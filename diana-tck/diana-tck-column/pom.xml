@@ -1,18 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
  <modelVersion>4.0.0</modelVersion>
-  <artifactId>diana-tck</artifactId>
- <packaging>pom</packaging>
- <name>Apache Diana TCK</name>
+ <artifactId>diana-tck-column</artifactId>
+ <packaging>jar</packaging>
+ <name>Apache Diana TCK Column</name>
  <parent>
   <groupId>org.apache.diana</groupId>
-  <artifactId>diana-parent</artifactId>
+  <artifactId>diana-tck</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 </parent>
 <properties>
   <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
   <maven.compile.sourceLevel>1.8</maven.compile.sourceLevel>
 </properties>
+
+<dependencies>
+  <dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>diana-tck-commons</artifactId>
+    <version>${project.version}</version>
+  </dependency>
+</dependencies>
+
 <build>
   <plugins>
     <plugin>
@@ -26,11 +35,4 @@
     </plugin>
   </plugins>
 </build>
-<modules>
-  <module>diana-tck-commons</module>
-  <module>diana-tck-column</module>
-  <module>diana-tck-document</module>
-  <module>diana-tck-graph</module>
-  <module>diana-tck-key-value</module>
-</modules>
 </project>
