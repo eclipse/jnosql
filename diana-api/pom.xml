@@ -2,7 +2,7 @@
  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
  <modelVersion>4.0.0</modelVersion>
  <artifactId>diana-api</artifactId>
- <packaging>pom</packaging>
+ <packaging>jar</packaging>
  <name>Apache Diana API</name>
  <parent>
   <groupId>org.apache.diana</groupId>
@@ -26,11 +26,4 @@
     </plugin>
   </plugins>
 </build>
-<modules>
-  <module>diana-api-commons</module>
-  <module>diana-api-column</module>
-  <module>diana-api-document</module>
-  <module>diana-api-graph</module>
-  <module>diana-api-key-value</module>
-</modules>
 </project>

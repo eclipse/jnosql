@@ -2,7 +2,7 @@
  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
  <modelVersion>4.0.0</modelVersion>
   <artifactId>diana-tck</artifactId>
- <packaging>pom</packaging>
+ <packaging>jar</packaging>
  <name>Apache Diana TCK</name>
  <parent>
   <groupId>org.apache.diana</groupId>
@@ -26,11 +26,4 @@
     </plugin>
   </plugins>
 </build>
-<modules>
-  <module>diana-tck-commons</module>
-  <module>diana-tck-column</module>
-  <module>diana-tck-document</module>
-  <module>diana-tck-graph</module>
-  <module>diana-tck-key-value</module>
-</modules>
 </project>
