@@ -1,21 +1,25 @@
 package org.apache.diana.api.key;
 
 
+
+
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.Optional;
 
 public interface KeyValueEntityManager {
 
-    KeyValueEntity getKeyValueEntity();
+    <T extends Serializable> void put(String key, T value);
 
-    <T extends Serializable> List<T> getList(String bucketName);
+    <T extends Serializable> void put(KeyValue keyValue);
 
-    <T extends Serializable> Set<T> getSet(String bucketName);
+    <T extends Serializable> void put(Iterable<KeyValue> keyValues);
 
-    <T extends Serializable> Queue<T> getQueue(String bucketName);
+    <T extends Serializable> Optional<T> get(String key, Class<T> entityClass);
 
-    <T extends Serializable> Map<String, T> getMap(String bucketName);
+    <T extends Serializable> Iterable<T> get(Iterable<String> key, Class<T> entityClass);
+
+    void remove(String key);
+
+    void remove(Iterable<String> keys);
+
 }
