@@ -1,7 +1,7 @@
 package org.apache.diana.api.column;
 
 
-public interface ColumnEntityManagerFactory {
+public interface ColumnEntityManagerFactory extends AutoCloseable {
 
     ColumnEntityManager getColumnEntityManager(String database);
 }

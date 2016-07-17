@@ -6,7 +6,7 @@ package org.apache.diana.api.key;
 import java.io.Serializable;
 import java.util.Optional;
 
-public interface KeyValueEntityManager {
+public interface KeyValueEntityManager extends AutoCloseable {
 
     <T extends Serializable> void put(String key, T value);
 

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-public interface KeyValueEntityManagerFactory {
+public interface KeyValueEntityManagerFactory extends AutoCloseable {
 
     KeyValueEntityManager getKeyValueEntity();
 
