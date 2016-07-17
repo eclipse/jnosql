@@ -19,10 +19,10 @@ public final class Columns {
         return Column.of(name, DefaultValue.of(value));
     }
 
-    public static List<Column> of(Map<String, Objects> values) {
+    public static List<Column> of(Map<String, Object> values) {
         Predicate<String> isNotNull = s -> values.get(s) != null;
         Function<String, Column> documentMap = key -> {
-            Objects value = values.get(key);
+            Object value = values.get(key);
             return Column.of(key, DefaultValue.of(value));
         };
         return values.keySet().stream().filter(isNotNull).map(documentMap).collect(Collectors.toList());

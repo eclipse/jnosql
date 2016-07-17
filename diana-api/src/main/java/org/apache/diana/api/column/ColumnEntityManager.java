@@ -18,13 +18,13 @@ public interface ColumnEntityManager extends AutoCloseable {
 
     void updateAsync(ColumnEntity entity, Consumer<Void> callBack);
 
-    void delete(Column key);
+    void delete(ColumnEntity entity);
 
-    void deleteAsync(Column key);
+    void deleteAsync(ColumnEntity entity);
 
-    void deleteAsync(Column key, Consumer<Void> callBack);
+    void deleteAsync(ColumnEntity entity, Consumer<Void> callBack);
 
-    ColumnEntity find(Column key);
+    ColumnEntity find(ColumnEntity entity);
 
     void findAsync(Column key, Consumer<ColumnEntity> callBack);
 
