@@ -20,6 +20,13 @@ public class CassandraConfigurationTest {
         assertNotNull(entityManagerFactory);
     }
 
+    @Test
+    public void shoudlCreateDocumentEntityManagerFactoryFromFile() {
+        CassandraConfiguration cassandraConfiguration = new CassandraConfiguration();
+        ColumnEntityManagerFactory entityManagerFactory = cassandraConfiguration.getManagerFactory();
+        assertNotNull(entityManagerFactory);
+    }
+
     @Test(expected = NullPointerException.class)
     public void shouldReturnNPEWhenMapIsNull() {
         CassandraConfiguration cassandraConfiguration = new CassandraConfiguration();
