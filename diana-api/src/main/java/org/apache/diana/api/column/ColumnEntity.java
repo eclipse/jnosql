@@ -9,24 +9,20 @@ import java.util.Objects;
 
 public class ColumnEntity implements Serializable {
 
-    private final Column key;
+
 
     private final List<Column> columns = new ArrayList<>();
 
     private final String columnFamily;
 
-    private ColumnEntity(Column key, String columnFamily) {
-        this.key = Objects.requireNonNull(key, "key is required");
+    private ColumnEntity(String columnFamily) {
         this.columnFamily = Objects.requireNonNull(columnFamily, "column family name is required");
     }
 
-    public static ColumnEntity of(Column key, String columnFamily) {
-        return new ColumnEntity(key, columnFamily);
+    public static ColumnEntity of(String columnFamily) {
+        return new ColumnEntity(columnFamily);
     }
 
-    public Column getKey() {
-        return key;
-    }
 
     public List<Column> getColumns() {
         return Collections.unmodifiableList(columns);
@@ -50,20 +46,20 @@ public class ColumnEntity implements Serializable {
             return false;
         }
         ColumnEntity that = (ColumnEntity) o;
-        return Objects.equals(key, that.key) &&
-                Objects.equals(columns, that.columns);
+        return Objects.equals(columns, that.columns) &&
+                Objects.equals(columnFamily, that.columnFamily);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, columns);
+        return Objects.hash(columns, columnFamily);
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DocumentEntity{");
-        sb.append("key=").append(key);
-        sb.append(", columns=").append(columns);
+        final StringBuilder sb = new StringBuilder("ColumnEntity{");
+        sb.append("columns=").append(columns);
+        sb.append(", columnFamily='").append(columnFamily).append('\'');
         sb.append('}');
         return sb.toString();
     }
