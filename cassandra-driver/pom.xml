@@ -6,6 +6,11 @@
  <packaging>pom</packaging>
  <version>0.0.1-SNAPSHOT</version>
  <name>Cassandra driver parent to Apache diana Project</name>
+ <parent>
+  <groupId>org.apache.diana</groupId>
+  <artifactId>diana-parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</parent>
  <properties>
   <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
   <maven.compile.sourceLevel>1.8</maven.compile.sourceLevel>
@@ -28,7 +33,7 @@
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-compiler-plugin</artifactId>
-      <version>3.3</version>
+      <version>${maven.compile.version}</version>
       <configuration>
         <target>1.8</target>
         <source>1.8</source>
