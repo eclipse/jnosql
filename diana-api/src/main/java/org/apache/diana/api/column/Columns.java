@@ -1,12 +1,9 @@
 package org.apache.diana.api.column;
 
-import org.apache.diana.api.document.Document;
-import org.apache.diana.api.util.DefaultValue;
+import org.apache.diana.api.DefaultValue;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;

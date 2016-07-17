@@ -7,13 +7,17 @@ import org.apache.diana.api.column.ColumnEntityManager;
 import org.apache.diana.api.column.ColumnEntityManagerFactory;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 class CassandraDocumentEntityManagerFactory implements ColumnEntityManagerFactory {
 
     private final Cluster cluster;
 
-    public CassandraDocumentEntityManagerFactory(final Cluster cluster, List<String> queries) {
+    private final Executor executor;
+
+    public CassandraDocumentEntityManagerFactory(final Cluster cluster, List<String> queries, Executor executor) {
         this.cluster = cluster;
+        this.executor = executor;
         runIniticialQuery(queries);
     }
 
@@ -25,7 +29,7 @@ class CassandraDocumentEntityManagerFactory implements ColumnEntityManagerFactor
 
     @Override
     public ColumnEntityManager getColumnEntityManager(String database) {
-        return new CassandraDocumentEntityManager(cluster.connect(database), database);
+        return new CassandraDocumentEntityManager(cluster.connect(database), executor, database);
     }
 
     @Override
@@ -41,6 +45,7 @@ class CassandraDocumentEntityManagerFactory implements ColumnEntityManagerFactor
     public String toString() {
         final StringBuilder sb = new StringBuilder("CassandraDocumentEntityManagerFactory{");
         sb.append("cluster=").append(cluster);
+        sb.append(", executor=").append(executor);
         sb.append('}');
         return sb.toString();
     }

@@ -1,9 +1,6 @@
-package org.apache.diana.api.util;
+package org.apache.diana.api;
 
 
-import org.apache.diana.api.Value;
-
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;

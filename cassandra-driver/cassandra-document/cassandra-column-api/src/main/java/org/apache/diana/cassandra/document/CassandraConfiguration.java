@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class CassandraConfiguration {
@@ -22,8 +25,11 @@ public class CassandraConfiguration {
                 .map(configurations::get).collect(Collectors.toList());
         Cluster.Builder builder = Cluster.builder();
         nodes.forEach(builder::addContactPoint);
-        List<String> queries = configurations.keySet().stream().filter(s -> s.startsWith("cassandra-initial-query")).map(configurations::get).collect(Collectors.toList());
-        return new CassandraDocumentEntityManagerFactory(builder.build(), queries);
+        List<String> queries = configurations.keySet().stream().filter(s -> s.startsWith("cassandra-initial-query")).sorted().map(configurations::get).collect(Collectors.toList());
+        String numThreadsServer = Integer.toString(Runtime.getRuntime().availableProcessors());
+        String numTreads = configurations.getOrDefault("cassandra-threads-number", numThreadsServer);
+        ExecutorService executorService = Executors.newFixedThreadPool(Integer.valueOf(numTreads));
+        return new CassandraDocumentEntityManagerFactory(builder.build(), queries, executorService);
     }
 
     public ColumnEntityManagerFactory getManagerFactory() {

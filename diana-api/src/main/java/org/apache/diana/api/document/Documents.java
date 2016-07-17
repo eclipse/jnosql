@@ -1,8 +1,7 @@
 package org.apache.diana.api.document;
 
-import org.apache.diana.api.util.DefaultValue;
+import org.apache.diana.api.DefaultValue;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
