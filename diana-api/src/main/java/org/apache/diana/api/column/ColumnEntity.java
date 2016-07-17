@@ -15,9 +15,13 @@ public class ColumnEntity implements Serializable {
 
     private final String columnFamily;
 
-    public ColumnEntity(Column key, String columnFamily) {
+    private ColumnEntity(Column key, String columnFamily) {
         this.key = Objects.requireNonNull(key, "key is required");
         this.columnFamily = Objects.requireNonNull(columnFamily, "column family name is required");
+    }
+
+    public static ColumnEntity of(Column key, String columnFamily) {
+        return new ColumnEntity(key, columnFamily);
     }
 
     public Column getKey() {
@@ -31,6 +35,10 @@ public class ColumnEntity implements Serializable {
     public void add(Column column) {
         Objects.requireNonNull(column, "Document is required");
         columns.add(column);
+    }
+
+    public String getColumnFamily() {
+        return columnFamily;
     }
 
     @Override
