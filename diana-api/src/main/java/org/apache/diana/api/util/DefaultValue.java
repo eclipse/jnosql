@@ -50,7 +50,7 @@ public class DefaultValue implements Value {
     }
 
     @Override
-    public <K extends Serializable, V extends Serializable> Map<K, V> getSet(Class<K> keyclass, Class<V> valueclass) {
+    public <K extends Serializable, V extends Serializable> Map<K, V> getSet(Class<K> keyClass, Class<V> valueClass) {
         return (Map<K, V>) value;
     }
 

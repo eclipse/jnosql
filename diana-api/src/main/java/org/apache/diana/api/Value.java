@@ -20,6 +20,6 @@ public interface Value extends Serializable {
 
     <T extends Serializable> Set<T> getSet(Class<T> clazz);
 
-    <K extends Serializable, V extends Serializable> Map<K, V> getSet(Class<K> keyclass, Class<V> valueclass);
+    <K extends Serializable, V extends Serializable> Map<K, V> getSet(Class<K> keyClass, Class<V> valueClass);
 
 }
