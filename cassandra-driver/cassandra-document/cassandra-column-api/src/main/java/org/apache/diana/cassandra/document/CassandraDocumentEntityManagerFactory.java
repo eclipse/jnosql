@@ -25,7 +25,7 @@ class CassandraDocumentEntityManagerFactory implements ColumnEntityManagerFactor
 
     @Override
     public ColumnEntityManager getColumnEntityManager(String database) {
-        return new CassandraDocumentEntityManager(cluster.connect(database));
+        return new CassandraDocumentEntityManager(cluster.connect(database), database);
     }
 
     @Override

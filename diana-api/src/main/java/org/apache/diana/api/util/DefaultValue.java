@@ -13,44 +13,44 @@ import java.util.stream.Stream;
 public class DefaultValue implements Value {
 
 
-    private final Serializable value;
+    private final Object value;
 
-    private DefaultValue(Serializable value) {
+    private DefaultValue(Object value) {
         this.value = value;
     }
 
-    public static Value of(Serializable value) {
+    public static Value of(Object value) {
         Objects.requireNonNull(value);
         return new DefaultValue(value);
     }
 
     @Override
-    public Serializable get() {
+    public Object get() {
         return value;
     }
 
     @Override
-    public <T extends Serializable> T get(Class<T> clazz) {
+    public <T> T get(Class<T> clazz) {
         return clazz.cast(value);
     }
 
     @Override
-    public <T extends Serializable> List<T> getList(Class<T> clazz) {
+    public <T> List<T> getList(Class<T> clazz) {
         return (List<T>) value;
     }
 
     @Override
-    public <T extends Serializable> Stream<T> getStream(Class<T> clazz) {
+    public <T> Stream<T> getStream(Class<T> clazz) {
         return getList(clazz).stream();
     }
 
     @Override
-    public <T extends Serializable> Set<T> getSet(Class<T> clazz) {
+    public <T> Set<T> getSet(Class<T> clazz) {
         return (Set<T>) value;
     }
 
     @Override
-    public <K extends Serializable, V extends Serializable> Map<K, V> getSet(Class<K> keyClass, Class<V> valueClass) {
+    public <K, V> Map<K, V> getSet(Class<K> keyClass, Class<V> valueClass) {
         return (Map<K, V>) value;
     }
 

@@ -27,7 +27,7 @@ public class CassandraDocumentEntityManagerFactoryTest {
 
     @Test
     public void shouldReturnEntityManager() throws Exception {
-        ColumnEntityManager columnEntityManager = subject.getColumnEntityManager("newKeySpace");
+        ColumnEntityManager columnEntityManager = subject.getColumnEntityManager(Constants.KEY_SPACE);
         assertNotNull(columnEntityManager);
     }
 
