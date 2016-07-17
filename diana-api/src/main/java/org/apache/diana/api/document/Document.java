@@ -12,11 +12,14 @@ public class Document implements Serializable {
 
     private final Value value;
 
-    public Document(String name, Value value) {
+    private Document(String name, Value value) {
         this.name = Objects.requireNonNull(name, "name is required");
         this.value = Objects.requireNonNull(value, "value is required");
     }
 
+    public static Document of(String name, Value value) {
+        return new Document(name, value);
+    }
     public String getName() {
         return name;
     }
