@@ -12,9 +12,13 @@ public class Column implements Serializable {
 
     private final Value value;
 
-    public Column(String name, Value value) {
+    private Column(String name, Value value) {
         this.name = Objects.requireNonNull(name, "name is required");
         this.value = Objects.requireNonNull(value, "value is required");
+    }
+
+    public static Column of(String name, Value value) {
+        return new Column(name, value);
     }
 
     public String getName() {
