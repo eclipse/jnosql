@@ -28,8 +28,8 @@ public interface ColumnEntityManager extends AutoCloseable {
 
     void findAsync(Column key, Consumer<ColumnEntity> callBack);
 
-    List<ColumnEntity> query(String query);
+    List<ColumnEntity> nativeQuery(String query);
 
-    PreparedStatement prepare(String query);
+    PreparedStatement nativeQueryPrepare(String query);
 
 }

@@ -28,8 +28,8 @@ public interface DocumentEntityManager extends AutoCloseable {
 
     void findAsync(Document key, Consumer<DocumentEntity> callBack);
 
-    List<DocumentEntity> query(String query);
+    List<DocumentEntity> nativeQuery(String query);
 
-    PreparedStatement prepare(String query);
+    PreparedStatement nativeQueryPrepare(String query);
 
 }
