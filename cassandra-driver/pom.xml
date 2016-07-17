@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+ <modelVersion>4.0.0</modelVersion>
+ <groupId>org.apache.diana.cassandra.driver</groupId>
+ <artifactId>cassandra-driver-parent</artifactId>
+ <packaging>pom</packaging>
+ <version>0.0.1-SNAPSHOT</version>
+ <name>Cassandra driver parent to Apache diana Project</name>
+ <properties>
+  <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
+  <maven.compile.sourceLevel>1.8</maven.compile.sourceLevel>
+</properties>
+<dependencies>
+ <dependency>
+  <groupId>junit</groupId>
+  <artifactId>junit</artifactId>
+  <version>4.12</version>
+  <scope>test</scope>
+</dependency>
+<dependency>
+  <groupId>org.apache.diana</groupId>
+  <artifactId>diana-api</artifactId>
+  <version>${project.version}</version>
+</dependency>
+</dependencies>
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>3.3</version>
+      <configuration>
+        <target>1.8</target>
+        <source>1.8</source>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+<modules>
+  <module>cassandra-document</module>
+</modules>
+</project>
