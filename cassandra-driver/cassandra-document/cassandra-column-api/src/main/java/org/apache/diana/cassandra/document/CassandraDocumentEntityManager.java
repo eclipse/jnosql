@@ -1,15 +1,23 @@
 package org.apache.diana.cassandra.document;
 
 
+import com.datastax.driver.core.Session;
 import org.apache.diana.api.column.Column;
 import org.apache.diana.api.column.ColumnEntity;
 import org.apache.diana.api.column.ColumnEntityManager;
+import org.apache.diana.api.column.PreparedStatement;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 class CassandraDocumentEntityManager implements ColumnEntityManager {
 
+
+    private final Session connect;
+
+    CassandraDocumentEntityManager(Session connect) {
+        this.connect = connect;
+    }
 
     @Override
     public void save(ColumnEntity columnEntity) {
@@ -72,12 +80,12 @@ class CassandraDocumentEntityManager implements ColumnEntityManager {
     }
 
     @Override
-    public org.apache.diana.api.column.PreparedStatement nativeQueryPrepare(String s) {
+    public PreparedStatement nativeQueryPrepare(String s) {
         return null;
     }
 
     @Override
     public void close() throws Exception {
-
+        connect.close();
     }
 }

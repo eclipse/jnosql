@@ -1,9 +1,8 @@
 package org.apache.diana.cassandra.document;
 
 import com.datastax.driver.core.Cluster;
-import org.apache.diana.api.document.DocumentEntityManager;
-import org.apache.diana.api.document.DocumentEntityManagerFactory;
-import org.junit.Assert;
+import org.apache.diana.api.column.ColumnEntityManager;
+import org.apache.diana.api.column.ColumnEntityManagerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,25 +11,24 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by otaviojava on 17/07/16.
- */
+
 public class CassandraDocumentEntityManagerFactoryTest {
 
-    private DocumentEntityManagerFactory subject;
+    private ColumnEntityManagerFactory subject;
 
     @Before
     public void setUp() {
         Map<String, String> configurations = new HashMap<>();
         configurations.put("cassandra-hoster-1", "172.17.0.2");
+        configurations.put("cassandra-initial-query-1", " CREATE KEYSPACE IF NOT EXISTS newKeySpace WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 3};");
         CassandraConfiguration cassandraConfiguration = new CassandraConfiguration();
-        subject = cassandraConfiguration.getConfiguration(configurations);
+        subject = cassandraConfiguration.getManagerFactory(configurations);
     }
 
     @Test
     public void shouldReturnEntityManager() throws Exception {
-        DocumentEntityManager columnEntityManager = subject.getColumnEntityManager("newKeySpace");
-        Assert.assertNotNull(columnEntityManager);
+        ColumnEntityManager columnEntityManager = subject.getColumnEntityManager("newKeySpace");
+        assertNotNull(columnEntityManager);
     }
 
     @Test
