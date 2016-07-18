@@ -8,9 +8,9 @@ import java.util.function.Consumer;
 
 public interface PreparedStatement extends AutoCloseable {
 
-    List<ColumnEntity> executeQuery();
+    List<ColumnFamily> executeQuery();
 
-    void executeQueryAsync(Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException;
+    void executeQueryAsync(Consumer<List<ColumnFamily>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     PreparedStatement bind(Object... values);
 }

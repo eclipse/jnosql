@@ -13,7 +13,7 @@ public class ColumnFamily implements Serializable {
     private final String name;
 
     private ColumnFamily(String name) {
-        this.name = Objects.requireNonNull(name, "column family name is required");
+        this.name = Objects.requireNonNull(name, "name is required");
     }
 
     public static ColumnFamily of(String columnFamily, Column... columns) {
@@ -43,7 +43,7 @@ public class ColumnFamily implements Serializable {
     }
 
     public void add(Column column) {
-        Objects.requireNonNull(column, "Document is required");
+        Objects.requireNonNull(column, "Column is required");
         columns.add(column);
     }
 
