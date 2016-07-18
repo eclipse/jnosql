@@ -6,6 +6,7 @@ import com.datastax.driver.core.querybuilder.Clause;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
+import org.apache.diana.api.DefaultValue;
 import org.apache.diana.api.Value;
 import org.apache.diana.api.column.Column;
 import org.apache.diana.api.column.ColumnEntity;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 class CassandraDocumentEntityManager implements ColumnEntityManager {
 
@@ -84,24 +86,16 @@ class CassandraDocumentEntityManager implements ColumnEntityManager {
     }
 
     @Override
-    public ColumnEntity find(ColumnEntity columnEntity) {
+    public List<ColumnEntity> find(ColumnEntity columnEntity) {
         Select.Where select = QueryUtils.select(columnEntity, keyspace);
-        ResultSet execute = session.execute(select);
-        List<Document> documents = new ArrayList<>();
-        for (Row row : execute.all()) {
-            for (ColumnDefinitions.Definition definition : row.getColumnDefinitions().asList()) {
-                DataType type = definition.getType();
-                Object value = CassandraConverter.get(definition, row);
-//              Value value = CassandraValue.of(row, definition.getName());
-                Document document = Documents.of(definition.getName(), value);
-                documents.add(document);
-            }
-        }
-        return null;
+        String columnFamily = columnEntity.getColumnFamily();
+        ResultSet resultSet = session.execute(select);
+        List<ColumnEntity> entities = resultSet.all().stream().map(row -> CassandraConverter.toDocumentEntity(row, columnFamily)).collect(Collectors.toList());
+        return entities;
     }
 
     @Override
-    public void findAsync(Column column, Consumer<ColumnEntity> consumer) {
+    public void findAsync(Column column, Consumer<List<ColumnEntity>> consumer) {
 
     }
 
