@@ -32,7 +32,7 @@ public interface ColumnEntityManager extends AutoCloseable {
 
     List<ColumnEntity> nativeQuery(String query);
 
-    List<ColumnEntity> nativeQueryAsync(String query) throws ExecuteAsyncQueryException;
+    void nativeQueryAsync(String query, Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException;
 
     PreparedStatement nativeQueryPrepare(String query);
 
