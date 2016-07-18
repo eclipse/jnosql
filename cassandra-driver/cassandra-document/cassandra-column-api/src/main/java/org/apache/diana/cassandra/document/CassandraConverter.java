@@ -4,7 +4,6 @@ package org.apache.diana.cassandra.document;
 import com.datastax.driver.core.ColumnDefinitions;
 import com.datastax.driver.core.DataType;
 import com.datastax.driver.core.Row;
-import org.apache.diana.api.DefaultValue;
 import org.apache.diana.api.Value;
 import org.apache.diana.api.column.Column;
 import org.apache.diana.api.column.ColumnFamily;
@@ -26,7 +25,7 @@ final class CassandraConverter {
         for (ColumnDefinitions.Definition definition : row.getColumnDefinitions().asList()) {
             DataType type = definition.getType();
             columnFamily = definition.getKeyspace();
-            Value value = DefaultValue.of(CassandraConverter.get(definition, row));
+            Value value = Value.of(CassandraConverter.get(definition, row));
             Column column = Column.of(definition.getName(), value);
             columns.add(column);
         }

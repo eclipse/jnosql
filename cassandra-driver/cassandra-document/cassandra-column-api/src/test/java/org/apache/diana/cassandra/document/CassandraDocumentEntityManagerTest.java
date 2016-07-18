@@ -58,8 +58,8 @@ public class CassandraDocumentEntityManagerTest {
     public void shouldFindById() {
 
         columnEntityManager.save(getColumnEntity());
-        ColumnFamily entity = ColumnFamily.of(COLUMN_FAMILY, Columns.of("id", 10L));
-        List<ColumnFamily> columnEntity = columnEntityManager.find(entity);
+        ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
+        List<ColumnFamily> columnEntity = columnEntityManager.find(query);
         assertFalse(columnEntity.isEmpty());
         List<Column> columns = columnEntity.get(0).getColumns();
         assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
@@ -92,7 +92,8 @@ public class CassandraDocumentEntityManagerTest {
     public void shouldDeleteColumnFamiliy() {
         columnEntityManager.save(getColumnEntity());
         ColumnFamily.of(COLUMN_FAMILY, Columns.of("id", 10L));
-        columnEntityManager.delete(ColumnFamily.of(COLUMN_FAMILY, Columns.of("id", 10L)));
+        ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
+        columnEntityManager.delete(query);
         List<ColumnFamily> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
         Assert.assertTrue(entities.isEmpty());
     }

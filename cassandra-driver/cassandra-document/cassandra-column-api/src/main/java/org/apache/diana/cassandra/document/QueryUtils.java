@@ -1,16 +1,14 @@
 package org.apache.diana.cassandra.document;
 
 
-import com.datastax.driver.core.querybuilder.Delete;
-import com.datastax.driver.core.querybuilder.Insert;
-import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.datastax.driver.core.querybuilder.Select;
+import com.datastax.driver.core.querybuilder.*;
+import org.apache.diana.api.Condition;
 import org.apache.diana.api.column.Column;
+import org.apache.diana.api.column.ColumnCondition;
 import org.apache.diana.api.column.ColumnFamily;
+import org.apache.diana.api.column.ColumnQuery;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.datastax.driver.core.querybuilder.QueryBuilder.insertInto;
 
@@ -26,26 +24,54 @@ final class QueryUtils {
         return insert;
     }
 
-    public static Select.Where select(ColumnFamily columnFamily, String keyspace) {
-        List<Column> columns = columnFamily.getColumns();
-        if(columns.size() == 1) {
-            Column column = columns.get(0);
-            return QueryBuilder.select().all().from(keyspace, columnFamily.getName()).where(QueryBuilder.eq(column.getName(), column.getValue().get()));
+    public static BuiltStatement add(ColumnQuery query, String keySpace) {
+        String columnFamily = query.getColumnFamily();
+        List<ColumnCondition> conditions = query.getConditions();
+        if (conditions.isEmpty()) {
+            return QueryBuilder.select().all().from(keySpace, columnFamily);
         }
-        List<String> names = columns.stream().sorted(Comparator.comparing(Column::getName)).map(Column::getName).collect(Collectors.toList());
-        List<Object> values = columns.stream().sorted(Comparator.comparing(Column::getName)).map(column -> column.getValue().get()).collect(Collectors.toList());
-        return QueryBuilder.select().all().from(keyspace, columnFamily.getName()).where(QueryBuilder.eq(names, values));
+        Select.Where where = QueryBuilder.select().all().from(keySpace, columnFamily).where();
+        conditions.stream().map(condition -> add(condition)).forEach(where::and);
+        return where;
     }
 
-    public static Delete.Where delete(ColumnFamily columnFamily, String keyspace) {
-        List<Column> columns = columnFamily.getColumns();
-        if(columns.size() == 1) {
-            Column column = columns.get(0);
-            return QueryBuilder.delete().all().from(keyspace, columnFamily.getName()).where(QueryBuilder.eq(column.getName(), column.getValue().get()));
+    public static BuiltStatement delete(ColumnQuery query, String keySpace) {
+        String columnFamily = query.getColumnFamily();
+        List<ColumnCondition> conditions = query.getConditions();
+
+        if (conditions.isEmpty()) {
+            return QueryBuilder.delete().all().from(keySpace, query.getColumnFamily());
         }
-        List<String> names = columns.stream().sorted(Comparator.comparing(Column::getName)).map(Column::getName).collect(Collectors.toList());
-        List<Object> values = columns.stream().sorted(Comparator.comparing(Column::getName)).map(column -> column.getValue().get()).collect(Collectors.toList());
-        return QueryBuilder.delete().all().from(keyspace, columnFamily.getName()).where(QueryBuilder.eq(names, values));
+        Delete.Where where = QueryBuilder.delete().all().from(keySpace, query.getColumnFamily()).where();
+        conditions.stream().map(condition -> add(condition)).forEach(where::and);
+        return where;
     }
+
+    private static Clause add(ColumnCondition columnCondition) {
+        Column column = columnCondition.getColumn();
+        Condition condition = columnCondition.getCondition();
+        switch (condition) {
+            case EQUALS:
+                return QueryBuilder.eq(column.getName(), column.getValue().get());
+            case GREATER_THAN:
+                return QueryBuilder.gt(column.getName(), column.getValue().get());
+            case GREATER_EQUALS_THAN:
+                return QueryBuilder.gte(column.getName(), column.getValue().get());
+            case LESSER_THAN:
+                return QueryBuilder.lt(column.getName(), column.getValue().get());
+            case LESSER_EQUALS_THAN:
+                return QueryBuilder.lte(column.getName(), column.getValue().get());
+            case IN:
+                return QueryBuilder.in(column.getName(), column.getValue().get());
+            case LIKE:
+                return QueryBuilder.like(column.getName(), column.getValue().get());
+            case AND:
+            case OR:
+            default:
+                throw new UnsupportedOperationException("The columnCondition " + condition + " is not supported in cassandra document driver");
+
+        }
+    }
+
 
 }

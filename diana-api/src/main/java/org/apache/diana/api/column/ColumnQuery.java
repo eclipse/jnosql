@@ -24,12 +24,14 @@ public class ColumnQuery {
         return new ColumnQuery(columnFamily);
     }
 
-    public void addCondition(ColumnCondition condition) {
+    public ColumnQuery addCondition(ColumnCondition condition) {
         this.conditions.add(Objects.requireNonNull(condition, "condition is required"));
+        return this;
     }
 
-    public void addSort(Sort sort) {
+    public ColumnQuery addSort(Sort sort) {
         this.sorts.add(Objects.requireNonNull(sort, "Sort is required"));
+        return this;
     }
 
     public String getColumnFamily() {

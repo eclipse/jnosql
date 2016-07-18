@@ -1,7 +1,7 @@
 package org.apache.diana.cassandra.document;
 
 
-import org.apache.diana.api.column.ColumnEntityManagerFactory;
+import org.apache.diana.api.column.ColumnFamilyManagerFactory;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -16,14 +16,14 @@ public class CassandraConfigurationTest {
         Map<String, String> configurations = new HashMap<>();
         configurations.put("cassandra-hoster-1", "172.17.0.2");
         CassandraConfiguration cassandraConfiguration = new CassandraConfiguration();
-        ColumnEntityManagerFactory entityManagerFactory = cassandraConfiguration.getManagerFactory(configurations);
+        ColumnFamilyManagerFactory entityManagerFactory = cassandraConfiguration.getManagerFactory(configurations);
         assertNotNull(entityManagerFactory);
     }
 
     @Test
     public void shoudlCreateDocumentEntityManagerFactoryFromFile() {
         CassandraConfiguration cassandraConfiguration = new CassandraConfiguration();
-        ColumnEntityManagerFactory entityManagerFactory = cassandraConfiguration.getManagerFactory();
+        ColumnFamilyManagerFactory entityManagerFactory = cassandraConfiguration.getManagerFactory();
         assertNotNull(entityManagerFactory);
     }
 

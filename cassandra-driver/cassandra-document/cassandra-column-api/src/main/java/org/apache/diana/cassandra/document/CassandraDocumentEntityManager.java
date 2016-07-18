@@ -4,13 +4,12 @@ package org.apache.diana.cassandra.document;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.querybuilder.BuiltStatement;
 import com.datastax.driver.core.querybuilder.Delete;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.Select;
 import org.apache.diana.api.ExecuteAsyncQueryException;
-import org.apache.diana.api.column.ColumnFamily;
-import org.apache.diana.api.column.ColumnFamilyManager;
-import org.apache.diana.api.column.PreparedStatement;
+import org.apache.diana.api.column.*;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -67,35 +66,37 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     }
 
     @Override
-    public void delete(ColumnFamily columnFamily) {
-        Delete.Where delete = QueryUtils.delete(columnFamily, keyspace);
+    public void delete(ColumnQuery query) {
+        BuiltStatement delete = QueryUtils.delete(query, keyspace);
         session.execute(delete);
 
     }
 
     @Override
-    public void deleteAsync(ColumnFamily columnEntity) {
-        Delete.Where delete = QueryUtils.delete(columnEntity, keyspace);
+    public void deleteAsync(ColumnQuery query) {
+        BuiltStatement delete = QueryUtils.delete(query, keyspace);
         session.executeAsync(delete);
     }
 
     @Override
-    public void deleteAsync(ColumnFamily columnEntity, Consumer<Void> consumer) {
-        Delete.Where delete = QueryUtils.delete(columnEntity, keyspace);
+    public void deleteAsync(ColumnQuery query, Consumer<Void> consumer) {
+        BuiltStatement delete = QueryUtils.delete(query, keyspace);
         ResultSetFuture resultSetFuture = session.executeAsync(delete);
-        resultSetFuture.addListener(()-> consumer.accept(null), executor);
+        resultSetFuture.addListener(() -> consumer.accept(null), executor);
     }
 
     @Override
-    public List<ColumnFamily> find(ColumnFamily columnEntity) {
-        Select.Where select = QueryUtils.select(columnEntity, keyspace);
+    public List<ColumnFamily> find(ColumnQuery query) {
+        BuiltStatement select = QueryUtils.add(query, keyspace);
         ResultSet resultSet = session.execute(select);
         return resultSet.all().stream().map(row -> CassandraConverter.toDocumentEntity(row)).collect(Collectors.toList());
     }
 
+
+
     @Override
-    public void findAsync(ColumnFamily columnEntity, Consumer<List<ColumnFamily>> consumer) {
-        Select.Where select = QueryUtils.select(columnEntity, keyspace);
+    public void findAsync(ColumnQuery query, Consumer<List<ColumnFamily>> consumer) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        BuiltStatement select = QueryUtils.add(query, keyspace);
         ResultSetFuture resultSet = session.executeAsync(select);
         CassandraReturnQueryAsync executeAsync = new CassandraReturnQueryAsync(resultSet, consumer);
         resultSet.addListener(executeAsync, executor);

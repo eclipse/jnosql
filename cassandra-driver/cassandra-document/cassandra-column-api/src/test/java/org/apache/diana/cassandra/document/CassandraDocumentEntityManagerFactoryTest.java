@@ -1,20 +1,21 @@
 package org.apache.diana.cassandra.document;
 
 import com.datastax.driver.core.Cluster;
-import org.apache.diana.api.column.ColumnEntityManager;
-import org.apache.diana.api.column.ColumnEntityManagerFactory;
+import org.apache.diana.api.column.ColumnFamilyManager;
+import org.apache.diana.api.column.ColumnFamilyManagerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 public class CassandraDocumentEntityManagerFactoryTest {
 
-    private ColumnEntityManagerFactory subject;
+    private ColumnFamilyManagerFactory subject;
 
     @Before
     public void setUp() {
@@ -27,7 +28,7 @@ public class CassandraDocumentEntityManagerFactoryTest {
 
     @Test
     public void shouldReturnEntityManager() throws Exception {
-        ColumnEntityManager columnEntityManager = subject.getColumnEntityManager(Constants.KEY_SPACE);
+        ColumnFamilyManager columnEntityManager = subject.getColumnEntityManager(Constants.KEY_SPACE);
         assertNotNull(columnEntityManager);
     }
 
