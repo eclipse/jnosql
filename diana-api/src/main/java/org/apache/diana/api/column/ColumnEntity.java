@@ -4,10 +4,7 @@ package org.apache.diana.api.column;
 import org.apache.diana.api.document.Document;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ColumnEntity implements Serializable {
 
@@ -21,8 +18,12 @@ public class ColumnEntity implements Serializable {
         this.columnFamily = Objects.requireNonNull(columnFamily, "column family name is required");
     }
 
-    public static ColumnEntity of(String columnFamily) {
-        return new ColumnEntity(columnFamily);
+    public static ColumnEntity of(String columnFamily, Column... columns) {
+        if(columns.length == 0){
+            return new ColumnEntity(columnFamily);
+        }
+        return of(columnFamily, Arrays.asList(columns));
+
     }
 
     public static ColumnEntity of(String columnFamily, List<Column> columns) {
