@@ -79,6 +79,17 @@ public class CassandraDocumentEntityManagerTest {
     }
 
     @Test
+    public void shouldPrepareStatment() {
+        columnEntityManager.save(getColumnEntity());
+        PreparedStatement preparedStatement = columnEntityManager.nativeQueryPrepare("select * from newKeySpace.newColumnFamily where id=?");
+        preparedStatement.bind(10L);
+        List<ColumnEntity> entities = preparedStatement.executeQuery();
+        List<Column> columns = entities.get(0).getColumns();
+        assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
+        assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, Arrays.asList(1,2,3), 10L));
+    }
+
+    @Test
     public void shouldDeleteColumnFamiliy() {
         columnEntityManager.save(getColumnEntity());
         ColumnEntity.of(COLUMN_FAMILY, Columns.of("id", 10L));
