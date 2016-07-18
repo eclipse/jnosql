@@ -22,15 +22,15 @@ public interface ColumnFamilyManager extends AutoCloseable {
 
     void delete(ColumnFamily columnFamily);
 
-    void deleteAsync(ColumnFamily columnFamily)throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void deleteAsync(ColumnFamily columnFamily) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     void deleteAsync(ColumnFamily columnFamily, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    List<ColumnFamily> find(ColumnFamily columnFamily);
+    List<ColumnFamily> find(String columnFamily, ColumnCondition... conditions);
 
     void findAsync(ColumnFamily columnFamily, Consumer<List<ColumnFamily>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    List<ColumnFamily> nativeQuery(String query)throws UnsupportedOperationException;
+    List<ColumnFamily> nativeQuery(String query) throws UnsupportedOperationException;
 
     void nativeQueryAsync(String query, Consumer<List<ColumnFamily>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
