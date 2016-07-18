@@ -4,7 +4,7 @@ package org.apache.diana.cassandra.document;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.ResultSetFuture;
 import org.apache.diana.api.ExecuteAsyncQueryException;
-import org.apache.diana.api.column.ColumnEntity;
+import org.apache.diana.api.column.ColumnFamily;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -15,10 +15,10 @@ class CassandraReturnQueryAsync implements Runnable {
 
     private final ResultSetFuture resultSet;
 
-    private final Consumer<List<ColumnEntity>> consumer;
+    private final Consumer<List<ColumnFamily>> consumer;
 
 
-    public CassandraReturnQueryAsync(ResultSetFuture resultSet, Consumer<List<ColumnEntity>> consumer) {
+    public CassandraReturnQueryAsync(ResultSetFuture resultSet, Consumer<List<ColumnFamily>> consumer) {
         this.resultSet = resultSet;
         this.consumer = consumer;
     }
@@ -27,7 +27,7 @@ class CassandraReturnQueryAsync implements Runnable {
     public void run() {
         try {
             ResultSet resultSet = this.resultSet.get();
-            List<ColumnEntity> entities = resultSet.all().stream().map(row -> CassandraConverter.toDocumentEntity(row)).collect(Collectors.toList());
+            List<ColumnFamily> entities = resultSet.all().stream().map(row -> CassandraConverter.toDocumentEntity(row)).collect(Collectors.toList());
             consumer.accept(entities);
         } catch (InterruptedException | ExecutionException e) {
             throw new ExecuteAsyncQueryException(e);

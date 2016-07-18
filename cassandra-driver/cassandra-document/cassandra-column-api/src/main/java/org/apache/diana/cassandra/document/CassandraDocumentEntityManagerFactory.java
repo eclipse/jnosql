@@ -3,13 +3,13 @@ package org.apache.diana.cassandra.document;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import org.apache.diana.api.column.ColumnEntityManager;
-import org.apache.diana.api.column.ColumnEntityManagerFactory;
+import org.apache.diana.api.column.ColumnFamilyManager;
+import org.apache.diana.api.column.ColumnFamilyManagerFactory;
 
 import java.util.List;
 import java.util.concurrent.Executor;
 
-class CassandraDocumentEntityManagerFactory implements ColumnEntityManagerFactory {
+class CassandraDocumentEntityManagerFactory implements ColumnFamilyManagerFactory {
 
     private final Cluster cluster;
 
@@ -28,7 +28,7 @@ class CassandraDocumentEntityManagerFactory implements ColumnEntityManagerFactor
     }
 
     @Override
-    public ColumnEntityManager getColumnEntityManager(String database) {
+    public ColumnFamilyManager getColumnEntityManager(String database) {
         return new CassandraDocumentEntityManager(cluster.connect(database), executor, database);
     }
 

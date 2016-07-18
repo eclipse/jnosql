@@ -2,7 +2,7 @@ package org.apache.diana.cassandra.document;
 
 
 import com.datastax.driver.core.Cluster;
-import org.apache.diana.api.column.ColumnEntityManagerFactory;
+import org.apache.diana.api.column.ColumnFamilyManagerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -19,7 +18,7 @@ public class CassandraConfiguration {
 
     private static final String CASSANDRA_FILE_CONFIGURATION = "diana-cassandra.properties";
 
-    public ColumnEntityManagerFactory getManagerFactory(Map<String, String> configurations) {
+    public ColumnFamilyManagerFactory getManagerFactory(Map<String, String> configurations) {
         Objects.requireNonNull(configurations);
         List<String> nodes = configurations.keySet().stream().filter(s -> s.startsWith("cassandra-hoster"))
                 .map(configurations::get).collect(Collectors.toList());
@@ -32,7 +31,7 @@ public class CassandraConfiguration {
         return new CassandraDocumentEntityManagerFactory(builder.build(), queries, executorService);
     }
 
-    public ColumnEntityManagerFactory getManagerFactory() {
+    public ColumnFamilyManagerFactory getManagerFactory() {
 
         try {
             Properties properties = new Properties();

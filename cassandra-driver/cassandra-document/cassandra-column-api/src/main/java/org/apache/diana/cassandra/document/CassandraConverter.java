@@ -7,8 +7,7 @@ import com.datastax.driver.core.Row;
 import org.apache.diana.api.DefaultValue;
 import org.apache.diana.api.Value;
 import org.apache.diana.api.column.Column;
-import org.apache.diana.api.column.ColumnEntity;
-import org.apache.diana.api.document.DocumentEntity;
+import org.apache.diana.api.column.ColumnFamily;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -21,7 +20,7 @@ final class CassandraConverter {
     private CassandraConverter() {
     }
 
-    public static ColumnEntity toDocumentEntity(Row row) {
+    public static ColumnFamily toDocumentEntity(Row row) {
         List<Column> columns = new ArrayList<>();
         String columnFamily = "";
         for (ColumnDefinitions.Definition definition : row.getColumnDefinitions().asList()) {
@@ -31,7 +30,7 @@ final class CassandraConverter {
             Column column = Column.of(definition.getName(), value);
             columns.add(column);
         }
-        return ColumnEntity.of(columnFamily, columns);
+        return ColumnFamily.of(columnFamily, columns);
     }
 
     public static Object get(ColumnDefinitions.Definition definition, Row row) {
