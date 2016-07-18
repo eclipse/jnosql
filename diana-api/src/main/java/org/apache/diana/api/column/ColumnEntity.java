@@ -5,9 +5,9 @@ import org.apache.diana.api.document.Document;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ColumnEntity implements Serializable {
-
 
 
     private final List<Column> columns = new ArrayList<>();
@@ -19,11 +19,10 @@ public class ColumnEntity implements Serializable {
     }
 
     public static ColumnEntity of(String columnFamily, Column... columns) {
-        if(columns.length == 0){
+        if (columns.length == 0) {
             return new ColumnEntity(columnFamily);
         }
         return of(columnFamily, Arrays.asList(columns));
-
     }
 
     public static ColumnEntity of(String columnFamily, List<Column> columns) {
@@ -37,6 +36,9 @@ public class ColumnEntity implements Serializable {
         this.columns.addAll(columns);
     }
 
+    public Map<String, Object> toMap() {
+        return columns.stream().collect(Collectors.toMap(Column::getName, column -> column.getValue().get()));
+    }
 
     public List<Column> getColumns() {
         return Collections.unmodifiableList(columns);
