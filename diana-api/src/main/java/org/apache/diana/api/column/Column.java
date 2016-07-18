@@ -6,6 +6,10 @@ import org.apache.diana.api.Value;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * A Column Family unit, it is a tuple (pair) that consists of a key-value pair, where the key is mapped to a value.
+ * @author Otávio Santana
+ */
 public class Column implements Serializable {
 
     private final String name;
@@ -17,14 +21,29 @@ public class Column implements Serializable {
         this.value = Objects.requireNonNull(value, "value is required");
     }
 
+    /**
+     * Creates a column instance
+     * @param name - column's name
+     * @param value - column's value
+     * @return a column instance
+     * @see {@link Columns}
+     */
     public static Column of(String name, Value value) {
         return new Column(name, value);
     }
 
+    /**
+     * The column's name
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * the column's value
+     * @return {@link Value}
+     */
     public Value getValue() {
         return value;
     }
