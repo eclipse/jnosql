@@ -51,7 +51,7 @@ public class ColumnFamily implements Serializable {
 
     /**
      * Appends all of the columns in the column family to the end of this list.
-     * @param columns
+     * @param columns - columns to be added
      * @throws NullPointerException when columns is null
      */
     public void addAll(List<Column> columns) {
@@ -61,7 +61,7 @@ public class ColumnFamily implements Serializable {
 
     /**
      * Appends the specified column to the end of this list
-     * @param column
+     * @param column - column to be added
      * @throws NullPointerException when column is null
      */
     public void add(Column column) {
@@ -97,7 +97,7 @@ public class ColumnFamily implements Serializable {
 
     /**
      * Returns true if the number of columns is zero otherwise false.
-     * @return true if there isnt elements to {@link ColumnFamily#columns}
+     * @return true if there isn't elements to {@link ColumnFamily#columns}
      */
     public boolean isEmpty() {
         return columns.isEmpty();
