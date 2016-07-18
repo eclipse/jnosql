@@ -60,7 +60,7 @@ public class ColumnFamily implements Serializable {
     }
 
     /**
-     * Appends the specified document to the end of this list
+     * Appends the specified column to the end of this list
      * @param column
      * @throws NullPointerException when column is null
      */
@@ -81,7 +81,7 @@ public class ColumnFamily implements Serializable {
 
     /**
      * Returns all columns from this Column Family
-     * @return an immutable list of documents
+     * @return an immutable list of columns
      */
     public List<Column> getColumns() {
         return Collections.unmodifiableList(columns);
@@ -96,7 +96,7 @@ public class ColumnFamily implements Serializable {
     }
 
     /**
-     * Returns true if the number of documents is zero otherwise false.
+     * Returns true if the number of columns is zero otherwise false.
      * @return true if there isnt elements to {@link ColumnFamily#columns}
      */
     public boolean isEmpty() {

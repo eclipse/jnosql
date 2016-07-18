@@ -36,10 +36,10 @@ public final class Columns {
     public static List<Column> of(Map<String, Object> values) {
         Objects.requireNonNull(values, "values is required");
         Predicate<String> isNotNull = s -> values.get(s) != null;
-        Function<String, Column> documentMap = key -> {
+        Function<String, Column> columnMap = key -> {
             Object value = values.get(key);
             return Column.of(key, DefaultValue.of(value));
         };
-        return values.keySet().stream().filter(isNotNull).map(documentMap).collect(Collectors.toList());
+        return values.keySet().stream().filter(isNotNull).map(columnMap).collect(Collectors.toList());
     }
 }

@@ -68,7 +68,7 @@ public class Column implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Document{");
+        final StringBuilder sb = new StringBuilder("Column{");
         sb.append("name='").append(name).append('\'');
         sb.append(", value=").append(value);
         sb.append('}');
