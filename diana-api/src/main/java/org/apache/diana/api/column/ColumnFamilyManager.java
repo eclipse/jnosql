@@ -8,27 +8,27 @@ import java.util.function.Consumer;
 
 public interface ColumnFamilyManager extends AutoCloseable {
 
-    void save(ColumnFamily entity);
+    void save(ColumnFamily columnFamily);
 
-    void saveAsync(ColumnFamily entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void saveAsync(ColumnFamily columnFamily) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void saveAsync(ColumnFamily entity, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void saveAsync(ColumnFamily columnFamily, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void update(ColumnFamily entity);
+    void update(ColumnFamily columnFamily);
 
-    void updateAsync(ColumnFamily entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void updateAsync(ColumnFamily columnFamily) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void updateAsync(ColumnFamily entity, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void updateAsync(ColumnFamily columnFamily, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void delete(ColumnFamily entity);
+    void delete(ColumnFamily columnFamily);
 
-    void deleteAsync(ColumnFamily entity)throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void deleteAsync(ColumnFamily columnFamily)throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void deleteAsync(ColumnFamily entity, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void deleteAsync(ColumnFamily columnFamily, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    List<ColumnFamily> find(ColumnFamily entity);
+    List<ColumnFamily> find(ColumnFamily columnFamily);
 
-    void findAsync(ColumnFamily entity, Consumer<List<ColumnFamily>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void findAsync(ColumnFamily columnFamily, Consumer<List<ColumnFamily>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     List<ColumnFamily> nativeQuery(String query)throws UnsupportedOperationException;
 
