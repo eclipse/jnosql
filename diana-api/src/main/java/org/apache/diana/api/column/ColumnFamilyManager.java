@@ -28,7 +28,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
 
     List<ColumnFamily> find(ColumnQuery query);
 
-    void findAsync(ColumnFamily columnFamily, ColumnQuery query, Consumer<List<ColumnFamily>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void findAsync(ColumnQuery query, Consumer<List<ColumnFamily>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     List<ColumnFamily> nativeQuery(String query) throws UnsupportedOperationException;
 
