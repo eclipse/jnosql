@@ -4,6 +4,7 @@ package org.apache.diana.cassandra.document;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.querybuilder.Delete;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.Select;
 import org.apache.diana.api.ExecuteAsyncQueryException;
@@ -67,17 +68,22 @@ class CassandraDocumentEntityManager implements ColumnEntityManager {
 
     @Override
     public void delete(ColumnEntity columnEntity) {
+        Delete.Where delete = QueryUtils.delete(columnEntity, keyspace);
+        session.execute(delete);
 
     }
 
     @Override
     public void deleteAsync(ColumnEntity columnEntity) {
-
+        Delete.Where delete = QueryUtils.delete(columnEntity, keyspace);
+        session.executeAsync(delete);
     }
 
     @Override
     public void deleteAsync(ColumnEntity columnEntity, Consumer<Void> consumer) {
-
+        Delete.Where delete = QueryUtils.delete(columnEntity, keyspace);
+        ResultSetFuture resultSetFuture = session.executeAsync(delete);
+        resultSetFuture.addListener(()-> consumer.accept(null), executor);
     }
 
     @Override

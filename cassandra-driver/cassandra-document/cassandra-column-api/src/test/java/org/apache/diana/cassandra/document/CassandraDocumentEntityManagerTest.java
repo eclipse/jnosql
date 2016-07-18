@@ -3,6 +3,7 @@ package org.apache.diana.cassandra.document;
 import com.datastax.driver.core.Session;
 import org.apache.diana.api.Value;
 import org.apache.diana.api.column.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -75,6 +76,15 @@ public class CassandraDocumentEntityManagerTest {
         List<Column> columns = entities.get(0).getColumns();
         assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
         assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, Arrays.asList(1,2,3), 10L));
+    }
+
+    @Test
+    public void shouldDeleteColumnFamiliy() {
+        columnEntityManager.save(getColumnEntity());
+        ColumnEntity.of(COLUMN_FAMILY, Columns.of("id", 10L));
+        columnEntityManager.delete(ColumnEntity.of(COLUMN_FAMILY, Columns.of("id", 10L)));
+        List<ColumnEntity> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
+        Assert.assertTrue(entities.isEmpty());
     }
 
     private ColumnEntity getColumnEntity() {
