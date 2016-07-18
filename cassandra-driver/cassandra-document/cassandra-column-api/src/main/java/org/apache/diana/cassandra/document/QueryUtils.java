@@ -12,6 +12,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.datastax.driver.core.querybuilder.QueryBuilder.insertInto;
+
 final class QueryUtils {
 
     private QueryUtils() {
@@ -19,7 +21,7 @@ final class QueryUtils {
 
 
     public static Insert insert(ColumnFamily columnFamily, String keyspace) {
-        Insert insert = QueryBuilder.insertInto(keyspace, columnFamily.getName());
+        Insert insert = insertInto(keyspace, columnFamily.getName());
         columnFamily.getColumns().forEach(d -> insert.value(d.getName(), d.getValue().get()));
         return insert;
     }
