@@ -9,7 +9,7 @@ import static org.apache.diana.api.Condition.*;
  * An unit condition  to run a column family query
  *
  * @author Otávio Santana
- * @see ColumnFamilyManager#find(String, ColumnCondition...)
+ * @see ColumnFamilyManager#find(String)
  */
 public interface ColumnCondition {
 

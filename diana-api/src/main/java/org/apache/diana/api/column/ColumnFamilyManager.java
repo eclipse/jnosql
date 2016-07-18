@@ -20,17 +20,17 @@ public interface ColumnFamilyManager extends AutoCloseable {
 
     void updateAsync(ColumnFamily columnFamily, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void delete(ColumnFamily columnFamily);
+    void delete(ColumnQuery query);
 
-    void deleteAsync(ColumnFamily columnFamily) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void deleteAsync(ColumnQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void deleteAsync(ColumnFamily columnFamily, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void deleteAsync(ColumnQuery query, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    List<ColumnFamily> find(String columnFamily, List<ColumnCondition> conditions);
+    List<ColumnFamily> find(String columnFamily, ColumnQuery query);
 
     List<ColumnFamily> find(String columnFamily);
 
-    void findAsync(ColumnFamily columnFamily, Consumer<List<ColumnFamily>> callBack, List<ColumnCondition> conditions) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void findAsync(ColumnFamily columnFamily, ColumnQuery query, Consumer<List<ColumnFamily>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     List<ColumnFamily> nativeQuery(String query) throws UnsupportedOperationException;
 
