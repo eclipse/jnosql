@@ -115,7 +115,8 @@ class CassandraDocumentEntityManager implements ColumnEntityManager {
     }
 
     @Override
-    public PreparedStatement nativeQueryPrepare(String s) {
+    public PreparedStatement nativeQueryPrepare(String query) {
+        com.datastax.driver.core.PreparedStatement prepare = session.prepare(query);
         return null;
     }
 
