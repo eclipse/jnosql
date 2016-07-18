@@ -1,21 +1,16 @@
 package org.apache.diana.cassandra.document;
 
 
-import com.datastax.driver.core.*;
-import com.datastax.driver.core.querybuilder.Clause;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.ResultSetFuture;
+import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.Insert;
-import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
-import org.apache.diana.api.DefaultValue;
-import org.apache.diana.api.Value;
-import org.apache.diana.api.column.Column;
+import org.apache.diana.api.ExecuteAsyncQueryException;
 import org.apache.diana.api.column.ColumnEntity;
 import org.apache.diana.api.column.ColumnEntityManager;
 import org.apache.diana.api.column.PreparedStatement;
-import org.apache.diana.api.document.Document;
-import org.apache.diana.api.document.Documents;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
@@ -88,19 +83,26 @@ class CassandraDocumentEntityManager implements ColumnEntityManager {
     @Override
     public List<ColumnEntity> find(ColumnEntity columnEntity) {
         Select.Where select = QueryUtils.select(columnEntity, keyspace);
-        String columnFamily = columnEntity.getColumnFamily();
         ResultSet resultSet = session.execute(select);
-        List<ColumnEntity> entities = resultSet.all().stream().map(row -> CassandraConverter.toDocumentEntity(row, columnFamily)).collect(Collectors.toList());
-        return entities;
+        return resultSet.all().stream().map(row -> CassandraConverter.toDocumentEntity(row)).collect(Collectors.toList());
     }
 
     @Override
-    public void findAsync(Column column, Consumer<List<ColumnEntity>> consumer) {
-
+    public void findAsync(ColumnEntity columnEntity, Consumer<List<ColumnEntity>> consumer) {
+        Select.Where select = QueryUtils.select(columnEntity, keyspace);
+        ResultSetFuture resultSet = session.executeAsync(select);
+        CassandraReturnQueryAsync executeAsync = new CassandraReturnQueryAsync(resultSet, consumer);
+        resultSet.addListener(executeAsync, executor);
     }
 
     @Override
-    public List<ColumnEntity> nativeQuery(String s) {
+    public List<ColumnEntity> nativeQuery(String query) {
+        ResultSet resultSet = session.execute(query);
+        return resultSet.all().stream().map(row -> CassandraConverter.toDocumentEntity(row)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ColumnEntity> nativeQueryAsync(String query) throws ExecuteAsyncQueryException {
         return null;
     }
 

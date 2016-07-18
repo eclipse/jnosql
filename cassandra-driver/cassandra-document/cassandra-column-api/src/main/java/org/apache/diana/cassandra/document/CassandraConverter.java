@@ -21,10 +21,12 @@ final class CassandraConverter {
     private CassandraConverter() {
     }
 
-    public static ColumnEntity toDocumentEntity(Row row, String columnFamily) {
+    public static ColumnEntity toDocumentEntity(Row row) {
         List<Column> columns = new ArrayList<>();
+        String columnFamily = "";
         for (ColumnDefinitions.Definition definition : row.getColumnDefinitions().asList()) {
             DataType type = definition.getType();
+            columnFamily = definition.getKeyspace();
             Value value = DefaultValue.of(CassandraConverter.get(definition, row));
             Column column = Column.of(definition.getName(), value);
             columns.add(column);
