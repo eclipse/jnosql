@@ -4,19 +4,37 @@ import org.apache.diana.api.DefaultValue;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * Utilitarian class to {@link Column}
+ * @author Otavio Santana
+ */
 public final class Columns {
 
     private Columns() {}
 
+    /**
+     * Creates a column instance
+     * @param name column's name
+     * @param value column's value
+     * @return a column's instance
+     */
     public static Column of(String name, Object value) {
         return Column.of(name, DefaultValue.of(value));
     }
 
+    /**
+     * Converts a Map to columns where: the key gonna be a column's name the value a column's value and null values elements will be ignored.
+     * @param values map to be converted
+     * @return a list of columns
+     * @throws NullPointerException when values is null
+     */
     public static List<Column> of(Map<String, Object> values) {
+        Objects.requireNonNull(values, "values is required");
         Predicate<String> isNotNull = s -> values.get(s) != null;
         Function<String, Column> documentMap = key -> {
             Object value = values.get(key);
