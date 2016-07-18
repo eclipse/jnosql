@@ -102,8 +102,10 @@ class CassandraDocumentEntityManager implements ColumnEntityManager {
     }
 
     @Override
-    public List<ColumnEntity> nativeQueryAsync(String query) throws ExecuteAsyncQueryException {
-        return null;
+    public void nativeQueryAsync(String query, Consumer<List<ColumnEntity>> consumer) throws ExecuteAsyncQueryException {
+        ResultSetFuture resultSet = session.executeAsync(query);
+        CassandraReturnQueryAsync executeAsync = new CassandraReturnQueryAsync(resultSet, consumer);
+        resultSet.addListener(executeAsync, executor);
     }
 
     @Override

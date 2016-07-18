@@ -3,26 +3,20 @@ package org.apache.diana.cassandra.document;
 import com.datastax.driver.core.Session;
 import org.apache.diana.api.Value;
 import org.apache.diana.api.column.*;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.matchers.JUnitMatchers;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+
 import static org.apache.diana.cassandra.document.Constants.COLUMN_FAMILY;
 import static org.apache.diana.cassandra.document.Constants.KEY_SPACE;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 public class CassandraDocumentEntityManagerTest {
@@ -62,19 +56,25 @@ public class CassandraDocumentEntityManagerTest {
 
     @Test
     public void shouldFindById() {
-        ColumnEntity columnEntity = getColumnEntity();
-        columnEntityManager.save(columnEntity);
-        Column key = Columns.of("id", 10L);
-        ColumnEntity entity = ColumnEntity.of(COLUMN_FAMILY);
-        entity.add(key);
-        List<ColumnEntity> columnEntity1 = columnEntityManager.find(entity);
+
+        columnEntityManager.save(getColumnEntity());
+        ColumnEntity entity = ColumnEntity.of(COLUMN_FAMILY, Columns.of("id", 10L));
+        List<ColumnEntity> columnEntity = columnEntityManager.find(entity);
         assertFalse(columnEntity.isEmpty());
-        List<Column> columns = columnEntity1.get(0).getColumns();
+        List<Column> columns = columnEntity.get(0).getColumns();
         assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
         assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, Arrays.asList(1,2,3), 10L));
 
+    }
 
-
+    @Test
+    public void shouldRunNativeQuery() {
+        columnEntityManager.save(getColumnEntity());
+        List<ColumnEntity> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
+        assertFalse(entities.isEmpty());
+        List<Column> columns = entities.get(0).getColumns();
+        assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
+        assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, Arrays.asList(1,2,3), 10L));
     }
 
     private ColumnEntity getColumnEntity() {
@@ -83,9 +83,7 @@ public class CassandraDocumentEntityManagerTest {
         fields.put("version", 3.2);
         fields.put("options", Arrays.asList(1,2,3));
         List<Column> columns = Columns.of(fields);
-        Column key = Columns.of("id", 10L);
-        ColumnEntity columnEntity = ColumnEntity.of(COLUMN_FAMILY);
-        columnEntity.add(key);
+        ColumnEntity columnEntity = ColumnEntity.of(COLUMN_FAMILY, Columns.of("id", 10L));
         columns.forEach(columnEntity::add);
         return columnEntity;
     }

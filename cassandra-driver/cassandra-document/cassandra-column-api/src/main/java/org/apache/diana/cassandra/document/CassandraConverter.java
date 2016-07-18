@@ -31,9 +31,7 @@ final class CassandraConverter {
             Column column = Column.of(definition.getName(), value);
             columns.add(column);
         }
-        ColumnEntity entity = ColumnEntity.of(columnFamily);
-        columns.forEach(entity::add);
-        return entity;
+        return ColumnEntity.of(columnFamily, columns);
     }
 
     public static Object get(ColumnDefinitions.Definition definition, Row row) {
