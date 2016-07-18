@@ -22,4 +22,8 @@ public interface Value extends Serializable {
 
     <K, V > Map<K, V> getSet(Class<K> keyClass, Class<V> valueClass);
 
+    static Value of(Object value) {
+        return DefaultValue.of(value);
+    }
+
 }

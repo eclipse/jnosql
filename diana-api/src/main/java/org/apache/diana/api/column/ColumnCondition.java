@@ -36,31 +36,31 @@ public interface ColumnCondition {
      * @return a {@link ColumnCondition} with {@link Condition#EQUALS}
      * @throws NullPointerException when column is null
      */
-    public static ColumnCondition eq(Column column) throws NullPointerException {
+    static ColumnCondition eq(Column column) throws NullPointerException {
         return DefaultColumnCondition.of(column, EQUALS);
     }
 
-    public static ColumnCondition gt(Column column) throws NullPointerException {
+    static ColumnCondition gt(Column column) throws NullPointerException {
         return DefaultColumnCondition.of(column, GREATER_THAN);
     }
 
-    public static ColumnCondition gte(Column column) throws NullPointerException {
+    static ColumnCondition gte(Column column) throws NullPointerException {
         return DefaultColumnCondition.of(column, GREATER_EQUALS_THAN);
     }
 
-    public static ColumnCondition lt(Column column) throws NullPointerException {
+    static ColumnCondition lt(Column column) throws NullPointerException {
         return DefaultColumnCondition.of(column, LESSER_THAN);
     }
 
-    public static ColumnCondition lte(Column column) throws NullPointerException {
+    static ColumnCondition lte(Column column) throws NullPointerException {
         return DefaultColumnCondition.of(column, LESSER_EQUALS_THAN);
     }
 
-    public static ColumnCondition in(Column column) throws NullPointerException {
+    static ColumnCondition in(Column column) throws NullPointerException {
         return DefaultColumnCondition.of(column, IN);
     }
 
-    public static ColumnCondition like(Column column) throws NullPointerException {
+    static ColumnCondition like(Column column) throws NullPointerException {
         return DefaultColumnCondition.of(column, LIKE);
     }
 

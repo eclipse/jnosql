@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class DefaultValue implements Value {
+class DefaultValue implements Value {
 
 
     private final Object value;

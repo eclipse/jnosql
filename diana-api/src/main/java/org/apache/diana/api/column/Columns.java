@@ -1,6 +1,6 @@
 package org.apache.diana.api.column;
 
-import org.apache.diana.api.DefaultValue;
+import org.apache.diana.api.Value;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,7 @@ public final class Columns {
      * @return a column's instance
      */
     public static Column of(String name, Object value) {
-        return Column.of(name, DefaultValue.of(value));
+        return Column.of(name, Value.of(value));
     }
 
     /**
@@ -38,7 +38,7 @@ public final class Columns {
         Predicate<String> isNotNull = s -> values.get(s) != null;
         Function<String, Column> columnMap = key -> {
             Object value = values.get(key);
-            return Column.of(key, DefaultValue.of(value));
+            return Column.of(key, Value.of(value));
         };
         return values.keySet().stream().filter(isNotNull).map(columnMap).collect(Collectors.toList());
     }

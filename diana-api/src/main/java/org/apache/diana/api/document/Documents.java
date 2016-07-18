@@ -1,6 +1,6 @@
 package org.apache.diana.api.document;
 
-import org.apache.diana.api.DefaultValue;
+import org.apache.diana.api.Value;
 
 import java.util.List;
 import java.util.Map;
@@ -13,14 +13,14 @@ public final class Documents {
     private Documents() {}
 
     public static Document of(String name, Object value) {
-        return Document.of(name, DefaultValue.of(value));
+        return Document.of(name, Value.of(value));
     }
 
     public static List<Document> of(Map<String, Object> values) {
         Predicate<String> isNotNull = s -> values.get(s) != null;
         Function<String, Document> documentMap = key -> {
             Object value = values.get(key);
-            return Document.of(key, DefaultValue.of(value));
+            return Document.of(key, Value.of(value));
         };
         return values.keySet().stream().filter(isNotNull).map(documentMap).collect(Collectors.toList());
     }
