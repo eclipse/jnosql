@@ -1,6 +1,8 @@
 package org.apache.diana.api.column;
 
 
+import org.apache.diana.api.document.Document;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +23,17 @@ public class ColumnEntity implements Serializable {
 
     public static ColumnEntity of(String columnFamily) {
         return new ColumnEntity(columnFamily);
+    }
+
+    public static ColumnEntity of(String columnFamily, List<Column> columns) {
+        ColumnEntity columnEntity = new ColumnEntity(columnFamily);
+        columnEntity.addAll(columns);
+        return columnEntity;
+    }
+
+    public void addAll(List<Column> columns) {
+        Objects.requireNonNull(columns, "The object column is required");
+        this.columns.addAll(columns);
     }
 
 
