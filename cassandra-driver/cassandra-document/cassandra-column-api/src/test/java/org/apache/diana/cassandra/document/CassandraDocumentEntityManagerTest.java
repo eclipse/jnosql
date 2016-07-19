@@ -48,7 +48,7 @@ public class CassandraDocumentEntityManagerTest {
 
     @Test
     public void shouldInsertColumns() {
-        ColumnFamily columnEntity = getColumnEntity();
+        ColumnFamily columnEntity = getColumnFamily();
         columnEntityManager.save(columnEntity);
     }
 
@@ -57,7 +57,7 @@ public class CassandraDocumentEntityManagerTest {
     @Test
     public void shouldFindById() {
 
-        columnEntityManager.save(getColumnEntity());
+        columnEntityManager.save(getColumnFamily());
         ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
         List<ColumnFamily> columnEntity = columnEntityManager.find(query);
         assertFalse(columnEntity.isEmpty());
@@ -69,7 +69,7 @@ public class CassandraDocumentEntityManagerTest {
 
     @Test
     public void shouldRunNativeQuery() {
-        columnEntityManager.save(getColumnEntity());
+        columnEntityManager.save(getColumnFamily());
         List<ColumnFamily> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
         assertFalse(entities.isEmpty());
         List<Column> columns = entities.get(0).getColumns();
@@ -79,7 +79,7 @@ public class CassandraDocumentEntityManagerTest {
 
     @Test
     public void shouldPrepareStatment() {
-        columnEntityManager.save(getColumnEntity());
+        columnEntityManager.save(getColumnFamily());
         PreparedStatement preparedStatement = columnEntityManager.nativeQueryPrepare("select * from newKeySpace.newColumnFamily where id=?");
         preparedStatement.bind(10L);
         List<ColumnFamily> entities = preparedStatement.executeQuery();
@@ -90,7 +90,7 @@ public class CassandraDocumentEntityManagerTest {
 
     @Test
     public void shouldDeleteColumnFamiliy() {
-        columnEntityManager.save(getColumnEntity());
+        columnEntityManager.save(getColumnFamily());
         ColumnFamily.of(COLUMN_FAMILY, Columns.of("id", 10L));
         ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
         columnEntityManager.delete(query);
@@ -98,15 +98,15 @@ public class CassandraDocumentEntityManagerTest {
         Assert.assertTrue(entities.isEmpty());
     }
 
-    private ColumnFamily getColumnEntity() {
+    private ColumnFamily getColumnFamily() {
         Map<String, Object> fields = new HashMap<>();
         fields.put("name", "Cassandra");
         fields.put("version", 3.2);
         fields.put("options", Arrays.asList(1,2,3));
         List<Column> columns = Columns.of(fields);
-        ColumnFamily columnEntity = ColumnFamily.of(COLUMN_FAMILY, Columns.of("id", 10L));
-        columns.forEach(columnEntity::add);
-        return columnEntity;
+        ColumnFamily columnFamily = ColumnFamily.of(COLUMN_FAMILY, Columns.of("id", 10L));
+        columns.forEach(columnFamily::add);
+        return columnFamily;
     }
 
 }
