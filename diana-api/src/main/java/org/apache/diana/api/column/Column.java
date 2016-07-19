@@ -26,7 +26,7 @@ public class Column implements Serializable {
      * @param name - column's name
      * @param value - column's value
      * @return a column instance
-     * @see {@link Columns}
+     * @see Columns
      */
     public static Column of(String name, Value value) {
         return new Column(name, value);
