@@ -28,6 +28,6 @@ public interface ReadField {
      * @param <T>   - the new type class
      * @return a new instance converted from required class
      */
-    <T> T read(Class<T> clazz, Object value) throws ClassCastException;
+    <T> T read(Class<T> clazz, Object value);
 
 }
