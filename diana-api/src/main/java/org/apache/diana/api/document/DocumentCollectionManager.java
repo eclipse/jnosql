@@ -1,35 +1,39 @@
 package org.apache.diana.api.document;
 
 
+import org.apache.diana.api.ExecuteAsyncQueryException;
+
 import java.util.List;
 import java.util.function.Consumer;
 
 public interface DocumentCollectionManager extends AutoCloseable {
 
-    void save(DocumentCollection entity);
+    void save(DocumentCollection collection);
 
-    void saveAsync(DocumentCollection entity);
+    void saveAsync(DocumentCollection collection) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void saveAsync(DocumentCollection entity, Consumer<Void> callBack);
+    void saveAsync(DocumentCollection collection, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void update(DocumentCollection entity);
+    void update(DocumentCollection collection);
 
-    void updateAsync(DocumentCollection entity);
+    void updateAsync(DocumentCollection collection) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void updateAsync(DocumentCollection entity, Consumer<Void> callBack);
+    void updateAsync(DocumentCollection collection, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void delete(Document key);
+    void delete(DocumentQuery query);
 
-    void deleteAsync(Document key);
+    void deleteAsync(DocumentQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    void deleteAsync(Document key, Consumer<Void> callBack);
+    void deleteAsync(DocumentQuery query, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    DocumentCollection find(Document key);
+    List<DocumentCollection> find(DocumentQuery query);
 
-    void findAsync(Document key, Consumer<DocumentCollection> callBack);
+    void findAsync(DocumentQuery query, Consumer<List<DocumentCollection>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
-    List<DocumentCollection> nativeQuery(String query);
+    List<DocumentCollection> nativeQuery(String query) throws UnsupportedOperationException;
 
-    PreparedStatement nativeQueryPrepare(String query);
+    void nativeQueryAsync(String query, Consumer<List<DocumentCollection>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+
+    PreparedStatement nativeQueryPrepare(String query) throws UnsupportedOperationException;
 
 }
