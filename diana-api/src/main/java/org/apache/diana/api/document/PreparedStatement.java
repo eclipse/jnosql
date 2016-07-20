@@ -10,7 +10,7 @@ public interface PreparedStatement extends AutoCloseable {
 
     List<DocumentCollection> executeQuery();
 
-    void executeQueryAsync(Consumer<List<DocumentCollection>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException
+    void executeQueryAsync(Consumer<List<DocumentCollection>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     PreparedStatement bind(Object... values);
 }

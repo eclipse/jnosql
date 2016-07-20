@@ -2,10 +2,6 @@ package org.apache.diana.api.document;
 
 
 import org.apache.diana.api.Condition;
-import org.apache.diana.api.document.Column;
-import org.apache.diana.api.document.DocumentCondition;
-import org.apache.diana.api.document.ColumnFamilyManager;
-import org.apache.diana.api.document.DefaultDocumentCondition;
 
 import static org.apache.diana.api.Condition.*;
 
