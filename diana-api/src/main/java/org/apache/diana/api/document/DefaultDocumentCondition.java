@@ -8,21 +8,21 @@ import java.util.Objects;
 
 class DefaultDocumentCondition implements DocumentCondition {
 
-    private final Column column;
+    private final Document document;
 
     private final Condition condition;
 
-    private DefaultDocumentCondition(Column column, Condition condition) {
-        this.column = column;
+    private DefaultDocumentCondition(Document document, Condition condition) {
+        this.document = document;
         this.condition = condition;
     }
 
-    public static DefaultDocumentCondition of(Column column, Condition condition) {
-        return new DefaultDocumentCondition(Objects.requireNonNull(column,"Column is required") , condition);
+    public static DefaultDocumentCondition of(Document document, Condition condition) {
+        return new DefaultDocumentCondition(Objects.requireNonNull(document,"Document is required") , condition);
     }
 
-    public Column getColumn() {
-        return column;
+    public Document getDocument() {
+        return document;
     }
 
     public Condition getCondition() {
@@ -38,19 +38,19 @@ class DefaultDocumentCondition implements DocumentCondition {
             return false;
         }
         DefaultDocumentCondition that = (DefaultDocumentCondition) o;
-        return Objects.equals(column, that.column) &&
+        return Objects.equals(document, that.document) &&
                 condition == that.condition;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(column, condition);
+        return Objects.hash(document, condition);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("DefaultDocumentCondition{");
-        sb.append("column=").append(column);
+        sb.append("document=").append(document);
         sb.append(", condition=").append(condition);
         sb.append('}');
         return sb.toString();
