@@ -19,7 +19,7 @@ public class ByteReaderTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenClassIsNumber() {
+    public void shouldValidateCompatibility() {
         assertTrue(readerField.isCompatible(Byte.class));
         assertFalse(readerField.isCompatible(AtomicBoolean.class));
         assertFalse(readerField.isCompatible(Boolean.class));

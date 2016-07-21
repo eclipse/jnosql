@@ -20,7 +20,7 @@ public class EnumReaderTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenClassIsNumber() {
+    public void shouldValidateCompatibility() {
         assertTrue(readerField.isCompatible(Enum.class));
         assertTrue(readerField.isCompatible(ExampleNumber.class));
         assertFalse(readerField.isCompatible(AtomicBoolean.class));

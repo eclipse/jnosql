@@ -13,7 +13,7 @@ public final class ShortReader implements ReaderField {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Double.class.equals(clazz);
+        return Short.class.equals(clazz);
     }
 
     @Override

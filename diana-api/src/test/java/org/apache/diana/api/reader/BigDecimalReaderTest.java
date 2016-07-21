@@ -20,7 +20,7 @@ public class BigDecimalReaderTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenClassIsNumber() {
+    public void shouldValidateCompatibility() {
         assertTrue(readerField.isCompatible(BigDecimal.class));
         assertFalse(readerField.isCompatible(AtomicBoolean.class));
         assertFalse(readerField.isCompatible(Boolean.class));

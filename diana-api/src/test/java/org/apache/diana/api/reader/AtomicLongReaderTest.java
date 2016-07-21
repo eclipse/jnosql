@@ -20,7 +20,7 @@ public class AtomicLongReaderTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenClassIsNumber() {
+    public void shouldValidateCompatibility() {
         assertTrue(readerField.isCompatible(AtomicLong.class));
         assertFalse(readerField.isCompatible(AtomicBoolean.class));
         assertFalse(readerField.isCompatible(Boolean.class));

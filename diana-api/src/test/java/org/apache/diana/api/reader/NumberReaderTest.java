@@ -19,7 +19,7 @@ public class NumberReaderTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenClassIsNumber() {
+    public void shouldValidateCompatibility() {
         assertTrue(readerField.isCompatible(Number.class));
         assertFalse(readerField.isCompatible(AtomicBoolean.class));
         assertFalse(readerField.isCompatible(Boolean.class));

@@ -20,7 +20,7 @@ public class AtomicIntegerReaderTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenClassIsNumber() {
+    public void shouldValidateCompatibility() {
         assertTrue(readerField.isCompatible(AtomicInteger.class));
         assertFalse(readerField.isCompatible(AtomicBoolean.class));
     }

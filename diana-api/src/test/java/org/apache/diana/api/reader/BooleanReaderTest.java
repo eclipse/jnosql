@@ -20,10 +20,10 @@ public class BooleanReaderTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenClassIsNumber() {
+    public void shouldValidateCompatibility() {
         assertTrue(readerField.isCompatible(AtomicBoolean.class));
         assertTrue(readerField.isCompatible(Boolean.class));
-        assertFalse(readerField.isCompatible(AtomicBoolean.class));
+        assertFalse(readerField.isCompatible(Number.class));
     }
 
     @Test

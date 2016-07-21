@@ -20,7 +20,7 @@ public class OptionalReaderTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenClassIsNumber() {
+    public void shouldValidateCompatibility() {
         assertTrue(readerField.isCompatible(Optional.class));
         assertFalse(readerField.isCompatible(AtomicBoolean.class));
     }

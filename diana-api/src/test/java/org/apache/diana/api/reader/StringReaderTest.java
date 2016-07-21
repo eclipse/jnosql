@@ -20,7 +20,7 @@ public class StringReaderTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenClassIsNumber() {
+    public void shouldValidateCompatibility() {
         assertTrue(readerField.isCompatible(String.class));
         assertTrue(readerField.isCompatible(CharSequence.class));
         assertFalse(readerField.isCompatible(AtomicBoolean.class));
