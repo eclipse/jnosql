@@ -23,7 +23,7 @@ public final class LongReader implements ReaderField {
             return (T) value;
         }
         if (Number.class.isInstance(value)) {
-            return (T) Long.valueOf(Long.class.cast(value).longValue());
+            return (T) Long.valueOf(Number.class.cast(value).longValue());
         } else {
             return (T) Long.valueOf(value.toString());
         }
