@@ -2,10 +2,15 @@ org.apache.diana.api.reader.AtomicIntegerReader
 org.apache.diana.api.reader.AtomicLongReader
 org.apache.diana.api.reader.BigDecimalReader
 org.apache.diana.api.reader.BigIntegerReader
+org.apache.diana.api.reader.BooleanReader
 org.apache.diana.api.reader.ByteReader
+org.apache.diana.api.reader.CharacterReader
 org.apache.diana.api.reader.DoubleReader
+org.apache.diana.api.reader.EnumReader
 org.apache.diana.api.reader.FloatReader
 org.apache.diana.api.reader.IntegerReader
 org.apache.diana.api.reader.LongReader
 org.apache.diana.api.reader.NumberReader
+org.apache.diana.api.reader.OptionalReader
 org.apache.diana.api.reader.ShortReader
+org.apache.diana.api.reader.StringReader
