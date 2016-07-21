@@ -1,0 +1,11 @@
+org.apache.diana.api.reader.AtomicIntegerReader
+org.apache.diana.api.reader.AtomicLongReader
+org.apache.diana.api.reader.BigDecimalReader
+org.apache.diana.api.reader.BigIntegerReader
+org.apache.diana.api.reader.ByteReader
+org.apache.diana.api.reader.DoubleReader
+org.apache.diana.api.reader.FloatReader
+org.apache.diana.api.reader.IntegerReader
+org.apache.diana.api.reader.LongReader
+org.apache.diana.api.reader.NumberReader
+org.apache.diana.api.reader.ShortReader
