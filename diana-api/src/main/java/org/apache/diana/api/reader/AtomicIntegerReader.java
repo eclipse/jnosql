@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Otávio Santana
  */
-final class AtomicIntegerReader implements ReaderField {
+public final class AtomicIntegerReader implements ReaderField {
 
     @Override
     public boolean isCompatible(Class clazz) {
@@ -30,4 +30,6 @@ final class AtomicIntegerReader implements ReaderField {
             return (T) new AtomicInteger(Integer.valueOf(value.toString()));
         }
     }
+
+
 }

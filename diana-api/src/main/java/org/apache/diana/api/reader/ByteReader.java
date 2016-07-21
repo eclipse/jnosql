@@ -9,7 +9,7 @@ import org.apache.diana.api.ReaderField;
  *
  * @author Otávio Santana
  */
-final class ByteReader implements ReaderField {
+public final class ByteReader implements ReaderField {
 
     @Override
     public boolean isCompatible(Class clazz) {

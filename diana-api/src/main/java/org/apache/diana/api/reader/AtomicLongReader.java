@@ -11,7 +11,9 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * @author Otávio Santana
  */
-final class AtomicLongReader implements ReaderField {
+public final class AtomicLongReader implements ReaderField {
+
+
 
     @Override
     public boolean isCompatible(Class clazz) {
@@ -30,4 +32,5 @@ final class AtomicLongReader implements ReaderField {
             return (T) new AtomicLong(Long.valueOf(value.toString()));
         }
     }
+
 }

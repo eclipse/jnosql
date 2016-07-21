@@ -9,7 +9,7 @@ import org.apache.diana.api.ReaderField;
  *
  * @author Otávio Santana
  */
-final class FloatReader implements ReaderField {
+public final class FloatReader implements ReaderField {
 
     @Override
     public boolean isCompatible(Class clazz) {

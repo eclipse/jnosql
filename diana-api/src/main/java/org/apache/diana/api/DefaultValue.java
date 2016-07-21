@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 class DefaultValue implements Value {
 
+    private static transient final ReaderFieldProvider SERVICE_LOADER = ReaderFieldProvider.getInstance();
 
     private final Object value;
 
@@ -28,7 +29,8 @@ class DefaultValue implements Value {
 
     @Override
     public <T> T get(Class<T> clazz) {
-        return clazz.cast(value);
+
+        return SERVICE_LOADER.convert(clazz, value);
     }
 
     @Override

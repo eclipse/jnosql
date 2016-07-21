@@ -11,7 +11,8 @@ import java.math.BigDecimal;
  *
  * @author Otávio Santana
  */
-final class BigDecimalReader implements ReaderField {
+public final class BigDecimalReader implements ReaderField {
+
 
     @Override
     public boolean isCompatible(Class clazz) {

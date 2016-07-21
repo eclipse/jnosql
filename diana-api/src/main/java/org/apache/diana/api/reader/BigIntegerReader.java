@@ -11,7 +11,7 @@ import java.math.BigInteger;
  *
  * @author Otávio Santana
  */
-final class BigIntegerReader implements ReaderField {
+public final class BigIntegerReader implements ReaderField {
 
     @Override
     public boolean isCompatible(Class clazz) {
