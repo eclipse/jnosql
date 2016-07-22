@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.*;
@@ -45,6 +47,15 @@ public class DefaultValueTest {
         Value value = Value.of(number);
         assertThat(value.getList(String.class), containsInAnyOrder("10"));
         assertThat(value.getList(Long.class), containsInAnyOrder(10L));
+    }
+
+    @Test
+    public void shouldConvertToStream() {
+        Long number = 10L;
+        Value value = Value.of(number);
+
+        assertThat(value.getStream(String.class).collect(Collectors.toList()), containsInAnyOrder("10"));
+        assertThat(value.getStream(Long.class).collect(Collectors.toList()), containsInAnyOrder(10L));
     }
 
     @Test
