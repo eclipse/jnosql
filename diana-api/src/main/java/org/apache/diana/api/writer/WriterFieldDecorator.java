@@ -41,4 +41,12 @@ public final class WriterFieldDecorator implements WriterField {
                 () -> new UnsupportedOperationException("The type " + clazz + " is not supported yet"));
         return writerField.write(object);
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("WriterFieldDecorator{");
+        sb.append("writers=").append(writers);
+        sb.append('}');
+        return sb.toString();
+    }
 }
