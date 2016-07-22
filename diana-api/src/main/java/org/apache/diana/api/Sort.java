@@ -5,10 +5,8 @@ import java.util.Objects;
 
 /**
  * This element represents a required order to be used in a query, it's has two attributes:
- * <ul>
- * * <li>The name - the field's name to be sorted</li>
- * * <li>The type - the way to be sorted</li>
- * </ul>
+ * -- The name - the field's name to be sorted
+ * -- The type - the way to be sorted
  *
  * @author Otávio Santana
  * @see Sort#of(String, SortType)
