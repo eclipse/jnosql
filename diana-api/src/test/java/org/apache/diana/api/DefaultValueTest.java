@@ -107,4 +107,12 @@ public class DefaultValueTest {
         assertThat(result.values(), containsInAnyOrder(Arrays.asList("1", "2", "3")));
     }
 
+    @Test
+    public void shouldCast() {
+        Map<Integer, List<String>> map = Collections.singletonMap(10, Arrays.asList("1", "2", "3"));
+        Value value = Value.of(map);
+        Map<String, List<String>> result = value.cast();
+        assertEquals(map, result);
+    }
+
 }

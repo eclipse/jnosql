@@ -30,6 +30,11 @@ class DefaultValue implements Value {
     }
 
     @Override
+    public <T> T cast() throws ClassCastException {
+        return (T) value;
+    }
+
+    @Override
     public <T> T get(Class<T> clazz) {
         return SERVICE_PROVIDER.convert(clazz, value);
     }

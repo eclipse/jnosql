@@ -17,6 +17,14 @@ public interface Value extends Serializable {
     Object get();
 
     /**
+     * Cast class to specificed type
+     * @param <T> the type
+     * @return a class casted to defined type
+     * @throws ClassCastException when cast is not possible
+     */
+    <T> T cast()throws ClassCastException;
+
+    /**
      * Converts {@link Value#get()} to specified class
      *
      * @param clazz the new class
