@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
  * this data would be grouped together within a table with other non-related data.
  * @author Otávio Santana
  */
-public class ColumnFamily implements Serializable {
+public class ColumnFamilyEntity implements Serializable {
 
 
     private final List<Column> columns = new ArrayList<>();
 
     private final String name;
 
-    private ColumnFamily(String name) {
+    private ColumnFamilyEntity(String name) {
         this.name = Objects.requireNonNull(name, "name is required");
     }
 
@@ -28,11 +28,11 @@ public class ColumnFamily implements Serializable {
      * Creates a column family instance
      * @param name a name to column family
      * @param columns - columns
-     * @return a ColumnFamily instance
+     * @return a ColumnFamilyEntity instance
      */
-    public static ColumnFamily of(String name, Column... columns) {
+    public static ColumnFamilyEntity of(String name, Column... columns) {
         if (columns.length == 0) {
-            return new ColumnFamily(name);
+            return new ColumnFamilyEntity(name);
         }
         return of(name, Arrays.asList(columns));
     }
@@ -41,10 +41,10 @@ public class ColumnFamily implements Serializable {
      * Creates a column family instance
      * @param name a name to column family
      * @param columns - columns
-     * @return a ColumnFamily instance
+     * @return a ColumnFamilyEntity instance
      */
-    public static ColumnFamily of(String name, List<Column> columns) {
-        ColumnFamily columnEntity = new ColumnFamily(name);
+    public static ColumnFamilyEntity of(String name, List<Column> columns) {
+        ColumnFamilyEntity columnEntity = new ColumnFamilyEntity(name);
         columnEntity.addAll(columns);
         return columnEntity;
     }
@@ -97,7 +97,7 @@ public class ColumnFamily implements Serializable {
 
     /**
      * Returns true if the number of columns is zero otherwise false.
-     * @return true if there isn't elements to {@link ColumnFamily#columns}
+     * @return true if there isn't elements to {@link ColumnFamilyEntity#columns}
      */
     public boolean isEmpty() {
         return columns.isEmpty();
@@ -111,7 +111,7 @@ public class ColumnFamily implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ColumnFamily that = (ColumnFamily) o;
+        ColumnFamilyEntity that = (ColumnFamilyEntity) o;
         return Objects.equals(columns, that.columns) &&
                 Objects.equals(name, that.name);
     }
@@ -123,7 +123,7 @@ public class ColumnFamily implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ColumnFamily{");
+        final StringBuilder sb = new StringBuilder("ColumnFamilyEntity{");
         sb.append("columns=").append(columns);
         sb.append(", name='").append(name).append('\'');
         sb.append('}');

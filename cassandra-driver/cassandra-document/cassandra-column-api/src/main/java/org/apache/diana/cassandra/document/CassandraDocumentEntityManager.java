@@ -32,37 +32,37 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     }
 
     @Override
-    public void save(ColumnFamily columnFamily) {
-        Insert insert = QueryUtils.insert(columnFamily, keyspace);
+    public void save(ColumnFamilyEntity entity) {
+        Insert insert = QueryUtils.insert(entity, keyspace);
         session.execute(insert);
     }
 
     @Override
-    public void saveAsync(ColumnFamily columnFamily) {
-        Insert insert = QueryUtils.insert(columnFamily, keyspace);
+    public void saveAsync(ColumnFamilyEntity entity) {
+        Insert insert = QueryUtils.insert(entity, keyspace);
         session.executeAsync(insert);
     }
 
     @Override
-    public void saveAsync(ColumnFamily columnFamily, Consumer<Void> consumer) {
-        Insert insert = QueryUtils.insert(columnFamily, keyspace);
+    public void saveAsync(ColumnFamilyEntity entity, Consumer<Void> consumer) {
+        Insert insert = QueryUtils.insert(entity, keyspace);
         ResultSetFuture resultSetFuture = session.executeAsync(insert);
         resultSetFuture.addListener(() -> consumer.accept(null), executor);
     }
 
     @Override
-    public void update(ColumnFamily columnFamily) {
-        save(columnFamily);
+    public void update(ColumnFamilyEntity entity) {
+        save(entity);
     }
 
     @Override
-    public void updateAsync(ColumnFamily columnFamily) {
-        saveAsync(columnFamily);
+    public void updateAsync(ColumnFamilyEntity entity) {
+        saveAsync(entity);
     }
 
     @Override
-    public void updateAsync(ColumnFamily columnFamily, Consumer<Void> consumer) {
-        saveAsync(columnFamily, consumer);
+    public void updateAsync(ColumnFamilyEntity entity, Consumer<Void> consumer) {
+        saveAsync(entity, consumer);
     }
 
     @Override
@@ -86,7 +86,7 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     }
 
     @Override
-    public List<ColumnFamily> find(ColumnQuery query) {
+    public List<ColumnFamilyEntity> find(ColumnQuery query) {
         BuiltStatement select = QueryUtils.add(query, keyspace);
         ResultSet resultSet = session.execute(select);
         return resultSet.all().stream().map(row -> CassandraConverter.toDocumentEntity(row)).collect(Collectors.toList());
@@ -95,7 +95,7 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
 
 
     @Override
-    public void findAsync(ColumnQuery query, Consumer<List<ColumnFamily>> consumer) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+    public void findAsync(ColumnQuery query, Consumer<List<ColumnFamilyEntity>> consumer) throws ExecuteAsyncQueryException, UnsupportedOperationException {
         BuiltStatement select = QueryUtils.add(query, keyspace);
         ResultSetFuture resultSet = session.executeAsync(select);
         CassandraReturnQueryAsync executeAsync = new CassandraReturnQueryAsync(resultSet, consumer);
@@ -103,13 +103,13 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     }
 
     @Override
-    public List<ColumnFamily> nativeQuery(String query) {
+    public List<ColumnFamilyEntity> nativeQuery(String query) {
         ResultSet resultSet = session.execute(query);
         return resultSet.all().stream().map(row -> CassandraConverter.toDocumentEntity(row)).collect(Collectors.toList());
     }
 
     @Override
-    public void nativeQueryAsync(String query, Consumer<List<ColumnFamily>> consumer) throws ExecuteAsyncQueryException {
+    public void nativeQueryAsync(String query, Consumer<List<ColumnFamilyEntity>> consumer) throws ExecuteAsyncQueryException {
         ResultSetFuture resultSet = session.executeAsync(query);
         CassandraReturnQueryAsync executeAsync = new CassandraReturnQueryAsync(resultSet, consumer);
         resultSet.addListener(executeAsync, executor);

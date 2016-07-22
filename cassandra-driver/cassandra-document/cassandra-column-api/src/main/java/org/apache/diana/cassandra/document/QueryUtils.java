@@ -5,7 +5,7 @@ import com.datastax.driver.core.querybuilder.*;
 import org.apache.diana.api.Condition;
 import org.apache.diana.api.column.Column;
 import org.apache.diana.api.column.ColumnCondition;
-import org.apache.diana.api.column.ColumnFamily;
+import org.apache.diana.api.column.ColumnFamilyEntity;
 import org.apache.diana.api.column.ColumnQuery;
 
 import java.util.List;
@@ -18,9 +18,9 @@ final class QueryUtils {
     }
 
 
-    public static Insert insert(ColumnFamily columnFamily, String keyspace) {
-        Insert insert = insertInto(keyspace, columnFamily.getName());
-        columnFamily.getColumns().forEach(d -> insert.value(d.getName(), d.getValue().get()));
+    public static Insert insert(ColumnFamilyEntity entity, String keyspace) {
+        Insert insert = insertInto(keyspace, entity.getName());
+        entity.getColumns().forEach(d -> insert.value(d.getName(), d.getValue().get()));
         return insert;
     }
 

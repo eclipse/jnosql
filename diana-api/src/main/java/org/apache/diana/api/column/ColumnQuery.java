@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Class that contains information to do a query to {@link ColumnFamily}
+ * Class that contains information to do a query to {@link ColumnFamilyEntity}
  * @see ColumnFamilyManager#find(ColumnQuery)
  * @see ColumnCondition
  * @see Sort

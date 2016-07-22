@@ -41,14 +41,14 @@ public class CassandraDocumentEntityManagerTest {
     @Test
     public void shouldInsertJustKey() {
         Column key = Columns.of("id", 10L);
-        ColumnFamily columnEntity = ColumnFamily.of(COLUMN_FAMILY);
+        ColumnFamilyEntity columnEntity = ColumnFamilyEntity.of(COLUMN_FAMILY);
         columnEntity.add(key);
         columnEntityManager.save(columnEntity);
     }
 
     @Test
     public void shouldInsertColumns() {
-        ColumnFamily columnEntity = getColumnFamily();
+        ColumnFamilyEntity columnEntity = getColumnFamily();
         columnEntityManager.save(columnEntity);
     }
 
@@ -59,7 +59,7 @@ public class CassandraDocumentEntityManagerTest {
 
         columnEntityManager.save(getColumnFamily());
         ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
-        List<ColumnFamily> columnEntity = columnEntityManager.find(query);
+        List<ColumnFamilyEntity> columnEntity = columnEntityManager.find(query);
         assertFalse(columnEntity.isEmpty());
         List<Column> columns = columnEntity.get(0).getColumns();
         assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
@@ -70,7 +70,7 @@ public class CassandraDocumentEntityManagerTest {
     @Test
     public void shouldRunNativeQuery() {
         columnEntityManager.save(getColumnFamily());
-        List<ColumnFamily> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
+        List<ColumnFamilyEntity> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
         assertFalse(entities.isEmpty());
         List<Column> columns = entities.get(0).getColumns();
         assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
@@ -82,7 +82,7 @@ public class CassandraDocumentEntityManagerTest {
         columnEntityManager.save(getColumnFamily());
         PreparedStatement preparedStatement = columnEntityManager.nativeQueryPrepare("select * from newKeySpace.newColumnFamily where id=?");
         preparedStatement.bind(10L);
-        List<ColumnFamily> entities = preparedStatement.executeQuery();
+        List<ColumnFamilyEntity> entities = preparedStatement.executeQuery();
         List<Column> columns = entities.get(0).getColumns();
         assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
         assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, Arrays.asList(1,2,3), 10L));
@@ -91,20 +91,20 @@ public class CassandraDocumentEntityManagerTest {
     @Test
     public void shouldDeleteColumnFamiliy() {
         columnEntityManager.save(getColumnFamily());
-        ColumnFamily.of(COLUMN_FAMILY, Columns.of("id", 10L));
+        ColumnFamilyEntity.of(COLUMN_FAMILY, Columns.of("id", 10L));
         ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
         columnEntityManager.delete(query);
-        List<ColumnFamily> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
+        List<ColumnFamilyEntity> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
         Assert.assertTrue(entities.isEmpty());
     }
 
-    private ColumnFamily getColumnFamily() {
+    private ColumnFamilyEntity getColumnFamily() {
         Map<String, Object> fields = new HashMap<>();
         fields.put("name", "Cassandra");
         fields.put("version", 3.2);
         fields.put("options", Arrays.asList(1,2,3));
         List<Column> columns = Columns.of(fields);
-        ColumnFamily columnFamily = ColumnFamily.of(COLUMN_FAMILY, Columns.of("id", 10L));
+        ColumnFamilyEntity columnFamily = ColumnFamilyEntity.of(COLUMN_FAMILY, Columns.of("id", 10L));
         columns.forEach(columnFamily::add);
         return columnFamily;
     }
