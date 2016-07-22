@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class ReaderFieldProviderTest {
@@ -26,6 +28,16 @@ public class ReaderFieldProviderTest {
     @Test(expected = UnsupportedOperationException.class)
     public void shoulReturnErrorWhenTypeIsNotSupported() {
         Bean name = serviceLoader.convert(Bean.class, "name");
+    }
+
+    @Test
+    public void shouldReturnIfIsCompatible() {
+        assertTrue(serviceLoader.hasSupport(Integer.class));
+    }
+
+    @Test
+    public void shouldReturnIfIsNotCompatible() {
+        assertFalse(serviceLoader.hasSupport(Bean.class));
     }
 
 
