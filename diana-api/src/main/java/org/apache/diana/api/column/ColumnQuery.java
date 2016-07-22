@@ -8,6 +8,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class that contains information to do a query to {@link ColumnFamily}
+ * @see ColumnFamilyManager#find(ColumnQuery)
+ * @see ColumnCondition
+ * @see Sort
+ */
 public class ColumnQuery {
 
     private final String columnFamily;
@@ -20,28 +26,56 @@ public class ColumnQuery {
         this.columnFamily = Objects.requireNonNull(columnFamily, "column family is required");
     }
 
+    /**
+     * Creates a {@link ColumnQuery}
+     * @param columnFamily - the name of column family to do a query
+     * @return a {@link ColumnQuery} instance
+     */
     public static ColumnQuery of(String columnFamily) {
         return new ColumnQuery(columnFamily);
     }
 
-    public ColumnQuery addCondition(ColumnCondition condition) {
+    /**
+     * Add a new condition in the query
+     * @param condition
+     * @return the same instance with a condition added
+     * @throws NullPointerException when condition is null
+     */
+    public ColumnQuery addCondition(ColumnCondition condition) throws NullPointerException{
         this.conditions.add(Objects.requireNonNull(condition, "condition is required"));
         return this;
     }
 
-    public ColumnQuery addSort(Sort sort) {
+    /**
+     * Add the order how the result will returned
+     * @param sort the order way
+     * @return the same way with a sort added
+     */
+    public ColumnQuery addSort(Sort sort) throws NullPointerException {
         this.sorts.add(Objects.requireNonNull(sort, "Sort is required"));
         return this;
     }
 
+    /**
+     * The column family name
+     * @return the column family name
+     */
     public String getColumnFamily() {
         return columnFamily;
     }
 
+    /**
+     * The conditions that contains in this {@link ColumnQuery}
+     * @return the conditions
+     */
     public List<ColumnCondition> getConditions() {
         return Collections.unmodifiableList(conditions);
     }
 
+    /**
+     * The sorts that contains in this {@link ColumnQuery}
+     * @return the sorts
+     */
     public List<Sort> getSorts() {
         return Collections.unmodifiableList(sorts);
     }

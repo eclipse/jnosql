@@ -6,8 +6,16 @@ import org.apache.diana.api.ExecuteAsyncQueryException;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * Interface used to interact with the persistence context to {@link ColumnFamily}
+ * The ColumnFamilyManager API is used to create and remove persistent {@link ColumnFamily} instances, to find entities by their primary key, and to query over entities.
+ */
 public interface ColumnFamilyManager extends AutoCloseable {
 
+    /**
+     * Save a Column family
+     * @param columnFamily column family to be saved
+     */
     void save(ColumnFamily columnFamily);
 
     void saveAsync(ColumnFamily columnFamily) throws ExecuteAsyncQueryException, UnsupportedOperationException;

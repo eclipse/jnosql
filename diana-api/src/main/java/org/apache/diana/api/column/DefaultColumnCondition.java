@@ -5,6 +5,9 @@ import org.apache.diana.api.Condition;
 
 import java.util.Objects;
 
+/**
+ * The default implementation of {@link ColumnCondition}
+ */
 class DefaultColumnCondition implements ColumnCondition {
 
     private final Column column;
