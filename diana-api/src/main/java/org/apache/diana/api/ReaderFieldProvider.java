@@ -29,6 +29,10 @@ final class ReaderFieldProvider {
         return readerField.read(clazz, value);
     }
 
+    public boolean hasSupport(Class clazz) {
+        return readers.stream().anyMatch(r -> r.isCompatible(clazz));
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ReaderFieldProvider{");
