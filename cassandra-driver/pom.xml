@@ -11,7 +11,7 @@
   <artifactId>diana-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 </parent>
- <properties>
+<properties>
   <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
   <maven.compile.sourceLevel>1.8</maven.compile.sourceLevel>
 </properties>
@@ -38,6 +38,30 @@
         <target>1.8</target>
         <source>1.8</source>
       </configuration>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-javadoc-plugin</artifactId>
+      <executions>
+        <execution>
+          <id>attach-javadocs</id>
+          <goals>
+            <goal>jar</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-source-plugin</artifactId>
+      <executions>
+        <execution>
+          <id>attach-sources</id>
+          <goals>
+            <goal>jar</goal>
+          </goals>
+        </execution>
+      </executions>
     </plugin>
   </plugins>
 </build>
