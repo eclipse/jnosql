@@ -32,9 +32,10 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     }
 
     @Override
-    public void save(ColumnFamilyEntity entity) {
+    public ColumnFamilyEntity save(ColumnFamilyEntity entity) {
         Insert insert = QueryUtils.insert(entity, keyspace);
         session.execute(insert);
+        return entity;
     }
 
     @Override
@@ -44,15 +45,15 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     }
 
     @Override
-    public void saveAsync(ColumnFamilyEntity entity, Consumer<Void> consumer) {
+    public void saveAsync(ColumnFamilyEntity entity, Consumer<ColumnFamilyEntity> consumer) {
         Insert insert = QueryUtils.insert(entity, keyspace);
         ResultSetFuture resultSetFuture = session.executeAsync(insert);
-        resultSetFuture.addListener(() -> consumer.accept(null), executor);
+        resultSetFuture.addListener(() -> consumer.accept(entity), executor);
     }
 
     @Override
-    public void update(ColumnFamilyEntity entity) {
-        save(entity);
+    public ColumnFamilyEntity update(ColumnFamilyEntity entity) {
+        return save(entity);
     }
 
     @Override
@@ -61,7 +62,7 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     }
 
     @Override
-    public void updateAsync(ColumnFamilyEntity entity, Consumer<Void> consumer) {
+    public void updateAsync(ColumnFamilyEntity entity, Consumer<ColumnFamilyEntity> consumer) {
         saveAsync(entity, consumer);
     }
 
