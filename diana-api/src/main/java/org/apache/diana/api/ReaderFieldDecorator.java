@@ -5,11 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 
-final class ReaderFieldProvider {
+/**
+ * Decorators of all {@link ReaderField} supported by Diana
+ *
+ * @author Otávio Santana
+ * @see ReaderField
+ */
+final class ReaderFieldDecorator implements ReaderField {
 
-    private static ReaderFieldProvider INSTANCE = new ReaderFieldProvider();
+    private static ReaderFieldDecorator INSTANCE = new ReaderFieldDecorator();
 
-    public static ReaderFieldProvider getInstance() {
+    public static ReaderFieldDecorator getInstance() {
         return INSTANCE;
     }
 
@@ -19,8 +25,13 @@ final class ReaderFieldProvider {
         ServiceLoader.load(ReaderField.class).forEach(readers::add);
     }
 
+    @Override
+    public boolean isCompatible(Class clazz) {
+        return readers.stream().anyMatch(r -> r.isCompatible(clazz));
+    }
 
-    <T> T convert(Class<T> clazz, Object value) {
+    @Override
+    public <T> T read(Class<T> clazz, Object value) {
         if (clazz.isInstance(value)) {
             return clazz.cast(value);
         }
@@ -29,15 +40,13 @@ final class ReaderFieldProvider {
         return readerField.read(clazz, value);
     }
 
-    public boolean hasSupport(Class clazz) {
-        return readers.stream().anyMatch(r -> r.isCompatible(clazz));
-    }
-
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ReaderFieldProvider{");
+        final StringBuilder sb = new StringBuilder("ReaderFieldDecorator{");
         sb.append("readers=").append(readers);
         sb.append('}');
         return sb.toString();
     }
+
+
 }

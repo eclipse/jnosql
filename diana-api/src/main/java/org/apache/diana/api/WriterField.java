@@ -5,9 +5,10 @@ package org.apache.diana.api;
  * So, the WriterField has the goal to convert to any specific structure type that a database might support.
  * These implementation will loaded by ServiceLoad and a NoSQL implementation will may use it.
  *
+ * @param <T>
  * @author Otávio Santana
  */
-public interface WriterField {
+public interface WriterField<T> {
 
     /**
      * verifies if the writer has support of instance from this class.
@@ -23,5 +24,6 @@ public interface WriterField {
      * @param object the instance to be converted
      * @return a new instance with the new class
      */
-    Object write(Object object);
+
+    Object write(T object);
 }

@@ -8,9 +8,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class ReaderFieldProviderTest {
+public class ReaderFieldDecoratorTest {
 
-    private ReaderFieldProvider serviceLoader = ReaderFieldProvider.getInstance();
+    private ReaderFieldDecorator serviceLoader = ReaderFieldDecorator.getInstance();
 
 
     @Test

@@ -11,7 +11,7 @@ import static java.util.stream.StreamSupport.stream;
 
 class DefaultValue implements Value {
 
-    private static transient final ReaderFieldProvider SERVICE_PROVIDER = ReaderFieldProvider.getInstance();
+    private static transient final ReaderField SERVICE_PROVIDER = ReaderFieldDecorator.getInstance();
 
     private final Object value;
 
@@ -36,14 +36,14 @@ class DefaultValue implements Value {
 
     @Override
     public <T> T get(Class<T> clazz) {
-        return SERVICE_PROVIDER.convert(clazz, value);
+        return SERVICE_PROVIDER.read(clazz, value);
     }
 
     @Override
     public <T> List<T> getList(Class<T> clazz) {
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);
-            return (List<T>) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.convert(clazz, o)).collect(collectingAndThen(toList(), Collections::unmodifiableList));
+            return (List<T>) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(clazz, o)).collect(collectingAndThen(toList(), Collections::unmodifiableList));
         }
         return singletonList(get(clazz));
     }
@@ -52,7 +52,7 @@ class DefaultValue implements Value {
     public <T> Set<T> getSet(Class<T> clazz) {
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);
-            return (Set<T>) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.convert(clazz, o)).collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
+            return (Set<T>) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(clazz, o)).collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
         }
         return Collections.singleton(get(clazz));
     }
@@ -69,8 +69,8 @@ class DefaultValue implements Value {
 
     private <K> Function mapKeyElement(Class<K> keyClass) {
         return (keyElement) -> {
-            if (SERVICE_PROVIDER.hasSupport(keyClass)) {
-                return SERVICE_PROVIDER.convert(keyClass, keyElement);
+            if (SERVICE_PROVIDER.isCompatible(keyClass)) {
+                return SERVICE_PROVIDER.read(keyClass, keyElement);
             }
             return keyElement;
         };
@@ -79,8 +79,8 @@ class DefaultValue implements Value {
     private <V> Function mapValueElement(Class<V> valueClass, Map mapValue) {
         return (keyElement) -> {
             Object valueElement = mapValue.get(keyElement);
-            if (SERVICE_PROVIDER.hasSupport(valueClass)) {
-                return SERVICE_PROVIDER.convert(valueClass, valueElement);
+            if (SERVICE_PROVIDER.isCompatible(valueClass)) {
+                return SERVICE_PROVIDER.read(valueClass, valueElement);
             }
             return valueElement;
         };
