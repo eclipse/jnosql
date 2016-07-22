@@ -8,6 +8,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class that contains information to do a query to {@link DocumentCollectionManager}
+ *
+ * @see DocumentCollectionManager#find(DocumentQuery)
+ * @see DocumentCondition
+ * @see Sort
+ */
 public class DocumentQuery {
 
     private final String collection;
@@ -20,28 +27,63 @@ public class DocumentQuery {
         this.collection = Objects.requireNonNull(collection, "column family is required");
     }
 
-    public static DocumentQuery of(String columnFamily) {
-        return new DocumentQuery(columnFamily);
+    /**
+     * Creates a {@link DocumentQuery}
+     *
+     * @param documentCollection - the name of document collection to do a query
+     * @return a {@link DocumentQuery} instance
+     */
+    public static DocumentQuery of(String documentCollection) {
+        return new DocumentQuery(documentCollection);
     }
 
+    /**
+     * Add a new condition in the query
+     *
+     * @param condition
+     * @return the same instance with a condition added
+     * @throws NullPointerException when condition is null
+     */
     public DocumentQuery addCondition(DocumentCondition condition) {
         this.conditions.add(Objects.requireNonNull(condition, "condition is required"));
         return this;
     }
 
+    /**
+     * Add the order how the result will returned
+     *
+     * @param sort the order way
+     * @return the same way with a sort added
+     */
     public DocumentQuery addSort(Sort sort) {
         this.sorts.add(Objects.requireNonNull(sort, "Sort is required"));
         return this;
     }
 
+
+    /**
+     * The document collection name
+     *
+     * @return the document collection name
+     */
     public String getCollection() {
         return collection;
     }
 
+    /**
+     * The conditions that contains in this {@link DocumentQuery}
+     *
+     * @return the conditions
+     */
     public List<DocumentCondition> getConditions() {
         return Collections.unmodifiableList(conditions);
     }
 
+    /**
+     * The sorts that contains in this {@link DocumentQuery}
+     *
+     * @return the sorts
+     */
     public List<Sort> getSorts() {
         return Collections.unmodifiableList(sorts);
     }

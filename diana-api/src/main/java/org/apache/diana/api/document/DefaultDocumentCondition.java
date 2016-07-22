@@ -6,6 +6,10 @@ import org.apache.diana.api.column.Column;
 
 import java.util.Objects;
 
+/**
+ * The default implementation of {@link DocumentCondition}
+ * @author Otávio Santana
+ */
 class DefaultDocumentCondition implements DocumentCondition {
 
     private final Document document;

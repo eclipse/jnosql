@@ -7,14 +7,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class DocumentCollection implements Serializable {
+public class DocumentCollectionEntity implements Serializable {
 
 
     private final List<Document> documents = new ArrayList<>();
 
     private final String name;
 
-    public DocumentCollection(String name) {
+    public DocumentCollectionEntity(String name) {
         this.name = Objects.requireNonNull(name, "name name is required");
     }
 
@@ -32,7 +32,7 @@ public class DocumentCollection implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DocumentCollection that = (DocumentCollection) o;
+        DocumentCollectionEntity that = (DocumentCollectionEntity) o;
         return Objects.equals(documents, that.documents) &&
                 Objects.equals(name, that.name);
     }
@@ -44,7 +44,7 @@ public class DocumentCollection implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DocumentCollection{");
+        final StringBuilder sb = new StringBuilder("DocumentCollectionEntity{");
         sb.append("documents=").append(documents);
         sb.append(", name='").append(name).append('\'');
         sb.append('}');

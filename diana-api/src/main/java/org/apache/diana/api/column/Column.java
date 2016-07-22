@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A Column Family unit, it is a tuple (pair) that consists of a key-value pair, where the key is mapped to a value.
+ * A Column Family entity unit, it is a tuple (pair) that consists of a key-value pair, where the key is mapped to a value.
  * @author Otávio Santana
  */
 public class Column implements Serializable {
