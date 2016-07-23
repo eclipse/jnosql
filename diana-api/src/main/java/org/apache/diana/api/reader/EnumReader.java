@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Otávio Santana
  */
-public final class EnumReader implements ReaderField {
+public final class EnumReader implements ReaderField<Enum> {
 
     @Override
     public boolean isCompatible(Class clazz) {
@@ -22,7 +22,7 @@ public final class EnumReader implements ReaderField {
     }
 
     @Override
-    public <T> T read(Class<T> clazz, Object value) {
+    public Enum read(Object value) {
 
 
         if (clazz.isInstance(value)) {
