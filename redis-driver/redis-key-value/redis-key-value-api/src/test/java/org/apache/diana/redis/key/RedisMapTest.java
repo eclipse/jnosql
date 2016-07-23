@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 public class RedisMapTest {
 
-    private KeyValueEntityManagerFactory zoo;
+    private KeyValueEntityManagerFactory entityManagerFactory;
 
     private Species mammals = new Species("lion", "cow", "dog");
     private Species fishes = new Species("redfish", "glassfish");
@@ -25,13 +25,12 @@ public class RedisMapTest {
 
     @Before
     public void init() {
-        zoo = RedisTestUtils.get();
+        entityManagerFactory = RedisTestUtils.get();
     }
 
     @Test
     public void shouldPutAndGetMap() {
-        Map<String, Species> vertebrates = zoo.getMap("vertebrates", String.class, Species.class);
-        Set<String> strings = vertebrates.keySet();
+        Map<String, Species> vertebrates = entityManagerFactory.getMap("vertebrates", String.class, Species.class);
         assertTrue(vertebrates.isEmpty());
 
         assertNotNull(vertebrates.put("mammals", mammals));
@@ -44,7 +43,7 @@ public class RedisMapTest {
     @Test
     public void shouldVerifyExist() {
 
-        Map<String, Species> vertebrates = zoo.getMap("vertebrates", String.class, Species.class);
+        Map<String, Species> vertebrates = entityManagerFactory.getMap("vertebrates", String.class, Species.class);
         vertebrates.put("mammals", mammals);
         assertTrue(vertebrates.containsKey("mammals"));
         Assert.assertFalse(vertebrates.containsKey("redfish"));
@@ -59,7 +58,7 @@ public class RedisMapTest {
         vertebratesMap.put("mammals", mammals);
         vertebratesMap.put("fishes", fishes);
         vertebratesMap.put("amphibians", amphibians);
-        Map<String, Species> vertebrates = zoo.getMap("vertebrates", String.class, Species.class);
+        Map<String, Species> vertebrates = entityManagerFactory.getMap("vertebrates", String.class, Species.class);
         vertebrates.putAll(vertebratesMap);
 
         Set<String> keys = vertebrates.keySet();
@@ -75,7 +74,7 @@ public class RedisMapTest {
 
     @After
     public void dispose() {
-        Map<String, Species> vertebrates = zoo.getMap("vertebrates", String.class, Species.class);
+        Map<String, Species> vertebrates = entityManagerFactory.getMap("vertebrates", String.class, Species.class);
         vertebrates.clear();
     }
 
