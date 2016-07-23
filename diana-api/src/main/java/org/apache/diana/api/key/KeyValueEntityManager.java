@@ -12,7 +12,7 @@ public interface KeyValueEntityManager extends AutoCloseable {
 
     <T> void put(Iterable<KeyValue> keyValues);
 
-    <T> Optional<T> get(String key, Class<T> entityClass);
+    <K, V> Optional<V> get(K key, Class<V> entityClass);
 
     <K, V> Iterable<V> get(Iterable<K> keys, Class<V> entityClass);
 
