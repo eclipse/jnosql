@@ -2,7 +2,6 @@ package org.apache.diana.hazelcast.key;
 
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
 import org.apache.diana.api.key.KeyValueEntityManager;
 import org.apache.diana.api.key.KeyValueEntityManagerFactory;
 

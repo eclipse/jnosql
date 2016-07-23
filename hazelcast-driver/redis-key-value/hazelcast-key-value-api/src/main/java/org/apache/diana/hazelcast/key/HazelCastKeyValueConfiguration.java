@@ -22,8 +22,8 @@ public class HazelCastKeyValueConfiguration implements KeyValueConfiguration {
     public KeyValueEntityManagerFactory getManagerFactory(Map<String, String> configurations) {
 
         List<String> servers = configurations.keySet().stream().filter(s -> s.startsWith("hazelcast-hoster-")).collect(Collectors.toList());
-        Config config = new Config();
 
+        Config config = new Config(configurations.getOrDefault("hazelcast-instanceName", "hazelcast-instanceName"));
         HazelcastInstance hazelcastInstance = Hazelcast.getOrCreateHazelcastInstance(config);
         return new HazelCastKeyValueEntityManagerFactory(hazelcastInstance);
     }
