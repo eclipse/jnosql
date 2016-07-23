@@ -17,7 +17,7 @@ class RedisQueue<T> extends RedisCollection<T> implements Queue<T> {
 
 	@Override
 	public void clear() {
-		throw new UnsupportedOperationException("Remove all elements using remove key in QueueStructure");
+		jedis.del(keyWithNameSpace);
 	}
 
 	@Override

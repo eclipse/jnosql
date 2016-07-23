@@ -22,7 +22,7 @@ class RedisSet<T> extends RedisCollection<T> implements Set<T>  {
 
 	@Override
 	public void clear() {
-		throw new UnsupportedOperationException("Remove all elements using remove key in SetStructure");
+		jedis.del(keyWithNameSpace);
 	}
 
 	@Override

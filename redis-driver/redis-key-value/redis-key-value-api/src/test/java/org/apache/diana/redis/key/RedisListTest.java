@@ -22,14 +22,14 @@ public class RedisListTest {
     private ProductCart waterMelon = new ProductCart("waterMelon", BigDecimal.TEN);
     private ProductCart melon = new ProductCart("melon", BigDecimal.ONE);
 
-    private KeyValueEntityManagerFactory fruitStore;
+    private KeyValueEntityManagerFactory keyValueEntityManagerFactory;
 
     private List<ProductCart> fruits;
 
     @Before
     public void init() {
-        fruitStore =  RedisTestUtils.get();
-        fruits = fruitStore.getList(FRUITS, ProductCart.class);
+        keyValueEntityManagerFactory =  RedisTestUtils.get();
+        fruits = keyValueEntityManagerFactory.getList(FRUITS, ProductCart.class);
     }
 
     @Test
