@@ -2,6 +2,7 @@ package org.apache.diana.cassandra.document;
 
 
 import com.datastax.driver.core.Cluster;
+import org.apache.diana.api.column.ColumnConfiguration;
 import org.apache.diana.api.column.ColumnFamilyManagerFactory;
 
 import java.io.IOException;
@@ -14,10 +15,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-public class CassandraConfiguration {
+public class CassandraConfiguration implements ColumnConfiguration {
 
     private static final String CASSANDRA_FILE_CONFIGURATION = "diana-cassandra.properties";
 
+    @Override
     public ColumnFamilyManagerFactory getManagerFactory(Map<String, String> configurations) {
         Objects.requireNonNull(configurations);
         List<String> nodes = configurations.keySet().stream().filter(s -> s.startsWith("cassandra-hoster"))
@@ -31,6 +33,7 @@ public class CassandraConfiguration {
         return new CassandraDocumentEntityManagerFactory(builder.build(), queries, executorService);
     }
 
+    @Override
     public ColumnFamilyManagerFactory getManagerFactory() {
 
         try {
