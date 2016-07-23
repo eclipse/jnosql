@@ -85,7 +85,7 @@ public class RedisMap<K, V> implements Map<K, V> {
 
     @Override
     public void putAll(Map<? extends K, ? extends V> map) {
-        requireNonNull(map);
+        requireNonNull(map, "map is required");
 
         for (K key : map.keySet()) {
             V value = map.get(key);
@@ -97,8 +97,7 @@ public class RedisMap<K, V> implements Map<K, V> {
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Remove all elements using remove key in MapStructure");
-
+        jedis.del(nameSpace);
     }
 
     @Override

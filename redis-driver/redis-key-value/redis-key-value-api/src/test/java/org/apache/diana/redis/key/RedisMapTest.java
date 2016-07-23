@@ -76,7 +76,7 @@ public class RedisMapTest {
     @After
     public void dispose() {
         Map<String, Species> vertebrates = zoo.getMap("vertebrates", String.class, Species.class);
-        vertebrates.keySet().stream().forEach(vertebrates::remove);
+        vertebrates.clear();
     }
 
 }
