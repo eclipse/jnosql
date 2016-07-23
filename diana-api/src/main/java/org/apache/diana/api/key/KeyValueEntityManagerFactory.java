@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface KeyValueEntityManagerFactory extends AutoCloseable {
 
-    KeyValueEntityManager getKeyValueEntity(String bucketName);
+    KeyValueEntityManager getKeyValueEntityManager(String bucketName);
 
     <T> List<T> getList(String bucketName, Class<T> clazz);
 
@@ -16,5 +16,5 @@ public interface KeyValueEntityManagerFactory extends AutoCloseable {
 
     <T> Queue<T> getQueue(String bucketName, Class<T> clazz);
 
-    <T> Map<String, T> getMap(String bucketName, Class<T> clazz);
+    <K, V> Map<K, V> getMap(String bucketName, Class<K> keyValue, Class<V> valueValue);
 }

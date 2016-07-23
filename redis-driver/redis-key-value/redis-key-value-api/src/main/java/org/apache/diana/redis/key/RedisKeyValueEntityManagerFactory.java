@@ -17,7 +17,7 @@ class RedisKeyValueEntityManagerFactory implements KeyValueEntityManagerFactory 
 
 
     @Override
-    public KeyValueEntityManager getKeyValueEntity(String bucketName) {
+    public KeyValueEntityManager getKeyValueEntityManager(String bucketName) {
         Objects.requireNonNull(bucketName, "bucket name is required");
         return new RedisKeyValueEntityManager(bucketName, new Gson(), jedisPool.getResource());
     }
@@ -44,10 +44,10 @@ class RedisKeyValueEntityManagerFactory implements KeyValueEntityManagerFactory 
     }
 
     @Override
-    public <T> Map<String, T> getMap(String bucketName, Class<T> clazz) {
+    public <K, V> Map<K, V> getMap(String bucketName, Class<K> keyValue, Class<V> valueValue) {
         Objects.requireNonNull(bucketName, "bucket name is required");
-        Objects.requireNonNull(clazz, "Class type is required");
-        return new RedisMap<T>(jedisPool.getResource(), clazz, bucketName);
+        Objects.requireNonNull(valueValue, "Class type is required");
+        return new RedisMap<>(jedisPool.getResource(), keyValue, valueValue, bucketName);
     }
 
     @Override
