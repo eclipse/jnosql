@@ -47,8 +47,8 @@ class RedisKeyValueEntityManager implements KeyValueEntityManager {
     }
 
     @Override
-    public <T> Optional<T> get(String key, Class<T> entityClass) {
-        String value = jedis.get(createKeyWithNameSpace(key, nameSpace));
+    public <K, V> Optional<V> get(K key, Class<V> entityClass) {
+        String value = jedis.get(createKeyWithNameSpace(key.toString(), nameSpace));
         if (StringUtils.isNotBlank(value)) {
             return Optional.of(gson.fromJson(value, entityClass));
         }
@@ -56,18 +56,18 @@ class RedisKeyValueEntityManager implements KeyValueEntityManager {
     }
 
     @Override
-    public <T> Iterable<T> get(Iterable<String> keys, Class<T> entityClass) {
-        return StreamSupport.stream(keys.spliterator(), false).map(k -> jedis.get(createKeyWithNameSpace(k, nameSpace))).
+    public <K, V> Iterable<V> get(Iterable<K> keys, Class<V> entityClass) {
+        return StreamSupport.stream(keys.spliterator(), false).map(k -> jedis.get(createKeyWithNameSpace(k.toString(), nameSpace))).
                 filter(StringUtils::isNotBlank).map(v -> gson.fromJson(v, entityClass)).collect(toList());
     }
 
     @Override
-    public void remove(String key) {
-        jedis.del(createKeyWithNameSpace(key, nameSpace));
+    public<K>  void remove(K key) {
+        jedis.del(createKeyWithNameSpace(key.toString(), nameSpace));
     }
 
     @Override
-    public void remove(Iterable<String> keys) {
+    public <K> void remove(Iterable<K> keys) {
         StreamSupport.stream(keys.spliterator(), false).forEach(this::remove);
     }
 
