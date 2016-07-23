@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,144 +13,153 @@ import redis.clients.jedis.Jedis;
 
 import com.google.gson.Gson;
 
-public class RedisMap<T> implements Map<String, T> {
+public class RedisMap<K, V> implements Map<K, V> {
 
 
-	private Class<T> clazz;
+    private final Class<K> keyClass;
 
-	private String nameSpace;
+    private final Class<V> valueClass;
 
-	private Jedis jedis;
+    private final String nameSpace;
 
-	private Gson gson;
+    private final Jedis jedis;
+
+    private final Gson gson;
 
 
-	RedisMap(Jedis jedis, Class<T> clazz, String keyWithNameSpace) {
-		this.clazz = clazz;
-		this.nameSpace = keyWithNameSpace;
-		this.jedis = jedis;
-		gson = new Gson();
-	}
+    RedisMap(Jedis jedis, Class<K> keyValue, Class<V> valueClass, String keyWithNameSpace) {
+        this.keyClass = keyValue;
+        this.valueClass = valueClass;
+        this.nameSpace = keyWithNameSpace;
+        this.jedis = jedis;
+        gson = new Gson();
+    }
 
-	@Override
-	public int size() {
-		return jedis.hgetAll(nameSpace).size();
-	}
+    @Override
+    public int size() {
+        return jedis.hgetAll(nameSpace).size();
+    }
 
-	@Override
-	public boolean isEmpty() {
-		return size() == 0;
-	}
+    @Override
+    public boolean isEmpty() {
+        return size() == 0;
+    }
 
-	@Override
-	public boolean containsKey(Object key) {
-		return jedis.hexists(nameSpace, Objects.requireNonNull(key).toString());
-	}
+    @Override
+    public boolean containsKey(Object key) {
+        return jedis.hexists(nameSpace, Objects.requireNonNull(key).toString());
+    }
 
-	@Override
-	public boolean containsValue(Object value) {
-		Objects.requireNonNull(value);
-		String valueString = gson.toJson(value);
-		Map<String, String> map = createRedisMap();
-		return map.containsValue(valueString);
-	}
+    @Override
+    public boolean containsValue(Object value) {
+        Objects.requireNonNull(value);
+        String valueString = gson.toJson(value);
+        Map<String, String> map = createRedisMap();
+        return map.containsValue(valueString);
+    }
 
-	@Override
-	public T get(Object key) {
-		Objects.requireNonNull(key);
-		String value = jedis.hget(nameSpace, key.toString());
-		if (StringUtils.isNoneBlank(value)) {
-			return gson.fromJson(value, clazz);
-		}
-		return null;
-	}
+    @Override
+    public V get(Object key) {
+        Objects.requireNonNull(key, "Key is required");
+        String value = jedis.hget(nameSpace, gson.toJson(key));
+        if (StringUtils.isNoneBlank(value)) {
+            return gson.fromJson(value, valueClass);
+        }
+        return null;
+    }
 
-	@Override
-	public T put(String key, T value) {
-		Objects.requireNonNull(value);
-		jedis.hset(nameSpace, Objects.requireNonNull(key), gson.toJson(value));
-		return value;
-	}
+    @Override
+    public V put(K key, V value) {
+        Objects.requireNonNull(value, "Value is required");
+        Objects.requireNonNull(value, "Key is required");
+        String keyJson = gson.toJson(key);
+        jedis.hset(nameSpace, keyJson, gson.toJson(value));
+        return value;
+    }
 
-	@Override
-	public T remove(Object key) {
-		T value = get(key);
-		if (value != null){
-			jedis.hdel(nameSpace, Objects.requireNonNull(key).toString());
-			return value;
-		}
-		return null;
-	}
+    @Override
+    public V remove(Object key) {
+        V value = get(key);
+        if (value != null) {
+            jedis.hdel(nameSpace, Objects.requireNonNull(key).toString());
+            return value;
+        }
+        return null;
+    }
 
-	@Override
-	public void putAll(Map<? extends String, ? extends T> map) {
-		Objects.requireNonNull(map);
+    @Override
+    public void putAll(Map<? extends K, ? extends V> map) {
+        Objects.requireNonNull(map);
 
-		for(String key: map.keySet()) {
-			T value = map.get(key);
-			if (value != null) {
-				put(key, value);
-			}
-		}
-	}
+        for (K key : map.keySet()) {
+            V value = map.get(key);
+            if (value != null) {
+                put(key, value);
+            }
+        }
+    }
 
-	@Override
-	public void clear() {
-		throw new UnsupportedOperationException("Remove all elements using remove key in MapStructure");
+    @Override
+    public void clear() {
+        throw new UnsupportedOperationException("Remove all elements using remove key in MapStructure");
 
-	}
+    }
 
-	@Override
-	public Set<String> keySet() {
-		return createRedisMap().keySet();
-	}
+    @Override
+    public Set<K> keySet() {
+        return createHashMap().keySet();
+    }
 
-	@Override
-	public Collection<T> values() {
-		return createHashMap().values();
-	}
+    @Override
+    public Collection<V> values() {
+        return createHashMap().values();
+    }
 
-	@Override
-	public Set<Entry<String, T>> entrySet() {
-		return createHashMap().entrySet();
-	}
+    @Override
+    public Set<Entry<K, V>> entrySet() {
+        return createHashMap().entrySet();
+    }
 
-	private Map<String, String> createRedisMap() {
-		Map<String, String> map = jedis.hgetAll(nameSpace);
-		return map;
-	}
+    private Map<String, String> createRedisMap() {
+        Map<String, String> map = jedis.hgetAll(nameSpace);
+        return map;
+    }
 
-	private Map<String, T> createHashMap() {
-		Map<String, T> values = new HashMap<>();
-		Map<String, String> redisMap = createRedisMap();
+    private Map<K, V> createHashMap() {
+        Map<K, V> values = new HashMap<>();
+        Map<String, String> redisMap = createRedisMap();
+        return redisMap.keySet().stream().collect(Collectors.toMap(k -> gson.fromJson(k, keyClass), k -> gson.fromJson(redisMap.get(k), valueClass)));
+    }
 
-		for(String key: redisMap.keySet()) {
-			values.put(key, gson.fromJson(redisMap.get(key), clazz));
-		}
-		return values;
-	}
 
-	@Override
-	public String toString() {
-		return "Aooonde?: br.com.elo7.elodum.redis.builder.RedisMap at " + nameSpace;
-	}
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("RedisMap{");
+        sb.append("keyClass=").append(keyClass);
+        sb.append(", valueClass=").append(valueClass);
+        sb.append(", nameSpace='").append(nameSpace).append('\'');
+        sb.append(", jedis=").append(jedis);
+        sb.append(", gson=").append(gson);
+        sb.append('}');
+        return sb.toString();
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(nameSpace);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(nameSpace);
+    }
 
-	@SuppressWarnings("rawtypes")
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (RedisMap.class.isInstance(obj)) {
-			RedisMap otherRedis = RedisMap.class.cast(obj);
-			return Objects.equals(otherRedis.nameSpace, nameSpace);
-		}
-		return false;
-	}
+    @SuppressWarnings("rawtypes")
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (RedisMap.class.isInstance(obj)) {
+            RedisMap otherRedis = RedisMap.class.cast(obj);
+            return Objects.equals(otherRedis.nameSpace, nameSpace);
+        }
+        return false;
+    }
 
 }

@@ -81,9 +81,4 @@ class RedisSet<T> extends RedisCollection<T> implements Set<T>  {
 		return list;
 	}
 
-	@Override
-	public String toString() {
-		return "Aooonde?: br.com.elo7.elodum.redis.builder.RedisSet at " + keyWithNameSpace;
-	}
-
 }

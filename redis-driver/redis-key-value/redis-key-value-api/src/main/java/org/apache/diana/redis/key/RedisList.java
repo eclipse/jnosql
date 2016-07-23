@@ -130,9 +130,6 @@ class RedisList<T> extends RedisCollection<T> implements List<T> {
 		return subList;
 	}
 
-	@Override
-	public String toString() {
-		return "br.com.elo7.elodum.redis.builder.RedisList at " + keyWithNameSpace;
-	}
+
 
 }

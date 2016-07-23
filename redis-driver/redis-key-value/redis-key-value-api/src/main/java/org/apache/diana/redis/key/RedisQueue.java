@@ -67,8 +67,5 @@ class RedisQueue<T> extends RedisCollection<T> implements Queue<T> {
 		}
 		return gson.fromJson(jedis.lindex(keyWithNameSpace, (long)index-1), clazz);
 	}
-	@Override
-	public String toString() {
-		return "Aooonde?: br.com.elo7.elodum.redis.builder.RedisQueue at " + keyWithNameSpace;
-	}
+
 }
