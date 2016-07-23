@@ -11,9 +11,13 @@ public class KeyValue {
 
     private final Value value;
 
-    public KeyValue(String key, Value value) {
+    private KeyValue(String key, Value value) {
         this.key = Objects.requireNonNull(key, "key is required");
         this.value = Objects.requireNonNull(value, "value is required");
+    }
+
+    public static KeyValue of(String key, Value value) {
+        return new KeyValue(key, value);
     }
 
     public String getKey() {
