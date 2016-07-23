@@ -1,7 +1,6 @@
 package org.apache.diana.api.key;
 
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -9,13 +8,13 @@ import java.util.Set;
 
 public interface KeyValueEntityManagerFactory extends AutoCloseable {
 
-    KeyValueEntityManager getKeyValueEntity();
+    KeyValueEntityManager getKeyValueEntity(String bucketName);
 
-    <T extends Serializable> List<T> getList(String bucketName);
+    <T> List<T> getList(String bucketName, Class<T> clazz);
 
-    <T extends Serializable> Set<T> getSet(String bucketName);
+    <T> Set<T> getSet(String bucketName, Class<T> clazz);
 
-    <T extends Serializable> Queue<T> getQueue(String bucketName);
+    <T> Queue<T> getQueue(String bucketName, Class<T> clazz);
 
-    <T extends Serializable> Map<String, T> getMap(String bucketName);
+    <T> Map<String, T> getMap(String bucketName, Class<T> clazz);
 }
