@@ -34,8 +34,8 @@ class HazelCastKeyValueEntityManager implements KeyValueEntityManager {
     }
 
     @Override
-    public <T> Optional<T> get(String key, Class<T> entityClass) {
-        T value = (T) map.get(key);
+    public <K, V> Optional<V> get(K key, Class<V> entityClass) {
+        V value = (V) map.get(key);
         return Optional.ofNullable(value);
     }
 
