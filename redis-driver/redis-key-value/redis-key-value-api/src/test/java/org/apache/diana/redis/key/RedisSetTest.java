@@ -1,14 +1,12 @@
 package org.apache.diana.redis.key;
 
 
-import java.util.Set;
-
-
 import org.apache.diana.api.key.KeyValueEntityManagerFactory;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
