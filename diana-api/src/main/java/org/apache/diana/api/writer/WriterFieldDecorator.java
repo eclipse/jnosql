@@ -14,7 +14,7 @@ import java.util.ServiceLoader;
  */
 public final class WriterFieldDecorator implements WriterField {
 
-    private static WriterFieldDecorator INSTANCE = new WriterFieldDecorator();
+    private static WriterField INSTANCE = new WriterFieldDecorator();
 
     private final List<WriterField> writers = new ArrayList<>();
 
@@ -22,7 +22,7 @@ public final class WriterFieldDecorator implements WriterField {
         ServiceLoader.load(WriterField.class).forEach(writers::add);
     }
 
-    public static WriterFieldDecorator getInstance() {
+    public static WriterField getInstance() {
         return INSTANCE;
     }
 
