@@ -73,6 +73,6 @@ class RedisKeyValueEntityManager implements KeyValueEntityManager {
 
     @Override
     public void close() throws Exception {
-
+        jedis.close();
     }
 }
