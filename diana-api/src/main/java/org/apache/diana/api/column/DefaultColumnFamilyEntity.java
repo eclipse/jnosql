@@ -3,7 +3,7 @@ package org.apache.diana.api.column;
 import java.util.*;
 import java.util.stream.Collectors;
 
-final class DefaultColumnFamilyEntity implements ColumnFamilyEntity{
+final class DefaultColumnFamilyEntity implements ColumnFamilyEntity {
 
     private final List<Column> columns = new ArrayList<>();
 
@@ -15,7 +15,8 @@ final class DefaultColumnFamilyEntity implements ColumnFamilyEntity{
 
     /**
      * Creates a column family instance
-     * @param name a name to column family
+     *
+     * @param name    a name to column family
      * @param columns - columns
      * @return a ColumnFamilyEntity instance
      */
@@ -28,7 +29,8 @@ final class DefaultColumnFamilyEntity implements ColumnFamilyEntity{
 
     /**
      * Creates a column family instance
-     * @param name a name to column family
+     *
+     * @param name    a name to column family
      * @param columns - columns
      * @return a ColumnFamilyEntity instance
      */
@@ -60,8 +62,30 @@ final class DefaultColumnFamilyEntity implements ColumnFamilyEntity{
         return name;
     }
 
+    @Override
+    public boolean remove(String columnName) {
+        return columns.removeIf(column -> column.getName().equals(columnName));
+    }
+
+    @Override
+    public Optional<Column> find(String name) {
+        return columns.stream().filter(column -> column.getName().equals(name)).findFirst();
+    }
+
+    @Override
+    public int size() {
+        return columns.size();
+    }
+
     public boolean isEmpty() {
         return columns.isEmpty();
+    }
+
+    @Override
+    public ColumnFamilyEntity copy() {
+        DefaultColumnFamilyEntity copy = new DefaultColumnFamilyEntity(this.name);
+        copy.columns.addAll(this.columns);
+        return copy;
     }
 
     @Override

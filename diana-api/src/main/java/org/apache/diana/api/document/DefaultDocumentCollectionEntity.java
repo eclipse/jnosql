@@ -26,8 +26,8 @@ final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity 
         return name;
     }
 
-    public boolean remove(String columnName) {
-        return documents.removeIf(document -> document.getName().equals(columnName));
+    public boolean remove(String documentName) {
+        return documents.removeIf(document -> document.getName().equals(documentName));
     }
 
     public List<Document> getDocuments() {

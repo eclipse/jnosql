@@ -1,8 +1,6 @@
 package org.apache.diana.api.column;
 
 
-import org.apache.diana.api.document.Document;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -87,7 +85,7 @@ public interface ColumnFamilyEntity extends Serializable {
     String getName();
 
     /**
-     * Remove a document whose name is informed in parameter.
+     * Remove a column whose name is informed in parameter.
      *
      * @param columnName
      * @return if a column was removed or not
@@ -100,7 +98,7 @@ public interface ColumnFamilyEntity extends Serializable {
      * @param name a document name
      * @return an {@link Optional} instance with the result
      */
-    Optional<Document> find(String name);
+    Optional<Column> find(String name);
 
     /**
      * Returns the number of elements in this list.
