@@ -55,7 +55,7 @@ public class DocumentCollectionEntityTest {
         assertFalse(notfound.isPresent());
         assertEquals(document, name.get());
     }
-    
+
     @Test
     public void shouldRemoveDocument() {
         Document document = Document.of("name", "name");
