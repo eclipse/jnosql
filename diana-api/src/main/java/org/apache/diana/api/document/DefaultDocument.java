@@ -5,7 +5,8 @@ import org.apache.diana.api.Value;
 
 import java.util.Objects;
 
-final class DefaultDocument implements Document{
+final class DefaultDocument implements Document {
+    
     private final String name;
 
     private final Value value;
@@ -26,16 +27,16 @@ final class DefaultDocument implements Document{
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (this == other) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (other == null || getClass() != other.getClass()) {
+        if (!(o instanceof DefaultDocument)) {
             return false;
         }
-        DefaultDocument document = (DefaultDocument) other;
-        return Objects.equals(name, document.name) &&
-                Objects.equals(value, document.value);
+        Document that = (Document) o;
+        return Objects.equals(name, that.getName()) &&
+                Objects.equals(value, that.getValue());
     }
 
     @Override
