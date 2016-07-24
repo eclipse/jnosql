@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+ <modelVersion>4.0.0</modelVersion>
+ <artifactId>mongodb-document</artifactId>
+ <packaging>pom</packaging>
+ <name>MongoDB document driver to Apache diana Project</name>
+ <parent>
+  <groupId>org.apache.diana.mongodb.driver</groupId>
+  <artifactId>mongodb-driver-parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</parent>
+<properties>
+  <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
+  <maven.compile.sourceLevel>1.8</maven.compile.sourceLevel>
+  <monbodb.driver>3.3.0</monbodb.driver>
+</properties>
+<dependencies>
+  <dependency>
+    <groupId>org.mongodb</groupId>
+    <artifactId>mongo-java-driver</artifactId>
+    <version>${monbodb.driver}</version>
+  </dependency>
+  <dependency>
+    <groupId>org.mongodb</groupId>
+    <artifactId>mongodb-driver-async</artifactId>
+    <version>${monbodb.driver}</version>
+  </dependency>
+
+</dependencies>
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>${maven.compile.version}</version>
+      <configuration>
+        <target>1.8</target>
+        <source>1.8</source>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+<modules>
+  <module>mongodb-document-api</module>
+</modules>
+</project>

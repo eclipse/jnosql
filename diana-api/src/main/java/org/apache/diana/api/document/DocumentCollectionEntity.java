@@ -2,52 +2,33 @@ package org.apache.diana.api.document;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
-public class DocumentCollectionEntity implements Serializable {
+public interface DocumentCollectionEntity extends Serializable {
 
-
-    private final List<Document> documents = new ArrayList<>();
-
-    private final String name;
-
-    public DocumentCollectionEntity(String name) {
-        this.name = Objects.requireNonNull(name, "name name is required");
+    static DocumentCollectionEntity of(String name) throws NullPointerException {
+        return new DefaultDocumentCollectionEntity(name);
     }
 
-
-    public List<Document> getDocuments() {
-        return Collections.unmodifiableList(documents);
+    static DocumentCollectionEntity of(String name, List<Document> documents) throws NullPointerException {
+        DefaultDocumentCollectionEntity entity = new DefaultDocumentCollectionEntity(name);
+        entity.addAll(documents);
+        return entity;
     }
 
-    public void add(Document document) {
-        Objects.requireNonNull(document, "Document is required");
-        documents.add(document);
-    }
+    String getName();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DocumentCollectionEntity that = (DocumentCollectionEntity) o;
-        return Objects.equals(documents, that.documents) &&
-                Objects.equals(name, that.name);
-    }
+    boolean remove(String columnName);
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(documents, name);
-    }
+    List<Document> getDocuments();
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("DocumentCollectionEntity{");
-        sb.append("documents=").append(documents);
-        sb.append(", name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
+    void add(Document document);
+
+    void addAll(Iterable<Document> documents);
+
+    Optional<Document> find(String name);
+
+    DocumentCollectionEntity copy();
+
 }

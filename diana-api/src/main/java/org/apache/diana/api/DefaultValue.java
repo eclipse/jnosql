@@ -9,7 +9,7 @@ import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.*;
 import static java.util.stream.StreamSupport.stream;
 
-class DefaultValue implements Value {
+final class DefaultValue implements Value {
 
     private static transient final ReaderField SERVICE_PROVIDER = ReaderFieldDecorator.getInstance();
 
@@ -92,11 +92,11 @@ class DefaultValue implements Value {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Value)) {
             return false;
         }
-        DefaultValue that = (DefaultValue) o;
-        return Objects.equals(value, that.value);
+        Value that = (Value) o;
+        return Objects.equals(value, that.get());
     }
 
     @Override
