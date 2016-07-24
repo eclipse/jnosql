@@ -17,11 +17,22 @@ public interface Document extends Serializable {
      *
      * @param name  - column's name
      * @param value - column's value
-     * @return a column instance
+     * @return a Document instance
      * @see Documents
      */
-    static Document of(String name, Value value) {
+    static Document of(String name, Value value) throws NullPointerException {
         return new DefaultDocument(name, value);
+    }
+
+    /**
+     * Creates a Document instance
+     * @param name - column's name
+     * @param value - column's value
+     * @return a Document instance
+     * @throws NullPointerException
+     */
+    static Document of(String name, Object value) throws NullPointerException {
+        return new DefaultDocument(name, Value.of(value));
     }
 
     /**
