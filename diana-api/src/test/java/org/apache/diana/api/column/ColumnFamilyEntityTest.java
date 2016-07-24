@@ -1,8 +1,10 @@
 package org.apache.diana.api.column;
 
 import org.apache.diana.api.Value;
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
@@ -59,6 +61,17 @@ public class ColumnFamilyEntityTest {
         ColumnFamilyEntity entity = ColumnFamilyEntity.of("entity", singletonList(column));
         assertTrue(entity.remove("name"));
         assertTrue(entity.isEmpty());
+    }
+
+    @Test
+    public void shouldConvertToMap() {
+        Column column = Column.of("name", "name");
+        ColumnFamilyEntity entity = ColumnFamilyEntity.of("entity", singletonList(column));
+        Map<String, Object> result = entity.toMap();
+        assertFalse(result.isEmpty());
+        assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));
+        assertEquals(column.getName(), result.keySet().stream().findAny().get());
+
     }
 
 }
