@@ -1,7 +1,7 @@
 package org.apache.diana.redis.key;
 
 
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class RedisQueueTest {
 
 
-    private KeyValueEntityManagerFactory keyValueEntityManagerFactory;
+    private BucketManagerFactory keyValueEntityManagerFactory;
 
     private Queue<LineBank> lineBank;
 

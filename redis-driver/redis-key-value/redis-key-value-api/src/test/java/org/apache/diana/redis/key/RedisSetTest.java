@@ -1,7 +1,7 @@
 package org.apache.diana.redis.key;
 
 
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class RedisSetTest {
 
 
-    private KeyValueEntityManagerFactory keyValueEntityManagerFactory;
+    private BucketManagerFactory keyValueEntityManagerFactory;
     private User userOtavioJava = new User("otaviojava");
     private User felipe = new User("ffrancesquini");
     private Set<User> users;

@@ -1,7 +1,7 @@
 package org.apache.diana.hazelcast.key;
 
+import org.apache.diana.api.key.BucketManager;
 import org.apache.diana.api.key.KeyValue;
-import org.apache.diana.api.key.KeyValueEntityManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 
-class HazelCastKeyValueEntityManager implements KeyValueEntityManager {
+class HazelCastKeyValueEntityManager implements BucketManager {
 
     private final Map map;
 

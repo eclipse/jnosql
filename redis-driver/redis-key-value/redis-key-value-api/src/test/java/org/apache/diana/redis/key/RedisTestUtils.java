@@ -1,14 +1,14 @@
 package org.apache.diana.redis.key;
 
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.apache.diana.api.key.KeyValueConfiguration;
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
 
 
 public class RedisTestUtils {
 
-    public static KeyValueEntityManagerFactory get() {
+    public static BucketManagerFactory get() {
         KeyValueConfiguration configuration = new RedisConfiguration();
-        KeyValueEntityManagerFactory managerFactory = configuration.getManagerFactory();
+        BucketManagerFactory managerFactory = configuration.getManagerFactory();
         return managerFactory;
     }
 }

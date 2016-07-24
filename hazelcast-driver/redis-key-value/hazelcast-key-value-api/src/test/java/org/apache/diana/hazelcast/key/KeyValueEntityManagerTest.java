@@ -2,9 +2,9 @@ package org.apache.diana.hazelcast.key;
 
 
 import org.apache.diana.api.Value;
+import org.apache.diana.api.key.BucketManager;
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.apache.diana.api.key.KeyValue;
-import org.apache.diana.api.key.KeyValueEntityManager;
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
 import org.apache.diana.hazelcast.key.model.User;
 import org.apache.diana.hazelcast.key.util.KeyValueEntityManagerFactoryUtils;
 import org.junit.Before;
@@ -20,9 +20,9 @@ import static org.junit.Assert.*;
 
 public class KeyValueEntityManagerTest {
 
-    private KeyValueEntityManager keyValueEntityManager;
+    private BucketManager keyValueEntityManager;
 
-    private KeyValueEntityManagerFactory keyValueEntityManagerFactory;
+    private BucketManagerFactory keyValueEntityManagerFactory;
 
     private User userOtavio = new User("otavio");
     private KeyValue keyValueOtavio = KeyValue.of("otavio", Value.of(userOtavio));
@@ -33,7 +33,7 @@ public class KeyValueEntityManagerTest {
     @Before
     public void init() {
         keyValueEntityManagerFactory = KeyValueEntityManagerFactoryUtils.get();
-        keyValueEntityManager = keyValueEntityManagerFactory.getKeyValueEntityManager("users-entity");
+        keyValueEntityManager = keyValueEntityManagerFactory.getBucketManager("users-entity");
     }
 
 

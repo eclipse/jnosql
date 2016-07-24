@@ -1,7 +1,7 @@
 package org.apache.diana.redis.key;
 
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.apache.diana.api.key.KeyValueConfiguration;
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,13 +23,13 @@ public class RedisConfigurationTest {
     public void shouldCreateKeyValueFactory() {
         Map<String, String> map = new HashMap<>();
         map.put("redis-master-hoster", "172.17.0.2");
-        KeyValueEntityManagerFactory managerFactory = configuration.getManagerFactory(map);
+        BucketManagerFactory managerFactory = configuration.getManagerFactory(map);
         assertNotNull(managerFactory);
     }
 
     @Test
     public void shouldCreateKeyValueFactoryFromFile() {
-        KeyValueEntityManagerFactory managerFactory = configuration.getManagerFactory();
+        BucketManagerFactory managerFactory = configuration.getManagerFactory();
         assertNotNull(managerFactory);
     }
 

@@ -1,14 +1,13 @@
 package org.apache.diana.redis.key;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-
-
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +21,7 @@ public class RedisListTest {
     private ProductCart waterMelon = new ProductCart("waterMelon", BigDecimal.TEN);
     private ProductCart melon = new ProductCart("melon", BigDecimal.ONE);
 
-    private KeyValueEntityManagerFactory keyValueEntityManagerFactory;
+    private BucketManagerFactory keyValueEntityManagerFactory;
 
     private List<ProductCart> fruits;
 

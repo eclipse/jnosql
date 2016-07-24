@@ -1,6 +1,6 @@
 package org.apache.diana.hazelcast.key;
 
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.apache.diana.hazelcast.key.model.ProductCart;
 import org.apache.diana.hazelcast.key.util.KeyValueEntityManagerFactoryUtils;
 import org.junit.After;
@@ -23,7 +23,7 @@ public class ListTest {
     private ProductCart waterMelon = new ProductCart("waterMelon", BigDecimal.TEN);
     private ProductCart melon = new ProductCart("melon", BigDecimal.ONE);
 
-    private KeyValueEntityManagerFactory keyValueEntityManagerFactory;
+    private BucketManagerFactory keyValueEntityManagerFactory;
 
     private List<ProductCart> fruits;
 

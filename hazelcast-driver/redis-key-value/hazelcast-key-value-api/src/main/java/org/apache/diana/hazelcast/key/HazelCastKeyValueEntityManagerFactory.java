@@ -2,15 +2,15 @@ package org.apache.diana.hazelcast.key;
 
 
 import com.hazelcast.core.HazelcastInstance;
-import org.apache.diana.api.key.KeyValueEntityManager;
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
+import org.apache.diana.api.key.BucketManager;
+import org.apache.diana.api.key.BucketManagerFactory;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-class HazelCastKeyValueEntityManagerFactory implements KeyValueEntityManagerFactory {
+class HazelCastKeyValueEntityManagerFactory implements BucketManagerFactory {
 
     private final HazelcastInstance hazelcastInstance;
 
@@ -19,7 +19,7 @@ class HazelCastKeyValueEntityManagerFactory implements KeyValueEntityManagerFact
     }
 
     @Override
-    public KeyValueEntityManager getKeyValueEntityManager(String bucketName) {
+    public BucketManager getBucketManager(String bucketName) {
         return new HazelCastKeyValueEntityManager(hazelcastInstance.getMap(bucketName));
     }
 

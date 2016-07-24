@@ -1,7 +1,7 @@
 package org.apache.diana.hazelcast.key;
 
 
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.apache.diana.hazelcast.key.model.User;
 import org.apache.diana.hazelcast.key.util.KeyValueEntityManagerFactoryUtils;
 import org.junit.After;
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 public class SetTest {
 
 
-    private KeyValueEntityManagerFactory keyValueEntityManagerFactory;
+    private BucketManagerFactory keyValueEntityManagerFactory;
     private User userOtavioJava = new User("otaviojava");
     private User felipe = new User("ffrancesquini");
     private Set<User> users;

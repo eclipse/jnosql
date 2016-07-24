@@ -1,6 +1,6 @@
 package org.apache.diana.hazelcast.key;
 
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.apache.diana.hazelcast.key.model.Species;
 import org.apache.diana.hazelcast.key.util.KeyValueEntityManagerFactoryUtils;
 import org.junit.After;
@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 
 public class MapTest {
 
-    private KeyValueEntityManagerFactory entityManagerFactory;
+    private BucketManagerFactory entityManagerFactory;
 
     private Species mammals = new Species("lion", "cow", "dog");
     private Species fishes = new Species("redfish", "glassfish");

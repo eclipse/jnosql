@@ -2,15 +2,12 @@ package org.apache.diana.redis.key;
 
 
 import org.apache.diana.api.Value;
+import org.apache.diana.api.key.BucketManager;
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.apache.diana.api.key.KeyValue;
-import org.apache.diana.api.key.KeyValueEntityManager;
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -21,9 +18,9 @@ import static org.junit.Assert.*;
 
 public class RedisKeyValueEntityManagerTest {
 
-    private KeyValueEntityManager keyValueEntityManager;
+    private BucketManager keyValueEntityManager;
 
-    private KeyValueEntityManagerFactory keyValueEntityManagerFactory;
+    private BucketManagerFactory keyValueEntityManagerFactory;
 
     private User userOtavio = new User("otavio");
     private KeyValue keyValueOtavio = KeyValue.of("otavio", Value.of(userOtavio));
@@ -34,7 +31,7 @@ public class RedisKeyValueEntityManagerTest {
     @Before
     public void init() {
         keyValueEntityManagerFactory = RedisTestUtils.get();
-        keyValueEntityManager = keyValueEntityManagerFactory.getKeyValueEntityManager("users-entity");
+        keyValueEntityManager = keyValueEntityManagerFactory.getBucketManager("users-entity");
     }
 
 

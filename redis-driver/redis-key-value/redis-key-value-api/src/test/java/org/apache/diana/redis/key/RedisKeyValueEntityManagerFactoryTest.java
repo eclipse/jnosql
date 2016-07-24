@@ -1,8 +1,8 @@
 package org.apache.diana.redis.key;
 
+import org.apache.diana.api.key.BucketManager;
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.apache.diana.api.key.KeyValueConfiguration;
-import org.apache.diana.api.key.KeyValueEntityManager;
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 public class RedisKeyValueEntityManagerFactoryTest {
 
     public static final String BUCKET_NAME = "bucketName";
-    private KeyValueEntityManagerFactory managerFactory;
+    private BucketManagerFactory managerFactory;
 
     @Before
     public void setUp() {
@@ -27,7 +27,7 @@ public class RedisKeyValueEntityManagerFactoryTest {
 
     @Test
     public void shouldCreateKeyValueEntityManager(){
-        KeyValueEntityManager keyValueEntityManager = managerFactory.getKeyValueEntityManager(BUCKET_NAME);
+        BucketManager keyValueEntityManager = managerFactory.getBucketManager(BUCKET_NAME);
         assertNotNull(keyValueEntityManager);
     }
 

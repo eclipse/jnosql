@@ -1,13 +1,13 @@
 package org.apache.diana.redis.key;
 
 import com.google.gson.Gson;
-import org.apache.diana.api.key.KeyValueEntityManager;
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
+import org.apache.diana.api.key.BucketManager;
+import org.apache.diana.api.key.BucketManagerFactory;
 import redis.clients.jedis.JedisPool;
 
 import java.util.*;
 
-class RedisKeyValueEntityManagerFactory implements KeyValueEntityManagerFactory {
+class RedisKeyValueEntityManagerFactory implements BucketManagerFactory {
 
     private final JedisPool jedisPool;
 
@@ -17,7 +17,7 @@ class RedisKeyValueEntityManagerFactory implements KeyValueEntityManagerFactory 
 
 
     @Override
-    public KeyValueEntityManager getKeyValueEntityManager(String bucketName) {
+    public BucketManager getBucketManager(String bucketName) {
         Objects.requireNonNull(bucketName, "bucket name is required");
         return new RedisKeyValueEntityManager(bucketName, new Gson(), jedisPool.getResource());
     }

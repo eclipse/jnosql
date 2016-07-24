@@ -1,7 +1,7 @@
 package org.apache.diana.hazelcast.key;
 
 
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.apache.diana.hazelcast.key.model.LineBank;
 import org.apache.diana.hazelcast.key.util.KeyValueEntityManagerFactoryUtils;
 import org.junit.After;
@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class QueueTest {
 
 
-    private KeyValueEntityManagerFactory keyValueEntityManagerFactory;
+    private BucketManagerFactory keyValueEntityManagerFactory;
 
     private Queue<LineBank> lineBank;
 

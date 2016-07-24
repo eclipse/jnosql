@@ -1,8 +1,8 @@
 package org.apache.diana.redis.key;
 
 
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.apache.diana.api.key.KeyValueConfiguration;
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -18,7 +18,7 @@ public final class RedisConfiguration implements KeyValueConfiguration {
 
 
     @Override
-    public KeyValueEntityManagerFactory getManagerFactory(Map<String, String> configurations) {
+    public BucketManagerFactory getManagerFactory(Map<String, String> configurations) {
         JedisPoolConfig poolConfig = getJedisPoolConfig(configurations);
         JedisPool jedisPool = getJedisPool(configurations, poolConfig);
 
@@ -46,7 +46,7 @@ public final class RedisConfiguration implements KeyValueConfiguration {
 
 
     @Override
-    public KeyValueEntityManagerFactory getManagerFactory() {
+    public BucketManagerFactory getManagerFactory() {
         try {
             Properties properties = new Properties();
             InputStream stream = RedisConfiguration.class.getClassLoader().getResourceAsStream(REDIS_FILE_CONFIGURATION);

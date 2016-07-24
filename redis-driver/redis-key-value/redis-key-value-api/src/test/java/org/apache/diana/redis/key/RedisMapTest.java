@@ -1,23 +1,22 @@
 package org.apache.diana.redis.key;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
 
 public class RedisMapTest {
 
-    private KeyValueEntityManagerFactory entityManagerFactory;
+    private BucketManagerFactory entityManagerFactory;
 
     private Species mammals = new Species("lion", "cow", "dog");
     private Species fishes = new Species("redfish", "glassfish");

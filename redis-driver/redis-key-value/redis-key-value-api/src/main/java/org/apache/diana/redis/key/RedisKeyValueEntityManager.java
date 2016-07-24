@@ -3,8 +3,8 @@ package org.apache.diana.redis.key;
 
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.diana.api.key.BucketManager;
 import org.apache.diana.api.key.KeyValue;
-import org.apache.diana.api.key.KeyValueEntityManager;
 import redis.clients.jedis.Jedis;
 
 import java.util.Objects;
@@ -14,7 +14,7 @@ import java.util.stream.StreamSupport;
 import static java.util.stream.Collectors.toList;
 import static org.apache.diana.redis.key.RedisUtils.createKeyWithNameSpace;
 
-class RedisKeyValueEntityManager implements KeyValueEntityManager {
+class RedisKeyValueEntityManager implements BucketManager {
 
     private final String nameSpace;
 

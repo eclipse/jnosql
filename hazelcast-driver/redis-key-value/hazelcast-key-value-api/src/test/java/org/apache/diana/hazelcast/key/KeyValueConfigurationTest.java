@@ -1,7 +1,7 @@
 package org.apache.diana.hazelcast.key;
 
+import org.apache.diana.api.key.BucketManagerFactory;
 import org.apache.diana.api.key.KeyValueConfiguration;
-import org.apache.diana.api.key.KeyValueEntityManagerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,13 +22,13 @@ public class KeyValueConfigurationTest {
     @Test
     public void shouldCreateKeyValueFactory() {
         Map<String, String> map = new HashMap<>();
-        KeyValueEntityManagerFactory managerFactory = configuration.getManagerFactory(map);
+        BucketManagerFactory managerFactory = configuration.getManagerFactory(map);
         assertNotNull(managerFactory);
     }
 
     @Test
     public void shouldCreateKeyValueFactoryFromFile() {
-        KeyValueEntityManagerFactory managerFactory = configuration.getManagerFactory();
+        BucketManagerFactory managerFactory = configuration.getManagerFactory();
         assertNotNull(managerFactory);
     }
 
