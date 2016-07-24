@@ -1,6 +1,8 @@
 package org.apache.diana.api.document;
 
 
+import org.apache.diana.api.column.Column;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -65,6 +67,11 @@ final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity 
         DefaultDocumentCollectionEntity entity = new DefaultDocumentCollectionEntity(this.name);
         entity.documents.addAll(this.getDocuments());
         return entity;
+    }
+
+    @Override
+    public Map<String, Object> toMap() {
+        return documents.stream().collect(Collectors.toMap(Document::getName, document -> document.getValue().get()));
     }
 
 

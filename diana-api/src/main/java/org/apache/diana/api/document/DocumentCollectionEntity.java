@@ -3,6 +3,7 @@ package org.apache.diana.api.document;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -110,5 +111,14 @@ public interface DocumentCollectionEntity extends Serializable {
      * @return an instance copy
      */
     DocumentCollectionEntity copy();
+
+    /**
+     * Converts the columns to a Map where:
+     * the key is the name the column
+     * The value is the {@link org.apache.diana.api.Value#get()} of the map
+     *
+     * @return a map instance
+     */
+    Map<String, Object> toMap();
 
 }

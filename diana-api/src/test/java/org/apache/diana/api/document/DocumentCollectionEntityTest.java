@@ -1,11 +1,9 @@
 package org.apache.diana.api.document;
 
 import org.apache.diana.api.Value;
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
@@ -62,6 +60,17 @@ public class DocumentCollectionEntityTest {
         DocumentCollectionEntity entity = DocumentCollectionEntity.of("entity", singletonList(document));
         assertTrue(entity.remove("name"));
         assertTrue(entity.isEmpty());
+    }
+
+    @Test
+    public void shouldConvertToMap() {
+        Document document = Document.of("name", "name");
+        DocumentCollectionEntity entity = DocumentCollectionEntity.of("entity", singletonList(document));
+        Map<String, Object> result = entity.toMap();
+        assertFalse(result.isEmpty());
+        assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));
+        assertEquals(document.getName(), result.keySet().stream().findAny().get());
+
     }
 
 }

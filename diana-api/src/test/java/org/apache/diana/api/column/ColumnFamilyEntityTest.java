@@ -1,7 +1,6 @@
 package org.apache.diana.api.column;
 
 import org.apache.diana.api.Value;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Map;
