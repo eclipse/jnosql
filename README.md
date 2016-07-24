@@ -1,3 +1,5 @@
+![Image of Yaktocat](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
+
 # diana
 
 
