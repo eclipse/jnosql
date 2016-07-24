@@ -3,55 +3,16 @@ package org.apache.diana.api.key;
 
 import org.apache.diana.api.Value;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-public class KeyValue {
+public interface KeyValue extends Serializable {
 
-    private final String key;
-
-    private final Value value;
-
-    private KeyValue(String key, Value value) {
-        this.key = Objects.requireNonNull(key, "key is required");
-        this.value = Objects.requireNonNull(value, "value is required");
+    static KeyValue of(String key, Value value) {
+        return new DefaultKeyValue(key, value);
     }
 
-    public static KeyValue of(String key, Value value) {
-        return new KeyValue(key, value);
-    }
+    String getKey();
 
-    public String getKey() {
-        return key;
-    }
+    Value getValue();
 
-    public Value getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        KeyValue keyValue = (KeyValue) o;
-        return Objects.equals(key, keyValue.key) &&
-                Objects.equals(value, keyValue.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(key, value);
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("KeyValue{");
-        sb.append("key='").append(key).append('\'');
-        sb.append(", value=").append(value);
-        sb.append('}');
-        return sb.toString();
-    }
 }
