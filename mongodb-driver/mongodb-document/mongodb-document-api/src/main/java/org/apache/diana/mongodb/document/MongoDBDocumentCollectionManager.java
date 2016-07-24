@@ -1,11 +1,10 @@
 package org.apache.diana.mongodb.document;
 
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.apache.diana.api.ExecuteAsyncQueryException;
-import org.apache.diana.api.document.DocumentCollectionEntity;
-import org.apache.diana.api.document.DocumentCollectionManager;
-import org.apache.diana.api.document.DocumentQuery;
-import org.apache.diana.api.document.PreparedStatement;
+import org.apache.diana.api.document.*;
+import org.bson.Document;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -14,6 +13,7 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
 
     private final MongoDatabase mongoDatabase;
 
+
     MongoDBDocumentCollectionManager(MongoDatabase mongoDatabase) {
         this.mongoDatabase = mongoDatabase;
     }
@@ -21,7 +21,17 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
 
     @Override
     public DocumentCollectionEntity save(DocumentCollectionEntity entity) {
-        return null;
+        String collectionName = entity.getName();
+        MongoCollection<Document> collection = mongoDatabase.getCollection(collectionName);
+        Document document = new Document();
+
+        entity.getDocuments().stream().map(d -> document.put(d.getName(), d.getValue().get()));
+        collection.insertOne(document);
+        boolean hasNotId = entity.getDocuments().stream().map(document1 -> document1.getName()).noneMatch(k -> k.equals("_id"));
+        if(hasNotId) {
+            entity.add(Documents.of("_id", document.get("_id")));
+        }
+        return entity;
     }
 
     @Override
@@ -91,6 +101,5 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
 
     @Override
     public void close() throws Exception {
-
     }
 }

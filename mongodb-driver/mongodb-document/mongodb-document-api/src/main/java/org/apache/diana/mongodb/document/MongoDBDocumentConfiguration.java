@@ -22,7 +22,7 @@ public class MongoDBDocumentConfiguration implements DocumentConfiguration {
 
     @Override
     public DocumentCollectionManagerFactory getManagerFactory(Map<String, String> configurations) {
-        List<ServerAddress> servers = configurations.keySet().stream().filter(s -> s.startsWith("mongodb-server-host-")).map(HostPortConfiguration::new)
+        List<ServerAddress> servers = configurations.keySet().stream().filter(s -> s.startsWith("mongodb-server-host-")).map(configurations::get).map(HostPortConfiguration::new)
                 .map(HostPortConfiguration::toServerAddress).collect(Collectors.toList());
         if (servers.isEmpty()) {
             return new MongoDBDocumentCollectionManagerFactory(new MongoClient());
