@@ -63,6 +63,32 @@ public class MongoDBDocumentCollectionManagerTest {
         assertThat(entities, contains(entity));
     }
 
+    @Test
+    public void shouldSaveAsync() {
+        DocumentCollectionEntity entity = getEntity();
+        entityManager.saveAsync(entity);
+
+    }
+
+    @Test
+    public void shouldUpdateAsync() {
+        DocumentCollectionEntity entity = getEntity();
+        DocumentCollectionEntity documentEntity = entityManager.save(entity);
+        Document newField = Documents.of("newField", "10");
+        entity.add(newField);
+        entityManager.updateAsync(entity);
+    }
+
+    @Test
+    public void shouldRemoveEntityAsync() {
+        DocumentCollectionEntity documentEntity = entityManager.save(getEntity());
+        DocumentQuery query = DocumentQuery.of(COLLECTION_NAME);
+        Optional<Document> id = documentEntity.find("_id");
+        query.addCondition(DocumentCondition.eq(id.get()));
+        entityManager.deleteAsync(query);
+
+    }
+
     private DocumentCollectionEntity getEntity() {
         DocumentCollectionEntity entity = DocumentCollectionEntity.of(COLLECTION_NAME);
         Map<String, Object> map = new HashMap<>();
