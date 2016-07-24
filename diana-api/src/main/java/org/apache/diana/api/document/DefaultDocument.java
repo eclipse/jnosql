@@ -5,8 +5,11 @@ import org.apache.diana.api.Value;
 
 import java.util.Objects;
 
+/**
+ * A default implementation {@link Document}
+ */
 final class DefaultDocument implements Document {
-    
+
     private final String name;
 
     private final Value value;

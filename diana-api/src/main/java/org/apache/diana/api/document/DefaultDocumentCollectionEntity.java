@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Comparator.comparing;
 
+/**
+ * A default implementation of {@link DocumentCollectionEntity}
+ */
 final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity {
     private final List<Document> documents = new ArrayList<>();
 
