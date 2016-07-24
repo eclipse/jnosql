@@ -1,6 +1,7 @@
 package org.apache.diana.mongodb.document;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import org.apache.diana.api.document.DocumentCollectionManager;
 import org.apache.diana.api.document.DocumentCollectionManagerFactory;
 
@@ -14,7 +15,8 @@ class MongoDBDocumentCollectionManagerFactory implements DocumentCollectionManag
 
     @Override
     public DocumentCollectionManager getDocumentEntityManager(String database) {
-        return null;
+        MongoDatabase mongoDatabase = mongoClient.getDatabase(database);
+        return new MongoDBDocumentCollectionManager(mongoDatabase);
     }
 
     @Override
