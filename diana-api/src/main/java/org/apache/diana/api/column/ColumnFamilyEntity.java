@@ -1,132 +1,126 @@
 package org.apache.diana.api.column;
 
 
+import org.apache.diana.api.document.Document;
 
 import java.io.Serializable;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * A column family is a NoSQL object that contains columns of related data. It is a tuple (pair) that consists of a key-value pair, where the key is mapped to a value that is a set of columns.
  * In analogy with relational databases, a column family is as a "table", each key-value pair being a "row".
  * Each column is a tuple (triplet) consisting of a column name, a value, and a timestamp. In a relational database table,
  * this data would be grouped together within a table with other non-related data.
+ *
  * @author Otávio Santana
  */
-public class ColumnFamilyEntity implements Serializable {
+public interface ColumnFamilyEntity extends Serializable {
 
-
-    private final List<Column> columns = new ArrayList<>();
-
-    private final String name;
-
-    private ColumnFamilyEntity(String name) {
-        this.name = Objects.requireNonNull(name, "name is required");
-    }
 
     /**
      * Creates a column family instance
-     * @param name a name to column family
+     *
+     * @param name    a name to column family
      * @param columns - columns
      * @return a ColumnFamilyEntity instance
      */
-    public static ColumnFamilyEntity of(String name, Column... columns) {
+    static ColumnFamilyEntity of(String name, Column... columns) {
         if (columns.length == 0) {
-            return new ColumnFamilyEntity(name);
+            return new DefaultColumnFamilyEntity(name);
         }
         return of(name, Arrays.asList(columns));
     }
 
     /**
      * Creates a column family instance
-     * @param name a name to column family
+     *
+     * @param name    a name to column family
      * @param columns - columns
      * @return a ColumnFamilyEntity instance
      */
-    public static ColumnFamilyEntity of(String name, List<Column> columns) {
-        ColumnFamilyEntity columnEntity = new ColumnFamilyEntity(name);
+    static ColumnFamilyEntity of(String name, List<Column> columns) {
+        ColumnFamilyEntity columnEntity = new DefaultColumnFamilyEntity(name);
         columnEntity.addAll(columns);
         return columnEntity;
     }
 
     /**
      * Appends all of the columns in the column family to the end of this list.
+     *
      * @param columns - columns to be added
      * @throws NullPointerException when columns is null
      */
-    public void addAll(List<Column> columns) {
-        Objects.requireNonNull(columns, "The object column is required");
-        this.columns.addAll(columns);
-    }
+    void addAll(List<Column> columns);
 
     /**
      * Appends the specified column to the end of this list
+     *
      * @param column - column to be added
      * @throws NullPointerException when column is null
      */
-    public void add(Column column) {
-        Objects.requireNonNull(column, "Column is required");
-        columns.add(column);
-    }
+    void add(Column column);
 
     /**
      * Converts the columns to a Map where:
      * the key is the name the column
      * The value is the {@link org.apache.diana.api.Value#get()} of the map
+     *
      * @return a map instance
      */
-    public Map<String, Object> toMap() {
-        return columns.stream().collect(Collectors.toMap(Column::getName, column -> column.getValue().get()));
-    }
+    Map<String, Object> toMap();
 
     /**
      * Returns all columns from this Column Family
+     *
      * @return an immutable list of columns
      */
-    public List<Column> getColumns() {
-        return Collections.unmodifiableList(columns);
-    }
+    List<Column> getColumns();
 
     /**
      * Column Family's name
+     *
      * @return Column Family's name
      */
-    public String getName() {
-        return name;
-    }
+    String getName();
+
+    /**
+     * Remove a document whose name is informed in parameter.
+     *
+     * @param columnName
+     * @return if a column was removed or not
+     */
+    boolean remove(String columnName);
+
+    /**
+     * Find document a document from name
+     *
+     * @param name a document name
+     * @return an {@link Optional} instance with the result
+     */
+    Optional<Document> find(String name);
+
+    /**
+     * Returns the number of elements in this list.
+     *
+     * @return the number of elements in this list
+     */
+    int size();
 
     /**
      * Returns true if the number of columns is zero otherwise false.
-     * @return true if there isn't elements to {@link ColumnFamilyEntity#columns}
+     *
+     * @return true if there isn't elements to {@link ColumnFamilyEntity#getColumns()}
      */
-    public boolean isEmpty() {
-        return columns.isEmpty();
-    }
+    boolean isEmpty();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ColumnFamilyEntity that = (ColumnFamilyEntity) o;
-        return Objects.equals(columns, that.columns) &&
-                Objects.equals(name, that.name);
-    }
+    /**
+     * make copy of itself
+     *
+     * @return an instance copy
+     */
+    ColumnFamilyEntity copy();
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(columns, name);
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("ColumnFamilyEntity{");
-        sb.append("columns=").append(columns);
-        sb.append(", name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
 }
