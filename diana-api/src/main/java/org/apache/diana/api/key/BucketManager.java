@@ -4,7 +4,7 @@ package org.apache.diana.api.key;
 import java.io.Serializable;
 import java.util.Optional;
 
-public interface KeyValueEntityManager extends AutoCloseable {
+public interface BucketManager extends AutoCloseable {
 
     <T> void put(String key, T value);
 

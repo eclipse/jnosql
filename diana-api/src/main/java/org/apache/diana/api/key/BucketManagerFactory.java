@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-public interface KeyValueEntityManagerFactory extends AutoCloseable {
+public interface BucketManagerFactory extends AutoCloseable {
 
-    KeyValueEntityManager getKeyValueEntityManager(String bucketName);
+    BucketManager getBucketManager(String bucketName);
 
     <T> List<T> getList(String bucketName, Class<T> clazz);
 
