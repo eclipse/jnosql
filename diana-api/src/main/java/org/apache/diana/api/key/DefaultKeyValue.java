@@ -4,7 +4,10 @@ import org.apache.diana.api.Value;
 
 import java.util.Objects;
 
-final class DefaultKeyValue implements KeyValue{
+/**
+ * The default implementation of {@link KeyValue}
+ */
+final class DefaultKeyValue implements KeyValue {
 
     private final String key;
 
