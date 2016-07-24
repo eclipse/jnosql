@@ -14,10 +14,19 @@ public class DocumentCollectionEntity implements Serializable {
 
     private final String name;
 
-    public DocumentCollectionEntity(String name) {
+
+    public static DocumentCollectionEntity of(String name) throws NullPointerException {
+        return new DocumentCollectionEntity(name);
+    }
+
+    private DocumentCollectionEntity(String name) {
         this.name = Objects.requireNonNull(name, "name name is required");
     }
 
+
+    public String getName() {
+        return name;
+    }
 
     public List<Document> getDocuments() {
         return Collections.unmodifiableList(documents);
