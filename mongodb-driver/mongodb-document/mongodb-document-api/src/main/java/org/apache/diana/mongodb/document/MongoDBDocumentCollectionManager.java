@@ -100,17 +100,17 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
 
     @Override
     public List<DocumentCollectionEntity> nativeQuery(String query) throws UnsupportedOperationException {
-        return null;
+        throw new UnsupportedOperationException("There is not support to native query yet");
     }
 
     @Override
     public void nativeQueryAsync(String query, Consumer<List<DocumentCollectionEntity>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException {
-
+        throw new UnsupportedOperationException("There is not support to native query yet");
     }
 
     @Override
     public PreparedStatement nativeQueryPrepare(String query) throws UnsupportedOperationException {
-        return null;
+        throw new UnsupportedOperationException("There is not support to native query yet");
     }
 
     @Override
