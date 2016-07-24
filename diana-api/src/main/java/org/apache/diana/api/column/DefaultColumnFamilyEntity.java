@@ -108,7 +108,7 @@ final class DefaultColumnFamilyEntity implements ColumnFamilyEntity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ColumnFamilyEntity{");
+        final StringBuilder sb = new StringBuilder("DefaultColumnFamilyEntity{");
         sb.append("columns=").append(columns);
         sb.append(", name='").append(name).append('\'');
         sb.append('}');
