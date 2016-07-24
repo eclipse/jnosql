@@ -91,6 +91,20 @@ public interface DocumentCollectionEntity extends Serializable {
     Optional<Document> find(String name);
 
     /**
+     * Returns the number of elements in this list.
+     *
+     * @return the number of elements in this list
+     */
+    int size();
+
+    /**
+     * Returns <tt>true</tt> if this list contains no elements.
+     *
+     * @return <tt>true</tt> if this list contains no elements
+     */
+    boolean isEmpty();
+
+    /**
      * make copy of itself
      *
      * @return an instance copy

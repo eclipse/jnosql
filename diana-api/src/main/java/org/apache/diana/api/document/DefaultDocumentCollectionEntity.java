@@ -11,6 +11,7 @@ import static java.util.Comparator.comparing;
  * A default implementation of {@link DocumentCollectionEntity}
  */
 final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity {
+
     private final List<Document> documents = new ArrayList<>();
 
     private final String name;
@@ -47,6 +48,16 @@ final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity 
     @Override
     public Optional<Document> find(String name) {
         return documents.stream().filter(document -> document.getName().equals(name)).findFirst();
+    }
+
+    @Override
+    public int size() {
+        return documents.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return documents.isEmpty();
     }
 
     @Override
