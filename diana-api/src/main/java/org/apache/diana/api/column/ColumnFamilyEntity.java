@@ -21,15 +21,11 @@ public interface ColumnFamilyEntity extends Serializable {
     /**
      * Creates a column family instance
      *
-     * @param name    a name to column family
-     * @param columns - columns
+     * @param name a name to column family
      * @return a ColumnFamilyEntity instance
      */
-    static ColumnFamilyEntity of(String name, Column... columns) {
-        if (columns.length == 0) {
-            return new DefaultColumnFamilyEntity(name);
-        }
-        return of(name, Arrays.asList(columns));
+    static ColumnFamilyEntity of(String name) {
+        return new DefaultColumnFamilyEntity(name);
     }
 
     /**

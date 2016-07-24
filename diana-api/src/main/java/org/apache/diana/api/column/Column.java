@@ -22,8 +22,20 @@ public interface Column extends Serializable {
      * @return a column instance
      * @see Columns
      */
-    public static Column of(String name, Value value) {
+    static Column of(String name, Value value) {
         return new DefaultColumn(name, value);
+    }
+
+    /**
+     * Creates a column instance
+     *
+     * @param name  - column's name
+     * @param value - column's value
+     * @return a column instance
+     * @see Columns
+     */
+    static Column of(String name, Object value) {
+        return new DefaultColumn(name, Value.of(value));
     }
 
     /**
