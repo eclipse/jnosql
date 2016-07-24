@@ -4,6 +4,7 @@ package org.apache.diana.api.document;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -33,6 +34,18 @@ final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity 
     public void add(Document document) {
         Objects.requireNonNull(document, "Document is required");
         documents.add(document);
+    }
+
+    @Override
+    public Optional<Document> find(String name) {
+        return documents.stream().filter(document -> document.getName().equals(name)).findFirst();
+    }
+
+    @Override
+    public DocumentCollectionEntity copy() {
+        DefaultDocumentCollectionEntity entity = new DefaultDocumentCollectionEntity(this.name);
+        entity.documents.addAll(this.getDocuments());
+        return entity;
     }
 
 
