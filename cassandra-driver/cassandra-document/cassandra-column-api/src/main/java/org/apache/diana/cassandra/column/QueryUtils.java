@@ -1,4 +1,4 @@
-package org.apache.diana.cassandra.document;
+package org.apache.diana.cassandra.column;
 
 
 import com.datastax.driver.core.querybuilder.*;
@@ -68,7 +68,7 @@ final class QueryUtils {
             case AND:
             case OR:
             default:
-                throw new UnsupportedOperationException("The columnCondition " + condition + " is not supported in cassandra document driver");
+                throw new UnsupportedOperationException("The columnCondition " + condition + " is not supported in cassandra column driver");
 
         }
     }

@@ -1,4 +1,4 @@
-package org.apache.diana.cassandra.document;
+package org.apache.diana.cassandra.column;
 
 import com.datastax.driver.core.Session;
 import org.apache.diana.api.Value;
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
-import static org.apache.diana.cassandra.document.Constants.COLUMN_FAMILY;
-import static org.apache.diana.cassandra.document.Constants.KEY_SPACE;
+import static org.apache.diana.cassandra.column.Constants.COLUMN_FAMILY;
+import static org.apache.diana.cassandra.column.Constants.KEY_SPACE;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.*;
 

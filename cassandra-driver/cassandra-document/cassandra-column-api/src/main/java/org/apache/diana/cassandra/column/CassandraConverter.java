@@ -1,4 +1,4 @@
-package org.apache.diana.cassandra.document;
+package org.apache.diana.cassandra.column;
 
 
 import com.datastax.driver.core.ColumnDefinitions;

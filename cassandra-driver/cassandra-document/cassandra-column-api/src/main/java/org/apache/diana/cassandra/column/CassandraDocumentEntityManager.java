@@ -1,13 +1,11 @@
-package org.apache.diana.cassandra.document;
+package org.apache.diana.cassandra.column;
 
 
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.BuiltStatement;
-import com.datastax.driver.core.querybuilder.Delete;
 import com.datastax.driver.core.querybuilder.Insert;
-import com.datastax.driver.core.querybuilder.Select;
 import org.apache.diana.api.ExecuteAsyncQueryException;
 import org.apache.diana.api.column.*;
 

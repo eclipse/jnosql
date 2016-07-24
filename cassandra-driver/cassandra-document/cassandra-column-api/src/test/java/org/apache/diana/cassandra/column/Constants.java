@@ -1,4 +1,4 @@
-package org.apache.diana.cassandra.document;
+package org.apache.diana.cassandra.column;
 
 
 public final class Constants {
