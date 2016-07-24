@@ -5,7 +5,7 @@ import org.apache.diana.api.Value;
 
 import java.util.Objects;
 
-class DefaultDocument implements Document{
+final class DefaultDocument implements Document{
     private final String name;
 
     private final Value value;
