@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.apache.diana.mongodb.document.DocumentConfigurationUtils.getConfiguration;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.contains;
+import static org.junit.Assert.*;
 
 
 public class MongoDBDocumentCollectionManagerTest {
@@ -49,7 +49,18 @@ public class MongoDBDocumentCollectionManagerTest {
         Optional<Document> id = documentEntity.find("_id");
         query.addCondition(DocumentCondition.eq(id.get()));
         entityManager.delete(query);
+        assertTrue(entityManager.find(query).isEmpty());
+    }
 
+    @Test
+    public void shouldFindDocument() {
+        DocumentCollectionEntity entity = entityManager.save(getEntity());
+        DocumentQuery query = DocumentQuery.of(COLLECTION_NAME);
+        Optional<Document> id = entity.find("_id");
+        query.addCondition(DocumentCondition.eq(id.get()));
+        List<DocumentCollectionEntity> entities = entityManager.find(query);
+        assertFalse(entities.isEmpty());
+        assertThat(entities, contains(entity));
     }
 
     private DocumentCollectionEntity getEntity() {

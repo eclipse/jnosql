@@ -8,15 +8,16 @@ import org.apache.diana.api.document.DocumentCollectionManagerFactory;
 class MongoDBDocumentCollectionManagerFactory implements DocumentCollectionManagerFactory {
 
     private final MongoClient mongoClient;
+    private final com.mongodb.async.client.MongoClient asyncMongoDatabase;
 
-    MongoDBDocumentCollectionManagerFactory(MongoClient mongoClient) {
+    MongoDBDocumentCollectionManagerFactory(MongoClient mongoClient, com.mongodb.async.client.MongoClient asyncMongoDatabase) {
         this.mongoClient = mongoClient;
+        this.asyncMongoDatabase = asyncMongoDatabase;
     }
 
     @Override
     public DocumentCollectionManager getDocumentEntityManager(String database) {
-        MongoDatabase mongoDatabase = mongoClient.getDatabase(database);
-        return new MongoDBDocumentCollectionManager(mongoDatabase);
+        return new MongoDBDocumentCollectionManager(mongoClient.getDatabase(database), asyncMongoDatabase.getDatabase(database));
     }
 
     @Override

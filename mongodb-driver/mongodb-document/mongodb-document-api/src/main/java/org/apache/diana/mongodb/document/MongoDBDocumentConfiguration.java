@@ -2,20 +2,27 @@ package org.apache.diana.mongodb.document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+import com.mongodb.async.client.MongoClientSettings;
+import com.mongodb.async.client.MongoClients;
+import com.mongodb.connection.ClusterSettings;
 import org.apache.diana.api.document.DocumentCollectionManagerFactory;
 import org.apache.diana.api.document.DocumentConfiguration;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
 public class MongoDBDocumentConfiguration implements DocumentConfiguration {
 
     private static final String FILE_CONFIGURATION = "diana-mongodb.properties";
+
+    private static final Logger LOGGER = Logger.getLogger(MongoDBDocumentConfiguration.class.getName());
 
     private static final int DEFAULT_PORT = 27017;
 
@@ -25,10 +32,16 @@ public class MongoDBDocumentConfiguration implements DocumentConfiguration {
         List<ServerAddress> servers = configurations.keySet().stream().filter(s -> s.startsWith("mongodb-server-host-")).map(configurations::get).map(HostPortConfiguration::new)
                 .map(HostPortConfiguration::toServerAddress).collect(Collectors.toList());
         if (servers.isEmpty()) {
-            return new MongoDBDocumentCollectionManagerFactory(new MongoClient());
+            return new MongoDBDocumentCollectionManagerFactory(new MongoClient(), MongoClients.create());
         }
-        MongoClient mongoClient = new MongoClient(servers);
-        return new MongoDBDocumentCollectionManagerFactory(mongoClient);
+
+        return new MongoDBDocumentCollectionManagerFactory(new MongoClient(servers), getAsyncMongoClient(servers));
+    }
+
+    private com.mongodb.async.client.MongoClient getAsyncMongoClient(List<ServerAddress> servers) {
+        ClusterSettings clusterSettings = ClusterSettings.builder().hosts(servers).build();
+        MongoClientSettings settings = MongoClientSettings.builder().clusterSettings(clusterSettings).build();
+        return MongoClients.create(settings);
     }
 
 
@@ -41,7 +54,8 @@ public class MongoDBDocumentConfiguration implements DocumentConfiguration {
             Map<String, String> collect = properties.keySet().stream().collect(Collectors.toMap(Object::toString, s -> properties.get(s).toString()));
             return getManagerFactory(collect);
         } catch (IOException e) {
-            throw new RuntimeException("Cannot found " + FILE_CONFIGURATION + " file");
+            LOGGER.warning("The file " + FILE_CONFIGURATION + " was not found using default configuration");
+            return getManagerFactory(Collections.emptyMap());
         }
     }
 
