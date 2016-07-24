@@ -58,13 +58,13 @@ public interface ColumnFamilyManager extends AutoCloseable {
     void updateAsync(ColumnFamilyEntity entity, Consumer<ColumnFamilyEntity> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
-     * Deleted an entity
+     * Deletes an entity
      * @param query query to delete an entity
      */
     void delete(ColumnQuery query);
 
     /**
-     * deleted an entity asynchronously
+     * Deletes an entity asynchronously
      * @param query query to delete an entity
      * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to delete asynchronous
@@ -72,7 +72,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
     void deleteAsync(ColumnQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
-     * deleted an entity asynchronously
+     * Deletes an entity asynchronously
      * @param query query to delete an entity
      * @param callBack the callback, when the process is finished will call this instance returning the null within parameters
      * @throws ExecuteAsyncQueryException when there is a async error

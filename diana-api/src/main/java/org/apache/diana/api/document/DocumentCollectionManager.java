@@ -2,7 +2,6 @@ package org.apache.diana.api.document;
 
 
 import org.apache.diana.api.ExecuteAsyncQueryException;
-import org.apache.diana.api.column.ColumnFamilyEntity;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -14,113 +13,121 @@ import java.util.function.Consumer;
 public interface DocumentCollectionManager extends AutoCloseable {
 
     /**
+     * Saves document collection entity
      *
-     * @param entity
-     * @return
+     * @param entity entity to be saved
+     * @return the entity saved
      */
     DocumentCollectionEntity save(DocumentCollectionEntity entity);
 
     /**
+     * Saves an entity asynchronously
      *
-     * @param entity
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * @param entity entity to be saved
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     void saveAsync(DocumentCollectionEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
+     * Saves an entity asynchronously
      *
-     * @param entity
-     * @param callBack
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * @param entity   entity to be saved
+     * @param callBack the callback, when the process is finished will call this instance returning the saved entity within parameters
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     void saveAsync(DocumentCollectionEntity entity, Consumer<DocumentCollectionEntity> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
+     * Updates a entity
      *
-     * @param entity
-     * @return
+     * @param entity entity to be updated
+     * @return the entity updated
      */
     DocumentCollectionEntity update(DocumentCollectionEntity entity);
 
     /**
+     * Updates an entity asynchronously
      *
-     * @param entity
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * @param entity entity to be updated
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     void updateAsync(DocumentCollectionEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
+     * Updates an entity asynchronously
      *
-     * @param entity
-     * @param callBack
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * @param entity   entity to be updated
+     * @param callBack the callback, when the process is finished will call this instance returning the updated entity within parametersa
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     void updateAsync(DocumentCollectionEntity entity, Consumer<DocumentCollectionEntity> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
+     * Deletes an entity
      *
-     * @param query
+     * @param query query to delete an entity
      */
     void delete(DocumentQuery query);
 
     /**
+     * Deletes an entity asynchronously
      *
-     * @param query
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * @param query query to delete an entity
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     void deleteAsync(DocumentQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
-     *
-     * @param query
-     * @param callBack
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * Deletes an entity asynchronously
+     * @param query query to delete an entity
+     * @param callBack the callback, when the process is finished will call this instance returning the null within parameters
+     * @throws ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to delete asynchronous
      */
     void deleteAsync(DocumentQuery query, Consumer<Void> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
-     *
-     * @param query
-     * @return
+     * Finds {@link DocumentCollectionEntity} from query
+     * @param query - query to figure out entities
+     * @return entities found by query
      */
     List<DocumentCollectionEntity> find(DocumentQuery query);
 
     /**
-     *
-     * @param query
-     * @param callBack
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * Finds {@link DocumentCollectionEntity} from query asynchronously
+     * @param query query to find entities
+     * @param callBack the callback, when the process is finished will call this instance returning the result of query within parameters
+     * @throws ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     void findAsync(DocumentQuery query, Consumer<List<DocumentCollectionEntity>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
-     *
-     * @param query
-     * @return
-     * @throws UnsupportedOperationException
+     * Executes a native query from database, this query may be difference between kind of database.
+     * @param query query to be executed
+     * @return the result of query
+     * @throws UnsupportedOperationException when the database does not have support to run native query
      */
     List<DocumentCollectionEntity> nativeQuery(String query) throws UnsupportedOperationException;
 
     /**
-     *
-     * @param query
-     * @param callBack
-     * @throws ExecuteAsyncQueryException
-     * @throws UnsupportedOperationException
+     * Executes a native query from database, this query may be difference between kind of database and run it asynchronously.
+     * @param query query to be executed
+     * @param callBack the callback, when the process is finished will call this instance returning the result of query within parameters
+     * @throws ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to run native query async.
      */
     void nativeQueryAsync(String query, Consumer<List<DocumentCollectionEntity>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
-     *
-     * @param query
-     * @return
+     * Creates a {@link PreparedStatement} from a native query
+     * @param query a query to be executed
+     * @return a {@link PreparedStatement}
      * @throws UnsupportedOperationException
      */
     PreparedStatement nativeQueryPrepare(String query) throws UnsupportedOperationException;
