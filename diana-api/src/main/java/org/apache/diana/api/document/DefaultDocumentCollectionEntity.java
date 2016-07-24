@@ -1,12 +1,11 @@
 package org.apache.diana.api.document;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableList;
+import static java.util.Comparator.comparing;
 
 final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity {
     private final List<Document> documents = new ArrayList<>();
@@ -37,6 +36,12 @@ final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity 
     }
 
     @Override
+    public void addAll(Iterable<Document> documents) {
+        Objects.requireNonNull(documents, "documents are required");
+        documents.forEach(this.documents::add);
+    }
+
+    @Override
     public Optional<Document> find(String name) {
         return documents.stream().filter(document -> document.getName().equals(name)).findFirst();
     }
@@ -58,7 +63,8 @@ final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity 
             return false;
         }
         DocumentCollectionEntity that = (DocumentCollectionEntity) o;
-        return Objects.equals(documents, that.getDocuments()) &&
+        return Objects.equals(documents.stream().sorted(comparing(Document::getName)).collect(Collectors.toList()),
+                that.getDocuments().stream().sorted(comparing(Document::getName)).collect(Collectors.toList())) &&
                 Objects.equals(name, that.getName());
     }
 
