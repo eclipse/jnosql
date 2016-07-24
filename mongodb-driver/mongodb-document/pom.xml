@@ -12,13 +12,20 @@
 <properties>
   <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
   <maven.compile.sourceLevel>1.8</maven.compile.sourceLevel>
+  <monbodb.driver>3.3.0</monbodb.driver>
 </properties>
 <dependencies>
   <dependency>
     <groupId>org.mongodb</groupId>
     <artifactId>mongo-java-driver</artifactId>
-    <version>3.3.0</version>
+    <version>${monbodb.driver}</version>
   </dependency>
+  <dependency>
+    <groupId>org.mongodb</groupId>
+    <artifactId>mongodb-driver-async</artifactId>
+    <version>${monbodb.driver}</version>
+  </dependency>
+
 </dependencies>
 <build>
   <plugins>
