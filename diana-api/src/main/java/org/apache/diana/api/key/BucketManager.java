@@ -1,7 +1,6 @@
 package org.apache.diana.api.key;
 
 
-import java.io.Serializable;
 import java.util.Optional;
 
 public interface BucketManager extends AutoCloseable {

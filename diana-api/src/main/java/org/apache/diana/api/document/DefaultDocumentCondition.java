@@ -2,7 +2,6 @@ package org.apache.diana.api.document;
 
 
 import org.apache.diana.api.Condition;
-import org.apache.diana.api.column.Column;
 
 import java.util.Objects;
 

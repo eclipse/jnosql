@@ -3,8 +3,6 @@ package org.apache.diana.api.reader;
 
 import org.apache.diana.api.ReaderField;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * Class to reads and converts to both {@link String} and {@link CharSequence}.
  *

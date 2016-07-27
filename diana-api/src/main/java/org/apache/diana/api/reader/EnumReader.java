@@ -6,8 +6,6 @@ import org.apache.diana.api.ReaderField;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Class to reads and converts to {@link Enum}

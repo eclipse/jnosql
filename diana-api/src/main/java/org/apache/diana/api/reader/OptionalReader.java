@@ -4,7 +4,6 @@ package org.apache.diana.api.reader;
 import org.apache.diana.api.ReaderField;
 
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Class to reads and converts to {@link Optional}

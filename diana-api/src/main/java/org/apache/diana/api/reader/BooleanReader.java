@@ -4,7 +4,6 @@ package org.apache.diana.api.reader;
 import org.apache.diana.api.ReaderField;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Class to reads and converts to both {@link Boolean} and {@link AtomicBoolean}

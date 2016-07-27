@@ -2,7 +2,6 @@ package org.apache.diana.api.column;
 
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

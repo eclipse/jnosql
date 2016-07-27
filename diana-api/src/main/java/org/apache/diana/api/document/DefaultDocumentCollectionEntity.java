@@ -1,8 +1,6 @@
 package org.apache.diana.api.document;
 
 
-import org.apache.diana.api.column.Column;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
