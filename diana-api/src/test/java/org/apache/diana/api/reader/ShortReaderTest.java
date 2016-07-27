@@ -27,7 +27,7 @@ public class ShortReaderTest {
 
     @Test
     public void shouldConvert() {
-        Short number = Short.valueOf((short)10);
+        Short number = (short) 10;
 
         assertEquals(number, readerField.read(Short.class, number));
         assertEquals(Short.valueOf((short)10), readerField.read(Short.class, 10.00));

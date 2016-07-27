@@ -27,7 +27,7 @@ public class ByteReaderTest {
 
     @Test
     public void shouldConvert() {
-        Byte number = Byte.valueOf((byte) 10);
+        Byte number = (byte) 10;
         assertEquals(number, readerField.read(Byte.class, 10.00));
         assertEquals(Byte.valueOf((byte) 10), readerField.read(Byte.class, 10.00));
         assertEquals(Byte.valueOf((byte) 10), readerField.read(Byte.class, "10"));

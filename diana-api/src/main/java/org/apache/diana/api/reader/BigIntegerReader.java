@@ -25,7 +25,7 @@ public final class BigIntegerReader implements ReaderField {
             return (T) value;
         }
         if (Number.class.isInstance(value)) {
-            return (T) BigInteger.valueOf(Long.valueOf(Number.class.cast(value).longValue()));
+            return (T) BigInteger.valueOf(Number.class.cast(value).longValue());
         } else {
             return (T) BigInteger.valueOf(Long.valueOf(value.toString()));
         }

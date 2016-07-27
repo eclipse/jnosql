@@ -95,7 +95,7 @@ public class DefaultValueTest {
         Value value = Value.of(map);
         Map<String, Integer> result = value.getMap(String.class, Integer.class);
         assertThat(result.keySet(), containsInAnyOrder("10"));
-        assertThat(result.values(), containsInAnyOrder(Integer.valueOf(1)));
+        assertThat(result.values(), containsInAnyOrder(1));
     }
 
     @Test

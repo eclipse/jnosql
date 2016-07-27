@@ -16,7 +16,7 @@ public class ReaderFieldDecoratorTest {
     @Test
     public void shouldConvert() {
         Number convert = serviceLoader.read(Number.class, "10D");
-        assertEquals(Double.valueOf(10D), convert);
+        assertEquals(10D, convert);
     }
 
     @Test

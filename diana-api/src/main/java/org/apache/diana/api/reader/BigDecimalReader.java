@@ -26,7 +26,7 @@ public final class BigDecimalReader implements ReaderField {
             return (T) value;
         }
         if (Number.class.isInstance(value)) {
-            return (T) BigDecimal.valueOf(Double.valueOf(Number.class.cast(value).doubleValue()));
+            return (T) BigDecimal.valueOf(Number.class.cast(value).doubleValue());
         } else {
             return (T) BigDecimal.valueOf(Double.valueOf(value.toString()));
         }

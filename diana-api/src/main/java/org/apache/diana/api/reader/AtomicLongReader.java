@@ -27,7 +27,7 @@ public final class AtomicLongReader implements ReaderField {
             return (T) value;
         }
         if (Number.class.isInstance(value)) {
-            return (T) new AtomicLong(Long.valueOf(Number.class.cast(value).longValue()));
+            return (T) new AtomicLong(Number.class.cast(value).longValue());
         } else {
             return (T) new AtomicLong(Long.valueOf(value.toString()));
         }
