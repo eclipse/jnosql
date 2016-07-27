@@ -44,7 +44,7 @@ class HazelCastKeyValueEntityManagerFactory implements BucketManagerFactory {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 }

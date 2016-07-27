@@ -63,6 +63,6 @@ class HazelCastKeyValueEntityManager implements BucketManager {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close()  {
     }
 }
