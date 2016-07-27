@@ -1,6 +1,8 @@
 package org.apache.diana.api.key;
 
 
+import org.apache.diana.api.CloseResource;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -12,7 +14,7 @@ import java.util.Set;
  *
  * @author Otávio Santana
  */
-public interface BucketManagerFactory extends AutoCloseable {
+public interface BucketManagerFactory extends CloseResource {
 
     /**
      * Creates a {@link BucketManager} from a bucket name

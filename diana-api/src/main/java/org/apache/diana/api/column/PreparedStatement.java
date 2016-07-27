@@ -1,6 +1,7 @@
 package org.apache.diana.api.column;
 
 
+import org.apache.diana.api.CloseResource;
 import org.apache.diana.api.ExecuteAsyncQueryException;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.function.Consumer;
  *
  * @author Otávio Santana
  */
-public interface PreparedStatement extends AutoCloseable {
+public interface PreparedStatement extends CloseResource {
 
     /**
      * Executes the query

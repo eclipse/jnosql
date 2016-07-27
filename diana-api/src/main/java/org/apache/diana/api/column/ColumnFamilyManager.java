@@ -1,6 +1,7 @@
 package org.apache.diana.api.column;
 
 
+import org.apache.diana.api.CloseResource;
 import org.apache.diana.api.ExecuteAsyncQueryException;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.function.Consumer;
  * Interface used to interact with the persistence context to {@link ColumnFamilyEntity}
  * The ColumnFamilyManager API is used to create and remove persistent {@link ColumnFamilyEntity} instances, to find entities by their primary key, and to query over entities.
  */
-public interface ColumnFamilyManager extends AutoCloseable {
+public interface ColumnFamilyManager extends CloseResource {
 
     /**
      * Saves a Column family entity

@@ -1,9 +1,11 @@
 package org.apache.diana.api.key;
 
 
+import org.apache.diana.api.CloseResource;
+
 import java.util.Optional;
 
-public interface BucketManager extends AutoCloseable {
+public interface BucketManager extends CloseResource {
 
     <T> void put(String key, T value);
 
