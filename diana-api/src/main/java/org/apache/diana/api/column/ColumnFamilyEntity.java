@@ -83,7 +83,7 @@ public interface ColumnFamilyEntity extends Serializable {
     /**
      * Remove a column whose name is informed in parameter.
      *
-     * @param columnName
+     * @param columnName a column name
      * @return if a column was removed or not
      */
     boolean remove(String columnName);

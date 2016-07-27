@@ -117,7 +117,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * Creates a {@link PreparedStatement} from a native query
      * @param query a query to be executed
      * @return a {@link PreparedStatement}
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException the there is not support to query
      */
     PreparedStatement nativeQueryPrepare(String query) throws UnsupportedOperationException;
 

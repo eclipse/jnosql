@@ -128,7 +128,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * Creates a {@link PreparedStatement} from a native query
      * @param query a query to be executed
      * @return a {@link PreparedStatement}
-     * @throws UnsupportedOperationException
+     * @throws UnsupportedOperationException when there is not support to this resource
      */
     PreparedStatement nativeQueryPrepare(String query) throws UnsupportedOperationException;
 

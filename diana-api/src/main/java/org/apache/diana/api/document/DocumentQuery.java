@@ -40,7 +40,7 @@ public class DocumentQuery {
     /**
      * Add a new condition in the query
      *
-     * @param condition
+     * @param condition condition to be added
      * @return the same instance with a condition added
      * @throws NullPointerException when condition is null
      */

@@ -29,7 +29,7 @@ public interface Document extends Serializable {
      * @param name - column's name
      * @param value - column's value
      * @return a Document instance
-     * @throws NullPointerException
+     * @throws NullPointerException when either name or value is null
      */
     static Document of(String name, Object value) throws NullPointerException {
         return new DefaultDocument(name, Value.of(value));

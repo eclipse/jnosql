@@ -53,7 +53,7 @@ public interface DocumentCollectionEntity extends Serializable {
     /**
      * Remove a documentName whose name is informed in parameter.
      *
-     * @param documentName
+     * @param documentName a document name
      * @return if a column was removed or not
      */
     boolean remove(String documentName);

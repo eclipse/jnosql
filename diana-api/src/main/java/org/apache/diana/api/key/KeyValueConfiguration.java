@@ -12,7 +12,7 @@ public interface KeyValueConfiguration {
     /**
      * Reads configuration from Map and creates a {@link BucketManagerFactory} instance.
      *
-     * @param configurations
+     * @param configurations a configuration from {@link Map}
      * @return a {@link BucketManagerFactory} instance
      */
     BucketManagerFactory getManagerFactory(Map<String, String> configurations);
@@ -20,7 +20,7 @@ public interface KeyValueConfiguration {
     /**
      * Reads configuration either from default configuration or a file defined by NoSQL provider and then creates a {@link BucketManagerFactory} instance.
      *
-     * @return
+     * @return a {@link BucketManagerFactory} instance
      */
     BucketManagerFactory getManagerFactory();
 }
