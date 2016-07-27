@@ -51,7 +51,7 @@ class RedisKeyValueEntityManagerFactory implements BucketManagerFactory {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close()  {
         jedisPool.close();
     }
 

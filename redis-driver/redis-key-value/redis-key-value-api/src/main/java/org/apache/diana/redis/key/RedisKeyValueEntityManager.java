@@ -72,7 +72,7 @@ class RedisKeyValueEntityManager implements BucketManager {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close()  {
         jedis.close();
     }
 }
