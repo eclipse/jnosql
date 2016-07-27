@@ -6,5 +6,5 @@ package org.apache.diana.api;
  * @author Otávio Santana
  */
 public enum Condition {
-    EQUALS, GREATER_THAN, GREATER_EQUALS_THAN, LESSER_THAN, LESSER_EQUALS_THAN, IN, LIKE, AND, OR;
+    EQUALS, GREATER_THAN, GREATER_EQUALS_THAN, LESSER_THAN, LESSER_EQUALS_THAN, IN, LIKE, AND, OR
 }

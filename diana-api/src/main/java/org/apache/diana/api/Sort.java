@@ -75,7 +75,7 @@ public class Sort {
      * @author Otávio Santana
      * @see Sort
      */
-    public static enum SortType {
+    public enum SortType {
         /**
          * The ascending way
          */
@@ -83,6 +83,6 @@ public class Sort {
         /**
          * The descending way
          */
-        DESC;
+        DESC
     }
 }
