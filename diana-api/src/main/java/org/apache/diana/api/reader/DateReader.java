@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Class to reads and converts Date type
  *
- * @author Daniel Cunha <danielsoro@apache.org>
+ * @author Daniel Cunha danielsoro@apache.org
  */
 public final class DateReader implements ReaderField {
 
