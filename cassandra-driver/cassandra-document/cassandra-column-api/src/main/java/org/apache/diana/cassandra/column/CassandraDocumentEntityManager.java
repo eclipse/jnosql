@@ -7,7 +7,10 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.BuiltStatement;
 import com.datastax.driver.core.querybuilder.Insert;
 import org.apache.diana.api.ExecuteAsyncQueryException;
-import org.apache.diana.api.column.*;
+import org.apache.diana.api.column.ColumnFamilyEntity;
+import org.apache.diana.api.column.ColumnFamilyManager;
+import org.apache.diana.api.column.ColumnQuery;
+import org.apache.diana.api.column.PreparedStatement;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -121,7 +124,7 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close()  {
         session.close();
     }
 

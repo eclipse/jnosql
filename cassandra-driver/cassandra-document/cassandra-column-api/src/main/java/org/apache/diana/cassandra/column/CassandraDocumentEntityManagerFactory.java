@@ -33,7 +33,7 @@ class CassandraDocumentEntityManagerFactory implements ColumnFamilyManagerFactor
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         cluster.close();
     }
 

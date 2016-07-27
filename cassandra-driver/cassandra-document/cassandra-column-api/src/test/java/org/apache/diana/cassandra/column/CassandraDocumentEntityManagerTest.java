@@ -7,11 +7,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.diana.cassandra.column.Constants.COLUMN_FAMILY;
 import static org.apache.diana.cassandra.column.Constants.KEY_SPACE;
@@ -91,7 +89,7 @@ public class CassandraDocumentEntityManagerTest {
     @Test
     public void shouldDeleteColumnFamiliy() {
         columnEntityManager.save(getColumnFamily());
-        ColumnFamilyEntity.of(COLUMN_FAMILY, Columns.of("id", 10L));
+        ColumnFamilyEntity.of(COLUMN_FAMILY, singletonList(Columns.of("id", 10L)));
         ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
         columnEntityManager.delete(query);
         List<ColumnFamilyEntity> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
@@ -104,7 +102,7 @@ public class CassandraDocumentEntityManagerTest {
         fields.put("version", 3.2);
         fields.put("options", Arrays.asList(1,2,3));
         List<Column> columns = Columns.of(fields);
-        ColumnFamilyEntity columnFamily = ColumnFamilyEntity.of(COLUMN_FAMILY, Columns.of("id", 10L));
+        ColumnFamilyEntity columnFamily = ColumnFamilyEntity.of(COLUMN_FAMILY, singletonList(Columns.of("id", 10L)));
         columns.forEach(columnFamily::add);
         return columnFamily;
     }
