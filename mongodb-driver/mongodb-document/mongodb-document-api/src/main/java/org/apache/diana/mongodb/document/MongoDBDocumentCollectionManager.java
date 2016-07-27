@@ -93,7 +93,8 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
 
     @Override
     public void deleteAsync(DocumentQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException {
-        deleteAsync(query, (deleteResult, throwable) -> {});
+        deleteAsync(query, (deleteResult, throwable) -> {
+        });
     }
 
     @Override
@@ -138,7 +139,7 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 

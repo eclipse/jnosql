@@ -21,7 +21,7 @@ class MongoDBDocumentCollectionManagerFactory implements DocumentCollectionManag
     }
 
     @Override
-    public void close() throws Exception {
+    public void close()  {
         mongoClient.close();
     }
 
