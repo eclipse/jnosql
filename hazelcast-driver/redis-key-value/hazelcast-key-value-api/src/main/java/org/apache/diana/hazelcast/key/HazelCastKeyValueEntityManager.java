@@ -24,12 +24,12 @@ class HazelCastKeyValueEntityManager implements BucketManager {
     }
 
     @Override
-    public <T> void put(KeyValue keyValue) {
+    public <K> void put(KeyValue<K> keyValue) throws NullPointerException {
         map.put(keyValue.getKey(), keyValue.getValue().get());
     }
 
     @Override
-    public <T> void put(Iterable<KeyValue> keyValues) {
+    public <K> void put(Iterable<KeyValue<K>> keyValues) throws NullPointerException {
         StreamSupport.stream(keyValues.spliterator(), false).forEach(this::put);
     }
 
