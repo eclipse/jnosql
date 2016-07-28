@@ -7,19 +7,19 @@ import java.util.Objects;
 /**
  * The default implementation of {@link KeyValue}
  */
-final class DefaultKeyValue implements KeyValue {
+final class DefaultKeyValue<T> implements KeyValue {
 
-    private final String key;
+    private final T key;
 
     private final Value value;
 
-    DefaultKeyValue(String key, Value value) {
+    DefaultKeyValue(T key, Value value) {
         this.key = Objects.requireNonNull(key, "key is required");
         this.value = Objects.requireNonNull(value, "value is required");
     }
 
 
-    public String getKey() {
+    public T getKey() {
         return key;
     }
 

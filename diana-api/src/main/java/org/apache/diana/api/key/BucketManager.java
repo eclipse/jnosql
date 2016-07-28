@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface BucketManager extends CloseResource {
 
-    <T> void put(String key, T value);
+    <K, V> void put(K key, V value);
 
     <T> void put(KeyValue keyValue);
 
