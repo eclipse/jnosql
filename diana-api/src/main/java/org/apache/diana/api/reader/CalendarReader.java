@@ -25,9 +25,15 @@ public final class CalendarReader implements ReaderField {
             return (T) value;
         }
 
-        if (Long.class.isInstance(value)) {
+        if (Number.class.isInstance(value)) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis((Long) value);
+            calendar.setTimeInMillis( ((Number) value).longValue());
+            return (T) calendar;
+        }
+
+        if (Date.class.isInstance(value)) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime((Date)value);
             return (T) calendar;
         }
 
