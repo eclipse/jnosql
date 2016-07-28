@@ -19,7 +19,7 @@ class HazelCastKeyValueEntityManager implements BucketManager {
     }
 
     @Override
-    public <T> void put(String key, T value) {
+    public <K, V> void put(K key, V value) {
         map.put(key, value);
     }
 
