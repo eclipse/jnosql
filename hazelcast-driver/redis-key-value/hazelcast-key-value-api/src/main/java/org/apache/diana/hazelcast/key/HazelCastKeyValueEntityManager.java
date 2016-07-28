@@ -1,12 +1,13 @@
 package org.apache.diana.hazelcast.key;
 
+import org.apache.diana.api.Value;
 import org.apache.diana.api.key.BucketManager;
 import org.apache.diana.api.key.KeyValue;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 
@@ -34,22 +35,17 @@ class HazelCastKeyValueEntityManager implements BucketManager {
     }
 
     @Override
-    public <K, V> Optional<V> get(K key, Class<V> entityClass) {
-        V value = (V) map.get(key);
-        return Optional.ofNullable(value);
+    public <K> Optional<Value> get(K key) throws NullPointerException {
+        Object value = map.get(key);
+        if(value == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(Value.of(value));
     }
 
     @Override
-    public <K, V> Iterable<V> get(Iterable<K> keys, Class<V> entityClass) {
-
-        List<V> list = new ArrayList<V>();
-        for (K key : keys) {
-            Object value = map.get(key);
-            if (value != null) {
-                list.add((V) value);
-            }
-        }
-        return list;
+    public <K> Iterable<Value> get(Iterable<K> keys) throws NullPointerException {
+        return StreamSupport.stream(keys.spliterator(), false).map(k -> map.get(k)).filter(Objects::nonNull).map(Value::of).collect(Collectors.toList());
     }
 
     @Override

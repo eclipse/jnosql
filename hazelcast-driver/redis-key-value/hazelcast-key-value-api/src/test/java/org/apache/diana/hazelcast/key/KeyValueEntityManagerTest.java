@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.Arrays.asList;
@@ -40,17 +41,17 @@ public class KeyValueEntityManagerTest {
     @Test
     public void shouldPutValue() {
         keyValueEntityManager.put("otavio", userOtavio);
-        Optional<User> otavio = keyValueEntityManager.get("otavio", User.class);
+        Optional<Value> otavio = keyValueEntityManager.get("otavio");
         assertTrue(otavio.isPresent());
-        assertEquals(userOtavio, otavio.get());
+        assertEquals(userOtavio, otavio.get().get(User.class));
     }
 
     @Test
     public void shouldPutKeyValue() {
         keyValueEntityManager.put(keyValueOtavio);
-        Optional<User> otavio = keyValueEntityManager.get("otavio", User.class);
+        Optional<Value> otavio = keyValueEntityManager.get("otavio");
         assertTrue(otavio.isPresent());
-        assertEquals(userOtavio, otavio.get());
+        assertEquals(userOtavio, otavio.get().get(User.class));
     }
 
     @Test
@@ -58,13 +59,13 @@ public class KeyValueEntityManagerTest {
 
 
         keyValueEntityManager.put(asList(keyValueSoro, keyValueOtavio));
-        Optional<User> otavio = keyValueEntityManager.get("otavio", User.class);
+        Optional<Value> otavio = keyValueEntityManager.get("otavio");
         assertTrue(otavio.isPresent());
-        assertEquals(userOtavio, otavio.get());
+        assertEquals(userOtavio, otavio.get().get(User.class));
 
-        Optional<User> soro = keyValueEntityManager.get("soro", User.class);
+        Optional<Value> soro = keyValueEntityManager.get("soro");
         assertTrue(soro.isPresent());
-        assertEquals(userSoro, soro.get());
+        assertEquals(userSoro, soro.get().get(User.class));
     }
 
     @Test
@@ -72,7 +73,7 @@ public class KeyValueEntityManagerTest {
         User user = new User("otavio");
         KeyValue keyValue = KeyValue.of("otavio", Value.of(user));
         keyValueEntityManager.put(keyValue);
-        assertNotNull(keyValueEntityManager.get("otavio", User.class));
+        assertNotNull(keyValueEntityManager.get("otavio"));
 
 
     }
@@ -81,9 +82,9 @@ public class KeyValueEntityManagerTest {
     public void shouldRemoveKey() {
 
         keyValueEntityManager.put(keyValueOtavio);
-        assertTrue(keyValueEntityManager.get("otavio", User.class).isPresent());
+        assertTrue(keyValueEntityManager.get("otavio").isPresent());
         keyValueEntityManager.remove("otavio");
-        assertFalse(keyValueEntityManager.get("otavio", User.class).isPresent());
+        assertFalse(keyValueEntityManager.get("otavio").isPresent());
     }
 
     @Test
@@ -91,9 +92,10 @@ public class KeyValueEntityManagerTest {
 
         keyValueEntityManager.put(asList(keyValueSoro, keyValueOtavio));
         List<String> keys = asList("otavio", "soro");
-        assertThat(keyValueEntityManager.get(keys, User.class), containsInAnyOrder(userOtavio, userSoro));
+        Iterable<Value> values = keyValueEntityManager.get(keys);
+        assertThat(StreamSupport.stream(values.spliterator(), false).map(value -> value.get(User.class)).collect(Collectors.toList()), containsInAnyOrder(userOtavio, userSoro));
         keyValueEntityManager.remove(keys);
-        Iterable<User> users = keyValueEntityManager.get(keys, User.class);
-        assertEquals(0L, StreamSupport.stream(users.spliterator(), false).count());
+        Iterable<Value> users = values;
+        assertEquals(0L, StreamSupport.stream(keyValueEntityManager.get(keys).spliterator(), false).count());
     }
 }
