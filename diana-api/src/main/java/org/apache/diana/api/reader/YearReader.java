@@ -3,7 +3,6 @@ package org.apache.diana.api.reader;
 import org.apache.diana.api.ReaderField;
 
 import java.time.Year;
-import java.util.Calendar;
 
 /**
  * Class to reads and converts to {@link Year}, first it verify if is Year if yes return itself otherwise convert to {@link String}
