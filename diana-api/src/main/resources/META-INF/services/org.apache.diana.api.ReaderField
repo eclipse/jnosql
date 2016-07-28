@@ -4,6 +4,7 @@ org.apache.diana.api.reader.BigDecimalReader
 org.apache.diana.api.reader.BigIntegerReader
 org.apache.diana.api.reader.BooleanReader
 org.apache.diana.api.reader.ByteReader
+org.apache.diana.api.reader.CalendarReader
 org.apache.diana.api.reader.CharacterReader
 org.apache.diana.api.reader.DoubleReader
 org.apache.diana.api.reader.EnumReader
@@ -14,3 +15,4 @@ org.apache.diana.api.reader.NumberReader
 org.apache.diana.api.reader.OptionalReader
 org.apache.diana.api.reader.ShortReader
 org.apache.diana.api.reader.StringReader
+org.apache.diana.api.reader.YearReader

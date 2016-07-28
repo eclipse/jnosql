@@ -34,6 +34,7 @@ public class CalendarReaderTest {
 
         assertEquals(calendar, readerField.read(Calendar.class, calendar));
         assertEquals(calendar, readerField.read(Calendar.class, calendar.getTimeInMillis()));
+        assertEquals(calendar, readerField.read(Calendar.class, calendar.getTime()));
     }
 
 
