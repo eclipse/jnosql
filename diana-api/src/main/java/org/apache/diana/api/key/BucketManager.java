@@ -2,6 +2,7 @@ package org.apache.diana.api.key;
 
 
 import org.apache.diana.api.CloseResource;
+import org.apache.diana.api.Value;
 
 import java.util.Optional;
 
@@ -43,24 +44,20 @@ public interface BucketManager extends CloseResource {
     /**
      * Finds the Value from a key
      * @param key the key
-     * @param entityClass the value type
      * @param <K> the key type
-     * @param <V> the value type
      * @return the {@link Optional} when is not found will return a {@link Optional#empty()}
      * @throws NullPointerException
      */
-    <K, V> Optional<V> get(K key, Class<V> entityClass) throws NullPointerException;
+    <K> Optional<Value> get(K key) throws NullPointerException;
 
     /**
      * Finds a list of values from keys
      * @param keys the keys to be used in this query
-     * @param entityClass the value type
      * @param <K> the key type
-     * @param <V> the value type
      * @return the list of result
      * @throws NullPointerException when either the keys or the entities values are null
      */
-    <K, V> Iterable<V> get(Iterable<K> keys, Class<V> entityClass) throws NullPointerException;
+    <K> Iterable<Value> get(Iterable<K> keys) throws NullPointerException;
 
     /**
      * Removes an entity from key

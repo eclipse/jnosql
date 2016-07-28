@@ -3,6 +3,7 @@ package org.apache.diana.redis.key;
 
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.diana.api.Value;
 import org.apache.diana.api.key.BucketManager;
 import org.apache.diana.api.key.KeyValue;
 import redis.clients.jedis.Jedis;
@@ -47,22 +48,22 @@ class RedisKeyValueEntityManager implements BucketManager {
     }
 
     @Override
-    public <K, V> Optional<V> get(K key, Class<V> entityClass) {
+    public <K> Optional<Value> get(K key) throws NullPointerException {
         String value = jedis.get(createKeyWithNameSpace(key.toString(), nameSpace));
         if (StringUtils.isNotBlank(value)) {
-            return Optional.of(gson.fromJson(value, entityClass));
+            return Optional.of(RedisValue.of(gson, value));
         }
         return Optional.empty();
     }
 
     @Override
-    public <K, V> Iterable<V> get(Iterable<K> keys, Class<V> entityClass) {
+    public <K> Iterable<Value> get(Iterable<K> keys) throws NullPointerException {
         return StreamSupport.stream(keys.spliterator(), false).map(k -> jedis.get(createKeyWithNameSpace(k.toString(), nameSpace))).
-                filter(StringUtils::isNotBlank).map(v -> gson.fromJson(v, entityClass)).collect(toList());
+                filter(StringUtils::isNotBlank).map(v -> RedisValue.of(gson, v)).collect(toList());
     }
 
     @Override
-    public<K>  void remove(K key) {
+    public <K> void remove(K key) {
         jedis.del(createKeyWithNameSpace(key.toString(), nameSpace));
     }
 
@@ -72,7 +73,7 @@ class RedisKeyValueEntityManager implements BucketManager {
     }
 
     @Override
-    public void close()  {
+    public void close() {
         jedis.close();
     }
 }
