@@ -29,20 +29,20 @@ class RedisKeyValueEntityManager implements BucketManager {
     }
 
     @Override
-    public <T> void put(String key, T value) {
+    public <K, V> void put(K key, V value) throws NullPointerException {
         Objects.requireNonNull(value, "Value is required");
         Objects.requireNonNull(key, "key is required");
-        String valideKey = createKeyWithNameSpace(key, nameSpace);
+        String valideKey = createKeyWithNameSpace(key.toString(), nameSpace);
         jedis.set(valideKey, gson.toJson(value));
     }
 
     @Override
-    public <T> void put(KeyValue keyValue) {
+    public <K> void put(KeyValue<K> keyValue) throws NullPointerException {
         put(keyValue.getKey(), keyValue.getValue().get());
     }
 
     @Override
-    public <T> void put(Iterable<KeyValue> keyValues) {
+    public <K> void put(Iterable<KeyValue<K>> keyValues) throws NullPointerException {
         StreamSupport.stream(keyValues.spliterator(), false).forEach(this::put);
     }
 
