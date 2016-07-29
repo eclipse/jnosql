@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Otávio Santana
  */
-public final class AtomicIntegerReader implements ReaderField {
+public final class AtomicIntegerReader implements ReaderField<AtomicInteger> {
 
     @Override
     public boolean isCompatible(Class clazz) {
@@ -19,15 +19,15 @@ public final class AtomicIntegerReader implements ReaderField {
     }
 
     @Override
-    public <T> T read(Class<T> clazz, Object value) {
+    public AtomicInteger read(Object value) {
 
         if (AtomicInteger.class.isInstance(value)) {
-            return (T) value;
+            return (AtomicInteger) value;
         }
         if (Number.class.isInstance(value)) {
-            return (T) new AtomicInteger(Number.class.cast(value).intValue());
+            return new AtomicInteger(Number.class.cast(value).intValue());
         } else {
-            return (T) new AtomicInteger(Integer.valueOf(value.toString()));
+            return new AtomicInteger(Integer.valueOf(value.toString()));
         }
     }
 
