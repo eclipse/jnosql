@@ -6,6 +6,7 @@ pom.xml.next
 test-output/
 /doc
 *.iml
+*.idea
 *.log
 .classpath
 -project
