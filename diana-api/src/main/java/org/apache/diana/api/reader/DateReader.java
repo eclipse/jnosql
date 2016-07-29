@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Class to reads and converts Date type
  *
- * @author Daniel Cunha danielsoro@apache.org
+ * @author Daniel Cunha - danielsoro@apache.org
  */
 public final class DateReader implements ReaderField {
 
@@ -24,9 +24,10 @@ public final class DateReader implements ReaderField {
             return (T) value;
         }
 
-        if (Long.class.isInstance(value)) {
-            return (T) new Date((Long) value);
+        if (Number.class.isInstance(value)) {
+            return (T) new Date(((Number) value).longValue());
         }
+
         return (T) new Date(value.toString());
     }
 }
