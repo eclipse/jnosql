@@ -86,6 +86,6 @@
         </plugins>
     </build>
     <modules>
-        <module>redis-key-value</module>
+        <module>halzelcast-key-value</module>
     </modules>
 </project>
