@@ -1,18 +1,20 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.apache.diana.redis.key;
@@ -23,7 +25,12 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.diana.api.Value;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 final class RedisValue implements Value {
 
@@ -31,13 +38,13 @@ final class RedisValue implements Value {
 
     private final String json;
 
-    public static Value of(Gson gson, String json) {
-        return new RedisValue(gson, json);
-    }
-
     private RedisValue(Gson gson, String json) {
         this.gson = gson;
         this.json = json;
+    }
+
+    public static Value of(Gson gson, String json) {
+        return new RedisValue(gson, json);
     }
 
     @Override
@@ -57,23 +64,20 @@ final class RedisValue implements Value {
 
     @Override
     public <T> List<T> getList(Class<T> clazz) throws NullPointerException, UnsupportedOperationException {
-
-        Type type = new TypeToken<ArrayList<T>>() {
-        }.getType();
+        Type type = new TypeToken<ArrayList<T>>() { }.getType();
         return gson.fromJson(json, type);
     }
 
     @Override
     public <T> Set<T> getSet(Class<T> clazz) throws NullPointerException, UnsupportedOperationException {
-        Type type = new TypeToken<HashSet<T>>() {
-        }.getType();
+        Type type = new TypeToken<HashSet<T>>() { }.getType();
         return gson.fromJson(json, type);
     }
 
     @Override
-    public <K, V> Map<K, V> getMap(Class<K> keyClass, Class<V> valueClass) throws NullPointerException, UnsupportedOperationException {
-        Type type = new TypeToken<Map<K, V>>() {
-        }.getType();
+    public <K, V> Map<K, V> getMap(Class<K> keyClass, Class<V> valueClass) throws NullPointerException,
+            UnsupportedOperationException {
+        Type type = new TypeToken<Map<K, V>>() { }.getType();
         return gson.fromJson(json, type);
     }
 

@@ -1,34 +1,42 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.apache.diana.api;
 
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static java.util.stream.StreamSupport.stream;
 
 final class DefaultValue implements Value {
 
-    private static transient final ReaderField SERVICE_PROVIDER = ReaderFieldDecorator.getInstance();
+    private static final transient ReaderField SERVICE_PROVIDER = ReaderFieldDecorator.getInstance();
 
     private final Object value;
 
@@ -60,7 +68,8 @@ final class DefaultValue implements Value {
     public <T> List<T> getList(Class<T> clazz) {
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);
-            return (List<T>) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(clazz, o)).collect(collectingAndThen(toList(), Collections::unmodifiableList));
+            return (List<T>) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(clazz, o))
+                    .collect(collectingAndThen(toList(), Collections::unmodifiableList));
         }
         return singletonList(get(clazz));
     }
@@ -69,7 +78,8 @@ final class DefaultValue implements Value {
     public <T> Set<T> getSet(Class<T> clazz) {
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);
-            return (Set<T>) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(clazz, o)).collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
+            return (Set<T>) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(clazz, o))
+                    .collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
         }
         return Collections.singleton(get(clazz));
     }
@@ -79,7 +89,8 @@ final class DefaultValue implements Value {
 
         if (Map.class.isInstance(value)) {
             Map mapValue = Map.class.cast(value);
-            return (Map<K, V>) mapValue.keySet().stream().collect(Collectors.toMap(mapKeyElement(keyClass), mapValueElement(valueClass, mapValue)));
+            return (Map<K, V>) mapValue.keySet().stream()
+                    .collect(Collectors.toMap(mapKeyElement(keyClass), mapValueElement(valueClass, mapValue)));
         }
         throw new UnsupportedOperationException("There is not supported convert" + value + " a not Map type.");
     }

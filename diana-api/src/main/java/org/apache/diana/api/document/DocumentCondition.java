@@ -1,18 +1,20 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.apache.diana.api.document;
@@ -20,7 +22,13 @@ package org.apache.diana.api.document;
 
 import org.apache.diana.api.Condition;
 
-import static org.apache.diana.api.Condition.*;
+import static org.apache.diana.api.Condition.EQUALS;
+import static org.apache.diana.api.Condition.GREATER_EQUALS_THAN;
+import static org.apache.diana.api.Condition.GREATER_THAN;
+import static org.apache.diana.api.Condition.IN;
+import static org.apache.diana.api.Condition.LESSER_EQUALS_THAN;
+import static org.apache.diana.api.Condition.LESSER_THAN;
+import static org.apache.diana.api.Condition.LIKE;
 
 /**
  * An unit condition  to run a document collection query
@@ -58,8 +66,9 @@ public interface DocumentCondition {
     }
 
     /**
-     * Creates a {@link DocumentCondition} that has a {@link Condition#GREATER_THAN}, it means a query will scanning to a
-     * document collection that has the same name and the value  greater than informed in this document.
+     * Creates a {@link DocumentCondition} that has a {@link Condition#GREATER_THAN},
+     * it means a query will scanning to a document collection that has the same name and the value
+     * greater than informed in this document.
      *
      * @param document a column instance
      * @return a {@link DocumentCondition} with {@link Condition#GREATER_THAN}
@@ -70,8 +79,9 @@ public interface DocumentCondition {
     }
 
     /**
-     * Creates a {@link DocumentCondition} that has a {@link Condition#GREATER_EQUALS_THAN}, it means a query will scanning to a
-     * document collection that has the same name and the value  greater or equals than informed in this document.
+     * Creates a {@link DocumentCondition} that has a {@link Condition#GREATER_EQUALS_THAN},
+     * it means a query will scanning to a document collection that has the same name and the value
+     * greater or equals than informed in this document.
      *
      * @param document a column instance
      * @return a {@link DocumentCondition} with {@link Condition#GREATER_EQUALS_THAN}
@@ -94,8 +104,9 @@ public interface DocumentCondition {
     }
 
     /**
-     * Creates a {@link DocumentCondition} that has a {@link Condition#LESSER_EQUALS_THAN}, it means a query will scanning to a
-     * document collection that has the same name and the value  lesser or equals than informed in this document.
+     * Creates a {@link DocumentCondition} that has a {@link Condition#LESSER_EQUALS_THAN},
+     * it means a query will scanning to a document collection that has the same name and the value
+     * lesser or equals than informed in this document.
      *
      * @param document a document instance
      * @return a {@link DocumentCondition} with {@link Condition#LESSER_EQUALS_THAN}
