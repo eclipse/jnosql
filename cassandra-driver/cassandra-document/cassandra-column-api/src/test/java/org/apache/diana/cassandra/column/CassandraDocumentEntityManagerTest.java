@@ -20,12 +20,15 @@ package org.apache.diana.cassandra.column;
 import com.datastax.driver.core.Session;
 import org.apache.diana.api.Value;
 import org.apache.diana.api.column.*;
+import org.apache.diana.api.document.Document;
+import org.apache.diana.api.document.Documents;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.diana.cassandra.column.Constants.COLUMN_FAMILY;
@@ -68,7 +71,6 @@ public class CassandraDocumentEntityManagerTest {
     }
 
 
-
     @Test
     public void shouldFindById() {
 
@@ -78,7 +80,7 @@ public class CassandraDocumentEntityManagerTest {
         assertFalse(columnEntity.isEmpty());
         List<Column> columns = columnEntity.get(0).getColumns();
         assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
-        assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, Arrays.asList(1,2,3), 10L));
+        assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, asList(1, 2, 3), 10L));
 
     }
 
@@ -89,7 +91,7 @@ public class CassandraDocumentEntityManagerTest {
         assertFalse(entities.isEmpty());
         List<Column> columns = entities.get(0).getColumns();
         assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
-        assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, Arrays.asList(1,2,3), 10L));
+        assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, asList(1, 2, 3), 10L));
     }
 
     @Test
@@ -100,7 +102,7 @@ public class CassandraDocumentEntityManagerTest {
         List<ColumnFamilyEntity> entities = preparedStatement.executeQuery();
         List<Column> columns = entities.get(0).getColumns();
         assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
-        assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, Arrays.asList(1,2,3), 10L));
+        assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, asList(1, 2, 3), 10L));
     }
 
     @Test
@@ -113,11 +115,42 @@ public class CassandraDocumentEntityManagerTest {
         Assert.assertTrue(entities.isEmpty());
     }
 
+    @Test
+    public void shouldLimitResult() {
+        getEntities().forEach(columnEntityManager::save);
+        ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY);
+        query.addCondition(ColumnCondition.in(Column.of("id", asList(1L, 2L, 3L))));
+        query.setLimit(2L);
+        List<ColumnFamilyEntity> columnFamilyEntities = columnEntityManager.find(query);
+        assertEquals(Integer.valueOf(2), Integer.valueOf(columnFamilyEntities.size()));
+    }
+
+    @Test
+    public void shouldOrderResult() {
+
+    }
+
+
+    private List<ColumnFamilyEntity> getEntities() {
+        Map<String, Object> fields = new HashMap<>();
+        fields.put("name", "Cassandra");
+        fields.put("version", 3.2);
+        fields.put("options", asList(1, 2, 3));
+        List<Column> columns = Columns.of(fields);
+        ColumnFamilyEntity entity = ColumnFamilyEntity.of(COLUMN_FAMILY, singletonList(Columns.of("id", 1L)));
+        ColumnFamilyEntity entity1 = ColumnFamilyEntity.of(COLUMN_FAMILY, singletonList(Columns.of("id", 2L)));
+        ColumnFamilyEntity entity2 = ColumnFamilyEntity.of(COLUMN_FAMILY, singletonList(Columns.of("id", 3L)));
+        columns.forEach(entity::add);
+        columns.forEach(entity1::add);
+        columns.forEach(entity2::add);
+        return asList(entity, entity1, entity2);
+    }
+
     private ColumnFamilyEntity getColumnFamily() {
         Map<String, Object> fields = new HashMap<>();
         fields.put("name", "Cassandra");
         fields.put("version", 3.2);
-        fields.put("options", Arrays.asList(1,2,3));
+        fields.put("options", asList(1, 2, 3));
         List<Column> columns = Columns.of(fields);
         ColumnFamilyEntity columnFamily = ColumnFamilyEntity.of(COLUMN_FAMILY, singletonList(Columns.of("id", 10L)));
         columns.forEach(columnFamily::add);

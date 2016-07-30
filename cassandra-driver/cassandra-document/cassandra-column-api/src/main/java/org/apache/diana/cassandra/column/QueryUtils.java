@@ -19,17 +19,32 @@ package org.apache.diana.cassandra.column;
 
 
 import com.datastax.driver.core.querybuilder.*;
+import com.google.common.collect.Iterables;
 import org.apache.diana.api.Condition;
+import org.apache.diana.api.Sort;
 import org.apache.diana.api.column.Column;
 import org.apache.diana.api.column.ColumnCondition;
 import org.apache.diana.api.column.ColumnFamilyEntity;
 import org.apache.diana.api.column.ColumnQuery;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.StreamSupport;
 
+import static com.datastax.driver.core.querybuilder.QueryBuilder.asc;
+import static com.datastax.driver.core.querybuilder.QueryBuilder.desc;
 import static com.datastax.driver.core.querybuilder.QueryBuilder.insertInto;
+import static org.apache.diana.api.Sort.SortType.ASC;
 
 final class QueryUtils {
+
+    private static final Function<Sort, Ordering> SORT_ORDERING_FUNCTION = sort -> {
+        if (ASC.equals(sort.getType())) {
+            return asc(sort.getName());
+        } else {
+            return desc(sort.getName());
+        }
+    };
 
     private QueryUtils() {
     }
@@ -48,6 +63,12 @@ final class QueryUtils {
             return QueryBuilder.select().all().from(keySpace, columnFamily);
         }
         Select.Where where = QueryBuilder.select().all().from(keySpace, columnFamily).where();
+        if (query.getLimit() > 0) {
+            where.limit((int) query.getLimit());
+        }
+        if (!query.getSorts().isEmpty()) {
+            where.orderBy(query.getSorts().stream().map(SORT_ORDERING_FUNCTION).toArray(Ordering[]::new));
+        }
         conditions.stream().map(condition -> add(condition)).forEach(where::and);
         return where;
     }
@@ -67,27 +88,35 @@ final class QueryUtils {
     private static Clause add(ColumnCondition columnCondition) {
         Column column = columnCondition.getColumn();
         Condition condition = columnCondition.getCondition();
+        Object value = column.getValue().get();
         switch (condition) {
             case EQUALS:
-                return QueryBuilder.eq(column.getName(), column.getValue().get());
+                return QueryBuilder.eq(column.getName(), value);
             case GREATER_THAN:
-                return QueryBuilder.gt(column.getName(), column.getValue().get());
+                return QueryBuilder.gt(column.getName(), value);
             case GREATER_EQUALS_THAN:
-                return QueryBuilder.gte(column.getName(), column.getValue().get());
+                return QueryBuilder.gte(column.getName(), value);
             case LESSER_THAN:
-                return QueryBuilder.lt(column.getName(), column.getValue().get());
+                return QueryBuilder.lt(column.getName(), value);
             case LESSER_EQUALS_THAN:
-                return QueryBuilder.lte(column.getName(), column.getValue().get());
+                return QueryBuilder.lte(column.getName(), value);
             case IN:
-                return QueryBuilder.in(column.getName(), column.getValue().get());
+                return QueryBuilder.in(column.getName(), getIinValue(value));
             case LIKE:
-                return QueryBuilder.like(column.getName(), column.getValue().get());
+                return QueryBuilder.like(column.getName(), value);
             case AND:
             case OR:
             default:
                 throw new UnsupportedOperationException("The columnCondition " + condition + " is not supported in cassandra column driver");
-
         }
+    }
+
+    private static Object[] getIinValue(Object value) {
+        if (Iterable.class.isInstance(value)) {
+            Iterable values = Iterable.class.cast(value);
+            return StreamSupport.stream(values.spliterator(), false).toArray(Object[]::new);
+        }
+        return new Object[]{value};
     }
 
 
