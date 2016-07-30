@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>hbase-column</artifactId>
     <packaging>pom</packaging>
-    <name>Cassandra column driver to Apache diana Project</name>
+    <name>Hbase column driver to Apache diana Project</name>
     <parent>
         <groupId>org.jnosql.diana.hbase.driver</groupId>
         <artifactId>hbase-driver-parent</artifactId>

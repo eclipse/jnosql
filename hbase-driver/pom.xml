@@ -25,7 +25,7 @@
     <artifactId>hbase-driver-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Cassandra driver parent to Apache diana Project</name>
+    <name>Hbase driver parent to Apache diana Project</name>
     <parent>
         <groupId>org.jnosql.diana</groupId>
         <artifactId>diana-parent</artifactId>

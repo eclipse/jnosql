@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>hbase-column-api</artifactId>
     <packaging>jar</packaging>
-    <name>Cassandra column API implementation to Apache diana Project</name>
+    <name>Hbase column API implementation to Apache diana Project</name>
     <parent>
         <groupId>org.jnosql.diana.hbase.driver</groupId>
         <artifactId>hbase-column</artifactId>
