@@ -1,18 +1,20 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.apache.diana.redis.key;
@@ -26,7 +28,10 @@ import org.junit.Test;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 
 public class RedisQueueTest {
@@ -39,7 +44,7 @@ public class RedisQueueTest {
     @Before
     public void init() {
 
-        keyValueEntityManagerFactory =  RedisTestUtils.get();
+        keyValueEntityManagerFactory = RedisTestUtils.get();
         lineBank = keyValueEntityManagerFactory.getQueue("physical-bank", LineBank.class);
 
 
@@ -48,7 +53,7 @@ public class RedisQueueTest {
     @Test
     public void shouldPushInTheLine() {
         assertTrue(lineBank.add(new LineBank("Otavio", 25)));
-        assertTrue(lineBank.size() ==1);
+        assertTrue(lineBank.size() == 1);
         LineBank otavio = lineBank.poll();
         assertEquals(otavio.getPerson().getName(), "Otavio");
         assertNull(lineBank.poll());
@@ -66,7 +71,7 @@ public class RedisQueueTest {
         boolean happendException = false;
         try {
             lineBank.remove();
-        }catch(NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             happendException = true;
         }
         assertTrue(happendException);
@@ -81,29 +86,31 @@ public class RedisQueueTest {
         boolean happendException = false;
         try {
             lineBank.element();
-        }catch(NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             happendException = true;
         }
         assertTrue(happendException);
     }
+
     @SuppressWarnings("unused")
     @Test
     public void shouldIterate() {
         lineBank.add(new LineBank("Otavio", 25));
         lineBank.add(new LineBank("Gama", 26));
         int count = 0;
-        for (LineBank line: lineBank) {
+        for (LineBank line : lineBank) {
             count++;
         }
         assertTrue(count == 2);
         lineBank.remove();
         lineBank.remove();
         count = 0;
-        for (LineBank line: lineBank) {
+        for (LineBank line : lineBank) {
             count++;
         }
         assertTrue(count == 0);
     }
+
     @After
     public void dispose() {
         lineBank.clear();
