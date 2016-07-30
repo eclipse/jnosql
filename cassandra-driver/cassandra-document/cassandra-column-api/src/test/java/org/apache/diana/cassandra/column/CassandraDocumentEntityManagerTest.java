@@ -18,21 +18,25 @@
 package org.apache.diana.cassandra.column;
 
 import com.datastax.driver.core.Session;
+import org.apache.diana.api.Sort;
 import org.apache.diana.api.Value;
 import org.apache.diana.api.column.*;
 import org.apache.diana.api.document.Document;
 import org.apache.diana.api.document.Documents;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.diana.cassandra.column.Constants.COLUMN_FAMILY;
 import static org.apache.diana.cassandra.column.Constants.KEY_SPACE;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.*;
 
@@ -124,13 +128,7 @@ public class CassandraDocumentEntityManagerTest {
         List<ColumnFamilyEntity> columnFamilyEntities = columnEntityManager.find(query);
         assertEquals(Integer.valueOf(2), Integer.valueOf(columnFamilyEntities.size()));
     }
-
-    @Test
-    public void shouldOrderResult() {
-
-    }
-
-
+    
     private List<ColumnFamilyEntity> getEntities() {
         Map<String, Object> fields = new HashMap<>();
         fields.put("name", "Cassandra");
