@@ -27,6 +27,7 @@ import java.util.Objects;
 
 /**
  * Class that contains information to do a query to {@link ColumnFamilyEntity}
+ *
  * @see ColumnFamilyManager#find(ColumnQuery)
  * @see ColumnCondition
  * @see Sort
@@ -39,12 +40,15 @@ public class ColumnQuery {
 
     private final List<Sort> sorts = new ArrayList<>();
 
+    private long limit = -1L;
+
     private ColumnQuery(String columnFamily) {
         this.columnFamily = Objects.requireNonNull(columnFamily, "column family is required");
     }
 
     /**
      * Creates a {@link ColumnQuery}
+     *
      * @param columnFamily - the name of column family to do a query
      * @return a {@link ColumnQuery} instance
      */
@@ -54,17 +58,19 @@ public class ColumnQuery {
 
     /**
      * Add a new condition in the query
+     *
      * @param condition a condition to be added
      * @return the same instance with a condition added
      * @throws NullPointerException when condition is null
      */
-    public ColumnQuery addCondition(ColumnCondition condition) throws NullPointerException{
+    public ColumnQuery addCondition(ColumnCondition condition) throws NullPointerException {
         this.conditions.add(Objects.requireNonNull(condition, "condition is required"));
         return this;
     }
 
     /**
      * Add the order how the result will returned
+     *
      * @param sort the order way
      * @return the same way with a sort added
      */
@@ -75,6 +81,7 @@ public class ColumnQuery {
 
     /**
      * The column family name
+     *
      * @return the column family name
      */
     public String getColumnFamily() {
@@ -83,6 +90,7 @@ public class ColumnQuery {
 
     /**
      * The conditions that contains in this {@link ColumnQuery}
+     *
      * @return the conditions
      */
     public List<ColumnCondition> getConditions() {
@@ -91,10 +99,29 @@ public class ColumnQuery {
 
     /**
      * The sorts that contains in this {@link ColumnQuery}
+     *
      * @return the sorts
      */
     public List<Sort> getSorts() {
         return Collections.unmodifiableList(sorts);
+    }
+
+    /**
+     * Returns the max number of row in a query
+     *
+     * @return the limit to be used in a query
+     */
+    public long getLimit() {
+        return limit;
+    }
+
+    /**
+     * Sets the max number of row in a query, if negative the value will ignored
+     *
+     * @param limit the new limit to query
+     */
+    public void setLimit(long limit) {
+        this.limit = limit;
     }
 
     @Override

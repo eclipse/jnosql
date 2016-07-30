@@ -40,6 +40,8 @@ public class DocumentQuery {
 
     private final List<Sort> sorts = new ArrayList<>();
 
+    private long limit = -1;
+
     private DocumentQuery(String collection) {
         this.collection = Objects.requireNonNull(collection, "column family is required");
     }
@@ -103,6 +105,24 @@ public class DocumentQuery {
      */
     public List<Sort> getSorts() {
         return Collections.unmodifiableList(sorts);
+    }
+
+    /**
+     * Returns the max number of row in a query
+     *
+     * @return the limit to be used in a query
+     */
+    public long getLimit() {
+        return limit;
+    }
+
+    /**
+     * Sets the max number of row in a query, if negative the value will ignored
+     *
+     * @param limit the new limit to query
+     */
+    public void setLimit(long limit) {
+        this.limit = limit;
     }
 
     @Override
