@@ -25,7 +25,7 @@
     <packaging>jar</packaging>
     <name>Cassandra column API implementation to Apache diana Project</name>
     <parent>
-        <groupId>org.apache.diana.cassandra.driver</groupId>
+        <groupId>org.jnosql.diana.cassandra.driver</groupId>
         <artifactId>cassandra-column</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>

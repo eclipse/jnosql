@@ -22,9 +22,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>redis-key-value</artifactId>
     <packaging>pom</packaging>
-    <name>Redis key-value driver to Apache diana Project</name>
+    <name>Redis key-value driver to JNOSQL diana Project</name>
     <parent>
-        <groupId>org.apache.diana.redis.driver</groupId>
+        <groupId>org.jnosql.diana.redis.driver</groupId>
         <artifactId>redis-driver-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>

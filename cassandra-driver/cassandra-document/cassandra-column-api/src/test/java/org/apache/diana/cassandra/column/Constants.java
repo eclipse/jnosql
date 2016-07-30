@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.diana.cassandra.column;
+package org.jnosql.diana.cassandra.column;
 
 
 public final class Constants {

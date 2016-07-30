@@ -25,7 +25,7 @@
     <packaging>pom</packaging>
     <name>Cassandra column driver to Apache diana Project</name>
     <parent>
-        <groupId>org.apache.diana.cassandra.driver</groupId>
+        <groupId>org.jnosql.diana.cassandra.driver</groupId>
         <artifactId>cassandra-driver-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>

@@ -21,13 +21,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.apache.diana.mongodb.driver</groupId>
+    <groupId>org.jnosql.diana.mongodb.driver</groupId>
     <artifactId>mongodb-driver-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>MongoDB driver parent to Apache diana Project</name>
+    <name>MongoDB driver parent to JNOSQL diana Project</name>
     <parent>
-        <groupId>org.apache.diana</groupId>
+        <groupId>org.jnosql.diana</groupId>
         <artifactId>diana-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -43,7 +43,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.diana</groupId>
+            <groupId>org.jnosql.diana</groupId>
             <artifactId>diana-api</artifactId>
             <version>${project.version}</version>
         </dependency>

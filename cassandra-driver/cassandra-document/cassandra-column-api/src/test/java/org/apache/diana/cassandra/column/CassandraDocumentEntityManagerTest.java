@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.diana.cassandra.column;
+package org.jnosql.diana.cassandra.column;
 
 import com.datastax.driver.core.Session;
-import org.apache.diana.api.Sort;
-import org.apache.diana.api.Value;
-import org.apache.diana.api.column.*;
-import org.apache.diana.api.document.Document;
-import org.apache.diana.api.document.Documents;
+import org.jnosql.diana.api.Sort;
+import org.jnosql.diana.api.Value;
+import org.jnosql.diana.api.column.*;
+import org.jnosql.diana.api.document.Document;
+import org.jnosql.diana.api.document.Documents;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,8 +36,8 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
-import static org.apache.diana.cassandra.column.Constants.COLUMN_FAMILY;
-import static org.apache.diana.cassandra.column.Constants.KEY_SPACE;
+import static org.jnosql.diana.cassandra.column.Constants.COLUMN_FAMILY;
+import static org.jnosql.diana.cassandra.column.Constants.KEY_SPACE;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.*;

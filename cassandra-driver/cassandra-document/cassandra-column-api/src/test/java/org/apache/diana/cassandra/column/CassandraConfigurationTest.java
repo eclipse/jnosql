@@ -17,10 +17,10 @@
  * under the License.
  */
 
-package org.apache.diana.cassandra.column;
+package org.jnosql.diana.cassandra.column;
 
 
-import org.apache.diana.api.column.ColumnFamilyManagerFactory;
+import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
 import org.junit.Test;
 
 import java.util.HashMap;
