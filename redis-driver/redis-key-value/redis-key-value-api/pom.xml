@@ -23,9 +23,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>redis-key-value-api</artifactId>
     <packaging>jar</packaging>
-    <name>Redis key-value API implementation to Apache diana Project</name>
+    <name>Redis key-value API implementation to JNOSQL diana Project</name>
     <parent>
-        <groupId>org.apache.diana.redis.driver</groupId>
+        <groupId>org.jnosql.diana.redis.driver</groupId>
         <artifactId>redis-key-value</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>

@@ -17,11 +17,11 @@
  * under the License.
  */
 
-package org.apache.diana.cassandra.column;
+package org.jnosql.diana.cassandra.column;
 
 import com.datastax.driver.core.Cluster;
-import org.apache.diana.api.column.ColumnFamilyManager;
-import org.apache.diana.api.column.ColumnFamilyManagerFactory;
+import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
 import org.junit.Before;
 import org.junit.Test;
 

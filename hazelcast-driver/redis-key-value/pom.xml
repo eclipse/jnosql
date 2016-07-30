@@ -23,9 +23,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>hazelcast-key-value</artifactId>
     <packaging>pom</packaging>
-    <name>Hazelcast key-value driver to Apache diana Project</name>
+    <name>Hazelcast key-value driver to JNOSQL diana Project</name>
     <parent>
-        <groupId>org.apache.diana.hazelcast.driver</groupId>
+        <groupId>org.jnosql.diana.hazelcast.driver</groupId>
         <artifactId>hazelcast-driver-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>

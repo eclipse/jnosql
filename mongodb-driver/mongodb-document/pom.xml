@@ -23,9 +23,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>mongodb-document</artifactId>
     <packaging>pom</packaging>
-    <name>MongoDB document driver to Apache diana Project</name>
+    <name>MongoDB document driver to JNOSQL diana Project</name>
     <parent>
-        <groupId>org.apache.diana.mongodb.driver</groupId>
+        <groupId>org.jnosql.diana.mongodb.driver</groupId>
         <artifactId>mongodb-driver-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
