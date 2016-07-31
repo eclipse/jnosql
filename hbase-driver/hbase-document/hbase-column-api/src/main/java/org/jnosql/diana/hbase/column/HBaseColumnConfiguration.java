@@ -6,8 +6,12 @@ import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.jnosql.diana.api.column.ColumnConfiguration;
 import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Configuration to HBase
@@ -17,6 +21,8 @@ import java.util.Objects;
 public class HBaseColumnConfiguration implements ColumnConfiguration {
 
     private final Configuration configuration;
+
+    private final List<String> families = new ArrayList<>();
 
     /**
      * creates an {@link HBaseColumnConfiguration} instance with {@link HBaseConfiguration#create()}
@@ -32,7 +38,24 @@ public class HBaseColumnConfiguration implements ColumnConfiguration {
      * @throws NullPointerException when configuration is null
      */
     public HBaseColumnConfiguration(Configuration configuration) throws NullPointerException {
-        this.configuration = Objects.requireNonNull(configuration, "configuration is required");
+        this.configuration = requireNonNull(configuration, "configuration is required");
+    }
+
+    /**
+     * Creates hbase configuration
+     *
+     * @param configuration to be used
+     * @param families      families to be used
+     * @throws NullPointerException when configuration is null
+     */
+    public HBaseColumnConfiguration(Configuration configuration, List<String> families) throws NullPointerException {
+        this.configuration = requireNonNull(configuration, "configuration is required");
+        requireNonNull(families, "families is required");
+        this.families.addAll(families);
+    }
+
+    public void add(String family) {
+        this.families.add(requireNonNull(family, "family is required"));
     }
 
     @Override
