@@ -65,7 +65,7 @@ public class HBaseColumnConfiguration implements ColumnConfiguration {
 
     @Override
     public ColumnFamilyManagerFactory getManagerFactory() {
-        return new HBaseColumnFamilyManagerFactory(configuration);
+        return new HBaseColumnFamilyManagerFactory(configuration, families);
     }
 
     @Override

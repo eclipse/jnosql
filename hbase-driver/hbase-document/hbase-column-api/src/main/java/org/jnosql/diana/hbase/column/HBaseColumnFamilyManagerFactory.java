@@ -31,13 +31,19 @@ import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 class HBaseColumnFamilyManagerFactory implements ColumnFamilyManagerFactory {
 
     private final Configuration configuration;
 
-    HBaseColumnFamilyManagerFactory(Configuration configuration) {
+    private final List<String> families;
+
+    HBaseColumnFamilyManagerFactory(Configuration configuration, List<String> families) {
         this.configuration = configuration;
+        this.families = families;
     }
 
     @Override
@@ -45,18 +51,31 @@ class HBaseColumnFamilyManagerFactory implements ColumnFamilyManagerFactory {
         try {
             Connection connection = ConnectionFactory.createConnection(configuration);
             Admin admin = connection.getAdmin();
-
-            if (admin.tableExists(TableName.valueOf(database))) {
+            TableName tableName = TableName.valueOf(database);
+            if (admin.tableExists(tableName)) {
+                existTable(admin, tableName);
             } else {
-                HTableDescriptor desc = new HTableDescriptor(TableName.valueOf(database));
-                desc.addFamily(new HColumnDescriptor("default"));
-                admin.createTable(desc);
+                createTable(admin, tableName);
             }
-            Table table = connection.getTable(TableName.valueOf(database));
+            Table table = connection.getTable(tableName);
             return new HBaseColumnFamilyManager(connection, table);
         } catch (IOException e) {
             throw new DianaHBaseException("A error happened when try to create ColumnFamilyManager", e);
         }
+    }
+
+    private void existTable(Admin admin, TableName tableName) throws IOException {
+        HTableDescriptor tableDescriptor = admin.getTableDescriptor(tableName);
+        HColumnDescriptor[] columnFamilies = tableDescriptor.getColumnFamilies();
+        List<String> familiesExist = Arrays.stream(columnFamilies).map(HColumnDescriptor::getName).map(String::new).collect(Collectors.toList());
+        families.stream().filter(s -> !familiesExist.contains(s)).map(HColumnDescriptor::new).forEach(tableDescriptor::addFamily);
+        admin.modifyTable(tableName, tableDescriptor);
+    }
+
+    private void createTable(Admin admin, TableName tableName) throws IOException {
+        HTableDescriptor desc = new HTableDescriptor(tableName);
+        families.forEach(HColumnDescriptor::new);
+        admin.createTable(desc);
     }
 
     @Override

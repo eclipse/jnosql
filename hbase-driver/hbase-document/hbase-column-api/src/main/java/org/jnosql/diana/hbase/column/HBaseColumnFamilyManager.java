@@ -19,9 +19,9 @@
 package org.jnosql.diana.hbase.column;
 
 
-import org.apache.hadoop.hbase.client.Connection;
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Table;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.CellUtil;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.Value;
@@ -30,9 +30,14 @@ import org.jnosql.diana.api.column.*;
 import org.jnosql.diana.api.writer.WriterFieldDecorator;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+
+import static org.jnosql.diana.api.Condition.EQUALS;
 
 class HBaseColumnFamilyManager implements ColumnFamilyManager {
 
@@ -82,7 +87,7 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
 
     @Override
     public ColumnFamilyEntity update(ColumnFamilyEntity entity) {
-        return null;
+        return save(entity);
     }
 
     @Override
@@ -112,8 +117,35 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
 
     @Override
     public List<ColumnFamilyEntity> find(ColumnQuery query) {
-        return null;
+
+        List<ColumnCondition> conditions = query.getConditions();
+        Result result = null;
+        if (conditions.size() == 1 && conditions.get(0).getCondition().equals(EQUALS)) {
+            result = findById(conditions);
+        } else {
+
+        }
+
+        List<ColumnFamilyEntity> entities = new ArrayList<>();
+        Map<String, List<Column>> columnsByKey = new HashMap<>();
+        for (Cell cell : result.rawCells()) {
+            String key = new String(CellUtil.cloneRow(cell));
+            String name = new String(CellUtil.cloneQualifier(cell));
+            String value = new String(CellUtil.cloneValue(cell));
+            List<Column> columns = columnsByKey.getOrDefault(key, new ArrayList<>());
+            columns.add(Column.of(name, value));
+            columnsByKey.put(key, columns);
+        }
+        for (String key : columnsByKey.keySet()) {
+            List<Column> columns = columnsByKey.get(key);
+            ColumnFamilyEntity entity = ColumnFamilyEntity.of(query.getColumnFamily());
+            entity.add(Column.of("", key));
+            columns.forEach(entity::add);
+            entities.add(entity);
+        }
+        return entities;
     }
+
 
     @Override
     public void findAsync(ColumnQuery query, Consumer<List<ColumnFamilyEntity>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException {
@@ -151,6 +183,17 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
             return writerField.write(object).toString();
         } else {
             return object.toString();
+        }
+    }
+
+    private Result findById(List<ColumnCondition> conditions) {
+        ColumnCondition columnCondition = conditions.get(0);
+        String valueKey = valueToString(columnCondition.getColumn().getValue());
+        Get get = new Get(valueKey.getBytes());
+        try {
+            return table.get(get);
+        } catch (IOException e) {
+            throw new DianaHBaseException("An error when try to find by id", e);
         }
     }
 
