@@ -31,7 +31,7 @@ import java.util.ServiceLoader;
  * @author Otávio Santana
  * @see WriterField
  */
-final class WriterFieldDecorator implements WriterField {
+public final class WriterFieldDecorator implements WriterField {
 
     private static final WriterField INSTANCE = new WriterFieldDecorator();
 
