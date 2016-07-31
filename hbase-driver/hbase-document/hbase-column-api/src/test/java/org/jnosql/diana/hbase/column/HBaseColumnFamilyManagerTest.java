@@ -50,6 +50,19 @@ public class HBaseColumnFamilyManagerTest {
     }
 
     @Test
+    public void shouldFindInBatch() {
+        columnFamilyManager.save(createEntity());
+        columnFamilyManager.save(createEntity2());
+
+        ColumnQuery query = ColumnQuery.of(FAMILY);
+        query.addCondition(ColumnCondition.eq(Column.of("", "otaviojava")));
+        query.addCondition(ColumnCondition.eq(Column.of("", "poliana")));
+        List<ColumnFamilyEntity> entities = columnFamilyManager.find(query);
+        assertEquals(Integer.valueOf(2), Integer.valueOf(entities.size()));
+
+    }
+
+    @Test
     public void shouldDeleteEntity() {
         columnFamilyManager.save(createEntity());
         ColumnQuery query = ColumnQuery.of(FAMILY);

@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.jnosql.diana.api.Condition.EQUALS;
@@ -135,17 +136,7 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
 
         List<ColumnCondition> conditions = query.getConditions();
         if (isQuerySupported(conditions)) {
-            Result result = findById(conditions);
-            List<ColumnFamilyEntity> entities = new ArrayList<>();
-            Map<String, List<Column>> columnsByKey = toMap(result);
-            for (String key : columnsByKey.keySet()) {
-                List<Column> columns = columnsByKey.get(key);
-                ColumnFamilyEntity entity = ColumnFamilyEntity.of(query.getColumnFamily());
-                entity.add(Column.of("", key));
-                columns.forEach(entity::add);
-                entities.add(entity);
-            }
-            return entities;
+            return Stream.of(findById(conditions)).map(EntityUnit::new).filter(EntityUnit::isNotEmpty).map(EntityUnit::toEntity).collect(toList());
         }
 
         throw new UnsupportedOperationException("There is not support to find more than one key");
@@ -191,12 +182,11 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
         }
     }
 
-    private Result findById(List<ColumnCondition> conditions) {
-        ColumnCondition columnCondition = conditions.get(0);
-        String valueKey = valueToString(columnCondition.getColumn().getValue());
-        Get get = new Get(valueKey.getBytes());
+    private Result[] findById(List<ColumnCondition> conditions) {
+        List<Get> gets = conditions.stream().map(c -> c.getColumn().getValue()).map(this::valueToString)
+                .map(String::getBytes).map(Get::new).collect(toList());
         try {
-            return table.get(get);
+            return table.get(gets);
         } catch (IOException e) {
             throw new DianaHBaseException("An error when try to find by id", e);
         }
