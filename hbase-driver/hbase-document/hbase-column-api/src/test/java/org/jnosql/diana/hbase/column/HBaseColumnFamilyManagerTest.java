@@ -57,13 +57,32 @@ public class HBaseColumnFamilyManagerTest {
         columnFamilyManager.delete(query);
         List<ColumnFamilyEntity> entities = columnFamilyManager.find(query);
         assertTrue(entities.isEmpty());
+    }
 
+    @Test
+    public void shouldDeleteEntities() {
+        columnFamilyManager.save(createEntity());
+        columnFamilyManager.save(createEntity2());
+        ColumnQuery query = ColumnQuery.of(FAMILY);
+        query.addCondition(ColumnCondition.eq(Column.of("", "otaviojava")));
+        query.addCondition(ColumnCondition.eq(Column.of("", "poliana")));
+        columnFamilyManager.delete(query);
+        List<ColumnFamilyEntity> entities = columnFamilyManager.find(query);
+        assertTrue(entities.isEmpty());
     }
 
     private ColumnFamilyEntity createEntity() {
         ColumnFamilyEntity entity = ColumnFamilyEntity.of(FAMILY);
         entity.add(Column.of("", "otaviojava"));
         entity.add(Column.of("age", 26));
+        entity.add(Column.of("country", "Brazil"));
+        return entity;
+    }
+
+    private ColumnFamilyEntity createEntity2() {
+        ColumnFamilyEntity entity = ColumnFamilyEntity.of(FAMILY);
+        entity.add(Column.of("", "poliana"));
+        entity.add(Column.of("age", 24));
         entity.add(Column.of("country", "Brazil"));
         return entity;
     }
