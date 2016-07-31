@@ -51,6 +51,12 @@ public class HBaseColumnFamilyManagerTest {
 
     @Test
     public void shouldDeleteEntity() {
+        columnFamilyManager.save(createEntity());
+        ColumnQuery query = ColumnQuery.of(FAMILY);
+        query.addCondition(ColumnCondition.eq(Column.of("", "otaviojava")));
+        columnFamilyManager.delete(query);
+        List<ColumnFamilyEntity> entities = columnFamilyManager.find(query);
+        assertTrue(entities.isEmpty());
 
     }
 

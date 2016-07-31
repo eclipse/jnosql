@@ -36,9 +36,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static org.jnosql.diana.api.Condition.EQUALS;
 
 class HBaseColumnFamilyManager implements ColumnFamilyManager {
@@ -105,6 +105,19 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
     @Override
     public void delete(ColumnQuery query) {
 
+        List<ColumnCondition> conditions = query.getConditions();
+        if (isQuerySupported(conditions)) {
+
+            List<Delete> deletes = conditions.stream().map(c -> c.getColumn().getValue()).
+                    map(this::valueToString)
+                    .map(String::getBytes).map(Delete::new).collect(toList());
+            try {
+                table.delete(deletes);
+            } catch (IOException e) {
+                throw new DianaHBaseException("An error when try to delete columns", e);
+            }
+        }
+
     }
 
     @Override
@@ -121,7 +134,7 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
     public List<ColumnFamilyEntity> find(ColumnQuery query) {
 
         List<ColumnCondition> conditions = query.getConditions();
-        if (conditions.size() == 1 && conditions.get(0).getCondition().equals(EQUALS)) {
+        if (isQuerySupported(conditions)) {
             Result result = findById(conditions);
             List<ColumnFamilyEntity> entities = new ArrayList<>();
             Map<String, List<Column>> columnsByKey = toMap(result);
@@ -133,13 +146,11 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
                 entities.add(entity);
             }
             return entities;
-        } else {
-            throw new UnsupportedOperationException("There is not support to find more than one key");
         }
 
+        throw new UnsupportedOperationException("There is not support to find more than one key");
 
     }
-
 
     @Override
     public void findAsync(ColumnQuery query, Consumer<List<ColumnFamilyEntity>> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException {
@@ -202,6 +213,11 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
             columnsByKey.put(key, columns);
         }
         return columnsByKey;
+    }
+
+
+    private boolean isQuerySupported(List<ColumnCondition> conditions) {
+        return conditions.stream().allMatch(columnCondition -> columnCondition.getCondition().equals(EQUALS));
     }
 
     @Override
