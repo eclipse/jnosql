@@ -46,14 +46,17 @@ public class HBaseColumnFamilyManagerTest {
         assertFalse(columnFamilyEntities.isEmpty());
         ColumnFamilyEntity entity = columnFamilyEntities.get(0);
         assertEquals(FAMILY, entity.getName());
-        Assert.assertThat(entity.getColumns(), containsInAnyOrder(Column.of("", "otaviojava"), Column.of("age", "26"), Column.of("country", "Brazil")));
+        assertThat(entity.getColumns(), containsInAnyOrder(Column.of("", "otaviojava"), Column.of("age", "26"), Column.of("country", "Brazil")));
+    }
 
+    @Test
+    public void shouldDeleteEntity() {
 
     }
 
     private ColumnFamilyEntity createEntity() {
         ColumnFamilyEntity entity = ColumnFamilyEntity.of(FAMILY);
-        entity.add(Column.of("nickName", "otaviojava"));
+        entity.add(Column.of("", "otaviojava"));
         entity.add(Column.of("age", 26));
         entity.add(Column.of("country", "Brazil"));
         return entity;

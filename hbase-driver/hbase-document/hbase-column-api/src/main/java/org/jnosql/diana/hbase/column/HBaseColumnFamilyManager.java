@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static org.jnosql.diana.api.Condition.EQUALS;
 
@@ -119,31 +121,23 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
     public List<ColumnFamilyEntity> find(ColumnQuery query) {
 
         List<ColumnCondition> conditions = query.getConditions();
-        Result result = null;
         if (conditions.size() == 1 && conditions.get(0).getCondition().equals(EQUALS)) {
-            result = findById(conditions);
+            Result result = findById(conditions);
+            List<ColumnFamilyEntity> entities = new ArrayList<>();
+            Map<String, List<Column>> columnsByKey = toMap(result);
+            for (String key : columnsByKey.keySet()) {
+                List<Column> columns = columnsByKey.get(key);
+                ColumnFamilyEntity entity = ColumnFamilyEntity.of(query.getColumnFamily());
+                entity.add(Column.of("", key));
+                columns.forEach(entity::add);
+                entities.add(entity);
+            }
+            return entities;
         } else {
-
+            throw new UnsupportedOperationException("There is not support to find more than one key");
         }
 
-        List<ColumnFamilyEntity> entities = new ArrayList<>();
-        Map<String, List<Column>> columnsByKey = new HashMap<>();
-        for (Cell cell : result.rawCells()) {
-            String key = new String(CellUtil.cloneRow(cell));
-            String name = new String(CellUtil.cloneQualifier(cell));
-            String value = new String(CellUtil.cloneValue(cell));
-            List<Column> columns = columnsByKey.getOrDefault(key, new ArrayList<>());
-            columns.add(Column.of(name, value));
-            columnsByKey.put(key, columns);
-        }
-        for (String key : columnsByKey.keySet()) {
-            List<Column> columns = columnsByKey.get(key);
-            ColumnFamilyEntity entity = ColumnFamilyEntity.of(query.getColumnFamily());
-            entity.add(Column.of("", key));
-            columns.forEach(entity::add);
-            entities.add(entity);
-        }
-        return entities;
+
     }
 
 
@@ -195,6 +189,19 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
         } catch (IOException e) {
             throw new DianaHBaseException("An error when try to find by id", e);
         }
+    }
+
+    private Map<String, List<Column>> toMap(Result result) {
+        Map<String, List<Column>> columnsByKey = new HashMap<>();
+        for (Cell cell : result.rawCells()) {
+            String key = new String(CellUtil.cloneRow(cell));
+            String name = new String(CellUtil.cloneQualifier(cell));
+            String value = new String(CellUtil.cloneValue(cell));
+            List<Column> columns = columnsByKey.getOrDefault(key, new ArrayList<>());
+            columns.add(Column.of(name, value));
+            columnsByKey.put(key, columns);
+        }
+        return columnsByKey;
     }
 
     @Override
