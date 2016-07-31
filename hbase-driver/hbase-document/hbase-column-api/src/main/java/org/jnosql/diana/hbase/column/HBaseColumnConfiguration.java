@@ -10,15 +10,18 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Configuration to Hbase
+ * Configuration to HBase
  *
  * @author Otávio Santana
  */
-public class HbaseConfiguration implements ColumnConfiguration {
+public class HBaseColumnConfiguration implements ColumnConfiguration {
 
     private final Configuration configuration;
 
-    public HbaseConfiguration() {
+    /**
+     * creates an {@link HBaseColumnConfiguration} instance with {@link HBaseConfiguration#create()}
+     */
+    public HBaseColumnConfiguration() {
         this.configuration = HBaseConfiguration.create();
     }
 
@@ -28,8 +31,8 @@ public class HbaseConfiguration implements ColumnConfiguration {
      * @param configuration to be used
      * @throws NullPointerException when configuration is null
      */
-    public HbaseConfiguration(Configuration configuration) throws NullPointerException {
-        this.configuration = configuration;
+    public HBaseColumnConfiguration(Configuration configuration) throws NullPointerException {
+        this.configuration = Objects.requireNonNull(configuration, "configuration is required");
     }
 
     @Override
@@ -39,7 +42,7 @@ public class HbaseConfiguration implements ColumnConfiguration {
 
     @Override
     public ColumnFamilyManagerFactory getManagerFactory() {
-        return null;
+        return new HBaseColumnFamilyManagerFactory(configuration);
     }
 
     @Override
@@ -50,7 +53,7 @@ public class HbaseConfiguration implements ColumnConfiguration {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        HbaseConfiguration that = (HbaseConfiguration) o;
+        HBaseColumnConfiguration that = (HBaseColumnConfiguration) o;
         return Objects.equals(configuration, that.configuration);
     }
 
@@ -61,7 +64,7 @@ public class HbaseConfiguration implements ColumnConfiguration {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("HbaseConfiguration{");
+        final StringBuilder sb = new StringBuilder("HBaseColumnConfiguration{");
         sb.append("configuration=").append(configuration);
         sb.append('}');
         return sb.toString();
