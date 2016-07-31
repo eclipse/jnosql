@@ -43,6 +43,8 @@ import static org.jnosql.diana.api.Condition.EQUALS;
 
 class HBaseColumnFamilyManager implements ColumnFamilyManager {
 
+    private static final String KEY_REQUIRED_ERROR = "\"To save an entity is necessary to have an row, a Column that has a blank name. Documents.of(\\\"\\\", keyValue);\"";
+
     private final Connection connection;
     private final Table table;
     private final WriterField writerField = WriterFieldDecorator.getInstance();
@@ -60,8 +62,7 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
         if (columns.isEmpty()) {
             return entity;
         }
-        Column columnID = columns.get(0);
-
+        Column columnID = entity.find(HBaseUtils.KEY_COLUMN).orElseThrow(() -> new DianaHBaseException(KEY_REQUIRED_ERROR));
 
         Put put = new Put(Bytes.toBytes(valueToString(columnID.getValue())));
         columns.stream().filter(Predicate.isEqual(columnID).negate()).forEach(column -> {

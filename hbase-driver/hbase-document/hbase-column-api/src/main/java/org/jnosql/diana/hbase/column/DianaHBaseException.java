@@ -24,4 +24,8 @@ class DianaHBaseException extends RuntimeException {
     DianaHBaseException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    DianaHBaseException(String message) {
+        super(message);
+    }
 }

@@ -36,6 +36,15 @@ public class HBaseColumnFamilyManagerTest {
         columnFamilyManager.save(entity);
     }
 
+    @Test(expected = DianaHBaseException.class)
+    public void shouldReturnErrorWhenKeyIsNotDefined() {
+        ColumnFamilyEntity entity = ColumnFamilyEntity.of(FAMILY);
+        entity.add(Column.of("id", "otaviojava"));
+        entity.add(Column.of("age", 26));
+        entity.add(Column.of("country", "Brazil"));
+        columnFamilyManager.save(entity);
+    }
+
     @Test
     public void shouldFind() {
         columnFamilyManager.save(createEntity());
