@@ -24,6 +24,7 @@ import org.jnosql.diana.api.ReaderField;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -45,10 +46,18 @@ public final class LocalDateReader implements ReaderField {
             return (T) value;
         }
 
+        if (Calendar.class.isInstance(value)) {
+            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+
+        if (Date.class.isInstance(value)) {
+            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+
         if (Number.class.isInstance(value)) {
             return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
 
-        return (T) new Date(value.toString()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return (T) LocalDate.parse(value.toString());
     }
 }
