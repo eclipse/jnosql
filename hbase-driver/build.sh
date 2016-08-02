@@ -17,9 +17,9 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-docker run --name some-cassandra -d cassandra > /dev/null
-echo "[INFO] Starting Cassandra database"
+docker run --name some-hbase -d nerdammer/hbase > /dev/null
+echo "[INFO] Starting HBase database"
 sleep 5
 echo "[INFO] Starting build"
 mvn clean install
-docker rm -f some-cassandra > /dev/null
+docker rm -f some-hbase > /dev/null
