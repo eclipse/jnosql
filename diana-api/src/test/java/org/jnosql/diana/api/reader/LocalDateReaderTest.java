@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
@@ -48,7 +49,10 @@ public class LocalDateReaderTest {
     public void shouldConvert() {
         final LocalDate now = LocalDate.now();
         final Date date = new Date();
+        final Calendar calendar = Calendar.getInstance();
         assertEquals(now, dateReader.read(LocalDate.class, now));
+        assertEquals(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), dateReader.read(LocalDate.class, date));
+        assertEquals(calendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), dateReader.read(LocalDate.class, calendar));
         assertEquals(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), dateReader.read(LocalDate.class, date.getTime()));
     }
 }
