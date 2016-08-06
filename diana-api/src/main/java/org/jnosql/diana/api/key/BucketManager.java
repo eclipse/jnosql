@@ -21,6 +21,7 @@ package org.jnosql.diana.api.key;
 
 
 import org.jnosql.diana.api.CloseResource;
+import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.Value;
 
 import java.util.Optional;
@@ -46,33 +47,59 @@ public interface BucketManager extends CloseResource {
 
     /**
      * Saves the {@link KeyValue}
+     *
      * @param keyValue the entity to be save
-     * @param <K> the key type
+     * @param <K>      the key type
      * @throws NullPointerException when entity is null
      */
     <K> void put(KeyValue<K> keyValue) throws NullPointerException;
 
     /**
+     * Saves the {@link KeyValue} with time to live
+     *
+     * @param keyValue the entity to be save
+     * @param ttl      the defined time to live
+     * @param <K>      the key type
+     * @throws NullPointerException          when entity is null
+     * @throws UnsupportedOperationException when expired time is not supported
+     */
+    <K> void put(KeyValue<K> keyValue, TTL ttl) throws NullPointerException, UnsupportedOperationException;
+
+    /**
      * Saves the {@link Iterable} of keys
+     *
      * @param keyValues keys to be save
-     * @param <K> the key type
+     * @param <K>       the key type
      * @throws NullPointerException when the iterable is null
      */
     <K> void put(Iterable<KeyValue<K>> keyValues) throws NullPointerException;
 
     /**
+     * Saves the {@link Iterable} of keys with a defined time to live
+     *
+     * @param keyValues keys to be save
+     * @param ttl       the time to entity expire
+     * @param <K>       the key type
+     * @throws NullPointerException          when the iterable is null
+     * @throws UnsupportedOperationException when expired time is not supported
+     */
+    <K> void put(Iterable<KeyValue<K>> keyValues, TTL ttl) throws NullPointerException, UnsupportedOperationException;
+
+    /**
      * Finds the Value from a key
+     *
      * @param key the key
      * @param <K> the key type
      * @return the {@link Optional} when is not found will return a {@link Optional#empty()}
-     * @throws NullPointerException
+     * @throws NullPointerException when the key is null
      */
     <K> Optional<Value> get(K key) throws NullPointerException;
 
     /**
      * Finds a list of values from keys
+     *
      * @param keys the keys to be used in this query
-     * @param <K> the key type
+     * @param <K>  the key type
      * @return the list of result
      * @throws NullPointerException when either the keys or the entities values are null
      */
@@ -80,6 +107,7 @@ public interface BucketManager extends CloseResource {
 
     /**
      * Removes an entity from key
+     *
      * @param key the key bo be used
      * @param <K> the key type
      * @throws NullPointerException when the key is null
@@ -88,10 +116,11 @@ public interface BucketManager extends CloseResource {
 
     /**
      * Removes entities from keys
+     *
      * @param keys the keys to be used
-     * @param <K> the key type
+     * @param <K>  the key type
      * @throws NullPointerException when the key is null
      */
-    <K> void remove(Iterable<K> keys)throws NullPointerException;
+    <K> void remove(Iterable<K> keys) throws NullPointerException;
 
 }
