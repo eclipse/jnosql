@@ -42,6 +42,8 @@ public class ColumnQuery {
 
     private final List<Sort> sorts = new ArrayList<>();
 
+    private final List<String> columns = new ArrayList<>();
+
     private long limit = -1L;
 
     private ColumnQuery(String columnFamily) {
@@ -74,10 +76,22 @@ public class ColumnQuery {
      * Add the order how the result will returned
      *
      * @param sort the order way
-     * @return the same way with a sort added
+     * @return the same instance with a sort added
      */
     public ColumnQuery addSort(Sort sort) throws NullPointerException {
         this.sorts.add(Objects.requireNonNull(sort, "Sort is required"));
+        return this;
+    }
+
+    /**
+     * Add column to be either retrieve or deleted, if empty will either returns
+     * all elements in a find query or delete all elements in a column family entity.
+     *
+     * @param column
+     * @return the same instance with a column added
+     */
+    public ColumnQuery addColumn(String column) throws NullPointerException {
+        this.columns.add(Objects.requireNonNull(column, "column is required"));
         return this;
     }
 
@@ -97,6 +111,10 @@ public class ColumnQuery {
      */
     public List<ColumnCondition> getConditions() {
         return Collections.unmodifiableList(conditions);
+    }
+
+    public List<String> getColumns() {
+        return Collections.unmodifiableList(columns);
     }
 
     /**
