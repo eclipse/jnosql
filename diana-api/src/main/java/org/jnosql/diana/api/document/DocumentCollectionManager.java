@@ -26,6 +26,7 @@ import org.jnosql.diana.api.TTL;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
@@ -81,8 +82,8 @@ public interface DocumentCollectionManager extends CloseResource {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    default void save(Iterable<DocumentCollectionEntity> entities) throws NullPointerException {
-        StreamSupport.stream(entities.spliterator(), false).forEach(this::save);
+    default Iterable<DocumentCollectionEntity> save(Iterable<DocumentCollectionEntity> entities) throws NullPointerException {
+        return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(Collectors.toList());
     }
 
     /**
@@ -107,8 +108,8 @@ public interface DocumentCollectionManager extends CloseResource {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    default void save(Iterable<DocumentCollectionEntity> entities, TTL ttl) throws NullPointerException {
-        StreamSupport.stream(entities.spliterator(), false).forEach(d -> save(d, ttl));
+    default Iterable<DocumentCollectionEntity> save(Iterable<DocumentCollectionEntity> entities, TTL ttl) throws NullPointerException {
+        return StreamSupport.stream(entities.spliterator(), false).map(d -> save(d, ttl)).collect(Collectors.toList());
     }
 
     /**
