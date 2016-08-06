@@ -42,6 +42,8 @@ public class DocumentQuery {
 
     private final List<Sort> sorts = new ArrayList<>();
 
+    private final List<String> documents = new ArrayList<>();
+
     private long limit = -1;
 
     private DocumentQuery(String collection) {
@@ -81,6 +83,18 @@ public class DocumentQuery {
         return this;
     }
 
+    /**
+     * Add column to be either retrieve or deleted, if empty will either returns
+     * all elements in a find query or delete all elements in a column family entity.
+     *
+     * @param document
+     * @return the same instance with a column added
+     */
+    public DocumentQuery addColumn(String document) throws NullPointerException {
+        this.documents.add(Objects.requireNonNull(document, "document is required"));
+        return this;
+    }
+
 
     /**
      * The document collection name
@@ -107,6 +121,10 @@ public class DocumentQuery {
      */
     public List<Sort> getSorts() {
         return Collections.unmodifiableList(sorts);
+    }
+
+    public List<String> getDocuments() {
+        return Collections.unmodifiableList(documents);
     }
 
     /**
