@@ -26,6 +26,7 @@ import org.jnosql.diana.api.TTL;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.StreamSupport;
 
 /**
  * Interface used to interact with the persistence context to {@link DocumentCollectionEntity}
@@ -39,8 +40,9 @@ public interface DocumentCollectionManager extends CloseResource {
      *
      * @param entity entity to be saved
      * @return the entity saved
+     * @throws NullPointerException when document is null
      */
-    DocumentCollectionEntity save(DocumentCollectionEntity entity);
+    DocumentCollectionEntity save(DocumentCollectionEntity entity) throws NullPointerException;
 
     /**
      * Saves an entity asynchronously
@@ -69,6 +71,58 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     void saveAsync(DocumentCollectionEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+
+    /**
+     * Saves documents collection entity, by default it's just run for each saving using
+     * {@link DocumentCollectionManager#save(DocumentCollectionEntity)},
+     * each NoSQL vendor might replace to a more appropriate one.
+     *
+     * @param entities entities to be saved
+     * @return the entity saved
+     * @throws NullPointerException when entities is null
+     */
+    default void save(Iterable<DocumentCollectionEntity> entities) throws NullPointerException {
+        StreamSupport.stream(entities.spliterator(), false).forEach(this::save);
+    }
+
+    /**
+     * Saves entities asynchronously, by default it's just run for each saving using
+     * {@link DocumentCollectionManager#saveAsync(DocumentCollectionEntity)},
+     * each NoSQL vendor might replace to a more appropriate one.
+     *
+     * @param entities entities to be saved
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    default void saveAsync(Iterable<DocumentCollectionEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        StreamSupport.stream(entities.spliterator(), false).forEach(this::saveAsync);
+    }
+
+    /**
+     * Saves documents collection entity with time to live, by default it's just run for each saving using
+     * {@link DocumentCollectionManager#save(DocumentCollectionEntity, TTL)},
+     * each NoSQL vendor might replace to a more appropriate one.
+     *
+     * @param entities entities to be saved
+     * @return the entity saved
+     * @throws NullPointerException when entities is null
+     */
+    default void save(Iterable<DocumentCollectionEntity> entities, TTL ttl) throws NullPointerException {
+        StreamSupport.stream(entities.spliterator(), false).forEach(d -> save(d, ttl));
+    }
+
+    /**
+     * Saves entities asynchronously with time to live, by default it's just run for each saving using
+     * {@link DocumentCollectionManager#saveAsync(DocumentCollectionEntity, TTL)},
+     * each NoSQL vendor might replace to a more appropriate one.
+     *
+     * @param entities entities to be saved
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    default void saveAsync(Iterable<DocumentCollectionEntity> entities, TTL ttl) {
+        StreamSupport.stream(entities.spliterator(), false).forEach(d -> saveAsync(d, ttl));
+    }
 
     /**
      * Saves an entity asynchronously
