@@ -89,7 +89,9 @@ public interface ColumnFamilyManager extends CloseResource {
             UnsupportedOperationException;
 
     /**
-     * Saves a Column family entities
+     * Saves a Column family entities, by default it's just run for each saving using
+     * {@link ColumnFamilyManager#save(ColumnFamilyEntity)}, each NoSQL vendor might
+     * replace to a more appropriate one.
      *
      * @param entities column family to be saved
      * @return the entity saved
@@ -100,7 +102,9 @@ public interface ColumnFamilyManager extends CloseResource {
     }
 
     /**
-     * Saves a Column family entity with time to live
+     * Saves a Column family entity with time to live, by default it's just run for each saving using
+     * {@link ColumnFamilyManager#save(ColumnFamilyEntity, TTL)},
+     * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities column family to be saved
      * @param ttl      time to live
@@ -112,7 +116,9 @@ public interface ColumnFamilyManager extends CloseResource {
     }
 
     /**
-     * Saves an entities asynchronously
+     * Saves an entities asynchronously, by default it's just run for each saving using
+     * {@link ColumnFamilyManager#saveAsync(ColumnFamilyEntity)},
+     * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entity to be saved
      * @throws ExecuteAsyncQueryException    when there is a async error
@@ -123,7 +129,9 @@ public interface ColumnFamilyManager extends CloseResource {
     }
 
     /**
-     * Saves an entities asynchronously with time to live
+     * Saves an entities asynchronously with time to live, by default it's just run for each saving using
+     * {@link ColumnFamilyManager#saveAsync(ColumnFamilyEntity, TTL)},
+     * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entity to be saved
      * @param ttl      time to live
