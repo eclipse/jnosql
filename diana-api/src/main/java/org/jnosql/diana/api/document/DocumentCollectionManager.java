@@ -24,7 +24,9 @@ import org.jnosql.diana.api.CloseResource;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.TTL;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -105,6 +107,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
+     * @param ttl      time to live
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
@@ -118,6 +121,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
+     * @param ttl      time to live
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
@@ -257,5 +261,28 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws UnsupportedOperationException when there is not support to this resource
      */
     PreparedStatement nativeQueryPrepare(String query) throws UnsupportedOperationException;
+
+    /**
+     * Finds {@link DocumentCollectionEntity} from a Diana Query Language
+     *
+     * @param query Diana query language
+     * @return entities from query
+     * @throws NullPointerException when query is null
+     */
+    default List<DocumentCollectionEntity> query(String query) throws NullPointerException {
+        Objects.requireNonNull(query, "query is required");
+        return Collections.emptyList();
+    }
+
+    /**
+     * Inserts or updates documents from Diana Query Language
+     *
+     * @param query Diana query language
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not support async save
+     */
+    default void insert(String query) throws NullPointerException, ExecuteAsyncQueryException, UnsupportedOperationException {
+        Objects.requireNonNull(query, "query is required");
+    }
 
 }
