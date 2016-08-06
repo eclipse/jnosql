@@ -22,6 +22,7 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.CloseResource;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
+import org.jnosql.diana.api.TTL;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -51,6 +52,25 @@ public interface DocumentCollectionManager extends CloseResource {
     void saveAsync(DocumentCollectionEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
+     * Saves document collection entity with time to live
+     *
+     * @param entity entity to be saved
+     * @param ttl    the time to live
+     * @return the entity saved
+     */
+    DocumentCollectionEntity save(DocumentCollectionEntity entity, TTL ttl);
+
+    /**
+     * Saves an entity asynchronously with time to live
+     *
+     * @param entity entity to be saved
+     * @param ttl    the time to live
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    void saveAsync(DocumentCollectionEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+
+    /**
      * Saves an entity asynchronously
      *
      * @param entity   entity to be saved
@@ -60,6 +80,19 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     void saveAsync(DocumentCollectionEntity entity, Consumer<DocumentCollectionEntity> callBack) throws
+            ExecuteAsyncQueryException, UnsupportedOperationException;
+
+    /**
+     * Saves an entity asynchronously with time to live
+     *
+     * @param entity   entity to be saved
+     * @param ttl      time to live
+     * @param callBack the callback, when the process is finished will call this instance returning
+     *                 the saved entity within parameters
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    void saveAsync(DocumentCollectionEntity entity, TTL ttl, Consumer<DocumentCollectionEntity> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
@@ -109,10 +142,11 @@ public interface DocumentCollectionManager extends CloseResource {
 
     /**
      * Deletes an entity asynchronously
-     * @param query query to delete an entity
+     *
+     * @param query    query to delete an entity
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the null within parameters
-     * @throws ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to delete asynchronous
      */
     void deleteAsync(DocumentQuery query, Consumer<Void> callBack) throws ExecuteAsyncQueryException,
@@ -120,6 +154,7 @@ public interface DocumentCollectionManager extends CloseResource {
 
     /**
      * Finds {@link DocumentCollectionEntity} from query
+     *
      * @param query - query to figure out entities
      * @return entities found by query
      */
@@ -127,10 +162,11 @@ public interface DocumentCollectionManager extends CloseResource {
 
     /**
      * Finds {@link DocumentCollectionEntity} from query asynchronously
-     * @param query query to find entities
+     *
+     * @param query    query to find entities
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the result of query within parameters
-     * @throws ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     void findAsync(DocumentQuery query, Consumer<List<DocumentCollectionEntity>> callBack) throws
@@ -138,6 +174,7 @@ public interface DocumentCollectionManager extends CloseResource {
 
     /**
      * Executes a native query from database, this query may be difference between kind of database.
+     *
      * @param query query to be executed
      * @return the result of query
      * @throws UnsupportedOperationException when the database does not have support to run native query
@@ -147,10 +184,11 @@ public interface DocumentCollectionManager extends CloseResource {
     /**
      * Executes a native query from database, this query may be difference between kind of database and run it
      * asynchronously.
-     * @param query query to be executed
+     *
+     * @param query    query to be executed
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the result of query within parameters
-     * @throws ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to run native query async.
      */
     void nativeQueryAsync(String query, Consumer<List<DocumentCollectionEntity>> callBack) throws
@@ -158,6 +196,7 @@ public interface DocumentCollectionManager extends CloseResource {
 
     /**
      * Creates a {@link PreparedStatement} from a native query
+     *
      * @param query a query to be executed
      * @return a {@link PreparedStatement}
      * @throws UnsupportedOperationException when there is not support to this resource
