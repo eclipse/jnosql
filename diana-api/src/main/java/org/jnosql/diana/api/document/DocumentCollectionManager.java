@@ -25,6 +25,7 @@ import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.TTL;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -83,6 +84,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws NullPointerException when entities is null
      */
     default Iterable<DocumentCollectionEntity> save(Iterable<DocumentCollectionEntity> entities) throws NullPointerException {
+        Objects.requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(Collectors.toList());
     }
 
@@ -96,6 +98,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     default void saveAsync(Iterable<DocumentCollectionEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        Objects.requireNonNull(entities, "entities is required");
         StreamSupport.stream(entities.spliterator(), false).forEach(this::saveAsync);
     }
 
@@ -109,6 +112,8 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws NullPointerException when entities is null
      */
     default Iterable<DocumentCollectionEntity> save(Iterable<DocumentCollectionEntity> entities, TTL ttl) throws NullPointerException {
+        Objects.requireNonNull(entities, "entities is required");
+        Objects.requireNonNull(ttl, "ttl is required");
         return StreamSupport.stream(entities.spliterator(), false).map(d -> save(d, ttl)).collect(Collectors.toList());
     }
 
@@ -122,6 +127,8 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     default void saveAsync(Iterable<DocumentCollectionEntity> entities, TTL ttl) {
+        Objects.requireNonNull(entities, "entities is required");
+        Objects.requireNonNull(ttl, "ttl is required");
         StreamSupport.stream(entities.spliterator(), false).forEach(d -> saveAsync(d, ttl));
     }
 
