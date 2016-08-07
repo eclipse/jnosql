@@ -25,7 +25,9 @@ import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.BuiltStatement;
 import com.datastax.driver.core.querybuilder.Insert;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
+import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.column.ColumnFamilyEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnQuery;
@@ -59,8 +61,23 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     }
 
     @Override
+    public ColumnFamilyEntity save(ColumnFamilyEntity entity, TTL ttl) throws NullPointerException {
+        Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.using(QueryBuilder.ttl((int) ttl.toSeconds()));
+        session.execute(insert);
+        return entity;
+    }
+
+    @Override
     public void saveAsync(ColumnFamilyEntity entity) {
         Insert insert = QueryUtils.insert(entity, keyspace);
+        session.executeAsync(insert);
+    }
+
+    @Override
+    public void saveAsync(ColumnFamilyEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.using(QueryBuilder.ttl((int) ttl.toSeconds()));
         session.executeAsync(insert);
     }
 
@@ -69,6 +86,14 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
         Insert insert = QueryUtils.insert(entity, keyspace);
         ResultSetFuture resultSetFuture = session.executeAsync(insert);
         resultSetFuture.addListener(() -> consumer.accept(entity), executor);
+    }
+
+    @Override
+    public void saveAsync(ColumnFamilyEntity entity, TTL ttl, Consumer<ColumnFamilyEntity> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.using(QueryBuilder.ttl((int) ttl.toSeconds()));
+        ResultSetFuture resultSetFuture = session.executeAsync(insert);
+        resultSetFuture.addListener(() -> callBack.accept(entity), executor);
     }
 
     @Override
@@ -115,7 +140,6 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     }
 
 
-
     @Override
     public void findAsync(ColumnQuery query, Consumer<List<ColumnFamilyEntity>> consumer)
             throws ExecuteAsyncQueryException, UnsupportedOperationException {
@@ -147,7 +171,7 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     }
 
     @Override
-    public void close()  {
+    public void close() {
         session.close();
     }
 
