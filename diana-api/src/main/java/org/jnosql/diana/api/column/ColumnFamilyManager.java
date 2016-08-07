@@ -25,6 +25,7 @@ import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.TTL;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -98,6 +99,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws NullPointerException when entities is null
      */
     default Iterable<ColumnFamilyEntity> save(Iterable<ColumnFamilyEntity> entities) throws NullPointerException {
+        Objects.requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(Collectors.toList());
     }
 
@@ -112,6 +114,8 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws NullPointerException when either entity or ttl are null
      */
     default Iterable<ColumnFamilyEntity> save(Iterable<ColumnFamilyEntity> entities, TTL ttl) throws NullPointerException {
+        Objects.requireNonNull(entities, "entities is required");
+        Objects.requireNonNull(ttl, "ttl is required");
         return StreamSupport.stream(entities.spliterator(), false).map(c -> this.save(c, ttl)).collect(Collectors.toList());
     }
 
@@ -125,6 +129,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     default void saveAsync(Iterable<ColumnFamilyEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        Objects.requireNonNull(entities, "entities is required");
         StreamSupport.stream(entities.spliterator(), false).forEach(this::save);
     }
 
@@ -139,6 +144,8 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
     default void saveAsync(Iterable<ColumnFamilyEntity> entities, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        Objects.requireNonNull(entities, "entities is required");
+        Objects.requireNonNull(ttl, "ttl is required");
         StreamSupport.stream(entities.spliterator(), false).forEach(c -> this.save(c, ttl));
     }
 
