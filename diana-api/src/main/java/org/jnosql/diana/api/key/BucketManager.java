@@ -21,9 +21,13 @@ package org.jnosql.diana.api.key;
 
 
 import org.jnosql.diana.api.CloseResource;
+import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.Value;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -122,5 +126,28 @@ public interface BucketManager extends CloseResource {
      * @throws NullPointerException when the key is null
      */
     <K> void remove(Iterable<K> keys) throws NullPointerException;
+
+    /**
+     * Finds {@link KeyValue} from a Diana Query Language
+     *
+     * @param query Diana query language
+     * @return entities from query
+     * @throws NullPointerException when query is null
+     */
+    default List<KeyValue> query(String query) throws NullPointerException {
+        Objects.requireNonNull(query, "query is required");
+        return Collections.emptyList();
+    }
+
+    /**
+     * Inserts or updates key-values from Diana Query Language
+     *
+     * @param query Diana query language
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not support async save
+     */
+    default void insert(String query) throws NullPointerException, ExecuteAsyncQueryException, UnsupportedOperationException {
+        Objects.requireNonNull(query, "query is required");
+    }
 
 }
