@@ -24,6 +24,7 @@ import org.jnosql.diana.api.CloseResource;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.TTL;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -270,5 +271,28 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws UnsupportedOperationException the there is not support to query
      */
     PreparedStatement nativeQueryPrepare(String query) throws UnsupportedOperationException;
+
+    /**
+     * Finds {@link ColumnFamilyEntity} from a Diana Query Language
+     *
+     * @param query Diana query language
+     * @return entities from query
+     * @throws NullPointerException when query is null
+     */
+    default List<ColumnFamilyEntity> query(String query) throws NullPointerException {
+        Objects.requireNonNull(query, "query is required");
+        return Collections.emptyList();
+    }
+
+    /**
+     * Inserts or updates column families from Diana Query Language
+     *
+     * @param query Diana query language
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not support async save
+     */
+    default void insert(String query) throws NullPointerException, ExecuteAsyncQueryException, UnsupportedOperationException {
+        Objects.requireNonNull(query, "query is required");
+    }
 
 }
