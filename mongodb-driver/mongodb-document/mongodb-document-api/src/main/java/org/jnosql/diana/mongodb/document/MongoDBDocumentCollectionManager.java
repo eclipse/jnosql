@@ -206,6 +206,11 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
 
     private Object convert(Value value) {
         Object val = value.get();
+        if (val instanceof org.jnosql.diana.api.document.Document) {
+            org.jnosql.diana.api.document.Document subDocument = (org.jnosql.diana.api.document.Document) val;
+            Object converted = convert(subDocument.getValue());
+            return new Document(subDocument.getName(), converted);
+        }
         if (writerField.isCompatible(val.getClass())) {
             return writerField.write(val);
         }
