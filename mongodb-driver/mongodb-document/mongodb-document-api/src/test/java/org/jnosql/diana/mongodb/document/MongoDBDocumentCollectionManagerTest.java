@@ -19,6 +19,7 @@
 
 package org.jnosql.diana.mongodb.document;
 
+import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.document.*;
 import org.junit.Assert;
 import org.junit.Before;
@@ -106,6 +107,22 @@ public class MongoDBDocumentCollectionManagerTest {
         query.addCondition(DocumentCondition.eq(id.get()));
         entityManager.deleteAsync(query);
 
+    }
+
+    @Test
+    public void shouldSaveSubDocument() {
+        DocumentCollectionEntity entity = getEntity();
+        entity.add(Document.of("phones", Document.of("mobile", "1231231")));
+        DocumentCollectionEntity entitySaved = entityManager.save(entity);
+        Document id = entitySaved.find("_id").get();
+        DocumentQuery query = DocumentQuery.of(COLLECTION_NAME);
+        query.addCondition(DocumentCondition.eq(id));
+        DocumentCollectionEntity entityFound = entityManager.find(query).get(0);
+        Map<String, String> result = entityFound.find("phones").get().getValue().cast();
+        String key = result.keySet().stream().findFirst().get();
+        String value = result.get(key);
+        assertEquals("mobile", key);
+        assertEquals("1231231", value);
     }
 
     private DocumentCollectionEntity getEntity() {
