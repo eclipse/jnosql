@@ -27,6 +27,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.TTL;
+import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.WriterField;
 import org.jnosql.diana.api.document.DocumentCollectionEntity;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
@@ -86,7 +87,7 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
     }
 
     @Override
-    public void saveAsync(DocumentCollectionEntity entity, TTL ttl)  {
+    public void saveAsync(DocumentCollectionEntity entity, TTL ttl) {
 
     }
 
@@ -97,7 +98,7 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
     }
 
     @Override
-    public void saveAsync(DocumentCollectionEntity entity, TTL ttl, Consumer<DocumentCollectionEntity> callBack)  {
+    public void saveAsync(DocumentCollectionEntity entity, TTL ttl, Consumer<DocumentCollectionEntity> callBack) {
 
     }
 
@@ -199,8 +200,16 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
 
     private Document getDocument(DocumentCollectionEntity entity) {
         Document document = new Document();
-        entity.getDocuments().stream().forEach(d -> document.append(d.getName(), d.getValue().get()));
+        entity.getDocuments().stream().forEach(d -> document.append(d.getName(), convert(d.getValue())));
         return document;
+    }
+
+    private Object convert(Value value) {
+        Object val = value.get();
+        if (writerField.isCompatible(val.getClass())) {
+            return writerField.write(val);
+        }
+        return val;
     }
 
     private void saveAsync(DocumentCollectionEntity entity, SingleResultCallback<Void> callBack) {
