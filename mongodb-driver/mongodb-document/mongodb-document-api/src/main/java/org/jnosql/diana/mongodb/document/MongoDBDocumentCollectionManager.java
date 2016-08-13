@@ -26,6 +26,8 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
+import org.jnosql.diana.api.TTL;
+import org.jnosql.diana.api.WriterField;
 import org.jnosql.diana.api.document.DocumentCollectionEntity;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentQuery;
@@ -33,6 +35,7 @@ import org.jnosql.diana.api.document.Documents;
 import org.jnosql.diana.api.document.PreparedStatement;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.jnosql.diana.api.writer.WriterFieldDecorator;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -45,6 +48,8 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
     private final MongoDatabase mongoDatabase;
 
     private final com.mongodb.async.client.MongoDatabase asyncMongoDatabase;
+
+    private final WriterField writerField = WriterFieldDecorator.getInstance();
 
 
     MongoDBDocumentCollectionManager(MongoDatabase mongoDatabase,
@@ -70,16 +75,30 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
 
 
     @Override
-    public void saveAsync(DocumentCollectionEntity entity)
-            throws ExecuteAsyncQueryException, UnsupportedOperationException {
+    public void saveAsync(DocumentCollectionEntity entity) {
         saveAsync(entity, (aVoid, throwable) -> {
         });
+    }
+
+    @Override
+    public DocumentCollectionEntity save(DocumentCollectionEntity entity, TTL ttl) {
+        return null;
+    }
+
+    @Override
+    public void saveAsync(DocumentCollectionEntity entity, TTL ttl)  {
+
     }
 
     @Override
     public void saveAsync(DocumentCollectionEntity entity, Consumer<DocumentCollectionEntity> callBack)
             throws ExecuteAsyncQueryException, UnsupportedOperationException {
         saveAsync(entity, (aVoid, throwable) -> callBack.accept(entity));
+    }
+
+    @Override
+    public void saveAsync(DocumentCollectionEntity entity, TTL ttl, Consumer<DocumentCollectionEntity> callBack)  {
+
     }
 
 
@@ -123,7 +142,7 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
     }
 
     @Override
-    public void deleteAsync(DocumentQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+    public void deleteAsync(DocumentQuery query) {
         deleteAsync(query, (deleteResult, throwable) -> {
         });
     }
