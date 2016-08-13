@@ -19,22 +19,24 @@
 
 package org.jnosql.diana.hazelcast.key;
 
+import com.hazelcast.core.IMap;
+import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValue;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 
 class HazelCastKeyValueEntityManager implements BucketManager {
 
-    private final Map map;
+    private final IMap map;
 
-    HazelCastKeyValueEntityManager(Map map) {
+    HazelCastKeyValueEntityManager(IMap map) {
         this.map = map;
     }
 
@@ -49,8 +51,18 @@ class HazelCastKeyValueEntityManager implements BucketManager {
     }
 
     @Override
+    public <K> void put(KeyValue<K> keyValue, TTL ttl) {
+        map.put(keyValue.getKey(), keyValue.getValue().get(), ttl.toMillis(), TimeUnit.MILLISECONDS);
+    }
+
+    @Override
     public <K> void put(Iterable<KeyValue<K>> keyValues) throws NullPointerException {
         StreamSupport.stream(keyValues.spliterator(), false).forEach(this::put);
+    }
+
+    @Override
+    public <K> void put(Iterable<KeyValue<K>> keyValues, TTL ttl) throws NullPointerException, UnsupportedOperationException {
+        StreamSupport.stream(keyValues.spliterator(), false).forEach(kv -> this.put(kv, ttl));
     }
 
     @Override
@@ -69,7 +81,7 @@ class HazelCastKeyValueEntityManager implements BucketManager {
     }
 
     @Override
-    public <K>  void remove(K key) {
+    public <K> void remove(K key) {
         map.remove(key);
     }
 
@@ -79,6 +91,6 @@ class HazelCastKeyValueEntityManager implements BucketManager {
     }
 
     @Override
-    public void close()  {
+    public void close() {
     }
 }
