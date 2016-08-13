@@ -22,6 +22,7 @@ package org.jnosql.diana.redis.key;
 
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
+import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValue;
@@ -62,8 +63,23 @@ class RedisKeyValueEntityManager implements BucketManager {
     }
 
     @Override
+    public <K> void put(KeyValue<K> keyValue, TTL ttl) throws NullPointerException, UnsupportedOperationException {
+        put(keyValue);
+        String valideKey = createKeyWithNameSpace(keyValue.getKey().toString(), nameSpace);
+        jedis.expire(valideKey, (int) ttl.toSeconds());
+    }
+
+    @Override
     public <K> void put(Iterable<KeyValue<K>> keyValues) throws NullPointerException {
         StreamSupport.stream(keyValues.spliterator(), false).forEach(this::put);
+    }
+
+    @Override
+    public <K> void put(Iterable<KeyValue<K>> keyValues, TTL ttl) throws NullPointerException, UnsupportedOperationException {
+        StreamSupport.stream(keyValues.spliterator(), false).forEach(this::put);
+        StreamSupport.stream(keyValues.spliterator(), false).map(KeyValue::getKey)
+                .map(k -> createKeyWithNameSpace(k.toString(), nameSpace))
+                .forEach(k -> jedis.expire(k, (int) ttl.toSeconds()));
     }
 
     @Override
