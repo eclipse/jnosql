@@ -83,12 +83,12 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
 
     @Override
     public DocumentCollectionEntity save(DocumentCollectionEntity entity, TTL ttl) {
-        return null;
+        throw new UnsupportedOperationException("MongoDB does not support save with TTL");
     }
 
     @Override
     public void saveAsync(DocumentCollectionEntity entity, TTL ttl) {
-
+        throw new UnsupportedOperationException("MongoDB does not support saveAsync with TTL");
     }
 
     @Override
@@ -99,7 +99,7 @@ class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
 
     @Override
     public void saveAsync(DocumentCollectionEntity entity, TTL ttl, Consumer<DocumentCollectionEntity> callBack) {
-
+        throw new UnsupportedOperationException("MongoDB does not support saveAsync with TTL");
     }
 
 
