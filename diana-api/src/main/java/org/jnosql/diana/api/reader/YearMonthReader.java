@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- 
+
 package org.jnosql.diana.api.reader;
 
 import java.time.YearMonth;
@@ -26,22 +26,22 @@ import org.jnosql.diana.api.ReaderField;
 /**
  * Class to reads and converts to {@link YearMonth}, first it verify if is YearMonth if yes return itself
  * otherwise convert to {@link String}
- * 
+ *
  * @author Daniel Dias
  */
 public final class YearMonthReader implements ReaderField {
 
-	@Override
-	public boolean isCompatible(Class clazz) {
-		return YearMonth.class.equals(clazz);
-	}
+    @Override
+    public boolean isCompatible(Class clazz) {
+        return YearMonth.class.equals(clazz);
+    }
 
-	@Override
-	public <T> T read(Class<T> clazz, Object value) {
-		if (YearMonth.class.isInstance(value)) {
-			return (T) value;
-		}
-		YearMonth yearMonth = YearMonth.parse(value.toString());
-		return (T) yearMonth;
-	}
+    @Override
+    public <T> T read(Class<T> clazz, Object value) {
+        if (YearMonth.class.isInstance(value)) {
+            return (T) value;
+        }
+        YearMonth yearMonth = YearMonth.parse(value.toString());
+        return (T) yearMonth;
+    }
 }
