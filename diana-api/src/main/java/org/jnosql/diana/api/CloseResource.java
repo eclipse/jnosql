@@ -21,7 +21,6 @@ package org.jnosql.diana.api;
 
 /**
  * A wrapper to {@link AutoCloseable}
- * @author Otávio Santana
  */
 public interface CloseResource extends AutoCloseable {
 

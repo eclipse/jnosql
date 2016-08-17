@@ -23,8 +23,6 @@ import java.util.Map;
 
 /**
  * The diana configuration to create a {@link ColumnFamilyManagerFactory}
- *
- * @author Otávio Santana
  */
 public interface ColumnConfiguration {
 

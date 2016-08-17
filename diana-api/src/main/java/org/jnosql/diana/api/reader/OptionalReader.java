@@ -26,8 +26,6 @@ import java.util.Optional;
 
 /**
  * Class to reads and converts to {@link Optional}
- *
- * @author Otávio Santana
  */
 public final class OptionalReader implements ReaderField {
 

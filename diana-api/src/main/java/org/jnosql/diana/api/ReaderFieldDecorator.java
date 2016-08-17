@@ -26,8 +26,6 @@ import java.util.ServiceLoader;
 
 /**
  * Decorators of all {@link ReaderField} supported by Diana
- *
- * @author Otávio Santana
  * @see ReaderField
  */
 final class ReaderFieldDecorator implements ReaderField {

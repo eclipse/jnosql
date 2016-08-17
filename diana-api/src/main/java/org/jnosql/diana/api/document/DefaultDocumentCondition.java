@@ -26,7 +26,6 @@ import java.util.Objects;
 
 /**
  * The default implementation of {@link DocumentCondition}
- * @author Otávio Santana
  */
 class DefaultDocumentCondition implements DocumentCondition {
 

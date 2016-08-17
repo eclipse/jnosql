@@ -25,7 +25,6 @@ package org.jnosql.diana.api;
  * so if there's a new type that the current API doesn't support just creates a new implementation and
  * load it by service load process.
  *
- * @author Otávio Santana
  * @see Value
  * @see Value#get(Class)
  */

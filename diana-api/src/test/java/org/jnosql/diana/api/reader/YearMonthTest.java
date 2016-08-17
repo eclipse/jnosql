@@ -29,9 +29,6 @@ import org.jnosql.diana.api.ReaderField;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Daniel Dias
- */
 public class YearMonthTest {
 	
 	private ReaderField readerField;

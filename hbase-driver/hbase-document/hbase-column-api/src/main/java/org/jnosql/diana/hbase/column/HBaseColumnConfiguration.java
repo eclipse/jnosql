@@ -33,8 +33,6 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Configuration to HBase
- *
- * @author Otávio Santana
  */
 public class HBaseColumnConfiguration implements ColumnConfiguration {
 

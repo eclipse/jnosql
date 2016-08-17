@@ -25,8 +25,6 @@ import org.jnosql.diana.api.ReaderField;
 /**
  * Class reader for {@link Number}, this converter first verify if the object is a Number instance,
  * if it will return itself, otherwise convert to String and then to {@link Double}
- *
- * @author Otávio Santana
  */
 public final class NumberReader implements ReaderField {
 

@@ -31,8 +31,6 @@ import java.util.Optional;
  * In analogy with relational databases, a column family is as a "table", each key-value pair being a "row".
  * Each column is a tuple (triplet) consisting of a column name, a value, and a timestamp.
  * In a relational database table, this data would be grouped together within a table with other non-related data.
- *
- * @author Otávio Santana
  */
 public interface ColumnFamilyEntity extends Serializable {
 

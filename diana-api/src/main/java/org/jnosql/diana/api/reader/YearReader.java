@@ -26,8 +26,6 @@ import java.time.Year;
 /**
  * Class to reads and converts to {@link Year}, first it verify if is Year if yes return itself
  * otherwise convert to {@link String}
- *
- * @author Marcelo de Souza
  */
 public final class YearReader implements ReaderField {
 

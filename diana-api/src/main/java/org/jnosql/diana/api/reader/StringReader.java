@@ -24,8 +24,6 @@ import org.jnosql.diana.api.ReaderField;
 
 /**
  * Class to reads and converts to both {@link String} and {@link CharSequence}.
- *
- * @author Otávio Santana
  */
 public final class StringReader implements ReaderField {
 

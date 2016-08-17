@@ -30,8 +30,6 @@ import java.util.function.Consumer;
 /**
  * Represents a prepared statement, a query with bound variables that has been
  * prepared (pre-parsed) by the database.
- *
- * @author Otávio Santana
  */
 public interface PreparedStatement extends CloseResource {
 

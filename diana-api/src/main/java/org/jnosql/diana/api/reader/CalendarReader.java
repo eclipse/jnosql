@@ -27,8 +27,6 @@ import java.util.Date;
 /**
  * Class to reads and converts to {@link Calendar}, first it verify if is Calendar if yes return itself then verifies
  * if is {@link Long} and use {@link Calendar#setTimeInMillis(long)}} otherwise convert to {@link String}
- *
- * @author Marcelo de Souza
  */
 public final class CalendarReader implements ReaderField {
 

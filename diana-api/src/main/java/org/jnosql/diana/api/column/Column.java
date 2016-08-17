@@ -27,8 +27,6 @@ import java.io.Serializable;
 /**
  * A Column Family entity unit, it is a tuple (pair) that consists of a key-value pair,
  * where the key is mapped to a value.
- *
- * @author Otávio Santana
  */
 public interface Column extends Serializable {
 

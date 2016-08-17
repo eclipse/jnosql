@@ -23,8 +23,6 @@ import java.util.Map;
 
 /**
  * The diana configuration to create a {@link DocumentCollectionManagerFactory}
- *
- * @author Otávio Santana
  */
 public interface DocumentConfiguration {
 

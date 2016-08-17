@@ -43,6 +43,5 @@
  * object-relational mapping. This makes document stores attractive
  * for programming web applications, which are subject to continual change in place, and where speed of deployment
  * is an important issue.
- * @author Otávio Santana
  */
 package org.jnosql.diana.api.document;

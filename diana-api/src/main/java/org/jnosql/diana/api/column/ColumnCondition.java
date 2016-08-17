@@ -32,8 +32,6 @@ import static org.jnosql.diana.api.Condition.LIKE;
 
 /**
  * An unit condition  to run a column family query
- *
- * @author Otávio Santana
  * @see ColumnFamilyManager#find(ColumnQuery)
  */
 public interface ColumnCondition {
