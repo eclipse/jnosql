@@ -30,7 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author Daniel.Dias
+ * @author Daniel Dias
  */
 public class YearMonthTest {
 	

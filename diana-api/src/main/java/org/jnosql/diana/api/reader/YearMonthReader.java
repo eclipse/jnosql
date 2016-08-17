@@ -27,7 +27,7 @@ import org.jnosql.diana.api.ReaderField;
  * Class to reads and converts to {@link YearMonth}, first it verify if is YearMonth if yes return itself
  * otherwise convert to {@link String}
  * 
- * @author Daniel.Dias
+ * @author Daniel Dias
  */
 public final class YearMonthReader implements ReaderField {
 
