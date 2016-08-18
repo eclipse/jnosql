@@ -30,6 +30,7 @@ org.jnosql.diana.api.reader.EnumReader
 org.jnosql.diana.api.reader.FloatReader
 org.jnosql.diana.api.reader.IntegerReader
 org.jnosql.diana.api.reader.LocalDateReader
+org.jnosql.diana.api.reader.LocalDateTimeReader
 org.jnosql.diana.api.reader.LongReader
 org.jnosql.diana.api.reader.NumberReader
 org.jnosql.diana.api.reader.OptionalReader
