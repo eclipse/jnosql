@@ -87,7 +87,7 @@ public class DocumentQuery {
      * Add column to be either retrieve or deleted, if empty will either returns
      * all elements in a find query or delete all elements in a column family entity.
      *
-     * @param document
+     * @param document the document name
      * @return the same instance with a column added
      */
     public DocumentQuery addColumn(String document) throws NullPointerException {

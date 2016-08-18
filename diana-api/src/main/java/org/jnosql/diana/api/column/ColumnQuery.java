@@ -87,7 +87,7 @@ public class ColumnQuery {
      * Add column to be either retrieve or deleted, if empty will either returns
      * all elements in a find query or delete all elements in a column family entity.
      *
-     * @param column
+     * @param column the column name
      * @return the same instance with a column added
      */
     public ColumnQuery addColumn(String column) throws NullPointerException {
