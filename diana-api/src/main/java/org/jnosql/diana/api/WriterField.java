@@ -26,7 +26,6 @@ package org.jnosql.diana.api;
  *
  * @param <T> current type
  * @param <S> the converted type
- * @author Otávio Santana
  */
 public interface WriterField<T, S> {
 

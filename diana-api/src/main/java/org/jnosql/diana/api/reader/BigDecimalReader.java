@@ -29,7 +29,6 @@ import java.math.BigDecimal;
  * if is {@link Number} and use {@link Number#doubleValue()} otherwise convert to {@link String}
  * and then {@link BigDecimal}
  *
- * @author Otávio Santana
  */
 public final class BigDecimalReader implements ReaderField {
 

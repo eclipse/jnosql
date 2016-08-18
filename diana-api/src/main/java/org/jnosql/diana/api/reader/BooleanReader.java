@@ -27,7 +27,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Class to reads and converts to both {@link Boolean} and {@link AtomicBoolean}
  *
- * @author Otávio Santana
  */
 public final class BooleanReader implements ReaderField {
 

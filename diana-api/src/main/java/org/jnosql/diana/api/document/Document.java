@@ -27,8 +27,6 @@ import java.io.Serializable;
 /**
  * A Document Collection Entity unit, it is a tuple (pair) that consists of a key-value pair,
  * where the key is mapped to a value.
- *
- * @author Otávio Santana
  */
 public interface Document extends Serializable {
 

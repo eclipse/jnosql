@@ -28,8 +28,6 @@ import java.util.concurrent.atomic.AtomicLong;
  * Class to reads and converts to {@link AtomicLong}, first it verify if is Double if yes return itself then verifies
  * if is {@link Number} and use {@link Number#longValue()} otherwise convert to {@link String}
  * and then {@link AtomicLong}
- *
- * @author Otávio Santana
  */
 public final class AtomicLongReader implements ReaderField {
 

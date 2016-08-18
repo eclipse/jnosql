@@ -26,6 +26,5 @@
  * database table, this data would be grouped together within a table with other non-related data.
  * Ref: https://en.wikipedia.org/wiki/Column_family
  *
- * @author Otávio Santana
  */
 package org.jnosql.diana.api.column;

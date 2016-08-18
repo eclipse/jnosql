@@ -34,7 +34,6 @@ import java.util.Optional;
  * Interface used to interact with the persistence context to {@link KeyValue}
  * The BucketManager API is used to create and remove persistent {@link KeyValue}.
  *
- * @author Otávio Santana
  */
 public interface BucketManager extends CloseResource {
 

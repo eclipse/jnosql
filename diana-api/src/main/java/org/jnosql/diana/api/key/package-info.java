@@ -30,7 +30,5 @@
  * Key-value stores can use consistency models ranging from eventual consistency to serializability.
  * Some databases support ordering of keys. There are various hardware implementations, and some users maintain
  * data in memory (RAM), while others employ solid-state drives or rotating disks.
- *
- * @author Otávio Santana
  */
 package org.jnosql.diana.api.key;

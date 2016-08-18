@@ -27,7 +27,6 @@ import java.util.Objects;
  * -- The name - the field's name to be sorted
  * -- The type - the way to be sorted
  *
- * @author Otávio Santana
  * @see Sort#of(String, SortType)
  * @see SortType
  */
@@ -91,7 +90,6 @@ public class Sort {
     /**
      * The way to be sorted.
      *
-     * @author Otávio Santana
      * @see Sort
      */
     public enum SortType {

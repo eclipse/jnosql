@@ -35,8 +35,6 @@ import java.util.stream.StreamSupport;
  * Interface used to interact with the persistence context to {@link ColumnFamilyEntity}
  * The ColumnFamilyManager API is used to create and remove persistent {@link ColumnFamilyEntity} instances,
  * to find entities by their primary key, and to query over entities.
- *
- * @author Otávio Santana
  */
 public interface ColumnFamilyManager extends CloseResource {
 

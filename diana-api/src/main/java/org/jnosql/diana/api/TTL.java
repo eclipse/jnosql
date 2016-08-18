@@ -23,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Entity that defines time to live an entity
- *
- * @author Otávio Santana
  */
 public interface TTL extends Serializable {
 

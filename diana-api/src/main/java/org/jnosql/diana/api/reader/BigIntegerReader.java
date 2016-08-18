@@ -29,7 +29,6 @@ import java.math.BigInteger;
  * if is {@link Number} and use {@link Number#longValue()} otherwise convert to {@link String}
  * and then {@link BigInteger}
  *
- * @author Otávio Santana
  */
 public final class BigIntegerReader implements ReaderField {
 

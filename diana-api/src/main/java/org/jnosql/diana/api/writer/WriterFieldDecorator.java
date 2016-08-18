@@ -27,8 +27,6 @@ import java.util.ServiceLoader;
 
 /**
  * Decorators of all {@link WriterField} supported by Diana
- *
- * @author Otávio Santana
  * @see WriterField
  */
 public final class WriterFieldDecorator implements WriterField {

@@ -26,8 +26,6 @@ import static java.lang.Character.MIN_VALUE;
 
 /**
  * Class reader for {@link Character}
- *
- * @author Otávio Santana
  */
 public final class CharacterReader implements ReaderField {
 

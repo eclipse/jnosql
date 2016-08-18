@@ -26,7 +26,6 @@ import org.jnosql.diana.api.ReaderField;
  * Class to reads and converts to {@link Integer}, first it verify if is Double if yes return itself then verifies if is
  * {@link Number} and use {@link Number#intValue()} otherwise convert to {@link String} and then {@link Integer}
  *
- * @author Otávio Santana
  */
 public final class IntegerReader implements ReaderField {
 

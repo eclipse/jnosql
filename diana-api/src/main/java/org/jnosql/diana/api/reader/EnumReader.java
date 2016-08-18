@@ -29,7 +29,6 @@ import java.util.List;
 /**
  * Class to reads and converts to {@link Enum}
  *
- * @author Otávio Santana
  */
 public final class EnumReader implements ReaderField {
 

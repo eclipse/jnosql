@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 
 /**
  * Utilitarian class to {@link Column}
- * @author Otavio Santana
  */
 public final class Columns {
 

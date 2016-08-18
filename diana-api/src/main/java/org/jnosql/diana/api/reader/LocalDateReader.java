@@ -30,7 +30,6 @@ import java.util.Date;
 /**
  * Class to reads and converts to {@link LocalDate} type
  *
- * @author Daniel Cunha - danielsoro@apache.org
  */
 public final class LocalDateReader implements ReaderField {
 

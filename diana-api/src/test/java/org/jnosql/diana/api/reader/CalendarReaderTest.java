@@ -27,9 +27,6 @@ import java.util.Calendar;
 
 import static org.junit.Assert.*;
 
-/**
- * @author Marcelo de Souza
- */
 public class CalendarReaderTest {
 
     private ReaderField readerField;

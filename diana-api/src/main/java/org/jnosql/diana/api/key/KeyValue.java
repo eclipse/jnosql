@@ -28,7 +28,6 @@ import java.io.Serializable;
  * A bucket unit, it's a tuple that contains key its respective value.
  *
  * @param <T> the key type
- * @author Otávio Santana
  */
 public interface KeyValue<T> extends Serializable {
 

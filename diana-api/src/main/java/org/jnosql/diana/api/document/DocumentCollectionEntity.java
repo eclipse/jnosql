@@ -33,8 +33,6 @@ import java.util.Optional;
  * XML databases are a subclass of document-oriented databases that are optimized to work with XML documents.
  * Graph databases are similar, but add another layer, the relationship,
  * which allows them to link documents for rapid traversal.
- *
- * @author Otávio Santana
  */
 public interface DocumentCollectionEntity extends Serializable {
 

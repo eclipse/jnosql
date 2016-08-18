@@ -31,8 +31,6 @@ import java.util.Set;
  * {@link BucketManager} factory.
  * When the application has finished using the bucket manager factory, and/or at application shutdown,
  * the application should close the column family manager factory.
- *
- * @author Otávio Santana
  */
 public interface BucketManagerFactory extends CloseResource {
 

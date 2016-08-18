@@ -25,8 +25,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * The default implementation to {@link TTL}
- *
- * @author Otávio Santana
  */
 class DefaultTTL implements TTL {
 
