@@ -30,9 +30,6 @@ import java.util.Date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by otaviojava on 18/08/16.
- */
 public class LocalDateTimeReaderTest {
 
     private LocalDateTimeReader dateReader;
