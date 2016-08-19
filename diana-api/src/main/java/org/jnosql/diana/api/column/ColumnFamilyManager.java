@@ -27,6 +27,7 @@ import org.jnosql.diana.api.TTL;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -226,6 +227,18 @@ public interface ColumnFamilyManager extends CloseResource {
      * @return entities found by query
      */
     List<ColumnFamilyEntity> find(ColumnQuery query);
+
+    default Optional<ColumnFamilyEntity> singleResult(ColumnQuery query) {
+        List<ColumnFamilyEntity> entities = find(query);
+        if (entities.isEmpty()) {
+            return Optional.empty();
+        }
+        if (entities.size() == 1) {
+            return Optional.of(entities.get(0));
+        }
+
+        throw new IllegalStateException("The query returns more than one entity, query: " + query);
+    }
 
     /**
      * Finds {@link ColumnFamilyEntity} from query asynchronously
