@@ -223,9 +223,18 @@ public interface DocumentCollectionManager extends CloseResource {
      *
      * @param query - query to figure out entities
      * @return entities found by query
+     * @throws NullPointerException when query is null
      */
-    List<DocumentCollectionEntity> find(DocumentQuery query);
+    List<DocumentCollectionEntity> find(DocumentQuery query) throws NullPointerException;
 
+    /**
+     * Returns a single entity from query
+     *
+     * @param query - query to figure out entities
+     * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
+     * @throws IllegalStateException when the result has more than 1 entity
+     * @throws NullPointerException  when query is null
+     */
     default Optional<DocumentCollectionEntity> singleResult(DocumentQuery query) {
         List<DocumentCollectionEntity> entities = find(query);
         if (entities.isEmpty()) {
