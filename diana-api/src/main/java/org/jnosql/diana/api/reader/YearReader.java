@@ -24,7 +24,7 @@ import org.jnosql.diana.api.ReaderField;
 import java.time.Year;
 
 /**
- * Class to reads and converts to {@link Year}, first it verify if is Year if yes return itself
+ * Class to read and convert to {@link Year}, first it verifies if is Year if yes return itself
  * otherwise convert to {@link String} and then {@link Year}
  */
 public final class YearReader implements ReaderField {
