@@ -22,6 +22,7 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.CloseResource;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
+import org.jnosql.diana.api.NonUniqueResultException;
 import org.jnosql.diana.api.TTL;
 
 import java.util.Collections;
@@ -234,10 +235,10 @@ public interface ColumnFamilyManager extends CloseResource {
      *
      * @param query - query to figure out entities
      * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
-     * @throws IllegalStateException when the result has more than 1 entity
+     * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException  when query is null
      */
-    default Optional<ColumnFamilyEntity> singleResult(ColumnQuery query) throws IllegalStateException, NullPointerException {
+    default Optional<ColumnFamilyEntity> singleResult(ColumnQuery query) throws NonUniqueResultException, NullPointerException {
         List<ColumnFamilyEntity> entities = find(query);
         if (entities.isEmpty()) {
             return Optional.empty();
@@ -246,7 +247,7 @@ public interface ColumnFamilyManager extends CloseResource {
             return Optional.of(entities.get(0));
         }
 
-        throw new IllegalStateException("The query returns more than one entity, query: " + query);
+        throw new NonUniqueResultException("The query returns more than one entity, query: " + query);
     }
 
     /**
