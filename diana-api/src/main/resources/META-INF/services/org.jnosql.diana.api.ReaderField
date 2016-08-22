@@ -38,3 +38,4 @@ org.jnosql.diana.api.reader.ShortReader
 org.jnosql.diana.api.reader.StringReader
 org.jnosql.diana.api.reader.YearMonthReader
 org.jnosql.diana.api.reader.YearReader
+org.jnosql.diana.api.reader.ZonedDateTimeReader
