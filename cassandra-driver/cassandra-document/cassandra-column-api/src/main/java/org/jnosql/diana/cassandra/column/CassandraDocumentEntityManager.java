@@ -20,12 +20,14 @@
 package org.jnosql.diana.cassandra.column;
 
 
+import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.BuiltStatement;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
+import java.util.Objects;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.column.ColumnFamilyEntity;
@@ -60,9 +62,24 @@ public class CassandraDocumentEntityManager implements ColumnFamilyManager {
         return entity;
     }
 
+    public ColumnFamilyEntity save(ColumnFamilyEntity entity, ConsistencyLevel level) throws NullPointerException {
+        Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
+        session.execute(insert);
+        return entity;
+    }
+
     @Override
     public ColumnFamilyEntity save(ColumnFamilyEntity entity, TTL ttl) throws NullPointerException {
         Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.using(QueryBuilder.ttl((int) ttl.toSeconds()));
+        session.execute(insert);
+        return entity;
+    }
+
+    public ColumnFamilyEntity save(ColumnFamilyEntity entity, TTL ttl, ConsistencyLevel level) throws NullPointerException {
+        Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
         insert.using(QueryBuilder.ttl((int) ttl.toSeconds()));
         session.execute(insert);
         return entity;
