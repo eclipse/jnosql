@@ -51,6 +51,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CassandraDocumentEntityManagerTest {
 
+    public static final ConsistencyLevel CONSISTENCY_LEVEL = ConsistencyLevel.ONE;
     private CassandraDocumentEntityManager columnEntityManager;
 
     @Before
@@ -93,13 +94,19 @@ public class CassandraDocumentEntityManagerTest {
     @Test
     public void shouldInsertColumnsWithConsistencyLevel() {
         ColumnFamilyEntity columnEntity = getColumnFamily();
-        columnEntityManager.save(columnEntity, ConsistencyLevel.ONE);
+        columnEntityManager.save(columnEntity, CONSISTENCY_LEVEL);
     }
 
     @Test
     public void shouldInsertColumnsAsync() {
         ColumnFamilyEntity columnEntity = getColumnFamily();
         columnEntityManager.saveAsync(columnEntity);
+    }
+
+    @Test
+    public void shouldInsertColumnsAsyncWithConsistenceLevel() {
+        ColumnFamilyEntity columnEntity = getColumnFamily();
+        columnEntityManager.saveAsync(columnEntity, CONSISTENCY_LEVEL);
     }
 
 
