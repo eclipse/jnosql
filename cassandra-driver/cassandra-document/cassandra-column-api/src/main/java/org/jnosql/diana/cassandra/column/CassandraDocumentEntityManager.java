@@ -180,11 +180,27 @@ public class CassandraDocumentEntityManager implements ColumnFamilyManager {
                 .collect(Collectors.toList());
     }
 
+    public List<ColumnFamilyEntity> find(ColumnQuery query, ConsistencyLevel level) {
+        BuiltStatement select = QueryUtils.add(query, keyspace);
+        select.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
+        ResultSet resultSet = session.execute(select);
+        return resultSet.all().stream().map(row -> CassandraConverter.toDocumentEntity(row))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public void findAsync(ColumnQuery query, Consumer<List<ColumnFamilyEntity>> consumer)
             throws ExecuteAsyncQueryException, UnsupportedOperationException {
         BuiltStatement select = QueryUtils.add(query, keyspace);
+        ResultSetFuture resultSet = session.executeAsync(select);
+        CassandraReturnQueryAsync executeAsync = new CassandraReturnQueryAsync(resultSet, consumer);
+        resultSet.addListener(executeAsync, executor);
+    }
+
+    public void findAsync(ColumnQuery query, ConsistencyLevel level, Consumer<List<ColumnFamilyEntity>> consumer)
+            throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        BuiltStatement select = QueryUtils.add(query, keyspace);
+        select.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
         ResultSetFuture resultSet = session.executeAsync(select);
         CassandraReturnQueryAsync executeAsync = new CassandraReturnQueryAsync(resultSet, consumer);
         resultSet.addListener(executeAsync, executor);
