@@ -23,8 +23,10 @@ import java.util.Map;
 
 /**
  * The diana configuration to create a {@link ColumnFamilyManagerFactory}
+ *
+ * @param <T> the ColumnFamilyManagerFactory type
  */
-public interface ColumnConfiguration {
+public interface ColumnConfiguration<T extends ColumnFamilyManagerFactory> {
 
     /**
      * Reads configuration either from default configuration or a file defined by NoSQL
@@ -32,5 +34,5 @@ public interface ColumnConfiguration {
      *
      * @return a {@link ColumnFamilyManagerFactory}
      */
-    ColumnFamilyManagerFactory getManagerFactory();
+    T getManagerFactory();
 }
