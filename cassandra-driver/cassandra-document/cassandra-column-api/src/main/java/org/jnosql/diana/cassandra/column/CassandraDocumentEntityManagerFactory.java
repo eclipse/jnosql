@@ -22,11 +22,9 @@ package org.jnosql.diana.cassandra.column;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
-import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
-
 import java.util.List;
 import java.util.concurrent.Executor;
+import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
 
 public class CassandraDocumentEntityManagerFactory implements ColumnFamilyManagerFactory<CassandraDocumentEntityManager> {
 

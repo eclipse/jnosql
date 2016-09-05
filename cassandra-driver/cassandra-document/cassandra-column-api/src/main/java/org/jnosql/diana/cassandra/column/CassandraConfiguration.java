@@ -21,9 +21,6 @@ package org.jnosql.diana.cassandra.column;
 
 
 import com.datastax.driver.core.Cluster;
-import org.jnosql.diana.api.column.ColumnConfiguration;
-import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -33,6 +30,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+import org.jnosql.diana.api.column.ColumnConfiguration;
 
 public class CassandraConfiguration implements ColumnConfiguration<CassandraDocumentEntityManagerFactory> {
 
