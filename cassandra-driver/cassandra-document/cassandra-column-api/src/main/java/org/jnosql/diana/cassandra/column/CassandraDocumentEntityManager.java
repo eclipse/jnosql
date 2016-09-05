@@ -38,7 +38,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-class CassandraDocumentEntityManager implements ColumnFamilyManager {
+public class CassandraDocumentEntityManager implements ColumnFamilyManager {
 
 
     private final Session session;

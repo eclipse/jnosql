@@ -34,12 +34,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-public class CassandraConfiguration implements ColumnConfiguration {
+public class CassandraConfiguration implements ColumnConfiguration<CassandraDocumentEntityManagerFactory> {
 
     private static final String CASSANDRA_FILE_CONFIGURATION = "diana-cassandra.properties";
 
-    @Override
-    public ColumnFamilyManagerFactory getManagerFactory(Map<String, String> configurations) {
+    public CassandraDocumentEntityManagerFactory getManagerFactory(Map<String, String> configurations) {
         Objects.requireNonNull(configurations);
         List<String> nodes = configurations.keySet().stream().filter(s -> s.startsWith("cassandra-hoster"))
                 .map(configurations::get).collect(Collectors.toList());
@@ -54,7 +53,7 @@ public class CassandraConfiguration implements ColumnConfiguration {
     }
 
     @Override
-    public ColumnFamilyManagerFactory getManagerFactory() {
+    public CassandraDocumentEntityManagerFactory getManagerFactory() {
 
         try {
             Properties properties = new Properties();

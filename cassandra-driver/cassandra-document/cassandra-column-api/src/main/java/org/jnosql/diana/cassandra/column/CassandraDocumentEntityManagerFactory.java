@@ -28,7 +28,7 @@ import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-class CassandraDocumentEntityManagerFactory implements ColumnFamilyManagerFactory {
+public class CassandraDocumentEntityManagerFactory implements ColumnFamilyManagerFactory<CassandraDocumentEntityManager> {
 
     private final Cluster cluster;
 
@@ -47,7 +47,7 @@ class CassandraDocumentEntityManagerFactory implements ColumnFamilyManagerFactor
     }
 
     @Override
-    public ColumnFamilyManager getColumnEntityManager(String database) {
+    public CassandraDocumentEntityManager getColumnEntityManager(String database) {
         return new CassandraDocumentEntityManager(cluster.connect(database), executor, database);
     }
 
