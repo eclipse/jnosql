@@ -145,12 +145,23 @@ public class CassandraDocumentEntityManager implements ColumnFamilyManager {
     public void delete(ColumnQuery query) {
         BuiltStatement delete = QueryUtils.delete(query, keyspace);
         session.execute(delete);
+    }
 
+    public void delete(ColumnQuery query, ConsistencyLevel level) {
+        BuiltStatement delete = QueryUtils.delete(query, keyspace);
+        delete.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
+        session.execute(delete);
     }
 
     @Override
     public void deleteAsync(ColumnQuery query) {
         BuiltStatement delete = QueryUtils.delete(query, keyspace);
+        session.executeAsync(delete);
+    }
+
+    public void deleteAsync(ColumnQuery query, ConsistencyLevel level) {
+        BuiltStatement delete = QueryUtils.delete(query, keyspace);
+        delete.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
         session.executeAsync(delete);
     }
 
