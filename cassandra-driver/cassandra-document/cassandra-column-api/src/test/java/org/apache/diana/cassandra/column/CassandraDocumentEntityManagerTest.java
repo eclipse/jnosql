@@ -145,11 +145,21 @@ public class CassandraDocumentEntityManagerTest {
     }
 
     @Test
-    public void shouldDeleteColumnFamiliy() {
+    public void shouldDeleteColumnFamily() {
         columnEntityManager.save(getColumnFamily());
         ColumnFamilyEntity.of(COLUMN_FAMILY, singletonList(Columns.of("id", 10L)));
         ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
         columnEntityManager.delete(query);
+        List<ColumnFamilyEntity> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
+        Assert.assertTrue(entities.isEmpty());
+    }
+
+    @Test
+    public void shouldDeleteColumnFamilyWithConsistencyLevel() {
+        columnEntityManager.save(getColumnFamily());
+        ColumnFamilyEntity.of(COLUMN_FAMILY, singletonList(Columns.of("id", 10L)));
+        ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
+        columnEntityManager.delete(query, CONSISTENCY_LEVEL);
         List<ColumnFamilyEntity> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
         Assert.assertTrue(entities.isEmpty());
     }
