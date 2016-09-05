@@ -91,9 +91,22 @@ public class CassandraDocumentEntityManager implements ColumnFamilyManager {
         session.executeAsync(insert);
     }
 
+    public void saveAsync(ColumnFamilyEntity entity, ConsistencyLevel level) {
+        Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
+        session.executeAsync(insert);
+    }
+
     @Override
     public void saveAsync(ColumnFamilyEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException {
         Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.using(QueryBuilder.ttl((int) ttl.toSeconds()));
+        session.executeAsync(insert);
+    }
+
+    public void saveAsync(ColumnFamilyEntity entity, TTL ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
         insert.using(QueryBuilder.ttl((int) ttl.toSeconds()));
         session.executeAsync(insert);
     }
