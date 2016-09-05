@@ -76,9 +76,23 @@ public class CassandraDocumentEntityManagerTest {
     }
 
     @Test
+    public void shouldInsertJustKeyAsync() {
+        Column key = Columns.of("id", 10L);
+        ColumnFamilyEntity columnEntity = ColumnFamilyEntity.of(COLUMN_FAMILY);
+        columnEntity.add(key);
+        columnEntityManager.saveAsync(columnEntity);
+    }
+
+    @Test
     public void shouldInsertColumns() {
         ColumnFamilyEntity columnEntity = getColumnFamily();
         columnEntityManager.save(columnEntity);
+    }
+
+    @Test
+    public void shouldInsertColumnsAsync() {
+        ColumnFamilyEntity columnEntity = getColumnFamily();
+        columnEntityManager.saveAsync(columnEntity);
     }
 
 
