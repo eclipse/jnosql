@@ -19,6 +19,7 @@
 
 package org.jnosql.diana.cassandra.column;
 
+import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Session;
 import java.util.HashMap;
 import java.util.List;
@@ -87,6 +88,12 @@ public class CassandraDocumentEntityManagerTest {
     public void shouldInsertColumns() {
         ColumnFamilyEntity columnEntity = getColumnFamily();
         columnEntityManager.save(columnEntity);
+    }
+
+    @Test
+    public void shouldInsertColumnsWithConsistencyLevel() {
+        ColumnFamilyEntity columnEntity = getColumnFamily();
+        columnEntityManager.save(columnEntity, ConsistencyLevel.ONE);
     }
 
     @Test
