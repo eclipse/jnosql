@@ -20,37 +20,42 @@
 package org.jnosql.diana.cassandra.column;
 
 import com.datastax.driver.core.Session;
-import org.jnosql.diana.api.Sort;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.jnosql.diana.api.Value;
-import org.jnosql.diana.api.column.*;
-import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.Documents;
-import org.hamcrest.Matchers;
+import org.jnosql.diana.api.column.Column;
+import org.jnosql.diana.api.column.ColumnCondition;
+import org.jnosql.diana.api.column.ColumnFamilyEntity;
+import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
+import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.api.column.Columns;
+import org.jnosql.diana.api.column.PreparedStatement;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.cassandra.column.Constants.COLUMN_FAMILY;
 import static org.jnosql.diana.cassandra.column.Constants.KEY_SPACE;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 public class CassandraDocumentEntityManagerTest {
 
-    private ColumnFamilyManager columnEntityManager;
+    private CassandraDocumentEntityManager columnEntityManager;
 
     @Before
     public void setUp() {
         CassandraConfiguration cassandraConfiguration = new CassandraConfiguration();
-        ColumnFamilyManagerFactory entityManagerFactory = cassandraConfiguration.getManagerFactory();
+        CassandraDocumentEntityManagerFactory entityManagerFactory = cassandraConfiguration.getManagerFactory();
         columnEntityManager = entityManagerFactory.getColumnEntityManager(KEY_SPACE);
     }
 
@@ -130,7 +135,7 @@ public class CassandraDocumentEntityManagerTest {
         List<ColumnFamilyEntity> columnFamilyEntities = columnEntityManager.find(query);
         assertEquals(Integer.valueOf(2), Integer.valueOf(columnFamilyEntities.size()));
     }
-    
+
     private List<ColumnFamilyEntity> getEntities() {
         Map<String, Object> fields = new HashMap<>();
         fields.put("name", "Cassandra");
