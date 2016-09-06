@@ -19,8 +19,6 @@
 
 package org.jnosql.diana.api.key;
 
-import java.util.Map;
-
 /**
  * The diana configuration to create a {@link BucketManagerFactory}
  *

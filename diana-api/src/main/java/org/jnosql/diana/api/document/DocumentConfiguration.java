@@ -19,8 +19,6 @@
 
 package org.jnosql.diana.api.document;
 
-import java.util.Map;
-
 /**
  * The diana configuration to create a {@link DocumentCollectionManagerFactory}
  * @param <T> the type to DocumentCollectionManagerFactory
