@@ -23,16 +23,10 @@ import java.util.Map;
 
 /**
  * The diana configuration to create a {@link BucketManagerFactory}
+ *
+ * @param <T> the BucketManagerFactory type
  */
-public interface KeyValueConfiguration {
-
-    /**
-     * Reads configuration from Map and creates a {@link BucketManagerFactory} instance.
-     *
-     * @param configurations a configuration from {@link Map}
-     * @return a {@link BucketManagerFactory} instance
-     */
-    BucketManagerFactory getManagerFactory(Map<String, String> configurations);
+public interface KeyValueConfiguration<T extends BucketManagerFactory> {
 
     /**
      * Reads configuration either from default configuration or a file defined by NoSQL provider
@@ -40,5 +34,5 @@ public interface KeyValueConfiguration {
      *
      * @return a {@link BucketManagerFactory} instance
      */
-    BucketManagerFactory getManagerFactory();
+    T getManagerFactory();
 }

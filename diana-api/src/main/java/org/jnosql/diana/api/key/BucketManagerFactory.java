@@ -32,7 +32,7 @@ import java.util.Set;
  * When the application has finished using the bucket manager factory, and/or at application shutdown,
  * the application should close the column family manager factory.
  */
-public interface BucketManagerFactory extends CloseResource {
+public interface BucketManagerFactory <T extends BucketManager> extends CloseResource {
 
     /**
      * Creates a {@link BucketManager} from a bucket name
@@ -41,7 +41,7 @@ public interface BucketManagerFactory extends CloseResource {
      * @return a {@link BucketManager} instance
      * @throws UnsupportedOperationException when the database does not have to it
      */
-    BucketManager getBucketManager(String bucketName) throws UnsupportedOperationException;
+    T getBucketManager(String bucketName) throws UnsupportedOperationException;
 
     /**
      * Creates a {@link List} from bucket name
