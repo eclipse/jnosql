@@ -26,13 +26,16 @@ import org.jnosql.diana.api.CloseResource;
  * {@link DocumentCollectionManager} factory.
  * When the application has finished using the document collection manager factory, and/or at application shutdown,
  * the application should close the column family manager factory.
+ *
+ * @param <T> the DocumentCollectionManager type
  */
-public interface DocumentCollectionManagerFactory extends CloseResource {
+public interface DocumentCollectionManagerFactory<T extends DocumentCollectionManager> extends CloseResource {
 
     /**
      * Creates a {@link DocumentCollectionManager} from database's name
+     *
      * @param database a database name
      * @return a new {@link DocumentCollectionManager} instance
      */
-    DocumentCollectionManager getDocumentEntityManager(String database);
+    T getDocumentEntityManager(String database);
 }
