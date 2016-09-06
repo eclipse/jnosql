@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-class HazelCastKeyValueEntityManagerFactory implements BucketManagerFactory {
+public class HazelCastKeyValueEntityManagerFactory implements BucketManagerFactory<HazelCastKeyValueEntityManager> {
 
     private final HazelcastInstance hazelcastInstance;
 
@@ -38,7 +38,7 @@ class HazelCastKeyValueEntityManagerFactory implements BucketManagerFactory {
     }
 
     @Override
-    public BucketManager getBucketManager(String bucketName) {
+    public HazelCastKeyValueEntityManager getBucketManager(String bucketName) {
         return new HazelCastKeyValueEntityManager(hazelcastInstance.getMap(bucketName));
     }
 

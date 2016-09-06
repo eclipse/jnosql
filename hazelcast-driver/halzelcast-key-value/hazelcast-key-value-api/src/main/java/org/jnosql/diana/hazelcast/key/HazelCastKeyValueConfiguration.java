@@ -23,22 +23,19 @@ package org.jnosql.diana.hazelcast.key;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import org.jnosql.diana.api.key.BucketManagerFactory;
-import org.jnosql.diana.api.key.KeyValueConfiguration;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
+import org.jnosql.diana.api.key.KeyValueConfiguration;
 
-public class HazelCastKeyValueConfiguration implements KeyValueConfiguration {
+public class HazelCastKeyValueConfiguration implements KeyValueConfiguration<HazelCastKeyValueEntityManagerFactory> {
 
     private static final String HAZELCAST_FILE_CONFIGURATION = "diana-hazelcast.properties";
 
-    @Override
-    public BucketManagerFactory getManagerFactory(Map<String, String> configurations) {
+    public HazelCastKeyValueEntityManagerFactory getManagerFactory(Map<String, String> configurations) {
 
         List<String> servers = configurations.keySet().stream().filter(s -> s.startsWith("hazelcast-hoster-"))
                 .collect(Collectors.toList());
@@ -49,7 +46,7 @@ public class HazelCastKeyValueConfiguration implements KeyValueConfiguration {
     }
 
     @Override
-    public BucketManagerFactory getManagerFactory() {
+    public HazelCastKeyValueEntityManagerFactory getManagerFactory() {
         try {
             Properties properties = new Properties();
             InputStream stream = HazelCastKeyValueConfiguration.class.getClassLoader()
