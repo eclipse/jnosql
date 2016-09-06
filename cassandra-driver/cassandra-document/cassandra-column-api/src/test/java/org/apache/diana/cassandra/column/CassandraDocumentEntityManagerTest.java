@@ -124,6 +124,19 @@ public class CassandraDocumentEntityManagerTest {
     }
 
     @Test
+    public void shouldFindByIdWithConsistenceLevel() {
+
+        columnEntityManager.save(getColumnFamily());
+        ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
+        List<ColumnFamilyEntity> columnEntity = columnEntityManager.find(query, CONSISTENCY_LEVEL);
+        assertFalse(columnEntity.isEmpty());
+        List<Column> columns = columnEntity.get(0).getColumns();
+        assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
+        assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, asList(1, 2, 3), 10L));
+
+    }
+
+    @Test
     public void shouldRunNativeQuery() {
         columnEntityManager.save(getColumnFamily());
         List<ColumnFamilyEntity> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
