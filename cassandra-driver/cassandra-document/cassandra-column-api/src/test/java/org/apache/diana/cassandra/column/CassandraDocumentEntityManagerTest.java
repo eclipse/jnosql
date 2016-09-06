@@ -19,38 +19,45 @@
 
 package org.jnosql.diana.cassandra.column;
 
+import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.Session;
-import org.jnosql.diana.api.Sort;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.jnosql.diana.api.Value;
-import org.jnosql.diana.api.column.*;
-import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.Documents;
-import org.hamcrest.Matchers;
+import org.jnosql.diana.api.column.Column;
+import org.jnosql.diana.api.column.ColumnCondition;
+import org.jnosql.diana.api.column.ColumnFamilyEntity;
+import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
+import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.api.column.Columns;
+import org.jnosql.diana.api.column.PreparedStatement;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.cassandra.column.Constants.COLUMN_FAMILY;
 import static org.jnosql.diana.cassandra.column.Constants.KEY_SPACE;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 public class CassandraDocumentEntityManagerTest {
 
-    private ColumnFamilyManager columnEntityManager;
+    public static final ConsistencyLevel CONSISTENCY_LEVEL = ConsistencyLevel.ONE;
+    private CassandraDocumentEntityManager columnEntityManager;
 
     @Before
     public void setUp() {
         CassandraConfiguration cassandraConfiguration = new CassandraConfiguration();
-        ColumnFamilyManagerFactory entityManagerFactory = cassandraConfiguration.getManagerFactory();
+        CassandraDocumentEntityManagerFactory entityManagerFactory = cassandraConfiguration.getManagerFactory();
         columnEntityManager = entityManagerFactory.getColumnEntityManager(KEY_SPACE);
     }
 
@@ -71,9 +78,35 @@ public class CassandraDocumentEntityManagerTest {
     }
 
     @Test
+    public void shouldInsertJustKeyAsync() {
+        Column key = Columns.of("id", 10L);
+        ColumnFamilyEntity columnEntity = ColumnFamilyEntity.of(COLUMN_FAMILY);
+        columnEntity.add(key);
+        columnEntityManager.saveAsync(columnEntity);
+    }
+
+    @Test
     public void shouldInsertColumns() {
         ColumnFamilyEntity columnEntity = getColumnFamily();
         columnEntityManager.save(columnEntity);
+    }
+
+    @Test
+    public void shouldInsertColumnsWithConsistencyLevel() {
+        ColumnFamilyEntity columnEntity = getColumnFamily();
+        columnEntityManager.save(columnEntity, CONSISTENCY_LEVEL);
+    }
+
+    @Test
+    public void shouldInsertColumnsAsync() {
+        ColumnFamilyEntity columnEntity = getColumnFamily();
+        columnEntityManager.saveAsync(columnEntity);
+    }
+
+    @Test
+    public void shouldInsertColumnsAsyncWithConsistenceLevel() {
+        ColumnFamilyEntity columnEntity = getColumnFamily();
+        columnEntityManager.saveAsync(columnEntity, CONSISTENCY_LEVEL);
     }
 
 
@@ -83,6 +116,19 @@ public class CassandraDocumentEntityManagerTest {
         columnEntityManager.save(getColumnFamily());
         ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
         List<ColumnFamilyEntity> columnEntity = columnEntityManager.find(query);
+        assertFalse(columnEntity.isEmpty());
+        List<Column> columns = columnEntity.get(0).getColumns();
+        assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
+        assertThat(columns.stream().map(Column::getValue).map(Value::get).collect(toList()), containsInAnyOrder("Cassandra", 3.2, asList(1, 2, 3), 10L));
+
+    }
+
+    @Test
+    public void shouldFindByIdWithConsistenceLevel() {
+
+        columnEntityManager.save(getColumnFamily());
+        ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
+        List<ColumnFamilyEntity> columnEntity = columnEntityManager.find(query, CONSISTENCY_LEVEL);
         assertFalse(columnEntity.isEmpty());
         List<Column> columns = columnEntity.get(0).getColumns();
         assertThat(columns.stream().map(Column::getName).collect(toList()), containsInAnyOrder("name", "version", "options", "id"));
@@ -112,11 +158,21 @@ public class CassandraDocumentEntityManagerTest {
     }
 
     @Test
-    public void shouldDeleteColumnFamiliy() {
+    public void shouldDeleteColumnFamily() {
         columnEntityManager.save(getColumnFamily());
         ColumnFamilyEntity.of(COLUMN_FAMILY, singletonList(Columns.of("id", 10L)));
         ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
         columnEntityManager.delete(query);
+        List<ColumnFamilyEntity> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
+        Assert.assertTrue(entities.isEmpty());
+    }
+
+    @Test
+    public void shouldDeleteColumnFamilyWithConsistencyLevel() {
+        columnEntityManager.save(getColumnFamily());
+        ColumnFamilyEntity.of(COLUMN_FAMILY, singletonList(Columns.of("id", 10L)));
+        ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY).addCondition(ColumnCondition.eq(Columns.of("id", 10L)));
+        columnEntityManager.delete(query, CONSISTENCY_LEVEL);
         List<ColumnFamilyEntity> entities = columnEntityManager.nativeQuery("select * from newKeySpace.newColumnFamily where id=10;");
         Assert.assertTrue(entities.isEmpty());
     }
@@ -130,7 +186,7 @@ public class CassandraDocumentEntityManagerTest {
         List<ColumnFamilyEntity> columnFamilyEntities = columnEntityManager.find(query);
         assertEquals(Integer.valueOf(2), Integer.valueOf(columnFamilyEntities.size()));
     }
-    
+
     private List<ColumnFamilyEntity> getEntities() {
         Map<String, Object> fields = new HashMap<>();
         fields.put("name", "Cassandra");

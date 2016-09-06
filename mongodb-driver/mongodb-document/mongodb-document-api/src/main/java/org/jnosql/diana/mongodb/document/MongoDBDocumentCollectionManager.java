@@ -25,6 +25,10 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
+import java.util.List;
+import java.util.function.Consumer;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.Value;
@@ -34,17 +38,12 @@ import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.api.document.Documents;
 import org.jnosql.diana.api.document.PreparedStatement;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.jnosql.diana.api.writer.WriterFieldDecorator;
-
-import java.util.List;
-import java.util.function.Consumer;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 
-class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
+public class MongoDBDocumentCollectionManager implements DocumentCollectionManager {
 
     private final MongoDatabase mongoDatabase;
 

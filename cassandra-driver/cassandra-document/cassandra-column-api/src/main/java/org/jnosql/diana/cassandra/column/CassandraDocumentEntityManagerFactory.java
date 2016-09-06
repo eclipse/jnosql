@@ -22,13 +22,11 @@ package org.jnosql.diana.cassandra.column;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
-import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
-
 import java.util.List;
 import java.util.concurrent.Executor;
+import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
 
-class CassandraDocumentEntityManagerFactory implements ColumnFamilyManagerFactory {
+public class CassandraDocumentEntityManagerFactory implements ColumnFamilyManagerFactory<CassandraDocumentEntityManager> {
 
     private final Cluster cluster;
 
@@ -47,7 +45,7 @@ class CassandraDocumentEntityManagerFactory implements ColumnFamilyManagerFactor
     }
 
     @Override
-    public ColumnFamilyManager getColumnEntityManager(String database) {
+    public CassandraDocumentEntityManager getColumnEntityManager(String database) {
         return new CassandraDocumentEntityManager(cluster.connect(database), executor, database);
     }
 

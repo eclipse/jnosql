@@ -37,7 +37,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
-public class MongoDBDocumentConfiguration implements DocumentConfiguration {
+public class MongoDBDocumentConfiguration implements DocumentConfiguration<MongoDBDocumentCollectionManagerFactory> {
 
     private static final String FILE_CONFIGURATION = "diana-mongodb.properties";
 
@@ -46,8 +46,7 @@ public class MongoDBDocumentConfiguration implements DocumentConfiguration {
     private static final int DEFAULT_PORT = 27017;
 
 
-    @Override
-    public DocumentCollectionManagerFactory getManagerFactory(Map<String, String> configurations) {
+    public MongoDBDocumentCollectionManagerFactory getManagerFactory(Map<String, String> configurations) {
         List<ServerAddress> servers = configurations.keySet().stream().filter(s -> s.startsWith("mongodb-server-host-"))
                 .map(configurations::get).map(HostPortConfiguration::new)
                 .map(HostPortConfiguration::toServerAddress).collect(Collectors.toList());
@@ -66,7 +65,7 @@ public class MongoDBDocumentConfiguration implements DocumentConfiguration {
 
 
     @Override
-    public DocumentCollectionManagerFactory getManagerFactory() {
+    public MongoDBDocumentCollectionManagerFactory getManagerFactory() {
         try {
             Properties properties = new Properties();
             InputStream stream = MongoDBDocumentConfiguration.class.getClassLoader()

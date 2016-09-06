@@ -35,7 +35,7 @@ import java.util.stream.StreamSupport;
 import static java.util.stream.Collectors.toList;
 import static org.jnosql.diana.redis.key.RedisUtils.createKeyWithNameSpace;
 
-class RedisKeyValueEntityManager implements BucketManager {
+public class RedisKeyValueEntityManager implements BucketManager {
 
     private final String nameSpace;
 

@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 
-class HazelCastKeyValueEntityManager implements BucketManager {
+public class HazelCastKeyValueEntityManager implements BucketManager {
 
     private final IMap map;
 

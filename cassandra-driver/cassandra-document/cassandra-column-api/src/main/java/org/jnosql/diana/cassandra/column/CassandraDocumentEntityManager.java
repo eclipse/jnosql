@@ -20,12 +20,14 @@
 package org.jnosql.diana.cassandra.column;
 
 
+import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.BuiltStatement;
 import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
+import java.util.Objects;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.column.ColumnFamilyEntity;
@@ -38,7 +40,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-class CassandraDocumentEntityManager implements ColumnFamilyManager {
+public class CassandraDocumentEntityManager implements ColumnFamilyManager {
 
 
     private final Session session;
@@ -60,9 +62,24 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
         return entity;
     }
 
+    public ColumnFamilyEntity save(ColumnFamilyEntity entity, ConsistencyLevel level) throws NullPointerException {
+        Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
+        session.execute(insert);
+        return entity;
+    }
+
     @Override
     public ColumnFamilyEntity save(ColumnFamilyEntity entity, TTL ttl) throws NullPointerException {
         Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.using(QueryBuilder.ttl((int) ttl.toSeconds()));
+        session.execute(insert);
+        return entity;
+    }
+
+    public ColumnFamilyEntity save(ColumnFamilyEntity entity, TTL ttl, ConsistencyLevel level) throws NullPointerException {
+        Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
         insert.using(QueryBuilder.ttl((int) ttl.toSeconds()));
         session.execute(insert);
         return entity;
@@ -74,9 +91,22 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
         session.executeAsync(insert);
     }
 
+    public void saveAsync(ColumnFamilyEntity entity, ConsistencyLevel level) {
+        Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
+        session.executeAsync(insert);
+    }
+
     @Override
     public void saveAsync(ColumnFamilyEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException {
         Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.using(QueryBuilder.ttl((int) ttl.toSeconds()));
+        session.executeAsync(insert);
+    }
+
+    public void saveAsync(ColumnFamilyEntity entity, TTL ttl, ConsistencyLevel level) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        Insert insert = QueryUtils.insert(entity, keyspace);
+        insert.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
         insert.using(QueryBuilder.ttl((int) ttl.toSeconds()));
         session.executeAsync(insert);
     }
@@ -115,12 +145,23 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
     public void delete(ColumnQuery query) {
         BuiltStatement delete = QueryUtils.delete(query, keyspace);
         session.execute(delete);
+    }
 
+    public void delete(ColumnQuery query, ConsistencyLevel level) {
+        BuiltStatement delete = QueryUtils.delete(query, keyspace);
+        delete.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
+        session.execute(delete);
     }
 
     @Override
     public void deleteAsync(ColumnQuery query) {
         BuiltStatement delete = QueryUtils.delete(query, keyspace);
+        session.executeAsync(delete);
+    }
+
+    public void deleteAsync(ColumnQuery query, ConsistencyLevel level) {
+        BuiltStatement delete = QueryUtils.delete(query, keyspace);
+        delete.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
         session.executeAsync(delete);
     }
 
@@ -139,11 +180,27 @@ class CassandraDocumentEntityManager implements ColumnFamilyManager {
                 .collect(Collectors.toList());
     }
 
+    public List<ColumnFamilyEntity> find(ColumnQuery query, ConsistencyLevel level) {
+        BuiltStatement select = QueryUtils.add(query, keyspace);
+        select.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
+        ResultSet resultSet = session.execute(select);
+        return resultSet.all().stream().map(row -> CassandraConverter.toDocumentEntity(row))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public void findAsync(ColumnQuery query, Consumer<List<ColumnFamilyEntity>> consumer)
             throws ExecuteAsyncQueryException, UnsupportedOperationException {
         BuiltStatement select = QueryUtils.add(query, keyspace);
+        ResultSetFuture resultSet = session.executeAsync(select);
+        CassandraReturnQueryAsync executeAsync = new CassandraReturnQueryAsync(resultSet, consumer);
+        resultSet.addListener(executeAsync, executor);
+    }
+
+    public void findAsync(ColumnQuery query, ConsistencyLevel level, Consumer<List<ColumnFamilyEntity>> consumer)
+            throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        BuiltStatement select = QueryUtils.add(query, keyspace);
+        select.setConsistencyLevel(Objects.requireNonNull(level, "ConsistencyLevel is required"));
         ResultSetFuture resultSet = session.executeAsync(select);
         CassandraReturnQueryAsync executeAsync = new CassandraReturnQueryAsync(resultSet, consumer);
         resultSet.addListener(executeAsync, executor);

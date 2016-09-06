@@ -31,12 +31,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
-public final class RedisConfiguration implements KeyValueConfiguration {
+public final class RedisConfiguration implements KeyValueConfiguration<RedisKeyValueEntityManagerFactory> {
 
     private static final String REDIS_FILE_CONFIGURATION = "diana-redis.properties";
 
-    @Override
-    public BucketManagerFactory getManagerFactory(Map<String, String> configurations) {
+    public RedisKeyValueEntityManagerFactory getManagerFactory(Map<String, String> configurations) {
         JedisPoolConfig poolConfig = getJedisPoolConfig(configurations);
         JedisPool jedisPool = getJedisPool(configurations, poolConfig);
 
@@ -65,7 +64,7 @@ public final class RedisConfiguration implements KeyValueConfiguration {
 
 
     @Override
-    public BucketManagerFactory getManagerFactory() {
+    public RedisKeyValueEntityManagerFactory getManagerFactory() {
         try {
             Properties properties = new Properties();
             InputStream stream = RedisConfiguration.class.getClassLoader()
