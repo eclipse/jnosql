@@ -19,6 +19,10 @@
 package org.jnosql.diana.hbase.column;
 
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
@@ -27,15 +31,9 @@ import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.client.Table;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-class HBaseColumnFamilyManagerFactory implements ColumnFamilyManagerFactory {
+public class HBaseColumnFamilyManagerFactory implements ColumnFamilyManagerFactory<HBaseColumnFamilyManager> {
 
     private final Configuration configuration;
 
@@ -47,7 +45,7 @@ class HBaseColumnFamilyManagerFactory implements ColumnFamilyManagerFactory {
     }
 
     @Override
-    public ColumnFamilyManager getColumnEntityManager(String database) {
+    public HBaseColumnFamilyManager getColumnEntityManager(String database) {
         try {
             Connection connection = ConnectionFactory.createConnection(configuration);
             Admin admin = connection.getAdmin();

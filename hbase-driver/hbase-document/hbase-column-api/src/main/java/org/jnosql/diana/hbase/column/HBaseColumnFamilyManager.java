@@ -24,6 +24,7 @@ import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
+import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.WriterField;
 import org.jnosql.diana.api.column.*;
@@ -41,7 +42,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static org.jnosql.diana.api.Condition.EQUALS;
 
-class HBaseColumnFamilyManager implements ColumnFamilyManager {
+public class HBaseColumnFamilyManager implements ColumnFamilyManager {
 
     private static final String KEY_REQUIRED_ERROR = "\"To save an entity is necessary to have an row, a Column that has a blank name. Documents.of(\\\"\\\", keyValue);\"";
 
@@ -77,6 +78,11 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
         return entity;
     }
 
+    @Override
+    public ColumnFamilyEntity save(ColumnFamilyEntity entity, TTL ttl) throws NullPointerException {
+        throw new UnsupportedOperationException("There is not support to save async");
+    }
+
 
     @Override
     public void saveAsync(ColumnFamilyEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException {
@@ -84,7 +90,17 @@ class HBaseColumnFamilyManager implements ColumnFamilyManager {
     }
 
     @Override
+    public void saveAsync(ColumnFamilyEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        throw new UnsupportedOperationException("There is not support to save async");
+    }
+
+    @Override
     public void saveAsync(ColumnFamilyEntity entity, Consumer<ColumnFamilyEntity> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        throw new UnsupportedOperationException("There is not support to save async");
+    }
+
+    @Override
+    public void saveAsync(ColumnFamilyEntity entity, TTL ttl, Consumer<ColumnFamilyEntity> callBack) throws ExecuteAsyncQueryException, UnsupportedOperationException {
         throw new UnsupportedOperationException("There is not support to save async");
     }
 

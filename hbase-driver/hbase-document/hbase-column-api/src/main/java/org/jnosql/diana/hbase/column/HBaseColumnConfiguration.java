@@ -34,7 +34,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Configuration to HBase
  */
-public class HBaseColumnConfiguration implements ColumnConfiguration {
+public class HBaseColumnConfiguration implements ColumnConfiguration<HBaseColumnFamilyManagerFactory> {
 
     private final Configuration configuration;
 
@@ -74,13 +74,9 @@ public class HBaseColumnConfiguration implements ColumnConfiguration {
         this.families.add(requireNonNull(family, "family is required"));
     }
 
-    @Override
-    public ColumnFamilyManagerFactory getManagerFactory(Map<String, String> configurations) {
-        throw new IllegalArgumentException("It isn't implemented yet");
-    }
 
     @Override
-    public ColumnFamilyManagerFactory getManagerFactory() {
+    public HBaseColumnFamilyManagerFactory getManagerFactory() {
         return new HBaseColumnFamilyManagerFactory(configuration, families);
     }
 
