@@ -20,10 +20,9 @@
 package org.jnosql.diana.mongodb.document;
 
 import com.mongodb.MongoClient;
-import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCollectionManagerFactory;
 
-class MongoDBDocumentCollectionManagerFactory implements DocumentCollectionManagerFactory {
+public class MongoDBDocumentCollectionManagerFactory implements DocumentCollectionManagerFactory<MongoDBDocumentCollectionManager> {
 
     private final MongoClient mongoClient;
     private final com.mongodb.async.client.MongoClient asyncMongoDatabase;
@@ -35,7 +34,7 @@ class MongoDBDocumentCollectionManagerFactory implements DocumentCollectionManag
     }
 
     @Override
-    public DocumentCollectionManager getDocumentEntityManager(String database) {
+    public MongoDBDocumentCollectionManager getDocumentEntityManager(String database) {
         return new MongoDBDocumentCollectionManager(mongoClient.getDatabase(database),
                 asyncMongoDatabase.getDatabase(database));
     }
