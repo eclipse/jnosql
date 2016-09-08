@@ -15,22 +15,31 @@
   ~ KIND, either express or implied. See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  -->
+-->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>diana-api</artifactId>
-    <packaging>jar</packaging>
-    <name>JNOSQL Diana API</name>
-    <parent>
-        <groupId>org.jnosql.diana</groupId>
-        <artifactId>diana-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+ <modelVersion>4.0.0</modelVersion>
+ <artifactId>diana-api</artifactId>
+ <packaging>jar</packaging>
+ <name>${project.groupId}:${project.artifactId}</name>
+ <description>Diana is a flexible and extensible API to connect NoSQL databases. It brings an easy interface to support key-value, column family, document oriented and graph databases as JDBC is for SQL databases</description>
+ <url>http://jnosql.org/</url>
+ <parent>
+  <groupId>org.jnosql.diana</groupId>
+  <artifactId>diana-parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</parent>
 
-     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+<properties>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+</properties>
+
+<licenses>
+  <license>
+    <name>The Apache License, Version 2.0</name>
+    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+  </license>
+</licenses>
 
 </project>
