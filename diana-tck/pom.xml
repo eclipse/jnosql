@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>diana-tck</artifactId>
     <packaging>jar</packaging>
-    <name>JNOSQL Diana TCK</name>
+    <name>${project.groupId}:${project.artifactId}</name>
     <parent>
         <groupId>org.jnosql.diana</groupId>
         <artifactId>diana-parent</artifactId>
