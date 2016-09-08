@@ -30,7 +30,7 @@ public final class LongReader implements ReaderField {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Long.class.equals(clazz);
+        return Long.class.equals(clazz) || long.class.equals(clazz);
     }
 
     @Override

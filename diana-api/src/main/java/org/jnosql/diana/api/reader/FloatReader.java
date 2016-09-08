@@ -30,7 +30,7 @@ public final class FloatReader implements ReaderField {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Float.class.equals(clazz);
+        return Float.class.equals(clazz) || float.class.equals(clazz);
     }
 
     @Override

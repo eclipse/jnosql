@@ -30,7 +30,7 @@ public final class ShortReader implements ReaderField {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Short.class.equals(clazz);
+        return Short.class.equals(clazz) || short.class.equals(clazz);
     }
 
     @Override

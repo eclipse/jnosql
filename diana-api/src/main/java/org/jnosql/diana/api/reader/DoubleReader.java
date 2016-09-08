@@ -30,7 +30,7 @@ public final class DoubleReader implements ReaderField {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Double.class.equals(clazz);
+        return Double.class.equals(clazz) || double.class.equals(clazz);
     }
 
     @Override

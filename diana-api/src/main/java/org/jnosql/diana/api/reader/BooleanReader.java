@@ -26,13 +26,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Class to reads and converts to both {@link Boolean} and {@link AtomicBoolean}
- *
  */
 public final class BooleanReader implements ReaderField {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Boolean.class.equals(clazz) || AtomicBoolean.class.equals(clazz);
+        return Boolean.class.equals(clazz) || AtomicBoolean.class.equals(clazz) || boolean.class.equals(clazz);
     }
 
     @Override

@@ -31,7 +31,7 @@ public final class CharacterReader implements ReaderField {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Character.class.equals(clazz);
+        return Character.class.equals(clazz) || char.class.equals(clazz);
     }
 
     @Override
