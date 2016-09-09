@@ -293,27 +293,4 @@ public interface ColumnFamilyManager extends CloseResource {
      */
     PreparedStatement nativeQueryPrepare(String query) throws UnsupportedOperationException;
 
-    /**
-     * Finds {@link ColumnFamilyEntity} from a Diana Query Language
-     *
-     * @param query Diana query language
-     * @return entities from query
-     * @throws NullPointerException when query is null
-     */
-    default List<ColumnFamilyEntity> query(String query) throws NullPointerException {
-        Objects.requireNonNull(query, "query is required");
-        return Collections.emptyList();
-    }
-
-    /**
-     * Inserts or updates column families from Diana Query Language
-     *
-     * @param query Diana query language
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support async save
-     */
-    default void insert(String query) throws NullPointerException, ExecuteAsyncQueryException, UnsupportedOperationException {
-        Objects.requireNonNull(query, "query is required");
-    }
-
 }
