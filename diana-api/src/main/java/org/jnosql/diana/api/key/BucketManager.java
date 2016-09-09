@@ -20,15 +20,10 @@
 package org.jnosql.diana.api.key;
 
 
+import java.util.Optional;
 import org.jnosql.diana.api.CloseResource;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.Value;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Interface used to interact with the persistence context to {@link KeyValue}

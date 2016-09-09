@@ -20,18 +20,16 @@
 package org.jnosql.diana.api.column;
 
 
-import org.jnosql.diana.api.CloseResource;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
-import org.jnosql.diana.api.NonUniqueResultException;
-import org.jnosql.diana.api.TTL;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import org.jnosql.diana.api.CloseResource;
+import org.jnosql.diana.api.ExecuteAsyncQueryException;
+import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.api.TTL;
 
 /**
  * Interface used to interact with the persistence context to {@link ColumnFamilyEntity}
