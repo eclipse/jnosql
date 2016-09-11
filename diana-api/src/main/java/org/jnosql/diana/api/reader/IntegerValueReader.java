@@ -20,28 +20,29 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 
 /**
- * Class to reads and converts to both {@link String} and {@link CharSequence}.
+ * Class to reads and converts to {@link Integer}, first it verify if is Double if yes return itself then verifies if is
+ * {@link Number} and use {@link Number#intValue()} otherwise convert to {@link String} and then {@link Integer}
  */
-public final class StringReader implements ReaderField {
+public final class IntegerValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return CharSequence.class.equals(clazz) || String.class.equals(clazz);
+        return Integer.class.equals(clazz) || int.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        boolean isClazzString = String.class.equals(clazz);
-
-        if (CharSequence.class.equals(clazz) && CharSequence.class.isInstance(value)) {
+        if (Integer.class.isInstance(value)) {
             return (T) value;
         }
-        return (T) value.toString();
+        if (Number.class.isInstance(value)) {
+            return (T) Integer.valueOf(Number.class.cast(value).intValue());
+        } else {
+            return (T) Integer.valueOf(value.toString());
+        }
     }
-
-
 }

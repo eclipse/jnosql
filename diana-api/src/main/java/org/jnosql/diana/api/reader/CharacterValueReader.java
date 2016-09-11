@@ -20,44 +20,33 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import static java.lang.Character.MIN_VALUE;
 
 /**
- * Class to reads and converts to both {@link Boolean} and {@link AtomicBoolean}
+ * Class reader for {@link Character}
  */
-public final class BooleanReader implements ReaderField {
+public final class CharacterValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Boolean.class.equals(clazz) || AtomicBoolean.class.equals(clazz) || boolean.class.equals(clazz);
+        return Character.class.equals(clazz) || char.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-
-        boolean isAtomicBoolean = AtomicBoolean.class.equals(clazz);
-
-        if (isAtomicBoolean && AtomicBoolean.class.isInstance(value)) {
+        if (Character.class.isInstance(value)) {
             return (T) value;
         }
-        Boolean bool = null;
-        if (Boolean.class.isInstance(value)) {
-            bool = Boolean.class.cast(value);
-        } else if (AtomicBoolean.class.isInstance(value)) {
-            bool = AtomicBoolean.class.cast(value).get();
-        } else if (Number.class.isInstance(value)) {
-            bool = Number.class.cast(value).longValue() != 0;
-        } else if (String.class.isInstance(value)) {
-            bool = Boolean.valueOf(value.toString());
+        if (Number.class.isInstance(value)) {
+            return (T) Character.valueOf((char) Number.class.cast(value).intValue());
         }
 
-        if (isAtomicBoolean) {
-            return (T) new AtomicBoolean(bool);
+        if (value.toString().isEmpty()) {
+            return (T) Character.valueOf(MIN_VALUE);
         }
-
-        return (T) bool;
+        return (T) Character.valueOf(value.toString().charAt(0));
     }
 
 

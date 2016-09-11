@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,26 +31,26 @@ import static org.junit.Assert.*;
 
 public class BigDecimalReaderTest {
 
-    private ReaderField readerField;
+    private ValueReader valueReader;
 
     @Before
     public void init() {
-        readerField = new BigDecimalReader();
+        valueReader = new BigDecimalValueReader();
     }
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(readerField.isCompatible(BigDecimal.class));
-        assertFalse(readerField.isCompatible(AtomicBoolean.class));
-        assertFalse(readerField.isCompatible(Boolean.class));
+        assertTrue(valueReader.isCompatible(BigDecimal.class));
+        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
+        assertFalse(valueReader.isCompatible(Boolean.class));
     }
 
     @Test
     public void shouldConvert() {
         BigDecimal bigDecimal = BigDecimal.TEN;
-        assertEquals(bigDecimal, readerField.read(BigDecimal.class, bigDecimal));
-        assertEquals(BigDecimal.valueOf(10D), readerField.read(BigDecimal.class, 10.00));
-        assertEquals(BigDecimal.valueOf(10D), readerField.read(BigDecimal.class, "10"));
+        assertEquals(bigDecimal, valueReader.read(BigDecimal.class, bigDecimal));
+        assertEquals(BigDecimal.valueOf(10D), valueReader.read(BigDecimal.class, 10.00));
+        assertEquals(BigDecimal.valueOf(10D), valueReader.read(BigDecimal.class, "10"));
     }
 
 

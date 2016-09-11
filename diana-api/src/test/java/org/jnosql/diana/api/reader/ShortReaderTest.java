@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,27 +30,27 @@ import static org.junit.Assert.*;
 
 public class ShortReaderTest {
 
-    private ReaderField readerField;
+    private ValueReader valueReader;
 
     @Before
     public void init() {
-        readerField = new ShortReader();
+        valueReader = new ShortValueReader();
     }
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(readerField.isCompatible(Short.class));
-        assertFalse(readerField.isCompatible(AtomicBoolean.class));
-        assertFalse(readerField.isCompatible(Boolean.class));
+        assertTrue(valueReader.isCompatible(Short.class));
+        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
+        assertFalse(valueReader.isCompatible(Boolean.class));
     }
 
     @Test
     public void shouldConvert() {
         Short number = (short) 10;
 
-        assertEquals(number, readerField.read(Short.class, number));
-        assertEquals(Short.valueOf((short)10), readerField.read(Short.class, 10.00));
-        assertEquals(Short.valueOf((short)10), readerField.read(Short.class, "10"));
+        assertEquals(number, valueReader.read(Short.class, number));
+        assertEquals(Short.valueOf((short)10), valueReader.read(Short.class, 10.00));
+        assertEquals(Short.valueOf((short)10), valueReader.read(Short.class, "10"));
     }
 
 

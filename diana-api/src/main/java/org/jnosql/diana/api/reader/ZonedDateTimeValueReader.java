@@ -19,30 +19,42 @@
 
 package org.jnosql.diana.api.reader;
 
+import org.jnosql.diana.api.ValueReader;
 
-import org.jnosql.diana.api.ReaderField;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
- * Class to reads and converts to {@link Short}, first it verify if is Double if yes return itself then verifies if is
- * {@link Number} and use {@link Number#shortValue()} otherwise convert to {@link String} and then {@link Short}
+ * Class to read and convert to {@link ZonedDateTime} type
+ *
  */
-public final class ShortReader implements ReaderField {
+public class ZonedDateTimeValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Short.class.equals(clazz) || short.class.equals(clazz);
+        return ZonedDateTime.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-
-        if (Short.class.isInstance(value)) {
+        if (ZonedDateTime.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) Short.valueOf(Number.class.cast(value).shortValue());
-        } else {
-            return (T) Short.valueOf(value.toString());
+
+        if (Calendar.class.isInstance(value)) {
+            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault());
         }
+
+        if (Date.class.isInstance(value)) {
+            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault());
+        }
+
+        if (Number.class.isInstance(value)) {
+            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault());
+        }
+
+        return (T) ZonedDateTime.parse(value.toString());
     }
 }

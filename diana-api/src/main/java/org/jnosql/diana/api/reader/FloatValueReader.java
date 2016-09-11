@@ -20,29 +20,29 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 
 /**
- * Class to reads and converts to {@link Byte}, first it verify if is Double if yes return itself then verifies if is
- * {@link Number} and use {@link Number#byteValue()} otherwise convert to {@link String} and then {@link Byte}
+ * Class to reads and converts to {@link Float}, first it verify if is Double if yes return itself then verifies if is
+ * {@link Number} and use {@link Number#floatValue()} otherwise convert to {@link String} and then {@link Float}
  */
-public final class ByteReader implements ReaderField {
+public final class FloatValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Byte.class.equals(clazz) || byte.class.equals(clazz);
+        return Float.class.equals(clazz) || float.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (Byte.class.isInstance(value)) {
+        if (Float.class.isInstance(value)) {
             return (T) value;
         }
         if (Number.class.isInstance(value)) {
-            return (T) Byte.valueOf(Number.class.cast(value).byteValue());
+            return (T) Float.valueOf(Number.class.cast(value).floatValue());
         } else {
-            return (T) Byte.valueOf(value.toString());
+            return (T) Float.valueOf(value.toString());
         }
     }
 }

@@ -19,43 +19,35 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
+import org.jnosql.diana.api.ValueReader;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Class to reads and converts to {@link LocalDateTime} type
- *
+ * Class to reads and converts to {@link AtomicInteger}, first it verify if is AtomicInteger if yes return itself then
+ * verifies if is {@link Number} and use {@link Number#intValue()} ()} otherwise convert to {@link String}
+ * and then {@link AtomicInteger}
  */
-public class LocalDateTimeReader implements ReaderField {
+public final class AtomicIntegerValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return LocalDateTime.class.equals(clazz);
+        return AtomicInteger.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (LocalDateTime.class.isInstance(value)) {
+        if (AtomicInteger.class.isInstance(value)) {
             return (T) value;
         }
-
-        if (Calendar.class.isInstance(value)) {
-            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        }
-
-        if (Date.class.isInstance(value)) {
-            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        }
-
         if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            return (T) new AtomicInteger(Number.class.cast(value).intValue());
+        } else {
+            return (T) new AtomicInteger(Integer.valueOf(value.toString()));
         }
-
-        return (T) LocalDateTime.parse(value.toString());
     }
+
+
 }

@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,26 +30,26 @@ import static org.junit.Assert.*;
 
 public class LongReaderTest {
 
-    private ReaderField readerField;
+    private ValueReader valueReader;
 
     @Before
     public void init() {
-        readerField = new LongReader();
+        valueReader = new LongValueReader();
     }
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(readerField.isCompatible(Long.class));
-        assertFalse(readerField.isCompatible(AtomicBoolean.class));
-        assertFalse(readerField.isCompatible(Boolean.class));
+        assertTrue(valueReader.isCompatible(Long.class));
+        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
+        assertFalse(valueReader.isCompatible(Boolean.class));
     }
 
     @Test
     public void shouldConvert() {
         Long number = 10L;
-        assertEquals(number, readerField.read(Number.class, number));
-        assertEquals(Long.valueOf(10L), readerField.read(Long.class, 10.00));
-        assertEquals(Long.valueOf(10L), readerField.read(Long.class, "10"));
+        assertEquals(number, valueReader.read(Number.class, number));
+        assertEquals(Long.valueOf(10L), valueReader.read(Long.class, 10.00));
+        assertEquals(Long.valueOf(10L), valueReader.read(Long.class, "10"));
     }
 
 

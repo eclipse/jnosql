@@ -20,34 +20,34 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.math.BigDecimal;
 
 /**
- * Class to reads and converts to {@link AtomicInteger}, first it verify if is AtomicInteger if yes return itself then
- * verifies if is {@link Number} and use {@link Number#intValue()} ()} otherwise convert to {@link String}
- * and then {@link AtomicInteger}
+ * Class to reads and converts to {@link BigDecimal}, first it verify if is Double if yes return itself then verifies
+ * if is {@link Number} and use {@link Number#doubleValue()} otherwise convert to {@link String}
+ * and then {@link BigDecimal}
+ *
  */
-public final class AtomicIntegerReader implements ReaderField {
+public final class BigDecimalValueReader implements ValueReader {
+
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return AtomicInteger.class.equals(clazz);
+        return BigDecimal.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (AtomicInteger.class.isInstance(value)) {
+        if (BigDecimal.class.isInstance(value)) {
             return (T) value;
         }
         if (Number.class.isInstance(value)) {
-            return (T) new AtomicInteger(Number.class.cast(value).intValue());
+            return (T) BigDecimal.valueOf(Number.class.cast(value).doubleValue());
         } else {
-            return (T) new AtomicInteger(Integer.valueOf(value.toString()));
+            return (T) BigDecimal.valueOf(Double.valueOf(value.toString()));
         }
     }
-
-
 }

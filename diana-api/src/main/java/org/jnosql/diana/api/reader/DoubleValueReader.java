@@ -19,41 +19,30 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
 
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
+import org.jnosql.diana.api.ValueReader;
 
 /**
- * Class to read and convert to {@link LocalTime} type
+ * Class to reads and converts to {@link Double}, first it verify if is Double if yes return itself then verifies if is
+ * {@link Number} and use {@link Number#doubleValue()} otherwise convert to {@link String} and then {@link Double}
  */
-public class LocalTimeReader implements ReaderField {
+public final class DoubleValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return LocalTime.class.equals(clazz);
+        return Double.class.equals(clazz) || double.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-        if (LocalTime.class.isInstance(value)) {
+
+        if (Double.class.isInstance(value)) {
             return (T) value;
         }
-
-        if (Calendar.class.isInstance(value)) {
-            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-        }
-
-        if (Date.class.isInstance(value)) {
-            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-        }
-
         if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+            return (T) Double.valueOf(Number.class.cast(value).doubleValue());
+        } else {
+            return (T) Double.valueOf(value.toString());
         }
-
-        return (T) LocalTime.parse(value.toString());
     }
 }

@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,38 +30,38 @@ import static org.junit.Assert.*;
 
 public class EnumReaderTest {
 
-    private ReaderField readerField;
+    private ValueReader valueReader;
 
     @Before
     public void init() {
-        readerField = new EnumReader();
+        valueReader = new EnumValueReader();
     }
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(readerField.isCompatible(Enum.class));
-        assertTrue(readerField.isCompatible(ExampleNumber.class));
-        assertFalse(readerField.isCompatible(AtomicBoolean.class));
+        assertTrue(valueReader.isCompatible(Enum.class));
+        assertTrue(valueReader.isCompatible(ExampleNumber.class));
+        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
     }
 
     @Test
     public void shouldConvert() {
         ExampleNumber value = ExampleNumber.ONE;
-        assertEquals(value, readerField.read(ExampleNumber.class, value));
-        assertEquals(value, readerField.read(ExampleNumber.class, 0));
-        assertEquals(value, readerField.read(ExampleNumber.class, "ONE"));
-        assertEquals(ExampleNumber.TWO, readerField.read(ExampleNumber.class, 1));
-        assertEquals(ExampleNumber.TWO, readerField.read(ExampleNumber.class, "TWO"));
+        assertEquals(value, valueReader.read(ExampleNumber.class, value));
+        assertEquals(value, valueReader.read(ExampleNumber.class, 0));
+        assertEquals(value, valueReader.read(ExampleNumber.class, "ONE"));
+        assertEquals(ExampleNumber.TWO, valueReader.read(ExampleNumber.class, 1));
+        assertEquals(ExampleNumber.TWO, valueReader.read(ExampleNumber.class, "TWO"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldReturnErrorInIndex() {
-        readerField.read(ExampleNumber.class, 10);
+        valueReader.read(ExampleNumber.class, 10);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldReturnErrorInName() {
-        readerField.read(ExampleNumber.class, "FOUR");
+        valueReader.read(ExampleNumber.class, "FOUR");
     }
 
 

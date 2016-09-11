@@ -33,11 +33,11 @@ import static org.junit.Assert.assertTrue;
 
 public class ZonedDateTimeReaderTest {
 
-    private ZonedDateTimeReader dateReader;
+    private ZonedDateTimeValueReader dateReader;
 
     @Before
     public void init() {
-        dateReader = new ZonedDateTimeReader();
+        dateReader = new ZonedDateTimeValueReader();
     }
 
     @Test

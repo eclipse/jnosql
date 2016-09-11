@@ -20,7 +20,7 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -30,7 +30,7 @@ import java.util.List;
  * Class to reads and converts to {@link Enum}
  *
  */
-public final class EnumReader implements ReaderField {
+public final class EnumValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {

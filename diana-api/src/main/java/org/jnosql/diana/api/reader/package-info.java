@@ -18,7 +18,7 @@
  */
 
 /**
- * The {@link org.jnosql.diana.api.ReaderField} has the goal read a information from Value by Class informed
+ * The {@link org.jnosql.diana.api.ValueReader} has the goal read a information from Value by Class informed
  * from {@link org.jnosql.diana.api.Value#get(java.lang.Class)}.
  * This package has all implementations supported by default in Diana Project
  */

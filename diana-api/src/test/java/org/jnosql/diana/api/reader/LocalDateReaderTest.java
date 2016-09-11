@@ -33,11 +33,11 @@ import static org.junit.Assert.assertTrue;
 
 public class LocalDateReaderTest {
 
-    private LocalDateReader dateReader;
+    private LocalDateValueReader dateReader;
 
     @Before
     public void init() {
-        dateReader = new LocalDateReader();
+        dateReader = new LocalDateValueReader();
     }
 
     @Test

@@ -55,7 +55,7 @@ public interface Value extends Serializable {
      * @return a new instance converted to informed class
      * @throws NullPointerException          when the class is null
      * @throws UnsupportedOperationException when the type is unsupported
-     * @see ReaderField
+     * @see ValueReader
      */
     <T> T get(Class<T> clazz) throws NullPointerException, UnsupportedOperationException;
 

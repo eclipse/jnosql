@@ -20,29 +20,28 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
+
+import java.util.Optional;
 
 /**
- * Class to reads and converts to {@link Integer}, first it verify if is Double if yes return itself then verifies if is
- * {@link Number} and use {@link Number#intValue()} otherwise convert to {@link String} and then {@link Integer}
+ * Class to reads and converts to {@link Optional}
  */
-public final class IntegerReader implements ReaderField {
+public final class OptionalValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Integer.class.equals(clazz) || int.class.equals(clazz);
+        return Optional.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (Integer.class.isInstance(value)) {
+        if (Optional.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) Integer.valueOf(Number.class.cast(value).intValue());
-        } else {
-            return (T) Integer.valueOf(value.toString());
-        }
+        return (T) Optional.ofNullable(value);
     }
+
+
 }

@@ -25,34 +25,34 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.YearMonth;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
 import org.junit.Test;
 
 public class YearMonthTest {
-	
-	private ReaderField readerField;
-	
+
+	private ValueReader valueReader;
+
 	@Before
 	public void init() {
-		readerField = new YearMonthReader();
+		valueReader = new YearMonthValueReader();
 	}
-	
+
 	@Test
 	public void shouldValidateCompatibility() {
-		assertTrue(readerField.isCompatible(YearMonth.class));
-		assertFalse(readerField.isCompatible(String.class));
-		assertFalse(readerField.isCompatible(Long.class));
+		assertTrue(valueReader.isCompatible(YearMonth.class));
+		assertFalse(valueReader.isCompatible(String.class));
+		assertFalse(valueReader.isCompatible(Long.class));
 	}
-	
+
 	@Test
 	public void shouldConvert() {
 		YearMonth yearMonth = YearMonth.parse("2016-08");
-		
-		assertEquals(yearMonth,readerField.read(YearMonth.class, YearMonth.parse("2016-08")));
-		assertEquals(yearMonth,readerField.read(String.class,"2016-08"));
-		assertEquals(yearMonth,readerField.read(Integer.class,YearMonth.of(2016,8)));
-		assertEquals(yearMonth,readerField.read(Long.class,YearMonth.of(2016,8)));
+
+		assertEquals(yearMonth, valueReader.read(YearMonth.class, YearMonth.parse("2016-08")));
+		assertEquals(yearMonth, valueReader.read(String.class,"2016-08"));
+		assertEquals(yearMonth, valueReader.read(Integer.class,YearMonth.of(2016,8)));
+		assertEquals(yearMonth, valueReader.read(Long.class,YearMonth.of(2016,8)));
 	}
 
 }

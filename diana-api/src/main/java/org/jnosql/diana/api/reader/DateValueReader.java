@@ -20,29 +20,31 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
+
+import java.util.Date;
 
 /**
- * Class to reads and converts to {@link Float}, first it verify if is Double if yes return itself then verifies if is
- * {@link Number} and use {@link Number#floatValue()} otherwise convert to {@link String} and then {@link Float}
+ * Class to reads and converts Date type
  */
-public final class FloatReader implements ReaderField {
+public final class DateValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Float.class.equals(clazz) || float.class.equals(clazz);
+        return Date.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (Float.class.isInstance(value)) {
+        if (Date.class.isInstance(value)) {
             return (T) value;
         }
+
         if (Number.class.isInstance(value)) {
-            return (T) Float.valueOf(Number.class.cast(value).floatValue());
-        } else {
-            return (T) Float.valueOf(value.toString());
+            return (T) new Date(((Number) value).longValue());
         }
+
+        return (T) new Date(value.toString());
     }
 }

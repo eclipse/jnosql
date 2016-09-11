@@ -25,9 +25,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 
-public class ReaderFieldDecoratorTest {
+public class ValueReaderDecoratorTest {
 
-    private ReaderFieldDecorator serviceLoader = ReaderFieldDecorator.getInstance();
+    private ValueReaderDecorator serviceLoader = ValueReaderDecorator.getInstance();
 
 
     @Test

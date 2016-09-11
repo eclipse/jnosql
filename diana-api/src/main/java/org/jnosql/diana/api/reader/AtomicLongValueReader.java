@@ -20,29 +20,35 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Class to reads and converts to {@link Double}, first it verify if is Double if yes return itself then verifies if is
- * {@link Number} and use {@link Number#doubleValue()} otherwise convert to {@link String} and then {@link Double}
+ * Class to reads and converts to {@link AtomicLong}, first it verify if is Double if yes return itself then verifies
+ * if is {@link Number} and use {@link Number#longValue()} otherwise convert to {@link String}
+ * and then {@link AtomicLong}
  */
-public final class DoubleReader implements ReaderField {
+public final class AtomicLongValueReader implements ValueReader {
+
+
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Double.class.equals(clazz) || double.class.equals(clazz);
+        return AtomicLong.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (Double.class.isInstance(value)) {
+        if (AtomicLong.class.isInstance(value)) {
             return (T) value;
         }
         if (Number.class.isInstance(value)) {
-            return (T) Double.valueOf(Number.class.cast(value).doubleValue());
+            return (T) new AtomicLong(Number.class.cast(value).longValue());
         } else {
-            return (T) Double.valueOf(value.toString());
+            return (T) new AtomicLong(Long.valueOf(value.toString()));
         }
     }
+
 }

@@ -20,33 +20,27 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
-
-import static java.lang.Character.MIN_VALUE;
+import org.jnosql.diana.api.ValueReader;
 
 /**
- * Class reader for {@link Character}
+ * Class to reads and converts to both {@link String} and {@link CharSequence}.
  */
-public final class CharacterReader implements ReaderField {
+public final class StringValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Character.class.equals(clazz) || char.class.equals(clazz);
+        return CharSequence.class.equals(clazz) || String.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-        if (Character.class.isInstance(value)) {
+
+        boolean isClazzString = String.class.equals(clazz);
+
+        if (CharSequence.class.equals(clazz) && CharSequence.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) Character.valueOf((char) Number.class.cast(value).intValue());
-        }
-
-        if (value.toString().isEmpty()) {
-            return (T) Character.valueOf(MIN_VALUE);
-        }
-        return (T) Character.valueOf(value.toString().charAt(0));
+        return (T) value.toString();
     }
 
 

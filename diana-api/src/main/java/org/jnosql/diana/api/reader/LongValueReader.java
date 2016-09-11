@@ -19,45 +19,30 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
 
-import java.util.Calendar;
-import java.util.Date;
+import org.jnosql.diana.api.ValueReader;
 
 /**
- * Class to reads and converts to {@link Calendar}, first it verify if is Calendar if yes return itself then verifies
- * if is {@link Long} and use {@link Calendar#setTimeInMillis(long)}} otherwise convert to {@link String}
+ * Class to reads and converts to {@link Long}, first it verify if is Double if yes return itself then verifies if is
+ * {@link Number} and use {@link Number#longValue()} otherwise convert to {@link String} and then {@link Long}
  */
-public final class CalendarReader implements ReaderField {
+public final class LongValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Calendar.class.equals(clazz);
+        return Long.class.equals(clazz) || long.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (Calendar.class.isInstance(value)) {
+        if (Long.class.isInstance(value)) {
             return (T) value;
         }
-
         if (Number.class.isInstance(value)) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis( ((Number) value).longValue());
-            return (T) calendar;
+            return (T) Long.valueOf(Number.class.cast(value).longValue());
+        } else {
+            return (T) Long.valueOf(value.toString());
         }
-
-        if (Date.class.isInstance(value)) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime((Date)value);
-            return (T) calendar;
-        }
-
-        Date date = new Date(value.toString());
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        return (T) calendar;
     }
 }

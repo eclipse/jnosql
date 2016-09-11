@@ -21,13 +21,13 @@ package org.jnosql.diana.api.reader;
 
 import java.time.YearMonth;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 
 /**
  * Class to reads and converts to {@link YearMonth}, first it verify if is YearMonth if yes return itself
  * otherwise convert to {@link String} and then {@link YearMonth}
  */
-public final class YearMonthReader implements ReaderField {
+public final class YearMonthValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {

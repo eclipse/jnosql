@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,26 +31,26 @@ import static org.junit.Assert.*;
 
 public class AtomicLongReaderTest {
 
-    private ReaderField readerField;
+    private ValueReader valueReader;
 
     @Before
     public void init() {
-        readerField = new AtomicLongReader();
+        valueReader = new AtomicLongValueReader();
     }
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(readerField.isCompatible(AtomicLong.class));
-        assertFalse(readerField.isCompatible(AtomicBoolean.class));
-        assertFalse(readerField.isCompatible(Boolean.class));
+        assertTrue(valueReader.isCompatible(AtomicLong.class));
+        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
+        assertFalse(valueReader.isCompatible(Boolean.class));
     }
 
     @Test
     public void shouldConvert() {
         AtomicLong atomicLong = new AtomicLong(9L);
-        assertEquals(atomicLong, readerField.read(AtomicLong.class, atomicLong));
-        assertEquals(atomicLong.get(), readerField.read(AtomicLong.class, 9.00).get());
-        assertEquals(atomicLong.get(), readerField.read(AtomicLong.class, "9").get());
+        assertEquals(atomicLong, valueReader.read(AtomicLong.class, atomicLong));
+        assertEquals(atomicLong.get(), valueReader.read(AtomicLong.class, 9.00).get());
+        assertEquals(atomicLong.get(), valueReader.read(AtomicLong.class, "9").get());
     }
 
 

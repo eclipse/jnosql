@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,25 +31,25 @@ import static org.junit.Assert.*;
 
 public class AtomicIntegerReaderTest {
 
-    private ReaderField readerField;
+    private ValueReader valueReader;
 
     @Before
     public void init() {
-        readerField = new AtomicIntegerReader();
+        valueReader = new AtomicIntegerValueReader();
     }
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(readerField.isCompatible(AtomicInteger.class));
-        assertFalse(readerField.isCompatible(AtomicBoolean.class));
+        assertTrue(valueReader.isCompatible(AtomicInteger.class));
+        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
     }
 
     @Test
     public void shouldConvert() {
         AtomicInteger integer = new AtomicInteger(10);
-        assertEquals(integer, readerField.read(AtomicInteger.class, integer));
-        assertEquals(integer.get(), readerField.read(AtomicInteger.class, 10.00).get());
-        assertEquals(integer.get(), readerField.read(AtomicInteger.class, "10").get());
+        assertEquals(integer, valueReader.read(AtomicInteger.class, integer));
+        assertEquals(integer.get(), valueReader.read(AtomicInteger.class, 10.00).get());
+        assertEquals(integer.get(), valueReader.read(AtomicInteger.class, "10").get());
     }
 
 

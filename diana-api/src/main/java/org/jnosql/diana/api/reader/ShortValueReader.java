@@ -20,33 +20,29 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
-
-import java.math.BigInteger;
+import org.jnosql.diana.api.ValueReader;
 
 /**
- * Class to reads and converts to {@link BigInteger}, first it verify if is Double if yes return itself then verifies
- * if is {@link Number} and use {@link Number#longValue()} otherwise convert to {@link String}
- * and then {@link BigInteger}
- *
+ * Class to reads and converts to {@link Short}, first it verify if is Double if yes return itself then verifies if is
+ * {@link Number} and use {@link Number#shortValue()} otherwise convert to {@link String} and then {@link Short}
  */
-public final class BigIntegerReader implements ReaderField {
+public final class ShortValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return BigInteger.class.equals(clazz);
+        return Short.class.equals(clazz) || short.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (BigInteger.class.isInstance(value)) {
+        if (Short.class.isInstance(value)) {
             return (T) value;
         }
         if (Number.class.isInstance(value)) {
-            return (T) BigInteger.valueOf(Number.class.cast(value).longValue());
+            return (T) Short.valueOf(Number.class.cast(value).shortValue());
         } else {
-            return (T) BigInteger.valueOf(Long.valueOf(value.toString()));
+            return (T) Short.valueOf(value.toString());
         }
     }
 }

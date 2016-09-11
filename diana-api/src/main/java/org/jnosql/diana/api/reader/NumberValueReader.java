@@ -20,13 +20,13 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 
 /**
  * Class reader for {@link Number}, this converter first verify if the object is a Number instance,
  * if it will return itself, otherwise convert to String and then to {@link Double}
  */
-public final class NumberReader implements ReaderField {
+public final class NumberValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {

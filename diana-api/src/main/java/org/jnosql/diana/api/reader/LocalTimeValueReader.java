@@ -19,36 +19,41 @@
 
 package org.jnosql.diana.api.reader;
 
+import org.jnosql.diana.api.ValueReader;
 
-import org.jnosql.diana.api.ReaderField;
-
-import java.util.concurrent.atomic.AtomicLong;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
- * Class to reads and converts to {@link AtomicLong}, first it verify if is Double if yes return itself then verifies
- * if is {@link Number} and use {@link Number#longValue()} otherwise convert to {@link String}
- * and then {@link AtomicLong}
+ * Class to read and convert to {@link LocalTime} type
  */
-public final class AtomicLongReader implements ReaderField {
-
-
+public class LocalTimeValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return AtomicLong.class.equals(clazz);
+        return LocalTime.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-
-        if (AtomicLong.class.isInstance(value)) {
+        if (LocalTime.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) new AtomicLong(Number.class.cast(value).longValue());
-        } else {
-            return (T) new AtomicLong(Long.valueOf(value.toString()));
-        }
-    }
 
+        if (Calendar.class.isInstance(value)) {
+            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        }
+
+        if (Date.class.isInstance(value)) {
+            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        }
+
+        if (Number.class.isInstance(value)) {
+            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        }
+
+        return (T) LocalTime.parse(value.toString());
+    }
 }

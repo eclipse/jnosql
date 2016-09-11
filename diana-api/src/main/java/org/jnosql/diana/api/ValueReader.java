@@ -28,7 +28,7 @@ package org.jnosql.diana.api;
  * @see Value
  * @see Value#get(Class)
  */
-public interface ReaderField {
+public interface ValueReader {
 
     /**
      * verifies if the reader has support of instance from this class.

@@ -19,42 +19,43 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Class to read and convert to {@link ZonedDateTime} type
+ * Class to reads and converts to {@link LocalDateTime} type
  *
  */
-public class ZonedDateTimeReader implements ReaderField {
+public class LocalDateTimeValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return ZonedDateTime.class.equals(clazz);
+        return LocalDateTime.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-        if (ZonedDateTime.class.isInstance(value)) {
+
+        if (LocalDateTime.class.isInstance(value)) {
             return (T) value;
         }
 
         if (Calendar.class.isInstance(value)) {
-            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault());
+            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         }
 
         if (Date.class.isInstance(value)) {
-            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault());
+            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         }
 
         if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault());
+            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         }
 
-        return (T) ZonedDateTime.parse(value.toString());
+        return (T) LocalDateTime.parse(value.toString());
     }
 }

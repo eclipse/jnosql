@@ -20,43 +20,33 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
+import java.math.BigInteger;
 
 /**
- * Class to reads and converts to {@link LocalDate} type
+ * Class to reads and converts to {@link BigInteger}, first it verify if is Double if yes return itself then verifies
+ * if is {@link Number} and use {@link Number#longValue()} otherwise convert to {@link String}
+ * and then {@link BigInteger}
  *
  */
-public final class LocalDateReader implements ReaderField {
+public final class BigIntegerValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return LocalDate.class.equals(clazz);
+        return BigInteger.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (LocalDate.class.isInstance(value)) {
+        if (BigInteger.class.isInstance(value)) {
             return (T) value;
         }
-
-        if (Calendar.class.isInstance(value)) {
-            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        }
-
-        if (Date.class.isInstance(value)) {
-            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        }
-
         if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            return (T) BigInteger.valueOf(Number.class.cast(value).longValue());
+        } else {
+            return (T) BigInteger.valueOf(Long.valueOf(value.toString()));
         }
-
-        return (T) LocalDate.parse(value.toString());
     }
 }

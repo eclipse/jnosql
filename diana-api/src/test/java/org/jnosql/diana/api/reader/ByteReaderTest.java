@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,26 +30,26 @@ import static org.junit.Assert.*;
 
 public class ByteReaderTest {
 
-    private ReaderField readerField;
+    private ValueReader valueReader;
 
     @Before
     public void init() {
-        readerField = new ByteReader();
+        valueReader = new ByteValueReader();
     }
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(readerField.isCompatible(Byte.class));
-        assertFalse(readerField.isCompatible(AtomicBoolean.class));
-        assertFalse(readerField.isCompatible(Boolean.class));
+        assertTrue(valueReader.isCompatible(Byte.class));
+        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
+        assertFalse(valueReader.isCompatible(Boolean.class));
     }
 
     @Test
     public void shouldConvert() {
         Byte number = (byte) 10;
-        assertEquals(number, readerField.read(Byte.class, 10.00));
-        assertEquals(Byte.valueOf((byte) 10), readerField.read(Byte.class, 10.00));
-        assertEquals(Byte.valueOf((byte) 10), readerField.read(Byte.class, "10"));
+        assertEquals(number, valueReader.read(Byte.class, 10.00));
+        assertEquals(Byte.valueOf((byte) 10), valueReader.read(Byte.class, 10.00));
+        assertEquals(Byte.valueOf((byte) 10), valueReader.read(Byte.class, "10"));
     }
 
 

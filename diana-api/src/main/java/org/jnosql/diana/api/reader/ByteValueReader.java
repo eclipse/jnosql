@@ -20,34 +20,29 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
-
-import java.math.BigDecimal;
+import org.jnosql.diana.api.ValueReader;
 
 /**
- * Class to reads and converts to {@link BigDecimal}, first it verify if is Double if yes return itself then verifies
- * if is {@link Number} and use {@link Number#doubleValue()} otherwise convert to {@link String}
- * and then {@link BigDecimal}
- *
+ * Class to reads and converts to {@link Byte}, first it verify if is Double if yes return itself then verifies if is
+ * {@link Number} and use {@link Number#byteValue()} otherwise convert to {@link String} and then {@link Byte}
  */
-public final class BigDecimalReader implements ReaderField {
-
+public final class ByteValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return BigDecimal.class.equals(clazz);
+        return Byte.class.equals(clazz) || byte.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (BigDecimal.class.isInstance(value)) {
+        if (Byte.class.isInstance(value)) {
             return (T) value;
         }
         if (Number.class.isInstance(value)) {
-            return (T) BigDecimal.valueOf(Number.class.cast(value).doubleValue());
+            return (T) Byte.valueOf(Number.class.cast(value).byteValue());
         } else {
-            return (T) BigDecimal.valueOf(Double.valueOf(value.toString()));
+            return (T) Byte.valueOf(value.toString());
         }
     }
 }

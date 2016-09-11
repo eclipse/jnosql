@@ -36,7 +36,7 @@ import static java.util.stream.StreamSupport.stream;
 
 final class DefaultValue implements Value {
 
-    private static final transient ReaderField SERVICE_PROVIDER = ReaderFieldDecorator.getInstance();
+    private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
 
     private final Object value;
 

@@ -25,20 +25,20 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 /**
- * Decorators of all {@link ReaderField} supported by Diana
- * @see ReaderField
+ * Decorators of all {@link ValueReader} supported by Diana
+ * @see ValueReader
  */
-final class ReaderFieldDecorator implements ReaderField {
+final class ValueReaderDecorator implements ValueReader {
 
-    private static final ReaderFieldDecorator INSTANCE = new ReaderFieldDecorator();
+    private static final ValueReaderDecorator INSTANCE = new ValueReaderDecorator();
 
-    private final List<ReaderField> readers = new ArrayList<>();
+    private final List<ValueReader> readers = new ArrayList<>();
 
     {
-        ServiceLoader.load(ReaderField.class).forEach(readers::add);
+        ServiceLoader.load(ValueReader.class).forEach(readers::add);
     }
 
-    public static ReaderFieldDecorator getInstance() {
+    public static ValueReaderDecorator getInstance() {
         return INSTANCE;
     }
 
@@ -52,14 +52,14 @@ final class ReaderFieldDecorator implements ReaderField {
         if (clazz.isInstance(value)) {
             return clazz.cast(value);
         }
-        ReaderField readerField = readers.stream().filter(r -> r.isCompatible(clazz)).findFirst().orElseThrow(
+        ValueReader valueReader = readers.stream().filter(r -> r.isCompatible(clazz)).findFirst().orElseThrow(
             () -> new UnsupportedOperationException("The type " + clazz + " is not supported yet"));
-        return readerField.read(clazz, value);
+        return valueReader.read(clazz, value);
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ReaderFieldDecorator{");
+        final StringBuilder sb = new StringBuilder("ValueReaderDecorator{");
         sb.append("readers=").append(readers);
         sb.append('}');
         return sb.toString();

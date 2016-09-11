@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,26 +30,26 @@ import static org.junit.Assert.*;
 
 public class FloatReaderTest {
 
-    private ReaderField readerField;
+    private ValueReader valueReader;
 
     @Before
     public void init() {
-        readerField = new FloatReader();
+        valueReader = new FloatValueReader();
     }
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(readerField.isCompatible(Float.class));
-        assertFalse(readerField.isCompatible(AtomicBoolean.class));
-        assertFalse(readerField.isCompatible(Boolean.class));
+        assertTrue(valueReader.isCompatible(Float.class));
+        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
+        assertFalse(valueReader.isCompatible(Boolean.class));
     }
 
     @Test
     public void shouldConvert() {
         Float number = 10F;
-        assertEquals(number, readerField.read(Float.class, number));
-        assertEquals(Float.valueOf(10F), readerField.read(Float.class, 10.00));
-        assertEquals(Float.valueOf(10F), readerField.read(Float.class, "10"));
+        assertEquals(number, valueReader.read(Float.class, number));
+        assertEquals(Float.valueOf(10F), valueReader.read(Float.class, 10.00));
+        assertEquals(Float.valueOf(10F), valueReader.read(Float.class, "10"));
     }
 
 

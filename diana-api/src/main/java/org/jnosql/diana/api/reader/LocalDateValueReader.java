@@ -20,31 +20,43 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Class to reads and converts Date type
+ * Class to reads and converts to {@link LocalDate} type
+ *
  */
-public final class DateReader implements ReaderField {
+public final class LocalDateValueReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {
-        return Date.class.equals(clazz);
+        return LocalDate.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (Date.class.isInstance(value)) {
+        if (LocalDate.class.isInstance(value)) {
             return (T) value;
         }
 
-        if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue());
+        if (Calendar.class.isInstance(value)) {
+            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
 
-        return (T) new Date(value.toString());
+        if (Date.class.isInstance(value)) {
+            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+
+        if (Number.class.isInstance(value)) {
+            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+
+        return (T) LocalDate.parse(value.toString());
     }
 }

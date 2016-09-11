@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,31 +30,31 @@ import static org.junit.Assert.*;
 
 public class StringReaderTest {
 
-    private ReaderField readerField;
+    private ValueReader valueReader;
 
     @Before
     public void init() {
-        readerField = new StringReader();
+        valueReader = new StringValueReader();
     }
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(readerField.isCompatible(String.class));
-        assertTrue(readerField.isCompatible(CharSequence.class));
-        assertFalse(readerField.isCompatible(AtomicBoolean.class));
+        assertTrue(valueReader.isCompatible(String.class));
+        assertTrue(valueReader.isCompatible(CharSequence.class));
+        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
     }
 
     @Test
     public void shouldConvert() {
         StringBuilder stringBuilder = new StringBuilder("sb");
 
-        assertEquals(stringBuilder, readerField.read(CharSequence.class, stringBuilder));
-        assertEquals(stringBuilder.toString(), readerField.read(String.class, stringBuilder));
+        assertEquals(stringBuilder, valueReader.read(CharSequence.class, stringBuilder));
+        assertEquals(stringBuilder.toString(), valueReader.read(String.class, stringBuilder));
 
-        assertEquals("10", readerField.read(CharSequence.class, 10));
-        assertEquals("10.0", readerField.read(String.class, 10.00));
-        assertEquals("10", readerField.read(CharSequence.class, "10"));
-        assertEquals("10", readerField.read(String.class, "10"));
+        assertEquals("10", valueReader.read(CharSequence.class, 10));
+        assertEquals("10.0", valueReader.read(String.class, 10.00));
+        assertEquals("10", valueReader.read(CharSequence.class, "10"));
+        assertEquals("10", valueReader.read(String.class, "10"));
     }
 
 

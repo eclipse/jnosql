@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.reader;
 
-import org.jnosql.diana.api.ReaderField;
+import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,28 +31,28 @@ import static org.junit.Assert.assertTrue;
 
 public class YearReaderTest {
 
-    private ReaderField readerField;
+    private ValueReader valueReader;
 
     @Before
     public void init() {
-        readerField = new YearReader();
+        valueReader = new YearValueReader();
     }
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(readerField.isCompatible(Year.class));
-        assertFalse(readerField.isCompatible(String.class));
-        assertFalse(readerField.isCompatible(Long.class));
+        assertTrue(valueReader.isCompatible(Year.class));
+        assertFalse(valueReader.isCompatible(String.class));
+        assertFalse(valueReader.isCompatible(Long.class));
     }
 
     @Test
     public void shouldConvert() {
         Year year = Year.parse("2009");
 
-        assertEquals(year, readerField.read(Year.class, Year.parse("2009")));
-        assertEquals(year, readerField.read(String.class, "2009"));
-        assertEquals(year, readerField.read(Integer.class, 2009));
-        assertEquals(year, readerField.read(Long.class, 2009));
+        assertEquals(year, valueReader.read(Year.class, Year.parse("2009")));
+        assertEquals(year, valueReader.read(String.class, "2009"));
+        assertEquals(year, valueReader.read(Integer.class, 2009));
+        assertEquals(year, valueReader.read(Long.class, 2009));
     }
 
 
