@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.writer;
 
-import org.jnosql.diana.api.WriterField;
+import org.jnosql.diana.api.ValueWriter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,30 +31,30 @@ import static org.junit.Assert.*;
 public class TemporalWriterTest {
 
 
-    private WriterField<Temporal, String> writerField;
+    private ValueWriter<Temporal, String> valueWriter;
 
     @Before
     public void setUp() {
-        writerField = new TemporalWriter();
+        valueWriter = new TemporalValueWriter();
     }
 
     @Test
     public void shouldVerifyCompatibility() {
-        assertTrue(writerField.isCompatible(Temporal.class));
-        assertTrue(writerField.isCompatible(LocalDate.class));
-        assertTrue(writerField.isCompatible(LocalDateTime.class));
-        assertTrue(writerField.isCompatible(LocalTime.class));
-        assertTrue(writerField.isCompatible(Year.class));
-        assertTrue(writerField.isCompatible(YearMonth.class));
-        assertTrue(writerField.isCompatible(ZonedDateTime.class));
-        assertFalse(writerField.isCompatible(Boolean.class));
+        assertTrue(valueWriter.isCompatible(Temporal.class));
+        assertTrue(valueWriter.isCompatible(LocalDate.class));
+        assertTrue(valueWriter.isCompatible(LocalDateTime.class));
+        assertTrue(valueWriter.isCompatible(LocalTime.class));
+        assertTrue(valueWriter.isCompatible(Year.class));
+        assertTrue(valueWriter.isCompatible(YearMonth.class));
+        assertTrue(valueWriter.isCompatible(ZonedDateTime.class));
+        assertFalse(valueWriter.isCompatible(Boolean.class));
 
     }
 
     @Test
     public void shouldConvertLocalDate() {
         LocalDate now = LocalDate.now();
-        String result = writerField.write(now);
+        String result = valueWriter.write(now);
         assertEquals(now.toString(), result);
         assertEquals(now, LocalDate.parse(result));
     }
@@ -62,7 +62,7 @@ public class TemporalWriterTest {
     @Test
     public void shouldConvertLocalDateTime() {
         LocalDateTime now = LocalDateTime.now();
-        String result = writerField.write(now);
+        String result = valueWriter.write(now);
         assertEquals(now.toString(), result);
         assertEquals(now, LocalDateTime.parse(result));
     }
@@ -70,7 +70,7 @@ public class TemporalWriterTest {
     @Test
     public void shouldConvertLocalTime() {
         LocalTime now = LocalTime.now();
-        String result = writerField.write(now);
+        String result = valueWriter.write(now);
         assertEquals(now.toString(), result);
         assertEquals(now, LocalTime.parse(result));
     }
@@ -79,7 +79,7 @@ public class TemporalWriterTest {
     @Test
     public void shouldConvertYear() {
         Year now = Year.now();
-        String result = writerField.write(now);
+        String result = valueWriter.write(now);
         assertEquals(now.toString(), result);
         assertEquals(now, Year.parse(result));
     }
@@ -87,7 +87,7 @@ public class TemporalWriterTest {
     @Test
     public void shouldConvertYearMonth() {
         YearMonth now = YearMonth.now();
-        String result = writerField.write(now);
+        String result = valueWriter.write(now);
         assertEquals(now.toString(), result);
         assertEquals(now, YearMonth.parse(result));
     }
@@ -95,7 +95,7 @@ public class TemporalWriterTest {
     @Test
     public void shouldConvertZonedDateTime() {
         ZonedDateTime now = ZonedDateTime.now();
-        String result = writerField.write(now);
+        String result = valueWriter.write(now);
         assertEquals(now.toString(), result);
         assertEquals(now, ZonedDateTime.parse(result));
     }

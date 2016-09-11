@@ -21,13 +21,13 @@ package org.jnosql.diana.api;
 
 /**
  * To put your own Java Structure in NoSQL database is necessary convert it to a supported one.
- * So, the WriterField has the goal to convert to any specific structure type that a database might support.
+ * So, the ValueWriter has the goal to convert to any specific structure type that a database might support.
  * These implementation will loaded by ServiceLoad and a NoSQL implementation will may use it.
  *
  * @param <T> current type
  * @param <S> the converted type
  */
-public interface WriterField<T, S> {
+public interface ValueWriter<T, S> {
 
     /**
      * verifies if the writer has support of instance from this class.

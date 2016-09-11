@@ -19,14 +19,14 @@
 
 package org.jnosql.diana.api.writer;
 
-import org.jnosql.diana.api.WriterField;
+import org.jnosql.diana.api.ValueWriter;
 
 public final class WriterFields {
 
     private WriterFields() { }
 
-    public static WriterField get() {
-        return WriterFieldDecorator.getInstance();
+    public static ValueWriter get() {
+        return ValueWriterDecorator.getInstance();
     }
 
 }

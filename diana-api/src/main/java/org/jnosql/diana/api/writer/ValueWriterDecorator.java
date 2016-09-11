@@ -19,30 +19,30 @@
 
 package org.jnosql.diana.api.writer;
 
-import org.jnosql.diana.api.WriterField;
+import org.jnosql.diana.api.ValueWriter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 
 /**
- * Decorators of all {@link WriterField} supported by Diana
- * @see WriterField
+ * Decorators of all {@link ValueWriter} supported by Diana
+ * @see ValueWriter
  */
-public final class WriterFieldDecorator implements WriterField {
+public final class ValueWriterDecorator implements ValueWriter {
 
-    private static final WriterField INSTANCE = new WriterFieldDecorator();
+    private static final ValueWriter INSTANCE = new ValueWriterDecorator();
 
-    private final List<WriterField> writers = new ArrayList<>();
+    private final List<ValueWriter> writers = new ArrayList<>();
 
     {
-        ServiceLoader.load(WriterField.class).forEach(writers::add);
+        ServiceLoader.load(ValueWriter.class).forEach(writers::add);
     }
 
-    private WriterFieldDecorator() {
+    private ValueWriterDecorator() {
     }
 
-    public static WriterField getInstance() {
+    public static ValueWriter getInstance() {
         return INSTANCE;
     }
 
@@ -54,14 +54,14 @@ public final class WriterFieldDecorator implements WriterField {
     @Override
     public Object write(Object object) {
         Class clazz = object.getClass();
-        WriterField writerField = writers.stream().filter(r -> r.isCompatible(clazz)).findFirst().orElseThrow(
+        ValueWriter valueWriter = writers.stream().filter(r -> r.isCompatible(clazz)).findFirst().orElseThrow(
             () -> new UnsupportedOperationException("The type " + clazz + " is not supported yet"));
-        return writerField.write(object);
+        return valueWriter.write(object);
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("WriterFieldDecorator{");
+        final StringBuilder sb = new StringBuilder("ValueWriterDecorator{");
         sb.append("writers=").append(writers);
         sb.append('}');
         return sb.toString();

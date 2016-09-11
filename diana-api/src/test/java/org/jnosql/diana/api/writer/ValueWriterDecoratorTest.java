@@ -19,20 +19,36 @@
 
 package org.jnosql.diana.api.writer;
 
-import org.jnosql.diana.api.WriterField;
+import org.jnosql.diana.api.ValueWriter;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.time.temporal.Temporal;
+import java.util.Optional;
 
+import static org.junit.Assert.*;
 
-public class TemporalWriter implements WriterField<Temporal, String> {
+public class ValueWriterDecoratorTest {
 
-    @Override
-    public boolean isCompatible(Class clazz) {
-        return Temporal.class.isAssignableFrom(clazz);
+    private ValueWriter valueWriter;
+
+    @Before
+    public void setUp() {
+        valueWriter = ValueWriterDecorator.getInstance();
     }
 
-    @Override
-    public String write(Temporal object) {
-        return object.toString();
+    @Test
+    public void shouldVerifyCompatibility() {
+        assertTrue(valueWriter.isCompatible(Optional.class));
+        assertTrue(valueWriter.isCompatible(Temporal.class));
+        assertFalse(valueWriter.isCompatible(Boolean.class));
+    }
+
+    @Test
+    public void shouldConvert() {
+        String diana = "diana";
+        Optional<String> optinal = Optional.of(diana);
+        Object result = valueWriter.write(optinal);
+        assertEquals(diana, result);
     }
 }

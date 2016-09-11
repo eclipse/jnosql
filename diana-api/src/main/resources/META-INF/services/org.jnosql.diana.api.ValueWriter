@@ -17,5 +17,5 @@
 # under the License.
 #
 
-org.jnosql.diana.api.writer.OptionalWriter
-org.jnosql.diana.api.writer.TemporalWriter
+org.jnosql.diana.api.writer.OptionalValueWriter
+org.jnosql.diana.api.writer.TemporalValueWriter

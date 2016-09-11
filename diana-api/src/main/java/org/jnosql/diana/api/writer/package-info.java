@@ -18,7 +18,7 @@
  */
 
 /**
- * This package contains all WriterField supported by API by default.
- *@see org.jnosql.diana.api.WriterField
+ * This package contains all ValueWriter supported by API by default.
+ *@see org.jnosql.diana.api.ValueWriter
  */
 package org.jnosql.diana.api.writer;

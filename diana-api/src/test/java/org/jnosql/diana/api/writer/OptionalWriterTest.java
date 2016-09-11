@@ -19,7 +19,7 @@
 
 package org.jnosql.diana.api.writer;
 
-import org.jnosql.diana.api.WriterField;
+import org.jnosql.diana.api.ValueWriter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,24 +30,24 @@ import static org.junit.Assert.*;
 
 public class OptionalWriterTest {
 
-    private WriterField<Optional, String> writerField;
+    private ValueWriter<Optional, String> valueWriter;
 
     @Before
     public void setUp() {
-        writerField = new OptionalWriter();
+        valueWriter = new OptionalValueWriter();
     }
 
     @Test
     public void shouldVerifyCompatibility() {
-        assertTrue(writerField.isCompatible(Optional.class));
-        assertFalse(writerField.isCompatible(Boolean.class));
+        assertTrue(valueWriter.isCompatible(Optional.class));
+        assertFalse(valueWriter.isCompatible(Boolean.class));
     }
 
     @Test
     public void shouldConvert() {
         String diana = "diana";
         Optional<String> optinal = Optional.of(diana);
-        String result = writerField.write(optinal);
+        String result = valueWriter.write(optinal);
         assertEquals(diana, result);
     }
 }
