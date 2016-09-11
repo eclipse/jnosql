@@ -20,9 +20,8 @@
 package org.jnosql.diana.api.key;
 
 
-import org.jnosql.diana.api.Value;
-
 import java.io.Serializable;
+import org.jnosql.diana.api.Value;
 
 /**
  * A bucket unit, it's a tuple that contains key its respective value.
@@ -44,6 +43,19 @@ public interface KeyValue<T> extends Serializable {
 
     static <T> KeyValue<T> of(T key, Value value) throws NullPointerException {
         return new DefaultKeyValue(key, value);
+    }
+
+    /**
+     * Creates a Key value instance
+     *
+     * @param key   the key
+     * @param value the value
+     * @param <T>   the key type
+     * @return a {@link KeyValue} instance
+     * @throws NullPointerException when either key or value are null
+     */
+    static <T> KeyValue<T> of(T key, Object value) throws NullPointerException {
+        return of(key, Value.of(value));
     }
 
     /**
