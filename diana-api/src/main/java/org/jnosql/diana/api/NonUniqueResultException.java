@@ -29,6 +29,8 @@ public class NonUniqueResultException extends RuntimeException {
      * Constructs a new runtime exception with {@code null} as its
      * detail message.  The cause is not initialized, and may subsequently be
      * initialized by a call to {@link #initCause}.
+     *
+     * @param message the message
      */
     public NonUniqueResultException(String message) {
         super(message);

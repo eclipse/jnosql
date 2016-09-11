@@ -26,8 +26,8 @@ import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.Value;
 
 /**
- * Interface used to interact with the persistence context to {@link KeyValue}
- * The BucketManager API is used to create and remove persistent {@link KeyValue}.
+ * Interface used to interact with the persistence context to {@link KeyValueEntity}
+ * The BucketManager API is used to create and remove persistent {@link KeyValueEntity}.
  *
  */
 public interface BucketManager extends CloseResource {
@@ -44,44 +44,44 @@ public interface BucketManager extends CloseResource {
     <K, V> void put(K key, V value) throws NullPointerException;
 
     /**
-     * Saves the {@link KeyValue}
+     * Saves the {@link KeyValueEntity}
      *
-     * @param keyValue the entity to be save
+     * @param entity the entity to be save
      * @param <K>      the key type
      * @throws NullPointerException when entity is null
      */
-    <K> void put(KeyValue<K> keyValue) throws NullPointerException;
+    <K> void put(KeyValueEntity<K> entity) throws NullPointerException;
 
     /**
-     * Saves the {@link KeyValue} with time to live
+     * Saves the {@link KeyValueEntity} with time to live
      *
-     * @param keyValue the entity to be save
+     * @param entity the entity to be save
      * @param ttl      the defined time to live
      * @param <K>      the key type
      * @throws NullPointerException          when entity is null
      * @throws UnsupportedOperationException when expired time is not supported
      */
-    <K> void put(KeyValue<K> keyValue, TTL ttl) throws NullPointerException, UnsupportedOperationException;
+    <K> void put(KeyValueEntity<K> entity, TTL ttl) throws NullPointerException, UnsupportedOperationException;
 
     /**
      * Saves the {@link Iterable} of keys
      *
-     * @param keyValues keys to be save
+     * @param entities keys to be save
      * @param <K>       the key type
      * @throws NullPointerException when the iterable is null
      */
-    <K> void put(Iterable<KeyValue<K>> keyValues) throws NullPointerException;
+    <K> void put(Iterable<KeyValueEntity<K>> entities) throws NullPointerException;
 
     /**
      * Saves the {@link Iterable} of keys with a defined time to live
      *
-     * @param keyValues keys to be save
+     * @param entities keys to be save
      * @param ttl       the time to entity expire
      * @param <K>       the key type
      * @throws NullPointerException          when the iterable is null
      * @throws UnsupportedOperationException when expired time is not supported
      */
-    <K> void put(Iterable<KeyValue<K>> keyValues, TTL ttl) throws NullPointerException, UnsupportedOperationException;
+    <K> void put(Iterable<KeyValueEntity<K>> entities, TTL ttl) throws NullPointerException, UnsupportedOperationException;
 
     /**
      * Finds the Value from a key
