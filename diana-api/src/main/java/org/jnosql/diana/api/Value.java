@@ -26,6 +26,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
+/**
+ * This interface represents the value that will be storage in the database.
+ */
 public interface Value extends Serializable {
 
     /**
@@ -37,11 +40,12 @@ public interface Value extends Serializable {
 
     /**
      * Cast class to specificed type
+     *
      * @param <T> the type
      * @return a class casted to defined type
      * @throws ClassCastException when cast is not possible
      */
-    <T> T cast()throws ClassCastException;
+    <T> T cast() throws ClassCastException;
 
     /**
      * Converts {@link Value#get()} to specified class
@@ -98,8 +102,9 @@ public interface Value extends Serializable {
 
     /**
      * Converts {@link Value#get()} in a {@link Stream} type of class,
+     *
      * @param clazz the class
-     * @param <T> the type
+     * @param <T>   the type
      * @return a {@link Stream} instance
      */
     default <T> Stream<T> getStream(Class<T> clazz) {
