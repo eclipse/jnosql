@@ -32,8 +32,8 @@ import org.jnosql.diana.api.NonUniqueResultException;
 import org.jnosql.diana.api.TTL;
 
 /**
- * Interface used to interact with the persistence context to {@link DocumentCollectionEntity}
- * The DocumentCollectionManager API is used to create and remove persistent {@link DocumentCollectionEntity} instances,
+ * Interface used to interact with the persistence context to {@link DocumentEntity}
+ * The DocumentCollectionManager API is used to create and remove persistent {@link DocumentEntity} instances,
  * to find entities by their primary key, and to query over entities.
  */
 public interface DocumentCollectionManager extends CloseResource {
@@ -45,7 +45,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @return the entity saved
      * @throws NullPointerException when document is null
      */
-    DocumentCollectionEntity save(DocumentCollectionEntity entity) throws NullPointerException;
+    DocumentEntity save(DocumentEntity entity) throws NullPointerException;
 
     /**
      * Saves an entity asynchronously
@@ -54,7 +54,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(DocumentCollectionEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void saveAsync(DocumentEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
      * Saves document collection entity with time to live
@@ -63,7 +63,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @param ttl    the time to live
      * @return the entity saved
      */
-    DocumentCollectionEntity save(DocumentCollectionEntity entity, TTL ttl);
+    DocumentEntity save(DocumentEntity entity, TTL ttl);
 
     /**
      * Saves an entity asynchronously with time to live
@@ -73,39 +73,39 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(DocumentCollectionEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void saveAsync(DocumentEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
      * Saves documents collection entity, by default it's just run for each saving using
-     * {@link DocumentCollectionManager#save(DocumentCollectionEntity)},
+     * {@link DocumentCollectionManager#save(DocumentEntity)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    default Iterable<DocumentCollectionEntity> save(Iterable<DocumentCollectionEntity> entities) throws NullPointerException {
+    default Iterable<DocumentEntity> save(Iterable<DocumentEntity> entities) throws NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(Collectors.toList());
     }
 
     /**
      * Saves entities asynchronously, by default it's just run for each saving using
-     * {@link DocumentCollectionManager#saveAsync(DocumentCollectionEntity)},
+     * {@link DocumentCollectionManager#saveAsync(DocumentEntity)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    default void saveAsync(Iterable<DocumentCollectionEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+    default void saveAsync(Iterable<DocumentEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException {
         Objects.requireNonNull(entities, "entities is required");
         StreamSupport.stream(entities.spliterator(), false).forEach(this::saveAsync);
     }
 
     /**
      * Saves documents collection entity with time to live, by default it's just run for each saving using
-     * {@link DocumentCollectionManager#save(DocumentCollectionEntity, TTL)},
+     * {@link DocumentCollectionManager#save(DocumentEntity, TTL)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
@@ -113,7 +113,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    default Iterable<DocumentCollectionEntity> save(Iterable<DocumentCollectionEntity> entities, TTL ttl) throws NullPointerException {
+    default Iterable<DocumentEntity> save(Iterable<DocumentEntity> entities, TTL ttl) throws NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         return StreamSupport.stream(entities.spliterator(), false).map(d -> save(d, ttl)).collect(Collectors.toList());
@@ -121,7 +121,7 @@ public interface DocumentCollectionManager extends CloseResource {
 
     /**
      * Saves entities asynchronously with time to live, by default it's just run for each saving using
-     * {@link DocumentCollectionManager#saveAsync(DocumentCollectionEntity, TTL)},
+     * {@link DocumentCollectionManager#saveAsync(DocumentEntity, TTL)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
@@ -129,7 +129,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    default void saveAsync(Iterable<DocumentCollectionEntity> entities, TTL ttl) {
+    default void saveAsync(Iterable<DocumentEntity> entities, TTL ttl) {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         StreamSupport.stream(entities.spliterator(), false).forEach(d -> saveAsync(d, ttl));
@@ -144,7 +144,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(DocumentCollectionEntity entity, Consumer<DocumentCollectionEntity> callBack) throws
+    void saveAsync(DocumentEntity entity, Consumer<DocumentEntity> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
@@ -157,7 +157,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(DocumentCollectionEntity entity, TTL ttl, Consumer<DocumentCollectionEntity> callBack) throws
+    void saveAsync(DocumentEntity entity, TTL ttl, Consumer<DocumentEntity> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
@@ -166,7 +166,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @param entity entity to be updated
      * @return the entity updated
      */
-    DocumentCollectionEntity update(DocumentCollectionEntity entity);
+    DocumentEntity update(DocumentEntity entity);
 
     /**
      * Updates an entity asynchronously
@@ -175,7 +175,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void updateAsync(DocumentCollectionEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void updateAsync(DocumentEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
      * Updates an entity asynchronously
@@ -186,7 +186,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void updateAsync(DocumentCollectionEntity entity, Consumer<DocumentCollectionEntity> callBack) throws
+    void updateAsync(DocumentEntity entity, Consumer<DocumentEntity> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
@@ -218,13 +218,13 @@ public interface DocumentCollectionManager extends CloseResource {
             UnsupportedOperationException;
 
     /**
-     * Finds {@link DocumentCollectionEntity} from query
+     * Finds {@link DocumentEntity} from query
      *
      * @param query - query to figure out entities
      * @return entities found by query
      * @throws NullPointerException when query is null
      */
-    List<DocumentCollectionEntity> find(DocumentQuery query) throws NullPointerException;
+    List<DocumentEntity> find(DocumentQuery query) throws NullPointerException;
 
     /**
      * Returns a single entity from query
@@ -234,8 +234,8 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException  when query is null
      */
-    default Optional<DocumentCollectionEntity> singleResult(DocumentQuery query) throws NonUniqueResultException {
-        List<DocumentCollectionEntity> entities = find(query);
+    default Optional<DocumentEntity> singleResult(DocumentQuery query) throws NonUniqueResultException {
+        List<DocumentEntity> entities = find(query);
         if (entities.isEmpty()) {
             return Optional.empty();
         }
@@ -247,7 +247,7 @@ public interface DocumentCollectionManager extends CloseResource {
     }
 
     /**
-     * Finds {@link DocumentCollectionEntity} from query asynchronously
+     * Finds {@link DocumentEntity} from query asynchronously
      *
      * @param query    query to find entities
      * @param callBack the callback, when the process is finished will call this instance returning
@@ -255,7 +255,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void findAsync(DocumentQuery query, Consumer<List<DocumentCollectionEntity>> callBack) throws
+    void findAsync(DocumentQuery query, Consumer<List<DocumentEntity>> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
@@ -265,7 +265,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @return the result of query
      * @throws UnsupportedOperationException when the database does not have support to run native query
      */
-    List<DocumentCollectionEntity> nativeQuery(String query) throws UnsupportedOperationException;
+    List<DocumentEntity> nativeQuery(String query) throws UnsupportedOperationException;
 
     /**
      * Executes a native query from database, this query may be difference between kind of database and run it
@@ -277,7 +277,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to run native query async.
      */
-    void nativeQueryAsync(String query, Consumer<List<DocumentCollectionEntity>> callBack) throws
+    void nativeQueryAsync(String query, Consumer<List<DocumentEntity>> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**

@@ -27,16 +27,16 @@ import static java.util.Collections.unmodifiableList;
 import static java.util.Comparator.comparing;
 
 /**
- * A default implementation of {@link DocumentCollectionEntity}
+ * A default implementation of {@link DocumentEntity}
  */
-final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity {
+final class DefaultDocumentEntity implements DocumentEntity {
 
     private final List<Document> documents = new ArrayList<>();
 
     private final String name;
 
 
-    DefaultDocumentCollectionEntity(String name) {
+    DefaultDocumentEntity(String name) {
         this.name = Objects.requireNonNull(name, "name name is required");
     }
 
@@ -81,8 +81,8 @@ final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity 
     }
 
     @Override
-    public DocumentCollectionEntity copy() {
-        DefaultDocumentCollectionEntity entity = new DefaultDocumentCollectionEntity(this.name);
+    public DocumentEntity copy() {
+        DefaultDocumentEntity entity = new DefaultDocumentEntity(this.name);
         entity.documents.addAll(this.getDocuments());
         return entity;
     }
@@ -98,10 +98,10 @@ final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity 
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DocumentCollectionEntity)) {
+        if (!(o instanceof DocumentEntity)) {
             return false;
         }
-        DocumentCollectionEntity that = (DocumentCollectionEntity) o;
+        DocumentEntity that = (DocumentEntity) o;
         return Objects.equals(documents.stream().sorted(comparing(Document::getName)).collect(Collectors.toList()),
                 that.getDocuments().stream().sorted(comparing(Document::getName)).collect(Collectors.toList())) &&
                 Objects.equals(name, that.getName());

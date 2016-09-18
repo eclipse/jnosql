@@ -34,35 +34,35 @@ import java.util.Optional;
  * Graph databases are similar, but add another layer, the relationship,
  * which allows them to link documents for rapid traversal.
  */
-public interface DocumentCollectionEntity extends Serializable {
+public interface DocumentEntity extends Serializable {
 
     /**
-     * Creates a {@link DocumentCollectionEntity} instance
+     * Creates a {@link DocumentEntity} instance
      *
      * @param name the name of the collection
-     * @return a {@link DocumentCollectionEntity} instance
+     * @return a {@link DocumentEntity} instance
      * @throws NullPointerException when name is null
      */
-    static DocumentCollectionEntity of(String name) throws NullPointerException {
-        return new DefaultDocumentCollectionEntity(name);
+    static DocumentEntity of(String name) throws NullPointerException {
+        return new DefaultDocumentEntity(name);
     }
 
     /**
-     * Creates a {@link DocumentCollectionEntity} instance
+     * Creates a {@link DocumentEntity} instance
      *
      * @param name      the collection name
-     * @param documents the intial document inside {@link DocumentCollectionEntity}
-     * @return a {@link DocumentCollectionEntity} instance
+     * @param documents the intial document inside {@link DocumentEntity}
+     * @return a {@link DocumentEntity} instance
      * @throws NullPointerException when either name or documents are null
      */
-    static DocumentCollectionEntity of(String name, List<Document> documents) throws NullPointerException {
-        DefaultDocumentCollectionEntity entity = new DefaultDocumentCollectionEntity(name);
+    static DocumentEntity of(String name, List<Document> documents) throws NullPointerException {
+        DefaultDocumentEntity entity = new DefaultDocumentEntity(name);
         entity.addAll(documents);
         return entity;
     }
 
     /**
-     * The collection name to {@link DocumentCollectionEntity}
+     * The collection name to {@link DocumentEntity}
      *
      * @return collection name
      */
@@ -84,7 +84,7 @@ public interface DocumentCollectionEntity extends Serializable {
     List<Document> getDocuments();
 
     /**
-     * add a document within {@link DocumentCollectionEntity}
+     * add a document within {@link DocumentEntity}
      *
      * @param document a document to be included
      * @throws UnsupportedOperationException when this method is not supported
@@ -93,7 +93,7 @@ public interface DocumentCollectionEntity extends Serializable {
     void add(Document document) throws UnsupportedOperationException, NullPointerException;
 
     /**
-     * add all documents within {@link DocumentCollectionEntity}
+     * add all documents within {@link DocumentEntity}
      *
      * @param documents documents to be included
      * @throws UnsupportedOperationException when this method is not supported
@@ -128,7 +128,7 @@ public interface DocumentCollectionEntity extends Serializable {
      *
      * @return an instance copy
      */
-    DocumentCollectionEntity copy();
+    DocumentEntity copy();
 
     /**
      * Converts the columns to a Map where:

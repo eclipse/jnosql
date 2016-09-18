@@ -18,7 +18,6 @@
  */
 package org.jnosql.diana.api.document;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -27,36 +26,36 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 
 
-public class DefaultDocumentCollectionEntityTest {
+public class DefaultDocumentEntityTest {
 
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenNameIsNull() {
-        DocumentCollectionEntity entity = new DefaultDocumentCollectionEntity(null);
+        DocumentEntity entity = new DefaultDocumentEntity(null);
     }
 
     @Test
     public void shouldShouldCreateANewInsntace() {
         String name = "name";
-        DocumentCollectionEntity entity = new DefaultDocumentCollectionEntity(name);
+        DocumentEntity entity = new DefaultDocumentEntity(name);
         assertEquals(name, entity.getName());
     }
 
     @Test
     public void shouldCreateAnEmptyEntity() {
-        DocumentCollectionEntity entity = new DefaultDocumentCollectionEntity("name");
+        DocumentEntity entity = new DefaultDocumentEntity("name");
         assertTrue(entity.isEmpty());
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnAnErrorWhenAddANullDocument() {
-        DocumentCollectionEntity entity = new DefaultDocumentCollectionEntity("name");
+        DocumentEntity entity = new DefaultDocumentEntity("name");
         entity.add(null);
     }
 
     @Test
     public void shouldAddANewDocument() {
-        DocumentCollectionEntity entity = new DefaultDocumentCollectionEntity("name");
+        DocumentEntity entity = new DefaultDocumentEntity("name");
         entity.add(Document.of("document", 12));
         assertFalse(entity.isEmpty());
         assertEquals(1, entity.size());
@@ -64,13 +63,13 @@ public class DefaultDocumentCollectionEntityTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenAddAnNullIterable() {
-        DocumentCollectionEntity entity = new DefaultDocumentCollectionEntity("name");
+        DocumentEntity entity = new DefaultDocumentEntity("name");
         entity.addAll(null);
     }
 
     @Test
     public void shouldAddAllDocuments() {
-        DocumentCollectionEntity entity = new DefaultDocumentCollectionEntity("name");
+        DocumentEntity entity = new DefaultDocumentEntity("name");
         entity.addAll(Arrays.asList(Document.of("name", 12), Document.of("value", "value")));
         assertFalse(entity.isEmpty());
         assertEquals(2, entity.size());
@@ -79,7 +78,7 @@ public class DefaultDocumentCollectionEntityTest {
 
     @Test
     public void shouldFindDocument() {
-        DocumentCollectionEntity entity = new DefaultDocumentCollectionEntity("name");
+        DocumentEntity entity = new DefaultDocumentEntity("name");
         entity.addAll(Arrays.asList(Document.of("name", 12), Document.of("value", "value")));
         Optional<Document> document = entity.find("name");
         assertTrue(document.isPresent());
@@ -88,14 +87,14 @@ public class DefaultDocumentCollectionEntityTest {
 
     @Test
     public void shouldNotFindDocument() {
-        DocumentCollectionEntity entity = new DefaultDocumentCollectionEntity("name");
+        DocumentEntity entity = new DefaultDocumentEntity("name");
         Optional<Document> document = entity.find("name");
         assertFalse(document.isPresent());
     }
 
     @Test
     public void shouldRemoveByName() {
-        DocumentCollectionEntity entity = new DefaultDocumentCollectionEntity("name");
+        DocumentEntity entity = new DefaultDocumentEntity("name");
         entity.add(Document.of("value", 32D));
         assertTrue(entity.remove("value"));
         assertTrue(entity.isEmpty());
@@ -103,7 +102,7 @@ public class DefaultDocumentCollectionEntityTest {
 
     @Test
     public void shouldNotRemoveByName() {
-        DocumentCollectionEntity entity = new DefaultDocumentCollectionEntity("name");
+        DocumentEntity entity = new DefaultDocumentEntity("name");
         entity.add(Document.of("value", 32D));
 
         assertFalse(entity.remove("value1"));
