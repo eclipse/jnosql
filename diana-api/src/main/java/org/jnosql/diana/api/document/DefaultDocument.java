@@ -39,11 +39,12 @@ final class DefaultDocument implements Document {
         this.value = Objects.requireNonNull(value, "value is required");
     }
 
-
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public Value getValue() {
         return value;
     }
