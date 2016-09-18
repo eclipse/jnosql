@@ -24,7 +24,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 
-public class DefaultDocumentTest {
+public class DocumentTest {
 
 
     private static final Value DEFAULT_VALUE = Value.of(12);
