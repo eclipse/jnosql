@@ -16,7 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jnosql.diana.api.document;
+package org.jnosql.diana.api.column;
+
 
 import org.jnosql.diana.api.Value;
 import org.junit.Test;
@@ -24,33 +25,33 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+public class ColumnTest {
 
-public class DocumentTest {
 
 
     private static final Value DEFAULT_VALUE = Value.of(12);
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnNameWhenNameIsNull() {
-       Document document = Document.of(null, DEFAULT_VALUE);
+        Column column = Column.of(null, DEFAULT_VALUE);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnNameWhenValueIsNull() {
-        Document document = Document.of("Name", null);
+        Column column = Column.of("Name", null);
     }
 
     @Test
     public void shouldCreateAnDocumentInstance() {
         String name = "name";
-        Document document = Document.of(name, DEFAULT_VALUE);
-        assertNotNull(document);
-        assertEquals(name, document.getName());
-        assertEquals(DEFAULT_VALUE, document.getValue());
+        Column column = Column.of(name, DEFAULT_VALUE);
+        assertNotNull(column);
+        assertEquals(name, column.getName());
+        assertEquals(DEFAULT_VALUE, column.getValue());
     }
 
     @Test
     public void shouldBeEquals() {
-        assertEquals(Document.of("name", DEFAULT_VALUE), Document.of("name", DEFAULT_VALUE));
+        assertEquals(Column.of("name", DEFAULT_VALUE), Column.of("name", DEFAULT_VALUE));
     }
 }
