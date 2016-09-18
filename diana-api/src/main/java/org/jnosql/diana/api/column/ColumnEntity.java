@@ -32,17 +32,17 @@ import java.util.Optional;
  * Each column is a tuple (triplet) consisting of a column name, a value, and a timestamp.
  * In a relational database table, this data would be grouped together within a table with other non-related data.
  */
-public interface ColumnFamilyEntity extends Serializable {
+public interface ColumnEntity extends Serializable {
 
 
     /**
      * Creates a column family instance
      *
      * @param name a name to column family
-     * @return a ColumnFamilyEntity instance
+     * @return a ColumnEntity instance
      */
-    static ColumnFamilyEntity of(String name) {
-        return new DefaultColumnFamilyEntity(name);
+    static ColumnEntity of(String name) {
+        return new DefaultColumnEntity(name);
     }
 
     /**
@@ -50,10 +50,10 @@ public interface ColumnFamilyEntity extends Serializable {
      *
      * @param name    a name to column family
      * @param columns - columns
-     * @return a ColumnFamilyEntity instance
+     * @return a ColumnEntity instance
      */
-    static ColumnFamilyEntity of(String name, List<Column> columns) {
-        ColumnFamilyEntity columnEntity = new DefaultColumnFamilyEntity(name);
+    static ColumnEntity of(String name, List<Column> columns) {
+        ColumnEntity columnEntity = new DefaultColumnEntity(name);
         columnEntity.addAll(columns);
         return columnEntity;
     }
@@ -123,7 +123,7 @@ public interface ColumnFamilyEntity extends Serializable {
     /**
      * Returns true if the number of columns is zero otherwise false.
      *
-     * @return true if there isn't elements to {@link ColumnFamilyEntity#getColumns()}
+     * @return true if there isn't elements to {@link ColumnEntity#getColumns()}
      */
     boolean isEmpty();
 
@@ -132,6 +132,6 @@ public interface ColumnFamilyEntity extends Serializable {
      *
      * @return an instance copy
      */
-    ColumnFamilyEntity copy();
+    ColumnEntity copy();
 
 }

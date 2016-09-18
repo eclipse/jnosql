@@ -38,7 +38,7 @@ public interface PreparedStatement extends CloseResource {
      *
      * @return the result
      */
-    List<ColumnFamilyEntity> executeQuery();
+    List<ColumnEntity> executeQuery();
 
     /**
      * Executes the query asynchronously
@@ -48,7 +48,7 @@ public interface PreparedStatement extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to run async.
      */
-    void executeQueryAsync(Consumer<List<ColumnFamilyEntity>> callBack) throws ExecuteAsyncQueryException,
+    void executeQueryAsync(Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException;
 
     /**

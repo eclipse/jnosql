@@ -29,20 +29,20 @@ import static java.util.Collections.singletonList;
 import static org.junit.Assert.*;
 
 
-public class ColumnFamilyEntityTest {
+public class ColumnEntityTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenNameIsNull() {
-        ColumnFamilyEntity.of(null);
+        ColumnEntity.of(null);
     }
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenDocumentsIsNull() {
-        ColumnFamilyEntity.of("entity", null);
+        ColumnEntity.of("entity", null);
     }
 
     @Test
     public void shouldReturnOneDocument() {
-        ColumnFamilyEntity entity = ColumnFamilyEntity.of("entity");
+        ColumnEntity entity = ColumnEntity.of("entity");
         assertEquals(Integer.valueOf(0), Integer.valueOf(entity.size()));
         assertTrue(entity.isEmpty());
 
@@ -50,13 +50,13 @@ public class ColumnFamilyEntityTest {
         entity.add(Column.of("name2", Value.of("name2")));
         assertFalse(entity.isEmpty());
         assertEquals(Integer.valueOf(2), Integer.valueOf(entity.size()));
-        assertFalse(ColumnFamilyEntity.of("entity", singletonList(Column.of("name", "name"))).isEmpty());
+        assertFalse(ColumnEntity.of("entity", singletonList(Column.of("name", "name"))).isEmpty());
     }
 
     @Test
     public void shouldDoCopy() {
-        ColumnFamilyEntity entity = ColumnFamilyEntity.of("entity", singletonList(Column.of("name", "name")));
-        ColumnFamilyEntity copy = entity.copy();
+        ColumnEntity entity = ColumnEntity.of("entity", singletonList(Column.of("name", "name")));
+        ColumnEntity copy = entity.copy();
         assertFalse(entity == copy);
         assertEquals(entity, copy);
 
@@ -65,7 +65,7 @@ public class ColumnFamilyEntityTest {
     @Test
     public void shouldFindDocument() {
         Column column = Column.of("name", "name");
-        ColumnFamilyEntity entity = ColumnFamilyEntity.of("entity", singletonList(column));
+        ColumnEntity entity = ColumnEntity.of("entity", singletonList(column));
         Optional<Column> name = entity.find("name");
         Optional<Column> notfound = entity.find("not_found");
         assertTrue(name.isPresent());
@@ -76,7 +76,7 @@ public class ColumnFamilyEntityTest {
     @Test
     public void shouldRemoveDocument() {
         Column column = Column.of("name", "name");
-        ColumnFamilyEntity entity = ColumnFamilyEntity.of("entity", singletonList(column));
+        ColumnEntity entity = ColumnEntity.of("entity", singletonList(column));
         assertTrue(entity.remove("name"));
         assertTrue(entity.isEmpty());
     }
@@ -84,7 +84,7 @@ public class ColumnFamilyEntityTest {
     @Test
     public void shouldConvertToMap() {
         Column column = Column.of("name", "name");
-        ColumnFamilyEntity entity = ColumnFamilyEntity.of("entity", singletonList(column));
+        ColumnEntity entity = ColumnEntity.of("entity", singletonList(column));
         Map<String, Object> result = entity.toMap();
         assertFalse(result.isEmpty());
         assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));

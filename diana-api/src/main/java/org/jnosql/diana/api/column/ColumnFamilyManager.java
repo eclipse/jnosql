@@ -32,8 +32,8 @@ import org.jnosql.diana.api.NonUniqueResultException;
 import org.jnosql.diana.api.TTL;
 
 /**
- * Interface used to interact with the persistence context to {@link ColumnFamilyEntity}
- * The ColumnFamilyManager API is used to create and remove persistent {@link ColumnFamilyEntity} instances,
+ * Interface used to interact with the persistence context to {@link ColumnEntity}
+ * The ColumnFamilyManager API is used to create and remove persistent {@link ColumnEntity} instances,
  * to find entities by their primary key, and to query over entities.
  */
 public interface ColumnFamilyManager extends CloseResource {
@@ -45,7 +45,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @return the entity saved
      * @throws NullPointerException when entity is null
      */
-    ColumnFamilyEntity save(ColumnFamilyEntity entity) throws NullPointerException;
+    ColumnEntity save(ColumnEntity entity) throws NullPointerException;
 
     /**
      * Saves a Column family entity with time to live
@@ -55,7 +55,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @return the entity saved
      * @throws NullPointerException when either entity or ttl are null
      */
-    ColumnFamilyEntity save(ColumnFamilyEntity entity, TTL ttl) throws NullPointerException;
+    ColumnEntity save(ColumnEntity entity, TTL ttl) throws NullPointerException;
 
     /**
      * Saves an entity asynchronously
@@ -64,7 +64,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(ColumnFamilyEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void saveAsync(ColumnEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
      * Saves an entity asynchronously with time to live
@@ -74,7 +74,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(ColumnFamilyEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void saveAsync(ColumnEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
      * Saves an entity asynchronously
@@ -85,26 +85,26 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(ColumnFamilyEntity entity, Consumer<ColumnFamilyEntity> callBack) throws ExecuteAsyncQueryException,
+    void saveAsync(ColumnEntity entity, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException;
 
     /**
      * Saves a Column family entities, by default it's just run for each saving using
-     * {@link ColumnFamilyManager#save(ColumnFamilyEntity)}, each NoSQL vendor might
+     * {@link ColumnFamilyManager#save(ColumnEntity)}, each NoSQL vendor might
      * replace to a more appropriate one.
      *
      * @param entities column family to be saved
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    default Iterable<ColumnFamilyEntity> save(Iterable<ColumnFamilyEntity> entities) throws NullPointerException {
+    default Iterable<ColumnEntity> save(Iterable<ColumnEntity> entities) throws NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(Collectors.toList());
     }
 
     /**
      * Saves a Column family entity with time to live, by default it's just run for each saving using
-     * {@link ColumnFamilyManager#save(ColumnFamilyEntity, TTL)},
+     * {@link ColumnFamilyManager#save(ColumnEntity, TTL)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities column family to be saved
@@ -112,7 +112,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @return the entity saved
      * @throws NullPointerException when either entity or ttl are null
      */
-    default Iterable<ColumnFamilyEntity> save(Iterable<ColumnFamilyEntity> entities, TTL ttl) throws NullPointerException {
+    default Iterable<ColumnEntity> save(Iterable<ColumnEntity> entities, TTL ttl) throws NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         return StreamSupport.stream(entities.spliterator(), false).map(c -> this.save(c, ttl)).collect(Collectors.toList());
@@ -120,21 +120,21 @@ public interface ColumnFamilyManager extends CloseResource {
 
     /**
      * Saves an entities asynchronously, by default it's just run for each saving using
-     * {@link ColumnFamilyManager#saveAsync(ColumnFamilyEntity)},
+     * {@link ColumnFamilyManager#saveAsync(ColumnEntity)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entity to be saved
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    default void saveAsync(Iterable<ColumnFamilyEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+    default void saveAsync(Iterable<ColumnEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException {
         Objects.requireNonNull(entities, "entities is required");
         StreamSupport.stream(entities.spliterator(), false).forEach(this::save);
     }
 
     /**
      * Saves an entities asynchronously with time to live, by default it's just run for each saving using
-     * {@link ColumnFamilyManager#saveAsync(ColumnFamilyEntity, TTL)},
+     * {@link ColumnFamilyManager#saveAsync(ColumnEntity, TTL)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entity to be saved
@@ -142,7 +142,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    default void saveAsync(Iterable<ColumnFamilyEntity> entities, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+    default void saveAsync(Iterable<ColumnEntity> entities, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         StreamSupport.stream(entities.spliterator(), false).forEach(c -> this.save(c, ttl));
@@ -159,7 +159,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(ColumnFamilyEntity entity, TTL ttl, Consumer<ColumnFamilyEntity> callBack) throws ExecuteAsyncQueryException,
+    void saveAsync(ColumnEntity entity, TTL ttl, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException;
 
     /**
@@ -168,7 +168,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @param entity column family to be saved
      * @return the entity updated
      */
-    ColumnFamilyEntity update(ColumnFamilyEntity entity);
+    ColumnEntity update(ColumnEntity entity);
 
     /**
      * Updates an entity asynchronously
@@ -177,7 +177,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to update asynchronous
      */
-    void updateAsync(ColumnFamilyEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void updateAsync(ColumnEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
      * Updates an entity asynchronously
@@ -188,7 +188,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to update asynchronous
      */
-    void updateAsync(ColumnFamilyEntity entity, Consumer<ColumnFamilyEntity> callBack) throws
+    void updateAsync(ColumnEntity entity, Consumer<ColumnEntity> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
@@ -220,13 +220,13 @@ public interface ColumnFamilyManager extends CloseResource {
             UnsupportedOperationException;
 
     /**
-     * Finds {@link ColumnFamilyEntity} from query
+     * Finds {@link ColumnEntity} from query
      *
      * @param query - query to figure out entities
      * @return entities found by query
      * @throws NullPointerException when query is null
      */
-    List<ColumnFamilyEntity> find(ColumnQuery query) throws NullPointerException;
+    List<ColumnEntity> find(ColumnQuery query) throws NullPointerException;
 
     /**
      * Returns a single entity from query
@@ -236,8 +236,8 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException  when query is null
      */
-    default Optional<ColumnFamilyEntity> singleResult(ColumnQuery query) throws NonUniqueResultException, NullPointerException {
-        List<ColumnFamilyEntity> entities = find(query);
+    default Optional<ColumnEntity> singleResult(ColumnQuery query) throws NonUniqueResultException, NullPointerException {
+        List<ColumnEntity> entities = find(query);
         if (entities.isEmpty()) {
             return Optional.empty();
         }
@@ -249,7 +249,7 @@ public interface ColumnFamilyManager extends CloseResource {
     }
 
     /**
-     * Finds {@link ColumnFamilyEntity} from query asynchronously
+     * Finds {@link ColumnEntity} from query asynchronously
      *
      * @param query    query to find entities
      * @param callBack the callback, when the process is finished will call this instance returning the
@@ -257,7 +257,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void findAsync(ColumnQuery query, Consumer<List<ColumnFamilyEntity>> callBack) throws ExecuteAsyncQueryException,
+    void findAsync(ColumnQuery query, Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException;
 
     /**
@@ -267,7 +267,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @return the result of query
      * @throws UnsupportedOperationException when the database does not have support to run native query
      */
-    List<ColumnFamilyEntity> nativeQuery(String query) throws UnsupportedOperationException;
+    List<ColumnEntity> nativeQuery(String query) throws UnsupportedOperationException;
 
     /**
      * Executes a native query from database, this query may be difference between
@@ -279,7 +279,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to run native query async.
      */
-    void nativeQueryAsync(String query, Consumer<List<ColumnFamilyEntity>> callBack) throws ExecuteAsyncQueryException,
+    void nativeQueryAsync(String query, Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException;
 
     /**

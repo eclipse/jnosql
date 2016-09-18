@@ -22,13 +22,13 @@ package org.jnosql.diana.api.column;
 import java.util.*;
 import java.util.stream.Collectors;
 
-final class DefaultColumnFamilyEntity implements ColumnFamilyEntity {
+final class DefaultColumnEntity implements ColumnEntity {
 
     private final List<Column> columns = new ArrayList<>();
 
     private final String name;
 
-    DefaultColumnFamilyEntity(String name) {
+    DefaultColumnEntity(String name) {
         this.name = Objects.requireNonNull(name, "name is required");
     }
 
@@ -37,11 +37,11 @@ final class DefaultColumnFamilyEntity implements ColumnFamilyEntity {
      *
      * @param name    a name to column family
      * @param columns - columns
-     * @return a ColumnFamilyEntity instance
+     * @return a ColumnEntity instance
      */
-    public static DefaultColumnFamilyEntity of(String name, Column... columns) {
+    public static DefaultColumnEntity of(String name, Column... columns) {
         if (columns.length == 0) {
-            return new DefaultColumnFamilyEntity(name);
+            return new DefaultColumnEntity(name);
         }
         return of(name, Arrays.asList(columns));
     }
@@ -51,10 +51,10 @@ final class DefaultColumnFamilyEntity implements ColumnFamilyEntity {
      *
      * @param name    a name to column family
      * @param columns - columns
-     * @return a ColumnFamilyEntity instance
+     * @return a ColumnEntity instance
      */
-    public static DefaultColumnFamilyEntity of(String name, List<Column> columns) {
-        DefaultColumnFamilyEntity columnEntity = new DefaultColumnFamilyEntity(name);
+    public static DefaultColumnEntity of(String name, List<Column> columns) {
+        DefaultColumnEntity columnEntity = new DefaultColumnEntity(name);
         columnEntity.addAll(columns);
         return columnEntity;
     }
@@ -101,8 +101,8 @@ final class DefaultColumnFamilyEntity implements ColumnFamilyEntity {
     }
 
     @Override
-    public ColumnFamilyEntity copy() {
-        DefaultColumnFamilyEntity copy = new DefaultColumnFamilyEntity(this.name);
+    public ColumnEntity copy() {
+        DefaultColumnEntity copy = new DefaultColumnEntity(this.name);
         copy.columns.addAll(this.columns);
         return copy;
     }
@@ -115,7 +115,7 @@ final class DefaultColumnFamilyEntity implements ColumnFamilyEntity {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultColumnFamilyEntity that = (DefaultColumnFamilyEntity) o;
+        DefaultColumnEntity that = (DefaultColumnEntity) o;
         return Objects.equals(columns, that.columns) &&
                 Objects.equals(name, that.name);
     }
@@ -127,7 +127,7 @@ final class DefaultColumnFamilyEntity implements ColumnFamilyEntity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultColumnFamilyEntity{");
+        final StringBuilder sb = new StringBuilder("DefaultColumnEntity{");
         sb.append("columns=").append(columns);
         sb.append(", name='").append(name).append('\'');
         sb.append('}');
