@@ -40,11 +40,12 @@ final class DefaultDocumentCollectionEntity implements DocumentCollectionEntity 
         this.name = Objects.requireNonNull(name, "name name is required");
     }
 
-
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public boolean remove(String name) {
         return documents.removeIf(document -> document.getName().equals(name));
     }
