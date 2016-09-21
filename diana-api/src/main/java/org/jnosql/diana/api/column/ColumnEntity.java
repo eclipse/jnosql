@@ -100,11 +100,11 @@ public interface ColumnEntity extends Serializable {
     /**
      * Remove a column whose name is informed in parameter.
      *
-     * @param columnName a column name
+     * @param name a column name
      * @return if a column was removed or not
      * @throws NullPointerException when column is null
      */
-    boolean remove(String columnName) throws NullPointerException;
+    boolean remove(String name) throws NullPointerException;
 
     /**
      * Remove a column

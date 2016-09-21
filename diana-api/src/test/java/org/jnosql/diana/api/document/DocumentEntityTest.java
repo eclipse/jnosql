@@ -75,7 +75,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldRemoveDocument() {
+    public void shouldRemoveDocumentByName() {
         Document document = Document.of("name", "name");
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
         assertTrue(entity.remove("name"));
@@ -156,6 +156,30 @@ public class DocumentEntityTest {
         entity.add(Document.of("value", 32D));
 
         assertFalse(entity.remove("value1"));
+        assertFalse(entity.isEmpty());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenRemoveByNameIsNull() {
+        DocumentEntity entity = new DefaultDocumentEntity("name");
+        entity.remove((String) null);
+    }
+
+    @Test
+    public void shouldRemoveDocument() {
+        Document document = Document.of("value", 32D);
+        DocumentEntity entity = new DefaultDocumentEntity("name");
+        entity.add(document);
+        assertTrue(entity.remove(document));
+        assertTrue(entity.isEmpty());
+    }
+
+    @Test
+    public void shouldDontRemoveDocument() {
+        Document document = Document.of("value", 32D);
+        DocumentEntity entity = new DefaultDocumentEntity("name");
+        entity.add(Document.of("value", 31D));
+        assertFalse(entity.remove(document));
         assertFalse(entity.isEmpty());
     }
 

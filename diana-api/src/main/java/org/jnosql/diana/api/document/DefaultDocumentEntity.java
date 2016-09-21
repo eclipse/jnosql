@@ -47,7 +47,14 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public boolean remove(String name) {
+        Objects.requireNonNull(name, "name is required");
         return documents.removeIf(document -> document.getName().equals(name));
+    }
+
+    @Override
+    public boolean remove(Document document) throws NullPointerException {
+        Objects.requireNonNull(document, "doument is required");
+        return documents.remove(document);
     }
 
     public List<Document> getDocuments() {

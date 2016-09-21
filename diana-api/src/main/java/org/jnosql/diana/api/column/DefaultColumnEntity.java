@@ -82,9 +82,9 @@ final class DefaultColumnEntity implements ColumnEntity {
     }
 
     @Override
-    public boolean remove(String columnName) {
-        Objects.requireNonNull(columnName, "columnName is required");
-        return columns.removeIf(column -> column.getName().equals(columnName));
+    public boolean remove(String name) {
+        Objects.requireNonNull(name, "columnName is required");
+        return columns.removeIf(column -> column.getName().equals(name));
     }
 
     @Override
