@@ -37,6 +37,7 @@ public class ColumnEntityTest {
     public void shouldReturnErrorWhenNameIsNull() {
         ColumnEntity.of(null);
     }
+
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenColumnsIsNull() {
         ColumnEntity.of("entity", null);
@@ -151,12 +152,42 @@ public class ColumnEntityTest {
         assertTrue(entity.isEmpty());
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenRemovedNameIsNull() {
+        ColumnEntity entity = new DefaultColumnEntity("name");
+        entity.remove((String) null);
+    }
+
     @Test
     public void shouldNotRemoveByName() {
         ColumnEntity entity = new DefaultColumnEntity("name");
         entity.add(Column.of("value", 32D));
 
         assertFalse(entity.remove("value1"));
+        assertFalse(entity.isEmpty());
+    }
+
+    @Test
+    public void shouldRemoveByColumn() {
+        Column column = Column.of("value", 32D);
+        ColumnEntity entity = new DefaultColumnEntity("name");
+        entity.add(column);
+        assertTrue(entity.remove(column));
+        assertTrue(entity.isEmpty());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenRemovedColumnIsNull() {
+        ColumnEntity entity = new DefaultColumnEntity("name");
+        entity.remove((Column) null);
+    }
+
+    @Test
+    public void shouldDontRemoveColumn() {
+        Column column = Column.of("value", 32D);
+        ColumnEntity entity = new DefaultColumnEntity("name");
+        entity.add(Column.of("value", 31D));
+        assertFalse(entity.remove(column));
         assertFalse(entity.isEmpty());
     }
 
