@@ -260,35 +260,4 @@ public interface ColumnFamilyManager extends CloseResource {
     void findAsync(ColumnQuery query, Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException;
 
-    /**
-     * Executes a native query from database, this query may be difference between kind of database.
-     *
-     * @param query query to be executed
-     * @return the result of query
-     * @throws UnsupportedOperationException when the database does not have support to run native query
-     */
-    List<ColumnEntity> nativeQuery(String query) throws UnsupportedOperationException;
-
-    /**
-     * Executes a native query from database, this query may be difference between
-     * kind of database and run it asynchronously.
-     *
-     * @param query    query to be executed
-     * @param callBack the callback, when the process is finished will call this instance
-     *                 returning the result of query within parameters
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to run native query async.
-     */
-    void nativeQueryAsync(String query, Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException,
-            UnsupportedOperationException;
-
-    /**
-     * Creates a {@link PreparedStatement} from a native query
-     *
-     * @param query a query to be executed
-     * @return a {@link PreparedStatement}
-     * @throws UnsupportedOperationException the there is not support to query
-     */
-    PreparedStatement nativeQueryPrepare(String query) throws UnsupportedOperationException;
-
 }
