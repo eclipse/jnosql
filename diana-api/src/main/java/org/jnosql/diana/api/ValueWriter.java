@@ -35,7 +35,7 @@ public interface ValueWriter<T, S> {
      * @param clazz - {@link Class} to be verified
      * @return true if the implementation is can support this class, otherwise false
      */
-    boolean isCompatible(Class clazz);
+    <T> boolean isCompatible(Class<T> clazz);
 
     /**
      * Converts a specific structure to a new one.
