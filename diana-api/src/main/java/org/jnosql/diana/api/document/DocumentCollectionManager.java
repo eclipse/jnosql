@@ -23,7 +23,6 @@ package org.jnosql.diana.api.document;
 import org.jnosql.diana.api.CloseResource;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.NonUniqueResultException;
-import org.jnosql.diana.api.TTL;
 
 import java.util.List;
 import java.util.Objects;

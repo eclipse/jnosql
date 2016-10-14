@@ -29,7 +29,6 @@ import java.util.stream.StreamSupport;
 import org.jnosql.diana.api.CloseResource;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.NonUniqueResultException;
-import org.jnosql.diana.api.TTL;
 
 /**
  * Interface used to interact with the persistence context to {@link ColumnEntity}

@@ -22,7 +22,6 @@ package org.jnosql.diana.api.key;
 
 import java.util.Optional;
 import org.jnosql.diana.api.CloseResource;
-import org.jnosql.diana.api.TTL;
 import org.jnosql.diana.api.Value;
 
 /**
