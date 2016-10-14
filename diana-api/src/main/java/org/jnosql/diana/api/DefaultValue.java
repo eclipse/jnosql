@@ -64,15 +64,6 @@ final class DefaultValue implements Value {
         return null;
     }
 
-    public <T> List<T> getList(Class<T> clazz) {
-        if (Iterable.class.isInstance(value)) {
-            Iterable iterable = Iterable.class.cast(value);
-            return (List<T>) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(clazz, o))
-                    .collect(collectingAndThen(toList(), Collections::unmodifiableList));
-        }
-        return singletonList(get(clazz));
-    }
-
     public <T> Set<T> getSet(Class<T> clazz) {
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);

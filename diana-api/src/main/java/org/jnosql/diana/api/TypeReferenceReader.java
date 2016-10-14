@@ -18,32 +18,25 @@
  */
 package org.jnosql.diana.api;
 
-import java.lang.reflect.ParameterizedType;
+
 import java.lang.reflect.Type;
 
-/**
- * This class is used to pass full generics type information, and avoid problems with type erasure
- */
-public abstract class TypeReference<T> {
+public interface TypeReferenceReader {
 
-    private final Type type;
 
-    protected TypeReference() {
-        Type superClass = getClass().getGenericSuperclass();
-        if (superClass instanceof Class<?>) { // sanity check, should never happen
-            throw new IllegalArgumentException("Internal error: TypeReference constructed without actual type information");
-        }
-        type = ((ParameterizedType) superClass).getActualTypeArguments()[0];
-    }
+    /**
+     * verifies if the reader has support of instance from this class.
+     * @param type
+     * @return
+     */
+    <T> boolean isCompatible(TypeReference<T> type);
 
-    public Type getType() {
-        return type;
-    }
-
-    @Override
-    public String toString() {
-        return "TypeReference{" +
-                "type=" + type +
-                '}';
-    }
+    /**
+     *
+     * @param type
+     * @param value
+     * @param <T>
+     * @return
+     */
+    <T> T convert(Type type, Object value);
 }

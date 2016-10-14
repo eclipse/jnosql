@@ -28,7 +28,7 @@ import java.util.ServiceLoader;
  * Decorators of all {@link ValueReader} supported by Diana
  * @see ValueReader
  */
-final class ValueReaderDecorator implements ValueReader {
+public final class ValueReaderDecorator implements ValueReader {
 
     private static final ValueReaderDecorator INSTANCE = new ValueReaderDecorator();
 
