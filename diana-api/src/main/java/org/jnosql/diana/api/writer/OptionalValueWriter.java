@@ -27,7 +27,7 @@ import java.util.Optional;
 public final class OptionalValueWriter<T> implements ValueWriter<Optional<T>, T> {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return Optional.class.equals(clazz);
     }
 

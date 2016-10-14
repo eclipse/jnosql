@@ -27,7 +27,7 @@ import java.time.temporal.Temporal;
 public class TemporalValueWriter implements ValueWriter<Temporal, String> {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return Temporal.class.isAssignableFrom(clazz);
     }
 
