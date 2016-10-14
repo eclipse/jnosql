@@ -61,8 +61,8 @@ public class MapTypeReferenceReaderTest {
 
     @Test
     public void shouldConvert() {
-        assertEquals(singletonMap("123", "123"), referenceReader.convert(new TypeReference<Map<String, String>>(){}.getType(), singletonMap(123, 123L)));
-        assertEquals(singletonMap(123L, 123), referenceReader.convert(new TypeReference<Map<Long, Integer>>(){}.getType(), singletonMap("123", "123")));
+        assertEquals(singletonMap("123", "123"), referenceReader.convert(new TypeReference<Map<String, String>>(){}, singletonMap(123, 123L)));
+        assertEquals(singletonMap(123L, 123), referenceReader.convert(new TypeReference<Map<Long, Integer>>(){}, singletonMap("123", "123")));
     }
 
 }

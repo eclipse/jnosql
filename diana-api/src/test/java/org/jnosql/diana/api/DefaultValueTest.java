@@ -117,7 +117,7 @@ public class DefaultValueTest {
         assertThat(result.values(), containsInAnyOrder(1));
     }
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void shouldConvertMapIgnoringKeyValue() {
         Map<Integer, List<String>> map = Collections.singletonMap(10, Arrays.asList("1", "2", "3"));
         Value value = Value.of(map);
