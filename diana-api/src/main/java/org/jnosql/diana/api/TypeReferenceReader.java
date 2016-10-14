@@ -19,8 +19,6 @@
 package org.jnosql.diana.api;
 
 
-import java.lang.reflect.Type;
-
 public interface TypeReferenceReader {
 
 
