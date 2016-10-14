@@ -20,9 +20,11 @@
 package org.jnosql.diana.api.key;
 
 
-import java.util.Optional;
 import org.jnosql.diana.api.CloseResource;
 import org.jnosql.diana.api.Value;
+
+import java.time.Duration;
+import java.util.Optional;
 
 /**
  * Interface used to interact with the persistence context to {@link KeyValueEntity}
@@ -60,7 +62,7 @@ public interface BucketManager extends CloseResource {
      * @throws NullPointerException          when entity is null
      * @throws UnsupportedOperationException when expired time is not supported
      */
-    <K> void put(KeyValueEntity<K> entity, TTL ttl) throws NullPointerException, UnsupportedOperationException;
+    <K> void put(KeyValueEntity<K> entity, Duration ttl) throws NullPointerException, UnsupportedOperationException;
 
     /**
      * Saves the {@link Iterable} of keys
@@ -80,7 +82,7 @@ public interface BucketManager extends CloseResource {
      * @throws NullPointerException          when the iterable is null
      * @throws UnsupportedOperationException when expired time is not supported
      */
-    <K> void put(Iterable<KeyValueEntity<K>> entities, TTL ttl) throws NullPointerException, UnsupportedOperationException;
+    <K> void put(Iterable<KeyValueEntity<K>> entities, Duration ttl) throws NullPointerException, UnsupportedOperationException;
 
     /**
      * Finds the Value from a key

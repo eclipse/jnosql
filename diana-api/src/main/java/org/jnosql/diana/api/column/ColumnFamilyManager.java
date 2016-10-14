@@ -20,15 +20,17 @@
 package org.jnosql.diana.api.column;
 
 
+import org.jnosql.diana.api.CloseResource;
+import org.jnosql.diana.api.ExecuteAsyncQueryException;
+import org.jnosql.diana.api.NonUniqueResultException;
+
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import org.jnosql.diana.api.CloseResource;
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
-import org.jnosql.diana.api.NonUniqueResultException;
 
 /**
  * Interface used to interact with the persistence context to {@link ColumnEntity}
@@ -54,7 +56,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @return the entity saved
      * @throws NullPointerException when either entity or ttl are null
      */
-    ColumnEntity save(ColumnEntity entity, TTL ttl) throws NullPointerException;
+    ColumnEntity save(ColumnEntity entity, Duration ttl) throws NullPointerException;
 
     /**
      * Saves an entity asynchronously
@@ -73,7 +75,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(ColumnEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void saveAsync(ColumnEntity entity, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
      * Saves an entity asynchronously
@@ -103,7 +105,7 @@ public interface ColumnFamilyManager extends CloseResource {
 
     /**
      * Saves a Column family entity with time to live, by default it's just run for each saving using
-     * {@link ColumnFamilyManager#save(ColumnEntity, TTL)},
+     * {@link ColumnFamilyManager#save(ColumnEntity, Duration)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities column family to be saved
@@ -111,7 +113,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @return the entity saved
      * @throws NullPointerException when either entity or ttl are null
      */
-    default Iterable<ColumnEntity> save(Iterable<ColumnEntity> entities, TTL ttl) throws NullPointerException {
+    default Iterable<ColumnEntity> save(Iterable<ColumnEntity> entities, Duration ttl) throws NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         return StreamSupport.stream(entities.spliterator(), false).map(c -> this.save(c, ttl)).collect(Collectors.toList());
@@ -133,7 +135,7 @@ public interface ColumnFamilyManager extends CloseResource {
 
     /**
      * Saves an entities asynchronously with time to live, by default it's just run for each saving using
-     * {@link ColumnFamilyManager#saveAsync(ColumnEntity, TTL)},
+     * {@link ColumnFamilyManager#saveAsync(ColumnEntity, Duration)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entity to be saved
@@ -141,7 +143,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    default void saveAsync(Iterable<ColumnEntity> entities, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+    default void saveAsync(Iterable<ColumnEntity> entities, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         StreamSupport.stream(entities.spliterator(), false).forEach(c -> this.save(c, ttl));
@@ -158,7 +160,7 @@ public interface ColumnFamilyManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(ColumnEntity entity, TTL ttl, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
+    void saveAsync(ColumnEntity entity, Duration ttl, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException;
 
     /**

@@ -24,6 +24,7 @@ import org.jnosql.diana.api.CloseResource;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.NonUniqueResultException;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -63,7 +64,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @param ttl    the time to live
      * @return the entity saved
      */
-    DocumentEntity save(DocumentEntity entity, TTL ttl);
+    DocumentEntity save(DocumentEntity entity, Duration ttl);
 
     /**
      * Saves an entity asynchronously with time to live
@@ -73,7 +74,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(DocumentEntity entity, TTL ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void saveAsync(DocumentEntity entity, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
      * Saves documents collection entity, by default it's just run for each saving using
@@ -105,7 +106,7 @@ public interface DocumentCollectionManager extends CloseResource {
 
     /**
      * Saves documents collection entity with time to live, by default it's just run for each saving using
-     * {@link DocumentCollectionManager#save(DocumentEntity, TTL)},
+     * {@link DocumentCollectionManager#save(DocumentEntity, Duration)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
@@ -113,7 +114,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    default Iterable<DocumentEntity> save(Iterable<DocumentEntity> entities, TTL ttl) throws NullPointerException {
+    default Iterable<DocumentEntity> save(Iterable<DocumentEntity> entities, Duration ttl) throws NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         return StreamSupport.stream(entities.spliterator(), false).map(d -> save(d, ttl)).collect(Collectors.toList());
@@ -121,7 +122,7 @@ public interface DocumentCollectionManager extends CloseResource {
 
     /**
      * Saves entities asynchronously with time to live, by default it's just run for each saving using
-     * {@link DocumentCollectionManager#saveAsync(DocumentEntity, TTL)},
+     * {@link DocumentCollectionManager#saveAsync(DocumentEntity, Duration)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
@@ -129,7 +130,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    default void saveAsync(Iterable<DocumentEntity> entities, TTL ttl) {
+    default void saveAsync(Iterable<DocumentEntity> entities, Duration ttl) {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         StreamSupport.stream(entities.spliterator(), false).forEach(d -> saveAsync(d, ttl));
@@ -157,7 +158,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    void saveAsync(DocumentEntity entity, TTL ttl, Consumer<DocumentEntity> callBack) throws
+    void saveAsync(DocumentEntity entity, Duration ttl, Consumer<DocumentEntity> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
