@@ -29,7 +29,7 @@ import org.jnosql.diana.api.ValueReader;
 public final class ByteValueReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return Byte.class.equals(clazz) || byte.class.equals(clazz);
     }
 

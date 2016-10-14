@@ -28,12 +28,11 @@ import java.util.Date;
 
 /**
  * Class to read and convert to {@link ZonedDateTime} type
- *
  */
 public class ZonedDateTimeValueReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return ZonedDateTime.class.equals(clazz);
     }
 

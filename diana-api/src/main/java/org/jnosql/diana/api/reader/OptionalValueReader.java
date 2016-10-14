@@ -30,7 +30,7 @@ import java.util.Optional;
 public final class OptionalValueReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return Optional.class.equals(clazz);
     }
 

@@ -34,7 +34,7 @@ public final class AtomicLongValueReader implements ValueReader {
 
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return AtomicLong.class.equals(clazz);
     }
 

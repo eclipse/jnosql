@@ -30,7 +30,7 @@ import static java.lang.Character.MIN_VALUE;
 public final class CharacterValueReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return Character.class.equals(clazz) || char.class.equals(clazz);
     }
 

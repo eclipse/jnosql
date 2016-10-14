@@ -33,7 +33,7 @@ import java.math.BigInteger;
 public final class BigIntegerValueReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return BigInteger.class.equals(clazz);
     }
 

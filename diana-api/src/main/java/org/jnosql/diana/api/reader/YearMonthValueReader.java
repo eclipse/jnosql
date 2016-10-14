@@ -30,7 +30,7 @@ import org.jnosql.diana.api.ValueReader;
 public final class YearMonthValueReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return YearMonth.class.equals(clazz);
     }
 

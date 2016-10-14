@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class AtomicIntegerValueReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return AtomicInteger.class.equals(clazz);
     }
 

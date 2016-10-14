@@ -30,7 +30,7 @@ import java.time.Year;
 public final class YearValueReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return Year.class.equals(clazz);
     }
 

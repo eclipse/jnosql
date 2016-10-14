@@ -31,7 +31,7 @@ import java.util.Date;
 public final class CalendarValueReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return Calendar.class.equals(clazz);
     }
 

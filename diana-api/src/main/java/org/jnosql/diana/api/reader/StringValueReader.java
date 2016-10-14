@@ -28,7 +28,7 @@ import org.jnosql.diana.api.ValueReader;
 public final class StringValueReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return CharSequence.class.equals(clazz) || String.class.equals(clazz);
     }
 

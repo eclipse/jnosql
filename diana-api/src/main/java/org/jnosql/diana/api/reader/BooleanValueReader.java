@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class BooleanValueReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
+    public <T> boolean isCompatible(Class<T> clazz) {
         return Boolean.class.equals(clazz) || AtomicBoolean.class.equals(clazz) || boolean.class.equals(clazz);
     }
 
