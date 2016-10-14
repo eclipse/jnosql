@@ -40,4 +40,11 @@ public abstract class TypeReference <T>{
     public Type getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "TypeReference{" +
+                "type=" + type +
+                '}';
+    }
 }
