@@ -29,6 +29,7 @@ import java.util.ServiceLoader;
  * Decorators of all {@link ValueWriter} supported by Diana
  * @see ValueWriter
  */
+@SuppressWarnings("unchecked")
 public final class ValueWriterDecorator implements ValueWriter {
 
     private static final ValueWriter INSTANCE = new ValueWriterDecorator();

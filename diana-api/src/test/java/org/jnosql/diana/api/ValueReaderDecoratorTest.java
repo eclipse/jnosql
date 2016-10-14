@@ -38,7 +38,7 @@ public class ValueReaderDecoratorTest {
 
     @Test
     public void shoulCastObject() {
-        Bean name = serviceLoader.read(Bean.class, new Bean("name"));
+        Bean name = serviceLoader.read(Bean.class, new Bean());
         Assert.assertEquals(name.getClass(), Bean.class);
     }
 
@@ -61,8 +61,8 @@ public class ValueReaderDecoratorTest {
     class Bean {
         private String name;
 
-        Bean(String name) {
-            this.name = name;
+        Bean() {
+            this.name = "name";
         }
     }
 

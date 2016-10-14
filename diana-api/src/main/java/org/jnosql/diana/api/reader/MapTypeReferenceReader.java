@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 /**
  * The {@link TypeReferenceReader} to {@link Map}
  */
+@SuppressWarnings("unchecked")
 public class MapTypeReferenceReader implements TypeReferenceReader {
 
     private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();

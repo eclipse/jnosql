@@ -37,6 +37,7 @@ import static java.util.stream.StreamSupport.stream;
 /**
  * The {@link TypeReferenceReader} to {@link java.util.List}
  */
+@SuppressWarnings("unchecked")
 public class ListTypeReferenceReader implements TypeReferenceReader {
 
     private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();

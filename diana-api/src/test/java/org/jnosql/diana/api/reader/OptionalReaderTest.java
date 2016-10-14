@@ -44,6 +44,7 @@ public class OptionalReaderTest {
         assertFalse(valueReader.isCompatible(AtomicBoolean.class));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void shouldConvert() {
         Optional<String> optional = Optional.of("value");

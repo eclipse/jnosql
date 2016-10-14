@@ -28,6 +28,7 @@ import org.jnosql.diana.api.Value;
  *
  * @param <T> the key type
  */
+@SuppressWarnings("unchecked")
 public interface KeyValueEntity<T> extends Serializable {
 
 

@@ -44,6 +44,7 @@ public class ValueWriterDecoratorTest {
         assertFalse(valueWriter.isCompatible(Boolean.class));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void shouldConvert() {
         String diana = "diana";

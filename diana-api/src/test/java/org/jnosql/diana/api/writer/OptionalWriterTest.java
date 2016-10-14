@@ -32,6 +32,7 @@ public class OptionalWriterTest {
 
     private ValueWriter<Optional, String> valueWriter;
 
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() {
         valueWriter = new OptionalValueWriter();
