@@ -39,15 +39,6 @@ public interface Value extends Serializable {
     Object get();
 
     /**
-     * Cast class to specificed type
-     *
-     * @param <T> the type
-     * @return a class casted to defined type
-     * @throws ClassCastException when cast is not possible
-     */
-    <T> T cast() throws ClassCastException;
-
-    /**
      * Converts {@link Value#get()} to specified class
      *
      * @param clazz the new class
@@ -59,57 +50,8 @@ public interface Value extends Serializable {
      */
     <T> T get(Class<T> clazz) throws NullPointerException, UnsupportedOperationException;
 
+    <T> T get(TypeReference<T> typeReference) throws NullPointerException, UnsupportedOperationException;
 
-    /**
-     * Converts the {@link Value#get()} in a {@link List},
-     * if the value is not a Iterable extension it will be converted to a list with just one element.
-     *
-     * @param clazz type to be converted
-     * @param <T>   - type
-     * @return a instance list
-     * @throws NullPointerException          - when clazz is null
-     * @throws UnsupportedOperationException when the type is unsupported
-     */
-    <T> List<T> getList(Class<T> clazz) throws NullPointerException, UnsupportedOperationException;
-
-    /**
-     * Converts {@link Value#get()} in a {@link Set} type of class,
-     * if the value is not a Iterable extension it will be converted to a Set with just one element.
-     * type of class
-     *
-     * @param clazz type to be converted
-     * @param <T>   - type
-     * @return a instance of {@link Set}
-     * @throws NullPointerException          - when clazz is null
-     * @throws UnsupportedOperationException when the type is unsupported
-     */
-    <T> Set<T> getSet(Class<T> clazz) throws NullPointerException, UnsupportedOperationException;
-
-
-    /**
-     * Converts {@link Value#get()} to a {@link Map}
-     *
-     * @param keyClass   - the key class
-     * @param valueClass - the value class
-     * @param <K>        - the key type
-     * @param <V>        - the value type
-     * @return a {@link Map} instance
-     * @throws NullPointerException          when clazz is null
-     * @throws UnsupportedOperationException when the type is unsupported
-     */
-    <K, V> Map<K, V> getMap(Class<K> keyClass, Class<V> valueClass) throws NullPointerException,
-            UnsupportedOperationException;
-
-    /**
-     * Converts {@link Value#get()} in a {@link Stream} type of class,
-     *
-     * @param clazz the class
-     * @param <T>   the type
-     * @return a {@link Stream} instance
-     */
-    default <T> Stream<T> getStream(Class<T> clazz) {
-        return getList(clazz).stream();
-    }
 
 
     /**

@@ -55,16 +55,15 @@ final class DefaultValue implements Value {
     }
 
     @Override
-    public <T> T cast() throws ClassCastException {
-        return (T) value;
-    }
-
-    @Override
     public <T> T get(Class<T> clazz) {
         return SERVICE_PROVIDER.read(clazz, value);
     }
 
     @Override
+    public <T> T get(TypeReference<T> typeReference) throws NullPointerException, UnsupportedOperationException {
+        return null;
+    }
+
     public <T> List<T> getList(Class<T> clazz) {
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);
@@ -74,7 +73,6 @@ final class DefaultValue implements Value {
         return singletonList(get(clazz));
     }
 
-    @Override
     public <T> Set<T> getSet(Class<T> clazz) {
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);
@@ -84,7 +82,6 @@ final class DefaultValue implements Value {
         return Collections.singleton(get(clazz));
     }
 
-    @Override
     public <K, V> Map<K, V> getMap(Class<K> keyClass, Class<V> valueClass) {
 
         if (Map.class.isInstance(value)) {
