@@ -26,6 +26,8 @@ final class DefaultValue implements Value {
 
     private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
 
+    private static final transient TypeReferenceReader REFERENCE_READER = TypeReferenceReaderDecorator.getInstance();
+
     private final Object value;
 
     private DefaultValue(Object value) {
@@ -49,7 +51,10 @@ final class DefaultValue implements Value {
 
     @Override
     public <T> T get(TypeReference<T> typeReference) throws NullPointerException, UnsupportedOperationException {
-        return null;
+        if (REFERENCE_READER.isCompatible(Objects.requireNonNull(typeReference, "typeReference is required"))) {
+
+        }
+        throw new UnsupportedOperationException("The type " + typeReference + " is not supported");
     }
 
 
