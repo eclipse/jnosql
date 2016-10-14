@@ -33,10 +33,10 @@ public interface TypeReferenceReader {
 
     /**
      *
-     * @param type
+     * @param typeReference
      * @param value
      * @param <T>
      * @return
      */
-    <T> T convert(Type type, Object value);
+    <T> T convert(TypeReference<T> typeReference, Object value);
 }

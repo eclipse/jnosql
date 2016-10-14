@@ -57,8 +57,8 @@ public class SetTypeReferenceReaderTest {
 
     @Test
     public void shouldConvert() {
-        assertEquals(singleton("123"), referenceReader.convert(new TypeReference<List<String>>(){}.getType(), "123"));
-        assertEquals(singleton(123L), referenceReader.convert(new TypeReference<List<Long>>(){}.getType(), "123"));
+        assertEquals(singleton("123"), referenceReader.convert(new TypeReference<List<String>>(){}, "123"));
+        assertEquals(singleton(123L), referenceReader.convert(new TypeReference<List<Long>>(){}, "123"));
     }
 
 }

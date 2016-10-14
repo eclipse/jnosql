@@ -58,7 +58,8 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
     }
 
     @Override
-    public <T> T convert(Type type, Object value) {
+    public <T> T convert(TypeReference<T> typeReference, Object value) {
+        Type type = typeReference.getType();
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Class<?> keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
         Class<?> valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];

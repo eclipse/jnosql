@@ -54,7 +54,8 @@ public class ListTypeReferenceReader implements TypeReferenceReader {
     }
 
     @Override
-    public <T> T convert(Type type, Object value) {
+    public <T> T convert(TypeReference<T> typeReference, Object value) {
+        Type type = typeReference.getType();
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Class<?> classType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
         if (Iterable.class.isInstance(value)) {

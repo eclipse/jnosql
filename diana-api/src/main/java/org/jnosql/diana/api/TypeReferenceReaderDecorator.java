@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 /**
- * Decorators of all {@link ValueReader} supported by Diana
+ * Decorators of all {@link TypeReferenceReader} supported by Diana
  *
  * @see ValueReader
  */
@@ -58,7 +58,7 @@ public final class TypeReferenceReaderDecorator implements TypeReferenceReader {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ValueReaderDecorator{");
+        final StringBuilder sb = new StringBuilder("TypeReferenceReaderDecorator{");
         sb.append("readers=").append(readers);
         sb.append('}');
         return sb.toString();
