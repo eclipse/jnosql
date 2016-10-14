@@ -20,19 +20,7 @@
 package org.jnosql.diana.api;
 
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
-import static java.util.stream.StreamSupport.stream;
 
 final class DefaultValue implements Value {
 
@@ -62,44 +50,6 @@ final class DefaultValue implements Value {
     @Override
     public <T> T get(TypeReference<T> typeReference) throws NullPointerException, UnsupportedOperationException {
         return null;
-    }
-
-    public <T> Set<T> getSet(Class<T> clazz) {
-        if (Iterable.class.isInstance(value)) {
-            Iterable iterable = Iterable.class.cast(value);
-            return (Set<T>) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(clazz, o))
-                    .collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
-        }
-        return Collections.singleton(get(clazz));
-    }
-
-    public <K, V> Map<K, V> getMap(Class<K> keyClass, Class<V> valueClass) {
-
-        if (Map.class.isInstance(value)) {
-            Map mapValue = Map.class.cast(value);
-            return (Map<K, V>) mapValue.keySet().stream()
-                    .collect(Collectors.toMap(mapKeyElement(keyClass), mapValueElement(valueClass, mapValue)));
-        }
-        throw new UnsupportedOperationException("There is not supported convert" + value + " a not Map type.");
-    }
-
-    private <K> Function mapKeyElement(Class<K> keyClass) {
-        return (keyElement) -> {
-            if (SERVICE_PROVIDER.isCompatible(keyClass)) {
-                return SERVICE_PROVIDER.read(keyClass, keyElement);
-            }
-            return keyElement;
-        };
-    }
-
-    private <V> Function mapValueElement(Class<V> valueClass, Map mapValue) {
-        return (keyElement) -> {
-            Object valueElement = mapValue.get(keyElement);
-            if (SERVICE_PROVIDER.isCompatible(valueClass)) {
-                return SERVICE_PROVIDER.read(valueClass, valueElement);
-            }
-            return valueElement;
-        };
     }
 
 
