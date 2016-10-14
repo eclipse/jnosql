@@ -50,7 +50,7 @@ public class ListTypeReferenceReaderTest {
 
     @Test
     public void shouldNotBeCompatible() {
-        assertTrue(referenceReader.isCompatible(new TypeReference<ArrayList<BigDecimal>>(){}));
+        assertFalse(referenceReader.isCompatible(new TypeReference<ArrayList<BigDecimal>>(){}));
         assertFalse(referenceReader.isCompatible(new TypeReference<String>(){}));
         assertFalse(referenceReader.isCompatible(new TypeReference<Set<String>>(){}));
         assertFalse(referenceReader.isCompatible(new TypeReference<List<List<String>>>(){}));
