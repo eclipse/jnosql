@@ -47,7 +47,7 @@ public class ListTypeReferenceReader implements TypeReferenceReader {
         if (ParameterizedType.class.isInstance(type)) {
             ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 
-            return List.class.equals((Class<?>) parameterizedType.getRawType()) &&
+            return List.class.equals(parameterizedType.getRawType()) &&
                     Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
         }
         return false;

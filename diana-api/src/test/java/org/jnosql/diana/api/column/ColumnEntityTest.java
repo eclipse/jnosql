@@ -20,7 +20,6 @@
 package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Value;
-import org.jnosql.diana.api.document.Document;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -28,7 +27,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class ColumnEntityTest {
