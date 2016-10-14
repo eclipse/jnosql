@@ -36,6 +36,10 @@ public abstract class TypeReference<T> {
         type = ((ParameterizedType) superClass).getActualTypeArguments()[0];
     }
 
+    /**
+     * returns the type
+     * @return the type
+     */
     public Type getType() {
         return type;
     }

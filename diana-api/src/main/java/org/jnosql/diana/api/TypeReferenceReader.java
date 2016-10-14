@@ -18,23 +18,26 @@
  */
 package org.jnosql.diana.api;
 
-
+/**
+ * The reader to {@link TypeReference}
+ * @see Value#get(TypeReference)
+ */
 public interface TypeReferenceReader {
 
 
     /**
      * verifies if the reader has support of instance from this class.
-     * @param type
-     * @return
+     * @param type the type
+     * @return true if is compatible otherwise false
      */
     <T> boolean isCompatible(TypeReference<T> type);
 
     /**
-     *
-     * @param typeReference
-     * @param value
-     * @param <T>
-     * @return
+     *converts to defined type on {@link TypeReference}
+     * @param typeReference the typeReference
+     * @param value the value
+     * @param <T> the typeReference type
+     * @return the instance converted
      */
     <T> T convert(TypeReference<T> typeReference, Object value);
 }
