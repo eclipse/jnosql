@@ -19,5 +19,32 @@
 package org.jnosql.diana.api;
 
 
-public class JNoSQLException extends RuntimeException{
+/**
+ * The root of the JNoSQL of unchecked exceptions.
+ */
+public class JNoSQLException extends RuntimeException {
+
+    public JNoSQLException() {
+        super();
+    }
+
+
+    public JNoSQLException(String message) {
+        super(message);
+    }
+
+    public JNoSQLException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+
+    public JNoSQLException(Throwable cause) {
+        super(cause);
+    }
+
+    protected JNoSQLException(String message, Throwable cause,
+                              boolean enableSuppression,
+                              boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }

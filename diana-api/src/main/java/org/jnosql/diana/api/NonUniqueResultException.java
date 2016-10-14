@@ -23,7 +23,7 @@ package org.jnosql.diana.api;
  * Thrown by the persistence provider an exception when is executed
  * on a query and there is more than one result from the query.
  */
-public class NonUniqueResultException extends RuntimeException {
+public class NonUniqueResultException extends JNoSQLException {
 
     /**
      * Constructs a new runtime exception with {@code null} as its

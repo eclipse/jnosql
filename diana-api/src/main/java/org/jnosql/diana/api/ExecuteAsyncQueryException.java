@@ -20,7 +20,7 @@
 package org.jnosql.diana.api;
 
 
-public class ExecuteAsyncQueryException extends RuntimeException {
+public class ExecuteAsyncQueryException extends JNoSQLException {
 
 
     public ExecuteAsyncQueryException() {
