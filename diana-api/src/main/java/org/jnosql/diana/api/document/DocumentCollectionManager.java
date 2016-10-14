@@ -20,7 +20,6 @@
 package org.jnosql.diana.api.document;
 
 
-import org.jnosql.diana.api.CloseResource;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.NonUniqueResultException;
 
@@ -37,7 +36,7 @@ import java.util.stream.StreamSupport;
  * The DocumentCollectionManager API is used to create and remove persistent {@link DocumentEntity} instances,
  * to find entities by their primary key, and to query over entities.
  */
-public interface DocumentCollectionManager extends CloseResource {
+public interface DocumentCollectionManager extends AutoCloseable {
 
     /**
      * Saves document collection entity
@@ -233,7 +232,7 @@ public interface DocumentCollectionManager extends CloseResource {
      * @param query - query to figure out entities
      * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
      * @throws NonUniqueResultException when the result has more than 1 entity
-     * @throws NullPointerException  when query is null
+     * @throws NullPointerException     when query is null
      */
     default Optional<DocumentEntity> singleResult(DocumentQuery query) throws NonUniqueResultException {
         List<DocumentEntity> entities = find(query);
@@ -258,5 +257,10 @@ public interface DocumentCollectionManager extends CloseResource {
      */
     void findAsync(DocumentQuery query, Consumer<List<DocumentEntity>> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException;
+
+    /**
+     * closes a resource
+     */
+    void close();
 
 }

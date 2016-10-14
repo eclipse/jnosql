@@ -20,7 +20,6 @@
 package org.jnosql.diana.api.key;
 
 
-import org.jnosql.diana.api.CloseResource;
 import org.jnosql.diana.api.Value;
 
 import java.time.Duration;
@@ -31,7 +30,7 @@ import java.util.Optional;
  * The BucketManager API is used to create and remove persistent {@link KeyValueEntity}.
  *
  */
-public interface BucketManager extends CloseResource {
+public interface BucketManager extends AutoCloseable {
 
     /**
      * Associates the specified value with the specified key and than storage
@@ -121,5 +120,10 @@ public interface BucketManager extends CloseResource {
      * @throws NullPointerException when the key is null
      */
     <K> void remove(Iterable<K> keys) throws NullPointerException;
+
+    /**
+     * closes a resource
+     */
+    void close();
 
 }

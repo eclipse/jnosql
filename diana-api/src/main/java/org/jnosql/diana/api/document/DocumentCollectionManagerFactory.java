@@ -20,8 +20,6 @@
 package org.jnosql.diana.api.document;
 
 
-import org.jnosql.diana.api.CloseResource;
-
 /**
  * {@link DocumentCollectionManager} factory.
  * When the application has finished using the document collection manager factory, and/or at application shutdown,
@@ -29,7 +27,7 @@ import org.jnosql.diana.api.CloseResource;
  *
  * @param <T> the DocumentCollectionManager type
  */
-public interface DocumentCollectionManagerFactory<T extends DocumentCollectionManager> extends CloseResource {
+public interface DocumentCollectionManagerFactory<T extends DocumentCollectionManager> extends AutoCloseable {
 
     /**
      * Creates a {@link DocumentCollectionManager} from database's name
@@ -38,4 +36,9 @@ public interface DocumentCollectionManagerFactory<T extends DocumentCollectionMa
      * @return a new {@link DocumentCollectionManager} instance
      */
     T getDocumentEntityManager(String database);
+
+    /**
+     * closes a resource
+     */
+    void close();
 }

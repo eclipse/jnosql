@@ -20,8 +20,6 @@
 package org.jnosql.diana.api.key;
 
 
-import org.jnosql.diana.api.CloseResource;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -32,7 +30,7 @@ import java.util.Set;
  * When the application has finished using the bucket manager factory, and/or at application shutdown,
  * the application should close the column family manager factory.
  */
-public interface BucketManagerFactory <T extends BucketManager> extends CloseResource {
+public interface BucketManagerFactory<T extends BucketManager> extends AutoCloseable {
 
     /**
      * Creates a {@link BucketManager} from a bucket name
@@ -89,4 +87,9 @@ public interface BucketManagerFactory <T extends BucketManager> extends CloseRes
      */
     <K, V> Map<K, V> getMap(String bucketName, Class<K> keyValue, Class<V> valueValue) throws
             UnsupportedOperationException;
+
+    /**
+     * closes a resource
+     */
+    void close();
 }

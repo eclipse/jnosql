@@ -20,7 +20,6 @@
 package org.jnosql.diana.api.column;
 
 
-import org.jnosql.diana.api.CloseResource;
 import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.NonUniqueResultException;
 
@@ -37,7 +36,7 @@ import java.util.stream.StreamSupport;
  * The ColumnFamilyManager API is used to create and remove persistent {@link ColumnEntity} instances,
  * to find entities by their primary key, and to query over entities.
  */
-public interface ColumnFamilyManager extends CloseResource {
+public interface ColumnFamilyManager extends AutoCloseable {
 
     /**
      * Saves a Column family entity
@@ -260,5 +259,10 @@ public interface ColumnFamilyManager extends CloseResource {
      */
     void findAsync(ColumnQuery query, Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException;
+
+    /**
+     * closes a resource
+     */
+    void close();
 
 }
