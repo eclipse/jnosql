@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Class to reads and converts to both {@link Boolean} and {@link AtomicBoolean}
  */
+@SuppressWarnings("unchecked")
 public final class BooleanValueReader implements ValueReader {
 
     @Override

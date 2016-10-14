@@ -30,6 +30,7 @@ import java.math.BigDecimal;
  * and then {@link BigDecimal}
  *
  */
+@SuppressWarnings("unchecked")
 public final class BigDecimalValueReader implements ValueReader {
 
 

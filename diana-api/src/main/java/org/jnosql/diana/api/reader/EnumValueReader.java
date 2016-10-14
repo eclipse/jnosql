@@ -30,6 +30,7 @@ import java.util.List;
  * Class to reads and converts to {@link Enum}
  *
  */
+@SuppressWarnings("unchecked")
 public final class EnumValueReader implements ValueReader {
 
     @Override

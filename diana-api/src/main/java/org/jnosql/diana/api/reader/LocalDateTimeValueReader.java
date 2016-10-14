@@ -30,6 +30,7 @@ import java.util.Date;
  * Class to reads and converts to {@link LocalDateTime} type
  *
  */
+@SuppressWarnings("unchecked")
 public class LocalDateTimeValueReader implements ValueReader {
 
     @Override

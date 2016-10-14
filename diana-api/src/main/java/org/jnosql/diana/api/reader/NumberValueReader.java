@@ -26,6 +26,7 @@ import org.jnosql.diana.api.ValueReader;
  * Class reader for {@link Number}, this converter first verify if the object is a Number instance,
  * if it will return itself, otherwise convert to String and then to {@link Double}
  */
+@SuppressWarnings("unchecked")
 public final class NumberValueReader implements ValueReader {
 
     @Override

@@ -29,6 +29,7 @@ import java.util.Date;
 /**
  * Class to read and convert to {@link ZonedDateTime} type
  */
+@SuppressWarnings("unchecked")
 public class ZonedDateTimeValueReader implements ValueReader {
 
     @Override

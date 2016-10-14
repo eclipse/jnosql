@@ -25,6 +25,7 @@ import org.jnosql.diana.api.ValueReader;
 /**
  * Class to reads and converts to both {@link String} and {@link CharSequence}.
  */
+@SuppressWarnings("unchecked")
 public final class StringValueReader implements ValueReader {
 
     @Override

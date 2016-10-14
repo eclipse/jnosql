@@ -27,6 +27,7 @@ import java.util.Date;
 /**
  * Class to reads and converts Date type
  */
+@SuppressWarnings("unchecked")
 public final class DateValueReader implements ValueReader {
 
     @Override

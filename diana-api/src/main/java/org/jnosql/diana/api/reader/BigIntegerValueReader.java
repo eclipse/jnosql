@@ -30,6 +30,7 @@ import java.math.BigInteger;
  * and then {@link BigInteger}
  *
  */
+@SuppressWarnings("unchecked")
 public final class BigIntegerValueReader implements ValueReader {
 
     @Override

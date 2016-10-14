@@ -27,6 +27,7 @@ import java.util.Optional;
 /**
  * Class to reads and converts to {@link Optional}
  */
+@SuppressWarnings("unchecked")
 public final class OptionalValueReader implements ValueReader {
 
     @Override

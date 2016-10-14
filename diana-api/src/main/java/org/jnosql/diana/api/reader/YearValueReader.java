@@ -27,6 +27,7 @@ import java.time.Year;
  * Class to reads and converts to {@link Year}, first it verify if is Year if yes return itself
  * otherwise convert to {@link String} and then {@link Year}
  */
+@SuppressWarnings("unchecked")
 public final class YearValueReader implements ValueReader {
 
     @Override

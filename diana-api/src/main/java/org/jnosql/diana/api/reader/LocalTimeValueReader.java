@@ -29,6 +29,7 @@ import java.util.Date;
 /**
  * Class to read and convert to {@link LocalTime} type
  */
+@SuppressWarnings("unchecked")
 public class LocalTimeValueReader implements ValueReader {
 
     @Override

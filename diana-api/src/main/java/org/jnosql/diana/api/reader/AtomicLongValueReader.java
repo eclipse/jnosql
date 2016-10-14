@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * if is {@link Number} and use {@link Number#longValue()} otherwise convert to {@link String}
  * and then {@link AtomicLong}
  */
+@SuppressWarnings("unchecked")
 public final class AtomicLongValueReader implements ValueReader {
 
 

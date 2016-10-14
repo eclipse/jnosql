@@ -27,6 +27,7 @@ import org.jnosql.diana.api.ValueReader;
  * Class to reads and converts to {@link YearMonth}, first it verify if is YearMonth if yes return itself
  * otherwise convert to {@link String} and then {@link YearMonth}
  */
+@SuppressWarnings("unchecked")
 public final class YearMonthValueReader implements ValueReader {
 
     @Override

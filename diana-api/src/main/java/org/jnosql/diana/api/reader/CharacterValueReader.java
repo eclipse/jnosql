@@ -27,6 +27,7 @@ import static java.lang.Character.MIN_VALUE;
 /**
  * Class reader for {@link Character}
  */
+@SuppressWarnings("unchecked")
 public final class CharacterValueReader implements ValueReader {
 
     @Override

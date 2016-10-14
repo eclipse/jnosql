@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * verifies if is {@link Number} and use {@link Number#intValue()} ()} otherwise convert to {@link String}
  * and then {@link AtomicInteger}
  */
+@SuppressWarnings("unchecked")
 public final class AtomicIntegerValueReader implements ValueReader {
 
     @Override

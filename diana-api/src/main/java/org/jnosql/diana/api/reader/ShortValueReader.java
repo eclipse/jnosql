@@ -26,6 +26,7 @@ import org.jnosql.diana.api.ValueReader;
  * Class to reads and converts to {@link Short}, first it verify if is Double if yes return itself then verifies if is
  * {@link Number} and use {@link Number#shortValue()} otherwise convert to {@link String} and then {@link Short}
  */
+@SuppressWarnings("unchecked")
 public final class ShortValueReader implements ValueReader {
 
     @Override

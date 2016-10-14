@@ -26,6 +26,7 @@ import org.jnosql.diana.api.ValueReader;
  * Class to reads and converts to {@link Float}, first it verify if is Double if yes return itself then verifies if is
  * {@link Number} and use {@link Number#floatValue()} otherwise convert to {@link String} and then {@link Float}
  */
+@SuppressWarnings("unchecked")
 public final class FloatValueReader implements ValueReader {
 
     @Override
