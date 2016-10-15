@@ -19,8 +19,8 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.TypeReferenceReader;
+import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.ValueReader;
 import org.jnosql.diana.api.ValueReaderDecorator;
 
@@ -39,8 +39,8 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
     private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
 
     @Override
-    public <T> boolean isCompatible(TypeReference<T> typeReference) {
-        Type type = typeReference.getType();
+    public <T> boolean isCompatible(TypeSupplier<T> typeReference) {
+        Type type = typeReference.get();
         if (ParameterizedType.class.isInstance(type)) {
             ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 
@@ -52,8 +52,8 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
     }
 
     @Override
-    public <T> T convert(TypeReference<T> typeReference, Object value) {
-        Type type = typeReference.getType();
+    public <T> T convert(TypeSupplier<T> typeReference, Object value) {
+        Type type = typeReference.get();
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Class<?> keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
         Class<?> valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];

@@ -46,8 +46,17 @@ public interface Value extends Serializable {
      */
     <T> T get(Class<T> clazz) throws NullPointerException, UnsupportedOperationException;
 
-    <T> T get(TypeReference<T> typeReference) throws NullPointerException, UnsupportedOperationException;
-
+    /**
+     * Converts {@link Value#get()} to specified class
+     *
+     * @param typeSupplier the type supplier
+     * @param <T>          the new instance type
+     * @return a new instance converted to informed class
+     * @throws NullPointerException          when the class is null
+     * @throws UnsupportedOperationException when the type is unsupported
+     * @see ValueReader
+     */
+    <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException;
 
 
     /**

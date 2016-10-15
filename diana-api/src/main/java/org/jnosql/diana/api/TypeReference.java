@@ -24,7 +24,7 @@ import java.lang.reflect.Type;
 /**
  * This class is used to pass full generics type information, and avoid problems with type erasure
  */
-public abstract class TypeReference<T> {
+public abstract class TypeReference<T> implements TypeSupplier<T> {
 
     private final Type type;
 
@@ -38,9 +38,10 @@ public abstract class TypeReference<T> {
 
     /**
      * returns the type
+     *
      * @return the type
      */
-    public Type getType() {
+    public Type get() {
         return type;
     }
 

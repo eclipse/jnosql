@@ -16,33 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.jnosql.diana.api;
 
-public class ExecuteAsyncQueryException extends JNoSQLException {
 
+import java.lang.reflect.Type;
+import java.util.function.Supplier;
 
-    public ExecuteAsyncQueryException() {
-        super();
-    }
-
-
-    public ExecuteAsyncQueryException(String message) {
-        super(message);
-    }
-
-    public ExecuteAsyncQueryException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-
-    public ExecuteAsyncQueryException(Throwable cause) {
-        super(cause);
-    }
-
-    protected ExecuteAsyncQueryException(String message, Throwable cause,
-                                         boolean enableSuppression,
-                                         boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
+/**
+ * Represents a supplier of {@link Type}.
+ *
+ * @param <T> the supplier type
+ */
+public interface TypeSupplier<T> extends Supplier<Type> {
 }

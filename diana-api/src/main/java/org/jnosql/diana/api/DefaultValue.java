@@ -50,7 +50,7 @@ final class DefaultValue implements Value {
     }
 
     @Override
-    public <T> T get(TypeReference<T> typeReference) throws NullPointerException, UnsupportedOperationException {
+    public <T> T get(TypeSupplier<T> typeReference) throws NullPointerException, UnsupportedOperationException {
         if (REFERENCE_READER.isCompatible(Objects.requireNonNull(typeReference, "typeReference is required"))) {
             return REFERENCE_READER.convert(typeReference, value);
         }

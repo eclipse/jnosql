@@ -20,7 +20,7 @@ package org.jnosql.diana.api;
 
 /**
  * The reader to {@link TypeReference}
- * @see Value#get(TypeReference)
+ * @see Value#get(TypeSupplier)
  */
 public interface TypeReferenceReader {
 
@@ -30,7 +30,7 @@ public interface TypeReferenceReader {
      * @param type the type
      * @return true if is compatible otherwise false
      */
-    <T> boolean isCompatible(TypeReference<T> type);
+    <T> boolean isCompatible(TypeSupplier<T> type);
 
     /**
      *converts to defined type on {@link TypeReference}
@@ -39,5 +39,5 @@ public interface TypeReferenceReader {
      * @param <T> the typeReference type
      * @return the instance converted
      */
-    <T> T convert(TypeReference<T> typeReference, Object value);
+    <T> T convert(TypeSupplier<T> typeReference, Object value);
 }
