@@ -30,8 +30,9 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 
-import static java.util.Collections.singletonList;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class OptionalTypeReferenceReaderTest {
