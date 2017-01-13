@@ -118,4 +118,13 @@ final class DefaultDocumentEntity implements DocumentEntity {
     public int hashCode() {
         return Objects.hash(documents, name);
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("DefaultDocumentEntity{");
+        sb.append("documents=").append(documents);
+        sb.append(", name='").append(name).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
