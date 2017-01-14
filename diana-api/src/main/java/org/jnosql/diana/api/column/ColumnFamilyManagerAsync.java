@@ -28,14 +28,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
  * Interface used to interact with the persistence context to {@link ColumnEntity}
  * The ColumnFamilyManager API is used to create and remove persistent {@link ColumnEntity} instances,
- * to find entities by their primary key, and to query over entities. The main different to {@link ColumnFamilyManagerAsync}
- * is because all the operation works asynchronous.
+ * to find entities by their primary key, and to query over entities. The main different of {@link ColumnFamilyManager}
+ * is because all the operation works asynchronous  .
  */
 public interface ColumnFamilyManagerAsync extends AutoCloseable {
 
