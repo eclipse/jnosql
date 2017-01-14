@@ -176,7 +176,6 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * Returns a single entity from query
      *
      * @param query - query to figure out entities
-     * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException     when query is null
      */
