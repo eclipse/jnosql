@@ -28,6 +28,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Condition.AND;
+import static org.jnosql.diana.api.Condition.OR;
 import static org.junit.Assert.*;
 
 
@@ -76,5 +77,31 @@ public class DefaultColumnConditionTest {
 
     }
 
+    @Test
+    public void shouldCreateOrCondition() {
+        Column age = Column.of("age", 26);
+        Column name = Column.of("name", "Otavio");
+        ColumnCondition condition1 = DefaultColumnCondition.of(name, Condition.EQUALS);
+        ColumnCondition condition2 = DefaultColumnCondition.of(age, Condition.GREATER_THAN);
+
+        ColumnCondition and = condition1.or(condition2);
+        Column andColumn = and.getColumn();
+        assertEquals(OR, and.getCondition());
+        assertEquals(OR.getNameField(), andColumn.getName());
+        assertThat(andColumn.getValue().get(new TypeReference<List<ColumnCondition>>() {}),
+                containsInAnyOrder(condition1, condition2));
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenCreateAndWithNullValues() {
+        DefaultColumnCondition.and((ColumnCondition[]) null);
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenCreateOrWithNullValues() {
+        DefaultColumnCondition.or((ColumnCondition[])null);
+    }
 
 }
