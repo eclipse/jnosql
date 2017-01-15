@@ -32,15 +32,25 @@ public class DefaultColumnConditionTest {
     public void shouldReturnErrorWhenColumnIsNull() {
         DefaultColumnCondition.of(null, Condition.AND);
     }
-    
+
     @Test
     public void shouldCreateAnInstance() {
-
         Column name = Column.of("name", "Otavio");
-        DefaultColumnCondition condition = DefaultColumnCondition.of(name, Condition.EQUALS);
+        ColumnCondition condition = DefaultColumnCondition.of(name, Condition.EQUALS);
         Assert.assertNotNull(condition);
         assertEquals(name, condition.getColumn());
         assertEquals(Condition.EQUALS, condition.getCondition());
+    }
+
+    @Test
+    public void shouldCreateNegationConditon() {
+        Column age = Column.of("age", 26);
+        ColumnCondition condition = DefaultColumnCondition.of(age, Condition.GREATER_THAN);
+        ColumnCondition negate = condition.negate();
+        Column negateColumn = negate.getColumn();
+        assertEquals(Condition.NOT, negate.getCondition());
+        assertEquals(Condition.NOT.getNameField(), negateColumn.getName());
+        assertEquals(DefaultColumnCondition.of(age, Condition.GREATER_THAN), negateColumn.getValue().get());
 
     }
 }
