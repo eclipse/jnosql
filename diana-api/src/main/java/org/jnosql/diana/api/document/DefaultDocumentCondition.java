@@ -21,9 +21,6 @@ package org.jnosql.diana.api.document;
 
 
 import org.jnosql.diana.api.Condition;
-import org.jnosql.diana.api.column.Column;
-import org.jnosql.diana.api.column.ColumnCondition;
-import org.jnosql.diana.api.column.DefaultColumnCondition;
 
 import java.util.Objects;
 
