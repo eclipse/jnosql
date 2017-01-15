@@ -20,8 +20,6 @@
 package org.jnosql.diana.api.document;
 
 
-import org.jnosql.diana.api.TypeSupplier;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -87,32 +85,6 @@ public interface DocumentEntity extends Serializable {
      * @throws NullPointerException when document is null
      */
     boolean remove(Document document) throws NullPointerException;
-
-    /**
-     * Alias to {@link org.jnosql.diana.api.Value#get(Class)}
-     * @param clazz
-     * @param <T>
-     * @return
-     * @throws NullPointerException
-     * @throws UnsupportedOperationException
-     */
-    <T> T get(Class<T> clazz) throws NullPointerException, UnsupportedOperationException;
-
-    /**
-     * Alias to {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
-     * @param typeSupplier
-     * @param <T>
-     * @return
-     * @throws NullPointerException
-     * @throws UnsupportedOperationException
-     */
-    <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException;
-
-    /**
-     * Alias to {@link org.jnosql.diana.api.Value#get()}
-     * @return
-     */
-    Object getValueAsObject();
 
     /**
      * List of all documents
