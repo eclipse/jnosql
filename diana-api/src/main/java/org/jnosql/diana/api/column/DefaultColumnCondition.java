@@ -51,6 +51,24 @@ class DefaultColumnCondition implements ColumnCondition {
     }
 
     @Override
+    public ColumnCondition and(ColumnCondition condition) throws NullPointerException {
+        Objects.requireNonNull(condition, "Condition is required");
+        return null;
+    }
+
+    @Override
+    public ColumnCondition negate() {
+        Column.of(Condition.)
+        return null;
+    }
+
+    @Override
+    public ColumnCondition or(ColumnCondition condition) {
+        Objects.requireNonNull(condition, "Condition is required");
+        return null;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

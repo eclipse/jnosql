@@ -51,6 +51,12 @@ public interface ColumnCondition {
      */
     Condition getCondition();
 
+    ColumnCondition and(ColumnCondition condition)throws NullPointerException;
+
+    ColumnCondition negate();
+
+    ColumnCondition or(ColumnCondition condition);
+
     /**
      * Creates a {@link ColumnCondition} that has a {@link Condition#EQUALS}, it means a query will scanning to a
      * column family that has the same name and equals value informed in this column.

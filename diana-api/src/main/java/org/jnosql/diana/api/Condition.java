@@ -19,9 +19,38 @@
 
 package org.jnosql.diana.api;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Conditions type to run a query
  */
 public enum Condition {
-    EQUALS, GREATER_THAN, GREATER_EQUALS_THAN, LESSER_THAN, LESSER_EQUALS_THAN, IN, LIKE, AND, OR
-}
+    EQUALS, GREATER_THAN, GREATER_EQUALS_THAN, LESSER_THAN, LESSER_EQUALS_THAN, IN, LIKE, AND, OR, NOT;
+
+    /**
+     * Return tne field as name to both document and column.
+     * The goal is the field gonna be a reserved word
+     *
+     * @return
+     */
+    public String getNameField() {
+        return "__" + this.name() + "__";
+    }
+
+    /**
+     * Retrieve the condition from {@link Condition#getNameField()}
+     *
+     * @param condition the condition converted to field
+     * @return the condition instance
+     * @throws NullPointerException     when condition is null
+     * @throws IllegalArgumentException when the condition is not found
+     */
+    public static Condition parse(String condition) throws NullPointerException, IllegalArgumentException {
+        Objects.requireNonNull(condition, "condition is required");
+        return Arrays.stream(Condition.values())
+                .filter(c -> c.getNameField()
+                        .equals(condition)).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(String.format("The condition $s is not found", condition)));
+    }
+    }
