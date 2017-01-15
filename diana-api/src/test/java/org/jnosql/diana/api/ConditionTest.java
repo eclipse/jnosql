@@ -46,8 +46,13 @@ public class ConditionTest {
 
     @Test
     public void shouldParser() {
-        assertEquals(AND,Condition.parse("__AND__"));
-
+        assertEquals(AND,Condition.parse("_AND"));
+        assertEquals(EQUALS,Condition.parse("_EQUALS"));
+        assertEquals(GREATER_EQUALS_THAN,Condition.parse("_GREATER_EQUALS_THAN"));
+        assertEquals(IN,Condition.parse("_IN"));
+        assertEquals(NOT,Condition.parse("_NOT"));
+        assertEquals(OR,Condition.parse("_OR"));
+        assertEquals(LESSER_THAN,Condition.parse("_LESSER_THAN"));
 
     }
 }

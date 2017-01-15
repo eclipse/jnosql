@@ -32,6 +32,7 @@ import static org.jnosql.diana.api.Condition.LIKE;
 
 /**
  * An unit condition  to run a column family query
+ *
  * @see ColumnFamilyManager#find(ColumnQuery)
  */
 public interface ColumnCondition {
@@ -51,11 +52,31 @@ public interface ColumnCondition {
      */
     Condition getCondition();
 
-    ColumnCondition and(ColumnCondition condition)throws NullPointerException;
+    /**
+     * Creates a new {@link ColumnCondition} using the {@link Condition#AND}
+     *
+     * @param condition the condition to be agregated
+     * @return the conditions joined as AND
+     * @throws NullPointerException when the condition is null
+     */
+    ColumnCondition and(ColumnCondition condition) throws NullPointerException;
 
+    /**
+     * Creates a new {@link ColumnCondition} negating the current one
+     *
+     * @return the negated condition
+     * @see Condition#NOT
+     */
     ColumnCondition negate();
 
-    ColumnCondition or(ColumnCondition condition);
+    /**
+     * Creates a new {@link ColumnCondition} using the {@link Condition#OR}
+     *
+     * @param condition the condition to be agregated
+     * @return the conditions joined as AND
+     * @throws NullPointerException when the condition is null
+     */
+    ColumnCondition or(ColumnCondition condition) throws NullPointerException;
 
     /**
      * Creates a {@link ColumnCondition} that has a {@link Condition#EQUALS}, it means a query will scanning to a

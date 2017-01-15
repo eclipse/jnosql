@@ -22,7 +22,12 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Condition;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
+
+import static java.util.Arrays.asList;
+import static org.jnosql.diana.api.Condition.AND;
 
 /**
  * The default implementation of {@link ColumnCondition}
@@ -53,6 +58,7 @@ class DefaultColumnCondition implements ColumnCondition {
     @Override
     public ColumnCondition and(ColumnCondition condition) throws NullPointerException {
         Objects.requireNonNull(condition, "Condition is required");
+        Column columnCondition = Column.of(AND.getNameField(), asList(this.condition, condition));
         return null;
     }
 
