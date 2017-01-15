@@ -22,8 +22,10 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Condition;
 
+import java.util.Arrays;
 import java.util.Objects;
 
+import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.NOT;
@@ -49,14 +51,14 @@ class DefaultColumnCondition implements ColumnCondition {
 
     static DefaultColumnCondition and(ColumnCondition... conditions) throws NullPointerException {
         requireNonNull(conditions, "condition is required");
-        Column column = Column.of(AND.getNameField(), conditions);
+        Column column = Column.of(AND.getNameField(), asList(conditions));
         return DefaultColumnCondition.of(column, AND);
     }
 
 
     static DefaultColumnCondition or(ColumnCondition... conditions) throws NullPointerException {
         requireNonNull(conditions, "condition is required");
-        Column column = Column.of(OR.getNameField(), conditions);
+        Column column = Column.of(OR.getNameField(), asList(conditions));
         return DefaultColumnCondition.of(column, OR);
     }
 

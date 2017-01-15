@@ -18,10 +18,16 @@
  */
 package org.jnosql.diana.api.column;
 
+import org.hamcrest.Matchers;
 import org.jnosql.diana.api.Condition;
+import org.jnosql.diana.api.TypeReference;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.jnosql.diana.api.Condition.AND;
 import static org.junit.Assert.*;
 
 
@@ -30,7 +36,7 @@ public class DefaultColumnConditionTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenColumnIsNull() {
-        DefaultColumnCondition.of(null, Condition.AND);
+        DefaultColumnCondition.of(null, AND);
     }
 
     @Test
@@ -51,6 +57,24 @@ public class DefaultColumnConditionTest {
         assertEquals(Condition.NOT, negate.getCondition());
         assertEquals(Condition.NOT.getNameField(), negateColumn.getName());
         assertEquals(DefaultColumnCondition.of(age, Condition.GREATER_THAN), negateColumn.getValue().get());
+    }
+
+
+    @Test
+    public void shouldCreateAndCondition() {
+        Column age = Column.of("age", 26);
+        Column name = Column.of("name", "Otavio");
+        ColumnCondition condition1 = DefaultColumnCondition.of(name, Condition.EQUALS);
+        ColumnCondition condition2 = DefaultColumnCondition.of(age, Condition.GREATER_THAN);
+
+        ColumnCondition and = condition1.and(condition2);
+        Column andColumn = and.getColumn();
+        assertEquals(AND, and.getCondition());
+        assertEquals(AND.getNameField(), andColumn.getName());
+        assertThat(andColumn.getValue().get(new TypeReference<List<ColumnCondition>>() {}),
+                containsInAnyOrder(condition1, condition2));
 
     }
+
+
 }
