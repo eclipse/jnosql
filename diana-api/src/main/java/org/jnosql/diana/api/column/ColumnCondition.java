@@ -22,9 +22,6 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Condition;
 
-import java.util.Objects;
-
-import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.EQUALS;
 import static org.jnosql.diana.api.Condition.GREATER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.GREATER_THAN;
@@ -32,7 +29,6 @@ import static org.jnosql.diana.api.Condition.IN;
 import static org.jnosql.diana.api.Condition.LESSER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.LESSER_THAN;
 import static org.jnosql.diana.api.Condition.LIKE;
-import static org.jnosql.diana.api.Condition.OR;
 
 /**
  * An unit condition  to run a column family query
@@ -178,14 +174,12 @@ public interface ColumnCondition {
      * </pre>ColumnCondition condition = ColumnCondition.eq(name).and(ColumnCondition.gte(age));</pre>
      * The {@link ColumnCondition#getColumn()} will have "_AND" as key and the list of condition as value.
      *
-     * @param conditions
-     * @return
-     * @throws NullPointerException
+     * @param conditions the conditions to be aggregated
+     * @return the new {@link ColumnCondition} instance
+     * @throws NullPointerException when the conditions is null
      */
     static ColumnCondition and(ColumnCondition... conditions) throws NullPointerException {
-        Objects.requireNonNull(conditions, "condition is required");
-        Column column = Column.of(AND.getNameField(), conditions);
-        return DefaultColumnCondition.of(column, AND);
+        return DefaultColumnCondition.and(conditions);
     }
 
     /**
@@ -198,14 +192,12 @@ public interface ColumnCondition {
      * </pre>ColumnCondition condition = ColumnCondition.eq(name).or(ColumnCondition.gte(age));</pre>
      * The {@link ColumnCondition#getColumn()} will have "_OR" as key and the list of condition as value.
      *
-     * @param conditions
-     * @return
-     * @throws NullPointerException
+     * @param conditions the conditions to be aggregated
+     * @return the new {@link ColumnCondition} instance
+     * @throws NullPointerException when the condition is null
      */
     static ColumnCondition or(ColumnCondition... conditions) throws NullPointerException {
-        Objects.requireNonNull(conditions, "condition is required");
-        Column column = Column.of(OR.getNameField(), conditions);
-        return DefaultColumnCondition.of(column, OR);
+        return DefaultColumnCondition.or(conditions);
     }
 
 }

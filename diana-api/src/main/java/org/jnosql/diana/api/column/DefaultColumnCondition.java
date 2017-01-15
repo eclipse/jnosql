@@ -22,12 +22,11 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Condition;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
-import static java.util.Arrays.asList;
 import static org.jnosql.diana.api.Condition.AND;
+import static org.jnosql.diana.api.Condition.NOT;
+import static org.jnosql.diana.api.Condition.OR;
 
 /**
  * The default implementation of {@link ColumnCondition}
@@ -44,7 +43,20 @@ class DefaultColumnCondition implements ColumnCondition {
     }
 
     public static DefaultColumnCondition of(Column column, Condition condition) {
-        return new DefaultColumnCondition(Objects.requireNonNull(column,"Column is required") , condition);
+        return new DefaultColumnCondition(Objects.requireNonNull(column, "Column is required"), condition);
+    }
+
+    static DefaultColumnCondition and(ColumnCondition... conditions) throws NullPointerException {
+        Objects.requireNonNull(conditions, "condition is required");
+        Column column = Column.of(AND.getNameField(), conditions);
+        return DefaultColumnCondition.of(column, AND);
+    }
+
+
+    static DefaultColumnCondition or(ColumnCondition... conditions) throws NullPointerException {
+        Objects.requireNonNull(conditions, "condition is required");
+        Column column = Column.of(OR.getNameField(), conditions);
+        return DefaultColumnCondition.of(column, OR);
     }
 
     public Column getColumn() {
@@ -57,20 +69,20 @@ class DefaultColumnCondition implements ColumnCondition {
 
     @Override
     public ColumnCondition and(ColumnCondition condition) throws NullPointerException {
-        Objects.requireNonNull(condition, "Condition is required");
-        Column columnCondition = Column.of(AND.getNameField(), asList(this.condition, condition));
-        return null;
+        Objects.requireNonNull(condition, "Conditions is required");
+        return ColumnCondition.and(this, condition);
     }
 
     @Override
     public ColumnCondition negate() {
-        return null;
+        Column column = Column.of(NOT.getNameField(), this);
+        return new DefaultColumnCondition(column, NOT);
     }
 
     @Override
     public ColumnCondition or(ColumnCondition condition) {
         Objects.requireNonNull(condition, "Condition is required");
-        return null;
+        return ColumnCondition.or(this, condition);
     }
 
     @Override
