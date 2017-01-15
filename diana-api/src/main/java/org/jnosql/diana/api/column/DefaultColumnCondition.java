@@ -22,7 +22,6 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Condition;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static java.util.Arrays.asList;
@@ -73,7 +72,7 @@ class DefaultColumnCondition implements ColumnCondition {
     @Override
     public ColumnCondition and(ColumnCondition condition) throws NullPointerException {
         requireNonNull(condition, "Conditions is required");
-        return ColumnCondition.and(this, condition);
+        return DefaultColumnCondition.and(this, condition);
     }
 
     @Override
@@ -85,7 +84,7 @@ class DefaultColumnCondition implements ColumnCondition {
     @Override
     public ColumnCondition or(ColumnCondition condition) {
         requireNonNull(condition, "Condition is required");
-        return ColumnCondition.or(this, condition);
+        return DefaultColumnCondition.or(this, condition);
     }
 
     @Override

@@ -21,8 +21,17 @@ package org.jnosql.diana.api.document;
 
 
 import org.jnosql.diana.api.Condition;
+import org.jnosql.diana.api.column.Column;
+import org.jnosql.diana.api.column.ColumnCondition;
+import org.jnosql.diana.api.column.DefaultColumnCondition;
 
 import java.util.Objects;
+
+import static java.util.Arrays.asList;
+import static java.util.Objects.requireNonNull;
+import static org.jnosql.diana.api.Condition.AND;
+import static org.jnosql.diana.api.Condition.NOT;
+import static org.jnosql.diana.api.Condition.OR;
 
 /**
  * The default implementation of {@link DocumentCondition}
@@ -39,7 +48,20 @@ class DefaultDocumentCondition implements DocumentCondition {
     }
 
     public static DefaultDocumentCondition of(Document document, Condition condition) {
-        return new DefaultDocumentCondition(Objects.requireNonNull(document,"Document is required") , condition);
+        return new DefaultDocumentCondition(Objects.requireNonNull(document, "Document is required"), condition);
+    }
+
+    static DefaultDocumentCondition and(DocumentCondition... conditions) throws NullPointerException {
+        requireNonNull(conditions, "condition is required");
+        Document document = Document.of(AND.getNameField(), asList(conditions));
+        return DefaultDocumentCondition.of(document, AND);
+    }
+
+
+    static DefaultDocumentCondition or(DocumentCondition... conditions) throws NullPointerException {
+        requireNonNull(conditions, "condition is required");
+        Document document = Document.of(OR.getNameField(), asList(conditions));
+        return DefaultDocumentCondition.of(document, OR);
     }
 
     public Document getDocument() {
@@ -49,6 +71,25 @@ class DefaultDocumentCondition implements DocumentCondition {
     public Condition getCondition() {
         return condition;
     }
+
+    @Override
+    public DocumentCondition and(DocumentCondition condition) throws NullPointerException {
+        requireNonNull(condition, "Conditions is required");
+        return DefaultDocumentCondition.and(this, condition);
+    }
+
+    @Override
+    public DocumentCondition negate() {
+        Document document = Document.of(NOT.getNameField(), this);
+        return new DefaultDocumentCondition(document, NOT);
+    }
+
+    @Override
+    public DocumentCondition or(DocumentCondition condition) {
+        requireNonNull(condition, "Condition is required");
+        return DefaultDocumentCondition.or(this, condition);
+    }
+
 
     @Override
     public boolean equals(Object o) {
