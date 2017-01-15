@@ -24,6 +24,7 @@ import org.jnosql.diana.api.Condition;
 
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.NOT;
 import static org.jnosql.diana.api.Condition.OR;
@@ -43,18 +44,18 @@ class DefaultColumnCondition implements ColumnCondition {
     }
 
     public static DefaultColumnCondition of(Column column, Condition condition) {
-        return new DefaultColumnCondition(Objects.requireNonNull(column, "Column is required"), condition);
+        return new DefaultColumnCondition(requireNonNull(column, "Column is required"), condition);
     }
 
     static DefaultColumnCondition and(ColumnCondition... conditions) throws NullPointerException {
-        Objects.requireNonNull(conditions, "condition is required");
+        requireNonNull(conditions, "condition is required");
         Column column = Column.of(AND.getNameField(), conditions);
         return DefaultColumnCondition.of(column, AND);
     }
 
 
     static DefaultColumnCondition or(ColumnCondition... conditions) throws NullPointerException {
-        Objects.requireNonNull(conditions, "condition is required");
+        requireNonNull(conditions, "condition is required");
         Column column = Column.of(OR.getNameField(), conditions);
         return DefaultColumnCondition.of(column, OR);
     }
@@ -69,7 +70,7 @@ class DefaultColumnCondition implements ColumnCondition {
 
     @Override
     public ColumnCondition and(ColumnCondition condition) throws NullPointerException {
-        Objects.requireNonNull(condition, "Conditions is required");
+        requireNonNull(condition, "Conditions is required");
         return ColumnCondition.and(this, condition);
     }
 
@@ -81,7 +82,7 @@ class DefaultColumnCondition implements ColumnCondition {
 
     @Override
     public ColumnCondition or(ColumnCondition condition) {
-        Objects.requireNonNull(condition, "Condition is required");
+        requireNonNull(condition, "Condition is required");
         return ColumnCondition.or(this, condition);
     }
 
