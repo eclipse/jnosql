@@ -58,7 +58,6 @@ class DefaultColumnCondition implements ColumnCondition {
 
     @Override
     public ColumnCondition negate() {
-        Column.of(Condition.)
         return null;
     }
 

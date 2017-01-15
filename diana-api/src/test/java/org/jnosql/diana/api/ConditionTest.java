@@ -21,6 +21,13 @@ package org.jnosql.diana.api;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.jnosql.diana.api.Condition.AND;
+import static org.jnosql.diana.api.Condition.EQUALS;
+import static org.jnosql.diana.api.Condition.GREATER_EQUALS_THAN;
+import static org.jnosql.diana.api.Condition.IN;
+import static org.jnosql.diana.api.Condition.LESSER_THAN;
+import static org.jnosql.diana.api.Condition.NOT;
+import static org.jnosql.diana.api.Condition.OR;
 import static org.junit.Assert.*;
 
 
@@ -28,12 +35,19 @@ public class ConditionTest {
 
     @Test
     public void shouldReturnNameField() {
-        assertEquals("__AND__", Condition.AND);
-        assertEquals("__EQUALS__", Condition.EQUALS);
-        assertEquals("__GREATER_EQUALS_THAN__", Condition.GREATER_EQUALS_THAN);
-        assertEquals("__IN__", Condition.IN);
-        assertEquals("__NOT__", Condition.NOT);
-        assertEquals("__OR__", Condition.OR);
-        assertEquals("__LESSAR_THAN__", Condition.LESSER_THAN);
+        assertEquals("_AND", AND.getNameField());
+        assertEquals("_EQUALS", EQUALS.getNameField());
+        assertEquals("_GREATER_EQUALS_THAN", GREATER_EQUALS_THAN.getNameField());
+        assertEquals("_IN", IN.getNameField());
+        assertEquals("_NOT", NOT.getNameField());
+        assertEquals("_OR", OR.getNameField());
+        assertEquals("_LESSER_THAN", LESSER_THAN.getNameField());
+    }
+
+    @Test
+    public void shouldParser() {
+        assertEquals(AND,Condition.parse("__AND__"));
+
+
     }
 }

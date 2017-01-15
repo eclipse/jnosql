@@ -30,16 +30,17 @@ public enum Condition {
 
     /**
      * Return tne field as name to both document and column.
-     * The goal is the field gonna be a reserved word
-     *
+     * The goal is the field gonna be a reserved word.
+     * The foruma is: underscore plus the {@link Enum#name()}
+     *So, the {@link Condition#EQUALS#getNameField()} will return "_EQUALS"
      * @return
      */
     public String getNameField() {
-        return "__" + this.name() + "__";
+        return '_' + this.name();
     }
 
     /**
-     * Retrieve the condition from {@link Condition#getNameField()}
+     * Retrieve the condition from {@link Condition#getNameField()} on case sentive
      *
      * @param condition the condition converted to field
      * @return the condition instance
