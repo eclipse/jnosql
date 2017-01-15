@@ -22,6 +22,9 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Condition;
 
+import java.util.Objects;
+
+import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.EQUALS;
 import static org.jnosql.diana.api.Condition.GREATER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.GREATER_THAN;
@@ -29,6 +32,7 @@ import static org.jnosql.diana.api.Condition.IN;
 import static org.jnosql.diana.api.Condition.LESSER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.LESSER_THAN;
 import static org.jnosql.diana.api.Condition.LIKE;
+import static org.jnosql.diana.api.Condition.OR;
 
 /**
  * An unit condition  to run a column family query
@@ -162,6 +166,46 @@ public interface ColumnCondition {
      */
     static ColumnCondition like(Column column) throws NullPointerException {
         return DefaultColumnCondition.of(column, LIKE);
+    }
+
+    /**
+     * Returns a new {@link ColumnCondition} aggregating ,as ¨AND", all the conditions as just one condition.
+     * The {@link Column} will storage the {@link Condition#getNameField()} as key and the value gonna be
+     * the {@link java.util.List} of all conditions, in other words.
+     * Given:
+     * <pre>Column age = Column.of("age", 26);</pre>
+     * </pre>Column name = Column.of("name", "otavio");</pre>
+     * </pre>ColumnCondition condition = ColumnCondition.eq(name).and(ColumnCondition.gte(age));</pre>
+     * The {@link ColumnCondition#getColumn()} will have "_AND" as key and the list of condition as value.
+     *
+     * @param conditions
+     * @return
+     * @throws NullPointerException
+     */
+    static ColumnCondition and(ColumnCondition... conditions) throws NullPointerException {
+        Objects.requireNonNull(conditions, "condition is required");
+        Column column = Column.of(AND.getNameField(), conditions);
+        return DefaultColumnCondition.of(column, AND);
+    }
+
+    /**
+     * Returns a new {@link ColumnCondition} aggregating ,as ¨OR", all the conditions as just one condition.
+     * The {@link Column} will storage the {@link Condition#getNameField()} as key and the value gonna be
+     * the {@link java.util.List} of all conditions, in other words.
+     * Given:
+     * <pre>Column age = Column.of("age", 26);</pre>
+     * </pre>Column name = Column.of("name", "otavio");</pre>
+     * </pre>ColumnCondition condition = ColumnCondition.eq(name).or(ColumnCondition.gte(age));</pre>
+     * The {@link ColumnCondition#getColumn()} will have "_OR" as key and the list of condition as value.
+     *
+     * @param conditions
+     * @return
+     * @throws NullPointerException
+     */
+    static ColumnCondition or(ColumnCondition... conditions) throws NullPointerException {
+        Objects.requireNonNull(conditions, "condition is required");
+        Column column = Column.of(OR.getNameField(), conditions);
+        return DefaultColumnCondition.of(column, OR);
     }
 
 }
