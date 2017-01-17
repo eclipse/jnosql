@@ -169,10 +169,14 @@ public interface DocumentCondition {
      * Returns a new {@link DocumentCondition} aggregating ,as ¨AND", all the conditions as just one condition.
      * The {@link Document} will storage the {@link Condition#getNameField()} as key and the value gonna be
      * the {@link java.util.List} of all conditions, in other words.
-     * Given:
-     * <pre>Document age = Document.of("age", 26);</pre>
-     * </pre>Document name = Document.of("name", "otavio");</pre>
-     * </pre>DocumentCondition condition = DocumentCondition.eq(name).and(DocumentCondition.gte(age));</pre>
+     * <p>Given:</p>
+     * <pre>
+     * {@code
+     * Document age = Document.of("age", 26);
+     * Document name = Document.of("name", "otavio");
+     * DocumentCondition condition = DocumentCondition.eq(name).and(DocumentCondition.gte(age));
+     * }
+     * </pre>
      * The {@link DocumentCondition#getDocument()} will have "_AND" as key and the list of condition as value.
      *
      * @param conditions the conditions to be aggregated
@@ -187,10 +191,14 @@ public interface DocumentCondition {
      * Returns a new {@link DocumentCondition} aggregating ,as ¨OR", all the conditions as just one condition.
      * The {@link Document} will storage the {@link Condition#getNameField()} as key and the value gonna be
      * the {@link java.util.List} of all conditions, in other words.
-     * Given:
-     * <pre>Document age = Document.of("age", 26);</pre>
-     * </pre>Document name = Document.of("name", "otavio");</pre>
-     * </pre>ColumnCondition condition = DocumentCondition.eq(name).or(DocumentCondition.gte(age));</pre>
+     * <p>Given:</p>
+     * <pre>
+     * {@code
+     * Document age = Document.of("age", 26);
+     * Document name = Document.of("name", "otavio");
+     * ColumnCondition condition = DocumentCondition.eq(name).or(DocumentCondition.gte(age));
+     * }
+     * </pre>
      * The {@link DocumentCondition#getDocument()} will have "_OR" as key and the list of condition as value.
      *
      * @param conditions the conditions to be aggregated

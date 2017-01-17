@@ -168,10 +168,12 @@ public interface ColumnCondition {
      * Returns a new {@link ColumnCondition} aggregating ,as ¨AND", all the conditions as just one condition.
      * The {@link Column} will storage the {@link Condition#getNameField()} as key and the value gonna be
      * the {@link java.util.List} of all conditions, in other words.
-     * Given:
-     * <pre>Column age = Column.of("age", 26);</pre>
-     * </pre>Column name = Column.of("name", "otavio");</pre>
-     * </pre>ColumnCondition condition = ColumnCondition.eq(name).and(ColumnCondition.gte(age));</pre>
+     * <p>Given:</p>
+     * {@code
+     * Column age = Column.of("age", 26);
+     * Column name = Column.of("name", "otavio");
+     * ColumnCondition condition = ColumnCondition.eq(name).and(ColumnCondition.gte(age));
+     * }
      * The {@link ColumnCondition#getColumn()} will have "_AND" as key and the list of condition as value.
      *
      * @param conditions the conditions to be aggregated
@@ -186,10 +188,12 @@ public interface ColumnCondition {
      * Returns a new {@link ColumnCondition} aggregating ,as ¨OR", all the conditions as just one condition.
      * The {@link Column} will storage the {@link Condition#getNameField()} as key and the value gonna be
      * the {@link java.util.List} of all conditions, in other words.
-     * Given:
-     * <pre>Column age = Column.of("age", 26);</pre>
-     * </pre>Column name = Column.of("name", "otavio");</pre>
-     * </pre>ColumnCondition condition = ColumnCondition.eq(name).or(ColumnCondition.gte(age));</pre>
+     * <p>Given:</p>
+     * {@code
+     * Column age = Column.of("age", 26);
+     * Column name = Column.of("name", "otavio");
+     * ColumnCondition condition = ColumnCondition.eq(name).or(ColumnCondition.gte(age));
+     * }
      * The {@link ColumnCondition#getColumn()} will have "_OR" as key and the list of condition as value.
      *
      * @param conditions the conditions to be aggregated

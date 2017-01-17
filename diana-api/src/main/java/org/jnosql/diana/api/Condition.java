@@ -32,7 +32,7 @@ public enum Condition {
      * Return tne field as name to both document and column.
      * The goal is the field gonna be a reserved word.
      * The foruma is: underscore plus the {@link Enum#name()}
-     * So, the {@link Condition#EQUALS#getNameField()}  will return "_EQUALS"
+     * So, call this method on {@link Condition#EQUALS}  will return "_EQUALS"
      *
      * @return the keyword to condition
      */
