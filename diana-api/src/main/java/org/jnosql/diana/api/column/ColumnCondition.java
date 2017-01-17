@@ -32,6 +32,7 @@ import static org.jnosql.diana.api.Condition.LIKE;
 
 /**
  * An unit condition  to run a column family query
+ *
  * @see ColumnFamilyManager#find(ColumnQuery)
  */
 public interface ColumnCondition {
@@ -50,6 +51,32 @@ public interface ColumnCondition {
      * @see Condition
      */
     Condition getCondition();
+
+    /**
+     * Creates a new {@link ColumnCondition} using the {@link Condition#AND}
+     *
+     * @param condition the condition to be agregated
+     * @return the conditions joined as AND
+     * @throws NullPointerException when the condition is null
+     */
+    ColumnCondition and(ColumnCondition condition) throws NullPointerException;
+
+    /**
+     * Creates a new {@link ColumnCondition} negating the current one
+     *
+     * @return the negated condition
+     * @see Condition#NOT
+     */
+    ColumnCondition negate();
+
+    /**
+     * Creates a new {@link ColumnCondition} using the {@link Condition#OR}
+     *
+     * @param condition the condition to be agregated
+     * @return the conditions joined as AND
+     * @throws NullPointerException when the condition is null
+     */
+    ColumnCondition or(ColumnCondition condition) throws NullPointerException;
 
     /**
      * Creates a {@link ColumnCondition} that has a {@link Condition#EQUALS}, it means a query will scanning to a
@@ -135,6 +162,46 @@ public interface ColumnCondition {
      */
     static ColumnCondition like(Column column) throws NullPointerException {
         return DefaultColumnCondition.of(column, LIKE);
+    }
+
+    /**
+     * Returns a new {@link ColumnCondition} aggregating ,as ¨AND", all the conditions as just one condition.
+     * The {@link Column} will storage the {@link Condition#getNameField()} as key and the value gonna be
+     * the {@link java.util.List} of all conditions, in other words.
+     * <p>Given:</p>
+     * {@code
+     * Column age = Column.of("age", 26);
+     * Column name = Column.of("name", "otavio");
+     * ColumnCondition condition = ColumnCondition.eq(name).and(ColumnCondition.gte(age));
+     * }
+     * The {@link ColumnCondition#getColumn()} will have "_AND" as key and the list of condition as value.
+     *
+     * @param conditions the conditions to be aggregated
+     * @return the new {@link ColumnCondition} instance
+     * @throws NullPointerException when the conditions is null
+     */
+    static ColumnCondition and(ColumnCondition... conditions) throws NullPointerException {
+        return DefaultColumnCondition.and(conditions);
+    }
+
+    /**
+     * Returns a new {@link ColumnCondition} aggregating ,as ¨OR", all the conditions as just one condition.
+     * The {@link Column} will storage the {@link Condition#getNameField()} as key and the value gonna be
+     * the {@link java.util.List} of all conditions, in other words.
+     * <p>Given:</p>
+     * {@code
+     * Column age = Column.of("age", 26);
+     * Column name = Column.of("name", "otavio");
+     * ColumnCondition condition = ColumnCondition.eq(name).or(ColumnCondition.gte(age));
+     * }
+     * The {@link ColumnCondition#getColumn()} will have "_OR" as key and the list of condition as value.
+     *
+     * @param conditions the conditions to be aggregated
+     * @return the new {@link ColumnCondition} instance
+     * @throws NullPointerException when the condition is null
+     */
+    static ColumnCondition or(ColumnCondition... conditions) throws NullPointerException {
+        return DefaultColumnCondition.or(conditions);
     }
 
 }

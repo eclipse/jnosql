@@ -53,6 +53,32 @@ public interface DocumentCondition {
     Condition getCondition();
 
     /**
+     * Creates a new {@link DocumentCondition} using the {@link Condition#AND}
+     *
+     * @param condition the condition to be agregated
+     * @return the conditions joined as AND
+     * @throws NullPointerException when the condition is null
+     */
+    DocumentCondition and(DocumentCondition condition) throws NullPointerException;
+
+    /**
+     * Creates a new {@link DocumentCondition} negating the current one
+     *
+     * @return the negated condition
+     * @see Condition#NOT
+     */
+    DocumentCondition negate();
+
+    /**
+     * Creates a new {@link DocumentCondition} using the {@link Condition#OR}
+     *
+     * @param condition the condition to be agregated
+     * @return the conditions joined as AND
+     * @throws NullPointerException when the condition is null
+     */
+    DocumentCondition or(DocumentCondition condition) throws NullPointerException;
+
+    /**
      * Creates a {@link DocumentCondition} that has a {@link Condition#EQUALS}, it means a query will scanning to a
      * document collection that has the same name and equals value informed in this document.
      *
@@ -137,6 +163,50 @@ public interface DocumentCondition {
      */
     static DocumentCondition like(Document document) throws NullPointerException {
         return DefaultDocumentCondition.of(document, LIKE);
+    }
+
+    /**
+     * Returns a new {@link DocumentCondition} aggregating ,as ¨AND", all the conditions as just one condition.
+     * The {@link Document} will storage the {@link Condition#getNameField()} as key and the value gonna be
+     * the {@link java.util.List} of all conditions, in other words.
+     * <p>Given:</p>
+     * <pre>
+     * {@code
+     * Document age = Document.of("age", 26);
+     * Document name = Document.of("name", "otavio");
+     * DocumentCondition condition = DocumentCondition.eq(name).and(DocumentCondition.gte(age));
+     * }
+     * </pre>
+     * The {@link DocumentCondition#getDocument()} will have "_AND" as key and the list of condition as value.
+     *
+     * @param conditions the conditions to be aggregated
+     * @return the new {@link DocumentCondition} instance
+     * @throws NullPointerException when the conditions is null
+     */
+    static DocumentCondition and(DocumentCondition... conditions) throws NullPointerException {
+        return DefaultDocumentCondition.and(conditions);
+    }
+
+    /**
+     * Returns a new {@link DocumentCondition} aggregating ,as ¨OR", all the conditions as just one condition.
+     * The {@link Document} will storage the {@link Condition#getNameField()} as key and the value gonna be
+     * the {@link java.util.List} of all conditions, in other words.
+     * <p>Given:</p>
+     * <pre>
+     * {@code
+     * Document age = Document.of("age", 26);
+     * Document name = Document.of("name", "otavio");
+     * ColumnCondition condition = DocumentCondition.eq(name).or(DocumentCondition.gte(age));
+     * }
+     * </pre>
+     * The {@link DocumentCondition#getDocument()} will have "_OR" as key and the list of condition as value.
+     *
+     * @param conditions the conditions to be aggregated
+     * @return the new {@link DocumentCondition} instance
+     * @throws NullPointerException when the condition is null
+     */
+    static DocumentCondition or(DocumentCondition... conditions) throws NullPointerException {
+        return DefaultDocumentCondition.or(conditions);
     }
 
 }
