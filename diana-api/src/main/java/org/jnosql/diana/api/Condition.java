@@ -32,8 +32,9 @@ public enum Condition {
      * Return tne field as name to both document and column.
      * The goal is the field gonna be a reserved word.
      * The foruma is: underscore plus the {@link Enum#name()}
-     *So, the {@link Condition#EQUALS#getNameField()} will return "_EQUALS"
-     * @return
+     * So, the {@link Condition#EQUALS#getNameField()} will return "_EQUALS"
+     *
+     * @return the keyword to condition
      */
     public String getNameField() {
         return '_' + this.name();
@@ -52,6 +53,7 @@ public enum Condition {
         return Arrays.stream(Condition.values())
                 .filter(c -> c.getNameField()
                         .equals(condition)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("The condition $s is not found", condition)));
+                .orElseThrow(() ->
+                        new IllegalArgumentException(String.format("The condition $s is not found", condition)));
     }
-    }
+}
