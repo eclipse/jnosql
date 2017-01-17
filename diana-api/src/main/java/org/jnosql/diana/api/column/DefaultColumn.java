@@ -56,7 +56,7 @@ final class DefaultColumn implements Column {
     }
 
     @Override
-    public Object getValueAsObject() {
+    public Object get() {
         return value.get();
     }
 

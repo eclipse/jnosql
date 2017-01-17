@@ -92,5 +92,5 @@ public interface Document extends Serializable {
      * Alias to {@link org.jnosql.diana.api.Value#get()}
      * @return
      */
-    Object getValueAsObject();
+    Object get();
 }

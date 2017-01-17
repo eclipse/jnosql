@@ -61,7 +61,7 @@ final class DefaultDocument implements Document {
     }
 
     @Override
-    public Object getValueAsObject() {
+    public Object get() {
         return value.get();
     }
 
