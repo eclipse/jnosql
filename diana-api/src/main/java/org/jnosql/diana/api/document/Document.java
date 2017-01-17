@@ -20,6 +20,7 @@
 package org.jnosql.diana.api.document;
 
 
+import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
 
 import java.io.Serializable;
@@ -66,4 +67,30 @@ public interface Document extends Serializable {
      * @return {@link Value}
      */
     Value getValue();
+
+    /**
+     * Alias to {@link org.jnosql.diana.api.Value#get(Class)}
+     * @param clazz
+     * @param <T>
+     * @return
+     * @throws NullPointerException
+     * @throws UnsupportedOperationException
+     */
+    <T> T get(Class<T> clazz) throws NullPointerException, UnsupportedOperationException;
+
+    /**
+     * Alias to {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @param typeSupplier
+     * @param <T>
+     * @return
+     * @throws NullPointerException
+     * @throws UnsupportedOperationException
+     */
+    <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException;
+
+    /**
+     * Alias to {@link org.jnosql.diana.api.Value#get()}
+     * @return
+     */
+    Object getValueAsObject();
 }

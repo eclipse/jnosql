@@ -20,6 +20,7 @@
 package org.jnosql.diana.api.document;
 
 
+import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
 
 import java.util.Objects;
@@ -47,6 +48,21 @@ final class DefaultDocument implements Document {
     @Override
     public Value getValue() {
         return value;
+    }
+
+    @Override
+    public <T> T get(Class<T> clazz) throws NullPointerException, UnsupportedOperationException {
+        return value.get(clazz);
+    }
+
+    @Override
+    public <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException {
+        return value.get(typeSupplier);
+    }
+
+    @Override
+    public Object getValueAsObject() {
+        return value.get();
     }
 
     @Override
