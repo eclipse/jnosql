@@ -38,7 +38,7 @@ public class DocumentQuery {
 
     private final String collection;
 
-    private final List<DocumentCondition> conditions = new ArrayList<>();
+    private DocumentCondition condition;
 
     private final List<Sort> sorts = new ArrayList<>();
 
@@ -67,8 +67,8 @@ public class DocumentQuery {
      * @return the same instance with a condition added
      * @throws NullPointerException when condition is null
      */
-    public DocumentQuery addCondition(DocumentCondition condition) {
-        this.conditions.add(Objects.requireNonNull(condition, "condition is required"));
+    public DocumentQuery condition(DocumentCondition condition) {
+        this.condition = Objects.requireNonNull(condition, "condition is required");
         return this;
     }
 
@@ -110,8 +110,8 @@ public class DocumentQuery {
      *
      * @return the conditions
      */
-    public List<DocumentCondition> getConditions() {
-        return Collections.unmodifiableList(conditions);
+    public DocumentCondition getCondition() {
+        return condition;
     }
 
     /**
@@ -155,20 +155,20 @@ public class DocumentQuery {
         }
         DocumentQuery that = (DocumentQuery) o;
         return Objects.equals(collection, that.collection) &&
-                Objects.equals(conditions, that.conditions) &&
+                Objects.equals(condition, that.condition) &&
                 Objects.equals(sorts, that.sorts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(collection, conditions, sorts);
+        return Objects.hash(collection, condition, sorts);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("DocumentQuery{");
         sb.append("collection='").append(collection).append('\'');
-        sb.append(", conditions=").append(conditions);
+        sb.append(", condition=").append(condition);
         sb.append(", sorts=").append(sorts);
         sb.append('}');
         return sb.toString();

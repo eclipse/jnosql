@@ -38,7 +38,7 @@ public class ColumnQuery {
 
     private final String columnFamily;
 
-    private final List<ColumnCondition> conditions = new ArrayList<>();
+    private ColumnCondition condition;
 
     private final List<Sort> sorts = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class ColumnQuery {
      * @throws NullPointerException when condition is null
      */
     public ColumnQuery addCondition(ColumnCondition condition) throws NullPointerException {
-        this.conditions.add(Objects.requireNonNull(condition, "condition is required"));
+        this.condition = Objects.requireNonNull(condition, "condition is required");
         return this;
     }
 
@@ -109,8 +109,8 @@ public class ColumnQuery {
      *
      * @return the conditions
      */
-    public List<ColumnCondition> getConditions() {
-        return Collections.unmodifiableList(conditions);
+    public ColumnCondition getCondition() {
+        return condition;
     }
 
     public List<String> getColumns() {
@@ -154,20 +154,20 @@ public class ColumnQuery {
         }
         ColumnQuery that = (ColumnQuery) o;
         return Objects.equals(columnFamily, that.columnFamily) &&
-                Objects.equals(conditions, that.conditions) &&
+                Objects.equals(condition, that.condition) &&
                 Objects.equals(sorts, that.sorts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(columnFamily, conditions, sorts);
+        return Objects.hash(columnFamily, condition, sorts);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ColumnQuery{");
         sb.append("columnFamily='").append(columnFamily).append('\'');
-        sb.append(", conditions=").append(conditions);
+        sb.append(", condition=").append(condition);
         sb.append(", sorts=").append(sorts);
         sb.append('}');
         return sb.toString();
