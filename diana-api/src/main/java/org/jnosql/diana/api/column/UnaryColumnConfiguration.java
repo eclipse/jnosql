@@ -16,29 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.jnosql.diana.api.column;
 
+
 /**
- * The diana configuration to create a {@link ColumnFamilyManagerFactory}
- *
- * @param <SYNC> the ColumnFamilyManagerFactory type
+ * @param <T> when the configuration implements both {@link ColumnFamilyManagerFactory}
+ *            and {@link ColumnFamilyManagerAsyncFactory}
+ * @see ColumnConfiguration
  */
-public interface ColumnConfiguration<SYNC extends ColumnFamilyManagerFactory, ASYNC extends ColumnFamilyManagerAsyncFactory> {
-
-    /**
-     * Reads configuration either from default configuration or a file defined by NoSQL
-     * provider and then creates a {@link ColumnFamilyManagerFactory} instance.
-     *
-     * @return a {@link ColumnFamilyManagerFactory}
-     */
-    SYNC get();
-
-    /**
-     * Reads configuration either from default configuration or a file defined by NoSQL
-     * provider and then creates a {@link ColumnFamilyManagerAsyncFactory} instance.
-     *
-     * @return a {@link ColumnFamilyManagerAsyncFactory}
-     */
-    ASYNC getAsync();
+public interface UnaryColumnConfiguration<T extends ColumnFamilyManagerFactory & ColumnFamilyManagerAsyncFactory>
+        extends ColumnConfiguration<T, T> {
 }
