@@ -74,7 +74,7 @@ public interface Column extends Serializable {
      * Alias to {@link org.jnosql.diana.api.Value#get(Class)}
      * @param clazz
      * @param <T>
-     * @return
+     * @return {@link org.jnosql.diana.api.Value#get(Class)}
      * @throws NullPointerException
      * @throws UnsupportedOperationException
      */
@@ -84,7 +84,7 @@ public interface Column extends Serializable {
      * Alias to {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @param typeSupplier
      * @param <T>
-     * @return
+     * @return {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @throws NullPointerException
      * @throws UnsupportedOperationException
      */
@@ -92,7 +92,7 @@ public interface Column extends Serializable {
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get()}
-     * @return
+     * @return {@link org.jnosql.diana.api.Value#get()}
      */
     Object get();
 }

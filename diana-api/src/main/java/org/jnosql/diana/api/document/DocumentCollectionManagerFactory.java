@@ -38,7 +38,7 @@ public interface DocumentCollectionManagerFactory<SYNC extends DocumentCollectio
      * @throws UnsupportedOperationException when this operation is not supported
      *                                       throws {@link NullPointerException} when the database is null
      */
-    SYNC getDocumentEntityManager(String database) throws UnsupportedOperationException, NullPointerException;
+    SYNC get(String database) throws UnsupportedOperationException, NullPointerException;
 
     /**
      * Creates a {@link DocumentCollectionManagerAsync} from database's name
@@ -48,7 +48,7 @@ public interface DocumentCollectionManagerFactory<SYNC extends DocumentCollectio
      * @throws UnsupportedOperationException when this operation is not supported
      *                                       throws {@link NullPointerException} when the database is null
      */
-    ASYNC getDocumentEntityManagerAsync(String database) throws UnsupportedOperationException, NullPointerException;
+    ASYNC getAsync(String database) throws UnsupportedOperationException, NullPointerException;
 
     /**
      * closes a resource

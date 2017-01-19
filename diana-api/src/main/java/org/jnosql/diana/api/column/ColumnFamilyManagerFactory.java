@@ -37,7 +37,7 @@ public interface ColumnFamilyManagerFactory<SYNC extends ColumnFamilyManager, AS
      * @throws UnsupportedOperationException when this operation is not supported
      *                                       throws {@link NullPointerException} when the database is null
      */
-    SYNC getColumnEntityManager(String database) throws UnsupportedOperationException, NullPointerException;
+    SYNC get(String database) throws UnsupportedOperationException, NullPointerException;
 
     /**
      * Creates a {@link ColumnFamilyManagerAsync} from database's name
@@ -47,7 +47,7 @@ public interface ColumnFamilyManagerFactory<SYNC extends ColumnFamilyManager, AS
      * @throws UnsupportedOperationException when this operation is not supported
      *                                       throws {@link NullPointerException} when the database is null
      */
-    ASYNC getColumnEntityMangerAsync(String database) throws UnsupportedOperationException, NullPointerException;
+    ASYNC getAsync(String database) throws UnsupportedOperationException, NullPointerException;
 
     /**
      * closes a resource
