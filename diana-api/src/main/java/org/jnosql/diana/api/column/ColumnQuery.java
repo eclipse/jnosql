@@ -61,14 +61,37 @@ public class ColumnQuery {
     }
 
     /**
-     * Add a new condition in the query
+     * Appends a new condition in the query using {@link ColumnCondition#and(ColumnCondition)}
      *
      * @param condition a condition to be added
      * @return the same instance with a condition added
      * @throws NullPointerException when condition is null
      */
-    public ColumnQuery addCondition(ColumnCondition condition) throws NullPointerException {
-        this.condition = Objects.requireNonNull(condition, "condition is required");
+    public ColumnQuery and(ColumnCondition condition) throws NullPointerException {
+        Objects.requireNonNull(condition, "condition is required");
+        if (Objects.isNull(this.condition)) {
+            this.condition = condition;
+        } else {
+            this.condition = this.condition.and(condition);
+        }
+        return this;
+    }
+
+
+    /**
+     * Appends a new condition in the query using {@link ColumnCondition#or(ColumnCondition)}
+     *
+     * @param condition a condition to be added
+     * @return the same instance with a condition added
+     * @throws NullPointerException when condition is null
+     */
+    public ColumnQuery or(ColumnCondition condition) throws NullPointerException {
+        Objects.requireNonNull(condition, "condition is required");
+        if (Objects.isNull(this.condition)) {
+            this.condition = condition;
+        } else {
+            this.condition = this.condition.and(condition);
+        }
         return this;
     }
 

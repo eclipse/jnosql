@@ -61,13 +61,33 @@ public class DocumentQuery {
     }
 
     /**
-     * Add a new condition in the query
+     * Appends a new condition in the query
+     * using {{@link DocumentCondition#and(DocumentCondition)}}
      *
      * @param condition condition to be added
      * @return the same instance with a condition added
      * @throws NullPointerException when condition is null
      */
-    public DocumentQuery condition(DocumentCondition condition) {
+    public DocumentQuery and(DocumentCondition condition) throws NullPointerException {
+        Objects.requireNonNull(condition, "condition is required");
+        if (Objects.isNull(this.condition)) {
+            this.condition = condition;
+        } else {
+            this.condition = this.condition.and(condition);
+        }
+
+        return this;
+    }
+
+    /**
+     * Appends a new condition in the query
+     * using {{@link DocumentCondition#or(DocumentCondition)}}
+     *
+     * @param condition condition to be added
+     * @return the same instance with a condition added
+     * @throws NullPointerException when condition is null
+     */
+    public DocumentQuery or(DocumentCondition condition) throws NullPointerException {
         this.condition = Objects.requireNonNull(condition, "condition is required");
         return this;
     }
