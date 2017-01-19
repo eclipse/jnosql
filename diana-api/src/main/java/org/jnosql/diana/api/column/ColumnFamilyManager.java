@@ -20,14 +20,12 @@
 package org.jnosql.diana.api.column;
 
 
-import org.jnosql.diana.api.ExecuteAsyncQueryException;
 import org.jnosql.diana.api.NonUniqueResultException;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -56,37 +54,6 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @throws NullPointerException when either entity or ttl are null
      */
     ColumnEntity save(ColumnEntity entity, Duration ttl) throws NullPointerException;
-
-    /**
-     * Saves an entity asynchronously
-     *
-     * @param entity entity to be saved
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
-     */
-    void saveAsync(ColumnEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
-
-    /**
-     * Saves an entity asynchronously with time to live
-     *
-     * @param entity entity to be saved
-     * @param ttl    time to live
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
-     */
-    void saveAsync(ColumnEntity entity, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
-
-    /**
-     * Saves an entity asynchronously
-     *
-     * @param entity   entity to be saved
-     * @param callBack the callback, when the process is finished will call this instance returning the saved entity
-     *                 within parameters
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
-     */
-    void saveAsync(ColumnEntity entity, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
-            UnsupportedOperationException;
 
     /**
      * Saves a Column family entities, by default it's just run for each saving using
@@ -118,78 +85,6 @@ public interface ColumnFamilyManager extends AutoCloseable {
         return StreamSupport.stream(entities.spliterator(), false).map(c -> this.save(c, ttl)).collect(Collectors.toList());
     }
 
-    /**
-     * Saves an entities asynchronously, by default it's just run for each saving using
-     * {@link ColumnFamilyManager#saveAsync(ColumnEntity)},
-     * each NoSQL vendor might replace to a more appropriate one.
-     *
-     * @param entities entity to be saved
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
-     */
-    default void saveAsync(Iterable<ColumnEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException {
-        Objects.requireNonNull(entities, "entities is required");
-        StreamSupport.stream(entities.spliterator(), false).forEach(this::save);
-    }
-
-    /**
-     * Saves an entities asynchronously with time to live, by default it's just run for each saving using
-     * {@link ColumnFamilyManager#saveAsync(ColumnEntity, Duration)},
-     * each NoSQL vendor might replace to a more appropriate one.
-     *
-     * @param entities entity to be saved
-     * @param ttl      time to live
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
-     */
-    default void saveAsync(Iterable<ColumnEntity> entities, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException {
-        Objects.requireNonNull(entities, "entities is required");
-        Objects.requireNonNull(ttl, "ttl is required");
-        StreamSupport.stream(entities.spliterator(), false).forEach(c -> this.save(c, ttl));
-    }
-
-
-    /**
-     * Saves an entity asynchronously
-     *
-     * @param entity   entity to be saved
-     * @param ttl      time to live
-     * @param callBack the callback, when the process is finished will call this instance returning the saved entity
-     *                 within parameters
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
-     */
-    void saveAsync(ColumnEntity entity, Duration ttl, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
-            UnsupportedOperationException;
-
-    /**
-     * Updates a Column family entity
-     *
-     * @param entity column family to be saved
-     * @return the entity updated
-     */
-    ColumnEntity update(ColumnEntity entity);
-
-    /**
-     * Updates an entity asynchronously
-     *
-     * @param entity entity to be saved
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to update asynchronous
-     */
-    void updateAsync(ColumnEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
-
-    /**
-     * Updates an entity asynchronously
-     *
-     * @param entity   entity to be saved
-     * @param callBack the callback, when the process is finished will call this instance returning
-     *                 the updated entity within parameters
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to update asynchronous
-     */
-    void updateAsync(ColumnEntity entity, Consumer<ColumnEntity> callBack) throws
-            ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
      * Deletes an entity
@@ -197,27 +92,6 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @param query query to delete an entity
      */
     void delete(ColumnQuery query);
-
-    /**
-     * Deletes an entity asynchronously
-     *
-     * @param query query to delete an entity
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to delete asynchronous
-     */
-    void deleteAsync(ColumnQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException;
-
-    /**
-     * Deletes an entity asynchronously
-     *
-     * @param query    query to delete an entity
-     * @param callBack the callback, when the process is finished will call this instance returning
-     *                 the null within parameters
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to delete asynchronous
-     */
-    void deleteAsync(ColumnQuery query, Consumer<Void> callBack) throws ExecuteAsyncQueryException,
-            UnsupportedOperationException;
 
     /**
      * Finds {@link ColumnEntity} from query
@@ -247,18 +121,6 @@ public interface ColumnFamilyManager extends AutoCloseable {
 
         throw new NonUniqueResultException("The query returns more than one entity, query: " + query);
     }
-
-    /**
-     * Finds {@link ColumnEntity} from query asynchronously
-     *
-     * @param query    query to find entities
-     * @param callBack the callback, when the process is finished will call this instance returning the
-     *                 result of query within parameters
-     * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
-     */
-    void findAsync(ColumnQuery query, Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException,
-            UnsupportedOperationException;
 
     /**
      * closes a resource

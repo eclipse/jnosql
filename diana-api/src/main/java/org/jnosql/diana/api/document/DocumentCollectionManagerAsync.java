@@ -1,0 +1,199 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package org.jnosql.diana.api.document;
+
+
+import org.jnosql.diana.api.ExecuteAsyncQueryException;
+import org.jnosql.diana.api.NonUniqueResultException;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.stream.StreamSupport;
+
+/**
+ * Interface used to interact with the persistence context to {@link DocumentEntity}
+ * The DocumentCollectionManager API is used to create and remove persistent {@link DocumentEntity} instances,
+ * to find entities by their primary key, and to query over entities. The main difference to {@link DocumentCollectionManager}
+ * is because all the operation works asynchronously.
+ */
+public interface DocumentCollectionManagerAsync extends AutoCloseable {
+
+
+    /**
+     * Saves an entity asynchronously
+     *
+     * @param entity entity to be saved
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    void save(DocumentEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+
+    /**
+     * Saves an entity asynchronously with time to live
+     *
+     * @param entity entity to be saved
+     * @param ttl    the time to live
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    void save(DocumentEntity entity, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+
+    /**
+     * Saves entities asynchronously, by default it's just run for each saving using
+     * {@link DocumentCollectionManagerAsync#save(DocumentEntity)},
+     * each NoSQL vendor might replace to a more appropriate one.
+     *
+     * @param entities entities to be saved
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    default void saveAsync(Iterable<DocumentEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+        Objects.requireNonNull(entities, "entities is required");
+        StreamSupport.stream(entities.spliterator(), false).forEach(this::save);
+    }
+
+    /**
+     * Saves entities asynchronously with time to live, by default it's just run for each saving using
+     * {@link DocumentCollectionManagerAsync#save(DocumentEntity, Duration)},
+     * each NoSQL vendor might replace to a more appropriate one.
+     *
+     * @param entities entities to be saved
+     * @param ttl      time to live
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    default void save(Iterable<DocumentEntity> entities, Duration ttl) {
+        Objects.requireNonNull(entities, "entities is required");
+        Objects.requireNonNull(ttl, "ttl is required");
+        StreamSupport.stream(entities.spliterator(), false).forEach(d -> save(d, ttl));
+    }
+
+    /**
+     * Saves an entity asynchronously
+     *
+     * @param entity   entity to be saved
+     * @param callBack the callback, when the process is finished will call this instance returning
+     *                 the saved entity within parameters
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    void save(DocumentEntity entity, Consumer<DocumentEntity> callBack) throws
+            ExecuteAsyncQueryException, UnsupportedOperationException;
+
+    /**
+     * Saves an entity asynchronously with time to live
+     *
+     * @param entity   entity to be saved
+     * @param ttl      time to live
+     * @param callBack the callback, when the process is finished will call this instance returning
+     *                 the saved entity within parameters
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    void save(DocumentEntity entity, Duration ttl, Consumer<DocumentEntity> callBack) throws
+            ExecuteAsyncQueryException, UnsupportedOperationException;
+
+
+    /**
+     * Updates an entity asynchronously
+     *
+     * @param entity entity to be updated
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    void update(DocumentEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+
+    /**
+     * Updates an entity asynchronously
+     *
+     * @param entity   entity to be updated
+     * @param callBack the callback, when the process is finished will call this instance returning
+     *                 the updated entity within parametersa
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    void update(DocumentEntity entity, Consumer<DocumentEntity> callBack) throws
+            ExecuteAsyncQueryException, UnsupportedOperationException;
+
+
+    /**
+     * Deletes an entity asynchronously
+     *
+     * @param query query to delete an entity
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    void delete(DocumentQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+
+    /**
+     * Deletes an entity asynchronously
+     *
+     * @param query    query to delete an entity
+     * @param callBack the callback, when the process is finished will call this instance returning
+     *                 the null within parameters
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to delete asynchronous
+     */
+    void delete(DocumentQuery query, Consumer<Void> callBack) throws ExecuteAsyncQueryException,
+            UnsupportedOperationException;
+
+    /**
+     * Finds {@link DocumentEntity} from query asynchronously
+     *
+     * @param query    query to find entities
+     * @param callBack the callback, when the process is finished will call this instance returning
+     *                 the result of query within parameters
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     */
+    void find(DocumentQuery query, Consumer<List<DocumentEntity>> callBack) throws
+            ExecuteAsyncQueryException, UnsupportedOperationException;
+
+    /**
+     * Returns a single entity from query
+     *
+     * @param query - query to figure out entities
+     * @throws NonUniqueResultException when the result has more than 1 entity
+     * @throws NullPointerException     when query is null
+     */
+    default void singleResult(DocumentQuery query, Consumer<Optional<DocumentEntity>> callBack) throws NonUniqueResultException, ExecuteAsyncQueryException, UnsupportedOperationException {
+
+        find(query, entities -> {
+            if (entities.isEmpty()) {
+                callBack.accept(Optional.empty());
+                return;
+            } else if (entities.size() == 1) {
+                callBack.accept(Optional.of(entities.get(0)));
+                return;
+            }
+            throw new NonUniqueResultException("The query returns more than one entity, query: " + query);
+        });
+
+    }
+
+    /**
+     * closes a resource
+     */
+    void close();
+
+}
