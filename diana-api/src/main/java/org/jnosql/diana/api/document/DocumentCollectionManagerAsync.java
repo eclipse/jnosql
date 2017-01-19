@@ -67,7 +67,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not have support to save asynchronous
      */
-    default void saveAsync(Iterable<DocumentEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException {
+    default void save(Iterable<DocumentEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException {
         Objects.requireNonNull(entities, "entities is required");
         StreamSupport.stream(entities.spliterator(), false).forEach(this::save);
     }
