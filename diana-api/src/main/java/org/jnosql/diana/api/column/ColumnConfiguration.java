@@ -24,7 +24,7 @@ package org.jnosql.diana.api.column;
  *
  * @param <SYNC> the ColumnFamilyManagerFactory type
  */
-public interface ColumnConfiguration<SYNC extends ColumnFamilyManagerFactory, ASYNC extends ColumnFamilyManagerAsyncFactory> {
+public interface ColumnConfiguration<SYNC extends ColumnFamilyManagerFactory> {
 
     /**
      * Reads configuration either from default configuration or a file defined by NoSQL
@@ -34,11 +34,4 @@ public interface ColumnConfiguration<SYNC extends ColumnFamilyManagerFactory, AS
      */
     SYNC get();
 
-    /**
-     * Reads configuration either from default configuration or a file defined by NoSQL
-     * provider and then creates a {@link ColumnFamilyManagerAsyncFactory} instance.
-     *
-     * @return a {@link ColumnFamilyManagerAsyncFactory}
-     */
-    ASYNC getAsync();
 }

@@ -25,5 +25,5 @@ package org.jnosql.diana.api.column;
  * @see ColumnConfiguration
  */
 public interface UnaryColumnConfiguration<T extends ColumnFamilyManagerFactory & ColumnFamilyManagerAsyncFactory>
-        extends ColumnConfiguration<T, T> {
+        extends ColumnConfiguration<T>, ColumnConfigurationAsync<T> {
 }

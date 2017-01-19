@@ -25,5 +25,5 @@ package org.jnosql.diana.api.document;
  * @see DocumentConfiguration
  */
 public interface UnaryDocumentConfiguration<T extends DocumentCollectionManagerFactory &
-        DocumentCollectionManagerAsyncFactory> extends DocumentConfiguration<T, T> {
+        DocumentCollectionManagerAsyncFactory> extends DocumentConfiguration<T>, DocumentConfigurationAsync<T> {
 }

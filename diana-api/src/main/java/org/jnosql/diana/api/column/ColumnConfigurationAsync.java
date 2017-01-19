@@ -16,27 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.jnosql.diana.api.column;
 
-package org.jnosql.diana.api.document;
 
 /**
- * The diana configuration to create a {@link DocumentCollectionManagerFactory}
- * and {@link DocumentCollectionManagerAsyncFactory}
+ * The diana configuration to create a {@link ColumnFamilyManagerAsyncFactory}
  *
- * @param <SYNC>  the type to DocumentCollectionManagerFactory
- * @param <ASYNC> the type {@link DocumentCollectionManagerAsyncFactory}
+ * @param <ASYNC> the ColumnFamilyManagerAsyncFactory type
  */
-public interface DocumentConfiguration<SYNC extends DocumentCollectionManagerFactory> {
-
+public interface ColumnConfigurationAsync<ASYNC extends ColumnFamilyManagerAsyncFactory> {
 
     /**
-     * Reads configuration either from default configuration or a file defined by NoSQL provider and then creates a
-     * {@link DocumentCollectionManagerFactory} instance.
+     * Reads configuration either from default configuration or a file defined by NoSQL
+     * provider and then creates a {@link ColumnFamilyManagerAsyncFactory} instance.
      *
-     * @return a {@link DocumentCollectionManagerFactory} instance
-     * @throws UnsupportedOperationException when the operation is not supported
+     * @return a {@link ColumnFamilyManagerAsyncFactory}
      */
-    SYNC get() throws UnsupportedOperationException;
-
+    ASYNC getAsync();
 
 }
