@@ -25,9 +25,8 @@ package org.jnosql.diana.api.column;
  * the application should close the column family manager factory.
  *
  * @param <SYNC>  the {@link ColumnFamilyManager} type
- * @param <ASYNC> the {@link ColumnFamilyManagerAsync} type
  */
-public interface ColumnFamilyManagerFactory<SYNC extends ColumnFamilyManager, ASYNC extends ColumnFamilyManagerAsync> extends AutoCloseable {
+public interface ColumnFamilyManagerFactory<SYNC extends ColumnFamilyManager> extends AutoCloseable {
 
     /**
      * Creates a {@link ColumnFamilyManager} from database's name
@@ -38,16 +37,6 @@ public interface ColumnFamilyManagerFactory<SYNC extends ColumnFamilyManager, AS
      *                                       throws {@link NullPointerException} when the database is null
      */
     SYNC get(String database) throws UnsupportedOperationException, NullPointerException;
-
-    /**
-     * Creates a {@link ColumnFamilyManagerAsync} from database's name
-     *
-     * @param database a database name
-     * @return a new {@link ColumnFamilyManagerAsync} instance
-     * @throws UnsupportedOperationException when this operation is not supported
-     *                                       throws {@link NullPointerException} when the database is null
-     */
-    ASYNC getAsync(String database) throws UnsupportedOperationException, NullPointerException;
 
     /**
      * closes a resource

@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.jnosql.diana.api.document;
 
 
@@ -25,20 +24,19 @@ package org.jnosql.diana.api.document;
  * When the application has finished using the document collection manager factory, and/or at application shutdown,
  * the application should close the column family manager factory.
  *
- * @param <SYNC>  the {@link DocumentCollectionManager} type
+ * @param <ASYNC> {@link DocumentCollectionManagerAsync} type
  */
-public interface DocumentCollectionManagerFactory<SYNC extends DocumentCollectionManager> extends AutoCloseable {
+public interface DocumentCollectionManagerAsyncFactory<ASYNC extends DocumentCollectionManagerAsync> extends AutoCloseable {
 
     /**
-     * Creates a {@link DocumentCollectionManager} from database's name
+     * Creates a {@link DocumentCollectionManagerAsync} from database's name
      *
      * @param database a database name
-     * @return a new {@link DocumentCollectionManager} instance
+     * @return a new {@link DocumentCollectionManagerAsync} instance
      * @throws UnsupportedOperationException when this operation is not supported
      *                                       throws {@link NullPointerException} when the database is null
      */
-    SYNC get(String database) throws UnsupportedOperationException, NullPointerException;
-
+    ASYNC getAsync(String database) throws UnsupportedOperationException, NullPointerException;
 
     /**
      * closes a resource
