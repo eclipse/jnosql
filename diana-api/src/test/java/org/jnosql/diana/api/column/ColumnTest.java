@@ -21,7 +21,6 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
-import org.jnosql.diana.api.document.Document;
 import org.junit.Test;
 
 import java.util.List;
@@ -62,23 +61,23 @@ public class ColumnTest {
     @Test
     public void shouldReturnGetObject() {
         Value value = Value.of("text");
-        Document document = Document.of("name", value);
-        assertEquals(value.get(), document.get());
+        Column column = Column.of("name", value);
+        assertEquals(value.get(), column.get());
     }
 
     @Test
     public void shouldReturnGetClass() {
         Value value = Value.of("text");
-        Document document = Document.of("name", value);
-        assertEquals(value.get(String.class), document.get(String.class));
+        Column column = Column.of("name", value);
+        assertEquals(value.get(String.class), column.get(String.class));
     }
 
 
     @Test
     public void shouldReturnGetType() {
         Value value = Value.of("text");
-        Document document = Document.of("name", value);
+        Column column = Column.of("name", value);
         TypeReference<List<String>> typeReference = new TypeReference<List<String>>(){};
-        assertEquals(value.get(typeReference), document.get(typeReference));
+        assertEquals(value.get(typeReference), column.get(typeReference));
     }
 }
