@@ -21,7 +21,10 @@ package org.jnosql.diana.api.column;
 
 
 import org.jnosql.diana.api.Condition;
+import org.jnosql.diana.api.TypeReference;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static java.util.Arrays.asList;
@@ -72,19 +75,40 @@ class DefaultColumnCondition implements ColumnCondition {
     @Override
     public ColumnCondition and(ColumnCondition condition) throws NullPointerException {
         requireNonNull(condition, "Conditions is required");
+        if (AND.equals(this.condition)) {
+            Column column = getConditions(condition, AND);
+            return new DefaultColumnCondition(column, AND);
+        }
         return DefaultColumnCondition.and(this, condition);
     }
 
     @Override
     public ColumnCondition negate() {
-        Column column = Column.of(NOT.getNameField(), this);
-        return new DefaultColumnCondition(column, NOT);
+        if (NOT.equals(this.condition)) {
+            return this.column.get(ColumnCondition.class);
+        } else {
+            Column column = Column.of(NOT.getNameField(), this);
+            return new DefaultColumnCondition(column, NOT);
+        }
+
     }
 
     @Override
     public ColumnCondition or(ColumnCondition condition) {
         requireNonNull(condition, "Condition is required");
+        if (OR.equals(this.condition)) {
+            Column column = getConditions(condition, OR);
+            return new DefaultColumnCondition(column, OR);
+        }
         return DefaultColumnCondition.or(this, condition);
+    }
+
+    private Column getConditions(ColumnCondition columnCondition, Condition condition) {
+        List<ColumnCondition> conditions = new ArrayList<>();
+        conditions.addAll(column.get(new TypeReference<List<ColumnCondition>>() {
+        }));
+        conditions.add(columnCondition);
+        return Column.of(condition.getNameField(), conditions);
     }
 
     @Override

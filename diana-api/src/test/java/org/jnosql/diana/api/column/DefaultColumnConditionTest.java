@@ -35,6 +35,8 @@ import static org.junit.Assert.*;
 public class DefaultColumnConditionTest {
 
 
+    private final ColumnCondition lte = ColumnCondition.lte(Column.of("salary", 10.32));
+
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenColumnIsNull() {
         DefaultColumnCondition.of(null, AND);
@@ -103,5 +105,85 @@ public class DefaultColumnConditionTest {
     public void shouldReturnErrorWhenCreateOrWithNullValues() {
         DefaultColumnCondition.or((ColumnCondition[])null);
     }
+
+
+    @Test
+    public void shouldAppendAnd() {
+        ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
+        ColumnCondition gt = ColumnCondition.gt(Column.of("age", 10));
+        ColumnCondition and = ColumnCondition.and(eq, gt);
+        assertEquals(AND, and.getCondition());
+        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        });
+        assertThat(conditions, containsInAnyOrder(eq, gt));
+    }
+
+    @Test
+    public void shouldAppendOr() {
+        ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
+        ColumnCondition gt = ColumnCondition.gt(Column.of("age", 10));
+        ColumnCondition and = ColumnCondition.or(eq, gt);
+        assertEquals(OR, and.getCondition());
+        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        });
+        assertThat(conditions, containsInAnyOrder(eq, gt));
+    }
+
+    @Test
+    public void shouldAnd() {
+        ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
+        ColumnCondition gt = ColumnCondition.gt(Column.of("age", 10));
+        ColumnCondition lte = ColumnCondition.lte(Column.of("salary", 10_000.00));
+
+        ColumnCondition and = eq.and(gt);
+        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        });
+        assertEquals(AND, and.getCondition());
+        assertThat(conditions, containsInAnyOrder(eq, gt));
+        ColumnCondition result = and.and(lte);
+
+        assertEquals(AND, result.getCondition());
+        assertThat(result.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        }), containsInAnyOrder(eq, gt, lte));
+
+    }
+
+    @Test
+    public void shouldOr() {
+        ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
+        ColumnCondition gt = ColumnCondition.gt(Column.of("age", 10));
+        ColumnCondition lte = ColumnCondition.lte(Column.of("salary", 10_000.00));
+
+        ColumnCondition or = eq.or(gt);
+        List<ColumnCondition> conditions = or.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        });
+        assertEquals(OR, or.getCondition());
+        assertThat(conditions, containsInAnyOrder(eq, gt));
+        ColumnCondition result = or.or(lte);
+
+        assertEquals(OR, result.getCondition());
+        assertThat(result.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        }), containsInAnyOrder(eq, gt, lte));
+
+    }
+
+    @Test
+    public void shouldNegate() {
+        ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
+        ColumnCondition negate = eq.negate();
+        assertEquals(Condition.NOT, negate.getCondition());
+        ColumnCondition condition = negate.getColumn().get(ColumnCondition.class);
+        assertEquals(eq, condition);
+    }
+
+    @Test
+    public void shouldAfirmeDoubleNegate() {
+        ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
+        ColumnCondition afirmative = eq.negate().negate();
+        assertEquals(eq.getCondition(), afirmative.getCondition());
+
+    }
+
+
 
 }
