@@ -19,8 +19,12 @@
 package org.jnosql.diana.api.column;
 
 
+import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
+import org.jnosql.diana.api.document.Document;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -53,5 +57,28 @@ public class ColumnTest {
     @Test
     public void shouldBeEquals() {
         assertEquals(Column.of("name", DEFAULT_VALUE), Column.of("name", DEFAULT_VALUE));
+    }
+
+    @Test
+    public void shouldReturnGetObject() {
+        Value value = Value.of("text");
+        Document document = Document.of("name", value);
+        assertEquals(value.get(), document.get());
+    }
+
+    @Test
+    public void shouldReturnGetClass() {
+        Value value = Value.of("text");
+        Document document = Document.of("name", value);
+        assertEquals(value.get(String.class), document.get(String.class));
+    }
+
+
+    @Test
+    public void shouldReturnGetType() {
+        Value value = Value.of("text");
+        Document document = Document.of("name", value);
+        TypeReference<List<String>> typeReference = new TypeReference<List<String>>(){};
+        assertEquals(value.get(typeReference), document.get(typeReference));
     }
 }

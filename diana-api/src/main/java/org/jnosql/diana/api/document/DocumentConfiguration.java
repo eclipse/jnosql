@@ -24,7 +24,6 @@ package org.jnosql.diana.api.document;
  * and {@link DocumentCollectionManagerAsyncFactory}
  *
  * @param <SYNC>  the type to DocumentCollectionManagerFactory
- * @param <ASYNC> the type {@link DocumentCollectionManagerAsyncFactory}
  */
 public interface DocumentConfiguration<SYNC extends DocumentCollectionManagerFactory> {
 
