@@ -105,4 +105,83 @@ public class DefaultDocumentConditionTest {
         DefaultDocumentCondition.or((DocumentCondition[])null);
     }
 
+    //
+    @Test
+    public void shouldAppendAnd() {
+        DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
+        DocumentCondition gt = DocumentCondition.gt(Document.of("age", 10));
+        DocumentCondition and = DocumentCondition.and(eq, gt);
+        assertEquals(AND, and.getCondition());
+        List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<List<DocumentCondition>>() {
+        });
+        assertThat(conditions, containsInAnyOrder(eq, gt));
+    }
+
+    @Test
+    public void shouldAppendOr() {
+        DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
+        DocumentCondition gt = DocumentCondition.gt(Document.of("age", 10));
+        DocumentCondition and = DocumentCondition.or(eq, gt);
+        assertEquals(OR, and.getCondition());
+        List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<List<DocumentCondition>>() {
+        });
+        assertThat(conditions, containsInAnyOrder(eq, gt));
+    }
+
+    @Test
+    public void shouldAnd() {
+        DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
+        DocumentCondition gt = DocumentCondition.gt(Document.of("age", 10));
+        DocumentCondition lte = DocumentCondition.lte(Document.of("salary", 10_000.00));
+
+        DocumentCondition and = eq.and(gt);
+        List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<List<DocumentCondition>>() {
+        });
+        assertEquals(AND, and.getCondition());
+        assertThat(conditions, containsInAnyOrder(eq, gt));
+        DocumentCondition result = and.and(lte);
+
+        assertEquals(AND, result.getCondition());
+        assertThat(result.getDocument().get(new TypeReference<List<DocumentCondition>>() {
+        }), containsInAnyOrder(eq, gt, lte));
+
+    }
+
+    @Test
+    public void shouldOr() {
+        DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
+        DocumentCondition gt = DocumentCondition.gt(Document.of("age", 10));
+        DocumentCondition lte = DocumentCondition.lte(Document.of("salary", 10_000.00));
+
+        DocumentCondition or = eq.or(gt);
+        List<DocumentCondition> conditions = or.getDocument().get(new TypeReference<List<DocumentCondition>>() {
+        });
+        assertEquals(OR, or.getCondition());
+        assertThat(conditions, containsInAnyOrder(eq, gt));
+        DocumentCondition result = or.or(lte);
+
+        assertEquals(OR, result.getCondition());
+        assertThat(result.getDocument().get(new TypeReference<List<DocumentCondition>>() {
+        }), containsInAnyOrder(eq, gt, lte));
+
+    }
+
+    @Test
+    public void shouldNegate() {
+        DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
+        DocumentCondition negate = eq.negate();
+        assertEquals(Condition.NOT, negate.getCondition());
+        DocumentCondition condition = negate.getDocument().get(DocumentCondition.class);
+        assertEquals(eq, condition);
+    }
+
+    @Test
+    public void shouldAfirmeDoubleNegate() {
+        DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
+        DocumentCondition afirmative = eq.negate().negate();
+        assertEquals(eq.getCondition(), afirmative.getCondition());
+
+    }
+
+
 }

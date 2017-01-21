@@ -21,7 +21,10 @@ package org.jnosql.diana.api.document;
 
 
 import org.jnosql.diana.api.Condition;
+import org.jnosql.diana.api.TypeReference;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static java.util.Arrays.asList;
@@ -72,21 +75,40 @@ class DefaultDocumentCondition implements DocumentCondition {
     @Override
     public DocumentCondition and(DocumentCondition condition) throws NullPointerException {
         requireNonNull(condition, "Conditions is required");
+        if (AND.equals(this.condition)) {
+            Document column = getConditions(condition, AND);
+            return new DefaultDocumentCondition(column, AND);
+        }
         return DefaultDocumentCondition.and(this, condition);
     }
 
     @Override
     public DocumentCondition negate() {
-        Document document = Document.of(NOT.getNameField(), this);
-        return new DefaultDocumentCondition(document, NOT);
+        if (NOT.equals(this.condition)) {
+            return this.document.get(DocumentCondition.class);
+        } else {
+            Document document = Document.of(NOT.getNameField(), this);
+            return new DefaultDocumentCondition(document, NOT);
+        }
     }
 
     @Override
     public DocumentCondition or(DocumentCondition condition) {
         requireNonNull(condition, "Condition is required");
+        if (OR.equals(this.condition)) {
+            Document document = getConditions(condition, OR);
+            return new DefaultDocumentCondition(document, OR);
+        }
         return DefaultDocumentCondition.or(this, condition);
     }
 
+    private Document getConditions(DocumentCondition columnCondition, Condition condition) {
+        List<DocumentCondition> conditions = new ArrayList<>();
+        conditions.addAll(document.get(new TypeReference<List<DocumentCondition>>() {
+        }));
+        conditions.add(columnCondition);
+        return Document.of(condition.getNameField(), conditions);
+    }
 
     @Override
     public boolean equals(Object o) {
