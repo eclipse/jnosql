@@ -33,26 +33,30 @@ import java.util.stream.Collectors;
  */
 public final class Columns {
 
-    private Columns() { }
+    private Columns() {
+    }
 
     /**
      * Creates a column instance
-     * @param name column's name
+     *
+     * @param name  column's name
      * @param value column's value
      * @return a column's instance
+     * @throws NullPointerException when either name or value are null
      */
-    public static Column of(String name, Object value) {
+    public static Column of(String name, Object value) throws NullPointerException {
         return Column.of(name, Value.of(value));
     }
 
     /**
      * Converts a Map to columns where: the key gonna be a column's name the value a column's value and null values
      * elements will be ignored.
+     *
      * @param values map to be converted
      * @return a list of columns
      * @throws NullPointerException when values is null
      */
-    public static List<Column> of(Map<String, Object> values) {
+    public static List<Column> of(Map<String, Object> values) throws NullPointerException {
         Objects.requireNonNull(values, "values is required");
         Predicate<String> isNotNull = s -> values.get(s) != null;
         Function<String, Column> columnMap = key -> {

@@ -32,5 +32,5 @@ public interface KeyValueConfiguration<T extends BucketManagerFactory> {
      *
      * @return a {@link BucketManagerFactory} instance
      */
-    T getManagerFactory();
+    T get();
 }
