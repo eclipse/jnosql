@@ -38,8 +38,9 @@ public interface BucketManagerFactory<T extends BucketManager> extends AutoClose
      * @param bucketName a bucket name
      * @return a {@link BucketManager} instance
      * @throws UnsupportedOperationException when the database does not have to it
+     * @throws NullPointerException          when bucketName is null
      */
-    T getBucketManager(String bucketName) throws UnsupportedOperationException;
+    T getBucketManager(String bucketName) throws UnsupportedOperationException, NullPointerException;
 
     /**
      * Creates a {@link List} from bucket name
@@ -49,8 +50,9 @@ public interface BucketManagerFactory<T extends BucketManager> extends AutoClose
      * @param <T>        the value type
      * @return a {@link List} instance
      * @throws UnsupportedOperationException when the database does not have to it
+     * @throws NullPointerException          when either bucketName or class are null
      */
-    <T> List<T> getList(String bucketName, Class<T> clazz) throws UnsupportedOperationException;
+    <T> List<T> getList(String bucketName, Class<T> clazz) throws UnsupportedOperationException, NullPointerException;
 
     /**
      * Creates a {@link Set} from bucket name
@@ -60,8 +62,9 @@ public interface BucketManagerFactory<T extends BucketManager> extends AutoClose
      * @param <T>        the value type
      * @return a {@link Set} instance
      * @throws UnsupportedOperationException when the database does not have to it
+     * @throws NullPointerException          when either bucketName or class are null
      */
-    <T> Set<T> getSet(String bucketName, Class<T> clazz) throws UnsupportedOperationException;
+    <T> Set<T> getSet(String bucketName, Class<T> clazz) throws UnsupportedOperationException, NullPointerException;
 
     /**
      * Creates a {@link Queue} from bucket name
@@ -71,8 +74,9 @@ public interface BucketManagerFactory<T extends BucketManager> extends AutoClose
      * @param <T>        the value type
      * @return a {@link Queue} instance
      * @throws UnsupportedOperationException when the database does not have to it
+     * @throws NullPointerException          when either bucketName or class are null
      */
-    <T> Queue<T> getQueue(String bucketName, Class<T> clazz) throws UnsupportedOperationException;
+    <T> Queue<T> getQueue(String bucketName, Class<T> clazz) throws UnsupportedOperationException, NullPointerException;
 
     /**
      * Creates a {@link  Map} from bucket name
@@ -84,9 +88,10 @@ public interface BucketManagerFactory<T extends BucketManager> extends AutoClose
      * @param <V>        the value type
      * @return a {@link Map} instance
      * @throws UnsupportedOperationException when the database does not have to it
+     * @throws NullPointerException          when either bucketName or class are null
      */
     <K, V> Map<K, V> getMap(String bucketName, Class<K> keyValue, Class<V> valueValue) throws
-            UnsupportedOperationException;
+            UnsupportedOperationException, NullPointerException;
 
     /**
      * closes a resource

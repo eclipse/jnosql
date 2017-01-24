@@ -46,6 +46,15 @@ public interface ColumnFamilyManager extends AutoCloseable {
     ColumnEntity save(ColumnEntity entity) throws NullPointerException;
 
     /**
+     * Updates a Column family entity
+     *
+     * @param entity column family to be saved
+     * @return the entity saved
+     * @throws NullPointerException when entity is null
+     */
+    ColumnEntity update(ColumnEntity entity) throws NullPointerException;
+
+    /**
      * Saves a Column family entity with time to live
      *
      * @param entity column family to be saved
@@ -108,7 +117,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @param query - query to figure out entities
      * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
      * @throws NonUniqueResultException when the result has more than 1 entity
-     * @throws NullPointerException  when query is null
+     * @throws NullPointerException     when query is null
      */
     default Optional<ColumnEntity> singleResult(ColumnQuery query) throws NonUniqueResultException, NullPointerException {
         List<ColumnEntity> entities = find(query);

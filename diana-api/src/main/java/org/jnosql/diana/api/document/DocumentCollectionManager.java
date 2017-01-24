@@ -93,8 +93,9 @@ public interface DocumentCollectionManager extends AutoCloseable {
      *
      * @param entity entity to be updated
      * @return the entity updated
+     * @throws NullPointerException when entity is null
      */
-    DocumentEntity update(DocumentEntity entity);
+    DocumentEntity update(DocumentEntity entity) throws NullPointerException;
 
 
     /**
