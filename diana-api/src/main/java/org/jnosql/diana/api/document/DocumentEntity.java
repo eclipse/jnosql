@@ -23,6 +23,7 @@ package org.jnosql.diana.api.document;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -44,6 +45,7 @@ public interface DocumentEntity extends Serializable {
      * @throws NullPointerException when name is null
      */
     static DocumentEntity of(String name) throws NullPointerException {
+        Objects.requireNonNull(name, "name is required");
         return new DefaultDocumentEntity(name);
     }
 
@@ -56,6 +58,8 @@ public interface DocumentEntity extends Serializable {
      * @throws NullPointerException when either name or documents are null
      */
     static DocumentEntity of(String name, List<Document> documents) throws NullPointerException {
+        Objects.requireNonNull(name, "name is required");
+        Objects.requireNonNull(documents, "documents is required");
         DefaultDocumentEntity entity = new DefaultDocumentEntity(name);
         entity.addAll(documents);
         return entity;
@@ -116,8 +120,9 @@ public interface DocumentEntity extends Serializable {
      *
      * @param name a document name
      * @return an {@link Optional} instance with the result
+     * @throws NullPointerException when name is null
      */
-    Optional<Document> find(String name);
+    Optional<Document> find(String name) throws NullPointerException;
 
     /**
      * Returns the number of elements in this list.

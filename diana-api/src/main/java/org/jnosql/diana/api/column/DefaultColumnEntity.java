@@ -95,6 +95,7 @@ final class DefaultColumnEntity implements ColumnEntity {
 
     @Override
     public Optional<Column> find(String name) {
+        Objects.requireNonNull(name, "name is required");
         return columns.stream().filter(column -> column.getName().equals(name)).findFirst();
     }
 

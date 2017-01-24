@@ -55,8 +55,10 @@ public class DocumentQuery {
      *
      * @param documentCollection - the name of document collection to do a query
      * @return a {@link DocumentQuery} instance
+     * @throws NullPointerException when documentCollecion is null
      */
-    public static DocumentQuery of(String documentCollection) {
+    public static DocumentQuery of(String documentCollection) throws NullPointerException {
+        Objects.requireNonNull(documentCollection, "documentCollection is required");
         return new DocumentQuery(documentCollection);
     }
 
@@ -97,8 +99,9 @@ public class DocumentQuery {
      *
      * @param sort the order way
      * @return the same way with a sort added
+     * @throws NullPointerException when sort is null
      */
-    public DocumentQuery addSort(Sort sort) {
+    public DocumentQuery addSort(Sort sort) throws NullPointerException {
         this.sorts.add(Objects.requireNonNull(sort, "Sort is required"));
         return this;
     }

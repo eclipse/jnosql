@@ -23,6 +23,7 @@ package org.jnosql.diana.api.column;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -51,8 +52,11 @@ public interface ColumnEntity extends Serializable {
      * @param name    a name to column family
      * @param columns - columns
      * @return a ColumnEntity instance
+     * @throws NullPointerException when either name or columns are null
      */
-    static ColumnEntity of(String name, List<Column> columns) {
+    static ColumnEntity of(String name, List<Column> columns) throws NullPointerException {
+        Objects.requireNonNull(name, "name is required");
+        Objects.requireNonNull(columns, "column is required");
         ColumnEntity columnEntity = new DefaultColumnEntity(name);
         columnEntity.addAll(columns);
         return columnEntity;
@@ -64,7 +68,7 @@ public interface ColumnEntity extends Serializable {
      * @param columns - columns to be added
      * @throws NullPointerException when columns is null
      */
-    void addAll(List<Column> columns);
+    void addAll(List<Column> columns) throws NullPointerException;
 
     /**
      * Appends the specified column to the end of this list
@@ -72,7 +76,7 @@ public interface ColumnEntity extends Serializable {
      * @param column - column to be added
      * @throws NullPointerException when column is null
      */
-    void add(Column column);
+    void add(Column column) throws NullPointerException;
 
     /**
      * Converts the columns to a Map where:
@@ -120,8 +124,9 @@ public interface ColumnEntity extends Serializable {
      *
      * @param name a document name
      * @return an {@link Optional} instance with the result
+     * @throws NullPointerException when name is null
      */
-    Optional<Column> find(String name);
+    Optional<Column> find(String name) throws NullPointerException;
 
     /**
      * Returns the number of elements in this list.

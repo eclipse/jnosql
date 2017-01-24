@@ -74,6 +74,7 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public Optional<Document> find(String name) {
+        Objects.requireNonNull(name, "name is required");
         return documents.stream().filter(document -> document.getName().equals(name)).findFirst();
     }
 
