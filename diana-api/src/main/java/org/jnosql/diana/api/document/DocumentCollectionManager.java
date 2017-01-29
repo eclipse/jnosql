@@ -52,8 +52,10 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @param entity entity to be saved
      * @param ttl    the time to live
      * @return the entity saved
+     * @throws NullPointerException when either entity or ttl are null
+     * @throws UnsupportedOperationException when the database does not support this feature
      */
-    DocumentEntity save(DocumentEntity entity, Duration ttl);
+    DocumentEntity save(DocumentEntity entity, Duration ttl) throws NullPointerException, UnsupportedOperationException;
 
 
     /**
@@ -80,8 +82,9 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @param ttl      time to live
      * @return the entity saved
      * @throws NullPointerException when entities is null
+     * @throws UnsupportedOperationException when the database does not support this feature
      */
-    default Iterable<DocumentEntity> save(Iterable<DocumentEntity> entities, Duration ttl) throws NullPointerException {
+    default Iterable<DocumentEntity> save(Iterable<DocumentEntity> entities, Duration ttl) throws NullPointerException, UnsupportedOperationException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         return StreamSupport.stream(entities.spliterator(), false).map(d -> save(d, ttl)).collect(Collectors.toList());

@@ -44,7 +44,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      *
      * @param entity entity to be saved
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when entity is null
      */
     void save(DocumentEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
@@ -55,7 +55,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param entity entity to be saved
      * @param ttl    the time to live
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entity or ttl are null
      */
     void save(DocumentEntity entity, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
@@ -67,7 +67,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      *
      * @param entities entities to be saved
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when entities is null
      */
     default void save(Iterable<DocumentEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
@@ -83,7 +83,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param entities entities to be saved
      * @param ttl      time to live
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entities or ttl are null
      */
     default void save(Iterable<DocumentEntity> entities, Duration ttl) throws ExecuteAsyncQueryException,
@@ -100,7 +100,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the saved entity within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either callback or entity are null
      */
     void save(DocumentEntity entity, Consumer<DocumentEntity> callBack) throws
@@ -114,7 +114,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the saved entity within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entity or ttl or callback are null
      */
     void save(DocumentEntity entity, Duration ttl, Consumer<DocumentEntity> callBack) throws
@@ -126,7 +126,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      *
      * @param entity entity to be updated
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when entity is null
      */
     void update(DocumentEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
@@ -138,7 +138,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the updated entity within parametersa
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entity or callback are null
      */
     void update(DocumentEntity entity, Consumer<DocumentEntity> callBack) throws
@@ -150,7 +150,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      *
      * @param query query to delete an entity
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      */
     void delete(DocumentQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
@@ -161,7 +161,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the null within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to delete asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either query or callback are null
      */
     void delete(DocumentQuery query, Consumer<Void> callBack) throws ExecuteAsyncQueryException,
@@ -174,7 +174,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the result of query within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either query or callback are null
      */
     void find(DocumentQuery query, Consumer<List<DocumentEntity>> callBack) throws

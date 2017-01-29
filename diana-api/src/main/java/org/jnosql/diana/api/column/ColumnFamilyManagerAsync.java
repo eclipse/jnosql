@@ -44,7 +44,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      *
      * @param entity entity to be saved
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when entity is null
      */
     void save(ColumnEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
@@ -55,7 +55,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param entity entity to be saved
      * @param ttl    time to live
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when the entity is null
      */
     void save(ColumnEntity entity, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
@@ -67,7 +67,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param callBack the callback, when the process is finished will call this instance returning the saved entity
      *                 within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entity or callback are null
      */
     void save(ColumnEntity entity, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
@@ -81,7 +81,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      *
      * @param entities entity to be saved
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when entities is null
      */
     default void save(Iterable<ColumnEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
@@ -97,7 +97,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param entities entity to be saved
      * @param ttl      time to live
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entities or ttl are null
      */
     default void save(Iterable<ColumnEntity> entities, Duration ttl) throws ExecuteAsyncQueryException,
@@ -116,7 +116,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param callBack the callback, when the process is finished will call this instance returning the saved entity
      *                 within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entity or ttl or callback are null
      */
     void save(ColumnEntity entity, Duration ttl, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
@@ -128,7 +128,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      *
      * @param entity entity to be saved
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to update asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when entity is null
      */
     void update(ColumnEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
@@ -140,7 +140,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the updated entity within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to update asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entity, callback are null
      */
     void update(ColumnEntity entity, Consumer<ColumnEntity> callBack) throws
@@ -152,7 +152,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      *
      * @param query query to delete an entity
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to delete asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when query is null
      */
     void delete(ColumnQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
@@ -164,7 +164,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the null within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to delete asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either query or callback are null
      */
     void delete(ColumnQuery query, Consumer<Void> callBack) throws ExecuteAsyncQueryException,
@@ -178,7 +178,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param callBack the callback, when the process is finished will call this instance returning the
      *                 result of query within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not have support to save asynchronous
+     * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either query or callback are null
      */
     void find(ColumnQuery query, Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException,

@@ -61,8 +61,9 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @param ttl    time to live
      * @return the entity saved
      * @throws NullPointerException when either entity or ttl are null
+     * @throws UnsupportedOperationException when the database does not support this feature
      */
-    ColumnEntity save(ColumnEntity entity, Duration ttl) throws NullPointerException;
+    ColumnEntity save(ColumnEntity entity, Duration ttl) throws NullPointerException, UnsupportedOperationException;
 
     /**
      * Saves a Column family entities, by default it's just run for each saving using
@@ -87,8 +88,9 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @param ttl      time to live
      * @return the entity saved
      * @throws NullPointerException when either entity or ttl are null
+     * @throws UnsupportedOperationException when the database does not support this feature
      */
-    default Iterable<ColumnEntity> save(Iterable<ColumnEntity> entities, Duration ttl) throws NullPointerException {
+    default Iterable<ColumnEntity> save(Iterable<ColumnEntity> entities, Duration ttl) throws NullPointerException, UnsupportedOperationException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         return StreamSupport.stream(entities.spliterator(), false).map(c -> this.save(c, ttl)).collect(Collectors.toList());
