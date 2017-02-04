@@ -26,7 +26,7 @@ import java.util.Objects;
  * Conditions type to run a query
  */
 public enum Condition {
-    EQUALS, GREATER_THAN, GREATER_EQUALS_THAN, LESSER_THAN, LESSER_EQUALS_THAN, IN, LIKE, AND, OR, NOT;
+    EQUALS, GREATER_THAN, GREATER_EQUALS_THAN, LESSER_THAN, LESSER_EQUALS_THAN, IN, LIKE, AND, OR, NOT, SUBQUERY;
 
     /**
      * Return tne field as name to both document and column.
