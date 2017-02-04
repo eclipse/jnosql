@@ -60,7 +60,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @param entity column family to be saved
      * @param ttl    time to live
      * @return the entity saved
-     * @throws NullPointerException when either entity or ttl are null
+     * @throws NullPointerException          when either entity or ttl are null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
     ColumnEntity save(ColumnEntity entity, Duration ttl) throws NullPointerException, UnsupportedOperationException;
@@ -87,7 +87,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @param entities column family to be saved
      * @param ttl      time to live
      * @return the entity saved
-     * @throws NullPointerException when either entity or ttl are null
+     * @throws NullPointerException          when either entity or ttl are null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
     default Iterable<ColumnEntity> save(Iterable<ColumnEntity> entities, Duration ttl) throws NullPointerException, UnsupportedOperationException {
@@ -100,9 +100,10 @@ public interface ColumnFamilyManager extends AutoCloseable {
     /**
      * Deletes an entity
      *
-     * @param query query to delete an entity
+     * @param query the query to delete an entity
+     * @throws NullPointerException when either query or collection are null
      */
-    void delete(ColumnCondition query);
+    void delete(DeleteCondition query) throws NullPointerException;
 
     /**
      * Finds {@link ColumnEntity} from query
