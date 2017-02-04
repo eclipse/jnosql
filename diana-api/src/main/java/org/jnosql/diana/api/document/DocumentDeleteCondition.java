@@ -68,7 +68,7 @@ public class DocumentDeleteCondition {
      * @return an {@link DocumentDeleteCondition}
      * @throws NullPointerException when either columnFamily
      */
-    public DocumentDeleteCondition of(String collection, DocumentCondition condition) throws NullPointerException {
+    public static DocumentDeleteCondition of(String collection, DocumentCondition condition) throws NullPointerException {
         Objects.requireNonNull(collection, "collection is required");
         Objects.requireNonNull(condition, "condition is required");
         return new DocumentDeleteCondition(collection, condition);

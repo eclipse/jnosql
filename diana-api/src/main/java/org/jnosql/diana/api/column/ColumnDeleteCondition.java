@@ -66,7 +66,7 @@ public class ColumnDeleteCondition {
      * @return an {@link ColumnDeleteCondition}
      * @throws NullPointerException when either columnFamily
      */
-    public ColumnDeleteCondition of(String columnFamily, ColumnCondition condition) throws NullPointerException {
+    public static ColumnDeleteCondition of(String columnFamily, ColumnCondition condition) throws NullPointerException {
         Objects.requireNonNull(columnFamily, "columnFamily is required");
         Objects.requireNonNull(condition, "condition is required");
         return new ColumnDeleteCondition(columnFamily, condition);
