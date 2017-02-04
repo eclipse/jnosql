@@ -46,6 +46,8 @@ public class ColumnQuery {
 
     private long limit = -1L;
 
+    private long start;
+
     private ColumnQuery(String columnFamily) {
         this.columnFamily = Objects.requireNonNull(columnFamily, "column family is required");
     }
@@ -167,6 +169,21 @@ public class ColumnQuery {
         this.limit = limit;
     }
 
+    /**
+     * Gets when the result starts
+     * @return
+     */
+    public long getStart() {
+        return start;
+    }
+
+    /**
+     * Setter to start a query
+     * @param start the starts
+     */
+    public void setStart(long start) {
+        this.start = start;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -46,6 +46,8 @@ public class DocumentQuery {
 
     private long limit = -1;
 
+    private long start;
+
     private DocumentQuery(String collection) {
         this.collection = Objects.requireNonNull(collection, "column family is required");
     }
@@ -166,6 +168,22 @@ public class DocumentQuery {
      */
     public void setLimit(long limit) {
         this.limit = limit;
+    }
+
+    /**
+     * Gets when the result starts
+     * @return
+     */
+    public long getStart() {
+        return start;
+    }
+
+    /**
+     * Setter to start a query
+     * @param start the starts
+     */
+    public void setStart(long start) {
+        this.start = start;
     }
 
     @Override

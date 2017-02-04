@@ -107,7 +107,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @param query query to delete an entity
      * @throws NullPointerException when query is null
      */
-    void delete(DocumentQuery query) throws NullPointerException;
+    void delete(DocumentCondition query) throws NullPointerException;
 
 
     /**

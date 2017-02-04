@@ -102,7 +102,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      *
      * @param query query to delete an entity
      */
-    void delete(ColumnQuery query);
+    void delete(ColumnCondition query);
 
     /**
      * Finds {@link ColumnEntity} from query
