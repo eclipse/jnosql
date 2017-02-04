@@ -16,41 +16,38 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.jnosql.diana.api.column;
-
-import org.jnosql.diana.api.document.DocumentCondition;
 
 import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * A unit that has the collection and condition to delete from conditions
+ * A unit that has the columnFamily and condition to delete from conditions
  *
- * @see ColumnDeleteCondition#of(String, DocumentCondition).
+ * @see ColumnDeleteCondition#of(String, ColumnCondition).
  * This instance will be used on:
- * {@link ColumnFamilyManager#delete(ColumnDeleteCondition)}
- * {@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition)}
- * {@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition, Consumer)}
+ * <p>{@link ColumnFamilyManager#delete(ColumnDeleteCondition)}</p>
+ * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition)}</p>
+ * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition, Consumer)}</p>
  */
 public class ColumnDeleteCondition {
 
-    private final String collection;
+    private final String columnFamily;
 
-    private final DocumentCondition condition;
+    private final ColumnCondition condition;
 
-    private ColumnDeleteCondition(String collection, DocumentCondition condition) {
-        this.collection = collection;
+    private ColumnDeleteCondition(String columnFamily, ColumnCondition condition) {
+        this.columnFamily = columnFamily;
         this.condition = condition;
     }
 
     /**
-     * getter the collection name
+     * getter the columnFamily name
      *
-     * @return the collection name
+     * @return the columnFamily name
      */
-    public String getCollection() {
-        return collection;
+    public String getColumnFamily() {
+        return columnFamily;
     }
 
     /**
@@ -58,21 +55,21 @@ public class ColumnDeleteCondition {
      *
      * @return the condition
      */
-    public DocumentCondition getCondition() {
+    public ColumnCondition getCondition() {
         return condition;
     }
 
     /**
-     * Creates a instance
+     * Creates a instance of column family
      *
-     * @param collection
-     * @param condition
-     * @return
-     * @throws NullPointerException
+     * @param columnFamily the column family name
+     * @param condition the condition
+     * @return an {@link ColumnDeleteCondition}
+     * @throws NullPointerException when either columnFamily
      */
-    public ColumnDeleteCondition of(String collection, DocumentCondition condition) throws NullPointerException {
-        Objects.requireNonNull(collection, "collection is required");
+    public ColumnDeleteCondition of(String columnFamily, ColumnCondition condition) throws NullPointerException {
+        Objects.requireNonNull(columnFamily, "columnFamily is required");
         Objects.requireNonNull(condition, "condition is required");
-        return new ColumnDeleteCondition(collection, condition);
+        return new ColumnDeleteCondition(columnFamily, condition);
     }
 }
