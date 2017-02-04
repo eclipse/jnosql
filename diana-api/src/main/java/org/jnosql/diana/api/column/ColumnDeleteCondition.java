@@ -19,7 +19,6 @@
 package org.jnosql.diana.api.column;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * A unit that has the columnFamily and condition to delete from conditions
@@ -28,7 +27,7 @@ import java.util.function.Consumer;
  * This instance will be used on:
  * <p>{@link ColumnFamilyManager#delete(ColumnDeleteCondition)}</p>
  * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition)}</p>
- * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition, Consumer)}</p>
+ * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition, java.util.function.Consumer)}</p>
  */
 public class ColumnDeleteCondition {
 

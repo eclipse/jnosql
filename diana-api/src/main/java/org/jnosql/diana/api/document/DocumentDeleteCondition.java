@@ -19,10 +19,8 @@
 package org.jnosql.diana.api.document;
 
 
-import org.jnosql.diana.api.column.ColumnDeleteCondition;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * A unit that has the columnFamily and condition to delete from conditions
@@ -31,7 +29,7 @@ import java.util.function.Consumer;
  * This instance will be used on:
  * <p>{@link DocumentCollectionManager#delete(DocumentCondition)}</p>
  * <p>{@link DocumentCollectionManagerAsync#delete(DocumentCondition)}</p>
- * <p>{@link DocumentCollectionManagerAsync#delete(DocumentCondition, Consumer)}</p>
+ * <p>{@link DocumentCollectionManagerAsync#delete(DocumentCondition, java.util.function.Consumer)}</p>
  */
 public class DocumentDeleteCondition {
 
@@ -67,7 +65,7 @@ public class DocumentDeleteCondition {
      *
      * @param collection the collection name
      * @param condition  the condition
-     * @return an {@link ColumnDeleteCondition}
+     * @return an {@link DocumentDeleteCondition}
      * @throws NullPointerException when either columnFamily
      */
     public DocumentDeleteCondition of(String collection, DocumentCondition condition) throws NullPointerException {
