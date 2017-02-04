@@ -155,7 +155,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when query is null
      */
-    void delete(DeleteCondition query) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    void delete(ColumnDeleteCondition query) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
      * Deletes an entity asynchronously
@@ -167,7 +167,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either query or callback are null
      */
-    void delete(DeleteCondition query, Consumer<Void> callBack) throws ExecuteAsyncQueryException,
+    void delete(ColumnDeleteCondition query, Consumer<Void> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException, NullPointerException;
 
 

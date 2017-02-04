@@ -19,20 +19,27 @@
 
 package org.jnosql.diana.api.column;
 
-import org.jnosql.diana.api.Condition;
+import org.jnosql.diana.api.document.DocumentCondition;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * A unit that has the collection and condition to delete from conditions
+ *
+ * @see ColumnDeleteCondition#of(String, DocumentCondition).
+ * This instance will be used on:
+ * {@link ColumnFamilyManager#delete(ColumnDeleteCondition)}
+ * {@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition)}
+ * {@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition, Consumer)}
  */
-public class DeleteCondition {
+public class ColumnDeleteCondition {
 
     private final String collection;
 
-    private final Condition condition;
+    private final DocumentCondition condition;
 
-    private DeleteCondition(String collection, Condition condition) {
+    private ColumnDeleteCondition(String collection, DocumentCondition condition) {
         this.collection = collection;
         this.condition = condition;
     }
@@ -51,13 +58,21 @@ public class DeleteCondition {
      *
      * @return the condition
      */
-    public Condition getCondition() {
+    public DocumentCondition getCondition() {
         return condition;
     }
 
-    public DeleteCondition of(String collection, Condition condition) throws NullPointerException {
+    /**
+     * Creates a instance
+     *
+     * @param collection
+     * @param condition
+     * @return
+     * @throws NullPointerException
+     */
+    public ColumnDeleteCondition of(String collection, DocumentCondition condition) throws NullPointerException {
         Objects.requireNonNull(collection, "collection is required");
         Objects.requireNonNull(condition, "condition is required");
-        return new DeleteCondition(collection, condition);
+        return new ColumnDeleteCondition(collection, condition);
     }
 }

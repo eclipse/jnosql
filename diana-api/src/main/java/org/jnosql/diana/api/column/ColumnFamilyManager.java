@@ -103,7 +103,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @param query the query to delete an entity
      * @throws NullPointerException when either query or collection are null
      */
-    void delete(DeleteCondition query) throws NullPointerException;
+    void delete(ColumnDeleteCondition query) throws NullPointerException;
 
     /**
      * Finds {@link ColumnEntity} from query
