@@ -27,9 +27,9 @@ import java.util.Objects;
  *
  * @see DocumentDeleteCondition#of(String, DocumentCondition).
  * This instance will be used on:
- * <p>{@link DocumentCollectionManager#delete(DocumentCondition)}</p>
- * <p>{@link DocumentCollectionManagerAsync#delete(DocumentCondition)}</p>
- * <p>{@link DocumentCollectionManagerAsync#delete(DocumentCondition, java.util.function.Consumer)}</p>
+ * <p>{@link DocumentCollectionManager#delete(DocumentDeleteCondition)}</p>
+ * <p>{@link DocumentCollectionManagerAsync#delete(DocumentDeleteCondition)}</p>
+ * <p>{@link DocumentCollectionManagerAsync#delete(DocumentDeleteCondition, java.util.function.Consumer)}</p>
  */
 public class DocumentDeleteCondition {
 

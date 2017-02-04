@@ -52,7 +52,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @param entity entity to be saved
      * @param ttl    the time to live
      * @return the entity saved
-     * @throws NullPointerException when either entity or ttl are null
+     * @throws NullPointerException          when either entity or ttl are null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
     DocumentEntity save(DocumentEntity entity, Duration ttl) throws NullPointerException, UnsupportedOperationException;
@@ -81,7 +81,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @param entities entities to be saved
      * @param ttl      time to live
      * @return the entity saved
-     * @throws NullPointerException when entities is null
+     * @throws NullPointerException          when entities is null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
     default Iterable<DocumentEntity> save(Iterable<DocumentEntity> entities, Duration ttl) throws NullPointerException, UnsupportedOperationException {
@@ -107,7 +107,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @param query query to delete an entity
      * @throws NullPointerException when query is null
      */
-    void delete(DocumentCondition query) throws NullPointerException;
+    void delete(DocumentDeleteCondition query) throws NullPointerException;
 
 
     /**
