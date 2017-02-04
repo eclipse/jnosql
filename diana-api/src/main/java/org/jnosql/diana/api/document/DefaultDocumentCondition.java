@@ -32,6 +32,7 @@ import static java.util.Objects.requireNonNull;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.NOT;
 import static org.jnosql.diana.api.Condition.OR;
+import static org.jnosql.diana.api.Condition.SUBQUERY;
 
 /**
  * The default implementation of {@link DocumentCondition}
@@ -62,6 +63,12 @@ class DefaultDocumentCondition implements DocumentCondition {
         requireNonNull(conditions, "condition is required");
         Document document = Document.of(OR.getNameField(), asList(conditions));
         return DefaultDocumentCondition.of(document, OR);
+    }
+
+    static DefaultDocumentCondition subquery(DocumentQuery query) throws NullPointerException {
+        requireNonNull(query, "query is required");
+        Document document = Document.of(SUBQUERY.getNameField(), query);
+        return DefaultDocumentCondition.of(document, SUBQUERY);
     }
 
     public Document getDocument() {
