@@ -204,4 +204,23 @@ public interface ColumnCondition {
         return DefaultColumnCondition.or(conditions);
     }
 
+    /**
+     * Returns a new {@link ColumnCondition} aggregating ,as ¨SUBQUERY", all the conditions as just one condition.
+     * The {@link Column} will storage the {@link Condition#getNameField()} as key and the value gonna be
+     * the {@link ColumnQuery}, in other words.
+     * <p>Given:</p>
+     * {@code
+     * condition.subquery(condition2);
+     * }
+     * The {@link ColumnCondition#getColumn()} will have "_SUBQUERY" as key and the query as value.
+     *
+     * @param query the conditions to be aggregated
+     * @return the new {@link ColumnCondition} instance
+     * @throws NullPointerException when the condition is null
+     */
+    static ColumnCondition subquery(ColumnQuery query) throws NullPointerException {
+        return DefaultColumnCondition.subquery(query);
+    }
+
+
 }

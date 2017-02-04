@@ -18,7 +18,6 @@
  */
 package org.jnosql.diana.api.column;
 
-import org.hamcrest.Matchers;
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
 import org.junit.Assert;
@@ -29,7 +28,9 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.OR;
-import static org.junit.Assert.*;
+import static org.jnosql.diana.api.Condition.SUBQUERY;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 
 public class DefaultColumnConditionTest {
@@ -181,6 +182,17 @@ public class DefaultColumnConditionTest {
         ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
         ColumnCondition afirmative = eq.negate().negate();
         assertEquals(eq.getCondition(), afirmative.getCondition());
+
+    }
+
+    @Test
+    public void shouldSubquery() {
+        ColumnQuery query = ColumnQuery.of("collection");
+        DefaultColumnCondition subquery = DefaultColumnCondition.subquery(query);
+        Column column = subquery.getColumn();
+        assertEquals(Condition.SUBQUERY, subquery.getCondition());
+        assertEquals(SUBQUERY.getNameField(), column.getName());
+        assertEquals(query,column.get(ColumnQuery.class));
 
     }
 
