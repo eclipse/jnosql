@@ -152,7 +152,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
      */
-    void delete(DocumentDeleteCondition query) throws ExecuteAsyncQueryException, UnsupportedOperationException;
+    void delete(DocumentDeleteQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException;
 
     /**
      * Deletes an entity asynchronously
@@ -164,7 +164,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either query or callback are null
      */
-    void delete(DocumentDeleteCondition query, Consumer<Void> callBack) throws ExecuteAsyncQueryException,
+    void delete(DocumentDeleteQuery query, Consumer<Void> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException, NullPointerException;
 
     /**

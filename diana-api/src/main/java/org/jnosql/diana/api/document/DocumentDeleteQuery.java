@@ -16,35 +16,37 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jnosql.diana.api.column;
+package org.jnosql.diana.api.document;
+
+
+import org.jnosql.diana.api.column.ColumnDeleteQuery;
 
 import java.util.List;
 
 /**
  * A unit that has the columnFamily and condition to delete from conditions
  *
- * @see ColumnDeleteQuery#of(String, ColumnCondition).
+ * @see DocumentDeleteQuery#of(String, DocumentCondition).
  * This instance will be used on:
- * <p>{@link ColumnFamilyManager#delete(ColumnDeleteQuery)}</p>
- * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteQuery)}</p>
- * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteQuery, java.util.function.Consumer)}</p>
+ * <p>{@link DocumentCollectionManager#delete(DocumentDeleteQuery)}</p>
+ * <p>{@link DocumentCollectionManagerAsync#delete(DocumentDeleteQuery)}</p>
+ * <p>{@link DocumentCollectionManagerAsync#delete(DocumentDeleteQuery, java.util.function.Consumer)}</p>
  */
-public interface ColumnDeleteQuery {
-
+public interface DocumentDeleteQuery {
 
     /**
-     * getter the columnFamily name
+     * getter the collection name
      *
-     * @return the columnFamily name
+     * @return the collection name
      */
-    String getColumnFamily();
+    String getCollection();
 
     /**
      * getter the condition
      *
      * @return the condition
      */
-    ColumnCondition getCondition();
+    DocumentCondition getCondition();
 
     /**
      * Defines which columns will be removed, the database provider might use this information
@@ -93,12 +95,12 @@ public interface ColumnDeleteQuery {
     /**
      * Creates a instance of column family
      *
-     * @param columnFamily the column family name
+     * @param collection the column family name
      * @param condition    the condition
      * @return an {@link ColumnDeleteQuery}
-     * @throws NullPointerException when either columnFamily
+     * @throws NullPointerException when either collection
      */
-    static ColumnDeleteQuery of(String columnFamily, ColumnCondition condition) throws NullPointerException {
-        return DefaultColumnDeleteQuery.of(columnFamily, condition);
+    static DocumentDeleteQuery of(String collection, DocumentCondition condition) throws NullPointerException {
+        return DefaultDocumentDeleteQuery.of(collection, condition);
     }
 }
