@@ -54,43 +54,43 @@ public interface DocumentDeleteQuery {
      *
      * @return the columns
      */
-    List<String> getColumns();
+    List<String> getDocuments();
 
     /**
-     * Adds a column to be removed
+     * Adds a document to be removed
      *
-     * @param column the column
+     * @param document the document
+     * @throws NullPointerException when document is null
+     * @see ColumnDeleteQuery#getColumns()
+     */
+    void add(String document) throws NullPointerException;
+
+    /**
+     * Adds all documents
+     *
+     * @param documents the documents to be added
      * @throws NullPointerException when column is null
      * @see ColumnDeleteQuery#getColumns()
      */
-    void add(String column) throws NullPointerException;
+    void addAll(Iterable<String> documents) throws NullPointerException;
 
     /**
-     * Adds all columns
+     * Removes a document from
      *
-     * @param columns the columns to be added
-     * @throws NullPointerException when column is null
+     * @param document the document to be removed
+     * @throws NullPointerException when document is null
      * @see ColumnDeleteQuery#getColumns()
      */
-    void addAll(Iterable<String> columns) throws NullPointerException;
+    void remove(String document) throws NullPointerException;
 
     /**
-     * Removes a column from
+     * Removes documents
      *
-     * @param column the column to be removed
-     * @throws NullPointerException when column is null
+     * @param documents the documents to be removed
+     * @throws NullPointerException when documents is null
      * @see ColumnDeleteQuery#getColumns()
      */
-    void remove(String column) throws NullPointerException;
-
-    /**
-     * Removes columns
-     *
-     * @param columns the columns to be removed
-     * @throws NullPointerException when columns is null
-     * @see ColumnDeleteQuery#getColumns()
-     */
-    void removeAll(Iterable<String> columns) throws NullPointerException;
+    void removeAll(Iterable<String> documents) throws NullPointerException;
 
     /**
      * Creates a instance of column family

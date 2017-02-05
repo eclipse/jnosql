@@ -34,7 +34,7 @@ class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
 
     private final DocumentCondition condition;
 
-    private final List<String> columns = new ArrayList<>();
+    private final List<String> documents = new ArrayList<>();
 
     private DefaultDocumentDeleteQuery(String collection, DocumentCondition condition) {
         this.collection = collection;
@@ -50,31 +50,31 @@ class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
     }
 
     @Override
-    public List<String> getColumns() {
-        return unmodifiableList(columns);
+    public List<String> getDocuments() {
+        return unmodifiableList(documents);
     }
 
     @Override
-    public void add(String column) throws NullPointerException {
-        this.columns.add(requireNonNull(column, "column null is required"));
+    public void add(String document) throws NullPointerException {
+        this.documents.add(requireNonNull(document, "document null is required"));
     }
 
     @Override
-    public void addAll(Iterable<String> columns) throws NullPointerException {
-        requireNonNull(columns, "columns is required");
-        columns.forEach(this::add);
+    public void addAll(Iterable<String> documents) throws NullPointerException {
+        requireNonNull(documents, "documents is required");
+        documents.forEach(this::add);
     }
 
     @Override
-    public void remove(String column) throws NullPointerException {
-        requireNonNull(column, "column is required");
-        this.columns.remove(column);
+    public void remove(String document) throws NullPointerException {
+        requireNonNull(document, "document is required");
+        this.documents.remove(document);
     }
 
     @Override
-    public void removeAll(Iterable<String> columns) throws NullPointerException {
-        requireNonNull(columns, "columns is required");
-        columns.forEach(this::remove);
+    public void removeAll(Iterable<String> documents) throws NullPointerException {
+        requireNonNull(documents, "documents is required");
+        documents.forEach(this::remove);
     }
 
     static DefaultDocumentDeleteQuery of(String collection, DocumentCondition condition) throws NullPointerException {

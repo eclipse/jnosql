@@ -46,7 +46,7 @@ public class DefaultDocumentDeleteQueryTest {
         DefaultDocumentDeleteQuery query = DefaultDocumentDeleteQuery.of("query", condition);
         assertEquals("query", query.getCollection());
         assertEquals(condition, query.getCondition());
-        assertTrue(query.getColumns().isEmpty());
+        assertTrue(query.getDocuments().isEmpty());
     }
 
     @Test(expected = NullPointerException.class)
@@ -61,7 +61,7 @@ public class DefaultDocumentDeleteQueryTest {
         DocumentCondition condition = DocumentCondition.eq(Document.of("name", "Ada"));
         DefaultDocumentDeleteQuery query = DefaultDocumentDeleteQuery.of("query", condition);
         query.add("column");
-        assertThat(query.getColumns(), contains("column"));
+        assertThat(query.getDocuments(), contains("column"));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class DefaultDocumentDeleteQueryTest {
         DefaultDocumentDeleteQuery query = DefaultDocumentDeleteQuery.of("query", condition);
         query.add("column");
         query.remove("column");
-        assertTrue(query.getColumns().isEmpty());
+        assertTrue(query.getDocuments().isEmpty());
     }
 
 
@@ -79,7 +79,7 @@ public class DefaultDocumentDeleteQueryTest {
         DocumentCondition condition = DocumentCondition.eq(Document.of("name", "Ada"));
         DefaultDocumentDeleteQuery query = DefaultDocumentDeleteQuery.of("query", condition);
         query.addAll(singletonList("column"));
-        assertThat(query.getColumns(), contains("column"));
+        assertThat(query.getDocuments(), contains("column"));
     }
 
     @Test
@@ -88,6 +88,6 @@ public class DefaultDocumentDeleteQueryTest {
         DefaultDocumentDeleteQuery query = DefaultDocumentDeleteQuery.of("query", condition);
         query.add("column");
         query.removeAll(singletonList("column"));
-        assertTrue(query.getColumns().isEmpty());
+        assertTrue(query.getDocuments().isEmpty());
     }
 }

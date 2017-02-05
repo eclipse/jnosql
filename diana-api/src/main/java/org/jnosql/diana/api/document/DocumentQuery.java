@@ -34,34 +34,18 @@ import java.util.Objects;
  * @see DocumentCondition
  * @see Sort
  */
-public class DocumentQuery {
+public interface DocumentQuery {
 
-    private final String collection;
-
-    private DocumentCondition condition;
-
-    private final List<Sort> sorts = new ArrayList<>();
-
-    private final List<String> documents = new ArrayList<>();
-
-    private long limit = -1;
-
-    private long start;
-
-    private DocumentQuery(String collection) {
-        this.collection = Objects.requireNonNull(collection, "column family is required");
-    }
 
     /**
      * Creates a {@link DocumentQuery}
      *
-     * @param documentCollection - the name of document collection to do a query
+     * @param collection - the name of document collection to do a query
      * @return a {@link DocumentQuery} instance
      * @throws NullPointerException when documentCollecion is null
      */
-    public static DocumentQuery of(String documentCollection) throws NullPointerException {
-        Objects.requireNonNull(documentCollection, "documentCollection is required");
-        return new DocumentQuery(documentCollection);
+    static DocumentQuery of(String collection) throws NullPointerException {
+        return DefaultDocumentQuery.of(collection);
     }
 
     /**
@@ -72,16 +56,7 @@ public class DocumentQuery {
      * @return the same instance with a condition added
      * @throws NullPointerException when condition is null
      */
-    public DocumentQuery and(DocumentCondition condition) throws NullPointerException {
-        Objects.requireNonNull(condition, "condition is required");
-        if (Objects.isNull(this.condition)) {
-            this.condition = condition;
-        } else {
-            this.condition = this.condition.and(condition);
-        }
-
-        return this;
-    }
+    DocumentQuery and(DocumentCondition condition) throws NullPointerException;
 
     /**
      * Appends a new condition in the query
@@ -91,10 +66,7 @@ public class DocumentQuery {
      * @return the same instance with a condition added
      * @throws NullPointerException when condition is null
      */
-    public DocumentQuery or(DocumentCondition condition) throws NullPointerException {
-        this.condition = Objects.requireNonNull(condition, "condition is required");
-        return this;
-    }
+    DocumentQuery or(DocumentCondition condition) throws NullPointerException;
 
     /**
      * Add the order how the result will returned
@@ -103,10 +75,7 @@ public class DocumentQuery {
      * @return the same way with a sort added
      * @throws NullPointerException when sort is null
      */
-    public DocumentQuery addSort(Sort sort) throws NullPointerException {
-        this.sorts.add(Objects.requireNonNull(sort, "Sort is required"));
-        return this;
-    }
+    DocumentQuery addSort(Sort sort) throws NullPointerException;
 
     /**
      * Add column to be either retrieve or deleted, if empty will either returns
@@ -115,10 +84,7 @@ public class DocumentQuery {
      * @param document the document name
      * @return the same instance with a column added
      */
-    public DocumentQuery addColumn(String document) throws NullPointerException {
-        this.documents.add(Objects.requireNonNull(document, "document is required"));
-        return this;
-    }
+    DocumentQuery addColumn(String document) throws NullPointerException;
 
 
     /**
@@ -126,92 +92,62 @@ public class DocumentQuery {
      *
      * @return the document collection name
      */
-    public String getCollection() {
-        return collection;
-    }
+    public String getCollection();
 
     /**
      * The conditions that contains in this {@link DocumentQuery}
      *
      * @return the conditions
      */
-    public DocumentCondition getCondition() {
-        return condition;
-    }
+    DocumentCondition getCondition();
 
     /**
      * The sorts that contains in this {@link DocumentQuery}
      *
      * @return the sorts
      */
-    public List<Sort> getSorts() {
-        return Collections.unmodifiableList(sorts);
-    }
+    List<Sort> getSorts();
 
-    public List<String> getDocuments() {
-        return Collections.unmodifiableList(documents);
-    }
+    /**
+     * Get documents
+     *
+     * @return
+     */
+    List<String> getDocuments();
 
     /**
      * Returns the max number of row in a query
      *
      * @return the limit to be used in a query
      */
-    public long getLimit() {
-        return limit;
-    }
+    long getLimit();
 
     /**
-     * Sets the max number of row in a query, if negative the value will ignored
+     * the limit setter
      *
-     * @param limit the new limit to query
+     * @param limit the limit
      */
-    public void setLimit(long limit) {
-        this.limit = limit;
-    }
+    void setLimit(long limit);
 
     /**
      * Gets when the result starts
+     *
      * @return the start
      */
-    public long getStart() {
-        return start;
-    }
+    long getStart();
 
     /**
      * Setter to start a query
+     *
      * @param start the starts
      */
-    public void setStart(long start) {
-        this.start = start;
-    }
+    void setStart(long start);
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        DocumentQuery that = (DocumentQuery) o;
-        return Objects.equals(collection, that.collection) &&
-                Objects.equals(condition, that.condition) &&
-                Objects.equals(sorts, that.sorts);
-    }
+    /**
+     * Converts to {@link DocumentDeleteQuery}
+     *
+     * @return the {@link DocumentDeleteQuery} instance
+     */
+    DocumentDeleteQuery toDeleteQuery();
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(collection, condition, sorts);
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("DocumentQuery{");
-        sb.append("collection='").append(collection).append('\'');
-        sb.append(", condition=").append(condition);
-        sb.append(", sorts=").append(sorts);
-        sb.append('}');
-        return sb.toString();
-    }
 }
