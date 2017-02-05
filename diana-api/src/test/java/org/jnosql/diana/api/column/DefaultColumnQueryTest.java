@@ -16,36 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.jnosql.diana.api.column;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Collections.singletonMap;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 
-public class ColumnsTest {
+public class DefaultColumnQueryTest {
 
-    @Test
-    public void shouldCreateColumn() {
-        Column column = Columns.of("name", "Ada");
-        assertEquals("name", column.getName());
-        assertEquals("Ada", column.get());
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnsNPE() {
+        ColumnQuery.of(null);
     }
 
     @Test
-    public void shouldCreateColumnsFromMap() {
-        Map<String, String> map = singletonMap("name", "Ada");
-        List<Column> columns = Columns.of(map);
-        assertFalse(columns.isEmpty());
-        assertThat(columns, Matchers.contains(Column.of("name", "Ada")));
-
+    public void shouldCreateInstance() {
+        ColumnQuery query = ColumnQuery.of("query");
+        assertEquals("query", query.getColumnFamily());
     }
 }
