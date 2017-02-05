@@ -64,7 +64,11 @@ class DefaultDocumentQuery implements DocumentQuery {
 
     @Override
     public DocumentQuery or(DocumentCondition condition) throws NullPointerException {
-        this.condition = Objects.requireNonNull(condition, "condition is required");
+        if (Objects.isNull(this.condition)) {
+            this.condition = condition;
+        } else {
+            this.condition = this.condition.or(condition);
+        }
         return this;
     }
 

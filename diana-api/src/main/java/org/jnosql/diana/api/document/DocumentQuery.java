@@ -22,10 +22,7 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Sort;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Class that contains information to do a query to {@link DocumentCollectionManager}
@@ -92,7 +89,7 @@ public interface DocumentQuery {
      *
      * @return the document collection name
      */
-    public String getCollection();
+    String getCollection();
 
     /**
      * The conditions that contains in this {@link DocumentQuery}

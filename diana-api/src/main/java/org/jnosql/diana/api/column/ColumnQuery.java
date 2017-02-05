@@ -39,7 +39,7 @@ public interface ColumnQuery {
      * @param columnFamily - the name of column family to do a query
      * @return a {@link ColumnQuery} instance
      */
-    public static ColumnQuery of(String columnFamily) {
+    static ColumnQuery of(String columnFamily) {
         return DefaultColumnQuery.of(columnFamily);
     }
 

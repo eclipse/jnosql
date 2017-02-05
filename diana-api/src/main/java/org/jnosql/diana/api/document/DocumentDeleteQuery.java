@@ -19,7 +19,6 @@
 package org.jnosql.diana.api.document;
 
 
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
 
 import java.util.List;
 
@@ -50,7 +49,7 @@ public interface DocumentDeleteQuery {
 
     /**
      * Defines which columns will be removed, the database provider might use this information
-     * to remove just these fields instead of all entity from {@link ColumnDeleteQuery}
+     * to remove just these fields instead of all entity from {@link DocumentDeleteQuery}
      *
      * @return the columns
      */
@@ -61,7 +60,7 @@ public interface DocumentDeleteQuery {
      *
      * @param document the document
      * @throws NullPointerException when document is null
-     * @see ColumnDeleteQuery#getColumns()
+     * @see DocumentDeleteQuery#getDocuments()
      */
     void add(String document) throws NullPointerException;
 
@@ -70,7 +69,7 @@ public interface DocumentDeleteQuery {
      *
      * @param documents the documents to be added
      * @throws NullPointerException when column is null
-     * @see ColumnDeleteQuery#getColumns()
+     * @see DocumentDeleteQuery#getDocuments()
      */
     void addAll(Iterable<String> documents) throws NullPointerException;
 
@@ -79,7 +78,7 @@ public interface DocumentDeleteQuery {
      *
      * @param document the document to be removed
      * @throws NullPointerException when document is null
-     * @see ColumnDeleteQuery#getColumns()
+     * @see DocumentDeleteQuery#getDocuments()
      */
     void remove(String document) throws NullPointerException;
 
@@ -88,7 +87,7 @@ public interface DocumentDeleteQuery {
      *
      * @param documents the documents to be removed
      * @throws NullPointerException when documents is null
-     * @see ColumnDeleteQuery#getColumns()
+     * @see DocumentDeleteQuery#getDocuments()
      */
     void removeAll(Iterable<String> documents) throws NullPointerException;
 
@@ -97,7 +96,7 @@ public interface DocumentDeleteQuery {
      *
      * @param collection the column family name
      * @param condition    the condition
-     * @return an {@link ColumnDeleteQuery}
+     * @return an {@link DocumentDeleteQuery}
      * @throws NullPointerException when either collection
      */
     static DocumentDeleteQuery of(String collection, DocumentCondition condition) throws NullPointerException {
