@@ -19,6 +19,7 @@
 
 package org.jnosql.diana.api.key;
 
+import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
 
 import java.util.Objects;
@@ -46,6 +47,20 @@ final class DefaultKeyValueEntity<T> implements KeyValueEntity {
         return value;
     }
 
+    @Override
+    public Object get() {
+        return value.get();
+    }
+
+    @Override
+    public Object get(TypeSupplier typeSupplier) throws NullPointerException, UnsupportedOperationException {
+        return value.get(typeSupplier);
+    }
+
+    @Override
+    public Object get(Class clazz) throws NullPointerException, UnsupportedOperationException {
+        return value.get(clazz);
+    }
 
     @Override
     public int hashCode() {

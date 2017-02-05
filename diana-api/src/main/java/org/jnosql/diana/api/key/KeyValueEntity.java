@@ -21,6 +21,8 @@ package org.jnosql.diana.api.key;
 
 
 import java.io.Serializable;
+
+import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
 
 /**
@@ -73,5 +75,31 @@ public interface KeyValueEntity<T> extends Serializable {
      * @see Value
      */
     Value getValue();
+
+    /**
+     * Alias to {@link org.jnosql.diana.api.Value#get(Class)}
+     * @param clazz
+     * @param <T>
+     * @return {@link org.jnosql.diana.api.Value#get(Class)}
+     * @throws NullPointerException
+     * @throws UnsupportedOperationException
+     */
+    <T> T get(Class<T> clazz) throws NullPointerException, UnsupportedOperationException;
+
+    /**
+     * Alias to {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @param typeSupplier
+     * @param <T>
+     * @return {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @throws NullPointerException
+     * @throws UnsupportedOperationException
+     */
+    <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException;
+
+    /**
+     * Alias to {@link org.jnosql.diana.api.Value#get()}
+     * @return {@link org.jnosql.diana.api.Value#get()}
+     */
+    Object get();
 
 }
