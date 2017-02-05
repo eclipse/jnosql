@@ -91,6 +91,26 @@ public interface ColumnDeleteQuery {
      */
     void removeAll(Iterable<String> columns) throws NullPointerException;
 
+
+    /**
+     * Appends a new condition in the query using {@link ColumnCondition#and(ColumnCondition)}
+     *
+     * @param condition a condition to be added
+     * @return the same instance with a condition added
+     * @throws NullPointerException when condition is null
+     */
+    ColumnDeleteQuery and(ColumnCondition condition);
+
+
+    /**
+     * Appends a new condition in the query using {@link ColumnCondition#or(ColumnCondition)}
+     *
+     * @param condition a condition to be added
+     * @return the same instance with a condition added
+     * @throws NullPointerException when condition is null
+     */
+    ColumnDeleteQuery or(ColumnCondition condition) throws NullPointerException;
+
     /**
      * Creates a instance of column family
      *
@@ -101,5 +121,16 @@ public interface ColumnDeleteQuery {
      */
     static ColumnDeleteQuery of(String columnFamily, ColumnCondition condition) throws NullPointerException {
         return DefaultColumnDeleteQuery.of(columnFamily, condition);
+    }
+
+    /**
+     * Creates a instance of column family
+     *
+     * @param columnFamily the column family name
+     * @return an {@link ColumnDeleteQuery}
+     * @throws NullPointerException when either columnFamily
+     */
+    static ColumnDeleteQuery of(String columnFamily) throws NullPointerException {
+        return DefaultColumnDeleteQuery.of(columnFamily);
     }
 }

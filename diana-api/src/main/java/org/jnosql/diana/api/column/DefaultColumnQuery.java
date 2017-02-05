@@ -50,23 +50,13 @@ class DefaultColumnQuery implements ColumnQuery {
         this.columnFamily = requireNonNull(columnFamily, "column family is required");
     }
 
-    /**
-     * Creates a {@link ColumnQuery}
-     *
-     * @param columnFamily - the name of column family to do a query
-     * @return a {@link ColumnQuery} instance
-     */
+
     static DefaultColumnQuery of(String columnFamily) {
         return new DefaultColumnQuery(columnFamily);
     }
 
-    /**
-     * Appends a new condition in the query using {@link ColumnCondition#and(ColumnCondition)}
-     *
-     * @param condition a condition to be added
-     * @return the same instance with a condition added
-     * @throws NullPointerException when condition is null
-     */
+
+    @Override
     public ColumnQuery and(ColumnCondition condition) throws NullPointerException {
         requireNonNull(condition, "condition is required");
         if (Objects.isNull(this.condition)) {
@@ -78,13 +68,7 @@ class DefaultColumnQuery implements ColumnQuery {
     }
 
 
-    /**
-     * Appends a new condition in the query using {@link ColumnCondition#or(ColumnCondition)}
-     *
-     * @param condition a condition to be added
-     * @return the same instance with a condition added
-     * @throws NullPointerException when condition is null
-     */
+    @Override
     public ColumnQuery or(ColumnCondition condition) throws NullPointerException {
         requireNonNull(condition, "condition is required");
         if (Objects.isNull(this.condition)) {
@@ -95,92 +79,54 @@ class DefaultColumnQuery implements ColumnQuery {
         return this;
     }
 
-    /**
-     * Add the order how the result will returned
-     *
-     * @param sort the order way
-     * @return the same instance with a sort added
-     */
+    @Override
     public ColumnQuery addSort(Sort sort) throws NullPointerException {
         this.sorts.add(requireNonNull(sort, "Sort is required"));
         return this;
     }
 
-    /**
-     * Add column to be either retrieve or deleted, if empty will either returns
-     * all elements in a find query or delete all elements in a column family entity.
-     *
-     * @param column the column name
-     * @return the same instance with a column added
-     */
+    @Override
     public ColumnQuery addColumn(String column) throws NullPointerException {
         this.columns.add(requireNonNull(column, "column is required"));
         return this;
     }
 
-    /**
-     * The column family name
-     *
-     * @return the column family name
-     */
+    @Override
     public String getColumnFamily() {
         return columnFamily;
     }
 
-    /**
-     * The conditions that contains in this {@link ColumnQuery}
-     *
-     * @return the conditions
-     */
+    @Override
     public Optional<ColumnCondition> getCondition() {
         return Optional.ofNullable(condition);
     }
 
+    @Override
     public List<String> getColumns() {
         return Collections.unmodifiableList(columns);
     }
 
-    /**
-     * The sorts that contains in this {@link ColumnQuery}
-     *
-     * @return the sorts
-     */
+    @Override
     public List<Sort> getSorts() {
         return Collections.unmodifiableList(sorts);
     }
 
-    /**
-     * Returns the max number of row in a query
-     *
-     * @return the limit to be used in a query
-     */
+    @Override
     public long getLimit() {
         return limit;
     }
 
-    /**
-     * Sets the max number of row in a query, if negative the value will ignored
-     *
-     * @param limit the new limit to query
-     */
+    @Override
     public void setLimit(long limit) {
         this.limit = limit;
     }
 
-    /**
-     * Gets when the result starts
-     *
-     * @return the start
-     */
+    @Override
     public long getStart() {
         return start;
     }
 
-    /**
-     * Setter to start a query
-     *
-     * @param start the starts
-     */
+    @Override
     public void setStart(long start) {
         this.start = start;
     }
