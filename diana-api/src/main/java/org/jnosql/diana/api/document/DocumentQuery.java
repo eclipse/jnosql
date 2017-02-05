@@ -23,6 +23,7 @@ package org.jnosql.diana.api.document;
 import org.jnosql.diana.api.Sort;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Class that contains information to do a query to {@link DocumentCollectionManager}
@@ -96,7 +97,7 @@ public interface DocumentQuery {
      *
      * @return the conditions
      */
-    DocumentCondition getCondition();
+    Optional<DocumentCondition> getCondition();
 
     /**
      * The sorts that contains in this {@link DocumentQuery}

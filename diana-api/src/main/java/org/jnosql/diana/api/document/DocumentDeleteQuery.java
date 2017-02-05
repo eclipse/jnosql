@@ -21,6 +21,7 @@ package org.jnosql.diana.api.document;
 
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A unit that has the columnFamily and condition to delete from conditions
@@ -45,7 +46,7 @@ public interface DocumentDeleteQuery {
      *
      * @return the condition
      */
-    DocumentCondition getCondition();
+    Optional<DocumentCondition> getCondition();
 
     /**
      * Defines which columns will be removed, the database provider might use this information
@@ -101,5 +102,16 @@ public interface DocumentDeleteQuery {
      */
     static DocumentDeleteQuery of(String collection, DocumentCondition condition) throws NullPointerException {
         return DefaultDocumentDeleteQuery.of(collection, condition);
+    }
+
+    /**
+     * Creates a instance of column family
+     *
+     * @param collection the column family name
+     * @return an {@link DocumentDeleteQuery}
+     * @throws NullPointerException when collection is null
+     */
+    static DocumentDeleteQuery of(String collection) throws NullPointerException {
+        return DefaultDocumentDeleteQuery.of(collection);
     }
 }

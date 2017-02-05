@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 class DefaultDocumentQuery implements DocumentQuery {
 
@@ -91,8 +92,8 @@ class DefaultDocumentQuery implements DocumentQuery {
     }
 
     @Override
-    public DocumentCondition getCondition() {
-        return condition;
+    public Optional<DocumentCondition> getCondition() {
+        return Optional.ofNullable(condition);
     }
 
     @Override

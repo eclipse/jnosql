@@ -45,7 +45,7 @@ public class DefaultDocumentDeleteQueryTest {
         DocumentCondition condition = DocumentCondition.eq(Document.of("name", "Ada"));
         DefaultDocumentDeleteQuery query = DefaultDocumentDeleteQuery.of("query", condition);
         assertEquals("query", query.getCollection());
-        assertEquals(condition, query.getCondition());
+        assertEquals(condition, query.getCondition().get());
         assertTrue(query.getDocuments().isEmpty());
     }
 

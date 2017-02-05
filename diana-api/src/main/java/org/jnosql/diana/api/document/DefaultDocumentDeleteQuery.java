@@ -21,6 +21,7 @@ package org.jnosql.diana.api.document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
@@ -32,7 +33,7 @@ class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
 
     private final String collection;
 
-    private final DocumentCondition condition;
+    private DocumentCondition condition;
 
     private final List<String> documents = new ArrayList<>();
 
@@ -41,12 +42,16 @@ class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
         this.condition = condition;
     }
 
+    DefaultDocumentDeleteQuery(String collection) {
+        this.collection = collection;
+    }
+
     public String getCollection() {
         return collection;
     }
 
-    public DocumentCondition getCondition() {
-        return condition;
+    public Optional<DocumentCondition> getCondition() {
+        return Optional.ofNullable(condition);
     }
 
     @Override
@@ -75,6 +80,11 @@ class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
     public void removeAll(Iterable<String> documents) throws NullPointerException {
         requireNonNull(documents, "documents is required");
         documents.forEach(this::remove);
+    }
+
+    static DefaultDocumentDeleteQuery of(String collection) throws NullPointerException {
+        requireNonNull(collection, "collection is required");
+        return new DefaultDocumentDeleteQuery(collection);
     }
 
     static DefaultDocumentDeleteQuery of(String collection, DocumentCondition condition) throws NullPointerException {
