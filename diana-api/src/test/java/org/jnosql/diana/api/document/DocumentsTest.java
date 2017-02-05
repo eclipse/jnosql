@@ -16,26 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.jnosql.diana.api.column;
+package org.jnosql.diana.api.document;
 
 import org.hamcrest.Matchers;
+import org.jnosql.diana.api.column.Column;
+import org.jnosql.diana.api.column.Columns;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.junit.Assert.*;
 
 
-public class ColumnsTest {
-
+public class DocumentsTest {
     @Test
-    public void shouldCreateColumn() {
-        Column column = Columns.of("name", "Ada");
+    public void shouldCreateDocument() {
+        Document column = Documents.of("name", "Ada");
         assertEquals("name", column.getName());
         assertEquals("Ada", column.get());
     }
@@ -43,8 +42,8 @@ public class ColumnsTest {
     @Test
     public void shouldCreateColumnsFromMap() {
         Map<String, String> map = singletonMap("name", "Ada");
-        List<Column> columns = Columns.of(map);
-        assertFalse(columns.isEmpty());
-        assertThat(columns, Matchers.contains(Column.of("name", "Ada")));
+        List<Document> documents = Documents.of(map);
+        assertFalse(documents.isEmpty());
+        assertThat(documents, contains(Document.of("name", "Ada")));
     }
 }
