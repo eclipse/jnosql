@@ -172,7 +172,7 @@ public class DocumentQuery {
 
     /**
      * Gets when the result starts
-     * @return
+     * @return the start
      */
     public long getStart() {
         return start;

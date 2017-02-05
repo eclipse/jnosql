@@ -171,7 +171,7 @@ public class ColumnQuery {
 
     /**
      * Gets when the result starts
-     * @return
+     * @return the start
      */
     public long getStart() {
         return start;
