@@ -19,30 +19,62 @@
 
 package org.jnosql.diana.api;
 
+/**
+ * The root exception to async query
+ */
 public class ExecuteAsyncQueryException extends JNoSQLException {
 
 
+    /**
+     * Constructs a new runtime exception with null as its detail message.
+     */
     public ExecuteAsyncQueryException() {
         super();
     }
 
-
+    /**
+     * Constructs a new runtime exception with the specified detail message.
+     *
+     * @param message
+     */
     public ExecuteAsyncQueryException(String message) {
         super(message);
     }
 
+    /**
+     * Constructs a new runtime exception with the specified detail message and cause.
+     *
+     * @param message the message
+     * @param cause   the cause
+     */
     public ExecuteAsyncQueryException(String message, Throwable cause) {
         super(message, cause);
     }
 
-
+    /**
+     * Constructs a new runtime exception with the specified cause and a detail
+     * message of (cause==null ? null : cause.toString()) (which typically contains
+     * the class and detail message of cause).
+     *
+     * @param cause the cause
+     */
     public ExecuteAsyncQueryException(Throwable cause) {
         super(cause);
     }
 
+    /**
+     * Constructs a new runtime exception with the specified detail
+     * message, cause, suppression enabled or disabled, and writable stack
+     * trace enabled or disabled.
+     *
+     * @param message            the message
+     * @param cause              the cause
+     * @param enableSuppression  the enableSuppression
+     * @param writableStackTrace the writableStackTrace
+     */
     protected ExecuteAsyncQueryException(String message, Throwable cause,
-                                         boolean enableSuppression,
-                                         boolean writableStackTrace) {
+                              boolean enableSuppression,
+                              boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }
