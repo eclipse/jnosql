@@ -23,6 +23,7 @@ package org.jnosql.diana.api.column;
 import org.jnosql.diana.api.Sort;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Class that contains information to do a query to {@link ColumnEntity}
@@ -91,7 +92,7 @@ public interface ColumnQuery {
      *
      * @return the conditions
      */
-    ColumnCondition getCondition();
+    Optional<ColumnCondition> getCondition();
 
     /**
      * Returns the columns

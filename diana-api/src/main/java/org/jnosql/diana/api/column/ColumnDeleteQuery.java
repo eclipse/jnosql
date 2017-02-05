@@ -19,6 +19,7 @@
 package org.jnosql.diana.api.column;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A unit that has the columnFamily and condition to delete from conditions
@@ -44,7 +45,7 @@ public interface ColumnDeleteQuery {
      *
      * @return the condition
      */
-    ColumnCondition getCondition();
+    Optional<ColumnCondition> getCondition();
 
     /**
      * Defines which columns will be removed, the database provider might use this information

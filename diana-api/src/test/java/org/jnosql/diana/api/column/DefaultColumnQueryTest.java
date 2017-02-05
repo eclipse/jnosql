@@ -91,11 +91,11 @@ public class DefaultColumnQueryTest {
         ColumnCondition condition1 = ColumnCondition.eq(Column.of("age", 10));
 
         query.and(condition);
-        assertEquals(condition, query.getCondition());
+        assertEquals(condition, query.getCondition().get());
 
-        assertNotNull(query.and(condition1).getCondition());
-        assertNotEquals(condition, query.getCondition());
-        assertNotEquals(condition1, query.getCondition());
+        assertNotNull(query.and(condition1).getCondition().get());
+        assertNotEquals(condition, query.getCondition().get());
+        assertNotEquals(condition1, query.getCondition().get());
     }
 
     @Test
@@ -105,11 +105,11 @@ public class DefaultColumnQueryTest {
         ColumnCondition condition1 = ColumnCondition.eq(Column.of("age", 10));
 
         query.or(condition);
-        assertEquals(condition, query.getCondition());
+        assertEquals(condition, query.getCondition().get());
 
-        assertNotNull(query.or(condition1).getCondition());
-        assertNotEquals(condition, query.getCondition());
-        assertNotEquals(condition1, query.getCondition());
+        assertNotNull(query.or(condition1).getCondition().get());
+        assertNotEquals(condition, query.getCondition().get());
+        assertNotEquals(condition1, query.getCondition().get());
     }
 
 

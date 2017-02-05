@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
@@ -131,8 +132,8 @@ class DefaultColumnQuery implements ColumnQuery {
      *
      * @return the conditions
      */
-    public ColumnCondition getCondition() {
-        return condition;
+    public Optional<ColumnCondition> getCondition() {
+        return Optional.ofNullable(condition);
     }
 
     public List<String> getColumns() {

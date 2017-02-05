@@ -21,6 +21,7 @@ package org.jnosql.diana.api.column;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
@@ -45,8 +46,8 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
         return columnFamily;
     }
 
-    public ColumnCondition getCondition() {
-        return condition;
+    public Optional<ColumnCondition> getCondition() {
+        return Optional.ofNullable(condition);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class DefaultColumnDeleteQueryTest {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
         DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
         assertEquals("query", query.getColumnFamily());
-        assertEquals(condition, query.getCondition());
+        assertEquals(condition, query.getCondition().get());
         assertTrue(query.getColumns().isEmpty());
     }
 
