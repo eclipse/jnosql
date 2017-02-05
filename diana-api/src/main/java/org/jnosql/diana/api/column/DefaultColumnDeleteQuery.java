@@ -26,9 +26,9 @@ import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 /**
- * the default implementation of {@link DeleteQuery}
+ * the default implementation of {@link ColumnDeleteQuery}
  */
-class DefaultDeleteQuery implements DeleteQuery {
+class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
 
     private final String columnFamily;
 
@@ -36,7 +36,7 @@ class DefaultDeleteQuery implements DeleteQuery {
 
     private final List<String> columns = new ArrayList<>();
 
-    private DefaultDeleteQuery(String columnFamily, ColumnCondition condition) {
+    private DefaultColumnDeleteQuery(String columnFamily, ColumnCondition condition) {
         this.columnFamily = columnFamily;
         this.condition = condition;
     }
@@ -77,9 +77,9 @@ class DefaultDeleteQuery implements DeleteQuery {
         columns.forEach(this::remove);
     }
 
-    static DefaultDeleteQuery of(String columnFamily, ColumnCondition condition) throws NullPointerException {
+    static DefaultColumnDeleteQuery of(String columnFamily, ColumnCondition condition) throws NullPointerException {
         requireNonNull(columnFamily, "columnFamily is required");
         requireNonNull(condition, "condition is required");
-        return new DefaultDeleteQuery(columnFamily, condition);
+        return new DefaultColumnDeleteQuery(columnFamily, condition);
     }
 }

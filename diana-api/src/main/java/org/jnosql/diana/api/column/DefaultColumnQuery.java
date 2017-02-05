@@ -185,12 +185,12 @@ class DefaultColumnQuery implements ColumnQuery {
     }
 
     @Override
-    public DeleteQuery toDeleteQuery() {
-        DeleteQuery deleteQuery = DeleteQuery.of(columnFamily, condition);
+    public ColumnDeleteQuery toDeleteQuery() {
+        ColumnDeleteQuery columnDeleteQuery = ColumnDeleteQuery.of(columnFamily, condition);
         if (!columns.isEmpty()) {
-            deleteQuery.addAll(columns);
+            columnDeleteQuery.addAll(columns);
         }
-        return deleteQuery;
+        return columnDeleteQuery;
     }
 
     @Override

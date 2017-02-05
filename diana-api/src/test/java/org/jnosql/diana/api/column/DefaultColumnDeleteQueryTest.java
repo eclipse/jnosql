@@ -27,24 +27,24 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 
-public class DefaultDeleteQueryTest {
+public class DefaultColumnDeleteQueryTest {
 
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnNPEWhenColumnIsNull() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultDeleteQuery.of(null, condition);
+        DefaultColumnDeleteQuery.of(null, condition);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnNPEWhenConditionIsNull() {
-        DefaultDeleteQuery.of("collection", null);
+        DefaultColumnDeleteQuery.of("collection", null);
     }
 
     @Test
     public void shouldCreateInstance() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultDeleteQuery query = DefaultDeleteQuery.of("query", condition);
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
         assertEquals("query", query.getColumnFamily());
         assertEquals(condition, query.getCondition());
         assertTrue(query.getColumns().isEmpty());
@@ -53,14 +53,14 @@ public class DefaultDeleteQueryTest {
     @Test(expected = NullPointerException.class)
     public void shouldGetErrorWhenAddColumnIsNull() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultDeleteQuery query = DefaultDeleteQuery.of("query", condition);
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
         query.add(null);
     }
 
     @Test
     public void shouldAddColumn() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultDeleteQuery query = DefaultDeleteQuery.of("query", condition);
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
         query.add("column");
         assertThat(query.getColumns(), contains("column"));
     }
@@ -68,7 +68,7 @@ public class DefaultDeleteQueryTest {
     @Test
     public void shouldRemoveColumn() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultDeleteQuery query = DefaultDeleteQuery.of("query", condition);
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
         query.add("column");
         query.remove("column");
         assertTrue(query.getColumns().isEmpty());
@@ -79,7 +79,7 @@ public class DefaultDeleteQueryTest {
     @Test
     public void shouldAddAllColumns() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultDeleteQuery query = DefaultDeleteQuery.of("query", condition);
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
         query.addAll(singletonList("column"));
         assertThat(query.getColumns(), contains("column"));
     }
@@ -87,7 +87,7 @@ public class DefaultDeleteQueryTest {
     @Test
     public void shouldRemoveAllColumns() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultDeleteQuery query = DefaultDeleteQuery.of("query", condition);
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
         query.add("column");
         query.removeAll(singletonList("column"));
         assertTrue(query.getColumns().isEmpty());

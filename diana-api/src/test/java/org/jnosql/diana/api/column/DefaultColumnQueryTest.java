@@ -18,11 +18,7 @@
  */
 package org.jnosql.diana.api.column;
 
-import org.hamcrest.Matchers;
 import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.DocumentCondition;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.contains;
@@ -123,9 +119,9 @@ public class DefaultColumnQueryTest {
         query.addColumn("column");
         query.and(ColumnCondition.eq(Column.of("name", "Ada")));
 
-        DeleteQuery deleteQuery = query.toDeleteQuery();
-        assertEquals(query.getColumnFamily(), deleteQuery.getColumnFamily());
-        assertThat(query.getColumns(), contains(deleteQuery.getColumns().get(0)));
+        ColumnDeleteQuery columnDeleteQuery = query.toDeleteQuery();
+        assertEquals(query.getColumnFamily(), columnDeleteQuery.getColumnFamily());
+        assertThat(query.getColumns(), contains(columnDeleteQuery.getColumns().get(0)));
 
     }
 }
