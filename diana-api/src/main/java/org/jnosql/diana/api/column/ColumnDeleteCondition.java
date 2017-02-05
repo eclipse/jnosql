@@ -18,6 +18,7 @@
  */
 package org.jnosql.diana.api.column;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -29,46 +30,49 @@ import java.util.Objects;
  * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition)}</p>
  * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition, java.util.function.Consumer)}</p>
  */
-public class ColumnDeleteCondition {
+public interface ColumnDeleteCondition {
 
-    private final String columnFamily;
-
-    private final ColumnCondition condition;
-
-    private ColumnDeleteCondition(String columnFamily, ColumnCondition condition) {
-        this.columnFamily = columnFamily;
-        this.condition = condition;
-    }
 
     /**
      * getter the columnFamily name
      *
      * @return the columnFamily name
      */
-    public String getColumnFamily() {
-        return columnFamily;
-    }
+    String getColumnFamily();
 
     /**
      * getter the condition
      *
      * @return the condition
      */
-    public ColumnCondition getCondition() {
-        return condition;
-    }
+    ColumnCondition getCondition();
+
+    /**
+     * Defines which columns will be removed, the database provider might use this information
+     * to remove just these fields instead of all entity from {@link ColumnDeleteCondition}
+     *
+     * @return the columns
+     */
+    List<String> getColumns();
+
+    /**
+     * Adds a column to be removed
+     *
+     * @param column the column
+     * @throws NullPointerException when column is null
+     * @see ColumnDeleteCondition#getColumns()
+     */
+    void add(String column) throws NullPointerException;
 
     /**
      * Creates a instance of column family
      *
      * @param columnFamily the column family name
-     * @param condition the condition
+     * @param condition    the condition
      * @return an {@link ColumnDeleteCondition}
      * @throws NullPointerException when either columnFamily
      */
     public static ColumnDeleteCondition of(String columnFamily, ColumnCondition condition) throws NullPointerException {
-        Objects.requireNonNull(columnFamily, "columnFamily is required");
-        Objects.requireNonNull(condition, "condition is required");
-        return new ColumnDeleteCondition(columnFamily, condition);
+        return DefaultColumnDeleteCondition.of(columnFamily, condition);
     }
 }
