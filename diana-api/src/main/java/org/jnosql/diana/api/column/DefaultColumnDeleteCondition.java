@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
+import static java.util.Objects.requireNonNull;
 
 /**
  * the default implementation of {@link ColumnDeleteCondition}
@@ -56,12 +57,30 @@ class DefaultColumnDeleteCondition implements ColumnDeleteCondition {
 
     @Override
     public void add(String column) throws NullPointerException {
-        this.columns.add(Objects.requireNonNull(column, "column null is required"));
+        this.columns.add(requireNonNull(column, "column null is required"));
+    }
+
+    @Override
+    public void addAll(Iterable<String> columns) throws NullPointerException {
+        requireNonNull(columns, "columns is required");
+        columns.forEach(this::add);
+    }
+
+    @Override
+    public void remove(String column) throws NullPointerException {
+        requireNonNull(column, "column is required");
+        this.columns.remove(column);
+    }
+
+    @Override
+    public void removeAll(Iterable<String> columns) throws NullPointerException {
+        requireNonNull(columns, "columns is required");
+        columns.forEach(this::remove);
     }
 
     static DefaultColumnDeleteCondition of(String columnFamily, ColumnCondition condition) throws NullPointerException {
-        Objects.requireNonNull(columnFamily, "columnFamily is required");
-        Objects.requireNonNull(condition, "condition is required");
+        requireNonNull(columnFamily, "columnFamily is required");
+        requireNonNull(condition, "condition is required");
         return new DefaultColumnDeleteCondition(columnFamily, condition);
     }
 }

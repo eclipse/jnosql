@@ -65,6 +65,33 @@ public interface ColumnDeleteCondition {
     void add(String column) throws NullPointerException;
 
     /**
+     * Adds all columns
+     *
+     * @param columns the columns to be added
+     * @throws NullPointerException when column is null
+     * @see ColumnDeleteCondition#getColumns()
+     */
+    void addAll(Iterable<String> columns) throws NullPointerException;
+
+    /**
+     * Removes a column from
+     *
+     * @param column the column to be removed
+     * @throws NullPointerException when column is null
+     * @see ColumnDeleteCondition#getColumns()
+     */
+    void remove(String column) throws NullPointerException;
+
+    /**
+     * Removes columns
+     *
+     * @param columns the columns to be removed
+     * @throws NullPointerException when columns is null
+     * @see ColumnDeleteCondition#getColumns()
+     */
+    void removeAll(Iterable<String> columns) throws NullPointerException;
+
+    /**
      * Creates a instance of column family
      *
      * @param columnFamily the column family name
