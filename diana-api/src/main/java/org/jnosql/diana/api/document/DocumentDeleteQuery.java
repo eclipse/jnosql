@@ -75,6 +75,26 @@ public interface DocumentDeleteQuery {
     void addAll(Iterable<String> documents) throws NullPointerException;
 
     /**
+     * Appends a new condition in the query
+     * using {{@link DocumentCondition#and(DocumentCondition)}}
+     *
+     * @param condition condition to be added
+     * @return the same instance with a condition added
+     * @throws NullPointerException when condition is null
+     */
+    DocumentDeleteQuery and(DocumentCondition condition) throws NullPointerException;
+
+    /**
+     * Appends a new condition in the query
+     * using {{@link DocumentCondition#or(DocumentCondition)}}
+     *
+     * @param condition condition to be added
+     * @return the same instance with a condition added
+     * @throws NullPointerException when condition is null
+     */
+    DocumentDeleteQuery or(DocumentCondition condition) throws NullPointerException;
+
+    /**
      * Removes a document from
      *
      * @param document the document to be removed

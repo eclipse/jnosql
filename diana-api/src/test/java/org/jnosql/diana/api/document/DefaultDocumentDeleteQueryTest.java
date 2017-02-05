@@ -23,6 +23,8 @@ import org.junit.Test;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -89,5 +91,33 @@ public class DefaultDocumentDeleteQueryTest {
         query.add("column");
         query.removeAll(singletonList("column"));
         assertTrue(query.getDocuments().isEmpty());
+    }
+
+    @Test
+    public void shouldAnd() {
+        DocumentDeleteQuery query = DocumentDeleteQuery.of("query");
+        DocumentCondition condition = DocumentCondition.eq(Document.of("name", "Ada"));
+        DocumentCondition condition1 = DocumentCondition.eq(Document.of("age", 10));
+
+        query.and(condition);
+        assertEquals(condition, query.getCondition().get());
+
+        assertNotNull(query.and(condition1).getCondition());
+        assertNotEquals(condition, query.getCondition().get());
+        assertNotEquals(condition1, query.getCondition().get());
+    }
+
+    @Test
+    public void shouldOr() {
+        DocumentDeleteQuery query = DocumentDeleteQuery.of("query");
+        DocumentCondition condition = DocumentCondition.eq(Document.of("name", "Ada"));
+        DocumentCondition condition1 = DocumentCondition.eq(Document.of("age", 10));
+
+        query.or(condition);
+        assertEquals(condition, query.getCondition().get());
+
+        assertNotNull(query.or(condition1).getCondition().get());
+        assertNotEquals(condition, query.getCondition().get());
+        assertNotEquals(condition1, query.getCondition().get());
     }
 }
