@@ -19,18 +19,17 @@
 package org.jnosql.diana.api.column;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A unit that has the columnFamily and condition to delete from conditions
  *
- * @see ColumnDeleteCondition#of(String, ColumnCondition).
+ * @see DeleteQuery#of(String, ColumnCondition).
  * This instance will be used on:
- * <p>{@link ColumnFamilyManager#delete(ColumnDeleteCondition)}</p>
- * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition)}</p>
- * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteCondition, java.util.function.Consumer)}</p>
+ * <p>{@link ColumnFamilyManager#delete(DeleteQuery)}</p>
+ * <p>{@link ColumnFamilyManagerAsync#delete(DeleteQuery)}</p>
+ * <p>{@link ColumnFamilyManagerAsync#delete(DeleteQuery, java.util.function.Consumer)}</p>
  */
-public interface ColumnDeleteCondition {
+public interface DeleteQuery {
 
 
     /**
@@ -49,7 +48,7 @@ public interface ColumnDeleteCondition {
 
     /**
      * Defines which columns will be removed, the database provider might use this information
-     * to remove just these fields instead of all entity from {@link ColumnDeleteCondition}
+     * to remove just these fields instead of all entity from {@link DeleteQuery}
      *
      * @return the columns
      */
@@ -60,7 +59,7 @@ public interface ColumnDeleteCondition {
      *
      * @param column the column
      * @throws NullPointerException when column is null
-     * @see ColumnDeleteCondition#getColumns()
+     * @see DeleteQuery#getColumns()
      */
     void add(String column) throws NullPointerException;
 
@@ -69,7 +68,7 @@ public interface ColumnDeleteCondition {
      *
      * @param columns the columns to be added
      * @throws NullPointerException when column is null
-     * @see ColumnDeleteCondition#getColumns()
+     * @see DeleteQuery#getColumns()
      */
     void addAll(Iterable<String> columns) throws NullPointerException;
 
@@ -78,7 +77,7 @@ public interface ColumnDeleteCondition {
      *
      * @param column the column to be removed
      * @throws NullPointerException when column is null
-     * @see ColumnDeleteCondition#getColumns()
+     * @see DeleteQuery#getColumns()
      */
     void remove(String column) throws NullPointerException;
 
@@ -87,7 +86,7 @@ public interface ColumnDeleteCondition {
      *
      * @param columns the columns to be removed
      * @throws NullPointerException when columns is null
-     * @see ColumnDeleteCondition#getColumns()
+     * @see DeleteQuery#getColumns()
      */
     void removeAll(Iterable<String> columns) throws NullPointerException;
 
@@ -96,10 +95,10 @@ public interface ColumnDeleteCondition {
      *
      * @param columnFamily the column family name
      * @param condition    the condition
-     * @return an {@link ColumnDeleteCondition}
+     * @return an {@link DeleteQuery}
      * @throws NullPointerException when either columnFamily
      */
-    public static ColumnDeleteCondition of(String columnFamily, ColumnCondition condition) throws NullPointerException {
-        return DefaultColumnDeleteCondition.of(columnFamily, condition);
+    public static DeleteQuery of(String columnFamily, ColumnCondition condition) throws NullPointerException {
+        return DefaultDeleteQuery.of(columnFamily, condition);
     }
 }

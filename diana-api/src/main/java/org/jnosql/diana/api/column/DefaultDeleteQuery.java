@@ -21,15 +21,14 @@ package org.jnosql.diana.api.column;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 /**
- * the default implementation of {@link ColumnDeleteCondition}
+ * the default implementation of {@link DeleteQuery}
  */
-class DefaultColumnDeleteCondition implements ColumnDeleteCondition {
+class DefaultDeleteQuery implements DeleteQuery {
 
     private final String columnFamily;
 
@@ -37,7 +36,7 @@ class DefaultColumnDeleteCondition implements ColumnDeleteCondition {
 
     private final List<String> columns = new ArrayList<>();
 
-    private DefaultColumnDeleteCondition(String columnFamily, ColumnCondition condition) {
+    private DefaultDeleteQuery(String columnFamily, ColumnCondition condition) {
         this.columnFamily = columnFamily;
         this.condition = condition;
     }
@@ -78,9 +77,9 @@ class DefaultColumnDeleteCondition implements ColumnDeleteCondition {
         columns.forEach(this::remove);
     }
 
-    static DefaultColumnDeleteCondition of(String columnFamily, ColumnCondition condition) throws NullPointerException {
+    static DefaultDeleteQuery of(String columnFamily, ColumnCondition condition) throws NullPointerException {
         requireNonNull(columnFamily, "columnFamily is required");
         requireNonNull(condition, "condition is required");
-        return new DefaultColumnDeleteCondition(columnFamily, condition);
+        return new DefaultDeleteQuery(columnFamily, condition);
     }
 }

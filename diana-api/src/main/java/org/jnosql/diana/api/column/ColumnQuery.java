@@ -134,4 +134,13 @@ public interface ColumnQuery {
      * @param start the starts
      */
     void setStart(long start);
+
+    /**
+     * Converts this to {@link DeleteQuery}
+     *
+     * @return the {@link DeleteQuery} instance
+     * @throws NullPointerException if {@link ColumnQuery#getCondition()} still null
+     */
+    DeleteQuery toDeleteQuery() throws NullPointerException;
+
 }

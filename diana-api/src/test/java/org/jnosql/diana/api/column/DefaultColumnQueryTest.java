@@ -115,4 +115,17 @@ public class DefaultColumnQueryTest {
         assertNotEquals(condition, query.getCondition());
         assertNotEquals(condition1, query.getCondition());
     }
+
+
+    @Test
+    public void shouldReturnDeleteQuery() {
+        ColumnQuery query = ColumnQuery.of("query");
+        query.addColumn("column");
+        query.and(ColumnCondition.eq(Column.of("name", "Ada")));
+
+        DeleteQuery deleteQuery = query.toDeleteQuery();
+        assertEquals(query.getColumnFamily(), deleteQuery.getColumnFamily());
+        assertThat(query.getColumns(), contains(deleteQuery.getColumns().get(0)));
+
+    }
 }
