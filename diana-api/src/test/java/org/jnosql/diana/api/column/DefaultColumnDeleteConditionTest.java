@@ -18,14 +18,13 @@
  */
 package org.jnosql.diana.api.column;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
-
-import java.util.Collections;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 public class DefaultColumnDeleteConditionTest {
