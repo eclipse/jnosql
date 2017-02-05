@@ -188,7 +188,7 @@ public class DefaultColumnConditionTest {
     @Test
     public void shouldSubquery() {
         ColumnQuery query = ColumnQuery.of("collection");
-        DefaultColumnCondition subquery = DefaultColumnCondition.subquery(query);
+        ColumnCondition subquery = ColumnCondition.subquery(query);
         Column column = subquery.getColumn();
         assertEquals(Condition.SUBQUERY, subquery.getCondition());
         assertEquals(SUBQUERY.getNameField(), column.getName());
