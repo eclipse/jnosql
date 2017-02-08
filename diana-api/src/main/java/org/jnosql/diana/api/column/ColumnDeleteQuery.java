@@ -23,9 +23,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A unit that has the columnFamily and condition to delete from conditions
- *
- * @see ColumnDeleteQuery#of(String, ColumnCondition).
+ * A unit that has the columnFamily and condition to delete from conditions.
+ * <p>{@link  ColumnDeleteQuery#of(String, ColumnCondition)}</p>
  * This instance will be used on:
  * <p>{@link ColumnFamilyManager#delete(ColumnDeleteQuery)}</p>
  * <p>{@link ColumnFamilyManagerAsync#delete(ColumnDeleteQuery)}</p>
