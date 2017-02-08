@@ -34,9 +34,11 @@ public interface ValueReader {
     /**
      * verifies if the reader has support of instance from this class.
      *
+     * @param <T>   the type
      * @param clazz - {@link Class} to be verified
      * @return true if the implementation is can support this class, otherwise false
      */
+
     <T> boolean isCompatible(Class<T> clazz);
 
     /**

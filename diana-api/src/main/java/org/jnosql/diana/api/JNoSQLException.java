@@ -35,7 +35,7 @@ public class JNoSQLException extends RuntimeException {
     /**
      * Constructs a new runtime exception with the specified detail message.
      *
-     * @param message
+     * @param message the message
      */
     public JNoSQLException(String message) {
         super(message);
