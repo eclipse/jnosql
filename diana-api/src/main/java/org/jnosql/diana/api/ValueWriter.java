@@ -33,6 +33,7 @@ public interface ValueWriter<T, S> {
     /**
      * verifies if the writer has support of instance from this class.
      *
+     * @param <T>   the type
      * @param clazz - {@link Class} to be verified
      * @return true if the implementation is can support this class, otherwise false
      */

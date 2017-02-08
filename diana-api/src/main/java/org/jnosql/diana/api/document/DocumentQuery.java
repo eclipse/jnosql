@@ -110,7 +110,7 @@ public interface DocumentQuery {
     /**
      * Get documents
      *
-     * @return
+     * @return the documents
      */
     List<String> getDocuments();
 

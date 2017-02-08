@@ -184,7 +184,8 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
     /**
      * Returns a single entity from query
      *
-     * @param query - query to figure out entities
+     * @param query    - query to figure out entities
+     * @param callBack the callback
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException     when query is null
      */

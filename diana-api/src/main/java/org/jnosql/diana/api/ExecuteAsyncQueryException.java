@@ -36,7 +36,7 @@ public class ExecuteAsyncQueryException extends JNoSQLException {
     /**
      * Constructs a new runtime exception with the specified detail message.
      *
-     * @param message
+     * @param message the message
      */
     public ExecuteAsyncQueryException(String message) {
         super(message);

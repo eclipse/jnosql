@@ -73,21 +73,21 @@ public interface Column extends Serializable {
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get(Class)}
-     * @param clazz
-     * @param <T>
+     * @param clazz the clazz
+     * @param <T> the type
      * @return {@link org.jnosql.diana.api.Value#get(Class)}
-     * @throws NullPointerException
-     * @throws UnsupportedOperationException
+     * @throws NullPointerException {@link org.jnosql.diana.api.Value#get(Class)}
+     * @throws UnsupportedOperationException {@link org.jnosql.diana.api.Value#get(Class)}
      */
     <T> T get(Class<T> clazz) throws NullPointerException, UnsupportedOperationException;
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
-     * @param typeSupplier
-     * @param <T>
+     * @param typeSupplier {@link org.jnosql.diana.api.Value#get(Class)}
+     * @param <T> {@link org.jnosql.diana.api.Value#get(Class)}
      * @return {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
-     * @throws NullPointerException
-     * @throws UnsupportedOperationException
+     * @throws NullPointerException {@link org.jnosql.diana.api.Value#get(Class)}
+     * @throws UnsupportedOperationException {@link org.jnosql.diana.api.Value#get(Class)}
      */
     <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException;
 
