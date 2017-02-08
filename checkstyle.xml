@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <!--
+  ~ Copyright 2017 Eclipse Foundation
   ~ Licensed to the Apache Software Foundation (ASF) under one
   ~ or more contributor license agreements. See the NOTICE file
   ~ distributed with this work for additional information
@@ -45,6 +46,7 @@
     <module name="Header">
         <property name="headerFile" value="${checkstyle.header.file}"/>
         <property name="fileExtensions" value="java"/>
+        <property name="ignoreLines" value="2"/>
     </module>
 
     <!-- Checks for Size Violations.                    -->
