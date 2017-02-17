@@ -48,9 +48,10 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git://github.com/simpligility/ossrh-demo.git</connection>
-        <developerConnection>scm:git:ssh://github.com:JNOSQL/diana.git</developerConnection>
-        <url>https://github.com/JNOSQL/diana/tree/master</url>
+        <connection>scm:git:https://github.com/JNOSQL/diana.git</connection>
+        <tag>master</tag>
+        <developerConnection>scm:git:https://github.com/JNOSQL/diana.git</developerConnection>
+        <url>https://github.com/JNOSQL/diana</url>
     </scm>
 
 
