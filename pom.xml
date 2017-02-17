@@ -102,7 +102,6 @@
 
     <modules>
         <module>diana-api</module>
-        <module>diana-tck</module>
     </modules>
 
     <dependencies>
