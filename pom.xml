@@ -57,15 +57,10 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray-release</id>
-            <name>oss-jfrog-artifactory-release</name>
-            <url>https://oss.jfrog.org/artifactory/oss-release-local</url>
+            <id>bintray-jnosql-maven</id>
+            <name>jnosql-maven</name>
+            <url>https://api.bintray.com/maven/jnosql/maven/org.jnosql.diana:diana-parent/;publish=1</url>
         </repository>
-        <snapshotRepository>
-            <id>bintray-snapshot</id>
-            <name>oss-jfrog-artifactory-snapshot</name>
-            <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
-        </snapshotRepository>
     </distributionManagement>
 
     <repositories>
