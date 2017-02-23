@@ -45,7 +45,8 @@ public class ListTypeReferenceReaderTest {
 
         assertTrue(referenceReader.isCompatible(new TypeReference<List<String>>(){}));
         assertTrue(referenceReader.isCompatible(new TypeReference<List<Long>>(){}));
-
+        assertTrue(referenceReader.isCompatible(new TypeReference<Iterable<String>>(){}));
+        assertTrue(referenceReader.isCompatible(new TypeReference<Iterable<Long>>(){}));
     }
 
 
@@ -64,6 +65,9 @@ public class ListTypeReferenceReaderTest {
     public void shouldConvert() {
         assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<List<String>>(){}, "123"));
         assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<List<Long>>(){}, "123"));
+
+        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<Iterable<String>>(){}, "123"));
+        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<Iterable<Long>>(){}, "123"));
     }
 
 }

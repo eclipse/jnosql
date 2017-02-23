@@ -36,7 +36,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 
 /**
- * The {@link TypeReferenceReader} to {@link java.util.List}
+ * The {@link TypeReferenceReader} to {@link java.util.List} and {@link java.lang.Iterable}
  */
 @SuppressWarnings("unchecked")
 public class ListTypeReferenceReader implements TypeReferenceReader {
@@ -49,7 +49,8 @@ public class ListTypeReferenceReader implements TypeReferenceReader {
         if (ParameterizedType.class.isInstance(type)) {
             ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 
-            return List.class.equals(parameterizedType.getRawType()) &&
+            return (List.class.equals(parameterizedType.getRawType())
+                    || Iterable.class.equals(parameterizedType.getRawType())) &&
                     Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
         }
         return false;
