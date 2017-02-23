@@ -23,6 +23,7 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Condition;
 
+import static org.jnosql.diana.api.Condition.BETWEEN;
 import static org.jnosql.diana.api.Condition.EQUALS;
 import static org.jnosql.diana.api.Condition.GREATER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.GREATER_THAN;
@@ -164,6 +165,23 @@ public interface DocumentCondition {
      */
     static DocumentCondition like(Document document) throws NullPointerException {
         return DefaultDocumentCondition.of(document, LIKE);
+    }
+
+    /**
+     * Creates a {@link DocumentCondition} that has a {@link Condition#BETWEEN},
+     * it means a query will scanning to a document collection that is between two values informed
+     * on a document name.
+     * The document must have a {@link Document#get()} an {@link Iterable} implementation
+     * with just two elements.
+     *
+     * @param document a column instance
+     * @return The between condition
+     * @throws NullPointerException     when document is null
+     * @throws IllegalArgumentException When the document neither has an Iterable instance or two elements on
+     *                                  an Iterable.
+     */
+    static DocumentCondition between(Document document) throws NullPointerException, IllegalArgumentException {
+        return DefaultDocumentCondition.between(document);
     }
 
     /**

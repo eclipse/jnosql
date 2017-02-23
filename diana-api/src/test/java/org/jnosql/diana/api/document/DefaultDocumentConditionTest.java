@@ -22,11 +22,15 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
+import org.jnosql.diana.api.TypeSupplier;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.OR;
@@ -195,5 +199,37 @@ public class DefaultDocumentConditionTest {
         assertEquals(query,document.get(DocumentQuery.class));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErroWhenBetweenIsNull() {
+        DocumentCondition.between(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldReturnErroWhenBetweenIsNotIterable() {
+        Document document = Document.of("age", 12);
+        DocumentCondition.between(document);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldReturnErrorWhenIterableHasOneElement() {
+        Document document = Document.of("age", Collections.singleton(12));
+        DocumentCondition.between(document);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldReturnErrorWhenIterableHasMoreThanTwoElement2() {
+        Document document = Document.of("age", Arrays.asList(12, 12, 12));
+        DocumentCondition.between(document);
+    }
+
+    @Test
+    public void shouldReturnBetween() {
+        Document document = Document.of("age", Arrays.asList(12, 13));
+        DocumentCondition between = DocumentCondition.between(document);
+        assertEquals(Condition.BETWEEN, between.getCondition());
+        Iterable<Integer> integers = between.getDocument().get(new TypeReference<Iterable<Integer>>() {
+        });
+        Assert.assertThat(integers, contains(12, 13));
+    }
 
 }

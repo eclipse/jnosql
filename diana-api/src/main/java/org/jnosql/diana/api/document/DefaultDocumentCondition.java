@@ -25,6 +25,7 @@ import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,6 +54,36 @@ class DefaultDocumentCondition implements DocumentCondition {
         return new DefaultDocumentCondition(Objects.requireNonNull(document, "Document is required"), condition);
     }
 
+    static DocumentCondition between(Document document) {
+        Objects.requireNonNull(document, "document is required");
+        Object value = document.get();
+        checkIterableClause(value);
+        return new DefaultDocumentCondition(document, Condition.BETWEEN);
+    }
+
+    private static void checkIterableClause(Object value) {
+        if (Iterable.class.isInstance(value)) {
+            int count = 0;
+            Iterator iterator = Iterable.class.cast(value).iterator();
+            while (iterator.hasNext()) {
+                iterator.next();
+                count++;
+                if (count > 2) {
+                    throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
+                            " with two elements");
+                }
+            }
+            if (count != 2) {
+                throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
+                        " with two elements");
+            }
+
+        } else {
+            throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
+                    " with two elements istead of class: " + value.getClass().getName());
+        }
+    }
+
     static DefaultDocumentCondition and(DocumentCondition... conditions) throws NullPointerException {
         requireNonNull(conditions, "condition is required");
         Document document = Document.of(AND.getNameField(), asList(conditions));
@@ -71,6 +102,7 @@ class DefaultDocumentCondition implements DocumentCondition {
         Document document = Document.of(SUBQUERY.getNameField(), query);
         return DefaultDocumentCondition.of(document, SUBQUERY);
     }
+
 
     public Document getDocument() {
         return document;
@@ -144,4 +176,6 @@ class DefaultDocumentCondition implements DocumentCondition {
         sb.append('}');
         return sb.toString();
     }
+
+
 }
