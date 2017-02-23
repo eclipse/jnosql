@@ -25,6 +25,7 @@ import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,6 +71,36 @@ class DefaultColumnCondition implements ColumnCondition {
         requireNonNull(query, "query is required");
         Column column = Column.of(SUBQUERY.getNameField(), query);
         return DefaultColumnCondition.of(column, SUBQUERY);
+    }
+
+    static DefaultColumnCondition between(Column column) {
+        Objects.requireNonNull(column, "column is required");
+        Object value = column.get();
+        checkIterableClause(value);
+        return new DefaultColumnCondition(column, Condition.BETWEEN);
+    }
+
+    private static void checkIterableClause(Object value) {
+        if (Iterable.class.isInstance(value)) {
+            int count = 0;
+            Iterator iterator = Iterable.class.cast(value).iterator();
+            while (iterator.hasNext()) {
+                iterator.next();
+                count++;
+                if (count > 2) {
+                    throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
+                            " with two elements");
+                }
+            }
+            if (count != 2) {
+                throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
+                        " with two elements");
+            }
+
+        } else {
+            throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
+                    " with two elements istead of class: " + value.getClass().getName());
+        }
     }
 
     public Column getColumn() {

@@ -166,6 +166,24 @@ public interface ColumnCondition {
     }
 
     /**
+     * Creates a {@link ColumnCondition} that has a {@link Condition#BETWEEN},
+     * it means a query will scanning to a column collection that is between two values informed
+     * on a column name.
+     * The column must have a {@link Column#get()} an {@link Iterable} implementation
+     * with just two elements.
+     *
+     * @param column a column instance
+     * @return The between condition
+     * @throws NullPointerException     when column is null
+     * @throws IllegalArgumentException When the column neither has an Iterable instance or two elements on
+     *                                  an Iterable.
+     */
+    static ColumnCondition between(Column column) throws NullPointerException, IllegalArgumentException {
+        return DefaultColumnCondition.between(column);
+    }
+
+
+    /**
      * Returns a new {@link ColumnCondition} aggregating ,as ¨AND", all the conditions as just one condition.
      * The {@link Column} will storage the {@link Condition#getNameField()} as key and the value gonna be
      * the {@link java.util.List} of all conditions, in other words.

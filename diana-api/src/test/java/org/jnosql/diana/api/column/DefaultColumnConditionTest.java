@@ -24,8 +24,11 @@ import org.jnosql.diana.api.TypeReference;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.OR;
@@ -197,6 +200,39 @@ public class DefaultColumnConditionTest {
 
     }
 
+    //
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErroWhenBetweenIsNull() {
+        ColumnCondition.between(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldReturnErroWhenBetweenIsNotIterable() {
+        Column column = Column.of("age", 12);
+        ColumnCondition.between(column);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldReturnErrorWhenIterableHasOneElement() {
+        Column column = Column.of("age", Collections.singleton(12));
+        ColumnCondition.between(column);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldReturnErrorWhenIterableHasMoreThanTwoElement2() {
+        Column column = Column.of("age", Arrays.asList(12, 12, 12));
+        ColumnCondition.between(column);
+    }
+
+    @Test
+    public void shouldReturnBetween() {
+        Column column = Column.of("age", Arrays.asList(12, 13));
+        ColumnCondition between = ColumnCondition.between(column);
+        assertEquals(Condition.BETWEEN, between.getCondition());
+        Iterable<Integer> integers = between.getColumn().get(new TypeReference<Iterable<Integer>>() {
+        });
+        Assert.assertThat(integers, contains(12, 13));
+    }
 
 
 }
