@@ -23,7 +23,6 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Condition;
 
-import static org.jnosql.diana.api.Condition.BETWEEN;
 import static org.jnosql.diana.api.Condition.EQUALS;
 import static org.jnosql.diana.api.Condition.GREATER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.GREATER_THAN;
