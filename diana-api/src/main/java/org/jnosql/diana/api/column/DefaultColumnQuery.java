@@ -75,7 +75,7 @@ class DefaultColumnQuery implements ColumnQuery {
         if (Objects.isNull(this.condition)) {
             this.condition = condition;
         } else {
-            this.condition = this.condition.and(condition);
+            this.condition = this.condition.or(condition);
         }
         return this;
     }
