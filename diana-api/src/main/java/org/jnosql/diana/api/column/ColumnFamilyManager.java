@@ -56,6 +56,20 @@ public interface ColumnFamilyManager extends AutoCloseable {
     ColumnEntity update(ColumnEntity entity) throws NullPointerException;
 
     /**
+     * Updates a Column family entities, by default it's just run for each saving using
+     * {@link ColumnFamilyManager#update(ColumnEntity)}, each NoSQL vendor might
+     * replace to a more appropriate one.
+     *
+     * @param entities column family to be saved
+     * @return the entity saved
+     * @throws NullPointerException when entities is null
+     */
+    default Iterable<ColumnEntity> update(Iterable<ColumnEntity> entities) throws NullPointerException {
+        Objects.requireNonNull(entities, "entities is required");
+        return StreamSupport.stream(entities.spliterator(), false).map(this::update).collect(Collectors.toList());
+    }
+
+    /**
      * Saves a Column family entity with time to live
      *
      * @param entity column family to be saved

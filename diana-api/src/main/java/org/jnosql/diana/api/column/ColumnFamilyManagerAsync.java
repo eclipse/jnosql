@@ -135,6 +135,21 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
     void update(ColumnEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
+     * Updates an entities asynchronously, by default it's just run for each saving using
+     * {@link ColumnFamilyManagerAsync#update(ColumnEntity)},
+     * each NoSQL vendor might replace to a more appropriate one.
+     *
+     * @param entities entity to be saved
+     * @throws ExecuteAsyncQueryException    when there is a async error
+     * @throws UnsupportedOperationException when the database does not support this feature
+     * @throws NullPointerException          when entities is null
+     */
+    default void update(Iterable<ColumnEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+        Objects.requireNonNull(entities, "entities is required");
+        StreamSupport.stream(entities.spliterator(), false).forEach(this::update);
+    }
+
+    /**
      * Updates an entity asynchronously
      *
      * @param entity   entity to be saved
