@@ -189,7 +189,8 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException     when query is null
      */
-    default void singleResult(DocumentQuery query, Consumer<Optional<DocumentEntity>> callBack) throws NonUniqueResultException, ExecuteAsyncQueryException, UnsupportedOperationException {
+    default void singleResult(DocumentQuery query, Consumer<Optional<DocumentEntity>> callBack) throws NonUniqueResultException,
+            ExecuteAsyncQueryException, UnsupportedOperationException {
 
         find(query, entities -> {
             if (entities.isEmpty()) {
