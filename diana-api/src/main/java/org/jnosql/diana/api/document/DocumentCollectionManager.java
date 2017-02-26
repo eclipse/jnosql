@@ -101,6 +101,19 @@ public interface DocumentCollectionManager extends AutoCloseable {
      */
     DocumentEntity update(DocumentEntity entity) throws NullPointerException;
 
+    /**
+     * Updates documents collection entity, by default it's just run for each saving using
+     * {@link DocumentCollectionManager#update(DocumentEntity)},
+     * each NoSQL vendor might replace to a more appropriate one.
+     *
+     * @param entities entities to be saved
+     * @return the entity saved
+     * @throws NullPointerException when entities is null
+     */
+    default Iterable<DocumentEntity> update(Iterable<DocumentEntity> entities) throws NullPointerException {
+        Objects.requireNonNull(entities, "entities is required");
+        return StreamSupport.stream(entities.spliterator(), false).map(this::update).collect(Collectors.toList());
+    }
 
     /**
      * Deletes an entity
