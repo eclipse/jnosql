@@ -26,13 +26,13 @@
     <parent>
         <groupId>org.jnosql</groupId>
         <artifactId>jnosql-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
 
     <groupId>org.jnosql.diana</groupId>
     <artifactId>diana-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Diana is a flexible and extensible API to connect NoSQL databases. It brings an easy interface to
         support key-value, column family, document oriented and graph databases as JDBC is for SQL databases
