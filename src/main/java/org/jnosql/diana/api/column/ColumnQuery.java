@@ -65,6 +65,42 @@ public interface ColumnQuery {
     ColumnQuery or(ColumnCondition condition) throws NullPointerException;
 
     /**
+     * Sets the column query
+     *
+     * @param condition
+     * @return this instance
+     * @throws NullPointerException when condition is null
+     */
+    ColumnQuery withCondition(ColumnCondition condition) throws NullPointerException;
+
+    /**
+     * Set the position of the first result to retrieve.
+     *
+     * @param firstResult the firstResult
+     * @return this instance
+     */
+    ColumnQuery withFirstResult(long firstResult);
+
+    /**
+     * Set the maximum number of results to retrieve.
+     *
+     * @param maxResults
+     * @return this instance
+     */
+    ColumnQuery withMaxResults(long maxResults);
+
+    /**
+     * @return The maximum number of results the query object was set to retrieve.
+     */
+    long getMaxResults();
+
+    /**
+     * @return The position of the first result the query object was set to retrieve.
+     */
+    long getFirstResult();
+
+
+    /**
      * Add the order how the result will returned
      *
      * @param sort the order way
@@ -109,33 +145,6 @@ public interface ColumnQuery {
      */
     List<Sort> getSorts();
 
-    /**
-     * Returns the max number of row in a query
-     *
-     * @return the limit to be used in a query
-     */
-    long getLimit();
-
-    /**
-     * Sets the max number of row in a query, if negative the value will ignored
-     *
-     * @param limit the new limit to query
-     */
-    void setLimit(long limit);
-
-    /**
-     * Gets when the result starts
-     *
-     * @return the start
-     */
-    long getStart();
-
-    /**
-     * Setter to start a query
-     *
-     * @param start the starts
-     */
-    void setStart(long start);
 
     /**
      * Converts this to {@link ColumnDeleteQuery}

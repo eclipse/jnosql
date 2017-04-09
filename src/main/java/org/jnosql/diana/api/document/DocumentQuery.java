@@ -68,6 +68,41 @@ public interface DocumentQuery {
     DocumentQuery or(DocumentCondition condition) throws NullPointerException;
 
     /**
+     * Set the position of the first result to retrieve.
+     *
+     * @param firstResult the firstResult
+     * @return this instance
+     */
+    DocumentQuery withFirstResult(long firstResult);
+
+    /**
+     * Set the maximum number of results to retrieve.
+     *
+     * @param maxResults
+     * @return this instance
+     */
+    DocumentQuery withMaxResults(long maxResults);
+
+    /**
+     * Sets the document query with a condition
+     * @param condition the condition to be seted
+     * @return this instance
+     * @throws NullPointerException when condition is null
+     */
+    DocumentQuery with(DocumentCondition condition) throws NullPointerException;
+
+
+    /**
+     * @return The maximum number of results the query object was set to retrieve.
+     */
+    long getMaxResults();
+
+    /**
+     * @return The position of the first result the query object was set to retrieve.
+     */
+    long getFirstResult();
+
+    /**
      * Add the order how the result will returned
      *
      * @param sort the order way
@@ -113,34 +148,6 @@ public interface DocumentQuery {
      * @return the documents
      */
     List<String> getDocuments();
-
-    /**
-     * Returns the max number of row in a query
-     *
-     * @return the limit to be used in a query
-     */
-    long getLimit();
-
-    /**
-     * the limit setter
-     *
-     * @param limit the limit
-     */
-    void setLimit(long limit);
-
-    /**
-     * Gets when the result starts
-     *
-     * @return the start
-     */
-    long getStart();
-
-    /**
-     * Setter to start a query
-     *
-     * @param start the starts
-     */
-    void setStart(long start);
 
     /**
      * Converts to {@link DocumentDeleteQuery}
