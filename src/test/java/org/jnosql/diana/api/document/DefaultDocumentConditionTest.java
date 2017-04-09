@@ -20,7 +20,6 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
-import org.jnosql.diana.api.TypeSupplier;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -81,9 +81,7 @@ class DefaultColumnCondition implements ColumnCondition {
     private static void checkIterableClause(Object value) {
         if (Iterable.class.isInstance(value)) {
             int count = 0;
-            Iterator iterator = Iterable.class.cast(value).iterator();
-            while (iterator.hasNext()) {
-                iterator.next();
+            for (Object object : Iterable.class.cast(value)) {
                 count++;
                 if (count > 2) {
                     throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
