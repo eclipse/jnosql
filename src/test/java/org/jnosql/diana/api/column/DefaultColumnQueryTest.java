@@ -24,7 +24,11 @@ import org.junit.Test;
 
 import static org.hamcrest.Matchers.contains;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 public class DefaultColumnQueryTest {
@@ -39,8 +43,8 @@ public class DefaultColumnQueryTest {
     public void shouldCreateInstance() {
         ColumnQuery query = ColumnQuery.of("query");
         assertEquals("query", query.getColumnFamily());
-        assertEquals(0, query.getStart());
-        assertEquals(-1, query.getLimit());
+        assertEquals(0, query.getFirstResult());
+        assertEquals(-1, query.getMaxResults());
         assertTrue(query.getColumns().isEmpty());
         assertTrue(query.getSorts().isEmpty());
     }
@@ -72,17 +76,17 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shoudSetStart() {
+    public void shoudSetFirstResult() {
         ColumnQuery query = ColumnQuery.of("query");
-        query.setStart(10);
-        assertEquals(10L, query.getStart());
+        query.withFirstResult(10);
+        assertEquals(10L, query.getFirstResult());
     }
 
     @Test
     public void shoudSetLimit() {
         ColumnQuery query = ColumnQuery.of("query");
-        query.setLimit(10L);
-        assertEquals(10L, query.getLimit());
+        query.withMaxResults(10L);
+        assertEquals(10L, query.getMaxResults());
     }
 
     @Test

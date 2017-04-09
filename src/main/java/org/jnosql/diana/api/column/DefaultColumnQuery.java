@@ -43,9 +43,9 @@ class DefaultColumnQuery implements ColumnQuery {
 
     private final List<String> columns = new ArrayList<>();
 
-    private long limit = -1L;
+    private long maxResults = -1L;
 
-    private long start;
+    private long firstResult;
 
     private DefaultColumnQuery(String columnFamily) {
         this.columnFamily = requireNonNull(columnFamily, "column family is required");
@@ -81,6 +81,34 @@ class DefaultColumnQuery implements ColumnQuery {
     }
 
     @Override
+    public ColumnQuery withCondition(ColumnCondition condition) throws NullPointerException {
+        this.condition = Objects.requireNonNull(condition, "condition is required");
+        return this;
+    }
+
+    @Override
+    public ColumnQuery withFirstResult(long firstResult) {
+        this.firstResult = firstResult;
+        return this;
+    }
+
+    @Override
+    public ColumnQuery withMaxResults(long maxResults) {
+        this.maxResults = maxResults;
+        return this;
+    }
+
+    @Override
+    public long getMaxResults() {
+        return maxResults;
+    }
+
+    @Override
+    public long getFirstResult() {
+        return firstResult;
+    }
+
+    @Override
     public ColumnQuery addSort(Sort sort) throws NullPointerException {
         this.sorts.add(requireNonNull(sort, "Sort is required"));
         return this;
@@ -113,26 +141,6 @@ class DefaultColumnQuery implements ColumnQuery {
     }
 
     @Override
-    public long getLimit() {
-        return limit;
-    }
-
-    @Override
-    public void setLimit(long limit) {
-        this.limit = limit;
-    }
-
-    @Override
-    public long getStart() {
-        return start;
-    }
-
-    @Override
-    public void setStart(long start) {
-        this.start = start;
-    }
-
-    @Override
     public ColumnDeleteQuery toDeleteQuery() {
         ColumnDeleteQuery columnDeleteQuery = ColumnDeleteQuery.of(columnFamily, condition);
         if (!columns.isEmpty()) {
@@ -146,18 +154,21 @@ class DefaultColumnQuery implements ColumnQuery {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof DefaultColumnQuery)) {
             return false;
         }
-        ColumnQuery that = (ColumnQuery) o;
-        return Objects.equals(columnFamily, that.getColumnFamily()) &&
-                Objects.equals(condition, that.getCondition()) &&
-                Objects.equals(sorts, that.getSorts());
+        DefaultColumnQuery that = (DefaultColumnQuery) o;
+        return maxResults == that.maxResults &&
+                firstResult == that.firstResult &&
+                Objects.equals(columnFamily, that.columnFamily) &&
+                Objects.equals(condition, that.condition) &&
+                Objects.equals(sorts, that.sorts) &&
+                Objects.equals(columns, that.columns);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(columnFamily, condition, sorts);
+        return Objects.hash(columnFamily, condition, sorts, columns, maxResults, firstResult);
     }
 
     @Override
@@ -166,6 +177,9 @@ class DefaultColumnQuery implements ColumnQuery {
         sb.append("columnFamily='").append(columnFamily).append('\'');
         sb.append(", condition=").append(condition);
         sb.append(", sorts=").append(sorts);
+        sb.append(", columns=").append(columns);
+        sb.append(", maxResults=").append(maxResults);
+        sb.append(", firstResult=").append(firstResult);
         sb.append('}');
         return sb.toString();
     }
