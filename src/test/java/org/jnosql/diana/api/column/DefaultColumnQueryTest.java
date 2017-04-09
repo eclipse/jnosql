@@ -78,16 +78,25 @@ public class DefaultColumnQueryTest {
     @Test
     public void shoudSetFirstResult() {
         ColumnQuery query = ColumnQuery.of("query");
-        query.withFirstResult(10);
+        assertEquals(query, query.withFirstResult(10));
         assertEquals(10L, query.getFirstResult());
     }
 
     @Test
-    public void shoudSetLimit() {
+    public void shoudSetMaxResult() {
         ColumnQuery query = ColumnQuery.of("query");
-        query.withMaxResults(10L);
+        assertEquals(query, query.withMaxResults(10L));
         assertEquals(10L, query.getMaxResults());
     }
+
+    @Test
+    public void shouldSetCondition() {
+        ColumnQuery query = ColumnQuery.of("query");
+        ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
+        assertEquals(query, query.withCondition(condition));
+        assertEquals(condition, query.getCondition().get());
+    }
+
 
     @Test
     public void shouldAnd() {

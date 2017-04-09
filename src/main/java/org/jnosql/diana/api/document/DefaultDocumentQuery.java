@@ -39,9 +39,9 @@ class DefaultDocumentQuery implements DocumentQuery {
 
     private final List<String> documents = new ArrayList<>();
 
-    private long limit = -1;
+    private long maxResults = -1;
 
-    private long start;
+    private long firstResult;
 
     private DefaultDocumentQuery(String collection) {
         this.collection = Objects.requireNonNull(collection, "column family is required");
@@ -72,6 +72,34 @@ class DefaultDocumentQuery implements DocumentQuery {
             this.condition = this.condition.or(condition);
         }
         return this;
+    }
+
+    @Override
+    public DocumentQuery withFirstResult(long firstResult) {
+        this.firstResult = firstResult;
+        return this;
+    }
+
+    @Override
+    public DocumentQuery withMaxResults(long maxResults) {
+        this.maxResults = maxResults;
+        return this;
+    }
+
+    @Override
+    public DocumentQuery with(DocumentCondition condition) throws NullPointerException {
+        this.condition = Objects.requireNonNull(condition, "condition is required");
+        return this;
+    }
+
+    @Override
+    public long getMaxResults() {
+        return maxResults;
+    }
+
+    @Override
+    public long getFirstResult() {
+        return firstResult;
     }
 
     @Override
@@ -107,25 +135,6 @@ class DefaultDocumentQuery implements DocumentQuery {
         return Collections.unmodifiableList(documents);
     }
 
-    @Override
-    public long getLimit() {
-        return limit;
-    }
-
-    @Override
-    public void setLimit(long limit) {
-        this.limit = limit;
-    }
-
-    @Override
-    public long getStart() {
-        return start;
-    }
-
-    @Override
-    public void setStart(long start) {
-        this.start = start;
-    }
 
     @Override
     public DocumentDeleteQuery toDeleteQuery() {
@@ -141,26 +150,32 @@ class DefaultDocumentQuery implements DocumentQuery {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof DocumentQuery)) {
             return false;
         }
         DocumentQuery that = (DocumentQuery) o;
-        return Objects.equals(collection, that.getCollection()) &&
+        return maxResults == that.getMaxResults() &&
+                firstResult == that.getFirstResult() &&
+                Objects.equals(collection, that.getCollection()) &&
                 Objects.equals(condition, that.getCondition()) &&
-                Objects.equals(sorts, that.getSorts());
+                Objects.equals(sorts, that.getSorts()) &&
+                Objects.equals(documents, that.getDocuments());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(collection, condition, sorts);
+        return Objects.hash(collection, condition, sorts, documents, maxResults, firstResult);
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DocumentQuery{");
+        final StringBuilder sb = new StringBuilder("DefaultDocumentQuery{");
         sb.append("collection='").append(collection).append('\'');
         sb.append(", condition=").append(condition);
         sb.append(", sorts=").append(sorts);
+        sb.append(", documents=").append(documents);
+        sb.append(", maxResults=").append(maxResults);
+        sb.append(", firstResult=").append(firstResult);
         sb.append('}');
         return sb.toString();
     }

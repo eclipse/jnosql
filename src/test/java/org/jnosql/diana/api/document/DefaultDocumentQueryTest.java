@@ -42,8 +42,8 @@ public class DefaultDocumentQueryTest {
     public void shouldCreateInstance() {
         DocumentQuery query = DocumentQuery.of("query");
         assertEquals("query", query.getCollection());
-        assertEquals(0, query.getStart());
-        assertEquals(-1, query.getLimit());
+        assertEquals(0, query.getFirstResult());
+        assertEquals(-1, query.getMaxResults());
         assertTrue(query.getDocuments().isEmpty());
         assertTrue(query.getSorts().isEmpty());
     }
@@ -75,17 +75,25 @@ public class DefaultDocumentQueryTest {
     }
 
     @Test
-    public void shoudSetStart() {
+    public void shoudSetFirstResult() {
         DocumentQuery query = DocumentQuery.of("query");
-        query.setStart(10);
-        assertEquals(10L, query.getStart());
+        assertEquals(query, query.withFirstResult(10));
+        assertEquals(10L, query.getFirstResult());
     }
 
     @Test
-    public void shoudSetLimit() {
+    public void shoudSetMaxResults() {
         DocumentQuery query = DocumentQuery.of("query");
-        query.setLimit(10L);
-        assertEquals(10L, query.getLimit());
+        assertEquals(query, query.withMaxResults(10L));
+        assertEquals(10L, query.getMaxResults());
+    }
+
+    @Test
+    public void shouldSetCondition() {
+        DocumentQuery query = DocumentQuery.of("query");
+        DocumentCondition condition = DocumentCondition.eq(Document.of("name", "Ada"));
+        assertEquals(query, query.with(condition));
+        assertEquals(condition, query.getCondition().get());
     }
 
     @Test
