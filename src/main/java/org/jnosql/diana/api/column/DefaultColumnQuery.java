@@ -79,7 +79,7 @@ class DefaultColumnQuery implements ColumnQuery {
     }
 
     @Override
-    public ColumnQuery withCondition(ColumnCondition condition) throws NullPointerException {
+    public ColumnQuery with(ColumnCondition condition) throws NullPointerException {
         this.condition = Objects.requireNonNull(condition, "condition is required");
         return this;
     }

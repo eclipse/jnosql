@@ -69,7 +69,7 @@ public interface ColumnQuery {
      * @return this instance
      * @throws NullPointerException when condition is null
      */
-    ColumnQuery withCondition(ColumnCondition condition) throws NullPointerException;
+    ColumnQuery with(ColumnCondition condition) throws NullPointerException;
 
     /**
      * Set the position of the first result to retrieve.

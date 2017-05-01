@@ -91,7 +91,7 @@ public class DefaultColumnQueryTest {
     public void shouldSetCondition() {
         ColumnQuery query = ColumnQuery.of("query");
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        assertEquals(query, query.withCondition(condition));
+        assertEquals(query, query.with(condition));
         assertEquals(condition, query.getCondition().get());
     }
 
