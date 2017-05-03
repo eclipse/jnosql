@@ -32,7 +32,7 @@ import java.util.stream.StreamSupport;
 /**
  * Interface used to interact with the persistence context to {@link ColumnEntity}
  * The ColumnFamilyManager API is used to create and remove persistent {@link ColumnEntity} instances,
- * to select entities by their primary key, and to query over entities. The main difference to {@link ColumnFamilyManager}
+ * to select entities by their primary key, and to select over entities. The main difference to {@link ColumnFamilyManager}
  * is because all the operation works asynchronously.
  */
 public interface ColumnFamilyManagerAsync extends AutoCloseable {
@@ -164,47 +164,47 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
     /**
      * Deletes an entity asynchronously
      *
-     * @param query query to delete an entity
+     * @param query select to delete an entity
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when query is null
+     * @throws NullPointerException          when select is null
      */
     void delete(ColumnDeleteQuery query) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
      * Deletes an entity asynchronously
      *
-     * @param query    query to delete an entity
+     * @param query    select to delete an entity
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the null within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either query or callback are null
+     * @throws NullPointerException          when either select or callback are null
      */
     void delete(ColumnDeleteQuery query, Consumer<Void> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException, NullPointerException;
 
 
     /**
-     * Finds {@link ColumnEntity} from query asynchronously
+     * Finds {@link ColumnEntity} from select asynchronously
      *
-     * @param query    query to select entities
+     * @param query    select to select entities
      * @param callBack the callback, when the process is finished will call this instance returning the
-     *                 result of query within parameters
+     *                 result of select within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either query or callback are null
+     * @throws NullPointerException          when either select or callback are null
      */
     void select(ColumnQuery query, Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException, NullPointerException;
 
     /**
-     * Returns a single entity from query
+     * Returns a single entity from select
      *
-     * @param query    - query to figure out entities
+     * @param query    - select to figure out entities
      * @param callBack the callback
      * @throws NonUniqueResultException when the result has more than 1 entity
-     * @throws NullPointerException     when query is null
+     * @throws NullPointerException     when select is null
      */
     default void singleResult(ColumnQuery query, Consumer<Optional<ColumnEntity>> callBack) throws NonUniqueResultException, NullPointerException {
         select(query, entities -> {
@@ -215,7 +215,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
                 callBack.accept(Optional.of(entities.get(0)));
                 return;
             }
-            throw new NonUniqueResultException("The query returns more than one entity, query: " + query);
+            throw new NonUniqueResultException("The select returns more than one entity, select: " + query);
         });
 
     }

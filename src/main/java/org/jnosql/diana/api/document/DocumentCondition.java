@@ -30,21 +30,21 @@ import static org.jnosql.diana.api.Condition.LESSER_THAN;
 import static org.jnosql.diana.api.Condition.LIKE;
 
 /**
- * An unit condition  to run a document collection query
+ * An unit condition  to run a document collection select
  *
  * @see DocumentCollectionManager#select(DocumentQuery)
  */
 public interface DocumentCondition {
 
     /**
-     * Gets the document to be used in the query
+     * Gets the document to be used in the select
      *
      * @return a document instance
      */
     Document getDocument();
 
     /**
-     * Gets the conditions to be used in the query
+     * Gets the conditions to be used in the select
      *
      * @return a Condition instance
      * @see Condition
@@ -78,7 +78,7 @@ public interface DocumentCondition {
     DocumentCondition or(DocumentCondition condition) throws NullPointerException;
 
     /**
-     * Creates a {@link DocumentCondition} that has a {@link Condition#EQUALS}, it means a query will scanning to a
+     * Creates a {@link DocumentCondition} that has a {@link Condition#EQUALS}, it means a select will scanning to a
      * document collection that has the same name and equals value informed in this document.
      *
      * @param document a column instance
@@ -91,7 +91,7 @@ public interface DocumentCondition {
 
     /**
      * Creates a {@link DocumentCondition} that has a {@link Condition#GREATER_THAN},
-     * it means a query will scanning to a document collection that has the same name and the value
+     * it means a select will scanning to a document collection that has the same name and the value
      * greater than informed in this document.
      *
      * @param document a column instance
@@ -104,7 +104,7 @@ public interface DocumentCondition {
 
     /**
      * Creates a {@link DocumentCondition} that has a {@link Condition#GREATER_EQUALS_THAN},
-     * it means a query will scanning to a document collection that has the same name and the value
+     * it means a select will scanning to a document collection that has the same name and the value
      * greater or equals than informed in this document.
      *
      * @param document a column instance
@@ -116,7 +116,7 @@ public interface DocumentCondition {
     }
 
     /**
-     * Creates a {@link DocumentCondition} that has a {@link Condition#LESSER_THAN}, it means a query will scanning to a
+     * Creates a {@link DocumentCondition} that has a {@link Condition#LESSER_THAN}, it means a select will scanning to a
      * document collection that has the same name and the value  lesser than informed in this document.
      *
      * @param document a column instance
@@ -129,7 +129,7 @@ public interface DocumentCondition {
 
     /**
      * Creates a {@link DocumentCondition} that has a {@link Condition#LESSER_EQUALS_THAN},
-     * it means a query will scanning to a document collection that has the same name and the value
+     * it means a select will scanning to a document collection that has the same name and the value
      * lesser or equals than informed in this document.
      *
      * @param document a document instance
@@ -141,7 +141,7 @@ public interface DocumentCondition {
     }
 
     /**
-     * Creates a {@link DocumentCondition} that has a {@link Condition#IN}, it means a query will scanning to a
+     * Creates a {@link DocumentCondition} that has a {@link Condition#IN}, it means a select will scanning to a
      * document collection that has the same name and the value is within informed in this document.
      *
      * @param document a column instance
@@ -153,7 +153,7 @@ public interface DocumentCondition {
     }
 
     /**
-     * Creates a {@link DocumentCondition} that has a {@link Condition#LIKE}, it means a query will scanning to a
+     * Creates a {@link DocumentCondition} that has a {@link Condition#LIKE}, it means a select will scanning to a
      * document collection that has the same name and the value  is like than informed in this document.
      *
      * @param document a column instance
@@ -166,7 +166,7 @@ public interface DocumentCondition {
 
     /**
      * Creates a {@link DocumentCondition} that has a {@link Condition#BETWEEN},
-     * it means a query will scanning to a document collection that is between two values informed
+     * it means a select will scanning to a document collection that is between two values informed
      * on a document name.
      * The document must have a {@link Document#get()} an {@link Iterable} implementation
      * with just two elements.
@@ -235,7 +235,7 @@ public interface DocumentCondition {
      * condition.subquery(condition2);
      * }
      * </pre>
-     * The {@link DocumentCondition#getDocument()} will have "_SUBQUERY" as key and the query as value.
+     * The {@link DocumentCondition#getDocument()} will have "_SUBQUERY" as key and the select as value.
      *
      * @param query the conditions to be aggregated
      * @return the new {@link DocumentCondition} instance

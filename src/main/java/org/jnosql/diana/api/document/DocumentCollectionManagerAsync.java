@@ -32,7 +32,7 @@ import java.util.stream.StreamSupport;
 /**
  * Interface used to interact with the persistence context to {@link DocumentEntity}
  * The DocumentCollectionManager API is used to create and remove persistent {@link DocumentEntity} instances,
- * to select entities by their primary key, and to query over entities. The main difference to {@link DocumentCollectionManager}
+ * to select entities by their primary key, and to select over entities. The main difference to {@link DocumentCollectionManager}
  * is because all the operation works asynchronously.
  */
 public interface DocumentCollectionManagerAsync extends AutoCloseable {
@@ -162,7 +162,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
     /**
      * Deletes an entity asynchronously
      *
-     * @param query query to delete an entity
+     * @param query select to delete an entity
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
      */
@@ -171,41 +171,41 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
     /**
      * Deletes an entity asynchronously
      *
-     * @param query    query to delete an entity
+     * @param query    select to delete an entity
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the null within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either query or callback are null
+     * @throws NullPointerException          when either select or callback are null
      */
     void delete(DocumentDeleteQuery query, Consumer<Void> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException, NullPointerException;
 
     /**
-     * Finds {@link DocumentEntity} from query asynchronously
+     * Finds {@link DocumentEntity} from select asynchronously
      *
-     * @param query    query to select entities
+     * @param query    select to select entities
      * @param callBack the callback, when the process is finished will call this instance returning
-     *                 the result of query within parameters
+     *                 the result of select within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either query or callback are null
+     * @throws NullPointerException          when either select or callback are null
      */
-    void query(DocumentQuery query, Consumer<List<DocumentEntity>> callBack) throws
+    void select(DocumentQuery query, Consumer<List<DocumentEntity>> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
-     * Returns a single entity from query
+     * Returns a single entity from select
      *
-     * @param query    - query to figure out entities
+     * @param query    - select to figure out entities
      * @param callBack the callback
      * @throws NonUniqueResultException when the result has more than 1 entity
-     * @throws NullPointerException     when query is null
+     * @throws NullPointerException     when select is null
      */
     default void singleResult(DocumentQuery query, Consumer<Optional<DocumentEntity>> callBack) throws NonUniqueResultException,
             ExecuteAsyncQueryException, UnsupportedOperationException {
 
-        query(query, entities -> {
+        select(query, entities -> {
             if (entities.isEmpty()) {
                 callBack.accept(Optional.empty());
                 return;
@@ -213,7 +213,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
                 callBack.accept(Optional.of(entities.get(0)));
                 return;
             }
-            throw new NonUniqueResultException("The query returns more than one entity, query: " + query);
+            throw new NonUniqueResultException("The select returns more than one entity, select: " + query);
         });
 
     }

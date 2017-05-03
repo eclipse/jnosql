@@ -188,7 +188,7 @@ public class DefaultDocumentConditionTest {
 
     @Test
     public void shouldCreateSubQuery() {
-        DocumentQuery query = DocumentQuery.of("query");
+        DocumentQuery query = DocumentQuery.of("select");
         DocumentCondition subquery = DocumentCondition.subquery(query);
         Document document = subquery.getDocument();
         assertEquals(Condition.SUBQUERY, subquery.getCondition());

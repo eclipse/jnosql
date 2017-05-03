@@ -39,8 +39,8 @@ public class DefaultColumnQueryTest {
 
     @Test
     public void shouldCreateInstance() {
-        ColumnQuery query = ColumnQuery.of("query");
-        assertEquals("query", query.getColumnFamily());
+        ColumnQuery query = ColumnQuery.of("select");
+        assertEquals("select", query.getColumnFamily());
         assertEquals(0, query.getFirstResult());
         assertEquals(-1, query.getMaxResults());
         assertTrue(query.getColumns().isEmpty());
@@ -49,47 +49,47 @@ public class DefaultColumnQueryTest {
 
     @Test
     public void shouldAddSort() {
-        ColumnQuery query = ColumnQuery.of("query");
+        ColumnQuery query = ColumnQuery.of("select");
         query.addSort(Sort.of("column", ASC));
         assertThat(query.getSorts(), contains(Sort.of("column", ASC)));
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenAddSort() {
-        ColumnQuery query = ColumnQuery.of("query");
+        ColumnQuery query = ColumnQuery.of("select");
         query.addSort(null);
     }
 
     @Test
     public void shouldAddColumn() {
-        ColumnQuery query = ColumnQuery.of("query");
+        ColumnQuery query = ColumnQuery.of("select");
         query.addColumn("column");
         assertThat(query.getColumns(), contains("column"));
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenAddColumn() {
-        ColumnQuery query = ColumnQuery.of("query");
+        ColumnQuery query = ColumnQuery.of("select");
         query.addColumn(null);
     }
 
     @Test
     public void shoudSetFirstResult() {
-        ColumnQuery query = ColumnQuery.of("query");
+        ColumnQuery query = ColumnQuery.of("select");
         assertEquals(query, query.withFirstResult(10));
         assertEquals(10L, query.getFirstResult());
     }
 
     @Test
     public void shoudSetMaxResult() {
-        ColumnQuery query = ColumnQuery.of("query");
+        ColumnQuery query = ColumnQuery.of("select");
         assertEquals(query, query.withMaxResults(10L));
         assertEquals(10L, query.getMaxResults());
     }
 
     @Test
     public void shouldSetCondition() {
-        ColumnQuery query = ColumnQuery.of("query");
+        ColumnQuery query = ColumnQuery.of("select");
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
         assertEquals(query, query.with(condition));
         assertEquals(condition, query.getCondition().get());
@@ -98,7 +98,7 @@ public class DefaultColumnQueryTest {
 
     @Test
     public void shouldAnd() {
-        ColumnQuery query = ColumnQuery.of("query");
+        ColumnQuery query = ColumnQuery.of("select");
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
         ColumnCondition condition1 = ColumnCondition.eq(Column.of("age", 10));
 
@@ -112,7 +112,7 @@ public class DefaultColumnQueryTest {
 
     @Test
     public void shouldOr() {
-        ColumnQuery query = ColumnQuery.of("query");
+        ColumnQuery query = ColumnQuery.of("select");
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
         ColumnCondition condition1 = ColumnCondition.eq(Column.of("age", 10));
 
@@ -127,7 +127,7 @@ public class DefaultColumnQueryTest {
 
     @Test
     public void shouldReturnDeleteQuery() {
-        ColumnQuery query = ColumnQuery.of("query");
+        ColumnQuery query = ColumnQuery.of("select");
         query.addColumn("column");
         query.and(ColumnCondition.eq(Column.of("name", "Ada")));
 

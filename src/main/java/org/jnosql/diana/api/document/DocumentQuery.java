@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class that contains information to do a query to {@link DocumentCollectionManager}
+ * Class that contains information to do a select to {@link DocumentCollectionManager}
  *
  * @see DocumentCollectionManager#select(DocumentQuery)
  * @see DocumentCondition
@@ -37,7 +37,7 @@ public interface DocumentQuery {
     /**
      * Creates a {@link DocumentQuery}
      *
-     * @param collection - the name of document collection to do a query
+     * @param collection - the name of document collection to do a select
      * @return a {@link DocumentQuery} instance
      * @throws NullPointerException when documentCollecion is null
      */
@@ -46,7 +46,7 @@ public interface DocumentQuery {
     }
 
     /**
-     * Appends a new condition in the query
+     * Appends a new condition in the select
      * using {{@link DocumentCondition#and(DocumentCondition)}}
      *
      * @param condition condition to be added
@@ -56,7 +56,7 @@ public interface DocumentQuery {
     DocumentQuery and(DocumentCondition condition) throws NullPointerException;
 
     /**
-     * Appends a new condition in the query
+     * Appends a new condition in the select
      * using {{@link DocumentCondition#or(DocumentCondition)}}
      *
      * @param condition condition to be added
@@ -82,7 +82,7 @@ public interface DocumentQuery {
     DocumentQuery withMaxResults(long maxResults);
 
     /**
-     * Sets the document query with a condition
+     * Sets the document select with a condition
      * @param condition the condition to be seted
      * @return this instance
      * @throws NullPointerException when condition is null
@@ -91,12 +91,12 @@ public interface DocumentQuery {
 
 
     /**
-     * @return The maximum number of results the query object was set to retrieve.
+     * @return The maximum number of results the select object was set to retrieve.
      */
     long getMaxResults();
 
     /**
-     * @return The position of the first result the query object was set to retrieve.
+     * @return The position of the first result the select object was set to retrieve.
      */
     long getFirstResult();
 
@@ -111,7 +111,7 @@ public interface DocumentQuery {
 
     /**
      * Add column to be either retrieve or deleted, if empty will either returns
-     * all elements in a select query or delete all elements in a column family entity.
+     * all elements in a select select or delete all elements in a column family entity.
      *
      * @param document the document name
      * @return the same instance with a column added

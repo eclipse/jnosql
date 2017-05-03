@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class that contains information to do a query to {@link ColumnEntity}
+ * Class that contains information to do a select to {@link ColumnEntity}
  *
- * @see ColumnFamilyManager#query(ColumnQuery)
+ * @see ColumnFamilyManager#select(ColumnQuery)
  * @see ColumnCondition
  * @see Sort
  */
@@ -36,7 +36,7 @@ public interface ColumnQuery {
     /**
      * Creates a {@link ColumnQuery}
      *
-     * @param columnFamily - the name of column family to do a query
+     * @param columnFamily - the name of column family to do a select
      * @return a {@link ColumnQuery} instance
      */
     static ColumnQuery of(String columnFamily) {
@@ -44,7 +44,7 @@ public interface ColumnQuery {
     }
 
     /**
-     * Appends a new condition in the query using {@link ColumnCondition#and(ColumnCondition)}
+     * Appends a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
      *
      * @param condition a condition to be added
      * @return the same instance with a condition added
@@ -54,7 +54,7 @@ public interface ColumnQuery {
 
 
     /**
-     * Appends a new condition in the query using {@link ColumnCondition#or(ColumnCondition)}
+     * Appends a new condition in the select using {@link ColumnCondition#or(ColumnCondition)}
      *
      * @param condition a condition to be added
      * @return the same instance with a condition added
@@ -63,7 +63,7 @@ public interface ColumnQuery {
     ColumnQuery or(ColumnCondition condition) throws NullPointerException;
 
     /**
-     * Sets the column query
+     * Sets the column select
      *
      * @param condition
      * @return this instance
@@ -88,12 +88,12 @@ public interface ColumnQuery {
     ColumnQuery withMaxResults(long maxResults);
 
     /**
-     * @return The maximum number of results the query object was set to retrieve.
+     * @return The maximum number of results the select object was set to retrieve.
      */
     long getMaxResults();
 
     /**
-     * @return The position of the first result the query object was set to retrieve.
+     * @return The position of the first result the select object was set to retrieve.
      */
     long getFirstResult();
 
@@ -108,7 +108,7 @@ public interface ColumnQuery {
 
     /**
      * Add column to be either retrieve or deleted, if empty will either returns
-     * all elements in a select query or delete all elements in a column family entity.
+     * all elements in a select select or delete all elements in a column family entity.
      *
      * @param column the column name
      * @return the same instance with a column added

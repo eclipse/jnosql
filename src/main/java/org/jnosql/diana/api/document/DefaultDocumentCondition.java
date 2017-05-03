@@ -93,7 +93,7 @@ class DefaultDocumentCondition implements DocumentCondition {
     }
 
     static DefaultDocumentCondition subquery(DocumentQuery query) throws NullPointerException {
-        requireNonNull(query, "query is required");
+        requireNonNull(query, "select is required");
         Document document = Document.of(SUBQUERY.getNameField(), query);
         return DefaultDocumentCondition.of(document, SUBQUERY);
     }

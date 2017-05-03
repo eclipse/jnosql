@@ -31,7 +31,7 @@ import java.util.stream.StreamSupport;
 /**
  * Interface used to interact with the persistence context to {@link ColumnEntity}
  * The ColumnFamilyManager API is used to create and remove persistent {@link ColumnEntity} instances,
- * to select entities by their primary key, and to query over entities.
+ * to select entities by their primary key, and to select over entities.
  */
 public interface ColumnFamilyManager extends AutoCloseable {
 
@@ -113,30 +113,30 @@ public interface ColumnFamilyManager extends AutoCloseable {
     /**
      * Deletes an entity
      *
-     * @param query the query to delete an entity
-     * @throws NullPointerException when either query or collection are null
+     * @param query the select to delete an entity
+     * @throws NullPointerException when either select or collection are null
      */
     void delete(ColumnDeleteQuery query) throws NullPointerException;
 
     /**
-     * Finds {@link ColumnEntity} from query
+     * Finds {@link ColumnEntity} from select
      *
-     * @param query - query to figure out entities
-     * @return entities found by query
-     * @throws NullPointerException when query is null
+     * @param query - select to figure out entities
+     * @return entities found by select
+     * @throws NullPointerException when select is null
      */
-    List<ColumnEntity> query(ColumnQuery query) throws NullPointerException;
+    List<ColumnEntity> select(ColumnQuery query) throws NullPointerException;
 
     /**
-     * Returns a single entity from query
+     * Returns a single entity from select
      *
-     * @param query - query to figure out entities
+     * @param query - select to figure out entities
      * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
      * @throws NonUniqueResultException when the result has more than 1 entity
-     * @throws NullPointerException     when query is null
+     * @throws NullPointerException     when select is null
      */
     default Optional<ColumnEntity> singleResult(ColumnQuery query) throws NonUniqueResultException, NullPointerException {
-        List<ColumnEntity> entities = query(query);
+        List<ColumnEntity> entities = select(query);
         if (entities.isEmpty()) {
             return Optional.empty();
         }
@@ -144,7 +144,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
             return Optional.of(entities.get(0));
         }
 
-        throw new NonUniqueResultException("The query returns more than one entity, query: " + query);
+        throw new NonUniqueResultException("The select returns more than one entity, select: " + query);
     }
 
     /**

@@ -38,8 +38,8 @@ public class DefaultDocumentQueryTest {
 
     @Test
     public void shouldCreateInstance() {
-        DocumentQuery query = DocumentQuery.of("query");
-        assertEquals("query", query.getCollection());
+        DocumentQuery query = DocumentQuery.of("select");
+        assertEquals("select", query.getCollection());
         assertEquals(0, query.getFirstResult());
         assertEquals(-1, query.getMaxResults());
         assertTrue(query.getDocuments().isEmpty());
@@ -48,47 +48,47 @@ public class DefaultDocumentQueryTest {
 
     @Test
     public void shouldAddSort() {
-        DocumentQuery query = DocumentQuery.of("query");
+        DocumentQuery query = DocumentQuery.of("select");
         query.addSort(Sort.of("column", ASC));
         assertThat(query.getSorts(), contains(Sort.of("column", ASC)));
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenAddSort() {
-        DocumentQuery query = DocumentQuery.of("query");
+        DocumentQuery query = DocumentQuery.of("select");
         query.addSort(null);
     }
 
     @Test
     public void shouldAddColumn() {
-        DocumentQuery query = DocumentQuery.of("query");
+        DocumentQuery query = DocumentQuery.of("select");
         query.addColumn("column");
         assertThat(query.getDocuments(), contains("column"));
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenAddColumn() {
-        DocumentQuery query = DocumentQuery.of("query");
+        DocumentQuery query = DocumentQuery.of("select");
         query.addColumn(null);
     }
 
     @Test
     public void shoudSetFirstResult() {
-        DocumentQuery query = DocumentQuery.of("query");
+        DocumentQuery query = DocumentQuery.of("select");
         assertEquals(query, query.withFirstResult(10));
         assertEquals(10L, query.getFirstResult());
     }
 
     @Test
     public void shoudSetMaxResults() {
-        DocumentQuery query = DocumentQuery.of("query");
+        DocumentQuery query = DocumentQuery.of("select");
         assertEquals(query, query.withMaxResults(10L));
         assertEquals(10L, query.getMaxResults());
     }
 
     @Test
     public void shouldSetCondition() {
-        DocumentQuery query = DocumentQuery.of("query");
+        DocumentQuery query = DocumentQuery.of("select");
         DocumentCondition condition = DocumentCondition.eq(Document.of("name", "Ada"));
         assertEquals(query, query.with(condition));
         assertEquals(condition, query.getCondition().get());
@@ -96,7 +96,7 @@ public class DefaultDocumentQueryTest {
 
     @Test
     public void shouldAnd() {
-        DocumentQuery query = DocumentQuery.of("query");
+        DocumentQuery query = DocumentQuery.of("select");
         DocumentCondition condition = DocumentCondition.eq(Document.of("name", "Ada"));
         DocumentCondition condition1 = DocumentCondition.eq(Document.of("age", 10));
 
@@ -110,7 +110,7 @@ public class DefaultDocumentQueryTest {
 
     @Test
     public void shouldOr() {
-        DocumentQuery query = DocumentQuery.of("query");
+        DocumentQuery query = DocumentQuery.of("select");
         DocumentCondition condition = DocumentCondition.eq(Document.of("name", "Ada"));
         DocumentCondition condition1 = DocumentCondition.eq(Document.of("age", 10));
 
@@ -125,7 +125,7 @@ public class DefaultDocumentQueryTest {
 
     @Test
     public void shouldReturnDeleteQuery() {
-        DocumentQuery query = DocumentQuery.of("query");
+        DocumentQuery query = DocumentQuery.of("select");
         query.addColumn("column");
         query.and(DocumentCondition.eq(Document.of("name", "Ada")));
 
