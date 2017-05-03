@@ -32,7 +32,7 @@ import java.util.stream.StreamSupport;
 /**
  * Interface used to interact with the persistence context to {@link ColumnEntity}
  * The ColumnFamilyManager API is used to create and remove persistent {@link ColumnEntity} instances,
- * to find entities by their primary key, and to query over entities. The main difference to {@link ColumnFamilyManager}
+ * to select entities by their primary key, and to query over entities. The main difference to {@link ColumnFamilyManager}
  * is because all the operation works asynchronously.
  */
 public interface ColumnFamilyManagerAsync extends AutoCloseable {
@@ -46,7 +46,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when entity is null
      */
-    void save(ColumnEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    void insert(ColumnEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
      * Saves an entity asynchronously with time to live
@@ -57,7 +57,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when the entity is null
      */
-    void save(ColumnEntity entity, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    void insert(ColumnEntity entity, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
      * Saves an entity asynchronously
@@ -69,13 +69,13 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entity or callback are null
      */
-    void save(ColumnEntity entity, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
+    void insert(ColumnEntity entity, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException, NullPointerException;
 
 
     /**
      * Saves an entities asynchronously, by default it's just run for each saving using
-     * {@link ColumnFamilyManagerAsync#save(ColumnEntity)},
+     * {@link ColumnFamilyManagerAsync#insert(ColumnEntity)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entity to be saved
@@ -83,14 +83,14 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when entities is null
      */
-    default void save(Iterable<ColumnEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+    default void insert(Iterable<ColumnEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
-        StreamSupport.stream(entities.spliterator(), false).forEach(this::save);
+        StreamSupport.stream(entities.spliterator(), false).forEach(this::insert);
     }
 
     /**
      * Saves an entities asynchronously with time to live, by default it's just run for each saving using
-     * {@link ColumnFamilyManagerAsync#save(ColumnEntity, Duration)},
+     * {@link ColumnFamilyManagerAsync#insert(ColumnEntity, Duration)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entity to be saved
@@ -99,11 +99,11 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entities or ttl are null
      */
-    default void save(Iterable<ColumnEntity> entities, Duration ttl) throws ExecuteAsyncQueryException,
+    default void insert(Iterable<ColumnEntity> entities, Duration ttl) throws ExecuteAsyncQueryException,
             UnsupportedOperationException, NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
-        StreamSupport.stream(entities.spliterator(), false).forEach(c -> this.save(c, ttl));
+        StreamSupport.stream(entities.spliterator(), false).forEach(c -> this.insert(c, ttl));
     }
 
 
@@ -118,7 +118,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entity or ttl or callback are null
      */
-    void save(ColumnEntity entity, Duration ttl, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
+    void insert(ColumnEntity entity, Duration ttl, Consumer<ColumnEntity> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException, NullPointerException;
 
 
@@ -188,14 +188,14 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
     /**
      * Finds {@link ColumnEntity} from query asynchronously
      *
-     * @param query    query to find entities
+     * @param query    query to select entities
      * @param callBack the callback, when the process is finished will call this instance returning the
      *                 result of query within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either query or callback are null
      */
-    void find(ColumnQuery query, Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException,
+    void select(ColumnQuery query, Consumer<List<ColumnEntity>> callBack) throws ExecuteAsyncQueryException,
             UnsupportedOperationException, NullPointerException;
 
     /**
@@ -207,7 +207,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws NullPointerException     when query is null
      */
     default void singleResult(ColumnQuery query, Consumer<Optional<ColumnEntity>> callBack) throws NonUniqueResultException, NullPointerException {
-        find(query, entities -> {
+        select(query, entities -> {
             if (entities.isEmpty()) {
                 callBack.accept(Optional.empty());
                 return;

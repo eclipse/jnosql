@@ -27,7 +27,7 @@ import java.util.Optional;
 /**
  * Class that contains information to do a query to {@link ColumnEntity}
  *
- * @see ColumnFamilyManager#find(ColumnQuery)
+ * @see ColumnFamilyManager#query(ColumnQuery)
  * @see ColumnCondition
  * @see Sort
  */
@@ -108,7 +108,7 @@ public interface ColumnQuery {
 
     /**
      * Add column to be either retrieve or deleted, if empty will either returns
-     * all elements in a find query or delete all elements in a column family entity.
+     * all elements in a select query or delete all elements in a column family entity.
      *
      * @param column the column name
      * @return the same instance with a column added
