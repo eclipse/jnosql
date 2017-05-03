@@ -31,7 +31,7 @@ import java.util.stream.StreamSupport;
 /**
  * Interface used to interact with the persistence context to {@link DocumentEntity}
  * The DocumentCollectionManager API is used to create and remove persistent {@link DocumentEntity} instances,
- * to find entities by their primary key, and to query over entities.
+ * to select entities by their primary key, and to query over entities.
  */
 public interface DocumentCollectionManager extends AutoCloseable {
 
@@ -42,7 +42,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @return the entity saved
      * @throws NullPointerException when document is null
      */
-    DocumentEntity save(DocumentEntity entity) throws NullPointerException;
+    DocumentEntity insert(DocumentEntity entity) throws NullPointerException;
 
 
     /**
@@ -54,27 +54,27 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @throws NullPointerException          when either entity or ttl are null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
-    DocumentEntity save(DocumentEntity entity, Duration ttl) throws NullPointerException, UnsupportedOperationException;
+    DocumentEntity insert(DocumentEntity entity, Duration ttl) throws NullPointerException, UnsupportedOperationException;
 
 
     /**
      * Saves documents collection entity, by default it's just run for each saving using
-     * {@link DocumentCollectionManager#save(DocumentEntity)},
+     * {@link DocumentCollectionManager#insert(DocumentEntity)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    default Iterable<DocumentEntity> save(Iterable<DocumentEntity> entities) throws NullPointerException {
+    default Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities) throws NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
-        return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(Collectors.toList());
+        return StreamSupport.stream(entities.spliterator(), false).map(this::insert).collect(Collectors.toList());
     }
 
 
     /**
      * Saves documents collection entity with time to live, by default it's just run for each saving using
-     * {@link DocumentCollectionManager#save(DocumentEntity, Duration)},
+     * {@link DocumentCollectionManager#insert(DocumentEntity, Duration)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
@@ -83,10 +83,10 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @throws NullPointerException          when entities is null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
-    default Iterable<DocumentEntity> save(Iterable<DocumentEntity> entities, Duration ttl) throws NullPointerException, UnsupportedOperationException {
+    default Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities, Duration ttl) throws NullPointerException, UnsupportedOperationException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
-        return StreamSupport.stream(entities.spliterator(), false).map(d -> save(d, ttl)).collect(Collectors.toList());
+        return StreamSupport.stream(entities.spliterator(), false).map(d -> insert(d, ttl)).collect(Collectors.toList());
     }
 
 
@@ -129,7 +129,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @return entities found by query
      * @throws NullPointerException when query is null
      */
-    List<DocumentEntity> find(DocumentQuery query) throws NullPointerException;
+    List<DocumentEntity> select(DocumentQuery query) throws NullPointerException;
 
     /**
      * Returns a single entity from query
@@ -140,7 +140,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @throws NullPointerException     when query is null
      */
     default Optional<DocumentEntity> singleResult(DocumentQuery query) throws NonUniqueResultException {
-        List<DocumentEntity> entities = find(query);
+        List<DocumentEntity> entities = select(query);
         if (entities.isEmpty()) {
             return Optional.empty();
         }

@@ -32,7 +32,7 @@ import java.util.stream.StreamSupport;
 /**
  * Interface used to interact with the persistence context to {@link DocumentEntity}
  * The DocumentCollectionManager API is used to create and remove persistent {@link DocumentEntity} instances,
- * to find entities by their primary key, and to query over entities. The main difference to {@link DocumentCollectionManager}
+ * to select entities by their primary key, and to query over entities. The main difference to {@link DocumentCollectionManager}
  * is because all the operation works asynchronously.
  */
 public interface DocumentCollectionManagerAsync extends AutoCloseable {
@@ -46,7 +46,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when entity is null
      */
-    void save(DocumentEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    void insert(DocumentEntity entity) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
      * Saves an entity asynchronously with time to live
@@ -57,11 +57,11 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entity or ttl are null
      */
-    void save(DocumentEntity entity, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
+    void insert(DocumentEntity entity, Duration ttl) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
      * Saves entities asynchronously, by default it's just run for each saving using
-     * {@link DocumentCollectionManagerAsync#save(DocumentEntity)},
+     * {@link DocumentCollectionManagerAsync#insert(DocumentEntity)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
@@ -69,14 +69,14 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when entities is null
      */
-    default void save(Iterable<DocumentEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
+    default void insert(Iterable<DocumentEntity> entities) throws ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
-        StreamSupport.stream(entities.spliterator(), false).forEach(this::save);
+        StreamSupport.stream(entities.spliterator(), false).forEach(this::insert);
     }
 
     /**
      * Saves entities asynchronously with time to live, by default it's just run for each saving using
-     * {@link DocumentCollectionManagerAsync#save(DocumentEntity, Duration)},
+     * {@link DocumentCollectionManagerAsync#insert(DocumentEntity, Duration)},
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
@@ -85,11 +85,11 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entities or ttl are null
      */
-    default void save(Iterable<DocumentEntity> entities, Duration ttl) throws ExecuteAsyncQueryException,
+    default void insert(Iterable<DocumentEntity> entities, Duration ttl) throws ExecuteAsyncQueryException,
             UnsupportedOperationException, NullPointerException {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
-        StreamSupport.stream(entities.spliterator(), false).forEach(d -> save(d, ttl));
+        StreamSupport.stream(entities.spliterator(), false).forEach(d -> insert(d, ttl));
     }
 
     /**
@@ -102,7 +102,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either callback or entity are null
      */
-    void save(DocumentEntity entity, Consumer<DocumentEntity> callBack) throws
+    void insert(DocumentEntity entity, Consumer<DocumentEntity> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
@@ -116,7 +116,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either entity or ttl or callback are null
      */
-    void save(DocumentEntity entity, Duration ttl, Consumer<DocumentEntity> callBack) throws
+    void insert(DocumentEntity entity, Duration ttl, Consumer<DocumentEntity> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
 
@@ -184,14 +184,14 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
     /**
      * Finds {@link DocumentEntity} from query asynchronously
      *
-     * @param query    query to find entities
+     * @param query    query to select entities
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the result of query within parameters
      * @throws ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either query or callback are null
      */
-    void find(DocumentQuery query, Consumer<List<DocumentEntity>> callBack) throws
+    void query(DocumentQuery query, Consumer<List<DocumentEntity>> callBack) throws
             ExecuteAsyncQueryException, UnsupportedOperationException, NullPointerException;
 
     /**
@@ -205,7 +205,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
     default void singleResult(DocumentQuery query, Consumer<Optional<DocumentEntity>> callBack) throws NonUniqueResultException,
             ExecuteAsyncQueryException, UnsupportedOperationException {
 
-        find(query, entities -> {
+        query(query, entities -> {
             if (entities.isEmpty()) {
                 callBack.accept(Optional.empty());
                 return;

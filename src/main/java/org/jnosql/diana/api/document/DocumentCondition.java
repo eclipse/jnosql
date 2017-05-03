@@ -32,7 +32,7 @@ import static org.jnosql.diana.api.Condition.LIKE;
 /**
  * An unit condition  to run a document collection query
  *
- * @see DocumentCollectionManager#find(DocumentQuery)
+ * @see DocumentCollectionManager#select(DocumentQuery)
  */
 public interface DocumentCondition {
 
