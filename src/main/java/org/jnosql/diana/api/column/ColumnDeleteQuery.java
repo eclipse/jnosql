@@ -100,7 +100,7 @@ public interface ColumnDeleteQuery {
     ColumnDeleteQuery and(ColumnCondition condition);
 
     /**
-     * Sets the column select
+     * Sets the column condition
      *
      * @param condition
      * @return this instance

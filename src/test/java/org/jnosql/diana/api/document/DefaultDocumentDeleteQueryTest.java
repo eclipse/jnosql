@@ -107,6 +107,15 @@ public class DefaultDocumentDeleteQueryTest {
     }
 
     @Test
+    public void shouldSetCondition() {
+        DocumentDeleteQuery query = DocumentDeleteQuery.of("select");
+        DocumentCondition condition = DocumentCondition.eq(Document.of("name", "Ada"));
+
+        query.with(condition);
+        assertEquals(condition, query.getCondition().get());
+    }
+
+    @Test
     public void shouldOr() {
         DocumentDeleteQuery query = DocumentDeleteQuery.of("select");
         DocumentCondition condition = DocumentCondition.eq(Document.of("name", "Ada"));

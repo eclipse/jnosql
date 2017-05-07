@@ -92,6 +92,16 @@ public interface DocumentDeleteQuery {
      */
     DocumentDeleteQuery or(DocumentCondition condition) throws NullPointerException;
 
+
+    /**
+     * Sets the document condition
+     *
+     * @param condition
+     * @return this instance
+     * @throws NullPointerException when condition is null
+     */
+    DocumentDeleteQuery with(DocumentCondition condition) throws NullPointerException;
+
     /**
      * Removes a document from
      *
