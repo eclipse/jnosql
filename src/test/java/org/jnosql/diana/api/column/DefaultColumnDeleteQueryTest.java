@@ -109,6 +109,14 @@ public class DefaultColumnDeleteQueryTest {
     }
 
     @Test
+    public void shoudSetCondition() {
+        ColumnDeleteQuery query = ColumnDeleteQuery.of("select");
+        ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
+        query.with(condition);
+        assertEquals(condition, query.getCondition().get());
+    }
+
+    @Test
     public void shouldOr() {
         ColumnDeleteQuery query = ColumnDeleteQuery.of("select");
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
