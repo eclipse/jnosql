@@ -65,7 +65,7 @@ class DefaultColumnCondition implements ColumnCondition {
     }
 
     static DefaultColumnCondition subquery(ColumnQuery query) throws NullPointerException {
-        requireNonNull(query, "query is required");
+        requireNonNull(query, "select is required");
         Column column = Column.of(SUBQUERY.getNameField(), query);
         return DefaultColumnCondition.of(column, SUBQUERY);
     }

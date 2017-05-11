@@ -95,6 +95,13 @@ class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
     }
 
     @Override
+    public DocumentDeleteQuery with(DocumentCondition condition) throws NullPointerException {
+        Objects.requireNonNull(condition, "Condition is required");
+        this.condition = condition;
+        return this;
+    }
+
+    @Override
     public void remove(String document) throws NullPointerException {
         requireNonNull(document, "document is required");
         this.documents.remove(document);

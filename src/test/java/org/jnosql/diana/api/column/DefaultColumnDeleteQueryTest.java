@@ -45,8 +45,8 @@ public class DefaultColumnDeleteQueryTest {
     @Test
     public void shouldCreateInstance() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
-        assertEquals("query", query.getColumnFamily());
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("select", condition);
+        assertEquals("select", query.getColumnFamily());
         assertEquals(condition, query.getCondition().get());
         assertTrue(query.getColumns().isEmpty());
     }
@@ -54,14 +54,14 @@ public class DefaultColumnDeleteQueryTest {
     @Test(expected = NullPointerException.class)
     public void shouldGetErrorWhenAddColumnIsNull() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("select", condition);
         query.add(null);
     }
 
     @Test
     public void shouldAddColumn() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("select", condition);
         query.add("column");
         assertThat(query.getColumns(), contains("column"));
     }
@@ -69,7 +69,7 @@ public class DefaultColumnDeleteQueryTest {
     @Test
     public void shouldRemoveColumn() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("select", condition);
         query.add("column");
         query.remove("column");
         assertTrue(query.getColumns().isEmpty());
@@ -80,7 +80,7 @@ public class DefaultColumnDeleteQueryTest {
     @Test
     public void shouldAddAllColumns() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("select", condition);
         query.addAll(singletonList("column"));
         assertThat(query.getColumns(), contains("column"));
     }
@@ -88,7 +88,7 @@ public class DefaultColumnDeleteQueryTest {
     @Test
     public void shouldRemoveAllColumns() {
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
-        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("query", condition);
+        DefaultColumnDeleteQuery query = DefaultColumnDeleteQuery.of("select", condition);
         query.add("column");
         query.removeAll(singletonList("column"));
         assertTrue(query.getColumns().isEmpty());
@@ -96,7 +96,7 @@ public class DefaultColumnDeleteQueryTest {
 
     @Test
     public void shouldAnd() {
-        ColumnDeleteQuery query = ColumnDeleteQuery.of("query");
+        ColumnDeleteQuery query = ColumnDeleteQuery.of("select");
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
         ColumnCondition condition1 = ColumnCondition.eq(Column.of("age", 10));
 
@@ -109,8 +109,16 @@ public class DefaultColumnDeleteQueryTest {
     }
 
     @Test
+    public void shoudSetCondition() {
+        ColumnDeleteQuery query = ColumnDeleteQuery.of("select");
+        ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
+        query.with(condition);
+        assertEquals(condition, query.getCondition().get());
+    }
+
+    @Test
     public void shouldOr() {
-        ColumnDeleteQuery query = ColumnDeleteQuery.of("query");
+        ColumnDeleteQuery query = ColumnDeleteQuery.of("select");
         ColumnCondition condition = ColumnCondition.eq(Column.of("name", "Ada"));
         ColumnCondition condition1 = ColumnCondition.eq(Column.of("age", 10));
 

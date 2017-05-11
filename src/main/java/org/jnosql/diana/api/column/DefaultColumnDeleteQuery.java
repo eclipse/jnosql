@@ -94,6 +94,13 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
     }
 
     @Override
+    public ColumnDeleteQuery with(ColumnCondition condition) throws NullPointerException {
+        Objects.requireNonNull(condition, "condition is required");
+        this.condition = condition;
+        return this;
+    }
+
+    @Override
     public ColumnDeleteQuery or(ColumnCondition condition) throws NullPointerException {
         requireNonNull(condition, "condition is required");
         if (Objects.isNull(this.condition)) {

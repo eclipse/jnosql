@@ -91,7 +91,7 @@ public interface ColumnDeleteQuery {
 
 
     /**
-     * Appends a new condition in the query using {@link ColumnCondition#and(ColumnCondition)}
+     * Appends a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
      *
      * @param condition a condition to be added
      * @return the same instance with a condition added
@@ -99,9 +99,18 @@ public interface ColumnDeleteQuery {
      */
     ColumnDeleteQuery and(ColumnCondition condition);
 
+    /**
+     * Sets the column condition
+     *
+     * @param condition
+     * @return this instance
+     * @throws NullPointerException when condition is null
+     */
+    ColumnDeleteQuery with(ColumnCondition condition) throws NullPointerException;
+
 
     /**
-     * Appends a new condition in the query using {@link ColumnCondition#or(ColumnCondition)}
+     * Appends a new condition in the select using {@link ColumnCondition#or(ColumnCondition)}
      *
      * @param condition a condition to be added
      * @return the same instance with a condition added

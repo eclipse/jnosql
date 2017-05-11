@@ -30,21 +30,21 @@ import static org.jnosql.diana.api.Condition.LESSER_THAN;
 import static org.jnosql.diana.api.Condition.LIKE;
 
 /**
- * An unit condition  to run a column family query
+ * An unit condition  to run a column family select
  *
- * @see ColumnFamilyManager#find(ColumnQuery)
+ * @see ColumnFamilyManager#select(ColumnQuery)
  */
 public interface ColumnCondition {
 
     /**
-     * Gets the column to be used in the query
+     * Gets the column to be used in the select
      *
      * @return a column instance
      */
     Column getColumn();
 
     /**
-     * Gets the conditions to be used in the query
+     * Gets the conditions to be used in the select
      *
      * @return a Condition instance
      * @see Condition
@@ -78,7 +78,7 @@ public interface ColumnCondition {
     ColumnCondition or(ColumnCondition condition) throws NullPointerException;
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#EQUALS}, it means a query will scanning to a
+     * Creates a {@link ColumnCondition} that has a {@link Condition#EQUALS}, it means a select will scanning to a
      * column family that has the same name and equals value informed in this column.
      *
      * @param column a column instance
@@ -90,7 +90,7 @@ public interface ColumnCondition {
     }
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#GREATER_THAN}, it means a query will scanning to a
+     * Creates a {@link ColumnCondition} that has a {@link Condition#GREATER_THAN}, it means a select will scanning to a
      * column family that has the same name and the value  greater than informed in this column.
      *
      * @param column a column instance
@@ -103,7 +103,7 @@ public interface ColumnCondition {
 
     /**
      * Creates a {@link ColumnCondition} that has a {@link Condition#GREATER_EQUALS_THAN},
-     * it means a query will scanning to a column family that has the same name and the value
+     * it means a select will scanning to a column family that has the same name and the value
      * greater or equals than informed in this column.
      *
      * @param column a column instance
@@ -115,7 +115,7 @@ public interface ColumnCondition {
     }
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#LESSER_THAN}, it means a query will scanning to a
+     * Creates a {@link ColumnCondition} that has a {@link Condition#LESSER_THAN}, it means a select will scanning to a
      * column family that has the same name and the value  lesser than informed in this column.
      *
      * @param column a column instance
@@ -128,7 +128,7 @@ public interface ColumnCondition {
 
     /**
      * Creates a {@link ColumnCondition} that has a {@link Condition#LESSER_EQUALS_THAN},
-     * it means a query will scanning to a column family that has the same name and the value
+     * it means a select will scanning to a column family that has the same name and the value
      * lesser or equals than informed in this column.
      *
      * @param column a column instance
@@ -140,7 +140,7 @@ public interface ColumnCondition {
     }
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#IN}, it means a query will scanning to a
+     * Creates a {@link ColumnCondition} that has a {@link Condition#IN}, it means a select will scanning to a
      * column family that has the same name and the value is within informed in this column.
      *
      * @param column a column instance
@@ -152,7 +152,7 @@ public interface ColumnCondition {
     }
 
     /**
-     * Creates a {@link ColumnCondition} that has a {@link Condition#LIKE}, it means a query will scanning to a
+     * Creates a {@link ColumnCondition} that has a {@link Condition#LIKE}, it means a select will scanning to a
      * column family that has the same name and the value  is like than informed in this column.
      *
      * @param column a column instance
@@ -165,7 +165,7 @@ public interface ColumnCondition {
 
     /**
      * Creates a {@link ColumnCondition} that has a {@link Condition#BETWEEN},
-     * it means a query will scanning to a column collection that is between two values informed
+     * it means a select will scanning to a column collection that is between two values informed
      * on a column name.
      * The column must have a {@link Column#get()} an {@link Iterable} implementation
      * with just two elements.
@@ -229,7 +229,7 @@ public interface ColumnCondition {
      * {@code
      * condition.subquery(condition2);
      * }
-     * The {@link ColumnCondition#getColumn()} will have "_SUBQUERY" as key and the query as value.
+     * The {@link ColumnCondition#getColumn()} will have "_SUBQUERY" as key and the select as value.
      *
      * @param query the conditions to be aggregated
      * @return the new {@link ColumnCondition} instance

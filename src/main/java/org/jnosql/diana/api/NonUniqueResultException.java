@@ -20,7 +20,7 @@ package org.jnosql.diana.api;
 
 /**
  * Thrown by the persistence provider an exception when is executed
- * on a query and there is more than one result from the query.
+ * on a select and there is more than one result from the select.
  */
 public class NonUniqueResultException extends JNoSQLException {
 
