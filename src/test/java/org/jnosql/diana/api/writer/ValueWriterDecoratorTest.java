@@ -47,8 +47,8 @@ public class ValueWriterDecoratorTest {
     @Test
     public void shouldConvert() {
         String diana = "diana";
-        Optional<String> optinal = Optional.of(diana);
-        Object result = valueWriter.write(optinal);
+        Optional<String> optional = Optional.of(diana);
+        Object result = valueWriter.write(optional);
         assertEquals(diana, result);
     }
 }

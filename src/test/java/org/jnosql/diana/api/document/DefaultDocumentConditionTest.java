@@ -197,12 +197,12 @@ public class DefaultDocumentConditionTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldReturnErroWhenBetweenIsNull() {
+    public void shouldReturnErrorWhenBetweenIsNull() {
         DocumentCondition.between(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldReturnErroWhenBetweenIsNotIterable() {
+    public void shouldReturnErrorWhenBetweenIsNotIterable() {
         Document document = Document.of("age", 12);
         DocumentCondition.between(document);
     }
