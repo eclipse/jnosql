@@ -45,7 +45,7 @@ public class DefaultValueTest {
     }
 
     @Test
-    public void shouldReturnSameInstanteInGet() {
+    public void shouldReturnSameInstanceInGet() {
         AtomicInteger number = new AtomicInteger(5_000);
         Value value = Value.of(number);
         assertEquals(number, value.get());

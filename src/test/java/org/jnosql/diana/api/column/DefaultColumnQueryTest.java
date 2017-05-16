@@ -74,14 +74,14 @@ public class DefaultColumnQueryTest {
     }
 
     @Test
-    public void shoudSetFirstResult() {
+    public void shouldSetFirstResult() {
         ColumnQuery query = ColumnQuery.of("select");
         assertEquals(query, query.withFirstResult(10));
         assertEquals(10L, query.getFirstResult());
     }
 
     @Test
-    public void shoudSetMaxResult() {
+    public void shouldSetMaxResult() {
         ColumnQuery query = ColumnQuery.of("select");
         assertEquals(query, query.withMaxResults(10L));
         assertEquals(10L, query.getMaxResults());

@@ -93,7 +93,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldShouldCreateANewInsntace() {
+    public void shouldShouldCreateANewInstance() {
         String name = "name";
         DocumentEntity entity = new DefaultDocumentEntity(name);
         assertEquals(name, entity.getName());
@@ -174,7 +174,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldDontRemoveDocument() {
+    public void shouldDoNotRemoveDocument() {
         Document document = Document.of("value", 32D);
         DocumentEntity entity = new DefaultDocumentEntity("name");
         entity.add(Document.of("value", 31D));

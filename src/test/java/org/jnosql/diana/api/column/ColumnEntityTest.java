@@ -44,7 +44,7 @@ public class ColumnEntityTest {
     }
 
     @Test
-    public void shouldReturnOneColunm() {
+    public void shouldReturnOneColumn() {
         ColumnEntity entity = ColumnEntity.of("entity");
         assertEquals(Integer.valueOf(0), Integer.valueOf(entity.size()));
         assertTrue(entity.isEmpty());
@@ -96,7 +96,7 @@ public class ColumnEntityTest {
     }
 
     @Test
-    public void shouldShouldCreateANewInsntace() {
+    public void shouldCreateANewInstance() {
         String name = "name";
         ColumnEntity entity = new DefaultColumnEntity(name);
         assertEquals(name, entity.getName());
@@ -183,7 +183,7 @@ public class ColumnEntityTest {
     }
 
     @Test
-    public void shouldDontRemoveColumn() {
+    public void shouldDoNotRemoveColumn() {
         Column column = Column.of("value", 32D);
         ColumnEntity entity = new DefaultColumnEntity("name");
         entity.add(Column.of("value", 31D));

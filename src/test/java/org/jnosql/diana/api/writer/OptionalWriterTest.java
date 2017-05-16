@@ -46,8 +46,8 @@ public class OptionalWriterTest {
     @Test
     public void shouldConvert() {
         String diana = "diana";
-        Optional<String> optinal = Optional.of(diana);
-        String result = valueWriter.write(optinal);
+        Optional<String> optional = Optional.of(diana);
+        String result = valueWriter.write(optional);
         assertEquals(diana, result);
     }
 }

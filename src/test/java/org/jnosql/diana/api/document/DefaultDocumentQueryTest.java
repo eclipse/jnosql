@@ -73,14 +73,14 @@ public class DefaultDocumentQueryTest {
     }
 
     @Test
-    public void shoudSetFirstResult() {
+    public void shouldSetFirstResult() {
         DocumentQuery query = DocumentQuery.of("select");
         assertEquals(query, query.withFirstResult(10));
         assertEquals(10L, query.getFirstResult());
     }
 
     @Test
-    public void shoudSetMaxResults() {
+    public void shouldSetMaxResults() {
         DocumentQuery query = DocumentQuery.of("select");
         assertEquals(query, query.withMaxResults(10L));
         assertEquals(10L, query.getMaxResults());
