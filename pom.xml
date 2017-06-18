@@ -46,20 +46,20 @@
     </licenses>
 
 
+    <scm>
+        <connection>scm:git:git://github.com/eclipse/jnosql-diana.git</connection>
+        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-diana.git</developerConnection>
+        <url>https://github.com/eclipse/jnosql-diana</url>
+    </scm>
+
     <developers>
         <developer>
             <name>Otavio Santana</name>
             <email>otaviojava@apache.org</email>
-            <organization>JNoSQL</organization>
-            <organizationUrl>http://jnosql.org/</organizationUrl>
+            <organization>SouJava</organization>
+            <organizationUrl>https://about.me/otaviojava</organizationUrl>
         </developer>
     </developers>
-    <scm>
-        <connection>scm:git:https://github.com/JNOSQL/diana.git</connection>
-        <tag>master</tag>
-        <developerConnection>scm:git:https://github.com/JNOSQL/diana.git</developerConnection>
-        <url>https://github.com/JNOSQL/diana</url>
-    </scm>
 
 
     <distributionManagement>
