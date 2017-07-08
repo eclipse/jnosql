@@ -18,11 +18,15 @@
 package org.jnosql.diana.api.document;
 
 
+import org.jnosql.diana.api.Value;
+
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * A document-oriented database, or document store, is a computer program designed for storing, retrieving,
@@ -71,13 +75,13 @@ public interface DocumentEntity extends Serializable {
     String getName();
 
     /**
-     * Remove a name whose name is informed in parameter.
+     * Remove a Document whose name is informed in parameter.
      *
-     * @param name a document name
+     * @param documentName a document name
      * @return if a column was removed or not
-     * @throws NullPointerException when name is null
+     * @throws NullPointerException when documentName is null
      */
-    boolean remove(String name) throws NullPointerException;
+    boolean remove(String documentName) throws NullPointerException;
 
     /**
      * Removes a Document
@@ -142,6 +146,33 @@ public interface DocumentEntity extends Serializable {
      * @return an instance copy
      */
     DocumentEntity copy();
+
+    /**
+     * Removes all Documents
+     */
+    void clear();
+
+    /**
+     * Returns a Set view of the names of document contained in Document Entity
+     *
+     * @return the keys
+     */
+    Set<String> getDocumentNames();
+
+    /**
+     * Returns a Collection view of the values contained in this DocumentEntity.
+     *
+     * @return the collection of values
+     */
+    Collection<Value> getValues();
+
+    /**
+     * Returns true if this DocumentEntity contains a document whose the name is informated
+     *
+     * @param documentName
+     * @return true if find a document and otherwise false
+     */
+    boolean contains(String documentName);
 
     /**
      * Converts the columns to a Map where:
