@@ -129,13 +129,13 @@ public interface DocumentEntity extends Serializable {
     void addAll(Iterable<Document> documents) throws UnsupportedOperationException, NullPointerException;
 
     /**
-     * Find document a document from name
+     * Find document a document from document name
      *
-     * @param name a document name
+     * @param documentName a name of a document
      * @return an {@link Optional} instance with the result
-     * @throws NullPointerException when name is null
+     * @throws NullPointerException when documentName is null
      */
-    Optional<Document> find(String name) throws NullPointerException;
+    Optional<Document> find(String documentName) throws NullPointerException;
 
     /**
      * Returns the number of elements in this list.
