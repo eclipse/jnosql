@@ -21,9 +21,11 @@ import org.jnosql.diana.api.Value;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.*;
 
@@ -127,7 +129,7 @@ public class DocumentEntityTest {
     @Test
     public void shouldAddAllDocuments() {
         DocumentEntity entity = new DefaultDocumentEntity("name");
-        entity.addAll(Arrays.asList(Document.of("name", 12), Document.of("value", "value")));
+        entity.addAll(asList(Document.of("name", 12), Document.of("value", "value")));
         assertFalse(entity.isEmpty());
         assertEquals(2, entity.size());
     }
@@ -218,10 +220,27 @@ public class DocumentEntityTest {
         DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
         entity.add(null, Value.of(12));
     }
-git 
-    //should avoid duplication names (list, a document, both element ways
-    //should add using key value, should return NPE when is null
-    //should add using key, object, should return NPE when there is any null
+
+
+    @Test
+    public void shouldAvoidDuplicatedDocument() {
+        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+        entity.add("name", 10);
+        entity.add("name", 13);
+        assertEquals(1, entity.size());
+        Optional<Document> document = entity.find("name");
+        assertEquals(Document.of("name", 13), document.get());
+    }
+
+    @Test
+    public void shouldAvoidDuplicatedDocumentWhenAddList() {
+        List<Document> documents = asList(Document.of("name", 10), Document.of("name", 13));
+        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+        entity.addAll(documents);
+        assertEquals(1, entity.size());
+        assertEquals(1,DocumentEntity.of("documentCollection", documents).size());
+    }
+
     //should returns getKeys
     //should returns getValues
     //should returns true when contains
