@@ -265,9 +265,47 @@ public class DocumentEntityTest {
                 Value.of(13), Value.of(16)));
     }
 
-    //should returns true when contains
-    //should returns false when does not contains
-    //should remove all elements in the document entity
+    @Test
+    public void shouldReturnTrueWhenContainsElement() {
+        List<Document> documents = asList(Document.of("name", 10), Document.of("name2", 11),
+                Document.of("name3", 12), Document.of("name4", 13),
+                Document.of("name5", 14), Document.of("name5", 16));
 
+        DocumentEntity collection = DocumentEntity.of("documentCollection", documents);
+
+        assertTrue(collection.contains("name"));
+        assertTrue(collection.contains("name2"));
+        assertTrue(collection.contains("name3"));
+        assertTrue(collection.contains("name4"));
+        assertTrue(collection.contains("name5"));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenDoesNotContainElement() {
+        List<Document> documents = asList(Document.of("name", 10), Document.of("name2", 11),
+                Document.of("name3", 12), Document.of("name4", 13),
+                Document.of("name5", 14), Document.of("name5", 16));
+
+        DocumentEntity collection = DocumentEntity.of("documentCollection", documents);
+
+        assertFalse(collection.contains("name6"));
+        assertFalse(collection.contains("name7"));
+        assertFalse(collection.contains("name8"));
+        assertFalse(collection.contains("name9"));
+        assertFalse(collection.contains("name10"));
+    }
+    
+    @Test
+    public void shouldRemoveAllElementsWhenUseClearMethod() {
+        List<Document> documents = asList(Document.of("name", 10), Document.of("name2", 11),
+                Document.of("name3", 12), Document.of("name4", 13),
+                Document.of("name5", 14), Document.of("name5", 16));
+
+        DocumentEntity collection = DocumentEntity.of("documentCollection", documents);
+
+        assertFalse(collection.isEmpty());
+        collection.clear();
+        assertTrue(collection.isEmpty());
+    }
 
 }
