@@ -54,15 +54,11 @@ final class DefaultDocumentEntity implements DocumentEntity {
     }
 
     @Override
-    public boolean remove(Document document) throws NullPointerException {
-        requireNonNull(document, "document is required");
-        return documents.remove(document);
-    }
-
     public List<Document> getDocuments() {
         return unmodifiableList(documents);
     }
 
+    @Override
     public void add(Document document) {
         requireNonNull(document, "Document is required");
         this.remove(document.getName());

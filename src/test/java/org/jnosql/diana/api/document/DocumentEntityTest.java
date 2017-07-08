@@ -294,7 +294,7 @@ public class DocumentEntityTest {
         assertFalse(collection.contains("name9"));
         assertFalse(collection.contains("name10"));
     }
-    
+
     @Test
     public void shouldRemoveAllElementsWhenUseClearMethod() {
         List<Document> documents = asList(Document.of("name", 10), Document.of("name2", 11),

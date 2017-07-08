@@ -84,15 +84,6 @@ public interface DocumentEntity extends Serializable {
     boolean remove(String documentName) throws NullPointerException;
 
     /**
-     * Removes a Document
-     *
-     * @param document the document to be removed
-     * @return if a column was removed or not
-     * @throws NullPointerException when document is null
-     */
-    boolean remove(Document document) throws NullPointerException;
-
-    /**
      * List of all documents
      *
      * @return all documents
