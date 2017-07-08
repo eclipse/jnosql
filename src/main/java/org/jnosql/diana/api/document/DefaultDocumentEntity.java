@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * A default implementation of {@link DocumentEntity}
@@ -115,22 +116,24 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public void clear() {
-
+        this.documents.clear();
     }
 
     @Override
     public Set<String> getDocumentNames() {
-        return null;
+        return documents.stream().map(Document::getName).collect(toSet());
     }
 
     @Override
     public Collection<Value> getValues() {
-        return null;
+        return documents.stream().map(Document::getValue)
+                .collect(toSet());
     }
 
     @Override
     public boolean contains(String documentName) {
-        return false;
+        requireNonNull(documentName, "documentName is required");
+        return documents.stream().anyMatch(d -> documentName.equals(d.getName()));
     }
 
     @Override
