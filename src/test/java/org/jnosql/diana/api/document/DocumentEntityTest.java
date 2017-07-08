@@ -17,6 +17,7 @@
 
 package org.jnosql.diana.api.document;
 
+import org.hamcrest.Matchers;
 import org.jnosql.diana.api.Value;
 import org.junit.Test;
 
@@ -27,6 +28,7 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.*;
 
 
@@ -241,8 +243,28 @@ public class DocumentEntityTest {
         assertEquals(1,DocumentEntity.of("documentCollection", documents).size());
     }
 
-    //should returns getKeys
-    //should returns getValues
+    @Test
+    public void shouldReturnsTheDocumentNames() {
+        List<Document> documents = asList(Document.of("name", 10), Document.of("name2", 11),
+                Document.of("name3", 12), Document.of("name4", 13),
+                Document.of("name5", 14), Document.of("name5", 16));
+
+        DocumentEntity collection = DocumentEntity.of("documentCollection", documents);
+        assertThat(collection.getDocumentNames(), containsInAnyOrder("name", "name2", "name3", "name4", "name5"));
+
+    }
+
+    @Test
+    public void shouldReturnsTheDocumentValues() {
+        List<Document> documents = asList(Document.of("name", 10), Document.of("name2", 11),
+                Document.of("name3", 12), Document.of("name4", 13),
+                Document.of("name5", 14), Document.of("name5", 16));
+
+        DocumentEntity collection = DocumentEntity.of("documentCollection", documents);
+        assertThat(collection.getValues(), containsInAnyOrder(Value.of(10), Value.of(11), Value.of(12),
+                Value.of(13), Value.of(16)));
+    }
+
     //should returns true when contains
     //should returns false when does not contains
     //should remove all elements in the document entity
