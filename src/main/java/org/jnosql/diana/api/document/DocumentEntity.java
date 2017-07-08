@@ -109,6 +109,26 @@ public interface DocumentEntity extends Serializable {
     void add(Document document) throws UnsupportedOperationException, NullPointerException;
 
     /**
+     * add a document within {@link DocumentEntity}
+     *
+     * @param name  a name of the document
+     * @param value the information of the document
+     * @throws UnsupportedOperationException when this method is not supported
+     * @throws NullPointerException          when either name or value are null
+     */
+    void add(String name, Object value) throws UnsupportedOperationException, NullPointerException;
+
+    /**
+     * add a document within {@link DocumentEntity}
+     *
+     * @param name  a name of the document
+     * @param value the information of the document
+     * @throws UnsupportedOperationException when this method is not supported
+     * @throws NullPointerException          when either name or value are null
+     */
+    void add(String name, Value value) throws UnsupportedOperationException, NullPointerException;
+
+    /**
      * add all documents within {@link DocumentEntity}
      *
      * @param documents documents to be included
