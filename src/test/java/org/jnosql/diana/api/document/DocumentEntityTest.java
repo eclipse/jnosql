@@ -181,4 +181,52 @@ public class DocumentEntityTest {
         assertFalse(entity.isEmpty());
     }
 
+    @Test
+    public void shouldAddDocumentAsNameAndObject(){
+        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+        entity.add("name", 10);
+        assertEquals(1, entity.size());
+        Optional<Document> name = entity.find("name");
+        assertTrue(name.isPresent());
+        assertEquals(10, name.get().get());
+    }
+
+    @Test
+    public void shouldAddDocumentAsNameAndValue(){
+        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+        entity.add("name", Value.of(10));
+        assertEquals(1, entity.size());
+        Optional<Document> name = entity.find("name");
+        assertTrue(name.isPresent());
+        assertEquals(10, name.get().get());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenAddDocumentasObjectWhenHasNullObject() {
+        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+        entity.add("name", null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenAddDocumentasObjectWhenHasNullDocumentName() {
+        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+        entity.add(null, 10);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenAddDocumentasValueWhenHasNullDocumentName() {
+        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+        entity.add(null, Value.of(12));
+    }
+git 
+    //should avoid duplication names (list, a document, both element ways
+    //should add using key value, should return NPE when is null
+    //should add using key, object, should return NPE when there is any null
+    //should returns getKeys
+    //should returns getValues
+    //should returns true when contains
+    //should returns false when does not contains
+    //should remove all elements in the document entity
+
+
 }
