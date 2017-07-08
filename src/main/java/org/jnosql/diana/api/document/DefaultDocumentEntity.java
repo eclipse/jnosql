@@ -18,11 +18,14 @@
 package org.jnosql.diana.api.document;
 
 
+import org.jnosql.diana.api.Value;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.Comparator.comparing;
+import static java.util.Objects.requireNonNull;
 
 /**
  * A default implementation of {@link DocumentEntity}
@@ -35,7 +38,7 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
 
     DefaultDocumentEntity(String name) {
-        this.name = Objects.requireNonNull(name, "name name is required");
+        this.name = requireNonNull(name, "name name is required");
     }
 
     @Override
@@ -45,13 +48,13 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public boolean remove(String documentName) {
-        Objects.requireNonNull(documentName, "name is required");
+        requireNonNull(documentName, "documentName is required");
         return documents.removeIf(document -> document.getName().equals(documentName));
     }
 
     @Override
     public boolean remove(Document document) throws NullPointerException {
-        Objects.requireNonNull(document, "doument is required");
+        requireNonNull(document, "document is required");
         return documents.remove(document);
     }
 
@@ -60,19 +63,36 @@ final class DefaultDocumentEntity implements DocumentEntity {
     }
 
     public void add(Document document) {
-        Objects.requireNonNull(document, "Document is required");
+        requireNonNull(document, "Document is required");
+        this.remove(document.getName());
         documents.add(document);
     }
 
     @Override
+    public void add(String documentName, Object value) throws UnsupportedOperationException, NullPointerException {
+        requireNonNull(documentName, "documentName is required");
+        requireNonNull(value, "value is required");
+        remove(documentName);
+        this.add(Document.of(documentName, value));
+    }
+
+    @Override
+    public void add(String documentName, Value value) throws UnsupportedOperationException, NullPointerException {
+        requireNonNull(documentName, "documentName is required");
+        requireNonNull(value, "value is required");
+        remove(documentName);
+        this.add(Document.of(documentName, value));
+    }
+
+    @Override
     public void addAll(Iterable<Document> documents) {
-        Objects.requireNonNull(documents, "documents are required");
-        documents.forEach(this.documents::add);
+        requireNonNull(documents, "documents are required");
+        documents.forEach(this::add);
     }
 
     @Override
     public Optional<Document> find(String name) {
-        Objects.requireNonNull(name, "name is required");
+        requireNonNull(name, "name is required");
         return documents.stream().filter(document -> document.getName().equals(name)).findFirst();
     }
 
@@ -91,6 +111,26 @@ final class DefaultDocumentEntity implements DocumentEntity {
         DefaultDocumentEntity entity = new DefaultDocumentEntity(this.name);
         entity.documents.addAll(this.getDocuments());
         return entity;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public Set<String> getDocumentNames() {
+        return null;
+    }
+
+    @Override
+    public Collection<Value> getValues() {
+        return null;
+    }
+
+    @Override
+    public boolean contains(String documentName) {
+        return false;
     }
 
     @Override
