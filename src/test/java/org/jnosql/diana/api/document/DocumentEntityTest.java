@@ -38,6 +38,7 @@ public class DocumentEntityTest {
     public void shouldReturnErrorWhenNameIsNull() {
         DocumentEntity.of(null);
     }
+
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenDocumentsIsNull() {
         DocumentEntity.of("entity", null);
@@ -164,29 +165,12 @@ public class DocumentEntityTest {
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenRemoveByNameIsNull() {
         DocumentEntity entity = new DefaultDocumentEntity("name");
-        entity.remove((String) null);
+        entity.remove(null);
     }
 
-    @Test
-    public void shouldRemoveDocument() {
-        Document document = Document.of("value", 32D);
-        DocumentEntity entity = new DefaultDocumentEntity("name");
-        entity.add(document);
-        assertTrue(entity.remove(document));
-        assertTrue(entity.isEmpty());
-    }
 
     @Test
-    public void shouldDoNotRemoveDocument() {
-        Document document = Document.of("value", 32D);
-        DocumentEntity entity = new DefaultDocumentEntity("name");
-        entity.add(Document.of("value", 31D));
-        assertFalse(entity.remove(document));
-        assertFalse(entity.isEmpty());
-    }
-
-    @Test
-    public void shouldAddDocumentAsNameAndObject(){
+    public void shouldAddDocumentAsNameAndObject() {
         DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
         entity.add("name", 10);
         assertEquals(1, entity.size());
@@ -196,7 +180,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldAddDocumentAsNameAndValue(){
+    public void shouldAddDocumentAsNameAndValue() {
         DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
         entity.add("name", Value.of(10));
         assertEquals(1, entity.size());
@@ -240,7 +224,7 @@ public class DocumentEntityTest {
         DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
         entity.addAll(documents);
         assertEquals(1, entity.size());
-        assertEquals(1,DocumentEntity.of("documentCollection", documents).size());
+        assertEquals(1, DocumentEntity.of("documentCollection", documents).size());
     }
 
     @Test
