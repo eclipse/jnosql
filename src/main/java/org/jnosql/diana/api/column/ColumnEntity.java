@@ -184,4 +184,9 @@ public interface ColumnEntity extends Serializable {
      */
     boolean contains(String columnName);
 
+    /**
+     * Removes all Columns
+     */
+    void clear();
+
 }
