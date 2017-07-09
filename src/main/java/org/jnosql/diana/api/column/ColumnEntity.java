@@ -18,11 +18,15 @@
 package org.jnosql.diana.api.column;
 
 
+import org.jnosql.diana.api.Value;
+
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * A column family is a NoSQL object that contains columns of related data. It is a tuple (pair) that consists
@@ -77,6 +81,26 @@ public interface ColumnEntity extends Serializable {
     void add(Column column) throws NullPointerException;
 
     /**
+     * add a column within {@link ColumnEntity}
+     *
+     * @param name  a name of the column
+     * @param value the information of the column
+     * @throws UnsupportedOperationException when this method is not supported
+     * @throws NullPointerException          when either name or value are null
+     */
+    void add(String name, Object value) throws UnsupportedOperationException, NullPointerException;
+
+    /**
+     * add a column within {@link ColumnEntity}
+     *
+     * @param name  a name of the column
+     * @param value the information of the column
+     * @throws UnsupportedOperationException when this method is not supported
+     * @throws NullPointerException          when either name or value are null
+     */
+    void add(String name, Value value) throws UnsupportedOperationException, NullPointerException;
+
+    /**
      * Converts the columns to a Map where:
      * the key is the name the column
      * The value is the {@link org.jnosql.diana.api.Value#get()} of the map
@@ -111,20 +135,20 @@ public interface ColumnEntity extends Serializable {
     /**
      * Remove a column
      *
-     * @param column a colum
+     * @param column a column
      * @return if a column was removed or not
      * @throws NullPointerException when column is null
      */
     boolean remove(Column column) throws NullPointerException;
 
     /**
-     * Find document a document from name
+     * Find column a column from columnName
      *
-     * @param name a document name
+     * @param columnName a column name
      * @return an {@link Optional} instance with the result
-     * @throws NullPointerException when name is null
+     * @throws NullPointerException when columnName is null
      */
-    Optional<Column> find(String name) throws NullPointerException;
+    Optional<Column> find(String columnName) throws NullPointerException;
 
     /**
      * Returns the number of elements in this list.
@@ -146,5 +170,27 @@ public interface ColumnEntity extends Serializable {
      * @return an instance copy
      */
     ColumnEntity copy();
+
+    /**
+     * Returns a Set view of the names of column contained in Document Entity
+     *
+     * @return the keys
+     */
+    Set<String> getColumnNames();
+
+    /**
+     * Returns a Collection view of the values contained in this ColumnEntity.
+     *
+     * @return the collection of values
+     */
+    Collection<Value> getValues();
+
+    /**
+     * Returns true if this ColumnEntity contains a column whose the name is informed
+     *
+     * @param columnName
+     * @return true if find a column and otherwise false
+     */
+    boolean contains(String columnName);
 
 }
