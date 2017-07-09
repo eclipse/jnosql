@@ -164,6 +164,11 @@ final class DefaultColumnEntity implements ColumnEntity {
     }
 
     @Override
+    public void clear() {
+        columns.clear();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
