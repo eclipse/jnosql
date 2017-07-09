@@ -20,10 +20,16 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Value;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
-import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
@@ -145,7 +151,7 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public Map<String, Object> toMap() {
-        return Collections.unmodifiableMap(documents);
+        return unmodifiableMap(documents);
     }
 
 
