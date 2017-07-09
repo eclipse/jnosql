@@ -21,12 +21,16 @@ import org.jnosql.diana.api.Value;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 
@@ -164,6 +168,137 @@ public class ColumnEntityTest {
 
         assertFalse(entity.remove("value1"));
         assertFalse(entity.isEmpty());
+    }
+    //
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenRemoveByNameIsNull() {
+        ColumnEntity entity = new DefaultColumnEntity("name");
+        entity.remove(null);
+    }
+
+
+    @Test
+    public void shouldAddColumnAsNameAndObject() {
+        ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+        entity.add("name", 10);
+        assertEquals(1, entity.size());
+        Optional<Column> name = entity.find("name");
+        assertTrue(name.isPresent());
+        assertEquals(10, name.get().get());
+    }
+
+    @Test
+    public void shouldAddColumnAsNameAndValue() {
+        ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+        entity.add("name", Value.of(10));
+        assertEquals(1, entity.size());
+        Optional<Column> name = entity.find("name");
+        assertTrue(name.isPresent());
+        assertEquals(10, name.get().get());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenAddColumnasObjectWhenHasNullObject() {
+        ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+        entity.add("name", null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenAddColumnasObjectWhenHasNullColumnName() {
+        ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+        entity.add(null, 10);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenAddColumnasValueWhenHasNullColumnName() {
+        ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+        entity.add(null, Value.of(12));
+    }
+
+
+    @Test
+    public void shouldAvoidDuplicatedColumn() {
+        ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+        entity.add("name", 10);
+        entity.add("name", 13);
+        assertEquals(1, entity.size());
+        Optional<Column> column = entity.find("name");
+        assertEquals(Column.of("name", 13), column.get());
+    }
+
+    @Test
+    public void shouldAvoidDuplicatedColumnWhenAddList() {
+        List<Column> columns = asList(Column.of("name", 10), Column.of("name", 13));
+        ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+        entity.addAll(columns);
+        assertEquals(1, entity.size());
+        assertEquals(1, ColumnEntity.of("columnFamily", columns).size());
+    }
+
+    @Test
+    public void shouldReturnsTheColumnNames() {
+        List<Column> columns = asList(Column.of("name", 10), Column.of("name2", 11),
+                Column.of("name3", 12), Column.of("name4", 13),
+                Column.of("name5", 14), Column.of("name5", 16));
+
+        ColumnEntity columnFamily = ColumnEntity.of("columnFamily", columns);
+        assertThat(columnFamily.getColumnNames(), containsInAnyOrder("name", "name2", "name3", "name4", "name5"));
+
+    }
+
+    @Test
+    public void shouldReturnsTheColumnValues() {
+        List<Column> columns = asList(Column.of("name", 10), Column.of("name2", 11),
+                Column.of("name3", 12), Column.of("name4", 13),
+                Column.of("name5", 14), Column.of("name5", 16));
+
+        ColumnEntity columnFamily = ColumnEntity.of("columnFamily", columns);
+        assertThat(columnFamily.getValues(), containsInAnyOrder(Value.of(10), Value.of(11), Value.of(12),
+                Value.of(13), Value.of(16)));
+    }
+
+    @Test
+    public void shouldReturnTrueWhenContainsElement() {
+        List<Column> columns = asList(Column.of("name", 10), Column.of("name2", 11),
+                Column.of("name3", 12), Column.of("name4", 13),
+                Column.of("name5", 14), Column.of("name5", 16));
+
+        ColumnEntity columnFamily = ColumnEntity.of("columnFamily", columns);
+
+        assertTrue(columnFamily.contains("name"));
+        assertTrue(columnFamily.contains("name2"));
+        assertTrue(columnFamily.contains("name3"));
+        assertTrue(columnFamily.contains("name4"));
+        assertTrue(columnFamily.contains("name5"));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenDoesNotContainElement() {
+        List<Column> columns = asList(Column.of("name", 10), Column.of("name2", 11),
+                Column.of("name3", 12), Column.of("name4", 13),
+                Column.of("name5", 14), Column.of("name5", 16));
+
+        ColumnEntity columnFamily = ColumnEntity.of("columnFamily", columns);
+
+        assertFalse(columnFamily.contains("name6"));
+        assertFalse(columnFamily.contains("name7"));
+        assertFalse(columnFamily.contains("name8"));
+        assertFalse(columnFamily.contains("name9"));
+        assertFalse(columnFamily.contains("name10"));
+    }
+
+    @Test
+    public void shouldRemoveAllElementsWhenUseClearMethod() {
+        List<Column> columns = asList(Column.of("name", 10), Column.of("name2", 11),
+                Column.of("name3", 12), Column.of("name4", 13),
+                Column.of("name5", 14), Column.of("name5", 16));
+
+        ColumnEntity columnFamily = ColumnEntity.of("columnFamily", columns);
+
+
+        assertFalse(columnFamily.isEmpty());
+        columnFamily.clear();
+        assertTrue(columnFamily.isEmpty());
     }
 
 }
