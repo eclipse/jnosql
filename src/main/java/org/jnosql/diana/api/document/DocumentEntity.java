@@ -178,7 +178,7 @@ public interface DocumentEntity extends Serializable {
     Collection<Value> getValues();
 
     /**
-     * Returns true if this DocumentEntity contains a document whose the name is informated
+     * Returns true if this DocumentEntity contains a document whose the name is informed
      *
      * @param documentName
      * @return true if find a document and otherwise false
