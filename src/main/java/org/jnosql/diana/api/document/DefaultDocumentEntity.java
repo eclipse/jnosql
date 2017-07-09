@@ -80,7 +80,6 @@ final class DefaultDocumentEntity implements DocumentEntity {
     public void add(String documentName, Object value) throws UnsupportedOperationException, NullPointerException {
         requireNonNull(documentName, "documentName is required");
         requireNonNull(value, "value is required");
-        remove(documentName);
         this.add(Document.of(documentName, value));
     }
 
