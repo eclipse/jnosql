@@ -17,12 +17,27 @@
 
 package org.jnosql.diana.api.column;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import org.jnosql.diana.api.Value;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
+import static java.util.Collections.unmodifiableMap;
+import static java.util.Collections.unmodifiableSet;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 final class DefaultColumnEntity implements ColumnEntity {
 
-    private final List<Column> columns = new ArrayList<>();
+    private final Map<String, Object> columns = new HashMap<>();
 
     private final String name;
 
@@ -37,7 +52,7 @@ final class DefaultColumnEntity implements ColumnEntity {
      * @param columns - columns
      * @return a ColumnEntity instance
      */
-    public static DefaultColumnEntity of(String name, Column... columns) {
+    static DefaultColumnEntity of(String name, Column... columns) {
         if (columns.length == 0) {
             return new DefaultColumnEntity(name);
         }
@@ -51,7 +66,7 @@ final class DefaultColumnEntity implements ColumnEntity {
      * @param columns - columns
      * @return a ColumnEntity instance
      */
-    public static DefaultColumnEntity of(String name, List<Column> columns) {
+     static DefaultColumnEntity of(String name, List<Column> columns) {
         DefaultColumnEntity columnEntity = new DefaultColumnEntity(name);
         columnEntity.addAll(columns);
         return columnEntity;
@@ -59,20 +74,38 @@ final class DefaultColumnEntity implements ColumnEntity {
 
     public void addAll(List<Column> columns) {
         Objects.requireNonNull(columns, "The object column is required");
-        this.columns.addAll(columns);
+
     }
 
+    @Override
     public void add(Column column) {
         Objects.requireNonNull(column, "Column is required");
-        columns.add(column);
+        this.columns.put(column.getName(), column.get());
+    }
+
+    @Override
+    public void add(String columnName, Object value) throws UnsupportedOperationException, NullPointerException {
+        requireNonNull(columnName, "columnName is required");
+        requireNonNull(value, "value is required");
+        this.add(Column.of(columnName, value));
+    }
+
+    @Override
+    public void add(String columnName, Value value) throws UnsupportedOperationException, NullPointerException {
+        requireNonNull(columnName, "columnName is required");
+        requireNonNull(value, "value is required");
+        this.add(Column.of(columnName, value));
     }
 
     public Map<String, Object> toMap() {
-        return columns.stream().collect(Collectors.toMap(Column::getName, column -> column.getValue().get()));
+        return unmodifiableMap(columns);
     }
 
     public List<Column> getColumns() {
-        return Collections.unmodifiableList(columns);
+        return columns.entrySet()
+                .stream()
+                .map(e -> Column.of(e.getKey(), e.getValue()))
+                .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
     public String getName() {
@@ -80,21 +113,20 @@ final class DefaultColumnEntity implements ColumnEntity {
     }
 
     @Override
-    public boolean remove(String name) {
-        Objects.requireNonNull(name, "columnName is required");
-        return columns.removeIf(column -> column.getName().equals(name));
+    public boolean remove(String columnName) {
+        requireNonNull(columnName, "columnName is required");
+        return columns.remove(columnName) != null;
     }
 
-    @Override
-    public boolean remove(Column column) throws NullPointerException {
-        Objects.requireNonNull(column, "column is required");
-        return columns.remove(column);
-    }
 
     @Override
     public Optional<Column> find(String columnName) {
-        Objects.requireNonNull(columnName, "name is required");
-        return columns.stream().filter(column -> column.getName().equals(columnName)).findFirst();
+        requireNonNull(columnName, "columnName is required");
+        Object value = columns.get(columnName);
+        if (value == null) {
+            return Optional.empty();
+        }
+        return Optional.of(Column.of(columnName, value));
     }
 
     @Override
@@ -108,9 +140,27 @@ final class DefaultColumnEntity implements ColumnEntity {
 
     @Override
     public ColumnEntity copy() {
-        DefaultColumnEntity copy = new DefaultColumnEntity(this.name);
-        copy.columns.addAll(this.columns);
-        return copy;
+        DefaultColumnEntity entity = new DefaultColumnEntity(this.name);
+        entity.columns.putAll(new HashMap<>(this.columns));
+        return entity;
+    }
+
+    @Override
+    public Set<String> getColumnNames() {
+        return unmodifiableSet(columns.keySet());
+    }
+
+    @Override
+    public Collection<Value> getValues() {
+        return columns.values().stream()
+                .map(Value::of)
+                .collect(toList());
+    }
+
+    @Override
+    public boolean contains(String columnName) {
+        requireNonNull(columnName, "columnName is required");
+        return columns.containsKey(columnName);
     }
 
     @Override
