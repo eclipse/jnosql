@@ -121,7 +121,7 @@ final class DefaultDocumentEntity implements DocumentEntity {
     @Override
     public DocumentEntity copy() {
         DefaultDocumentEntity entity = new DefaultDocumentEntity(this.name);
-        entity.documents.putAll(this.documents);
+        entity.documents.putAll(new HashMap<>(this.documents));
         return entity;
     }
 
@@ -139,7 +139,7 @@ final class DefaultDocumentEntity implements DocumentEntity {
     public Collection<Value> getValues() {
         return documents.values().stream()
                 .map(Value::of)
-                .collect(toSet());
+                .collect(toList());
     }
 
     @Override
