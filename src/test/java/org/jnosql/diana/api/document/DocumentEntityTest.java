@@ -17,11 +17,9 @@
 
 package org.jnosql.diana.api.document;
 
-import org.hamcrest.Matchers;
 import org.jnosql.diana.api.Value;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,7 +27,10 @@ import java.util.Optional;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 public class DocumentEntityTest {
@@ -75,6 +76,13 @@ public class DocumentEntityTest {
         assertTrue(name.isPresent());
         assertFalse(notfound.isPresent());
         assertEquals(document, name.get());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErroWhenFindDocumentIsNull() {
+        Document document = Document.of("name", "name");
+        DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
+        entity.find(null);
     }
 
     @Test

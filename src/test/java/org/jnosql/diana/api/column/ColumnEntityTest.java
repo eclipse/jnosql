@@ -79,6 +79,13 @@ public class ColumnEntityTest {
         assertEquals(column, name.get());
     }
 
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErroWhenFindCoumnIsNull() {
+        Column column = Column.of("name", "name");
+        ColumnEntity entity = ColumnEntity.of("entity", singletonList(column));
+        entity.find(null);
+    }
+
     @Test
     public void shouldRemoveColumn() {
         Column column = Column.of("name", "name");
@@ -169,6 +176,7 @@ public class ColumnEntityTest {
         assertFalse(entity.remove("value1"));
         assertFalse(entity.isEmpty());
     }
+
     //
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenRemoveByNameIsNull() {
