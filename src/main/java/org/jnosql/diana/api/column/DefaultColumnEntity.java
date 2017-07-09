@@ -74,7 +74,7 @@ final class DefaultColumnEntity implements ColumnEntity {
 
     public void addAll(List<Column> columns) {
         Objects.requireNonNull(columns, "The object column is required");
-
+        columns.forEach(this::add);
     }
 
     @Override
