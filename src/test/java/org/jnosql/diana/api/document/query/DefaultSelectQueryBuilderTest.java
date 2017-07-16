@@ -36,25 +36,25 @@ public class DefaultSelectQueryBuilderTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenHasNullElementInSelect() {
-        select("column", "column", null);
+        select("document", "document'", null);
     }
 
     @Test
     public void shouldSelect() {
-        String columnFamily = "documentCollection";
-        DocumentQuery query = select().from(columnFamily).build();
+        String documentCollection = "documentCollection";
+        DocumentQuery query = select().from(documentCollection).build();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getDocumentCollection());
+        assertEquals(documentCollection, query.getDocumentCollection());
     }
 
     @Test
-    public void shouldSelectColumns() {
-        String columnFamily = "columnFamily";
-        DocumentQuery query = select("column", "column2").from(columnFamily).build();
-        assertThat(query.getDocuments(), containsInAnyOrder("column", "column2"));
+    public void shouldSelectDocument() {
+        String documentCollection = "documentCollection";
+        DocumentQuery query = select("document", "document2").from(documentCollection).build();
+        assertThat(query.getDocuments(), containsInAnyOrder("document", "document2"));
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getDocumentCollection());
+        assertEquals(documentCollection, query.getDocumentCollection());
     }
 
     @Test(expected = NullPointerException.class)
@@ -64,15 +64,15 @@ public class DefaultSelectQueryBuilderTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenWhereConditionIsNull() {
-        String columnFamily = "columnFamily";
-        select().from(columnFamily).where(null);
+        String documentCollection = "documentCollection";
+        select().from(documentCollection).where(null);
     }
 
     @Test
     public void shouldSelectWhere() {
-        String columnFamily = "columnFamily";
+        String documentCollection = "documentCollection";
         DocumentCondition condition = eq(Document.of("name", "Ada"));
-        DocumentQuery query = select().from(columnFamily).where(condition).build();
+        DocumentQuery query = select().from(documentCollection).where(condition).build();
         assertTrue(query.getCondition().isPresent());
         DocumentCondition conditionWhere = query.getCondition().get();
         assertEquals(condition, conditionWhere);
@@ -80,9 +80,9 @@ public class DefaultSelectQueryBuilderTest {
 
     @Test
     public void shouldSelectWhereAnd() {
-        String columnFamily = "columnFamily";
+        String documentCollection = "documentCollection";
         DocumentCondition condition = eq(Document.of("name", "Ada"));
-        DocumentQuery query = select().from(columnFamily).where(condition).and(gt(Document.of("age", 10))).build();
+        DocumentQuery query = select().from(documentCollection).where(condition).and(gt(Document.of("age", 10))).build();
         assertTrue(query.getCondition().isPresent());
         DocumentCondition expected = eq(Document.of("name", "Ada")).and(gt(Document.of("age", 10)));
         assertEquals(expected, query.getCondition().get());
@@ -90,9 +90,9 @@ public class DefaultSelectQueryBuilderTest {
 
     @Test
     public void shouldSelectWhereOr() {
-        String columnFamily = "columnFamily";
+        String documentCollection = "documentCollection";
         DocumentCondition condition = eq(Document.of("name", "Ada"));
-        DocumentQuery query = select().from(columnFamily).where(condition).or(gt(Document.of("age", 10))).build();
+        DocumentQuery query = select().from(documentCollection).where(condition).or(gt(Document.of("age", 10))).build();
         assertTrue(query.getCondition().isPresent());
         DocumentCondition expected = eq(Document.of("name", "Ada")).or(gt(Document.of("age", 10)));
         assertEquals(expected, query.getCondition().get());
@@ -101,51 +101,51 @@ public class DefaultSelectQueryBuilderTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenSelectWhereAndConditionIsNull() {
-        String columnFamily = "columnFamily";
+        String documentCollection = "documentCollection";
         DocumentCondition condition = eq(Document.of("name", "Ada"));
-        select().from(columnFamily).where(condition).and(null);
+        select().from(documentCollection).where(condition).and(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenSelectWhereOrConditionIsNull() {
-        String columnFamily = "columnFamily";
+        String documentCollection = "documentCollection";
         DocumentCondition condition = eq(Document.of("name", "Ada"));
-        select().from(columnFamily).where(condition).or(null);
+        select().from(documentCollection).where(condition).or(null);
     }
 
     @Test
     public void shouldSelectOrder() {
-        String columnFamily = "columnFamily";
-        DocumentQuery query = select().from(columnFamily).orderBy(Sort.of("name", ASC)).build();
+        String documentCollection = "documentCollection";
+        DocumentQuery query = select().from(documentCollection).orderBy(Sort.of("name", ASC)).build();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getDocumentCollection());
+        assertEquals(documentCollection, query.getDocumentCollection());
         assertThat(query.getSorts(), contains(Sort.of("name", ASC)));
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorSelectWhenOrderIsNull() {
-        String columnFamily = "columnFamily";
-        select().from(columnFamily).orderBy(null);
+        String documentCollection = "documentCollection";
+        select().from(documentCollection).orderBy(null);
     }
 
     @Test
     public void shouldSelectLimit() {
-        String columnFamily = "columnFamily";
-        DocumentQuery query = select().from(columnFamily).limit(10).build();
+        String documentCollection = "documentCollection";
+        DocumentQuery query = select().from(documentCollection).limit(10).build();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getDocumentCollection());
+        assertEquals(documentCollection, query.getDocumentCollection());
         assertEquals(10L, query.getMaxResults());
     }
 
     @Test
     public void shouldSelectStart() {
-        String columnFamily = "columnFamily";
-        DocumentQuery query = select().from(columnFamily).start(10).build();
+        String documentCollection = "documentCollection";
+        DocumentQuery query = select().from(documentCollection).start(10).build();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getDocumentCollection());
+        assertEquals(documentCollection, query.getDocumentCollection());
         assertEquals(10L, query.getFirstResult());
     }
 }

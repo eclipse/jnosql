@@ -100,6 +100,5 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
     @Override
     public DocumentQuery build() {
         return new DefaultDocumentQuery(limit, start, documentCollection, documents, sorts, condition);
-
     }
 }
