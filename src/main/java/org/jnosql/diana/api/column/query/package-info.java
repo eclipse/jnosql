@@ -15,6 +15,7 @@
  *
  */
 /**
- * This package has the DSL domain to create a {@link org.jnosql.diana.api.column.ColumnQuery}
+ * This package has the DSL domain to create both {@link org.jnosql.diana.api.column.ColumnQuery} and
+ * {@link org.jnosql.diana.api.column.ColumnDeleteQuery}
  */
 package org.jnosql.diana.api.column.query;
