@@ -24,6 +24,9 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * The default implementation to Delete query
+ */
 class DefaultDeleteQueryBuilder implements ColumnDelete, ColumnDeleteFrom, ColumnDeleteWhere {
 
     private String columnFamily;
