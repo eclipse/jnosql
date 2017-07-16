@@ -26,6 +26,9 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * The default implementation of the Select in the document
+ */
 class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, DocumentWhere, DocumentLimit, DocumentStart, DocumentOrder {
 
 
