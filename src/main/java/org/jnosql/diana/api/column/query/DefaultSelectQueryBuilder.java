@@ -26,7 +26,7 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere, ColumnLimit, ColumnStart, ColumnOrder {
+class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere, ColumnLimit, ColumnStart, ColumnOrder {
 
     private String columnFamily;
 
@@ -40,7 +40,7 @@ class DefaultQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere, Colu
 
     private final List<String> columns;
 
-    DefaultQueryBuilder(List<String> columns) {
+    DefaultSelectQueryBuilder(List<String> columns) {
         this.columns = columns;
     }
 

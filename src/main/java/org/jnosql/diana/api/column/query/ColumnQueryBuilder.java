@@ -17,8 +17,30 @@
 package org.jnosql.diana.api.column.query;
 
 
+import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+
+/**
+ * A utilitarian class to query.
+ */
 public final class ColumnQueryBuilder {
 
     private ColumnQueryBuilder() {
+    }
+
+
+    /**
+     * Creates a query to Column
+     *
+     * @param columns - The column fields to query, optional.
+     * @return a new {@link ColumnSelect} instance
+     * @throws NullPointerException when there is a null element
+     */
+    public static ColumnSelect select(String... columns) throws NullPointerException {
+        return new DefaultSelectQueryBuilder(Stream.of(columns)
+                .peek(c -> requireNonNull(c, "element is required"))
+                .collect(toList()));
     }
 }
