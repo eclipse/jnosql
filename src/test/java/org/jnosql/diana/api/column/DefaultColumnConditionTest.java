@@ -186,17 +186,6 @@ public class DefaultColumnConditionTest {
 
     }
 
-    @Test
-    public void shouldSubquery() {
-        ColumnQuery query = ColumnQuery.of("collection");
-        ColumnCondition subquery = ColumnCondition.subquery(query);
-        Column column = subquery.getColumn();
-        assertEquals(Condition.SUBQUERY, subquery.getCondition());
-        assertEquals(SUBQUERY.getNameField(), column.getName());
-        assertEquals(query,column.get(ColumnQuery.class));
-
-    }
-
     //
     @Test(expected = NullPointerException.class)
     public void shouldReturnErroWhenBetweenIsNull() {
