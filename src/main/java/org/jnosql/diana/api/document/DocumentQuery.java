@@ -34,88 +34,16 @@ public interface DocumentQuery {
 
 
     /**
-     * Creates a {@link DocumentQuery}
-     *
-     * @param collection - the name of document collection to do a select
-     * @return a {@link DocumentQuery} instance
-     * @throws NullPointerException when documentCollecion is null
-     */
-    static DocumentQuery of(String collection) throws NullPointerException {
-        return DefaultDocumentQuery.of(collection);
-    }
-
-    /**
-     * Appends a new condition in the select
-     * using {{@link DocumentCondition#and(DocumentCondition)}}
-     *
-     * @param condition condition to be added
-     * @return the same instance with a condition added
-     * @throws NullPointerException when condition is null
-     */
-    DocumentQuery and(DocumentCondition condition) throws NullPointerException;
-
-    /**
-     * Appends a new condition in the select
-     * using {{@link DocumentCondition#or(DocumentCondition)}}
-     *
-     * @param condition condition to be added
-     * @return the same instance with a condition added
-     * @throws NullPointerException when condition is null
-     */
-    DocumentQuery or(DocumentCondition condition) throws NullPointerException;
-
-    /**
-     * Set the position of the first result to retrieve.
-     *
-     * @param firstResult the firstResult
-     * @return this instance
-     */
-    DocumentQuery withFirstResult(long firstResult);
-
-    /**
-     * Set the maximum number of results to retrieve.
-     *
-     * @param maxResults
-     * @return this instance
-     */
-    DocumentQuery withMaxResults(long maxResults);
-
-    /**
-     * Sets the document select with a condition
-     * @param condition the condition to be seted
-     * @return this instance
-     * @throws NullPointerException when condition is null
-     */
-    DocumentQuery with(DocumentCondition condition) throws NullPointerException;
-
-
-    /**
      * @return The maximum number of results the select object was set to retrieve.
+     * The implementation might ignore this option.
      */
     long getMaxResults();
 
     /**
      * @return The position of the first result the select object was set to retrieve.
+     * The implementation might ignore this option.
      */
     long getFirstResult();
-
-    /**
-     * Add the order how the result will returned
-     *
-     * @param sort the order way
-     * @return the same way with a sort added
-     * @throws NullPointerException when sort is null
-     */
-    DocumentQuery addSort(Sort sort) throws NullPointerException;
-
-    /**
-     * Add column to be either retrieve or deleted, if empty will either returns
-     * all elements in a select select or delete all elements in a column family entity.
-     *
-     * @param document the document name
-     * @return the same instance with a column added
-     */
-    DocumentQuery addColumn(String document) throws NullPointerException;
 
 
     /**
@@ -127,6 +55,7 @@ public interface DocumentQuery {
 
     /**
      * The conditions that contains in this {@link DocumentQuery}
+     * If empty, {@link Optional#empty()} is true, the implementation might either return an unsupported exception or returns same elements in the database.
      *
      * @return the conditions
      */
@@ -134,23 +63,18 @@ public interface DocumentQuery {
 
     /**
      * The sorts that contains in this {@link DocumentQuery}
+     * The implementation might ignore this option.
      *
      * @return the sorts
      */
     List<Sort> getSorts();
 
     /**
-     * Get documents
+     * Returns the documents to returns in that query if empty will return all elements in the query.
+     * The implementation might ignore this option.
      *
      * @return the documents
      */
     List<String> getDocuments();
-
-    /**
-     * Converts to {@link DocumentDeleteQuery}
-     *
-     * @return the {@link DocumentDeleteQuery} instance
-     */
-    DocumentDeleteQuery toDeleteQuery();
 
 }
