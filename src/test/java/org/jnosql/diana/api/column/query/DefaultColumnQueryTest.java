@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.column.query;
 
+import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,8 +48,8 @@ public class DefaultColumnQueryTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void shouldNotRemoveSort() {
-        List<String> columns = query.getColumns();
-        assertTrue(columns.isEmpty());
-        columns.clear();
+        List<Sort> sorts = query.getSorts();
+        assertTrue(sorts.isEmpty());
+        sorts.clear();
     }
 }
