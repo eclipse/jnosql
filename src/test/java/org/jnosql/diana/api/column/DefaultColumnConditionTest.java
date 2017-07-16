@@ -29,7 +29,6 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.OR;
-import static org.jnosql.diana.api.Condition.SUBQUERY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
@@ -186,7 +185,6 @@ public class DefaultColumnConditionTest {
 
     }
 
-    //
     @Test(expected = NullPointerException.class)
     public void shouldReturnErroWhenBetweenIsNull() {
         ColumnCondition.between(null);
