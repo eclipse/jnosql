@@ -56,4 +56,6 @@ public final class ColumnQueryBuilder {
                 .peek(c -> requireNonNull(c, "element is cannot be null"))
                 .collect(toList()));
     }
+
+
 }
