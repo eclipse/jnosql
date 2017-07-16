@@ -35,11 +35,13 @@ public interface ColumnQuery {
 
     /**
      * @return The maximum number of results the select object was set to retrieve.
+     * The implementation might ignore this option.
      */
     long getMaxResults();
 
     /**
      * @return The position of the first result the select object was set to retrieve.
+     * The implementation might ignore this option.
      */
     long getFirstResult();
 
@@ -58,7 +60,8 @@ public interface ColumnQuery {
     Optional<ColumnCondition> getCondition();
 
     /**
-     * Returns the columns
+     * Returns the columns to returns in that query if empty will return all elements in the query.
+     * The implementation might ignore this option.
      *
      * @return the columns
      */
@@ -70,14 +73,5 @@ public interface ColumnQuery {
      * @return the sorts
      */
     List<Sort> getSorts();
-
-
-    /**
-     * Converts this to {@link ColumnDeleteQuery}
-     *
-     * @return the {@link ColumnDeleteQuery} instance
-     * @throws NullPointerException if {@link ColumnQuery#getCondition()} still null
-     */
-    ColumnDeleteQuery toDeleteQuery() throws NullPointerException;
 
 }
