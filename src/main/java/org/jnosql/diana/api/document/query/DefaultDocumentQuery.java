@@ -42,8 +42,8 @@ class DefaultDocumentQuery implements DocumentQuery {
 
     private final List<String> documents;
 
-    DefaultDocumentQuery(long maxResult, long firstResult, String documentCollection, DocumentCondition condition,
-                         List<Sort> sorts, List<String> documents) {
+    DefaultDocumentQuery(long maxResult, long firstResult, String documentCollection,
+                          List<String> documents, List<Sort> sorts, DocumentCondition condition) {
 
         this.maxResult = maxResult;
         this.firstResult = firstResult;
