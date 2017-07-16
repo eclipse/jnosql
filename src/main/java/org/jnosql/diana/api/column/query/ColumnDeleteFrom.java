@@ -31,7 +31,7 @@ public interface ColumnDeleteFrom {
      * Defines a new condition in the query
      *
      * @param condition the condition in the where
-     * @return a new {@link ColumnWhere}
+     * @return a new {@link ColumnDeleteWhere}
      * @throws NullPointerException when condition is null
      */
     ColumnDeleteWhere where(ColumnCondition condition) throws NullPointerException;
