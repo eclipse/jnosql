@@ -45,7 +45,7 @@ public class DefaultSelectQueryBuilderTest {
         DocumentQuery query = select().from(columnFamily).build();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getCollection());
+        assertEquals(columnFamily, query.getDocumentCollection());
     }
 
     @Test
@@ -54,7 +54,7 @@ public class DefaultSelectQueryBuilderTest {
         DocumentQuery query = select("column", "column2").from(columnFamily).build();
         assertThat(query.getDocuments(), containsInAnyOrder("column", "column2"));
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getCollection());
+        assertEquals(columnFamily, query.getDocumentCollection());
     }
 
     @Test(expected = NullPointerException.class)
@@ -119,7 +119,7 @@ public class DefaultSelectQueryBuilderTest {
         DocumentQuery query = select().from(columnFamily).orderBy(Sort.of("name", ASC)).build();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getCollection());
+        assertEquals(columnFamily, query.getDocumentCollection());
         assertThat(query.getSorts(), contains(Sort.of("name", ASC)));
     }
 
@@ -135,7 +135,7 @@ public class DefaultSelectQueryBuilderTest {
         DocumentQuery query = select().from(columnFamily).limit(10).build();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getCollection());
+        assertEquals(columnFamily, query.getDocumentCollection());
         assertEquals(10L, query.getMaxResults());
     }
 
@@ -145,7 +145,7 @@ public class DefaultSelectQueryBuilderTest {
         DocumentQuery query = select().from(columnFamily).start(10).build();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getCollection());
+        assertEquals(columnFamily, query.getDocumentCollection());
         assertEquals(10L, query.getFirstResult());
     }
 }

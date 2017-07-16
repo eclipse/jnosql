@@ -64,7 +64,7 @@ class DefaultDocumentQuery implements DocumentQuery {
     }
 
     @Override
-    public String getCollection() {
+    public String getDocumentCollection() {
         return documentCollection;
     }
 
@@ -94,7 +94,7 @@ class DefaultDocumentQuery implements DocumentQuery {
         DocumentQuery that = (DocumentQuery) o;
         return maxResult == that.getMaxResults() &&
                 firstResult == that.getFirstResult() &&
-                Objects.equals(documentCollection, that.getCollection()) &&
+                Objects.equals(documentCollection, that.getDocumentCollection()) &&
                 Objects.equals(condition, that.getCondition()) &&
                 Objects.equals(sorts, that.getSorts()) &&
                 Objects.equals(documents, that.getDocuments());
