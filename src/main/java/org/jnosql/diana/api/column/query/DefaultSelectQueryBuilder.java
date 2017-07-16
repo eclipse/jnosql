@@ -95,7 +95,7 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere
 
     @Override
     public ColumnQuery build() {
-        return null;
+        return new DefaultColumnQuery(limit, start, columnFamily, columns, sorts, condition);
     }
 
 }

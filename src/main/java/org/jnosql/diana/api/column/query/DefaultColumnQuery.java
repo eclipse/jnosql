@@ -105,4 +105,17 @@ class DefaultColumnQuery implements ColumnQuery {
     public int hashCode() {
         return hash(maxResults, firstResult, columnFamily, columns, sorts, condition);
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("DefaultColumnQuery{");
+        sb.append("maxResults=").append(maxResults);
+        sb.append(", firstResult=").append(firstResult);
+        sb.append(", columnFamily='").append(columnFamily).append('\'');
+        sb.append(", columns=").append(columns);
+        sb.append(", sorts=").append(sorts);
+        sb.append(", condition=").append(condition);
+        sb.append('}');
+        return sb.toString();
+    }
 }
