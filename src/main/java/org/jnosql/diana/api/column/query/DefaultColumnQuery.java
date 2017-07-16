@@ -26,7 +26,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.unmodifiableList;
-import static java.util.Objects.hash;
 import static java.util.Optional.ofNullable;
 
 /**
