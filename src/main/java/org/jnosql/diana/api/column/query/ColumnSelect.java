@@ -17,5 +17,17 @@
 package org.jnosql.diana.api.column.query;
 
 
-public interface ColumnSelectBuilder {
+/**
+ * The initial element in the Column query
+ */
+public interface ColumnSelect {
+
+    /**
+     * Defines the column family in the query
+     *
+     * @param columnFamily the column family to query
+     * @return a {@link ColumnFrom query}
+     * @throws NullPointerException when columnFamily is null
+     */
+    ColumnFrom from(String columnFamily) throws NullPointerException;
 }
