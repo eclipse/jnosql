@@ -59,19 +59,18 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
         return unmodifiableList(columns);
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ColumnDeleteQuery)) {
+        if (!(o instanceof DefaultColumnDeleteQuery)) {
             return false;
         }
-        ColumnDeleteQuery that = (ColumnDeleteQuery) o;
-        return Objects.equals(columnFamily, that.getColumnFamily()) &&
-                Objects.equals(condition, that.getCondition()) &&
-                Objects.equals(columns, that.getColumns());
+        DefaultColumnDeleteQuery that = (DefaultColumnDeleteQuery) o;
+        return Objects.equals(columnFamily, that.columnFamily) &&
+                Objects.equals(condition, that.condition) &&
+                Objects.equals(columns, that.columns);
     }
 
     @Override
