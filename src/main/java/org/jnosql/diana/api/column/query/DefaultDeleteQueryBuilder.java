@@ -24,7 +24,7 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultDeleteQueryBuilder implements ColumnDelete, ColumnDeleteFrom, ColumnDeleteWhere{
+class DefaultDeleteQueryBuilder implements ColumnDelete, ColumnDeleteFrom, ColumnDeleteWhere {
 
     private String columnFamily;
 
@@ -67,7 +67,7 @@ class DefaultDeleteQueryBuilder implements ColumnDelete, ColumnDeleteFrom, Colum
 
     @Override
     public ColumnDeleteQuery build() {
-        return null;
+        return new DefaultColumnDeleteQuery(columnFamily, condition, columns);
     }
 }
 
