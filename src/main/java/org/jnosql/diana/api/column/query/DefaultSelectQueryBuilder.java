@@ -48,6 +48,7 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere
     @Override
     public ColumnFrom from(String columnFamily) throws NullPointerException {
         requireNonNull(columnFamily, "columnFamily is required");
+        this.columnFamily = columnFamily;
         return this;
     }
 
