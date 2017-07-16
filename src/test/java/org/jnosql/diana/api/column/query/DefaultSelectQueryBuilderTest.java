@@ -60,6 +60,11 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenFromIsNull() {
+        select().from(null);
+    }
+
+    @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenWhereConditionIsNull() {
         String columnFamily = "columnFamily";
         select().from(columnFamily).where(null);
