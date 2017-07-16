@@ -17,9 +17,13 @@
 package org.jnosql.diana.api.column.query;
 
 import org.jnosql.diana.api.column.ColumnQuery;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DefaultSelectQueryBuilderTest {
 
@@ -31,6 +35,10 @@ public class DefaultSelectQueryBuilderTest {
 
     @Test
     public void shouldSelect() {
-        ColumnQuery query = select().from("columnFamily").build();
+        String columnFamily = "columnFamily";
+        ColumnQuery query = select().from(columnFamily).build();
+        assertTrue(query.getColumns().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(columnFamily, query.getColumnFamily());
     }
 }

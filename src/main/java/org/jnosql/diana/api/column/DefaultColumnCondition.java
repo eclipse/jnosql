@@ -30,7 +30,6 @@ import static java.util.Objects.requireNonNull;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.NOT;
 import static org.jnosql.diana.api.Condition.OR;
-import static org.jnosql.diana.api.Condition.SUBQUERY;
 
 /**
  * The default implementation of {@link ColumnCondition}
@@ -63,11 +62,6 @@ class DefaultColumnCondition implements ColumnCondition {
         return DefaultColumnCondition.of(column, OR);
     }
 
-    static DefaultColumnCondition subquery(ColumnQuery query) throws NullPointerException {
-        requireNonNull(query, "select is required");
-        Column column = Column.of(SUBQUERY.getNameField(), query);
-        return DefaultColumnCondition.of(column, SUBQUERY);
-    }
 
     static DefaultColumnCondition between(Column column) {
         Objects.requireNonNull(column, "column is required");

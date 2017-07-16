@@ -30,7 +30,6 @@ import static java.util.Objects.requireNonNull;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.NOT;
 import static org.jnosql.diana.api.Condition.OR;
-import static org.jnosql.diana.api.Condition.SUBQUERY;
 
 /**
  * The default implementation of {@link DocumentCondition}
@@ -91,11 +90,6 @@ class DefaultDocumentCondition implements DocumentCondition {
         return DefaultDocumentCondition.of(document, OR);
     }
 
-    static DefaultDocumentCondition subquery(DocumentQuery query) throws NullPointerException {
-        requireNonNull(query, "select is required");
-        Document document = Document.of(SUBQUERY.getNameField(), query);
-        return DefaultDocumentCondition.of(document, SUBQUERY);
-    }
 
 
     public Document getDocument() {

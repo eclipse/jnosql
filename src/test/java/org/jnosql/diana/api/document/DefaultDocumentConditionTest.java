@@ -30,7 +30,6 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.OR;
-import static org.jnosql.diana.api.Condition.SUBQUERY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
@@ -183,16 +182,6 @@ public class DefaultDocumentConditionTest {
         DocumentCondition afirmative = eq.negate().negate();
         assertEquals(eq.getCondition(), afirmative.getCondition());
 
-    }
-
-    @Test
-    public void shouldCreateSubQuery() {
-        DocumentQuery query = DocumentQuery.of("select");
-        DocumentCondition subquery = DocumentCondition.subquery(query);
-        Document document = subquery.getDocument();
-        assertEquals(Condition.SUBQUERY, subquery.getCondition());
-        assertEquals(SUBQUERY.getNameField(), document.getName());
-        assertEquals(query,document.get(DocumentQuery.class));
     }
 
     @Test(expected = NullPointerException.class)

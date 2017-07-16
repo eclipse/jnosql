@@ -224,24 +224,4 @@ public interface DocumentCondition {
         return DefaultDocumentCondition.or(conditions);
     }
 
-    /**
-     * Returns a new {@link DocumentCondition} aggregating ,as ¨SUBQUERY", all the conditions as just one condition.
-     * The {@link Document} will storage the {@link Condition#getNameField()} as key and the value gonna be
-     * the {@link DocumentQuery} of all conditions, in other words.
-     * <p>Given:</p>
-     * <pre>
-     * {@code
-     * condition.subquery(condition2);
-     * }
-     * </pre>
-     * The {@link DocumentCondition#getDocument()} will have "_SUBQUERY" as key and the select as value.
-     *
-     * @param query the conditions to be aggregated
-     * @return the new {@link DocumentCondition} instance
-     * @throws NullPointerException when the condition is null
-     */
-    static DocumentCondition subquery(DocumentQuery query) throws NullPointerException {
-        return DefaultDocumentCondition.subquery(query);
-    }
-
 }
