@@ -19,7 +19,6 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Value;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,16 +27,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import static java.util.Collections.unmodifiableMap;
+import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Objects.requireNonNull;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
 final class DefaultColumnEntity implements ColumnEntity {
 
-    private final Map<String, Object> columns = new HashMap<>();
+    private final Map<String, Column> columns = new HashMap<>();
 
     private final String name;
 
@@ -56,7 +57,7 @@ final class DefaultColumnEntity implements ColumnEntity {
         if (columns.length == 0) {
             return new DefaultColumnEntity(name);
         }
-        return of(name, Arrays.asList(columns));
+        return of(name, asList(columns));
     }
 
     /**
@@ -80,7 +81,7 @@ final class DefaultColumnEntity implements ColumnEntity {
     @Override
     public void add(Column column) {
         Objects.requireNonNull(column, "Column is required");
-        this.columns.put(column.getName(), column.get());
+        this.columns.put(column.getName(), column);
     }
 
     @Override
@@ -98,13 +99,15 @@ final class DefaultColumnEntity implements ColumnEntity {
     }
 
     public Map<String, Object> toMap() {
-        return unmodifiableMap(columns);
+        return columns.entrySet().stream()
+                .collect(collectingAndThen(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get()),
+                        Collections::unmodifiableMap));
     }
 
     public List<Column> getColumns() {
         return columns.entrySet()
                 .stream()
-                .map(e -> Column.of(e.getKey(), e.getValue()))
+                .map(Map.Entry::getValue)
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
@@ -122,11 +125,8 @@ final class DefaultColumnEntity implements ColumnEntity {
     @Override
     public Optional<Column> find(String columnName) {
         requireNonNull(columnName, "columnName is required");
-        Object value = columns.get(columnName);
-        if (value == null) {
-            return Optional.empty();
-        }
-        return Optional.of(Column.of(columnName, value));
+        Column column = columns.get(columnName);
+        return ofNullable(column);
     }
 
     @Override
@@ -153,7 +153,7 @@ final class DefaultColumnEntity implements ColumnEntity {
     @Override
     public Collection<Value> getValues() {
         return columns.values().stream()
-                .map(Value::of)
+                .map(Column::getValue)
                 .collect(toList());
     }
 
@@ -189,7 +189,7 @@ final class DefaultColumnEntity implements ColumnEntity {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("DefaultColumnEntity{");
-        sb.append("columns=").append(columns);
+        sb.append("columns=").append(toMap());
         sb.append(", name='").append(name).append('\'');
         sb.append('}');
         return sb.toString();

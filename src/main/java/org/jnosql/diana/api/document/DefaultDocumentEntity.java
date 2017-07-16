@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
@@ -99,8 +100,8 @@ final class DefaultDocumentEntity implements DocumentEntity {
     @Override
     public Optional<Document> find(String documentName) {
         requireNonNull(documentName, "documentName is required");
-        Document value = documents.get(documentName);
-        return Optional.ofNullable(value);
+        Document document = documents.get(documentName);
+        return ofNullable(document);
     }
 
     @Override
@@ -145,7 +146,6 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public Map<String, Object> toMap() {
-
         return documents.entrySet().stream()
                 .collect(collectingAndThen(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get()),
                         Collections::unmodifiableMap));
