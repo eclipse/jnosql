@@ -56,13 +56,18 @@ public class DefaultDeleteQueryBuilderTest {
         assertEquals(columnFamily, query.getColumnFamily());
     }
 
+
+    @Test(expected = NullPointerException.class)
+    public void shouldReturnErrorWhenFromIsNull() {
+        delete().from(null);
+    }
+
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenWhereConditionIsNull() {
         String columnFamily = "columnFamily";
         delete().from(columnFamily).where(null);
     }
 
-    //
     @Test
     public void shouldSelectWhere() {
         String columnFamily = "columnFamily";
