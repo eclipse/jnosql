@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.document.query;
 
+
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -40,6 +41,19 @@ public final class DocumentQueryBuilder {
      */
     public static DocumentSelect select(String... documents) throws NullPointerException {
         return new DefaultSelectQueryBuilder(Stream.of(documents)
+                .peek(c -> requireNonNull(c, "element is cannot be null"))
+                .collect(toList()));
+    }
+
+    /**
+     * Creates a delete query to Document
+     *
+     * @param documents - The document fields to query, optional.
+     * @return a new {@link DocumentDelete} instance
+     * @throws NullPointerException when there is a null element
+     */
+    public static DocumentDelete delete(String... documents) throws NullPointerException {
+        return new DefaultDeleteQueryBuilder(Stream.of(documents)
                 .peek(c -> requireNonNull(c, "element is cannot be null"))
                 .collect(toList()));
     }

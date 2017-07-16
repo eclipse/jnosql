@@ -45,7 +45,7 @@ public final class ColumnQueryBuilder {
     }
 
     /**
-     * Creates a query to Column
+     * Creates a delete query to Column
      *
      * @param columns - The column fields to query, optional.
      * @return a new {@link ColumnSelect} instance
