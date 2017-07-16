@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
@@ -41,7 +41,7 @@ import static java.util.stream.Collectors.toList;
  */
 final class DefaultDocumentEntity implements DocumentEntity {
 
-    private final Map<String, Object> documents = new HashMap<>();
+    private final Map<String, Document> documents = new HashMap<>();
 
     private final String name;
 
@@ -65,14 +65,14 @@ final class DefaultDocumentEntity implements DocumentEntity {
     public List<Document> getDocuments() {
         return documents.entrySet()
                 .stream()
-                .map(e -> Document.of(e.getKey(), e.getValue()))
+                .map(Map.Entry::getValue)
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
     @Override
     public void add(Document document) {
         requireNonNull(document, "Document is required");
-        documents.put(document.getName(), document.get());
+        documents.put(document.getName(), document);
     }
 
     @Override
@@ -99,12 +99,8 @@ final class DefaultDocumentEntity implements DocumentEntity {
     @Override
     public Optional<Document> find(String documentName) {
         requireNonNull(documentName, "documentName is required");
-        Object value = documents.get(documentName);
-        if (value == null) {
-            return Optional.empty();
-        }
-        return Optional.of(Document.of(documentName, value));
-
+        Document value = documents.get(documentName);
+        return Optional.ofNullable(value);
     }
 
     @Override
@@ -137,7 +133,7 @@ final class DefaultDocumentEntity implements DocumentEntity {
     @Override
     public Collection<Value> getValues() {
         return documents.values().stream()
-                .map(Value::of)
+                .map(Document::getValue)
                 .collect(toList());
     }
 
@@ -149,7 +145,10 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public Map<String, Object> toMap() {
-        return unmodifiableMap(documents);
+
+        return documents.entrySet().stream()
+                .collect(collectingAndThen(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get()),
+                        Collections::unmodifiableMap));
     }
 
 
@@ -175,7 +174,7 @@ final class DefaultDocumentEntity implements DocumentEntity {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("DefaultDocumentEntity{");
-        sb.append("documents=").append(documents);
+        sb.append("documents=").append(toMap());
         sb.append(", name='").append(name).append('\'');
         sb.append('}');
         return sb.toString();
