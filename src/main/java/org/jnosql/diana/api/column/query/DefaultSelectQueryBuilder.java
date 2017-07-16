@@ -26,6 +26,9 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * The default implementation of the Select in the column
+ */
 class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere, ColumnLimit, ColumnStart, ColumnOrder {
 
     private String columnFamily;
