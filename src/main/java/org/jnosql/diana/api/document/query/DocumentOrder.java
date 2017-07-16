@@ -34,6 +34,24 @@ public interface DocumentOrder {
      */
     DocumentOrder orderBy(Sort sort) throws NullPointerException;
 
+
+    /**
+     * Defines the position of the first result to retrieve.
+     *
+     * @param start the first result to retrive
+     * @return a query with first result defined
+     */
+    DocumentStart start(long start);
+
+
+    /**
+     * Defines the maximum number of results to retrieve.
+     *
+     * @param limit the limit
+     * @return a query with the limit defined
+     */
+    DocumentLimit limit(long limit);
+
     /**
      * Creates a new instance of {@link DocumentQuery}
      *
