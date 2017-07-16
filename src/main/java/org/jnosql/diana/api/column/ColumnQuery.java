@@ -70,6 +70,7 @@ public interface ColumnQuery {
 
     /**
      * The sorts that contains in this {@link ColumnQuery}
+     * The implementation might ignore this option.
      *
      * @return the sorts
      */
