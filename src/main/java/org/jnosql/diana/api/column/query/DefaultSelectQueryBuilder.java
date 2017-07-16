@@ -81,14 +81,14 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere
     @Override
     public ColumnWhere and(ColumnCondition condition) throws NullPointerException {
         requireNonNull(condition, "condition is required");
-        this.condition.and(condition);
+        this.condition = this.condition.and(condition);
         return this;
     }
 
     @Override
     public ColumnWhere or(ColumnCondition condition) throws NullPointerException {
         requireNonNull(condition, "condition is required");
-        this.condition.or(condition);
+        this.condition = this.condition.or(condition);
         return this;
     }
 
