@@ -54,6 +54,7 @@ public interface ColumnQuery {
 
     /**
      * The conditions that contains in this {@link ColumnQuery}
+     * If empty, {@link Optional#empty()} is true, the implementation might either return an unsupported exception or returns same elements in the database.
      *
      * @return the conditions
      */

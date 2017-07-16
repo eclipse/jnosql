@@ -38,6 +38,7 @@ public interface ColumnDeleteQuery {
 
     /**
      * getter the condition
+     * If empty, {@link Optional#empty()} is true, the implementation might either return an unsupported exception or delete same elements in the database.
      *
      * @return the condition
      */
