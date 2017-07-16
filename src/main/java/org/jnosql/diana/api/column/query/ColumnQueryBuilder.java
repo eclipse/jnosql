@@ -40,7 +40,20 @@ public final class ColumnQueryBuilder {
      */
     public static ColumnSelect select(String... columns) throws NullPointerException {
         return new DefaultSelectQueryBuilder(Stream.of(columns)
-                .peek(c -> requireNonNull(c, "element is required"))
+                .peek(c -> requireNonNull(c, "element is cannot be null"))
+                .collect(toList()));
+    }
+
+    /**
+     * Creates a query to Column
+     *
+     * @param columns - The column fields to query, optional.
+     * @return a new {@link ColumnSelect} instance
+     * @throws NullPointerException when there is a null element
+     */
+    public static ColumnDelete delete(String... columns) throws NullPointerException {
+        return new DefaultDeleteQueryBuilder(Stream.of(columns)
+                .peek(c -> requireNonNull(c, "element is cannot be null"))
                 .collect(toList()));
     }
 }
