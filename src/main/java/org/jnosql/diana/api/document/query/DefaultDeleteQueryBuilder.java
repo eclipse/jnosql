@@ -69,6 +69,6 @@ class DefaultDeleteQueryBuilder implements DocumentDelete, DocumentDeleteFrom, D
 
     @Override
     public DocumentDeleteQuery build() {
-        return null;
+        return new DefaultDocumentDeleteQuery(documentCollection, condition, documents);
     }
 }
