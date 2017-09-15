@@ -17,6 +17,8 @@
 
 package org.jnosql.diana.api.key;
 
+import org.jnosql.diana.api.Settings;
+
 /**
  * The diana configuration to create a {@link BucketManagerFactory}
  *
@@ -31,4 +33,16 @@ public interface KeyValueConfiguration<SYNC extends BucketManagerFactory> {
      * @return a {@link BucketManagerFactory} instance
      */
     SYNC get();
+
+    /**
+     * Reads configuration from the {@link Settings} instance, the parameters are defined by NoSQL
+     * provider, then creates a {@link BucketManagerFactory} instance.
+     *
+     * @param settings the settings
+     * @return a {@link BucketManagerFactory}
+     * @throws NullPointerException when settings is null
+     * @see Settings
+     * @see Settings#of(java.util.Map)
+     */
+    SYNC get(Settings settings);
 }

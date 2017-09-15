@@ -16,6 +16,8 @@
  */
 package org.jnosql.diana.api.document;
 
+import org.jnosql.diana.api.Settings;
+
 /**
  * The diana configuration to create a {@link DocumentCollectionManagerFactory}
  *
@@ -28,7 +30,18 @@ public interface DocumentConfigurationAsync<ASYNC extends DocumentCollectionMana
      * {@link DocumentCollectionManagerAsyncFactory} instance.
      *
      * @return a {@link DocumentCollectionManagerAsyncFactory} instance
-     * @throws UnsupportedOperationException when the operation is not supported
      */
-    ASYNC getAsync() throws UnsupportedOperationException;
+    ASYNC getAsync();
+
+    /**
+     * Reads configuration from the {@link Settings} instance, the parameters are defined by NoSQL
+     * provider, then creates a {@link DocumentCollectionManagerAsyncFactory} instance.
+     *
+     * @param settings the settings
+     * @return a {@link DocumentCollectionManagerAsyncFactory}
+     * @throws NullPointerException when settings is null
+     * @see Settings
+     * @see Settings#of(java.util.Map)
+     */
+    ASYNC getAsync(Settings settings) throws NullPointerException;
 }

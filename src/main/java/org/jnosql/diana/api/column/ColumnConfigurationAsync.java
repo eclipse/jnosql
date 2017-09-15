@@ -17,6 +17,8 @@
 package org.jnosql.diana.api.column;
 
 
+import org.jnosql.diana.api.Settings;
+
 /**
  * The diana configuration to create a {@link ColumnFamilyManagerAsyncFactory}
  *
@@ -31,5 +33,17 @@ public interface ColumnConfigurationAsync<ASYNC extends ColumnFamilyManagerAsync
      * @return a {@link ColumnFamilyManagerAsyncFactory}
      */
     ASYNC getAsync();
+
+    /**
+     * Reads configuration from the {@link Settings} instance, the parameters are defined by NoSQL
+     * provider, then creates a {@link ColumnFamilyManagerAsyncFactory} instance.
+     *
+     * @param settings the settings
+     * @return a {@link ColumnFamilyManagerAsyncFactory}
+     * @throws NullPointerException when settings is null
+     * @see Settings
+     * @see Settings#of(java.util.Map)
+     */
+    ASYNC getAsync(Settings settings) throws NullPointerException;
 
 }

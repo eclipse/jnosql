@@ -17,6 +17,9 @@
 
 package org.jnosql.diana.api.column;
 
+import org.jnosql.diana.api.Settings;
+
+
 /**
  * The diana configuration to create a {@link ColumnFamilyManagerFactory}
  *
@@ -31,5 +34,18 @@ public interface ColumnConfiguration<SYNC extends ColumnFamilyManagerFactory> {
      * @return a {@link ColumnFamilyManagerFactory}
      */
     SYNC get();
+
+
+    /**
+     * Reads configuration from the {@link Settings} instance, the parameters are defined by NoSQL
+     * provider, then creates a {@link ColumnFamilyManagerFactory} instance.
+     *
+     * @param settings the settings
+     * @return a {@link ColumnFamilyManagerFactory}
+     * @throws NullPointerException when settings is null
+     * @see Settings
+     * @see Settings#of(java.util.Map)
+     */
+    SYNC get(Settings settings) throws NullPointerException;
 
 }
