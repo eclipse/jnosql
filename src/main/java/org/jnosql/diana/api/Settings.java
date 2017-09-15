@@ -18,10 +18,14 @@ package org.jnosql.diana.api;
 
 import java.util.Map;
 
+import static java.util.Collections.emptyMap;
 import static java.util.Objects.requireNonNull;
 
 /**
  * The interface represents the settings used in a configuration.
+ *
+ * @see Settings#of(Map)
+ * @see Settings#newSettings()
  */
 public interface Settings extends Map<String, Object> {
 
@@ -35,5 +39,14 @@ public interface Settings extends Map<String, Object> {
      */
     static Settings of(Map<String, Object> settings) throws NullPointerException {
         return new DefaultSettings(requireNonNull(settings, "settings is requried"));
+    }
+
+    /**
+     * Returns a new Settings instance
+     *
+     * @return a new empty {@link Settings instance}
+     */
+    static Settings newSettings() {
+        return new DefaultSettings(emptyMap());
     }
 }
