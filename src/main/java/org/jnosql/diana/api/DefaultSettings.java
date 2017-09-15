@@ -17,6 +17,7 @@
 package org.jnosql.diana.api;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -26,7 +27,7 @@ class DefaultSettings implements Settings {
     private final Map<String, Object> configurations;
 
     DefaultSettings(Map<String, Object> configurations) {
-        this.configurations = configurations;
+        this.configurations = new HashMap<>(configurations);
     }
 
 
