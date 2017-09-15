@@ -16,8 +16,6 @@
  */
 package org.jnosql.diana.api;
 
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static java.util.Collections.singletonMap;
