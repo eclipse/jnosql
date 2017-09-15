@@ -88,4 +88,11 @@ public class DefaultSettingsTest {
         Settings settings = Settings.of(singletonMap("key", "value"));
         assertThat(settings.values(), contains("value"));
     }
+
+
+    @Test
+    public void shouldGetEntrySet() {
+        Settings settings = Settings.of(singletonMap("key", "value"));
+        assertEquals(settings.entrySet().stream().findFirst().get().getKey(), "key");
+    }
 }
