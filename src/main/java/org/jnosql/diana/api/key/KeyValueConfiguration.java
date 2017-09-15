@@ -20,9 +20,9 @@ package org.jnosql.diana.api.key;
 /**
  * The diana configuration to create a {@link BucketManagerFactory}
  *
- * @param <T> the BucketManagerFactory type
+ * @param <SYNC> the BucketManagerFactory type
  */
-public interface KeyValueConfiguration<T extends BucketManagerFactory> {
+public interface KeyValueConfiguration<SYNC extends BucketManagerFactory> {
 
     /**
      * Reads configuration either from default configuration or a file defined by NoSQL provider
@@ -30,5 +30,5 @@ public interface KeyValueConfiguration<T extends BucketManagerFactory> {
      *
      * @return a {@link BucketManagerFactory} instance
      */
-    T get();
+    SYNC get();
 }
