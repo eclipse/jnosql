@@ -16,16 +16,15 @@
  */
 package org.jnosql.diana.api;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import static java.util.Collections.emptyMap;
-import static java.util.Objects.requireNonNull;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * The interface represents the settings used in a configuration.
  *
- * @see Settings#of(Map)
- * @see Settings#newSettings()
+ * @see Settings#of(Map[])
  */
 public interface Settings extends Map<String, Object> {
 
@@ -37,16 +36,13 @@ public interface Settings extends Map<String, Object> {
      * @return the new {@link Settings} instance
      * @throws NullPointerException when the parameter is null
      */
-    static Settings of(Map<String, Object> settings) throws NullPointerException {
-        return new DefaultSettings(requireNonNull(settings, "settings is requried"));
+    static Settings of(Map<String, Object>... settings) throws NullPointerException {
+        Map<String, Object> map = new HashMap<>();
+        if (Stream.of(settings).anyMatch(Objects::isNull)) {
+            throw new NullPointerException("The settings element cannot be null");
+        }
+        Stream.of(settings).forEach(map::putAll);
+        return new DefaultSettings(map);
     }
 
-    /**
-     * Returns a new Settings instance
-     *
-     * @return a new empty {@link Settings instance}
-     */
-    static Settings newSettings() {
-        return new DefaultSettings(emptyMap());
-    }
 }
