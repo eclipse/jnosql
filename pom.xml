@@ -69,10 +69,13 @@
 
 
     <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
         <repository>
-            <id>bintray-jnosql-maven</id>
-            <name>jnosql-maven</name>
-             <url>https://api.bintray.com/maven/jnosql/maven/org.jnosql.diana:diana-api/;publish=1</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
