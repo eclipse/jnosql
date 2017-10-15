@@ -19,3 +19,29 @@ The JNoSQL communication API layer to column database.
 * **ColumnFamilyManager**: The entity manager, that class that interacts with the ColumnFamilyEntity, to do a CRUD Operation. This interface might be extended to capture particular behavior in a NoSQL database.
 * **ColumnEntity**: The column entity, this interface represents a unit element in a column family. This interface has the column family whose the unit belongs and also its columns.
 * **Column**: The column is an element in _ColumnEntity_; it`s a tuple that has key-value whose the key is the name and value is the information.
+
+
+```java
+
+  public static void main(String[] args) {
+
+        ColumnConfiguration condition = //configuration instance
+
+        try(ColumnFamilyManagerFactory managerFactory = condition.get()) {
+            ColumnFamilyManager entityManager = managerFactory.get("keyspace");
+            ColumnEntity entity = ColumnEntity.of("column family");
+            Column id = Column.of("id", 10L);
+            entity.add(id);
+            entity.add(Column.of("version", 0.001));
+            entity.add(Column.of("name", "Diana"));
+            entity.add(Column.of("options", Arrays.asList(1, 2, 3)));
+
+            entityManager.insert(entity);
+
+            ColumnQuery query = select().from("column family").where(eq(id)).build();
+
+            Optional<ColumnEntity> result = entityManager.singleResult(query);
+            System.out.println(result);
+
+        }
+```
