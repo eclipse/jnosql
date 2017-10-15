@@ -1,19 +1,46 @@
-![Diana Project](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
+![Diana Key-value](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
 
-# Diana
+# Diana Key-value
 
 
-Diana is a flexible and extensible API to connect NoSQL databases. It brings an easy interface to support key-value, column family, document oriented and graph databases as JDBC does for SQL databases.
+The JNoSQL communication API layer to key-value database.
 
-The basic building blocks hereby are:
+## NoSQL key-value type
 
-* A simple API to support Column NoSQL Database
-* A simple API to support Key-value NoSQL Database
-* A simple API to support Graph NoSQL Database
-* A simple API to support Document Database
-* Convention over configuration
-* Support for asynchronous queries
-* Support for asynchronous write operations
-* An easy API to implement, so that NoSQL vendors can comply with it  and test by themselves.
+ Key-value (KV) stores use the associative array (also known as a map or dictionary) as their fundamental data model.
+In this model, data is represented as a collection of key-value pairs, such that each possible key appears at most
+once in the collection. The key-value model is one of the simplest non-trivial data models, and richer data models are often implemented as an extension of it.
+The key-value model can be extended to a discretely ordered model that maintains keys in lexicographic order.
+This extension is computationally powerful, in that it can efficiently retrieve selective key ranges.
+Key-value stores can use consistency models ranging from eventual consistency to serializability.
+Some databases support ordering of keys. There are various hardware implementations, and some users maintain
+data in memory (RAM), while others employ solid-state drives or rotating disks.
+ 
+ ## Code structure
+ 
+ The Key-value API has the following structure:
 
-The API's focus is on simplicity and ease of use. Developers should only have to know a minimal set of artifacts to work with the solution. The API is built on latest Java 8 features and therefore fit perfectly with the functional features of Java 8. 
+* **KeyValueConfiguration**: This interface represents the configuration whose a database has. These settings such as password, user, clients are storage and use to create a manager factory.
+* **BucketManagerFactory**: This interface represents the factory whose creates an entity manager.
+* **BucketManager**: The entity manager, that class that interacts with the KeyValueEntity, to do a CRUD Operation. This interface might be extended to capture particular behavior in a NoSQL database.
+* **KeyValueEntity**: The key and it respective value.
+
+```java
+
+
+    public static void main(String[] args) {
+
+        KeyValueConfiguration<?> configuration = new HazelCastKeyValueConfiguration();
+        try (BucketManagerFactory<?> managerFactory = configuration.get()) {
+            BucketManager bucket = managerFactory.getBucketManager("bucket");
+            List<String> list = managerFactory.getList("bucketList", String.class);
+            Set<String> set = managerFactory.getSet("bucketSet", String.class);
+            Map<String, Integer> map = managerFactory.getMap("bucketList", String.class, Integer.class);
+            Queue<String> queue = managerFactory.getQueue("queueList", String.class);
+            bucket.put("key", "value");
+            Optional<Value> value = bucket.get("key");
+        }
+
+
+    }
+```
