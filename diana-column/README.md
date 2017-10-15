@@ -1,19 +1,21 @@
-![Diana Project](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
+![Diana column](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
 
-# Diana
+# Diana Column
 
 
-Diana is a flexible and extensible API to connect NoSQL databases. It brings an easy interface to support key-value, column family, document oriented and graph databases as JDBC does for SQL databases.
+The JNoSQL communication API layer to column database.
 
-The basic building blocks hereby are:
+## NoSQL column type
+ A column family is a NoSQL object that contains columns of related data. It is a tuple (pair) that consists of a key-value pair, where the key is mapped to a value that is a set of columns. In analogy with relational databases, a column family is as a "table", each key-value pair being a "row". Each column is a tuple (triplet) consisting of a column name, a value, and a timestamp. In a relational database table, this data would be grouped together within a table with other non-related data. 
+ 
+ Ref: https://en.wikipedia.org/wiki/Column_family
+ 
+ ## Code structure
+ 
+ The Column API has the following structure:
 
-* A simple API to support Column NoSQL Database
-* A simple API to support Key-value NoSQL Database
-* A simple API to support Graph NoSQL Database
-* A simple API to support Document Database
-* Convention over configuration
-* Support for asynchronous queries
-* Support for asynchronous write operations
-* An easy API to implement, so that NoSQL vendors can comply with it  and test by themselves.
-
-The API's focus is on simplicity and ease of use. Developers should only have to know a minimal set of artifacts to work with the solution. The API is built on latest Java 8 features and therefore fit perfectly with the functional features of Java 8. 
+* **ColumnConfiguration**: This interface represents the configuration whose a database has. These settings such as password, user, clients are storage and use to create a manager factory.
+* **ColumnFamilyManagerFactory**: This interface represents the factory whose creates an entity manager.
+* **ColumnFamilyManager**: The entity manager, that class that interacts with the ColumnFamilyEntity, to do a CRUD Operation. This interface might be extended to capture particular behavior in a NoSQL database.
+* **ColumnEntity**: The column entity, this interface represents a unit element in a column family. This interface has the column family whose the unit belongs and also its columns.
+* **Column**: The column is an element in _ColumnEntity_; it`s a tuple that has key-value whose the key is the name and value is the information.
