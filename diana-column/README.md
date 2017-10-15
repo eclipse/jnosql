@@ -16,7 +16,7 @@ The JNoSQL communication API layer to column database.
 
 * **ColumnConfiguration**: This interface represents the configuration whose a database has. These settings such as password, user, clients are storage and use to create a manager factory.
 * **ColumnFamilyManagerFactory**: This interface represents the factory whose creates an entity manager.
-* **ColumnFamilyManager**: The entity manager, that class that interacts with the ColumnFamilyEntity, to do a CRUD Operation. This interface might be extended to capture particular behavior in a NoSQL database.
+* **ColumnFamilyManager**: The entity manager, that class that interacts with the ColumnEntity, to do a CRUD Operation. This interface might be extended to capture particular behavior in a NoSQL database.
 * **ColumnEntity**: The column entity, this interface represents a unit element in a column family. This interface has the column family whose the unit belongs and also its columns.
 * **Column**: The column is an element in _ColumnEntity_; it`s a tuple that has key-value whose the key is the name and value is the information.
 
