@@ -25,9 +25,9 @@ The JNoSQL communication API layer to column database.
 
   public static void main(String[] args) {
 
-        ColumnConfiguration condition = //configuration instance
+        ColumnConfiguration configuration = //configuration instance
 
-        try(ColumnFamilyManagerFactory managerFactory = condition.get()) {
+        try(ColumnFamilyManagerFactory managerFactory = configuration.get()) {
             ColumnFamilyManager entityManager = managerFactory.get("keyspace");
             ColumnEntity entity = ColumnEntity.of("column family");
             Column id = Column.of("id", 10L);

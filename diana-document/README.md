@@ -24,25 +24,25 @@ A document-oriented database, or document store,is a computer program designed f
 
 ```java
 
-  public static void main(String[] args) {
 
-        ColumnConfiguration condition = //configuration instance
+ public static void main(String[] args)  {
+        DocumentConfiguration configuration = //configuration instance
+        try(DocumentCollectionManagerFactory managerFactory = configuration.get();) {
+            DocumentCollectionManager entityManager = managerFactory.get(DATABASE);
 
-        try(ColumnFamilyManagerFactory managerFactory = condition.get()) {
-            ColumnFamilyManager entityManager = managerFactory.get("keyspace");
-            ColumnEntity entity = ColumnEntity.of("column family");
-            Column id = Column.of("id", 10L);
-            entity.add(id);
-            entity.add(Column.of("version", 0.001));
-            entity.add(Column.of("name", "Diana"));
-            entity.add(Column.of("options", Arrays.asList(1, 2, 3)));
+            DocumentEntity entity = DocumentEntity.of("document collection");
+            entity.add(Document.of("name", "Daniel Soro"));
+            entity.add(Document.of("age", 26));
 
-            entityManager.insert(entity);
+            DocumentEntity entitySaved = entityManager.insert(entity);
+            Optional<Document> id = entitySaved.find("_id");
 
-            ColumnQuery query = select().from("column family").where(eq(id)).build();
 
-            Optional<ColumnEntity> result = entityManager.singleResult(query);
-            System.out.println(result);
+            DocumentQuery query = select().from("document collection").where(DocumentCondition.eq(id.get())).build();
+
+            List<DocumentEntity> documentsFound = entityManager.select(query);
+
 
         }
+    }
 ```
