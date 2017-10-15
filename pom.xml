@@ -109,9 +109,9 @@
 
     <modules>
         <module>diana-core</module>
+        <module>diana-key-value</module>
         <module>diana-column</module>
         <module>diana-document</module>
-        <module>diana-key-value</module>
         <module>diana-graph</module>
     </modules>
 </project>
