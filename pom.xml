@@ -31,7 +31,9 @@
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>Diana is a flexible and extensible API to connect NoSQL databases. It brings an easy interface to support key-value, column family, document oriented and graph databases as JDBC is for SQL databases</description>
+    <description>Diana is a flexible and extensible API to connect NoSQL databases. It brings an easy interface to
+        support key-value, column family, document oriented and graph databases as JDBC is for SQL databases
+    </description>
     <url>http://jnosql.org/</url>
 
     <licenses>
@@ -106,10 +108,10 @@
     </dependencies>
 
     <modules>
-          <module>diana-core</module>
-          <module>diana-column</module>
-          <module>diana-document</module>
-          <module>diana-graph</module>
-          <module>diana-key-value</module>
+        <module>diana-core</module>
+        <module>diana-column</module>
+        <module>diana-document</module>
+        <module>diana-key-value</module>
+        <module>diana-graph</module>
     </modules>
 </project>
