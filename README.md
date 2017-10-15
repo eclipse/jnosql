@@ -19,6 +19,9 @@ The basic building blocks hereby are:
 The API's focus is on simplicity and ease of use. Developers should only have to know a minimal set of artifacts to work with the solution. 
 The API is built on latest Java 8 features and therefore fit perfectly with the functional features of Java 8. 
 
+
+## Modules
+
 The JNoSQL communication layer has fives modules:
 
 * **diana-core**: The JNoSQL API communication commons to all types. 
@@ -26,3 +29,11 @@ The JNoSQL communication layer has fives modules:
 * **diana-column**: The JNoSQL communication API layer to column database.
 * **diana-document**: The JNoSQL communication API layer to document database.
 * **diana-graph**: The JNoSQL communication API layer to the graph database.
+
+
+## Structure
+
+* **Configuration**: This interface represents the configuration whose a database has. These settings such as password, user, clients are storage and use to create a manager factory.
+* **ManagerFactory**: This interface represents the factory whose creates an entity manager.
+* **Manager**: The entity manager, that class that interacts with the entity, to do a CRUD Operation. This interface might be extended to capture particular behavior in a NoSQL database.
+* **Entity**: The element to have interaction in a database
