@@ -86,6 +86,10 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>diana-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
