@@ -30,7 +30,7 @@
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
-   <description>The JNoSQL communication API layer to document database.</description>
+    <description>The JNoSQL communication API layer to document database.</description>
     <url>http://jnosql.org/</url>
 
     <licenses>
@@ -86,5 +86,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>diana-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
