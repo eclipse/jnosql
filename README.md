@@ -3,7 +3,7 @@
 # The communication layer, Diana
 
 
-Diana is a flexible and extensible API to connect NoSQL databases. It brings an easy interface to support key-value, column family, document oriented and graph databases as JDBC does for SQL databases.
+The Eclipse JNoSQL communcation layer, Diana, is a flexible and extensible API to connect NoSQL databases. It brings an easy interface to support key-value, column family, document oriented and graph databases as JDBC does for SQL databases.
 
 The basic building blocks hereby are:
 
