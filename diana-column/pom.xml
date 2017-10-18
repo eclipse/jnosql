@@ -30,7 +30,7 @@
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>The JNoSQL communication API layer to column database.</description>
+    <description>The Eclipse JNoSQL communication API layer to column database.</description>
     <url>http://jnosql.org/</url>
 
     <licenses>

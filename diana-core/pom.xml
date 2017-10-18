@@ -30,7 +30,7 @@
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>The JNoSQL API communication commons</description>
+    <description>The Eclipse JNoSQL API communication commons</description>
     <url>http://jnosql.org/</url>
 
     <licenses>
