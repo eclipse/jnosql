@@ -20,6 +20,10 @@ The API's focus is on simplicity and ease of use. Developers should only have to
 The API is built on latest Java 8 features and therefore fit perfectly with the functional features of Java 8. 
 
 
+## A different API to a different database kind
+   
+The Eclipse JNoSQL Diana has one API to each different database, so an API to document, column, key-value and graph, where the graph is an API that already exists. The Apache TinkerPop is the API to Graph database.
+
 ## Modules
 
 The JNoSQL communication layer has four modules:

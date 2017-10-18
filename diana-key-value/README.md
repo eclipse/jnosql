@@ -1,6 +1,6 @@
-![Diana Key-value](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
+![Eclipse JNoSQL Diana Key-Value](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
 
-# Diana Key-value
+# Eclipse JNoSQL Diana Key-Value
 
 
 The JNoSQL communication API layer to key-value database.

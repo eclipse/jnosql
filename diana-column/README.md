@@ -1,6 +1,6 @@
-![Diana column](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
+![Eclipse JNoSQL Diana column](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
 
-# Diana Column
+# Eclipse JNoSQL Diana Column
 
 
 The JNoSQL communication API layer to column database.

@@ -1,6 +1,6 @@
-![Diana document](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
+![Eclipse JNoSQL Diana Document](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
 
-# Diana Document
+# Eclipse JNoSQL Diana Document
 
 
 The JNoSQL communication API layer to document database.
