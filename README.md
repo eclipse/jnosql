@@ -22,7 +22,7 @@ The API is built on latest Java 8 features and therefore fit perfectly with the 
 
 ## Modules
 
-The JNoSQL communication layer has fives modules:
+The JNoSQL communication layer has four modules:
 
 * **diana-core**: The JNoSQL API communication commons to all types. 
 * **diana-key-value**: The JNoSQL communication API layer to key-value database.
