@@ -28,7 +28,6 @@ The JNoSQL communication layer has fives modules:
 * **diana-key-value**: The JNoSQL communication API layer to key-value database.
 * **diana-column**: The JNoSQL communication API layer to column database.
 * **diana-document**: The JNoSQL communication API layer to document database.
-* **diana-graph**: The JNoSQL communication API layer to the graph database.
 
 
 ## Structure
