@@ -31,7 +31,7 @@
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>Diana is a flexible and extensible API to connect NoSQL databases. It brings an easy interface to
+    <description>Eclipse JNoSQL Communication, Diana, is a flexible and extensible API to connect NoSQL databases. It brings an easy interface to
         support key-value, column family, document oriented and graph databases as JDBC is for SQL databases
     </description>
     <url>http://jnosql.org/</url>
