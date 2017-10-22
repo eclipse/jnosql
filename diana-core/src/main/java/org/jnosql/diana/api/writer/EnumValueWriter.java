@@ -18,8 +18,6 @@ package org.jnosql.diana.api.writer;
 
 import org.jnosql.diana.api.ValueWriter;
 
-import java.util.Optional;
-
 /**
  * Value writer to {@link Enum}.
  * This writer converts the enum to {@link String} using {@link Enum#name()}
