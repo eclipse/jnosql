@@ -13,5 +13,6 @@
 #
 #   Otavio Santana
 
+org.jnosql.diana.api.writer.EnumValueWriter
 org.jnosql.diana.api.writer.OptionalValueWriter
 org.jnosql.diana.api.writer.TemporalValueWriter
