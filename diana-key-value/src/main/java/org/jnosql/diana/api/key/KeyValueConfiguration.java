@@ -42,7 +42,7 @@ public interface KeyValueConfiguration<SYNC extends BucketManagerFactory> {
      * @return a {@link BucketManagerFactory}
      * @throws NullPointerException when settings is null
      * @see Settings
-     * @see Settings#of(java.util.Map)
+     * @see Settings {@link java.util.Map}
      */
     SYNC get(Settings settings);
 }
