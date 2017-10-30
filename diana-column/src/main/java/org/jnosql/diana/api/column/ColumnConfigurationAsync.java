@@ -42,7 +42,7 @@ public interface ColumnConfigurationAsync<ASYNC extends ColumnFamilyManagerAsync
      * @return a {@link ColumnFamilyManagerAsyncFactory}
      * @throws NullPointerException when settings is null
      * @see Settings
-     * @see Settings#of(java.util.Map)
+     * @see Settings {@link java.util.Map}
      */
     ASYNC getAsync(Settings settings) throws NullPointerException;
 
