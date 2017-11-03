@@ -36,6 +36,15 @@ public interface DocumentFrom {
     DocumentWhere where(DocumentCondition condition) throws NullPointerException;
 
     /**
+     * Starts a new condition defining the  column name
+     *
+     * @param name the column name
+     * @return a new {@link DocumentWhereName}
+     * @throws NullPointerException when name is null
+     */
+    DocumentWhereName where(String name) throws NullPointerException;
+
+    /**
      * Defines the position of the first result to retrieve.
      *
      * @param start the first result to retrive
