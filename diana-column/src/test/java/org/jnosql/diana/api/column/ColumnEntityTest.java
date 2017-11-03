@@ -165,7 +165,7 @@ public class ColumnEntityTest {
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenRemovedNameIsNull() {
         ColumnEntity entity = new DefaultColumnEntity("name");
-        entity.remove((String) null);
+        entity.remove(null);
     }
 
     @Test
