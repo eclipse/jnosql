@@ -89,9 +89,9 @@ public interface ColumnNameCondition {
 
     /**
      * Creates in condition {@link org.jnosql.diana.api.Condition#IN}
-     * @param values
-     * @param <T>
-     * @return
+     * @param values the values
+     * @param <T> the type
+     * @return the {@link ColumnWhere}
      * @throws NullPointerException
      */
     <T> ColumnWhere in(Iterable<T> values) throws NullPointerException;
