@@ -92,7 +92,7 @@ public interface ColumnNameCondition {
      * @param values the values
      * @param <T> the type
      * @return the {@link ColumnWhere}
-     * @throws NullPointerException
+     * @throws NullPointerException when value is null
      */
     <T> ColumnWhere in(Iterable<T> values) throws NullPointerException;
 
