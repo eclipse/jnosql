@@ -39,6 +39,7 @@ The JNoSQL communication API layer to column database.
             entityManager.insert(entity);
 
             ColumnQuery query = select().from("column family").where(eq(id)).build();
+            ColumnQuery query2 = select().from("column family").where("name").eq("Diana").build();
 
             Optional<ColumnEntity> result = entityManager.singleResult(query);
             System.out.println(result);

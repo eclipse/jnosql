@@ -143,12 +143,12 @@ class DefaultColumnCondition implements ColumnCondition {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || !ColumnCondition.class.isAssignableFrom(o.getClass())) {
             return false;
         }
-        DefaultColumnCondition that = (DefaultColumnCondition) o;
-        return Objects.equals(column, that.column) &&
-                condition == that.condition;
+        ColumnCondition that = (ColumnCondition) o;
+        return Objects.equals(column, that.getColumn()) &&
+                condition == that.getCondition();
     }
 
     @Override

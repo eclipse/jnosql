@@ -36,6 +36,16 @@ public interface ColumnDeleteFrom {
      */
     ColumnDeleteWhere where(ColumnCondition condition) throws NullPointerException;
 
+
+    /**
+     * Starts a new condition defining the  column name
+     *
+     * @param name the column name
+     * @return a new {@link ColumnWhereName}
+     * @throws NullPointerException when name is null
+     */
+    ColumnDeleteWhereName where(String name) throws NullPointerException;
+
     /**
      * Creates a new instance of {@link ColumnDeleteQuery}
      *

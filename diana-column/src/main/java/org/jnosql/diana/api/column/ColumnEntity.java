@@ -179,7 +179,7 @@ public interface ColumnEntity extends Serializable {
     /**
      * Returns true if this ColumnEntity contains a column whose the name is informed
      *
-     * @param columnName
+     * @param columnName the column name
      * @return true if find a column and otherwise false
      */
     boolean contains(String columnName);
