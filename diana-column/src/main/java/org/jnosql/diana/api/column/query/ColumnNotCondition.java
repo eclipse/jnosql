@@ -16,5 +16,8 @@
  */
 package org.jnosql.diana.api.column.query;
 
+/**
+ * The column not condition
+ */
 public interface ColumnNotCondition extends ColumnNameCondition {
 }
