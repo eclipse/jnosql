@@ -16,6 +16,9 @@
  */
 package org.jnosql.diana.api.column.query;
 
+/**
+ * The base to name condition
+ */
 public interface ColumnNameCondition {
 
 
