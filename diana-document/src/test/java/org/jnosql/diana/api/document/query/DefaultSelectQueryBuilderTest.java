@@ -65,7 +65,7 @@ public class DefaultSelectQueryBuilderTest {
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenWhereConditionIsNull() {
         String documentCollection = "documentCollection";
-        select().from(documentCollection).where(null);
+        select().from(documentCollection).where((DocumentCondition) null);
     }
 
     @Test
@@ -103,14 +103,14 @@ public class DefaultSelectQueryBuilderTest {
     public void shouldReturnErrorWhenSelectWhereAndConditionIsNull() {
         String documentCollection = "documentCollection";
         DocumentCondition condition = eq(Document.of("name", "Ada"));
-        select().from(documentCollection).where(condition).and(null);
+        select().from(documentCollection).where(condition).and((DocumentCondition) null);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenSelectWhereOrConditionIsNull() {
         String documentCollection = "documentCollection";
         DocumentCondition condition = eq(Document.of("name", "Ada"));
-        select().from(documentCollection).where(condition).or(null);
+        select().from(documentCollection).where(condition).or((DocumentCondition) null);
     }
 
     @Test
