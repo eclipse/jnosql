@@ -52,7 +52,7 @@ class DefaultColumnQuery implements ColumnQuery {
         this.columnFamily = columnFamily;
         this.columns = columns;
         this.sorts = sorts;
-        this.condition = condition;
+        this.condition = ofNullable(condition).map(ReadOnlyColumnCondition::new).orElse(null);
     }
 
     @Override
