@@ -67,7 +67,7 @@ public class DefaultSelectQueryBuilderTest {
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenWhereConditionIsNull() {
         String columnFamily = "columnFamily";
-        select().from(columnFamily).where(null);
+        select().from(columnFamily).where((ColumnCondition) null);
     }
 
     @Test
@@ -105,14 +105,14 @@ public class DefaultSelectQueryBuilderTest {
     public void shouldReturnErrorWhenSelectWhereAndConditionIsNull() {
         String columnFamily = "columnFamily";
         ColumnCondition condition = eq(Column.of("name", "Ada"));
-        select().from(columnFamily).where(condition).and(null);
+        select().from(columnFamily).where(condition).and((ColumnCondition) null);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenSelectWhereOrConditionIsNull() {
         String columnFamily = "columnFamily";
         ColumnCondition condition = eq(Column.of("name", "Ada"));
-        select().from(columnFamily).where(condition).or(null);
+        select().from(columnFamily).where(condition).or((ColumnCondition) null);
     }
 
     @Test
