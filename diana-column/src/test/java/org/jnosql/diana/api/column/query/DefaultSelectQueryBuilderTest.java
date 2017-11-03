@@ -318,4 +318,73 @@ public class DefaultSelectQueryBuilderTest {
         assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10))));
     }
+
+
+    @Test
+    public void shouldSelectWhereNameAnd2() {
+        String columnFamily = "columnFamily";
+        String name = "Ada Lovelace";
+
+        ColumnQuery query = select().from(columnFamily).where("name").eq(name)
+                .and(ColumnCondition.gt(Column.of("age", 10))).build();
+        ColumnCondition columnCondition = query.getCondition().get();
+
+        Column column = columnCondition.getColumn();
+        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        });
+        assertEquals(Condition.AND, columnCondition.getCondition());
+        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10))));
+    }
+
+    @Test
+    public void shouldSelectWhereNameOr2() {
+        String columnFamily = "columnFamily";
+        String name = "Ada Lovelace";
+        ColumnQuery query = select().from(columnFamily).where("name").eq(name)
+                .or(ColumnCondition.gt(Column.of("age", 10))).build();
+        ColumnCondition columnCondition = query.getCondition().get();
+
+        Column column = columnCondition.getColumn();
+        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        });
+        assertEquals(Condition.OR, columnCondition.getCondition());
+        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10))));
+    }
+
+    
+    @Test
+    public void shouldSelectWhereNameAnd3() {
+        String columnFamily = "columnFamily";
+        String name = "Ada Lovelace";
+
+        ColumnQuery query = select().from(columnFamily).where(ColumnCondition.eq(Column.of("name", name))
+        ).and("age").gt(10).build();
+        ColumnCondition columnCondition = query.getCondition().get();
+
+        Column column = columnCondition.getColumn();
+        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        });
+        assertEquals(Condition.AND, columnCondition.getCondition());
+        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10))));
+    }
+
+    @Test
+    public void shouldSelectWhereNameOr3() {
+        String columnFamily = "columnFamily";
+        String name = "Ada Lovelace";
+        ColumnQuery query = select().from(columnFamily).where(ColumnCondition.eq(Column.of("name", name)))
+                .or("age").gt(10).build();
+        ColumnCondition columnCondition = query.getCondition().get();
+
+        Column column = columnCondition.getColumn();
+        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        });
+        assertEquals(Condition.OR, columnCondition.getCondition());
+        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10))));
+    }
+
 }
