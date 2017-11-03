@@ -183,7 +183,7 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere
         requireNonNull(valueA, "valueA is required");
         requireNonNull(valueB, "valueB is required");
         ColumnCondition newCondition = ColumnCondition.between(Column.of(name, asList(valueA, valueB)));
-        return this;
+        return appendCondition(newCondition);
     }
 
     @Override
