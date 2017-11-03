@@ -85,6 +85,22 @@ class DefaultDeleteQueryBuilder implements ColumnDelete, ColumnDeleteFrom,
         return this;
     }
 
+    @Override
+    public ColumnDeleteNameCondition and(String name) throws NullPointerException {
+        requireNonNull(name, "name is required");
+        this.name = name;
+        this.and = true;
+        return this;
+    }
+
+    @Override
+    public ColumnDeleteNameCondition or(String name) throws NullPointerException {
+        requireNonNull(name, "name is required");
+        this.name = name;
+        this.and = false;
+        return this;
+    }
+
 
     @Override
     public ColumnDeleteNotCondition not() {

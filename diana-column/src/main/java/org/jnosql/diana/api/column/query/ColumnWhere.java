@@ -37,7 +37,7 @@ public interface ColumnWhere {
     ColumnWhere and(ColumnCondition condition) throws NullPointerException;
 
     /**
-     * Appends a new condition in the select using {@link ColumnCondition#or(ColumnCondition)}
+     * Starts a new condition in the select using {@link ColumnCondition#or(ColumnCondition)}
      *
      * @param condition a condition to be added
      * @return the same {@link ColumnWhere} with the condition appended
@@ -46,7 +46,7 @@ public interface ColumnWhere {
     ColumnWhere or(ColumnCondition condition) throws NullPointerException;
 
     /**
-     * Appends a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
+     * Starts a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link ColumnNameCondition} with the condition appended

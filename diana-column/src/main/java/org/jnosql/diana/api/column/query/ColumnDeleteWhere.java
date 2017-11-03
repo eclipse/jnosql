@@ -45,7 +45,7 @@ public interface ColumnDeleteWhere {
     ColumnDeleteWhere or(ColumnCondition condition) throws NullPointerException;
 
     /**
-     * Appends a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
+     * Starts a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link ColumnDeleteNameCondition} with the condition appended
@@ -54,7 +54,7 @@ public interface ColumnDeleteWhere {
     ColumnDeleteNameCondition and(String name) throws NullPointerException;
 
     /**
-     * Appends a new condition in the select using {@link ColumnCondition#or(ColumnCondition)}
+     * Starts a new condition in the select using {@link ColumnCondition#or(ColumnCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link ColumnDeleteNameCondition} with the condition appended
