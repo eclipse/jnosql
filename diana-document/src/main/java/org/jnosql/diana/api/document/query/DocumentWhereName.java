@@ -16,5 +16,15 @@
  */
 package org.jnosql.diana.api.document.query;
 
-public interface DocumentWhereName {
+/**
+ * Starts the where name condition
+ */
+public interface DocumentWhereName extends DocumentNameCondition  {
+
+    /**
+     * Creates the equals condition {@link org.jnosql.diana.api.Condition#NOT}
+     *
+     * @return {@link DocumentNotCondition}
+     */
+    DocumentNotCondition not();
 }
