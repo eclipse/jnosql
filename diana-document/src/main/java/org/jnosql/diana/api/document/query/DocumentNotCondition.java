@@ -16,5 +16,8 @@
  */
 package org.jnosql.diana.api.document.query;
 
-public interface DocumentNotCondition {
+/**
+ * The column not condition
+ */
+public interface DocumentNotCondition extends DocumentNameCondition {
 }
