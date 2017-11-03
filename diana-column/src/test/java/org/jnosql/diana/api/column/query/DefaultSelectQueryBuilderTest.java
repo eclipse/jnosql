@@ -353,7 +353,7 @@ public class DefaultSelectQueryBuilderTest {
                 ColumnCondition.gt(Column.of("age", 10))));
     }
 
-    
+
     @Test
     public void shouldSelectWhereNameAnd3() {
         String columnFamily = "columnFamily";
