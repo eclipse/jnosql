@@ -270,4 +270,52 @@ public class DefaultSelectQueryBuilderTest {
         assertEquals("name", column.getName());
         Assert.assertThat(column.get(new TypeReference<List<Number>>() {}), Matchers.contains(10, 20));
     }
+
+    @Test
+    public void shouldSelectWhereNameNot() {
+        String columnFamily = "columnFamily";
+        String name = "Ada Lovelace";
+        ColumnQuery query = select().from(columnFamily).where("name").not().eq(name).build();
+        ColumnCondition columnCondition = query.getCondition().get();
+
+        Column column = columnCondition.getColumn();
+        ColumnCondition negate = column.get(ColumnCondition.class);
+        assertTrue(query.getColumns().isEmpty());
+        assertEquals(columnFamily, query.getColumnFamily());
+        assertEquals(Condition.NOT, columnCondition.getCondition());
+        assertEquals(Condition.EQUALS, negate.getCondition());
+        assertEquals("name", negate.getColumn().getName());
+        assertEquals(name, negate.getColumn().get());
+    }
+
+
+    @Test
+    public void shouldSelectWhereNameAnd() {
+        String columnFamily = "columnFamily";
+        String name = "Ada Lovelace";
+        ColumnQuery query = select().from(columnFamily).where("name").eq(name).and("age").gt(10).build();
+        ColumnCondition columnCondition = query.getCondition().get();
+
+        Column column = columnCondition.getColumn();
+        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        });
+        assertEquals(Condition.AND, columnCondition.getCondition());
+      assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+              ColumnCondition.gt(Column.of("age", 10))));
+    }
+
+    @Test
+    public void shouldSelectWhereNameOr() {
+        String columnFamily = "columnFamily";
+        String name = "Ada Lovelace";
+        ColumnQuery query = select().from(columnFamily).where("name").eq(name).or("age").gt(10).build();
+        ColumnCondition columnCondition = query.getCondition().get();
+
+        Column column = columnCondition.getColumn();
+        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        });
+        assertEquals(Condition.OR, columnCondition.getCondition());
+        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10))));
+    }
 }
