@@ -65,7 +65,7 @@ public class DefaultDeleteQueryBuilderTest {
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenWhereConditionIsNull() {
         String columnFamily = "columnFamily";
-        delete().from(columnFamily).where(null);
+        delete().from(columnFamily).where((ColumnCondition) null);
     }
 
     @Test
