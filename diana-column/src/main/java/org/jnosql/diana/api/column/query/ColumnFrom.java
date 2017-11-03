@@ -36,6 +36,15 @@ public interface ColumnFrom {
     ColumnWhere where(ColumnCondition condition) throws NullPointerException;
 
     /**
+     * Defines a new condition in the query
+     *
+     * @param name the condition in the where
+     * @return a new {@link ColumnWhere}
+     * @throws NullPointerException when condition is null
+     */
+    ColumnWhereName where(String name) throws NullPointerException;
+
+    /**
      * Defines the position of the first result to retrieve.
      *
      * @param start the first result to retrive
