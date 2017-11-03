@@ -42,18 +42,18 @@ class ReadOnlyColumnCondition implements ColumnCondition {
 
     @Override
     public ColumnCondition and(ColumnCondition condition) throws NullPointerException {
-        throw new IllegalStateException("You cannot change the status after build the query");
+        throw new IllegalStateException("You cannot change the status after building the query");
 
     }
 
     @Override
     public ColumnCondition negate() {
-        throw new IllegalStateException("You cannot change the status after build the query");
+        throw new IllegalStateException("You cannot change the status after building the query");
     }
 
     @Override
     public ColumnCondition or(ColumnCondition condition) throws NullPointerException {
-        throw new IllegalStateException("You cannot change the status after build the query");
+        throw new IllegalStateException("You cannot change the status after building the query");
     }
 
     @Override
