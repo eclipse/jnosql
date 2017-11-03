@@ -46,6 +46,24 @@ public interface DocumentWhere {
     DocumentWhere or(DocumentCondition condition) throws NullPointerException;
 
     /**
+     * Starts a new condition in the select using {@link DocumentCondition#and(DocumentCondition)}
+     *
+     * @param name a condition to be added
+     * @return the same {@link DocumentCondition} with the condition appended
+     * @throws NullPointerException when condition is null
+     */
+    DocumentCondition and(String name) throws NullPointerException;
+
+    /**
+     * Appends a new condition in the select using {@link DocumentCondition#or(DocumentCondition)}
+     *
+     * @param name a condition to be added
+     * @return the same {@link DocumentCondition} with the condition appended
+     * @throws NullPointerException when condition is null
+     */
+    DocumentCondition or(String name) throws NullPointerException;
+
+    /**
      * Defines the position of the first result to retrieve.
      *
      * @param start the first result to retrive
