@@ -40,7 +40,7 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
 
     DefaultColumnDeleteQuery(String columnFamily, ColumnCondition condition, List<String> columns) {
         this.columnFamily = columnFamily;
-        this.condition = ofNullable(condition).map(ReadOnlyColumnCondition::new).orElse(null);;
+        this.condition = ofNullable(condition).map(ReadOnlyColumnCondition::new).orElse(null);
         this.columns = columns;
     }
 
