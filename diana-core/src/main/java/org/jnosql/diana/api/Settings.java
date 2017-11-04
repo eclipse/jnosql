@@ -36,6 +36,7 @@ public interface Settings extends Map<String, Object> {
      * @return the new {@link Settings} instance
      * @throws NullPointerException when the parameter is null
      */
+    @SafeVarargs
     static Settings of(Map<String, Object>... settings) throws NullPointerException {
         Map<String, Object> map = new HashMap<>();
         if (Stream.of(settings).anyMatch(Objects::isNull)) {
