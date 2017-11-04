@@ -193,6 +193,12 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere
         return this;
     }
 
+
+    @Override
+    public ColumnQuery build() {
+        return new DefaultColumnQuery(limit, start, columnFamily, columns, sorts, condition);
+    }
+
     private ColumnWhere appendCondition(ColumnCondition newCondition) {
         if (negate) {
             newCondition = newCondition.negate();
@@ -209,11 +215,5 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere
         this.negate = false;
         this.name = null;
         return this;
-    }
-
-
-    @Override
-    public ColumnQuery build() {
-        return new DefaultColumnQuery(limit, start, columnFamily, columns, sorts, condition);
     }
 }

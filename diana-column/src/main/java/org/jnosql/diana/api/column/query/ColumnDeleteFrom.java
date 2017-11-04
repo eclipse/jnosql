@@ -41,7 +41,7 @@ public interface ColumnDeleteFrom {
      * Starts a new condition defining the  column name
      *
      * @param name the column name
-     * @return a new {@link ColumnWhereName}
+     * @return a new {@link ColumnDeleteWhereName}
      * @throws NullPointerException when name is null
      */
     ColumnDeleteWhereName where(String name) throws NullPointerException;

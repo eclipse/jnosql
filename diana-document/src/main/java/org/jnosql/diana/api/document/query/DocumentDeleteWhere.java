@@ -43,6 +43,24 @@ public interface DocumentDeleteWhere {
     DocumentDeleteWhere or(DocumentCondition condition) throws NullPointerException;
 
     /**
+     * Starts a new condition in the select using {@link DocumentCondition#and(DocumentCondition)}
+     *
+     * @param name a condition to be added
+     * @return the same {@link DocumentDeleteNameCondition} with the condition appended
+     * @throws NullPointerException when condition is null
+     */
+    DocumentDeleteNameCondition and(String name) throws NullPointerException;
+
+    /**
+     * Starts a new condition in the select using {@link DocumentCondition#or(DocumentCondition)}
+     *
+     * @param name a condition to be added
+     * @return the same {@link DocumentDeleteNameCondition} with the condition appended
+     * @throws NullPointerException when condition is null
+     */
+    DocumentDeleteNameCondition or(String name) throws NullPointerException;
+
+    /**
      * Creates a new instance of {@link DocumentDeleteQuery}
      *
      * @return a new {@link DocumentDeleteQuery} instance

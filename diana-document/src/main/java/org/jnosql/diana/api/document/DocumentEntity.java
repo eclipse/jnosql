@@ -180,7 +180,7 @@ public interface DocumentEntity extends Serializable {
     /**
      * Returns true if this DocumentEntity contains a document whose the name is informed
      *
-     * @param documentName
+     * @param documentName the document name
      * @return true if find a document and otherwise false
      */
     boolean contains(String documentName);

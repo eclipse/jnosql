@@ -35,6 +35,15 @@ public interface DocumentDeleteFrom {
     DocumentDeleteWhere where(DocumentCondition condition) throws NullPointerException;
 
     /**
+     * Starts a new condition defining the  column name
+     *
+     * @param name the column name
+     * @return a new {@link DocumentDeleteWhereName}
+     * @throws NullPointerException when name is null
+     */
+    DocumentDeleteWhereName where(String name) throws NullPointerException;
+
+    /**
      * Creates a new instance of {@link DocumentDeleteQuery}
      *
      * @return a new {@link DocumentDeleteQuery} instance

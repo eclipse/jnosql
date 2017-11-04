@@ -14,17 +14,17 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.api.column.query;
+package org.jnosql.diana.api.document.query;
 
 /**
- * Starts the where name condition on delete query
+ * Starts the where name condition
  */
-public interface ColumnDeleteWhereName extends ColumnDeleteNameCondition {
+public interface DocumentWhereName extends DocumentNameCondition  {
 
     /**
      * Creates the equals condition {@link org.jnosql.diana.api.Condition#NOT}
      *
-     * @return {@link ColumnDeleteNotCondition}
+     * @return {@link DocumentNotCondition}
      */
-    ColumnDeleteNotCondition not();
+    DocumentNotCondition not();
 }

@@ -40,7 +40,7 @@ class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
 
     DefaultDocumentDeleteQuery(String documentCollection, DocumentCondition condition, List<String> documents) {
         this.documentCollection = documentCollection;
-        this.condition = condition;
+        this.condition = ofNullable(condition).map(ReadOnlyDocumentCondition::new).orElse(null);
         this.documents = documents;
     }
 
