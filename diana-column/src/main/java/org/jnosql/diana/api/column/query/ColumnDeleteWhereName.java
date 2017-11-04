@@ -24,7 +24,7 @@ public interface ColumnDeleteWhereName extends ColumnDeleteNameCondition {
     /**
      * Creates the equals condition {@link org.jnosql.diana.api.Condition#NOT}
      *
-     * @return {@link ColumnNotCondition}
+     * @return {@link ColumnDeleteNotCondition}
      */
     ColumnDeleteNotCondition not();
 }
