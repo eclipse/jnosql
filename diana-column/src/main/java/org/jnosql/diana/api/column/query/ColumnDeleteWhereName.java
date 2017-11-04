@@ -16,6 +16,9 @@
  */
 package org.jnosql.diana.api.column.query;
 
+/**
+ * Starts the where name condition on delete query
+ */
 public interface ColumnDeleteWhereName extends ColumnDeleteNameCondition {
 
     /**
