@@ -65,7 +65,7 @@ public class DefaultDeleteQueryBuilderTest {
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenWhereConditionIsNull() {
         String documentCollection = "documentCollection";
-        delete().from(documentCollection).where(null);
+        delete().from(documentCollection).where((DocumentCondition) null);
     }
 
     @Test
@@ -103,13 +103,13 @@ public class DefaultDeleteQueryBuilderTest {
     public void shouldReturnErrorWhenSelectWhereAndConditionIsNull() {
         String documentCollection = "documentCollection";
         DocumentCondition condition = eq(Document.of("name", "Ada"));
-        delete().from(documentCollection).where(condition).and(null);
+        delete().from(documentCollection).where(condition).and((DocumentCondition) null);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorWhenSelectWhereOrConditionIsNull() {
         String documentCollection = "documentCollection";
         DocumentCondition condition = eq(Document.of("name", "Ada"));
-        delete().from(documentCollection).where(condition).or(null);
+        delete().from(documentCollection).where(condition).or((DocumentCondition) null);
     }
 }
