@@ -59,8 +59,7 @@ public final class EnumValueReader implements ValueReader {
     }
 
     private <T> List<Enum> getEnumList(Class<Enum> clazz) {
-        Class<Enum> enumClass = clazz;
-        EnumSet enumSet = EnumSet.allOf(enumClass);
+        EnumSet enumSet = EnumSet.allOf(clazz);
         return new ArrayList<>(enumSet);
     }
 
