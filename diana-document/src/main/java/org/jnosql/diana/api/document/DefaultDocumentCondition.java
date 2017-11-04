@@ -143,12 +143,12 @@ class DefaultDocumentCondition implements DocumentCondition {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || !DocumentCondition.class.isAssignableFrom(o.getClass())) {
             return false;
         }
-        DefaultDocumentCondition that = (DefaultDocumentCondition) o;
-        return Objects.equals(document, that.document) &&
-                condition == that.condition;
+        DocumentCondition that = (DocumentCondition) o;
+        return Objects.equals(document, that.getDocument()) &&
+                condition == that.getCondition();
     }
 
     @Override
