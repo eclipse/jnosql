@@ -30,7 +30,6 @@ class ReadOnlyDocumentCondition implements DocumentCondition {
 
     ReadOnlyDocumentCondition(DocumentCondition condition) {
         this.condition = requireNonNull(condition, "condition is required");
-        ;
     }
 
     @Override

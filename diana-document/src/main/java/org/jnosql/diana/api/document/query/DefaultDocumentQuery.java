@@ -48,7 +48,7 @@ class DefaultDocumentQuery implements DocumentQuery {
         this.maxResult = maxResult;
         this.firstResult = firstResult;
         this.documentCollection = documentCollection;
-        this.condition = ofNullable(condition).map(ReadOnlyDocumentCondition::new).orElse(null);;
+        this.condition = ofNullable(condition).map(ReadOnlyDocumentCondition::new).orElse(null);
         this.sorts = sorts;
         this.documents = documents;
     }
