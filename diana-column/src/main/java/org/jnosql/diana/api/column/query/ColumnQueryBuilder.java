@@ -19,6 +19,7 @@ package org.jnosql.diana.api.column.query;
 
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
@@ -45,6 +46,16 @@ public final class ColumnQueryBuilder {
     }
 
     /**
+     * Creates a query to Column
+     *
+     * @return a new {@link ColumnSelect} instance
+     * @throws NullPointerException when there is a null element
+     */
+    public static ColumnSelect select() throws NullPointerException {
+        return new DefaultSelectQueryBuilder(emptyList());
+    }
+
+    /**
      * Creates a delete query to Column
      *
      * @param columns - The column fields to query, optional.
@@ -55,6 +66,15 @@ public final class ColumnQueryBuilder {
         return new DefaultDeleteQueryBuilder(Stream.of(columns)
                 .peek(c -> requireNonNull(c, "element is cannot be null"))
                 .collect(toList()));
+    }
+
+    /**
+     * Creates a delete query to Column
+     * @return a new {@link ColumnSelect} instance
+     * @throws NullPointerException when there is a null element
+     */
+    public static ColumnDelete delete() throws NullPointerException {
+        return new DefaultDeleteQueryBuilder(emptyList());
     }
 
 
