@@ -21,7 +21,8 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class SettingsBuilderTest {
 
@@ -46,5 +47,12 @@ public class SettingsBuilderTest {
     public void shouldReturnErrorWhenMapHasNullValue() {
         Map<String, Object> map = Collections.singletonMap("key", null);
         Settings.builder().putAll(map);
+    }
+    
+    @Test
+    public void shouldCreateSettingsBuilder() {
+        Settings settings = Settings.builder().put("key", "value").build();
+        assertNotNull(settings);
+        assertEquals("value", settings.get("key"));
     }
 }
