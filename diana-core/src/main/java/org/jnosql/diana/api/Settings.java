@@ -16,10 +16,11 @@
  */
 package org.jnosql.diana.api;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * The interface represents the settings used in a configuration.
@@ -30,7 +31,30 @@ public interface Settings extends Map<String, Object> {
 
 
     /**
-     * Creates a settings from a map
+     * Creates a {@link SettingsBuilder}
+     * @return a {@link SettingsBuilder} instance
+     */
+    static SettingsBuilder builder() {
+        return new SettingsBuilder();
+    }
+
+    /**
+     * Creates a settings from maps
+     *
+     * @param settings the setting
+     * @return the new {@link Settings} instance
+     * @throws NullPointerException when either the parameter is null or there key or value null
+     */
+    static Settings of(Map<String, Object> settings) throws NullPointerException {
+
+        requireNonNull(settings, "settings is required");
+        SettingsBuilder builder = new SettingsBuilder();
+        builder.putAll(settings);
+        return builder.build();
+    }
+
+    /**
+     * Creates a settings from maps
      *
      * @param settings the setting
      * @return the new {@link Settings} instance
@@ -38,15 +62,13 @@ public interface Settings extends Map<String, Object> {
      */
     @SafeVarargs
     static Settings of(Map<String, Object>... settings) throws NullPointerException {
-        Map<String, Object> map = new HashMap<>();
         if (Stream.of(settings).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The settings element cannot be null");
         }
 
         SettingsBuilder builder = new SettingsBuilder();
-
-        Stream.of(settings).forEach(map::putAll);
-        return new DefaultSettings(map);
+        Stream.of(settings).forEach(builder::putAll);
+        return builder.build();
     }
 
 }

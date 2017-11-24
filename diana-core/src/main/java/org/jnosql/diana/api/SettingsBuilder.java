@@ -39,11 +39,29 @@ public class SettingsBuilder {
      * @return the settings builder with a new element
      * @throws NullPointerException when either key or value are null
      */
-    public SettingsBuilder add(String key, Object value) throws NullPointerException {
+    public SettingsBuilder put(String key, Object value) throws NullPointerException {
         requireNonNull(key, "key is required");
         requireNonNull(value, "value is required");
         settings.put(key, value);
         return this;
+    }
+
+
+    /**
+     * Adds all elements in the builder
+     *
+     * @param settings the map with all elements
+     * @return the settings builder with a new element
+     * @throws NullPointerException when either the settings or the key or the value are null
+     */
+    public SettingsBuilder putAll(Map<String, Object> settings) throws NullPointerException {
+        requireNonNull(settings, "settings is required");
+        settings.entrySet().forEach(this::put);
+        return this;
+    }
+
+    private void put(Map.Entry<String, Object> entry) {
+        put(entry.getKey(), entry.getValue());
     }
 
     public Settings build() {
@@ -57,5 +75,6 @@ public class SettingsBuilder {
         sb.append('}');
         return sb.toString();
     }
+
 }
 
