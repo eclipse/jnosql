@@ -28,6 +28,9 @@ public class SettingsBuilder {
 
     private final Map<String, Object> settings = new HashMap<>();
 
+    SettingsBuilder() {
+    }
+
     /**
      * Adds a new element in the builder
      *
