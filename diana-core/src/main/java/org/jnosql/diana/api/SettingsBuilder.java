@@ -19,6 +19,11 @@ package org.jnosql.diana.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Objects.requireNonNull;
+
+/**
+ * The Settings builder {@link Settings}
+ */
 public class SettingsBuilder {
 
     private final Map<String, Object> settings = new HashMap<>();
@@ -26,14 +31,28 @@ public class SettingsBuilder {
     /**
      * Adds a new element in the builder
      *
-     * @param key the key to the settings
+     * @param key   the key to the settings
      * @param value the value from the respective settings
      * @return the settings builder with a new element
      * @throws NullPointerException when either key or value are null
      */
     public SettingsBuilder add(String key, Object value) throws NullPointerException {
-
+        requireNonNull(key, "key is required");
+        requireNonNull(value, "value is required");
+        settings.put(key, value);
+        return this;
     }
 
+    public Settings build() {
+        return new DefaultSettings(settings);
+    }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("SettingsBuilder{");
+        sb.append("settings=").append(settings);
+        sb.append('}');
+        return sb.toString();
+    }
 }
+
