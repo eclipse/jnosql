@@ -18,6 +18,8 @@ package org.jnosql.diana.api;
 
 import org.junit.Test;
 
+import java.util.Map;
+
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertEquals;
@@ -30,7 +32,7 @@ public class DefaultSettingsTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnNPEWhenInstanceIsNull() {
-        Settings.of(null);
+        Settings.of((Map<String, Object>) null);
     }
 
     @Test
