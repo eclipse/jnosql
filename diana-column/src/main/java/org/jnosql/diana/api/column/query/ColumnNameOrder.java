@@ -22,4 +22,15 @@ package org.jnosql.diana.api.column.query;
 public interface ColumnNameOrder {
 
 
+    /**
+     * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#ASC}
+     * @return the {@link ColumnWhere} instance
+     */
+    ColumnWhere asc();
+
+    /**
+     * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#DESC}
+     * @return the {@link ColumnWhere} instance
+     */
+    ColumnWhere desc();
 }
