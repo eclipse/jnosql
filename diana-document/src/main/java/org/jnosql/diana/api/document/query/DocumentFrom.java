@@ -64,11 +64,11 @@ public interface DocumentFrom {
     /**
      * Add the order how the result will returned
      *
-     * @param sort the order
+     * @param name the order
      * @return a query with the sort defined
-     * @throws NullPointerException when sort is null
+     * @throws NullPointerException when name is null
      */
-    DocumentOrder orderBy(Sort sort) throws NullPointerException;
+    DocumentFromOrder orderBy(String name) throws NullPointerException;
 
     /**
      * Creates a new instance of {@link DocumentQuery}
