@@ -36,6 +36,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
 
 
     private final DefaultColumnWhere columnWhere = new DefaultColumnWhere(this);
+    private final DefaultColumnFromOrder columnFromOrder = new DefaultColumnFromOrder(this);
 
     DefaultSelectQueryBuilder(List<String> columns) {
        super(columns);
@@ -78,7 +79,8 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     @Override
     public ColumnFromOrder orderBy(String name) throws NullPointerException {
         requireNonNull(name, "name is required");
-        return new DefaultColumnFromOrder(name, this);
+        this.name = name;
+        return columnFromOrder;
     }
 
 

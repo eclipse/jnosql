@@ -24,24 +24,22 @@ import static java.util.Objects.requireNonNull;
 class DefaultColumnFromOrder implements ColumnFromOrder, ColumnNameOrder {
 
 
-    private String name;
 
     private final DefaultSelectQueryBuilder queryBuilder;
 
-    DefaultColumnFromOrder(String name, DefaultSelectQueryBuilder queryBuilder) {
-        this.name = name;
+    DefaultColumnFromOrder(DefaultSelectQueryBuilder queryBuilder) {
         this.queryBuilder = queryBuilder;
     }
 
     @Override
     public ColumnNameOrder asc() {
-        this.queryBuilder.sorts.add(Sort.of(name, Sort.SortType.ASC));
+        this.queryBuilder.sorts.add(Sort.of(queryBuilder.name, Sort.SortType.ASC));
         return this;
     }
 
     @Override
     public ColumnNameOrder desc() {
-        this.queryBuilder.sorts.add(Sort.of(name, Sort.SortType.DESC));
+        this.queryBuilder.sorts.add(Sort.of(queryBuilder.name, Sort.SortType.DESC));
         return this;
     }
 
