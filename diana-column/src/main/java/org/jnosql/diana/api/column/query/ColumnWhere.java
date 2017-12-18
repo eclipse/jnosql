@@ -17,7 +17,6 @@
 package org.jnosql.diana.api.column.query;
 
 
-import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnQuery;
 
@@ -87,7 +86,7 @@ public interface ColumnWhere {
      * @return a query with the sort defined
      * @throws NullPointerException when name is null
      */
-    ColumnNameOrder orderBy(String name) throws NullPointerException;
+    ColumnOrder orderBy(String name) throws NullPointerException;
 
     /**
      * Creates a new instance of {@link ColumnQuery}

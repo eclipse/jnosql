@@ -19,7 +19,7 @@ package org.jnosql.diana.api.column.query;
 /**
  * The definition to either {@link org.jnosql.diana.api.Sort.SortType}
  */
-public interface ColumnNameOrder {
+public interface ColumnOrder {
 
 
     /**
