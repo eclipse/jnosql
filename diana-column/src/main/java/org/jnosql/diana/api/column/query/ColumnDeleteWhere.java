@@ -26,23 +26,6 @@ import org.jnosql.diana.api.column.ColumnDeleteQuery;
 public interface ColumnDeleteWhere {
 
 
-    /**
-     * Appends a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
-     *
-     * @param condition a condition to be added
-     * @return the same {@link ColumnDeleteWhere} with the condition appended
-     * @throws NullPointerException when condition is null
-     */
-    ColumnDeleteWhere and(ColumnCondition condition) throws NullPointerException;
-
-    /**
-     * Appends a new condition in the select using {@link ColumnCondition#or(ColumnCondition)}
-     *
-     * @param condition a condition to be added
-     * @return the same {@link ColumnDeleteWhere} with the condition appended
-     * @throws NullPointerException when condition is null
-     */
-    ColumnDeleteWhere or(ColumnCondition condition) throws NullPointerException;
 
     /**
      * Starts a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
