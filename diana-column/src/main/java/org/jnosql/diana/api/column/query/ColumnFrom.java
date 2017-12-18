@@ -67,7 +67,7 @@ public interface ColumnFrom {
      * @return a query with the sort defined
      * @throws NullPointerException when name is null
      */
-    ColumnOrder orderBy(String name) throws NullPointerException;
+    ColumnFromOrder orderBy(String name) throws NullPointerException;
 
     /**
      * Creates a new instance of {@link ColumnQuery}
