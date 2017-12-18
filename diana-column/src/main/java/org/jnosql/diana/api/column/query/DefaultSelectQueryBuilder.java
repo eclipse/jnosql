@@ -17,12 +17,10 @@
 package org.jnosql.diana.api.column.query;
 
 
-import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -32,29 +30,12 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of the Select in the column
  */
-class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere, ColumnLimit, ColumnStart,
+class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit, ColumnStart,
         ColumnOrder, ColumnWhereName, ColumnNameCondition, ColumnNotCondition {
 
-    private String columnFamily;
-
-    private ColumnCondition condition;
-
-    private long start;
-
-    private long limit;
-
-    private final List<Sort> sorts = new ArrayList<>();
-
-    private final List<String> columns;
-
-    private String name;
-
-    private boolean negate;
-
-    private boolean and;
 
     DefaultSelectQueryBuilder(List<String> columns) {
-        this.columns = columns;
+       super(columns);
     }
 
 
@@ -93,7 +74,8 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere
 
     @Override
     public ColumnFromOrder orderBy(String name) throws NullPointerException {
-        return this;
+        requireNonNull(name, "name is required");
+        return new DefaultColumnFromOrder(name, this);
     }
 
     @Override
@@ -223,52 +205,6 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere
         this.negate = false;
         this.name = null;
         return this;
-    }
-
-    class DefaultColumnFromOrder implements ColumnFromOrder, ColumnNameOrder {
-
-        private String name;
-        private final DefaultSelectQueryBuilder queryBuilder;
-
-        DefaultColumnFromOrder(String name, DefaultSelectQueryBuilder queryBuilder) {
-            this.name = name;
-            this.queryBuilder = queryBuilder;
-        }
-
-        @Override
-        public ColumnNameOrder asc() {
-            this.queryBuilder.sorts.add(Sort.of(name, Sort.SortType.ASC));
-            return this;
-        }
-
-        @Override
-        public ColumnNameOrder desc() {
-            this.queryBuilder.sorts.add(Sort.of(name, Sort.SortType.DESC));
-            return this;
-        }
-
-        @Override
-        public ColumnFromOrder orderBy(String name) throws NullPointerException {
-            requireNonNull(name, "name is required");
-            return this;
-        }
-
-        @Override
-        public ColumnStart start(long start) {
-            this.queryBuilder.start(start);
-            return queryBuilder;
-        }
-
-        @Override
-        public ColumnLimit limit(long limit) {
-            this.queryBuilder.limit(limit);
-            return queryBuilder;
-        }
-
-        @Override
-        public ColumnQuery build() {
-            return queryBuilder.build();
-        }
     }
 
 }
