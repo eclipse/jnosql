@@ -16,39 +16,47 @@
  */
 package org.jnosql.diana.api.column.query;
 
-import org.jnosql.diana.api.Sort;
+import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnQuery;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultColumnFromOrder implements ColumnFromOrder, ColumnNameOrder {
-
-
-    private String name;
+class DefaultColumnWhere implements ColumnWhere {
 
     private final DefaultSelectQueryBuilder queryBuilder;
 
-    DefaultColumnFromOrder(String name, DefaultSelectQueryBuilder queryBuilder) {
-        this.name = name;
+    DefaultColumnWhere(DefaultSelectQueryBuilder queryBuilder) {
         this.queryBuilder = queryBuilder;
     }
 
     @Override
-    public ColumnNameOrder asc() {
-        this.queryBuilder.sorts.add(Sort.of(name, Sort.SortType.ASC));
+    public ColumnWhere and(ColumnCondition condition) throws NullPointerException {
+        requireNonNull(condition, "condition is required");
+        this.queryBuilder.condition = this.queryBuilder.condition.and(condition);
         return this;
     }
 
     @Override
-    public ColumnNameOrder desc() {
-        this.queryBuilder.sorts.add(Sort.of(name, Sort.SortType.DESC));
+    public ColumnWhere or(ColumnCondition condition) throws NullPointerException {
+        requireNonNull(condition, "condition is required");
+        this.queryBuilder.condition = this.queryBuilder.condition.or(condition);
         return this;
     }
 
     @Override
-    public ColumnFromOrder orderBy(String name) throws NullPointerException {
+    public ColumnNameCondition and(String name) throws NullPointerException {
         requireNonNull(name, "name is required");
-        return this;
+        this.queryBuilder.name = name;
+        this.queryBuilder.and = true;
+        return queryBuilder;
+    }
+
+    @Override
+    public ColumnNameCondition or(String name) throws NullPointerException {
+        requireNonNull(name, "name is required");
+        this.queryBuilder.name = name;
+        this.queryBuilder.and = false;
+        return queryBuilder;
     }
 
     @Override
@@ -60,6 +68,12 @@ class DefaultColumnFromOrder implements ColumnFromOrder, ColumnNameOrder {
     @Override
     public ColumnLimit limit(long limit) {
         this.queryBuilder.limit(limit);
+        return queryBuilder;
+    }
+
+    @Override
+    public ColumnOrder orderBy(String name) throws NullPointerException {
+        this.queryBuilder.orderBy(name);
         return queryBuilder;
     }
 
