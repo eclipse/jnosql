@@ -300,7 +300,7 @@ public class DefaultSelectQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
-      assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+      assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
               ColumnCondition.gt(Column.of("age", 10))));
     }
 
@@ -315,7 +315,7 @@ public class DefaultSelectQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
         assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10))));
     }
 
@@ -333,7 +333,7 @@ public class DefaultSelectQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10))));
     }
 
@@ -349,7 +349,7 @@ public class DefaultSelectQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
         assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10))));
     }
 
@@ -367,7 +367,7 @@ public class DefaultSelectQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10))));
     }
 
@@ -383,7 +383,7 @@ public class DefaultSelectQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
         assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10))));
     }
 
