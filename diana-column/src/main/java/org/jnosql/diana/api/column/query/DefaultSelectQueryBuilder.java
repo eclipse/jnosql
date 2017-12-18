@@ -69,12 +69,6 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
         return this;
     }
 
-    @Override
-    public ColumnWhere where(ColumnCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.condition = condition;
-        return columnWhere;
-    }
 
     @Override
     public ColumnWhereName where(String name) throws NullPointerException {

@@ -16,7 +16,6 @@
  */
 package org.jnosql.diana.api.column.query;
 
-import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnQuery;
 
 import static java.util.Objects.requireNonNull;
@@ -29,19 +28,6 @@ class DefaultColumnWhere implements ColumnWhere {
         this.queryBuilder = queryBuilder;
     }
 
-    @Override
-    public ColumnWhere and(ColumnCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.queryBuilder.condition = this.queryBuilder.condition.and(condition);
-        return this;
-    }
-
-    @Override
-    public ColumnWhere or(ColumnCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.queryBuilder.condition = this.queryBuilder.condition.or(condition);
-        return this;
-    }
 
     @Override
     public ColumnNameCondition and(String name) throws NullPointerException {

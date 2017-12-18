@@ -57,12 +57,6 @@ class DefaultDeleteQueryBuilder implements ColumnDelete, ColumnDeleteFrom,
         return this;
     }
 
-    @Override
-    public ColumnDeleteWhere where(ColumnCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.condition = condition;
-        return this;
-    }
 
     @Override
     public ColumnDeleteWhereName where(String name) throws NullPointerException {
@@ -71,19 +65,6 @@ class DefaultDeleteQueryBuilder implements ColumnDelete, ColumnDeleteFrom,
         return this;
     }
 
-    @Override
-    public ColumnDeleteWhere and(ColumnCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.condition = this.condition.and(condition);
-        return this;
-    }
-
-    @Override
-    public ColumnDeleteWhere or(ColumnCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.condition = this.condition.or(condition);
-        return this;
-    }
 
     @Override
     public ColumnDeleteNameCondition and(String name) throws NullPointerException {
