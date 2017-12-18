@@ -92,9 +92,7 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere
     }
 
     @Override
-    public ColumnOrder orderBy(Sort sort) throws NullPointerException {
-        requireNonNull(sort, "sort is required");
-        this.sorts.add(sort);
+    public ColumnFromOrder orderBy(String name) throws NullPointerException {
         return this;
     }
 
@@ -193,6 +191,16 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere
         return this;
     }
 
+    @Override
+    public ColumnWhere asc() {
+        return this;
+    }
+
+    @Override
+    public ColumnWhere desc() {
+        return this;
+    }
+
 
     @Override
     public ColumnQuery build() {
@@ -216,4 +224,51 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnWhere
         this.name = null;
         return this;
     }
+
+    class DefaultColumnFromOrder implements ColumnFromOrder, ColumnNameOrder {
+
+        private String name;
+        private final DefaultSelectQueryBuilder queryBuilder;
+
+        DefaultColumnFromOrder(String name, DefaultSelectQueryBuilder queryBuilder) {
+            this.name = name;
+            this.queryBuilder = queryBuilder;
+        }
+
+        @Override
+        public ColumnNameOrder asc() {
+            this.queryBuilder.sorts.add(Sort.of(name, Sort.SortType.ASC));
+            return this;
+        }
+
+        @Override
+        public ColumnNameOrder desc() {
+            this.queryBuilder.sorts.add(Sort.of(name, Sort.SortType.DESC));
+            return this;
+        }
+
+        @Override
+        public ColumnFromOrder orderBy(String name) throws NullPointerException {
+            requireNonNull(name, "name is required");
+            return this;
+        }
+
+        @Override
+        public ColumnStart start(long start) {
+            this.queryBuilder.start(start);
+            return queryBuilder;
+        }
+
+        @Override
+        public ColumnLimit limit(long limit) {
+            this.queryBuilder.limit(limit);
+            return queryBuilder;
+        }
+
+        @Override
+        public ColumnQuery build() {
+            return queryBuilder.build();
+        }
+    }
+
 }
