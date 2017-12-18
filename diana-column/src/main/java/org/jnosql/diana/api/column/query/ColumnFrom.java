@@ -64,11 +64,11 @@ public interface ColumnFrom {
     /**
      * Add the order how the result will returned
      *
-     * @param sort the order
+     * @param name the name to be ordered
      * @return a query with the sort defined
-     * @throws NullPointerException when sort is null
+     * @throws NullPointerException when name is null
      */
-    ColumnOrder orderBy(Sort sort) throws NullPointerException;
+    ColumnNameOrder orderBy(String name) throws NullPointerException;
 
     /**
      * Creates a new instance of {@link ColumnQuery}
