@@ -31,6 +31,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
+import static org.jnosql.diana.api.Sort.SortType.DESC;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -71,13 +72,23 @@ public class DefaultSelectQueryBuilderTest {
 
 
     @Test
-    public void shouldSelectOrder() {
+    public void shouldSelectOrderAsc() {
         String columnFamily = "columnFamily";
         ColumnQuery query = select().from(columnFamily).orderBy("name").asc().build();
         assertTrue(query.getColumns().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(columnFamily, query.getColumnFamily());
         assertThat(query.getSorts(), contains(Sort.of("name", ASC)));
+    }
+
+    @Test
+    public void shouldSelectOrderDesc() {
+        String columnFamily = "columnFamily";
+        ColumnQuery query = select().from(columnFamily).orderBy("name").desc().build();
+        assertTrue(query.getColumns().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(columnFamily, query.getColumnFamily());
+        assertThat(query.getSorts(), contains(Sort.of("name", DESC)));
     }
 
     @Test(expected = NullPointerException.class)
