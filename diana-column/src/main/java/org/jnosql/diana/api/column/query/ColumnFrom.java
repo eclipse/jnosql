@@ -25,14 +25,6 @@ import org.jnosql.diana.api.column.ColumnQuery;
  */
 public interface ColumnFrom {
 
-    /**
-     * Defines a new condition in the query
-     *
-     * @param condition the condition in the where
-     * @return a new {@link ColumnWhere}
-     * @throws NullPointerException when condition is null
-     */
-    ColumnWhere where(ColumnCondition condition) throws NullPointerException;
 
     /**
      * Starts a new condition defining the  column name

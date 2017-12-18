@@ -27,24 +27,6 @@ public interface ColumnWhere {
 
 
     /**
-     * Appends a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
-     *
-     * @param condition a condition to be added
-     * @return the same {@link ColumnWhere} with the condition appended
-     * @throws NullPointerException when condition is null
-     */
-    ColumnWhere and(ColumnCondition condition) throws NullPointerException;
-
-    /**
-     * Starts a new condition in the select using {@link ColumnCondition#or(ColumnCondition)}
-     *
-     * @param condition a condition to be added
-     * @return the same {@link ColumnWhere} with the condition appended
-     * @throws NullPointerException when condition is null
-     */
-    ColumnWhere or(ColumnCondition condition) throws NullPointerException;
-
-    /**
      * Starts a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
      *
      * @param name a condition to be added
