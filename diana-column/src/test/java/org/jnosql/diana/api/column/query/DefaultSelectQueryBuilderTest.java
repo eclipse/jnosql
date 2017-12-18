@@ -124,7 +124,7 @@ public class DefaultSelectQueryBuilderTest {
     @Test
     public void shouldSelectOrder() {
         String columnFamily = "columnFamily";
-        ColumnQuery query = select().from(columnFamily).orderBy(Sort.of("name", ASC)).build();
+        ColumnQuery query = select().from(columnFamily).orderBy("name").asc().build();
         assertTrue(query.getColumns().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(columnFamily, query.getColumnFamily());
