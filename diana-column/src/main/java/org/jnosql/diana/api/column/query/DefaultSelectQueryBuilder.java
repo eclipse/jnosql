@@ -22,6 +22,7 @@ import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -31,15 +32,33 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of the Select in the column
  */
-class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit, ColumnStart,
+class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit, ColumnStart,
         ColumnOrder, ColumnWhereName, ColumnNameCondition, ColumnNotCondition {
 
 
     private final DefaultColumnWhere columnWhere = new DefaultColumnWhere(this);
     private final DefaultColumnFromOrder columnFromOrder = new DefaultColumnFromOrder(this);
 
+    protected String columnFamily;
+
+    protected ColumnCondition condition;
+
+    protected long start;
+
+    protected long limit;
+
+    protected final List<Sort> sorts = new ArrayList<>();
+
+    protected final List<String> columns;
+
+    protected String name;
+
+    protected boolean negate;
+
+    protected boolean and;
+
     DefaultSelectQueryBuilder(List<String> columns) {
-       super(columns);
+       this.columns = columns;
     }
 
 
