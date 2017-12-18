@@ -17,7 +17,6 @@
 package org.jnosql.diana.api.column.query;
 
 
-import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 
 /**
@@ -28,7 +27,7 @@ public interface ColumnDeleteWhere {
 
 
     /**
-     * Starts a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
+     * Starts a new condition in the select using {@link org.jnosql.diana.api.column.ColumnCondition#and(org.jnosql.diana.api.column.ColumnCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link ColumnDeleteNameCondition} with the condition appended
@@ -37,7 +36,7 @@ public interface ColumnDeleteWhere {
     ColumnDeleteNameCondition and(String name) throws NullPointerException;
 
     /**
-     * Starts a new condition in the select using {@link ColumnCondition#or(ColumnCondition)}
+     * Starts a new condition in the select using {@link org.jnosql.diana.api.column.ColumnCondition#or(org.jnosql.diana.api.column.ColumnCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link ColumnDeleteNameCondition} with the condition appended
