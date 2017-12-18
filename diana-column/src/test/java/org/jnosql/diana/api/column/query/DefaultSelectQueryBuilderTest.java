@@ -31,8 +31,6 @@ import java.util.List;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
-import static org.jnosql.diana.api.column.ColumnCondition.eq;
-import static org.jnosql.diana.api.column.ColumnCondition.gt;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -70,56 +68,7 @@ public class DefaultSelectQueryBuilderTest {
         select().from(null);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldReturnErrorWhenWhereConditionIsNull() {
-        String columnFamily = "columnFamily";
-        select().from(columnFamily).where((ColumnCondition) null);
-    }
 
-    @Test
-    public void shouldSelectWhere() {
-        String columnFamily = "columnFamily";
-        ColumnCondition condition = eq(Column.of("name", "Ada"));
-        ColumnQuery query = select().from(columnFamily).where(condition).build();
-        assertTrue(query.getCondition().isPresent());
-        ColumnCondition conditionWhere = query.getCondition().get();
-        assertEquals(condition, conditionWhere);
-    }
-
-    @Test
-    public void shouldSelectWhereAnd() {
-        String columnFamily = "columnFamily";
-        ColumnCondition condition = eq(Column.of("name", "Ada"));
-        ColumnQuery query = select().from(columnFamily).where(condition).and(gt(Column.of("age", 10))).build();
-        assertTrue(query.getCondition().isPresent());
-        ColumnCondition expected = eq(Column.of("name", "Ada")).and(gt(Column.of("age", 10)));
-        assertEquals(expected, query.getCondition().get());
-    }
-
-    @Test
-    public void shouldSelectWhereOr() {
-        String columnFamily = "columnFamily";
-        ColumnCondition condition = eq(Column.of("name", "Ada"));
-        ColumnQuery query = select().from(columnFamily).where(condition).or(gt(Column.of("age", 10))).build();
-        assertTrue(query.getCondition().isPresent());
-        ColumnCondition expected = eq(Column.of("name", "Ada")).or(gt(Column.of("age", 10)));
-        assertEquals(expected, query.getCondition().get());
-    }
-
-
-    @Test(expected = NullPointerException.class)
-    public void shouldReturnErrorWhenSelectWhereAndConditionIsNull() {
-        String columnFamily = "columnFamily";
-        ColumnCondition condition = eq(Column.of("name", "Ada"));
-        select().from(columnFamily).where(condition).and((ColumnCondition) null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldReturnErrorWhenSelectWhereOrConditionIsNull() {
-        String columnFamily = "columnFamily";
-        ColumnCondition condition = eq(Column.of("name", "Ada"));
-        select().from(columnFamily).where(condition).or((ColumnCondition) null);
-    }
 
     @Test
     public void shouldSelectOrder() {
@@ -319,72 +268,5 @@ public class DefaultSelectQueryBuilderTest {
                 ColumnCondition.gt(Column.of("age", 10))));
     }
 
-
-    @Test
-    public void shouldSelectWhereNameAnd2() {
-        String columnFamily = "columnFamily";
-        String name = "Ada Lovelace";
-
-        ColumnQuery query = select().from(columnFamily).where("name").eq(name)
-                .and(ColumnCondition.gt(Column.of("age", 10))).build();
-        ColumnCondition condition = query.getCondition().get();
-
-        Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
-        });
-        assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
-    }
-
-    @Test
-    public void shouldSelectWhereNameOr2() {
-        String columnFamily = "columnFamily";
-        String name = "Ada Lovelace";
-        ColumnQuery query = select().from(columnFamily).where("name").eq(name)
-                .or(ColumnCondition.gt(Column.of("age", 10))).build();
-        ColumnCondition condition = query.getCondition().get();
-
-        Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
-        });
-        assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
-    }
-
-
-    @Test
-    public void shouldSelectWhereNameAnd3() {
-        String columnFamily = "columnFamily";
-        String name = "Ada Lovelace";
-
-        ColumnQuery query = select().from(columnFamily).where(ColumnCondition.eq(Column.of("name", name))
-        ).and("age").gt(10).build();
-        ColumnCondition condition = query.getCondition().get();
-
-        Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
-        });
-        assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
-    }
-
-    @Test
-    public void shouldSelectWhereNameOr3() {
-        String columnFamily = "columnFamily";
-        String name = "Ada Lovelace";
-        ColumnQuery query = select().from(columnFamily).where(ColumnCondition.eq(Column.of("name", name)))
-                .or("age").gt(10).build();
-        ColumnCondition condition = query.getCondition().get();
-
-        Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
-        });
-        assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
-    }
 
 }

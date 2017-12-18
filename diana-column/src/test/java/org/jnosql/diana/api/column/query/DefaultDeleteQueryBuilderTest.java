@@ -29,8 +29,6 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.jnosql.diana.api.column.ColumnCondition.eq;
-import static org.jnosql.diana.api.column.ColumnCondition.gt;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.delete;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -68,56 +66,9 @@ public class DefaultDeleteQueryBuilderTest {
         delete().from(null);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldReturnErrorWhenWhereConditionIsNull() {
-        String columnFamily = "columnFamily";
-        delete().from(columnFamily).where((ColumnCondition) null);
-    }
-
-    @Test
-    public void shouldSelectWhere() {
-        String columnFamily = "columnFamily";
-        ColumnCondition condition = eq(Column.of("name", "Ada"));
-        ColumnDeleteQuery query = delete().from(columnFamily).where(condition).build();
-        assertTrue(query.getCondition().isPresent());
-        ColumnCondition conditionWhere = query.getCondition().get();
-        assertEquals(condition, conditionWhere);
-    }
-
-    @Test
-    public void shouldSelectWhereAnd() {
-        String columnFamily = "columnFamily";
-        ColumnCondition condition = eq(Column.of("name", "Ada"));
-        ColumnDeleteQuery query = delete().from(columnFamily).where(condition).and(gt(Column.of("age", 10))).build();
-        assertTrue(query.getCondition().isPresent());
-        ColumnCondition expected = eq(Column.of("name", "Ada")).and(gt(Column.of("age", 10)));
-        assertEquals(expected, query.getCondition().get());
-    }
-
-    @Test
-    public void shouldSelectWhereOr() {
-        String columnFamily = "columnFamily";
-        ColumnCondition condition = eq(Column.of("name", "Ada"));
-        ColumnDeleteQuery query = delete().from(columnFamily).where(condition).or(gt(Column.of("age", 10))).build();
-        assertTrue(query.getCondition().isPresent());
-        ColumnCondition expected = eq(Column.of("name", "Ada")).or(gt(Column.of("age", 10)));
-        assertEquals(expected, query.getCondition().get());
-    }
 
 
-    @Test(expected = NullPointerException.class)
-    public void shouldReturnErrorWhenSelectWhereAndConditionIsNull() {
-        String columnFamily = "columnFamily";
-        ColumnCondition condition = eq(Column.of("name", "Ada"));
-        delete().from(columnFamily).where(condition).and((ColumnCondition) null);
-    }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldReturnErrorWhenSelectWhereOrConditionIsNull() {
-        String columnFamily = "columnFamily";
-        ColumnCondition condition = eq(Column.of("name", "Ada"));
-        delete().from(columnFamily).where(condition).or((ColumnCondition) null);
-    }
 
 
     @Test
@@ -273,74 +224,6 @@ public class DefaultDeleteQueryBuilderTest {
         String columnFamily = "columnFamily";
         String name = "Ada Lovelace";
         ColumnDeleteQuery query = delete().from(columnFamily).where("name").eq(name).or("age").gt(10).build();
-        ColumnCondition condition = query.getCondition().get();
-
-        Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
-        });
-        assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
-    }
-
-
-    @Test
-    public void shouldSelectWhereNameAnd2() {
-        String columnFamily = "columnFamily";
-        String name = "Ada Lovelace";
-
-        ColumnDeleteQuery query = delete().from(columnFamily).where("name").eq(name)
-                .and(ColumnCondition.gt(Column.of("age", 10))).build();
-        ColumnCondition condition = query.getCondition().get();
-
-        Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
-        });
-        assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
-    }
-
-    @Test
-    public void shouldSelectWhereNameOr2() {
-        String columnFamily = "columnFamily";
-        String name = "Ada Lovelace";
-        ColumnDeleteQuery query = delete().from(columnFamily).where("name").eq(name)
-                .or(ColumnCondition.gt(Column.of("age", 10))).build();
-        ColumnCondition condition = query.getCondition().get();
-
-        Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
-        });
-        assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
-    }
-
-
-    @Test
-    public void shouldSelectWhereNameAnd3() {
-        String columnFamily = "columnFamily";
-        String name = "Ada Lovelace";
-
-        ColumnDeleteQuery query = delete().from(columnFamily).where(ColumnCondition.eq(Column.of("name", name))
-        ).and("age").gt(10).build();
-        ColumnCondition condition = query.getCondition().get();
-
-        Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
-        });
-        assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
-    }
-
-    @Test
-    public void shouldSelectWhereNameOr3() {
-        String columnFamily = "columnFamily";
-        String name = "Ada Lovelace";
-        ColumnDeleteQuery query = delete().from(columnFamily).where(ColumnCondition.eq(Column.of("name", name)))
-                .or("age").gt(10).build();
         ColumnCondition condition = query.getCondition().get();
 
         Column column = condition.getColumn();
