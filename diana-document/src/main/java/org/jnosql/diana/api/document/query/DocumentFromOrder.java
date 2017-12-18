@@ -16,23 +16,22 @@
  */
 package org.jnosql.diana.api.document.query;
 
-import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.document.DocumentQuery;
-
 /**
- * The Document Order whose define the sort in the query.
+ * Defines the order right after the from in the fluent API
  */
-public interface DocumentOrder {
+public interface DocumentFromOrder {
 
     /**
      * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#ASC}
-     * @return the {@link DocumentWhere} instance
+     *
+     * @return the {@link DocumentNameOrder} instance
      */
-    DocumentWhere asc();
+    DocumentNameOrder asc();
 
     /**
      * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#DESC}
-     * @return the {@link DocumentWhere} instance
+     *
+     * @return the {@link DocumentNameOrder} instance
      */
-    DocumentWhere desc();
+    DocumentNameOrder desc();
 }
