@@ -18,28 +18,21 @@ package org.jnosql.diana.api.column.query;
 
 
 import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.column.Column;
-import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnQuery;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 /**
  * The default implementation of the Select in the column
  */
-class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit, ColumnStart,
+class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit, ColumnStart,
         ColumnOrder, ColumnWhereName, ColumnNameCondition, ColumnNotCondition, ColumnNameOrder, ColumnWhere {
 
 
-
     private String columnFamily;
-
-    private ColumnCondition condition;
 
     private long start;
 
@@ -49,14 +42,9 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
 
     private final List<String> columns;
 
-    private String name;
-
-    private boolean negate;
-
-    private boolean and;
 
     DefaultSelectQueryBuilder(List<String> columns) {
-       this.columns = columns;
+        this.columns = columns;
     }
 
 
@@ -119,61 +107,54 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
 
     @Override
     public <T> ColumnWhere eq(T value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.eq(Column.of(name, value));
-        return appendCondition(newCondition);
+        eqImpl(value);
+        return this;
     }
-
 
     @Override
     public ColumnWhere like(String value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.like(Column.of(name, value));
-        return appendCondition(newCondition);
+        likeImpl(value);
+        return this;
     }
 
     @Override
     public ColumnWhere gt(Number value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.gt(Column.of(name, value));
-        return appendCondition(newCondition);
+        gtImpl(value);
+        return this;
     }
 
     @Override
     public ColumnWhere gte(Number value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.gte(Column.of(name, value));
-        return appendCondition(newCondition);
+        gteImpl(value);
+        return this;
     }
 
     @Override
     public ColumnWhere lt(Number value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.lt(Column.of(name, value));
-        return appendCondition(newCondition);
+        ltImpl(value);
+        return this;
     }
+
 
     @Override
     public ColumnWhere lte(Number value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition.lte(Column.of(name, value));
-        return appendCondition(newCondition);
+        lteImpl(value);
+        return this;
     }
 
     @Override
     public ColumnWhere between(Number valueA, Number valueB) throws NullPointerException {
-        requireNonNull(valueA, "valueA is required");
-        requireNonNull(valueB, "valueB is required");
-        ColumnCondition newCondition = ColumnCondition.between(Column.of(name, asList(valueA, valueB)));
-        return appendCondition(newCondition);
+        betweenImpl(valueA, valueB);
+        return this;
     }
+
 
     @Override
     public <T> ColumnWhere in(Iterable<T> values) throws NullPointerException {
-        requireNonNull(values, "values is required");
-        ColumnCondition newCondition = ColumnCondition.in(Column.of(name, values));
-        return appendCondition(newCondition);
+        inImpl(values);
+        return this;
     }
+
 
     @Override
     public ColumnNameOrder asc() {
@@ -193,22 +174,5 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
         return new DefaultColumnQuery(limit, start, columnFamily, columns, sorts, condition);
     }
 
-    private ColumnWhere appendCondition(ColumnCondition newCondition) {
-        if (negate) {
-            newCondition = newCondition.negate();
-        }
-        if (nonNull(condition)) {
-            if (and) {
-                this.condition = condition.and(newCondition);
-            } else {
-                this.condition = condition.or(newCondition);
-            }
-        } else {
-            this.condition = newCondition;
-        }
-        this.negate = false;
-        this.name = null;
-        return this;
-    }
 
 }
