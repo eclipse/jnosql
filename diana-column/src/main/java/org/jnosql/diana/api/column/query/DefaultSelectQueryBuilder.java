@@ -33,11 +33,10 @@ import static java.util.Objects.requireNonNull;
  * The default implementation of the Select in the column
  */
 class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit, ColumnStart,
-        ColumnOrder, ColumnWhereName, ColumnNameCondition, ColumnNotCondition {
+        ColumnOrder, ColumnWhereName, ColumnNameCondition, ColumnNotCondition, ColumnNameOrder {
 
 
     private final DefaultColumnWhere columnWhere = new DefaultColumnWhere(this);
-    private final DefaultColumnFromOrder columnFromOrder = new DefaultColumnFromOrder(this);
 
     protected String columnFamily;
 
@@ -90,10 +89,10 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
     }
 
     @Override
-    public ColumnFromOrder orderBy(String name) throws NullPointerException {
+    public ColumnOrder orderBy(String name) throws NullPointerException {
         requireNonNull(name, "name is required");
         this.name = name;
-        return columnFromOrder;
+        return this;
     }
 
 
@@ -162,15 +161,15 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
     }
 
     @Override
-    public ColumnWhere asc() {
+    public ColumnNameOrder asc() {
         this.sorts.add(Sort.of(name, Sort.SortType.ASC));
-        return columnWhere;
+        return this;
     }
 
     @Override
-    public ColumnWhere desc() {
+    public ColumnNameOrder desc() {
         this.sorts.add(Sort.of(name, Sort.SortType.ASC));
-        return columnWhere;
+        return this;
     }
 
 
