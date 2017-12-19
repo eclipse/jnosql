@@ -17,8 +17,6 @@
 package org.jnosql.diana.api.document.query;
 
 
-import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentQuery;
 
 /**
@@ -26,14 +24,6 @@ import org.jnosql.diana.api.document.DocumentQuery;
  */
 public interface DocumentFrom {
 
-    /**
-     * Defines a new condition in the query
-     *
-     * @param condition the condition in the where
-     * @return a new {@link DocumentWhere}
-     * @throws NullPointerException when condition is null
-     */
-    DocumentWhere where(DocumentCondition condition) throws NullPointerException;
 
     /**
      * Starts a new condition defining the  column name

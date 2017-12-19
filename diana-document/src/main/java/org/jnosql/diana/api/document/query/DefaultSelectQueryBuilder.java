@@ -32,27 +32,30 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of the Select in the document
  */
-class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, DocumentWhere, DocumentLimit,
+class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, DocumentLimit,
         DocumentStart, DocumentOrder, DocumentWhereName, DocumentNotCondition {
 
 
-    private String documentCollection;
+    private final DefaultDocumentWhere documentWhere = new DefaultDocumentWhere(this);
+    private final DefaultDocumentFromOrder docucmentFromOrder = new DefaultDocumentFromOrder(this);
 
-    private DocumentCondition condition;
+    protected String documentCollection;
 
-    private long start;
+    protected DocumentCondition condition;
 
-    private long limit;
+    protected long start;
 
-    private final List<Sort> sorts = new ArrayList<>();
+    protected long limit;
 
-    private final List<String> documents;
+    protected final List<Sort> sorts = new ArrayList<>();
 
-    private String name;
+    protected final List<String> documents;
 
-    private boolean negate;
+    protected String name;
 
-    private boolean and;
+    protected boolean negate;
+
+    protected boolean and;
 
     DefaultSelectQueryBuilder(List<String> documents) {
         this.documents = documents;
@@ -63,13 +66,6 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
     public DocumentFrom from(String documentCollection) throws NullPointerException {
         requireNonNull(documentCollection, "documentCollection is required");
         this.documentCollection = documentCollection;
-        return this;
-    }
-
-    @Override
-    public DocumentWhere where(DocumentCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.condition = condition;
         return this;
     }
 
@@ -93,40 +89,10 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
     }
 
     @Override
-    public DocumentOrder orderBy(Sort sort) throws NullPointerException {
-        requireNonNull(sort, "sort is required");
-        this.sorts.add(sort);
-        return this;
-    }
-
-    @Override
-    public DocumentWhere and(DocumentCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.condition = this.condition.and(condition);
-        return this;
-    }
-
-    @Override
-    public DocumentWhere or(DocumentCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.condition = this.condition.or(condition);
-        return this;
-    }
-
-    @Override
-    public DocumentWhereName and(String name) throws NullPointerException {
+    public DocumentFromOrder orderBy(String name) throws NullPointerException {
         requireNonNull(name, "name is required");
         this.name = name;
-        this.and = true;
-        return this;
-    }
-
-    @Override
-    public DocumentWhereName or(String name) throws NullPointerException {
-        requireNonNull(name, "name is required");
-        this.name = name;
-        this.and = false;
-        return this;
+        return docucmentFromOrder;
     }
 
 
@@ -190,12 +156,24 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
     public <T> DocumentWhere in(Iterable<T> values) throws NullPointerException {
         requireNonNull(values, "values is required");
         DocumentCondition newCondition = DocumentCondition.in(Document.of(name, values));
-        return this;
+        return documentWhere;
     }
 
     @Override
     public DocumentQuery build() {
         return new DefaultDocumentQuery(limit, start, documentCollection, documents, sorts, condition);
+    }
+
+    @Override
+    public DocumentWhere asc() {
+        this.sorts.add(Sort.of(name, Sort.SortType.ASC));
+        return documentWhere;
+    }
+
+    @Override
+    public DocumentWhere desc() {
+        this.sorts.add(Sort.of(name, Sort.SortType.DESC));
+        return documentWhere;
     }
 
     private DocumentWhere appendCondition(DocumentCondition newCondition) {
@@ -213,6 +191,8 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
         }
         this.negate = false;
         this.name = null;
-        return this;
+        return documentWhere;
     }
+
+
 }

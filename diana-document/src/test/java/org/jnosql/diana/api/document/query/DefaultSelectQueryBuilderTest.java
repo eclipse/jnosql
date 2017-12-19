@@ -31,10 +31,12 @@ import java.util.List;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
-import static org.jnosql.diana.api.document.DocumentCondition.eq;
-import static org.jnosql.diana.api.document.DocumentCondition.gt;
+import static org.jnosql.diana.api.Sort.SortType.DESC;
 import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.select;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 public class DefaultSelectQueryBuilderTest {
@@ -68,66 +70,27 @@ public class DefaultSelectQueryBuilderTest {
         select().from(null);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldReturnErrorWhenWhereConditionIsNull() {
-        String documentCollection = "documentCollection";
-        select().from(documentCollection).where((DocumentCondition) null);
-    }
 
     @Test
-    public void shouldSelectWhere() {
+    public void shouldSelectOrderAsc() {
         String documentCollection = "documentCollection";
-        DocumentCondition condition = eq(Document.of("name", "Ada"));
-        DocumentQuery query = select().from(documentCollection).where(condition).build();
-        assertTrue(query.getCondition().isPresent());
-        DocumentCondition conditionWhere = query.getCondition().get();
-        assertEquals(condition, conditionWhere);
-    }
-
-    @Test
-    public void shouldSelectWhereAnd() {
-        String documentCollection = "documentCollection";
-        DocumentCondition condition = eq(Document.of("name", "Ada"));
-        DocumentQuery query = select().from(documentCollection).where(condition).and(gt(Document.of("age", 10))).build();
-        assertTrue(query.getCondition().isPresent());
-        DocumentCondition expected = eq(Document.of("name", "Ada")).and(gt(Document.of("age", 10)));
-        assertEquals(expected, query.getCondition().get());
-    }
-
-    @Test
-    public void shouldSelectWhereOr() {
-        String documentCollection = "documentCollection";
-        DocumentCondition condition = eq(Document.of("name", "Ada"));
-        DocumentQuery query = select().from(documentCollection).where(condition).or(gt(Document.of("age", 10))).build();
-        assertTrue(query.getCondition().isPresent());
-        DocumentCondition expected = eq(Document.of("name", "Ada")).or(gt(Document.of("age", 10)));
-        assertEquals(expected, query.getCondition().get());
-    }
-
-
-    @Test(expected = NullPointerException.class)
-    public void shouldReturnErrorWhenSelectWhereAndConditionIsNull() {
-        String documentCollection = "documentCollection";
-        DocumentCondition condition = eq(Document.of("name", "Ada"));
-        select().from(documentCollection).where(condition).and((DocumentCondition) null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldReturnErrorWhenSelectWhereOrConditionIsNull() {
-        String documentCollection = "documentCollection";
-        DocumentCondition condition = eq(Document.of("name", "Ada"));
-        select().from(documentCollection).where(condition).or((DocumentCondition) null);
-    }
-
-    @Test
-    public void shouldSelectOrder() {
-        String documentCollection = "documentCollection";
-        DocumentQuery query = select().from(documentCollection).orderBy(Sort.of("name", ASC)).build();
+        DocumentQuery query = select().from(documentCollection).orderBy("name").asc().build();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
         assertThat(query.getSorts(), contains(Sort.of("name", ASC)));
     }
+
+    @Test
+    public void shouldSelectOrderDesc() {
+        String documentCollection = "documentCollection";
+        DocumentQuery query = select().from(documentCollection).orderBy("name").desc().build();
+        assertTrue(query.getDocuments().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(documentCollection, query.getDocumentCollection());
+        assertThat(query.getSorts(), contains(Sort.of("name", DESC)));
+    }
+
 
     @Test(expected = NullPointerException.class)
     public void shouldReturnErrorSelectWhenOrderIsNull() {
@@ -318,71 +281,4 @@ public class DefaultSelectQueryBuilderTest {
                 DocumentCondition.gt(Document.of("age", 10))));
     }
 
-
-    @Test
-    public void shouldSelectWhereNameAnd2() {
-        String documentCollection = "documentCollection";
-        String name = "Ada Lovelace";
-
-        DocumentQuery query = select().from(documentCollection).where("name").eq(name)
-                .and(DocumentCondition.gt(Document.of("age", 10))).build();
-        DocumentCondition condition = query.getCondition().get();
-
-        Document document = condition.getDocument();
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
-        });
-        assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(DocumentCondition.eq(Document.of("name", name)),
-                DocumentCondition.gt(Document.of("age", 10))));
-    }
-
-    @Test
-    public void shouldSelectWhereNameOr2() {
-        String documentCollection = "documentCollection";
-        String name = "Ada Lovelace";
-        DocumentQuery query = select().from(documentCollection).where("name").eq(name)
-                .or(DocumentCondition.gt(Document.of("age", 10))).build();
-        DocumentCondition condition = query.getCondition().get();
-
-        Document document = condition.getDocument();
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
-        });
-        assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(DocumentCondition.eq(Document.of("name", name)),
-                DocumentCondition.gt(Document.of("age", 10))));
-    }
-
-
-    @Test
-    public void shouldSelectWhereNameAnd3() {
-        String documentCollection = "documentCollection";
-        String name = "Ada Lovelace";
-
-        DocumentQuery query = select().from(documentCollection).where(DocumentCondition.eq(Document.of("name", name))
-        ).and("age").gt(10).build();
-        DocumentCondition condition = query.getCondition().get();
-
-        Document document = condition.getDocument();
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
-        });
-        assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(DocumentCondition.eq(Document.of("name", name)),
-                DocumentCondition.gt(Document.of("age", 10))));
-    }
-
-    @Test
-    public void shouldSelectWhereNameOr3() {
-        String documentCollection = "documentCollection";
-        String name = "Ada Lovelace";
-        DocumentQuery query = select().from(documentCollection).where(DocumentCondition.eq(Document.of("name", name)))
-                .or("age").gt(10).build();
-        DocumentCondition condition = query.getCondition().get();
-
-        Document document = condition.getDocument();
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
-        });
-        assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(DocumentCondition.eq(Document.of("name", name)),
-                DocumentCondition.gt(Document.of("age", 10))));
-    }
 }

@@ -27,23 +27,6 @@ import org.jnosql.diana.api.document.DocumentQuery;
  */
 public interface DocumentWhere {
 
-    /**
-     * Appends a new condition in the select using {@link DocumentCondition#and(DocumentCondition)}
-     *
-     * @param condition a condition to be added
-     * @return the same {@link DocumentWhere} with the condition appended
-     * @throws NullPointerException when condition is null
-     */
-    DocumentWhere and(DocumentCondition condition) throws NullPointerException;
-
-    /**
-     * Appends a new condition in the select using {@link DocumentCondition#or(DocumentCondition)}
-     *
-     * @param condition a condition to be added
-     * @return the same {@link DocumentWhere} with the condition appended
-     * @throws NullPointerException when condition is null
-     */
-    DocumentWhere or(DocumentCondition condition) throws NullPointerException;
 
     /**
      * Starts a new condition in the select using {@link DocumentCondition#and(DocumentCondition)}

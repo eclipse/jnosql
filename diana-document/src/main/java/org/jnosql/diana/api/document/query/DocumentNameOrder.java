@@ -49,7 +49,7 @@ public interface DocumentNameOrder {
      * @param limit the limit
      * @return a query with the limit defined
      */
-    DocumentStart limit(long limit);
+    DocumentLimit limit(long limit);
 
 
     /**
