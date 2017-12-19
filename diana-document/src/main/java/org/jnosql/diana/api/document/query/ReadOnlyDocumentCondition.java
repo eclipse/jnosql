@@ -66,11 +66,19 @@ class ReadOnlyDocumentCondition implements DocumentCondition {
             return false;
         }
         DocumentCondition that = (DocumentCondition) o;
-        return Objects.equals(condition, that.getCondition());
+        return Objects.equals(condition, that);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(condition);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ReadOnlyDocumentCondition{");
+        sb.append("condition=").append(condition);
+        sb.append('}');
+        return sb.toString();
     }
 }
