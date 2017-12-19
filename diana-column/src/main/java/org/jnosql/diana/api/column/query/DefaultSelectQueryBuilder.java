@@ -183,7 +183,7 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
 
     @Override
     public ColumnNameOrder desc() {
-        this.sorts.add(Sort.of(name, Sort.SortType.ASC));
+        this.sorts.add(Sort.of(name, Sort.SortType.DESC));
         return this;
     }
 
