@@ -97,8 +97,6 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
     }
 
 
-
-
     @Override
     public ColumnNotCondition not() {
         this.negate = true;
