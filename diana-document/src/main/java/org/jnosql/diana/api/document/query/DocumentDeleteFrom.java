@@ -17,7 +17,6 @@
 package org.jnosql.diana.api.document.query;
 
 
-import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 
 /**
@@ -25,14 +24,6 @@ import org.jnosql.diana.api.document.DocumentDeleteQuery;
  */
 public interface DocumentDeleteFrom {
 
-    /**
-     * Defines a new condition in the query
-     *
-     * @param condition the condition in the where
-     * @return a new {@link DocumentDeleteWhere}
-     * @throws NullPointerException when condition is null
-     */
-    DocumentDeleteWhere where(DocumentCondition condition) throws NullPointerException;
 
     /**
      * Starts a new condition defining the  column name

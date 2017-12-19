@@ -55,12 +55,6 @@ class DefaultDeleteQueryBuilder implements DocumentDelete, DocumentDeleteFrom,
         return this;
     }
 
-    @Override
-    public DocumentDeleteWhere where(DocumentCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.condition = condition;
-        return this;
-    }
 
     @Override
     public DocumentDeleteWhereName where(String name) throws NullPointerException {
@@ -69,19 +63,6 @@ class DefaultDeleteQueryBuilder implements DocumentDelete, DocumentDeleteFrom,
         return this;
     }
 
-    @Override
-    public DocumentDeleteWhere and(DocumentCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.condition = this.condition.and(condition);
-        return this;
-    }
-
-    @Override
-    public DocumentDeleteWhere or(DocumentCondition condition) throws NullPointerException {
-        requireNonNull(condition, "condition is required");
-        this.condition = this.condition.or(condition);
-        return this;
-    }
 
     @Override
     public DocumentDeleteNameCondition and(String name) throws NullPointerException {

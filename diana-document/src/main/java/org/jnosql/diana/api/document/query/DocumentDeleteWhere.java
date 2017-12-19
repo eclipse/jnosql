@@ -16,7 +16,6 @@
  */
 package org.jnosql.diana.api.document.query;
 
-import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 
 /**
@@ -24,26 +23,9 @@ import org.jnosql.diana.api.document.DocumentDeleteQuery;
  */
 public interface DocumentDeleteWhere {
 
-    /**
-     * Appends a new condition in the select using {@link DocumentCondition#and(DocumentCondition)}
-     *
-     * @param condition a condition to be added
-     * @return the same {@link DocumentDeleteWhere} with the condition appended
-     * @throws NullPointerException when condition is null
-     */
-    DocumentDeleteWhere and(DocumentCondition condition) throws NullPointerException;
 
     /**
-     * Appends a new condition in the select using {@link DocumentCondition#or(DocumentCondition)}
-     *
-     * @param condition a condition to be added
-     * @return the same {@link DocumentDeleteWhere} with the condition appended
-     * @throws NullPointerException when condition is null
-     */
-    DocumentDeleteWhere or(DocumentCondition condition) throws NullPointerException;
-
-    /**
-     * Starts a new condition in the select using {@link DocumentCondition#and(DocumentCondition)}
+     * Starts a new condition in the select using {@link org.jnosql.diana.api.document.DocumentCondition#and(org.jnosql.diana.api.document.DocumentCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link DocumentDeleteNameCondition} with the condition appended
@@ -52,7 +34,7 @@ public interface DocumentDeleteWhere {
     DocumentDeleteNameCondition and(String name) throws NullPointerException;
 
     /**
-     * Starts a new condition in the select using {@link DocumentCondition#or(DocumentCondition)}
+     * Starts a new condition in the select using {@link org.jnosql.diana.api.document.DocumentCondition#or(org.jnosql.diana.api.document.DocumentCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link DocumentDeleteNameCondition} with the condition appended

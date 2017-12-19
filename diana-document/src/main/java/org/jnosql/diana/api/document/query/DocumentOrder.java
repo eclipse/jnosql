@@ -16,9 +16,6 @@
  */
 package org.jnosql.diana.api.document.query;
 
-import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.document.DocumentQuery;
-
 /**
  * The Document Order whose define the sort in the query.
  */

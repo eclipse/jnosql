@@ -18,8 +18,6 @@
 package org.jnosql.diana.api.document.query;
 
 
-import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentQuery;
 
 /**
@@ -29,7 +27,7 @@ public interface DocumentWhere {
 
 
     /**
-     * Starts a new condition in the select using {@link DocumentCondition#and(DocumentCondition)}
+     * Starts a new condition in the select using {@link org.jnosql.diana.api.document.DocumentCondition#and(org.jnosql.diana.api.document.DocumentCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link DocumentNameCondition} with the condition appended
@@ -38,7 +36,7 @@ public interface DocumentWhere {
     DocumentNameCondition and(String name) throws NullPointerException;
 
     /**
-     * Appends a new condition in the select using {@link DocumentCondition#or(DocumentCondition)}
+     * Appends a new condition in the select using {@link org.jnosql.diana.api.document.DocumentCondition#or(org.jnosql.diana.api.document.DocumentCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link DocumentNameCondition} with the condition appended
