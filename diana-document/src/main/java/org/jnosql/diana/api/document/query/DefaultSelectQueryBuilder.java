@@ -40,11 +40,11 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
 
     private final List<Sort> sorts = new ArrayList<>();
 
-    private final List<String> Documents;
+    private final List<String> documents;
 
 
-    DefaultSelectQueryBuilder(List<String> Documents) {
-        this.Documents = Documents;
+    DefaultSelectQueryBuilder(List<String> documents) {
+        this.documents = documents;
     }
 
 
@@ -171,7 +171,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
 
     @Override
     public DocumentQuery build() {
-        return new DefaultDocumentQuery(limit, start, documentCollection, Documents, sorts, condition);
+        return new DefaultDocumentQuery(limit, start, documentCollection, documents, sorts, condition);
     }
 
 

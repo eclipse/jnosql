@@ -31,11 +31,11 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
     private String documentCollection;
 
 
-    private final List<String> Documents;
+    private final List<String> documents;
 
 
-    DefaultDeleteQueryBuilder(List<String> Documents) {
-        this.Documents = Documents;
+    DefaultDeleteQueryBuilder(List<String> documents) {
+        this.documents = documents;
     }
 
     @Override
@@ -128,6 +128,6 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
 
     @Override
     public DocumentDeleteQuery build() {
-        return new DefaultDocumentDeleteQuery(documentCollection, condition, Documents);
+        return new DefaultDocumentDeleteQuery(documentCollection, condition, documents);
     }
 }
