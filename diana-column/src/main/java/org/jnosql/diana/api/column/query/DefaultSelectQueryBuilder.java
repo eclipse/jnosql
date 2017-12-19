@@ -37,23 +37,23 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
 
 
 
-    protected String columnFamily;
+    private String columnFamily;
 
-    protected ColumnCondition condition;
+    private ColumnCondition condition;
 
-    protected long start;
+    private long start;
 
-    protected long limit;
+    private long limit;
 
-    protected final List<Sort> sorts = new ArrayList<>();
+    private final List<Sort> sorts = new ArrayList<>();
 
-    protected final List<String> columns;
+    private final List<String> columns;
 
-    protected String name;
+    private String name;
 
-    protected boolean negate;
+    private boolean negate;
 
-    protected boolean and;
+    private boolean and;
 
     DefaultSelectQueryBuilder(List<String> columns) {
        this.columns = columns;

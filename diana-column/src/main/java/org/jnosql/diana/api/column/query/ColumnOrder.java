@@ -24,13 +24,13 @@ public interface ColumnOrder {
 
     /**
      * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#ASC}
-     * @return the {@link ColumnWhere} instance
+     * @return the {@link ColumnNameOrder} instance
      */
     ColumnNameOrder asc();
 
     /**
      * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#DESC}
-     * @return the {@link ColumnWhere} instance
+     * @return the {@link ColumnNameOrder} instance
      */
     ColumnNameOrder desc();
 }
