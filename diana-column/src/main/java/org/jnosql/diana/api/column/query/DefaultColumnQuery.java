@@ -90,16 +90,16 @@ class DefaultColumnQuery implements ColumnQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultColumnQuery)) {
+        if (!(o instanceof ColumnQuery)) {
             return false;
         }
-        DefaultColumnQuery that = (DefaultColumnQuery) o;
-        return maxResults == that.maxResults &&
-                firstResult == that.firstResult &&
-                Objects.equals(columnFamily, that.columnFamily) &&
-                Objects.equals(columns, that.columns) &&
-                Objects.equals(sorts, that.sorts) &&
-                Objects.equals(condition, that.condition);
+        ColumnQuery that = (ColumnQuery) o;
+        return maxResults == that.getMaxResults() &&
+                firstResult == that.getFirstResult() &&
+                Objects.equals(columnFamily, that.getColumnFamily()) &&
+                Objects.equals(columns, that.getColumns()) &&
+                Objects.equals(sorts, that.getSorts()) &&
+                Objects.equals(condition, that.getCondition().orElse(null));
     }
 
     @Override
