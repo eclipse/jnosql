@@ -143,7 +143,7 @@ class DefaultDeleteQueryBuilder implements ColumnDelete, ColumnDeleteFrom,
     public <T> ColumnDeleteWhere in(Iterable<T> values) throws NullPointerException {
         requireNonNull(values, "values is required");
         ColumnCondition newCondition = ColumnCondition.in(Column.of(name, values));
-        return this;
+        return appendCondition(newCondition);
     }
 
     private DefaultDeleteQueryBuilder appendCondition(ColumnCondition newCondition) {

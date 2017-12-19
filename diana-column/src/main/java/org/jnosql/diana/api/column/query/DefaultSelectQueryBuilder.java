@@ -172,7 +172,7 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
     public <T> ColumnWhere in(Iterable<T> values) throws NullPointerException {
         requireNonNull(values, "values is required");
         ColumnCondition newCondition = ColumnCondition.in(Column.of(name, values));
-        return this;
+        return appendCondition(newCondition);
     }
 
     @Override
