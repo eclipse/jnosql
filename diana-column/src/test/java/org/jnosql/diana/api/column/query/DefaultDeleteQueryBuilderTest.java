@@ -67,10 +67,6 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
 
-
-
-
-
     @Test
     public void shouldSelectWhereNameEq() {
         String columnFamily = "columnFamily";
