@@ -31,7 +31,7 @@ public interface DocumentNameOrder {
      * @return a query with the sort defined
      * @throws NullPointerException when name is null
      */
-    DocumentFromOrder orderBy(String name) throws NullPointerException;
+    DocumentOrder orderBy(String name) throws NullPointerException;
 
 
     /**

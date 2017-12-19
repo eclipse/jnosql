@@ -33,27 +33,24 @@ import static java.util.Objects.requireNonNull;
  * The default implementation of the Select in the document
  */
 class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, DocumentLimit,
-        DocumentStart, DocumentOrder, DocumentWhereName, DocumentNotCondition {
+        DocumentStart, DocumentOrder, DocumentWhereName, DocumentNotCondition, DocumentNameOrder, DocumentWhere {
 
 
-    private final DefaultDocumentWhere documentWhere = new DefaultDocumentWhere(this);
-    private final DefaultDocumentFromOrder docucmentFromOrder = new DefaultDocumentFromOrder(this);
-
-    protected String documentCollection;
+    private String documentCollection;
 
     protected DocumentCondition condition;
 
-    protected long start;
+    private long start;
 
-    protected long limit;
+    private long limit;
 
-    protected final List<Sort> sorts = new ArrayList<>();
+    private final List<Sort> sorts = new ArrayList<>();
 
     protected final List<String> documents;
 
     protected String name;
 
-    protected boolean negate;
+    private boolean negate;
 
     protected boolean and;
 
@@ -77,6 +74,22 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
     }
 
     @Override
+    public DocumentNameCondition and(String name) throws NullPointerException {
+        requireNonNull(name, "name is required");
+        this.name = name;
+        this.and = true;
+        return this;
+    }
+
+    @Override
+    public DocumentNameCondition or(String name) throws NullPointerException {
+        requireNonNull(name, "name is required");
+        this.name = name;
+        this.and = false;
+        return this;
+    }
+
+    @Override
     public DocumentStart start(long start) {
         this.start = start;
         return this;
@@ -89,10 +102,10 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
     }
 
     @Override
-    public DocumentFromOrder orderBy(String name) throws NullPointerException {
+    public DocumentOrder orderBy(String name) throws NullPointerException {
         requireNonNull(name, "name is required");
         this.name = name;
-        return docucmentFromOrder;
+        return this;
     }
 
 
@@ -156,7 +169,7 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
     public <T> DocumentWhere in(Iterable<T> values) throws NullPointerException {
         requireNonNull(values, "values is required");
         DocumentCondition newCondition = DocumentCondition.in(Document.of(name, values));
-        return documentWhere;
+        return this;
     }
 
     @Override
@@ -165,15 +178,15 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
     }
 
     @Override
-    public DocumentWhere asc() {
+    public DocumentNameOrder asc() {
         this.sorts.add(Sort.of(name, Sort.SortType.ASC));
-        return documentWhere;
+        return this;
     }
 
     @Override
-    public DocumentWhere desc() {
+    public DocumentNameOrder desc() {
         this.sorts.add(Sort.of(name, Sort.SortType.DESC));
-        return documentWhere;
+        return this;
     }
 
     private DocumentWhere appendCondition(DocumentCondition newCondition) {
@@ -191,7 +204,7 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
         }
         this.negate = false;
         this.name = null;
-        return documentWhere;
+        return this;
     }
 
 

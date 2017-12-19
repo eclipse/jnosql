@@ -23,13 +23,13 @@ public interface DocumentOrder {
 
     /**
      * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#ASC}
-     * @return the {@link DocumentWhere} instance
+     * @return the {@link DocumentNameOrder} instance
      */
-    DocumentWhere asc();
+    DocumentNameOrder asc();
 
     /**
      * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#DESC}
-     * @return the {@link DocumentWhere} instance
+     * @return the {@link DocumentNameOrder} instance
      */
-    DocumentWhere desc();
+    DocumentNameOrder desc();
 }
