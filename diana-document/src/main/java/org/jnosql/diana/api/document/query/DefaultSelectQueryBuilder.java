@@ -18,27 +18,21 @@ package org.jnosql.diana.api.document.query;
 
 
 import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentQuery;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 /**
  * The default implementation of the Select in the document
  */
-class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, DocumentLimit,
+class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSelect, DocumentFrom, DocumentLimit,
         DocumentStart, DocumentOrder, DocumentWhereName, DocumentNotCondition, DocumentNameOrder, DocumentWhere {
 
 
     private String documentCollection;
-
-    protected DocumentCondition condition;
 
     private long start;
 
@@ -46,16 +40,11 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
 
     private final List<Sort> sorts = new ArrayList<>();
 
-    protected final List<String> documents;
+    private final List<String> Documents;
 
-    protected String name;
 
-    private boolean negate;
-
-    protected boolean and;
-
-    DefaultSelectQueryBuilder(List<String> documents) {
-        this.documents = documents;
+    DefaultSelectQueryBuilder(List<String> Documents) {
+        this.Documents = Documents;
     }
 
 
@@ -65,6 +54,7 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
         this.documentCollection = documentCollection;
         return this;
     }
+
 
     @Override
     public DocumentWhereName where(String name) throws NullPointerException {
@@ -117,65 +107,54 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
 
     @Override
     public <T> DocumentWhere eq(T value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        DocumentCondition newCondition = DocumentCondition.eq(Document.of(name, value));
-        return appendCondition(newCondition);
-    }
-
-    @Override
-    public DocumentWhere like(String value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        DocumentCondition newCondition = DocumentCondition.like(Document.of(name, value));
-        return appendCondition(newCondition);
-    }
-
-    @Override
-    public DocumentWhere gt(Number value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        DocumentCondition newCondition = DocumentCondition.gt(Document.of(name, value));
-        return appendCondition(newCondition);
-    }
-
-    @Override
-    public DocumentWhere gte(Number value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        DocumentCondition newCondition = DocumentCondition.gte(Document.of(name, value));
-        return appendCondition(newCondition);
-    }
-
-    @Override
-    public DocumentWhere lt(Number value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        DocumentCondition newCondition = DocumentCondition.lt(Document.of(name, value));
-        return appendCondition(newCondition);
-    }
-
-    @Override
-    public DocumentWhere lte(Number value) throws NullPointerException {
-        requireNonNull(value, "value is required");
-        DocumentCondition newCondition = DocumentCondition.lte(Document.of(name, value));
-        return appendCondition(newCondition);
-    }
-
-    @Override
-    public DocumentWhere between(Number valueA, Number valueB) throws NullPointerException {
-        requireNonNull(valueA, "valueA is required");
-        requireNonNull(valueB, "valueB is required");
-        DocumentCondition newCondition = DocumentCondition.between(Document.of(name, asList(valueA, valueB)));
-        return appendCondition(newCondition);
-    }
-
-    @Override
-    public <T> DocumentWhere in(Iterable<T> values) throws NullPointerException {
-        requireNonNull(values, "values is required");
-        DocumentCondition newCondition = DocumentCondition.in(Document.of(name, values));
+        eqImpl(value);
         return this;
     }
 
     @Override
-    public DocumentQuery build() {
-        return new DefaultDocumentQuery(limit, start, documentCollection, documents, sorts, condition);
+    public DocumentWhere like(String value) throws NullPointerException {
+        likeImpl(value);
+        return this;
     }
+
+    @Override
+    public DocumentWhere gt(Number value) throws NullPointerException {
+        gtImpl(value);
+        return this;
+    }
+
+    @Override
+    public DocumentWhere gte(Number value) throws NullPointerException {
+        gteImpl(value);
+        return this;
+    }
+
+    @Override
+    public DocumentWhere lt(Number value) throws NullPointerException {
+        ltImpl(value);
+        return this;
+    }
+
+
+    @Override
+    public DocumentWhere lte(Number value) throws NullPointerException {
+        lteImpl(value);
+        return this;
+    }
+
+    @Override
+    public DocumentWhere between(Number valueA, Number valueB) throws NullPointerException {
+        betweenImpl(valueA, valueB);
+        return this;
+    }
+
+
+    @Override
+    public <T> DocumentWhere in(Iterable<T> values) throws NullPointerException {
+        inImpl(values);
+        return this;
+    }
+
 
     @Override
     public DocumentNameOrder asc() {
@@ -189,22 +168,10 @@ class DefaultSelectQueryBuilder implements DocumentSelect, DocumentFrom, Documen
         return this;
     }
 
-    private DocumentWhere appendCondition(DocumentCondition newCondition) {
-        if (negate) {
-            newCondition = newCondition.negate();
-        }
-        if (nonNull(condition)) {
-            if (and) {
-                this.condition = condition.and(newCondition);
-            } else {
-                this.condition = condition.or(newCondition);
-            }
-        } else {
-            this.condition = newCondition;
-        }
-        this.negate = false;
-        this.name = null;
-        return this;
+
+    @Override
+    public DocumentQuery build() {
+        return new DefaultDocumentQuery(limit, start, documentCollection, Documents, sorts, condition);
     }
 
 
