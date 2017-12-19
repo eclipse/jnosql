@@ -64,13 +64,13 @@ class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultDocumentDeleteQuery)) {
+        if (!(o instanceof DocumentDeleteQuery)) {
             return false;
         }
-        DefaultDocumentDeleteQuery that = (DefaultDocumentDeleteQuery) o;
-        return Objects.equals(documentCollection, that.documentCollection) &&
-                Objects.equals(condition, that.condition) &&
-                Objects.equals(documents, that.documents);
+        DocumentDeleteQuery that = (DocumentDeleteQuery) o;
+        return Objects.equals(documentCollection, that.getDocumentCollection()) &&
+                Objects.equals(condition, that.getCondition().orElse(null)) &&
+                Objects.equals(documents, that.getDocuments());
     }
 
     @Override

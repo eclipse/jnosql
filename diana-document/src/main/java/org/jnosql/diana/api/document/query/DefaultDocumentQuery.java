@@ -43,7 +43,7 @@ class DefaultDocumentQuery implements DocumentQuery {
     private final List<String> documents;
 
     DefaultDocumentQuery(long maxResult, long firstResult, String documentCollection,
-                          List<String> documents, List<Sort> sorts, DocumentCondition condition) {
+                         List<String> documents, List<Sort> sorts, DocumentCondition condition) {
 
         this.maxResult = maxResult;
         this.firstResult = firstResult;
@@ -95,7 +95,7 @@ class DefaultDocumentQuery implements DocumentQuery {
         return maxResult == that.getMaxResults() &&
                 firstResult == that.getFirstResult() &&
                 Objects.equals(documentCollection, that.getDocumentCollection()) &&
-                Objects.equals(condition, that.getCondition()) &&
+                Objects.equals(condition, that.getCondition().orElse(null)) &&
                 Objects.equals(sorts, that.getSorts()) &&
                 Objects.equals(documents, that.getDocuments());
     }
