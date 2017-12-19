@@ -33,10 +33,9 @@ import static java.util.Objects.requireNonNull;
  * The default implementation of the Select in the column
  */
 class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit, ColumnStart,
-        ColumnOrder, ColumnWhereName, ColumnNameCondition, ColumnNotCondition, ColumnNameOrder {
+        ColumnOrder, ColumnWhereName, ColumnNameCondition, ColumnNotCondition, ColumnNameOrder, ColumnWhere {
 
 
-    private final DefaultColumnWhere columnWhere = new DefaultColumnWhere(this);
 
     protected String columnFamily;
 
@@ -73,6 +72,22 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
     public ColumnWhereName where(String name) throws NullPointerException {
         requireNonNull(name, "name is required");
         this.name = name;
+        return this;
+    }
+
+    @Override
+    public ColumnNameCondition and(String name) throws NullPointerException {
+        requireNonNull(name, "name is required");
+        this.name = name;
+        this.and = true;
+        return this;
+    }
+
+    @Override
+    public ColumnNameCondition or(String name) throws NullPointerException {
+        requireNonNull(name, "name is required");
+        this.name = name;
+        this.and = false;
         return this;
     }
 
@@ -157,7 +172,7 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
     public <T> ColumnWhere in(Iterable<T> values) throws NullPointerException {
         requireNonNull(values, "values is required");
         ColumnCondition newCondition = ColumnCondition.in(Column.of(name, values));
-        return columnWhere;
+        return this;
     }
 
     @Override
@@ -193,7 +208,7 @@ class DefaultSelectQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit
         }
         this.negate = false;
         this.name = null;
-        return columnWhere;
+        return this;
     }
 
 }
