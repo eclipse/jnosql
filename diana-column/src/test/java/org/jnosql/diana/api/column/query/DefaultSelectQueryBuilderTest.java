@@ -23,11 +23,12 @@ import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnQuery;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
@@ -35,15 +36,16 @@ import static org.jnosql.diana.api.Sort.SortType.DESC;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultSelectQueryBuilderTest {
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenHasNullElementInSelect() {
-        select("column", "column", null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            select("column", "column", null);
+        });
     }
 
     @Test
@@ -64,11 +66,12 @@ public class DefaultSelectQueryBuilderTest {
         assertEquals(columnFamily, query.getColumnFamily());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenFromIsNull() {
-        select().from(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            select().from(null);
+        });
     }
-
 
 
     @Test
@@ -91,10 +94,12 @@ public class DefaultSelectQueryBuilderTest {
         assertThat(query.getSorts(), contains(Sort.of("name", DESC)));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorSelectWhenOrderIsNull() {
-        String columnFamily = "columnFamily";
-        select().from(columnFamily).orderBy(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            String columnFamily = "columnFamily";
+            select().from(columnFamily).orderBy(null);
+        });
     }
 
     @Test
@@ -228,7 +233,8 @@ public class DefaultSelectQueryBuilderTest {
         assertEquals(columnFamily, query.getColumnFamily());
         assertEquals(Condition.BETWEEN, condition.getCondition());
         assertEquals("name", column.getName());
-        Assert.assertThat(column.get(new TypeReference<List<Number>>() {}), Matchers.contains(10, 20));
+        assertThat(column.get(new TypeReference<List<Number>>() {
+        }), Matchers.contains(10, 20));
     }
 
     @Test
@@ -260,8 +266,8 @@ public class DefaultSelectQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
-      assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
-              ColumnCondition.gt(Column.of("age", 10))));
+        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10))));
     }
 
     @Test

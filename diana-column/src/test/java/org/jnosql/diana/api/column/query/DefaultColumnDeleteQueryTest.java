@@ -17,12 +17,13 @@
 package org.jnosql.diana.api.column.query;
 
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class DefaultColumnDeleteQueryTest {
@@ -30,15 +31,17 @@ public class DefaultColumnDeleteQueryTest {
     private ColumnDeleteQuery query;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         query = ColumnQueryBuilder.delete().from("columnFamily").build();
     }
 
-    @Test(expected =  UnsupportedOperationException.class)
+    @Test
     public void shouldNotEditColumns() {
-        List<String> columns = query.getColumns();
-        assertTrue(columns.isEmpty());
-        columns.clear();
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            List<String> columns = query.getColumns();
+            assertTrue(columns.isEmpty());
+            columns.clear();
+        });
     }
 }

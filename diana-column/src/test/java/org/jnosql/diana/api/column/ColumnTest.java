@@ -19,6 +19,7 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -32,14 +33,18 @@ public class ColumnTest {
 
     private static final Value DEFAULT_VALUE = Value.of(12);
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnNameWhenNameIsNull() {
-        Column column = Column.of(null, DEFAULT_VALUE);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Column column = Column.of(null, DEFAULT_VALUE);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnNameWhenValueIsNull() {
-        Column column = Column.of("Name", null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Column column = Column.of("Name", null);
+        });
     }
 
     @Test
