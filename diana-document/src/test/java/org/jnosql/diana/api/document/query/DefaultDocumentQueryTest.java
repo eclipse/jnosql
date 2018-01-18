@@ -19,7 +19,7 @@ package org.jnosql.diana.api.document.query;
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

@@ -19,7 +19,7 @@ package org.jnosql.diana.api.writer;
 
 import org.jnosql.diana.api.ValueWriter;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.temporal.Temporal;
 import java.util.Optional;

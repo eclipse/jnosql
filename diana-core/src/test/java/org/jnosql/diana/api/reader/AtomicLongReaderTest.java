@@ -19,7 +19,7 @@ package org.jnosql.diana.api.reader;
 
 import org.jnosql.diana.api.ValueReader;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;

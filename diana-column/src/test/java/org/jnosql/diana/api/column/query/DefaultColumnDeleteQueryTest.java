@@ -18,7 +18,7 @@ package org.jnosql.diana.api.column.query;
 
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
