@@ -18,19 +18,19 @@
 package org.jnosql.diana.api.reader;
 
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DateReaderTest {
 
     private DateValueReader dateReader;
 
-    @Before
+    @BeforeEach
     public void init() {
         dateReader = new DateValueReader();
     }

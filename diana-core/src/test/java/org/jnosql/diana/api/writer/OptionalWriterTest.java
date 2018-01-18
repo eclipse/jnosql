@@ -18,12 +18,14 @@
 package org.jnosql.diana.api.writer;
 
 import org.jnosql.diana.api.ValueWriter;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class OptionalWriterTest {
@@ -31,7 +33,7 @@ public class OptionalWriterTest {
     private ValueWriter<Optional, String> valueWriter;
 
     @SuppressWarnings("unchecked")
-    @Before
+    @BeforeEach
     public void setUp() {
         valueWriter = new OptionalValueWriter();
     }

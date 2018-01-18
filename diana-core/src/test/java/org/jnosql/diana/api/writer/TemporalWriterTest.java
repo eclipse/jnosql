@@ -18,20 +18,27 @@
 package org.jnosql.diana.api.writer;
 
 import org.jnosql.diana.api.ValueWriter;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.ZonedDateTime;
 import java.time.temporal.Temporal;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TemporalWriterTest {
 
 
     private ValueWriter<Temporal, String> valueWriter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         valueWriter = new TemporalValueWriter();
     }

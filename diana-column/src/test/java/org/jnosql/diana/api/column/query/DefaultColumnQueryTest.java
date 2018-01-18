@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class DefaultColumnQueryTest {
