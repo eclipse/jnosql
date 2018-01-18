@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.jnosql.diana</groupId>
         <artifactId>diana-api</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5-SNAPSHOT</version>
     </parent>
 
     <artifactId>diana-key-value</artifactId>
