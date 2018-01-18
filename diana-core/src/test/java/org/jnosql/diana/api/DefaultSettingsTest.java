@@ -16,23 +16,27 @@
  */
 package org.jnosql.diana.api;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class DefaultSettingsTest {
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnNPEWhenInstanceIsNull() {
-        Settings.of((Map<String, Object>) null);
+        Assertions.assertThrows(NullPointerException.class, () ->{
+            Settings.of((Map<String, Object>) null);
+        });
+
     }
 
     @Test

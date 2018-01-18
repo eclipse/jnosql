@@ -34,7 +34,7 @@ import static org.jnosql.diana.api.document.DocumentCondition.gt;
 import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.delete;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class DefaultDeleteQueryBuilderTest {

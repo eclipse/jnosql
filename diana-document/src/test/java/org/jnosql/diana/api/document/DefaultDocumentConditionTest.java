@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.OR;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 
 public class DefaultDocumentConditionTest {
