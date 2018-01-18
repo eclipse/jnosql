@@ -84,6 +84,7 @@
 
     <properties>
         <junit.version>5.0.3</junit.version>
+        <junit.platform.surefire>1.0.3</junit.platform.surefire>
         <hamcrest-all.version>1.3</hamcrest-all.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
