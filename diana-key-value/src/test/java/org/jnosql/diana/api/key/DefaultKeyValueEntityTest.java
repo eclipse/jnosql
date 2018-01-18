@@ -18,27 +18,32 @@ package org.jnosql.diana.api.key;
 
 import org.hamcrest.Matchers;
 import org.jnosql.diana.api.TypeReference;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static java.util.Collections.singletonList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 
 public class DefaultKeyValueEntityTest {
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenKeyIsNull() {
+        Assertions.assertThrows(NullPointerException.class,()-> {
         KeyValueEntity.of(null, "value");
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenValueIsNull() {
-        KeyValueEntity.of("key", null);
+        Assertions.assertThrows(NullPointerException.class,()-> {
+            KeyValueEntity.of("key", null);
+        });
     }
 
     @Test
