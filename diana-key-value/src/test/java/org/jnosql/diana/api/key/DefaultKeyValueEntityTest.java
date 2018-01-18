@@ -34,14 +34,14 @@ public class DefaultKeyValueEntityTest {
 
     @Test
     public void shouldReturnErrorWhenKeyIsNull() {
-        Assertions.assertThrows(NullPointerException.class,()-> {
-        KeyValueEntity.of(null, "value");
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            KeyValueEntity.of(null, "value");
         });
     }
 
     @Test
     public void shouldReturnErrorWhenValueIsNull() {
-        Assertions.assertThrows(NullPointerException.class,()-> {
+        Assertions.assertThrows(NullPointerException.class, () -> {
             KeyValueEntity.of("key", null);
         });
     }
@@ -60,6 +60,7 @@ public class DefaultKeyValueEntityTest {
         KeyValueEntity<String> entity = KeyValueEntity.of("key", value);
         assertEquals(value, entity.get());
         assertEquals(Integer.valueOf(10), entity.get(Integer.class));
-        assertThat(singletonList(10), Matchers.contains(entity.get(new TypeReference<List<Integer>>() {}).get(0)));
+        assertThat(singletonList(10), Matchers.contains(entity.get(new TypeReference<List<Integer>>() {
+        }).get(0)));
     }
 }
