@@ -23,25 +23,25 @@ import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.jnosql.diana.api.document.DocumentCondition.eq;
-import static org.jnosql.diana.api.document.DocumentCondition.gt;
 import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultDeleteQueryBuilderTest {
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenHasNullElementInSelect() {
-        delete("document", "document", null);
+        Assertions.assertThrows(NullPointerException.class,() -> {
+            delete("document", "document", null);
+        });
     }
 
     @Test
@@ -63,9 +63,11 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenFromIsNull() {
-        delete().from(null);
+        Assertions.assertThrows(NullPointerException.class,() -> {
+            delete().from(null);
+        });
     }
 
     @Test
@@ -179,7 +181,7 @@ public class DefaultDeleteQueryBuilderTest {
         assertEquals(documentCollection, query.getDocumentCollection());
         assertEquals(Condition.BETWEEN, condition.getCondition());
         assertEquals("name", document.getName());
-        Assert.assertThat(document.get(new TypeReference<List<Number>>() {}), Matchers.contains(10, 20));
+        assertThat(document.get(new TypeReference<List<Number>>() {}), Matchers.contains(10, 20));
     }
 
     @Test

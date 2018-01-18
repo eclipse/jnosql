@@ -18,7 +18,8 @@ package org.jnosql.diana.api.document.query;
 
 
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -31,15 +32,17 @@ public class DefaultDocumentnDeleteQueryTest {
     private DocumentDeleteQuery query;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         query = DocumentQueryBuilder.delete().from("columnFamily").build();
     }
 
-    @Test(expected =  UnsupportedOperationException.class)
+    @Test
     public void shouldNotEditColumns() {
-        List<String> documents = query.getDocuments();
-        assertTrue(documents.isEmpty());
-        documents.clear();
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            List<String> documents = query.getDocuments();
+            assertTrue(documents.isEmpty());
+            documents.clear();
+        });
     }
 }

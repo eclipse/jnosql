@@ -18,13 +18,14 @@ package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.document.DocumentQuery;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.select;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class DefaultDocumentQueryTest {
@@ -33,24 +34,28 @@ public class DefaultDocumentQueryTest {
     private DocumentQuery query;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         query = select().from("columnFamily").build();
     }
 
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldNotRemoveColumns() {
-        List<String> columns = query.getDocuments();
-        assertTrue(columns.isEmpty());
-        columns.clear();
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            List<String> columns = query.getDocuments();
+            assertTrue(columns.isEmpty());
+            columns.clear();
+        });
     }
 
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldNotRemoveSort() {
-        List<Sort> sorts = query.getSorts();
-        assertTrue(sorts.isEmpty());
-        sorts.clear();
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            List<Sort> sorts = query.getSorts();
+            assertTrue(sorts.isEmpty());
+            sorts.clear();
+        });
     }
 }

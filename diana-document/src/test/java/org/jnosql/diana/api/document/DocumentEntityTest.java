@@ -18,6 +18,7 @@
 package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Value;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -26,23 +27,27 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class DocumentEntityTest {
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenNameIsNull() {
-        DocumentEntity.of(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            DocumentEntity.of(null);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenDocumentsIsNull() {
-        DocumentEntity.of("entity", null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            DocumentEntity.of("entity", null);
+        });
     }
 
     @Test
@@ -78,11 +83,13 @@ public class DocumentEntityTest {
         assertEquals(document, name.get());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErroWhenFindDocumentIsNull() {
-        Document document = Document.of("name", "name");
-        DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
-        entity.find(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Document document = Document.of("name", "name");
+            DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
+            entity.find(null);
+        });
     }
 
     @Test
@@ -117,10 +124,12 @@ public class DocumentEntityTest {
         assertTrue(entity.isEmpty());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnAnErrorWhenAddANullDocument() {
-        DocumentEntity entity = new DefaultDocumentEntity("name");
-        entity.add(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            DocumentEntity entity = new DefaultDocumentEntity("name");
+            entity.add(null);
+        });
     }
 
     @Test
@@ -131,10 +140,12 @@ public class DocumentEntityTest {
         assertEquals(1, entity.size());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenAddAnNullIterable() {
-        DocumentEntity entity = new DefaultDocumentEntity("name");
-        entity.addAll(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            DocumentEntity entity = new DefaultDocumentEntity("name");
+            entity.addAll(null);
+        });
     }
 
     @Test
@@ -170,10 +181,12 @@ public class DocumentEntityTest {
         assertFalse(entity.isEmpty());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenRemoveByNameIsNull() {
-        DocumentEntity entity = new DefaultDocumentEntity("name");
-        entity.remove(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            DocumentEntity entity = new DefaultDocumentEntity("name");
+            entity.remove(null);
+        });
     }
 
 
@@ -197,22 +210,28 @@ public class DocumentEntityTest {
         assertEquals(10, name.get().get());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenAddDocumentasObjectWhenHasNullObject() {
-        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
-        entity.add("name", null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+            entity.add("name", null);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenAddDocumentasObjectWhenHasNullDocumentName() {
-        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
-        entity.add(null, 10);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+            entity.add(null, 10);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenAddDocumentasValueWhenHasNullDocumentName() {
-        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
-        entity.add(null, Value.of(12));
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+            entity.add(null, Value.of(12));
+        });
     }
 
 
