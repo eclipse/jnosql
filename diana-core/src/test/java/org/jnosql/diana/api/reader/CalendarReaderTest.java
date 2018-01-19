@@ -18,18 +18,19 @@
 package org.jnosql.diana.api.reader;
 
 import org.jnosql.diana.api.ValueReader;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 
-import static org.junit.Assert.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CalendarReaderTest {
 
     private ValueReader valueReader;
 
-    @Before
+    @BeforeEach
     public void init() {
         valueReader = new CalendarValueReader();
     }

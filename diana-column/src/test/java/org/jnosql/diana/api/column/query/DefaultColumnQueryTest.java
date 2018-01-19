@@ -18,13 +18,14 @@ package org.jnosql.diana.api.column.query;
 
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.column.ColumnQuery;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class DefaultColumnQueryTest {
@@ -32,24 +33,28 @@ public class DefaultColumnQueryTest {
     private ColumnQuery query;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         query = select().from("columnFamily").build();
     }
 
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldNotRemoveColumns() {
-        List<String> columns = query.getColumns();
-        assertTrue(columns.isEmpty());
-        columns.clear();
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            List<String> columns = query.getColumns();
+            assertTrue(columns.isEmpty());
+            columns.clear();
+        });
     }
 
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldNotRemoveSort() {
-        List<Sort> sorts = query.getSorts();
-        assertTrue(sorts.isEmpty());
-        sorts.clear();
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            List<Sort> sorts = query.getSorts();
+            assertTrue(sorts.isEmpty());
+            sorts.clear();
+        });
     }
 }

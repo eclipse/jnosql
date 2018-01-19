@@ -19,7 +19,7 @@ package org.jnosql.diana.api.reader;
 
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.TypeReferenceReader;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -29,9 +29,9 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class StreamTypeReferenceReaderTest {

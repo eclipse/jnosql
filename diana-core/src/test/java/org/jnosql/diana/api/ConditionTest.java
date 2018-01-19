@@ -16,7 +16,8 @@
  */
 package org.jnosql.diana.api;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.EQUALS;
@@ -25,7 +26,7 @@ import static org.jnosql.diana.api.Condition.IN;
 import static org.jnosql.diana.api.Condition.LESSER_THAN;
 import static org.jnosql.diana.api.Condition.NOT;
 import static org.jnosql.diana.api.Condition.OR;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class ConditionTest {

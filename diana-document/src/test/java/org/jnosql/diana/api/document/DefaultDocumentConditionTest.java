@@ -19,34 +19,39 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.OR;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class DefaultDocumentConditionTest {
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenDocumentIsNull() {
-        DefaultDocumentCondition.of(null, AND);
+        assertThrows(NullPointerException.class, () -> {
+            DefaultDocumentCondition.of(null, AND);
+        });
     }
 
     @Test
     public void shouldCreateAnInstance() {
         Document name = Document.of("name", "Otavio");
         DocumentCondition condition = DefaultDocumentCondition.of(name, Condition.EQUALS);
-        Assert.assertNotNull(condition);
+        assertNotNull(condition);
         assertEquals(name, condition.getDocument());
         assertEquals(Condition.EQUALS, condition.getCondition());
     }
@@ -74,7 +79,8 @@ public class DefaultDocumentConditionTest {
         Document andDocument = and.getDocument();
         assertEquals(AND, and.getCondition());
         assertEquals(AND.getNameField(), andDocument.getName());
-        assertThat(andDocument.getValue().get(new TypeReference<List<DocumentCondition>>() {}),
+        assertThat(andDocument.getValue().get(new TypeReference<List<DocumentCondition>>() {
+                }),
                 containsInAnyOrder(condition1, condition2));
 
     }
@@ -90,23 +96,28 @@ public class DefaultDocumentConditionTest {
         Document andDocument = and.getDocument();
         assertEquals(OR, and.getCondition());
         assertEquals(OR.getNameField(), andDocument.getName());
-        assertThat(andDocument.getValue().get(new TypeReference<List<DocumentCondition>>() {}),
+        assertThat(andDocument.getValue().get(new TypeReference<List<DocumentCondition>>() {
+                }),
                 containsInAnyOrder(condition1, condition2));
 
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenCreateAndWithNullValues() {
-        DefaultDocumentCondition.and((DocumentCondition[]) null);
+        assertThrows(NullPointerException.class, () -> {
+            DefaultDocumentCondition.and((DocumentCondition[]) null);
+        });
     }
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenCreateOrWithNullValues() {
-        DefaultDocumentCondition.or((DocumentCondition[])null);
+        assertThrows(NullPointerException.class, () -> {
+            DefaultDocumentCondition.or((DocumentCondition[]) null);
+        });
     }
 
-    //
+
     @Test
     public void shouldAppendAnd() {
         DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
@@ -184,27 +195,35 @@ public class DefaultDocumentConditionTest {
 
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenBetweenIsNull() {
-        DocumentCondition.between(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            DocumentCondition.between(null);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldReturnErrorWhenBetweenIsNotIterable() {
-        Document document = Document.of("age", 12);
-        DocumentCondition.between(document);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Document document = Document.of("age", 12);
+            DocumentCondition.between(document);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldReturnErrorWhenIterableHasOneElement() {
-        Document document = Document.of("age", Collections.singleton(12));
-        DocumentCondition.between(document);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Document document = Document.of("age", Collections.singleton(12));
+            DocumentCondition.between(document);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldReturnErrorWhenIterableHasMoreThanTwoElement2() {
-        Document document = Document.of("age", Arrays.asList(12, 12, 12));
-        DocumentCondition.between(document);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Document document = Document.of("age", Arrays.asList(12, 12, 12));
+            DocumentCondition.between(document);
+        });
     }
 
     @Test
@@ -214,7 +233,7 @@ public class DefaultDocumentConditionTest {
         assertEquals(Condition.BETWEEN, between.getCondition());
         Iterable<Integer> integers = between.getDocument().get(new TypeReference<Iterable<Integer>>() {
         });
-        Assert.assertThat(integers, contains(12, 13));
+        assertThat(integers, contains(12, 13));
     }
 
 }

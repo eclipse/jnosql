@@ -18,12 +18,13 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class DocumentTest {
@@ -31,14 +32,18 @@ public class DocumentTest {
 
     private static final Value DEFAULT_VALUE = Value.of(12);
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnNameWhenNameIsNull() {
-       Document document = Document.of(null, DEFAULT_VALUE);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Document document = Document.of(null, DEFAULT_VALUE);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnNameWhenValueIsNull() {
-        Document document = Document.of("Name", null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Document document = Document.of("Name", null);
+        });
     }
 
     @Test
@@ -74,7 +79,8 @@ public class DocumentTest {
     public void shouldReturnGetType() {
         Value value = Value.of("text");
         Document document = Document.of("name", value);
-        TypeReference<List<String>> typeReference = new TypeReference<List<String>>(){};
+        TypeReference<List<String>> typeReference = new TypeReference<List<String>>() {
+        };
         assertEquals(value.get(typeReference), document.get(typeReference));
     }
 }

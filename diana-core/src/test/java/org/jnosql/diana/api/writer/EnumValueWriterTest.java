@@ -17,23 +17,23 @@
 package org.jnosql.diana.api.writer;
 
 import org.jnosql.diana.api.ValueWriter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.DayOfWeek;
 import java.time.Month;
 import java.util.List;
 
 import static java.time.Month.JANUARY;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EnumValueWriterTest {
     private ValueWriter<Enum<?>, String> valueWriter;
 
     @SuppressWarnings("unchecked")
-    @Before
+    @BeforeEach
     public void setUp() {
         valueWriter = new EnumValueWriter();
     }

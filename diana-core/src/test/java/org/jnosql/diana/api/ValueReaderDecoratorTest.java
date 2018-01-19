@@ -17,9 +17,12 @@
 
 package org.jnosql.diana.api;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ValueReaderDecoratorTest {
@@ -39,9 +42,11 @@ public class ValueReaderDecoratorTest {
         assertEquals(name.getClass(), Bean.class);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldReturnErrorWhenTypeIsNotSupported() {
-        Bean name = serviceLoader.read(Bean.class, "name");
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            Bean name = serviceLoader.read(Bean.class, "name");
+        });
     }
 
     @Test

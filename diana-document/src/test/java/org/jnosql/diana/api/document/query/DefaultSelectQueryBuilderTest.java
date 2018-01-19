@@ -23,28 +23,30 @@ import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentQuery;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
 import static org.jnosql.diana.api.Sort.SortType.DESC;
 import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.select;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class DefaultSelectQueryBuilderTest {
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenHasNullElementInSelect() {
-        select("document", "document'", null);
+        assertThrows(NullPointerException.class, () -> {
+            select("document", "document'", null);
+        });
     }
 
     @Test
@@ -65,9 +67,11 @@ public class DefaultSelectQueryBuilderTest {
         assertEquals(documentCollection, query.getDocumentCollection());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenFromIsNull() {
-        select().from(null);
+        assertThrows(NullPointerException.class, () -> {
+            select().from(null);
+        });
     }
 
 
@@ -92,10 +96,12 @@ public class DefaultSelectQueryBuilderTest {
     }
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorSelectWhenOrderIsNull() {
-        String documentCollection = "documentCollection";
-        select().from(documentCollection).orderBy(null);
+        assertThrows(NullPointerException.class,() -> {
+            String documentCollection = "documentCollection";
+            select().from(documentCollection).orderBy(null);
+        });
     }
 
     @Test
@@ -229,7 +235,8 @@ public class DefaultSelectQueryBuilderTest {
         assertEquals(documentCollection, query.getDocumentCollection());
         assertEquals(Condition.BETWEEN, condition.getCondition());
         assertEquals("name", document.getName());
-        Assert.assertThat(document.get(new TypeReference<List<Number>>() {}), Matchers.contains(10, 20));
+        assertThat(document.get(new TypeReference<List<Number>>() {
+        }), Matchers.contains(10, 20));
     }
 
     @Test

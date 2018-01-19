@@ -18,27 +18,32 @@ package org.jnosql.diana.api.key;
 
 import org.hamcrest.Matchers;
 import org.jnosql.diana.api.TypeReference;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class DefaultKeyValueEntityTest {
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenKeyIsNull() {
-        KeyValueEntity.of(null, "value");
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            KeyValueEntity.of(null, "value");
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenValueIsNull() {
-        KeyValueEntity.of("key", null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            KeyValueEntity.of("key", null);
+        });
     }
 
     @Test
@@ -55,6 +60,7 @@ public class DefaultKeyValueEntityTest {
         KeyValueEntity<String> entity = KeyValueEntity.of("key", value);
         assertEquals(value, entity.get());
         assertEquals(Integer.valueOf(10), entity.get(Integer.class));
-        assertThat(singletonList(10), Matchers.contains(entity.get(new TypeReference<List<Integer>>() {}).get(0)));
+        assertThat(singletonList(10), Matchers.contains(entity.get(new TypeReference<List<Integer>>() {
+        }).get(0)));
     }
 }

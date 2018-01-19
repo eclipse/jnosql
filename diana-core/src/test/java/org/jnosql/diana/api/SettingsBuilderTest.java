@@ -16,39 +16,51 @@
  */
 package org.jnosql.diana.api;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SettingsBuilderTest {
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenKeyIsNUll() {
-        Settings.builder().put(null, "value");
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Settings.builder().put(null, "value");
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenValueIsNUll() {
-        Settings.builder().put("key", null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Settings.builder().put("key", null);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenMapHasNullKey() {
-        Map<String, Object> map = Collections.singletonMap(null, "value");
-        Settings.builder().putAll(map);
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Map<String, Object> map = Collections.singletonMap(null, "value");
+            Settings.builder().putAll(map);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenMapHasNullValue() {
-        Map<String, Object> map = Collections.singletonMap("key", null);
-        Settings.builder().putAll(map);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+
+            Map<String, Object> map = Collections.singletonMap("key", null);
+            Settings.builder().putAll(map);
+        });
     }
-    
+
     @Test
     public void shouldCreateSettingsBuilder() {
         Settings settings = Settings.builder().put("key", "value").build();

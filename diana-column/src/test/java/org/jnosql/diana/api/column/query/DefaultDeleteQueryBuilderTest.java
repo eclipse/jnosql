@@ -23,23 +23,25 @@ import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.delete;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultDeleteQueryBuilderTest {
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenHasNullElementInSelect() {
+        Assertions.assertThrows(NullPointerException.class, () ->{
         delete("column", "column", null);
+        });
     }
 
     @Test
@@ -61,9 +63,11 @@ public class DefaultDeleteQueryBuilderTest {
     }
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenFromIsNull() {
-        delete().from(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            delete().from(null);
+        });
     }
 
 
@@ -178,7 +182,7 @@ public class DefaultDeleteQueryBuilderTest {
         assertEquals(columnFamily, query.getColumnFamily());
         assertEquals(Condition.BETWEEN, condition.getCondition());
         assertEquals("name", column.getName());
-        Assert.assertThat(column.get(new TypeReference<List<Number>>() {
+        assertThat(column.get(new TypeReference<List<Number>>() {
         }), Matchers.contains(10, 20));
     }
 

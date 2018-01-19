@@ -17,7 +17,9 @@
 
 package org.jnosql.diana.api;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -29,18 +31,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SuppressWarnings("unchecked")
 public class DefaultValueTest {
 
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldReturnErrorWhenElementIsNull() {
-        Value.of(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            Value.of(null);
+        });
+
     }
 
     @Test
@@ -62,8 +67,10 @@ public class DefaultValueTest {
     public void shouldConvertToSingletonList() {
         Long number = 10L;
         Value value = Value.of(number);
-        assertThat(value.get(new TypeReference<List<String>>(){}), containsInAnyOrder("10"));
-        assertThat(value.get(new TypeReference<List<Long>>(){}), containsInAnyOrder(10L));
+        assertThat(value.get(new TypeReference<List<String>>() {
+        }), containsInAnyOrder("10"));
+        assertThat(value.get(new TypeReference<List<Long>>() {
+        }), containsInAnyOrder(10L));
     }
 
     @Test
@@ -71,30 +78,38 @@ public class DefaultValueTest {
         Long number = 10L;
         Value value = Value.of(number);
 
-        assertThat(value.get(new TypeReference<Stream<String>>(){}).collect(Collectors.toList()), containsInAnyOrder("10"));
-        assertThat(value.get(new TypeReference<Stream<Long>>(){}).collect(Collectors.toList()), containsInAnyOrder(10L));
+        assertThat(value.get(new TypeReference<Stream<String>>() {
+        }).collect(Collectors.toList()), containsInAnyOrder("10"));
+        assertThat(value.get(new TypeReference<Stream<Long>>() {
+        }).collect(Collectors.toList()), containsInAnyOrder(10L));
     }
 
     @Test
     public void shouldConvertToList() {
         Value value = Value.of(Arrays.asList(10, 20, 30));
-        assertThat(value.get(new TypeReference<List<String>>(){}), containsInAnyOrder("10", "20", "30"));
-        assertThat(value.get(new TypeReference<List<BigInteger>>(){}), containsInAnyOrder(BigInteger.TEN, BigInteger.valueOf(20L), BigInteger.valueOf(30L)));
+        assertThat(value.get(new TypeReference<List<String>>() {
+        }), containsInAnyOrder("10", "20", "30"));
+        assertThat(value.get(new TypeReference<List<BigInteger>>() {
+        }), containsInAnyOrder(BigInteger.TEN, BigInteger.valueOf(20L), BigInteger.valueOf(30L)));
     }
 
     @Test
     public void shouldConvertToSingletonSet() {
         Long number = 10L;
         Value value = Value.of(number);
-        assertThat(value.get(new TypeReference<Set<String>>(){}), containsInAnyOrder("10"));
-        assertThat(value.get(new TypeReference<List<Long>>(){}), containsInAnyOrder(10L));
+        assertThat(value.get(new TypeReference<Set<String>>() {
+        }), containsInAnyOrder("10"));
+        assertThat(value.get(new TypeReference<List<Long>>() {
+        }), containsInAnyOrder(10L));
     }
 
     @Test
     public void shouldConvertToSet() {
         Value value = Value.of(Arrays.asList(10, 20, 30));
-        assertThat(value.get(new TypeReference<Set<String>>(){}), containsInAnyOrder("10", "20", "30"));
-        assertThat(value.get(new TypeReference<List<BigInteger>>(){}), containsInAnyOrder(BigInteger.TEN, BigInteger.valueOf(20L), BigInteger.valueOf(30L)));
+        assertThat(value.get(new TypeReference<Set<String>>() {
+        }), containsInAnyOrder("10", "20", "30"));
+        assertThat(value.get(new TypeReference<List<BigInteger>>() {
+        }), containsInAnyOrder(BigInteger.TEN, BigInteger.valueOf(20L), BigInteger.valueOf(30L)));
     }
 
     @Test
@@ -102,7 +117,8 @@ public class DefaultValueTest {
         Map<String, Integer> map = Collections.singletonMap("ONE", 1);
         Value value = Value.of(map);
 
-        Map<String, Integer> result = value.get(new TypeReference<Map<String, Integer>>(){});
+        Map<String, Integer> result = value.get(new TypeReference<Map<String, Integer>>() {
+        });
         assertThat(result.keySet(), containsInAnyOrder("ONE"));
         assertThat(result.values(), containsInAnyOrder(1));
     }
@@ -111,18 +127,22 @@ public class DefaultValueTest {
     public void shouldConvertKeyValueInsideMap() {
         Map<Integer, String> map = Collections.singletonMap(10, "1");
         Value value = Value.of(map);
-        Map<String, Integer> result = value.get(new TypeReference<Map<String, Integer>>(){});
+        Map<String, Integer> result = value.get(new TypeReference<Map<String, Integer>>() {
+        });
         assertThat(result.keySet(), containsInAnyOrder("10"));
         assertThat(result.values(), containsInAnyOrder(1));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldConvertMapIgnoringKeyValue() {
-        Map<Integer, List<String>> map = Collections.singletonMap(10, Arrays.asList("1", "2", "3"));
-        Value value = Value.of(map);
-        Map<String, List<String>> result = value.get(new TypeReference<Map<String, List<String>>>(){});
-        assertThat(result.keySet(), containsInAnyOrder("10"));
-        assertThat(result.values(), containsInAnyOrder(Arrays.asList("1", "2", "3")));
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
+            Map<Integer, List<String>> map = Collections.singletonMap(10, Arrays.asList("1", "2", "3"));
+            Value value = Value.of(map);
+            Map<String, List<String>> result = value.get(new TypeReference<Map<String, List<String>>>() {
+            });
+            assertThat(result.keySet(), containsInAnyOrder("10"));
+            assertThat(result.values(), containsInAnyOrder(Arrays.asList("1", "2", "3")));
+        });
     }
 
 }
