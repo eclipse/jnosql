@@ -131,8 +131,7 @@ class DefaultColumnCondition implements ColumnCondition {
     }
 
     private Column getConditions(ColumnCondition columnCondition, Condition condition) {
-        List<ColumnCondition> conditions = new ArrayList<>();
-        conditions.addAll(column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = new ArrayList<>(column.get(new TypeReference<List<ColumnCondition>>() {
         }));
         conditions.add(columnCondition);
         return Column.of(condition.getNameField(), conditions);

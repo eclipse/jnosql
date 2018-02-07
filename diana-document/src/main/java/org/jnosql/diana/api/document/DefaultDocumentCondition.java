@@ -131,8 +131,7 @@ class DefaultDocumentCondition implements DocumentCondition {
     }
 
     private Document getConditions(DocumentCondition columnCondition, Condition condition) {
-        List<DocumentCondition> conditions = new ArrayList<>();
-        conditions.addAll(document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = new ArrayList<>(document.get(new TypeReference<List<DocumentCondition>>() {
         }));
         conditions.add(columnCondition);
         return Document.of(condition.getNameField(), conditions);
