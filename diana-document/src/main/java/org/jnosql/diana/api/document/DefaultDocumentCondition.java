@@ -24,6 +24,7 @@ import org.jnosql.diana.api.TypeReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.StreamSupport;
 
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
@@ -58,19 +59,18 @@ final class DefaultDocumentCondition implements DocumentCondition {
 
     private static void checkIterableClause(Object value) {
         if (Iterable.class.isInstance(value)) {
-            int count = 0;
-            for (Object object : Iterable.class.cast(value)) {
-                count++;
-                if (count > 2) {
-                    throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
-                            " with two elements");
-                }
-            }
-            if (count != 2) {
+
+            long count = (int) StreamSupport.stream(Iterable.class.cast(value).spliterator(), false).count();
+
+            if (count > 2) {
                 throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
                         " with two elements");
             }
 
+            if (count != 2) {
+                throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
+                        " with two elements");
+            }
         } else {
             throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
                     " with two elements instead of class: " + value.getClass().getName());
@@ -89,7 +89,6 @@ final class DefaultDocumentCondition implements DocumentCondition {
         Document document = Document.of(OR.getNameField(), asList(conditions));
         return DefaultDocumentCondition.of(document, OR);
     }
-
 
 
     public Document getDocument() {
