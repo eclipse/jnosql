@@ -51,12 +51,12 @@ final class DefaultKeyValueEntity<T> implements KeyValueEntity {
     }
 
     @Override
-    public Object get(TypeSupplier typeSupplier) throws NullPointerException, UnsupportedOperationException {
+    public Object get(TypeSupplier typeSupplier) {
         return value.get(typeSupplier);
     }
 
     @Override
-    public Object get(Class clazz) throws NullPointerException, UnsupportedOperationException {
+    public Object get(Class clazz) {
         return value.get(clazz);
     }
 
