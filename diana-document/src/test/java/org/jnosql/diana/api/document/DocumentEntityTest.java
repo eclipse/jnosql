@@ -38,16 +38,12 @@ public class DocumentEntityTest {
 
     @Test
     public void shouldReturnErrorWhenNameIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            DocumentEntity.of(null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> DocumentEntity.of(null));
     }
 
     @Test
     public void shouldReturnErrorWhenDocumentsIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            DocumentEntity.of("entity", null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> DocumentEntity.of("entity", null));
     }
 
     @Test

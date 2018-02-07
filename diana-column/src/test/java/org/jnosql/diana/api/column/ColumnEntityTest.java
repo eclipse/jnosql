@@ -39,16 +39,12 @@ public class ColumnEntityTest {
 
     @Test
     public void shouldReturnErrorWhenNameIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnEntity.of(null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> ColumnEntity.of(null));
     }
 
     @Test
     public void shouldReturnErrorWhenColumnsIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnEntity.of("entity", null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> ColumnEntity.of("entity", null));
     }
 
     @Test

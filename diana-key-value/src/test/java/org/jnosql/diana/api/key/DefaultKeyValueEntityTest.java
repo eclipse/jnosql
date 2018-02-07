@@ -34,16 +34,12 @@ public class DefaultKeyValueEntityTest {
 
     @Test
     public void shouldReturnErrorWhenKeyIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            KeyValueEntity.of(null, "value");
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> KeyValueEntity.of(null, "value"));
     }
 
     @Test
     public void shouldReturnErrorWhenValueIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            KeyValueEntity.of("key", null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> KeyValueEntity.of("key", null));
     }
 
     @Test

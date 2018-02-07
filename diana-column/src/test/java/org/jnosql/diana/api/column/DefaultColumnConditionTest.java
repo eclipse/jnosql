@@ -41,9 +41,7 @@ public class DefaultColumnConditionTest {
 
     @Test
     public void shouldReturnErrorWhenColumnIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            DefaultColumnCondition.of(null, AND);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> DefaultColumnCondition.of(null, AND));
     }
 
     @Test
@@ -103,17 +101,13 @@ public class DefaultColumnConditionTest {
 
     @Test
     public void shouldReturnErrorWhenCreateAndWithNullValues() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            DefaultColumnCondition.and((ColumnCondition[]) null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> DefaultColumnCondition.and((ColumnCondition[]) null));
     }
 
 
     @Test
     public void shouldReturnErrorWhenCreateOrWithNullValues() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            DefaultColumnCondition.or((ColumnCondition[]) null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> DefaultColumnCondition.or((ColumnCondition[]) null));
     }
 
 
@@ -196,9 +190,7 @@ public class DefaultColumnConditionTest {
 
     @Test
     public void shouldReturnErroWhenBetweenIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnCondition.between(null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> ColumnCondition.between(null));
     }
 
     @Test

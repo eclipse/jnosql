@@ -33,9 +33,7 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldReturnNPEWhenInstanceIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () ->{
-            Settings.of((Map<String, Object>) null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> Settings.of((Map<String, Object>) null));
 
     }
 

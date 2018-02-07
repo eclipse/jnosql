@@ -42,9 +42,7 @@ public class DefaultDocumentConditionTest {
 
     @Test
     public void shouldReturnErrorWhenDocumentIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            DefaultDocumentCondition.of(null, AND);
-        });
+        assertThrows(NullPointerException.class, () -> DefaultDocumentCondition.of(null, AND));
     }
 
     @Test
@@ -104,17 +102,13 @@ public class DefaultDocumentConditionTest {
 
     @Test
     public void shouldReturnErrorWhenCreateAndWithNullValues() {
-        assertThrows(NullPointerException.class, () -> {
-            DefaultDocumentCondition.and((DocumentCondition[]) null);
-        });
+        assertThrows(NullPointerException.class, () -> DefaultDocumentCondition.and((DocumentCondition[]) null));
     }
 
 
     @Test
     public void shouldReturnErrorWhenCreateOrWithNullValues() {
-        assertThrows(NullPointerException.class, () -> {
-            DefaultDocumentCondition.or((DocumentCondition[]) null);
-        });
+        assertThrows(NullPointerException.class, () -> DefaultDocumentCondition.or((DocumentCondition[]) null));
     }
 
 
@@ -197,9 +191,7 @@ public class DefaultDocumentConditionTest {
 
     @Test
     public void shouldReturnErrorWhenBetweenIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            DocumentCondition.between(null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> DocumentCondition.between(null));
     }
 
     @Test

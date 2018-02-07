@@ -31,16 +31,12 @@ public class SettingsBuilderTest {
 
     @Test
     public void shouldReturnErrorWhenKeyIsNUll() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Settings.builder().put(null, "value");
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> Settings.builder().put(null, "value"));
     }
 
     @Test
     public void shouldReturnErrorWhenValueIsNUll() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Settings.builder().put("key", null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> Settings.builder().put("key", null));
     }
 
     @Test

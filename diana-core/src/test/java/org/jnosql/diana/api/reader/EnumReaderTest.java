@@ -56,16 +56,12 @@ public class EnumReaderTest {
 
     @Test
     public void shouldReturnErrorInIndex() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            valueReader.read(ExampleNumber.class, 10);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> valueReader.read(ExampleNumber.class, 10));
     }
 
     @Test
     public void shouldReturnErrorInName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            valueReader.read(ExampleNumber.class, "FOUR");
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> valueReader.read(ExampleNumber.class, "FOUR"));
     }
 
 

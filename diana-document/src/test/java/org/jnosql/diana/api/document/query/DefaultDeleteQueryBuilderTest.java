@@ -39,9 +39,7 @@ public class DefaultDeleteQueryBuilderTest {
 
     @Test
     public void shouldReturnErrorWhenHasNullElementInSelect() {
-        Assertions.assertThrows(NullPointerException.class,() -> {
-            delete("document", "document", null);
-        });
+        Assertions.assertThrows(NullPointerException.class,() -> delete("document", "document", null));
     }
 
     @Test
@@ -65,9 +63,7 @@ public class DefaultDeleteQueryBuilderTest {
 
     @Test
     public void shouldReturnErrorWhenFromIsNull() {
-        Assertions.assertThrows(NullPointerException.class,() -> {
-            delete().from(null);
-        });
+        Assertions.assertThrows(NullPointerException.class,() -> delete().from(null));
     }
 
     @Test

@@ -44,9 +44,7 @@ public class DefaultSelectQueryBuilderTest {
 
     @Test
     public void shouldReturnErrorWhenHasNullElementInSelect() {
-        assertThrows(NullPointerException.class, () -> {
-            select("document", "document'", null);
-        });
+        assertThrows(NullPointerException.class, () -> select("document", "document'", null));
     }
 
     @Test
@@ -69,9 +67,7 @@ public class DefaultSelectQueryBuilderTest {
 
     @Test
     public void shouldReturnErrorWhenFromIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            select().from(null);
-        });
+        assertThrows(NullPointerException.class, () -> select().from(null));
     }
 
 

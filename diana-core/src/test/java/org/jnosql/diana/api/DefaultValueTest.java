@@ -42,9 +42,7 @@ public class DefaultValueTest {
 
     @Test
     public void shouldReturnErrorWhenElementIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Value.of(null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> Value.of(null));
 
     }
 
