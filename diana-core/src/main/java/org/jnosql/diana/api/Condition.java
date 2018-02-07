@@ -46,7 +46,7 @@ public enum Condition {
      * @throws NullPointerException     when condition is null
      * @throws IllegalArgumentException when the condition is not found
      */
-    public static Condition parse(String condition) throws NullPointerException, IllegalArgumentException {
+    public static Condition parse(String condition) {
         Objects.requireNonNull(condition, "condition is required");
         return Arrays.stream(Condition.values())
                 .filter(c -> c.getNameField()

@@ -40,7 +40,7 @@ public interface Value  {
      * @throws UnsupportedOperationException when the type is unsupported
      * @see ValueReader
      */
-    <T> T get(Class<T> clazz) throws NullPointerException, UnsupportedOperationException;
+    <T> T get(Class<T> clazz);
 
     /**
      * Converts {@link Value#get()} to specified class
@@ -52,7 +52,7 @@ public interface Value  {
      * @throws UnsupportedOperationException when the type is unsupported
      * @see ValueReader
      */
-    <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException;
+    <T> T get(TypeSupplier<T> typeSupplier);
 
 
     /**
@@ -62,7 +62,7 @@ public interface Value  {
      * @return a {@link Value} instance within a value informed
      * @throws NullPointerException when the parameter is null
      */
-    static Value of(Object value) throws NullPointerException {
+    static Value of(Object value) {
         return DefaultValue.of(value);
     }
 
