@@ -34,7 +34,7 @@ public interface ColumnFamilyManagerFactory<SYNC extends ColumnFamilyManager> ex
      * @throws UnsupportedOperationException when this operation is not supported
      *                                       throws {@link NullPointerException} when the database is null
      */
-    SYNC get(String database) throws UnsupportedOperationException, NullPointerException;
+    SYNC get(String database);
 
     /**
      * closes a resource

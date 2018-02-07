@@ -53,7 +53,7 @@ public final class Documents {
      * @return the list instance
      * @throws NullPointerException when map is null
      */
-    public static List<Document> of(Map<String, ?> values) throws NullPointerException {
+    public static List<Document> of(Map<String, ?> values) {
         Objects.requireNonNull(values, "values is required");
         Predicate<String> isNotNull = s -> values.get(s) != null;
         Function<String, Document> documentMap = key -> {

@@ -49,7 +49,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
 
 
     @Override
-    public ColumnFrom from(String columnFamily) throws NullPointerException {
+    public ColumnFrom from(String columnFamily) {
         requireNonNull(columnFamily, "columnFamily is required");
         this.columnFamily = columnFamily;
         return this;
@@ -57,14 +57,14 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
 
 
     @Override
-    public ColumnWhereName where(String name) throws NullPointerException {
+    public ColumnWhereName where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
     }
 
     @Override
-    public ColumnNameCondition and(String name) throws NullPointerException {
+    public ColumnNameCondition and(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = true;
@@ -72,7 +72,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     }
 
     @Override
-    public ColumnNameCondition or(String name) throws NullPointerException {
+    public ColumnNameCondition or(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = false;
@@ -92,7 +92,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     }
 
     @Override
-    public ColumnOrder orderBy(String name) throws NullPointerException {
+    public ColumnOrder orderBy(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
@@ -106,51 +106,51 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     }
 
     @Override
-    public <T> ColumnWhere eq(T value) throws NullPointerException {
+    public <T> ColumnWhere eq(T value) {
         eqImpl(value);
         return this;
     }
 
     @Override
-    public ColumnWhere like(String value) throws NullPointerException {
+    public ColumnWhere like(String value) {
         likeImpl(value);
         return this;
     }
 
     @Override
-    public ColumnWhere gt(Number value) throws NullPointerException {
+    public ColumnWhere gt(Number value) {
         gtImpl(value);
         return this;
     }
 
     @Override
-    public ColumnWhere gte(Number value) throws NullPointerException {
+    public ColumnWhere gte(Number value) {
         gteImpl(value);
         return this;
     }
 
     @Override
-    public ColumnWhere lt(Number value) throws NullPointerException {
+    public ColumnWhere lt(Number value) {
         ltImpl(value);
         return this;
     }
 
 
     @Override
-    public ColumnWhere lte(Number value) throws NullPointerException {
+    public ColumnWhere lte(Number value) {
         lteImpl(value);
         return this;
     }
 
     @Override
-    public ColumnWhere between(Number valueA, Number valueB) throws NullPointerException {
+    public ColumnWhere between(Number valueA, Number valueB) {
         betweenImpl(valueA, valueB);
         return this;
     }
 
 
     @Override
-    public <T> ColumnWhere in(Iterable<T> values) throws NullPointerException {
+    public <T> ColumnWhere in(Iterable<T> values) {
         inImpl(values);
         return this;
     }

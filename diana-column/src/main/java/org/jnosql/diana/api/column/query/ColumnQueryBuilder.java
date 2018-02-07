@@ -39,7 +39,7 @@ public final class ColumnQueryBuilder {
      * @return a new {@link ColumnSelect} instance
      * @throws NullPointerException when there is a null element
      */
-    public static ColumnSelect select(String... columns) throws NullPointerException {
+    public static ColumnSelect select(String... columns) {
         return new DefaultSelectQueryBuilder(Stream.of(columns)
                 .peek(c -> requireNonNull(c, "element is cannot be null"))
                 .collect(toList()));
@@ -51,7 +51,7 @@ public final class ColumnQueryBuilder {
      * @return a new {@link ColumnSelect} instance
      * @throws NullPointerException when there is a null element
      */
-    public static ColumnSelect select() throws NullPointerException {
+    public static ColumnSelect select() {
         return new DefaultSelectQueryBuilder(emptyList());
     }
 
@@ -62,7 +62,7 @@ public final class ColumnQueryBuilder {
      * @return a new {@link ColumnSelect} instance
      * @throws NullPointerException when there is a null element
      */
-    public static ColumnDelete delete(String... columns) throws NullPointerException {
+    public static ColumnDelete delete(String... columns) {
         return new DefaultDeleteQueryBuilder(Stream.of(columns)
                 .peek(c -> requireNonNull(c, "element is cannot be null"))
                 .collect(toList()));
@@ -73,7 +73,7 @@ public final class ColumnQueryBuilder {
      * @return a new {@link ColumnSelect} instance
      * @throws NullPointerException when there is a null element
      */
-    public static ColumnDelete delete() throws NullPointerException {
+    public static ColumnDelete delete() {
         return new DefaultDeleteQueryBuilder(emptyList());
     }
 

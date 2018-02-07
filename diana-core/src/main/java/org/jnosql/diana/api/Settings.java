@@ -45,7 +45,7 @@ public interface Settings extends Map<String, Object> {
      * @return the new {@link Settings} instance
      * @throws NullPointerException when either the parameter is null or there key or value null
      */
-    static Settings of(Map<String, Object> settings) throws NullPointerException {
+    static Settings of(Map<String, Object> settings) {
 
         requireNonNull(settings, "settings is required");
         SettingsBuilder builder = new SettingsBuilder();
@@ -61,7 +61,7 @@ public interface Settings extends Map<String, Object> {
      * @throws NullPointerException when either the parameter is null or there key or value null
      */
     @SafeVarargs
-    static Settings of(Map<String, Object>... settings) throws NullPointerException {
+    static Settings of(Map<String, Object>... settings) {
         if (Stream.of(settings).anyMatch(Objects::isNull)) {
             throw new NullPointerException("The settings element cannot be null");
         }

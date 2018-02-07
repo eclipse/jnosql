@@ -46,6 +46,6 @@ public interface ColumnConfiguration<SYNC extends ColumnFamilyManagerFactory> {
      * @see Settings
      * @see Settings {@link java.util.Map}
      */
-    SYNC get(Settings settings) throws NullPointerException;
+    SYNC get(Settings settings);
 
 }

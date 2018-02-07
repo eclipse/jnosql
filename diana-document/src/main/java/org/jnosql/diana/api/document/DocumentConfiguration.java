@@ -47,5 +47,5 @@ public interface DocumentConfiguration<SYNC extends DocumentCollectionManagerFac
      * @see Settings
      * @see Settings {@link java.util.Map}
      */
-    SYNC get(Settings settings) throws NullPointerException;
+    SYNC get(Settings settings);
 }

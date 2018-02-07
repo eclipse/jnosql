@@ -57,7 +57,7 @@ public interface DocumentCondition {
      * @return the conditions joined as AND
      * @throws NullPointerException when the condition is null
      */
-    DocumentCondition and(DocumentCondition condition) throws NullPointerException;
+    DocumentCondition and(DocumentCondition condition);
 
     /**
      * Creates a new {@link DocumentCondition} negating the current one
@@ -74,7 +74,7 @@ public interface DocumentCondition {
      * @return the conditions joined as AND
      * @throws NullPointerException when the condition is null
      */
-    DocumentCondition or(DocumentCondition condition) throws NullPointerException;
+    DocumentCondition or(DocumentCondition condition);
 
     /**
      * Creates a {@link DocumentCondition} that has a {@link Condition#EQUALS}, it means a select will scanning to a
@@ -84,7 +84,7 @@ public interface DocumentCondition {
      * @return a {@link DocumentCondition} with {@link Condition#EQUALS}
      * @throws NullPointerException when column is null
      */
-    static DocumentCondition eq(Document document) throws NullPointerException {
+    static DocumentCondition eq(Document document) {
         return DefaultDocumentCondition.of(document, EQUALS);
     }
 
@@ -97,7 +97,7 @@ public interface DocumentCondition {
      * @return a {@link DocumentCondition} with {@link Condition#GREATER_THAN}
      * @throws NullPointerException when column is null
      */
-    static DocumentCondition gt(Document document) throws NullPointerException {
+    static DocumentCondition gt(Document document) {
         return DefaultDocumentCondition.of(document, GREATER_THAN);
     }
 
@@ -110,7 +110,7 @@ public interface DocumentCondition {
      * @return a {@link DocumentCondition} with {@link Condition#GREATER_EQUALS_THAN}
      * @throws NullPointerException when column is null
      */
-    static DocumentCondition gte(Document document) throws NullPointerException {
+    static DocumentCondition gte(Document document) {
         return DefaultDocumentCondition.of(document, GREATER_EQUALS_THAN);
     }
 
@@ -122,7 +122,7 @@ public interface DocumentCondition {
      * @return a {@link DocumentCondition} with {@link Condition#LESSER_THAN}
      * @throws NullPointerException when column is null
      */
-    static DocumentCondition lt(Document document) throws NullPointerException {
+    static DocumentCondition lt(Document document) {
         return DefaultDocumentCondition.of(document, LESSER_THAN);
     }
 
@@ -135,7 +135,7 @@ public interface DocumentCondition {
      * @return a {@link DocumentCondition} with {@link Condition#LESSER_EQUALS_THAN}
      * @throws NullPointerException when column is null
      */
-    static DocumentCondition lte(Document document) throws NullPointerException {
+    static DocumentCondition lte(Document document) {
         return DefaultDocumentCondition.of(document, LESSER_EQUALS_THAN);
     }
 
@@ -147,7 +147,7 @@ public interface DocumentCondition {
      * @return a {@link DocumentCondition} with {@link Condition#IN}
      * @throws NullPointerException when column is null
      */
-    static DocumentCondition in(Document document) throws NullPointerException {
+    static DocumentCondition in(Document document) {
         return DefaultDocumentCondition.of(document, IN);
     }
 
@@ -159,7 +159,7 @@ public interface DocumentCondition {
      * @return a {@link DocumentCondition} with {@link Condition#LIKE}
      * @throws NullPointerException when column is null
      */
-    static DocumentCondition like(Document document) throws NullPointerException {
+    static DocumentCondition like(Document document) {
         return DefaultDocumentCondition.of(document, LIKE);
     }
 
@@ -176,7 +176,7 @@ public interface DocumentCondition {
      * @throws IllegalArgumentException When the document neither has an Iterable instance or two elements on
      *                                  an Iterable.
      */
-    static DocumentCondition between(Document document) throws NullPointerException, IllegalArgumentException {
+    static DocumentCondition between(Document document) {
         return DefaultDocumentCondition.between(document);
     }
 
@@ -198,7 +198,7 @@ public interface DocumentCondition {
      * @return the new {@link DocumentCondition} instance
      * @throws NullPointerException when the conditions is null
      */
-    static DocumentCondition and(DocumentCondition... conditions) throws NullPointerException {
+    static DocumentCondition and(DocumentCondition... conditions) {
         return DefaultDocumentCondition.and(conditions);
     }
 
@@ -220,7 +220,7 @@ public interface DocumentCondition {
      * @return the new {@link DocumentCondition} instance
      * @throws NullPointerException when the condition is null
      */
-    static DocumentCondition or(DocumentCondition... conditions) throws NullPointerException {
+    static DocumentCondition or(DocumentCondition... conditions) {
         return DefaultDocumentCondition.or(conditions);
     }
 

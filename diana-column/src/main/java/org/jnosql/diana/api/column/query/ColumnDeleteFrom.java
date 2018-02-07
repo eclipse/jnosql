@@ -33,7 +33,7 @@ public interface ColumnDeleteFrom {
      * @return a new {@link ColumnDeleteWhereName}
      * @throws NullPointerException when name is null
      */
-    ColumnDeleteWhereName where(String name) throws NullPointerException;
+    ColumnDeleteWhereName where(String name);
 
     /**
      * Creates a new instance of {@link ColumnDeleteQuery}

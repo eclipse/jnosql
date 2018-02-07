@@ -29,5 +29,5 @@ public interface ColumnDelete {
      * @return a {@link ColumnDeleteFrom query}
      * @throws NullPointerException when columnFamily is null
      */
-    ColumnDeleteFrom from(String columnFamily) throws NullPointerException;
+    ColumnDeleteFrom from(String columnFamily);
 }

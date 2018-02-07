@@ -40,7 +40,7 @@ public final class DocumentQueryBuilder {
      * @return a new {@link DocumentSelect} instance
      * @throws NullPointerException when there is a null element
      */
-    public static DocumentSelect select(String... documents) throws NullPointerException {
+    public static DocumentSelect select(String... documents) {
         return new DefaultSelectQueryBuilder(Stream.of(documents)
                 .peek(c -> requireNonNull(c, "element is cannot be null"))
                 .collect(toList()));
@@ -52,7 +52,7 @@ public final class DocumentQueryBuilder {
      * @return a new {@link DocumentSelect} instance
      * @throws NullPointerException when there is a null element
      */
-    public static DocumentSelect select() throws NullPointerException {
+    public static DocumentSelect select() {
         return new DefaultSelectQueryBuilder(emptyList());
     }
 
@@ -63,7 +63,7 @@ public final class DocumentQueryBuilder {
      * @return a new {@link DocumentDelete} instance
      * @throws NullPointerException when there is a null element
      */
-    public static DocumentDelete delete(String... documents) throws NullPointerException {
+    public static DocumentDelete delete(String... documents) {
         return new DefaultDeleteQueryBuilder(Stream.of(documents)
                 .peek(c -> requireNonNull(c, "element is cannot be null"))
                 .collect(toList()));
@@ -75,7 +75,7 @@ public final class DocumentQueryBuilder {
      * @return a new {@link DocumentDelete} instance
      * @throws NullPointerException when there is a null element
      */
-    public static DocumentDelete delete() throws NullPointerException {
+    public static DocumentDelete delete() {
         return new DefaultDeleteQueryBuilder(emptyList());
     }
 }

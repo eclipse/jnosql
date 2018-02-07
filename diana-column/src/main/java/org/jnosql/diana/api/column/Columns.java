@@ -42,7 +42,7 @@ public final class Columns {
      * @return a column's instance
      * @throws NullPointerException when either name or value are null
      */
-    public static Column of(String name, Object value) throws NullPointerException {
+    public static Column of(String name, Object value) {
         return Column.of(name, Value.of(value));
     }
 
@@ -54,7 +54,7 @@ public final class Columns {
      * @return a list of columns
      * @throws NullPointerException when values is null
      */
-    public static List<Column> of(Map<String, ?> values) throws NullPointerException {
+    public static List<Column> of(Map<String, ?> values) {
         Objects.requireNonNull(values, "values is required");
         Predicate<String> isNotNull = s -> values.get(s) != null;
         Function<String, Column> columnMap = key -> {

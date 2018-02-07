@@ -31,7 +31,7 @@ public interface DocumentDeleteWhere {
      * @return the same {@link DocumentDeleteNameCondition} with the condition appended
      * @throws NullPointerException when condition is null
      */
-    DocumentDeleteNameCondition and(String name) throws NullPointerException;
+    DocumentDeleteNameCondition and(String name);
 
     /**
      * Starts a new condition in the select using {@link org.jnosql.diana.api.document.DocumentCondition#or(org.jnosql.diana.api.document.DocumentCondition)}
@@ -40,7 +40,7 @@ public interface DocumentDeleteWhere {
      * @return the same {@link DocumentDeleteNameCondition} with the condition appended
      * @throws NullPointerException when condition is null
      */
-    DocumentDeleteNameCondition or(String name) throws NullPointerException;
+    DocumentDeleteNameCondition or(String name);
 
     /**
      * Creates a new instance of {@link DocumentDeleteQuery}

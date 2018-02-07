@@ -31,7 +31,7 @@ public interface ColumnNameOrder {
      * @return a query with the sort defined
      * @throws NullPointerException when name is null
      */
-    ColumnOrder orderBy(String name) throws NullPointerException;
+    ColumnOrder orderBy(String name);
 
 
     /**

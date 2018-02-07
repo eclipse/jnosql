@@ -39,7 +39,7 @@ public interface BucketManager extends AutoCloseable {
      * @param <V>   the value type
      * @throws NullPointerException when either key or value are null
      */
-    <K, V> void put(K key, V value) throws NullPointerException;
+    <K, V> void put(K key, V value);
 
     /**
      * Saves the {@link KeyValueEntity}
@@ -48,7 +48,7 @@ public interface BucketManager extends AutoCloseable {
      * @param <K>      the key type
      * @throws NullPointerException when entity is null
      */
-    <K> void put(KeyValueEntity<K> entity) throws NullPointerException;
+    <K> void put(KeyValueEntity<K> entity);
 
     /**
      * Saves the {@link KeyValueEntity} with time to live
@@ -59,7 +59,7 @@ public interface BucketManager extends AutoCloseable {
      * @throws NullPointerException          when entity is null
      * @throws UnsupportedOperationException when expired time is not supported
      */
-    <K> void put(KeyValueEntity<K> entity, Duration ttl) throws NullPointerException, UnsupportedOperationException;
+    <K> void put(KeyValueEntity<K> entity, Duration ttl);
 
     /**
      * Saves the {@link Iterable} of keys
@@ -68,7 +68,7 @@ public interface BucketManager extends AutoCloseable {
      * @param <K>       the key type
      * @throws NullPointerException when the iterable is null
      */
-    <K> void put(Iterable<KeyValueEntity<K>> entities) throws NullPointerException;
+    <K> void put(Iterable<KeyValueEntity<K>> entities);
 
     /**
      * Saves the {@link Iterable} of keys with a defined time to live
@@ -79,7 +79,7 @@ public interface BucketManager extends AutoCloseable {
      * @throws NullPointerException          when the iterable is null
      * @throws UnsupportedOperationException when expired time is not supported
      */
-    <K> void put(Iterable<KeyValueEntity<K>> entities, Duration ttl) throws NullPointerException, UnsupportedOperationException;
+    <K> void put(Iterable<KeyValueEntity<K>> entities, Duration ttl);
 
     /**
      * Finds the Value from a key
@@ -89,7 +89,7 @@ public interface BucketManager extends AutoCloseable {
      * @return the {@link Optional} when is not found will return a {@link Optional#empty()}
      * @throws NullPointerException when the key is null
      */
-    <K> Optional<Value> get(K key) throws NullPointerException;
+    <K> Optional<Value> get(K key);
 
     /**
      * Finds a list of values from keys
@@ -99,7 +99,7 @@ public interface BucketManager extends AutoCloseable {
      * @return the list of result
      * @throws NullPointerException when either the keys or the entities values are null
      */
-    <K> Iterable<Value> get(Iterable<K> keys) throws NullPointerException;
+    <K> Iterable<Value> get(Iterable<K> keys);
 
     /**
      * Removes an entity from key
@@ -108,7 +108,7 @@ public interface BucketManager extends AutoCloseable {
      * @param <K> the key type
      * @throws NullPointerException when the key is null
      */
-    <K> void remove(K key) throws NullPointerException;
+    <K> void remove(K key);
 
     /**
      * Removes entities from keys
@@ -117,7 +117,7 @@ public interface BucketManager extends AutoCloseable {
      * @param <K>  the key type
      * @throws NullPointerException when the key is null
      */
-    <K> void remove(Iterable<K> keys) throws NullPointerException;
+    <K> void remove(Iterable<K> keys);
 
     /**
      * closes a resource

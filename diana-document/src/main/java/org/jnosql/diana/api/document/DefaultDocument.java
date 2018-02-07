@@ -49,12 +49,12 @@ final class DefaultDocument implements Document {
     }
 
     @Override
-    public <T> T get(Class<T> clazz) throws NullPointerException, UnsupportedOperationException {
+    public <T> T get(Class<T> clazz) {
         return value.get(clazz);
     }
 
     @Override
-    public <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException {
+    public <T> T get(TypeSupplier<T> typeSupplier) {
         return value.get(typeSupplier);
     }
 

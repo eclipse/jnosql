@@ -41,7 +41,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @return the entity saved
      * @throws NullPointerException when document is null
      */
-    DocumentEntity insert(DocumentEntity entity) throws NullPointerException;
+    DocumentEntity insert(DocumentEntity entity);
 
 
     /**
@@ -53,7 +53,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @throws NullPointerException          when either entity or ttl are null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
-    DocumentEntity insert(DocumentEntity entity, Duration ttl) throws NullPointerException, UnsupportedOperationException;
+    DocumentEntity insert(DocumentEntity entity, Duration ttl);
 
 
     /**
@@ -65,7 +65,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    default Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities) throws NullPointerException {
+    default Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities) {
         Objects.requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false).map(this::insert).collect(Collectors.toList());
     }
@@ -82,7 +82,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @throws NullPointerException          when entities is null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
-    default Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities, Duration ttl) throws NullPointerException, UnsupportedOperationException {
+    default Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities, Duration ttl) {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         return StreamSupport.stream(entities.spliterator(), false).map(d -> insert(d, ttl)).collect(Collectors.toList());
@@ -96,7 +96,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @return the entity updated
      * @throws NullPointerException when entity is null
      */
-    DocumentEntity update(DocumentEntity entity) throws NullPointerException;
+    DocumentEntity update(DocumentEntity entity);
 
     /**
      * Updates documents collection entity, by default it's just run for each saving using
@@ -107,7 +107,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    default Iterable<DocumentEntity> update(Iterable<DocumentEntity> entities) throws NullPointerException {
+    default Iterable<DocumentEntity> update(Iterable<DocumentEntity> entities) {
         Objects.requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false).map(this::update).collect(Collectors.toList());
     }
@@ -118,7 +118,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @param query select to delete an entity
      * @throws NullPointerException when select is null
      */
-    void delete(DocumentDeleteQuery query) throws NullPointerException;
+    void delete(DocumentDeleteQuery query);
 
 
     /**
@@ -128,7 +128,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @return entities found by select
      * @throws NullPointerException when select is null
      */
-    List<DocumentEntity> select(DocumentQuery query) throws NullPointerException;
+    List<DocumentEntity> select(DocumentQuery query);
 
     /**
      * Returns a single entity from select
@@ -138,7 +138,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException     when select is null
      */
-    default Optional<DocumentEntity> singleResult(DocumentQuery query) throws NonUniqueResultException {
+    default Optional<DocumentEntity> singleResult(DocumentQuery query) {
         List<DocumentEntity> entities = select(query);
         if (entities.isEmpty()) {
             return Optional.empty();

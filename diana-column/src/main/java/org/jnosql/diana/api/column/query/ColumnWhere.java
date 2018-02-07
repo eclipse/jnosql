@@ -33,7 +33,7 @@ public interface ColumnWhere {
      * @return the same {@link ColumnNameCondition} with the condition appended
      * @throws NullPointerException when condition is null
      */
-    ColumnNameCondition and(String name) throws NullPointerException;
+    ColumnNameCondition and(String name);
 
     /**
      * Appends a new condition in the select using
@@ -43,7 +43,7 @@ public interface ColumnWhere {
      * @return the same {@link ColumnNameCondition} with the condition appended
      * @throws NullPointerException when condition is null
      */
-    ColumnNameCondition or(String name) throws NullPointerException;
+    ColumnNameCondition or(String name);
 
     /**
      * Defines the position of the first result to retrieve.
@@ -69,7 +69,7 @@ public interface ColumnWhere {
      * @return a query with the sort defined
      * @throws NullPointerException when name is null
      */
-    ColumnOrder orderBy(String name) throws NullPointerException;
+    ColumnOrder orderBy(String name);
 
     /**
      * Creates a new instance of {@link ColumnQuery}

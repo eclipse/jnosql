@@ -30,7 +30,7 @@ public interface ColumnNameCondition {
      * @return the {@link ColumnWhere}
      * @throws NullPointerException when value is null
      */
-    <T> ColumnWhere eq(T value) throws NullPointerException;
+    <T> ColumnWhere eq(T value);
 
     /**
      * Creates the like condition {@link org.jnosql.diana.api.Condition#LIKE}
@@ -39,7 +39,7 @@ public interface ColumnNameCondition {
      * @return the {@link ColumnWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnWhere like(String value) throws NullPointerException;
+    ColumnWhere like(String value);
 
     /**
      * Creates the greater than condition {@link org.jnosql.diana.api.Condition#GREATER_THAN}
@@ -48,7 +48,7 @@ public interface ColumnNameCondition {
      * @return the {@link ColumnWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnWhere gt(Number value) throws NullPointerException;
+    ColumnWhere gt(Number value);
 
     /**
      * Creates the greater equals than condition {@link org.jnosql.diana.api.Condition#GREATER_EQUALS_THAN}
@@ -57,7 +57,7 @@ public interface ColumnNameCondition {
      * @return the {@link ColumnWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnWhere gte(Number value) throws NullPointerException;
+    ColumnWhere gte(Number value);
 
     /**
      * Creates the lesser than condition {@link org.jnosql.diana.api.Condition#LESSER_THAN}
@@ -66,7 +66,7 @@ public interface ColumnNameCondition {
      * @return the {@link ColumnWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnWhere lt(Number value) throws NullPointerException;
+    ColumnWhere lt(Number value);
 
     /**
      * Creates the lesser equals than condition {@link org.jnosql.diana.api.Condition#LESSER_EQUALS_THAN}
@@ -75,7 +75,7 @@ public interface ColumnNameCondition {
      * @return the {@link ColumnWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnWhere lte(Number value) throws NullPointerException;
+    ColumnWhere lte(Number value);
 
     /**
      * Creates the between condition {@link org.jnosql.diana.api.Condition#EQUALS}
@@ -85,7 +85,7 @@ public interface ColumnNameCondition {
      * @return the {@link ColumnWhere}
      * @throws NullPointerException when either valueA or valueB are null
      */
-    ColumnWhere between(Number valueA, Number valueB) throws NullPointerException;
+    ColumnWhere between(Number valueA, Number valueB);
 
     /**
      * Creates in condition {@link org.jnosql.diana.api.Condition#IN}
@@ -94,6 +94,6 @@ public interface ColumnNameCondition {
      * @return the {@link ColumnWhere}
      * @throws NullPointerException when value is null
      */
-    <T> ColumnWhere in(Iterable<T> values) throws NullPointerException;
+    <T> ColumnWhere in(Iterable<T> values);
 
 }
