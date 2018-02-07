@@ -33,7 +33,7 @@ public interface ColumnDeleteWhere {
      * @return the same {@link ColumnDeleteNameCondition} with the condition appended
      * @throws NullPointerException when condition is null
      */
-    ColumnDeleteNameCondition and(String name) throws NullPointerException;
+    ColumnDeleteNameCondition and(String name);
 
     /**
      * Starts a new condition in the select using {@link org.jnosql.diana.api.column.ColumnCondition#or(org.jnosql.diana.api.column.ColumnCondition)}
@@ -42,7 +42,7 @@ public interface ColumnDeleteWhere {
      * @return the same {@link ColumnDeleteNameCondition} with the condition appended
      * @throws NullPointerException when condition is null
      */
-    ColumnDeleteNameCondition or(String name) throws NullPointerException;
+    ColumnDeleteNameCondition or(String name);
 
     /**
      * Creates a new instance of {@link ColumnDeleteQuery}

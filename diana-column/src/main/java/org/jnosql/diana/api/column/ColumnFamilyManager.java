@@ -41,7 +41,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @return the entity saved
      * @throws NullPointerException when entity is null
      */
-    ColumnEntity insert(ColumnEntity entity) throws NullPointerException;
+    ColumnEntity insert(ColumnEntity entity);
 
     /**
      * Updates a Column family entity
@@ -50,7 +50,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @return the entity saved
      * @throws NullPointerException when entity is null
      */
-    ColumnEntity update(ColumnEntity entity) throws NullPointerException;
+    ColumnEntity update(ColumnEntity entity);
 
     /**
      * Updates a Column family entities, by default it's just run for each saving using
@@ -61,7 +61,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    default Iterable<ColumnEntity> update(Iterable<ColumnEntity> entities) throws NullPointerException {
+    default Iterable<ColumnEntity> update(Iterable<ColumnEntity> entities) {
         Objects.requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false).map(this::update).collect(Collectors.toList());
     }
@@ -75,7 +75,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @throws NullPointerException          when either entity or ttl are null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
-    ColumnEntity insert(ColumnEntity entity, Duration ttl) throws NullPointerException, UnsupportedOperationException;
+    ColumnEntity insert(ColumnEntity entity, Duration ttl);
 
     /**
      * Saves a Column family entities, by default it's just run for each saving using
@@ -86,7 +86,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    default Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities) throws NullPointerException {
+    default Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities) {
         Objects.requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false).map(this::insert).collect(Collectors.toList());
     }
@@ -102,7 +102,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @throws NullPointerException          when either entity or ttl are null
      * @throws UnsupportedOperationException when the database does not support this feature
      */
-    default Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities, Duration ttl) throws NullPointerException, UnsupportedOperationException {
+    default Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities, Duration ttl) {
         Objects.requireNonNull(entities, "entities is required");
         Objects.requireNonNull(ttl, "ttl is required");
         return StreamSupport.stream(entities.spliterator(), false).map(c -> this.insert(c, ttl)).collect(Collectors.toList());
@@ -115,7 +115,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @param query the select to delete an entity
      * @throws NullPointerException when either select or collection are null
      */
-    void delete(ColumnDeleteQuery query) throws NullPointerException;
+    void delete(ColumnDeleteQuery query);
 
     /**
      * Finds {@link ColumnEntity} from select
@@ -124,7 +124,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @return entities found by select
      * @throws NullPointerException when select is null
      */
-    List<ColumnEntity> select(ColumnQuery query) throws NullPointerException;
+    List<ColumnEntity> select(ColumnQuery query);
 
     /**
      * Returns a single entity from select
@@ -134,7 +134,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException     when select is null
      */
-    default Optional<ColumnEntity> singleResult(ColumnQuery query) throws NonUniqueResultException, NullPointerException {
+    default Optional<ColumnEntity> singleResult(ColumnQuery query) {
         List<ColumnEntity> entities = select(query);
         if (entities.isEmpty()) {
             return Optional.empty();

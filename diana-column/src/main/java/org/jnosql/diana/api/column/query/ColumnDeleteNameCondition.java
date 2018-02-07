@@ -30,7 +30,7 @@ public interface ColumnDeleteNameCondition {
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    <T> ColumnDeleteWhere eq(T value) throws NullPointerException;
+    <T> ColumnDeleteWhere eq(T value);
 
     /**
      * Creates the like condition {@link org.jnosql.diana.api.Condition#LIKE}
@@ -39,7 +39,7 @@ public interface ColumnDeleteNameCondition {
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnDeleteWhere like(String value) throws NullPointerException;
+    ColumnDeleteWhere like(String value);
 
     /**
      * Creates the greater than condition {@link org.jnosql.diana.api.Condition#GREATER_THAN}
@@ -48,7 +48,7 @@ public interface ColumnDeleteNameCondition {
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnDeleteWhere gt(Number value) throws NullPointerException;
+    ColumnDeleteWhere gt(Number value);
 
     /**
      * Creates the greater equals than condition {@link org.jnosql.diana.api.Condition#GREATER_EQUALS_THAN}
@@ -57,7 +57,7 @@ public interface ColumnDeleteNameCondition {
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnDeleteWhere gte(Number value) throws NullPointerException;
+    ColumnDeleteWhere gte(Number value);
 
     /**
      * Creates the lesser than condition {@link org.jnosql.diana.api.Condition#LESSER_THAN}
@@ -66,7 +66,7 @@ public interface ColumnDeleteNameCondition {
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnDeleteWhere lt(Number value) throws NullPointerException;
+    ColumnDeleteWhere lt(Number value);
 
     /**
      * Creates the lesser equals than condition {@link org.jnosql.diana.api.Condition#LESSER_EQUALS_THAN}
@@ -75,7 +75,7 @@ public interface ColumnDeleteNameCondition {
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnDeleteWhere lte(Number value) throws NullPointerException;
+    ColumnDeleteWhere lte(Number value);
 
     /**
      * Creates the between condition {@link org.jnosql.diana.api.Condition#EQUALS}
@@ -85,7 +85,7 @@ public interface ColumnDeleteNameCondition {
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when either valueA or valueB are null
      */
-    ColumnDeleteWhere between(Number valueA, Number valueB) throws NullPointerException;
+    ColumnDeleteWhere between(Number valueA, Number valueB);
 
     /**
      * Creates in condition {@link org.jnosql.diana.api.Condition#IN}
@@ -95,6 +95,6 @@ public interface ColumnDeleteNameCondition {
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    <T> ColumnDeleteWhere in(Iterable<T> values) throws NullPointerException;
+    <T> ColumnDeleteWhere in(Iterable<T> values);
 
 }

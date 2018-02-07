@@ -56,7 +56,7 @@ public interface ColumnEntity extends Serializable {
      * @return a ColumnEntity instance
      * @throws NullPointerException when either name or columns are null
      */
-    static ColumnEntity of(String name, List<Column> columns) throws NullPointerException {
+    static ColumnEntity of(String name, List<Column> columns) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(columns, "column is required");
         ColumnEntity columnEntity = new DefaultColumnEntity(name);
@@ -70,7 +70,7 @@ public interface ColumnEntity extends Serializable {
      * @param columns - columns to be added
      * @throws NullPointerException when columns is null
      */
-    void addAll(List<Column> columns) throws NullPointerException;
+    void addAll(List<Column> columns);
 
     /**
      * Appends the specified column to the end of this list
@@ -78,7 +78,7 @@ public interface ColumnEntity extends Serializable {
      * @param column - column to be added
      * @throws NullPointerException when column is null
      */
-    void add(Column column) throws NullPointerException;
+    void add(Column column);
 
     /**
      * add a column within {@link ColumnEntity}
@@ -88,7 +88,7 @@ public interface ColumnEntity extends Serializable {
      * @throws UnsupportedOperationException when this method is not supported
      * @throws NullPointerException          when either name or value are null
      */
-    void add(String name, Object value) throws UnsupportedOperationException, NullPointerException;
+    void add(String name, Object value);
 
     /**
      * add a column within {@link ColumnEntity}
@@ -98,7 +98,7 @@ public interface ColumnEntity extends Serializable {
      * @throws UnsupportedOperationException when this method is not supported
      * @throws NullPointerException          when either name or value are null
      */
-    void add(String name, Value value) throws UnsupportedOperationException, NullPointerException;
+    void add(String name, Value value);
 
     /**
      * Converts the columns to a Map where:
@@ -130,7 +130,7 @@ public interface ColumnEntity extends Serializable {
      * @return if a column was removed or not
      * @throws NullPointerException when column is null
      */
-    boolean remove(String name) throws NullPointerException;
+    boolean remove(String name);
 
     /**
      * Find column a column from columnName
@@ -139,7 +139,7 @@ public interface ColumnEntity extends Serializable {
      * @return an {@link Optional} instance with the result
      * @throws NullPointerException when columnName is null
      */
-    Optional<Column> find(String columnName) throws NullPointerException;
+    Optional<Column> find(String columnName);
 
     /**
      * Returns the number of elements in this list.

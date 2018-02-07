@@ -29,5 +29,5 @@ public interface ColumnSelect {
      * @return a {@link ColumnFrom query}
      * @throws NullPointerException when columnFamily is null
      */
-    ColumnFrom from(String columnFamily) throws NullPointerException;
+    ColumnFrom from(String columnFamily);
 }

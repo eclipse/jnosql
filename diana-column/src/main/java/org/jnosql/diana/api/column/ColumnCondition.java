@@ -57,7 +57,7 @@ public interface ColumnCondition {
      * @return the conditions joined as AND
      * @throws NullPointerException when the condition is null
      */
-    ColumnCondition and(ColumnCondition condition) throws NullPointerException;
+    ColumnCondition and(ColumnCondition condition);
 
     /**
      * Creates a new {@link ColumnCondition} negating the current one
@@ -74,7 +74,7 @@ public interface ColumnCondition {
      * @return the conditions joined as AND
      * @throws NullPointerException when the condition is null
      */
-    ColumnCondition or(ColumnCondition condition) throws NullPointerException;
+    ColumnCondition or(ColumnCondition condition);
 
     /**
      * Creates a {@link ColumnCondition} that has a {@link Condition#EQUALS}, it means a select will scanning to a
@@ -84,7 +84,7 @@ public interface ColumnCondition {
      * @return a {@link ColumnCondition} with {@link Condition#EQUALS}
      * @throws NullPointerException when column is null
      */
-    static ColumnCondition eq(Column column) throws NullPointerException {
+    static ColumnCondition eq(Column column) {
         return DefaultColumnCondition.of(column, EQUALS);
     }
 
@@ -96,7 +96,7 @@ public interface ColumnCondition {
      * @return a {@link ColumnCondition} with {@link Condition#GREATER_THAN}
      * @throws NullPointerException when column is null
      */
-    static ColumnCondition gt(Column column) throws NullPointerException {
+    static ColumnCondition gt(Column column) {
         return DefaultColumnCondition.of(column, GREATER_THAN);
     }
 
@@ -109,7 +109,7 @@ public interface ColumnCondition {
      * @return a {@link ColumnCondition} with {@link Condition#GREATER_EQUALS_THAN}
      * @throws NullPointerException when column is null
      */
-    static ColumnCondition gte(Column column) throws NullPointerException {
+    static ColumnCondition gte(Column column) {
         return DefaultColumnCondition.of(column, GREATER_EQUALS_THAN);
     }
 
@@ -121,7 +121,7 @@ public interface ColumnCondition {
      * @return a {@link ColumnCondition} with {@link Condition#LESSER_THAN}
      * @throws NullPointerException when column is null
      */
-    static ColumnCondition lt(Column column) throws NullPointerException {
+    static ColumnCondition lt(Column column) {
         return DefaultColumnCondition.of(column, LESSER_THAN);
     }
 
@@ -134,7 +134,7 @@ public interface ColumnCondition {
      * @return a {@link ColumnCondition} with {@link Condition#LESSER_EQUALS_THAN}
      * @throws NullPointerException when column is null
      */
-    static ColumnCondition lte(Column column) throws NullPointerException {
+    static ColumnCondition lte(Column column) {
         return DefaultColumnCondition.of(column, LESSER_EQUALS_THAN);
     }
 
@@ -146,7 +146,7 @@ public interface ColumnCondition {
      * @return a {@link ColumnCondition} with {@link Condition#IN}
      * @throws NullPointerException when column is null
      */
-    static ColumnCondition in(Column column) throws NullPointerException {
+    static ColumnCondition in(Column column) {
         return DefaultColumnCondition.of(column, IN);
     }
 
@@ -158,7 +158,7 @@ public interface ColumnCondition {
      * @return a {@link ColumnCondition} with {@link Condition#LIKE}
      * @throws NullPointerException when column is null
      */
-    static ColumnCondition like(Column column) throws NullPointerException {
+    static ColumnCondition like(Column column) {
         return DefaultColumnCondition.of(column, LIKE);
     }
 
@@ -175,7 +175,7 @@ public interface ColumnCondition {
      * @throws IllegalArgumentException When the column neither has an Iterable instance or two elements on
      *                                  an Iterable.
      */
-    static ColumnCondition between(Column column) throws NullPointerException, IllegalArgumentException {
+    static ColumnCondition between(Column column) {
         return DefaultColumnCondition.between(column);
     }
 
@@ -196,7 +196,7 @@ public interface ColumnCondition {
      * @return the new {@link ColumnCondition} instance
      * @throws NullPointerException when the conditions is null
      */
-    static ColumnCondition and(ColumnCondition... conditions) throws NullPointerException {
+    static ColumnCondition and(ColumnCondition... conditions) {
         return DefaultColumnCondition.and(conditions);
     }
 
@@ -216,7 +216,7 @@ public interface ColumnCondition {
      * @return the new {@link ColumnCondition} instance
      * @throws NullPointerException when the condition is null
      */
-    static ColumnCondition or(ColumnCondition... conditions) throws NullPointerException {
+    static ColumnCondition or(ColumnCondition... conditions) {
         return DefaultColumnCondition.or(conditions);
     }
 

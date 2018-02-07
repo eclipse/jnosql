@@ -33,7 +33,7 @@ public interface ColumnFamilyManagerAsyncFactory <ASYNC extends ColumnFamilyMana
      * @throws UnsupportedOperationException when this operation is not supported
      *                                       throws {@link NullPointerException} when the database is null
      */
-    ASYNC getAsync(String database) throws UnsupportedOperationException, NullPointerException;
+    ASYNC getAsync(String database);
 
     /**
      * closes a resource

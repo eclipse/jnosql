@@ -32,7 +32,7 @@ public interface ColumnFrom {
      * @return a new {@link ColumnWhereName}
      * @throws NullPointerException when name is null
      */
-    ColumnWhereName where(String name) throws NullPointerException;
+    ColumnWhereName where(String name);
 
     /**
      * Defines the position of the first result to retrieve.
@@ -58,7 +58,7 @@ public interface ColumnFrom {
      * @return a query with the sort defined
      * @throws NullPointerException when name is null
      */
-    ColumnOrder orderBy(String name) throws NullPointerException;
+    ColumnOrder orderBy(String name);
 
     /**
      * Creates a new instance of {@link ColumnQuery}

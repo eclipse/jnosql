@@ -85,14 +85,14 @@ final class DefaultColumnEntity implements ColumnEntity {
     }
 
     @Override
-    public void add(String columnName, Object value) throws UnsupportedOperationException, NullPointerException {
+    public void add(String columnName, Object value) {
         requireNonNull(columnName, "columnName is required");
         requireNonNull(value, "value is required");
         this.add(Column.of(columnName, value));
     }
 
     @Override
-    public void add(String columnName, Value value) throws UnsupportedOperationException, NullPointerException {
+    public void add(String columnName, Value value) {
         requireNonNull(columnName, "columnName is required");
         requireNonNull(value, "value is required");
         this.add(Column.of(columnName, value));

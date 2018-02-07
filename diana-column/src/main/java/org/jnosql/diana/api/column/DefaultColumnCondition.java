@@ -50,14 +50,14 @@ final class DefaultColumnCondition implements ColumnCondition {
         return new DefaultColumnCondition(requireNonNull(column, "Column is required"), condition);
     }
 
-    static DefaultColumnCondition and(ColumnCondition... conditions) throws NullPointerException {
+    static DefaultColumnCondition and(ColumnCondition... conditions) {
         requireNonNull(conditions, "condition is required");
         Column column = Column.of(AND.getNameField(), asList(conditions));
         return DefaultColumnCondition.of(column, AND);
     }
 
 
-    static DefaultColumnCondition or(ColumnCondition... conditions) throws NullPointerException {
+    static DefaultColumnCondition or(ColumnCondition... conditions) {
         requireNonNull(conditions, "condition is required");
         Column column = Column.of(OR.getNameField(), asList(conditions));
         return DefaultColumnCondition.of(column, OR);
@@ -99,7 +99,7 @@ final class DefaultColumnCondition implements ColumnCondition {
     }
 
     @Override
-    public ColumnCondition and(ColumnCondition condition) throws NullPointerException {
+    public ColumnCondition and(ColumnCondition condition) {
         requireNonNull(condition, "Conditions is required");
         if (AND.equals(this.condition)) {
             Column column = getConditions(condition, AND);
