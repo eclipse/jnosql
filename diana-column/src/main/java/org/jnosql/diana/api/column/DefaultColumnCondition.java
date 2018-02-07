@@ -24,6 +24,7 @@ import org.jnosql.diana.api.TypeReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.StreamSupport;
 
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
@@ -72,16 +73,14 @@ final class DefaultColumnCondition implements ColumnCondition {
 
     private static void checkIterableClause(Object value) {
         if (Iterable.class.isInstance(value)) {
-            int count = 0;
-            for (Object object : Iterable.class.cast(value)) {
-                count++;
-                if (count > 2) {
-                    throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
-                            " with two elements");
-                }
+
+            long count = (int) StreamSupport.stream(Iterable.class.cast(value).spliterator(), false).count();
+            if (count > 2) {
+                throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
+                        " with two elements");
             }
             if (count != 2) {
-                throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
+                throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
                         " with two elements");
             }
 
