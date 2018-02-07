@@ -73,7 +73,7 @@ final class DefaultDocumentCondition implements DocumentCondition {
 
         } else {
             throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
-                    " with two elements istead of class: " + value.getClass().getName());
+                    " with two elements instead of class: " + value.getClass().getName());
         }
     }
 
