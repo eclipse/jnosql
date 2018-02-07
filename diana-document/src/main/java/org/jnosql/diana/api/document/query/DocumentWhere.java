@@ -33,7 +33,7 @@ public interface DocumentWhere {
      * @return the same {@link DocumentNameCondition} with the condition appended
      * @throws NullPointerException when condition is null
      */
-    DocumentNameCondition and(String name) throws NullPointerException;
+    DocumentNameCondition and(String name);
 
     /**
      * Appends a new condition in the select using {@link org.jnosql.diana.api.document.DocumentCondition#or(org.jnosql.diana.api.document.DocumentCondition)}
@@ -42,7 +42,7 @@ public interface DocumentWhere {
      * @return the same {@link DocumentNameCondition} with the condition appended
      * @throws NullPointerException when condition is null
      */
-    DocumentNameCondition or(String name) throws NullPointerException;
+    DocumentNameCondition or(String name);
 
     /**
      * Defines the position of the first result to retrieve.
@@ -68,7 +68,7 @@ public interface DocumentWhere {
      * @return a query with the sort defined
      * @throws NullPointerException when name is null
      */
-    DocumentOrder orderBy(String name)  throws NullPointerException;
+    DocumentOrder orderBy(String name);
 
     /**
      * Creates a new instance of {@link DocumentQuery}

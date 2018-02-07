@@ -39,7 +39,7 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
     }
 
     @Override
-    public DocumentDeleteFrom from(String documentCollection) throws NullPointerException {
+    public DocumentDeleteFrom from(String documentCollection) {
         requireNonNull(documentCollection, "documentCollection is required");
         this.documentCollection = documentCollection;
         return this;
@@ -47,7 +47,7 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
 
 
     @Override
-    public DocumentDeleteWhereName where(String name) throws NullPointerException {
+    public DocumentDeleteWhereName where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
@@ -55,7 +55,7 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
 
 
     @Override
-    public DocumentDeleteNameCondition and(String name) throws NullPointerException {
+    public DocumentDeleteNameCondition and(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = true;
@@ -63,7 +63,7 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
     }
 
     @Override
-    public DocumentDeleteNameCondition or(String name) throws NullPointerException {
+    public DocumentDeleteNameCondition or(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = false;
@@ -78,49 +78,49 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
     }
 
     @Override
-    public <T> DocumentDeleteWhere eq(T value) throws NullPointerException {
+    public <T> DocumentDeleteWhere eq(T value) {
         eqImpl(value);
         return this;
     }
 
     @Override
-    public DocumentDeleteWhere like(String value) throws NullPointerException {
+    public DocumentDeleteWhere like(String value) {
         likeImpl(value);
         return this;
     }
 
     @Override
-    public DocumentDeleteWhere gt(Number value) throws NullPointerException {
+    public DocumentDeleteWhere gt(Number value) {
         gtImpl(value);
         return this;
     }
 
     @Override
-    public DocumentDeleteWhere gte(Number value) throws NullPointerException {
+    public DocumentDeleteWhere gte(Number value) {
         gteImpl(value);
         return this;
     }
 
     @Override
-    public DocumentDeleteWhere lt(Number value) throws NullPointerException {
+    public DocumentDeleteWhere lt(Number value) {
         ltImpl(value);
         return this;
     }
 
     @Override
-    public DocumentDeleteWhere lte(Number value) throws NullPointerException {
+    public DocumentDeleteWhere lte(Number value) {
         lteImpl(value);
         return this;
     }
 
     @Override
-    public DocumentDeleteWhere between(Number valueA, Number valueB) throws NullPointerException {
+    public DocumentDeleteWhere between(Number valueA, Number valueB) {
         betweenImpl(valueA, valueB);
         return this;
     }
 
     @Override
-    public <T> DocumentDeleteWhere in(Iterable<T> values) throws NullPointerException {
+    public <T> DocumentDeleteWhere in(Iterable<T> values) {
         inImpl(values);
         return this;
     }

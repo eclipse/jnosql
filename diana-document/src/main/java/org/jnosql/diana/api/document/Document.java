@@ -37,7 +37,7 @@ public interface Document extends Serializable {
      * @return a Document instance
      * @see Documents
      */
-    static Document of(String name, Value value) throws NullPointerException {
+    static Document of(String name, Value value) {
         return new DefaultDocument(name, value);
     }
 
@@ -48,7 +48,7 @@ public interface Document extends Serializable {
      * @return a Document instance
      * @throws NullPointerException when either name or value is null
      */
-    static Document of(String name, Object value) throws NullPointerException {
+    static Document of(String name, Object value) {
         return new DefaultDocument(name, Value.of(value));
     }
 
@@ -74,7 +74,7 @@ public interface Document extends Serializable {
      * @throws NullPointerException see {@link org.jnosql.diana.api.Value#get(Class)}
      * @throws UnsupportedOperationException see {@link org.jnosql.diana.api.Value#get(Class)}
      */
-    <T> T get(Class<T> clazz) throws NullPointerException, UnsupportedOperationException;
+    <T> T get(Class<T> clazz);
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
@@ -84,7 +84,7 @@ public interface Document extends Serializable {
      * @throws NullPointerException see {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @throws UnsupportedOperationException see {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      */
-    <T> T get(TypeSupplier<T> typeSupplier) throws NullPointerException, UnsupportedOperationException;
+    <T> T get(TypeSupplier<T> typeSupplier);
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get()}

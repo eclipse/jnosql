@@ -32,7 +32,7 @@ public interface DocumentFrom {
      * @return a new {@link DocumentWhereName}
      * @throws NullPointerException when name is null
      */
-    DocumentWhereName where(String name) throws NullPointerException;
+    DocumentWhereName where(String name);
 
     /**
      * Defines the position of the first result to retrieve.
@@ -58,7 +58,7 @@ public interface DocumentFrom {
      * @return a query with the sort defined
      * @throws NullPointerException when name is null
      */
-    DocumentOrder orderBy(String name) throws NullPointerException;
+    DocumentOrder orderBy(String name);
 
     /**
      * Creates a new instance of {@link DocumentQuery}

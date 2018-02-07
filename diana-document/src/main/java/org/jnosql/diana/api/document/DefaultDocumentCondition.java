@@ -77,14 +77,14 @@ final class DefaultDocumentCondition implements DocumentCondition {
         }
     }
 
-    static DefaultDocumentCondition and(DocumentCondition... conditions) throws NullPointerException {
+    static DefaultDocumentCondition and(DocumentCondition... conditions) {
         requireNonNull(conditions, "condition is required");
         Document document = Document.of(AND.getNameField(), asList(conditions));
         return DefaultDocumentCondition.of(document, AND);
     }
 
 
-    static DefaultDocumentCondition or(DocumentCondition... conditions) throws NullPointerException {
+    static DefaultDocumentCondition or(DocumentCondition... conditions) {
         requireNonNull(conditions, "condition is required");
         Document document = Document.of(OR.getNameField(), asList(conditions));
         return DefaultDocumentCondition.of(document, OR);
@@ -100,7 +100,7 @@ final class DefaultDocumentCondition implements DocumentCondition {
     }
 
     @Override
-    public DocumentCondition and(DocumentCondition condition) throws NullPointerException {
+    public DocumentCondition and(DocumentCondition condition) {
         requireNonNull(condition, "Conditions is required");
         if (AND.equals(this.condition)) {
             Document column = getConditions(condition, AND);

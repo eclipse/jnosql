@@ -43,5 +43,5 @@ public interface DocumentConfigurationAsync<ASYNC extends DocumentCollectionMana
      * @see Settings
      * @see Settings {@link java.util.Map}
      */
-    ASYNC getAsync(Settings settings) throws NullPointerException;
+    ASYNC getAsync(Settings settings);
 }

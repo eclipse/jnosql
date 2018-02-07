@@ -29,7 +29,7 @@ public interface DocumentDeleteNameCondition {
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    <T> DocumentDeleteWhere eq(T value) throws NullPointerException;
+    <T> DocumentDeleteWhere eq(T value);
 
     /**
      * Creates the like condition {@link org.jnosql.diana.api.Condition#LIKE}
@@ -38,7 +38,7 @@ public interface DocumentDeleteNameCondition {
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentDeleteWhere like(String value) throws NullPointerException;
+    DocumentDeleteWhere like(String value);
 
     /**
      * Creates the greater than condition {@link org.jnosql.diana.api.Condition#GREATER_THAN}
@@ -47,7 +47,7 @@ public interface DocumentDeleteNameCondition {
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentDeleteWhere gt(Number value) throws NullPointerException;
+    DocumentDeleteWhere gt(Number value);
 
     /**
      * Creates the greater equals than condition {@link org.jnosql.diana.api.Condition#GREATER_EQUALS_THAN}
@@ -56,7 +56,7 @@ public interface DocumentDeleteNameCondition {
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentDeleteWhere gte(Number value) throws NullPointerException;
+    DocumentDeleteWhere gte(Number value);
 
     /**
      * Creates the lesser than condition {@link org.jnosql.diana.api.Condition#LESSER_THAN}
@@ -65,7 +65,7 @@ public interface DocumentDeleteNameCondition {
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentDeleteWhere lt(Number value) throws NullPointerException;
+    DocumentDeleteWhere lt(Number value);
 
     /**
      * Creates the lesser equals than condition {@link org.jnosql.diana.api.Condition#LESSER_EQUALS_THAN}
@@ -74,7 +74,7 @@ public interface DocumentDeleteNameCondition {
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentDeleteWhere lte(Number value) throws NullPointerException;
+    DocumentDeleteWhere lte(Number value);
 
     /**
      * Creates the between condition {@link org.jnosql.diana.api.Condition#EQUALS}
@@ -84,7 +84,7 @@ public interface DocumentDeleteNameCondition {
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when either valueA or valueB are null
      */
-    DocumentDeleteWhere between(Number valueA, Number valueB) throws NullPointerException;
+    DocumentDeleteWhere between(Number valueA, Number valueB);
 
     /**
      * Creates in condition {@link org.jnosql.diana.api.Condition#IN}
@@ -94,6 +94,6 @@ public interface DocumentDeleteNameCondition {
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    <T> DocumentDeleteWhere in(Iterable<T> values) throws NullPointerException;
+    <T> DocumentDeleteWhere in(Iterable<T> values);
 
 }

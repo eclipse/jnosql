@@ -30,7 +30,7 @@ public interface DocumentNameCondition {
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    <T> DocumentWhere eq(T value) throws NullPointerException;
+    <T> DocumentWhere eq(T value);
 
     /**
      * Creates the like condition {@link org.jnosql.diana.api.Condition#LIKE}
@@ -39,7 +39,7 @@ public interface DocumentNameCondition {
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentWhere like(String value) throws NullPointerException;
+    DocumentWhere like(String value);
 
     /**
      * Creates the greater than condition {@link org.jnosql.diana.api.Condition#GREATER_THAN}
@@ -48,7 +48,7 @@ public interface DocumentNameCondition {
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentWhere gt(Number value) throws NullPointerException;
+    DocumentWhere gt(Number value);
 
     /**
      * Creates the greater equals than condition {@link org.jnosql.diana.api.Condition#GREATER_EQUALS_THAN}
@@ -57,7 +57,7 @@ public interface DocumentNameCondition {
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentWhere gte(Number value) throws NullPointerException;
+    DocumentWhere gte(Number value);
 
     /**
      * Creates the lesser than condition {@link org.jnosql.diana.api.Condition#LESSER_THAN}
@@ -66,7 +66,7 @@ public interface DocumentNameCondition {
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentWhere lt(Number value) throws NullPointerException;
+    DocumentWhere lt(Number value);
 
     /**
      * Creates the lesser equals than condition {@link org.jnosql.diana.api.Condition#LESSER_EQUALS_THAN}
@@ -75,7 +75,7 @@ public interface DocumentNameCondition {
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentWhere lte(Number value) throws NullPointerException;
+    DocumentWhere lte(Number value);
 
     /**
      * Creates the between condition {@link org.jnosql.diana.api.Condition#EQUALS}
@@ -85,7 +85,7 @@ public interface DocumentNameCondition {
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when either valueA or valueB are null
      */
-    DocumentWhere between(Number valueA, Number valueB) throws NullPointerException;
+    DocumentWhere between(Number valueA, Number valueB);
 
     /**
      * Creates in condition {@link org.jnosql.diana.api.Condition#IN}
@@ -94,5 +94,5 @@ public interface DocumentNameCondition {
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    <T> DocumentWhere    in(Iterable<T> values) throws NullPointerException;
+    <T> DocumentWhere    in(Iterable<T> values);
 }

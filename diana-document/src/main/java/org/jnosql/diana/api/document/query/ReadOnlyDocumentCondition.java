@@ -43,7 +43,7 @@ class ReadOnlyDocumentCondition implements DocumentCondition {
     }
 
     @Override
-    public DocumentCondition and(DocumentCondition condition) throws NullPointerException {
+    public DocumentCondition and(DocumentCondition condition) {
         throw new IllegalStateException("You cannot change the status after building the query");
     }
 
@@ -53,7 +53,7 @@ class ReadOnlyDocumentCondition implements DocumentCondition {
     }
 
     @Override
-    public DocumentCondition or(DocumentCondition condition) throws NullPointerException {
+    public DocumentCondition or(DocumentCondition condition) {
         throw new IllegalStateException("You cannot change the status after building the query");
     }
 

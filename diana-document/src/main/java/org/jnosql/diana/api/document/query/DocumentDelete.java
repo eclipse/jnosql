@@ -28,6 +28,6 @@ public interface DocumentDelete {
      * @return a {@link DocumentDeleteFrom query}
      * @throws NullPointerException when documentCollection is null
      */
-    DocumentDeleteFrom from(String documentCollection) throws NullPointerException;
+    DocumentDeleteFrom from(String documentCollection);
 
 }

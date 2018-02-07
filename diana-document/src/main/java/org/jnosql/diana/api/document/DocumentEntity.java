@@ -46,7 +46,7 @@ public interface DocumentEntity extends Serializable {
      * @return a {@link DocumentEntity} instance
      * @throws NullPointerException when name is null
      */
-    static DocumentEntity of(String name) throws NullPointerException {
+    static DocumentEntity of(String name) {
         Objects.requireNonNull(name, "name is required");
         return new DefaultDocumentEntity(name);
     }
@@ -59,7 +59,7 @@ public interface DocumentEntity extends Serializable {
      * @return a {@link DocumentEntity} instance
      * @throws NullPointerException when either name or documents are null
      */
-    static DocumentEntity of(String name, List<Document> documents) throws NullPointerException {
+    static DocumentEntity of(String name, List<Document> documents) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(documents, "documents is required");
         DefaultDocumentEntity entity = new DefaultDocumentEntity(name);
@@ -81,7 +81,7 @@ public interface DocumentEntity extends Serializable {
      * @return if a column was removed or not
      * @throws NullPointerException when documentName is null
      */
-    boolean remove(String documentName) throws NullPointerException;
+    boolean remove(String documentName);
 
     /**
      * List of all documents
@@ -97,7 +97,7 @@ public interface DocumentEntity extends Serializable {
      * @throws UnsupportedOperationException when this method is not supported
      * @throws NullPointerException          when document is null
      */
-    void add(Document document) throws UnsupportedOperationException, NullPointerException;
+    void add(Document document);
 
     /**
      * add a document within {@link DocumentEntity}
@@ -107,7 +107,7 @@ public interface DocumentEntity extends Serializable {
      * @throws UnsupportedOperationException when this method is not supported
      * @throws NullPointerException          when either name or value are null
      */
-    void add(String documentName, Object value) throws UnsupportedOperationException, NullPointerException;
+    void add(String documentName, Object value);
 
     /**
      * add a document within {@link DocumentEntity}
@@ -117,7 +117,7 @@ public interface DocumentEntity extends Serializable {
      * @throws UnsupportedOperationException when this method is not supported
      * @throws NullPointerException          when either name or value are null
      */
-    void add(String documentName, Value value) throws UnsupportedOperationException, NullPointerException;
+    void add(String documentName, Value value);
 
     /**
      * add all documents within {@link DocumentEntity}
@@ -126,7 +126,7 @@ public interface DocumentEntity extends Serializable {
      * @throws UnsupportedOperationException when this method is not supported
      * @throws NullPointerException          when document is null
      */
-    void addAll(Iterable<Document> documents) throws UnsupportedOperationException, NullPointerException;
+    void addAll(Iterable<Document> documents);
 
     /**
      * Find document a document from document name
@@ -135,7 +135,7 @@ public interface DocumentEntity extends Serializable {
      * @return an {@link Optional} instance with the result
      * @throws NullPointerException when documentName is null
      */
-    Optional<Document> find(String documentName) throws NullPointerException;
+    Optional<Document> find(String documentName);
 
     /**
      * Returns the number of elements in this list.

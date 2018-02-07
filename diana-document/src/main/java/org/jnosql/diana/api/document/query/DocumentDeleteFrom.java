@@ -32,7 +32,7 @@ public interface DocumentDeleteFrom {
      * @return a new {@link DocumentDeleteWhereName}
      * @throws NullPointerException when name is null
      */
-    DocumentDeleteWhereName where(String name) throws NullPointerException;
+    DocumentDeleteWhereName where(String name);
 
     /**
      * Creates a new instance of {@link DocumentDeleteQuery}

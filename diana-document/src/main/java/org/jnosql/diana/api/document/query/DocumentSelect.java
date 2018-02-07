@@ -28,5 +28,5 @@ public interface DocumentSelect {
      * @return a {@link DocumentFrom query}
      * @throws NullPointerException when documentCollection is null
      */
-    DocumentFrom from(String documentCollection) throws NullPointerException;
+    DocumentFrom from(String documentCollection);
 }
