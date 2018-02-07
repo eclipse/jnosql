@@ -28,7 +28,7 @@ import java.util.Objects;
  * @see Sort#of(String, SortType)
  * @see SortType
  */
-public class Sort {
+public final class Sort {
 
     private final String name;
 

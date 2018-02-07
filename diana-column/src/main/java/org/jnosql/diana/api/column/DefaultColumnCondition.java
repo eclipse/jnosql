@@ -34,7 +34,7 @@ import static org.jnosql.diana.api.Condition.OR;
 /**
  * The default implementation of {@link ColumnCondition}
  */
-class DefaultColumnCondition implements ColumnCondition {
+final class DefaultColumnCondition implements ColumnCondition {
 
     private final Column column;
 

@@ -34,7 +34,7 @@ import static org.jnosql.diana.api.Condition.OR;
 /**
  * The default implementation of {@link DocumentCondition}
  */
-class DefaultDocumentCondition implements DocumentCondition {
+final class DefaultDocumentCondition implements DocumentCondition {
 
     private final Document document;
 
