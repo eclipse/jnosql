@@ -87,7 +87,7 @@ final class DefaultColumnCondition implements ColumnCondition {
 
         } else {
             throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
-                    " with two elements istead of class: " + value.getClass().getName());
+                    " with two elements instead of class: " + value.getClass().getName());
         }
     }
 
