@@ -39,8 +39,6 @@ public final class YearValueReader implements ValueReader {
         if (Year.class.isInstance(value)) {
             return (T) value;
         }
-
-        Year year = Year.parse(value.toString());
-        return (T) year;
+        return (T) Year.parse(value.toString());
     }
 }
