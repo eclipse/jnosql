@@ -18,12 +18,10 @@
 package org.jnosql.diana.api;
 
 
-import java.io.Serializable;
-
 /**
  * This interface represents the value that will be storage in the database.
  */
-public interface Value extends Serializable {
+public interface Value  {
 
     /**
      * Returns the real value without conversion.
