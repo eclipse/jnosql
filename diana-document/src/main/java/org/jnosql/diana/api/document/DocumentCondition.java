@@ -23,7 +23,6 @@ import org.jnosql.diana.api.Condition;
 import static org.jnosql.diana.api.Condition.EQUALS;
 import static org.jnosql.diana.api.Condition.GREATER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.GREATER_THAN;
-import static org.jnosql.diana.api.Condition.IN;
 import static org.jnosql.diana.api.Condition.LESSER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.LESSER_THAN;
 import static org.jnosql.diana.api.Condition.LIKE;
@@ -148,7 +147,7 @@ public interface DocumentCondition {
      * @throws NullPointerException when column is null
      */
     static DocumentCondition in(Document document) {
-        return DefaultDocumentCondition.of(document, IN);
+        return DefaultDocumentCondition.in(document);
     }
 
     /**
