@@ -144,7 +144,8 @@ public interface ColumnCondition {
      *
      * @param column a column instance
      * @return a {@link ColumnCondition} with {@link Condition#IN}
-     * @throws NullPointerException when column is null
+     * @throws NullPointerException     when column is null
+     * @throws IllegalArgumentException when the {@link Column#get()} in not an iterable implementation
      */
     static ColumnCondition in(Column column) {
         return DefaultColumnCondition.in(column);
@@ -219,7 +220,6 @@ public interface ColumnCondition {
     static ColumnCondition or(ColumnCondition... conditions) {
         return DefaultColumnCondition.or(conditions);
     }
-
 
 
 }
