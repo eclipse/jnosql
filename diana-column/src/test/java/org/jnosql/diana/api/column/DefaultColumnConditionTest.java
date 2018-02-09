@@ -18,7 +18,6 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -32,6 +31,7 @@ import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.OR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class DefaultColumnConditionTest {
@@ -41,7 +41,7 @@ public class DefaultColumnConditionTest {
 
     @Test
     public void shouldReturnErrorWhenColumnIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> DefaultColumnCondition.of(null, AND));
+        assertThrows(NullPointerException.class, () -> DefaultColumnCondition.of(null, AND));
     }
 
     @Test
@@ -101,13 +101,13 @@ public class DefaultColumnConditionTest {
 
     @Test
     public void shouldReturnErrorWhenCreateAndWithNullValues() {
-        Assertions.assertThrows(NullPointerException.class, () -> DefaultColumnCondition.and((ColumnCondition[]) null));
+        assertThrows(NullPointerException.class, () -> DefaultColumnCondition.and((ColumnCondition[]) null));
     }
 
 
     @Test
     public void shouldReturnErrorWhenCreateOrWithNullValues() {
-        Assertions.assertThrows(NullPointerException.class, () -> DefaultColumnCondition.or((ColumnCondition[]) null));
+        assertThrows(NullPointerException.class, () -> DefaultColumnCondition.or((ColumnCondition[]) null));
     }
 
 
@@ -190,12 +190,12 @@ public class DefaultColumnConditionTest {
 
     @Test
     public void shouldReturnErroWhenBetweenIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> ColumnCondition.between(null));
+        assertThrows(NullPointerException.class, () -> ColumnCondition.between(null));
     }
 
     @Test
     public void shouldReturnErroWhenBetweenIsNotIterable() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             Column column = Column.of("age", 12);
             ColumnCondition.between(column);
         });
@@ -203,7 +203,7 @@ public class DefaultColumnConditionTest {
 
     @Test
     public void shouldReturnErrorWhenIterableHasOneElement() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             Column column = Column.of("age", Collections.singleton(12));
             ColumnCondition.between(column);
         });
@@ -211,7 +211,7 @@ public class DefaultColumnConditionTest {
 
     @Test
     public void shouldReturnErrorWhenIterableHasMoreThanTwoElement2() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             Column column = Column.of("age", Arrays.asList(12, 12, 12));
             ColumnCondition.between(column);
         });
@@ -227,5 +227,20 @@ public class DefaultColumnConditionTest {
         assertThat(integers, contains(12, 13));
     }
 
+    @Test
+    public void shouldReturnErrorWhenInConditionIsInvalid() {
+        assertThrows(NullPointerException.class, () -> ColumnCondition.in(null));
+        assertThrows(IllegalArgumentException.class, () -> ColumnCondition.in(Column.of("value", 10)));
+    }
+
+    @Test
+    public void shouldReturnInClause() {
+        Column column = Column.of("age", Arrays.asList(12, 13));
+        ColumnCondition in = ColumnCondition.in(column);
+        assertEquals(Condition.IN, in.getCondition());
+        Iterable<Integer> integers = in.getColumn().get(new TypeReference<Iterable<Integer>>() {
+        });
+        assertThat(integers, contains(12, 13));
+    }
 
 }
