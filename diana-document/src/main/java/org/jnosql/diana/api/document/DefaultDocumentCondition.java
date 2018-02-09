@@ -52,9 +52,22 @@ final class DefaultDocumentCondition implements DocumentCondition {
 
     static DocumentCondition between(Document document) {
         Objects.requireNonNull(document, "document is required");
-        Object value = document.get();
-        checkBetweenClause(value);
+        checkBetweenClause(document.get());
         return new DefaultDocumentCondition(document, Condition.BETWEEN);
+    }
+
+    static DocumentCondition in(Document document) {
+        Objects.requireNonNull(document, "document is required");
+        Object value = document.get();
+        checkInClause(value);
+        return new DefaultDocumentCondition(document, Condition.IN);
+    }
+
+    private static void checkInClause(Object value) {
+        if (!Iterable.class.isInstance(value)) {
+            throw new IllegalArgumentException("On DocumentCondition#in you must use an iterable" +
+                    " instead of class: " + value.getClass().getName());
+        }
     }
 
     private static void checkBetweenClause(Object value) {
