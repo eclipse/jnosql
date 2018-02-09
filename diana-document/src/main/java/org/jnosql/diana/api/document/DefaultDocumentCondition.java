@@ -53,11 +53,11 @@ final class DefaultDocumentCondition implements DocumentCondition {
     static DocumentCondition between(Document document) {
         Objects.requireNonNull(document, "document is required");
         Object value = document.get();
-        checkIterableClause(value);
+        checkBetweenClause(value);
         return new DefaultDocumentCondition(document, Condition.BETWEEN);
     }
 
-    private static void checkIterableClause(Object value) {
+    private static void checkBetweenClause(Object value) {
         if (Iterable.class.isInstance(value)) {
 
             long count = (int) StreamSupport.stream(Iterable.class.cast(value).spliterator(), false).count();
