@@ -19,7 +19,6 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -190,12 +189,12 @@ public class DefaultDocumentConditionTest {
 
     @Test
     public void shouldReturnErrorWhenBetweenIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> DocumentCondition.between(null));
+        assertThrows(NullPointerException.class, () -> DocumentCondition.between(null));
     }
 
     @Test
     public void shouldReturnErrorWhenBetweenIsNotIterable() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             Document document = Document.of("age", 12);
             DocumentCondition.between(document);
         });
@@ -203,7 +202,7 @@ public class DefaultDocumentConditionTest {
 
     @Test
     public void shouldReturnErrorWhenIterableHasOneElement() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             Document document = Document.of("age", Collections.singleton(12));
             DocumentCondition.between(document);
         });
@@ -211,7 +210,7 @@ public class DefaultDocumentConditionTest {
 
     @Test
     public void shouldReturnErrorWhenIterableHasMoreThanTwoElement2() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             Document document = Document.of("age", Arrays.asList(12, 12, 12));
             DocumentCondition.between(document);
         });
@@ -227,4 +226,19 @@ public class DefaultDocumentConditionTest {
         assertThat(integers, contains(12, 13));
     }
 
+    @Test
+    public void shouldReturnErrorWhenInConditionIsInvalid() {
+        assertThrows(NullPointerException.class, () -> DocumentCondition.in(null));
+        assertThrows(IllegalArgumentException.class, () -> DocumentCondition.in(Document.of("value", 10)));
+    }
+
+    @Test
+    public void shouldReturnInClause() {
+        Document column = Document.of("age", Arrays.asList(12, 13));
+        DocumentCondition in = DocumentCondition.in(column);
+        assertEquals(Condition.IN, in.getCondition());
+        Iterable<Integer> integers = in.getDocument().get(new TypeReference<Iterable<Integer>>() {
+        });
+        assertThat(integers, contains(12, 13));
+    }
 }
