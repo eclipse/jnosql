@@ -29,6 +29,8 @@ import java.util.stream.StreamSupport;
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
 import static org.jnosql.diana.api.Condition.AND;
+import static org.jnosql.diana.api.Condition.BETWEEN;
+import static org.jnosql.diana.api.Condition.IN;
 import static org.jnosql.diana.api.Condition.NOT;
 import static org.jnosql.diana.api.Condition.OR;
 
@@ -67,13 +69,13 @@ final class DefaultColumnCondition implements ColumnCondition {
     static DefaultColumnCondition between(Column column) {
         Objects.requireNonNull(column, "column is required");
         checkBetweenClause(column.get());
-        return new DefaultColumnCondition(column, Condition.BETWEEN);
+        return new DefaultColumnCondition(column, BETWEEN);
     }
 
     static DefaultColumnCondition in(Column column) {
         Objects.requireNonNull(column, "column is required");
         checkInClause(column.get());
-        return new DefaultColumnCondition(column, Condition.BETWEEN);
+        return new DefaultColumnCondition(column, IN);
     }
 
     private static void checkInClause(Object value) {
