@@ -67,11 +67,11 @@ final class DefaultColumnCondition implements ColumnCondition {
     static DefaultColumnCondition between(Column column) {
         Objects.requireNonNull(column, "column is required");
         Object value = column.get();
-        checkIterableClause(value);
+        checkbetweenClause(value);
         return new DefaultColumnCondition(column, Condition.BETWEEN);
     }
 
-    private static void checkIterableClause(Object value) {
+    private static void checkbetweenClause(Object value) {
         if (Iterable.class.isInstance(value)) {
 
             long count = (int) StreamSupport.stream(Iterable.class.cast(value).spliterator(), false).count();
