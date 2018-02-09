@@ -147,7 +147,7 @@ public interface ColumnCondition {
      * @throws NullPointerException when column is null
      */
     static ColumnCondition in(Column column) {
-        return DefaultColumnCondition.of(column, IN);
+        return DefaultColumnCondition.in(column);
     }
 
     /**
