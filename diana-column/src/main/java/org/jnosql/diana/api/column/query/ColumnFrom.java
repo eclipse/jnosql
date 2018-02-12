@@ -29,10 +29,10 @@ public interface ColumnFrom {
      * Starts a new condition defining the  column name
      *
      * @param name the column name
-     * @return a new {@link ColumnWhereName}
+     * @return a new {@link ColumnNameCondition}
      * @throws NullPointerException when name is null
      */
-    ColumnWhereName where(String name);
+    ColumnNameCondition where(String name);
 
     /**
      * Defines the position of the first result to retrieve.

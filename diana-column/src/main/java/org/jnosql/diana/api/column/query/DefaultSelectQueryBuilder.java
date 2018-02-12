@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
  * The default implementation of the Select in the column
  */
 class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit, ColumnStart,
-        ColumnOrder, ColumnWhereName, ColumnNameCondition, ColumnNotCondition, ColumnNameOrder, ColumnWhere {
+        ColumnOrder, ColumnNameCondition, ColumnNotCondition, ColumnNameOrder, ColumnWhere {
 
 
     private String columnFamily;
@@ -57,7 +57,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
 
 
     @Override
-    public ColumnWhereName where(String name) {
+    public ColumnNameCondition where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;

@@ -96,4 +96,11 @@ public interface ColumnNameCondition {
      */
     <T> ColumnWhere in(Iterable<T> values);
 
+    /**
+     * Creates the equals condition {@link org.jnosql.diana.api.Condition#NOT}
+     *
+     * @return {@link ColumnNotCondition}
+     */
+    ColumnNotCondition not();
+
 }
