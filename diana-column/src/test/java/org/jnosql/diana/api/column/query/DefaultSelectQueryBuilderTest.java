@@ -33,6 +33,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
 import static org.jnosql.diana.api.Sort.SortType.DESC;
+import static org.jnosql.diana.api.column.ColumnCondition.eq;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -262,7 +263,7 @@ public class DefaultSelectQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+        assertThat(conditions, containsInAnyOrder(eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10))));
     }
 
@@ -277,8 +278,27 @@ public class DefaultSelectQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
         assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
+        assertThat(conditions, containsInAnyOrder(eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10))));
+    }
+
+    @Test
+    public void shouldSelectNegate() {
+        String columnFamily = "columnFamily";
+        ColumnQuery query = select().from(columnFamily).where("city").not().eq("Assis")
+                .and("name").not().eq("Lucas").build();
+
+        ColumnCondition condition = query.getCondition().orElseThrow(RuntimeException::new);
+        assertEquals(columnFamily, query.getColumnFamily());
+        Column column = condition.getColumn();
+        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        });
+
+        assertEquals(Condition.AND, condition.getCondition());
+        assertThat(conditions, containsInAnyOrder(eq(Column.of("city", "Assis")).negate(),
+                eq(Column.of("name", "Lucas")).negate()));
+
+
     }
 
 
