@@ -29,10 +29,10 @@ public interface DocumentFrom {
      * Starts a new condition defining the  column name
      *
      * @param name the column name
-     * @return a new {@link DocumentWhereName}
+     * @return a new {@link DocumentNameCondition}
      * @throws NullPointerException when name is null
      */
-    DocumentWhereName where(String name);
+    DocumentNameCondition where(String name);
 
     /**
      * Defines the position of the first result to retrieve.

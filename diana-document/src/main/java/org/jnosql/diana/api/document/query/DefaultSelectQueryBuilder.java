@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
  * The default implementation of the Select in the document
  */
 class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSelect, DocumentFrom, DocumentLimit,
-        DocumentStart, DocumentOrder, DocumentWhereName, DocumentNotCondition, DocumentNameOrder, DocumentWhere {
+        DocumentStart, DocumentOrder, DocumentNotCondition, DocumentNameOrder, DocumentWhere {
 
 
     private String documentCollection;
@@ -57,7 +57,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
 
 
     @Override
-    public DocumentWhereName where(String name) {
+    public DocumentNameCondition where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
