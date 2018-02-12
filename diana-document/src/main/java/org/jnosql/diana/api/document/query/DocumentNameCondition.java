@@ -95,4 +95,11 @@ public interface DocumentNameCondition {
      * @throws NullPointerException when value is null
      */
     <T> DocumentWhere    in(Iterable<T> values);
+
+    /**
+     * Creates the equals condition {@link org.jnosql.diana.api.Condition#NOT}
+     *
+     * @return {@link DocumentNotCondition}
+     */
+    DocumentNotCondition not();
 }
