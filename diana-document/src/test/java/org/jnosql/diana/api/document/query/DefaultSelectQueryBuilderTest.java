@@ -32,6 +32,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
 import static org.jnosql.diana.api.Sort.SortType.DESC;
+import static org.jnosql.diana.api.document.DocumentCondition.eq;
 import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -265,7 +266,7 @@ public class DefaultSelectQueryBuilderTest {
         List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(DocumentCondition.eq(Document.of("name", name)),
+        assertThat(conditions, Matchers.containsInAnyOrder(eq(Document.of("name", name)),
                 DocumentCondition.gt(Document.of("age", 10))));
     }
 
@@ -280,8 +281,28 @@ public class DefaultSelectQueryBuilderTest {
         List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
         });
         assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(DocumentCondition.eq(Document.of("name", name)),
+        assertThat(conditions, Matchers.containsInAnyOrder(eq(Document.of("name", name)),
                 DocumentCondition.gt(Document.of("age", 10))));
+    }
+
+
+    @Test
+    public void shouldSelectNegate() {
+        String columnFamily = "columnFamily";
+        DocumentQuery query = select().from(columnFamily).where("city").not().eq("Assis")
+                .and("name").not().eq("Lucas").build();
+
+        DocumentCondition condition = query.getCondition().orElseThrow(RuntimeException::new);
+        assertEquals(columnFamily, query.getDocumentCollection());
+        Document column = condition.getDocument();
+        List<DocumentCondition> conditions = column.get(new TypeReference<List<DocumentCondition>>() {
+        });
+
+        assertEquals(Condition.AND, condition.getCondition());
+        assertThat(conditions, containsInAnyOrder(eq(Document.of("city", "Assis")).negate(),
+                eq(Document.of("name", "Lucas")).negate()));
+
+
     }
 
 }
