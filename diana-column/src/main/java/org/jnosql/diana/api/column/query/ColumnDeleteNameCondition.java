@@ -97,4 +97,12 @@ public interface ColumnDeleteNameCondition {
      */
     <T> ColumnDeleteWhere in(Iterable<T> values);
 
+    /**
+     * Creates the equals condition {@link org.jnosql.diana.api.Condition#NOT}
+     *
+     * @return {@link ColumnDeleteNotCondition}
+     */
+    ColumnDeleteNotCondition not();
+
+
 }

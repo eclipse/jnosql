@@ -96,4 +96,11 @@ public interface DocumentDeleteNameCondition {
      */
     <T> DocumentDeleteWhere in(Iterable<T> values);
 
+    /**
+     * Creates the equals condition {@link org.jnosql.diana.api.Condition#NOT}
+     *
+     * @return {@link DocumentDeleteNotCondition}
+     */
+    DocumentDeleteNotCondition not();
+
 }
