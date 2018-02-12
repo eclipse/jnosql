@@ -29,10 +29,10 @@ public interface DocumentDeleteFrom {
      * Starts a new condition defining the  column name
      *
      * @param name the column name
-     * @return a new {@link DocumentDeleteWhereName}
+     * @return a new {@link DocumentDeleteNameCondition}
      * @throws NullPointerException when name is null
      */
-    DocumentDeleteWhereName where(String name);
+    DocumentDeleteNameCondition where(String name);
 
     /**
      * Creates a new instance of {@link DocumentDeleteQuery}

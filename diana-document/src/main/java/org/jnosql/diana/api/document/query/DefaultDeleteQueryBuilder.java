@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
  * The default implementation to Delete query
  */
 class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDelete, DocumentDeleteFrom,
-        DocumentDeleteWhere, DocumentDeleteWhereName, DocumentDeleteNotCondition {
+        DocumentDeleteWhere, DocumentDeleteNotCondition {
 
     private String documentCollection;
 
@@ -47,7 +47,7 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
 
 
     @Override
-    public DocumentDeleteWhereName where(String name) {
+    public DocumentDeleteNameCondition where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
