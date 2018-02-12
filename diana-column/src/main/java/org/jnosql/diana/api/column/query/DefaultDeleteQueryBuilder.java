@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
  * The default implementation to Delete query
  */
 class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete, ColumnDeleteFrom,
-        ColumnDeleteWhere, ColumnDeleteWhereName, ColumnDeleteNotCondition {
+        ColumnDeleteWhere, ColumnDeleteNotCondition {
 
     private String columnFamily;
 
@@ -48,7 +48,7 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete
 
 
     @Override
-    public ColumnDeleteWhereName where(String name) {
+    public ColumnDeleteNameCondition where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
