@@ -114,6 +114,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      *
      * @param query the select to delete an entity
      * @throws NullPointerException when either select or collection are null
+     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     void delete(ColumnDeleteQuery query);
 
@@ -123,6 +124,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * @param query - select to figure out entities
      * @return entities found by select
      * @throws NullPointerException when select is null
+     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     List<ColumnEntity> select(ColumnQuery query);
 

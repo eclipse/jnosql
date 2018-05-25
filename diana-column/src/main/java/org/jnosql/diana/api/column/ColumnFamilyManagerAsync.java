@@ -174,6 +174,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either select or callback are null
+     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     void delete(ColumnDeleteQuery query, Consumer<Void> callBack);
 
@@ -187,6 +188,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either select or callback are null
+     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     void select(ColumnQuery query, Consumer<List<ColumnEntity>> callBack);
 
