@@ -34,7 +34,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
 
     private String documentCollection;
 
-    private long start;
+    private long skip;
 
     private long limit;
 
@@ -80,8 +80,8 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
     }
 
     @Override
-    public DocumentSkip skip(long start) {
-        this.start = start;
+    public DocumentSkip skip(long skip) {
+        this.skip = skip;
         return this;
     }
 
@@ -171,7 +171,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
 
     @Override
     public DocumentQuery build() {
-        return new DefaultDocumentQuery(limit, start, documentCollection, documents, sorts, condition);
+        return new DefaultDocumentQuery(limit, skip, documentCollection, documents, sorts, condition);
     }
 
 

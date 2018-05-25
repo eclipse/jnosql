@@ -37,10 +37,10 @@ public interface ColumnNameOrder {
     /**
      * Defines the position of the first result to retrieve.
      *
-     * @param start the first result to retrive
+     * @param skip the first result to retrive
      * @return a query with first result defined
      */
-    ColumnSkip skip(long start);
+    ColumnSkip skip(long skip);
 
 
     /**

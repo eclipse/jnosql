@@ -26,10 +26,10 @@ public interface ColumnLimit {
     /**
      * Defines the position of the first result to retrieve.
      *
-     * @param start the first result to retrive
+     * @param skip the number of elements to skip
      * @return a query with first result defined
      */
-    ColumnSkip skip(long start);
+    ColumnSkip skip(long skip);
 
     /**
      * Creates a new instance of {@link ColumnQuery}

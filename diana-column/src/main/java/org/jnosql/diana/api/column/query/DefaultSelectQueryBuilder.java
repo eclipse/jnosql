@@ -34,7 +34,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
 
     private String columnFamily;
 
-    private long start;
+    private long skip;
 
     private long limit;
 
@@ -80,8 +80,8 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     }
 
     @Override
-    public ColumnSkip skip(long start) {
-        this.start = start;
+    public ColumnSkip skip(long skip) {
+        this.skip = skip;
         return this;
     }
 
@@ -171,7 +171,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
 
     @Override
     public ColumnQuery build() {
-        return new DefaultColumnQuery(limit, start, columnFamily, columns, sorts, condition);
+        return new DefaultColumnQuery(limit, skip, columnFamily, columns, sorts, condition);
     }
 
 
