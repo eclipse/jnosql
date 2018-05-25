@@ -59,7 +59,7 @@ class DefaultDocumentQuery implements DocumentQuery {
     }
 
     @Override
-    public long getFirstResult() {
+    public long getStart() {
         return firstResult;
     }
 
@@ -93,7 +93,7 @@ class DefaultDocumentQuery implements DocumentQuery {
         }
         DocumentQuery that = (DocumentQuery) o;
         return maxResult == that.getLimit() &&
-                firstResult == that.getFirstResult() &&
+                firstResult == that.getStart() &&
                 Objects.equals(documentCollection, that.getDocumentCollection()) &&
                 Objects.equals(condition, that.getCondition().orElse(null)) &&
                 Objects.equals(sorts, that.getSorts()) &&
