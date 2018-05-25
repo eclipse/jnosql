@@ -110,9 +110,9 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectStart() {
+    public void shouldSelectSkip() {
         String columnFamily = "columnFamily";
-        ColumnQuery query = select().from(columnFamily).start(10).build();
+        ColumnQuery query = select().from(columnFamily).skip(10).build();
         assertTrue(query.getColumns().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(columnFamily, query.getColumnFamily());

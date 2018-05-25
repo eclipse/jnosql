@@ -80,7 +80,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     }
 
     @Override
-    public ColumnSkip start(long start) {
+    public ColumnSkip skip(long start) {
         this.start = start;
         return this;
     }

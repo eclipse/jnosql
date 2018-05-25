@@ -112,9 +112,9 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
-    public void shouldSelectStart() {
+    public void shouldSelectSkip() {
         String documentCollection = "documentCollection";
-        DocumentQuery query = select().from(documentCollection).start(10).build();
+        DocumentQuery query = select().from(documentCollection).skip(10).build();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());

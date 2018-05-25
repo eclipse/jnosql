@@ -80,7 +80,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
     }
 
     @Override
-    public DocumentSkip start(long start) {
+    public DocumentSkip skip(long start) {
         this.start = start;
         return this;
     }

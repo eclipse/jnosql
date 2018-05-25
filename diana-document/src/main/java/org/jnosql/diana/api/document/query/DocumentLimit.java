@@ -30,7 +30,7 @@ public interface DocumentLimit {
      * @param start the first result to retrive
      * @return a query with first result defined
      */
-    DocumentSkip start(long start);
+    DocumentSkip skip(long start);
 
     /**
      * Creates a new instance of {@link DocumentQuery}
