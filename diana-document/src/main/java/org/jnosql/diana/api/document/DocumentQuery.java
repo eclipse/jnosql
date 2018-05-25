@@ -37,7 +37,7 @@ public interface DocumentQuery {
      * @return The maximum number of results the select object was set to retrieve.
      * The implementation might ignore this option.
      */
-    long getMaxResults();
+    long getLimit();
 
     /**
      * @return The position of the first result the select object was set to retrieve.

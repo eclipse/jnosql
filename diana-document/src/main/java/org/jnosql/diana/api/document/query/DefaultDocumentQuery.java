@@ -54,7 +54,7 @@ class DefaultDocumentQuery implements DocumentQuery {
     }
 
     @Override
-    public long getMaxResults() {
+    public long getLimit() {
         return maxResult;
     }
 
@@ -92,7 +92,7 @@ class DefaultDocumentQuery implements DocumentQuery {
             return false;
         }
         DocumentQuery that = (DocumentQuery) o;
-        return maxResult == that.getMaxResults() &&
+        return maxResult == that.getLimit() &&
                 firstResult == that.getFirstResult() &&
                 Objects.equals(documentCollection, that.getDocumentCollection()) &&
                 Objects.equals(condition, that.getCondition().orElse(null)) &&

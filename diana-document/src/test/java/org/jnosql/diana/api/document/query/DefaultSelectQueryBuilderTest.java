@@ -108,7 +108,7 @@ public class DefaultSelectQueryBuilderTest {
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(10L, query.getMaxResults());
+        assertEquals(10L, query.getLimit());
     }
 
     @Test
