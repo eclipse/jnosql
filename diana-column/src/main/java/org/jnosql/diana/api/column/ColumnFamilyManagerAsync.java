@@ -199,6 +199,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param callBack the callback
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException     when select is null
+     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     default void singleResult(ColumnQuery query, Consumer<Optional<ColumnEntity>> callBack) {
         select(query, entities -> {

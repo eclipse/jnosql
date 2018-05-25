@@ -117,6 +117,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      *
      * @param query select to delete an entity
      * @throws NullPointerException when select is null
+     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     void delete(DocumentDeleteQuery query);
 
@@ -127,6 +128,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @param query - select to figure out entities
      * @return entities found by select
      * @throws NullPointerException when select is null
+     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     List<DocumentEntity> select(DocumentQuery query);
 
@@ -137,6 +139,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException     when select is null
+     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     default Optional<DocumentEntity> singleResult(DocumentQuery query) {
         List<DocumentEntity> entities = select(query);

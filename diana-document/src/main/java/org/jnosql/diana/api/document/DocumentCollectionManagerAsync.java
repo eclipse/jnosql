@@ -159,6 +159,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param query select to delete an entity
      * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
+     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     void delete(DocumentDeleteQuery query);
 
@@ -183,6 +184,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
      * @throws UnsupportedOperationException when the database does not support this feature
      * @throws NullPointerException          when either select or callback are null
+     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     void select(DocumentQuery query, Consumer<List<DocumentEntity>> callBack);
 
@@ -193,6 +195,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param callBack the callback
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException     when select is null
+     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     default void singleResult(DocumentQuery query, Consumer<Optional<DocumentEntity>> callBack) {
 
