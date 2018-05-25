@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
  * The default implementation of the Select in the document
  */
 class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSelect, DocumentFrom, DocumentLimit,
-        DocumentStart, DocumentOrder, DocumentNotCondition, DocumentNameOrder, DocumentWhere {
+        DocumentSkip, DocumentOrder, DocumentNotCondition, DocumentNameOrder, DocumentWhere {
 
 
     private String documentCollection;
@@ -80,7 +80,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
     }
 
     @Override
-    public DocumentStart start(long start) {
+    public DocumentSkip start(long start) {
         this.start = start;
         return this;
     }

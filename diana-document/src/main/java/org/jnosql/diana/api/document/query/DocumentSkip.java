@@ -22,7 +22,7 @@ import org.jnosql.diana.api.document.DocumentQuery;
 /**
  * The Document Order whose define the position of the first result to retrieve.
  */
-public interface DocumentStart {
+public interface DocumentSkip {
 
     /**
      * Defines the maximum number of results to retrieve.

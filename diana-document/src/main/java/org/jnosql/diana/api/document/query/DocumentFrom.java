@@ -40,7 +40,7 @@ public interface DocumentFrom {
      * @param start the first result to retrive
      * @return a query with first result defined
      */
-    DocumentStart start(long start);
+    DocumentSkip start(long start);
 
 
     /**
