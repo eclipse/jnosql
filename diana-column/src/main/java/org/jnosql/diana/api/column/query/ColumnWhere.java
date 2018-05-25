@@ -51,7 +51,7 @@ public interface ColumnWhere {
      * @param start the first result to retrive
      * @return a query with first result defined
      */
-    ColumnStart start(long start);
+    ColumnSkip start(long start);
 
 
     /**

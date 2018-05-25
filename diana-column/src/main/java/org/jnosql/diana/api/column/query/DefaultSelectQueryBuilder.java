@@ -28,7 +28,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of the Select in the column
  */
-class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit, ColumnStart,
+class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit, ColumnSkip,
         ColumnOrder, ColumnNameCondition, ColumnNotCondition, ColumnNameOrder, ColumnWhere {
 
 
@@ -80,7 +80,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     }
 
     @Override
-    public ColumnStart start(long start) {
+    public ColumnSkip start(long start) {
         this.start = start;
         return this;
     }

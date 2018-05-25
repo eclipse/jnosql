@@ -43,7 +43,7 @@ public interface ColumnQuery {
      * @return The position of the first result the select object was set to retrieve.
      * The implementation might ignore this option.
      */
-    long getStart();
+    long getSkip();
 
     /**
      * The column family name

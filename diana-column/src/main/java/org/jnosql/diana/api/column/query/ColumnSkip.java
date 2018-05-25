@@ -22,7 +22,7 @@ import org.jnosql.diana.api.column.ColumnQuery;
 /**
  * The Column Order whose define the position of the first result to retrieve.
  */
-public interface ColumnStart {
+public interface ColumnSkip {
 
 
     /**

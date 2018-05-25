@@ -61,7 +61,7 @@ class DefaultColumnQuery implements ColumnQuery {
     }
 
     @Override
-    public long getStart() {
+    public long getSkip() {
         return firstResult;
     }
 
@@ -95,7 +95,7 @@ class DefaultColumnQuery implements ColumnQuery {
         }
         ColumnQuery that = (ColumnQuery) o;
         return maxResults == that.getLimit() &&
-                firstResult == that.getStart() &&
+                firstResult == that.getSkip() &&
                 Objects.equals(columnFamily, that.getColumnFamily()) &&
                 Objects.equals(columns, that.getColumns()) &&
                 Objects.equals(sorts, that.getSorts()) &&

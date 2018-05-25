@@ -116,7 +116,7 @@ public class DefaultSelectQueryBuilderTest {
         assertTrue(query.getColumns().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(columnFamily, query.getColumnFamily());
-        assertEquals(10L, query.getStart());
+        assertEquals(10L, query.getSkip());
     }
 
     @Test
