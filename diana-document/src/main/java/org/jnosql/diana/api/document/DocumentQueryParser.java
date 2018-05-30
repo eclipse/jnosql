@@ -24,13 +24,24 @@ import java.util.List;
 public interface DocumentQueryParser {
 
     /**
-     *Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
-     *  command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
-     * @param query the query as {@link String}
+     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param query             the query as {@link String}
      * @param collectionManager the collection manager
      * @return the result of the operation if delete it will always return an empty list
-     * @throws NullPointerException when there is parameter null
+     * @throws NullPointerException     when there is parameter null
      * @throws IllegalArgumentException when the query has value parameters
      */
     List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager);
+
+    /**
+     * It returns a {@link DocumentQueryParser} from {@link java.util.ServiceLoader}
+     *
+     * @return {@link DocumentQueryParser} instance
+     * @throws IllegalStateException when there isn't DocumentQueryParser from service loader.
+     */
+    static DocumentQueryParser getParser() {
+        return null;
+    }
 }
