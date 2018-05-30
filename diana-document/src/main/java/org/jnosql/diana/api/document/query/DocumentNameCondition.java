@@ -44,57 +44,63 @@ public interface DocumentNameCondition {
     /**
      * Creates the greater than condition {@link org.jnosql.diana.api.Condition#GREATER_THAN}
      *
+     * @param <T>   the type
      * @param value the value to the condition
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentWhere gt(Number value);
+    <T> DocumentWhere gt(Number value);
 
     /**
      * Creates the greater equals than condition {@link org.jnosql.diana.api.Condition#GREATER_EQUALS_THAN}
      *
+     * @param <T>   the type
      * @param value the value to the condition
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentWhere gte(Number value);
+    <T> DocumentWhere gte(T value);
 
     /**
      * Creates the lesser than condition {@link org.jnosql.diana.api.Condition#LESSER_THAN}
      *
+     * @param <T>   the type
      * @param value the value to the condition
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentWhere lt(Number value);
+    <T> DocumentWhere lt(T value);
 
     /**
      * Creates the lesser equals than condition {@link org.jnosql.diana.api.Condition#LESSER_EQUALS_THAN}
      *
+     * @param <T>   the type
      * @param value the value to the condition
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentWhere lte(Number value);
+    <T> DocumentWhere lte(T value);
 
     /**
      * Creates the between condition {@link org.jnosql.diana.api.Condition#EQUALS}
      *
+     * @param <T>    the type
      * @param valueA the values within a given range
      * @param valueB the values within a given range
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when either valueA or valueB are null
      */
-    DocumentWhere between(Number valueA, Number valueB);
+    <T> DocumentWhere between(T valueA, T valueB);
 
     /**
      * Creates in condition {@link org.jnosql.diana.api.Condition#IN}
+     *
      * @param values the values
-     * @param <T> the type
+     * @param <T>    the type
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    <T> DocumentWhere    in(Iterable<T> values);
+    <T> DocumentWhere in(Iterable<T> values);
 
     /**
      * Creates the equals condition {@link org.jnosql.diana.api.Condition#NOT}
