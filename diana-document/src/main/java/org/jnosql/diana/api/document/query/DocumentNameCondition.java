@@ -49,7 +49,7 @@ public interface DocumentNameCondition {
      * @return the {@link DocumentWhere}
      * @throws NullPointerException when value is null
      */
-    <T> DocumentWhere gt(Number value);
+    <T> DocumentWhere gt(T value);
 
     /**
      * Creates the greater equals than condition {@link org.jnosql.diana.api.Condition#GREATER_EQUALS_THAN}
