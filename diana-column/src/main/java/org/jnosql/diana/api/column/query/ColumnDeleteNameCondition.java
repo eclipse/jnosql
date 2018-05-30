@@ -45,47 +45,52 @@ public interface ColumnDeleteNameCondition {
      * Creates the greater than condition {@link org.jnosql.diana.api.Condition#GREATER_THAN}
      *
      * @param value the value to the condition
+     * @param <T>   the type
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnDeleteWhere gt(Number value);
+    <T> ColumnDeleteWhere gt(T value);
 
     /**
      * Creates the greater equals than condition {@link org.jnosql.diana.api.Condition#GREATER_EQUALS_THAN}
      *
+     * @param <T>   the type
      * @param value the value to the condition
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnDeleteWhere gte(Number value);
+    <T> ColumnDeleteWhere gte(T value);
 
     /**
      * Creates the lesser than condition {@link org.jnosql.diana.api.Condition#LESSER_THAN}
      *
+     * @param <T>   the type
      * @param value the value to the condition
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnDeleteWhere lt(Number value);
+    <T> ColumnDeleteWhere lt(T value);
 
     /**
      * Creates the lesser equals than condition {@link org.jnosql.diana.api.Condition#LESSER_EQUALS_THAN}
      *
+     * @param <T>   the type
      * @param value the value to the condition
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    ColumnDeleteWhere lte(Number value);
+    <T> ColumnDeleteWhere lte(T value);
 
     /**
      * Creates the between condition {@link org.jnosql.diana.api.Condition#EQUALS}
      *
+     * @param <T>    the type
      * @param valueA the values within a given range
      * @param valueB the values within a given range
      * @return the {@link ColumnDeleteWhere}
      * @throws NullPointerException when either valueA or valueB are null
      */
-    ColumnDeleteWhere between(Number valueA, Number valueB);
+    <T> ColumnDeleteWhere between(T valueA, T valueB);
 
     /**
      * Creates in condition {@link org.jnosql.diana.api.Condition#IN}

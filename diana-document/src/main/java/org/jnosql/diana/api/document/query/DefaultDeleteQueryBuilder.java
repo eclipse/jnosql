@@ -90,31 +90,31 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
     }
 
     @Override
-    public DocumentDeleteWhere gt(Number value) {
+    public <T> DocumentDeleteWhere gt(T value) {
         gtImpl(value);
         return this;
     }
 
     @Override
-    public DocumentDeleteWhere gte(Number value) {
+    public <T> DocumentDeleteWhere gte(T value) {
         gteImpl(value);
         return this;
     }
 
     @Override
-    public DocumentDeleteWhere lt(Number value) {
+    public <T> DocumentDeleteWhere lt(T value) {
         ltImpl(value);
         return this;
     }
 
     @Override
-    public DocumentDeleteWhere lte(Number value) {
+    public <T> DocumentDeleteWhere lte(T value) {
         lteImpl(value);
         return this;
     }
 
     @Override
-    public DocumentDeleteWhere between(Number valueA, Number valueB) {
+    public <T> DocumentDeleteWhere between(T valueA, T valueB) {
         betweenImpl(valueA, valueB);
         return this;
     }

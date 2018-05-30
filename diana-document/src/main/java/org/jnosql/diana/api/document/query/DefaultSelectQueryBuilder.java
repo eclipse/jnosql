@@ -118,32 +118,32 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
     }
 
     @Override
-    public DocumentWhere gt(Number value) {
+    public <T> DocumentWhere gt(T value) {
         gtImpl(value);
         return this;
     }
 
     @Override
-    public DocumentWhere gte(Number value) {
+    public <T> DocumentWhere gte(T value) {
         gteImpl(value);
         return this;
     }
 
     @Override
-    public DocumentWhere lt(Number value) {
+    public <T> DocumentWhere lt(T value) {
         ltImpl(value);
         return this;
     }
 
 
     @Override
-    public DocumentWhere lte(Number value) {
+    public <T> DocumentWhere lte(T value) {
         lteImpl(value);
         return this;
     }
 
     @Override
-    public DocumentWhere between(Number valueA, Number valueB) {
+    public <T> DocumentWhere between(T valueA, T valueB) {
         betweenImpl(valueA, valueB);
         return this;
     }

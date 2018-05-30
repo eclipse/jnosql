@@ -91,31 +91,31 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete
     }
 
     @Override
-    public ColumnDeleteWhere gt(Number value) {
+    public <T> ColumnDeleteWhere gt(T value) {
         gtImpl(value);
         return this;
     }
 
     @Override
-    public ColumnDeleteWhere gte(Number value) {
+    public <T> ColumnDeleteWhere gte(T value) {
         gteImpl(value);
         return this;
     }
 
     @Override
-    public ColumnDeleteWhere lt(Number value) {
+    public <T> ColumnDeleteWhere lt(T value) {
         ltImpl(value);
         return this;
     }
 
     @Override
-    public ColumnDeleteWhere lte(Number value) {
+    public <T> ColumnDeleteWhere lte(T value) {
         lteImpl(value);
         return this;
     }
 
     @Override
-    public ColumnDeleteWhere between(Number valueA, Number valueB) {
+    public <T> ColumnDeleteWhere between(T valueA, T valueB) {
         betweenImpl(valueA, valueB);
         return this;
     }

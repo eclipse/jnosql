@@ -39,7 +39,7 @@ abstract class BaseQueryBuilder {
         appendCondition(newCondition);
     }
 
-    protected void gtImpl(Number value) {
+    protected <T> void gtImpl(T value) {
         requireNonNull(value, "value is required");
         ColumnCondition newCondition = ColumnCondition.gt(Column.of(name, value));
         appendCondition(newCondition);
@@ -51,24 +51,25 @@ abstract class BaseQueryBuilder {
         appendCondition(newCondition);
     }
 
-    protected void ltImpl(Number value) {
+    protected <T> void ltImpl(T value) {
         requireNonNull(value, "value is required");
         ColumnCondition newCondition = ColumnCondition.lt(Column.of(name, value));
         appendCondition(newCondition);
     }
 
-    protected void lteImpl(Number value) {
+    protected <T> void lteImpl(T value) {
         requireNonNull(value, "value is required");
         ColumnCondition newCondition = ColumnCondition.lte(Column.of(name, value));
         appendCondition(newCondition);
     }
-    protected void gteImpl(Number value) {
+
+    protected <T> void gteImpl(T value) {
         requireNonNull(value, "value is required");
         ColumnCondition newCondition = ColumnCondition.gte(Column.of(name, value));
         appendCondition(newCondition);
     }
 
-    protected void betweenImpl(Number valueA, Number valueB) {
+    protected <T> void betweenImpl(T valueA, T valueB) {
         requireNonNull(valueA, "valueA is required");
         requireNonNull(valueB, "valueB is required");
         ColumnCondition newCondition = ColumnCondition.between(Column.of(name, asList(valueA, valueB)));

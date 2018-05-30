@@ -43,48 +43,53 @@ public interface DocumentDeleteNameCondition {
     /**
      * Creates the greater than condition {@link org.jnosql.diana.api.Condition#GREATER_THAN}
      *
+     * @param <T>   the type
      * @param value the value to the condition
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentDeleteWhere gt(Number value);
+    <T> DocumentDeleteWhere gt(T value);
 
     /**
      * Creates the greater equals than condition {@link org.jnosql.diana.api.Condition#GREATER_EQUALS_THAN}
      *
+     * @param <T>   the type
      * @param value the value to the condition
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentDeleteWhere gte(Number value);
+    <T> DocumentDeleteWhere gte(T value);
 
     /**
      * Creates the lesser than condition {@link org.jnosql.diana.api.Condition#LESSER_THAN}
      *
+     * @param <T>   the type
      * @param value the value to the condition
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentDeleteWhere lt(Number value);
+    <T> DocumentDeleteWhere lt(T value);
 
     /**
      * Creates the lesser equals than condition {@link org.jnosql.diana.api.Condition#LESSER_EQUALS_THAN}
      *
+     * @param <T>   the type
      * @param value the value to the condition
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when value is null
      */
-    DocumentDeleteWhere lte(Number value);
+    <T> DocumentDeleteWhere lte(T value);
 
     /**
      * Creates the between condition {@link org.jnosql.diana.api.Condition#EQUALS}
      *
+     * @param <T>    the type
      * @param valueA the values within a given range
      * @param valueB the values within a given range
      * @return the {@link DocumentDeleteWhere}
      * @throws NullPointerException when either valueA or valueB are null
      */
-    DocumentDeleteWhere between(Number valueA, Number valueB);
+    <T> DocumentDeleteWhere between(T valueA, T valueB);
 
     /**
      * Creates in condition {@link org.jnosql.diana.api.Condition#IN}
