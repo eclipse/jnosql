@@ -142,6 +142,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
      * @throws NullPointerException     when there is parameter null
      * @throws IllegalArgumentException when the query has value parameters
      * @throws IllegalStateException    when there is not {@link DocumentQueryParser}
+     * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
     default List<DocumentEntity> query(String query) {
         Objects.requireNonNull(query, "query is required");

@@ -32,6 +32,7 @@ public interface DocumentQueryParser {
      * @return the result of the operation if delete it will always return an empty list
      * @throws NullPointerException     when there is parameter null
      * @throws IllegalArgumentException when the query has value parameters
+     * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
     List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager);
 
