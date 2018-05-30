@@ -17,18 +17,27 @@
 package org.jnosql.diana.api.document.query.parser;
 
 import org.jnosql.diana.api.document.DocumentCollectionManager;
-import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQueryParser;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Objects;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class DefaultDocumentQueryParser implements DocumentQueryParser {
 
-    @Override
-    public List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
-        Objects.requireNonNull(query, "query is required");
-        Objects.requireNonNull(collectionManager, "collectionManager is required");
-        return null;
+class DefaultDocumentQueryParserTest {
+
+    private DocumentQueryParser parser = new DefaultDocumentQueryParser();
+
+
+
+    @Test
+    public void shouldReturnNPEWhenThereIsNullParameter() {
+
+        DocumentCollectionManager documentCollection = Mocki;
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            parser.query(null, documentCollection);
+        });
     }
+
+
 }
