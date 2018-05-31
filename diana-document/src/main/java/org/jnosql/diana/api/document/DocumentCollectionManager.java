@@ -151,6 +151,22 @@ public interface DocumentCollectionManager extends AutoCloseable {
     }
 
     /**
+     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param query the query as {@link String}
+     * @return a {@link DocumentPreparedStatement} instance
+     * @throws NullPointerException     when there is parameter null
+     * @throws IllegalStateException    when there is not {@link DocumentQueryParser}
+     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     */
+    default DocumentPreparedStatement  prepare(String query) {
+        Objects.requireNonNull(query, "query is required");
+        DocumentQueryParser parser = DocumentQueryParser.getParser();
+        return parser.prepare(query, this);
+    }
+
+    /**
      * Returns a single entity from select
      *
      * @param query - select to figure out entities

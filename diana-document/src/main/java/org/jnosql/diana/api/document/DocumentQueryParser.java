@@ -37,6 +37,19 @@ public interface DocumentQueryParser {
     List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager);
 
     /**
+     * Executes a query and returns a {@link DocumentPreparedStatement}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param query             the query as {@link String}
+     * @param collectionManager the collection manager
+     * @return a {@link DocumentPreparedStatement} instance
+     * @throws NullPointerException     when there is parameter null
+     * @throws IllegalArgumentException when the query has value parameters
+     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     */
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager);
+
+    /**
      * It returns a {@link DocumentQueryParser} from {@link java.util.ServiceLoader}
      *
      * @return {@link DocumentQueryParser} instance
@@ -45,4 +58,6 @@ public interface DocumentQueryParser {
     static DocumentQueryParser getParser() {
         return null;
     }
+
+
 }
