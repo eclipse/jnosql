@@ -19,7 +19,6 @@ package org.jnosql.diana.api.document.query;
 import org.hamcrest.MatcherAssert;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.query.QueryException;
 import org.junit.jupiter.api.Test;
 
