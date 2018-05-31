@@ -19,34 +19,31 @@ package org.jnosql.diana.api.document.query;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
-import org.jnosql.query.InsertQuery;
-import org.jnosql.query.InsertQuerySupplier;
 import org.jnosql.query.QueryException;
+import org.jnosql.query.UpdateQuery;
+import org.jnosql.query.UpdateQuerySupplier;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-final class InsertQueryParser {
+final class UpdateQueryParser {
 
-    private final InsertQuerySupplier supplier;
+    private final UpdateQuerySupplier supplier;
 
-    public InsertQueryParser() {
-        this.supplier = InsertQuerySupplier.getSupplier();
+    public UpdateQueryParser() {
+        this.supplier = UpdateQuerySupplier.getSupplier();
     }
 
     public List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
 
-        InsertQuery insertQuery = supplier.apply(query);
+        UpdateQuery updateQuery = supplier.apply(query);
 
-        String collection = insertQuery.getEntity();
+        String collection = updateQuery.getEntity();
         Params params = new Params();
 
-        Optional<Duration> ttl = insertQuery.getTtl();
         DocumentEntity entity = DocumentEntity.of(collection);
 
-        insertQuery.getConditions()
+        updateQuery.getConditions()
                 .stream()
                 .map(c -> Conditions.getCondition(c, params))
                 .map(DocumentCondition::getDocument)
@@ -55,10 +52,6 @@ final class InsertQueryParser {
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        if (ttl.isPresent()) {
-            return Collections.singletonList(collectionManager.insert(entity, ttl.get()));
-        } else {
-            return Collections.singletonList(collectionManager.insert(entity));
-        }
+        return Collections.singletonList(collectionManager.update(entity));
     }
 }
