@@ -19,6 +19,7 @@ package org.jnosql.diana.api.document.query;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.UpdateQuery;
 import org.jnosql.query.UpdateQuerySupplier;
@@ -30,11 +31,11 @@ final class UpdateQueryParser {
 
     private final UpdateQuerySupplier supplier;
 
-    public UpdateQueryParser() {
+    UpdateQueryParser() {
         this.supplier = UpdateQuerySupplier.getSupplier();
     }
 
-    public List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
@@ -53,5 +54,23 @@ final class UpdateQueryParser {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
         return Collections.singletonList(collectionManager.update(entity));
+    }
+
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+
+        UpdateQuery updateQuery = supplier.apply(query);
+
+        String collection = updateQuery.getEntity();
+        Params params = new Params();
+
+        DocumentEntity entity = DocumentEntity.of(collection);
+
+        updateQuery.getConditions()
+                .stream()
+                .map(c -> Conditions.getCondition(c, params))
+                .map(DocumentCondition::getDocument)
+                .forEach(entity::add);
+
+        return DefaultDocumentPreparedStatement.update(entity, params, query, collectionManager);
     }
 }

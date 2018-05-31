@@ -77,11 +77,11 @@ final class SelectQueryParser {
         List<Sort> sorts = selectQuery.getOrderBy().stream().map(this::toSort).collect(toList());
         DocumentCondition condition = null;
         Params params = new Params();
-        DocumentQuery documentQuery = new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
         if (selectQuery.getWhere().isPresent()) {
             condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
         }
 
-        return null;
+        DocumentQuery documentQuery = new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
+        return DefaultDocumentPreparedStatement.select(documentQuery,params,query,collectionManager);
     }
 }

@@ -19,6 +19,7 @@ package org.jnosql.diana.api.document.query;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.query.InsertQuery;
 import org.jnosql.query.InsertQuerySupplier;
 import org.jnosql.query.QueryException;
@@ -32,11 +33,11 @@ final class InsertQueryParser {
 
     private final InsertQuerySupplier supplier;
 
-    public InsertQueryParser() {
+    InsertQueryParser() {
         this.supplier = InsertQuerySupplier.getSupplier();
     }
 
-    public List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
 
         InsertQuery insertQuery = supplier.apply(query);
 
@@ -60,5 +61,28 @@ final class InsertQueryParser {
         } else {
             return Collections.singletonList(collectionManager.insert(entity));
         }
+    }
+
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+        InsertQuery insertQuery = supplier.apply(query);
+
+        String collection = insertQuery.getEntity();
+        Params params = new Params();
+
+        Optional<Duration> ttl = insertQuery.getTtl();
+        DocumentEntity entity = DocumentEntity.of(collection);
+
+        insertQuery.getConditions()
+                .stream()
+                .map(c -> Conditions.getCondition(c, params))
+                .map(DocumentCondition::getDocument)
+                .forEach(entity::add);
+
+        if (params.isNotEmpty()) {
+            throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
+        }
+
+        return DefaultDocumentPreparedStatement.insert(entity, params, query, ttl.orElse(null), collectionManager);
+
     }
 }

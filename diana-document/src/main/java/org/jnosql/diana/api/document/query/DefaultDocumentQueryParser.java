@@ -58,12 +58,12 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
         switch (command) {
             case "select":
                 return select.prepare(query, collectionManager);
-//            case "delete":
-//                return delete.query(query, collectionManager);
-//            case "insert":
-//                return insert.query(query, collectionManager);
-//            case "update":
-//                return update.query(query, collectionManager);
+            case "delete":
+                return delete.prepare(query, collectionManager);
+            case "insert":
+                return insert.prepare(query, collectionManager);
+            case "update":
+                return update.prepare(query, collectionManager);
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }

@@ -20,6 +20,7 @@ import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.query.DeleteQuery;
 import org.jnosql.query.DeleteQuerySupplier;
 import org.jnosql.query.QueryException;
@@ -32,11 +33,11 @@ final class DeleteQueryParser {
 
     private final DeleteQuerySupplier selectQuerySupplier;
 
-    public DeleteQueryParser() {
+    DeleteQueryParser() {
         this.selectQuerySupplier = DeleteQuerySupplier.getSupplier();
     }
 
-    public List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
 
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
@@ -55,5 +56,24 @@ final class DeleteQueryParser {
         DocumentDeleteQuery documentQuery = new DefaultDocumentDeleteQuery(collection, condition, documents);
         collectionManager.delete(documentQuery);
         return Collections.emptyList();
+    }
+
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+        DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
+
+        String collection = deleteQuery.getEntity();
+        List<String> documents = new ArrayList<>(deleteQuery.getFields());
+        DocumentCondition condition = null;
+        Params params = new Params();
+
+        if (deleteQuery.getWhere().isPresent()) {
+            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
+        }
+
+        if (params.isNotEmpty()) {
+            throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
+        }
+        DocumentDeleteQuery documentQuery = new DefaultDocumentDeleteQuery(collection, condition, documents);
+        return DefaultDocumentPreparedStatement.delete(documentQuery, params, query, collectionManager);
     }
 }
