@@ -119,4 +119,52 @@ public class SelectQueryParserTest {
         assertEquals("God", documentQuery.getDocumentCollection());
         assertFalse(documentQuery.getCondition().isPresent());
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select * from God skip 12"})
+    public void shouldReturnParserQuery7(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        assertTrue(documentQuery.getDocuments().isEmpty());
+        assertTrue(documentQuery.getSorts().isEmpty());
+        assertEquals(0L, documentQuery.getLimit());
+        assertEquals(12L, documentQuery.getSkip());
+        assertEquals("God", documentQuery.getDocumentCollection());
+        assertFalse(documentQuery.getCondition().isPresent());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select * from God limit 12"})
+    public void shouldReturnParserQuery8(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        assertTrue(documentQuery.getDocuments().isEmpty());
+        assertTrue(documentQuery.getSorts().isEmpty());
+        assertEquals(12L, documentQuery.getLimit());
+        assertEquals(0L, documentQuery.getSkip());
+        assertEquals("God", documentQuery.getDocumentCollection());
+        assertFalse(documentQuery.getCondition().isPresent());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select * from God skip 10 limit 12"})
+    public void shouldReturnParserQuery9(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        assertTrue(documentQuery.getDocuments().isEmpty());
+        assertTrue(documentQuery.getSorts().isEmpty());
+        assertEquals(12L, documentQuery.getLimit());
+        assertEquals(10L, documentQuery.getSkip());
+        assertEquals("God", documentQuery.getDocumentCollection());
+        assertFalse(documentQuery.getCondition().isPresent());
+    }
 }
