@@ -23,8 +23,6 @@ import org.jnosql.query.ConditionValue;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.Where;
 
-import java.util.List;
-
 import static org.jnosql.diana.api.document.DocumentCondition.and;
 import static org.jnosql.diana.api.document.DocumentCondition.between;
 import static org.jnosql.diana.api.document.DocumentCondition.eq;

@@ -17,13 +17,11 @@
 
 package org.jnosql.diana.api.document;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.jnosql.diana.api.Value;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.toList;
