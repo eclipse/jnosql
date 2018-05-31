@@ -22,6 +22,7 @@ import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.query.DeleteQuery;
 import org.jnosql.query.DeleteQuerySupplier;
+import org.jnosql.query.QueryException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,11 +43,15 @@ final class DeleteQueryParser {
         String collection = deleteQuery.getEntity();
         List<String> documents = new ArrayList<>(deleteQuery.getFields());
         DocumentCondition condition = null;
+        List<ParamValue> parameters = new ArrayList<>();
 
-        if(deleteQuery.getWhere().isPresent()) {
-            condition = deleteQuery.getWhere().map(Conditions::getCondition).get();
+        if (deleteQuery.getWhere().isPresent()) {
+            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, parameters)).get();
         }
 
+        if (!parameters.isEmpty()) {
+            throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
+        }
         DocumentDeleteQuery documentQuery = new DefaultDocumentDeleteQuery(collection, condition, documents);
         collectionManager.delete(documentQuery);
         return Collections.emptyList();

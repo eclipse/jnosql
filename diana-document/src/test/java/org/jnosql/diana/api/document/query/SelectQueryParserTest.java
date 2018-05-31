@@ -23,6 +23,7 @@ import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.query.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -50,6 +51,7 @@ import static org.jnosql.diana.api.Sort.SortType.DESC;
 import static org.jnosql.diana.api.document.DocumentCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SelectQueryParserTest {
@@ -470,6 +472,17 @@ public class SelectQueryParserTest {
         assertEquals(EQUALS, conditions.get(1).getCondition());
         assertEquals(OR, conditions.get(2).getCondition());
         assertEquals(EQUALS, conditions.get(3).getCondition());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where age = @age"})
+    public void shouldReturnErrorWhenNeedPrepareStatement(String query) {
+
+        assertThrows(QueryException.class, () -> {
+            parser.query(query, documentCollection);
+        });
+
+
     }
 
     private void checkBaseQuery(DocumentQuery documentQuery, long limit, long skip) {

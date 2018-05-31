@@ -23,6 +23,8 @@ import org.jnosql.query.ConditionValue;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.Where;
 
+import java.util.List;
+
 import static org.jnosql.diana.api.document.DocumentCondition.and;
 import static org.jnosql.diana.api.document.DocumentCondition.between;
 import static org.jnosql.diana.api.document.DocumentCondition.eq;
@@ -39,40 +41,40 @@ final class Conditions {
     private Conditions() {
     }
 
-    public static DocumentCondition getCondition(Where where) {
+    public static DocumentCondition getCondition(Where where, List<ParamValue> parameters) {
         Condition condition = where.getCondition();
-        return getCondition(condition);
+        return getCondition(condition, parameters);
     }
 
-    private static DocumentCondition getCondition(Condition condition) {
+    private static DocumentCondition getCondition(Condition condition, List<ParamValue> parameters) {
         switch (condition.getOperator()) {
             case EQUALS:
-                return eq(Document.of(condition.getName(), Values.get(condition.getValue())));
+                return eq(Document.of(condition.getName(), Values.get(condition.getValue(), parameters)));
             case GREATER_THAN:
-                return gt(Document.of(condition.getName(), Values.get(condition.getValue())));
+                return gt(Document.of(condition.getName(), Values.get(condition.getValue(), parameters)));
             case GREATER_EQUALS_THAN:
-                return gte(Document.of(condition.getName(), Values.get(condition.getValue())));
+                return gte(Document.of(condition.getName(), Values.get(condition.getValue(), parameters)));
             case LESSER_THAN:
-                return lt(Document.of(condition.getName(), Values.get(condition.getValue())));
+                return lt(Document.of(condition.getName(), Values.get(condition.getValue(), parameters)));
             case LESSER_EQUALS_THAN:
-                return lte(Document.of(condition.getName(), Values.get(condition.getValue())));
+                return lte(Document.of(condition.getName(), Values.get(condition.getValue(), parameters)));
             case IN:
-                return in(Document.of(condition.getName(), Values.get(condition.getValue())));
+                return in(Document.of(condition.getName(), Values.get(condition.getValue(), parameters)));
             case LIKE:
-                return like(Document.of(condition.getName(), Values.get(condition.getValue())));
+                return like(Document.of(condition.getName(), Values.get(condition.getValue(), parameters)));
             case BETWEEN:
-                return between(Document.of(condition.getName(), Values.get(condition.getValue())));
+                return between(Document.of(condition.getName(), Values.get(condition.getValue(), parameters)));
             case NOT:
-                return getCondition(ConditionValue.class.cast(condition.getValue()).get().get(0)).negate();
+                return getCondition(ConditionValue.class.cast(condition.getValue()).get().get(0), parameters).negate();
             case OR:
                 return or(ConditionValue.class.cast(condition.getValue())
                         .get()
-                        .stream().map(Conditions::getCondition)
+                        .stream().map(v -> getCondition(v, parameters))
                         .toArray(DocumentCondition[]::new));
             case AND:
                 return and(ConditionValue.class.cast(condition.getValue())
                         .get()
-                        .stream().map(Conditions::getCondition)
+                        .stream().map(v -> getCondition(v, parameters))
                         .toArray(DocumentCondition[]::new));
             default:
                 throw new QueryException("There is not support the type: " + condition.getOperator());

@@ -20,11 +20,13 @@ import org.jnosql.query.ArrayValue;
 import org.jnosql.query.Function;
 import org.jnosql.query.FunctionValue;
 import org.jnosql.query.JSONValue;
+import org.jnosql.query.ParamValue;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.Value;
 import org.jnosql.query.ValueType;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -34,30 +36,36 @@ final class Values {
     private Values() {
     }
 
-    static Object get(Value<?> value) {
+    static Object get(Value<?> value, List<org.jnosql.diana.api.document.query.ParamValue> parameters) {
 
         ValueType type = value.getType();
         switch (type) {
             case NUMBER:
             case STRING:
                 return value.get();
-            case CONDITION:
-            case CONVERT:
             case PARAMETER:
+                org.jnosql.diana.api.document.query.ParamValue paramValue =
+                        new org.jnosql.diana.api.document.query.ParamValue(ParamValue.class.cast(value).get());
+                parameters.add(paramValue);
+                return paramValue;
             case ARRAY:
-                return Stream.of(ArrayValue.class.cast(value).get()).map(Values::get).collect(toList());
+                return Stream.of(ArrayValue.class.cast(value).get())
+                        .map(v -> get(v, parameters))
+                        .collect(toList());
             case FUNCTION:
                 Function function = FunctionValue.class.cast(value).get();
                 String name = function.getName();
                 Object[] params = function.getParams();
                 if ("convert".equals(name)) {
-                    return org.jnosql.diana.api.Value.of(get(Value.class.cast(params[0]))).get((Class<?>) params[1]);
+                    return org.jnosql.diana.api.Value.of(get(Value.class.cast(params[0]), parameters))
+                            .get((Class<?>) params[1]);
                 }
                 String message = String.format("There is not support to the fuction: %s with parameters %s", name,
                         Arrays.toString(params));
                 throw new QueryException(message);
             case JSON:
                 return JsonObjects.geDocument(JSONValue.class.cast(value).get());
+            case CONDITION:
             default:
                 throw new QueryException("There is not suppor to the value: " + type);
 
