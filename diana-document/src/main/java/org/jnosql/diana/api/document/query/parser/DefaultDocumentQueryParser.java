@@ -19,6 +19,7 @@ package org.jnosql.diana.api.document.query.parser;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQueryParser;
+import org.jnosql.query.QueryException;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +30,17 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
     public List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(collectionManager, "collectionManager is required");
-        return null;
+
+        if (query.length() < 6) {
+            throw new QueryException(String.format("The query %s is invalid", query));
+        }
+        String command = query.substring(0, 7);
+        switch (command) {
+            case "select":
+
+            default:
+                throw new QueryException(String.format("The command was not recognized at the query %s ", query));
+        }
+//        return null;
     }
 }
