@@ -16,7 +16,9 @@
  */
 package org.jnosql.diana.api.document;
 
+
 import java.util.List;
+import java.util.Optional;
 
 public interface DocumentPreparedStatement {
 
@@ -38,5 +40,12 @@ public interface DocumentPreparedStatement {
      * @return The result list, if delete it will return an empty list
      */
     List<DocumentEntity> getResultList();
+
+    /**
+     * Returns the result as a single element otherwise it will return an {@link Optional#empty()}
+     * @return the single result
+     * @throws org.jnosql.diana.api.NonUniqueResultException  when the result has more than one entity
+     */
+    Optional<DocumentEntity> getSingleResult();
 
 }
