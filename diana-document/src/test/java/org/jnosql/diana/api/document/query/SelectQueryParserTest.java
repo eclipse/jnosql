@@ -26,8 +26,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.Arrays;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.jnosql.diana.api.Condition.BETWEEN;
 import static org.jnosql.diana.api.Condition.EQUALS;
 import static org.jnosql.diana.api.Condition.GREATER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.GREATER_THAN;
@@ -245,6 +248,22 @@ public class SelectQueryParserTest {
 
         assertEquals(LESSER_THAN, condition.getCondition());
         assertEquals(Document.of("stamina", -10.23), condition.getDocument());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where age between 10 and 30"})
+    public void shouldReturnParserQuery15(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+
+        assertEquals(BETWEEN, condition.getCondition());
+        assertEquals(Document.of("age", Arrays.asList(10L, 30L)), condition.getDocument());
     }
 
     private void checkBaseQuery(DocumentQuery documentQuery, long limit, long skip) {

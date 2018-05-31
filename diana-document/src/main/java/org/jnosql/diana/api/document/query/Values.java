@@ -16,10 +16,14 @@
  */
 package org.jnosql.diana.api.document.query;
 
-import org.jnosql.query.JSONValue;
+import org.jnosql.query.ArrayValue;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.Value;
 import org.jnosql.query.ValueType;
+
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 final class Values {
 
@@ -37,6 +41,7 @@ final class Values {
             case CONVERT:
             case PARAMETER:
             case ARRAY:
+                return Stream.of(ArrayValue.class.cast(value).get()).map(Values::get).collect(toList());
             case FUNCTION:
             case JSON:
             default:

@@ -22,6 +22,7 @@ import org.jnosql.query.Condition;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.Where;
 
+import static org.jnosql.diana.api.document.DocumentCondition.between;
 import static org.jnosql.diana.api.document.DocumentCondition.eq;
 import static org.jnosql.diana.api.document.DocumentCondition.gt;
 import static org.jnosql.diana.api.document.DocumentCondition.gte;
@@ -53,7 +54,7 @@ final class Conditions {
             case LIKE:
                 return like(Document.of(condition.getName(), Values.get(condition.getValue())));
             case BETWEEN:
-                return eq(Document.of(condition.getName(), Values.get(condition.getValue())));
+                return between(Document.of(condition.getName(), Values.get(condition.getValue())));
             case AND:
             case OR:
             case NOT:
