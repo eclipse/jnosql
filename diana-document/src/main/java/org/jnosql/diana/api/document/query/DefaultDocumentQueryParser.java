@@ -27,6 +27,9 @@ import java.util.Objects;
 public class DefaultDocumentQueryParser implements DocumentQueryParser {
 
     private final SelectQueryParser select = new SelectQueryParser();
+    private final DeleteQueryParser delete = new DeleteQueryParser();
+    private final InsertQueryParser insert = new InsertQueryParser();
+    private final UpdateQueryParser update = new UpdateQueryParser();
 
     @Override
     public List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
@@ -40,6 +43,12 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
         switch (command) {
             case "select":
                 return select.query(query, collectionManager);
+            case "delete":
+                return delete.query(query, collectionManager);
+            case "insert":
+                return insert.query(query, collectionManager);
+            case "update":
+                return update.query(query, collectionManager);
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }
