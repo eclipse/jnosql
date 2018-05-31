@@ -16,14 +16,21 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.query.QueryException;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 final class DefaultDocumentPreparedStatement implements DocumentPreparedStatement {
 
@@ -41,10 +48,19 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
 
     private final List<String> paramsLeft;
 
-    private DefaultDocumentPreparedStatement(DocumentEntity entity, DocumentQuery documentQuery,
-                                            DocumentDeleteQuery documentDeleteQuery,
-                                            PreparedStatementType type, Params params,
-                                            String query, List<String> paramsLeft) {
+    private final Duration duration;
+
+    private final DocumentCollectionManager manager;
+
+    private DefaultDocumentPreparedStatement(DocumentEntity entity,
+                                             DocumentQuery documentQuery,
+                                             DocumentDeleteQuery documentDeleteQuery,
+                                             PreparedStatementType type,
+                                             Params params,
+                                             String query,
+                                             List<String> paramsLeft,
+                                             Duration duration,
+                                             DocumentCollectionManager manager) {
         this.entity = entity;
         this.documentQuery = documentQuery;
         this.documentDeleteQuery = documentDeleteQuery;
@@ -52,6 +68,8 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
         this.params = params;
         this.query = query;
         this.paramsLeft = paramsLeft;
+        this.manager = manager;
+        this.duration = duration;
     }
 
     @Override
@@ -60,17 +78,46 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
         Objects.requireNonNull(value, "value is required");
 
         paramsLeft.remove(name);
-        return null;
+        params.bind(name, value);
+        return this;
     }
 
     @Override
     public List<DocumentEntity> getResultList() {
-        return null;
+        if (!paramsLeft.isEmpty()) {
+            throw new QueryException("Check all the parameters before execute the query, params left: " + paramsLeft);
+        }
+        switch (type) {
+            case SELECT:
+                return manager.select(documentQuery);
+            case DELETE:
+                manager.select(documentQuery);
+                return emptyList();
+            case UPDATE:
+                return singletonList(manager.update(entity));
+            case INSERT:
+                if (Objects.isNull(duration)) {
+                    return singletonList(manager.insert(entity));
+                } else {
+                    return singletonList(manager.insert(entity, duration));
+                }
+            default:
+                throw new UnsupportedOperationException("there is not support to operation type: " + type);
+
+        }
     }
 
     @Override
     public Optional<DocumentEntity> getSingleResult() {
-        return Optional.empty();
+        List<DocumentEntity> entities = getResultList();
+        if (entities.isEmpty()) {
+            return Optional.empty();
+        }
+        if (entities.size() == 1) {
+            return Optional.of(entities.get(0));
+        }
+
+        throw new NonUniqueResultException("The select returns more than one entity, select: " + query);
     }
 
     enum PreparedStatementType {
