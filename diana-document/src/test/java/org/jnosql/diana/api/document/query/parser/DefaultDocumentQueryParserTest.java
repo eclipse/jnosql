@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.document.query.parser;
 
+import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.api.document.DocumentQueryParser;
@@ -28,7 +29,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.jnosql.diana.api.Sort.SortType.ASC;
+import static org.jnosql.diana.api.Sort.SortType.DESC;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class DefaultDocumentQueryParserTest {
@@ -71,12 +78,14 @@ class DefaultDocumentQueryParserTest {
         DocumentQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.getDocuments().isEmpty());
+        assertTrue(documentQuery.getSorts().isEmpty());
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
         assertFalse(documentQuery.getCondition().isPresent());
 
     }
+
 
 
 }

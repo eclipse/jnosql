@@ -26,6 +26,8 @@ import java.util.Objects;
 
 public class DefaultDocumentQueryParser implements DocumentQueryParser {
 
+    private final SelectQueryParser select = new SelectQueryParser();
+
     @Override
     public List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
         Objects.requireNonNull(query, "query is required");
@@ -34,10 +36,10 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
         if (query.length() < 6) {
             throw new QueryException(String.format("The query %s is invalid", query));
         }
-        String command = query.substring(0, 7);
+        String command = query.substring(0, 6);
         switch (command) {
             case "select":
-
+                return select.query(query, collectionManager);
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }

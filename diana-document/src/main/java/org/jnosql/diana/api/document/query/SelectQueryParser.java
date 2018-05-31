@@ -19,11 +19,11 @@ package org.jnosql.diana.api.document.query;
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.query.SelectQuery;
 import org.jnosql.query.SelectQuerySupplier;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -46,12 +46,11 @@ final class SelectQueryParser {
         long skip = selectQuery.getSkip();
         List<String> documents = new ArrayList<>(selectQuery.getFields());
         List<Sort> sorts = selectQuery.getOrderBy().stream().map(this::toSort).collect(toList());
-
-
-        return Collections.emptyList();
+        DocumentQuery documentQuery = new DefaultDocumentQuery(limit, skip, collection, documents, sorts, null);
+        return collectionManager.select(documentQuery);
     }
 
     private Sort toSort(org.jnosql.query.Sort sort) {
-        Sort.of(sort.getName(), sort.getType().equals(org.jnosql.query.Sort.SortType.ASC)? ASC: DESC);
+        return Sort.of(sort.getName(), sort.getType().equals(org.jnosql.query.Sort.SortType.ASC)? ASC: DESC);
     }
 }
