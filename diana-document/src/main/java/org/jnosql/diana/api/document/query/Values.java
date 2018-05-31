@@ -17,11 +17,14 @@
 package org.jnosql.diana.api.document.query;
 
 import org.jnosql.query.ArrayValue;
+import org.jnosql.query.Function;
+import org.jnosql.query.FunctionValue;
 import org.jnosql.query.JSONValue;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.Value;
 import org.jnosql.query.ValueType;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -44,6 +47,15 @@ final class Values {
             case ARRAY:
                 return Stream.of(ArrayValue.class.cast(value).get()).map(Values::get).collect(toList());
             case FUNCTION:
+                Function function = FunctionValue.class.cast(value).get();
+                String name = function.getName();
+                Object[] params = function.getParams();
+                if ("convert".equals(name)) {
+                    return org.jnosql.diana.api.Value.of(params[0]).get((Class<?>) params[1]);
+                }
+                String message = String.format("There is not support to the fuction: %s with parameters %s", name,
+                        Arrays.toString(params));
+                throw new QueryException(message);
             case JSON:
                 return JsonObjects.geDocument(JSONValue.class.cast(value).get());
             default:

@@ -18,6 +18,7 @@ package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.TypeReference;
+import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
@@ -305,6 +306,27 @@ public class SelectQueryParserTest {
                 Document.of("Zeus", "Father")));
         assertEquals("siblings", document.getName());
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where age = convert(12, java.lang.Integer)"})
+    public void shouldReturnParserQuery19(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+        Document document = condition.getDocument();
+        assertEquals(EQUALS, condition.getCondition());
+        assertEquals("age", document.getName());
+        assertEquals(Value.of(12), document.getValue());
+
+
+    }
+
+
     private void checkBaseQuery(DocumentQuery documentQuery, long limit, long skip) {
         assertTrue(documentQuery.getDocuments().isEmpty());
         assertTrue(documentQuery.getSorts().isEmpty());
