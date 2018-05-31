@@ -16,17 +16,14 @@
  */
 package org.jnosql.diana.api.document.query;
 
-import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
-import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.query.InsertQuery;
 import org.jnosql.query.InsertQuerySupplier;
 import org.jnosql.query.QueryException;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
