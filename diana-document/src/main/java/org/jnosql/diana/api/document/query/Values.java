@@ -17,6 +17,7 @@
 package org.jnosql.diana.api.document.query;
 
 import org.jnosql.query.ArrayValue;
+import org.jnosql.query.JSONValue;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.Value;
 import org.jnosql.query.ValueType;
@@ -44,6 +45,7 @@ final class Values {
                 return Stream.of(ArrayValue.class.cast(value).get()).map(Values::get).collect(toList());
             case FUNCTION:
             case JSON:
+                return JsonObjects.geDocument(JSONValue.class.cast(value).get());
             default:
                 throw new QueryException("There is not suppor to the value: " + type);
 
