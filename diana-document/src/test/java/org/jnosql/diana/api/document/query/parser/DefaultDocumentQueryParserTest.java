@@ -19,6 +19,7 @@ package org.jnosql.diana.api.document.query.parser;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.api.document.DocumentQueryParser;
+import org.jnosql.diana.api.document.query.DefaultDocumentQueryParser;
 import org.jnosql.query.QueryException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
