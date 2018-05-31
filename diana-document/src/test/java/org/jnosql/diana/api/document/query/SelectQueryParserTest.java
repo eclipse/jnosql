@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.hamcrest.Matchers;
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
@@ -38,8 +39,11 @@ import static org.jnosql.diana.api.Condition.BETWEEN;
 import static org.jnosql.diana.api.Condition.EQUALS;
 import static org.jnosql.diana.api.Condition.GREATER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.GREATER_THAN;
+import static org.jnosql.diana.api.Condition.IN;
 import static org.jnosql.diana.api.Condition.LESSER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.LESSER_THAN;
+import static org.jnosql.diana.api.Condition.LIKE;
+import static org.jnosql.diana.api.Condition.NOT;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
 import static org.jnosql.diana.api.Sort.SortType.DESC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -326,6 +330,56 @@ public class SelectQueryParserTest {
 
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where name in (\"Ada\", \"Apollo\")"})
+    public void shouldReturnParserQuery20(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+        Document document = condition.getDocument();
+        assertEquals(IN, condition.getCondition());
+        assertEquals("name", document.getName());
+        List<String> values = document.get(new TypeReference<List<String>>() {
+        });
+        assertThat(values, containsInAnyOrder("Ada", "Apollo"));
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select * from God where name like \"Ada\""})
+    public void shouldReturnParserQuery21(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+        Document document = condition.getDocument();
+        assertEquals(LIKE, condition.getCondition());
+        assertEquals("name", document.getName());
+        assertEquals("Ada", document.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select * from God where name not like \"Ada\""})
+    public void shouldReturnParserQuery22(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+        Document document = condition.getDocument();
+        assertEquals(NOT, condition.getCondition());
+    }
 
     private void checkBaseQuery(DocumentQuery documentQuery, long limit, long skip) {
         assertTrue(documentQuery.getDocuments().isEmpty());
