@@ -39,9 +39,12 @@ final class ParamValue implements Value {
     @Override
     public Object get() {
         validValue();
-        return null;
+        return value;
     }
 
+    public String getName() {
+        return name;
+    }
 
     @Override
     public <T> T get(Class<T> clazz) {

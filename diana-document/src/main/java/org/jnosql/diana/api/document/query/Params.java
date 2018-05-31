@@ -21,18 +21,33 @@ import org.jnosql.diana.api.Value;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
 final class Params {
 
     private final List<ParamValue> parameters = new ArrayList<>();
 
-
-    public boolean isNotEmpty() {
+    boolean isNotEmpty() {
         return !parameters.isEmpty();
     }
 
-    public Value add(String param) {
+    Value add(String param) {
         ParamValue value = new ParamValue(param);
         parameters.add(value);
         return value;
+    }
+
+    List<String> getParametersNames() {
+        return parameters.stream().map(ParamValue::getName).collect(toList());
+    }
+
+    @Override
+    public String toString() {
+        return parameters.stream().map(ParamValue::getName).collect(joining(","));
+    }
+
+    void bind(String name, Object value) {
+        parameters.stream().filter(p -> p.getName().equals(name)).forEach(p -> p.setValue(value));
     }
 }

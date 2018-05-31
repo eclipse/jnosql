@@ -34,12 +34,7 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
 
     @Override
     public List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
-        Objects.requireNonNull(query, "query is required");
-        Objects.requireNonNull(collectionManager, "collectionManager is required");
-
-        if (query.length() < 6) {
-            throw new QueryException(String.format("The query %s is invalid", query));
-        }
+        validation(query, collectionManager);
         String command = query.substring(0, 6);
         switch (command) {
             case "select":
@@ -57,14 +52,28 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
 
     @Override
     public DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+        validation(query, collectionManager);
+        String command = query.substring(0, 6);
+
+        switch (command) {
+            case "select":
+                return select.prepare(query, collectionManager);
+//            case "delete":
+//                return delete.query(query, collectionManager);
+//            case "insert":
+//                return insert.query(query, collectionManager);
+//            case "update":
+//                return update.query(query, collectionManager);
+            default:
+                throw new QueryException(String.format("The command was not recognized at the query %s ", query));
+        }
+    }
+
+    private void validation(String query, DocumentCollectionManager collectionManager) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(collectionManager, "collectionManager is required");
         if (query.length() < 6) {
             throw new QueryException(String.format("The query %s is invalid", query));
         }
-        String command = query.substring(0, 6);
-
-
-        return null;
     }
 }

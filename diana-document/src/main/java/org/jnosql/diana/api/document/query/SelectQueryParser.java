@@ -20,6 +20,7 @@ import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.SelectQuery;
@@ -63,5 +64,24 @@ final class SelectQueryParser {
 
     private Sort toSort(org.jnosql.query.Sort sort) {
         return Sort.of(sort.getName(), sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? ASC : DESC);
+    }
+
+    public DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+
+        SelectQuery selectQuery = selectQuerySupplier.apply(query);
+
+        String collection = selectQuery.getEntity();
+        long limit = selectQuery.getLimit();
+        long skip = selectQuery.getSkip();
+        List<String> documents = new ArrayList<>(selectQuery.getFields());
+        List<Sort> sorts = selectQuery.getOrderBy().stream().map(this::toSort).collect(toList());
+        DocumentCondition condition = null;
+        Params params = new Params();
+        DocumentQuery documentQuery = new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
+        if (selectQuery.getWhere().isPresent()) {
+            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
+        }
+
+        return null;
     }
 }
