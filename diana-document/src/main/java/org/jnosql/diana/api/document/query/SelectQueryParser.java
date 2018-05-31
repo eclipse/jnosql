@@ -18,6 +18,7 @@ package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.query.SelectQuery;
@@ -46,7 +47,13 @@ final class SelectQueryParser {
         long skip = selectQuery.getSkip();
         List<String> documents = new ArrayList<>(selectQuery.getFields());
         List<Sort> sorts = selectQuery.getOrderBy().stream().map(this::toSort).collect(toList());
-        DocumentQuery documentQuery = new DefaultDocumentQuery(limit, skip, collection, documents, sorts, null);
+        DocumentCondition condition = null;
+
+        if(selectQuery.getWhere().isPresent()) {
+            condition = selectQuery.getWhere().map(Conditions::getCondition).get();
+        }
+
+        DocumentQuery documentQuery = new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
         return collectionManager.select(documentQuery);
     }
 

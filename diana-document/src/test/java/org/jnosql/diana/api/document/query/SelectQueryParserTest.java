@@ -16,8 +16,11 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.Sort;
+import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -166,5 +169,25 @@ public class SelectQueryParserTest {
         assertEquals(10L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
         assertFalse(documentQuery.getCondition().isPresent());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where age = 10"})
+    public void shouldReturnParserQuery10(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        assertTrue(documentQuery.getDocuments().isEmpty());
+        assertTrue(documentQuery.getSorts().isEmpty());
+        assertEquals(0L, documentQuery.getLimit());
+        assertEquals(0L, documentQuery.getSkip());
+        assertEquals("God", documentQuery.getDocumentCollection());
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+
+        assertEquals(Condition.EQUALS, condition.getCondition());
+        assertEquals(Document.of("age", 10L), condition.getDocument());
     }
 }
