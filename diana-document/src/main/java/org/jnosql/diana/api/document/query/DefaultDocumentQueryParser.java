@@ -52,6 +52,5 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }
-//        return null;
     }
 }
