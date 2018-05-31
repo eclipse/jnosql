@@ -17,7 +17,10 @@
 package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.Sort;
+import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentDeleteQuery;
+import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.api.document.DocumentQueryParser;
 import org.jnosql.diana.api.document.query.DefaultDocumentQueryParser;
@@ -84,6 +87,47 @@ class DefaultDocumentQueryParserTest {
         assertEquals("God", documentQuery.getDocumentCollection());
         assertFalse(documentQuery.getCondition().isPresent());
 
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"delete from God"})
+    public void shouldReturnParserQuery1(String query) {
+        ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).delete(captor.capture());
+        DocumentDeleteQuery documentQuery = captor.getValue();
+
+        assertTrue(documentQuery.getDocuments().isEmpty());
+        assertEquals("God", documentQuery.getDocumentCollection());
+        assertFalse(documentQuery.getCondition().isPresent());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert God (name = \"Diana\")"})
+    public void shouldReturnParserQuery2(String query) {
+        ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).insert(captor.capture());
+        DocumentEntity entity = captor.getValue();
+
+
+        assertEquals("God", entity.getName());
+        assertEquals(Document.of("name", "Diana"), entity.find("name").get());
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"update God (name = \"Diana\")"})
+    public void shouldReturnParserQuery3(String query) {
+        ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).update(captor.capture());
+        DocumentEntity entity = captor.getValue();
+
+
+        assertEquals("God", entity.getName());
+        assertEquals(Document.of("name", "Diana"), entity.find("name").get());
     }
 
 

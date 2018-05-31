@@ -18,6 +18,7 @@ package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentQueryParser;
 import org.jnosql.query.QueryException;
 
@@ -52,5 +53,18 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }
+    }
+
+    @Override
+    public DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+        Objects.requireNonNull(query, "query is required");
+        Objects.requireNonNull(collectionManager, "collectionManager is required");
+        if (query.length() < 6) {
+            throw new QueryException(String.format("The query %s is invalid", query));
+        }
+        String command = query.substring(0, 6);
+
+
+        return null;
     }
 }
