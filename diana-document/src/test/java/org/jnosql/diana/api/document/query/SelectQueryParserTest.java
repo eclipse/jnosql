@@ -16,7 +16,6 @@
  */
 package org.jnosql.diana.api.document.query;
 
-import org.hamcrest.Matchers;
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
@@ -35,6 +34,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.BETWEEN;
 import static org.jnosql.diana.api.Condition.EQUALS;
 import static org.jnosql.diana.api.Condition.GREATER_EQUALS_THAN;
@@ -44,8 +44,10 @@ import static org.jnosql.diana.api.Condition.LESSER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.LESSER_THAN;
 import static org.jnosql.diana.api.Condition.LIKE;
 import static org.jnosql.diana.api.Condition.NOT;
+import static org.jnosql.diana.api.Condition.OR;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
 import static org.jnosql.diana.api.Sort.SortType.DESC;
+import static org.jnosql.diana.api.document.DocumentCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -379,6 +381,49 @@ public class SelectQueryParserTest {
         DocumentCondition condition = documentQuery.getCondition().get();
         Document document = condition.getDocument();
         assertEquals(NOT, condition.getCondition());
+        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        });
+        DocumentCondition documentCondition = conditions.get(0);
+        assertEquals(LIKE, documentCondition.getCondition());
+        assertEquals(Document.of("name", "Ada"), documentCondition.getDocument());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where name = \"Ada\" and age = 20"})
+    public void shouldReturnParserQuery23(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+        Document document = condition.getDocument();
+        assertEquals(AND, condition.getCondition());
+        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        });
+        assertThat(conditions, contains(eq(Document.of("name", "Ada")),
+                eq(Document.of("age", 20L))));
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where name = \"Ada\" or age = 20"})
+    public void shouldReturnParserQuery24(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+        Document document = condition.getDocument();
+        assertEquals(OR, condition.getCondition());
+        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        });
+        assertThat(conditions, contains(eq(Document.of("name", "Ada")),
+                eq(Document.of("age", 20L))));
     }
 
     private void checkBaseQuery(DocumentQuery documentQuery, long limit, long skip) {

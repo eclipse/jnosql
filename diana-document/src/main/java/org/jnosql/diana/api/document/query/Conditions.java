@@ -19,9 +19,11 @@ package org.jnosql.diana.api.document.query;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.query.Condition;
+import org.jnosql.query.ConditionValue;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.Where;
 
+import static org.jnosql.diana.api.document.DocumentCondition.and;
 import static org.jnosql.diana.api.document.DocumentCondition.between;
 import static org.jnosql.diana.api.document.DocumentCondition.eq;
 import static org.jnosql.diana.api.document.DocumentCondition.gt;
@@ -30,6 +32,7 @@ import static org.jnosql.diana.api.document.DocumentCondition.in;
 import static org.jnosql.diana.api.document.DocumentCondition.like;
 import static org.jnosql.diana.api.document.DocumentCondition.lt;
 import static org.jnosql.diana.api.document.DocumentCondition.lte;
+import static org.jnosql.diana.api.document.DocumentCondition.or;
 
 final class Conditions {
 
@@ -59,10 +62,18 @@ final class Conditions {
                 return like(Document.of(condition.getName(), Values.get(condition.getValue())));
             case BETWEEN:
                 return between(Document.of(condition.getName(), Values.get(condition.getValue())));
-            case OR:
-
-            case AND:
             case NOT:
+                return getCondition(ConditionValue.class.cast(condition.getValue()).get().get(0)).negate();
+            case OR:
+                return or(ConditionValue.class.cast(condition.getValue())
+                        .get()
+                        .stream().map(Conditions::getCondition)
+                        .toArray(DocumentCondition[]::new));
+            case AND:
+                return and(ConditionValue.class.cast(condition.getValue())
+                        .get()
+                        .stream().map(Conditions::getCondition)
+                        .toArray(DocumentCondition[]::new));
             default:
                 throw new QueryException("There is not support the type: " + condition.getOperator());
 
