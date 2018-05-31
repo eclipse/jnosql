@@ -38,6 +38,10 @@ final class Conditions {
 
     public static DocumentCondition getCondition(Where where) {
         Condition condition = where.getCondition();
+        return getCondition(condition);
+    }
+
+    private static DocumentCondition getCondition(Condition condition) {
         switch (condition.getOperator()) {
             case EQUALS:
                 return eq(Document.of(condition.getName(), Values.get(condition.getValue())));
@@ -55,8 +59,9 @@ final class Conditions {
                 return like(Document.of(condition.getName(), Values.get(condition.getValue())));
             case BETWEEN:
                 return between(Document.of(condition.getName(), Values.get(condition.getValue())));
-            case AND:
             case OR:
+
+            case AND:
             case NOT:
             default:
                 throw new QueryException("There is not support the type: " + condition.getOperator());
