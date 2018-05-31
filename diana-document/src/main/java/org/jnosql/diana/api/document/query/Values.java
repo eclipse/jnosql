@@ -51,7 +51,7 @@ final class Values {
                 String name = function.getName();
                 Object[] params = function.getParams();
                 if ("convert".equals(name)) {
-                    return org.jnosql.diana.api.Value.of(params[0]).get((Class<?>) params[1]);
+                    return org.jnosql.diana.api.Value.of(get(Value.class.cast(params[0]))).get((Class<?>) params[1]);
                 }
                 String message = String.format("There is not support to the fuction: %s with parameters %s", name,
                         Arrays.toString(params));

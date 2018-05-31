@@ -449,6 +449,29 @@ public class SelectQueryParserTest {
 
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where name = \"Ada\" and age = 20 or" +
+            " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"} and birthday =" +
+            " convert(\"2007-12-03\", java.time.LocalDate)"})
+    public void shouldReturnParserQuery26(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+        Document document = condition.getDocument();
+        assertEquals(AND, condition.getCondition());
+        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        });
+        assertEquals(EQUALS, conditions.get(0).getCondition());
+        assertEquals(EQUALS, conditions.get(1).getCondition());
+        assertEquals(OR, conditions.get(2).getCondition());
+        assertEquals(EQUALS, conditions.get(3).getCondition());
+    }
+
     private void checkBaseQuery(DocumentQuery documentQuery, long limit, long skip) {
         assertTrue(documentQuery.getDocuments().isEmpty());
         assertTrue(documentQuery.getSorts().isEmpty());
