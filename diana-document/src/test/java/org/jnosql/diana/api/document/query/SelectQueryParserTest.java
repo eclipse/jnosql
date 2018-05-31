@@ -16,7 +16,6 @@
  */
 package org.jnosql.diana.api.document.query;
 
-import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
@@ -29,6 +28,11 @@ import org.mockito.Mockito;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.jnosql.diana.api.Condition.EQUALS;
+import static org.jnosql.diana.api.Condition.GREATER_EQUALS_THAN;
+import static org.jnosql.diana.api.Condition.GREATER_THAN;
+import static org.jnosql.diana.api.Condition.LESSER_EQUALS_THAN;
+import static org.jnosql.diana.api.Condition.LESSER_THAN;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
 import static org.jnosql.diana.api.Sort.SortType.DESC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -131,11 +135,7 @@ public class SelectQueryParserTest {
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
-        assertTrue(documentQuery.getDocuments().isEmpty());
-        assertTrue(documentQuery.getSorts().isEmpty());
-        assertEquals(0L, documentQuery.getLimit());
-        assertEquals(12L, documentQuery.getSkip());
-        assertEquals("God", documentQuery.getDocumentCollection());
+        checkBaseQuery(documentQuery, 0L, 12L);
         assertFalse(documentQuery.getCondition().isPresent());
     }
 
@@ -147,11 +147,7 @@ public class SelectQueryParserTest {
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
-        assertTrue(documentQuery.getDocuments().isEmpty());
-        assertTrue(documentQuery.getSorts().isEmpty());
-        assertEquals(12L, documentQuery.getLimit());
-        assertEquals(0L, documentQuery.getSkip());
-        assertEquals("God", documentQuery.getDocumentCollection());
+        checkBaseQuery(documentQuery, 12L, 0L);
         assertFalse(documentQuery.getCondition().isPresent());
     }
 
@@ -179,15 +175,83 @@ public class SelectQueryParserTest {
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
-        assertTrue(documentQuery.getDocuments().isEmpty());
-        assertTrue(documentQuery.getSorts().isEmpty());
-        assertEquals(0L, documentQuery.getLimit());
-        assertEquals(0L, documentQuery.getSkip());
-        assertEquals("God", documentQuery.getDocumentCollection());
+        checkBaseQuery(documentQuery, 0L, 0L);
         assertTrue(documentQuery.getCondition().isPresent());
         DocumentCondition condition = documentQuery.getCondition().get();
 
-        assertEquals(Condition.EQUALS, condition.getCondition());
+        assertEquals(EQUALS, condition.getCondition());
         assertEquals(Document.of("age", 10L), condition.getDocument());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where stamina > 10.23"})
+    public void shouldReturnParserQuery11(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+
+        assertEquals(GREATER_THAN, condition.getCondition());
+        assertEquals(Document.of("stamina", 10.23), condition.getDocument());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where stamina >= -10.23"})
+    public void shouldReturnParserQuery12(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+
+        assertEquals(GREATER_EQUALS_THAN, condition.getCondition());
+        assertEquals(Document.of("stamina", -10.23), condition.getDocument());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where stamina <= -10.23"})
+    public void shouldReturnParserQuery13(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+
+        assertEquals(LESSER_EQUALS_THAN, condition.getCondition());
+        assertEquals(Document.of("stamina", -10.23), condition.getDocument());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where stamina < -10.23"})
+    public void shouldReturnParserQuery14(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        parser.query(query, documentCollection);
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+
+        assertEquals(LESSER_THAN, condition.getCondition());
+        assertEquals(Document.of("stamina", -10.23), condition.getDocument());
+    }
+
+    private void checkBaseQuery(DocumentQuery documentQuery, long limit, long skip) {
+        assertTrue(documentQuery.getDocuments().isEmpty());
+        assertTrue(documentQuery.getSorts().isEmpty());
+        assertEquals(limit, documentQuery.getLimit());
+        assertEquals(skip, documentQuery.getSkip());
+        assertEquals("God", documentQuery.getDocumentCollection());
     }
 }
