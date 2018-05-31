@@ -39,12 +39,12 @@ final class Conditions {
     private Conditions() {
     }
 
-    public static DocumentCondition getCondition(Where where, Params params) {
+    static DocumentCondition getCondition(Where where, Params params) {
         Condition condition = where.getCondition();
         return getCondition(condition, params);
     }
 
-    private static DocumentCondition getCondition(Condition condition, Params parameters) {
+    static DocumentCondition getCondition(Condition condition, Params parameters) {
         switch (condition.getOperator()) {
             case EQUALS:
                 return eq(Document.of(condition.getName(), Values.get(condition.getValue(), parameters)));
