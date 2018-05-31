@@ -43,13 +43,13 @@ final class DeleteQueryParser {
         String collection = deleteQuery.getEntity();
         List<String> documents = new ArrayList<>(deleteQuery.getFields());
         DocumentCondition condition = null;
-        List<ParamValue> parameters = new ArrayList<>();
+        Params params = new Params();
 
         if (deleteQuery.getWhere().isPresent()) {
-            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, parameters)).get();
+            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
         }
 
-        if (!parameters.isEmpty()) {
+        if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
         DocumentDeleteQuery documentQuery = new DefaultDocumentDeleteQuery(collection, condition, documents);

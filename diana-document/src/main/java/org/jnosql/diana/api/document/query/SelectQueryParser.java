@@ -49,12 +49,12 @@ final class SelectQueryParser {
         List<String> documents = new ArrayList<>(selectQuery.getFields());
         List<Sort> sorts = selectQuery.getOrderBy().stream().map(this::toSort).collect(toList());
         DocumentCondition condition = null;
-        List<ParamValue> parameters = new ArrayList<>();
+        Params params = new Params();
         if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, parameters)).get();
+            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
         }
 
-        if (!parameters.isEmpty()) {
+        if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
         DocumentQuery documentQuery = new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);

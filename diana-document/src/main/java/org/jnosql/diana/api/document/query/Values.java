@@ -26,7 +26,6 @@ import org.jnosql.query.Value;
 import org.jnosql.query.ValueType;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -36,7 +35,7 @@ final class Values {
     private Values() {
     }
 
-    static Object get(Value<?> value, List<org.jnosql.diana.api.document.query.ParamValue> parameters) {
+    static Object get(Value<?> value, Params parameters) {
 
         ValueType type = value.getType();
         switch (type) {
@@ -44,10 +43,7 @@ final class Values {
             case STRING:
                 return value.get();
             case PARAMETER:
-                org.jnosql.diana.api.document.query.ParamValue paramValue =
-                        new org.jnosql.diana.api.document.query.ParamValue(ParamValue.class.cast(value).get());
-                parameters.add(paramValue);
-                return paramValue;
+                return parameters.add(ParamValue.class.cast(value).get());
             case ARRAY:
                 return Stream.of(ArrayValue.class.cast(value).get())
                         .map(v -> get(v, parameters))
