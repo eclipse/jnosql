@@ -129,4 +129,47 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
     public String toString() {
         return query;
     }
+
+    static DocumentPreparedStatement select(
+            DocumentQuery documentQuery,
+            Params params,
+            String query,
+            DocumentCollectionManager manager) {
+        return new DefaultDocumentPreparedStatement(null, documentQuery,
+                null, PreparedStatementType.SELECT, params, query,
+                params.getParametersNames(), null, manager);
+
+    }
+
+    static DocumentPreparedStatement delete(DocumentDeleteQuery documentDeleteQuery,
+                                            Params params,
+                                            String query,
+                                            DocumentCollectionManager manager) {
+
+        return new DefaultDocumentPreparedStatement(null, null,
+                documentDeleteQuery, PreparedStatementType.DELETE, params, query,
+                params.getParametersNames(), null, manager);
+
+    }
+
+    static DocumentPreparedStatement insert(DocumentEntity entity,
+                                            Params params,
+                                            String query,
+                                            Duration duration,
+                                            DocumentCollectionManager manager) {
+        return new DefaultDocumentPreparedStatement(entity, null,
+                null, PreparedStatementType.INSERT, params, query,
+                params.getParametersNames(), duration, manager);
+
+    }
+
+    static DocumentPreparedStatement update(DocumentEntity entity,
+                                            Params params,
+                                            String query,
+                                            DocumentCollectionManager manager) {
+        return new DefaultDocumentPreparedStatement(entity, null,
+                null, PreparedStatementType.UPDATE, params, query,
+                params.getParametersNames(), null, manager);
+
+    }
 }
