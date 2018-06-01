@@ -56,7 +56,7 @@ public interface DocumentQueryParser {
      * @throws IllegalStateException when there isn't DocumentQueryParser from service loader.
      */
     static DocumentQueryParser getParser() {
-        return null;
+        return DocumentQueryParserServiceLoader.getInstance();
     }
 
 
