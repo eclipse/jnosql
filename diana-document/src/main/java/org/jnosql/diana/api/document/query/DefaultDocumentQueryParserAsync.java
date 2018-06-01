@@ -37,7 +37,7 @@ final class DefaultDocumentQueryParserAsync implements DocumentQueryParserAsync 
     public void query(String query, DocumentCollectionManagerAsync collectionManager,
                       Consumer<List<DocumentEntity>> callBack) {
 
-        validation(query, collectionManager);
+        validation(query, collectionManager, callBack);
         String command = query.substring(0, 6);
         switch (command) {
             case "select":
@@ -77,8 +77,19 @@ final class DefaultDocumentQueryParserAsync implements DocumentQueryParserAsync 
     }
 
     private void validation(String query, DocumentCollectionManagerAsync collectionManager) {
+
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(collectionManager, "collectionManager is required");
+        if (query.length() < 6) {
+            throw new QueryException(String.format("The query %s is invalid", query));
+        }
+    }
+    private void validation(String query, DocumentCollectionManagerAsync collectionManager,
+                            Consumer<List<DocumentEntity>> callBack) {
+
+        Objects.requireNonNull(query, "query is required");
+        Objects.requireNonNull(collectionManager, "collectionManager is required");
+        Objects.requireNonNull(callBack, "callBack is required");
         if (query.length() < 6) {
             throw new QueryException(String.format("The query %s is invalid", query));
         }
