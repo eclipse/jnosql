@@ -23,6 +23,7 @@ import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
+import org.jnosql.diana.api.document.ObserverParser;
 import org.jnosql.query.DeleteQuery;
 import org.jnosql.query.DeleteQuerySupplier;
 import org.jnosql.query.QueryException;
@@ -40,56 +41,59 @@ final class DeleteQueryParser {
         this.selectQuerySupplier = DeleteQuerySupplier.getSupplier();
     }
 
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
 
-        DocumentDeleteQuery documentQuery = getQuery(query);
+        DocumentDeleteQuery documentQuery = getQuery(query, observer);
         collectionManager.delete(documentQuery);
         return Collections.emptyList();
     }
 
-    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack) {
-        DocumentDeleteQuery documentQuery = getQuery(query);
+    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
+                    Consumer<List<DocumentEntity>> callBack, ObserverParser observer) {
+        DocumentDeleteQuery documentQuery = getQuery(query, observer);
         collectionManager.delete(documentQuery, v -> callBack.accept(Collections.emptyList()));
     }
 
-    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager,
+                                      ObserverParser observer) {
         Params params = new Params();
-        DocumentDeleteQuery documentQuery = getQuery(query, params);
+        DocumentDeleteQuery documentQuery = getQuery(query, params, observer);
         return DefaultDocumentPreparedStatement.delete(documentQuery, params, query, collectionManager);
     }
 
 
-    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager) {
+    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager,
+                                                ObserverParser observer) {
         Params params = new Params();
-        DocumentDeleteQuery documentQuery = getQuery(query, params);
+        DocumentDeleteQuery documentQuery = getQuery(query, params, observer);
         return DefaultDocumentPreparedStatementAsync.delete(documentQuery, params, query, collectionManager);
 
     }
 
-    private DocumentDeleteQuery getQuery(String query, Params params) {
+    private DocumentDeleteQuery getQuery(String query, Params params, ObserverParser observer) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
-        String collection = deleteQuery.getEntity();
+        String collection = observer.fireEntity(deleteQuery.getEntity());
         List<String> documents = new ArrayList<>(deleteQuery.getFields());
         DocumentCondition condition = null;
 
         if (deleteQuery.getWhere().isPresent()) {
-            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
+            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer)).get();
         }
 
         return new DefaultDocumentDeleteQuery(collection, condition, documents);
     }
 
-    private DocumentDeleteQuery getQuery(String query) {
+    private DocumentDeleteQuery getQuery(String query, ObserverParser observer) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
-        String collection = deleteQuery.getEntity();
+        String collection = observer.fireEntity(deleteQuery.getEntity());
         List<String> documents = new ArrayList<>(deleteQuery.getFields());
         DocumentCondition condition = null;
         Params params = new Params();
 
         if (deleteQuery.getWhere().isPresent()) {
-            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
+            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer)).get();
         }
 
         if (params.isNotEmpty()) {

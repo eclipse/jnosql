@@ -80,11 +80,11 @@ final class SelectQueryParser {
     private DocumentQuery getDocumentQuery(String query, ObserverParser observer) {
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
-        String collection = observer.convertDocumentCollection(selectQuery.getEntity());
+        String collection = observer.fireEntity(selectQuery.getEntity());
         long limit = selectQuery.getLimit();
         long skip = selectQuery.getSkip();
         List<String> documents = selectQuery.getFields().stream()
-                .map(observer::convertField).collect(Collectors.toList());
+                .map(observer::fireField).collect(Collectors.toList());
         List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer)).collect(toList());
         DocumentCondition condition = null;
         Params params = new Params();
@@ -100,11 +100,11 @@ final class SelectQueryParser {
 
     private DocumentQuery getDocumentQuery(Params params, SelectQuery selectQuery, ObserverParser observer) {
 
-        String collection = observer.convertDocumentCollection(selectQuery.getEntity());
+        String collection = observer.fireEntity(selectQuery.getEntity());
         long limit = selectQuery.getLimit();
         long skip = selectQuery.getSkip();
         List<String> documents = selectQuery.getFields().stream()
-                .map(observer::convertField).collect(Collectors.toList());
+                .map(observer::fireField).collect(Collectors.toList());
 
         List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer)).collect(toList());
         DocumentCondition condition = null;
@@ -116,7 +116,7 @@ final class SelectQueryParser {
     }
 
     private Sort toSort(org.jnosql.query.Sort sort, ObserverParser observer) {
-        return Sort.of(observer.convertField(sort.getName()), sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? ASC : DESC);
+        return Sort.of(observer.fireField(sort.getName()), sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? ASC : DESC);
     }
 
 

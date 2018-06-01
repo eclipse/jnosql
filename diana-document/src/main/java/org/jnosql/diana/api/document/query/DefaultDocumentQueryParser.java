@@ -70,12 +70,12 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
     }
 
     @Override
-    public String convertDocumentCollection(String document) {
+    public String fireEntity(String document) {
         return document;
     }
 
     @Override
-    public String convertField(String document) {
+    public String fireField(String document) {
         return document;
     }
 

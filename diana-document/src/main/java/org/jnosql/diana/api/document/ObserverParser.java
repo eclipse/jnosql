@@ -27,7 +27,7 @@ public interface ObserverParser {
      * @param document the document
      * @return the field result
      */
-    String convertDocumentCollection(String document);
+    String fireEntity(String document);
 
     /**
      * Fire an event to each field in case of mapper process
@@ -35,5 +35,5 @@ public interface ObserverParser {
      * @param document the document
      * @return the field result
      */
-    String convertField(String document);
+    String fireField(String document);
 }
