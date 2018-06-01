@@ -33,7 +33,7 @@ final class JsonObjects {
     private JsonObjects() {
     }
 
-    static List<Document> geDocument(JsonObject jsonObject) {
+    static List<Document> getDocuments(JsonObject jsonObject) {
         Map<String, Object> map = JSON.fromJson(jsonObject.toString(), Map.class);
         return Documents.of(map);
     }
