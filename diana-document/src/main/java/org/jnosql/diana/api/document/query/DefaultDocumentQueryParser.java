@@ -38,13 +38,13 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
         String command = query.substring(0, 6);
         switch (command) {
             case "select":
-                return select.query(query, collectionManager);
+                return select.query(query, collectionManager, this);
             case "delete":
-                return delete.query(query, collectionManager);
+                return delete.query(query, collectionManager, this);
             case "insert":
-                return insert.query(query, collectionManager);
+                return insert.query(query, collectionManager, this);
             case "update":
-                return update.query(query, collectionManager);
+                return update.query(query, collectionManager, this);
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }
@@ -57,16 +57,26 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
 
         switch (command) {
             case "select":
-                return select.prepare(query, collectionManager);
+                return select.prepare(query, collectionManager, this);
             case "delete":
-                return delete.prepare(query, collectionManager);
+                return delete.prepare(query, collectionManager, this);
             case "insert":
-                return insert.prepare(query, collectionManager);
+                return insert.prepare(query, collectionManager, this);
             case "update":
-                return update.prepare(query, collectionManager);
+                return update.prepare(query, collectionManager, this);
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }
+    }
+
+    @Override
+    public String convertDocumentCollection(String document) {
+        return document;
+    }
+
+    @Override
+    public String convertField(String document) {
+        return document;
     }
 
     private void validation(String query, DocumentCollectionManager collectionManager) {

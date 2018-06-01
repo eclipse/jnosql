@@ -24,13 +24,14 @@ import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.api.document.ObserverParser;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.SelectQuery;
 import org.jnosql.query.SelectQuerySupplier;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
@@ -44,47 +45,51 @@ final class SelectQueryParser {
         this.selectQuerySupplier = SelectQuerySupplier.getSupplier();
     }
 
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
 
-        DocumentQuery documentQuery = getDocumentQuery(query);
+        DocumentQuery documentQuery = getDocumentQuery(query, observer);
         return collectionManager.select(documentQuery);
     }
 
-    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack) {
-        DocumentQuery documentQuery = getDocumentQuery(query);
+    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack,
+                    ObserverParser observer) {
+        DocumentQuery documentQuery = getDocumentQuery(query, observer);
         collectionManager.select(documentQuery, callBack);
     }
 
-    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
 
         Params params = new Params();
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
-        DocumentQuery documentQuery = getDocumentQuery(params, selectQuery);
+        DocumentQuery documentQuery = getDocumentQuery(params, selectQuery, observer);
         return DefaultDocumentPreparedStatement.select(documentQuery, params, query, collectionManager);
     }
 
-    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager) {
+    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager,
+                                                ObserverParser observer) {
         Params params = new Params();
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
-        DocumentQuery documentQuery = getDocumentQuery(params, selectQuery);
+        DocumentQuery documentQuery = getDocumentQuery(params, selectQuery, observer);
         return DefaultDocumentPreparedStatementAsync.select(documentQuery, params, query, collectionManager);
     }
 
-    private DocumentQuery getDocumentQuery(String query) {
+    private DocumentQuery getDocumentQuery(String query, ObserverParser observer) {
+
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
-        String collection = selectQuery.getEntity();
+        String collection = observer.convertDocumentCollection(selectQuery.getEntity());
         long limit = selectQuery.getLimit();
         long skip = selectQuery.getSkip();
-        List<String> documents = new ArrayList<>(selectQuery.getFields());
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(this::toSort).collect(toList());
+        List<String> documents = selectQuery.getFields().stream()
+                .map(observer::convertField).collect(Collectors.toList());
+        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer)).collect(toList());
         DocumentCondition condition = null;
         Params params = new Params();
         if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
+            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer)).get();
         }
 
         if (params.isNotEmpty()) {
@@ -93,22 +98,25 @@ final class SelectQueryParser {
         return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
-    private DocumentQuery getDocumentQuery(Params params, SelectQuery selectQuery) {
-        String collection = selectQuery.getEntity();
+    private DocumentQuery getDocumentQuery(Params params, SelectQuery selectQuery, ObserverParser observer) {
+
+        String collection = observer.convertDocumentCollection(selectQuery.getEntity());
         long limit = selectQuery.getLimit();
         long skip = selectQuery.getSkip();
-        List<String> documents = new ArrayList<>(selectQuery.getFields());
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(this::toSort).collect(toList());
+        List<String> documents = selectQuery.getFields().stream()
+                .map(observer::convertField).collect(Collectors.toList());
+
+        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer)).collect(toList());
         DocumentCondition condition = null;
         if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
+            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer)).get();
         }
 
         return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
-    private Sort toSort(org.jnosql.query.Sort sort) {
-        return Sort.of(sort.getName(), sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? ASC : DESC);
+    private Sort toSort(org.jnosql.query.Sort sort, ObserverParser observer) {
+        return Sort.of(observer.convertField(sort.getName()), sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? ASC : DESC);
     }
 
 

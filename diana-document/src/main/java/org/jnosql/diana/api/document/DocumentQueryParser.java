@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * A query parser to document database type, this class will convert a String to an operation in {@link DocumentCollectionManager}.
  */
-public interface DocumentQueryParser {
+public interface DocumentQueryParser extends ObserverParser {
 
     /**
      * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
@@ -30,8 +30,8 @@ public interface DocumentQueryParser {
      * @param query             the query as {@link String}
      * @param collectionManager the collection manager
      * @return the result of the operation if delete it will always return an empty list
-     * @throws NullPointerException     when there is parameter null
-     * @throws IllegalArgumentException when the query has value parameters
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
     List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager);
@@ -43,8 +43,8 @@ public interface DocumentQueryParser {
      * @param query             the query as {@link String}
      * @param collectionManager the collection manager
      * @return a {@link DocumentPreparedStatement} instance
-     * @throws NullPointerException     when there is parameter null
-     * @throws IllegalArgumentException when the query has value parameters
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager);
