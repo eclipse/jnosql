@@ -22,6 +22,7 @@ import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
+import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.query.DeleteQuery;
 import org.jnosql.query.DeleteQuerySupplier;
 import org.jnosql.query.QueryException;
@@ -52,19 +53,31 @@ final class DeleteQueryParser {
     }
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+        Params params = new Params();
+        DocumentDeleteQuery documentQuery = getQuery(query, params);
+        return DefaultDocumentPreparedStatement.delete(documentQuery, params, query, collectionManager);
+    }
+
+
+    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager) {
+        Params params = new Params();
+        DocumentDeleteQuery documentQuery = getQuery(query, params);
+        return DefaultDocumentPreparedStatementAsync.delete(documentQuery, params, query, collectionManager);
+
+    }
+
+    private DocumentDeleteQuery getQuery(String query, Params params) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
         String collection = deleteQuery.getEntity();
         List<String> documents = new ArrayList<>(deleteQuery.getFields());
         DocumentCondition condition = null;
-        Params params = new Params();
 
         if (deleteQuery.getWhere().isPresent()) {
             condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
         }
 
-        DocumentDeleteQuery documentQuery = new DefaultDocumentDeleteQuery(collection, condition, documents);
-        return DefaultDocumentPreparedStatement.delete(documentQuery, params, query, collectionManager);
+        return new DefaultDocumentDeleteQuery(collection, condition, documents);
     }
 
     private DocumentDeleteQuery getQuery(String query) {

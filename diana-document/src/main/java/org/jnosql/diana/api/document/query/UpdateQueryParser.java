@@ -21,6 +21,7 @@ import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
+import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.UpdateQuery;
 import org.jnosql.query.UpdateQuerySupplier;
@@ -44,14 +45,7 @@ final class UpdateQueryParser {
 
         Params params = new Params();
 
-        String collection = updateQuery.getEntity();
-        DocumentEntity entity = DocumentEntity.of(collection);
-
-        updateQuery.getConditions()
-                .stream()
-                .map(c -> Conditions.getCondition(c, params))
-                .map(DocumentCondition::getDocument)
-                .forEach(entity::add);
+        DocumentEntity entity = getEntity(params, updateQuery);
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
@@ -65,14 +59,7 @@ final class UpdateQueryParser {
 
         Params params = new Params();
 
-        String collection = updateQuery.getEntity();
-        DocumentEntity entity = DocumentEntity.of(collection);
-
-        updateQuery.getConditions()
-                .stream()
-                .map(c -> Conditions.getCondition(c, params))
-                .map(DocumentCondition::getDocument)
-                .forEach(entity::add);
+        DocumentEntity entity = getEntity(params, updateQuery);
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
@@ -82,10 +69,26 @@ final class UpdateQueryParser {
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
 
+        Params params = new Params();
+
         UpdateQuery updateQuery = supplier.apply(query);
 
-        String collection = updateQuery.getEntity();
+        DocumentEntity entity = getEntity(params, updateQuery);
+
+        return DefaultDocumentPreparedStatement.update(entity, params, query, collectionManager);
+    }
+
+    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager) {
         Params params = new Params();
+        UpdateQuery updateQuery = supplier.apply(query);
+
+        DocumentEntity entity = getEntity(params, updateQuery);
+
+        return DefaultDocumentPreparedStatementAsync.update(entity, params, query, collectionManager);
+    }
+
+    private DocumentEntity getEntity(Params params, UpdateQuery updateQuery) {
+        String collection = updateQuery.getEntity();
 
         DocumentEntity entity = DocumentEntity.of(collection);
 
@@ -94,9 +97,7 @@ final class UpdateQueryParser {
                 .map(c -> Conditions.getCondition(c, params))
                 .map(DocumentCondition::getDocument)
                 .forEach(entity::add);
-
-        return DefaultDocumentPreparedStatement.update(entity, params, query, collectionManager);
+        return entity;
     }
-
 
 }

@@ -64,13 +64,13 @@ final class DefaultDocumentQueryParserAsync implements DocumentQueryParserAsync 
 
         switch (command) {
             case "select":
-                return select.prepare(query, collectionManager);
+                return select.prepareAsync(query, collectionManager);
             case "delete":
-                return delete.prepare(query, collectionManager);
+                return delete.prepareAsync(query, collectionManager);
             case "insert":
-                return insert.prepare(query, collectionManager);
+                return insert.prepareAsync(query, collectionManager);
             case "update":
-                return update.prepare(query, collectionManager);
+                return update.prepareAsync(query, collectionManager);
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }

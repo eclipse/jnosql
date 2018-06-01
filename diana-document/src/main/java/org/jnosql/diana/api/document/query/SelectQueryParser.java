@@ -22,6 +22,7 @@ import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
+import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.SelectQuery;
@@ -56,23 +57,22 @@ final class SelectQueryParser {
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
 
+        Params params = new Params();
+
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
-        String collection = selectQuery.getEntity();
-        long limit = selectQuery.getLimit();
-        long skip = selectQuery.getSkip();
-        List<String> documents = new ArrayList<>(selectQuery.getFields());
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(this::toSort).collect(toList());
-        DocumentCondition condition = null;
-        Params params = new Params();
-        if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
-        }
-
-        DocumentQuery documentQuery = new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
+        DocumentQuery documentQuery = getDocumentQuery(params, selectQuery);
         return DefaultDocumentPreparedStatement.select(documentQuery, params, query, collectionManager);
     }
 
+    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager) {
+        Params params = new Params();
+
+        SelectQuery selectQuery = selectQuerySupplier.apply(query);
+
+        DocumentQuery documentQuery = getDocumentQuery(params, selectQuery);
+        return DefaultDocumentPreparedStatementAsync.select(documentQuery, params, query, collectionManager);
+    }
 
     private DocumentQuery getDocumentQuery(String query) {
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
@@ -90,6 +90,20 @@ final class SelectQueryParser {
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
+        return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
+    }
+
+    private DocumentQuery getDocumentQuery(Params params, SelectQuery selectQuery) {
+        String collection = selectQuery.getEntity();
+        long limit = selectQuery.getLimit();
+        long skip = selectQuery.getSkip();
+        List<String> documents = new ArrayList<>(selectQuery.getFields());
+        List<Sort> sorts = selectQuery.getOrderBy().stream().map(this::toSort).collect(toList());
+        DocumentCondition condition = null;
+        if (selectQuery.getWhere().isPresent()) {
+            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
+        }
+
         return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 

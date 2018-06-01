@@ -21,6 +21,7 @@ import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
+import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.query.InsertQuery;
 import org.jnosql.query.InsertQuerySupplier;
 import org.jnosql.query.QueryException;
@@ -93,6 +94,17 @@ final class InsertQueryParser {
 
     }
 
+    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager) {
+        Params params = new Params();
+
+        InsertQuery insertQuery = supplier.apply(query);
+        String collection = insertQuery.getEntity();
+        Optional<Duration> ttl = insertQuery.getTtl();
+        DocumentEntity entity = getEntity(insertQuery, collection, params);
+
+        return DefaultDocumentPreparedStatementAsync.insert(entity, params, query, ttl.orElse(null), collectionManager);
+    }
+
     private DocumentEntity getEntity(InsertQuery insertQuery, String collection, Params params) {
         DocumentEntity entity = DocumentEntity.of(collection);
 
@@ -103,6 +115,7 @@ final class InsertQueryParser {
                 .forEach(entity::add);
         return entity;
     }
+
 
 
 }
