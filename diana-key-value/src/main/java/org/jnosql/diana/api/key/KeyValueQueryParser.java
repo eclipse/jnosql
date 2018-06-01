@@ -48,4 +48,14 @@ public interface KeyValueQueryParser {
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
     KeyValuePreparedStatement prepare(String query, BucketManager manager);
+
+    /**
+     * It returns a {@link KeyValueQueryParser} from {@link java.util.ServiceLoader}
+     *
+     * @return {@link KeyValueQueryParser} instance
+     * @throws IllegalStateException when there isn't KeyValueQueryParser from service loader.
+     */
+    static KeyValueQueryParser getParser() {
+        return KeyValueQueryParserServiceLoader.getInstance();
+    }
 }
