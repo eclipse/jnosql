@@ -60,6 +60,7 @@ class DefaultDocumentQueryParserTest {
 
     @Test
     public void shouldReturnErrorWhenHasInvalidQuery() {
+
         Assertions.assertThrows(QueryException.class, () -> {
             parser.query("inva", documentCollection);
         });
