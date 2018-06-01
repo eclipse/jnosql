@@ -37,6 +37,9 @@ final class DocumentQueryParserServiceLoader {
         INSTANCE = LOADERS.stream().findFirst();
     }
 
+    private DocumentQueryParserServiceLoader() {
+    }
+
     static DocumentQueryParser getInstance() {
         return INSTANCE.orElseThrow(() -> new IllegalStateException(MESSAGE));
     }
