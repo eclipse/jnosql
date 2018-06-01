@@ -20,8 +20,6 @@ import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValueEntity;
 import org.jnosql.diana.api.key.KeyValuePreparedStatement;
-import org.jnosql.query.DelQuery;
-import org.jnosql.query.DelQuerySupplier;
 import org.jnosql.query.PutQuery;
 import org.jnosql.query.PutQuerySupplier;
 import org.jnosql.query.QueryException;
@@ -31,8 +29,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.toList;
-
 final class PutQueryParser {
 
     private final PutQuerySupplier supplier;
@@ -41,7 +37,7 @@ final class PutQueryParser {
         this.supplier = PutQuerySupplier.getSupplier();
     }
 
-    Iterable<Value> query(String query, BucketManager manager) {
+    List<Value> query(String query, BucketManager manager) {
 
         PutQuery putQuery = supplier.apply(query);
         Params params = new Params();

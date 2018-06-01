@@ -21,8 +21,6 @@ import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValuePreparedStatement;
 import org.jnosql.query.DelQuery;
 import org.jnosql.query.DelQuerySupplier;
-import org.jnosql.query.GetQuery;
-import org.jnosql.query.GetQuerySupplier;
 import org.jnosql.query.QueryException;
 
 import java.util.Collections;
@@ -38,7 +36,7 @@ final class DelQueryParser {
         this.supplier = DelQuerySupplier.getSupplier();
     }
 
-    Iterable<Value> query(String query, BucketManager manager) {
+    List<Value> query(String query, BucketManager manager) {
 
         DelQuery delQuery = supplier.apply(query);
         Params params = new Params();

@@ -16,6 +16,8 @@
  */
 package org.jnosql.diana.api.key;
 
+import org.jnosql.diana.api.Value;
+
 import java.util.List;
 
 /**
@@ -25,7 +27,7 @@ public interface KeyValueQueryParser {
 
     /**
      * Executes a query and returns the result, when the operations are <b>put</b>, <b>get</b> and <b>del</b>
-     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     * command it will return the result of the operation when the command is either <b>put</b> or <b>del</b> it will return an empty collection.
      *
      * @param query             the query as {@link String}
      * @param manager the manager
@@ -34,7 +36,7 @@ public interface KeyValueQueryParser {
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    List<KeyValueEntity<?>> query(String query, BucketManager manager);
+    List<Value> query(String query, BucketManager manager);
 
     /**
      * Executes a query and returns a {@link KeyValuePreparedStatement}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>

@@ -23,8 +23,8 @@ import org.jnosql.query.GetQuery;
 import org.jnosql.query.GetQuerySupplier;
 import org.jnosql.query.QueryException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -36,7 +36,7 @@ final class GetQueryParser {
         this.supplier = GetQuerySupplier.getSupplier();
     }
 
-    Iterable<Value> query(String query, BucketManager manager) {
+    List<Value> query(String query, BucketManager manager) {
 
         GetQuery getQuery = supplier.apply(query);
         Params params = new Params();
@@ -46,7 +46,9 @@ final class GetQueryParser {
         }
 
         List<Object> keys = values.stream().map(Value::get).collect(toList());
-        return manager.get(keys);
+        List<Value> result = new ArrayList<>();
+        manager.get(keys).forEach(result::add);
+        return result;
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
