@@ -35,7 +35,7 @@ public interface DocumentQueryParserAsync {
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    void query(String query, DocumentCollectionManager collectionManager, Consumer<List<DocumentEntity>> callBack);
+    void query(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack);
 
     /**
      * Executes a query and returns a {@link DocumentPreparedStatement}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
@@ -48,7 +48,7 @@ public interface DocumentQueryParserAsync {
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager);
+    DocumentPreparedStatementAsync prepare(String query, DocumentCollectionManagerAsync collectionManager);
 
     /**
      * It returns a {@link DocumentQueryParserAsync} from {@link java.util.ServiceLoader}
