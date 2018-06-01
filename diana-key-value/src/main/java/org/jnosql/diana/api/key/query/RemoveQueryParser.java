@@ -46,7 +46,7 @@ final class RemoveQueryParser {
         }
 
         List<Object> keys = values.stream().map(Value::get).collect(toList());
-        manager.del(keys);
+        manager.remove(keys);
         return Collections.emptyList();
     }
 

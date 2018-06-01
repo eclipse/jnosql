@@ -69,14 +69,14 @@ class DefaultKeyValueQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"del \"Diana\""})
+    @ValueSource(strings = {"remove \"Diana\""})
     public void shouldReturnParserQuery3(String query) {
 
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
 
         parser.query(query, manager);
 
-        Mockito.verify(manager).del(captor.capture());
+        Mockito.verify(manager).remove(captor.capture());
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());
@@ -84,7 +84,7 @@ class DefaultKeyValueQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"del @id"})
+    @ValueSource(strings = {"remove @id"})
     public void shouldExecutePrepareStatment(String query) {
 
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
@@ -92,7 +92,7 @@ class DefaultKeyValueQueryParserTest {
         prepare.bind("id", 10);
         prepare.getResultList();
 
-        Mockito.verify(manager).del(captor.capture());
+        Mockito.verify(manager).remove(captor.capture());
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());
