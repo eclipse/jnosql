@@ -200,13 +200,13 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param query    the query as {@link String}
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
-     * @throws IllegalStateException           when there is not {@link DocumentQueryParser}
+     * @throws IllegalStateException           when there is not {@link ColumnQueryParserAsync}
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    default void query(String query, Consumer<List<DocumentEntity>> callBack) {
+    default void query(String query, Consumer<List<ColumnEntity>> callBack) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
-        DocumentQueryParserAsync parser = DocumentQueryParserAsync.getParser();
+        ColumnQueryParserAsync parser = ColumnQueryParserAsync.getParser();
         parser.query(query, this, callBack);
     }
 
@@ -215,14 +215,14 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
      *
      * @param query the query as {@link String}
-     * @return a {@link DocumentPreparedStatement} instance
+     * @return a {@link ColumnPreparedStatementAsync} instance
      * @throws NullPointerException            when there is parameter null
-     * @throws IllegalStateException           when there is not {@link DocumentQueryParser}
+     * @throws IllegalStateException           when there is not {@link ColumnQueryParserAsync}
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    default DocumentPreparedStatementAsync prepare(String query) {
+    default ColumnPreparedStatementAsync prepare(String query) {
         Objects.requireNonNull(query, "query is required");
-        DocumentQueryParserAsync parser = DocumentQueryParserAsync.getParser();
+        ColumnQueryParserAsync parser = ColumnQueryParserAsync.getParser();
         return parser.prepare(query, this);
     }
 
