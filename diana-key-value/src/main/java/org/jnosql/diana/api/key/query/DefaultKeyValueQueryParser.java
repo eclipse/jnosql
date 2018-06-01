@@ -29,29 +29,46 @@ public class DefaultKeyValueQueryParser implements KeyValueQueryParser {
 
     private final PutQueryParser putQueryParser = new PutQueryParser();
     private final GetQueryParser getQueryParser = new GetQueryParser();
-    private final DelQueryParser delQueryParser = new DelQueryParser();
+    private final RemoveQueryParser removeQueryParser = new RemoveQueryParser();
 
     @Override
     public List<Value> query(String query, BucketManager manager) {
-        Objects.requireNonNull(query, "query is required");
-        Objects.requireNonNull(manager, "manager is required");
-        if(query.length() <= 4) {
-            throw new QueryException(String.format("The query %s is invalid", query));
-        }
-        String command = query.substring(0, 6);
+        validation(query, manager);
+        String command = query.substring(0, 3);
         switch (command) {
             case "get":
                 return getQueryParser.query(query, manager);
             case "del":
-                return delQueryParser.query(query, manager);
+                return removeQueryParser.query(query, manager);
             case "put":
                 return putQueryParser.query(query, manager);
+            default:
+                throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }
-        return null;
     }
+
 
     @Override
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
-        return null;
+        validation(query, manager);
+        String command = query.substring(0, 3);
+        switch (command) {
+            case "get":
+                return getQueryParser.prepare(query, manager);
+            case "del":
+                return removeQueryParser.prepare(query, manager);
+            case "put":
+                return putQueryParser.prepare(query, manager);
+            default:
+                throw new QueryException(String.format("The command was not recognized at the query %s ", query));
+        }
+    }
+
+    private void validation(String query, BucketManager manager) {
+        Objects.requireNonNull(query, "query is required");
+        Objects.requireNonNull(manager, "manager is required");
+        if (query.length() <= 4) {
+            throw new QueryException(String.format("The query %s is invalid", query));
+        }
     }
 }

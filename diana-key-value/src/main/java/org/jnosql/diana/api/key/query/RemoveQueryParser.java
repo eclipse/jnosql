@@ -19,26 +19,26 @@ package org.jnosql.diana.api.key.query;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValuePreparedStatement;
-import org.jnosql.query.DelQuery;
-import org.jnosql.query.DelQuerySupplier;
 import org.jnosql.query.QueryException;
+import org.jnosql.query.RemoveQuery;
+import org.jnosql.query.RemoveQuerySupplier;
 
 import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-final class DelQueryParser {
+final class RemoveQueryParser {
 
-    private final DelQuerySupplier supplier;
+    private final RemoveQuerySupplier supplier;
 
-    DelQueryParser() {
-        this.supplier = DelQuerySupplier.getSupplier();
+    RemoveQueryParser() {
+        this.supplier = RemoveQuerySupplier.getSupplier();
     }
 
     List<Value> query(String query, BucketManager manager) {
 
-        DelQuery delQuery = supplier.apply(query);
+        RemoveQuery delQuery = supplier.apply(query);
         Params params = new Params();
         List<Value> values = delQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         if (params.isNotEmpty()) {
@@ -51,7 +51,7 @@ final class DelQueryParser {
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
-        DelQuery delQuery = supplier.apply(query);
+        RemoveQuery delQuery = supplier.apply(query);
         Params params = new Params();
         List<Value> values = delQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         return DefaultKeyValuePreparedStatement.del(values, manager, params, query);

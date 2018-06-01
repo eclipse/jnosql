@@ -31,10 +31,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DelQueryParserTest {
+class RemoveQueryParserTest {
 
 
-    private DelQueryParser parser = new DelQueryParser();
+    private RemoveQueryParser parser = new RemoveQueryParser();
     private BucketManager manager = Mockito.mock(BucketManager.class);
 
 
