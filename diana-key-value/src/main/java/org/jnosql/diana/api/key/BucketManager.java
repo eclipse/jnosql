@@ -25,7 +25,7 @@ import java.util.Optional;
 
 /**
  * Interface used to interact with the persistence context to {@link KeyValueEntity}
- * The BucketManager API is used to create and remove persistent {@link KeyValueEntity}.
+ * The BucketManager API is used to create and del persistent {@link KeyValueEntity}.
  *
  */
 public interface BucketManager extends AutoCloseable {
@@ -108,7 +108,7 @@ public interface BucketManager extends AutoCloseable {
      * @param <K> the key type
      * @throws NullPointerException when the key is null
      */
-    <K> void remove(K key);
+    <K> void del(K key);
 
     /**
      * Removes entities from keys
@@ -117,7 +117,7 @@ public interface BucketManager extends AutoCloseable {
      * @param <K>  the key type
      * @throws NullPointerException when the key is null
      */
-    <K> void remove(Iterable<K> keys);
+    <K> void del(Iterable<K> keys);
 
     /**
      * closes a resource

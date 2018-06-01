@@ -16,6 +16,8 @@
  */
 package org.jnosql.diana.api.key;
 
+import org.jnosql.diana.api.Value;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -36,9 +38,9 @@ public interface KeyValuePreparedStatement {
     /**
      * Executes a query and return the result as List
      *
-     * @return The result list, if delete it will return an empty list
+     * @return The result list, if either delete or put it will return an empty list
      */
-    List<KeyValueEntity<?>> getResultList();
+    List<Value> getResultList();
 
     /**
      * Returns the result as a single element otherwise it will return an {@link Optional#empty()}
@@ -46,5 +48,5 @@ public interface KeyValuePreparedStatement {
      * @return the single result
      * @throws org.jnosql.diana.api.NonUniqueResultException when the result has more than one entity
      */
-    Optional<KeyValueEntity<?>> getSingleResult();
+    Optional<Value> getSingleResult();
 }

@@ -20,6 +20,8 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.BucketManager;
+import org.jnosql.diana.api.key.KeyValuePreparedStatement;
+import org.jnosql.query.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -82,7 +84,7 @@ class GetQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"get convert(\"2018-01-10\", java.time.LocalTime)"})
+    @ValueSource(strings = {"get convert(\"2018-01-10\", java.time.LocalDate)"})
     public void shouldReturnParserQuery4(String query) {
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
 
@@ -94,5 +96,30 @@ class GetQueryParserTest {
         assertEquals(1, value.size());
 
         MatcherAssert.assertThat(value, Matchers.contains(LocalDate.parse("2018-01-10")));
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"get @id"})
+    public void shouldReturnErrorWhenUseParameterInQuery(String query) {
+        assertThrows(QueryException.class, () -> {
+            parser.query(query, manager);
+        });
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"get @id"})
+    public void shouldReturnErrorWhenDontBindParameters(String query) {
+
+        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
+        assertThrows(QueryException.class, () -> {
+            prepare.getResultList();
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"get @id"})
+    public void shouldExecutePrepareStatment(String query) {
+
     }
 }
