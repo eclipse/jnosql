@@ -49,15 +49,15 @@ final class SelectQueryParser {
 
     List<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
-        ColumnQuery ColumnQuery = cache.get(query, observer);
-        return manager.select(ColumnQuery);
+        ColumnQuery columnQuery = cache.get(query, observer);
+        return manager.select(columnQuery);
     }
 
     void queryAsync(String query, ColumnFamilyManagerAsync manager, Consumer<List<ColumnEntity>> callBack,
                     ColumnObserverParser observer) {
 
-        ColumnQuery ColumnQuery = cache.get(query, observer);
-        manager.select(ColumnQuery, callBack);
+        ColumnQuery columnQuery = cache.get(query, observer);
+        manager.select(columnQuery, callBack);
     }
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
@@ -66,8 +66,8 @@ final class SelectQueryParser {
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
-        ColumnQuery ColumnQuery = getColumnQuery(params, selectQuery, observer);
-        return DefaultColumnPreparedStatement.select(ColumnQuery, params, query, manager);
+        ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
+        return DefaultColumnPreparedStatement.select(columnQuery, params, query, manager);
     }
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
@@ -76,8 +76,8 @@ final class SelectQueryParser {
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
-        ColumnQuery ColumnQuery = getColumnQuery(params, selectQuery, observer);
-        return DefaultColumnPreparedStatementAsync.select(ColumnQuery, params, query, manager);
+        ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
+        return DefaultColumnPreparedStatementAsync.select(columnQuery, params, query, manager);
     }
 
     private ColumnQuery getColumnQuery(String query, ColumnObserverParser observer) {
