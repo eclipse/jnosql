@@ -24,6 +24,7 @@ import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.api.document.ObserverParser;
 import org.jnosql.query.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -60,13 +61,15 @@ public class SelectQueryParserTest {
     private SelectQueryParser parser = new SelectQueryParser();
 
     private DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
+    private final ObserverParser observer = new ObserverParser() {
+    };
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God"})
     public void shouldReturnParserQuery1(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -82,7 +85,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select * from God order by name"})
     public void shouldReturnParserQuery3(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -98,7 +101,9 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select * from God order by name asc"})
     public void shouldReturnParserQuery4(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        ObserverParser observer = new ObserverParser() {
+        };
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -114,7 +119,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select * from God order by name desc"})
     public void shouldReturnParserQuery5(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -131,7 +136,7 @@ public class SelectQueryParserTest {
     public void shouldReturnParserQuery6(String query) {
 
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -147,7 +152,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select * from God skip 12"})
     public void shouldReturnParserQuery7(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -159,7 +164,9 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select * from God limit 12"})
     public void shouldReturnParserQuery8(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        ObserverParser observer = new ObserverParser() {
+        };
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -171,7 +178,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select * from God skip 10 limit 12"})
     public void shouldReturnParserQuery9(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -187,7 +194,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where age = 10"})
     public void shouldReturnParserQuery10(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -203,7 +210,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where stamina > 10.23"})
     public void shouldReturnParserQuery11(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -219,7 +226,9 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where stamina >= -10.23"})
     public void shouldReturnParserQuery12(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        ObserverParser observer = new ObserverParser() {
+        };
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -235,7 +244,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where stamina <= -10.23"})
     public void shouldReturnParserQuery13(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -251,7 +260,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where stamina < -10.23"})
     public void shouldReturnParserQuery14(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -267,7 +276,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where age between 10 and 30"})
     public void shouldReturnParserQuery15(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -283,7 +292,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where name = \"diana\""})
     public void shouldReturnParserQuery16(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -299,7 +308,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery18(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -320,7 +329,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where age = convert(12, java.lang.Integer)"})
     public void shouldReturnParserQuery19(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -339,7 +348,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where name in (\"Ada\", \"Apollo\")"})
     public void shouldReturnParserQuery20(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -358,7 +367,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select * from God where name like \"Ada\""})
     public void shouldReturnParserQuery21(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -375,7 +384,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select * from God where name not like \"Ada\""})
     public void shouldReturnParserQuery22(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -395,7 +404,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where name = \"Ada\" and age = 20"})
     public void shouldReturnParserQuery23(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -414,7 +423,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where name = \"Ada\" or age = 20"})
     public void shouldReturnParserQuery24(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -435,7 +444,7 @@ public class SelectQueryParserTest {
     public void shouldReturnParserQuery25(String query) {
 
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -458,7 +467,7 @@ public class SelectQueryParserTest {
             " convert(\"2007-12-03\", java.time.LocalDate)"})
     public void shouldReturnParserQuery26(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -480,7 +489,7 @@ public class SelectQueryParserTest {
     public void shouldReturnErrorWhenIsQueryWithParam(String query) {
 
         assertThrows(QueryException.class, () -> {
-            parser.query(query, documentCollection);
+            parser.query(query, documentCollection, observer);
         });
 
 
@@ -491,7 +500,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where age = @age"})
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
-        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
         assertThrows(QueryException.class, () -> {
             prepare.getResultList();
         });
@@ -502,7 +511,7 @@ public class SelectQueryParserTest {
     public void shouldExecutePrepareStatment(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
 
-        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
         prepare.bind("age", 12);
         prepare.getResultList();
         Mockito.verify(documentCollection).select(captor.capture());

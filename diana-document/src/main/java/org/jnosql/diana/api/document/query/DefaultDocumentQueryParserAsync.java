@@ -41,16 +41,16 @@ final class DefaultDocumentQueryParserAsync implements DocumentQueryParserAsync 
         String command = query.substring(0, 6);
         switch (command) {
             case "select":
-                select.queryAsync(query, collectionManager, callBack);
+                select.queryAsync(query, collectionManager, callBack, this);
                 return;
             case "delete":
-                delete.queryAsync(query, collectionManager, callBack);
+                delete.queryAsync(query, collectionManager, callBack, this);
             return;
             case "insert":
-                insert.queryAsync(query, collectionManager, callBack);
+                insert.queryAsync(query, collectionManager, callBack, this);
             return;
             case "update":
-                update.queryAsync(query, collectionManager, callBack);
+                update.queryAsync(query, collectionManager, callBack, this);
             return;
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
@@ -64,13 +64,13 @@ final class DefaultDocumentQueryParserAsync implements DocumentQueryParserAsync 
 
         switch (command) {
             case "select":
-                return select.prepareAsync(query, collectionManager);
+                return select.prepareAsync(query, collectionManager, this);
             case "delete":
-                return delete.prepareAsync(query, collectionManager);
+                return delete.prepareAsync(query, collectionManager, this);
             case "insert":
-                return insert.prepareAsync(query, collectionManager);
+                return insert.prepareAsync(query, collectionManager, this);
             case "update":
-                return update.prepareAsync(query, collectionManager);
+                return update.prepareAsync(query, collectionManager, this);
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }
