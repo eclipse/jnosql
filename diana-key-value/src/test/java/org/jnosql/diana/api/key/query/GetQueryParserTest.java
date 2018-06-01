@@ -121,5 +121,16 @@ class GetQueryParserTest {
     @ValueSource(strings = {"get @id"})
     public void shouldExecutePrepareStatment(String query) {
 
+        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
+        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
+        prepare.bind("id", 10);
+        prepare.getResultList();
+
+        Mockito.verify(manager).get(captor.capture());
+        List<Object> value = captor.getValue();
+
+        assertEquals(1, value.size());
+
+        MatcherAssert.assertThat(value, Matchers.contains(10));
     }
 }

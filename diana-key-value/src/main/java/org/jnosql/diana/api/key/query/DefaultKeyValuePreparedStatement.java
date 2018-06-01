@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.key.query;
 
+import org.jnosql.diana.api.NonUniqueResultException;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValueEntity;
@@ -47,11 +48,13 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
 
     private final Duration ttl;
 
+    private final String query;
+
     DefaultKeyValuePreparedStatement(KeyValueEntity entity, List<Value> keys,
                                      PreparedStatementType type,
                                      BucketManager manager,
                                      Params params,
-                                     Duration ttl) {
+                                     Duration ttl, String query) {
         this.entity = entity;
         this.keys = keys;
         this.type = type;
@@ -59,6 +62,7 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
         this.params = params;
         this.paramsLeft = params.getParametersNames();
         this.ttl = ttl;
+        this.query = query;
     }
 
     @Override
@@ -99,11 +103,41 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
 
     @Override
     public Optional<Value> getSingleResult() {
-        return Optional.empty();
+        List<Value> entities = getResultList();
+        if (entities.isEmpty()) {
+            return Optional.empty();
+        }
+        if (entities.size() == 1) {
+            return Optional.of(entities.get(0));
+        }
+
+        throw new NonUniqueResultException("The select returns more than one entity, select: " + query);
     }
 
     enum PreparedStatementType {
         GET, PUT, DEL;
+    }
+
+    static KeyValuePreparedStatement get(List<Value> keys,
+                                         BucketManager manager,
+                                         Params params, String query) {
+        return new DefaultKeyValuePreparedStatement(null, keys, PreparedStatementType.GET,
+                manager, params, null, query);
+    }
+
+    static KeyValuePreparedStatement put(KeyValueEntity entity,
+                                         BucketManager manager,
+                                         Params params,
+                                         Duration ttl, String query) {
+        return new DefaultKeyValuePreparedStatement(entity, null, PreparedStatementType.PUT,
+                manager, params, ttl, query);
+    }
+
+    static KeyValuePreparedStatement del(List<Value> keys,
+                                         BucketManager manager,
+                                         Params params, String query) {
+        return new DefaultKeyValuePreparedStatement(null, keys, PreparedStatementType.DEL,
+                manager, params, null, query);
     }
 
 

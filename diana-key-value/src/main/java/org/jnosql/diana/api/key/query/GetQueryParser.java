@@ -41,7 +41,7 @@ final class GetQueryParser {
         GetQuery getQuery = supplier.apply(query);
         Params params = new Params();
         List<Value> values = getQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
-        if(params.isNotEmpty()) {
+        if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
 
@@ -50,6 +50,9 @@ final class GetQueryParser {
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
-        return null;
+        GetQuery getQuery = supplier.apply(query);
+        Params params = new Params();
+        List<Value> values = getQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
+        return DefaultKeyValuePreparedStatement.get(values, manager, params, query);
     }
 }
