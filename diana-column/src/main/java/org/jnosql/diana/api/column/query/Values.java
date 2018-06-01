@@ -60,7 +60,7 @@ final class Values {
                         Arrays.toString(params));
                 throw new QueryException(message);
             case JSON:
-                return JsonObjects.geDocument(JSONValue.class.cast(value).get());
+                return JsonObjects.getColumns(JSONValue.class.cast(value).get());
             case CONDITION:
             default:
                 throw new QueryException("There is not suppor to the value: " + type);

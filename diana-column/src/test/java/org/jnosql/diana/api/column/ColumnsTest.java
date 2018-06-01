@@ -55,11 +55,11 @@ public class ColumnsTest {
         Map<String, String> map = singletonMap("mobile", "55 1234-4567");
         list.add(singletonList(map));
 
-        List<Column> documents = Columns.of(singletonMap("contact", list));
-        assertEquals(1, documents.size());
-        Column document = documents.get(0);
-        assertEquals("contact", document.getName());
-        List<List<Column>> result = (List<List<Column>>) document.get();
+        List<Column> columns = Columns.of(singletonMap("contact", list));
+        assertEquals(1, columns.size());
+        Column column = columns.get(0);
+        assertEquals("contact", column.getName());
+        List<List<Column>> result = (List<List<Column>>) column.get();
         assertEquals(Column.of("mobile", "55 1234-4567"), result.get(0).get(0));
 
     }
