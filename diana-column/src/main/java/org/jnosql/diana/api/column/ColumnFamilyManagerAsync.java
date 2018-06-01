@@ -193,6 +193,41 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
     void select(ColumnQuery query, Consumer<List<ColumnEntity>> callBack);
 
     /**
+     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param callBack the callback result
+     * @param query    the query as {@link String}
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalArgumentException        when the query has value parameters
+     * @throws IllegalStateException           when there is not {@link DocumentQueryParser}
+     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     */
+    default void query(String query, Consumer<List<DocumentEntity>> callBack) {
+        Objects.requireNonNull(query, "query is required");
+        Objects.requireNonNull(callBack, "callBack is required");
+        DocumentQueryParserAsync parser = DocumentQueryParserAsync.getParser();
+        parser.query(query, this, callBack);
+    }
+
+    /**
+     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param query the query as {@link String}
+     * @return a {@link DocumentPreparedStatement} instance
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalStateException           when there is not {@link DocumentQueryParser}
+     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     */
+    default DocumentPreparedStatementAsync prepare(String query) {
+        Objects.requireNonNull(query, "query is required");
+        DocumentQueryParserAsync parser = DocumentQueryParserAsync.getParser();
+        return parser.prepare(query, this);
+    }
+
+
+    /**
      * Returns a single entity from select
      *
      * @param query    - select to figure out entities

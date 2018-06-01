@@ -197,7 +197,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param query    the query as {@link String}
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
-     * @throws IllegalStateException           when there is not {@link DocumentQueryParser}
+     * @throws IllegalStateException           when there is not {@link DocumentQueryParserAsync}
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
     default void query(String query, Consumer<List<DocumentEntity>> callBack) {
@@ -214,7 +214,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param query the query as {@link String}
      * @return a {@link DocumentPreparedStatement} instance
      * @throws NullPointerException            when there is parameter null
-     * @throws IllegalStateException           when there is not {@link DocumentQueryParser}
+     * @throws IllegalStateException           when there is not {@link DocumentQueryParserAsync}
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
     default DocumentPreparedStatementAsync prepare(String query) {
