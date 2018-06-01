@@ -23,7 +23,7 @@ import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
-import org.jnosql.diana.api.document.ObserverParser;
+import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.query.DeleteQuery;
 import org.jnosql.query.DeleteQuerySupplier;
 import org.jnosql.query.QueryException;
@@ -41,7 +41,7 @@ final class DeleteQueryParser {
         this.selectQuerySupplier = DeleteQuerySupplier.getSupplier();
     }
 
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
         DocumentDeleteQuery documentQuery = getQuery(query, observer);
         collectionManager.delete(documentQuery);
@@ -49,13 +49,13 @@ final class DeleteQueryParser {
     }
 
     void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
-                    Consumer<List<DocumentEntity>> callBack, ObserverParser observer) {
+                    Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer) {
         DocumentDeleteQuery documentQuery = getQuery(query, observer);
         collectionManager.delete(documentQuery, v -> callBack.accept(Collections.emptyList()));
     }
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager,
-                                      ObserverParser observer) {
+                                      DocumentObserverParser observer) {
         Params params = new Params();
         DocumentDeleteQuery documentQuery = getQuery(query, params, observer);
         return DefaultDocumentPreparedStatement.delete(documentQuery, params, query, collectionManager);
@@ -63,14 +63,14 @@ final class DeleteQueryParser {
 
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager,
-                                                ObserverParser observer) {
+                                                DocumentObserverParser observer) {
         Params params = new Params();
         DocumentDeleteQuery documentQuery = getQuery(query, params, observer);
         return DefaultDocumentPreparedStatementAsync.delete(documentQuery, params, query, collectionManager);
 
     }
 
-    private DocumentDeleteQuery getQuery(String query, Params params, ObserverParser observer) {
+    private DocumentDeleteQuery getQuery(String query, Params params, DocumentObserverParser observer) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
         String collection = observer.fireEntity(deleteQuery.getEntity());
@@ -84,7 +84,7 @@ final class DeleteQueryParser {
         return new DefaultDocumentDeleteQuery(collection, condition, documents);
     }
 
-    private DocumentDeleteQuery getQuery(String query, ObserverParser observer) {
+    private DocumentDeleteQuery getQuery(String query, DocumentObserverParser observer) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
         String collection = observer.fireEntity(deleteQuery.getEntity());

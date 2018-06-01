@@ -22,7 +22,7 @@ import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
-import org.jnosql.diana.api.document.ObserverParser;
+import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.UpdateQuery;
 import org.jnosql.query.UpdateQuerySupplier;
@@ -40,7 +40,7 @@ final class UpdateQueryParser {
         this.supplier = UpdateQuerySupplier.getSupplier();
     }
 
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
@@ -55,7 +55,7 @@ final class UpdateQueryParser {
     }
 
     void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
-                    Consumer<List<DocumentEntity>> callBack, ObserverParser observer) {
+                    Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer) {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
@@ -69,7 +69,7 @@ final class UpdateQueryParser {
         collectionManager.update(entity, c -> callBack.accept(singletonList(c)));
     }
 
-    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
         Params params = new Params();
 
@@ -80,7 +80,7 @@ final class UpdateQueryParser {
         return DefaultDocumentPreparedStatement.update(entity, params, query, collectionManager);
     }
 
-    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager, ObserverParser observer) {
+    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager, DocumentObserverParser observer) {
         Params params = new Params();
         UpdateQuery updateQuery = supplier.apply(query);
 
@@ -89,7 +89,7 @@ final class UpdateQueryParser {
         return DefaultDocumentPreparedStatementAsync.update(entity, params, query, collectionManager);
     }
 
-    private DocumentEntity getEntity(Params params, UpdateQuery updateQuery, ObserverParser observer) {
+    private DocumentEntity getEntity(Params params, UpdateQuery updateQuery, DocumentObserverParser observer) {
         String collection = observer.fireEntity(updateQuery.getEntity());
 
         DocumentEntity entity = DocumentEntity.of(collection);

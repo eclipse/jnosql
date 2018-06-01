@@ -20,7 +20,7 @@ package org.jnosql.diana.api.document;
  * An observer to a parser; this observer allows checking both the name of an entity and the fields.
  * This observer might be used to the mapper process.
  */
-public interface ObserverParser {
+public interface DocumentObserverParser {
 
     /**
      * Fire an event to entity name

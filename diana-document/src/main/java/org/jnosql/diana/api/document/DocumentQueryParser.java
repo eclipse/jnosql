@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * A query parser to document database type, this class will convert a String to an operation in {@link DocumentCollectionManager}.
  */
-public interface DocumentQueryParser extends ObserverParser {
+public interface DocumentQueryParser extends DocumentObserverParser {
 
     /**
      * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>

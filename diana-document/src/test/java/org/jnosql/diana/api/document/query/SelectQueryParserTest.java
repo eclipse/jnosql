@@ -24,7 +24,7 @@ import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentQuery;
-import org.jnosql.diana.api.document.ObserverParser;
+import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.query.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -61,7 +61,7 @@ public class SelectQueryParserTest {
     private SelectQueryParser parser = new SelectQueryParser();
 
     private DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
-    private final ObserverParser observer = new ObserverParser() {
+    private final DocumentObserverParser observer = new DocumentObserverParser() {
     };
 
 
@@ -101,7 +101,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select * from God order by name asc"})
     public void shouldReturnParserQuery4(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        ObserverParser observer = new ObserverParser() {
+        DocumentObserverParser observer = new DocumentObserverParser() {
         };
         parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
@@ -164,7 +164,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select * from God limit 12"})
     public void shouldReturnParserQuery8(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        ObserverParser observer = new ObserverParser() {
+        DocumentObserverParser observer = new DocumentObserverParser() {
         };
         parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());
@@ -226,7 +226,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where stamina >= -10.23"})
     public void shouldReturnParserQuery12(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        ObserverParser observer = new ObserverParser() {
+        DocumentObserverParser observer = new DocumentObserverParser() {
         };
         parser.query(query, documentCollection, observer);
         Mockito.verify(documentCollection).select(captor.capture());

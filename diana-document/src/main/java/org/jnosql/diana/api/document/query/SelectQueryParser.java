@@ -24,7 +24,7 @@ import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.diana.api.document.DocumentQuery;
-import org.jnosql.diana.api.document.ObserverParser;
+import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.SelectQuery;
 import org.jnosql.query.SelectQuerySupplier;
@@ -45,19 +45,19 @@ final class SelectQueryParser {
         this.selectQuerySupplier = SelectQuerySupplier.getSupplier();
     }
 
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
         DocumentQuery documentQuery = getDocumentQuery(query, observer);
         return collectionManager.select(documentQuery);
     }
 
     void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack,
-                    ObserverParser observer) {
+                    DocumentObserverParser observer) {
         DocumentQuery documentQuery = getDocumentQuery(query, observer);
         collectionManager.select(documentQuery, callBack);
     }
 
-    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
         Params params = new Params();
 
@@ -68,7 +68,7 @@ final class SelectQueryParser {
     }
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager,
-                                                ObserverParser observer) {
+                                                DocumentObserverParser observer) {
         Params params = new Params();
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
@@ -77,7 +77,7 @@ final class SelectQueryParser {
         return DefaultDocumentPreparedStatementAsync.select(documentQuery, params, query, collectionManager);
     }
 
-    private DocumentQuery getDocumentQuery(String query, ObserverParser observer) {
+    private DocumentQuery getDocumentQuery(String query, DocumentObserverParser observer) {
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
         String collection = observer.fireEntity(selectQuery.getEntity());
@@ -98,7 +98,7 @@ final class SelectQueryParser {
         return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
-    private DocumentQuery getDocumentQuery(Params params, SelectQuery selectQuery, ObserverParser observer) {
+    private DocumentQuery getDocumentQuery(Params params, SelectQuery selectQuery, DocumentObserverParser observer) {
 
         String collection = observer.fireEntity(selectQuery.getEntity());
         long limit = selectQuery.getLimit();
@@ -115,7 +115,7 @@ final class SelectQueryParser {
         return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
-    private Sort toSort(org.jnosql.query.Sort sort, ObserverParser observer) {
+    private Sort toSort(org.jnosql.query.Sort sort, DocumentObserverParser observer) {
         return Sort.of(observer.fireField(sort.getName()), sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? ASC : DESC);
     }
 

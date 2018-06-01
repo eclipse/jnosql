@@ -18,7 +18,7 @@ package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCondition;
-import org.jnosql.diana.api.document.ObserverParser;
+import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.query.Condition;
 import org.jnosql.query.ConditionValue;
 import org.jnosql.query.QueryException;
@@ -40,12 +40,12 @@ final class Conditions {
     private Conditions() {
     }
 
-    static DocumentCondition getCondition(Where where, Params params, ObserverParser observer) {
+    static DocumentCondition getCondition(Where where, Params params, DocumentObserverParser observer) {
         Condition condition = where.getCondition();
         return getCondition(condition, params, observer);
     }
 
-    static DocumentCondition getCondition(Condition condition, Params parameters, ObserverParser observer) {
+    static DocumentCondition getCondition(Condition condition, Params parameters, DocumentObserverParser observer) {
         switch (condition.getOperator()) {
             case EQUALS:
                 return eq(Document.of(observer.fireField(condition.getName()), Values.get(condition.getValue(), parameters)));

@@ -20,7 +20,7 @@ import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
-import org.jnosql.diana.api.document.ObserverParser;
+import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.query.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -37,7 +37,7 @@ class InsertQueryParserTest {
     private InsertQueryParser parser = new InsertQueryParser();
 
     private DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
-    private final ObserverParser observer = new ObserverParser() {
+    private final DocumentObserverParser observer = new DocumentObserverParser() {
     };
 
 
