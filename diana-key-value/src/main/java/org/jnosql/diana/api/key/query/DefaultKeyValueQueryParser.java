@@ -38,7 +38,7 @@ public class DefaultKeyValueQueryParser implements KeyValueQueryParser {
         switch (command) {
             case "get":
                 return getQueryParser.query(query, manager);
-            case "del":
+            case "rem":
                 return removeQueryParser.query(query, manager);
             case "put":
                 return putQueryParser.query(query, manager);
@@ -55,7 +55,7 @@ public class DefaultKeyValueQueryParser implements KeyValueQueryParser {
         switch (command) {
             case "get":
                 return getQueryParser.prepare(query, manager);
-            case "del":
+            case "rem":
                 return removeQueryParser.prepare(query, manager);
             case "put":
                 return putQueryParser.prepare(query, manager);

@@ -88,7 +88,7 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
                 values.forEach(target::add);
                 return target;
             case DEL:
-                manager.del(keys.stream().map(Value::get).collect(Collectors.toList()));
+                manager.remove(keys.stream().map(Value::get).collect(Collectors.toList()));
                 return Collections.emptyList();
             case PUT:
                 KeyValueEntity<Object> entity = KeyValueEntity.of(key.get(), value.get());
