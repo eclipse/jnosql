@@ -32,7 +32,7 @@ import java.util.Optional;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
-final class DefaultDocumentPreparedStatement implements ColumnPreparedStatement {
+final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
 
     private final ColumnEntity entity;
 
@@ -52,7 +52,7 @@ final class DefaultDocumentPreparedStatement implements ColumnPreparedStatement 
 
     private final ColumnFamilyManager manager;
 
-    private DefaultDocumentPreparedStatement(ColumnEntity entity,
+    private DefaultColumnPreparedStatement(ColumnEntity entity,
                                              ColumnQuery columnQuery,
                                              ColumnDeleteQuery columnDeleteQuery,
                                              PreparedStatementType type,
@@ -135,7 +135,7 @@ final class DefaultDocumentPreparedStatement implements ColumnPreparedStatement 
             Params params,
             String query,
             ColumnFamilyManager manager) {
-        return new DefaultDocumentPreparedStatement(null, columnQuery,
+        return new DefaultColumnPreparedStatement(null, columnQuery,
                 null, PreparedStatementType.SELECT, params, query,
                 params.getParametersNames(), null, manager);
 
@@ -146,7 +146,7 @@ final class DefaultDocumentPreparedStatement implements ColumnPreparedStatement 
                                             String query,
                                           ColumnFamilyManager manager) {
 
-        return new DefaultDocumentPreparedStatement(null, null,
+        return new DefaultColumnPreparedStatement(null, null,
                 columnDeleteQuery, PreparedStatementType.DELETE, params, query,
                 params.getParametersNames(), null, manager);
 
@@ -157,7 +157,7 @@ final class DefaultDocumentPreparedStatement implements ColumnPreparedStatement 
                                             String query,
                                             Duration duration,
                                           ColumnFamilyManager manager) {
-        return new DefaultDocumentPreparedStatement(entity, null,
+        return new DefaultColumnPreparedStatement(entity, null,
                 null, PreparedStatementType.INSERT, params, query,
                 params.getParametersNames(), duration, manager);
 
@@ -167,7 +167,7 @@ final class DefaultDocumentPreparedStatement implements ColumnPreparedStatement 
                                             Params params,
                                             String query,
                                           ColumnFamilyManager manager) {
-        return new DefaultDocumentPreparedStatement(entity, null,
+        return new DefaultColumnPreparedStatement(entity, null,
                 null, PreparedStatementType.UPDATE, params, query,
                 params.getParametersNames(), null, manager);
 

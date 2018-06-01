@@ -47,78 +47,78 @@ final class SelectQueryParser {
         this.cache = new CacheQuery<>(this::getColumnQuery);
     }
 
-    List<ColumnEntity> query(String query, ColumnFamilyManager collectionManager, ColumnObserverParser observer) {
+    List<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
         ColumnQuery ColumnQuery = cache.get(query, observer);
-        return collectionManager.select(ColumnQuery);
+        return manager.select(ColumnQuery);
     }
 
-    void queryAsync(String query, ColumnFamilyManagerAsync collectionManager, Consumer<List<ColumnEntity>> callBack,
+    void queryAsync(String query, ColumnFamilyManagerAsync manager, Consumer<List<ColumnEntity>> callBack,
                     ColumnObserverParser observer) {
 
         ColumnQuery ColumnQuery = cache.get(query, observer);
-        collectionManager.select(ColumnQuery, callBack);
+        manager.select(ColumnQuery, callBack);
     }
 
-    ColumnPreparedStatement prepare(String query, ColumnFamilyManager collectionManager, ColumnObserverParser observer) {
+    ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
         Params params = new Params();
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
         ColumnQuery ColumnQuery = getColumnQuery(params, selectQuery, observer);
-        return DefaultDocumentPreparedStatement.select(ColumnQuery, params, query, collectionManager);
+        return DefaultColumnPreparedStatement.select(ColumnQuery, params, query, manager);
     }
 
-    ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync collectionManager,
+    ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
         Params params = new Params();
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
         ColumnQuery ColumnQuery = getColumnQuery(params, selectQuery, observer);
-        return DefaultColumnPreparedStatementAsync.select(ColumnQuery, params, query, collectionManager);
+        return DefaultColumnPreparedStatementAsync.select(ColumnQuery, params, query, manager);
     }
 
     private ColumnQuery getColumnQuery(String query, ColumnObserverParser observer) {
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
-        String collection = observer.fireEntity(selectQuery.getEntity());
+        String columnFamily = observer.fireEntity(selectQuery.getEntity());
         long limit = selectQuery.getLimit();
         long skip = selectQuery.getSkip();
-        List<String> documents = selectQuery.getFields().stream()
-                .map(f -> observer.fireField(collection, f))
+        List<String> columns = selectQuery.getFields().stream()
+                .map(f -> observer.fireField(columnFamily, f))
                 .collect(Collectors.toList());
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, collection))
+        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, columnFamily))
                 .collect(toList());
         ColumnCondition condition = null;
         Params params = new Params();
         if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
+            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
         }
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        return new DefaultColumnQuery(limit, skip, collection, documents, sorts, condition);
+        return new DefaultColumnQuery(limit, skip, columnFamily, columns, sorts, condition);
     }
 
     private ColumnQuery getColumnQuery(Params params, SelectQuery selectQuery, ColumnObserverParser observer) {
 
-        String collection = observer.fireEntity(selectQuery.getEntity());
+        String columnFamily = observer.fireEntity(selectQuery.getEntity());
         long limit = selectQuery.getLimit();
         long skip = selectQuery.getSkip();
-        List<String> documents = selectQuery.getFields().stream()
-                .map(f -> observer.fireField(collection, f))
+        List<String> columns = selectQuery.getFields().stream()
+                .map(f -> observer.fireField(columnFamily, f))
                 .collect(Collectors.toList());
 
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, collection)).collect(toList());
+        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, columnFamily)).collect(toList());
         ColumnCondition condition = null;
         if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
+            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
         }
 
-        return new DefaultColumnQuery(limit, skip, collection, documents, sorts, condition);
+        return new DefaultColumnQuery(limit, skip, columnFamily, columns, sorts, condition);
     }
 
     private Sort toSort(org.jnosql.query.Sort sort, ColumnObserverParser observer, String entity) {
