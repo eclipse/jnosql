@@ -91,6 +91,11 @@
             <artifactId>diana-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jnosql.query</groupId>
+            <artifactId>jnosql-query-antlr</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
