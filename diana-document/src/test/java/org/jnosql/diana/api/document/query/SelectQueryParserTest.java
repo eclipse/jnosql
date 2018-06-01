@@ -21,8 +21,11 @@ import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
+import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
+import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.query.QueryException;
@@ -33,6 +36,7 @@ import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -61,6 +65,7 @@ public class SelectQueryParserTest {
     private SelectQueryParser parser = new SelectQueryParser();
 
     private DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
+    private DocumentCollectionManagerAsync documentCollectionAsync = Mockito.mock(DocumentCollectionManagerAsync.class);
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };
 
@@ -522,6 +527,72 @@ public class SelectQueryParserTest {
         assertEquals("age", document.getName());
         assertEquals(12, document.get());
     }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where age = @age"})
+    public void shouldReturnErrorWhenIsQueryWithParamAsync(String query) {
+
+        assertThrows(QueryException.class, () -> {
+            parser.queryAsync(query, documentCollectionAsync, s -> {
+            }, observer);
+        });
+
+
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where age = @age"})
+    public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
+
+        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
+        assertThrows(QueryException.class, () -> {
+            prepare.getResultList(s -> {
+            });
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where age = @age"})
+    public void shouldExecutePrepareStatmentAsync(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+
+        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
+        prepare.bind("age", 12);
+        Consumer<List<DocumentEntity>> callBack = s -> {
+        };
+        prepare.getResultList(callBack);
+        Mockito.verify(documentCollectionAsync).select(captor.capture(), Mockito.eq(callBack));
+        DocumentQuery documentQuery = captor.getValue();
+        DocumentCondition documentCondition = documentQuery.getCondition().get();
+        Document document = documentCondition.getDocument();
+        assertEquals(EQUALS, documentCondition.getCondition());
+        assertEquals("age", document.getName());
+        assertEquals(12, document.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where name = \"Ada\" and age = 20"})
+    public void shouldReturnParserQueryAsync(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        Consumer<List<DocumentEntity>> callBack = s -> {
+        };
+        parser.queryAsync(query, documentCollectionAsync, callBack, observer);
+        Mockito.verify(documentCollectionAsync).select(captor.capture(), Mockito.eq(callBack));
+        DocumentQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery, 0L, 0L);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+        Document document = condition.getDocument();
+        assertEquals(AND, condition.getCondition());
+        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        });
+        assertThat(conditions, contains(eq(Document.of("name", "Ada")),
+                eq(Document.of("age", 20L))));
+    }
+
 
     private void checkBaseQuery(DocumentQuery documentQuery, long limit, long skip) {
         assertTrue(documentQuery.getDocuments().isEmpty());
