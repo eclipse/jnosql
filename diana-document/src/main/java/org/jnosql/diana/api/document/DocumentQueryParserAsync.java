@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * A query parser to document database type, this class will convert a String to an operation in {@link DocumentCollectionManager}.
+ * A query parser to document database type, this class will convert a String to an operation
+ * in {@link DocumentCollectionManagerAsync}.
  */
 public interface DocumentQueryParserAsync extends DocumentObserverParser {
 
@@ -38,7 +39,7 @@ public interface DocumentQueryParserAsync extends DocumentObserverParser {
     void query(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack);
 
     /**
-     * Executes a query and returns a {@link DocumentPreparedStatement}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * Executes a query and returns a {@link DocumentPreparedStatementAsync}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
      * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
      *
      * @param query             the query as {@link String}
