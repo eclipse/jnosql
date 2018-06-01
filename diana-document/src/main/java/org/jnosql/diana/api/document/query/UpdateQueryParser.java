@@ -22,6 +22,7 @@ import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
+import org.jnosql.diana.api.document.ObserverParser;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.UpdateQuery;
 import org.jnosql.query.UpdateQuerySupplier;
@@ -39,13 +40,13 @@ final class UpdateQueryParser {
         this.supplier = UpdateQuerySupplier.getSupplier();
     }
 
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
         Params params = new Params();
 
-        DocumentEntity entity = getEntity(params, updateQuery);
+        DocumentEntity entity = getEntity(params, updateQuery, observer);
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
@@ -53,13 +54,14 @@ final class UpdateQueryParser {
         return singletonList(collectionManager.update(entity));
     }
 
-    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack) {
+    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
+                    Consumer<List<DocumentEntity>> callBack, ObserverParser observer) {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
         Params params = new Params();
 
-        DocumentEntity entity = getEntity(params, updateQuery);
+        DocumentEntity entity = getEntity(params, updateQuery, observer);
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
@@ -67,34 +69,34 @@ final class UpdateQueryParser {
         collectionManager.update(entity, c -> callBack.accept(singletonList(c)));
     }
 
-    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
 
         Params params = new Params();
 
         UpdateQuery updateQuery = supplier.apply(query);
 
-        DocumentEntity entity = getEntity(params, updateQuery);
+        DocumentEntity entity = getEntity(params, updateQuery, observer);
 
         return DefaultDocumentPreparedStatement.update(entity, params, query, collectionManager);
     }
 
-    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager) {
+    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager, ObserverParser observer) {
         Params params = new Params();
         UpdateQuery updateQuery = supplier.apply(query);
 
-        DocumentEntity entity = getEntity(params, updateQuery);
+        DocumentEntity entity = getEntity(params, updateQuery, observer);
 
         return DefaultDocumentPreparedStatementAsync.update(entity, params, query, collectionManager);
     }
 
-    private DocumentEntity getEntity(Params params, UpdateQuery updateQuery) {
-        String collection = updateQuery.getEntity();
+    private DocumentEntity getEntity(Params params, UpdateQuery updateQuery, ObserverParser observer) {
+        String collection = observer.fireEntity(updateQuery.getEntity());
 
         DocumentEntity entity = DocumentEntity.of(collection);
 
         updateQuery.getConditions()
                 .stream()
-                .map(c -> Conditions.getCondition(c, params))
+                .map(c -> Conditions.getCondition(c, params, observer))
                 .map(DocumentCondition::getDocument)
                 .forEach(entity::add);
         return entity;

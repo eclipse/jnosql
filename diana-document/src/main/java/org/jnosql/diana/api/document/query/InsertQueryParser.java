@@ -22,12 +22,12 @@ import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
+import org.jnosql.diana.api.document.ObserverParser;
 import org.jnosql.query.InsertQuery;
 import org.jnosql.query.InsertQuerySupplier;
 import org.jnosql.query.QueryException;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -42,14 +42,14 @@ final class InsertQueryParser {
         this.supplier = InsertQuerySupplier.getSupplier();
     }
 
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
 
         InsertQuery insertQuery = supplier.apply(query);
 
         String collection = insertQuery.getEntity();
         Params params = new Params();
 
-        DocumentEntity entity = getEntity(insertQuery, collection, params);
+        DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
 
         Optional<Duration> ttl = insertQuery.getTtl();
         if (params.isNotEmpty()) {
@@ -62,13 +62,14 @@ final class InsertQueryParser {
         }
     }
 
-    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack) {
+    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
+                    Consumer<List<DocumentEntity>> callBack, ObserverParser observer) {
         InsertQuery insertQuery = supplier.apply(query);
 
-        String collection = insertQuery.getEntity();
+        String collection = observer.fireEntity(insertQuery.getEntity());
         Params params = new Params();
 
-        DocumentEntity entity = getEntity(insertQuery, collection, params);
+        DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
 
         Optional<Duration> ttl = insertQuery.getTtl();
         if (params.isNotEmpty()) {
@@ -81,36 +82,36 @@ final class InsertQueryParser {
         }
     }
 
-    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, ObserverParser observer) {
         InsertQuery insertQuery = supplier.apply(query);
 
-        String collection = insertQuery.getEntity();
+        String collection = observer.fireEntity(insertQuery.getEntity());
         Params params = new Params();
 
         Optional<Duration> ttl = insertQuery.getTtl();
-        DocumentEntity entity = getEntity(insertQuery, collection, params);
+        DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
 
         return DefaultDocumentPreparedStatement.insert(entity, params, query, ttl.orElse(null), collectionManager);
 
     }
 
-    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager) {
+    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager, ObserverParser observer) {
         Params params = new Params();
 
         InsertQuery insertQuery = supplier.apply(query);
-        String collection = insertQuery.getEntity();
+        String collection = observer.fireEntity(insertQuery.getEntity());
         Optional<Duration> ttl = insertQuery.getTtl();
-        DocumentEntity entity = getEntity(insertQuery, collection, params);
+        DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
 
         return DefaultDocumentPreparedStatementAsync.insert(entity, params, query, ttl.orElse(null), collectionManager);
     }
 
-    private DocumentEntity getEntity(InsertQuery insertQuery, String collection, Params params) {
+    private DocumentEntity getEntity(InsertQuery insertQuery, String collection, Params params, ObserverParser observer) {
         DocumentEntity entity = DocumentEntity.of(collection);
 
         insertQuery.getConditions()
                 .stream()
-                .map(c -> Conditions.getCondition(c, params))
+                .map(c -> Conditions.getCondition(c, params, observer))
                 .map(DocumentCondition::getDocument)
                 .forEach(entity::add);
         return entity;

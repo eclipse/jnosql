@@ -17,17 +17,20 @@
 package org.jnosql.diana.api.document;
 
 /**
- * This is an observer to a parser
+ * An observer to a parser; this observer allows checking both the name of an entity and the fields.
+ * This observer might be used to the mapper process.
  */
 public interface ObserverParser {
 
     /**
      * Fire an event to entity name
      *
-     * @param document the document
+     * @param entity the entity
      * @return the field result
      */
-    String fireEntity(String document);
+    default String fireEntity(String entity) {
+        return entity;
+    }
 
     /**
      * Fire an event to each field in case of mapper process
@@ -35,5 +38,7 @@ public interface ObserverParser {
      * @param document the document
      * @return the field result
      */
-    String fireField(String document);
+    default String fireField(String document) {
+        return document;
+    }
 }

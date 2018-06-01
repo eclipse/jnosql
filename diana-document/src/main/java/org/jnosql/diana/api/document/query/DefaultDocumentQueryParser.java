@@ -69,15 +69,6 @@ public class DefaultDocumentQueryParser implements DocumentQueryParser {
         }
     }
 
-    @Override
-    public String fireEntity(String document) {
-        return document;
-    }
-
-    @Override
-    public String fireField(String document) {
-        return document;
-    }
 
     private void validation(String query, DocumentCollectionManager collectionManager) {
         Objects.requireNonNull(query, "query is required");
