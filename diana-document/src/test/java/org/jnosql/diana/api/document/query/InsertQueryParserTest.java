@@ -190,7 +190,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = @name)"})
-    public void shouldExecutePrepareStatement(String query) {
+    public void shouldExecutePrepareStatment(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
         prepare.bind("name", "Diana");

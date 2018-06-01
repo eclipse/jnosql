@@ -19,8 +19,10 @@ package org.jnosql.diana.api.document.query;
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.api.document.DocumentQueryParser;
 import org.jnosql.diana.api.document.query.DefaultDocumentQueryParser;
@@ -34,6 +36,7 @@ import org.mockito.Mockito;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.jnosql.diana.api.Condition.EQUALS;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
 import static org.jnosql.diana.api.Sort.SortType.DESC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -128,6 +131,69 @@ class DefaultDocumentQueryParserTest {
 
         assertEquals("God", entity.getName());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"delete from God where age = @age"})
+    public void shouldExecutePrepareStatment(String query) {
+        ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        prepare.bind("age", 12);
+        prepare.getResultList();
+        Mockito.verify(documentCollection).delete(captor.capture());
+        DocumentDeleteQuery documentQuery = captor.getValue();
+        DocumentCondition documentCondition = documentQuery.getCondition().get();
+        Document document = documentCondition.getDocument();
+        assertEquals(EQUALS, documentCondition.getCondition());
+        assertEquals("age", document.getName());
+        assertEquals(12, document.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert God (name = @name)"})
+    public void shouldExecutePrepareStatment1(String query) {
+        ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        prepare.bind("name", "Diana");
+        prepare.getResultList();
+        Mockito.verify(documentCollection).insert(captor.capture());
+        DocumentEntity entity = captor.getValue();
+        assertEquals("God", entity.getName());
+        assertEquals(Document.of("name", "Diana"), entity.find("name").get());
+
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where age = @age"})
+    public void shouldExecutePrepareStatment2(String query) {
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        prepare.bind("age", 12);
+        prepare.getResultList();
+        Mockito.verify(documentCollection).select(captor.capture());
+        DocumentQuery documentQuery = captor.getValue();
+        DocumentCondition documentCondition = documentQuery.getCondition().get();
+        Document document = documentCondition.getDocument();
+        assertEquals(EQUALS, documentCondition.getCondition());
+        assertEquals("age", document.getName());
+        assertEquals(12, document.get());
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"update God (name = @name)"})
+    public void shouldExecutePrepareStatment3(String query) {
+        ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        prepare.bind("name", "Diana");
+        prepare.getResultList();
+        Mockito.verify(documentCollection).update(captor.capture());
+        DocumentEntity entity = captor.getValue();
+        assertEquals("God", entity.getName());
+        assertEquals(Document.of("name", "Diana"), entity.find("name").get());
+
     }
 
 
