@@ -21,10 +21,10 @@ import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.diana.api.document.DocumentQuery;
-import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.query.QueryException;
 import org.jnosql.query.SelectQuery;
 import org.jnosql.query.SelectQuerySupplier;
@@ -40,20 +40,23 @@ import static org.jnosql.diana.api.Sort.SortType.DESC;
 final class SelectQueryParser {
 
     private final SelectQuerySupplier selectQuerySupplier;
+    private final CacheQuery<DocumentQuery> cache;
 
     SelectQueryParser() {
         this.selectQuerySupplier = SelectQuerySupplier.getSupplier();
+        this.cache = new CacheQuery<>(this::getDocumentQuery);
     }
 
     List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
-        DocumentQuery documentQuery = getDocumentQuery(query, observer);
+        DocumentQuery documentQuery = cache.get(query, observer);
         return collectionManager.select(documentQuery);
     }
 
     void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack,
                     DocumentObserverParser observer) {
-        DocumentQuery documentQuery = getDocumentQuery(query, observer);
+
+        DocumentQuery documentQuery = cache.get(query, observer);
         collectionManager.select(documentQuery, callBack);
     }
 
