@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-final class DefaultDocumentQueryParserAsync implements DocumentQueryParserAsync {
+public final class DefaultDocumentQueryParserAsync implements DocumentQueryParserAsync {
 
     private final SelectQueryParser select = new SelectQueryParser();
     private final DeleteQueryParser delete = new DeleteQueryParser();

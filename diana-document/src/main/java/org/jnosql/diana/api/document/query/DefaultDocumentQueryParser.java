@@ -25,7 +25,7 @@ import org.jnosql.query.QueryException;
 import java.util.List;
 import java.util.Objects;
 
-public class DefaultDocumentQueryParser implements DocumentQueryParser {
+public final class DefaultDocumentQueryParser implements DocumentQueryParser {
 
     private final SelectQueryParser select = new SelectQueryParser();
     private final DeleteQueryParser delete = new DeleteQueryParser();
