@@ -28,7 +28,6 @@ import org.jnosql.query.DeleteQuery;
 import org.jnosql.query.DeleteQuerySupplier;
 import org.jnosql.query.QueryException;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
