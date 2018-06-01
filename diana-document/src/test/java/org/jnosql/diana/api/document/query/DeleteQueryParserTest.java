@@ -20,10 +20,13 @@ import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
-import org.jnosql.diana.api.document.DocumentPreparedStatement;
+import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentObserverParser;
+import org.jnosql.diana.api.document.DocumentPreparedStatement;
+import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.query.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -32,6 +35,7 @@ import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -58,6 +62,7 @@ class DeleteQueryParserTest {
     private DeleteQueryParser parser = new DeleteQueryParser();
 
     private DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
+    private DocumentCollectionManagerAsync documentCollectionAsync = Mockito.mock(DocumentCollectionManagerAsync.class);
 
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };
@@ -384,9 +389,7 @@ class DeleteQueryParserTest {
             parser.query(query, documentCollection, observer);
         });
 
-
     }
-
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = @age"})
@@ -415,6 +418,66 @@ class DeleteQueryParserTest {
         assertEquals(12, document.get());
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"delete from God where age = @age"})
+    public void shouldReturnErrorWhenIsQueryWithParamAsync(String query) {
+
+        assertThrows(QueryException.class, () -> {
+            parser.queryAsync(query, documentCollectionAsync, s->{}, observer);
+        });
+
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"delete from God where age = @age"})
+    public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
+
+        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
+        assertThrows(QueryException.class, () -> {
+            prepare.getResultList(s ->{});
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"delete from God where age = @age"})
+    public void shouldExecutePrepareStatmentAsync(String query) {
+        ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+
+        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
+        prepare.bind("age", 12);
+        Consumer<List<DocumentEntity>> callBack = s -> {
+        };
+        prepare.getResultList(callBack);
+        Mockito.verify(documentCollectionAsync).delete(captor.capture(), Mockito.any(Consumer.class));
+        DocumentDeleteQuery documentQuery = captor.getValue();
+        DocumentCondition documentCondition = documentQuery.getCondition().get();
+        Document document = documentCondition.getDocument();
+        assertEquals(EQUALS, documentCondition.getCondition());
+        assertEquals("age", document.getName());
+        assertEquals(12, document.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"delete  from God where name = \"Ada\" or age = 20"})
+    public void shouldReturnParserQueryAsync(String query) {
+        ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+
+        Consumer<List<DocumentEntity>> callBack = s -> {
+        };
+        parser.queryAsync(query, documentCollectionAsync, callBack, observer);
+        Mockito.verify(documentCollectionAsync).delete(captor.capture(), Mockito.any(Consumer.class));
+        DocumentDeleteQuery documentQuery = captor.getValue();
+
+        checkBaseQuery(documentQuery);
+        assertTrue(documentQuery.getCondition().isPresent());
+        DocumentCondition condition = documentQuery.getCondition().get();
+        Document document = condition.getDocument();
+        assertEquals(OR, condition.getCondition());
+        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        });
+        assertThat(conditions, contains(eq(Document.of("name", "Ada")),
+                eq(Document.of("age", 20L))));
+    }
     private void checkBaseQuery(DocumentDeleteQuery documentQuery) {
         assertTrue(documentQuery.getDocuments().isEmpty());
         assertEquals("God", documentQuery.getDocumentCollection());

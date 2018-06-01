@@ -18,14 +18,19 @@ package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentObserverParser;
+import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.query.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,6 +40,7 @@ class UpdateQueryParserTest {
     private UpdateQueryParser parser = new UpdateQueryParser();
 
     private DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
+    private DocumentCollectionManagerAsync documentCollectionAsync = Mockito.mock(DocumentCollectionManagerAsync.class);
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };
 
@@ -92,6 +98,43 @@ class UpdateQueryParserTest {
         prepare.bind("name", "Diana");
         prepare.getResultList();
         Mockito.verify(documentCollection).update(captor.capture());
+        DocumentEntity entity = captor.getValue();
+        assertEquals("God", entity.getName());
+        assertEquals(Document.of("name", "Diana"), entity.find("name").get());
+
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"update God (name = @name)"})
+    public void shouldReturnErrorWhenShouldUsePrepareStatmentAsync(String query) {
+
+        assertThrows(QueryException.class, () -> {
+            parser.queryAsync(query, documentCollectionAsync, s->{}, observer);
+        });
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"update God (name = @name)"})
+    public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQueryAsync(String query) {
+
+        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
+        assertThrows(QueryException.class, () -> {
+            prepare.getResultList(s ->{});
+        });
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"update God (name = @name)"})
+    public void shouldExecutePrepareStatmentAsync(String query) {
+        ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
+        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
+        prepare.bind("name", "Diana");
+        Consumer<List<DocumentEntity>> callBack = s -> {
+        };
+        prepare.getResultList(callBack);
+        Mockito.verify(documentCollectionAsync).insert(captor.capture(), Mockito.any(Consumer.class));
         DocumentEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
