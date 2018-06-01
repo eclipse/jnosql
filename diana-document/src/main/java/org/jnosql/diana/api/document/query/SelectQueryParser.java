@@ -18,6 +18,7 @@ package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
@@ -28,6 +29,7 @@ import org.jnosql.query.SelectQuerySupplier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static java.util.stream.Collectors.toList;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
@@ -37,13 +39,43 @@ final class SelectQueryParser {
 
     private final SelectQuerySupplier selectQuerySupplier;
 
-    public SelectQueryParser() {
+    SelectQueryParser() {
         this.selectQuerySupplier = SelectQuerySupplier.getSupplier();
     }
 
-    public List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager) {
+
+        DocumentQuery documentQuery = getDocumentQuery(query);
+        return collectionManager.select(documentQuery);
+    }
+
+    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack) {
+        DocumentQuery documentQuery = getDocumentQuery(query);
+        collectionManager.select(documentQuery, callBack);
+    }
+
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
+
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
+        String collection = selectQuery.getEntity();
+        long limit = selectQuery.getLimit();
+        long skip = selectQuery.getSkip();
+        List<String> documents = new ArrayList<>(selectQuery.getFields());
+        List<Sort> sorts = selectQuery.getOrderBy().stream().map(this::toSort).collect(toList());
+        DocumentCondition condition = null;
+        Params params = new Params();
+        if (selectQuery.getWhere().isPresent()) {
+            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
+        }
+
+        DocumentQuery documentQuery = new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
+        return DefaultDocumentPreparedStatement.select(documentQuery, params, query, collectionManager);
+    }
+
+
+    private DocumentQuery getDocumentQuery(String query) {
+        SelectQuery selectQuery = selectQuerySupplier.apply(query);
         String collection = selectQuery.getEntity();
         long limit = selectQuery.getLimit();
         long skip = selectQuery.getSkip();
@@ -58,30 +90,12 @@ final class SelectQueryParser {
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        DocumentQuery documentQuery = new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
-        return collectionManager.select(documentQuery);
+        return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
     private Sort toSort(org.jnosql.query.Sort sort) {
         return Sort.of(sort.getName(), sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? ASC : DESC);
     }
 
-    public DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
 
-        SelectQuery selectQuery = selectQuerySupplier.apply(query);
-
-        String collection = selectQuery.getEntity();
-        long limit = selectQuery.getLimit();
-        long skip = selectQuery.getSkip();
-        List<String> documents = new ArrayList<>(selectQuery.getFields());
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(this::toSort).collect(toList());
-        DocumentCondition condition = null;
-        Params params = new Params();
-        if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
-        }
-
-        DocumentQuery documentQuery = new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
-        return DefaultDocumentPreparedStatement.select(documentQuery,params,query,collectionManager);
-    }
 }

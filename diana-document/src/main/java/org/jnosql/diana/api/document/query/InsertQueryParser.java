@@ -17,6 +17,7 @@
 package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
@@ -28,6 +29,9 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+
+import static java.util.Collections.singletonList;
 
 final class InsertQueryParser {
 
@@ -44,22 +48,35 @@ final class InsertQueryParser {
         String collection = insertQuery.getEntity();
         Params params = new Params();
 
+        DocumentEntity entity = getEntity(insertQuery, collection, params);
+
         Optional<Duration> ttl = insertQuery.getTtl();
-        DocumentEntity entity = DocumentEntity.of(collection);
-
-        insertQuery.getConditions()
-                .stream()
-                .map(c -> Conditions.getCondition(c, params))
-                .map(DocumentCondition::getDocument)
-                .forEach(entity::add);
-
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
         if (ttl.isPresent()) {
-            return Collections.singletonList(collectionManager.insert(entity, ttl.get()));
+            return singletonList(collectionManager.insert(entity, ttl.get()));
         } else {
-            return Collections.singletonList(collectionManager.insert(entity));
+            return singletonList(collectionManager.insert(entity));
+        }
+    }
+
+    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack) {
+        InsertQuery insertQuery = supplier.apply(query);
+
+        String collection = insertQuery.getEntity();
+        Params params = new Params();
+
+        DocumentEntity entity = getEntity(insertQuery, collection, params);
+
+        Optional<Duration> ttl = insertQuery.getTtl();
+        if (params.isNotEmpty()) {
+            throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
+        }
+        if (ttl.isPresent()) {
+            collectionManager.insert(entity, ttl.get(), c -> callBack.accept(singletonList(c)));
+        } else {
+            collectionManager.insert(entity, c -> callBack.accept(singletonList(c)));
         }
     }
 
@@ -70,6 +87,13 @@ final class InsertQueryParser {
         Params params = new Params();
 
         Optional<Duration> ttl = insertQuery.getTtl();
+        DocumentEntity entity = getEntity(insertQuery, collection, params);
+
+        return DefaultDocumentPreparedStatement.insert(entity, params, query, ttl.orElse(null), collectionManager);
+
+    }
+
+    private DocumentEntity getEntity(InsertQuery insertQuery, String collection, Params params) {
         DocumentEntity entity = DocumentEntity.of(collection);
 
         insertQuery.getConditions()
@@ -77,8 +101,8 @@ final class InsertQueryParser {
                 .map(c -> Conditions.getCondition(c, params))
                 .map(DocumentCondition::getDocument)
                 .forEach(entity::add);
-
-        return DefaultDocumentPreparedStatement.insert(entity, params, query, ttl.orElse(null), collectionManager);
-
+        return entity;
     }
+
+
 }

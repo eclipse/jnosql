@@ -17,6 +17,7 @@
 package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
@@ -24,8 +25,10 @@ import org.jnosql.query.QueryException;
 import org.jnosql.query.UpdateQuery;
 import org.jnosql.query.UpdateQuerySupplier;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
+
+import static java.util.Collections.singletonList;
 
 final class UpdateQueryParser {
 
@@ -39,9 +42,9 @@ final class UpdateQueryParser {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
-        String collection = updateQuery.getEntity();
         Params params = new Params();
 
+        String collection = updateQuery.getEntity();
         DocumentEntity entity = DocumentEntity.of(collection);
 
         updateQuery.getConditions()
@@ -53,7 +56,28 @@ final class UpdateQueryParser {
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        return Collections.singletonList(collectionManager.update(entity));
+        return singletonList(collectionManager.update(entity));
+    }
+
+    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack) {
+
+        UpdateQuery updateQuery = supplier.apply(query);
+
+        Params params = new Params();
+
+        String collection = updateQuery.getEntity();
+        DocumentEntity entity = DocumentEntity.of(collection);
+
+        updateQuery.getConditions()
+                .stream()
+                .map(c -> Conditions.getCondition(c, params))
+                .map(DocumentCondition::getDocument)
+                .forEach(entity::add);
+
+        if (params.isNotEmpty()) {
+            throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
+        }
+        collectionManager.update(entity, c -> callBack.accept(singletonList(c)));
     }
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager) {
@@ -73,4 +97,6 @@ final class UpdateQueryParser {
 
         return DefaultDocumentPreparedStatement.update(entity, params, query, collectionManager);
     }
+
+
 }
