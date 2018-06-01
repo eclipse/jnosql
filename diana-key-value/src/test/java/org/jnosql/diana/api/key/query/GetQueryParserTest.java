@@ -18,7 +18,6 @@ package org.jnosql.diana.api.key.query;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValuePreparedStatement;
 import org.jnosql.query.QueryException;
@@ -30,7 +29,8 @@ import org.mockito.Mockito;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GetQueryParserTest {
 

@@ -34,8 +34,6 @@ import java.util.stream.Collectors;
 final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatement {
 
 
-    private final KeyValueEntity entity;
-
     private final List<Value> keys;
 
     private final PreparedStatementType type;
@@ -49,13 +47,16 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
     private final Duration ttl;
 
     private final String query;
+    private final Value key;
+    private final Value value;
 
-    DefaultKeyValuePreparedStatement(KeyValueEntity entity, List<Value> keys,
+    DefaultKeyValuePreparedStatement(Value key, Value value, List<Value> keys,
                                      PreparedStatementType type,
                                      BucketManager manager,
                                      Params params,
                                      Duration ttl, String query) {
-        this.entity = entity;
+        this.key = key;
+        this.value = value;
         this.keys = keys;
         this.type = type;
         this.manager = manager;
@@ -90,6 +91,7 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
                 manager.del(keys.stream().map(Value::get).collect(Collectors.toList()));
                 return Collections.emptyList();
             case PUT:
+                KeyValueEntity<Object> entity = KeyValueEntity.of(key.get(), value.get());
                 if (Objects.isNull(ttl)) {
                     manager.put(entity);
                 } else {
@@ -121,22 +123,23 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
     static KeyValuePreparedStatement get(List<Value> keys,
                                          BucketManager manager,
                                          Params params, String query) {
-        return new DefaultKeyValuePreparedStatement(null, keys, PreparedStatementType.GET,
+        return new DefaultKeyValuePreparedStatement(null, null, keys, PreparedStatementType.GET,
                 manager, params, null, query);
     }
 
-    static KeyValuePreparedStatement put(KeyValueEntity entity,
+    static KeyValuePreparedStatement put(Value key,
+                                         Value value,
                                          BucketManager manager,
                                          Params params,
                                          Duration ttl, String query) {
-        return new DefaultKeyValuePreparedStatement(entity, null, PreparedStatementType.PUT,
+        return new DefaultKeyValuePreparedStatement(key, value, null, PreparedStatementType.PUT,
                 manager, params, ttl, query);
     }
 
     static KeyValuePreparedStatement del(List<Value> keys,
                                          BucketManager manager,
                                          Params params, String query) {
-        return new DefaultKeyValuePreparedStatement(null, keys, PreparedStatementType.DEL,
+        return new DefaultKeyValuePreparedStatement(null, null, keys, PreparedStatementType.DEL,
                 manager, params, null, query);
     }
 
