@@ -43,12 +43,16 @@ public interface Document extends Serializable {
 
     /**
      * Creates a Document instance
-     * @param name - column's name
+     *
+     * @param name  - column's name
      * @param value - column's value
      * @return a Document instance
      * @throws NullPointerException when either name or value is null
      */
     static Document of(String name, Object value) {
+        if (value instanceof Value) {
+            return new DefaultDocument(name, Value.class.cast(value));
+        }
         return new DefaultDocument(name, Value.of(value));
     }
 
@@ -68,26 +72,29 @@ public interface Document extends Serializable {
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get(Class)}
+     *
      * @param clazz {@link org.jnosql.diana.api.Value#get(Class)}
-     * @param <T> {@link org.jnosql.diana.api.Value#get(Class)}
+     * @param <T>   {@link org.jnosql.diana.api.Value#get(Class)}
      * @return {@link org.jnosql.diana.api.Value#get(Class)}
-     * @throws NullPointerException see {@link org.jnosql.diana.api.Value#get(Class)}
+     * @throws NullPointerException          see {@link org.jnosql.diana.api.Value#get(Class)}
      * @throws UnsupportedOperationException see {@link org.jnosql.diana.api.Value#get(Class)}
      */
     <T> T get(Class<T> clazz);
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     *
      * @param typeSupplier {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
-     * @param <T> {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @param <T>          {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @return {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
-     * @throws NullPointerException see {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @throws NullPointerException          see {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @throws UnsupportedOperationException see {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      */
     <T> T get(TypeSupplier<T> typeSupplier);
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get()}
+     *
      * @return {@link org.jnosql.diana.api.Value#get()}
      */
     Object get();

@@ -40,9 +40,9 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * Saves an entity asynchronously
      *
      * @param entity entity to be saved
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when entity is null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when entity is null
      */
     void insert(DocumentEntity entity);
 
@@ -51,9 +51,9 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      *
      * @param entity entity to be saved
      * @param ttl    the time to live
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either entity or ttl are null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either entity or ttl are null
      */
     void insert(DocumentEntity entity, Duration ttl);
 
@@ -63,9 +63,9 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when entities is null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when entities is null
      */
     default void insert(Iterable<DocumentEntity> entities) {
         Objects.requireNonNull(entities, "entities is required");
@@ -79,9 +79,9 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      *
      * @param entities entities to be saved
      * @param ttl      time to live
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either entities or ttl are null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either entities or ttl are null
      */
     default void insert(Iterable<DocumentEntity> entities, Duration ttl) {
         Objects.requireNonNull(entities, "entities is required");
@@ -95,9 +95,9 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param entity   entity to be saved
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the saved entity within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either callback or entity are null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either callback or entity are null
      */
     void insert(DocumentEntity entity, Consumer<DocumentEntity> callBack);
 
@@ -108,9 +108,9 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param ttl      time to live
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the saved entity within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either entity or ttl or callback are null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either entity or ttl or callback are null
      */
     void insert(DocumentEntity entity, Duration ttl, Consumer<DocumentEntity> callBack);
 
@@ -119,9 +119,9 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * Updates an entity asynchronously
      *
      * @param entity entity to be updated
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when entity is null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when entity is null
      */
     void update(DocumentEntity entity);
 
@@ -131,9 +131,9 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entities to be saved
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when entities is null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when entities is null
      */
     default void update(Iterable<DocumentEntity> entities) {
         Objects.requireNonNull(entities, "entities is required");
@@ -146,9 +146,9 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param entity   entity to be updated
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the updated entity within parametersa
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either entity or callback are null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either entity or callback are null
      */
     void update(DocumentEntity entity, Consumer<DocumentEntity> callBack);
 
@@ -157,9 +157,9 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * Deletes an entity asynchronously
      *
      * @param query select to delete an entity
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws UnsupportedOperationException                   if the implementation does not support any operation that a query has.
      */
     void delete(DocumentDeleteQuery query);
 
@@ -169,9 +169,9 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param query    select to delete an entity
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the null within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either select or callback are null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either select or callback are null
      */
     void delete(DocumentDeleteQuery query, Consumer<Void> callBack);
 
@@ -181,20 +181,56 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
      * @param query    select to select entities
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the result of select within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either select or callback are null
-     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either select or callback are null
+     * @throws UnsupportedOperationException                   if the implementation does not support any operation that a query has.
      */
     void select(DocumentQuery query, Consumer<List<DocumentEntity>> callBack);
+
+
+    /**
+     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param callBack the callback result
+     * @param query    the query as {@link String}
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalArgumentException        when the query has value parameters
+     * @throws IllegalStateException           when there is not {@link DocumentQueryParserAsync}
+     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     */
+    default void query(String query, Consumer<List<DocumentEntity>> callBack) {
+        Objects.requireNonNull(query, "query is required");
+        Objects.requireNonNull(callBack, "callBack is required");
+        DocumentQueryParserAsync parser = DocumentQueryParserAsync.getParser();
+        parser.query(query, this, callBack);
+    }
+
+    /**
+     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param query the query as {@link String}
+     * @return a {@link DocumentPreparedStatement} instance
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalStateException           when there is not {@link DocumentQueryParserAsync}
+     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     */
+    default DocumentPreparedStatementAsync prepare(String query) {
+        Objects.requireNonNull(query, "query is required");
+        DocumentQueryParserAsync parser = DocumentQueryParserAsync.getParser();
+        return parser.prepare(query, this);
+    }
+
 
     /**
      * Returns a single entity from select
      *
      * @param query    - select to figure out entities
      * @param callBack the callback
-     * @throws NonUniqueResultException when the result has more than 1 entity
-     * @throws NullPointerException     when select is null
+     * @throws NonUniqueResultException      when the result has more than 1 entity
+     * @throws NullPointerException          when select is null
      * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     default void singleResult(DocumentQuery query, Consumer<Optional<DocumentEntity>> callBack) {

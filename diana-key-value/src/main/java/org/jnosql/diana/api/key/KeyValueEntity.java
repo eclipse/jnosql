@@ -56,6 +56,9 @@ public interface KeyValueEntity<T> extends Serializable {
      * @throws NullPointerException when either key or value are null
      */
     static <T> KeyValueEntity<T> of(T key, Object value) {
+        if (value instanceof Value) {
+            return new DefaultKeyValueEntity(key, Value.class.cast(value));
+        }
         return of(key, Value.of(value));
     }
 
@@ -76,26 +79,29 @@ public interface KeyValueEntity<T> extends Serializable {
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get(Class)}
+     *
      * @param clazz {@link org.jnosql.diana.api.Value#get(Class)}
-     * @param <T> {@link org.jnosql.diana.api.Value#get(Class)}
+     * @param <T>   {@link org.jnosql.diana.api.Value#get(Class)}
      * @return {@link org.jnosql.diana.api.Value#get(Class)}
-     * @throws NullPointerException see {@link org.jnosql.diana.api.Value#get(Class)}
+     * @throws NullPointerException          see {@link org.jnosql.diana.api.Value#get(Class)}
      * @throws UnsupportedOperationException see {@link org.jnosql.diana.api.Value#get(Class)}
      */
     <T> T get(Class<T> clazz);
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     *
      * @param typeSupplier {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
-     * @param <T> {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @param <T>          {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @return {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
-     * @throws NullPointerException see {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @throws NullPointerException          see {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @throws UnsupportedOperationException see {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      */
     <T> T get(TypeSupplier<T> typeSupplier);
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get()}
+     *
      * @return {@link org.jnosql.diana.api.Value#get()}
      */
     Object get();

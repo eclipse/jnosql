@@ -16,11 +16,14 @@
  */
 package org.jnosql.diana.api.document;
 
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -42,5 +45,20 @@ public class DocumentsTest {
         List<Document> documents = Documents.of(map);
         assertFalse(documents.isEmpty());
         assertThat(documents, contains(Document.of("name", "Ada")));
+    }
+
+    @Test
+    public void shouldCreateRecursiveMap() {
+        List<List<Map<String, String>>> list = new ArrayList<>();
+        Map<String, String> map = singletonMap("mobile", "55 1234-4567");
+        list.add(singletonList(map));
+
+        List<Document> documents = Documents.of(singletonMap("contact", list));
+        assertEquals(1, documents.size());
+        Document document = documents.get(0);
+        assertEquals("contact", document.getName());
+        List<List<Document>> result = (List<List<Document>>) document.get();
+        assertEquals(Document.of("mobile", "55 1234-4567"), result.get(0).get(0));
+
     }
 }

@@ -51,6 +51,9 @@ public interface Column extends Serializable {
      * @see Columns
      */
     static Column of(String name, Object value) {
+        if (value instanceof Value) {
+            return new DefaultColumn(name, Value.class.cast(value));
+        }
         return new DefaultColumn(name, Value.of(value));
     }
 

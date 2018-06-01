@@ -129,6 +129,39 @@ public interface ColumnFamilyManager extends AutoCloseable {
     List<ColumnEntity> select(ColumnQuery query);
 
     /**
+     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param query the query as {@link String}
+     * @return the result of the operation if delete it will always return an empty list
+     * @throws NullPointerException     when there is parameter null
+     * @throws IllegalArgumentException when the query has value parameters
+     * @throws IllegalStateException    when there is not {@link ColumnQueryParser}
+     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     */
+    default List<ColumnEntity> query(String query) {
+        Objects.requireNonNull(query, "query is required");
+        ColumnQueryParser parser = ColumnQueryParser.getParser();
+        return parser.query(query, this);
+    }
+
+    /**
+     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param query the query as {@link String}
+     * @return a {@link ColumnPreparedStatement} instance
+     * @throws NullPointerException     when there is parameter null
+     * @throws IllegalStateException    when there is not {@link ColumnQueryParser}
+     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     */
+    default ColumnPreparedStatement  prepare(String query) {
+        Objects.requireNonNull(query, "query is required");
+        ColumnQueryParser parser = ColumnQueryParser.getParser();
+        return parser.prepare(query, this);
+    }
+
+    /**
      * Returns a single entity from select
      *
      * @param query - select to figure out entities
