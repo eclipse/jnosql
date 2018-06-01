@@ -82,7 +82,7 @@ final class DeleteQueryParser {
         DocumentCondition condition = null;
 
         if (deleteQuery.getWhere().isPresent()) {
-            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer)).get();
+            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
         }
 
         return new DefaultDocumentDeleteQuery(collection, condition, documents);
@@ -97,7 +97,7 @@ final class DeleteQueryParser {
         Params params = new Params();
 
         if (deleteQuery.getWhere().isPresent()) {
-            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer)).get();
+            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
         }
 
         if (params.isNotEmpty()) {

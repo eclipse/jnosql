@@ -94,7 +94,7 @@ final class SelectQueryParser {
         DocumentCondition condition = null;
         Params params = new Params();
         if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer)).get();
+            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
         }
 
         if (params.isNotEmpty()) {

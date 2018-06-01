@@ -111,7 +111,7 @@ final class InsertQueryParser {
 
         insertQuery.getConditions()
                 .stream()
-                .map(c -> Conditions.getCondition(c, params, observer))
+                .map(c -> Conditions.getCondition(c, params, observer, collection))
                 .map(DocumentCondition::getDocument)
                 .forEach(entity::add);
         return entity;
