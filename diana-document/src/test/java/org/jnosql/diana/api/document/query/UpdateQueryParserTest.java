@@ -134,7 +134,7 @@ class UpdateQueryParserTest {
         Consumer<List<DocumentEntity>> callBack = s -> {
         };
         prepare.getResultList(callBack);
-        Mockito.verify(documentCollectionAsync).insert(captor.capture(), Mockito.any(Consumer.class));
+        Mockito.verify(documentCollectionAsync).update(captor.capture(), Mockito.any(Consumer.class));
         DocumentEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
