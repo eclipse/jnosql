@@ -24,6 +24,7 @@ import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.diana.api.document.DocumentObserverParser;
+import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.query.DeleteQuery;
 import org.jnosql.query.DeleteQuerySupplier;
 import org.jnosql.query.QueryException;
@@ -36,21 +37,24 @@ import java.util.function.Consumer;
 final class DeleteQueryParser {
 
     private final DeleteQuerySupplier selectQuerySupplier;
+    private final CacheQuery<DocumentDeleteQuery> cache;
 
     DeleteQueryParser() {
         this.selectQuerySupplier = DeleteQuerySupplier.getSupplier();
+        cache = new CacheQuery<>(this::getQuery);
     }
 
     List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
-        DocumentDeleteQuery documentQuery = getQuery(query, observer);
+        DocumentDeleteQuery documentQuery = cache.get(query, observer);
         collectionManager.delete(documentQuery);
         return Collections.emptyList();
     }
 
     void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
                     Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer) {
-        DocumentDeleteQuery documentQuery = getQuery(query, observer);
+
+        DocumentDeleteQuery documentQuery = cache.get(query, observer);
         collectionManager.delete(documentQuery, v -> callBack.accept(Collections.emptyList()));
     }
 
