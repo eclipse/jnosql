@@ -20,9 +20,11 @@ package org.jnosql.diana.api.column;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -44,5 +46,21 @@ public class ColumnsTest {
         List<Column> columns = Columns.of(map);
         assertFalse(columns.isEmpty());
         assertThat(columns, Matchers.contains(Column.of("name", "Ada")));
+    }
+
+
+    @Test
+    public void shouldCreateRecursiveMap() {
+        List<List<Map<String, String>>> list = new ArrayList<>();
+        Map<String, String> map = singletonMap("mobile", "55 1234-4567");
+        list.add(singletonList(map));
+
+        List<Column> documents = Columns.of(singletonMap("contact", list));
+        assertEquals(1, documents.size());
+        Column document = documents.get(0);
+        assertEquals("contact", document.getName());
+        List<List<Column>> result = (List<List<Column>>) document.get();
+        assertEquals(Column.of("mobile", "55 1234-4567"), result.get(0).get(0));
+
     }
 }

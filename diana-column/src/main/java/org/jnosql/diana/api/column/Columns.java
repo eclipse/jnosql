@@ -22,14 +22,17 @@ import org.jnosql.diana.api.Value;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 
 /**
  * Utilitarian class to {@link Column}
  */
 public final class Columns {
+
+    private static final Predicate<Map.Entry<String, ?>> IS_VALUE_NULL = e -> Objects.nonNull(e.getValue());
 
     private Columns() {
     }
@@ -56,11 +59,25 @@ public final class Columns {
      */
     public static List<Column> of(Map<String, ?> values) {
         Objects.requireNonNull(values, "values is required");
-        Predicate<String> isNotNull = s -> values.get(s) != null;
-        Function<String, Column> columnMap = key -> {
-            Object value = values.get(key);
-            return Column.of(key, Value.of(value));
-        };
-        return values.keySet().stream().filter(isNotNull).map(columnMap).collect(Collectors.toList());
+        return values.entrySet().stream()
+                .filter(IS_VALUE_NULL)
+                .map(e -> Column.of(e.getKey(), getValue(e.getValue())))
+                .collect(toList());
+    }
+
+    private static Object getValue(Object value) {
+
+        if (value instanceof Map) {
+            List list = Columns.of((Map.class.cast(value)));
+            if(list.size() == 1) {
+                return list.get(0);
+            }
+            return list;
+        }
+        if (value instanceof Iterable) {
+            return stream(Iterable.class.cast(value).spliterator(), false)
+                    .map(Columns::getValue).collect(toList());
+        }
+        return value;
     }
 }
