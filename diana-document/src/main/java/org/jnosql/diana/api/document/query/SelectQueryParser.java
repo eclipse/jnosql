@@ -87,8 +87,10 @@ final class SelectQueryParser {
         long limit = selectQuery.getLimit();
         long skip = selectQuery.getSkip();
         List<String> documents = selectQuery.getFields().stream()
-                .map(observer::fireField).collect(Collectors.toList());
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer)).collect(toList());
+                .map(f -> observer.fireField(collection, f))
+                .collect(Collectors.toList());
+        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, collection))
+                .collect(toList());
         DocumentCondition condition = null;
         Params params = new Params();
         if (selectQuery.getWhere().isPresent()) {
@@ -107,19 +109,21 @@ final class SelectQueryParser {
         long limit = selectQuery.getLimit();
         long skip = selectQuery.getSkip();
         List<String> documents = selectQuery.getFields().stream()
-                .map(observer::fireField).collect(Collectors.toList());
+                .map(f -> observer.fireField(collection, f))
+                .collect(Collectors.toList());
 
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer)).collect(toList());
+        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, collection)).collect(toList());
         DocumentCondition condition = null;
         if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer)).get();
+            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
         }
 
         return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
-    private Sort toSort(org.jnosql.query.Sort sort, DocumentObserverParser observer) {
-        return Sort.of(observer.fireField(sort.getName()), sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? ASC : DESC);
+    private Sort toSort(org.jnosql.query.Sort sort, DocumentObserverParser observer, String entity) {
+        return Sort.of(observer.fireField(entity, sort.getName()),
+                sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? ASC : DESC);
     }
 
 

@@ -40,40 +40,58 @@ final class Conditions {
     private Conditions() {
     }
 
-    static DocumentCondition getCondition(Where where, Params params, DocumentObserverParser observer) {
+    static DocumentCondition getCondition(Where where, Params params, DocumentObserverParser observer, String entity) {
         Condition condition = where.getCondition();
-        return getCondition(condition, params, observer);
+        return getCondition(condition, params, observer, entity);
     }
 
-    static DocumentCondition getCondition(Condition condition, Params parameters, DocumentObserverParser observer) {
+    static DocumentCondition getCondition(Condition condition, Params parameters, DocumentObserverParser observer, String entity) {
         switch (condition.getOperator()) {
             case EQUALS:
-                return eq(Document.of(observer.fireField(condition.getName()), Values.get(condition.getValue(), parameters)));
+                return eq(Document.of(observer.fireField(entity, condition.getName()),
+                        Values.get(condition.getValue(),
+                        parameters)));
             case GREATER_THAN:
-                return gt(Document.of(observer.fireField(condition.getName()), Values.get(condition.getValue(), parameters)));
+                return gt(Document.of(observer.fireField(entity, condition.getName()),
+                        Values.get(condition.getValue(),
+                        parameters)));
             case GREATER_EQUALS_THAN:
-                return gte(Document.of(observer.fireField(condition.getName()), Values.get(condition.getValue(), parameters)));
+                return gte(Document.of(observer.fireField(entity, condition.getName()),
+                        Values.get(condition.getValue(),
+                        parameters)));
             case LESSER_THAN:
-                return lt(Document.of(observer.fireField(condition.getName()), Values.get(condition.getValue(), parameters)));
+                return lt(Document.of(observer.fireField(entity, condition.getName()),
+                        Values.get(condition.getValue(),
+                        parameters)));
             case LESSER_EQUALS_THAN:
-                return lte(Document.of(observer.fireField(condition.getName()), Values.get(condition.getValue(), parameters)));
+                return lte(Document.of(observer.fireField(entity, condition.getName()),
+                        Values.get(condition.getValue(),
+                        parameters)));
             case IN:
-                return in(Document.of(observer.fireField(condition.getName()), Values.get(condition.getValue(), parameters)));
+                return in(Document.of(observer.fireField(entity, condition.getName()),
+                        Values.get(condition.getValue(),
+                        parameters)));
             case LIKE:
-                return like(Document.of(observer.fireField(condition.getName()), Values.get(condition.getValue(), parameters)));
+                return like(Document.of(observer.fireField(entity, condition.getName()),
+                        Values.get(condition.getValue(),
+                        parameters)));
             case BETWEEN:
-                return between(Document.of(observer.fireField(condition.getName()), Values.get(condition.getValue(), parameters)));
+                return between(Document.of(observer.fireField(entity, condition.getName()),
+                        Values.get(condition.getValue(),
+                        parameters)));
             case NOT:
-                return getCondition(ConditionValue.class.cast(condition.getValue()).get().get(0), parameters, observer).negate();
+                return getCondition(ConditionValue.class.cast(condition.getValue()).get().get(0),
+                        parameters, observer,
+                        entity).negate();
             case OR:
                 return or(ConditionValue.class.cast(condition.getValue())
                         .get()
-                        .stream().map(v -> getCondition(v, parameters, observer))
+                        .stream().map(v -> getCondition(v, parameters, observer, entity))
                         .toArray(DocumentCondition[]::new));
             case AND:
                 return and(ConditionValue.class.cast(condition.getValue())
                         .get()
-                        .stream().map(v -> getCondition(v, parameters, observer))
+                        .stream().map(v -> getCondition(v, parameters, observer, entity))
                         .toArray(DocumentCondition[]::new));
             default:
                 throw new QueryException("There is not support the type: " + condition.getOperator());
