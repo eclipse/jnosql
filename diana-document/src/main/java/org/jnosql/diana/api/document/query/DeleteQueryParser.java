@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 final class DeleteQueryParser {
 
@@ -77,7 +78,9 @@ final class DeleteQueryParser {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
         String collection = observer.fireEntity(deleteQuery.getEntity());
-        List<String> documents = new ArrayList<>(deleteQuery.getFields());
+        List<String> documents = deleteQuery.getFields().stream()
+                .map(f -> observer.fireField(collection, f))
+                .collect(Collectors.toList());
         DocumentCondition condition = null;
 
         if (deleteQuery.getWhere().isPresent()) {
@@ -91,7 +94,9 @@ final class DeleteQueryParser {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
         String collection = observer.fireEntity(deleteQuery.getEntity());
-        List<String> documents = new ArrayList<>(deleteQuery.getFields());
+        List<String> documents = deleteQuery.getFields().stream()
+                .map(f -> observer.fireField(collection, f))
+                .collect(Collectors.toList());
         DocumentCondition condition = null;
         Params params = new Params();
 
