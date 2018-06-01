@@ -22,6 +22,7 @@ import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
+import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.query.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -369,6 +370,45 @@ class DeleteQueryParserTest {
         });
 
 
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"delete from God where age = @age"})
+    public void shouldReturnErrorWhenIsQueryWithParam(String query) {
+
+        assertThrows(QueryException.class, () -> {
+            parser.query(query, documentCollection);
+        });
+
+
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"delete from God where age = @age"})
+    public void shouldReturnErrorWhenDontBindParameters(String query) {
+
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        assertThrows(QueryException.class, () -> {
+            prepare.getResultList();
+        });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"delete from God where age = @age"})
+    public void shouldExecutePrepareStatment(String query) {
+        ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        prepare.bind("age", 12);
+        prepare.getResultList();
+        Mockito.verify(documentCollection).delete(captor.capture());
+        DocumentDeleteQuery documentQuery = captor.getValue();
+        DocumentCondition documentCondition = documentQuery.getCondition().get();
+        Document document = documentCondition.getDocument();
+        assertEquals(EQUALS, documentCondition.getCondition());
+        assertEquals("age", document.getName());
+        assertEquals(12, document.get());
     }
 
     private void checkBaseQuery(DocumentDeleteQuery documentQuery) {

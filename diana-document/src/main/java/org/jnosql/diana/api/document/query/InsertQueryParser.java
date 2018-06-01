@@ -78,10 +78,6 @@ final class InsertQueryParser {
                 .map(DocumentCondition::getDocument)
                 .forEach(entity::add);
 
-        if (params.isNotEmpty()) {
-            throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
-        }
-
         return DefaultDocumentPreparedStatement.insert(entity, params, query, ttl.orElse(null), collectionManager);
 
     }

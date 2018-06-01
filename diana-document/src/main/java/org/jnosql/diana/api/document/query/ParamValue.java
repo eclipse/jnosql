@@ -63,4 +63,12 @@ final class ParamValue implements Value {
             throw new QueryException(String.format("The parameter %s is not defined", name));
         }
     }
+
+    @Override
+    public String toString() {
+        if (Objects.isNull(value)) {
+            return name + "= ?";
+        }
+        return name + "= " + value;
+    }
 }

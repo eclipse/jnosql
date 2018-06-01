@@ -70,9 +70,6 @@ final class DeleteQueryParser {
             condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params)).get();
         }
 
-        if (params.isNotEmpty()) {
-            throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
-        }
         DocumentDeleteQuery documentQuery = new DefaultDocumentDeleteQuery(collection, condition, documents);
         return DefaultDocumentPreparedStatement.delete(documentQuery, params, query, collectionManager);
     }

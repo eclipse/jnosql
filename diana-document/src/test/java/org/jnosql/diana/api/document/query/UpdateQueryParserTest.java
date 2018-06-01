@@ -19,6 +19,7 @@ package org.jnosql.diana.api.document.query;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.query.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -68,5 +69,30 @@ class UpdateQueryParserTest {
         assertThrows(QueryException.class, () -> {
             parser.query(query, documentCollection);
         });
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"update God (name = @name)"})
+    public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
+
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        assertThrows(QueryException.class, () -> {
+            prepare.getResultList();
+        });
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"update God (name = @name)"})
+    public void shouldExecutePrepareStatement(String query) {
+        ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        prepare.bind("name", "Diana");
+        prepare.getResultList();
+        Mockito.verify(documentCollection).update(captor.capture());
+        DocumentEntity entity = captor.getValue();
+        assertEquals("God", entity.getName());
+        assertEquals(Document.of("name", "Diana"), entity.find("name").get());
+
     }
 }

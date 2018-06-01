@@ -91,7 +91,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
             case SELECT:
                 return manager.select(documentQuery);
             case DELETE:
-                manager.select(documentQuery);
+                manager.delete(documentDeleteQuery);
                 return emptyList();
             case UPDATE:
                 return singletonList(manager.update(entity));
