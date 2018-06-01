@@ -164,7 +164,7 @@ public interface ColumnCondition {
 
     /**
      * Creates a {@link ColumnCondition} that has a {@link Condition#BETWEEN},
-     * it means a select will scanning to a column collection that is between two values informed
+     * it means a select will scanning to a column family that is between two values informed
      * on a column name.
      * The column must have a {@link Column#get()} an {@link Iterable} implementation
      * with just two elements.

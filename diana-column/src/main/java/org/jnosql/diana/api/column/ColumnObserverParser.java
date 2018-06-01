@@ -35,11 +35,11 @@ public interface ColumnObserverParser {
     /**
      * Fire an event to each field in case of mapper process
      *
-     * @param document the document
+     * @param field the field
      * @param entity   the entity
      * @return the field result
      */
-    default String fireField(String entity, String document) {
-        return document;
+    default String fireField(String entity, String field) {
+        return field;
     }
 }

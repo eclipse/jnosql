@@ -48,7 +48,7 @@ public class ColumnTest {
     }
 
     @Test
-    public void shouldCreateAnDocumentInstance() {
+    public void shouldCreateAnColumnInstance() {
         String name = "name";
         Column column = Column.of(name, DEFAULT_VALUE);
         assertNotNull(column);

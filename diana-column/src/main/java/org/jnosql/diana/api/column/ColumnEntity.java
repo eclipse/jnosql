@@ -163,7 +163,7 @@ public interface ColumnEntity extends Serializable {
     ColumnEntity copy();
 
     /**
-     * Returns a Set view of the names of column contained in Document Entity
+     * Returns a Set view of the names of column contained in Column Entity
      *
      * @return the keys
      */

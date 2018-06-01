@@ -90,11 +90,11 @@ final class DefaultColumnCondition implements ColumnCondition {
 
             long count = (int) StreamSupport.stream(Iterable.class.cast(value).spliterator(), false).count();
             if (count > 2) {
-                throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
+                throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
                         " with two elements");
             }
             if (count != 2) {
-                throw new IllegalArgumentException("On Documentcondition#between you must use an iterable" +
+                throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
                         " with two elements");
             }
 

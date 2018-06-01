@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * A query parser to document database type, this class will convert a String to an operation in {@link ColumnFamilyManagerAsync}.
+ * A query parser to column database type, this class will convert a String to an operation in {@link ColumnFamilyManagerAsync}.
  */
 public interface ColumnQueryParserAsync extends ColumnObserverParser {
 
@@ -29,32 +29,32 @@ public interface ColumnQueryParserAsync extends ColumnObserverParser {
      * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
      *
      * @param query             the query as {@link String}
-     * @param collectionManager the collection manager
+     * @param manager the manager
      * @param callBack          the callback
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    void query(String query, ColumnFamilyManagerAsync collectionManager, Consumer<List<ColumnEntity>> callBack);
+    void query(String query, ColumnFamilyManagerAsync manager, Consumer<List<ColumnEntity>> callBack);
 
     /**
      * Executes a query and returns a {@link ColumnPreparedStatementAsync}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
      * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
      *
      * @param query             the query as {@link String}
-     * @param collectionManager the collection manager
+     * @param manager the manager
      * @return a {@link ColumnPreparedStatementAsync} instance
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    ColumnPreparedStatementAsync prepare(String query, ColumnFamilyManagerAsync collectionManager);
+    ColumnPreparedStatementAsync prepare(String query, ColumnFamilyManagerAsync manager);
 
     /**
      * It returns a {@link ColumnQueryParserAsync} from {@link java.util.ServiceLoader}
      *
      * @return {@link ColumnQueryParserAsync} instance
-     * @throws IllegalStateException when there isn't DocumentQueryParser from service loader.
+     * @throws IllegalStateException when there isn't ColumnQueryParser from service loader.
      */
     static ColumnQueryParserAsync getParser() {
         return ColumnQueryParserServiceAsyncLoader.getInstance();
