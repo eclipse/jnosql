@@ -39,7 +39,6 @@ public interface ColumnPreparedStatementAsync {
     /**
      * Executes a query and return the result as List
      * @param callBack the callback
-     * @return The result list, if delete it will return an empty list
      */
     void getResultList(Consumer<List<ColumnEntity>> callBack);
 
