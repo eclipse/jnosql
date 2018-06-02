@@ -22,6 +22,9 @@ package org.jnosql.diana.api.column;
  */
 public interface ColumnObserverParser {
 
+    static final ColumnObserverParser EMPTY = new ColumnObserverParser() {
+    };
+
     /**
      * Fire an event to entity name
      *
@@ -35,8 +38,8 @@ public interface ColumnObserverParser {
     /**
      * Fire an event to each field in case of mapper process
      *
-     * @param field the field
-     * @param entity   the entity
+     * @param field  the field
+     * @param entity the entity
      * @return the field result
      */
     default String fireField(String entity, String field) {

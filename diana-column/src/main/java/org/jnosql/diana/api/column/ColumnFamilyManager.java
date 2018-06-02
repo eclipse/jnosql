@@ -113,7 +113,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      * Deletes an entity
      *
      * @param query the select to delete an entity
-     * @throws NullPointerException when either select or collection are null
+     * @throws NullPointerException          when either select or collection are null
      * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     void delete(ColumnDeleteQuery query);
@@ -123,7 +123,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
      *
      * @param query - select to figure out entities
      * @return entities found by select
-     * @throws NullPointerException when select is null
+     * @throws NullPointerException          when select is null
      * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     List<ColumnEntity> select(ColumnQuery query);
@@ -134,15 +134,15 @@ public interface ColumnFamilyManager extends AutoCloseable {
      *
      * @param query the query as {@link String}
      * @return the result of the operation if delete it will always return an empty list
-     * @throws NullPointerException     when there is parameter null
-     * @throws IllegalArgumentException when the query has value parameters
-     * @throws IllegalStateException    when there is not {@link ColumnQueryParser}
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalArgumentException        when the query has value parameters
+     * @throws IllegalStateException           when there is not {@link ColumnQueryParser}
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
     default List<ColumnEntity> query(String query) {
         Objects.requireNonNull(query, "query is required");
         ColumnQueryParser parser = ColumnQueryParser.getParser();
-        return parser.query(query, this);
+        return parser.query(query, this, ColumnObserverParser.EMPTY);
     }
 
     /**
@@ -151,14 +151,14 @@ public interface ColumnFamilyManager extends AutoCloseable {
      *
      * @param query the query as {@link String}
      * @return a {@link ColumnPreparedStatement} instance
-     * @throws NullPointerException     when there is parameter null
-     * @throws IllegalStateException    when there is not {@link ColumnQueryParser}
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalStateException           when there is not {@link ColumnQueryParser}
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    default ColumnPreparedStatement  prepare(String query) {
+    default ColumnPreparedStatement prepare(String query) {
         Objects.requireNonNull(query, "query is required");
         ColumnQueryParser parser = ColumnQueryParser.getParser();
-        return parser.prepare(query, this);
+        return parser.prepare(query, this, ColumnObserverParser.EMPTY);
     }
 
     /**
@@ -166,8 +166,8 @@ public interface ColumnFamilyManager extends AutoCloseable {
      *
      * @param query - select to figure out entities
      * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
-     * @throws NonUniqueResultException when the result has more than 1 entity
-     * @throws NullPointerException     when select is null
+     * @throws NonUniqueResultException      when the result has more than 1 entity
+     * @throws NullPointerException          when select is null
      * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     default Optional<ColumnEntity> singleResult(ColumnQuery query) {

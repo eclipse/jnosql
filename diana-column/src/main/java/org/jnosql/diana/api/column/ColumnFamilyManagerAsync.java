@@ -40,9 +40,9 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * Saves an entity asynchronously
      *
      * @param entity entity to be saved
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when entity is null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when entity is null
      */
     void insert(ColumnEntity entity);
 
@@ -51,9 +51,9 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      *
      * @param entity entity to be saved
      * @param ttl    time to live
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when the entity is null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when the entity is null
      */
     void insert(ColumnEntity entity, Duration ttl);
 
@@ -63,9 +63,9 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param entity   entity to be saved
      * @param callBack the callback, when the process is finished will call this instance returning the saved entity
      *                 within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either entity or callback are null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either entity or callback are null
      */
     void insert(ColumnEntity entity, Consumer<ColumnEntity> callBack);
 
@@ -76,9 +76,9 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entity to be saved
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when entities is null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when entities is null
      */
     default void insert(Iterable<ColumnEntity> entities) {
         Objects.requireNonNull(entities, "entities is required");
@@ -92,9 +92,9 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      *
      * @param entities entity to be saved
      * @param ttl      time to live
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either entities or ttl are null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either entities or ttl are null
      */
     default void insert(Iterable<ColumnEntity> entities, Duration ttl) {
         Objects.requireNonNull(entities, "entities is required");
@@ -110,9 +110,9 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param ttl      time to live
      * @param callBack the callback, when the process is finished will call this instance returning the saved entity
      *                 within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either entity or ttl or callback are null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either entity or ttl or callback are null
      */
     void insert(ColumnEntity entity, Duration ttl, Consumer<ColumnEntity> callBack);
 
@@ -121,9 +121,9 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * Updates an entity asynchronously
      *
      * @param entity entity to be saved
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when entity is null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when entity is null
      */
     void update(ColumnEntity entity);
 
@@ -133,9 +133,9 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * each NoSQL vendor might replace to a more appropriate one.
      *
      * @param entities entity to be saved
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when entities is null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when entities is null
      */
     default void update(Iterable<ColumnEntity> entities) {
         Objects.requireNonNull(entities, "entities is required");
@@ -148,9 +148,9 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param entity   entity to be saved
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the updated entity within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either entity, callback are null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either entity, callback are null
      */
     void update(ColumnEntity entity, Consumer<ColumnEntity> callBack);
 
@@ -159,9 +159,9 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * Deletes an entity asynchronously
      *
      * @param query select to delete an entity
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when select is null
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when select is null
      */
     void delete(ColumnDeleteQuery query);
 
@@ -171,10 +171,10 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param query    select to delete an entity
      * @param callBack the callback, when the process is finished will call this instance returning
      *                 the null within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either select or callback are null
-     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either select or callback are null
+     * @throws UnsupportedOperationException                   if the implementation does not support any operation that a query has.
      */
     void delete(ColumnDeleteQuery query, Consumer<Void> callBack);
 
@@ -185,10 +185,10 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @param query    select to select entities
      * @param callBack the callback, when the process is finished will call this instance returning the
      *                 result of select within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException    when there is a async error
-     * @throws UnsupportedOperationException when the database does not support this feature
-     * @throws NullPointerException          when either select or callback are null
-     * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
+     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws UnsupportedOperationException                   when the database does not support this feature
+     * @throws NullPointerException                            when either select or callback are null
+     * @throws UnsupportedOperationException                   if the implementation does not support any operation that a query has.
      */
     void select(ColumnQuery query, Consumer<List<ColumnEntity>> callBack);
 
@@ -207,7 +207,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
         ColumnQueryParserAsync parser = ColumnQueryParserAsync.getParser();
-        parser.query(query, this, callBack);
+        parser.query(query, this, callBack, ColumnObserverParser.EMPTY);
     }
 
     /**
@@ -223,7 +223,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
     default ColumnPreparedStatementAsync prepare(String query) {
         Objects.requireNonNull(query, "query is required");
         ColumnQueryParserAsync parser = ColumnQueryParserAsync.getParser();
-        return parser.prepare(query, this);
+        return parser.prepare(query, this, ColumnObserverParser.EMPTY);
     }
 
 
@@ -232,8 +232,8 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      *
      * @param query    - select to figure out entities
      * @param callBack the callback
-     * @throws NonUniqueResultException when the result has more than 1 entity
-     * @throws NullPointerException     when select is null
+     * @throws NonUniqueResultException      when the result has more than 1 entity
+     * @throws NullPointerException          when select is null
      * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */
     default void singleResult(ColumnQuery query, Consumer<Optional<ColumnEntity>> callBack) {
