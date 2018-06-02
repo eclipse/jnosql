@@ -18,13 +18,15 @@ package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.diana.api.document.DocumentQueryParserAsync;
 import org.jnosql.query.QueryException;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
+
+import static java.util.Objects.requireNonNull;
 
 public final class DefaultDocumentQueryParserAsync implements DocumentQueryParserAsync {
 
@@ -35,61 +37,67 @@ public final class DefaultDocumentQueryParserAsync implements DocumentQueryParse
 
     @Override
     public void query(String query, DocumentCollectionManagerAsync collectionManager,
-                      Consumer<List<DocumentEntity>> callBack) {
+                      Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer) {
 
-        validation(query, collectionManager, callBack);
+        validation(query, collectionManager, callBack, observer);
         String command = query.substring(0, 6);
         switch (command) {
             case "select":
-                select.queryAsync(query, collectionManager, callBack, this);
+                select.queryAsync(query, collectionManager, callBack, observer);
                 return;
             case "delete":
-                delete.queryAsync(query, collectionManager, callBack, this);
-            return;
+                delete.queryAsync(query, collectionManager, callBack, observer);
+                return;
             case "insert":
-                insert.queryAsync(query, collectionManager, callBack, this);
-            return;
+                insert.queryAsync(query, collectionManager, callBack, observer);
+                return;
             case "update":
-                update.queryAsync(query, collectionManager, callBack, this);
-            return;
+                update.queryAsync(query, collectionManager, callBack, observer);
+                return;
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }
     }
 
     @Override
-    public DocumentPreparedStatementAsync prepare(String query, DocumentCollectionManagerAsync collectionManager) {
-        validation(query, collectionManager);
+    public DocumentPreparedStatementAsync prepare(String query, DocumentCollectionManagerAsync collectionManager,
+                                                  DocumentObserverParser observer) {
+
+        validation(query, collectionManager, observer);
         String command = query.substring(0, 6);
 
         switch (command) {
             case "select":
-                return select.prepareAsync(query, collectionManager, this);
+                return select.prepareAsync(query, collectionManager, observer);
             case "delete":
-                return delete.prepareAsync(query, collectionManager, this);
+                return delete.prepareAsync(query, collectionManager, observer);
             case "insert":
-                return insert.prepareAsync(query, collectionManager, this);
+                return insert.prepareAsync(query, collectionManager, observer);
             case "update":
-                return update.prepareAsync(query, collectionManager, this);
+                return update.prepareAsync(query, collectionManager, observer);
             default:
                 throw new QueryException(String.format("The command was not recognized at the query %s ", query));
         }
     }
 
-    private void validation(String query, DocumentCollectionManagerAsync collectionManager) {
+    private void validation(String query, DocumentCollectionManagerAsync collectionManager,
+                            DocumentObserverParser observer) {
 
-        Objects.requireNonNull(query, "query is required");
-        Objects.requireNonNull(collectionManager, "collectionManager is required");
+        requireNonNull(query, "query is required");
+        requireNonNull(observer, "observer is required");
+        requireNonNull(collectionManager, "collectionManager is required");
         if (query.length() < 6) {
             throw new QueryException(String.format("The query %s is invalid", query));
         }
     }
-    private void validation(String query, DocumentCollectionManagerAsync collectionManager,
-                            Consumer<List<DocumentEntity>> callBack) {
 
-        Objects.requireNonNull(query, "query is required");
-        Objects.requireNonNull(collectionManager, "collectionManager is required");
-        Objects.requireNonNull(callBack, "callBack is required");
+    private void validation(String query, DocumentCollectionManagerAsync collectionManager,
+                            Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer) {
+
+        requireNonNull(query, "query is required");
+        requireNonNull(collectionManager, "collectionManager is required");
+        requireNonNull(callBack, "callBack is required");
+        requireNonNull(observer, "observer is required");
         if (query.length() < 6) {
             throw new QueryException(String.format("The query %s is invalid", query));
         }

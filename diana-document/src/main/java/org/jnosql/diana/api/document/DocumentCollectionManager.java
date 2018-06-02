@@ -147,7 +147,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
     default List<DocumentEntity> query(String query) {
         Objects.requireNonNull(query, "query is required");
         DocumentQueryParser parser = DocumentQueryParser.getParser();
-        return parser.query(query, this);
+        return parser.query(query, this, DocumentObserverParser.EMPTY);
     }
 
     /**
@@ -163,7 +163,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
     default DocumentPreparedStatement  prepare(String query) {
         Objects.requireNonNull(query, "query is required");
         DocumentQueryParser parser = DocumentQueryParser.getParser();
-        return parser.prepare(query, this);
+        return parser.prepare(query, this, DocumentObserverParser.EMPTY);
     }
 
     /**

@@ -22,6 +22,10 @@ package org.jnosql.diana.api.document;
  */
 public interface DocumentObserverParser {
 
+    static final DocumentObserverParser EMPTY = new DocumentObserverParser() {
+
+    };
+
     /**
      * Fire an event to entity name
      *
@@ -42,4 +46,5 @@ public interface DocumentObserverParser {
     default String fireField(String entity, String document) {
         return document;
     }
+
 }

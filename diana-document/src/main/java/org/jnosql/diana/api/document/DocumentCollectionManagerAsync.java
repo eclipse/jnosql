@@ -204,7 +204,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(callBack, "callBack is required");
         DocumentQueryParserAsync parser = DocumentQueryParserAsync.getParser();
-        parser.query(query, this, callBack);
+        parser.query(query, this, callBack, DocumentObserverParser.EMPTY);
     }
 
     /**
@@ -220,7 +220,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
     default DocumentPreparedStatementAsync prepare(String query) {
         Objects.requireNonNull(query, "query is required");
         DocumentQueryParserAsync parser = DocumentQueryParserAsync.getParser();
-        return parser.prepare(query, this);
+        return parser.prepare(query, this, DocumentObserverParser.EMPTY);
     }
 
 

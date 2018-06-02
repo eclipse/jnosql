@@ -23,7 +23,7 @@ import java.util.function.Consumer;
  * A query parser to document database type, this class will convert a String to an operation
  * in {@link DocumentCollectionManagerAsync}.
  */
-public interface DocumentQueryParserAsync extends DocumentObserverParser {
+public interface DocumentQueryParserAsync {
 
     /**
      * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
@@ -36,7 +36,7 @@ public interface DocumentQueryParserAsync extends DocumentObserverParser {
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    void query(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack);
+    void query(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer);
 
     /**
      * Executes a query and returns a {@link DocumentPreparedStatementAsync}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
@@ -49,7 +49,7 @@ public interface DocumentQueryParserAsync extends DocumentObserverParser {
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    DocumentPreparedStatementAsync prepare(String query, DocumentCollectionManagerAsync collectionManager);
+    DocumentPreparedStatementAsync prepare(String query, DocumentCollectionManagerAsync collectionManager, DocumentObserverParser observer);
 
     /**
      * It returns a {@link DocumentQueryParserAsync} from {@link java.util.ServiceLoader}
