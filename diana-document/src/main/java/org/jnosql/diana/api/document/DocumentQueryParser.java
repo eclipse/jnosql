@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * A query parser to document database type, this class will convert a String to an operation in {@link DocumentCollectionManager}.
  */
-public interface DocumentQueryParser extends DocumentObserverParser {
+public interface DocumentQueryParser {
 
     /**
      * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
@@ -29,12 +29,13 @@ public interface DocumentQueryParser extends DocumentObserverParser {
      *
      * @param query             the query as {@link String}
      * @param collectionManager the collection manager
+     * @param observer          the observer
      * @return the result of the operation if delete it will always return an empty list
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager);
+    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer);
 
     /**
      * Executes a query and returns a {@link DocumentPreparedStatement}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
@@ -42,12 +43,13 @@ public interface DocumentQueryParser extends DocumentObserverParser {
      *
      * @param query             the query as {@link String}
      * @param collectionManager the collection manager
+     * @param observer          the observer
      * @return a {@link DocumentPreparedStatement} instance
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager);
+    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer);
 
     /**
      * It returns a {@link DocumentQueryParser} from {@link java.util.ServiceLoader}
