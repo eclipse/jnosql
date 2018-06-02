@@ -21,6 +21,7 @@ import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.api.document.DocumentQueryParser;
@@ -50,11 +51,11 @@ class DefaultDocumentQueryParserTest {
 
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query(null, documentCollection);
+            parser.query(null, documentCollection, DocumentObserverParser.EMPTY);
         });
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query("select * from God", null);
+            parser.query("select * from God", null, DocumentObserverParser.EMPTY);
         });
     }
 
@@ -62,11 +63,11 @@ class DefaultDocumentQueryParserTest {
     public void shouldReturnErrorWhenHasInvalidQuery() {
 
         Assertions.assertThrows(QueryException.class, () -> {
-            parser.query("inva", documentCollection);
+            parser.query("inva", documentCollection, DocumentObserverParser.EMPTY);
         });
 
         Assertions.assertThrows(QueryException.class, () -> {
-            parser.query("invalid", documentCollection);
+            parser.query("invalid", documentCollection, DocumentObserverParser.EMPTY);
         });
     }
 
@@ -74,7 +75,7 @@ class DefaultDocumentQueryParserTest {
     @ValueSource(strings = {"select * from God"})
     public void shouldReturnParserQuery(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
 
@@ -92,7 +93,7 @@ class DefaultDocumentQueryParserTest {
         @ValueSource(strings = {"delete from God"})
     public void shouldReturnParserQuery1(String query) {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).delete(captor.capture());
         DocumentDeleteQuery documentQuery = captor.getValue();
 
@@ -105,7 +106,7 @@ class DefaultDocumentQueryParserTest {
     @ValueSource(strings = {"insert God (name = \"Diana\")"})
     public void shouldReturnParserQuery2(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).insert(captor.capture());
         DocumentEntity entity = captor.getValue();
 
@@ -119,7 +120,7 @@ class DefaultDocumentQueryParserTest {
     @ValueSource(strings = {"update God (name = \"Diana\")"})
     public void shouldReturnParserQuery3(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        parser.query(query, documentCollection);
+        parser.query(query, documentCollection, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).update(captor.capture());
         DocumentEntity entity = captor.getValue();
 
@@ -133,7 +134,7 @@ class DefaultDocumentQueryParserTest {
     public void shouldExecutePrepareStatment(String query) {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
 
-        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
         prepare.getResultList();
         Mockito.verify(documentCollection).delete(captor.capture());
@@ -149,7 +150,7 @@ class DefaultDocumentQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldExecutePrepareStatment1(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");
         prepare.getResultList();
         Mockito.verify(documentCollection).insert(captor.capture());
@@ -164,7 +165,7 @@ class DefaultDocumentQueryParserTest {
     public void shouldExecutePrepareStatment2(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
 
-        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
         prepare.getResultList();
         Mockito.verify(documentCollection).select(captor.capture());
@@ -181,7 +182,7 @@ class DefaultDocumentQueryParserTest {
     @ValueSource(strings = {"update God (name = @name)"})
     public void shouldExecutePrepareStatment3(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection);
+        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");
         prepare.getResultList();
         Mockito.verify(documentCollection).update(captor.capture());

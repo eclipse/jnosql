@@ -21,6 +21,7 @@ import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.diana.api.document.DocumentQueryParserAsync;
@@ -54,16 +55,16 @@ class DefaultDocumentQueryParserAsyncTest {
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             parser.query(null, documentCollection, s -> {
-            });
+            }, DocumentObserverParser.EMPTY);
         });
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             parser.query("select * from God", null, s -> {
-            });
+            }, DocumentObserverParser.EMPTY);
         });
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query("select * from God", documentCollection, null);
+            parser.query("select * from God", documentCollection, null, DocumentObserverParser.EMPTY);
         });
 
     }
@@ -73,12 +74,12 @@ class DefaultDocumentQueryParserAsyncTest {
 
         Assertions.assertThrows(QueryException.class, () -> {
             parser.query("inva", documentCollection, s -> {
-            });
+            }, DocumentObserverParser.EMPTY);
         });
 
         Assertions.assertThrows(QueryException.class, () -> {
             parser.query("invalid", documentCollection, s -> {
-            });
+            }, DocumentObserverParser.EMPTY);
         });
     }
 
@@ -88,7 +89,7 @@ class DefaultDocumentQueryParserAsyncTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         Consumer<List<DocumentEntity>> callBack = s -> {
         };
-        parser.query(query, documentCollection, callBack);
+        parser.query(query, documentCollection, callBack, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).select(captor.capture(), Mockito.eq(callBack));
         DocumentQuery documentQuery = captor.getValue();
 
@@ -108,7 +109,7 @@ class DefaultDocumentQueryParserAsyncTest {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
         Consumer<List<DocumentEntity>> callBack = s -> {
         };
-        parser.query(query, documentCollection, callBack);
+        parser.query(query, documentCollection, callBack, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).delete(captor.capture(), Mockito.any(Consumer.class));
         DocumentDeleteQuery documentQuery = captor.getValue();
 
@@ -123,7 +124,7 @@ class DefaultDocumentQueryParserAsyncTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         Consumer<List<DocumentEntity>> callBack = s -> {
         };
-        parser.query(query, documentCollection, callBack);
+        parser.query(query, documentCollection, callBack, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).insert(captor.capture(), Mockito.any(Consumer.class));
         DocumentEntity entity = captor.getValue();
 
@@ -139,7 +140,7 @@ class DefaultDocumentQueryParserAsyncTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         Consumer<List<DocumentEntity>> callBack = s -> {
         };
-        parser.query(query, documentCollection, callBack);
+        parser.query(query, documentCollection, callBack, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).update(captor.capture(), Mockito.any(Consumer.class));
         DocumentEntity entity = captor.getValue();
 
@@ -154,7 +155,7 @@ class DefaultDocumentQueryParserAsyncTest {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
 
 
-        DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection);
+        DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
         prepare.getResultList(s -> {
         });
@@ -171,7 +172,7 @@ class DefaultDocumentQueryParserAsyncTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldExecutePrepareStatment1(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection);
+        DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");
         prepare.getResultList(s -> {
         });
@@ -187,7 +188,7 @@ class DefaultDocumentQueryParserAsyncTest {
     public void shouldExecutePrepareStatment2(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
 
-        DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection);
+        DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
         prepare.getResultList(s -> {
         });
@@ -205,7 +206,7 @@ class DefaultDocumentQueryParserAsyncTest {
     @ValueSource(strings = {"update God (name = @name)"})
     public void shouldExecutePrepareStatment3(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection);
+        DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");
         prepare.getResultList(s -> {
         });
