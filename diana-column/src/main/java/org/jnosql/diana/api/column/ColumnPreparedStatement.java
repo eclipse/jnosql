@@ -33,7 +33,6 @@ public interface ColumnPreparedStatement {
      * @param value the parameter value
      * @return the same query instance
      * @throws NullPointerException     when there is null parameter
-     * @throws IllegalArgumentException
      */
     ColumnPreparedStatement bind(String name, Object value);
 
