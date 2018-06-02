@@ -34,13 +34,12 @@ public interface DocumentPreparedStatementAsync {
      * @param value    the parameter value
      * @return the same query instance
      * @throws NullPointerException     when there is null parameter
-     * @throws IllegalArgumentException
      */
     DocumentPreparedStatementAsync bind(String name, Object value);
 
     /**
      * Executes a query and return the result as List
-     *
+     * @param callBack the callback
      * @return The result list, if delete it will return an empty list
      */
     void getResultList(Consumer<List<DocumentEntity>> callBack);

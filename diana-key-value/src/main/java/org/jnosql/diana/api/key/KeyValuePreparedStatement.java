@@ -31,7 +31,6 @@ public interface KeyValuePreparedStatement {
      * @param value the parameter value
      * @return the same query instance
      * @throws NullPointerException     when there is null parameter
-     * @throws IllegalArgumentException
      */
     KeyValuePreparedStatement bind(String name, Object value);
 

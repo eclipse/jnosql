@@ -33,7 +33,6 @@ public interface DocumentPreparedStatement {
      * @param value the parameter value
      * @return the same query instance
      * @throws NullPointerException     when there is null parameter
-     * @throws IllegalArgumentException
      */
     DocumentPreparedStatement bind(String name, Object value);
 
