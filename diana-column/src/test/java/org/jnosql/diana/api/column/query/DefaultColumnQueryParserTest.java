@@ -21,6 +21,7 @@ import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.api.column.ColumnObserverParser;
 import org.jnosql.diana.api.column.ColumnPreparedStatement;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.jnosql.diana.api.column.ColumnQueryParser;
@@ -49,11 +50,11 @@ public class DefaultColumnQueryParserTest {
 
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query(null, manager);
+            parser.query(null, manager, ColumnObserverParser.EMPTY);
         });
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query("select * from God", null);
+            parser.query("select * from God", null, ColumnObserverParser.EMPTY);
         });
     }
 
@@ -61,11 +62,11 @@ public class DefaultColumnQueryParserTest {
     public void shouldReturnErrorWhenHasInvalidQuery() {
 
         Assertions.assertThrows(QueryException.class, () -> {
-            parser.query("inva", manager);
+            parser.query("inva", manager, ColumnObserverParser.EMPTY);
         });
 
         Assertions.assertThrows(QueryException.class, () -> {
-            parser.query("invalid", manager);
+            parser.query("invalid", manager, ColumnObserverParser.EMPTY);
         });
     }
 
@@ -73,7 +74,7 @@ public class DefaultColumnQueryParserTest {
     @ValueSource(strings = {"select * from God"})
     public void shouldReturnParserQuery(String query) {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        parser.query(query, manager);
+        parser.query(query, manager, ColumnObserverParser.EMPTY);
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
 
@@ -91,7 +92,7 @@ public class DefaultColumnQueryParserTest {
     @ValueSource(strings = {"delete from God"})
     public void shouldReturnParserQuery1(String query) {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        parser.query(query, manager);
+        parser.query(query, manager, ColumnObserverParser.EMPTY);
         Mockito.verify(manager).delete(captor.capture());
         ColumnDeleteQuery columnDeleteQuery = captor.getValue();
 
@@ -104,7 +105,7 @@ public class DefaultColumnQueryParserTest {
     @ValueSource(strings = {"insert God (name = \"Diana\")"})
     public void shouldReturnParserQuery2(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
-        parser.query(query, manager);
+        parser.query(query, manager, ColumnObserverParser.EMPTY);
         Mockito.verify(manager).insert(captor.capture());
         ColumnEntity entity = captor.getValue();
 
@@ -118,7 +119,7 @@ public class DefaultColumnQueryParserTest {
     @ValueSource(strings = {"update God (name = \"Diana\")"})
     public void shouldReturnParserQuery3(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
-        parser.query(query, manager);
+        parser.query(query, manager, ColumnObserverParser.EMPTY);
         Mockito.verify(manager).update(captor.capture());
         ColumnEntity entity = captor.getValue();
 
@@ -132,7 +133,7 @@ public class DefaultColumnQueryParserTest {
     public void shouldExecutePrepareStatment(String query) {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
 
-        ColumnPreparedStatement prepare = parser.prepare(query, manager);
+        ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);
         prepare.getResultList();
         Mockito.verify(manager).delete(captor.capture());
@@ -148,7 +149,7 @@ public class DefaultColumnQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldExecutePrepareStatment1(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
-        ColumnPreparedStatement prepare = parser.prepare(query, manager);
+        ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("name", "Diana");
         prepare.getResultList();
         Mockito.verify(manager).insert(captor.capture());
@@ -163,7 +164,7 @@ public class DefaultColumnQueryParserTest {
     public void shouldExecutePrepareStatment2(String query) {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
-        ColumnPreparedStatement prepare = parser.prepare(query, manager);
+        ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);
         prepare.getResultList();
         Mockito.verify(manager).select(captor.capture());
@@ -180,7 +181,7 @@ public class DefaultColumnQueryParserTest {
     @ValueSource(strings = {"update God (name = @name)"})
     public void shouldExecutePrepareStatment3(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
-        ColumnPreparedStatement prepare = parser.prepare(query, manager);
+        ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("name", "Diana");
         prepare.getResultList();
         Mockito.verify(manager).update(captor.capture());
