@@ -187,7 +187,8 @@ public interface ColumnFamilyManager extends AutoCloseable {
      *
      * @param columnFamily the column family
      * @return the number of elements
-     * @throws NullPointerException when column family is null
+     * @throws NullPointerException          when column family is null
+     * @throws UnsupportedOperationException when the database dot not have support
      */
     long count(String columnFamily);
 
