@@ -249,7 +249,7 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
     }
 
     /**
-     * Returns the number of elements form document collection
+     * Returns the number of elements from document collection
      *
      * @param documentCollection the document collection
      * @param callback     the callback with the response

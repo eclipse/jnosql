@@ -188,7 +188,7 @@ public interface DocumentCollectionManager extends AutoCloseable {
     }
 
     /**
-     * Returns the number of elements form document collection
+     * Returns the number of elements from document collection
      *
      * @param documentCollection the document collection
      * @return the number of elements
