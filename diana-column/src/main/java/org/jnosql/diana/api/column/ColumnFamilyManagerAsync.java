@@ -252,12 +252,14 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
 
     /**
      * Returns the number of elements form column family
+     *
      * @param columnFamily the column family
-     * @param callback the callback with the response
-     * @throws NullPointerException when there is null parameter
+     * @param callback     the callback with the response
+     * @throws NullPointerException          when there is null parameter
      * @throws UnsupportedOperationException when the database dot not have support
      */
     void count(String columnFamily, Consumer<Long> callback);
+
     /**
      * closes a resource
      */
