@@ -188,6 +188,15 @@ public interface DocumentCollectionManager extends AutoCloseable {
     }
 
     /**
+     * Returns the number of elements form document collection
+     *
+     * @param documentCollection the document collection
+     * @return the number of elements
+     * @throws NullPointerException          when document collection is null
+     * @throws UnsupportedOperationException when the database dot not have support
+     */
+    long count(String documentCollection);
+    /**
      * closes a resource
      */
     void close();

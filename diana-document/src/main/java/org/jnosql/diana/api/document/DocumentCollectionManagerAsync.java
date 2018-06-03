@@ -249,6 +249,16 @@ public interface DocumentCollectionManagerAsync extends AutoCloseable {
     }
 
     /**
+     * Returns the number of elements form document collection
+     *
+     * @param documentCollection the document collection
+     * @param callback     the callback with the response
+     * @throws NullPointerException          when there is null parameter
+     * @throws UnsupportedOperationException when the database dot not have support
+     */
+    void count(String documentCollection, Consumer<Long> callback);
+
+    /**
      * closes a resource
      */
     void close();
