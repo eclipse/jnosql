@@ -183,7 +183,7 @@ public interface ColumnFamilyManager extends AutoCloseable {
     }
 
     /**
-     * Returns the number of elements form column family
+     * Returns the number of elements from column family
      *
      * @param columnFamily the column family
      * @return the number of elements
