@@ -29,7 +29,7 @@ final class KeyValueQueryParserServiceLoader {
 
     static final Optional<KeyValueQueryParser> INSTANCE;
 
-    private static final String MESSAGE = "Could not found an implementation of ColumnQueryParser in service loader.";
+    private static final String MESSAGE = "Could not found an implementation of KeyValueQueryParser in service loader.";
 
     static {
         ServiceLoader<KeyValueQueryParser> serviceLoader = ServiceLoader.load(KeyValueQueryParser.class);
