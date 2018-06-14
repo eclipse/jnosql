@@ -49,35 +49,29 @@ final class Conditions {
     static ColumnCondition getCondition(Condition condition, Params parameters, ColumnObserverParser observer, String entity) {
         switch (condition.getOperator()) {
             case EQUALS:
-                return eq(Column.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                                parameters)));
+                return eq(Column.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case GREATER_THAN:
-                return gt(Column.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                                parameters)));
+                return gt(Column.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case GREATER_EQUALS_THAN:
-                return gte(Column.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                                parameters)));
+                return gte(Column.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case LESSER_THAN:
-                return lt(Column.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                                parameters)));
+                return lt(Column.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case LESSER_EQUALS_THAN:
-                return lte(Column.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                                parameters)));
+                return lte(Column.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case IN:
-                return in(Column.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                                parameters)));
+                return in(Column.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case LIKE:
-                return like(Column.of(observer.fireField(entity, condition.getName()),
+                return like(Column.of(getName(condition, observer, entity),
                         Values.get(condition.getValue(),
                                 parameters)));
             case BETWEEN:
-                return between(Column.of(observer.fireField(entity, condition.getName()),
+                return between(Column.of(getName(condition, observer, entity),
                         Values.get(condition.getValue(),
                                 parameters)));
             case NOT:
@@ -99,5 +93,14 @@ final class Conditions {
 
 
         }
+    }
+
+    private static String getName(Condition condition, ColumnObserverParser observer, String entity) {
+        return observer.fireField(entity, condition.getName());
+    }
+
+    private static Object getValue(Condition condition, Params parameters,
+                                   ColumnObserverParser observer, String entity) {
+        return observer.fireValue(entity, condition.getName(), Values.get(condition.getValue(), parameters));
     }
 }

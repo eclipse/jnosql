@@ -48,37 +48,29 @@ final class Conditions {
     static DocumentCondition getCondition(Condition condition, Params parameters, DocumentObserverParser observer, String entity) {
         switch (condition.getOperator()) {
             case EQUALS:
-                return eq(Document.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                        parameters)));
+                return eq(Document.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case GREATER_THAN:
-                return gt(Document.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                        parameters)));
+                return gt(Document.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case GREATER_EQUALS_THAN:
-                return gte(Document.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                        parameters)));
+                return gte(Document.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case LESSER_THAN:
-                return lt(Document.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                        parameters)));
+                return lt(Document.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case LESSER_EQUALS_THAN:
-                return lte(Document.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                        parameters)));
+                return lte(Document.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case IN:
-                return in(Document.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                        parameters)));
+                return in(Document.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case LIKE:
-                return like(Document.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                        parameters)));
+                return like(Document.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case BETWEEN:
-                return between(Document.of(observer.fireField(entity, condition.getName()),
-                        Values.get(condition.getValue(),
-                        parameters)));
+                return between(Document.of(getName(condition, observer, entity),
+                        getValue(condition, parameters, observer, entity)));
             case NOT:
                 return getCondition(ConditionValue.class.cast(condition.getValue()).get().get(0),
                         parameters, observer,
@@ -98,5 +90,15 @@ final class Conditions {
 
 
         }
+    }
+
+    private static Object getValue(Condition condition, Params parameters,
+                                   DocumentObserverParser observer, String entity) {
+        return observer.fireValue(entity, condition.getName(), Values.get(condition.getValue(), parameters));
+    }
+
+    private static String getName(Condition condition,
+                                  DocumentObserverParser observer, String entity) {
+        return observer.fireField(entity, condition.getName());
     }
 }

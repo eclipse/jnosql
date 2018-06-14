@@ -56,7 +56,7 @@ public interface DocumentObserverParser {
      * @return the converted value
      * @throws NullPointerException when there is null parameter
      */
-    default Object fireField(String entity, String field, Object value) {
+    default Object fireValue(String entity, String field, Object value) {
         return value;
     }
 
