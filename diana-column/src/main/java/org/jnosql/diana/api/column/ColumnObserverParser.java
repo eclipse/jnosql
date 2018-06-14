@@ -22,7 +22,7 @@ package org.jnosql.diana.api.column;
  */
 public interface ColumnObserverParser {
 
-    static final ColumnObserverParser EMPTY = new ColumnObserverParser() {
+    ColumnObserverParser EMPTY = new ColumnObserverParser() {
     };
 
     /**
@@ -30,6 +30,7 @@ public interface ColumnObserverParser {
      *
      * @param entity the entity
      * @return the field result
+     * @throws NullPointerException when the entity is null
      */
     default String fireEntity(String entity) {
         return entity;
@@ -41,8 +42,22 @@ public interface ColumnObserverParser {
      * @param field  the field
      * @param entity the entity
      * @return the field result
+     * @throws NullPointerException when there is null parameter
      */
     default String fireField(String entity, String field) {
         return field;
+    }
+
+    /**
+     * Fire an event to each field value in the field
+     *
+     * @param entity the entity
+     * @param field  the field
+     * @param value  the value
+     * @return the converted value
+     * @throws NullPointerException when there is null parameter
+     */
+    default Object fireField(String entity, String field, Object value) {
+        return value;
     }
 }
