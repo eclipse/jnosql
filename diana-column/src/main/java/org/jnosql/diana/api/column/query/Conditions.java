@@ -50,22 +50,22 @@ final class Conditions {
         switch (condition.getOperator()) {
             case EQUALS:
                 return eq(Column.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case GREATER_THAN:
                 return gt(Column.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case GREATER_EQUALS_THAN:
                 return gte(Column.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case LESSER_THAN:
                 return lt(Column.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case LESSER_EQUALS_THAN:
                 return lte(Column.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case IN:
                 return in(Column.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case LIKE:
                 return like(Column.of(getName(condition, observer, entity),
                         Values.get(condition.getValue(),
@@ -99,8 +99,4 @@ final class Conditions {
         return observer.fireField(entity, condition.getName());
     }
 
-    private static Object getValue(Condition condition, Params parameters,
-                                   ColumnObserverParser observer, String entity) {
-        return observer.fireValue(entity, condition.getName(), Values.get(condition.getValue(), parameters));
-    }
 }

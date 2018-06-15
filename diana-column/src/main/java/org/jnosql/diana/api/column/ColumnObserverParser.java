@@ -48,16 +48,4 @@ public interface ColumnObserverParser {
         return field;
     }
 
-    /**
-     * Fire an event to each field value in the field
-     *
-     * @param entity the entity
-     * @param field  the field
-     * @param value  the value
-     * @return the converted value
-     * @throws NullPointerException when there is null parameter
-     */
-    default Object fireValue(String entity, String field, Object value) {
-        return value;
-    }
 }

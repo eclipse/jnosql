@@ -49,28 +49,28 @@ final class Conditions {
         switch (condition.getOperator()) {
             case EQUALS:
                 return eq(Document.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case GREATER_THAN:
                 return gt(Document.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case GREATER_EQUALS_THAN:
                 return gte(Document.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case LESSER_THAN:
                 return lt(Document.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case LESSER_EQUALS_THAN:
                 return lte(Document.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case IN:
                 return in(Document.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case LIKE:
                 return like(Document.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case BETWEEN:
                 return between(Document.of(getName(condition, observer, entity),
-                        getValue(condition, parameters, observer, entity)));
+                        Values.get(condition.getValue(), parameters)));
             case NOT:
                 return getCondition(ConditionValue.class.cast(condition.getValue()).get().get(0),
                         parameters, observer,
@@ -90,11 +90,6 @@ final class Conditions {
 
 
         }
-    }
-
-    private static Object getValue(Condition condition, Params parameters,
-                                   DocumentObserverParser observer, String entity) {
-        return observer.fireValue(entity, condition.getName(), Values.get(condition.getValue(), parameters));
     }
 
     private static String getName(Condition condition,
