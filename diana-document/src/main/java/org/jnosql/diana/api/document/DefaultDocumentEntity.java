@@ -146,9 +146,20 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public Map<String, Object> toMap() {
-        return documents.entrySet().stream()
-                .collect(collectingAndThen(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get()),
-                        Collections::unmodifiableMap));
+        Map<String, Object> map = new HashMap<>();
+        for (Map.Entry<String, Document> entry : documents.entrySet()) {
+            Document value = entry.getValue();
+            map.put(value.getName(), convert(value.get()));
+        }
+        return Collections.unmodifiableMap(map);
+    }
+
+    private Object convert(Object value) {
+        if (value instanceof Document) {
+            Document column = Document.class.cast(value);
+            return Collections.singletonMap(column.getName(), convert(column.get()));
+        }
+        return value;
     }
 
 
