@@ -105,7 +105,17 @@ public class ColumnEntityTest {
         assertFalse(result.isEmpty());
         assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));
         assertEquals(column.getName(), result.keySet().stream().findAny().get());
+    }
 
+    @Test
+    public void shouldConvertSubColumn() {
+        Column column = Column.of("name", "name");
+        ColumnEntity entity = ColumnEntity.of("entity", singletonList(Column.of("sub", column)));
+        Map<String, Object> result = entity.toMap();
+        assertFalse(result.isEmpty());
+        assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));
+        Map<String, Object> map = (Map<String, Object>) result.get("sub");
+        assertEquals("name", map.get("name"));
     }
 
     @Test
