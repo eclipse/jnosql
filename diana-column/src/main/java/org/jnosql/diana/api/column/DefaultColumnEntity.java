@@ -46,13 +46,6 @@ final class DefaultColumnEntity implements ColumnEntity {
         this.name = Objects.requireNonNull(name, "name is required");
     }
 
-    /**
-     * Creates a column family instance
-     *
-     * @param name    a name to column family
-     * @param columns - columns
-     * @return a ColumnEntity instance
-     */
     static DefaultColumnEntity of(String name, Column... columns) {
         if (columns.length == 0) {
             return new DefaultColumnEntity(name);
@@ -60,13 +53,6 @@ final class DefaultColumnEntity implements ColumnEntity {
         return of(name, asList(columns));
     }
 
-    /**
-     * Creates a column family instance
-     *
-     * @param name    a name to column family
-     * @param columns - columns
-     * @return a ColumnEntity instance
-     */
      static DefaultColumnEntity of(String name, List<Column> columns) {
         DefaultColumnEntity columnEntity = new DefaultColumnEntity(name);
         columnEntity.addAll(columns);
