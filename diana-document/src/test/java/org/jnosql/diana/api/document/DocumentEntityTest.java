@@ -108,6 +108,17 @@ public class DocumentEntityTest {
     }
 
     @Test
+    public void shouldConvertSubColumn() {
+        Document document = Document.of("name", "name");
+        DocumentEntity entity = DocumentEntity.of("entity", singletonList(Document.of("sub", document)));
+        Map<String, Object> result = entity.toMap();
+        assertFalse(result.isEmpty());
+        assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));
+        Map<String, Object> map = (Map<String, Object>) result.get("sub");
+        assertEquals("name", map.get("name"));
+    }
+
+    @Test
     public void shouldShouldCreateANewInstance() {
         String name = "name";
         DocumentEntity entity = new DefaultDocumentEntity(name);
