@@ -53,7 +53,7 @@ final class DefaultColumnEntity implements ColumnEntity {
         return of(name, asList(columns));
     }
 
-     static DefaultColumnEntity of(String name, List<Column> columns) {
+    static DefaultColumnEntity of(String name, List<Column> columns) {
         DefaultColumnEntity columnEntity = new DefaultColumnEntity(name);
         columnEntity.addAll(columns);
         return columnEntity;
@@ -84,10 +84,22 @@ final class DefaultColumnEntity implements ColumnEntity {
         this.add(Column.of(columnName, value));
     }
 
+    @Override
     public Map<String, Object> toMap() {
-        return columns.entrySet().stream()
-                .collect(collectingAndThen(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get()),
-                        Collections::unmodifiableMap));
+        Map<String, Object> map = new HashMap<>();
+        for (Map.Entry<String, Column> entry : columns.entrySet()) {
+            Column value = entry.getValue();
+            map.put(value.getName(), convert(value.get()));
+        }
+        return Collections.unmodifiableMap(map);
+    }
+
+    private Object convert(Object value) {
+        if (value instanceof Column) {
+            Column column = Column.class.cast(value);
+            return Collections.singletonMap(column.getName(), convert(column.get()));
+        }
+        return value;
     }
 
     public List<Column> getColumns() {
