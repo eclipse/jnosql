@@ -21,6 +21,7 @@ import org.jnosql.diana.api.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -108,7 +109,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldConvertSubColumn() {
+    public void shouldConvertSubColumnToMap() {
         Document document = Document.of("name", "name");
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(Document.of("sub", document)));
         Map<String, Object> result = entity.toMap();
@@ -116,6 +117,22 @@ public class DocumentEntityTest {
         assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));
         Map<String, Object> map = (Map<String, Object>) result.get("sub");
         assertEquals("name", map.get("name"));
+    }
+
+    @Test
+    public void shouldConvertSubDocumentListToMap() {
+        DocumentEntity entity = DocumentEntity.of("entity");
+        entity.add(Document.of("_id", "ids"));
+        List<List<Document>> documents = new ArrayList<>();
+        documents.add(asList(Document.of("name", "Ada"), Document.of("type", "type"),
+                Document.of("information", "ada@lovelace.com")));
+        documents.add(asList(Document.of("name", "Ada"), Document.of("type", "type"),
+                Document.of("information", "11 1231231 123")));
+        documents.add(asList(Document.of("name", "Ada"), Document.of("type", "type"),
+                Document.of("information", "phone")));
+        entity.add(Document.of("contacts", documents));
+        Map<String, Object> result = entity.toMap();
+
     }
 
     @Test
