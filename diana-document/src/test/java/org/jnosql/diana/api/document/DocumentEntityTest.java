@@ -121,6 +121,23 @@ public class DocumentEntityTest {
     }
 
     @Test
+    public void shouldConvertSubDocumentListToMap() {
+        DocumentEntity entity = DocumentEntity.of("entity");
+        entity.add(Document.of("_id", "id"));
+        List<Document> documents = asList(Document.of("name", "Ada"), Document.of("type", "type"),
+                Document.of("information", "ada@lovelace.com"));
+
+        entity.add(Document.of("contacts", documents));
+        Map<String, Object> result = entity.toMap();
+        assertEquals("id", result.get("_id"));
+        List<Map<String, Object>> contacts = (List<Map<String, Object>>) result.get("contacts");
+        assertEquals(3, contacts.size());
+        assertThat(contacts, containsInAnyOrder(singletonMap("name", "Ada"), singletonMap("type", "type"),
+                singletonMap("information", "ada@lovelace.com")));
+
+    }
+
+    @Test
     public void shouldConvertSubDocumentListToMap2() {
         DocumentEntity entity = DocumentEntity.of("entity");
         entity.add(Document.of("_id", "id"));
