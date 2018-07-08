@@ -28,6 +28,7 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -120,18 +121,22 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldConvertSubDocumentListToMap() {
+    public void shouldConvertSubDocumentListToMap2() {
         DocumentEntity entity = DocumentEntity.of("entity");
-        entity.add(Document.of("_id", "ids"));
+        entity.add(Document.of("_id", "id"));
         List<List<Document>> documents = new ArrayList<>();
         documents.add(asList(Document.of("name", "Ada"), Document.of("type", "type"),
                 Document.of("information", "ada@lovelace.com")));
-        documents.add(asList(Document.of("name", "Ada"), Document.of("type", "type"),
-                Document.of("information", "11 1231231 123")));
-        documents.add(asList(Document.of("name", "Ada"), Document.of("type", "type"),
-                Document.of("information", "phone")));
+
         entity.add(Document.of("contacts", documents));
         Map<String, Object> result = entity.toMap();
+        assertEquals("id", result.get("_id"));
+        List<List<Map<String, Object>>> contacts = (List<List<Map<String, Object>>>) result.get("contacts");
+        assertEquals(1, contacts.size());
+        List<Map<String, Object>> maps = contacts.get(0);
+        assertEquals(3, maps.size());
+        assertThat(maps, containsInAnyOrder(singletonMap("name", "Ada"), singletonMap("type", "type"),
+                singletonMap("information", "ada@lovelace.com")));
 
     }
 

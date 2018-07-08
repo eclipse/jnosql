@@ -20,6 +20,7 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Value;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,12 +30,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import static java.util.Collections.singletonMap;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 
 /**
  * A default implementation of {@link DocumentEntity}
@@ -156,7 +159,11 @@ final class DefaultDocumentEntity implements DocumentEntity {
     private Object convert(Object value) {
         if (value instanceof Document) {
             Document column = Document.class.cast(value);
-            return Collections.singletonMap(column.getName(), convert(column.get()));
+            return singletonMap(column.getName(), convert(column.get()));
+        } else if (value instanceof Iterable) {
+            List<Object> list = new ArrayList<>();
+            Iterable.class.cast(value).forEach(e -> list.add(convert(e)));
+            return list;
         }
         return value;
     }
