@@ -21,6 +21,7 @@ import org.jnosql.diana.api.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -116,6 +118,44 @@ public class ColumnEntityTest {
         assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));
         Map<String, Object> map = (Map<String, Object>) result.get("sub");
         assertEquals("name", map.get("name"));
+    }
+
+
+    @Test
+    public void shouldConvertSubColumnListToMap() {
+        ColumnEntity entity = ColumnEntity.of("entity");
+        entity.add(Column.of("_id", "id"));
+        List<Column> columns = asList(Column.of("name", "Ada"), Column.of("type", "type"),
+                Column.of("information", "ada@lovelace.com"));
+
+        entity.add(Column.of("contacts", columns));
+        Map<String, Object> result = entity.toMap();
+        assertEquals("id", result.get("_id"));
+        List<Map<String, Object>> contacts = (List<Map<String, Object>>) result.get("contacts");
+        assertEquals(3, contacts.size());
+        assertThat(contacts, containsInAnyOrder(singletonMap("name", "Ada"), singletonMap("type", "type"),
+                singletonMap("information", "ada@lovelace.com")));
+
+    }
+
+    @Test
+    public void shouldConvertSubColumnListToMap2() {
+        ColumnEntity entity = ColumnEntity.of("entity");
+        entity.add(Column.of("_id", "id"));
+        List<List<Column>> columns = new ArrayList<>();
+        columns.add(asList(Column.of("name", "Ada"), Column.of("type", "type"),
+                Column.of("information", "ada@lovelace.com")));
+
+        entity.add(Column.of("contacts", columns));
+        Map<String, Object> result = entity.toMap();
+        assertEquals("id", result.get("_id"));
+        List<List<Map<String, Object>>> contacts = (List<List<Map<String, Object>>>) result.get("contacts");
+        assertEquals(1, contacts.size());
+        List<Map<String, Object>> maps = contacts.get(0);
+        assertEquals(3, maps.size());
+        assertThat(maps, containsInAnyOrder(singletonMap("name", "Ada"), singletonMap("type", "type"),
+                singletonMap("information", "ada@lovelace.com")));
+
     }
 
     @Test
