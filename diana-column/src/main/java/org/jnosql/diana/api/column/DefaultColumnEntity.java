@@ -19,6 +19,7 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Value;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -97,10 +98,15 @@ final class DefaultColumnEntity implements ColumnEntity {
         if (value instanceof Column) {
             Column column = Column.class.cast(value);
             return Collections.singletonMap(column.getName(), convert(column.get()));
+        } else if (value instanceof Iterable) {
+            List<Object> list = new ArrayList<>();
+            Iterable.class.cast(value).forEach(e -> list.add(convert(e)));
+            return list;
         }
         return value;
     }
 
+    @Override
     public List<Column> getColumns() {
         return columns.entrySet()
                 .stream()
@@ -131,6 +137,7 @@ final class DefaultColumnEntity implements ColumnEntity {
         return columns.size();
     }
 
+    @Override
     public boolean isEmpty() {
         return columns.isEmpty();
     }
