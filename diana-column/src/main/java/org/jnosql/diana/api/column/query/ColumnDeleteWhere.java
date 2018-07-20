@@ -17,13 +17,10 @@
 package org.jnosql.diana.api.column.query;
 
 
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-
 /**
  * The Column Where whose define the condition in the delete query.
  */
-public interface ColumnDeleteWhere {
-
+public interface ColumnDeleteWhere extends ColumnDeleteQueryBuild {
 
 
     /**
@@ -44,10 +41,4 @@ public interface ColumnDeleteWhere {
      */
     ColumnDeleteNameCondition or(String name);
 
-    /**
-     * Creates a new instance of {@link ColumnDeleteQuery}
-     *
-     * @return a new {@link ColumnDeleteQuery} instance
-     */
-    ColumnDeleteQuery build();
 }
