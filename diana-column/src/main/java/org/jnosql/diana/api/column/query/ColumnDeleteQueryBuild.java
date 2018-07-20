@@ -20,6 +20,8 @@ import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 
+import java.util.function.Consumer;
+
 /**
  * The last step to the build of {@link ColumnDeleteQuery}.
  * It either can return a new {@link ColumnDeleteQuery} instance or execute a query with
@@ -34,9 +36,28 @@ public interface ColumnDeleteQueryBuild {
      */
     ColumnDeleteQuery build();
 
-//    void execute(ColumnFamilyManager manager);
-//
-//    void execute(ColumnFamilyManagerAsync manager);
-//
-//    void execute(ColumnFamilyManagerAsync manager, Consumer<Void> callback);
+    /**
+     * executes the {@link ColumnFamilyManager#delete(ColumnDeleteQuery)}
+     *
+     * @param manager the entity manager
+     * @throws NullPointerException when manager is null
+     */
+    void execute(ColumnFamilyManager manager);
+
+    /**
+     * executes the {@link ColumnFamilyManagerAsync#delete(ColumnDeleteQuery)}
+     *
+     * @param manager the entity manager
+     * @throws NullPointerException when manager is null
+     */
+    void execute(ColumnFamilyManagerAsync manager);
+
+    /**
+     * executes the {@link ColumnFamilyManagerAsync#delete(ColumnDeleteQuery, Consumer)}
+     *
+     * @param manager  the entity manager
+     * @param callback the callback
+     * @throws NullPointerException when there is null parameter
+     */
+    void execute(ColumnFamilyManagerAsync manager, Consumer<Void> callback);
 }

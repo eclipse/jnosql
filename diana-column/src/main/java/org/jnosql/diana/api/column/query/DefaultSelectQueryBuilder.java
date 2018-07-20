@@ -25,7 +25,6 @@ import org.jnosql.diana.api.column.ColumnQuery;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
