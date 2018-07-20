@@ -20,7 +20,7 @@ package org.jnosql.diana.api.column.query;
 /**
  * The Column Where whose define the condition in the query.
  */
-public interface ColumnWhere extends ColumnBuild {
+public interface ColumnWhere extends ColumnQueryBuild {
 
 
     /**

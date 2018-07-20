@@ -19,7 +19,7 @@ package org.jnosql.diana.api.column.query;
 /**
  * The Column name order a query
  */
-public interface ColumnNameOrder extends ColumnBuild {
+public interface ColumnNameOrder extends ColumnQueryBuild {
 
 
     /**

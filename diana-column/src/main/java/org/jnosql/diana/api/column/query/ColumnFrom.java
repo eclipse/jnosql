@@ -20,7 +20,7 @@ package org.jnosql.diana.api.column.query;
 /**
  * The ColumnFrom Query
  */
-public interface ColumnFrom extends ColumnBuild {
+public interface ColumnFrom extends ColumnQueryBuild {
 
 
     /**

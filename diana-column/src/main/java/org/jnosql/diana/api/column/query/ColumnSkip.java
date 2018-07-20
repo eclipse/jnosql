@@ -20,7 +20,7 @@ package org.jnosql.diana.api.column.query;
 /**
  * The Column Order whose define the position of the first result to retrieve.
  */
-public interface ColumnSkip extends ColumnBuild {
+public interface ColumnSkip extends ColumnQueryBuild {
 
 
     /**

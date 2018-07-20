@@ -23,7 +23,7 @@ import org.jnosql.diana.api.column.ColumnQuery;
  * It either can return a new {@link ColumnQuery} instance or execute a query with
  * {@link org.jnosql.diana.api.column.ColumnFamilyManager} and {@link org.jnosql.diana.api.column.ColumnFamilyManagerAsync}
  */
-public interface ColumnBuild {
+public interface ColumnQueryBuild {
 
     /**
      * Creates a new instance of {@link ColumnQuery}

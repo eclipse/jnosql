@@ -19,7 +19,7 @@ package org.jnosql.diana.api.column.query;
 /**
  * The Column Order whose define the the maximum number of results to retrieve.
  */
-public interface ColumnLimit extends ColumnBuild {
+public interface ColumnLimit extends ColumnQueryBuild {
 
     /**
      * Defines the position of the first result to retrieve.
