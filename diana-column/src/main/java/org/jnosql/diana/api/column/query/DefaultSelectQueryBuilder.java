@@ -18,10 +18,16 @@ package org.jnosql.diana.api.column.query;
 
 
 import org.jnosql.diana.api.Sort;
+import org.jnosql.diana.api.column.ColumnEntity;
+import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 import org.jnosql.diana.api.column.ColumnQuery;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -172,6 +178,32 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     @Override
     public ColumnQuery build() {
         return new DefaultColumnQuery(limit, skip, columnFamily, columns, sorts, condition);
+    }
+
+    @Override
+    public List<ColumnEntity> select(ColumnFamilyManager manager) {
+        requireNonNull(manager, "manager is required");
+        return manager.select(this.build());
+    }
+
+    @Override
+    public Optional<ColumnEntity> singleResult(ColumnFamilyManager manager) {
+        requireNonNull(manager, "manager is required");
+        return manager.singleResult(this.build());
+    }
+
+    @Override
+    public void select(ColumnFamilyManagerAsync manager, Consumer<List<ColumnEntity>> callback) {
+        requireNonNull(manager, "manager is required");
+        requireNonNull(callback, "callback is required");
+        manager.select(this.build(), callback);
+    }
+
+    @Override
+    public void singleResult(ColumnFamilyManagerAsync manager, Consumer<Optional<ColumnEntity>> callback) {
+        requireNonNull(manager, "manager is required");
+        requireNonNull(callback, "callback is required");
+        manager.singleResult(this.build(), callback);
     }
 
 
