@@ -46,7 +46,7 @@ public interface ColumnQueryBuild {
      * @return the result of {@link ColumnFamilyManager#select(ColumnQuery)}
      * @throws NullPointerException when manager is null
      */
-    List<ColumnEntity> select(ColumnFamilyManager manager);
+    List<ColumnEntity> execute(ColumnFamilyManager manager);
 
     /**
      * Executes {@link ColumnFamilyManager#singleResult(ColumnQuery)}
@@ -64,7 +64,7 @@ public interface ColumnQueryBuild {
      * @param callback the callback
      * @throws NullPointerException when there is null parameter
      */
-    void select(ColumnFamilyManagerAsync manager, Consumer<List<ColumnEntity>> callback);
+    void execute(ColumnFamilyManagerAsync manager, Consumer<List<ColumnEntity>> callback);
 
     /**
      * Executes {@link ColumnFamilyManagerAsync#singleResult(ColumnQuery, Consumer)}

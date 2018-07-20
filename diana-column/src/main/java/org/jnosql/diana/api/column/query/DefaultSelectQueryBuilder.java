@@ -181,7 +181,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     }
 
     @Override
-    public List<ColumnEntity> select(ColumnFamilyManager manager) {
+    public List<ColumnEntity> execute(ColumnFamilyManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.select(this.build());
     }
@@ -193,7 +193,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     }
 
     @Override
-    public void select(ColumnFamilyManagerAsync manager, Consumer<List<ColumnEntity>> callback) {
+    public void execute(ColumnFamilyManagerAsync manager, Consumer<List<ColumnEntity>> callback) {
         requireNonNull(manager, "manager is required");
         requireNonNull(callback, "callback is required");
         manager.select(this.build(), callback);
