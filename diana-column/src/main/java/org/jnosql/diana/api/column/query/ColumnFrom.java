@@ -22,7 +22,7 @@ import org.jnosql.diana.api.column.ColumnQuery;
 /**
  * The ColumnFrom Query
  */
-public interface ColumnFrom {
+public interface ColumnFrom extends ColumnBuild {
 
 
     /**
@@ -60,10 +60,5 @@ public interface ColumnFrom {
      */
     ColumnOrder orderBy(String name);
 
-    /**
-     * Creates a new instance of {@link ColumnQuery}
-     *
-     * @return a new {@link ColumnQuery} instance
-     */
-    ColumnQuery build();
+
 }

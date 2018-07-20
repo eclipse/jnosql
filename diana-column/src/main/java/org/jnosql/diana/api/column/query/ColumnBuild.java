@@ -16,19 +16,19 @@
  */
 package org.jnosql.diana.api.column.query;
 
+import org.jnosql.diana.api.column.ColumnQuery;
 
 /**
- * The Column Order whose define the position of the first result to retrieve.
+ * The last step to the build of {@link ColumnQuery}.
+ * It either can return a new {@link ColumnQuery} instance or execute a query with
+ * {@link org.jnosql.diana.api.column.ColumnFamilyManager} and {@link org.jnosql.diana.api.column.ColumnFamilyManagerAsync}
  */
-public interface ColumnSkip extends ColumnBuild {
-
+public interface ColumnBuild {
 
     /**
-     * Defines the maximum number of results to retrieve.
+     * Creates a new instance of {@link ColumnQuery}
      *
-     * @param limit the limit
-     * @return a query with the limit defined
+     * @return a new {@link ColumnQuery} instance
      */
-    ColumnLimit limit(long limit);
-
+    ColumnQuery build();
 }

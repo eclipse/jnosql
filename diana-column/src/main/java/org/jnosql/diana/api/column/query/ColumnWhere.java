@@ -17,12 +17,10 @@
 package org.jnosql.diana.api.column.query;
 
 
-import org.jnosql.diana.api.column.ColumnQuery;
-
 /**
  * The Column Where whose define the condition in the query.
  */
-public interface ColumnWhere {
+public interface ColumnWhere extends ColumnBuild {
 
 
     /**
@@ -70,12 +68,5 @@ public interface ColumnWhere {
      * @throws NullPointerException when name is null
      */
     ColumnOrder orderBy(String name);
-
-    /**
-     * Creates a new instance of {@link ColumnQuery}
-     *
-     * @return a new {@link ColumnQuery} instance
-     */
-    ColumnQuery build();
 
 }

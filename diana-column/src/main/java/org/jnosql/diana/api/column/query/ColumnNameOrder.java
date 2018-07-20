@@ -16,12 +16,10 @@
  */
 package org.jnosql.diana.api.column.query;
 
-import org.jnosql.diana.api.column.ColumnQuery;
-
 /**
- * The Column name order to the buider
+ * The Column name order a query
  */
-public interface ColumnNameOrder {
+public interface ColumnNameOrder extends ColumnBuild {
 
 
     /**
@@ -52,10 +50,4 @@ public interface ColumnNameOrder {
     ColumnLimit limit(long limit);
 
 
-    /**
-     * Creates a new instance of {@link org.jnosql.diana.api.column.ColumnQuery}
-     *
-     * @return a new {@link org.jnosql.diana.api.column.ColumnQuery} instance
-     */
-    ColumnQuery build();
 }
