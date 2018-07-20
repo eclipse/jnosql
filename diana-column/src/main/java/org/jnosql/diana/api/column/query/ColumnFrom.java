@@ -17,8 +17,6 @@
 package org.jnosql.diana.api.column.query;
 
 
-import org.jnosql.diana.api.column.ColumnQuery;
-
 /**
  * The ColumnFrom Query
  */
