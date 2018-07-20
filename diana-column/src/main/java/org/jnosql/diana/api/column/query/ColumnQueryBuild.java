@@ -16,12 +16,19 @@
  */
 package org.jnosql.diana.api.column.query;
 
+import org.jnosql.diana.api.column.ColumnEntity;
+import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 import org.jnosql.diana.api.column.ColumnQuery;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * The last step to the build of {@link ColumnQuery}.
  * It either can return a new {@link ColumnQuery} instance or execute a query with
- * {@link org.jnosql.diana.api.column.ColumnFamilyManager} and {@link org.jnosql.diana.api.column.ColumnFamilyManagerAsync}
+ * {@link ColumnFamilyManager} and {@link ColumnFamilyManagerAsync}
  */
 public interface ColumnQueryBuild {
 
@@ -31,4 +38,40 @@ public interface ColumnQueryBuild {
      * @return a new {@link ColumnQuery} instance
      */
     ColumnQuery build();
+
+    /**
+     * Executes {@link ColumnFamilyManager#select(ColumnQuery)}
+     *
+     * @param manager the entity manager
+     * @return the result of {@link ColumnFamilyManager#select(ColumnQuery)}
+     * @throws NullPointerException when manager is null
+     */
+    List<ColumnEntity> select(ColumnFamilyManager manager);
+
+    /**
+     * Executes {@link ColumnFamilyManager#singleResult(ColumnQuery)}
+     *
+     * @param manager the entity manager
+     * @return the result of {@link ColumnFamilyManager#singleResult(ColumnQuery)}
+     * @throws NullPointerException when manager is null
+     */
+    Optional<ColumnEntity> singleResult(ColumnFamilyManager manager);
+
+    /**
+     * Executes {@link ColumnFamilyManagerAsync#select(ColumnQuery, Consumer)}
+     *
+     * @param manager  the entity manager
+     * @param callback the callback
+     * @throws NullPointerException when there is null parameter
+     */
+    void select(ColumnFamilyManagerAsync manager, Consumer<List<ColumnEntity>> callback);
+
+    /**
+     * Executes {@link ColumnFamilyManagerAsync#singleResult(ColumnQuery, Consumer)}
+     *
+     * @param manager  the entity manager
+     * @param callback the callback
+     * @throws NullPointerException when there is null parameter
+     */
+    void singleResult(ColumnFamilyManagerAsync manager, Consumer<Optional<ColumnEntity>> callback);
 }
