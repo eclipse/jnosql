@@ -323,7 +323,7 @@ public class DefaultSelectQueryBuilderTest {
         ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String columnFamily = "columnFamily";
-        Optional<ColumnEntity> entities = select().from(columnFamily).singleResult(manager);
+        Optional<ColumnEntity> entities = select().from(columnFamily).executeSingle(manager);
         Mockito.verify(manager).singleResult(queryCaptor.capture());
         checkQuery(queryCaptor, columnFamily);
     }
@@ -345,7 +345,7 @@ public class DefaultSelectQueryBuilderTest {
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String columnFamily = "columnFamily";
         Consumer<Optional<ColumnEntity>> callback = System.out::println;
-        select().from(columnFamily).singleResult(manager, callback);
+        select().from(columnFamily).executeSingle(manager, callback);
         Mockito.verify(manager).singleResult(queryCaptor.capture(), Mockito.eq(callback));
         checkQuery(queryCaptor, columnFamily);
     }

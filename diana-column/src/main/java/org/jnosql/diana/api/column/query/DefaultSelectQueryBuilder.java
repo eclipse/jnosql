@@ -186,7 +186,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     }
 
     @Override
-    public Optional<ColumnEntity> singleResult(ColumnFamilyManager manager) {
+    public Optional<ColumnEntity> executeSingle(ColumnFamilyManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.singleResult(this.build());
     }
@@ -199,7 +199,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
     }
 
     @Override
-    public void singleResult(ColumnFamilyManagerAsync manager, Consumer<Optional<ColumnEntity>> callback) {
+    public void executeSingle(ColumnFamilyManagerAsync manager, Consumer<Optional<ColumnEntity>> callback) {
         requireNonNull(manager, "manager is required");
         requireNonNull(callback, "callback is required");
         manager.singleResult(this.build(), callback);
