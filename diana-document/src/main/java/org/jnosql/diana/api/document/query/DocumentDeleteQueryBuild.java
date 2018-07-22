@@ -16,8 +16,17 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 
+import java.util.function.Consumer;
+
+/**
+ * The last step to the build of {@link DocumentDeleteQuery}.
+ * It either can return a new {@link DocumentDeleteQuery} instance or execute a query with
+ * {@link org.jnosql.diana.api.document.DocumentCollectionManager} and {@link DocumentCollectionManagerAsync}
+ */
 public interface DocumentDeleteQueryBuild {
 
     /**
@@ -26,4 +35,29 @@ public interface DocumentDeleteQueryBuild {
      * @return a new {@link DocumentDeleteQuery} instance
      */
     DocumentDeleteQuery build();
+
+    /**
+     * executes the {@link DocumentCollectionManager#delete(DocumentDeleteQuery)}
+     *
+     * @param manager the entity manager
+     * @throws NullPointerException when manager is null
+     */
+    void execute(DocumentCollectionManager manager);
+
+    /**
+     * executes the {@link org.jnosql.diana.api.document.DocumentCollectionManagerAsync#delete(DocumentDeleteQuery)}
+     *
+     * @param manager the entity manager
+     * @throws NullPointerException when manager is null
+     */
+    void execute(DocumentCollectionManagerAsync manager);
+
+    /**
+     * executes the {@link DocumentCollectionManagerAsync#delete(DocumentDeleteQuery, Consumer)}
+     *
+     * @param manager  the entity manager
+     * @param callback the callback
+     * @throws NullPointerException when there is null parameter
+     */
+    void execute(DocumentCollectionManagerAsync manager, Consumer<Void> callback);
 }
