@@ -65,7 +65,7 @@ public interface DocumentQueryBuild {
      * @param callback the callback
      * @throws NullPointerException when there is null parameter
      */
-    void execute(DocumentCollectionManager manager, Consumer<List<DocumentEntity>> callback);
+    void execute(DocumentCollectionManagerAsync manager, Consumer<List<DocumentEntity>> callback);
 
     /**
      * Executes {@link DocumentCollectionManagerAsync#singleResult(DocumentQuery, Consumer)}
