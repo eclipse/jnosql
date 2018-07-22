@@ -16,8 +16,6 @@
  */
 package org.jnosql.diana.api.document.query;
 
-import org.jnosql.diana.api.document.DocumentDeleteQuery;
-
 /**
  * The Document Where whose define the condition in the delete query.
  */
