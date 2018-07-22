@@ -16,20 +16,14 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.document.DocumentDeleteQuery;
 
-/**
- * The Document Delete Query
- */
-public interface DocumentDeleteFrom extends DocumentDeleteQueryBuild {
-
+public interface DocumentDeleteQueryBuild {
 
     /**
-     * Starts a new condition defining the  column name
+     * Creates a new instance of {@link DocumentDeleteQuery}
      *
-     * @param name the column name
-     * @return a new {@link DocumentDeleteNameCondition}
-     * @throws NullPointerException when name is null
+     * @return a new {@link DocumentDeleteQuery} instance
      */
-    DocumentDeleteNameCondition where(String name);
-
+    DocumentDeleteQuery build();
 }
