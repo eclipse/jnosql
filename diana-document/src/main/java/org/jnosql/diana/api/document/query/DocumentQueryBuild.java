@@ -16,5 +16,20 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.document.DocumentQuery;
+
+/**
+ * The last step to the build of {@link org.jnosql.diana.api.document.DocumentQuery}.
+ * It either can return a new {@link org.jnosql.diana.api.document.DocumentQuery} instance or execute a query with
+ * {@link org.jnosql.diana.api.document.DocumentCollectionManager}
+ * and {@link org.jnosql.diana.api.document.DocumentCollectionManagerAsync}
+ */
 public interface DocumentQueryBuild {
+
+    /**
+     * Creates a new instance of {@link DocumentQuery}
+     *
+     * @return a new {@link DocumentQuery} instance
+     */
+    DocumentQuery build();
 }

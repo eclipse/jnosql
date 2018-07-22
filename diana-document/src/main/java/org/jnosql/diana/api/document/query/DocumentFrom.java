@@ -17,12 +17,10 @@
 package org.jnosql.diana.api.document.query;
 
 
-import org.jnosql.diana.api.document.DocumentQuery;
-
 /**
  * The DocumentFrom Query
  */
-public interface DocumentFrom {
+public interface DocumentFrom extends DocumentQueryBuild {
 
 
     /**
@@ -60,10 +58,5 @@ public interface DocumentFrom {
      */
     DocumentOrder orderBy(String name);
 
-    /**
-     * Creates a new instance of {@link DocumentQuery}
-     *
-     * @return a new {@link DocumentQuery} instance
-     */
-    DocumentQuery build();
+
 }

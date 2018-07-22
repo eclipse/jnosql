@@ -17,12 +17,10 @@
 package org.jnosql.diana.api.document.query;
 
 
-import org.jnosql.diana.api.document.DocumentQuery;
-
 /**
  * The Document Order whose define the the maximum number of results to retrieve.
  */
-public interface DocumentLimit {
+public interface DocumentLimit extends DocumentQueryBuild {
 
     /**
      * Defines the position of the first result to retrieve.
@@ -32,10 +30,4 @@ public interface DocumentLimit {
      */
     DocumentSkip skip(long skip);
 
-    /**
-     * Creates a new instance of {@link DocumentQuery}
-     *
-     * @return a new {@link DocumentQuery} instance
-     */
-    DocumentQuery build();
 }
