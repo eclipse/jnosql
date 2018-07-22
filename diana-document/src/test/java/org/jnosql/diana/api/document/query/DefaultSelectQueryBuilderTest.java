@@ -316,49 +316,49 @@ public class DefaultSelectQueryBuilderTest {
     public void shouldExecuteManager() {
         DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        String columnFamily = "collection";
-        List<DocumentEntity> entities = select().from(columnFamily).execute(manager);
+        String collection = "collection";
+        List<DocumentEntity> entities = select().from(collection).execute(manager);
         Mockito.verify(manager).select(queryCaptor.capture());
-        checkQuery(queryCaptor, columnFamily);
+        checkQuery(queryCaptor, collection);
     }
 
     @Test
     public void shouldExecuteSingleResultManager() {
         DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        String columnFamily = "collection";
-        Optional<DocumentEntity> entities = select().from(columnFamily).executeSingle(manager);
+        String collection = "collection";
+        Optional<DocumentEntity> entities = select().from(collection).executeSingle(manager);
         Mockito.verify(manager).singleResult(queryCaptor.capture());
-        checkQuery(queryCaptor, columnFamily);
+        checkQuery(queryCaptor, collection);
     }
 
     @Test
     public void shouldExecuteManagerAsync() {
         DocumentCollectionManagerAsync manager = Mockito.mock(DocumentCollectionManagerAsync.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        String columnFamily = "collection";
+        String collection = "collection";
         Consumer<List<DocumentEntity>> callback = System.out::println;
-        select().from(columnFamily).execute(manager, callback);
+        select().from(collection).execute(manager, callback);
         Mockito.verify(manager).select(queryCaptor.capture(), Mockito.eq(callback));
-        checkQuery(queryCaptor, columnFamily);
+        checkQuery(queryCaptor, collection);
     }
 
     @Test
     public void shouldExecuteSingleResultManagerAsync() {
         DocumentCollectionManagerAsync manager = Mockito.mock(DocumentCollectionManagerAsync.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        String columnFamily = "collection";
+        String collection = "collection";
         Consumer<Optional<DocumentEntity>> callback = System.out::println;
-        select().from(columnFamily).executeSingle(manager, callback);
+        select().from(collection).executeSingle(manager, callback);
         Mockito.verify(manager).singleResult(queryCaptor.capture(), Mockito.eq(callback));
-        checkQuery(queryCaptor, columnFamily);
+        checkQuery(queryCaptor, collection);
     }
 
-    private void checkQuery(ArgumentCaptor<DocumentQuery> queryCaptor, String columnfamily) {
+    private void checkQuery(ArgumentCaptor<DocumentQuery> queryCaptor, String collection) {
         DocumentQuery query = queryCaptor.getValue();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnfamily, query.getDocumentCollection());
+        assertEquals(collection, query.getDocumentCollection());
     }
 
 }
