@@ -261,44 +261,44 @@ public class DefaultDeleteQueryBuilderTest {
 
     @Test
     public void shouldExecuteDelete() {
-        String columnFamily = "columnFamily";
+        String collection = "collection";
         DocumentCollectionManager manager = mock(DocumentCollectionManager.class);
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-        delete().from(columnFamily).execute(manager);
-        verify(manager).delete(queryCaptor.capture());
-
-        DocumentDeleteQuery query = queryCaptor.getValue();
-        assertTrue(query.getDocumentCollection().isEmpty());
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getDocumentCollection());
-    }
-
-    @Test
-    public void shouldExecuteAsyncDelete() {
-        String columnFamily = "columnFamily";
-        DocumentCollectionManagerAsync manager = mock(DocumentCollectionManagerAsync.class);
-        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-        delete().from(columnFamily).execute(manager);
+        delete().from(collection).execute(manager);
         verify(manager).delete(queryCaptor.capture());
 
         DocumentDeleteQuery query = queryCaptor.getValue();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getDocumentCollection());
+        assertEquals(collection, query.getDocumentCollection());
+    }
+
+    @Test
+    public void shouldExecuteAsyncDelete() {
+        String collection = "collection";
+        DocumentCollectionManagerAsync manager = mock(DocumentCollectionManagerAsync.class);
+        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+        delete().from(collection).execute(manager);
+        verify(manager).delete(queryCaptor.capture());
+
+        DocumentDeleteQuery query = queryCaptor.getValue();
+        assertTrue(query.getDocuments().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(collection, query.getDocumentCollection());
     }
 
     @Test
     public void shouldExecuteAsync2Delete() {
-        String columnFamily = "columnFamily";
+        String collection = "collection";
         DocumentCollectionManagerAsync manager = mock(DocumentCollectionManagerAsync.class);
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
         Consumer<Void> callback = (v) ->{};
-        delete().from(columnFamily).execute(manager, callback);
+        delete().from(collection).execute(manager, callback);
         verify(manager).delete(queryCaptor.capture(), ArgumentMatchers.eq(callback));
 
         DocumentDeleteQuery query = queryCaptor.getValue();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getDocumentCollection());
+        assertEquals(collection, query.getDocumentCollection());
     }
 }
