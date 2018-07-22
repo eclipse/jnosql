@@ -18,7 +18,7 @@ package org.jnosql.diana.api.document.query;
 
 
 /**
- * The Column name order to the buider
+ * The Column name order to the builder
  */
 public interface DocumentNameOrder extends DocumentQueryBuild {
 
