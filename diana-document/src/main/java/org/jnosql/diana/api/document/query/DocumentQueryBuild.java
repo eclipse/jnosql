@@ -16,7 +16,14 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
+import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * The last step to the build of {@link org.jnosql.diana.api.document.DocumentQuery}.
@@ -32,4 +39,40 @@ public interface DocumentQueryBuild {
      * @return a new {@link DocumentQuery} instance
      */
     DocumentQuery build();
+
+    /**
+     * Executes {@link DocumentCollectionManager#select(DocumentQuery)}
+     *
+     * @param manager the entity manager
+     * @return the result of {@link DocumentCollectionManager#select(DocumentQuery)}
+     * @throws NullPointerException when manager is null
+     */
+    List<DocumentEntity> execute(DocumentCollectionManager manager);
+
+    /**
+     * Executes {@link DocumentCollectionManager#singleResult(DocumentQuery)}
+     *
+     * @param manager the entity manager
+     * @return the result of {@link DocumentCollectionManager#singleResult(DocumentQuery)}
+     * @throws NullPointerException when manager is null
+     */
+    Optional<DocumentEntity> executeSingle(DocumentCollectionManager manager);
+
+    /**
+     * Executes {@link DocumentCollectionManagerAsync#select(DocumentQuery, Consumer)}
+     *
+     * @param manager  the entity manager
+     * @param callback the callback
+     * @throws NullPointerException when there is null parameter
+     */
+    void execute(DocumentCollectionManager manager, Consumer<List<DocumentEntity>> callback);
+
+    /**
+     * Executes {@link DocumentCollectionManagerAsync#singleResult(DocumentQuery, Consumer)}
+     *
+     * @param manager  the entity manager
+     * @param callback the callback
+     * @throws NullPointerException when there is null parameter
+     */
+    void executeSingle(DocumentCollectionManagerAsync manager, Consumer<Optional<DocumentEntity>> callback);
 }
