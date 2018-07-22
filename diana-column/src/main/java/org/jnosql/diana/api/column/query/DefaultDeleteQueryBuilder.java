@@ -18,8 +18,11 @@ package org.jnosql.diana.api.column.query;
 
 
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
+import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -130,6 +133,25 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete
     @Override
     public ColumnDeleteQuery build() {
         return new DefaultColumnDeleteQuery(columnFamily, condition, columns);
+    }
+
+    @Override
+    public void execute(ColumnFamilyManager manager) {
+        requireNonNull(manager, "manager is required");
+        manager.delete(this.build());
+    }
+
+    @Override
+    public void execute(ColumnFamilyManagerAsync manager) {
+        requireNonNull(manager, "manager is required");
+        manager.delete(this.build());
+    }
+
+    @Override
+    public void execute(ColumnFamilyManagerAsync manager, Consumer<Void> callback) {
+        requireNonNull(manager, "manager is required");
+        requireNonNull(callback, "callback is required");
+        manager.delete(this.build(), callback);
     }
 }
 

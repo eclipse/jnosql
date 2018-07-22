@@ -23,10 +23,14 @@ import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
+import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -35,6 +39,9 @@ import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class DefaultDeleteQueryBuilderTest {
 
@@ -248,6 +255,49 @@ public class DefaultDeleteQueryBuilderTest {
                 eq(Column.of("name", "Lucas")).negate()));
 
 
+    }
+
+    @Test
+    public void shouldExecuteDelete() {
+        String columnFamily = "columnFamily";
+        ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
+        ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        delete().from(columnFamily).execute(manager);
+        verify(manager).delete(queryCaptor.capture());
+
+        ColumnDeleteQuery query = queryCaptor.getValue();
+        assertTrue(query.getColumns().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(columnFamily, query.getColumnFamily());
+    }
+
+    @Test
+    public void shouldExecuteAsyncDelete() {
+        String columnFamily = "columnFamily";
+        ColumnFamilyManagerAsync manager = mock(ColumnFamilyManagerAsync.class);
+        ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        delete().from(columnFamily).execute(manager);
+        verify(manager).delete(queryCaptor.capture());
+
+        ColumnDeleteQuery query = queryCaptor.getValue();
+        assertTrue(query.getColumns().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(columnFamily, query.getColumnFamily());
+    }
+
+    @Test
+    public void shouldExecuteAsync2Delete() {
+        String columnFamily = "columnFamily";
+        ColumnFamilyManagerAsync manager = mock(ColumnFamilyManagerAsync.class);
+        ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
+        Consumer<Void> callback = (v) ->{};
+        delete().from(columnFamily).execute(manager, callback);
+        verify(manager).delete(queryCaptor.capture(), eq(callback));
+
+        ColumnDeleteQuery query = queryCaptor.getValue();
+        assertTrue(query.getColumns().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(columnFamily, query.getColumnFamily());
     }
 
 }

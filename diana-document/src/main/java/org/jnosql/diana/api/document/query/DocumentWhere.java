@@ -18,12 +18,10 @@
 package org.jnosql.diana.api.document.query;
 
 
-import org.jnosql.diana.api.document.DocumentQuery;
-
 /**
  * The Document Where whose define the condition in the query.
  */
-public interface DocumentWhere {
+public interface DocumentWhere extends DocumentQueryBuild {
 
 
     /**
@@ -70,10 +68,4 @@ public interface DocumentWhere {
      */
     DocumentOrder orderBy(String name);
 
-    /**
-     * Creates a new instance of {@link DocumentQuery}
-     *
-     * @return a new {@link DocumentQuery} instance
-     */
-    DocumentQuery build();
 }

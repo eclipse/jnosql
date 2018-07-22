@@ -21,11 +21,18 @@ import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.document.Document;
+import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
+import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -302,7 +309,56 @@ public class DefaultSelectQueryBuilderTest {
         assertThat(conditions, containsInAnyOrder(eq(Document.of("city", "Assis")).negate(),
                 eq(Document.of("name", "Lucas")).negate()));
 
+    }
 
+
+    @Test
+    public void shouldExecuteManager() {
+        DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
+        ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
+        String collection = "collection";
+        List<DocumentEntity> entities = select().from(collection).execute(manager);
+        Mockito.verify(manager).select(queryCaptor.capture());
+        checkQuery(queryCaptor, collection);
+    }
+
+    @Test
+    public void shouldExecuteSingleResultManager() {
+        DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
+        ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
+        String collection = "collection";
+        Optional<DocumentEntity> entities = select().from(collection).executeSingle(manager);
+        Mockito.verify(manager).singleResult(queryCaptor.capture());
+        checkQuery(queryCaptor, collection);
+    }
+
+    @Test
+    public void shouldExecuteManagerAsync() {
+        DocumentCollectionManagerAsync manager = Mockito.mock(DocumentCollectionManagerAsync.class);
+        ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
+        String collection = "collection";
+        Consumer<List<DocumentEntity>> callback = System.out::println;
+        select().from(collection).execute(manager, callback);
+        Mockito.verify(manager).select(queryCaptor.capture(), Mockito.eq(callback));
+        checkQuery(queryCaptor, collection);
+    }
+
+    @Test
+    public void shouldExecuteSingleResultManagerAsync() {
+        DocumentCollectionManagerAsync manager = Mockito.mock(DocumentCollectionManagerAsync.class);
+        ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
+        String collection = "collection";
+        Consumer<Optional<DocumentEntity>> callback = System.out::println;
+        select().from(collection).executeSingle(manager, callback);
+        Mockito.verify(manager).singleResult(queryCaptor.capture(), Mockito.eq(callback));
+        checkQuery(queryCaptor, collection);
+    }
+
+    private void checkQuery(ArgumentCaptor<DocumentQuery> queryCaptor, String collection) {
+        DocumentQuery query = queryCaptor.getValue();
+        assertTrue(query.getDocuments().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(collection, query.getDocumentCollection());
     }
 
 }

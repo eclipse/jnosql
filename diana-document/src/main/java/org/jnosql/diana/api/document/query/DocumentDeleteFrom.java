@@ -17,12 +17,10 @@
 package org.jnosql.diana.api.document.query;
 
 
-import org.jnosql.diana.api.document.DocumentDeleteQuery;
-
 /**
  * The Document Delete Query
  */
-public interface DocumentDeleteFrom {
+public interface DocumentDeleteFrom extends DocumentDeleteQueryBuild {
 
 
     /**
@@ -34,10 +32,4 @@ public interface DocumentDeleteFrom {
      */
     DocumentDeleteNameCondition where(String name);
 
-    /**
-     * Creates a new instance of {@link DocumentDeleteQuery}
-     *
-     * @return a new {@link DocumentDeleteQuery} instance
-     */
-    DocumentDeleteQuery build();
 }

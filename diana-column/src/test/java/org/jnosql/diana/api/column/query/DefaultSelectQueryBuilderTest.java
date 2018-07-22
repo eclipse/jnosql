@@ -22,11 +22,18 @@ import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnCondition;
+import org.jnosql.diana.api.column.ColumnEntity;
+import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -301,5 +308,54 @@ public class DefaultSelectQueryBuilderTest {
 
     }
 
+    @Test
+    public void shouldExecuteManager() {
+        ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
+        String columnFamily = "columnFamily";
+        List<ColumnEntity> entities = select().from(columnFamily).execute(manager);
+        Mockito.verify(manager).select(queryCaptor.capture());
+        checkQuery(queryCaptor, columnFamily);
+    }
+
+    @Test
+    public void shouldExecuteSingleResultManager() {
+        ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
+        String columnFamily = "columnFamily";
+        Optional<ColumnEntity> entities = select().from(columnFamily).executeSingle(manager);
+        Mockito.verify(manager).singleResult(queryCaptor.capture());
+        checkQuery(queryCaptor, columnFamily);
+    }
+
+    @Test
+    public void shouldExecuteManagerAsync() {
+        ColumnFamilyManagerAsync manager = Mockito.mock(ColumnFamilyManagerAsync.class);
+        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
+        String columnFamily = "columnFamily";
+        Consumer<List<ColumnEntity>> callback = System.out::println;
+        select().from(columnFamily).execute(manager, callback);
+        Mockito.verify(manager).select(queryCaptor.capture(), Mockito.eq(callback));
+        checkQuery(queryCaptor, columnFamily);
+    }
+
+    @Test
+    public void shouldExecuteSingleResultManagerAsync() {
+        ColumnFamilyManagerAsync manager = Mockito.mock(ColumnFamilyManagerAsync.class);
+        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
+        String columnFamily = "columnFamily";
+        Consumer<Optional<ColumnEntity>> callback = System.out::println;
+        select().from(columnFamily).executeSingle(manager, callback);
+        Mockito.verify(manager).singleResult(queryCaptor.capture(), Mockito.eq(callback));
+        checkQuery(queryCaptor, columnFamily);
+    }
+
+
+    private void checkQuery(ArgumentCaptor<ColumnQuery> queryCaptor, String columnFamily) {
+        ColumnQuery query = queryCaptor.getValue();
+        assertTrue(query.getColumns().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(columnFamily, query.getColumnFamily());
+    }
 
 }

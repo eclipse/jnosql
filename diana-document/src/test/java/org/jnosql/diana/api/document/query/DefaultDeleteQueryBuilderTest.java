@@ -21,12 +21,17 @@ import org.hamcrest.Matchers;
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.document.Document;
+import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -35,6 +40,8 @@ import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class DefaultDeleteQueryBuilderTest {
 
@@ -250,5 +257,48 @@ public class DefaultDeleteQueryBuilderTest {
                 eq(Document.of("name", "Lucas")).negate()));
 
 
+    }
+
+    @Test
+    public void shouldExecuteDelete() {
+        String collection = "collection";
+        DocumentCollectionManager manager = mock(DocumentCollectionManager.class);
+        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+        delete().from(collection).execute(manager);
+        verify(manager).delete(queryCaptor.capture());
+
+        DocumentDeleteQuery query = queryCaptor.getValue();
+        assertTrue(query.getDocuments().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(collection, query.getDocumentCollection());
+    }
+
+    @Test
+    public void shouldExecuteAsyncDelete() {
+        String collection = "collection";
+        DocumentCollectionManagerAsync manager = mock(DocumentCollectionManagerAsync.class);
+        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+        delete().from(collection).execute(manager);
+        verify(manager).delete(queryCaptor.capture());
+
+        DocumentDeleteQuery query = queryCaptor.getValue();
+        assertTrue(query.getDocuments().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(collection, query.getDocumentCollection());
+    }
+
+    @Test
+    public void shouldExecuteAsync2Delete() {
+        String collection = "collection";
+        DocumentCollectionManagerAsync manager = mock(DocumentCollectionManagerAsync.class);
+        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+        Consumer<Void> callback = (v) ->{};
+        delete().from(collection).execute(manager, callback);
+        verify(manager).delete(queryCaptor.capture(), ArgumentMatchers.eq(callback));
+
+        DocumentDeleteQuery query = queryCaptor.getValue();
+        assertTrue(query.getDocuments().isEmpty());
+        assertFalse(query.getCondition().isPresent());
+        assertEquals(collection, query.getDocumentCollection());
     }
 }

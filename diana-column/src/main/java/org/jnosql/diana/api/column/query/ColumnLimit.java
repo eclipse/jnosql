@@ -16,12 +16,10 @@
  */
 package org.jnosql.diana.api.column.query;
 
-import org.jnosql.diana.api.column.ColumnQuery;
-
 /**
  * The Column Order whose define the the maximum number of results to retrieve.
  */
-public interface ColumnLimit {
+public interface ColumnLimit extends ColumnQueryBuild {
 
     /**
      * Defines the position of the first result to retrieve.
@@ -31,10 +29,4 @@ public interface ColumnLimit {
      */
     ColumnSkip skip(long skip);
 
-    /**
-     * Creates a new instance of {@link ColumnQuery}
-     *
-     * @return a new {@link ColumnQuery} instance
-     */
-    ColumnQuery build();
 }

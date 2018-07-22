@@ -17,13 +17,10 @@
 package org.jnosql.diana.api.column.query;
 
 
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-
-
 /**
  * The Column Delete Query
  */
-public interface ColumnDeleteFrom {
+public interface ColumnDeleteFrom extends ColumnDeleteQueryBuild {
 
 
     /**
@@ -35,10 +32,4 @@ public interface ColumnDeleteFrom {
      */
     ColumnDeleteNameCondition where(String name);
 
-    /**
-     * Creates a new instance of {@link ColumnDeleteQuery}
-     *
-     * @return a new {@link ColumnDeleteQuery} instance
-     */
-    ColumnDeleteQuery build();
 }

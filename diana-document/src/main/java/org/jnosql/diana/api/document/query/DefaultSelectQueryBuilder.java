@@ -18,10 +18,15 @@ package org.jnosql.diana.api.document.query;
 
 
 import org.jnosql.diana.api.Sort;
+import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
+import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentQuery;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -29,7 +34,7 @@ import static java.util.Objects.requireNonNull;
  * The default implementation of the Select in the document
  */
 class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSelect, DocumentFrom, DocumentLimit,
-        DocumentSkip, DocumentOrder, DocumentNotCondition, DocumentNameOrder, DocumentWhere {
+        DocumentSkip, DocumentOrder, DocumentNotCondition, DocumentNameOrder, DocumentWhere, DocumentQueryBuild {
 
 
     private String documentCollection;
@@ -172,6 +177,32 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
     @Override
     public DocumentQuery build() {
         return new DefaultDocumentQuery(limit, skip, documentCollection, documents, sorts, condition);
+    }
+
+    @Override
+    public List<DocumentEntity> execute(DocumentCollectionManager manager) {
+        requireNonNull(manager, "manager is required");
+        return manager.select(this.build());
+    }
+
+    @Override
+    public Optional<DocumentEntity> executeSingle(DocumentCollectionManager manager) {
+        requireNonNull(manager, "manager is required");
+        return manager.singleResult(this.build());
+    }
+
+    @Override
+    public void execute(DocumentCollectionManagerAsync manager, Consumer<List<DocumentEntity>> callback) {
+        requireNonNull(manager, "manager is required");
+        requireNonNull(callback, "callback is required");
+        manager.select(this.build(), callback);
+    }
+
+    @Override
+    public void executeSingle(DocumentCollectionManagerAsync manager, Consumer<Optional<DocumentEntity>> callback) {
+        requireNonNull(manager, "manager is required");
+        requireNonNull(callback, "callback is required");
+        manager.singleResult(this.build(), callback);
     }
 
 

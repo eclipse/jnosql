@@ -17,12 +17,10 @@
 package org.jnosql.diana.api.document.query;
 
 
-import org.jnosql.diana.api.document.DocumentQuery;
-
 /**
  * The Column name order to the buider
  */
-public interface DocumentNameOrder {
+public interface DocumentNameOrder extends DocumentQueryBuild {
 
     /**
      * Add the order how the result will returned
@@ -52,11 +50,5 @@ public interface DocumentNameOrder {
     DocumentLimit limit(long limit);
 
 
-    /**
-     * Creates a new instance of {@link DocumentQuery}
-     *
-     * @return a new {@link DocumentQuery} instance
-     */
-    DocumentQuery build();
 
 }

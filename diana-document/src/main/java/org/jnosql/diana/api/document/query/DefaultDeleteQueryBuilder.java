@@ -16,9 +16,12 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -129,5 +132,24 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
     @Override
     public DocumentDeleteQuery build() {
         return new DefaultDocumentDeleteQuery(documentCollection, condition, documents);
+    }
+
+    @Override
+    public void execute(DocumentCollectionManager manager) {
+        requireNonNull(manager, "manager is required");
+        manager.delete(this.build());
+    }
+
+    @Override
+    public void execute(DocumentCollectionManagerAsync manager) {
+        requireNonNull(manager, "manager is required");
+        manager.delete(this.build());
+    }
+
+    @Override
+    public void execute(DocumentCollectionManagerAsync manager, Consumer<Void> callback) {
+        requireNonNull(manager, "manager is required");
+        requireNonNull(callback, "callback is required");
+        manager.delete(this.build(), callback);
     }
 }

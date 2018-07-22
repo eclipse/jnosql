@@ -17,12 +17,10 @@
 package org.jnosql.diana.api.column.query;
 
 
-import org.jnosql.diana.api.column.ColumnQuery;
-
 /**
  * The Column Order whose define the position of the first result to retrieve.
  */
-public interface ColumnSkip {
+public interface ColumnSkip extends ColumnQueryBuild {
 
 
     /**
@@ -33,10 +31,4 @@ public interface ColumnSkip {
      */
     ColumnLimit limit(long limit);
 
-    /**
-     * Creates a new instance of {@link ColumnQuery}
-     *
-     * @return a new {@link ColumnQuery} instance
-     */
-    ColumnQuery build();
 }
