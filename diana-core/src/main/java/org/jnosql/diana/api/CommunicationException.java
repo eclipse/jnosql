@@ -18,6 +18,7 @@ package org.jnosql.diana.api;
 
 /**
  * The root exception to Communication exception.
+ * This exception is related to any issue that happen at an implementation within the Communication layer.
  */
 public class CommunicationException extends JNoSQLException {
 
@@ -69,8 +70,8 @@ public class CommunicationException extends JNoSQLException {
      * @param writableStackTrace the writableStackTrace
      */
     protected CommunicationException(String message, Throwable cause,
-                              boolean enableSuppression,
-                              boolean writableStackTrace) {
+                                     boolean enableSuppression,
+                                     boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }
