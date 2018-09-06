@@ -47,7 +47,7 @@ final class InsertQueryParser {
         InsertQuery insertQuery = supplier.apply(query);
 
         String collection = insertQuery.getEntity();
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
 
         DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
 
@@ -67,7 +67,7 @@ final class InsertQueryParser {
         InsertQuery insertQuery = supplier.apply(query);
 
         String collection = observer.fireEntity(insertQuery.getEntity());
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
 
         DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
 
@@ -86,7 +86,7 @@ final class InsertQueryParser {
         InsertQuery insertQuery = supplier.apply(query);
 
         String collection = observer.fireEntity(insertQuery.getEntity());
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
 
         Optional<Duration> ttl = insertQuery.getTtl();
         DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
@@ -96,7 +96,7 @@ final class InsertQueryParser {
     }
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager, DocumentObserverParser observer) {
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
 
         InsertQuery insertQuery = supplier.apply(query);
         String collection = observer.fireEntity(insertQuery.getEntity());
@@ -106,7 +106,7 @@ final class InsertQueryParser {
         return DefaultDocumentPreparedStatementAsync.insert(entity, params, query, ttl.orElse(null), collectionManager);
     }
 
-    private DocumentEntity getEntity(InsertQuery insertQuery, String collection, Params params, DocumentObserverParser observer) {
+    private DocumentEntity getEntity(InsertQuery insertQuery, String collection, DocumentParams params, DocumentObserverParser observer) {
         DocumentEntity entity = DocumentEntity.of(collection);
 
         insertQuery.getConditions()

@@ -44,7 +44,7 @@ final class UpdateQueryParser {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
 
@@ -59,7 +59,7 @@ final class UpdateQueryParser {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
 
@@ -71,7 +71,7 @@ final class UpdateQueryParser {
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
 
         UpdateQuery updateQuery = supplier.apply(query);
 
@@ -81,7 +81,7 @@ final class UpdateQueryParser {
     }
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager, DocumentObserverParser observer) {
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
         UpdateQuery updateQuery = supplier.apply(query);
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
@@ -89,7 +89,7 @@ final class UpdateQueryParser {
         return DefaultDocumentPreparedStatementAsync.update(entity, params, query, collectionManager);
     }
 
-    private DocumentEntity getEntity(Params params, UpdateQuery updateQuery, DocumentObserverParser observer) {
+    private DocumentEntity getEntity(DocumentParams params, UpdateQuery updateQuery, DocumentObserverParser observer) {
         String collection = observer.fireEntity(updateQuery.getEntity());
 
         DocumentEntity entity = DocumentEntity.of(collection);

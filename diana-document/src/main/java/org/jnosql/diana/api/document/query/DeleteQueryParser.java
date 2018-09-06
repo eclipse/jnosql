@@ -59,7 +59,7 @@ final class DeleteQueryParser {
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager,
                                       DocumentObserverParser observer) {
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
         DocumentDeleteQuery documentQuery = getQuery(query, params, observer);
         return DefaultDocumentPreparedStatement.delete(documentQuery, params, query, collectionManager);
     }
@@ -67,13 +67,13 @@ final class DeleteQueryParser {
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager,
                                                 DocumentObserverParser observer) {
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
         DocumentDeleteQuery documentQuery = getQuery(query, params, observer);
         return DefaultDocumentPreparedStatementAsync.delete(documentQuery, params, query, collectionManager);
 
     }
 
-    private DocumentDeleteQuery getQuery(String query, Params params, DocumentObserverParser observer) {
+    private DocumentDeleteQuery getQuery(String query, DocumentParams params, DocumentObserverParser observer) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
         String collection = observer.fireEntity(deleteQuery.getEntity());
@@ -97,7 +97,7 @@ final class DeleteQueryParser {
                 .map(f -> observer.fireField(collection, f))
                 .collect(Collectors.toList());
         DocumentCondition condition = null;
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
 
         if (deleteQuery.getWhere().isPresent()) {
             condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();

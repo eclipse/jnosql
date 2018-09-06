@@ -29,13 +29,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ParamsTest {
+class DocumentParamsTest {
 
 
 
     @Test
     public void shouldAddParamter() {
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
         Value name = params.add("name");
         assertNotNull(name);
         MatcherAssert.<List<String>>assertThat(params.getParametersNames(), containsInAnyOrder("name"));
@@ -43,7 +43,7 @@ class ParamsTest {
 
     @Test
     public void shouldNotUseValueWhenIsInvalid() {
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
         Value name = params.add("name");
         assertThrows(QueryException.class, () ->{
             name.get();
@@ -56,7 +56,7 @@ class ParamsTest {
 
     @Test
     public void shouldSetParameter() {
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
         Value name = params.add("name");
         Document document = Document.of("name", name);
         params.bind("name", "Ada Lovelace");

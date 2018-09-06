@@ -42,7 +42,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
 
     private final PreparedStatementType type;
 
-    private final Params params;
+    private final DocumentParams params;
 
     private final String query;
 
@@ -56,7 +56,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
                                              DocumentQuery documentQuery,
                                              DocumentDeleteQuery documentDeleteQuery,
                                              PreparedStatementType type,
-                                             Params params,
+                                             DocumentParams params,
                                              String query,
                                              List<String> paramsLeft,
                                              Duration duration,
@@ -132,7 +132,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
 
     static DocumentPreparedStatement select(
             DocumentQuery documentQuery,
-            Params params,
+            DocumentParams params,
             String query,
             DocumentCollectionManager manager) {
         return new DefaultDocumentPreparedStatement(null, documentQuery,
@@ -142,7 +142,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
     }
 
     static DocumentPreparedStatement delete(DocumentDeleteQuery documentDeleteQuery,
-                                            Params params,
+                                            DocumentParams params,
                                             String query,
                                             DocumentCollectionManager manager) {
 
@@ -153,7 +153,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
     }
 
     static DocumentPreparedStatement insert(DocumentEntity entity,
-                                            Params params,
+                                            DocumentParams params,
                                             String query,
                                             Duration duration,
                                             DocumentCollectionManager manager) {
@@ -164,7 +164,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
     }
 
     static DocumentPreparedStatement update(DocumentEntity entity,
-                                            Params params,
+                                            DocumentParams params,
                                             String query,
                                             DocumentCollectionManager manager) {
         return new DefaultDocumentPreparedStatement(entity, null,

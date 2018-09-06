@@ -62,7 +62,7 @@ final class SelectQueryParser {
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
@@ -72,7 +72,7 @@ final class SelectQueryParser {
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager,
                                                 DocumentObserverParser observer) {
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
@@ -92,7 +92,7 @@ final class SelectQueryParser {
         List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, collection))
                 .collect(toList());
         DocumentCondition condition = null;
-        Params params = new Params();
+        DocumentParams params = new DocumentParams();
         if (selectQuery.getWhere().isPresent()) {
             condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
         }
@@ -103,7 +103,7 @@ final class SelectQueryParser {
         return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
-    private DocumentQuery getDocumentQuery(Params params, SelectQuery selectQuery, DocumentObserverParser observer) {
+    private DocumentQuery getDocumentQuery(DocumentParams params, SelectQuery selectQuery, DocumentObserverParser observer) {
 
         String collection = observer.fireEntity(selectQuery.getEntity());
         long limit = selectQuery.getLimit();

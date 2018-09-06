@@ -35,7 +35,7 @@ final class Values {
     private Values() {
     }
 
-    static Object get(Value<?> value, Params parameters) {
+    static Object get(Value<?> value, DocumentParams parameters) {
 
         ValueType type = value.getType();
         switch (type) {

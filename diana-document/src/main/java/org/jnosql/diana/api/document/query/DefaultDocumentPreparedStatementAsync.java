@@ -41,7 +41,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
 
     private final PreparedStatementType type;
 
-    private final Params params;
+    private final DocumentParams params;
 
     private final String query;
 
@@ -55,7 +55,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
                                                   DocumentQuery documentQuery,
                                                   DocumentDeleteQuery documentDeleteQuery,
                                                   PreparedStatementType type,
-                                                  Params params,
+                                                  DocumentParams params,
                                                   String query,
                                                   List<String> paramsLeft,
                                                   Duration duration,
@@ -140,7 +140,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
 
     static DefaultDocumentPreparedStatementAsync select(
             DocumentQuery documentQuery,
-            Params params,
+            DocumentParams params,
             String query,
             DocumentCollectionManagerAsync manager) {
         return new DefaultDocumentPreparedStatementAsync(null, documentQuery,
@@ -150,7 +150,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
     }
 
     static DefaultDocumentPreparedStatementAsync delete(DocumentDeleteQuery documentDeleteQuery,
-                                            Params params,
+                                            DocumentParams params,
                                             String query,
                                             DocumentCollectionManagerAsync manager) {
 
@@ -161,7 +161,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
     }
 
     static DefaultDocumentPreparedStatementAsync insert(DocumentEntity entity,
-                                            Params params,
+                                            DocumentParams params,
                                             String query,
                                             Duration duration,
                                             DocumentCollectionManagerAsync manager) {
@@ -172,7 +172,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
     }
 
     static DefaultDocumentPreparedStatementAsync update(DocumentEntity entity,
-                                            Params params,
+                                            DocumentParams params,
                                             String query,
                                             DocumentCollectionManagerAsync manager) {
         return new DefaultDocumentPreparedStatementAsync(entity, null,
