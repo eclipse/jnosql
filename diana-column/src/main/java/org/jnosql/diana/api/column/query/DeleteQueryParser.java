@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNull;
+
 final class DeleteQueryParser implements DeleteQueryConverter{
 
     private final DeleteQuerySupplier selectQuerySupplier;
@@ -77,12 +79,20 @@ final class DeleteQueryParser implements DeleteQueryConverter{
     public ColumnDeleteQueryParams apply(DeleteQuery deleteQuery,
                                          ColumnObserverParser columnObserverParser) {
 
+        requireNonNull(deleteQuery, "deleteQuery is required");
+        requireNonNull(columnObserverParser, "columnObserverParser is required");
+        ColumnParams params = new ColumnParams();
+        ColumnDeleteQuery query = getQuery(params, columnObserverParser, deleteQuery);
         return null;
     }
 
     private ColumnDeleteQuery getQuery(String query, ColumnParams params, ColumnObserverParser observer) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
+        return getQuery(params, observer, deleteQuery);
+    }
+
+    private ColumnDeleteQuery getQuery(ColumnParams params, ColumnObserverParser observer, DeleteQuery deleteQuery) {
         String columnFamily = observer.fireEntity(deleteQuery.getEntity());
         List<String> columns = deleteQuery.getFields().stream()
                 .map(f -> observer.fireField(columnFamily, f))
