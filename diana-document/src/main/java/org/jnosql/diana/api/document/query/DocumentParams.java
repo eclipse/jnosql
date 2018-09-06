@@ -17,6 +17,7 @@
 package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.Value;
+import org.jnosql.query.Params;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.List;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
-final class DocumentParams {
+final class DocumentParams implements Params {
 
     private final List<ParamValue> parameters = new ArrayList<>();
 
@@ -47,7 +48,21 @@ final class DocumentParams {
         return parameters.stream().map(ParamValue::getName).collect(joining(","));
     }
 
-    void bind(String name, Object value) {
+    @Override
+    public boolean isEmpty() {
+        return getNames().isEmpty();
+    }
+
+    @Override
+    public List<String> getNames() {
+        return parameters.stream()
+                .filter(ParamValue::isEmpty)
+                .map(ParamValue::getName)
+                .collect(toList());
+    }
+
+    @Override
+    public void bind(String name, Object value) {
         parameters.stream().filter(p -> p.getName().equals(name)).forEach(p -> p.setValue(value));
     }
 }

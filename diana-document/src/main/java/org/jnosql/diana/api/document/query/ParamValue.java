@@ -58,6 +58,10 @@ final class ParamValue implements Value {
         return Value.of(value).get(typeSupplier);
     }
 
+    public boolean isEmpty() {
+        return Objects.isNull(value);
+    }
+
     private void validValue() {
         if (Objects.isNull(value)) {
             throw new QueryException(String.format("The parameter %s is not defined", name));
