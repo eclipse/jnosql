@@ -16,5 +16,13 @@
  */
 package org.jnosql.diana.api.column.query;
 
-public interface SelectQueryConverter {
+import org.jnosql.diana.api.column.ColumnObserverParser;
+import org.jnosql.query.SelectQuery;
+
+import java.util.function.BiFunction;
+
+/**
+ * A converter that converts {@link SelectQuery} to {@link ColumnSelectQuery}
+ */
+public interface SelectQueryConverter extends BiFunction<SelectQuery, ColumnObserverParser, ColumnSelectQuery> {
 }

@@ -70,6 +70,12 @@ final class SelectQueryParser {
         return DefaultColumnPreparedStatement.select(columnQuery, params, query, manager);
     }
 
+    ColumnSelectQuery get(SelectQuery selectQuery, ColumnObserverParser observer) {
+        ColumnParams params = new ColumnParams();
+        ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
+
+    }
+
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
         ColumnParams params = new ColumnParams();
