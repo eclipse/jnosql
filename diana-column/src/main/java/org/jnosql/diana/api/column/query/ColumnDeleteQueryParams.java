@@ -17,7 +17,6 @@
 package org.jnosql.diana.api.column.query;
 
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnQuery;
 import org.jnosql.query.Params;
 
 /**
@@ -26,9 +25,9 @@ import org.jnosql.query.Params;
 public interface ColumnDeleteQueryParams {
 
     /**
-     * The {@link ColumnQuery}
+     * The {@link ColumnDeleteQuery}
      *
-     * @return a {@link ColumnQuery} instance
+     * @return a {@link ColumnDeleteQuery} instance
      */
     ColumnDeleteQuery getQuery();
 
