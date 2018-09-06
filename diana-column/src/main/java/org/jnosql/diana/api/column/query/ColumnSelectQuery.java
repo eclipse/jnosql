@@ -17,10 +17,24 @@
 package org.jnosql.diana.api.column.query;
 
 import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.query.Params;
 
+/**
+ * The result of {@link SelectQueryConverter} that has {@link ColumnQuery} and {@link Params}.
+ */
 public interface ColumnSelectQuery {
 
+    /**
+     * The {@link ColumnQuery}
+     *
+     * @return a {@link ColumnQuery} instance
+     */
     ColumnQuery getQuery();
 
-
+    /**
+     * The {@link Params}
+     *
+     * @return a {@link Params} instance
+     */
+    Params getParams();
 }
