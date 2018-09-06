@@ -26,7 +26,7 @@ enum DeleteQueryConverterFactory implements DeleteQueryConverter {
     private final DeleteQueryParser parser = new DeleteQueryParser();
 
     @Override
-    public ColumnDeleteQuery apply(DeleteQuery deleteQuery, ColumnObserverParser columnObserverParser) {
+    public ColumnDeleteQueryParams apply(DeleteQuery deleteQuery, ColumnObserverParser columnObserverParser) {
         return null;
     }
 }

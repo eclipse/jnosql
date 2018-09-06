@@ -74,8 +74,8 @@ final class DeleteQueryParser implements DeleteQueryConverter{
     }
 
     @Override
-    public org.jnosql.diana.api.column.query.ColumnDeleteQuery apply(DeleteQuery deleteQuery,
-                                                                     ColumnObserverParser columnObserverParser) {
+    public ColumnDeleteQueryParams apply(DeleteQuery deleteQuery,
+                                         ColumnObserverParser columnObserverParser) {
 
         return null;
     }

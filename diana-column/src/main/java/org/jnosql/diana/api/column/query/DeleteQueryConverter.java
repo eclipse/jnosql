@@ -23,9 +23,9 @@ import org.jnosql.query.SelectQuery;
 import java.util.function.BiFunction;
 
 /**
- * A converter that converts {@link SelectQuery} to {@link ColumnDeleteQuery}
+ * A converter that converts {@link SelectQuery} to {@link ColumnDeleteQueryParams}
  */
-public interface DeleteQueryConverter extends BiFunction<DeleteQuery, ColumnObserverParser, ColumnDeleteQuery> {
+public interface DeleteQueryConverter extends BiFunction<DeleteQuery, ColumnObserverParser, ColumnDeleteQueryParams> {
 
     /**
      * A {@link DeleteQueryConverter} instance

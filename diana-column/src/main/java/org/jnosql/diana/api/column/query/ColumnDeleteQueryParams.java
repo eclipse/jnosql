@@ -16,13 +16,14 @@
  */
 package org.jnosql.diana.api.column.query;
 
+import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 import org.jnosql.query.Params;
 
 /**
- * The result of {@link ColumnDeleteQuery} that has {@link ColumnDeleteQuery} and {@link Params}.
+ * The result of {@link ColumnDeleteQueryParams} that has {@link ColumnDeleteQuery} and {@link Params}.
  */
-public interface ColumnDeleteQuery {
+public interface ColumnDeleteQueryParams {
 
     /**
      * The {@link ColumnQuery}
