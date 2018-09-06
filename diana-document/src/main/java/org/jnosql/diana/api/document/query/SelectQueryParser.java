@@ -30,6 +30,7 @@ import org.jnosql.query.SelectQuery;
 import org.jnosql.query.SelectQuerySupplier;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,7 @@ import static java.util.stream.Collectors.toList;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
 import static org.jnosql.diana.api.Sort.SortType.DESC;
 
-final class SelectQueryParser {
+final class SelectQueryParser  implements SelectQueryConverter{
 
     private final SelectQuerySupplier selectQuerySupplier;
     private final CacheQuery<DocumentQuery> cache;
@@ -78,6 +79,15 @@ final class SelectQueryParser {
 
         DocumentQuery documentQuery = getDocumentQuery(params, selectQuery, observer);
         return DefaultDocumentPreparedStatementAsync.select(documentQuery, params, query, collectionManager);
+    }
+
+    @Override
+    public DocumentQueryParams apply(SelectQuery selectQuery, DocumentObserverParser observer) {
+        Objects.requireNonNull(selectQuery, "selectQuery is required");
+        Objects.requireNonNull(observer, "observer is required");
+        DocumentParams params = new DocumentParams();
+        DocumentQuery columnQuery = getDocumentQuery(params, selectQuery, observer);
+        return new DefaultDocumentQueryParams(columnQuery, params);
     }
 
     private DocumentQuery getDocumentQuery(String query, DocumentObserverParser observer) {
@@ -125,6 +135,7 @@ final class SelectQueryParser {
         return Sort.of(observer.fireField(entity, sort.getName()),
                 sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? ASC : DESC);
     }
+
 
 
 }

@@ -20,10 +20,13 @@ import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.query.SelectQuery;
 
 enum SelectQueryConverterFactory implements SelectQueryConverter {
+
     INSTANCE;
+
+    private final SelectQueryParser parser = new SelectQueryParser();
 
     @Override
     public DocumentQueryParams apply(SelectQuery selectQuery, DocumentObserverParser documentObserverParser) {
-        return null;
+        return parser.apply(selectQuery, documentObserverParser);
     }
 }
