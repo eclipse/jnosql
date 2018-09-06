@@ -42,7 +42,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
 
     private final PreparedStatementType type;
 
-    private final Params params;
+    private final ColumnParams params;
 
     private final String query;
 
@@ -56,7 +56,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
                                              ColumnQuery columnQuery,
                                              ColumnDeleteQuery columnDeleteQuery,
                                              PreparedStatementType type,
-                                             Params params,
+                                             ColumnParams params,
                                              String query,
                                              List<String> paramsLeft,
                                              Duration duration,
@@ -132,7 +132,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
 
     static ColumnPreparedStatement select(
             ColumnQuery columnQuery,
-            Params params,
+            ColumnParams params,
             String query,
             ColumnFamilyManager manager) {
         return new DefaultColumnPreparedStatement(null, columnQuery,
@@ -142,7 +142,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
     }
 
     static ColumnPreparedStatement delete(ColumnDeleteQuery columnDeleteQuery,
-                                            Params params,
+                                            ColumnParams params,
                                             String query,
                                           ColumnFamilyManager manager) {
 
@@ -153,7 +153,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
     }
 
     static ColumnPreparedStatement insert(ColumnEntity entity,
-                                            Params params,
+                                            ColumnParams params,
                                             String query,
                                             Duration duration,
                                           ColumnFamilyManager manager) {
@@ -164,7 +164,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
     }
 
     static ColumnPreparedStatement update(ColumnEntity entity,
-                                            Params params,
+                                            ColumnParams params,
                                             String query,
                                           ColumnFamilyManager manager) {
         return new DefaultColumnPreparedStatement(entity, null,

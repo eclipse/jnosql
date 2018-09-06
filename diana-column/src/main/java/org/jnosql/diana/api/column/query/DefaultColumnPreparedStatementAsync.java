@@ -41,7 +41,7 @@ final class DefaultColumnPreparedStatementAsync implements ColumnPreparedStateme
 
     private final PreparedStatementType type;
 
-    private final Params params;
+    private final ColumnParams params;
 
     private final String query;
 
@@ -55,7 +55,7 @@ final class DefaultColumnPreparedStatementAsync implements ColumnPreparedStateme
                                                   ColumnQuery columnQuery,
                                                   ColumnDeleteQuery columnDeleteQuery,
                                                   PreparedStatementType type,
-                                                  Params params,
+                                                  ColumnParams params,
                                                   String query,
                                                   List<String> paramsLeft,
                                                   Duration duration,
@@ -140,7 +140,7 @@ final class DefaultColumnPreparedStatementAsync implements ColumnPreparedStateme
 
     static ColumnPreparedStatementAsync select(
             ColumnQuery columnQuery,
-            Params params,
+            ColumnParams params,
             String query,
             ColumnFamilyManagerAsync manager) {
         return new DefaultColumnPreparedStatementAsync(null, columnQuery,
@@ -150,7 +150,7 @@ final class DefaultColumnPreparedStatementAsync implements ColumnPreparedStateme
     }
 
     static ColumnPreparedStatementAsync delete(ColumnDeleteQuery columnDeleteQuery,
-                                                        Params params,
+                                                        ColumnParams params,
                                                         String query,
                                                ColumnFamilyManagerAsync manager) {
 
@@ -161,7 +161,7 @@ final class DefaultColumnPreparedStatementAsync implements ColumnPreparedStateme
     }
 
     static ColumnPreparedStatementAsync insert(ColumnEntity entity,
-                                                        Params params,
+                                                        ColumnParams params,
                                                         String query,
                                                         Duration duration,
                                                ColumnFamilyManagerAsync manager) {
@@ -172,7 +172,7 @@ final class DefaultColumnPreparedStatementAsync implements ColumnPreparedStateme
     }
 
     static ColumnPreparedStatementAsync update(ColumnEntity entity,
-                                                        Params params,
+                                                        ColumnParams params,
                                                         String query,
                                                ColumnFamilyManagerAsync manager) {
         return new DefaultColumnPreparedStatementAsync(entity, null,

@@ -62,7 +62,7 @@ final class SelectQueryParser {
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
@@ -72,7 +72,7 @@ final class SelectQueryParser {
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
@@ -92,7 +92,7 @@ final class SelectQueryParser {
         List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, columnFamily))
                 .collect(toList());
         ColumnCondition condition = null;
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
         if (selectQuery.getWhere().isPresent()) {
             condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
         }
@@ -103,7 +103,7 @@ final class SelectQueryParser {
         return new DefaultColumnQuery(limit, skip, columnFamily, columns, sorts, condition);
     }
 
-    private ColumnQuery getColumnQuery(Params params, SelectQuery selectQuery, ColumnObserverParser observer) {
+    private ColumnQuery getColumnQuery(ColumnParams params, SelectQuery selectQuery, ColumnObserverParser observer) {
 
         String columnFamily = observer.fireEntity(selectQuery.getEntity());
         long limit = selectQuery.getLimit();

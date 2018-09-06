@@ -59,7 +59,7 @@ final class DeleteQueryParser {
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager,
                                     ColumnObserverParser observer) {
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
         ColumnDeleteQuery columnDeleteQuery = getQuery(query, params, observer);
         return DefaultColumnPreparedStatement.delete(columnDeleteQuery, params, query, manager);
     }
@@ -67,13 +67,13 @@ final class DeleteQueryParser {
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
         ColumnDeleteQuery columnDeleteQuery = getQuery(query, params, observer);
         return DefaultColumnPreparedStatementAsync.delete(columnDeleteQuery, params, query, manager);
 
     }
 
-    private ColumnDeleteQuery getQuery(String query, Params params, ColumnObserverParser observer) {
+    private ColumnDeleteQuery getQuery(String query, ColumnParams params, ColumnObserverParser observer) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
         String columnFamily = observer.fireEntity(deleteQuery.getEntity());
@@ -97,7 +97,7 @@ final class DeleteQueryParser {
                 .map(f -> observer.fireField(columnFamily, f))
                 .collect(Collectors.toList());
         ColumnCondition condition = null;
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
 
         if (deleteQuery.getWhere().isPresent()) {
             condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();

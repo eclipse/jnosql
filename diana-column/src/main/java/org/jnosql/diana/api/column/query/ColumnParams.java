@@ -24,7 +24,7 @@ import java.util.List;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
-final class Params {
+final class ColumnParams {
 
     private final List<ParamValue> parameters = new ArrayList<>();
 

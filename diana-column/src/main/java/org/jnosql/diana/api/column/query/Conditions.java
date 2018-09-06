@@ -41,12 +41,12 @@ final class Conditions {
     private Conditions() {
     }
 
-    static ColumnCondition getCondition(Where where, Params params, ColumnObserverParser observer, String entity) {
+    static ColumnCondition getCondition(Where where, ColumnParams params, ColumnObserverParser observer, String entity) {
         Condition condition = where.getCondition();
         return getCondition(condition, params, observer, entity);
     }
 
-    static ColumnCondition getCondition(Condition condition, Params parameters, ColumnObserverParser observer, String entity) {
+    static ColumnCondition getCondition(Condition condition, ColumnParams parameters, ColumnObserverParser observer, String entity) {
         switch (condition.getOperator()) {
             case EQUALS:
                 return eq(Column.of(getName(condition, observer, entity),

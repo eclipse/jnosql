@@ -47,7 +47,7 @@ final class InsertQueryParser {
         InsertQuery insertQuery = supplier.apply(query);
 
         String columnFamily = insertQuery.getEntity();
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
 
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
 
@@ -70,7 +70,7 @@ final class InsertQueryParser {
 
         String columnFamily = observer.fireEntity(insertQuery.getEntity());
 
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
 
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
 
@@ -90,7 +90,7 @@ final class InsertQueryParser {
         InsertQuery insertQuery = supplier.apply(query);
 
         String columnFamily = observer.fireEntity(insertQuery.getEntity());
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
 
         Optional<Duration> ttl = insertQuery.getTtl();
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
@@ -101,7 +101,7 @@ final class InsertQueryParser {
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
 
         InsertQuery insertQuery = supplier.apply(query);
         String columnFamily = observer.fireEntity(insertQuery.getEntity());
@@ -111,7 +111,7 @@ final class InsertQueryParser {
         return DefaultColumnPreparedStatementAsync.insert(entity, params, query, ttl.orElse(null), manager);
     }
 
-    private ColumnEntity getEntity(InsertQuery insertQuery, String columnFamily, Params params,
+    private ColumnEntity getEntity(InsertQuery insertQuery, String columnFamily, ColumnParams params,
                                    ColumnObserverParser observer) {
         ColumnEntity entity = ColumnEntity.of(columnFamily);
 

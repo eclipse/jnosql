@@ -44,7 +44,7 @@ final class UpdateQueryParser {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
 
@@ -59,7 +59,7 @@ final class UpdateQueryParser {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
 
@@ -71,7 +71,7 @@ final class UpdateQueryParser {
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
 
         UpdateQuery updateQuery = supplier.apply(query);
 
@@ -82,7 +82,7 @@ final class UpdateQueryParser {
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
-        Params params = new Params();
+        ColumnParams params = new ColumnParams();
         UpdateQuery updateQuery = supplier.apply(query);
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
@@ -90,7 +90,7 @@ final class UpdateQueryParser {
         return DefaultColumnPreparedStatementAsync.update(entity, params, query, manager);
     }
 
-    private ColumnEntity getEntity(Params params, UpdateQuery updateQuery, ColumnObserverParser observer) {
+    private ColumnEntity getEntity(ColumnParams params, UpdateQuery updateQuery, ColumnObserverParser observer) {
         String columnFamily = observer.fireEntity(updateQuery.getEntity());
 
         ColumnEntity entity = ColumnEntity.of(columnFamily);
