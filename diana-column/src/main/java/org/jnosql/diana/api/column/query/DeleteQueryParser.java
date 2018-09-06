@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-final class DeleteQueryParser {
+final class DeleteQueryParser implements DeleteQueryConverter{
 
     private final DeleteQuerySupplier selectQuerySupplier;
     private final CacheQuery<ColumnDeleteQuery> cache;
@@ -73,6 +73,13 @@ final class DeleteQueryParser {
 
     }
 
+    @Override
+    public org.jnosql.diana.api.column.query.ColumnDeleteQuery apply(DeleteQuery deleteQuery,
+                                                                     ColumnObserverParser columnObserverParser) {
+
+        return null;
+    }
+
     private ColumnDeleteQuery getQuery(String query, ColumnParams params, ColumnObserverParser observer) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
@@ -108,6 +115,4 @@ final class DeleteQueryParser {
         }
         return new DefaultColumnDeleteQuery(columnFamily, condition, columns);
     }
-
-
 }

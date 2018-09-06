@@ -22,7 +22,7 @@ import org.jnosql.query.Params;
 /**
  * The result of {@link SelectQueryConverter} that has {@link ColumnQuery} and {@link Params}.
  */
-public interface ColumnSelectQuery {
+public interface ColumnQuerySelect {
 
     /**
      * The {@link ColumnQuery}

@@ -21,13 +21,13 @@ import org.jnosql.query.Params;
 
 import java.util.Objects;
 
-final class DefaultColumnSelectQuery implements ColumnSelectQuery {
+final class DefaultColumnQuerySelect implements ColumnQuerySelect {
 
     private final ColumnQuery query;
 
     private final Params params;
 
-    public DefaultColumnSelectQuery(ColumnQuery query, Params params) {
+    public DefaultColumnQuerySelect(ColumnQuery query, Params params) {
         this.query = query;
         this.params = params;
     }
@@ -50,7 +50,7 @@ final class DefaultColumnSelectQuery implements ColumnSelectQuery {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultColumnSelectQuery that = (DefaultColumnSelectQuery) o;
+        DefaultColumnQuerySelect that = (DefaultColumnQuerySelect) o;
         return Objects.equals(query, that.query) &&
                 Objects.equals(params, that.params);
     }

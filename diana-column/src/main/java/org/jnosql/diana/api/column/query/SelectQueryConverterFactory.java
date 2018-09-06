@@ -26,7 +26,7 @@ enum SelectQueryConverterFactory implements SelectQueryConverter {
     private final SelectQueryParser parser = new SelectQueryParser();
 
     @Override
-    public ColumnSelectQuery apply(SelectQuery selectQuery, ColumnObserverParser columnObserverParser) {
+    public ColumnQuerySelect apply(SelectQuery selectQuery, ColumnObserverParser columnObserverParser) {
         return parser.apply(selectQuery, columnObserverParser);
     }
 }

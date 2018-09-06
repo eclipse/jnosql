@@ -73,13 +73,13 @@ final class SelectQueryParser implements SelectQueryConverter {
 
 
     @Override
-    public ColumnSelectQuery apply(SelectQuery selectQuery, ColumnObserverParser observer) {
+    public ColumnQuerySelect apply(SelectQuery selectQuery, ColumnObserverParser observer) {
         Objects.requireNonNull(selectQuery, "selectQuery is required");
         Objects.requireNonNull(observer, "observer is required");
 
         ColumnParams params = new ColumnParams();
         ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
-        return new DefaultColumnSelectQuery(columnQuery, params);
+        return new DefaultColumnQuerySelect(columnQuery, params);
     }
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,

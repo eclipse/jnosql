@@ -22,9 +22,9 @@ import org.jnosql.query.SelectQuery;
 import java.util.function.BiFunction;
 
 /**
- * A converter that converts {@link SelectQuery} to {@link ColumnSelectQuery}
+ * A converter that converts {@link SelectQuery} to {@link ColumnQuerySelect}
  */
-public interface SelectQueryConverter extends BiFunction<SelectQuery, ColumnObserverParser, ColumnSelectQuery> {
+public interface SelectQueryConverter extends BiFunction<SelectQuery, ColumnObserverParser, ColumnQuerySelect> {
 
     /**
      * A {@link SelectQueryConverter} instance
