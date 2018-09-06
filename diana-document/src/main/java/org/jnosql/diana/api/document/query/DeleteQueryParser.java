@@ -30,10 +30,11 @@ import org.jnosql.query.QueryException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-final class DeleteQueryParser {
+final class DeleteQueryParser implements DeleteQueryConverter {
 
     private final DeleteQuerySupplier selectQuerySupplier;
     private final CacheQuery<DocumentDeleteQuery> cache;
@@ -73,9 +74,23 @@ final class DeleteQueryParser {
 
     }
 
+    @Override
+    public DocumentDeleteQueryParams apply(DeleteQuery deleteQuery, DocumentObserverParser observer) {
+        Objects.requireNonNull(deleteQuery, "deleteQuery is required");
+        Objects.requireNonNull(observer, "observer is required");
+        DocumentParams params = new DocumentParams();
+        DocumentDeleteQuery query = getQuery(params, observer, deleteQuery);
+        return new DefaultDocumentDeleteQueryParams(query, params);
+    }
+
     private DocumentDeleteQuery getQuery(String query, DocumentParams params, DocumentObserverParser observer) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
+        return getQuery(params, observer, deleteQuery);
+    }
+
+    private DocumentDeleteQuery getQuery(DocumentParams params, DocumentObserverParser observer,
+                                         DeleteQuery deleteQuery) {
         String collection = observer.fireEntity(deleteQuery.getEntity());
         List<String> documents = deleteQuery.getFields().stream()
                 .map(f -> observer.fireField(collection, f))
