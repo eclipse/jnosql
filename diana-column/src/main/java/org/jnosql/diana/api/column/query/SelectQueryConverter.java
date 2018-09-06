@@ -25,4 +25,13 @@ import java.util.function.BiFunction;
  * A converter that converts {@link SelectQuery} to {@link ColumnSelectQuery}
  */
 public interface SelectQueryConverter extends BiFunction<SelectQuery, ColumnObserverParser, ColumnSelectQuery> {
+
+    /**
+     * A {@link SelectQueryConverter} instance
+     *
+     * @return A {@link SelectQueryConverter} instance
+     */
+    static SelectQueryConverter get() {
+        return SelectQueryConverterFactory.INSTANCE;
+    }
 }

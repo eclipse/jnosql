@@ -30,6 +30,7 @@ import org.jnosql.query.SelectQuery;
 import org.jnosql.query.SelectQuerySupplier;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,7 @@ import static java.util.stream.Collectors.toList;
 import static org.jnosql.diana.api.Sort.SortType.ASC;
 import static org.jnosql.diana.api.Sort.SortType.DESC;
 
-final class SelectQueryParser {
+final class SelectQueryParser implements SelectQueryConverter {
 
     private final SelectQuerySupplier selectQuerySupplier;
     private final CacheQuery<ColumnQuery> cache;
@@ -70,10 +71,15 @@ final class SelectQueryParser {
         return DefaultColumnPreparedStatement.select(columnQuery, params, query, manager);
     }
 
-    ColumnSelectQuery get(SelectQuery selectQuery, ColumnObserverParser observer) {
+
+    @Override
+    public ColumnSelectQuery apply(SelectQuery selectQuery, ColumnObserverParser observer) {
+        Objects.requireNonNull(selectQuery, "selectQuery is required");
+        Objects.requireNonNull(observer, "observer is required");
+
         ColumnParams params = new ColumnParams();
         ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
-
+        return new DefaultColumnSelectQuery(columnQuery, params);
     }
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
