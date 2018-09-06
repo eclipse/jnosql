@@ -18,21 +18,15 @@ package org.jnosql.diana.api.column.query;
 
 import org.jnosql.diana.api.column.ColumnObserverParser;
 import org.jnosql.query.DeleteQuery;
-import org.jnosql.query.SelectQuery;
 
-import java.util.function.BiFunction;
+enum DeleteQueryConverterFactory implements DeleteQueryConverter {
 
-/**
- * A converter that converts {@link SelectQuery} to {@link ColumnDeleteQuery}
- */
-public interface DeleteQueryConverter extends BiFunction<DeleteQuery, ColumnObserverParser, ColumnDeleteQuery> {
+    INSTANCE;
 
-    /**
-     * A {@link DeleteQueryConverter} instance
-     *
-     * @return A {@link DeleteQueryConverter} instance
-     */
-    static DeleteQueryConverter get() {
-        return DeleteQueryConverterFactory.INSTANCE;
+    private final SelectQueryParser parser = new SelectQueryParser();
+
+    @Override
+    public ColumnDeleteQuery apply(DeleteQuery deleteQuery, ColumnObserverParser columnObserverParser) {
+        return null;
     }
 }
