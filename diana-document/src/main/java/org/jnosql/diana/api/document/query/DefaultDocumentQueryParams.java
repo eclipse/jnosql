@@ -19,6 +19,45 @@ package org.jnosql.diana.api.document.query;
 import org.jnosql.diana.api.document.DocumentQuery;
 import org.jnosql.query.Params;
 
-final class DefaultDocumentQueryParams {
+import java.util.Objects;
 
+final class DefaultDocumentQueryParams implements DocumentQueryParams {
+
+    private final DocumentQuery query;
+
+    private final Params params;
+
+
+    DefaultDocumentQueryParams(DocumentQuery query, Params params) {
+        this.query = query;
+        this.params = params;
+    }
+
+    @Override
+    public DocumentQuery getQuery() {
+        return query;
+    }
+
+    @Override
+    public Params getParams() {
+        return params;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DefaultDocumentQueryParams that = (DefaultDocumentQueryParams) o;
+        return Objects.equals(query, that.query) &&
+                Objects.equals(params, that.params);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(query, params);
+    }
 }
