@@ -20,7 +20,7 @@ import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.query.Params;
 
 /**
- * The result of {@link ColumnDeleteQueryParams} that has {@link ColumnDeleteQuery} and {@link Params}.
+ * The result of {@link DeleteQueryConverter} that has {@link ColumnDeleteQuery} and {@link Params}.
  */
 public interface ColumnDeleteQueryParams {
 
