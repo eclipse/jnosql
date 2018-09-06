@@ -27,6 +27,6 @@ enum DeleteQueryConverterFactory implements DeleteQueryConverter {
 
     @Override
     public ColumnDeleteQueryParams apply(DeleteQuery deleteQuery, ColumnObserverParser columnObserverParser) {
-        return null;
+        return parser.apply(deleteQuery, columnObserverParser);
     }
 }

@@ -83,7 +83,7 @@ final class DeleteQueryParser implements DeleteQueryConverter{
         requireNonNull(columnObserverParser, "columnObserverParser is required");
         ColumnParams params = new ColumnParams();
         ColumnDeleteQuery query = getQuery(params, columnObserverParser, deleteQuery);
-        return null;
+        return new DefaultColumnDeleteQueryParams(query, params);
     }
 
     private ColumnDeleteQuery getQuery(String query, ColumnParams params, ColumnObserverParser observer) {
