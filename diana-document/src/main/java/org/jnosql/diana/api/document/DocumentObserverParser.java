@@ -22,7 +22,7 @@ package org.jnosql.diana.api.document;
  */
 public interface DocumentObserverParser {
 
-    static final DocumentObserverParser EMPTY = new DocumentObserverParser() {
+    DocumentObserverParser EMPTY = new DocumentObserverParser() {
 
     };
 

@@ -117,7 +117,7 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
     }
 
     enum PreparedStatementType {
-        GET, PUT, DEL;
+        GET, PUT, DEL
     }
 
     static KeyValuePreparedStatement get(List<Value> keys,

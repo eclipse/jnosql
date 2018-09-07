@@ -16,7 +16,6 @@
  */
 package org.jnosql.diana.api.document;
 
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
