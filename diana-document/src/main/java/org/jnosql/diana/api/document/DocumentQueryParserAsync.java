@@ -32,11 +32,13 @@ public interface DocumentQueryParserAsync {
      * @param query             the query as {@link String}
      * @param collectionManager the collection manager
      * @param callBack          the callback
+     * @param observer the observer
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    void query(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer);
+    void query(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack,
+               DocumentObserverParser observer);
 
     /**
      * Executes a query and returns a {@link DocumentPreparedStatementAsync}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
@@ -44,12 +46,14 @@ public interface DocumentQueryParserAsync {
      *
      * @param query             the query as {@link String}
      * @param collectionManager the collection manager
+     * @param observer the observer
      * @return a {@link DocumentPreparedStatement} instance
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws org.jnosql.query.QueryException when there is error in the syntax
      */
-    DocumentPreparedStatementAsync prepare(String query, DocumentCollectionManagerAsync collectionManager, DocumentObserverParser observer);
+    DocumentPreparedStatementAsync prepare(String query, DocumentCollectionManagerAsync collectionManager,
+                                           DocumentObserverParser observer);
 
     /**
      * It returns a {@link DocumentQueryParserAsync} from {@link java.util.ServiceLoader}
