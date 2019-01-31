@@ -1,3 +1,0 @@
-update Person (name = "Ada Lovelace"
-update Person (birthday = convert("1988-03-21", java.time.LocalDate)
-update Person (birthday = convert("1988-03-21" java.time.LocalDate), age = 12)

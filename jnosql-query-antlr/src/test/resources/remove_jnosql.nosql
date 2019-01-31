@@ -1,7 +1,0 @@
-remove "Ada Lovelace"
-remove 12
-remove 12.13
-remove @key
-remove {"Ana" : "Sister", "Maria" : "Mother"}
-remove convert("2018-01-10", java.time.LocalTime)
-remove {1, 2, 3, "one", "two"}
