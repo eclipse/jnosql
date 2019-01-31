@@ -1,0 +1,769 @@
+//
+//  Copyright (c) 2018 Otávio Santana and others
+//   All rights reserved. This program and the accompanying materials
+//   are made available under the terms of the Eclipse Public License v1.0
+//   and Apache License v2.0 which accompanies this distribution.
+//   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+//   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+//
+//   You may elect to redistribute this code under either of these licenses.
+//
+//   Contributors:
+//
+//   Otavio Santana
+
+== Communication API Introduction
+
+
+With the strategy to divide and conquer on JNoSQL, the communication API was born. It has the goal to make the communication layer easy and extensible. The extensibility is more than important, that is entirely necessary once the API must support specific feature in each database. Nonetheless, the advantage of a common API in a change to another database provider has lesser than using the specific API.
+
+To cover the three kinds of database, this API has three packages, one for each database.
+
+* `org.jnosql.column`
+* `org.jnosql.document`
+* `org.jnosql.key`
+
+IMPORTANT: The package name might change on the Jakarta EE process.
+
+There isn't a communication API because of the Graph API already does exist, that is link:http://tinkerpop.apache.org/[Apache TinkerPop].
+
+So, if a database is multi-model, has support to more than one database, it will implement an API to each database which it supports. Also, each API has the TCK to prove if the database is compatible with the API. Even from different NoSQL types, it tries to use the same nomenclature:
+
+* Configuration
+* Factory
+* Manager
+* Entity
+* Value
+
+=== The API structure
+
+The communication has four projects:
+
+* The *communication-core*: The JNoSQL API communication common to all types.
+* The *communication-key-value*: The JNoSQL communication API layer to key-value database.
+* The *communication-column*: The JNoSQL communication API layer to column database.
+* The *communication-document*: The JNoSQL communication API layer to document database.
+
+Each module works separately; thereby, a NoSQL vendor just needs to implement the specific type, e.g., a key-value provider will apply a key-value API. If a NoSQL already has a driver, this API can work as an adapter with the current one. To multi-model NoSQL, providers will implement the API which they need.
+
+WARNING: To the Graph communication API, there is the link:http://tinkerpop.apache.org/[Apache TinkerPop] that won’t be covered in this documentation.
+
+
+=== Value
+
+This interface represents the value that will store, that is a wrapper to be a bridge between the database and the application. E.g. If a database does not support a Java type, it may do the conversion with ease.
+
+[source,java]
+----
+Value value = Value.of(12);
+----
+
+The Value interface has the methods:
+
+* `Object get();` Returns the value as Object
+
+* `<T> T get(Class<T> clazz);` Does the conversion process to the required type that is the safer way to do it. If the type required doesn’t have support, it will throw an exception, although the API allows to create custom converters.
+
+* `<T> T get(TypeSupplier<T> typeSupplier);` Similar to the previous method, it does the conversion process but using a structure that uses generics such as List, Map, Stream and Set.
+
+[source,java]
+----
+Value value = Value.of(12);
+String string = value.get(String.class);
+List<Integer> list = value.get(new TypeReference<List<Integer>>() {});
+Set<Long> set = value.get(new TypeReference<Set<Long>>() {});
+Stream<Integer> stream = value.get(new TypeReference<Stream<Integer>>() {});
+Object integer = value.get();
+----
+
+==== Make custom Writer and Reader
+
+As mentioned before, the `Value` interface is to store the cost information into a database. The API already has support to the Java type such as primitive types, wrappers types, new Java 8 date time. Furthermore, the developer can create a custom converter easily and quickly. It has two interfaces:
+
+
+* `ValueWriter`: This interface represents a `Value` instance to write in a database.
+* `ValueReader`: This interface represents how the `Value` will convert to Java application. This interface will use the `<T> T get(Class<T> clazz)` and <T> T `get(TypeSupplier<T> typeSupplier)`.
+
+Both class implementations load from Java SE ServiceLoader resource. So, to Communication API learn a new type, just register on ServiceLoader, e.g., Given a Money type:
+
+[source,java]
+----
+public class Money {
+
+    private final String currency;
+
+    private final BigDecimal value;
+
+    Money(String currency, BigDecimal value) {
+        this.currency = currency;
+        this.value = value;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return currency + ' ' + value;
+    }
+
+    public static Money parse(String text) {
+        String[] texts = text.split(" ");
+        return new Money(texts[0], BigDecimal.valueOf(Double.valueOf(texts[1])));
+    }
+}
+----
+
+Just to be more didactic, the book creates a simple money representation. As everyone knows, that is not a good practice reinventing the wheel, so in production, the Java Developer must use mature Money APIs such as link:https://github.com/JavaMoney[Moneta] that is the reference implementation of link:https://jcp.org/en/jsr/detail?id=354[JSR 354].
+
+The first step is to create the converter to a custom type database, the `ValueWriter`. It has two methods:
+
+* `boolean isCompatible(Class clazz)`: Check if the given class has support for this implementation.
+* `S write(T object)`: Once the implementation supports the type, the next step converts a `T` instance to `S` type.
+
+
+[source,java]
+----
+public class MoneyValueWriter implements ValueWriter<Money, String> {
+
+    @Override
+    public boolean isCompatible(Class clazz) {
+        return Money.class.equals(clazz);
+    }
+
+    @Override
+    public String write(Money money) {
+        return money.toString();
+    }
+}
+----
+
+With the `MoneyValueWriter` created and the Money type will save as String, then the next step is read information to Java application. As can be seen, a `ValueReader` implementation. This interface has two methods:
+
+* `boolean isCompatible(Class clazz)`; Check if the given class has support for this implementation.
+* `<T> T read(Class<T> clazz, Object value)`; Converts to the `T` type from Object instance.
+
+[source,java]
+----
+public class MoneyValueReader implements ValueReader {
+
+    @Override
+    public boolean isCompatible(Class clazz) {
+        return Money.class.equals(clazz);
+    }
+
+    @Override
+    public <T> T read(Class<T> clazz, Object value) {
+        return (T) Money.parse(value.toString());
+    }
+}
+----
+
+After both implementations are done, the last step is to register them into two files:
+
+* `META-INF/services/org.jnosql.ValueReader`
+* `META-INF/services/org.jnosql.ValueWriter`
+
+Each file will have the qualifier of this respective implementation:
+
+The file `org.jnosql.ValueReader` will have:
+
+```
+my.company.MoneyValueReader
+```
+
+The file `org.jnosql.ValueWriter` will have:
+
+```
+my.company.MoneyValueWriter
+```
+
+[source,java]
+----
+Value value = Value.of("BRL 10.0");
+Money money = value.get(Money.class);
+List<Money> list = value.get(new TypeReference<List<Money>>() {});
+Set<Money> set = value.get(new TypeReference<Set<Money>>() {});;
+----
+
+
+=== Element Entity
+
+The *Element entity* is a small piece of a body, except a key-value structure type, once this structure is simple. E.g. The column family structure, the entity has columns, element entity with column has a tuple where the key is the name, and the value is the information as a `Value` implementation.
+
+* *Document*
+* *Column*
+
+
+==== Document
+
+The `Document` is a small piece of a Document entity. Each document has a tuple where the key is the document name, and the value is the information itself as `Value`.
+
+[source,java]
+----
+Document document = Document.of("name", "value");
+Value value = document.getValue();
+String name = document.getName();
+----
+
+The document might have another document inside; the subdocument concept.
+
+[source,java]
+----
+Document subDocument = Document.of("subDocument", document);
+----
+
+The way to store information in subdocuments will also depend on each driver's implementation.
+
+To access the information from `Document`, it has an alias method to `Value`; in other words, it does a conversion directly from `Document` _interface_.
+
+[source,java]
+----
+Document age = Document.of("age", 29);
+String ageString = age.get(String.class);
+List<Integer> ages = age.get(new TypeReference<List<Integer>>() {});
+Object ageObject = age.get();
+----
+
+
+==== Column
+
+The Column is a small piece of the column family entity. Each column has a tuple where the name represents a key and the value itself as a `Value` implementation.
+
+[source,java]
+----
+Column document = Column.of("name", "value");
+Value value = document.getValue();
+String name = document.getName();
+----
+
+With this interface, we may have a column inside a column.
+
+
+[source,java]
+----
+Column subColumn = Column.of("subColumn", column);
+----
+
+The way to store a subcolumn will also depend on each driver's implementation as well as the information.
+
+To access the information from `Column`, it has an alias method to `Value`; thus, you can do a conversion directly from `Column` _interface_.
+
+[source,java]
+----
+Column age = Column.of("age", 29);
+String ageString = age.get(String.class);
+List<Integer> ages = age.get(new TypeReference<List<Integer>>() {});
+Object ageObject = age.get();
+----
+
+=== Entity
+
+The Entity is the body of the information that goes to the database; each database has an Entity:
+
+* ColumnEntity
+* DocumentEntity
+* KeyValueEntity
+
+==== ColumnFamilyEntity
+
+The `ColumnFamilyEntity` is an entity to column family database type. It is composed of one or more columns. As a result, the Column is a tuple of name and value.
+
+[source,java]
+----
+ColumnEntity entity = ColumnEntity.of("columnFamily");
+entity.add(Column.of("id", Value.of(10L)));
+entity.add(Column.of("version", 0.001));
+entity.add(Column.of("name", "Diana"));
+entity.add(Column.of("options", Arrays.asList(1, 2, 3)));
+
+List<Column> columns = entity.getColumns();
+Optional<Column> id = entity.find("id");
+----
+
+==== DocumentEntity
+
+The `DocumentEntity` is an entity to document collection database type. It is composed of one or more documents. As a result, the Document is a tuple of name and value.
+
+[source,java]
+----
+DocumentEntity entity = DocumentEntity.of("documentFamily");
+String name = entity.getName();
+entity.add(Document.of("id", Value.of(10L)));
+entity.add(Document.of("version", 0.001));
+entity.add(Document.of("name", "Diana"));
+entity.add(Document.of("options", Arrays.asList(1, 2, 3)));
+
+List<Document> documents = entity.getDocuments();
+Optional<Document> id = entity.find("id");
+entity.remove("options");
+----
+
+==== KeyValueEntity
+
+The `KeyValueEntity` is the simplest structure; it has a tuple and a key-value structure. As the previous entity, it has direct access to information using alias method to `Value`.
+
+[source,java]
+----
+KeyValueEntity<String> entity = KeyValueEntity.of("key", Value.of(123));
+KeyValueEntity<Integer> entity2 = KeyValueEntity.of(12, "Text");
+String key = entity.getKey();
+Value value = entity.getValue();
+Integer integer = entity.get(Integer.class);
+----
+
+
+=== Manager
+
+The Manager is the class that pushes information to a database and retrieves it. The manager might have a synchronous and asynchronous implementation.
+
+
+* *DocumentCollectionManager*
+* *DocumentCollectionManagerAsync*
+* *ColumnConfiguration*
+* *ColumnConfigurationAsync*
+* *BucketManager*
+
+==== Document Manager
+
+The manager class to a document type can be synchronous or asynchronous:
+
+* *DocumentCollectionManager*: To do synchronous operations.
+* *DocumentCollectionManagerAsync*: To do asynchronous operations.
+
+===== DocumentCollectionManager
+
+The `DocumentCollectionManager` is the class that manages the persistence on the synchronous way to document collection.
+
+[source,java]
+----
+DocumentEntity entity = DocumentEntity.of("collection");
+Document diana = Document.of("name", "Diana");
+entity.add(diana);
+
+List<DocumentEntity> entities = Collections.singletonList(entity);
+DocumentCollectionManager manager = //instance;
+//insert operations
+manager.insert(entity);
+manager.insert(entity, Duration.ofHours(2L));//inserts with 2 hours of TTL
+manager.insert(entities, Duration.ofHours(2L));//inserts with 2 hours of TTL
+//updates operations
+manager.update(entity);
+manager.update(entities);
+----
+
+===== DocumentCollectionManagerAsync
+
+The `DocumentCollectionManagerAsync` is the class that manages the persistence on an asynchronous way to document collection.
+
+[source,java]
+----
+DocumentEntity entity = DocumentEntity.of("collection");
+Document diana = Document.of("name", "Diana");
+entity.add(diana);
+
+List<DocumentEntity> entities = Collections.singletonList(entity);
+DocumentCollectionManagerAsync managerAsync = //instance
+
+//insert operations
+managerAsync.insert(entity);
+managerAsync.insert(entity, Duration.ofHours(2L));//inserts with 2 hours of TTL
+managerAsync.insert(entities, Duration.ofHours(2L));//inserts with 2 hours of TTL
+//updates operations
+managerAsync.update(entity);
+managerAsync.update(entities);
+----
+
+Sometimes on an asynchronous process, it's important to know when this process is over, so the `DocumentCollectionManagerAsync` also has callback support.
+
+[source,java]
+----
+Consumer<DocumentEntity> callBack = e -> {};
+managerAsync.insert(entity, callBack);
+managerAsync.update(entity, callBack);
+----
+
+===== Search information on a document collection
+
+The Document Communication API has support to retrieve information from both ways; synchronous and asynchronous, from the `DocumentQuery` class. The `DocumentQuery` has information such as sort type, document, and also the condition to retrieve information.
+
+The condition on `DocumentQuery` is given from `DocumentCondition`, which has the status and the document. E.g. The condition behind is to find a name equal "**Ada**".
+[source,java]
+----
+DocumentCondition nameEqualsAda = DocumentCondition.eq(Document.of("name", “Ada”));
+----
+
+Also, the developer can use the aggregators such as **AND**, **OR**, and **NOT**.
+
+[source,java]
+----
+DocumentCondition nameEqualsAda = DocumentCondition.eq(Document.of("name", "Ada"));
+DocumentCondition youngerThan2Years = DocumentCondition.lt(Document.of("age", 2));
+DocumentCondition condition = nameEqualsAda.and(youngerThan2Years);
+DocumentCondition nameNotEqualsAda = nameEqualsAda.negate();
+----
+
+If there isn’t a condition in the query, that means the query will try to retrieve all information from the database, similar to a “`select * from database`” in a relational database, just remembering that the return depends on the driver. It is important to say that not all NoSQL databases have support for this resource.
+`DocumentQuery` also has pagination feature to define where the data starts, and its limits.
+
+[source,java]
+----
+DocumentCollectionManager manager = //instance;
+DocumentCollectionManagerAsync managerAsync = //instance;
+DocumentQuery query = DocumentQueryBuilder.select().from("collection").where("age").lt(10).and("name").eq("Ada").orderBy("name").asc().limit(10).skip(2).build();
+List<DocumentEntity> entities = manager.select(query);
+Optional<DocumentEntity> entity = manager.singleResult(query);
+Consumer<List<DocumentEntity>> callback = e -> {};
+managerAsync.select(query, callback);
+----
+
+===== Removing information from Document Collection
+
+Such as `DocumentQuery`, there is a class to remove information from the document database type: A `DocumentDeleteQuery` type.
+
+It is smoother than `DocumentQuery` because there isn’t pagination and sort feature, once this information is unnecessary to remove information from database.
+
+[source,java]
+----
+DocumentCollectionManager manager = //instance;
+DocumentCollectionManagerAsync managerAsync = //instance;
+DocumentDeleteQuery query = DocumentQueryBuilder.delete().from("collection").where("age").gt(10).build();
+manager.delete(query);
+managerAsync.delete(query);
+managerAsync.delete(query, v -> {});
+----
+
+==== Column Manager
+
+The Manager class for the column family type can be synchronous or asynchronous:
+
+* *ColumnFamilyManager*: To do synchronous operations.
+* *ColumnFamilyManagerAsync*: To do asynchronous operations.
+
+===== ColumnFamilyManager
+
+The `ColumnFamilyManager` is the class that manages the persistence on the synchronous way to column family.
+
+[source,java]
+----
+ColumnEntity entity = ColumnEntity.of("columnFamily");
+Column diana = Column.of("name", "Diana");
+entity.add(diana);
+
+List<ColumnEntity> entities = Collections.singletonList(entity);
+ColumnFamilyManager manager = //instance;
+
+//inserts operations
+manager.insert(entity);
+manager.insert(entity, Duration.ofHours(2L));//inserts with 2 hours of TTL
+manager.insert(entities, Duration.ofHours(2L));//inserts with 2 hours of TTL
+//updates operations
+manager.update(entity);
+manager.update(entities);
+----
+
+===== ColumnFamilyManagerAsync
+
+The `ColumnFamilyManagerAsync` is the class that manages the persistence on the asynchronous way to column family.
+
+[source,java]
+----
+Column diana = Column.of("name", "Diana");
+entity.add(diana);
+
+List<ColumnEntity> entities = Collections.singletonList(entity);
+ColumnFamilyManagerAsync managerAsync = null;
+
+//inserts operations
+managerAsync.insert(entity);
+managerAsync.insert(entity, Duration.ofHours(2L));//inserts with 2 hours of TTL
+managerAsync.insert(entities, Duration.ofHours(2L));//inserts with 2 hours of TTL
+//updates operations
+managerAsync.update(entity);
+managerAsync.update(entities);
+----
+
+Sometimes on an asynchronous process, is important to know when this process is over, so the `ColumnFamilyManagerAsync` also has callback support.
+
+[source,java]
+----
+Consumer<ColumnEntity> callBack = e -> {};
+managerAsync.insert(entity, callBack);
+managerAsync.update(entity, callBack);
+----
+
+===== Search information on a column family
+
+
+The Column communication API has support to retrieve information from both ways synchronous and asynchronous from the `ColumnQuery` class. The `ColumnQuery`  has information such as sort type, document and also the condition to retrieve information.
+
+The condition on `ColumnQuery` is given from ColumnCondition, which has the status and the column. E.g. The condition behind is to find a name equal "**Ada**".
+[source,java]
+----
+ColumnCondition nameEqualsAda = ColumnCondition.eq(Column.of("name", “Ada”));
+----
+
+Also, the developer can use the aggregators such as **AND**, **OR**, and **NOT**.
+
+[source,java]
+----
+ColumnCondition nameEqualsAda = ColumnCondition.eq(Column.of("name", "Ada"));
+ColumnCondition youngerThan2Years = ColumnCondition.lt(Column.of("age", 2));
+ColumnCondition condition = nameEqualsAda.and(youngerThan2Years);
+ColumnCondition nameNotEqualsAda = nameEqualsAda.negate();
+----
+
+If there isn’t condition at the query, that means the query will try to retrieve all information from the database, look like a “`select * from database`” in a relational database, just to remember the return depends on from driver. It is important to say that not all NoSQL databases have support for this resource.
+
+`ColumnQuery` also has pagination feature to define where the data starts, and its limits.
+
+[source,java]
+----
+ColumnFamilyManager manager = //instance;
+ColumnFamilyManagerAsync managerAsync = //instance;
+ColumnQuery query = ColumnQuery query = ColumnQueryBuilder.select().from("collection").where("age").lt(10).and("name").eq("Ada").orderBy("name").asc().limit(10).skip(2).build();
+
+List<ColumnEntity> entities = manager.select(query);
+Optional<ColumnEntity> entity = manager.singleResult(query);
+
+Consumer<List<ColumnEntity>> callback = e -> {};
+managerAsync.select(query, callback);
+----
+
+===== Removing information from Column Family
+
+Such as `ColumnQuery`, there is a class to remove information from the column database type: A `ColumnDeleteQuery` type.
+
+It is smoother than `ColumnQuery` because there isn’t pagination and sort feature, once this information is unnecessary to remove information from database.
+
+[source,java]
+----
+ColumnFamilyManager manager = //instance;
+ColumnFamilyManagerAsync managerAsync = //instance;
+
+ColumnDeleteQuery query = ColumnQueryBuilder.delete()
+                .from("collection").where("age").gt(10).build();
+
+manager.delete(query);
+
+managerAsync.delete(query);
+managerAsync.delete(query, v -> {});
+----
+
+
+==== BucketManager
+
+The `BucketManager` is the class which saves the KeyValueEntity on a synchronous way in key-value database.
+
+[source,java]
+----
+BucketManager bucketManager= null;
+KeyValueEntity<String> entity = KeyValueEntity.of("key", 1201);
+Set<KeyValueEntity<String>> entities = Collections.singleton(entity);
+bucketManager.put("key", "value");
+bucketManager.put(entity);
+bucketManager.put(entities);
+bucketManager.put(entities, Duration.ofHours(2));//two hours TTL
+bucketManager.put(entity, Duration.ofHours(2));//two hours TTL
+----
+
+===== Removing and retrieve information from a key-value database
+
+With a simple structure, the bucket needs a key to both retrieve and delete information from the database.
+
+[source,java]
+----
+Optional<Value> value = bucketManager.get("key");
+Iterable<Value> values = bucketManager.get(Collections.singletonList("key"));
+bucketManager.remove("key");
+bucketManager.remove(Collections.singletonList("key"));
+----
+
+include::communication_query.adoc[]
+
+=== Factory
+
+The factory class creates the *Managers*.
+
+* *ColumnFamilyManagerAsyncFactory*
+* *ColumnFamilyManagerFactory*
+* *BucketManagerFactory*
+* *DocumentCollectionManagerFactory*
+* *DocumentCollectionManagerAsyncFactory*
+
+
+==== Column Family Manager Factory
+
+The factory classes have the duty to create the column family manager.
+
+* *ColumnFamilyManagerAsyncFactory*
+* *ColumnFamilyManagerFactory*
+
+The `ColumnFamilyManagerAsyncFactory` and `ColumnFamilyManagerFactory` create the manager synchronously and asynchronously respectively.
+
+[source,java]
+----
+ColumnFamilyManagerFactory factory = //instance
+ColumnFamilyManagerAsyncFactory asyncFactory = //instance
+ColumnFamilyManager manager = factory.get("database");
+ColumnFamilyManagerAsync managerAsync = asyncFactory.getAsync("database");
+----
+
+The factories were separated intentionally, as not all databases support synchronous and asynchronous operations.
+
+==== Document Collection Factory
+
+The factory classes have the duty to create the document collection manager.
+
+* *DocumentCollectionManagerFactory*
+* *DocumentCollectionManagerAsyncFactory*
+
+The `DocumentCollectionManagerAsyncFactory` and `DocumentCollectionManagerFactory` create the manager synchronously and asynchronously respectively.
+
+[source,java]
+----
+DocumentCollectionManagerFactory factory = //instance
+DocumentCollectionManagerAsyncFactory asyncFactory = //instance
+DocumentCollectionManager manager = factory.get("database");
+DocumentCollectionManagerAsync managerAsync = asyncFactory.getAsync("database");
+----
+
+The factories were separated intentionally, as not all databases support synchronous and asynchronous operations.
+
+==== Bucket Manager Factory
+
+The factory classes have the duty to create the bucket manager.
+
+
+[source,java]
+----
+BucketManagerFactory bucketManager= //instance
+BucketManager bucket = bucketManager.getBucketManager("bucket");
+----
+
+Beyond the BucketManager, some databases have support for particular structures represented in the Java world such as `List`, `Set`, `Queue` e `Map`.
+
+
+[source,java]
+----
+List<String> list = bucketManager.getList("list", String.class);
+Set<String> set = bucketManager.getSet("set", String.class);
+Queue<String> queue = bucketManager.getQueue("queue", String.class);
+Map<String, String> map = bucketManager.getMap("map", String.class, String.class);
+----
+
+These methods may return a `java.lang.UnsupportedOperationException` if the database does not support any of the structures.
+
+=== Configuration
+
+
+The configuration classes create a Manager Factory. This class has all the configuration to build the database connection.
+
+Once there are a large diversity configuration flavors on such as P2P, master/slave, thrift communication, HTTP, etc. The implementation may be different, however, they have a method to return a Manager Factory. It is recommended that all database driver providers have a properties file to read this startup information.
+
+
+==== Settings
+
+The Settings interface represents the settings used in a configuration. It extends a `Map<String, Object>`; for this reason, gives a key that can set any value as configuration.
+
+[source,java]
+----
+Settings settings = Settings.builder().put("key", "value").build();
+Map<String, Object> map = ....;
+Settings settings = Settings.of(map);
+----
+
+
+==== Document Configuration
+
+On the document collection configuration, there are two classes, `DocumentConfiguration` and `DocumentConfigurationAsync` to `DocumentCollectionManagerFactory` and `DocumentCollectionManagerAsyncFactory` respectively.
+
+[source,java]
+----
+DocumentConfiguration configuration = //instance
+DocumentConfigurationAsync configurationAsync = //instance
+DocumentCollectionManagerFactory managerFactory = configuration.get();
+DocumentCollectionManagerAsyncFactory managerAsyncFactory = configurationAsync.getAsync();
+----
+
+If a database has support for both synchronous and asynchronous, it may use `UnaryDocumentConfiguration` that implements both document configurations.
+
+[source,java]
+----
+UnaryDocumentConfiguration unaryDocumentConfiguration = //instance
+DocumentCollectionManagerFactory managerFactory = unaryDocumentConfiguration.get();
+DocumentCollectionManagerAsyncFactory managerAsyncFactory = unaryDocumentConfiguration.getAsync();
+----
+
+==== Column Configuration
+
+On the column family configuration, there are two classes, `ColumnConfiguration` and `ColumnConfigurationAsync` to `ColumnFamilyManagerFactory` and `ColumnFamilyManagerAsyncFactory` respectively.
+
+[source,java]
+----
+ColumnConfiguration configuration = //instance
+ColumnConfigurationAsync configurationAsync = //instance
+ColumnFamilyManagerFactory managerFactory = configuration.get();
+ColumnFamilyManagerAsyncFactory managerAsyncFactory = configurationAsync.getAsync();
+----
+
+If a database has support for both synchronous and asynchronous, it may use `UnaryColumnConfiguration` that implements both document configurations.
+
+[source,java]
+----
+UnaryColumnConfiguration unaryDocumentConfiguration = //instance
+ColumnFamilyManagerFactory managerFactory = unaryDocumentConfiguration.get();
+ColumnFamilyManagerAsyncFactory managerAsyncFactory = unaryDocumentConfiguration.getAsync();
+----
+
+==== Key Value Configuration
+
+
+On the key-value configuration, there is KeyValueConfiguration to BucketManagerFactory.
+
+[source,java]
+----
+KeyValueConfiguration configuration = //instance
+BucketManagerFactory managerFactory = configuration.get();
+----
+
+=== The diversity on NoSQL database
+
+In NoSQL world, beyond the several types, it's trivial a particular database has features that do exist on this provider. When there is a change among the types, column family, and document collection, there is a considerable change. Notably, with a switch to the same kind such as column family to column family, e.g., Cassandra to HBase, there is the same problem once Cassandra has featured such as Cassandra query language and consistency level. The communication API allows looking the variety on NoSQL database. The configurations classes, and entity factory return specialist class from a provider.
+
+[source,java]
+----
+   public interface ColumnFamilyManagerFactory<SYNC extends ColumnFamilyManager> extends AutoCloseable {
+   SYNC get(String database);
+}
+----
+
+A `ColumnFamilyManagerFactory` returns a class that implements `ColumnFamilyManager`. E.g.: Using a particular resource from Cassandra driver.
+
+[source,java]
+----
+CassandraConfiguration condition = new CassandraConfiguration();
+try(CassandraDocumentEntityManagerFactory managerFactory = condition.get()) {
+    CassandraColumnFamilyManager columnEntityManager = managerFactory.get(KEY_SPACE);
+    ColumnEntity entity = ColumnEntity.of(COLUMN_FAMILY);
+    Column id = Column.of("id", 10L);
+    entity.add(id);
+    entity.add(Column.of("version", 0.001));
+    entity.add(Column.of("name", "Diana"));
+    entity.add(Column.of("options", Arrays.asList(1, 2, 3)));
+    columnEntityManager.save(entity);
+    //common implementation
+    ColumnQuery query = ColumnQuery.of(COLUMN_FAMILY);
+    query.and(ColumnCondition.eq(id));
+    Optional<ColumnEntity> result = columnEntityManager.singleResult(query);
+    //cassandra implementation
+    columnEntityManager.save(entity, ConsistencyLevel.THREE);
+    List<ColumnEntity> entities = columnEntityManager.cql("select * from newKeySpace.newColumnFamily");
+    System.out.println(entities);
+}
+----

@@ -1,0 +1,95 @@
+//
+//  Copyright (c) 2018 Otávio Santana and others
+//   All rights reserved. This program and the accompanying materials
+//   are made available under the terms of the Eclipse Public License v1.0
+//   and Apache License v2.0 which accompanies this distribution.
+//   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+//   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+//
+//   You may elect to redistribute this code under either of these licenses.
+//
+//   Contributors:
+//
+//   Otavio Santana
+
+== The main idea behind the API
+
+Once, we talked about the importance of the standard of a NoSQL database API; the next step is to discuss, in more details, about API. However, to make a natural explanation, we are first going to talk about both layer and tier. These structure levels make communication, maintenance, and split the responsibility clearer. The new API proposal is going to be responsible for being a bridge between the logic tier and data tier, and to do this; we need to create two APIs - one to communicate to a database and another one to be a high abstraction to Java application.
+
+
+In software, the word is common that application has structures: tier, physical structure, and layer, logic one. The multi-tier application has three levels:
+
+* **Presentation tier**: This, as primary duty, translates the result from below tiers to what the user can understand.
+
+* **Logic tier**: The tier where has all business rules, process, conditions, etc. This level moves and processes information between other levels.
+
+* **Data tier**: Stores and retrieve information, either in a database or a system file.
+
+Talking more precisely about the physical layer, logic to separate responsibilities, there are layers
+
+The logic tier, where the application and the business rule stay. It has layers:
+
+
+* *Application layer*: The bridge between the view tier and logic tier, e.g., Convert an object into either JSON or HTML.
+* *Service layer*: The service layer can either be a Controller or a Resource.
+* *Business Layer*: Where the whole business and the model be.
+* *Persistence Layer*: The platform between the logic tier and data tier. The layer has an integration such as DAO or repository.
+
+Within a persistence layer, it has its layers: A Data Access Object, DAO. This structure connects business layer and persistence layer. Inside it has an API that does database. Currently, there is a difference between SQL and NoSQL database:
+
+In the relational database, there are two mechanisms beyond DAO: JDBC, and JPA.
+
+* *JDBC*: A deep layer with a database that has communications, basic transactions; basically, it's a driver to a particular database.
+* *JPA*: A high layer that has communication, either JDBC and JPA. This layer has high mapping to Java; this place has annotations and an EntityManager. In general, a JPA has integration with other specifications such as CDI and Bean Validation.
+
+A huge advantage of this strategy is that one change, either JDBC or JPA, can happen quickly. When a developer changes a database, he just needs the switch to a respective driver by a database and done! Code ready for a new database changed.
+
+
+.A usual Java application with JPA layer architecture
+image::jpa.png[A usual Java application with JPA layer architecture]
+
+In a NoSQL database, there isn’t a strategy to save code or little impact for a change. All APIs are different and don’t follow any one standard, so one change to new database results in a lot of work. There are some solutions such as Spring Data, Hibernate OGM, TopLink NoSQL, but at a high level. In other words, if this high-level API has no support for a particular database, the result is going to be either changing a high-level API or using the API from NoSQL database directly; so, loss of a lot of code. This solution has several issues:
+
+* The database vendor needs to be worried about the high-level mapping to Java world
+* The solution provider needs to be concerned about the low level of communication with a particular database. The database vendor needs to “copy” this communication solutions to all Java vendors.
+* To a Java developer, there are two lock-in types: If a developer uses an API directly for a change, it will lose code. If a developer uses a high-level mapping, this developer has locked-in a Java solution because if this high level hasn’t support for a particular NoSQL database, the developer needs to change to either Java solution or use a NoSQL API directly.
+
+
+.A NoSQL Java application that has lock-in to each NoSQL provider
+image::nosql_issue.png[A NoSQL Java application that has locking to each NoSQL provider]
+
+The solve this problem, the API should have two layers:
+
+* The communication layer: the driver from a particular database that connects Java to an accurate database. This layer has four specializations, one for each NoSQL type.
+* The mapping level: its duty is to high concept to Java developers; this layer has annotations and integration to other specializations.
+
+These APIs are optional to each other. In other words, a Java solution just needs to implement a great solution, and the database vendors need to implement the connection API.
+
+=== Eclipse JNoSQL
+
+The Eclipse JNoSQL is a several tool to make easy integration between the Java Application with the NoSQL. JNoSQL has a standard API. However, NoSQL has a diversity even when both are the same type. E.g. two column family databases, HBase and Cassandra, they have particular behavior and resource that make their individual, such as Cassandra Query Language and consistency level that just does exist on Cassandra. So, the API must be extensive and configurable to have support also to a specific database. To solve this problem, the project gonna have two layers:
+
+* **Communication API**: An API just to communicate with the database, exactly what JDBC does to SQL. This API is going to have four specializations, one for each kind of database.
+* **Mapping API**: An API to do integration and do the best integration with the Java developer. That is going to be annotation driven and going to have integration with other technologies like Bean Validation, etc.
+
+.Eclipse JNoSQL
+image::jnosql.png[Eclipse JNoSQL]
+
+==== Communication API
+
+The communication has a goal to the low-level API; in other words, communicate with the NoSQL databases. This project is going to work as a driver to NoSQL databases. At overall, it has four APIs inside; three new APIs and Apache TinkePop to graph one for each NoSQL kind, beyond its own TCK. A test compatibility kit, the TCK, is a test group that makes sure a NoSQL database does support a database.
+
+
+==== Mapping API
+
+
+Mapping API is the integration and mapping layer. In other words, it takes the communication level, and it does integration with other technologies such as Bean Validation and also with an entity model. It has a CDI engine.
+
+As communication has, mapping also has an API to each database flavor. Using CDI as the engine, each component is configurable, and it has features such as:
+
+
+* Persist an object through annotation
+* Make replaceable any component (reflections, entity conversions, cache, persistence lifecycle and more).
+* Observe event: a continued existence database lifecycle (each database's kind has an individual event).
+
+An important point about CDI events is how easy it creates and add new functionalities without changing the core code that is easy to use bean validation just to listen to an event.
