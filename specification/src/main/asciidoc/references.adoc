@@ -1,0 +1,64 @@
+//
+//  Copyright (c) 2018 Otávio Santana and others
+//   All rights reserved. This program and the accompanying materials
+//   are made available under the terms of the Eclipse Public License v1.0
+//   and Apache License v2.0 which accompanies this distribution.
+//   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+//   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+//
+//   You may elect to redistribute this code under either of these licenses.
+//
+//   Contributors:
+//
+//   Otavio Santana
+
+== References
+
+=== Frameworks
+
+Spring Data:: http://projects.spring.io/spring-data/
+Hibernate OGM:: http://hibernate.org/ogm/
+Eclipselink:: http://www.eclipse.org/eclipselink/
+Jdbc-json:: https://github.com/jdbc-json/jdbc-cb
+Simba:: http://www.simba.com/drivers/
+Apache Tinkerpop:: http://tinkerpop.apache.org/
+Apache Gora:: http://gora.apache.org/about.html
+Spring Data:: http://projects.spring.io/spring-data/
+
+=== Databases
+
+ArangoDB:: https://www.arangodb.com/
+Blazegraph:: https://www.blazegraph.com/
+Cassandra:: http://cassandra.apache.org/
+CosmosDB:: https://docs.microsoft.com/en-us/azure/cosmos-db/introduction
+Couchbase:: https://www.couchbase.com/
+Elastic Search:: https://www.elastic.co/
+Grakn:: https://grakn.ai/
+Hazelcast:: https://hazelcast.com/
+Hbase:: https://hbase.apache.org/
+Infinispan:: http://infinispan.org/
+JanusGraph IBM:: https://www.ibm.com/cloud/compose/janusgraph
+Janusgraph:: http://janusgraph.org/
+Linkurio:: https://linkurio.us/
+Keylines:: https://cambridge-intelligence.com/keylines/
+MongoDB:: https://www.mongodb.com/
+Neo4J:: https://neo4j.com/
+OriendDB:: https://orientdb.com/why-orientdb/
+RavenDB:: https://ravendb.net/
+Redis:: https://redis.io/
+Riak:: http://basho.com/
+Scylladb:: https://www.scylladb.com/
+Stardog:: https://www.stardog.com/
+TitanDB:: http://titan.thinkaurelius.com/
+
+
+
+
+=== Articles
+
+
+Graph Databases for Beginners: ACID vs. BASE Explained:: https://neo4j.com/blog/acid-vs-base-consistency-models-explained/
+Base: An Acid Alternative:: https://queue.acm.org/detail.cfm?id=1394128
+Understanding the CAP Theorem:: https://dzone.com/articles/understanding-the-cap-theorem
+Wikipedia CAP theorem:: https://en.wikipedia.org/wiki/CAP_theorem
+List of NoSQL databases:: http://nosql-database.org/

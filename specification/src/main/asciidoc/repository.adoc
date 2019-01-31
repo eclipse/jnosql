@@ -1,0 +1,378 @@
+//
+//  Copyright (c) 2018 Otávio Santana and others
+//   All rights reserved. This program and the accompanying materials
+//   are made available under the terms of the Eclipse Public License v1.0
+//   and Apache License v2.0 which accompanies this distribution.
+//   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+//   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+//
+//   You may elect to redistribute this code under either of these licenses.
+//
+//   Contributors:
+//
+//   Otavio Santana
+
+=== Repository
+
+In addition to a template class, the Mapping API has the Repository. This interface helps the Entity repository to save, update, delete and retrieve information. To use Repository, you just need to create a new interface that extends the *Repository*.
+
+[source,java]
+----
+interface PersonRepository extends Repository<Person, String> {
+
+}
+----
+
+The qualifier is mandatory to define the database type that will be used at the injection point moment.
+
+[source,java]
+----
+@Inject
+@Database(DatabaseType.DOCUMENT)
+private PersonRepository documentRepository;
+@Inject
+@Database(DatabaseType.COLUMN)
+private PersonRepository columnRepository;
+@Inject
+@Database(DatabaseType.KEY_VALUE)
+private PersonRepository keyValueRepository;
+@Inject
+@Database(DatabaseType.GRAPH)
+private PersonRepository graphRepository;
+----
+
+And then, make any manager class (*ColumnFamilyManager*, *DocumentCollectionManager*, *BucketManager*, and *Graph*) eligible to CDI defining a method with Produces annotation.
+
+[source,java]
+----
+@Produces
+public DocumentCollectionManager getManager() {
+  DocumentCollectionManager manager = //instance
+  return manager;
+}
+
+@Produces
+public ColumnFamilyManager getManager() {
+  ColumnFamilyManager manager = //instance
+  return manager;
+}
+
+@Produces
+public BucketManager getManager() {
+  BucketManager manager = //instance
+  return manager;
+}
+
+@Produces
+public Graph getGraph() {
+  Graph graph = //instance
+  return graph;
+}
+----
+
+To work with multiple databases, you can use qualifiers:
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.DOCUMENT , provider = "databaseA")
+private PersonRepository documentRepositoryA;
+
+@Inject
+@Database(value = DatabaseType.DOCUMENT , provider = "databaseB")
+private PersonRepository documentRepositoryB;
+
+@Inject
+@Database(value = DatabaseType.COLUMN, provider = "databaseA")
+private PersonRepository columnRepositoryA;
+
+@Inject
+@Database(value = DatabaseType.COLUMN, provider = "databaseB")
+private PersonRepository columnRepositoryB;
+
+@Inject
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseA")
+private UserRepository userRepositoryA;
+@Inject
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseB")
+private UserRepository userRepositoryB;
+
+@Inject
+@Database(value = DatabaseType.GRAPH, provider = "databaseA")
+private PersonRepository graphRepositoryA;
+
+@Inject
+@Database(value = DatabaseType.GRAPH, provider = "databaseB")
+private PersonRepository graphRepositoryB;
+
+//producers methods
+@Produces
+@Database(value = DatabaseType.COLUMN, provider = "databaseA")
+public ColumnFamilyManager getColumnFamilyManagerA() {
+  ColumnFamilyManager manager =//instance
+  return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.COLUMN, provider = "databaseB")
+public ColumnFamilyManager getColumnFamilyManagerB() {
+  ColumnFamilyManager manager = //instance
+  return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseA")
+public DocumentCollectionManager getDocumentCollectionManagerA() {
+  DocumentCollectionManager manager = //instance
+  return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseB")
+public DocumentCollectionManager DocumentCollectionManagerB() {
+  DocumentCollectionManager manager = //instance
+  return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseA")
+public BucketManager getBucket() {
+    BucketManager manager =//instance
+    return manager;
+}
+@Produces
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseB")
+public BucketManager getBucketB() {
+    BucketManager manager = //instance
+    return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.GRAPH, provider = "databaseA")
+public Graph getGraph() {
+    Graph graph =//instance
+    return graph;
+}
+@Produces
+@Database(value = DatabaseType.GRAPH, provider = "databaseB")
+public Graph getGraphB() {
+    Graph graph = //instance
+    return graph;
+}
+----
+
+So, Eclipse JNoSQL will inject automatically.
+
+[source,java]
+----
+PersonRepository repository = //instance
+
+Person person = new Person();
+person.setNickname("diana");
+person.setName("Diana Goodness");
+
+List<Person> people = Collections.singletonList(person);
+
+repository.save(person);
+repository.save(people);
+----
+
+
+==== Query by method
+
+The Repository also has a method query from the method name. These are the keywords:
+
+* *findBy*: The prefix to find some information.
+* *deleteBy*: The prefix to delete some information.
+
+Also, the operators:
+
+* And
+* Or
+* Between
+* LessThan
+* GreaterThan
+* LessThanEqual
+* GreaterThanEqual
+* Like
+* OrderBy
+* OrderBy\_\_\_\_Desc
+* OrderBy\_\_\_\_\_ASC
+
+[source,java]
+----
+interface PersonRepository extends Repository<Person, Long> {
+
+    List<Person> findByAddress(String address);
+
+    Stream<Person> findByName(String name);
+
+    Stream<Person> findByNameOrderByNameAsc(String name);
+
+    Optional<Person> findByNickname(String nickname);
+
+    void deleteByNickName(String nickname);
+}
+----
+
+Using these keywords, Mapping will create the queries.
+
+==== Using Repository as an asynchronous way
+
+The RepositoryAsync interface works similarly as Repository but with asynchronous work.
+
+[source,java]
+----
+@Inject
+@Database(DatabaseType.DOCUMENT)
+private PersonRepositoryAsync documentRepositoryAsync;
+
+@Inject
+@Database(DatabaseType.COLUMN)
+private PersonRepositoryAsync columnRepositoryAsync;
+----
+
+In other words, just inject and then create an Entity Manager async with producers method.
+
+[source,java]
+----
+PersonRepositoryAsync repositoryAsync = //instance
+
+Person person = new Person();
+person.setNickname("diana");
+person.setName("Diana Goodness");
+
+List<Person> people = Collections.singletonList(person);
+
+
+repositoryAsync.save(person);
+repositoryAsync.save(people);
+----
+
+Also, delete and retrieve information with a callback.
+
+[source,java]
+----
+interface PersonRepositoryAsync extends RepositoryAsync<Person, Long> {
+
+    void findByNickname(String nickname, Consumer<List<Person>> callback);
+
+    void deleteByNickName(String nickname);
+
+    void deleteByNickName(String nickname, Consumer<Void> callback);
+}
+----
+
+TIP: In the key-value resource, the *Repository* does not support method query resource; this database type has key oriented operations.
+
+==== Using Query annotation
+
+The Repository interface contains all the trivial methods shared among the NoSQL implementations that a developer does not need to care. Also, there is a query method that does query based on the method name. Equally important, there are two new annotations: The Query and param, that defines the statement and set the values in the query respectively.
+
+[source,java]
+----
+public interface PersonRepository extends Repository<Person, Long> {
+    @Query("select * from Person")
+    Optional<Person> findByQuery();
+
+    @Query("select * from Person where id = @id")
+    Optional<Person> findByQuery(@Param("id") String id);
+}
+----
+
+IMPORTANT: Remember, when a developer defines who that repository will be implemented from the CDI qualifier, the query will be executed to that defined type, given that, gremlin to Graph, JNoSQL key to key-value and so on.
+
+==== How to Create Repository and RepositoryAsync implementation programmatically
+
+The Mapping API has support to create Repository programmatically to each NoSQL type, so there are *ColumnRepositoryProducer*, *DocumentRepositoryProducer*, *KeyValueRepositoryProducer*, *GraphRepositoryProducer* to column, document, key-value, graph repository implementation respectively. Each producer needs both the repository class and the manager instance to return a repository instance.
+The *ColumnRepositoryAsyncProducer* and *DocumentRepositoryAsyncProducer* have a method to create a RepositoryAsync instance that needs both an interface that extends RepositoryAsync and the manager async.
+
+.Graph repository producer
+[source,java]
+----
+@Inject
+private GraphRepositoryProducer producer;
+
+public void anyMethod() {
+    Graph graph = ...;//instance
+    PersonRepository personRepository = producer.get(PersonRepository.class, graph);
+}
+----
+
+.Key-value repository producer
+[source,java]
+----
+@Inject
+private KeyValueRepositoryProducer producer;
+
+public void anyMethod() {
+    BucketManager manager = ...;//instance
+    PersonRepository personRepository = producer.get(PersonRepository.class, manager);
+}
+----
+
+.Column repository producer
+[source,java]
+----
+@Inject
+private ColumnRepositoryProducer producer;
+
+@Inject
+private ColumnRepositoryAsyncProducer producerAsync;
+
+public void anyMethod() {
+    DocumentCollectionManager manager = ...;//instance
+    DocumentCollectionManagerAsync managerAsync = ...;//instance
+    PersonRepository personRepository = producer.get(PersonRepository.class, graph);
+    PersonRepositoryAsync personRepositoryAsync = producerAsync.get(PersonRepositoryAsync.class, graph);
+}
+----
+
+.Document repository producer
+----
+@Inject
+private DocumentRepositoryProducer producer;
+
+@Inject
+private DocumentRepositoryAsyncProducer producerAsync;
+
+public void anyMethod() {
+    DocumentCollectionManager manager = ...;//instance
+    DocumentCollectionManagerAsync managerAsync = ...;//instance
+    PersonRepository personRepository = producer.get(PersonRepository.class, graph);
+    PersonRepositoryAsync personRepositoryAsync = producerAsync.get(PersonRepositoryAsync.class, graph);
+}
+----
+
+
+[source,java]
+----
+@Inject
+private ColumnRepositoryProducer producer;
+
+@Inject
+private ColumnRepositoryAsyncProducer producerAsync;
+
+public void anyMethod() {
+    ColumnFamilyManager manager = ...;//instance
+    ColumnFamilyManagerAsync managerAsync = ...;//instance
+    PersonRepository personRepository = producer.get(PersonRepository.class, manager);
+    PersonRepositoryAsync personRepositoryAsync = producerAsync.get(PersonRepositoryAsync.class, managerAsync);
+}
+----
+
+[source,java]
+----
+@Inject
+private DocumentRepositoryProducer producer;
+
+@Inject
+private DocumentRepositoryAsyncProducer producerAsync;
+
+public void anyMethod() {
+    DocumentCollectionManager manager = ...;//instance
+    DocumentCollectionManagerAsync managerAsync = ...;//instance
+    PersonRepository personRepository = producer.get(PersonRepository.class, manager);
+    PersonRepositoryAsync personRepositoryAsync = producerAsync.get(PersonRepositoryAsync.class, managerAsync);
+}
+----

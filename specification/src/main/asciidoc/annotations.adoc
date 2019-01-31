@@ -1,0 +1,429 @@
+//
+//  Copyright (c) 2018 Otávio Santana and others
+//   All rights reserved. This program and the accompanying materials
+//   are made available under the terms of the Eclipse Public License v1.0
+//   and Apache License v2.0 which accompanies this distribution.
+//   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+//   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+//
+//   You may elect to redistribute this code under either of these licenses.
+//
+//   Contributors:
+//
+//   Otavio Santana
+
+=== Models Annotation
+
+As mentioned previously, the Mapping API has annotations that make the Java developer's life easier; these annotations have two categories:
+
+* Annotation Models
+* Qualifier annotation
+
+==== Annotation Models
+
+The annotation model is to convert the entity model to the entity on communication, the communication entity:
+
+
+* Entity
+* Column
+* MappedSuperclass
+* Id
+* Embeddable
+* Convert
+
+
+The JNoSQL Mapping does not require the getter and setter methods to the fields, however, the Entity class must have a non-private constructor with no parameters.
+
+===== Entity
+
+This annotation maps the class to Eclipse JNoSQL. It has a unique attribute called `name`. This attribute is to inform either the column family name or the document collection name, etc. The default value is the simple name of a class; for example, given the org.jnosql.demo.Person class, the default name will be `Person`.
+
+[source,java]
+----
+@Entity
+public class Person {
+}
+----
+
+[source,java]
+----
+@Entity("name")
+public class Person {
+}
+----
+
+An entity as a field will incorporate as a sub-entity. E.g., In a document, this entity field will convert to a subdocument.
+
+
+[source,java]
+----
+@Entity
+public class Person {
+
+    @Id
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private Address address;
+
+}
+
+
+@Entity
+public class Address {
+
+    @Column
+    private String street;
+
+    @Column
+    private String city;
+
+}
+----
+
+
+[source,json]
+----
+{
+    "_id":10,
+    "name":"Ada Lovelave",
+    "address":{
+        "city":"São Paulo",
+        "street":"Av nove de julho"
+    }
+}
+----
+===== Column
+
+This annotation is to define which fields on an Entity will be persisted. It also has a unique attribute name to specify that name on Database, and the default value is the field name.
+
+[source,java]
+----
+@Entity
+public class Person {
+    @Column
+    private String nickname;
+    @Column("native_mapper")
+    private String name;
+    @Column
+    private List<String> phones;
+    //ignored
+    private String address;
+}
+----
+
+===== MappedSuperclass
+
+If this annotation is on the parent class, it will persist its information as well. So, beyond the son class, it will store any field that is in Parent class with Column annotation.
+
+
+[source,java]
+----
+@Entity
+public class Dog extends Animal {
+
+    @Column
+    private String name;
+
+}
+
+@MappedSuperclass
+public class Animal {
+
+    @Column
+    private String race;
+
+    @Column
+    private Integer age;
+
+
+}
+----
+
+On this sample above, when saving a Dog instance, it saves the Animal case too; explicitly, will save the field's `name`, `race`, and `age`.
+
+
+===== Id
+
+It shows which attribute is the id, or the key in key-value types. Thus, the value will be the remaining information. It has an attribute as the Column to define the native name. However, the default value of this annotation is `_id`. The way of storing the class will depend on the database driver.
+
+[source,java]
+----
+@Entity
+public class User implements Serializable {
+
+    @Id
+    private String userName;
+
+    private String name;
+
+    private List<String> phones;
+    }
+----
+
+
+===== Embeddable
+
+Defines a class whose instances are stored as an intrinsic part of an owning entity and share the identity of the object.
+
+[source,java]
+----
+@Entity
+public class Book {
+
+    @Column
+    private String name;
+
+    @Column
+    private Author author;
+
+
+}
+
+@Embeddable
+public class Author {
+
+    @Column
+    private String name;
+
+    @Column
+    private Integer age;
+
+
+}
+----
+
+===== Convert
+
+As Communication, the Mapping API has a converter at abstraction level. This feature is useful, e.g., to cipher a field, String to String, or just to do a conversion to a custom type using annotation. The Converter annotation has a parameter, and an AttributeConverter implementation class can be used. E.g., the sample below shows how to create a converter to a custom Money class.
+
+[source,java]
+----
+@Entity
+public class Worker {
+    @Column
+    private String name;
+    @Column
+    private Job job;
+    @Column("money")
+    @Convert(MoneyConverter.class)
+    private Money salary;
+}
+
+public class MoneyConverter implements AttributeConverter<Money, String>{
+    @Override
+    public String convertToDatabaseColumn(Money attribute) {
+        return attribute.toString();
+    }
+    @Override
+    public Money convertToEntityAttribute(String dbData) {
+        return Money.parse(dbData);
+    }
+}
+public class Money {
+    private final String currency;
+
+    private final BigDecimal value;
+
+//....
+}
+----
+
+===== Collection
+
+
+The Mapping layer has support for `java.util.Collection` to both simple elements such as `String`, `Integer`, that will send to the communication API the exact value and class that has fields inside, once the class has either `Entity` or `Embedded` annotation; otherwise, will post as the first scenario, like String or any amount without converter process.
+
+It has support to:
+
+* `java.util.Deque`
+* `java.util.Queue`
+* `java.util.List`
+* `java.util.Iterable`
+* `java.util.NavigableSet`
+* `java.util.SortedSet`
+* `java.util.HashSet`
+
+
+[source,java]
+----
+@Entity
+public class Person {
+
+    @Id
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private List<String> phones;
+
+    @Column
+    private List<Address> address;
+}
+
+
+@Embeddable
+public class Address {
+
+    @Column
+    private String street;
+
+    @Column
+    private String city;
+
+}
+----
+
+
+
+[source,json]
+----
+{
+    "_id": 10,
+    "address":[
+        {
+            "city":"São Paulo",
+            "street":"Av nove de julho"
+        },
+        {
+            "city":"Salvador",
+            "street":"Rua Engenheiro Jose Anasoh"
+        }
+    ],
+    "name":"Name",
+    "phones":[
+        "234",
+        "432"
+    ]
+}
+----
+==== Qualifier annotation
+
+That is important to work with more than one type of the same application.
+
+[source,java]
+----
+@Inject
+private DocumentRepository repositoryA;
+@Inject
+private DocumentRepository repositoryB;
+----
+
+Two injections with the same interface, CDI throws an ambiguous exception. There is the `Database` qualifier to fix this problem. It has two attributes:
+
+* *DatabaseType*: The database type, key-value, document, column, graph.
+* *provider*: The provider's database name, e.g., "cassandra", "hbase", "mongodb". So, using the `Database` qualifier:
+
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.DOCUMENT, provider = “databaseA”)
+private DocumentRepository repositoryA;
+@Inject
+@Database(value = DatabaseType.DOCUMENT, provider = “databaseB”)
+private DocumentRepository repositoryB;
+----
+
+Beyond this annotation, the producer method with the entity manager is required.
+
+The benefit of using this qualifier instead of creating a new one is that if the Manager Entity is produced using `Database` as a qualifier, it will create classes such as DocumentRepository, ColumnRepository, etc. automatically.
+==== ConfigurationUnit
+
+Storage of the database's configuration such as password and users outside the code is important; Eclipse JNoSQL has the ConfigurationUnit annotation that reads the configuration from a file such as XML, YAML, and JSON file and inject to create a factory. The default configuration structure is within either a **META-INF** or **WEB-INF** folder.
+
+===== JSON file structure
+
+
+[source,json]
+----
+[
+   {
+      "description":"that is the description",
+      "name":"name",
+      "provider":"class",
+      "settings":{
+         "key":"value"
+      }
+   },
+   {
+      "description":"that is the description",
+      "name":"name-2",
+      "provider":"class",
+      "settings":{
+         "key":"value"
+      }
+   }
+]
+----
+
+===== XML file structure
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<configurations>
+   <configuration>
+      <description>that is the description</description>
+      <name>name</name>
+      <provider>class</provider>
+      <settings>
+         <entry>
+            <key>key2</key>
+            <value>value2</value>
+         </entry>
+         <entry>
+            <key>key</key>
+            <value>value</value>
+         </entry>
+      </settings>
+   </configuration>
+</configurations>
+----
+
+===== YAML file structure
+
+[source,yaml]
+----
+configurations:
+    - description: that is the description
+      name: name
+      provider: class
+      settings:
+        key: value
+        key2: value2
+----
+
+===== Injection of the code
+
+With the configuration file, the next step is to inject the dependency into the application. The default behavior supports the following classes:
+
+* BucketManagerFactory
+* DocumentCollectionManagerAsyncFactory
+* DocumentCollectionManagerAsyncFactory
+* ColumnFamilyManagerAsyncFactory
+* ColumnFamilyManagerAsyncFactory
+
+[source,java]
+----
+
+@Inject
+@ConfigurationUnit(fileName = "column.xml", name = "name")
+private ColumnFamilyManagerFactory<?> factoryA;
+
+@Inject
+@ConfigurationUnit(fileName = "document.json", name = "name-2")
+private DocumentCollectionManagerFactory factoryB;
+
+@Inject
+@ConfigurationUnit
+private BucketManagerFactory factoryB;
+----
+
+
+

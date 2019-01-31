@@ -1,0 +1,265 @@
+//
+//  Copyright (c) 2018 Otávio Santana and others
+//   All rights reserved. This program and the accompanying materials
+//   are made available under the terms of the Eclipse Public License v1.0
+//   and Apache License v2.0 which accompanies this distribution.
+//   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+//   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+//
+//   You may elect to redistribute this code under either of these licenses.
+//
+//   Contributors:
+//
+//   Otavio Santana
+
+==== ColumnTemplate
+
+This template has the duty to be a bridge between the entity model and the communication to a column family. It has two classes; `ColumnTemplate` and `ColumnTemplateAsync` - one for the synchronous and the other for the asynchronous work.
+
+The `ColumnTemplate` is the column template for the synchronous tasks. It has three components:
+
+* *ColumnEntityConverter*: That converts an entity to communication API, e.g., The Person to ColumnFamilyEntity.
+
+* *ColumnCollectionManager*: The communication column family entity manager.
+
+* *ColumnWorkflow*: The workflow to update and insert methods.
+
+[source,java]
+----
+ColumnTemplate template = //instance
+
+Person person = new Person();
+person.setAddress("Olympus");
+person.setName("Artemis Good");
+person.setPhones(Arrays.asList("55 11 94320121", "55 11 94320121"));
+person.setNickname("artemis");
+
+List<Person> people = Collections.singletonList(person);
+
+Person personUpdated = template.insert(person);
+template.insert(people);
+template.insert(person, Duration.ofHours(1L));
+
+template.update(person);
+template.update(people);
+----
+
+For information removal and retrieval, there are *ColumnQuery* and *ColumnDeleteQuery* respectively; also, the callback method can be used.
+
+[source,java]
+----
+ColumnQuery query = select().from("Person").where("address").eq("Olympus").build();
+
+List<Person> peopleWhoLiveOnOlympus = template.select(query);
+Optional<Person> artemis = template.singleResult(select().from("Person").where("nickname").eq("artemis").build());
+
+ColumnDeleteQuery deleteQuery = delete().from("Person").where("address").eq("Olympus").build()
+template.delete(deleteQuery);
+----
+
+
+Both *ColumnQuery* and *ColumnDeleteQuery* won't convert the Object to native fields. However, there is *ColumnQueryMapperBuilder* that creates both query types, reading the Class then switching to the native fields through annotations.
+
+[source,java]
+----
+@Entity
+public class Person {
+
+    @Id("native_id")
+    private long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private int age;
+}
+----
+
+[source,java]
+----
+@Inject
+private ColumnQueryMapperBuilder mapperBuilder;
+
+public void mapper() {
+  ColumnQuery query = mapperBuilder.selectFrom(Person.class).where("id").gte(10).build();
+  //translating: select().from("Person").where("native_id").gte(10L).build();
+  ColumnDeleteQuery deleteQuery = mapperBuilder.deleteFrom(Person.class).where("id").eq("20").build();
+  //translating: delete().from("Person").where("native_id").gte(10L).build();
+}
+----
+
+
+To use a column template, just follow the CDI style and put an `@Inject` on the field.
+
+[source,java]
+----
+@Inject
+private ColumnTemplate template;
+----
+
+The next step is to produce a **ColumnFamilyManager**:
+
+[source,java]
+----
+@Produces
+public ColumnFamilyManager getManager() {
+    ColumnFamilyManager manager = //instance
+    return manager;
+}
+----
+
+To work with more than one Column Template, there are two approaches:
+
+1) Using qualifiers:
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.COLUMN, provider = "databaseA")
+private ColumnTemplate templateA;
+
+@Inject
+@Database(value = DatabaseType.COLUMN, provider = "databaseB")
+private ColumnTemplate templateB;
+
+
+//producers methods
+@Produces
+@Database(value = DatabaseType.COLUMN, provider = "databaseA")
+public ColumnFamilyManager getManagerA() {
+    ColumnFamilyManager manager =//instance
+    return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.COLUMN, provider = "databaseB")
+public ColumnFamilyManager getManagerB() {
+    ColumnFamilyManager manager = //instance
+    return manager;
+}
+----
+
+2)  Using the **ColumnTemplateProducer** class:
+
+```java
+@Inject
+private ColumnTemplateProducer producer;
+
+public void sample() {
+   ColumnFamilyManager managerA = //instance;
+   ColumnFamilyManager managerB = //instance
+   ColumnTemplate templateA = producer.get(managerA);
+   ColumnTemplate templateB = producer.get(managerB);
+}
+```
+
+===== ColumnTemplateAsync
+
+
+The `ColumnTemplateAsync` is the document template for the asynchronous tasks. It has two components:
+
+* *ColumnEntityConverter:* That converts an entity to communication API, e.g., The Person to ColumnFamilyEntity.
+
+* *ColumnFamilyManagerAsync:*  The asynchronous communication column family entity manager.
+
+
+[source,java]
+----
+ColumnTemplateAsync templateAsync = //instance
+
+Person person = new Person();
+person.setAddress("Olympus");
+person.setName("Artemis Good");
+person.setPhones(Arrays.asList("55 11 94320121", "55 11 94320121"));
+person.setNickname("artemis");
+
+List<Person> people = Collections.singletonList(person);
+
+Consumer<Person> callback = p -> {};
+templateAsync.insert(person);
+templateAsync.insert(person, Duration.ofHours(1L));
+templateAsync.insert(person, callback);
+templateAsync.insert(people);
+
+templateAsync.update(person);
+templateAsync.update(person, callback);
+templateAsync.update(people);
+----
+
+For information removal and retrieval, there are *ColumnQuery* and *ColumnDeleteQuery*, respectively; also, the callback method can be used.
+
+[source,java]
+----
+Consumer<List<Person>> callBackPeople = p -> {};
+Consumer<Void> voidCallBack = v ->{};
+templateAsync.select(query, callBackPeople);
+templateAsync.delete(deleteQuery);
+templateAsync.delete(deleteQuery, voidCallBack);
+----
+
+To use a column template just follow the CDI style and put an `@Inject` on the field.
+
+[source,java]
+----
+@Inject
+private ColumnTemplateAsync template;
+----
+
+
+The next step is to produce a *ColumnFamilyManagerAsync:*
+
+[source,java]
+----
+@Produces
+public ColumnFamilyManagerAsync getManager() {
+    ColumnFamilyManagerAsync managerAsync = //instance
+    return manager;
+}
+----
+
+To work with more than one Column Template, there are two approaches:
+
+1) Using qualifiers:
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.COLUMN, provider = "databaseA")
+private ColumnTemplateAsync templateA;
+
+@Inject
+@Database(value = DatabaseType.COLUMN, provider = "databaseB")
+private ColumnTemplateAsync templateB;
+
+
+//producers methods
+@Produces
+@Database(value = DatabaseType.COLUMN, provider = "databaseA")
+public ColumnFamilyManagerAsync getManagerA() {
+    ColumnFamilyManagerAsync manager = //instance
+    return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.COLUMN, provider = "databaseB")
+public ColumnFamilyManagerAsync getManagerB() {
+    ColumnFamilyManagerAsync manager = //instance
+    return manager;
+}
+----
+
+2) Using the  *ColumnTemplateAsyncProducer*:
+
+[source,java]
+----
+@Inject
+private ColumnTemplateAsyncProducer producer;
+
+public void sample() {
+   ColumnFamilyManagerAsync managerA = //instance;
+   ColumnFamilyManagerAsync managerB = //instance
+   ColumnTemplateAsync templateA = producer.get(managerA);
+   ColumnTemplateAsync templateB = producer.get(managerB);
+}
+----

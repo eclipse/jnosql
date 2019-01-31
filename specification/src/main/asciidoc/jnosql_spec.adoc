@@ -1,0 +1,61 @@
+//
+//  Copyright (c) 2018 Otávio Santana and others
+//   All rights reserved. This program and the accompanying materials
+//   are made available under the terms of the Eclipse Public License v1.0
+//   and Apache License v2.0 which accompanies this distribution.
+//   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+//   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+//
+//   You may elect to redistribute this code under either of these licenses.
+//
+//   Contributors:
+//
+//   Otavio Santana
+
+
+:sectanchors:
+:doctype: book
+:license: Apache License v2.0
+:source-highlighter: coderay
+:authors: Otávio Santana
+:email: otaviojava@apache.org
+ifdef::backend-pdf[]
+:pagenums:
+:title-logo-image: images/title_image.png
+endif::[]
+:doctype: book
+:toc: left
+:toclevels: 4
+:sectnums:
+:icons: font
+ifndef::imagesdir[:imagesdir: images]
+ifndef::sourcedir[:sourcedir: ../../main/java]
+
+
+include::license-alv2.asciidoc[]
+
+= Eclipse JNoSQL
+
+Eclipse JNoSQL is a Java framework that streamlines the integration of Java applications with NoSQL databases. It defines a set of APIs to interact with NoSQL databases, and provides a standard implementation for most NoSQL databases. This clearly helps to achieve very low coupling with the underlying NoSQL technologies used.
+
+The project has two layers:
+
+* **Communication Layer**: This is a set of APIs that define communication with NoSQL databases. In traditional SQL/RDBMS world, these can be compared with the JDBC APIs. This API set contains four modules, with each one representing a NoSQL database storage type: Key-Value, Column Family, Document, and Graph.
+* **Mapping Layer**: These are the APIs that help developers to map Java objects to NoSQL databases. This layer is annotation driven and uses technologies like CDI and Bean Validations to make it simple for the developer. In traditional SQL/RDBMS world, this layer can be compared to JPA and ORM frameworks.
+
+*Key features*
+
+* Simple APIs supporting all well-known NoSQL storage types - Column Family, Key-Value Pair, Graph and Document databases.
+* Use of Convention Over Configuration
+* Support for Asynchronous Queries
+* Support for Asynchronous Write operations
+* Easy-to-implement API Specification and Test Compatibility Kit (TCK) for NoSQL Vendors
+* The API’s focus is on simplicity and ease of use. Developers should only have to know a minimal set of artifacts to work with JNoSQL. The API is built on Java 8 features like Lambdas and Streams, and therefore fits perfectly with the functional features of Java 8+.
+
+
+:imagesdir: images
+include::introduction.adoc[]
+include::mainbehindspec.adoc[]
+include::communication.adoc[]
+include::mapping.adoc[]
+include::references.adoc[]

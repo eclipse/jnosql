@@ -1,0 +1,214 @@
+//
+//  Copyright (c) 2018 Otávio Santana and others
+//   All rights reserved. This program and the accompanying materials
+//   are made available under the terms of the Eclipse Public License v1.0
+//   and Apache License v2.0 which accompanies this distribution.
+//   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+//   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+//
+//   You may elect to redistribute this code under either of these licenses.
+//
+//   Contributors:
+//
+//   Otavio Santana
+
+==== Querying by text at Communication API
+
+
+The communication API also has a query as text. These queries will convert to an operation that already exists in the Manager interface from the `query` method, thereby, these operations might return an `UnsupportedOperationException` if a NoSQL has no support for that procedure.
+
+This query has basic principles:
+
+* All instructions end with a break like `\n`
+* It is case-sensitive
+* All keywords must be in lowercase
+* The goal is to look like SQL, however simpler
+* Even passing in the syntax and parsing the query, a specific implementation may not support an operation. E.g., Column family may not support query in a different field that is not the ID field.
+
+
+===== Key-Value
+
+The key-value has three operations: *put*, *remove* and *get*.
+====== Get
+
+Retrieving data for an entity is done using a GET statement:
+
+[source,sql]
+----
+get_statement ::=  GET ID (',' ID)*
+//sample
+get "Apollo" //to return an element where the id is 'Apollo'
+get "Diana" "Artemis" //to return a list of values from the ids
+----
+====== Remove
+
+To delete one or more entities, use the remove statement
+
+[source,sql]
+----
+del_statement ::=  GET ID (',' ID)*
+//sample
+remove "Apollo"
+remove "Diana" "Artemis"
+----
+
+====== Put
+
+To either insert or override values from a key-value database, use the put statement.
+
+[source,sql]
+----
+put_statement ::=  PUT {KEY, VALUE, [TTL]}
+//sample
+put {"Diana" ,  "The goddess of hunt"}//adds key -diana and value ->"The goddess of hunt"
+put {"Diana" ,  "The goddess of hunt", 10 second}//also defines a TTL of 10 seconds
+----
+
+===== Column and Document
+
+Both have sample syntax that looks like an SQL query, however, remember it has a limitation and does not support joins. Document types are usually more queriable than a column type. They have four operations: insert, update, delete, and select.
+
+====== Insert
+Inserting data for an entity is done using an INSERT statement:
+
+[source,sql]
+----
+insert_statement ::=  INSERT entity_name (name = value, (`,` name = value) *) [ TTL ]
+//sample
+insert God (name = "Diana", age = 10)
+insert God (name = "Diana", age = 10, power = {"sun", "god"})
+insert God (name = "Diana", age = 10, power = {"sun", "god"}) 1 day
+----
+
+====== Update
+
+Updating an entity is done using an update statement:
+
+[source,sql]
+----
+update_statement ::=  UPDATE entity_name (name = value, (`,` name = value) *)
+ //sample
+update God (name = "Diana", age = 10)
+update God (name = "Diana", age = 10, power = {"hunt", "moon"})
+----
+
+====== Delete
+Deleting either an entity or fields uses the delete statement
+
+[source,sql]
+----
+delete_statement ::=  DELETE [ simple_selection ( ',' simple_selection ) ]
+                      FROM entity_name
+                      WHERE where_clause
+//sample
+delete from God
+delete  name, age ,adress.age from God where id = "Diana"
+----
+
+====== Select
+
+The select statement reads one or more fields for one or more entities. It returns a result-set of the entities matching the request, where each entity contains the fields for corresponding to the query.
+
+[source,sql]
+----
+select_statement ::=  SELECT ( select_clause | '*' )
+                      FROM entity_name
+                      [ WHERE where_clause ]
+                      [ SKIP (integer) ]
+                      [ LIMIT (integer) ]
+                      [ ORDER BY ordering_clause ]
+//sample
+select * from God
+select name, age, adress.age from God order by name desc age desc
+select * from God where birthday between "01-09-1988" and "01-09-1988" and salary = 12
+select name, age, adress.age from God skip 20 limit 10 order by name desc age desc
+----
+
+===== PreparedStatement and PreparedStatementAsync
+
+To run a query dynamically, use the `prepare` method in the manager for instance. It will return a `PreparedStatement` interface. To define a parameter to key-value, document, and column query, use the "@" in front of the name.
+
+[source,java]
+----
+PreparedStatement preparedStatement = documetManager.prepare("select * from Person where name = @name");
+preparedStatement.bind("name", "Ada");
+List<DocumentEntity> adas = preparedStatement.getResultList();
+
+----
+
+[source,java]
+----
+PreparedStatementAsync preparedStatement = documetManagerAsync.prepare("select * from Person where name = @name");
+preparedStatement.bind("name", "Ada");
+Consumer<List<DocumentEntity>> callback = ...;
+preparedStatement.getResultList(callback);
+
+----
+
+
+===== WHERE
+
+The *WHERE* clause specifies a filter to the result. These filters are boolean operations that are composed of one or more conditions appended with the and (*AND*) and or (*OR*) operators.
+
+===== Conditions
+
+Conditions perform different computations or actions depending on whether a boolean query condition evaluates to **true** or **false**. The conditions are composed of three elements:
+
+1. *Name*, the data source or target, to apply the operator
+2. *Operator*, that defines comparing process between the name and the value.
+3. *Value*, that data that receives the operation.
+
+===== Operators
+
+The Operators are:
+
+
+.Operators in a query
+|===
+| Operator | Description
+| *=*         | Equal to
+| *>*         | Greater than
+| *<*         | Less than
+| *>=*        | Greater than or equal to
+| *<=*        | Less than or equal to
+| *BETWEEN*   | TRUE if the operand is within the range of comparisons
+| *NOT*       | Displays a record if the condition(s) is NOT TRUE
+| *AND*       | TRUE if all the conditions separated by AND is TRUE
+| *OR*        | TRUE if any of the conditions separated by OR is TRUE
+| *LIKE*      |TRUE if the operand matches a pattern
+| *IN*        |TRUE if the operand is equal to one of a list of expressions
+|===
+
+
+===== The value
+
+The value is the last element in a condition, and it defines what'll go to be used, with an operator, in a field target.
+
+There are six types:
+
+* Number is a mathematical object used to count, measure and also label, where if it is a decimal, will become **double**, otherwise, **long**. E.g.: `age = 20`, `salary = 12.12`
+* String: one or more characters among either two double quotes, `"`,  or single quotes, `'`. E.g.: `name = "Ada Lovelace"`, `name = 'Ada Lovelace'`
+* Convert: convert is a function where given the first value parameter as number or string, it will convert to the class type of the second one. E.g.: `birthday = convert("03-01-1988", java.time.LocalDate)`
+* Parameter: the parameter is a dynamic value, which means it does not define the query; it'll replace in the execution time. The parameter is at `@` followed by a name. E.g.: `age = @age`
+* Array: A sequence of elements that can be either number or string that is between braces `{  }`. E.g.: `power = {"Sun", "hunt"}`
+* JSON: JavaScript Object Notation is a lightweight data-interchange format. E.g.: `siblings = {"apollo": "brother", "zeus": "father"}`
+
+
+
+===== SKIP
+
+The *SKIP* option to a *SELECT* statement defines where the query should start.
+
+===== LIMIT
+
+The *LIMIT* option to a *SELECT* statement limits the number of rows returned by a query.
+
+===== ORDER BY
+
+The ORDER BY clause allows selecting the order of the returned results. It takes as argument a list of column names along with the order for the column (**ASC** for ascendant and **DESC** for the descendant, omitting the order being equivalent to **ASC**).
+
+===== TTL
+
+Both the *INSERT* and *PUT* commands support setting a time for data in an entity to expire. It defines the time to live of an object that is composed of the integer value and then the unit that might be `day`, `hour`, `minute`, `second`, `millisecond`, `nanosecond`. E.g.: `ttl 10 second`
+
+WARNING: For graph API, check https://tinkerpop.apache.org/gremlin.html[Gremlin]
