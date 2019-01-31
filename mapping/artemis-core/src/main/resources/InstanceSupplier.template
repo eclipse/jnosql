@@ -1,0 +1,10 @@
+package {0};
+
+import org.jnosql.artemis.reflection.InstanceSupplier;
+
+public class {1} implements InstanceSupplier '{'
+    @Override
+    public Object get() '{'
+        return new {2}();
+    '}'
+}

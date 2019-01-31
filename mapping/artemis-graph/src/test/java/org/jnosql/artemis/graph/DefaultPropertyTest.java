@@ -1,0 +1,66 @@
+/*
+ *  Copyright (c) 2017 Otávio Santana and others
+ *   All rights reserved. This program and the accompanying materials
+ *   are made available under the terms of the Eclipse Public License v1.0
+ *   and Apache License v2.0 which accompanies this distribution.
+ *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ *
+ *   You may elect to redistribute this code under either of these licenses.
+ *
+ *   Contributors:
+ *
+ *   Otavio Santana
+ */
+package org.jnosql.artemis.graph;
+
+import org.apache.tinkerpop.gremlin.structure.Property;
+import org.jnosql.diana.api.Value;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+
+public class DefaultPropertyTest {
+
+
+    @Test
+    public void shouldReturnErrorWhenKeyINull() {
+        assertThrows(NullPointerException.class, () -> DefaultProperty.of(null, 10L));
+    }
+
+    @Test
+    public void shouldReturnErrorWhenValueINull() {
+        assertThrows(NullPointerException.class, () -> DefaultProperty.of("key", null));
+    }
+
+    @Test
+    public void shouldReturnKey() {
+        Property element = DefaultProperty.of("key", 10L);
+        assertEquals("key", element.key());
+    }
+
+    @Test
+    public void shouldReturnValue() {
+        Property element = DefaultProperty.of("key", 10L);
+        assertEquals(10L, element.value());
+    }
+
+    @Test
+    public void shouldReturnValueAsObject() {
+        long value = 10L;
+        Property element = DefaultProperty.of("key", value);
+        assertEquals(value, element.value());
+    }
+
+
+    @Test
+    public void shouldCreateInstanceValue() {
+        Property element = DefaultProperty.of("key", Value.of(10L));
+        assertEquals(Value.of(10L), element.value());
+        assertEquals("key", element.key());
+        assertEquals(Value.of(10L), element.value());
+    }
+
+}

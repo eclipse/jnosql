@@ -1,0 +1,86 @@
+<!--
+  ~  Copyright (c) 2017 Otávio Santana and others
+  ~   All rights reserved. This program and the accompanying materials
+  ~   are made available under the terms of the Eclipse Public License v1.0
+  ~   and Apache License v2.0 which accompanies this distribution.
+  ~   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+  ~   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+  ~
+  ~   You may elect to redistribute this code under either of these licenses.
+  ~
+  ~   Contributors:
+  ~
+  ~   Otavio Santana
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.jnosql.artemis</groupId>
+        <artifactId>artemis-parent</artifactId>
+        <version>0.0.8-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>artemis-document</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Eclipse JNoSQL Mapping, Artemis API, to document NoSQL databases</description>
+    <url>http://jnosql.org/</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+        <license>
+            <name>The Eclipse Public License v1.0</name>
+            <url>http://www.eclipse.org/legal/epl-v10.html</url>
+        </license>
+    </licenses>
+
+
+    <scm>
+        <connection>scm:git:git://github.com/eclipse/jnosql-artemis.git</connection>
+        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-artemis.git</developerConnection>
+        <url>https://github.com/eclipse/jnosql-artemis</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Otavio Santana</name>
+            <email>otaviojava@apache.org</email>
+            <organization>SouJava</organization>
+            <organizationUrl>https://about.me/otaviojava</organizationUrl>
+        </developer>
+        <developer>
+            <name>JNoSQL Developers</name>
+            <email>jnosql-dev@eclipse.org</email>
+            <organization>Eclipse JNoSQL</organization>
+            <organizationUrl>https://dev.eclipse.org/mailman/listinfo/jnosql-dev</organizationUrl>
+        </developer>
+    </developers>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jnosql.diana</groupId>
+            <artifactId>diana-document</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jnosql.artemis</groupId>
+            <artifactId>artemis-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jnosql.artemis</groupId>
+            <artifactId>artemis-configuration</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+</project>

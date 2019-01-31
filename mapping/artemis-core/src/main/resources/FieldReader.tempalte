@@ -1,0 +1,10 @@
+package {0};
+
+import org.jnosql.artemis.reflection.FieldReader;
+
+public class {1} implements FieldReader '{'
+    @Override
+    public Object read(Object bean) '{'
+        return {2}.class.cast(bean).{3}();
+    '}'
+'}'

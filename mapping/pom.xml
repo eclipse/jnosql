@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~  Copyright (c) 2017 Otávio Santana and others
+  ~   All rights reserved. This program and the accompanying materials
+  ~   are made available under the terms of the Eclipse Public License v1.0
+  ~   and Apache License v2.0 which accompanies this distribution.
+  ~   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+  ~   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+  ~
+  ~   You may elect to redistribute this code under either of these licenses.
+  ~
+  ~   Contributors:
+  ~
+  ~   Otavio Santana
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <parent>
+        <groupId>org.jnosql</groupId>
+        <artifactId>jnosql-parent</artifactId>
+        <version>0.0.8-SNAPSHOT</version>
+    </parent>
+
+
+    <groupId>org.jnosql.artemis</groupId>
+    <artifactId>artemis-parent</artifactId>
+    <packaging>pom</packaging>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Eclipse JNoSQL Mapping layer, Artemis</description>
+    <url>http://jnosql.org/</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+        <license>
+            <name>The Eclipse Public License v1.0</name>
+            <url>http://www.eclipse.org/legal/epl-v10.html</url>
+        </license>
+    </licenses>
+
+
+    <scm>
+        <connection>scm:git:git://github.com/eclipse/jnosql-artemis.git</connection>
+        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-artemis.git</developerConnection>
+        <url>https://github.com/eclipse/jnosql-artemis</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Otavio Santana</name>
+            <email>otaviojava@apache.org</email>
+            <organization>SouJava</organization>
+            <organizationUrl>https://about.me/otaviojava</organizationUrl>
+        </developer>
+        <developer>
+            <name>JNoSQL Developers</name>
+            <email>jnosql-dev@eclipse.org</email>
+            <organization>Eclipse JNoSQL</organization>
+            <organizationUrl>https://dev.eclipse.org/mailman/listinfo/jnosql-dev</organizationUrl>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
+    </properties>
+
+    <modules>
+        <module>artemis-core</module>
+        <module>artemis-configuration</module>
+        <module>artemis-graph</module>
+        <module>artemis-document</module>
+        <module>artemis-column</module>
+        <module>artemis-key-value</module>
+        <module>artemis-validation</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <version>${yasson.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>${javax.json.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>weld</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>javax.enterprise</groupId>
+                    <artifactId>cdi-api</artifactId>
+                    <version>${javax.enterprise.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.jboss.weld.se</groupId>
+                    <artifactId>weld-se-core</artifactId>
+                    <version>${weld.se.core.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>OWB</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-atinject_1.0_spec</artifactId>
+                    <version>1.0</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-jcdi_2.0_spec</artifactId>
+                    <version>1.0.1</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-interceptor_1.2_spec</artifactId>
+                    <version>1.0</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-annotation_1.3_spec</artifactId>
+                    <version>1.0</version>
+                </dependency>
+
+
+                <dependency>
+                    <groupId>org.apache.openwebbeans</groupId>
+                    <artifactId>openwebbeans-spi</artifactId>
+                    <version>${owb.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.apache.openwebbeans</groupId>
+                    <artifactId>openwebbeans-impl</artifactId>
+                    <version>${owb.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.apache.openwebbeans</groupId>
+                    <artifactId>openwebbeans-se</artifactId>
+                    <version>${owb.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+</project>
