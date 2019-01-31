@@ -1,0 +1,22 @@
+[
+  {
+    "description":"that is the description",
+    "name":"name",
+    "provider":"org.jnosql.artemis.document.DocumentCollectionManagerMock",
+    "settings":{
+      "key":"value",
+      "key2":"value2"
+
+    }
+  },
+  {
+    "description":"that is the description",
+    "name":"name-2",
+    "provider":"org.jnosql.artemis.document.DocumentCollectionManagerMock",
+    "settings":{
+      "key":"value",
+      "key2":"value2",
+      "key3":"value3"
+    }
+  }
+]

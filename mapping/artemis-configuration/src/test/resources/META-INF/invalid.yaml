@@ -1,0 +1,10 @@
+configurations:
+    - description: that is the description
+      name: name
+      provider: org.jnosql.artemis.configuration.DefaultMockConfiguration
+      settings:
+        - key
+          value
+
+        - key2
+          value

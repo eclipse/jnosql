@@ -1,0 +1,26 @@
+[
+  {
+    "name": "name",
+    "description": "that is the description",
+    "provider": "java.util.Collection",
+    "settings": {
+      "key": "value"
+    }
+  },
+  {
+    "name": "name-1",
+    "description": "that is the description",
+    "provider": "java.invalid.Collection",
+    "settings": {
+      "key": "value"
+    }
+  },
+  {
+    "name": "name-2",
+    "description": "that is the description",
+    "provider": "org.jnosql.artemis.configuration.InvalidConfiguration",
+    "settings": {
+      "key": "value"
+    }
+  }
+]

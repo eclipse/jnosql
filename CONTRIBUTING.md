@@ -17,12 +17,10 @@ more.
 
 The project maintains the following source code repositories
 
-* https://github.com/eclipse/jnosql-parent
+
 * https://github.com/eclipse/jnosql-diana
 * https://github.com/eclipse/jnosql-diana-driver
-* https://github.com/eclipse/jnosql-artemis
 * https://github.com/eclipse/jnosql-artemis-extension
-* https://github.com/eclipse/jnosql-aphrodite
 
 ## Eclipse Contributor Agreement
 
