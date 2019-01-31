@@ -1,0 +1,48 @@
+![Eclipse JNoSQL Diana column](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
+
+# Eclipse JNoSQL Diana Column
+
+
+The JNoSQL communication API layer to column database.
+
+## NoSQL column type
+ A column family is a NoSQL object that contains columns of related data. It is a tuple (pair) that consists of a key-value pair, where the key is mapped to a value that is a set of columns. In analogy with relational databases, a column family is as a "table", each key-value pair being a "row". Each column is a tuple (triplet) consisting of a column name, a value, and a timestamp. In a relational database table, this data would be grouped together within a table with other non-related data. 
+ 
+ Ref: https://en.wikipedia.org/wiki/Column_family
+ 
+ ## Code structure
+ 
+ The Column API has the following structure:
+
+* **ColumnConfiguration**: This interface represents the configuration whose a database has. These settings such as password, user, clients are storage and use to create a manager factory.
+* **ColumnFamilyManagerFactory**: This interface represents the factory whose creates an entity manager.
+* **ColumnFamilyManager**: The entity manager, that class that interacts with the ColumnEntity, to do a CRUD Operation. This interface might be extended to capture particular behavior in a NoSQL database.
+* **ColumnEntity**: The column entity, this interface represents a unit element in a column family. This interface has the column family whose the unit belongs and also its columns.
+* **Column**: The column is an element in _ColumnEntity_; it`s a tuple that has key-value whose the key is the name and value is the information.
+
+
+```java
+
+  public static void main(String[] args) {
+
+        ColumnConfiguration configuration = //configuration instance
+
+        try(ColumnFamilyManagerFactory managerFactory = configuration.get()) {
+            ColumnFamilyManager entityManager = managerFactory.get("keyspace");
+            ColumnEntity entity = ColumnEntity.of("column family");
+            Column id = Column.of("id", 10L);
+            entity.add(id);
+            entity.add(Column.of("version", 0.001));
+            entity.add(Column.of("name", "Diana"));
+            entity.add(Column.of("options", Arrays.asList(1, 2, 3)));
+
+            entityManager.insert(entity);
+
+            ColumnQuery query = select().from("column family").where(eq(id)).build();
+            ColumnQuery query2 = select().from("column family").where("name").eq("Diana").build();
+
+            Optional<ColumnEntity> result = entityManager.singleResult(query);
+            System.out.println(result);
+
+        }
+```

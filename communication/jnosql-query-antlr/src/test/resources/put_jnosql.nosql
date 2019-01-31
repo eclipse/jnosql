@@ -1,0 +1,13 @@
+put {"Ada", "Ada Lovelace"}
+put {12, "Ada"}
+put {12,13.12}
+put {@key, @value}
+put {"json", {"Ana" : "Sister", "Maria" : "Mother"}}
+put {12,convert("2018-01-10", java.time.LocalTime)}
+put {"array", {1, 2, 3, "one", "two"}}
+put {"diana", "goddess of hunt", 10 day}
+put {"Ada", "goddess of hunt", 10 hour}
+put {"Ada", "goddess of hunt", 10 minute}
+put {"Ada", "goddess of hunt", 10 second}
+put {"Ada", "goddess of hunt", 10 millisecond}
+put {"Ada", "goddess of hunt", 10 nanosecond}
