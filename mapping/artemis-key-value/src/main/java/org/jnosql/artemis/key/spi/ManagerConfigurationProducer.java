@@ -47,7 +47,7 @@ class ManagerConfigurationProducer {
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
-            throw new ConfigurationException("To create a KeyValueTemplate from a ConfigurationUnit the database field is required");
+            throw new ConfigurationException("The field database at ConfigurationUnit annotation is required");
         }
         return bucketManagerFactory.getBucketManager(database);
     }
