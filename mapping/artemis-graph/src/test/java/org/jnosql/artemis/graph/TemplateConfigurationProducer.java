@@ -25,7 +25,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 
 @ExtendWith(CDIExtension.class)
-public class GraphTemplateConfigurationProducer {
+public class TemplateConfigurationProducer {
 
 
     @Inject

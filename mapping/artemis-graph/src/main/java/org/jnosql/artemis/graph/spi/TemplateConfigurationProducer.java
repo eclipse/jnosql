@@ -27,7 +27,7 @@ import javax.inject.Inject;
  * It creates a {@link org.jnosql.artemis.graph.GraphTemplate} from a ConfigurationUnit annotation.
  */
 @ApplicationScoped
-class GraphTemplateConfigurationProducer {
+class TemplateConfigurationProducer {
 
     @Inject
     private GraphConfigurationProducer configurationProducer;
