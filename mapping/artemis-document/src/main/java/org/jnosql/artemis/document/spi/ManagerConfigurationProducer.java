@@ -45,7 +45,7 @@ class ManagerConfigurationProducer {
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
-            throw new ConfigurationException("To create a DocumentTemplate from a ConfigurationUnit the database field is required");
+            throw new ConfigurationException("The field database at ConfigurationUnit annotation is required");
         }
         return managerFactory.get(database);
     }
@@ -57,7 +57,7 @@ class ManagerConfigurationProducer {
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
-            throw new ConfigurationException("To create a DocumentTemplateAsync from a ConfigurationUnit the database field is required");
+            throw new ConfigurationException("The field database at ConfigurationUnit annotation is required");
         }
         return managerFactory.getAsync(database);
     }
