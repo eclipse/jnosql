@@ -47,7 +47,7 @@ class RepositoryConfigurationProducer {
     public <K, V, R extends Repository<?,?>, E extends Repository<K, V>> ColumnRepositorySupplier<R> get(InjectionPoint injectionPoint) {
         ParameterizedType type = (ParameterizedType) injectionPoint.getType();
         Class<E> repository = (Class) type.getActualTypeArguments()[0];
-        ColumnTemplate template = configurationProducer.getTemplate(injectionPoint);
+        ColumnTemplate template = configurationProducer.get(injectionPoint);
         return () -> (R) producer.get(repository, template);
     }
 
@@ -56,7 +56,7 @@ class RepositoryConfigurationProducer {
     public <K, V, R extends RepositoryAsync<?,?>, E extends RepositoryAsync<K, V>> ColumnRepositoryAsyncSupplier<R> getAsync(InjectionPoint injectionPoint) {
         ParameterizedType type = (ParameterizedType) injectionPoint.getType();
         Class<E> repository = (Class) type.getActualTypeArguments()[0];
-        ColumnTemplateAsync template = configurationProducer.getTemplateAsync(injectionPoint);
+        ColumnTemplateAsync template = configurationProducer.getAsync(injectionPoint);
         return () -> (R) producerAsync.get(repository, template);
     }
 

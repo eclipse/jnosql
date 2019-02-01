@@ -25,7 +25,6 @@ import javax.inject.Inject;
 class ManagerConfigurationProducerTest {
 
 
-
     @Inject
     @ConfigurationUnit(fileName = "document.json", name = "name", database = "database")
     private ColumnFamilyManager manager;
