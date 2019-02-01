@@ -16,10 +16,6 @@ package org.jnosql.artemis.document.spi;
 
 import org.jnosql.artemis.ConfigurationException;
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.artemis.document.DocumentTemplate;
-import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.artemis.document.DocumentTemplateAsyncProducer;
-import org.jnosql.artemis.document.DocumentTemplateProducer;
 import org.jnosql.artemis.util.StringUtils;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
@@ -41,13 +37,6 @@ class ManagerConfigurationProducer {
 
     @Inject
     private DocumentCollectionConfigurationProducer configurationProducer;
-
-    @Inject
-    private DocumentTemplateProducer producer;
-
-    @Inject
-    private DocumentTemplateAsyncProducer asyncProducer;
-
 
     @ConfigurationUnit
     @Produces
