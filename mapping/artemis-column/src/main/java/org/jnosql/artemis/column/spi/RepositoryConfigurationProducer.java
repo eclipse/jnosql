@@ -31,7 +31,7 @@ import javax.inject.Inject;
 import java.lang.reflect.ParameterizedType;
 
 @ApplicationScoped
-class ColumnRepositoryConfigurationProducer {
+class RepositoryConfigurationProducer {
 
     @Inject
     private ColumnRepositoryProducer producer;
