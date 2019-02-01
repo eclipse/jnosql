@@ -71,7 +71,7 @@ public class BucketManagerProducerExtension implements Extension {
                 databases.size(), crudTypes.size()));
 
         databases.forEach(type -> {
-            final KeyValueTemplateBean bean = new KeyValueTemplateBean(beanManager, type.getProvider());
+            final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 

@@ -12,11 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.key;
+package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.diana.api.key.BucketManager;
+import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,30 +25,25 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 
 @ExtendWith(CDIExtension.class)
-class KeyValueTemplateConfigurationProducerTest {
+class ManagerConfigurationProducerTest {
+
 
     @Inject
-    @ConfigurationUnit(fileName = "key-value.json", name = "name", database = "database")
-    private KeyValueTemplate templateA;
+    @ConfigurationUnit(fileName = "column.json", name = "name", database = "database")
+    private ColumnFamilyManager manager;
 
     @Inject
-    @ConfigurationUnit(fileName = "key-value.json", name = "name-2", database = "database")
-    private KeyValueTemplate templateB;
+    @ConfigurationUnit(fileName = "column.json", name = "name", database = "database")
+    private ColumnFamilyManagerAsync managerAsync;
+
 
     @Test
-    public void shouldTemplate() {
-        Assertions.assertNotNull(templateA);
-        BucketManager manager = AbstractKeyValueTemplate.class.cast(templateA).getManager();
-        Assertions.assertNotNull(manager);
-
-    }
-
-    @Test
-    public void shouldTemplateB() {
-        Assertions.assertNotNull(templateB);
-        BucketManager manager = AbstractKeyValueTemplate.class.cast(templateA).getManager();
+    public void shouldTestManager() {
         Assertions.assertNotNull(manager);
     }
 
-
+    @Test
+    public void shouldTestManagerAsync() {
+        Assertions.assertNotNull(manager);
+    }
 }

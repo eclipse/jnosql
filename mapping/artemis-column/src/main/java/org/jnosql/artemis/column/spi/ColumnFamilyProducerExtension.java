@@ -92,12 +92,12 @@ public class ColumnFamilyProducerExtension implements Extension {
         LOGGER.info(String.format("Starting to process on columns: %d databases crud %d and crudAsync %d",
                 databases.size(), crudTypes.size(), crudAsyncTypes.size()));
         databases.forEach(type -> {
-            final ColumnTemplateBean bean = new ColumnTemplateBean(beanManager, type.getProvider());
+            final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 
         databasesAsync.forEach(type -> {
-            final ColumnTemplateAsyncBean bean = new ColumnTemplateAsyncBean(beanManager, type.getProvider());
+            final TemplateAsyncBean bean = new TemplateAsyncBean(beanManager, type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 

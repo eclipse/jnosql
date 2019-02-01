@@ -12,14 +12,13 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.document.spi;
+package org.jnosql.artemis.graph.spi;
 
-
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
-import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.artemis.document.DocumentTemplateAsyncProducer;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
+import org.jnosql.artemis.graph.GraphTemplate;
+import org.jnosql.artemis.graph.GraphTemplateProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -32,7 +31,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class DocumentTemplateAsyncBean implements Bean<DocumentTemplateAsync>, PassivationCapable {
+class TemplateBean implements Bean<GraphTemplate>, PassivationCapable {
 
     private final BeanManager beanManager;
 
@@ -48,16 +47,16 @@ class DocumentTemplateAsyncBean implements Bean<DocumentTemplateAsync>, Passivat
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public DocumentTemplateAsyncBean(BeanManager beanManager, String provider) {
+    public TemplateBean(BeanManager beanManager, String provider) {
         this.beanManager = beanManager;
-        this.types = Collections.singleton(DocumentTemplateAsync.class);
+        this.types = Collections.singleton(GraphTemplate.class);
         this.provider = provider;
-        this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));
+        this.qualifiers = Collections.singleton(DatabaseQualifier.ofGraph(provider));
     }
 
     @Override
     public Class<?> getBeanClass() {
-        return DocumentTemplateAsync.class;
+        return GraphTemplate.class;
     }
 
     @Override
@@ -71,18 +70,18 @@ class DocumentTemplateAsyncBean implements Bean<DocumentTemplateAsync>, Passivat
     }
 
     @Override
-    public DocumentTemplateAsync create(CreationalContext<DocumentTemplateAsync> creationalContext) {
+    public GraphTemplate create(CreationalContext<GraphTemplate> creationalContext) {
 
-        DocumentTemplateAsyncProducer producer = getInstance(DocumentTemplateAsyncProducer.class);
-        DocumentCollectionManagerAsync manager = getManager();
+        GraphTemplateProducer producer = getInstance(GraphTemplateProducer.class);
+        Graph manager = getGraph();
         return producer.get(manager);
     }
 
-    private DocumentCollectionManagerAsync getManager() {
-        Bean<DocumentCollectionManagerAsync> bean = (Bean<DocumentCollectionManagerAsync>) beanManager.getBeans(DocumentCollectionManagerAsync.class,
-                DatabaseQualifier.ofDocument(provider)).iterator().next();
-        CreationalContext<DocumentCollectionManagerAsync> ctx = beanManager.createCreationalContext(bean);
-        return (DocumentCollectionManagerAsync) beanManager.getReference(bean, DocumentCollectionManagerAsync.class, ctx);
+    private Graph getGraph() {
+        Bean<Graph> bean = (Bean<Graph>) beanManager.getBeans(Graph.class,
+                DatabaseQualifier.ofGraph(provider) ).iterator().next();
+        CreationalContext<Graph> ctx = beanManager.createCreationalContext(bean);
+        return (Graph) beanManager.getReference(bean, Graph.class, ctx);
     }
 
 
@@ -94,7 +93,7 @@ class DocumentTemplateAsyncBean implements Bean<DocumentTemplateAsync>, Passivat
 
 
     @Override
-    public void destroy(DocumentTemplateAsync instance, CreationalContext<DocumentTemplateAsync> creationalContext) {
+    public void destroy(GraphTemplate instance, CreationalContext<GraphTemplate> creationalContext) {
 
     }
 
@@ -130,7 +129,7 @@ class DocumentTemplateAsyncBean implements Bean<DocumentTemplateAsync>, Passivat
 
     @Override
     public String getId() {
-        return DocumentTemplateAsync.class.getName() + DatabaseType.COLUMN + "-" + provider;
+        return GraphTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
     }
 
 }

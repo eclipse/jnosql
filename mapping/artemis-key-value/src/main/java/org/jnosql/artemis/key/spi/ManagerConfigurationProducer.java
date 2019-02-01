@@ -16,7 +16,6 @@ package org.jnosql.artemis.key.spi;
 
 import org.jnosql.artemis.ConfigurationException;
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.key.KeyValueTemplateProducer;
 import org.jnosql.artemis.util.StringUtils;
 import org.jnosql.diana.api.key.BucketManager;
@@ -30,28 +29,26 @@ import javax.inject.Inject;
 import static org.jnosql.artemis.util.ConfigurationUnitUtils.getConfigurationUnit;
 
 /**
- * It creates a {@link KeyValueTemplate} from a ConfigurationUnit annotation.
+ * It creates a {@link BucketManager} from a ConfigurationUnit annotation.
  */
 @ApplicationScoped
-class KeyValueTemplateConfigurationProducer {
+class ManagerConfigurationProducer {
 
     @Inject
-    private BucketManagerConfigurationProducer configurationProducer;
+    private KeyValueConfigurationProducer configurationProducer;
 
     @Inject
     private KeyValueTemplateProducer producer;
 
     @ConfigurationUnit
     @Produces
-    public KeyValueTemplate getKeyValueTemplate(InjectionPoint injectionPoint) {
-        BucketManagerFactory bucketManagerFactory = configurationProducer.getBucketManager(injectionPoint);
+    public BucketManager get(InjectionPoint injectionPoint) {
+        BucketManagerFactory bucketManagerFactory = configurationProducer.get(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
-            throw new ConfigurationException("To create a KeyValueTemplate from a ConfigurationUnit the database field is required");
+            throw new ConfigurationException("The field database at ConfigurationUnit annotation is required");
         }
-        BucketManager bucketManager = bucketManagerFactory.getBucketManager(database);
-        return producer.get(bucketManager);
+        return bucketManagerFactory.getBucketManager(database);
     }
-
 }

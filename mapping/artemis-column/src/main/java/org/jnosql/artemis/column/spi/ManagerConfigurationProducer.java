@@ -14,12 +14,11 @@
  */
 package org.jnosql.artemis.column.spi;
 
+
 import org.jnosql.artemis.ConfigurationException;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
-import org.jnosql.artemis.column.ColumnTemplateAsyncProducer;
-import org.jnosql.artemis.column.ColumnTemplateProducer;
 import org.jnosql.artemis.util.StringUtils;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
@@ -37,42 +36,34 @@ import static org.jnosql.artemis.util.ConfigurationUnitUtils.getConfigurationUni
  * It creates both a {@link ColumnTemplate} and a {@link ColumnTemplateAsync} from a ConfigurationUnit annotation.
  */
 @ApplicationScoped
-class ColumnTemplateConfigurationProducer {
+class ManagerConfigurationProducer {
 
 
-    @Inject
-    private ColumnFamilyManagerConfigurationProducer configurationProducer;
 
     @Inject
-    private ColumnTemplateProducer producer;
-
-    @Inject
-    private ColumnTemplateAsyncProducer asyncProducer;
-
+    private ColumnConfigurationProducer configurationProducer;
 
     @ConfigurationUnit
     @Produces
-    public ColumnTemplate getTemplate(InjectionPoint injectionPoint) {
-        ColumnFamilyManagerFactory<?> managerFactory = configurationProducer.getColumnConfiguration(injectionPoint);
+    public ColumnFamilyManager get(InjectionPoint injectionPoint) {
+        ColumnFamilyManagerFactory<?> managerFactory = configurationProducer.get(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
-            throw new ConfigurationException("To create a DocumentTemplate from a ConfigurationUnit the database field is required");
+            throw new ConfigurationException("The field database at ConfigurationUnit annotation is required");
         }
-        ColumnFamilyManager manager = managerFactory.get(database);
-        return producer.get(manager);
+        return managerFactory.get(database);
     }
 
     @ConfigurationUnit
     @Produces
-    public ColumnTemplateAsync getTemplateAsync(InjectionPoint injectionPoint) {
-        ColumnFamilyManagerAsyncFactory<?> managerFactory = configurationProducer.getColumnConfigurationAsync(injectionPoint);
+    public ColumnFamilyManagerAsync getAsync(InjectionPoint injectionPoint) {
+        ColumnFamilyManagerAsyncFactory<?> managerFactory = configurationProducer.getAsync(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
-            throw new ConfigurationException("To create a DocumentTemplateAsync from a ConfigurationUnit the database field is required");
+            throw new ConfigurationException("The field database at ConfigurationUnit annotation is required");
         }
-        ColumnFamilyManagerAsync manager = managerFactory.getAsync(database);
-        return asyncProducer.get(manager);
+        return managerFactory.getAsync(database);
     }
 }

@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(CDIExtension.class)
-public class ColumnFamilyManagerConfigurationProducerTest {
+public class ColumnConfigurationProducerTest {
 
 
     @Inject

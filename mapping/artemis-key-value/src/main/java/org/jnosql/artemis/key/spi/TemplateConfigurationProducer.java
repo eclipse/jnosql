@@ -15,32 +15,33 @@
 package org.jnosql.artemis.key.spi;
 
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.key.KeyRepositorySupplier;
-import org.jnosql.artemis.key.KeyValueRepositoryProducer;
 import org.jnosql.artemis.key.KeyValueTemplate;
+import org.jnosql.artemis.key.KeyValueTemplateProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
-import java.lang.reflect.ParameterizedType;
 
+/**
+ * It creates a {@link KeyValueTemplate} from a ConfigurationUnit annotation.
+ */
 @ApplicationScoped
-class KeyValueRepositoryConfigurationProducer {
+class TemplateConfigurationProducer {
 
     @Inject
-    private KeyValueRepositoryProducer producer;
+    private KeyValueConfigurationProducer configurationProducer;
 
     @Inject
-    private KeyValueTemplateConfigurationProducer configurationProducer;
+    private KeyValueTemplateProducer producer;
+
+    @Inject
+    private ManagerConfigurationProducer managerProducer;
 
     @ConfigurationUnit
     @Produces
-    public <K, V, R extends Repository<?,?>, E extends Repository<K, V>> KeyRepositorySupplier<R> get(InjectionPoint injectionPoint) {
-        ParameterizedType type = (ParameterizedType) injectionPoint.getType();
-        Class<E> repository = (Class) type.getActualTypeArguments()[0];
-        KeyValueTemplate template = configurationProducer.getKeyValueTemplate(injectionPoint);
-        return () -> (R) producer.get(repository, template);
+    public KeyValueTemplate get(InjectionPoint injectionPoint) {
+        return producer.get(managerProducer.get(injectionPoint));
     }
+
 }

@@ -97,12 +97,12 @@ public class DocumentCollectionProducerExtension implements Extension {
                 databases.size(), crudTypes.size(), crudAsyncTypes.size()));
 
         databases.forEach(type -> {
-            final DocumentTemplateBean bean = new DocumentTemplateBean(beanManager, type.getProvider());
+            final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 
         databasesAsync.forEach(type -> {
-            final DocumentTemplateAsyncBean bean = new DocumentTemplateAsyncBean(beanManager, type.getProvider());
+            final TemplateAsyncBean bean = new TemplateAsyncBean(beanManager, type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 

@@ -35,7 +35,7 @@ import static org.jnosql.artemis.util.ConfigurationUnitUtils.getConfigurationUni
  * The class that creates {@link BucketManagerFactory} from the {@link ConfigurationUnit}
  */
 @ApplicationScoped
-class BucketManagerConfigurationProducer {
+class KeyValueConfigurationProducer {
 
 
     @Inject
@@ -46,13 +46,13 @@ class BucketManagerConfigurationProducer {
 
     @ConfigurationUnit
     @Produces
-    public <T extends BucketManager> BucketManagerFactory<T> getBucketManagerGenerics(InjectionPoint injectionPoint) {
+    public <T extends BucketManager> BucketManagerFactory<T> getGenerics(InjectionPoint injectionPoint) {
         return getBuckerManagerFactocy(injectionPoint);
     }
 
     @ConfigurationUnit
     @Produces
-    public BucketManagerFactory getBucketManager(InjectionPoint injectionPoint) {
+    public BucketManagerFactory get(InjectionPoint injectionPoint) {
         return getBuckerManagerFactocy(injectionPoint);
     }
 

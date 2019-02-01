@@ -31,7 +31,7 @@ import javax.inject.Inject;
 import java.lang.reflect.ParameterizedType;
 
 @ApplicationScoped
-class ColumnRepositoryConfigurationProducer {
+class RepositoryConfigurationProducer {
 
     @Inject
     private ColumnRepositoryProducer producer;
@@ -40,14 +40,14 @@ class ColumnRepositoryConfigurationProducer {
     private ColumnRepositoryAsyncProducer producerAsync;
 
     @Inject
-    private ColumnTemplateConfigurationProducer configurationProducer;
+    private TemplateConfigurationProducer configurationProducer;
 
     @ConfigurationUnit
     @Produces
     public <K, V, R extends Repository<?,?>, E extends Repository<K, V>> ColumnRepositorySupplier<R> get(InjectionPoint injectionPoint) {
         ParameterizedType type = (ParameterizedType) injectionPoint.getType();
         Class<E> repository = (Class) type.getActualTypeArguments()[0];
-        ColumnTemplate template = configurationProducer.getTemplate(injectionPoint);
+        ColumnTemplate template = configurationProducer.get(injectionPoint);
         return () -> (R) producer.get(repository, template);
     }
 
@@ -56,7 +56,7 @@ class ColumnRepositoryConfigurationProducer {
     public <K, V, R extends RepositoryAsync<?,?>, E extends RepositoryAsync<K, V>> ColumnRepositoryAsyncSupplier<R> getAsync(InjectionPoint injectionPoint) {
         ParameterizedType type = (ParameterizedType) injectionPoint.getType();
         Class<E> repository = (Class) type.getActualTypeArguments()[0];
-        ColumnTemplateAsync template = configurationProducer.getTemplateAsync(injectionPoint);
+        ColumnTemplateAsync template = configurationProducer.getAsync(injectionPoint);
         return () -> (R) producerAsync.get(repository, template);
     }
 

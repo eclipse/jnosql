@@ -12,12 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.document;
+package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsyncFactory;
-import org.jnosql.diana.api.document.DocumentCollectionManagerFactory;
+import org.jnosql.diana.api.column.ColumnFamilyManagerAsyncFactory;
+import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -28,41 +28,42 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(CDIExtension.class)
-public class DocumentCollectionConfigurationProducerXMLTest {
-
-    @Inject
-    @ConfigurationUnit(fileName = "document.xml", name = "name")
-    private DocumentCollectionManagerFactory<?> factoryA;
-
-    @Inject
-    @ConfigurationUnit(fileName = "document.xml", name = "name-2")
-    private DocumentCollectionManagerFactory factoryB;
+public class ColumnConfigurationProducerXMLTest {
 
 
     @Inject
-    @ConfigurationUnit(fileName = "document.xml", name = "name")
-    private DocumentCollectionManagerAsyncFactory<?> factoryAsyncA;
+    @ConfigurationUnit(fileName = "column.xml", name = "name")
+    private ColumnFamilyManagerFactory<?> factoryA;
 
     @Inject
-    @ConfigurationUnit(fileName = "document.xml", name = "name-2")
-    private DocumentCollectionManagerAsyncFactory factoryAsyncB;
+    @ConfigurationUnit(fileName = "column.xml", name = "name-2")
+    private ColumnFamilyManagerFactory factoryB;
+
+
+    @Inject
+    @ConfigurationUnit(fileName = "column.xml", name = "name")
+    private ColumnFamilyManagerAsyncFactory<?> factoryAsyncA;
+
+    @Inject
+    @ConfigurationUnit(fileName = "column.xml", name = "name-2")
+    private ColumnFamilyManagerAsyncFactory factoryAsyncB;
 
 
     @Test
-    public void shouldReadInjectDocumentCollection() {
+    public void shouldReadInjectColumnFamily() {
         factoryA.get("database");
-        assertTrue(DocumentCollectionManagerMock.DocumentMock.class.isInstance(factoryA));
-        DocumentCollectionManagerMock.DocumentMock mock = DocumentCollectionManagerMock.DocumentMock.class.cast(factoryA);
+        assertTrue(ColumnFamilyManagerMock.MockFamilyManager.class.isInstance(factoryA));
+        ColumnFamilyManagerMock.MockFamilyManager mock = ColumnFamilyManagerMock.MockFamilyManager.class.cast(factoryA);
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
     }
 
     @Test
-    public void shouldReadInjectDocumentCollectionB() {
+    public void shouldReadInjectColumnFamilyB() {
         factoryB.get("database");
-        assertTrue(DocumentCollectionManagerMock.DocumentMock.class.isInstance(factoryB));
-        DocumentCollectionManagerMock.DocumentMock mock = DocumentCollectionManagerMock.DocumentMock.class.cast(factoryB);
+        assertTrue(ColumnFamilyManagerMock.MockFamilyManager.class.isInstance(factoryB));
+        ColumnFamilyManagerMock.MockFamilyManager mock = ColumnFamilyManagerMock.MockFamilyManager.class.cast(factoryB);
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
@@ -70,23 +71,24 @@ public class DocumentCollectionConfigurationProducerXMLTest {
     }
 
     @Test
-    public void shouldReadInjectDocumentCollectionAsync() {
+    public void shouldReadInjectColumnFamilyAsync() {
         factoryAsyncA.getAsync("database");
-        assertTrue(DocumentCollectionManagerMock.DocumentMock.class.isInstance(factoryAsyncA));
-        DocumentCollectionManagerMock.DocumentMock mock = DocumentCollectionManagerMock.DocumentMock.class.cast(factoryAsyncA);
+        assertTrue(ColumnFamilyManagerMock.MockFamilyManager.class.isInstance(factoryAsyncA));
+        ColumnFamilyManagerMock.MockFamilyManager mock = ColumnFamilyManagerMock.MockFamilyManager.class.cast(factoryAsyncA);
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
     }
 
     @Test
-    public void shouldReadInjectDocumentCollectionAsyncB() {
+    public void shouldReadInjectColumnFamilyBAsync() {
         factoryAsyncB.getAsync("database");
-        assertTrue(DocumentCollectionManagerMock.DocumentMock.class.isInstance(factoryAsyncB));
-        DocumentCollectionManagerMock.DocumentMock mock = DocumentCollectionManagerMock.DocumentMock.class.cast(factoryAsyncB);
+        assertTrue(ColumnFamilyManagerMock.MockFamilyManager.class.isInstance(factoryAsyncB));
+        ColumnFamilyManagerMock.MockFamilyManager mock = ColumnFamilyManagerMock.MockFamilyManager.class.cast(factoryAsyncB);
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
         assertEquals("value3", settings.get("key3"));
     }
+
 }

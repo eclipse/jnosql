@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(CDIExtension.class)
-public class BucketManagerConfigurationProducerXMLTest {
+public class KeyValueConfigurationProducerXMLTest {
 
     @Inject
     @ConfigurationUnit(fileName = "key-value.xml", name = "name")

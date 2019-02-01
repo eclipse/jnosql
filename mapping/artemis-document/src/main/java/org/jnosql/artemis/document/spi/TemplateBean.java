@@ -12,14 +12,14 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.column.spi;
+package org.jnosql.artemis.document.spi;
 
 
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
-import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.artemis.column.ColumnTemplateProducer;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.artemis.document.DocumentTemplate;
+import org.jnosql.artemis.document.DocumentTemplateProducer;
+import org.jnosql.diana.api.document.DocumentCollectionManager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -32,7 +32,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class ColumnTemplateBean implements Bean<ColumnTemplate>, PassivationCapable {
+class TemplateBean implements Bean<DocumentTemplate>, PassivationCapable {
 
     private final BeanManager beanManager;
 
@@ -48,16 +48,16 @@ class ColumnTemplateBean implements Bean<ColumnTemplate>, PassivationCapable {
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public ColumnTemplateBean(BeanManager beanManager, String provider) {
+    public TemplateBean(BeanManager beanManager, String provider) {
         this.beanManager = beanManager;
-        this.types = Collections.singleton(ColumnTemplate.class);
+        this.types = Collections.singleton(DocumentTemplate.class);
         this.provider = provider;
-        this.qualifiers = Collections.singleton(DatabaseQualifier.ofColumn(provider));
+        this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));
     }
 
     @Override
     public Class<?> getBeanClass() {
-        return ColumnTemplate.class;
+        return DocumentTemplate.class;
     }
 
     @Override
@@ -71,18 +71,18 @@ class ColumnTemplateBean implements Bean<ColumnTemplate>, PassivationCapable {
     }
 
     @Override
-    public ColumnTemplate create(CreationalContext<ColumnTemplate> creationalContext) {
+    public DocumentTemplate create(CreationalContext<DocumentTemplate> creationalContext) {
 
-        ColumnTemplateProducer producer = getInstance(ColumnTemplateProducer.class);
-        ColumnFamilyManager columnFamilyManager = getColumnFamilyManager();
-        return producer.get(columnFamilyManager);
+        DocumentTemplateProducer producer = getInstance(DocumentTemplateProducer.class);
+        DocumentCollectionManager manager = getManager();
+        return producer.get(manager);
     }
 
-    private ColumnFamilyManager getColumnFamilyManager() {
-        Bean<ColumnFamilyManager> bean = (Bean<ColumnFamilyManager>) beanManager.getBeans(ColumnFamilyManager.class,
-                DatabaseQualifier.ofColumn(provider) ).iterator().next();
-        CreationalContext<ColumnFamilyManager> ctx = beanManager.createCreationalContext(bean);
-        return (ColumnFamilyManager) beanManager.getReference(bean, ColumnFamilyManager.class, ctx);
+    private DocumentCollectionManager getManager() {
+        Bean<DocumentCollectionManager> bean = (Bean<DocumentCollectionManager>) beanManager.getBeans(DocumentCollectionManager.class,
+                DatabaseQualifier.ofDocument(provider) ).iterator().next();
+        CreationalContext<DocumentCollectionManager> ctx = beanManager.createCreationalContext(bean);
+        return (DocumentCollectionManager) beanManager.getReference(bean, DocumentCollectionManager.class, ctx);
     }
 
 
@@ -94,7 +94,7 @@ class ColumnTemplateBean implements Bean<ColumnTemplate>, PassivationCapable {
 
 
     @Override
-    public void destroy(ColumnTemplate instance, CreationalContext<ColumnTemplate> creationalContext) {
+    public void destroy(DocumentTemplate instance, CreationalContext<DocumentTemplate> creationalContext) {
 
     }
 
@@ -130,7 +130,7 @@ class ColumnTemplateBean implements Bean<ColumnTemplate>, PassivationCapable {
 
     @Override
     public String getId() {
-        return ColumnTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
+        return DocumentTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
     }
 
 }

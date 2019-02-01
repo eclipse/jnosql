@@ -12,13 +12,14 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.graph.spi;
+package org.jnosql.artemis.column.spi;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
+
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
-import org.jnosql.artemis.graph.GraphTemplate;
-import org.jnosql.artemis.graph.GraphTemplateProducer;
+import org.jnosql.artemis.column.ColumnTemplateAsync;
+import org.jnosql.artemis.column.ColumnTemplateAsyncProducer;
+import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -31,7 +32,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
+class TemplateAsyncBean implements Bean<ColumnTemplateAsync>, PassivationCapable {
 
     private final BeanManager beanManager;
 
@@ -47,16 +48,16 @@ class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public GraphTemplateBean(BeanManager beanManager, String provider) {
+    public TemplateAsyncBean(BeanManager beanManager, String provider) {
         this.beanManager = beanManager;
-        this.types = Collections.singleton(GraphTemplate.class);
+        this.types = Collections.singleton(ColumnTemplateAsync.class);
         this.provider = provider;
-        this.qualifiers = Collections.singleton(DatabaseQualifier.ofGraph(provider));
+        this.qualifiers = Collections.singleton(DatabaseQualifier.ofColumn(provider));
     }
 
     @Override
     public Class<?> getBeanClass() {
-        return GraphTemplate.class;
+        return ColumnTemplateAsync.class;
     }
 
     @Override
@@ -70,18 +71,18 @@ class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
     }
 
     @Override
-    public GraphTemplate create(CreationalContext<GraphTemplate> creationalContext) {
+    public ColumnTemplateAsync create(CreationalContext<ColumnTemplateAsync> creationalContext) {
 
-        GraphTemplateProducer producer = getInstance(GraphTemplateProducer.class);
-        Graph manager = getGraph();
-        return producer.get(manager);
+        ColumnTemplateAsyncProducer producer = getInstance(ColumnTemplateAsyncProducer.class);
+        ColumnFamilyManagerAsync columnFamilyManager = getColumnFamilyManager();
+        return producer.get(columnFamilyManager);
     }
 
-    private Graph getGraph() {
-        Bean<Graph> bean = (Bean<Graph>) beanManager.getBeans(Graph.class,
-                DatabaseQualifier.ofGraph(provider) ).iterator().next();
-        CreationalContext<Graph> ctx = beanManager.createCreationalContext(bean);
-        return (Graph) beanManager.getReference(bean, Graph.class, ctx);
+    private ColumnFamilyManagerAsync getColumnFamilyManager() {
+        Bean<ColumnFamilyManagerAsync> bean = (Bean<ColumnFamilyManagerAsync>) beanManager.getBeans(ColumnFamilyManagerAsync.class,
+                DatabaseQualifier.ofColumn(provider)).iterator().next();
+        CreationalContext<ColumnFamilyManagerAsync> ctx = beanManager.createCreationalContext(bean);
+        return (ColumnFamilyManagerAsync) beanManager.getReference(bean, ColumnFamilyManagerAsync.class, ctx);
     }
 
 
@@ -91,9 +92,8 @@ class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
 
-
     @Override
-    public void destroy(GraphTemplate instance, CreationalContext<GraphTemplate> creationalContext) {
+    public void destroy(ColumnTemplateAsync instance, CreationalContext<ColumnTemplateAsync> creationalContext) {
 
     }
 
@@ -129,7 +129,7 @@ class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
 
     @Override
     public String getId() {
-        return GraphTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
+        return ColumnTemplateAsync.class.getName() + DatabaseType.COLUMN + "-" + provider;
     }
 
 }

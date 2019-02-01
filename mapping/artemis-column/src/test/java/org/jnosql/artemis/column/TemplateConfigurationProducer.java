@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 
 @ExtendWith(CDIExtension.class)
-public class ColumnTemplateConfigurationProducer {
+public class TemplateConfigurationProducer {
 
 
     @Inject

@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(CDIExtension.class)
-public class BucketManagerConfigurationProducerTest {
+public class KeyValueConfigurationProducerTest {
 
     @Inject
     @ConfigurationUnit(fileName = "key-value.json", name = "name")

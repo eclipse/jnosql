@@ -14,34 +14,31 @@
  */
 package org.jnosql.artemis.graph.spi;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.graph.GraphRepositoryProducer;
-import org.jnosql.artemis.graph.GraphRepositorySupplier;
+import org.jnosql.artemis.graph.GraphTemplate;
+import org.jnosql.artemis.graph.GraphTemplateProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
-import java.lang.reflect.ParameterizedType;
 
+/**
+ * It creates a {@link org.jnosql.artemis.graph.GraphTemplate} from a ConfigurationUnit annotation.
+ */
 @ApplicationScoped
-class GraphRepositoryConfigurationProducer {
-
-    @Inject
-    private GraphRepositoryProducer producer;
+class TemplateConfigurationProducer {
 
     @Inject
     private GraphConfigurationProducer configurationProducer;
 
+    @Inject
+    private GraphTemplateProducer producer;
+
+
     @ConfigurationUnit
     @Produces
-    public <K, V, R extends Repository<?,?>, E extends Repository<K, V>> GraphRepositorySupplier<R> get(InjectionPoint injectionPoint) {
-        ParameterizedType type = (ParameterizedType) injectionPoint.getType();
-        Class<E> repository = (Class) type.getActualTypeArguments()[0];
-        Graph graph = configurationProducer.get(injectionPoint);
-        return () -> (R) producer.get(repository, graph);
+    public GraphTemplate get(InjectionPoint injectionPoint) {
+        return producer.get(configurationProducer.get(injectionPoint));
     }
-
 }

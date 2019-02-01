@@ -71,7 +71,7 @@ public class GraphProducerExtension implements Extension {
                 databases.size(), crudTypes.size()));
 
         databases.forEach(type -> {
-            final GraphTemplateBean bean = new GraphTemplateBean(beanManager, type.getProvider());
+            final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 

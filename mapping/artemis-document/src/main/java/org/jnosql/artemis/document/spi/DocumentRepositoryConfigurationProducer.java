@@ -40,14 +40,14 @@ class DocumentRepositoryConfigurationProducer {
     private DocumentRepositoryAsyncProducer producerAsync;
 
     @Inject
-    private DocumentTemplateConfigurationProducer configurationProducer;
+    private TemplateConfigurationProducer configurationProducer;
 
     @ConfigurationUnit
     @Produces
     public <K, V, R extends Repository<?,?>, E extends Repository<K, V>> DocumentRepositorySupplier<R> get(InjectionPoint injectionPoint) {
         ParameterizedType type = (ParameterizedType) injectionPoint.getType();
         Class<E> repository = (Class) type.getActualTypeArguments()[0];
-        DocumentTemplate template = configurationProducer.getTemplate(injectionPoint);
+        DocumentTemplate template = configurationProducer.get(injectionPoint);
         return () -> (R) producer.get(repository, template);
     }
 
@@ -56,7 +56,7 @@ class DocumentRepositoryConfigurationProducer {
     public <K, V, R extends RepositoryAsync<?,?>, E extends RepositoryAsync<K, V>> DocumentRepositoryAsyncSupplier<R> getAsync(InjectionPoint injectionPoint) {
         ParameterizedType type = (ParameterizedType) injectionPoint.getType();
         Class<E> repository = (Class) type.getActualTypeArguments()[0];
-        DocumentTemplateAsync template = configurationProducer.getTemplateAsync(injectionPoint);
+        DocumentTemplateAsync template = configurationProducer.getAsync(injectionPoint);
         return () -> (R) producerAsync.get(repository, template);
     }
 }

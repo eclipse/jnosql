@@ -41,7 +41,7 @@ class GraphConfigurationProducer {
 
     @ConfigurationUnit
     @Produces
-    public Graph getGraph(InjectionPoint injectionPoint) {
+    public Graph get(InjectionPoint injectionPoint) {
         return getGraphImpl(injectionPoint);
     }
 
