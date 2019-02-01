@@ -14,23 +14,26 @@
  */
 package org.jnosql.artemis.column;
 
+import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
+@ExtendWith(CDIExtension.class)
 class ManagerConfigurationProducerTest {
 
 
     @Inject
-    @ConfigurationUnit(fileName = "document.json", name = "name", database = "database")
+    @ConfigurationUnit(fileName = "column.json", name = "name", database = "database")
     private ColumnFamilyManager manager;
 
     @Inject
-    @ConfigurationUnit(fileName = "document.json", name = "name", database = "database")
+    @ConfigurationUnit(fileName = "column.json", name = "name", database = "database")
     private ColumnFamilyManagerAsync managerAsync;
 
 
