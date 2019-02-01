@@ -28,23 +28,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(CDIExtension.class)
-public class DocumentCollectionConfigurationProducerXMLTest {
+public class DocumentConfigurationProducerTest {
 
     @Inject
-    @ConfigurationUnit(fileName = "document.xml", name = "name")
+    @ConfigurationUnit(fileName = "document.json", name = "name")
     private DocumentCollectionManagerFactory<?> factoryA;
 
     @Inject
-    @ConfigurationUnit(fileName = "document.xml", name = "name-2")
+    @ConfigurationUnit(fileName = "document.json", name = "name-2")
     private DocumentCollectionManagerFactory factoryB;
 
 
     @Inject
-    @ConfigurationUnit(fileName = "document.xml", name = "name")
+    @ConfigurationUnit(fileName = "document.json", name = "name")
     private DocumentCollectionManagerAsyncFactory<?> factoryAsyncA;
 
     @Inject
-    @ConfigurationUnit(fileName = "document.xml", name = "name-2")
+    @ConfigurationUnit(fileName = "document.json", name = "name-2")
     private DocumentCollectionManagerAsyncFactory factoryAsyncB;
 
 
@@ -84,6 +84,7 @@ public class DocumentCollectionConfigurationProducerXMLTest {
         factoryAsyncB.getAsync("database");
         assertTrue(DocumentCollectionManagerMock.DocumentMock.class.isInstance(factoryAsyncB));
         DocumentCollectionManagerMock.DocumentMock mock = DocumentCollectionManagerMock.DocumentMock.class.cast(factoryAsyncB);
+
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));

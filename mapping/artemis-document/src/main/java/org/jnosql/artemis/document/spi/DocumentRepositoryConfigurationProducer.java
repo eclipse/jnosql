@@ -40,7 +40,7 @@ class DocumentRepositoryConfigurationProducer {
     private DocumentRepositoryAsyncProducer producerAsync;
 
     @Inject
-    private DocumentTemplateConfigurationProducer configurationProducer;
+    private TemplateConfigurationProducer configurationProducer;
 
     @ConfigurationUnit
     @Produces

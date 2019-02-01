@@ -17,9 +17,9 @@ package org.jnosql.artemis.document.spi;
 
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
-import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.artemis.document.DocumentTemplateAsyncProducer;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
+import org.jnosql.artemis.document.DocumentTemplate;
+import org.jnosql.artemis.document.DocumentTemplateProducer;
+import org.jnosql.diana.api.document.DocumentCollectionManager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -32,7 +32,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class DocumentTemplateAsyncBean implements Bean<DocumentTemplateAsync>, PassivationCapable {
+class TemplateBean implements Bean<DocumentTemplate>, PassivationCapable {
 
     private final BeanManager beanManager;
 
@@ -48,16 +48,16 @@ class DocumentTemplateAsyncBean implements Bean<DocumentTemplateAsync>, Passivat
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public DocumentTemplateAsyncBean(BeanManager beanManager, String provider) {
+    public TemplateBean(BeanManager beanManager, String provider) {
         this.beanManager = beanManager;
-        this.types = Collections.singleton(DocumentTemplateAsync.class);
+        this.types = Collections.singleton(DocumentTemplate.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));
     }
 
     @Override
     public Class<?> getBeanClass() {
-        return DocumentTemplateAsync.class;
+        return DocumentTemplate.class;
     }
 
     @Override
@@ -71,18 +71,18 @@ class DocumentTemplateAsyncBean implements Bean<DocumentTemplateAsync>, Passivat
     }
 
     @Override
-    public DocumentTemplateAsync create(CreationalContext<DocumentTemplateAsync> creationalContext) {
+    public DocumentTemplate create(CreationalContext<DocumentTemplate> creationalContext) {
 
-        DocumentTemplateAsyncProducer producer = getInstance(DocumentTemplateAsyncProducer.class);
-        DocumentCollectionManagerAsync manager = getManager();
+        DocumentTemplateProducer producer = getInstance(DocumentTemplateProducer.class);
+        DocumentCollectionManager manager = getManager();
         return producer.get(manager);
     }
 
-    private DocumentCollectionManagerAsync getManager() {
-        Bean<DocumentCollectionManagerAsync> bean = (Bean<DocumentCollectionManagerAsync>) beanManager.getBeans(DocumentCollectionManagerAsync.class,
-                DatabaseQualifier.ofDocument(provider)).iterator().next();
-        CreationalContext<DocumentCollectionManagerAsync> ctx = beanManager.createCreationalContext(bean);
-        return (DocumentCollectionManagerAsync) beanManager.getReference(bean, DocumentCollectionManagerAsync.class, ctx);
+    private DocumentCollectionManager getManager() {
+        Bean<DocumentCollectionManager> bean = (Bean<DocumentCollectionManager>) beanManager.getBeans(DocumentCollectionManager.class,
+                DatabaseQualifier.ofDocument(provider) ).iterator().next();
+        CreationalContext<DocumentCollectionManager> ctx = beanManager.createCreationalContext(bean);
+        return (DocumentCollectionManager) beanManager.getReference(bean, DocumentCollectionManager.class, ctx);
     }
 
 
@@ -94,7 +94,7 @@ class DocumentTemplateAsyncBean implements Bean<DocumentTemplateAsync>, Passivat
 
 
     @Override
-    public void destroy(DocumentTemplateAsync instance, CreationalContext<DocumentTemplateAsync> creationalContext) {
+    public void destroy(DocumentTemplate instance, CreationalContext<DocumentTemplate> creationalContext) {
 
     }
 
@@ -130,7 +130,7 @@ class DocumentTemplateAsyncBean implements Bean<DocumentTemplateAsync>, Passivat
 
     @Override
     public String getId() {
-        return DocumentTemplateAsync.class.getName() + DatabaseType.COLUMN + "-" + provider;
+        return DocumentTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
     }
 
 }

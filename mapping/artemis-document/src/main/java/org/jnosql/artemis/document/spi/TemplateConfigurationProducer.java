@@ -29,7 +29,7 @@ import javax.inject.Inject;
  * It creates both a {@link DocumentTemplate} and a {@link DocumentTemplateAsync} from a ConfigurationUnit annotation.
  */
 @ApplicationScoped
-class DocumentTemplateConfigurationProducer {
+class TemplateConfigurationProducer {
 
     @Inject
     private DocumentTemplateProducer producer;

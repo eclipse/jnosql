@@ -36,12 +36,12 @@ import static org.jnosql.artemis.util.ConfigurationUnitUtils.getConfigurationUni
 class ManagerConfigurationProducer {
 
     @Inject
-    private DocumentCollectionConfigurationProducer configurationProducer;
+    private DocumentConfigurationProducer configurationProducer;
 
     @ConfigurationUnit
     @Produces
     public DocumentCollectionManager get(InjectionPoint injectionPoint) {
-        DocumentCollectionManagerFactory<?> managerFactory = configurationProducer.getDocumentConfiguration(injectionPoint);
+        DocumentCollectionManagerFactory<?> managerFactory = configurationProducer.get(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
@@ -53,7 +53,7 @@ class ManagerConfigurationProducer {
     @ConfigurationUnit
     @Produces
     public DocumentCollectionManagerAsync getAsync(InjectionPoint injectionPoint) {
-        DocumentCollectionManagerAsyncFactory<?> managerFactory = configurationProducer.getDocumentManagerAsync(injectionPoint);
+        DocumentCollectionManagerAsyncFactory<?> managerFactory = configurationProducer.getAsync(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
