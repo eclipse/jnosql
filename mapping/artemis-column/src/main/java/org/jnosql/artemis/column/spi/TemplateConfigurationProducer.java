@@ -37,11 +37,11 @@ import static org.jnosql.artemis.util.ConfigurationUnitUtils.getConfigurationUni
  * It creates both a {@link ColumnTemplate} and a {@link ColumnTemplateAsync} from a ConfigurationUnit annotation.
  */
 @ApplicationScoped
-class ColumnTemplateConfigurationProducer {
+class TemplateConfigurationProducer {
 
 
     @Inject
-    private ColumnFamilyManagerConfigurationProducer configurationProducer;
+    private ColumnConfigurationProducer configurationProducer;
 
     @Inject
     private ColumnTemplateProducer producer;

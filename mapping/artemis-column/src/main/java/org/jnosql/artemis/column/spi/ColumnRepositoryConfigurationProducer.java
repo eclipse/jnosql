@@ -40,7 +40,7 @@ class ColumnRepositoryConfigurationProducer {
     private ColumnRepositoryAsyncProducer producerAsync;
 
     @Inject
-    private ColumnTemplateConfigurationProducer configurationProducer;
+    private TemplateConfigurationProducer configurationProducer;
 
     @ConfigurationUnit
     @Produces
