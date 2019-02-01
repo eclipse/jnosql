@@ -32,9 +32,6 @@ import javax.inject.Inject;
 class DocumentTemplateConfigurationProducer {
 
     @Inject
-    private DocumentCollectionConfigurationProducer configurationProducer;
-
-    @Inject
     private DocumentTemplateProducer producer;
 
     @Inject
