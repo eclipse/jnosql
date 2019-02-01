@@ -40,7 +40,7 @@ class GraphRepositoryConfigurationProducer {
     public <K, V, R extends Repository<?,?>, E extends Repository<K, V>> GraphRepositorySupplier<R> get(InjectionPoint injectionPoint) {
         ParameterizedType type = (ParameterizedType) injectionPoint.getType();
         Class<E> repository = (Class) type.getActualTypeArguments()[0];
-        Graph graph = configurationProducer.getGraph(injectionPoint);
+        Graph graph = configurationProducer.get(injectionPoint);
         return () -> (R) producer.get(repository, graph);
     }
 
