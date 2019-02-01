@@ -40,7 +40,7 @@ class RepositoryConfigurationProducer {
     public <K, V, R extends Repository<?,?>, E extends Repository<K, V>> KeyRepositorySupplier<R> get(InjectionPoint injectionPoint) {
         ParameterizedType type = (ParameterizedType) injectionPoint.getType();
         Class<E> repository = (Class) type.getActualTypeArguments()[0];
-        KeyValueTemplate template = configurationProducer.getKeyValueTemplate(injectionPoint);
+        KeyValueTemplate template = configurationProducer.get(injectionPoint);
         return () -> (R) producer.get(repository, template);
     }
 }
