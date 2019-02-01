@@ -50,27 +50,27 @@ class DocumentCollectionConfigurationProducer {
 
     @ConfigurationUnit
     @Produces
-    public <T extends DocumentCollectionManager> DocumentCollectionManagerFactory<T> getDocumentConfigurationGenerics(InjectionPoint injectionPoint) {
+    public <T extends DocumentCollectionManager> DocumentCollectionManagerFactory<T> getGenerics(InjectionPoint injectionPoint) {
         return getDocumentCollection(injectionPoint);
     }
 
     @ConfigurationUnit
     @Produces
-    public DocumentCollectionManagerFactory getDocumentConfiguration(InjectionPoint injectionPoint) {
+    public DocumentCollectionManagerFactory get(InjectionPoint injectionPoint) {
         return getDocumentCollection(injectionPoint);
     }
 
 
     @ConfigurationUnit
     @Produces
-    public <T extends DocumentCollectionManagerAsync> DocumentCollectionManagerAsyncFactory<T> getDocumentManagerAsyncGenerics(InjectionPoint injectionPoint) {
+    public <T extends DocumentCollectionManagerAsync> DocumentCollectionManagerAsyncFactory<T> getAsyncGenerics(InjectionPoint injectionPoint) {
         return getDocumentCollectionAsync(injectionPoint);
     }
 
 
     @ConfigurationUnit
     @Produces
-    public DocumentCollectionManagerAsyncFactory getDocumentManagerAsync(InjectionPoint injectionPoint) {
+    public DocumentCollectionManagerAsyncFactory getAsync(InjectionPoint injectionPoint) {
         return getDocumentCollectionAsync(injectionPoint);
     }
 
