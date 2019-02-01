@@ -33,10 +33,10 @@ import static org.jnosql.artemis.util.ConfigurationUnitUtils.getConfigurationUni
  * It creates a {@link KeyValueTemplate} from a ConfigurationUnit annotation.
  */
 @ApplicationScoped
-class KeyValueTemplateConfigurationProducer {
+class TemplateConfigurationProducer {
 
     @Inject
-    private BucketManagerConfigurationProducer configurationProducer;
+    private KeyValueConfigurationProducer configurationProducer;
 
     @Inject
     private KeyValueTemplateProducer producer;

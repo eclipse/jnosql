@@ -35,7 +35,7 @@ import static org.jnosql.artemis.util.ConfigurationUnitUtils.getConfigurationUni
  * The class that creates {@link BucketManagerFactory} from the {@link ConfigurationUnit}
  */
 @ApplicationScoped
-class BucketManagerConfigurationProducer {
+class KeyValueConfigurationProducer {
 
 
     @Inject

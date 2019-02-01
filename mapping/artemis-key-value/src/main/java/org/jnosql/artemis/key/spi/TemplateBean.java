@@ -32,7 +32,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class KeyValueTemplateBean implements Bean<KeyValueTemplate>, PassivationCapable {
+class TemplateBean implements Bean<KeyValueTemplate>, PassivationCapable {
 
     private final BeanManager beanManager;
 
@@ -48,7 +48,7 @@ class KeyValueTemplateBean implements Bean<KeyValueTemplate>, PassivationCapable
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public KeyValueTemplateBean(BeanManager beanManager, String provider) {
+    public TemplateBean(BeanManager beanManager, String provider) {
         this.beanManager = beanManager;
         this.types = Collections.singleton(KeyValueTemplate.class);
         this.provider = provider;

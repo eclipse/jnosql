@@ -24,7 +24,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 
 @ExtendWith(CDIExtension.class)
-class KeyValueTemplateConfigurationProducerTest {
+class TemplateConfigurationProducerTest {
 
     @Inject
     @ConfigurationUnit(fileName = "key-value.json", name = "name", database = "database")
