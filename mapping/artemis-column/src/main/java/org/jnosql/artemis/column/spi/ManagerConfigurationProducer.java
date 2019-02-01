@@ -19,8 +19,6 @@ import org.jnosql.artemis.ConfigurationException;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
-import org.jnosql.artemis.column.ColumnTemplateAsyncProducer;
-import org.jnosql.artemis.column.ColumnTemplateProducer;
 import org.jnosql.artemis.util.StringUtils;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
@@ -44,13 +42,6 @@ class ManagerConfigurationProducer {
 
     @Inject
     private ColumnConfigurationProducer configurationProducer;
-
-    @Inject
-    private ColumnTemplateProducer producer;
-
-    @Inject
-    private ColumnTemplateAsyncProducer asyncProducer;
-
 
     @ConfigurationUnit
     @Produces
