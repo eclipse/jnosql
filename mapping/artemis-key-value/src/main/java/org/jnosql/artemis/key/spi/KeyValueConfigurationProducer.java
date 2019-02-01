@@ -46,13 +46,13 @@ class KeyValueConfigurationProducer {
 
     @ConfigurationUnit
     @Produces
-    public <T extends BucketManager> BucketManagerFactory<T> getBucketManagerGenerics(InjectionPoint injectionPoint) {
+    public <T extends BucketManager> BucketManagerFactory<T> getGenerics(InjectionPoint injectionPoint) {
         return getBuckerManagerFactocy(injectionPoint);
     }
 
     @ConfigurationUnit
     @Produces
-    public BucketManagerFactory getBucketManager(InjectionPoint injectionPoint) {
+    public BucketManagerFactory get(InjectionPoint injectionPoint) {
         return getBuckerManagerFactocy(injectionPoint);
     }
 
