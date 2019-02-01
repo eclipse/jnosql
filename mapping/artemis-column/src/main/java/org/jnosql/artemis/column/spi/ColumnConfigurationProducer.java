@@ -50,27 +50,27 @@ class ColumnConfigurationProducer {
 
     @ConfigurationUnit
     @Produces
-    public <T extends ColumnFamilyManager> ColumnFamilyManagerFactory<T> getColumnConfigurationGenerics(InjectionPoint injectionPoint) {
+    public <T extends ColumnFamilyManager> ColumnFamilyManagerFactory<T> getGenerics(InjectionPoint injectionPoint) {
         return gettColumnFamilyManagerFactory(injectionPoint);
     }
 
     @ConfigurationUnit
     @Produces
-    public ColumnFamilyManagerFactory getColumnConfiguration(InjectionPoint injectionPoint) {
+    public ColumnFamilyManagerFactory get(InjectionPoint injectionPoint) {
         return gettColumnFamilyManagerFactory(injectionPoint);
     }
 
 
     @ConfigurationUnit
     @Produces
-    public <T extends ColumnFamilyManagerAsync> ColumnFamilyManagerAsyncFactory<T> getColumnConfigurationAsyncGeneric(InjectionPoint injectionPoint) {
+    public <T extends ColumnFamilyManagerAsync> ColumnFamilyManagerAsyncFactory<T> getAsyncgenerics(InjectionPoint injectionPoint) {
         return gettColumnFamilyManagerAsyncFactory(injectionPoint);
     }
 
 
     @ConfigurationUnit
     @Produces
-    public ColumnFamilyManagerAsyncFactory getColumnConfigurationAsync(InjectionPoint injectionPoint) {
+    public ColumnFamilyManagerAsyncFactory getAsync(InjectionPoint injectionPoint) {
         return gettColumnFamilyManagerAsyncFactory(injectionPoint);
     }
 

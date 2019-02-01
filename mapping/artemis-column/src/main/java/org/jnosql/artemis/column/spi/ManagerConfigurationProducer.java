@@ -46,7 +46,7 @@ class ManagerConfigurationProducer {
     @ConfigurationUnit
     @Produces
     public ColumnFamilyManager get(InjectionPoint injectionPoint) {
-        ColumnFamilyManagerFactory<?> managerFactory = configurationProducer.getColumnConfiguration(injectionPoint);
+        ColumnFamilyManagerFactory<?> managerFactory = configurationProducer.get(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
@@ -58,7 +58,7 @@ class ManagerConfigurationProducer {
     @ConfigurationUnit
     @Produces
     public ColumnFamilyManagerAsync getAsync(InjectionPoint injectionPoint) {
-        ColumnFamilyManagerAsyncFactory<?> managerFactory = configurationProducer.getColumnConfigurationAsync(injectionPoint);
+        ColumnFamilyManagerAsyncFactory<?> managerFactory = configurationProducer.getAsync(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
