@@ -31,7 +31,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
+class TemplateBean implements Bean<GraphTemplate>, PassivationCapable {
 
     private final BeanManager beanManager;
 
@@ -47,7 +47,7 @@ class GraphTemplateBean implements Bean<GraphTemplate>, PassivationCapable {
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public GraphTemplateBean(BeanManager beanManager, String provider) {
+    public TemplateBean(BeanManager beanManager, String provider) {
         this.beanManager = beanManager;
         this.types = Collections.singleton(GraphTemplate.class);
         this.provider = provider;

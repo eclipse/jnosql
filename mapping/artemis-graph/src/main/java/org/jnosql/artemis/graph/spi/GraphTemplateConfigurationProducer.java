@@ -38,7 +38,7 @@ class GraphTemplateConfigurationProducer {
 
     @ConfigurationUnit
     @Produces
-    public GraphTemplate getGraph(InjectionPoint injectionPoint) {
+    public GraphTemplate get(InjectionPoint injectionPoint) {
         return producer.get(configurationProducer.getGraph(injectionPoint));
     }
 }
