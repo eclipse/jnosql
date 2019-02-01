@@ -43,13 +43,13 @@ class DocumentTemplateConfigurationProducer {
 
     @ConfigurationUnit
     @Produces
-    public DocumentTemplate getTemplate(InjectionPoint injectionPoint) {
+    public DocumentTemplate get(InjectionPoint injectionPoint) {
         return producer.get(managerProducer.get(injectionPoint));
     }
 
     @ConfigurationUnit
     @Produces
-    public DocumentTemplateAsync getTemplateAsync(InjectionPoint injectionPoint) {
+    public DocumentTemplateAsync getAsync(InjectionPoint injectionPoint) {
         return asyncProducer.get(managerProducer.getAsync(injectionPoint));
     }
 
