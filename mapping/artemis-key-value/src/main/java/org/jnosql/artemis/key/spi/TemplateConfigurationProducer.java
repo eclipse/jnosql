@@ -44,7 +44,7 @@ class TemplateConfigurationProducer {
     @ConfigurationUnit
     @Produces
     public KeyValueTemplate getKeyValueTemplate(InjectionPoint injectionPoint) {
-        BucketManagerFactory bucketManagerFactory = configurationProducer.getBucketManager(injectionPoint);
+        BucketManagerFactory bucketManagerFactory = configurationProducer.get(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
