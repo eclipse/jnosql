@@ -88,6 +88,7 @@
         <weld.se.core.version>3.1.0.Beta1</weld.se.core.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <checkstyle.excludes>**/antlr/**</checkstyle.excludes>
+        <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
     </properties>
 
     <dependencies>
@@ -464,9 +465,6 @@
         <module>specification</module>
     </modules>
 
-    <properties>
-        <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
-    </properties>
 
 
 </project>
