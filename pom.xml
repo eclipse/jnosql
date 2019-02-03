@@ -464,5 +464,9 @@
         <module>specification</module>
     </modules>
 
+    <properties>
+        <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
+    </properties>
+
 
 </project>

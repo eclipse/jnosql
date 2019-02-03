@@ -82,11 +82,6 @@
         </repository>
     </distributionManagement>
 
-
-    <properties>
-        <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.eclipse</groupId>
