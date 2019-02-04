@@ -46,9 +46,9 @@
 
 
     <scm>
-        <connection>scm:git:git://github.com/eclipse/jnosql-diana.git</connection>
-        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-diana.git</developerConnection>
-        <url>https://github.com/eclipse/jnosql-diana</url>
+        <connection>scm:git:git://github.com/eclipse/jnosql.git</connection>
+        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql.git</developerConnection>
+        <url>https://github.com/eclipse/jnosql</url>
     </scm>
 
     <developers>

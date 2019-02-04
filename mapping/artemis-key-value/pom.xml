@@ -43,8 +43,8 @@
 
 
     <scm>
-        <connection>scm:git:git://github.com/eclipse/jnosql-artemis.git</connection>
-        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql-artemis.git</developerConnection>
+        <connection>scm:git:git://github.com/eclipse/jnosql.git</connection>
+        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql.git</developerConnection>
         <url>https://github.com/eclipse/jnosql-artemis</url>
     </scm>
 
