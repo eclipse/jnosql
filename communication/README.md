@@ -1,4 +1,4 @@
-![Eclipse JNoSQL Diana Project](https://github.com/JNOSQL/diana-site/blob/master/images/duke-diana.png)
+![Eclipse JNoSQL Diana Project](https://github.com/JNOSQL/jnosql.github.io/blob/master/images/duke-diana.png)
 
 # The communication layer, Diana
 
