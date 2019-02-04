@@ -1,6 +1,6 @@
 # Eclipse JNoSQL
 
-![Image of Yaktocat](https://www.eclipse.org/community/eclipse_newsletter/2018/april/images/eclipse_jnosql.png)
+![Eclipse JNOSQL logo](https://www.eclipse.org/community/eclipse_newsletter/2018/april/images/eclipse_jnosql.png)
 
 Eclipse JNoSQL is a Java framework that streamlines the integration of Java applications with NoSQL databases. It defines a set of APIs and provides a standard implementation for most NoSQL databases. This clearly helps to achieve very low coupling with the underlying NoSQL technologies used in applications. The project has two layers:
 
@@ -11,7 +11,7 @@ The project has two layers:
 1. **Mapping Layer**: These APIs help developers to integrate their Java application with the NoSQL database. This layer is annotation-driven and uses technologies like CDI and Bean Validation, making it simple for developers to use. In the traditional RDBMS world, this layer can be compared to the Java Persistence API or object-relational mapping frameworks such as Hibernate.
 
 
-![Image of Yaktocat](https://www.eclipse.org/community/eclipse_newsletter/2018/april/images/jnosql_map.png)
+![Layers](https://www.eclipse.org/community/eclipse_newsletter/2018/april/images/jnosql_map.png)
 
 ## One Mapping API, multiples databases
 
