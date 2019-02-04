@@ -12,7 +12,7 @@ This program and the accompanying materials are made available under the terms o
 
 == Source Code
 
-* https://github.com/eclipse/jnosql-diana.git
+* https://github.com/eclipse/jnosql.git
 
 == Copyright Holders
 
