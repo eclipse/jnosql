@@ -384,6 +384,8 @@ To templates and managers classes the databases field are required:
 * ColumnFamilyManagerAsync
 * ColumnTemplate
 * ColumnTemplateAsync
+* Graph
+* GraphTemplate
 
 
 [source,java]
