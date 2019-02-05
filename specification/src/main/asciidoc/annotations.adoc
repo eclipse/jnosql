@@ -371,6 +371,42 @@ private DocumentCollectionManagerFactory factoryB;
 private BucketManagerFactory factoryB;
 ----
 
+To templates and managers classes the databases field are required:
+
+
+* BucketManager
+* KeyValueTemplate
+* DocumentCollectionManager
+* DocumentCollectionManagerAsync
+* DocumentTemplate
+* DocumentTemplateAsync
+* ColumnFamilyManager
+* ColumnFamilyManagerAsync
+* ColumnTemplate
+* ColumnTemplateAsync
+
+
+[source,java]
+----
+
+@Inject
+@ConfigurationUnit(fileName = "key-value.json", name = "name", database = "database")
+private KeyValueTemplate keyValueTemplate;
+
+@Inject
+@ConfigurationUnit(fileName = "column.json", name = "name", database = "database")
+private ColumnTemplate columnTemplate;
+
+@Inject
+@ConfigurationUnit(fileName = "document.json", name = "name", database = "database")
+private DocumentTemplate documentTemplate;
+
+@Inject
+@ConfigurationUnit(fileName = "graph.json", name = "name", database = "database")
+private GraphTemplate graphTemplate;
+
+----
+
 
 ===== The configuration structure
 
