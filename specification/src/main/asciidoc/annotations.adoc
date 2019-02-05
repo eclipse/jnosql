@@ -410,6 +410,26 @@ private GraphTemplate graphTemplate;
 ----
 
 
+At the repositories interfaces, beyond the name required, as the templates classes, there are repositories supplier:
+
+* KeyValueRepositorySupplier
+* GraphRepositorySupplier
+* ColumnRepositorySupplier
+* ColumnRepositoryAsyncSupplier
+* DocumentRepositorySupplier
+* DocumentRepositoryAsyncSupplier
+
+[source,java]
+----
+
+@Inject
+@ConfigurationUnit(fileName = "document.json", name = "name", database = "database")
+private DocumentRepositorySupplier<PersonRepository> repositorySupplier;
+
+// at a method
+PersonRepository repository = repository.get();
+----
+
 ===== The configuration structure
 
 Each configuration has four fields:
