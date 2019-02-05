@@ -340,69 +340,6 @@ The benefit of using this qualifier instead of creating a new one is that if the
 Storage of the database's configuration such as password and users outside the code is important; Eclipse JNoSQL has the `ConfigurationUnit` annotation that reads the configuration from a file such as XML, YAML, and JSON file. The default configuration structure is within either a **META-INF** or **WEB-INF** folder.
 
 
-
-===== JSON file structure
-
-
-[source,json]
-----
-[
-   {
-      "description":"that is the description",
-      "name":"name",
-      "provider":"class",
-      "settings":{
-         "key":"value"
-      }
-   },
-   {
-      "description":"that is the description",
-      "name":"name-2",
-      "provider":"class",
-      "settings":{
-         "key":"value"
-      }
-   }
-]
-----
-
-===== XML file structure
-
-[source,xml]
-----
-<?xml version="1.0" encoding="UTF-8"?>
-<configurations>
-   <configuration>
-      <description>that is the description</description>
-      <name>name</name>
-      <provider>class</provider>
-      <settings>
-         <entry>
-            <key>key2</key>
-            <value>value2</value>
-         </entry>
-         <entry>
-            <key>key</key>
-            <value>value</value>
-         </entry>
-      </settings>
-   </configuration>
-</configurations>
-----
-
-===== YAML file structure
-
-[source,yaml]
-----
-configurations:
-    - description: that is the description
-      name: name
-      provider: class
-      settings:
-        key: value
-        key2: value2
-----
-
 ===== Injection of the code
 
 With the configuration file, the next step is to inject the dependency into the application. The default behavior supports the following classes:
@@ -430,4 +367,73 @@ private BucketManagerFactory factoryB;
 ----
 
 
+===== The configuration structure
 
+Each configuration has four fields:
+
+* The name: the name of the configuration, it works as an ID
+* description: a description of the configuration, it won't be used
+* provider: the classpath of a configuration implementation.
+* settings: the entry list, as a Map, to be used when it creates the instances.
+
+====== JSON file structure
+
+
+[source,json]
+----
+[
+   {
+      "description":"that is the description",
+      "name":"name",
+      "provider":"class",
+      "settings":{
+         "key":"value"
+      }
+   },
+   {
+      "description":"that is the description",
+      "name":"name-2",
+      "provider":"class",
+      "settings":{
+         "key":"value"
+      }
+   }
+]
+----
+
+====== XML file structure
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<configurations>
+   <configuration>
+      <description>that is the description</description>
+      <name>name</name>
+      <provider>class</provider>
+      <settings>
+         <entry>
+            <key>key2</key>
+            <value>value2</value>
+         </entry>
+         <entry>
+            <key>key</key>
+            <value>value</value>
+         </entry>
+      </settings>
+   </configuration>
+</configurations>
+----
+
+====== YAML file structure
+
+[source,yaml]
+----
+configurations:
+    - description: that is the description
+      name: name
+      provider: class
+      settings:
+        key: value
+        key2: value2
+----
