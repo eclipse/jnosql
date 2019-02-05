@@ -337,7 +337,12 @@ The benefit of using this qualifier instead of creating a new one is that if the
 
 ==== ConfigurationUnit
 
-Storage of the database's configuration such as password and users outside the code is important; Eclipse JNoSQL has the `ConfigurationUnit` annotation that reads the configuration from a file such as XML, YAML, and JSON file. The default configuration structure is within either a **META-INF** or **WEB-INF** folder.
+Storage of the database's configuration such as password and users outside the code is important; Eclipse JNoSQL has the `ConfigurationUnit` annotation that reads the configuration from a file such as XML, YAML, and JSON file. The default configuration structure is within either a **META-INF** or **WEB-INF** folder. The ConfigurationUnit has three fields.
+
+* *fileName*: the field name at the folder, the default value is `jnosql.json`
+* *name*: the name works as ID to find the respective configuration. The default value is empty which will work when there is just a configuration at the file.
+* *database*: to inject the Template, Repository and manager communication the database name is required.
+
 
 
 ===== Injection of the code
