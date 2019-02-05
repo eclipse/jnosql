@@ -333,6 +333,8 @@ private DocumentRepository repositoryB;
 Beyond this annotation, the producer method with the entity manager is required.
 
 The benefit of using this qualifier instead of creating a new one is that if the Manager Entity is produced using `Database` as a qualifier, it will create classes such as DocumentRepository, ColumnRepository, etc. automatically.
+
+
 ==== ConfigurationUnit
 
 Storage of the database's configuration such as password and users outside the code is important; Eclipse JNoSQL has the ConfigurationUnit annotation that reads the configuration from a file such as XML, YAML, and JSON file and inject to create a factory. The default configuration structure is within either a **META-INF** or **WEB-INF** folder.
