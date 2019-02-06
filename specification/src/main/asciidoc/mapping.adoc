@@ -20,13 +20,10 @@ This level is in charge to do integration among technologies such as Bean Valida
 
 To go straight and cover the four NoSQL types, this API has four domains:
 
-* `org.jnosql.persistence.column`
-
-* `org.jnosql.persistence.document`
-
-* `org.jnosql.persistence.graph`
-
-* `org.jnosql.persistence.key`
+* `org.jnosql.artemis.column`
+* `org.jnosql.artemis.document`
+* `org.jnosql.artemis.graph`
+* `org.jnosql.artemis.key`
 
 IMPORTANT: The package name might change on the Jakarta EE process.
 
