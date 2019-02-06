@@ -19,9 +19,9 @@ With the strategy to divide and conquer on JNoSQL, the communication API was bor
 
 To cover the three kinds of database, this API has three packages, one for each database.
 
-* `org.jnosql.column`
-* `org.jnosql.document`
-* `org.jnosql.key`
+* `org.jnosql.diana.column`
+* `org.jnosql.diana.document`
+* `org.jnosql.diana.key`
 
 IMPORTANT: The package name might change on the Jakarta EE process.
 
