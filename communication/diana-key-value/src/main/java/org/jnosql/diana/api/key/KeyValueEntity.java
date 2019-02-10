@@ -31,7 +31,9 @@ import org.jnosql.diana.api.Value;
 @SuppressWarnings("unchecked")
 public interface KeyValueEntity<T> extends Serializable {
 
-
+	public static final String KEY = "key";
+	public static final String VALUE = "value";
+	
     /**
      * Creates a Key value instance
      *
