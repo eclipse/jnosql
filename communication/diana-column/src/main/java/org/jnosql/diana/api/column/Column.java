@@ -21,13 +21,11 @@ package org.jnosql.diana.api.column;
 import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
 
-import java.io.Serializable;
-
 /**
  * A Column Family entity unit, it is a tuple (pair) that consists of a key-value pair,
  * where the key is mapped to a value.
  */
-public interface Column extends Serializable {
+public interface Column  {
 
 
     /**

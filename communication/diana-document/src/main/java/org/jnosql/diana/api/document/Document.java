@@ -21,13 +21,11 @@ package org.jnosql.diana.api.document;
 import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
 
-import java.io.Serializable;
-
 /**
  * A Document Collection Entity unit, it is a tuple (pair) that consists of a key-value pair,
  * where the key is mapped to a value.
  */
-public interface Document extends Serializable {
+public interface Document  {
 
     /**
      * Creates a Document instance

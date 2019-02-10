@@ -20,7 +20,6 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Value;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,7 @@ import java.util.Set;
  * Each column is a tuple (triplet) consisting of a column name, a value, and a timestamp.
  * In a relational database table, this data would be grouped together within a table with other non-related data.
  */
-public interface ColumnEntity extends Serializable {
+public interface ColumnEntity  {
 
 
     /**

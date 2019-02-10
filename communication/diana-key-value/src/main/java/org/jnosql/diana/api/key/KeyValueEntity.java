@@ -18,8 +18,6 @@
 package org.jnosql.diana.api.key;
 
 
-import java.io.Serializable;
-
 import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
 
@@ -29,7 +27,7 @@ import org.jnosql.diana.api.Value;
  * @param <T> the key type
  */
 @SuppressWarnings("unchecked")
-public interface KeyValueEntity<T> extends Serializable {
+public interface KeyValueEntity<T>  {
 
 
     /**
