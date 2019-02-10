@@ -20,7 +20,6 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Value;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ import java.util.Set;
  * Graph databases are similar, but add another layer, the relationship,
  * which allows them to link documents for rapid traversal.
  */
-public interface DocumentEntity extends Serializable {
+public interface DocumentEntity  {
 
     /**
      * Creates a {@link DocumentEntity} instance
