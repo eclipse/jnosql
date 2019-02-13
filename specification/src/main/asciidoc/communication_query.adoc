@@ -124,28 +124,6 @@ select * from God where birthday between "01-09-1988" and "01-09-1988" and salar
 select name, age, adress.age from God skip 20 limit 10 order by name desc age desc
 ----
 
-===== PreparedStatement and PreparedStatementAsync
-
-To run a query dynamically, use the `prepare` method in the manager for instance. It will return a `PreparedStatement` interface. To define a parameter to key-value, document, and column query, use the "@" in front of the name.
-
-[source,java]
-----
-PreparedStatement preparedStatement = documetManager.prepare("select * from Person where name = @name");
-preparedStatement.bind("name", "Ada");
-List<DocumentEntity> adas = preparedStatement.getResultList();
-
-----
-
-[source,java]
-----
-PreparedStatementAsync preparedStatement = documetManagerAsync.prepare("select * from Person where name = @name");
-preparedStatement.bind("name", "Ada");
-Consumer<List<DocumentEntity>> callback = ...;
-preparedStatement.getResultList(callback);
-
-----
-
-
 ===== WHERE
 
 The *WHERE* clause specifies a filter to the result. These filters are boolean operations that are composed of one or more conditions appended with the and (*AND*) and or (*OR*) operators.
@@ -210,5 +188,27 @@ The ORDER BY clause allows selecting the order of the returned results. It takes
 ===== TTL
 
 Both the *INSERT* and *PUT* commands support setting a time for data in an entity to expire. It defines the time to live of an object that is composed of the integer value and then the unit that might be `day`, `hour`, `minute`, `second`, `millisecond`, `nanosecond`. E.g.: `ttl 10 second`
+
+===== PreparedStatement and PreparedStatementAsync
+
+To run a query dynamically, use the `prepare` method in the manager for instance. It will return a `PreparedStatement` interface. To define a parameter to key-value, document, and column query, use the "@" in front of the name.
+
+[source,java]
+----
+PreparedStatement preparedStatement = documetManager.prepare("select * from Person where name = @name");
+preparedStatement.bind("name", "Ada");
+List<DocumentEntity> adas = preparedStatement.getResultList();
+
+----
+
+[source,java]
+----
+PreparedStatementAsync preparedStatement = documetManagerAsync.prepare("select * from Person where name = @name");
+preparedStatement.bind("name", "Ada");
+Consumer<List<DocumentEntity>> callback = ...;
+preparedStatement.getResultList(callback);
+
+----
+
 
 WARNING: For graph API, check https://tinkerpop.apache.org/gremlin.html[Gremlin]

@@ -23,7 +23,7 @@ Status: {revremark}
 
 Release: {revdate}
 
-Copyright (c) 2016-2018 Eclipse JNoSQL Contributors:
+Copyright (c) 2019 Eclipse JNoSQL Contributors:
 {authors}
 
 Licensed under the Apache License, Version 2.0 (the "License"),
