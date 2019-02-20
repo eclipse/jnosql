@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.jnosql.artemis</groupId>
         <artifactId>artemis-parent</artifactId>
-        <version>0.0.8</version>
+        <version>0.0.9-SNAPSHOT</version>
     </parent>
 
     <artifactId>artemis-graph</artifactId>
@@ -73,7 +73,7 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jnosql.query</groupId>
+            <groupId>org.jnosql.diana</groupId>
             <artifactId>jnosql-query-antlr</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -17,7 +17,7 @@
     <parent>
         <groupId>org.jnosql.diana</groupId>
         <artifactId>diana-api</artifactId>
-        <version>0.0.8</version>
+        <version>0.0.9-SNAPSHOT</version>
     </parent>
 
     <artifactId>jnosql-query-antlr</artifactId>
@@ -79,7 +79,7 @@
             <version>${antlr4.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jnosql.query</groupId>
+            <groupId>org.jnosql.diana</groupId>
             <artifactId>jnosql-query-api</artifactId>
             <version>${project.version}</version>
         </dependency>

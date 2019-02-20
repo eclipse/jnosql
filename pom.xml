@@ -22,7 +22,7 @@
 
     <groupId>org.jnosql</groupId>
     <artifactId>jnosql-parent</artifactId>
-    <version>0.0.8</version>
+    <version>0.0.9-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Eclipse JNoSQL</name>
