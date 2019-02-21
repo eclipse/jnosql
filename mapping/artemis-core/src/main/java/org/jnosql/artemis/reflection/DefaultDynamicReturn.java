@@ -40,7 +40,7 @@ public class DefaultDynamicReturn<T> implements DynamicReturn {
      * @param <T>    the return type
      * @return the function that does this conversion
      */
-    public static <T> Function<Supplier<List<T>>, Supplier<Optional<T>>> toSingleResult(final Method method) {
+    public static  Function<Supplier<List<?>>, Supplier<Optional<?>>> toSingleResult(final Method method) {
         return l -> {
             List<T> entities = l.get();
             if (entities.isEmpty()) {

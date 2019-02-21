@@ -99,14 +99,17 @@ public abstract class AbstractColumnRepositoryProxy<T, ID> extends  BaseColumnRe
         }
 
         Supplier<List<?>> listSupplier = () -> entities;
-        Supplier<Optional<?>> singleSupplier = DefaultDynamicReturn.toSingleResult(method).
-        DefaultDynamicReturn<?> dynamicReturn = DefaultDynamicReturn.builder()
+
+        Supplier<Optional<?>> singleSupplier = DefaultDynamicReturn.toSingleResult(method).apply(listSupplier);
+
+        DefaultDynamicReturn dynamicReturn = DefaultDynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
                 .withList(listSupplier)
-                .withSingleResult(() -> ).build();
+                .withSingleResult(singleSupplier)
+                .build();
 
-        return ReturnTypeConverterUtil.returnObject(entities, typeClass, method);
+        returnConverter.convert(dynamicReturn);
     }
 
 }
