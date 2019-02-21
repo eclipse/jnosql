@@ -18,14 +18,37 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ *This instance has information to return at the dynamic query in Repository.
+ */
 public interface DynamicReturn {
 
+
+    /**
+     * The repository class type source.
+     * @param <T> the repository type
+     * @return The repository class type source.
+     */
     <T> Class<T> typeClass();
 
+    /**
+     * The method source at the Repository
+     * @return The method source at the Repository
+     */
     Method getMethod();
 
+    /**
+     * Returns the result as single result
+     * @param <T> the result type
+     * @return the result as single result
+     */
     <T> Optional<T> singleResult();
 
+    /**
+     * Returns the result as {@link List}
+     * @param <T> the result type
+     * @return the result as {@link List}
+     */
     <T> List<T> list();
 
 
