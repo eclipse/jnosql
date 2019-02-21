@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static org.jnosql.artemis.column.query.ReturnTypeConverterUtil.returnObject;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
 
 /**
@@ -115,7 +114,7 @@ public abstract class AbstractColumnRepositoryProxy<T, ID> extends  BaseColumnRe
                 .withSingleResult(singleSupplier)
                 .build();
 
-        returnConverter.convert(dynamicReturn);
+        return returnConverter.convert(dynamicReturn);
     }
 
 }
