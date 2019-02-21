@@ -26,35 +26,49 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Stream;
 
+/**
+ * The converter within the return method at Repository class.
+ */
 public enum DynamicReturnConverter {
 
     INSTANCE;
 
-    public Object returnObject(ColumnQuery query, ColumnTemplate template, Class typeClass, Method method) {
+
+    /**
+     * Converts the entity from the Method return type.
+     *
+     * @param dynamic the information about the method and return source
+     * @return the conversion result
+     * @throws NullPointerException when the dynamic is null
+     */
+    public Object convert(DynamicReturn dynamic) {
+
+        Method method = dynamic.getMethod();
+        Class<?> typeClass = dynamic.typeClass();
         Class<?> returnType = method.getReturnType();
 
         if (typeClass.equals(returnType)) {
-            Optional<Object> optional = template.singleResult(query);
+            Optional<Object> optional = dynamic.singleResult();
             return optional.orElse(null);
 
         } else if (Optional.class.equals(returnType)) {
-            return template.singleResult(query);
+            return dynamic.singleResult();
         } else if (List.class.equals(returnType)
                 || Iterable.class.equals(returnType)
                 || Collection.class.equals(returnType)) {
-            return template.select(query);
+            return dynamic.list();
         } else if (Set.class.equals(returnType)) {
-            return new HashSet<>(template.select(query));
+            return new HashSet<>(dynamic.list());
         } else if (Queue.class.equals(returnType)) {
-            return new PriorityQueue<>(template.select(query));
+            return new PriorityQueue<>(dynamic.list());
         } else if (Stream.class.equals(returnType)) {
-            return template.select(query).stream();
+            return dynamic.list().stream();
         }
 
-        return template.select(query);
+        return dynamic.list();
     }
 
-    <T> Object returnObject(List<T> entities, Class<?> typeClass, Method method) {
+    public <T> Object convert(List<T> entities, Class<?> typeClass, Method method) {
         Class<?> returnType = method.getReturnType();
 
         if (typeClass.equals(returnType)) {
