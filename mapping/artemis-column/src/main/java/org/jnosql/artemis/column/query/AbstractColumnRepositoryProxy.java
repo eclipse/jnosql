@@ -70,8 +70,14 @@ public abstract class AbstractColumnRepositoryProxy<T, ID> extends  BaseColumnRe
 
                 return returnConverter.convert(dynamicReturn);
             case FIND_ALL:
-                return returnObject(select().from(getClassMapping().getName()).build(),
-                        getTemplate(), typeClass, method);
+
+                ColumnQuery queryFindAll = select().from(getClassMapping().getName()).build();
+                DefaultDynamicReturn<?> dynamicReturnFindAll = DefaultDynamicReturn.builder()
+                        .withClassSource(typeClass)
+                        .withMethodSource(method).withList(() -> getTemplate().select(queryFindAll))
+                        .withSingleResult(() -> getTemplate().singleResult(queryFindAll)).build();
+                return returnConverter.convert(dynamicReturnFindAll);
+
             case DELETE_BY:
                 ColumnDeleteQuery deleteQuery = getDeleteQuery(method, args);
                 getTemplate().delete(deleteQuery);
