@@ -37,12 +37,11 @@ public class DefaultDynamicReturn<T> implements DynamicReturn {
      * A wrapper function that convert a result as a list to a result as optional
      *
      * @param method the method source
-     * @param <T>    the return type
      * @return the function that does this conversion
      */
     public static  Function<Supplier<List<?>>, Supplier<Optional<?>>> toSingleResult(final Method method) {
         return l -> {
-            List<T> entities = l.get();
+            List<?> entities = l.get();
             if (entities.isEmpty()) {
                 return () -> Optional.empty();
             }
