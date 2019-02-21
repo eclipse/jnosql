@@ -21,6 +21,8 @@ import org.jnosql.artemis.Query;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.query.RepositoryType;
+import org.jnosql.artemis.reflection.DefaultDynamicReturn;
+import org.jnosql.artemis.reflection.DynamicReturnConverter;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 
@@ -28,6 +30,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 import static org.jnosql.artemis.column.query.ReturnTypeConverterUtil.returnObject;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
@@ -46,6 +50,9 @@ public abstract class AbstractColumnRepositoryProxy<T, ID> extends  BaseColumnRe
 
     protected abstract Converters getConverters();
 
+    private final DynamicReturnConverter returnConverter = DynamicReturnConverter.INSTANCE;
+
+
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
         RepositoryType type = RepositoryType.of(method);
@@ -56,7 +63,12 @@ public abstract class AbstractColumnRepositoryProxy<T, ID> extends  BaseColumnRe
                 return method.invoke(getRepository(), args);
             case FIND_BY:
                 ColumnQuery query = getQuery(method, args);
-                return returnObject(query, getTemplate(), typeClass, method);
+                DefaultDynamicReturn<?> dynamicReturn = DefaultDynamicReturn.builder()
+                        .withClassSource(typeClass)
+                        .withMethodSource(method).withList(() -> getTemplate().select(query))
+                        .withSingleResult(() -> getTemplate().singleResult(query)).build();
+
+                return returnConverter.convert(dynamicReturn);
             case FIND_ALL:
                 return returnObject(select().from(getClassMapping().getName()).build(),
                         getTemplate(), typeClass, method);
@@ -85,6 +97,15 @@ public abstract class AbstractColumnRepositoryProxy<T, ID> extends  BaseColumnRe
             params.forEach(prepare::bind);
             entities = prepare.getResultList();
         }
+
+        Supplier<List<?>> listSupplier = () -> entities;
+        Supplier<Optional<?>> singleSupplier = DefaultDynamicReturn.toSingleResult(method).
+        DefaultDynamicReturn<?> dynamicReturn = DefaultDynamicReturn.builder()
+                .withClassSource(typeClass)
+                .withMethodSource(method)
+                .withList(listSupplier)
+                .withSingleResult(() -> ).build();
+
         return ReturnTypeConverterUtil.returnObject(entities, typeClass, method);
     }
 

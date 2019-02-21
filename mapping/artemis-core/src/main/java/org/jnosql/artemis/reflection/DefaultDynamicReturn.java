@@ -40,14 +40,14 @@ public class DefaultDynamicReturn<T> implements DynamicReturn {
      * @param <T>    the return type
      * @return the function that does this conversion
      */
-    public static <T> Function<Supplier<List<T>>, Optional<T>> toSingleResult(final Method method) {
+    public static <T> Function<Supplier<List<T>>, Supplier<Optional<T>>> toSingleResult(final Method method) {
         return l -> {
             List<T> entities = l.get();
             if (entities.isEmpty()) {
-                return Optional.empty();
+                return () -> Optional.empty();
             }
             if (entities.size() == 1) {
-                return Optional.ofNullable(entities.get(0));
+                return () -> Optional.ofNullable(entities.get(0));
             }
             throw new NonUniqueResultException("No unique result to the method: " + method);
         };
@@ -98,44 +98,43 @@ public class DefaultDynamicReturn<T> implements DynamicReturn {
      * @param <T> the type
      * @return a builder instance
      */
-    public static <T> DefaultDynamicReturnBuilder<T> builder() {
-        return new DefaultDynamicReturnBuilder<>();
+    public static <T> DefaultDynamicReturnBuilder builder() {
+        return new DefaultDynamicReturnBuilder();
     }
 
     /**
      * A builder of {@link DefaultDynamicReturn}
      *
-     * @param <T> the source type
      */
-    public static class DefaultDynamicReturnBuilder<T> {
+    public static class DefaultDynamicReturnBuilder {
 
-        private Class<T> classSource;
+        private Class<?> classSource;
 
         private Method methodSource;
 
-        private Supplier<Optional<T>> singleResult;
+        private Supplier<Optional<?>> singleResult;
 
-        private Supplier<List<T>> list;
+        private Supplier<List<?>> list;
 
         private DefaultDynamicReturnBuilder() {
         }
 
-        public DefaultDynamicReturnBuilder<T> withClassSource(Class<T> classSource) {
-            this.classSource = classSource;
+        public DefaultDynamicReturnBuilder withClassSource(Class<?> classSource) {
+            this.classSource =  classSource;
             return this;
         }
 
-        public DefaultDynamicReturnBuilder<T> withMethodSource(Method methodSource) {
+        public DefaultDynamicReturnBuilder withMethodSource(Method methodSource) {
             this.methodSource = methodSource;
             return this;
         }
 
-        public DefaultDynamicReturnBuilder<T> withSingleResult(Supplier<Optional<T>> singleResult) {
+        public DefaultDynamicReturnBuilder withSingleResult(Supplier<Optional<?>> singleResult) {
             this.singleResult = singleResult;
             return this;
         }
 
-        public DefaultDynamicReturnBuilder<T> withList(Supplier<List<T>> list) {
+        public DefaultDynamicReturnBuilder withList(Supplier<List<?>> list) {
             this.list = list;
             return this;
         }
@@ -152,7 +151,7 @@ public class DefaultDynamicReturn<T> implements DynamicReturn {
             requireNonNull(singleResult, "the single result supplier is required");
             requireNonNull(list, "the list result supplier is required");
 
-            return new DefaultDynamicReturn<>(classSource, methodSource, singleResult, list);
+            return new DefaultDynamicReturn(classSource, methodSource, singleResult, list);
         }
     }
 
