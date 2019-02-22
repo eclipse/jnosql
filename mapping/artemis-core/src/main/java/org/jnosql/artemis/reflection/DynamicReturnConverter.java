@@ -14,8 +14,6 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.diana.api.NonUniqueResultException;
-
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
@@ -66,39 +64,6 @@ public enum DynamicReturnConverter {
         }
 
         return dynamic.list();
-    }
-
-    public <T> Object convert(List<T> entities, Class<?> typeClass, Method method) {
-        Class<?> returnType = method.getReturnType();
-
-        if (typeClass.equals(returnType)) {
-            return getObject(entities, method);
-
-        } else if (Optional.class.equals(returnType)) {
-            return Optional.ofNullable(getObject(entities, method));
-        } else if (List.class.equals(returnType)
-                || Iterable.class.equals(returnType)
-                || Collection.class.equals(returnType)) {
-            return entities;
-        } else if (Set.class.equals(returnType)) {
-            return new HashSet<>(entities);
-        } else if (Queue.class.equals(returnType)) {
-            return new PriorityQueue<>(entities);
-        } else if (Stream.class.equals(returnType)) {
-            return entities.stream();
-        }
-
-        return entities;
-    }
-
-    private <T> Object getObject(List<T> entities, Method method) {
-        if (entities.isEmpty()) {
-            return null;
-        }
-        if (entities.size() == 1) {
-            return entities.get(0);
-        }
-        throw new NonUniqueResultException("No unique result to the method: " + method);
     }
 
 }
