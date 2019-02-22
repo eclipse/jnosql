@@ -20,6 +20,8 @@ import org.jnosql.artemis.Query;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.query.RepositoryType;
+import org.jnosql.artemis.reflection.DefaultDynamicReturn;
+import org.jnosql.artemis.reflection.DynamicReturnConverter;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentQuery;
 
@@ -27,8 +29,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 
-import static org.jnosql.artemis.document.query.ReturnTypeConverterUtil.returnObject;
 import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.select;
 
 /**
@@ -43,6 +46,8 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
 
     protected abstract DocumentTemplate getTemplate();
 
+    private final DynamicReturnConverter returnConverter = DynamicReturnConverter.INSTANCE;
+
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
@@ -55,10 +60,19 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 return method.invoke(getRepository(), args);
             case FIND_BY:
                 DocumentQuery query = getQuery(method, args);
-                return returnObject(query, getTemplate(), typeClass, method);
+                DefaultDynamicReturn<?> dynamicReturn = DefaultDynamicReturn.builder()
+                        .withClassSource(typeClass)
+                        .withMethodSource(method).withList(() -> getTemplate().select(query))
+                        .withSingleResult(() -> getTemplate().singleResult(query)).build();
+
+                return returnConverter.convert(dynamicReturn);
             case FIND_ALL:
-                return returnObject(select().from(getClassMapping().getName()).build(), getTemplate(),
-                        typeClass, method);
+                DocumentQuery queryFindAll = select().from(getClassMapping().getName()).build();
+                DefaultDynamicReturn<?> dynamicReturnFindAll = DefaultDynamicReturn.builder()
+                        .withClassSource(typeClass)
+                        .withMethodSource(method).withList(() -> getTemplate().select(queryFindAll))
+                        .withSingleResult(() -> getTemplate().singleResult(queryFindAll)).build();
+                return returnConverter.convert(dynamicReturnFindAll);
             case DELETE_BY:
                 DocumentDeleteQuery documentDeleteQuery = getDeleteQuery(method, args);
                 getTemplate().delete(documentDeleteQuery);
@@ -83,7 +97,18 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
             params.forEach(prepare::bind);
             entities = prepare.getResultList();
         }
-        return ReturnTypeConverterUtil.returnObject(entities, typeClass, method);
+
+        Supplier<List<?>> listSupplier = () -> entities;
+        Supplier<Optional<?>> singleSupplier = DefaultDynamicReturn.toSingleResult(method).apply(listSupplier);
+
+        DefaultDynamicReturn dynamicReturn = DefaultDynamicReturn.builder()
+                .withClassSource(typeClass)
+                .withMethodSource(method)
+                .withList(listSupplier)
+                .withSingleResult(singleSupplier)
+                .build();
+
+        return returnConverter.convert(dynamicReturn);
     }
 
 }
