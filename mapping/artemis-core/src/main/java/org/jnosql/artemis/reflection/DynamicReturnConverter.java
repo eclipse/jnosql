@@ -81,8 +81,7 @@ public enum DynamicReturnConverter {
      * @param <T>
      * @return
      */
-    public <T> Object convert(Method method, Object[] args, Class<?> typeClass,
-                                     Function<String, List<T>> queryConverter, Function<String, PreparedStatement> prepareConverter) {
+    public <T> Object convert(DynamicQueryMethodReturn dynamicQueryMethod) {
         String value = RepositoryReflectionUtils.INSTANCE.getQuery(method);
 
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);

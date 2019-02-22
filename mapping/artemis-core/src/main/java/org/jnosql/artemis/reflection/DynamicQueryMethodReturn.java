@@ -12,7 +12,8 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.column.query;
+package org.jnosql.artemis.reflection;
+
 
 import org.jnosql.artemis.PreparedStatement;
 
