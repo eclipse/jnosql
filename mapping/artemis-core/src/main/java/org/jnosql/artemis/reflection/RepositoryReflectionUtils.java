@@ -33,8 +33,9 @@ public enum RepositoryReflectionUtils {
 
     /**
      * Convets values at arg at a {@link Map}
+     *
      * @param method the method that has the {@link Param} info
-     * @param args the arguments from the method
+     * @param args   the arguments from the method
      * @return the {@link Map} from method and its arguments
      */
     public Map<String, Object> getParams(Method method, Object[] args) {
@@ -54,8 +55,9 @@ public enum RepositoryReflectionUtils {
 
     /**
      * Returns the query value from the {@link Query} annotation
-     * @param method
-     * @return
+     *
+     * @param method the method
+     * @return the query value
      */
     public String getQuery(Method method) {
         return method.getAnnotation(Query.class).value();
