@@ -27,7 +27,7 @@ import java.util.Objects;
 /**
  * Utilitarian class to {@link Param anotation}
  */
-public enum ParamsUtils {
+public enum RepositoryReflectionUtils {
 
     INSTANCE;
 

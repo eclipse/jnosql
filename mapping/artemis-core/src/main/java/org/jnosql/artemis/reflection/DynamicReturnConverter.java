@@ -73,8 +73,8 @@ public enum DynamicReturnConverter {
 
     public Object getJnosqlQuery(Method method, Object[] args, Class<?> typeClass) {
         String value = method.getAnnotation(Query.class).value();
-        ParamsUtils.
-        Map<String, Object> params = getParams(method, args);
+
+        Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
         List<T> entities;
         if (params.isEmpty()) {
             entities = getTemplate().query(value);
