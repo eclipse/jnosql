@@ -15,7 +15,6 @@
 package org.jnosql.artemis.reflection;
 
 import org.jnosql.artemis.PreparedStatement;
-import org.jnosql.artemis.Query;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -26,6 +25,7 @@ import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -71,15 +71,26 @@ public enum DynamicReturnConverter {
         return dynamic.list();
     }
 
-    public Object getJnosqlQuery(Method method, Object[] args, Class<?> typeClass) {
-        String value = method.getAnnotation(Query.class).value();
+    /**
+     * Reads and execute JNoSQL query from the Method
+     * @param method
+     * @param args
+     * @param typeClass
+     * @param queryConverter
+     * @param prepareConverter
+     * @param <T>
+     * @return
+     */
+    public <T> Object convert(Method method, Object[] args, Class<?> typeClass,
+                                     Function<String, List<T>> queryConverter, Function<String, PreparedStatement> prepareConverter) {
+        String value = RepositoryReflectionUtils.INSTANCE.getQuery(method);
 
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
         List<T> entities;
         if (params.isEmpty()) {
-            entities = getTemplate().query(value);
+            entities = queryConverter.apply(value);
         } else {
-            PreparedStatement prepare = getTemplate().prepare(value);
+            PreparedStatement prepare = prepareConverter.apply(value);
             params.forEach(prepare::bind);
             entities = prepare.getResultList();
         }
@@ -95,6 +106,6 @@ public enum DynamicReturnConverter {
                 .withSingleResult(singleSupplier)
                 .build();
 
-        return returnConverter.convert(dynamicReturn);
+        return convert(dynamicReturn);
     }
 }
