@@ -72,20 +72,22 @@ public enum DynamicReturnConverter {
     }
 
     /**
-     * Reads and execute JNoSQL query from the Method
-     * @param method
-     * @param args
-     * @param typeClass
-     * @param queryConverter
-     * @param prepareConverter
-     * @param <T>
-     * @return
+     * Reads and execute JNoSQL query from the Method that has the {@link org.jnosql.artemis.Query} annotation
+     *
+     * @return the result from the query annotation
      */
-    public <T> Object convert(DynamicQueryMethodReturn dynamicQueryMethod) {
+    public Object convert(DynamicQueryMethodReturn dynamicQueryMethod) {
+        Method method = dynamicQueryMethod.getMethod();
+        Object[] args = dynamicQueryMethod.getArgs();
+        Function<String, List<?>> queryConverter = dynamicQueryMethod.getQueryConverter();
+        Function<String, PreparedStatement> prepareConverter = dynamicQueryMethod.getPrepareConverter();
+        Class<?> typeClass = dynamicQueryMethod.getTypeClass();
+
         String value = RepositoryReflectionUtils.INSTANCE.getQuery(method);
 
+
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
-        List<T> entities;
+        List<?> entities;
         if (params.isEmpty()) {
             entities = queryConverter.apply(value);
         } else {
