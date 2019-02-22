@@ -14,14 +14,19 @@
  */
 package org.jnosql.artemis.reflection;
 
+import org.jnosql.artemis.PreparedStatement;
+import org.jnosql.artemis.Query;
+
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -66,4 +71,30 @@ public enum DynamicReturnConverter {
         return dynamic.list();
     }
 
+    public Object getJnosqlQuery(Method method, Object[] args, Class<?> typeClass) {
+        String value = method.getAnnotation(Query.class).value();
+        ParamsUtils.
+        Map<String, Object> params = getParams(method, args);
+        List<T> entities;
+        if (params.isEmpty()) {
+            entities = getTemplate().query(value);
+        } else {
+            PreparedStatement prepare = getTemplate().prepare(value);
+            params.forEach(prepare::bind);
+            entities = prepare.getResultList();
+        }
+
+        Supplier<List<?>> listSupplier = () -> entities;
+
+        Supplier<Optional<?>> singleSupplier = DefaultDynamicReturn.toSingleResult(method).apply(listSupplier);
+
+        DefaultDynamicReturn dynamicReturn = DefaultDynamicReturn.builder()
+                .withClassSource(typeClass)
+                .withMethodSource(method)
+                .withList(listSupplier)
+                .withSingleResult(singleSupplier)
+                .build();
+
+        return returnConverter.convert(dynamicReturn);
+    }
 }

@@ -12,9 +12,11 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.document.query;
+package org.jnosql.artemis.reflection;
+
 
 import org.jnosql.artemis.Param;
+import org.jnosql.artemis.Query;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -47,4 +49,15 @@ public enum ParamsUtils {
             }
         }
         return params;
+    }
+
+
+    /**
+     * Returns the query value from the {@link Query} annotation
+     * @param method
+     * @return
+     */
+    public String getQuery(Method method) {
+        return method.getAnnotation(Query.class).value();
+    }
 }
