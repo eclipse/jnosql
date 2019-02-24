@@ -97,12 +97,14 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
     }
 
     private Object findAll(Method method, Class<?> typeClass) {
-        GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
-        List<Vertex> vertices = traversal.hasLabel(getClassMapping().getName()).toList();
-        Stream<T> stream = vertices.stream().map(getConverter()::toEntity);
+
         Supplier<List<?>> querySupplier = () ->
-                traversal.hasLabel(getClassMapping().getName()).toList().stream()
-                        .map(getConverter()::toEntity).collect(toList());
+                getGraph().traversal().V()
+                        .hasLabel(getClassMapping().getName())
+                        .toList()
+                        .stream()
+                        .map(getConverter()::toEntity)
+                        .collect(toList());
 
         return converter(method, typeClass, querySupplier);
     }

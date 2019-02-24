@@ -275,6 +275,13 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
+    public void shouldReturnEmptyAtFindAll() {
+        List<Person> people = personRepository.findAll();
+        assertTrue(people.isEmpty());
+    }
+
+
+    @Test
     public void shouldReturnToString() {
         assertNotNull(personRepository.toString());
     }
