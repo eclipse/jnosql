@@ -16,19 +16,15 @@ package org.jnosql.artemis.column.query;
 
 
 import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.PreparedStatementAsync;
-import org.jnosql.artemis.Query;
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.artemis.query.RepositoryType;
-import org.jnosql.artemis.reflection.RepositoryReflectionUtils;
+import org.jnosql.artemis.reflection.DynamicAsyncQueryMethodReturn;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
@@ -64,8 +60,13 @@ public abstract class AbstractColumnRepositoryAsyncProxy<T> extends BaseColumnRe
                 return method.invoke(this, args);
             case JNOSQL_QUERY:
 
-                RepositoryReflectionUtils.INSTANCE.getJnosqlQuery()
-                return getJnosqlQuery(method, args);
+                DynamicAsyncQueryMethodReturn<Object> nativeQuery = DynamicAsyncQueryMethodReturn.builder()
+                        .withArgs(args)
+                        .withMethod(method)
+                        .withAsyncConsumer(getTemplate()::query)
+                        .withPrepareConverter(q -> getTemplate().prepare(q))
+                        .build();
+                nativeQuery.execute();
             default:
                 return Void.class;
         }
