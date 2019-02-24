@@ -16,14 +16,11 @@ package org.jnosql.artemis.key;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.diana.api.Settings;
 import org.jnosql.diana.api.key.BucketManagerFactory;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,8 +41,8 @@ public class KeyValueConfigurationProducerTest {
     @Test
     public void shouldReadBucketManager() {
         factoryA.getBucketManager("database");
-        assertTrue(KeyValueConfigurationMock.BucketManagerFactoryMock.class.isInstance(factoryA));
-        KeyValueConfigurationMock.BucketManagerFactoryMock mock = KeyValueConfigurationMock.BucketManagerFactoryMock.class.cast(factoryA);
+        assertTrue(factoryA instanceof KeyValueConfigurationMock.BucketManagerFactoryMock);
+        KeyValueConfigurationMock.BucketManagerFactoryMock mock = (KeyValueConfigurationMock.BucketManagerFactoryMock) factoryA;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
@@ -54,8 +51,8 @@ public class KeyValueConfigurationProducerTest {
     @Test
     public void shouldReadBucketManagerB() {
         factoryB.getBucketManager("database");
-        assertTrue(KeyValueConfigurationMock.BucketManagerFactoryMock.class.isInstance(factoryB));
-        KeyValueConfigurationMock.BucketManagerFactoryMock mock = KeyValueConfigurationMock.BucketManagerFactoryMock.class.cast(factoryB);
+        assertTrue(factoryB instanceof KeyValueConfigurationMock.BucketManagerFactoryMock);
+        KeyValueConfigurationMock.BucketManagerFactoryMock mock = (KeyValueConfigurationMock.BucketManagerFactoryMock) factoryB;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));

@@ -52,8 +52,8 @@ public class ColumnConfigurationProducerXMLTest {
     @Test
     public void shouldReadInjectColumnFamily() {
         factoryA.get("database");
-        assertTrue(ColumnFamilyManagerMock.MockFamilyManager.class.isInstance(factoryA));
-        ColumnFamilyManagerMock.MockFamilyManager mock = ColumnFamilyManagerMock.MockFamilyManager.class.cast(factoryA);
+        assertTrue(factoryA instanceof ColumnFamilyManagerMock.MockFamilyManager);
+        ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryA;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
@@ -62,8 +62,8 @@ public class ColumnConfigurationProducerXMLTest {
     @Test
     public void shouldReadInjectColumnFamilyB() {
         factoryB.get("database");
-        assertTrue(ColumnFamilyManagerMock.MockFamilyManager.class.isInstance(factoryB));
-        ColumnFamilyManagerMock.MockFamilyManager mock = ColumnFamilyManagerMock.MockFamilyManager.class.cast(factoryB);
+        assertTrue(factoryB instanceof ColumnFamilyManagerMock.MockFamilyManager);
+        ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryB;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
@@ -73,8 +73,8 @@ public class ColumnConfigurationProducerXMLTest {
     @Test
     public void shouldReadInjectColumnFamilyAsync() {
         factoryAsyncA.getAsync("database");
-        assertTrue(ColumnFamilyManagerMock.MockFamilyManager.class.isInstance(factoryAsyncA));
-        ColumnFamilyManagerMock.MockFamilyManager mock = ColumnFamilyManagerMock.MockFamilyManager.class.cast(factoryAsyncA);
+        assertTrue(factoryAsyncA instanceof ColumnFamilyManagerMock.MockFamilyManager);
+        ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryAsyncA;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
@@ -83,8 +83,8 @@ public class ColumnConfigurationProducerXMLTest {
     @Test
     public void shouldReadInjectColumnFamilyBAsync() {
         factoryAsyncB.getAsync("database");
-        assertTrue(ColumnFamilyManagerMock.MockFamilyManager.class.isInstance(factoryAsyncB));
-        ColumnFamilyManagerMock.MockFamilyManager mock = ColumnFamilyManagerMock.MockFamilyManager.class.cast(factoryAsyncB);
+        assertTrue(factoryAsyncB instanceof ColumnFamilyManagerMock.MockFamilyManager);
+        ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryAsyncB;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));

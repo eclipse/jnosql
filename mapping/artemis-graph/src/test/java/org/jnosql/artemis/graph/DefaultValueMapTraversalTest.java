@@ -93,6 +93,6 @@ class DefaultValueMapTraversalTest extends AbstractTraversalTest {
         String name = "Poliana";
         Optional<Map<String, Object>> poliana = graphTemplate.getTraversalVertex().hasLabel("Person").
                 has("name", name).valueMap("name").getSingleResult();
-        assertEquals(name, poliana.map(m -> List.class.cast(m.get("name")).get(0)).orElse(""));
+        assertEquals(name, poliana.map(m -> ((List) m.get("name")).get(0)).orElse(""));
     }
 }

@@ -51,10 +51,10 @@ final class GremlinExecutor {
 
             Object eval = ENGINE.eval(gremlin, bindings);
             if (eval instanceof GraphTraversal) {
-                return convertToList(GraphTraversal.class.cast(eval).toList());
+                return convertToList(((GraphTraversal) eval).toList());
             }
             if (eval instanceof Iterable) {
-                return convertToList(Iterable.class.cast(eval));
+                return convertToList((Iterable) eval);
             }
             return Collections.singletonList((T) eval);
         } catch (ScriptException e) {
@@ -73,11 +73,11 @@ final class GremlinExecutor {
 
     private Object getElement(Object entity) {
         if (entity instanceof Vertex) {
-            return converter.toEntity(Vertex.class.cast(entity));
+            return converter.toEntity((Vertex) entity);
         }
 
         if (entity instanceof Edge) {
-            return converter.toEdgeEntity(Edge.class.cast(entity));
+            return converter.toEdgeEntity((Edge) entity);
         }
         return entity;
     }

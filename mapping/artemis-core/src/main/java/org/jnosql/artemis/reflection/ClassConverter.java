@@ -117,8 +117,8 @@ class ClassConverter {
                 appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField);
                 return;
             case COLLECTION:
-                if (GenericFieldMapping.class.cast(field).isEmbeddable()) {
-                    Class<?> entityClass = GenericFieldMapping.class.cast(field).getElementType();
+                if (((GenericFieldMapping) field).isEmbeddable()) {
+                    Class<?> entityClass = ((GenericFieldMapping) field).getElementType();
                     String nativeFieldAppended = appendPreparePrefix(nativeField, field.getName());
                     appendFields(nativeFieldGroupByJavaField, field, javaField, nativeFieldAppended, entityClass);
                     return;

@@ -89,16 +89,16 @@ public class GenericFieldMapping extends AbstractFieldMapping {
     }
 
     private boolean hasFieldAnnotation(Class<?> annotation) {
-        return Class.class.cast(ParameterizedType.class.cast(getNativeField()
+        return ((Class) ((ParameterizedType) getNativeField()
                 .getGenericType())
                 .getActualTypeArguments()[0])
                 .getAnnotation(annotation) != null;
     }
 
     public Class getElementType() {
-        return Class.class.cast(ParameterizedType.class.cast(getNativeField()
+        return (Class) ((ParameterizedType) getNativeField()
                 .getGenericType())
-                .getActualTypeArguments()[0]);
+                .getActualTypeArguments()[0];
     }
 
     public Collection getCollectionInstance() {

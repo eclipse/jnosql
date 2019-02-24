@@ -18,9 +18,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.aphrodite.antlr.method.DeleteMethodFactory;
 import org.jnosql.artemis.reflection.ClassMapping;
-import org.jnosql.query.Condition;
 import org.jnosql.query.DeleteQuery;
-import org.jnosql.query.Where;
 
 import java.util.List;
 import java.util.function.Function;
@@ -32,14 +30,7 @@ final class DeleteQueryConverter extends AbstractQueryConvert implements Functio
         DeleteMethodFactory factory = DeleteMethodFactory.get();
         DeleteQuery deleteQuery = factory.apply(graphQuery.getMethod(), graphQuery.getEntityName());
         ClassMapping mapping = graphQuery.getMapping();
-        GraphTraversal<Vertex, Vertex> traversal = graphQuery.getTraversal();
-        if (deleteQuery.getWhere().isPresent()) {
-            Where where = deleteQuery.getWhere().get();
-
-            Condition condition = where.getCondition();
-            traversal.filter(getPredicate(graphQuery, condition, mapping));
-        }
-
+        GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, deleteQuery::getWhere, mapping);
         traversal.hasLabel(mapping.getName());
         return traversal.toList();
     }

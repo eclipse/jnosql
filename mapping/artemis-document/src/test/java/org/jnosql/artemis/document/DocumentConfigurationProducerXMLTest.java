@@ -51,8 +51,8 @@ public class DocumentConfigurationProducerXMLTest {
     @Test
     public void shouldReadInjectDocumentCollection() {
         factoryA.get("database");
-        assertTrue(DocumentCollectionManagerMock.DocumentMock.class.isInstance(factoryA));
-        DocumentCollectionManagerMock.DocumentMock mock = DocumentCollectionManagerMock.DocumentMock.class.cast(factoryA);
+        assertTrue(factoryA instanceof DocumentCollectionManagerMock.DocumentMock);
+        DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryA;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
@@ -61,8 +61,8 @@ public class DocumentConfigurationProducerXMLTest {
     @Test
     public void shouldReadInjectDocumentCollectionB() {
         factoryB.get("database");
-        assertTrue(DocumentCollectionManagerMock.DocumentMock.class.isInstance(factoryB));
-        DocumentCollectionManagerMock.DocumentMock mock = DocumentCollectionManagerMock.DocumentMock.class.cast(factoryB);
+        assertTrue(factoryB instanceof DocumentCollectionManagerMock.DocumentMock);
+        DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryB;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
@@ -72,8 +72,8 @@ public class DocumentConfigurationProducerXMLTest {
     @Test
     public void shouldReadInjectDocumentCollectionAsync() {
         factoryAsyncA.getAsync("database");
-        assertTrue(DocumentCollectionManagerMock.DocumentMock.class.isInstance(factoryAsyncA));
-        DocumentCollectionManagerMock.DocumentMock mock = DocumentCollectionManagerMock.DocumentMock.class.cast(factoryAsyncA);
+        assertTrue(factoryAsyncA instanceof DocumentCollectionManagerMock.DocumentMock);
+        DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryAsyncA;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
@@ -82,8 +82,8 @@ public class DocumentConfigurationProducerXMLTest {
     @Test
     public void shouldReadInjectDocumentCollectionAsyncB() {
         factoryAsyncB.getAsync("database");
-        assertTrue(DocumentCollectionManagerMock.DocumentMock.class.isInstance(factoryAsyncB));
-        DocumentCollectionManagerMock.DocumentMock mock = DocumentCollectionManagerMock.DocumentMock.class.cast(factoryAsyncB);
+        assertTrue(factoryAsyncB instanceof DocumentCollectionManagerMock.DocumentMock);
+        DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryAsyncB;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));

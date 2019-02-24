@@ -186,7 +186,6 @@ public class GraphRepositoryProxyTest {
     public void shouldFindByAge() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
         Optional<Person> person = personRepository.findByAge(20);
         assertTrue(person.isPresent());
@@ -274,6 +273,13 @@ public class GraphRepositoryProxyTest {
         List<Person> people = personRepository.findAll();
         assertFalse(people.isEmpty());
     }
+
+    @Test
+    public void shouldReturnEmptyAtFindAll() {
+        List<Person> people = personRepository.findAll();
+        assertTrue(people.isEmpty());
+    }
+
 
     @Test
     public void shouldReturnToString() {

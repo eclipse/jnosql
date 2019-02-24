@@ -68,7 +68,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
 
     private List<List<Document>> getDocuments(DocumentEntityConverter converter) {
         List<List<Document>> documents = new ArrayList<>();
-        for (Object element : Iterable.class.cast(getValue())) {
+        for (Object element : (Iterable) getValue()) {
             documents.add(converter.toDocument(element).getDocuments());
         }
         return documents;
@@ -88,7 +88,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     }
 
     private boolean isEmbeddableElement() {
-        return GenericFieldMapping.class.cast(getField()).isEmbeddable();
+        return ((GenericFieldMapping) getField()).isEmbeddable();
     }
 
     private String getName() {

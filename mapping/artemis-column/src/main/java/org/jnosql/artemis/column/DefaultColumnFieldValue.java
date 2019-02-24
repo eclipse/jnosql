@@ -74,7 +74,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
 
     private List<List<Column>> getColumns(ColumnEntityConverter converter) {
         List<List<Column>> columns = new ArrayList<>();
-        for (Object element : Iterable.class.cast(getValue())) {
+        for (Object element : (Iterable) getValue()) {
             columns.add(converter.toColumn(element).getColumns());
         }
         return columns;
@@ -93,7 +93,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     }
 
     private boolean isEmbeddableElement() {
-        return GenericFieldMapping.class.cast(getField()).isEmbeddable();
+        return ((GenericFieldMapping) getField()).isEmbeddable();
     }
 
     @Override

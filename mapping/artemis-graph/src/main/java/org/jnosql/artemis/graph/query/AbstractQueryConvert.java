@@ -22,6 +22,10 @@ import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.query.Condition;
 import org.jnosql.query.ConditionValue;
 import org.jnosql.query.Operator;
+import org.jnosql.query.Where;
+
+import java.util.Optional;
+import java.util.function.Supplier;
 
 abstract class AbstractQueryConvert {
 
@@ -47,14 +51,14 @@ abstract class AbstractQueryConvert {
             case IN:
                 return __.has(nativeName, P.within(graphQuery.getInValue(name)));
             case NOT:
-                Condition notCondition = ConditionValue.class.cast(condition.getValue()).get().get(0);
+                Condition notCondition = ((ConditionValue) condition.getValue()).get().get(0);
                 return __.not(getPredicate(graphQuery, notCondition, mapping));
             case AND:
-                return ConditionValue.class.cast(condition.getValue()).get().stream()
+                return ((ConditionValue) condition.getValue()).get().stream()
                         .map(c -> getPredicate(graphQuery, c, mapping)).reduce(GraphTraversal::and)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the AND operator"));
             case OR:
-                return ConditionValue.class.cast(condition.getValue()).get().stream()
+                return ((ConditionValue) condition.getValue()).get().stream()
                         .map(c -> getPredicate(graphQuery, c, mapping)).reduce(GraphTraversal::or)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the OR operator"));
             default:
@@ -62,5 +66,21 @@ abstract class AbstractQueryConvert {
 
 
         }
+    }
+
+    protected GraphTraversal<Vertex, Vertex> getGraphTraversal(GraphQueryMethod graphQuery,
+                                                               Supplier<Optional<Where>> whereSupplier,
+                                                               ClassMapping mapping) {
+
+        GraphTraversal<Vertex, Vertex> traversal = graphQuery.getTraversal();
+        Optional<Where> whereOptional = whereSupplier.get();
+
+        if (whereOptional.isPresent()) {
+            Where where = whereOptional.get();
+
+            Condition condition = where.getCondition();
+            traversal.filter(getPredicate(graphQuery, condition, mapping));
+        }
+        return traversal;
     }
 }

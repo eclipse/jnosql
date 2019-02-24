@@ -16,18 +16,15 @@ package org.jnosql.artemis.column.query;
 
 
 import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.PreparedStatementAsync;
-import org.jnosql.artemis.Query;
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.artemis.query.RepositoryType;
+import org.jnosql.artemis.reflection.DynamicAsyncQueryMethodReturn;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
@@ -62,43 +59,25 @@ public abstract class AbstractColumnRepositoryAsyncProxy<T> extends BaseColumnRe
             case OBJECT_METHOD:
                 return method.invoke(this, args);
             case JNOSQL_QUERY:
-                return getJnosqlQuery(method, args);
+
+                DynamicAsyncQueryMethodReturn<Object> nativeQuery = DynamicAsyncQueryMethodReturn.builder()
+                        .withArgs(args)
+                        .withMethod(method)
+                        .withAsyncConsumer(getTemplate()::query)
+                        .withPrepareConverter(q -> getTemplate().prepare(q))
+                        .build();
+                nativeQuery.execute();
+                return Void.class;
             default:
                 return Void.class;
         }
     }
 
-    private Object getJnosqlQuery(Method method, Object[] args) {
-        String value = method.getAnnotation(Query.class).value();
-        Map<String, Object> params = getParams(method, args);
-        Consumer<List<T>> consumer = getConsumer(args);
-        if (params.isEmpty()) {
-            getTemplate().query(value, consumer);
-        } else {
-            PreparedStatementAsync prepare = getTemplate().prepare(value);
-            params.forEach(prepare::bind);
-            prepare.getResultList(consumer);
-        }
-
-        return Void.class;
-    }
-
-    private Consumer<List<T>> getConsumer(Object[] args) {
-        Consumer<List<T>> consumer;
-        Object callBack = getCallback(args);
-        if (callBack instanceof Consumer) {
-            consumer = Consumer.class.cast(callBack);
-        } else {
-            consumer = l -> {
-            };
-        }
-        return consumer;
-    }
 
 
     private Object executeDelete(Object arg, ColumnDeleteQuery deleteQuery) {
-        if (Consumer.class.isInstance(arg)) {
-            getTemplate().delete(deleteQuery, Consumer.class.cast(arg));
+        if (arg instanceof Consumer) {
+            getTemplate().delete(deleteQuery, (Consumer) arg);
             return Void.class;
         }
         getTemplate().delete(deleteQuery);
@@ -113,8 +92,8 @@ public abstract class AbstractColumnRepositoryAsyncProxy<T> extends BaseColumnRe
     }
 
     private Object executeQuery(Object arg, ColumnQuery query) {
-        if (Consumer.class.isInstance(arg)) {
-            getTemplate().select(query, Consumer.class.cast(arg));
+        if (arg instanceof Consumer) {
+            getTemplate().select(query, (Consumer) arg);
             return null;
         }
 

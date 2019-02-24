@@ -71,7 +71,7 @@ final class GraphQueryMethod {
     public  Collection<?> getInValue(String name) {
         Object value = getValue();
         if(value instanceof Iterable<?>) {
-            return (Collection<?>) StreamSupport.stream(Iterable.class.cast(value).spliterator(), false)
+            return (Collection<?>) StreamSupport.stream(((Iterable) value).spliterator(), false)
                     .map(v -> ConverterUtil.getValue(v, mapping, name, converters))
                     .collect(Collectors.toList());
         }
