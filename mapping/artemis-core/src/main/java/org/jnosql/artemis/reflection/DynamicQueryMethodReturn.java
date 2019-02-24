@@ -72,7 +72,7 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
         return DynamicReturnConverter.INSTANCE.convert(this);
     }
 
-    public static class DynamicQueryMethodReturnBuilder {
+    public static final class DynamicQueryMethodReturnBuilder {
 
         private Method method;
 

@@ -18,7 +18,7 @@ import java.util.WeakHashMap;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
-public class MethodQuery implements Supplier<String> {
+public final class MethodQuery implements Supplier<String> {
 
     private final String value;
     private static final Pattern PATTERN = Pattern.compile("findBy|deleteBy|OrderBy|And|Or(?!der)|Not|Equals|GreaterThanEqual|" +

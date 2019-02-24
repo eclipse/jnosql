@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class ConverterUtil {
+public final class ConverterUtil {
 
 
     private ConverterUtil() {

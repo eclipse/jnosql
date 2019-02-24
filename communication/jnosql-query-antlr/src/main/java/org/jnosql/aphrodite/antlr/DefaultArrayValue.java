@@ -17,7 +17,7 @@ import org.jnosql.query.Value;
 
 import java.util.Arrays;
 
-class DefaultArrayValue implements ArrayValue {
+final class DefaultArrayValue implements ArrayValue {
 
     private final Value<?>[] values;
 

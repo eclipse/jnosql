@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @param <T> the source type
  */
-public class DynamicReturn<T> implements MethodDynamicExecutable {
+public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
 
     /**
@@ -139,7 +139,7 @@ public class DynamicReturn<T> implements MethodDynamicExecutable {
     /**
      * A builder of {@link DynamicReturn}
      */
-    public static class DefaultDynamicReturnBuilder {
+    public static final class DefaultDynamicReturnBuilder {
 
         private Class<?> classSource;
 

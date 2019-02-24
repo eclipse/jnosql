@@ -28,7 +28,7 @@ import java.util.function.Function;
  * This instance has the information to run the JNoSQL native query at {@link org.jnosql.artemis.RepositoryAsync}
  * To create an instance use {@link DynamicAsyncQueryMethodReturn#builder()}
  */
-public class DynamicAsyncQueryMethodReturn<T> implements MethodDynamicExecutable {
+public final class DynamicAsyncQueryMethodReturn<T> implements MethodDynamicExecutable {
 
     private final Method method;
     private final Object[] args;
@@ -105,7 +105,7 @@ public class DynamicAsyncQueryMethodReturn<T> implements MethodDynamicExecutable
         return new DynamicAsyncQueryMethodReturnBuilder<>();
     }
 
-    public static class DynamicAsyncQueryMethodReturnBuilder<T> {
+    public static final class DynamicAsyncQueryMethodReturnBuilder<T> {
 
         private Method method;
 
