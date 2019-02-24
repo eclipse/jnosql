@@ -28,7 +28,7 @@ import java.util.function.Function;
  * This instance has the information to run the JNoSQL native query at {@link org.jnosql.artemis.RepositoryAsync}
  * To create an instance use {@link DynamicAsyncQueryMethodReturn#builder()}
  */
-public class DynamicAsyncQueryMethodReturn<T> {
+public class DynamicAsyncQueryMethodReturn<T> implements MethodDynamicExecutable {
 
     private final Method method;
     private final Object[] args;
@@ -61,10 +61,8 @@ public class DynamicAsyncQueryMethodReturn<T> {
     }
 
 
-    /**
-     * Executes the async process
-     */
-    public void execute() {
+    @Override
+    public Object execute() {
         String value = RepositoryReflectionUtils.INSTANCE.getQuery(method);
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
         Consumer<List<T>> consumer = getConsumer(args);
@@ -75,6 +73,7 @@ public class DynamicAsyncQueryMethodReturn<T> {
             params.forEach(prepare::bind);
             prepare.getResultList(consumer);
         }
+        return Void.class;
     }
 
     private <T> Consumer<List<T>> getConsumer(Object[] args) {
