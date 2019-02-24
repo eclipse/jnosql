@@ -43,8 +43,8 @@ class ColumnRepositoryAsyncProxy<T> extends AbstractColumnRepositoryAsyncProxy<T
                                Class<?> repositoryType, Converters converters) {
 
         this.template = template;
-        Class<T> typeClass = Class.class.cast(ParameterizedType.class.cast(repositoryType.getGenericInterfaces()[0])
-                .getActualTypeArguments()[0]);
+        Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
+                .getActualTypeArguments()[0];
         this.classMapping = classMappings.get(typeClass);
         this.repository = new ColumnRepositoryAsync(template, classMapping);
         this.converters = converters;

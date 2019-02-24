@@ -56,7 +56,7 @@ class ColumnFieldConverters {
         }
 
         private boolean isCollectionEmbeddable(FieldMapping field) {
-            return COLLECTION.equals(field.getType()) && GenericFieldMapping.class.cast(field).isEmbeddable();
+            return COLLECTION.equals(field.getType()) && ((GenericFieldMapping) field).isEmbeddable();
         }
     }
 
@@ -70,8 +70,8 @@ class ColumnFieldConverters {
             if (column.isPresent()) {
                 Column subColumn = column.get();
                 Object value = subColumn.get();
-                if (Map.class.isInstance(value)) {
-                    Map map = Map.class.cast(value);
+                if (value instanceof Map) {
+                    Map map = (Map) value;
                     List<Column> embeddedColumns = new ArrayList<>();
 
                     for (Map.Entry entry : (Set<Map.Entry>) map.entrySet()) {
@@ -138,7 +138,7 @@ class ColumnFieldConverters {
 
         private <T> Consumer<Column> convertColumn(T instance, FieldMapping field, AbstractColumnEntityConverter converter) {
             return column -> {
-                GenericFieldMapping genericField = GenericFieldMapping.class.cast(field);
+                GenericFieldMapping genericField = (GenericFieldMapping) field;
                 Collection collection = genericField.getCollectionInstance();
                 List<List<Column>> embeddable = (List<List<Column>>) column.get();
                 for (List<Column> columnList : embeddable) {

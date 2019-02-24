@@ -263,7 +263,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
         List<String> names = new ArrayList<>();
 
-        maps.forEach(m -> names.add(List.class.cast(m.get("name")).get(0).toString()));
+        maps.forEach(m -> names.add(((List) m.get("name")).get(0).toString()));
 
         assertThat(names, containsInAnyOrder("Otavio", "Poliana", "Paulo"));
     }

@@ -37,7 +37,7 @@ class TemplateConfigurationProducerTest {
     @Test
     public void shouldTemplate() {
         Assertions.assertNotNull(templateA);
-        BucketManager manager = AbstractKeyValueTemplate.class.cast(templateA).getManager();
+        BucketManager manager = ((AbstractKeyValueTemplate) templateA).getManager();
         Assertions.assertNotNull(manager);
 
     }
@@ -45,7 +45,7 @@ class TemplateConfigurationProducerTest {
     @Test
     public void shouldTemplateB() {
         Assertions.assertNotNull(templateB);
-        BucketManager manager = AbstractKeyValueTemplate.class.cast(templateA).getManager();
+        BucketManager manager = ((AbstractKeyValueTemplate) templateA).getManager();
         Assertions.assertNotNull(manager);
     }
 

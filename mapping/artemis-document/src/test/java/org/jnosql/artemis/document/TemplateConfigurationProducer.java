@@ -49,7 +49,7 @@ public class TemplateConfigurationProducer {
     @Test
     public void shouldTemplate() {
         Assertions.assertNotNull(templateA);
-        DocumentCollectionManager manager = AbstractDocumentTemplate.class.cast(templateA).getManager();
+        DocumentCollectionManager manager = ((AbstractDocumentTemplate) templateA).getManager();
         Assertions.assertNotNull(manager);
 
     }
@@ -57,14 +57,14 @@ public class TemplateConfigurationProducer {
     @Test
     public void shouldTemplateB() {
         Assertions.assertNotNull(templateB);
-        DocumentCollectionManager manager = AbstractDocumentTemplate.class.cast(templateB).getManager();
+        DocumentCollectionManager manager = ((AbstractDocumentTemplate) templateB).getManager();
         Assertions.assertNotNull(manager);
     }
 
     @Test
     public void shouldTemplateAsync() {
         Assertions.assertNotNull(templateA);
-        DocumentCollectionManagerAsync manager = AbstractDocumentTemplateAsync.class.cast(templateAsyncA).getManager();
+        DocumentCollectionManagerAsync manager = ((AbstractDocumentTemplateAsync) templateAsyncA).getManager();
         Assertions.assertNotNull(manager);
 
     }
@@ -72,7 +72,7 @@ public class TemplateConfigurationProducer {
     @Test
     public void shouldTemplateAsyncB() {
         Assertions.assertNotNull(templateB);
-        DocumentCollectionManagerAsync manager = AbstractDocumentTemplateAsync.class.cast(templateAsyncB).getManager();
+        DocumentCollectionManagerAsync manager = ((AbstractDocumentTemplateAsync) templateAsyncB).getManager();
         Assertions.assertNotNull(manager);
     }
 

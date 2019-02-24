@@ -74,8 +74,8 @@ public abstract class AbstractDocumentRepositoryAsyncProxy<T> extends BaseDocume
 
     private Object executeDelete(Object[] args, DocumentDeleteQuery query1) {
         Object callBack = getCallBack(args);
-        if (Consumer.class.isInstance(callBack)) {
-            getTemplate().delete(query1, Consumer.class.cast(callBack));
+        if (callBack instanceof Consumer) {
+            getTemplate().delete(query1, (Consumer) callBack);
         } else {
             getTemplate().delete(query1);
         }
@@ -87,8 +87,8 @@ public abstract class AbstractDocumentRepositoryAsyncProxy<T> extends BaseDocume
     }
 
     private Object executeQuery(Object arg, DocumentQuery query) {
-        if (Consumer.class.isInstance(arg)) {
-            getTemplate().select(query, Consumer.class.cast(arg));
+        if (arg instanceof Consumer) {
+            getTemplate().select(query, (Consumer) arg);
         } else {
             throw new DynamicQueryException("On select async method you must put a java.util.function.Consumer" +
                     " as end parameter as callback");

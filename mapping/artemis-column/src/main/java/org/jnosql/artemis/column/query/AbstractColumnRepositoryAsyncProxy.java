@@ -76,8 +76,8 @@ public abstract class AbstractColumnRepositoryAsyncProxy<T> extends BaseColumnRe
 
 
     private Object executeDelete(Object arg, ColumnDeleteQuery deleteQuery) {
-        if (Consumer.class.isInstance(arg)) {
-            getTemplate().delete(deleteQuery, Consumer.class.cast(arg));
+        if (arg instanceof Consumer) {
+            getTemplate().delete(deleteQuery, (Consumer) arg);
             return Void.class;
         }
         getTemplate().delete(deleteQuery);
@@ -92,8 +92,8 @@ public abstract class AbstractColumnRepositoryAsyncProxy<T> extends BaseColumnRe
     }
 
     private Object executeQuery(Object arg, ColumnQuery query) {
-        if (Consumer.class.isInstance(arg)) {
-            getTemplate().select(query, Consumer.class.cast(arg));
+        if (arg instanceof Consumer) {
+            getTemplate().select(query, (Consumer) arg);
             return null;
         }
 

@@ -80,7 +80,7 @@ public class DynamicAsyncQueryMethodReturn<T> implements MethodDynamicExecutable
         Consumer<List<T>> consumer;
         Object callBack = getCallback(args);
         if (callBack instanceof Consumer) {
-            consumer = Consumer.class.cast(callBack);
+            consumer = (Consumer) callBack;
         } else {
             consumer = l -> {
             };

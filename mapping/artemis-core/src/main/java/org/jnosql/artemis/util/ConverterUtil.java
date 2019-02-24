@@ -92,7 +92,7 @@ public class ConverterUtil {
     private static ParameterizedType getGenericInterface(AttributeConverter a) {
         for (Type genericInterface : a.getClass().getGenericInterfaces()) {
             if (ParameterizedType.class.isAssignableFrom(genericInterface.getClass()) &&
-                    ParameterizedType.class.cast(genericInterface).getRawType().equals(AttributeConverter.class)) {
+                    ((ParameterizedType) genericInterface).getRawType().equals(AttributeConverter.class)) {
                 return (ParameterizedType) genericInterface;
             }
         }

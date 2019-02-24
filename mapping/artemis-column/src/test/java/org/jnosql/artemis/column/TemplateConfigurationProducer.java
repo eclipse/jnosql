@@ -50,7 +50,7 @@ public class TemplateConfigurationProducer {
     @Test
     public void shouldTemplate() {
         Assertions.assertNotNull(templateA);
-        ColumnFamilyManager manager = AbstractColumnTemplate.class.cast(templateA).getManager();
+        ColumnFamilyManager manager = ((AbstractColumnTemplate) templateA).getManager();
         Assertions.assertNotNull(manager);
 
     }
@@ -58,14 +58,14 @@ public class TemplateConfigurationProducer {
     @Test
     public void shouldTemplateB() {
         Assertions.assertNotNull(templateB);
-        ColumnFamilyManager manager = AbstractColumnTemplate.class.cast(templateB).getManager();
+        ColumnFamilyManager manager = ((AbstractColumnTemplate) templateB).getManager();
         Assertions.assertNotNull(manager);
     }
 
     @Test
     public void shouldTemplateAsync() {
         Assertions.assertNotNull(templateA);
-        ColumnFamilyManagerAsync manager = AbstractColumnTemplateAsync.class.cast(templateAsyncA).getManager();
+        ColumnFamilyManagerAsync manager = ((AbstractColumnTemplateAsync) templateAsyncA).getManager();
         Assertions.assertNotNull(manager);
 
     }
@@ -73,7 +73,7 @@ public class TemplateConfigurationProducer {
     @Test
     public void shouldTemplateAsyncB() {
         Assertions.assertNotNull(templateB);
-        ColumnFamilyManagerAsync manager = AbstractColumnTemplateAsync.class.cast(templateAsyncB).getManager();
+        ColumnFamilyManagerAsync manager = ((AbstractColumnTemplateAsync) templateAsyncB).getManager();
         Assertions.assertNotNull(manager);
     }
 }

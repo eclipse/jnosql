@@ -40,8 +40,8 @@ class GraphConfigurationProducerTest {
 
     @Test
     public void shouldInjectGraphA() {
-        Assertions.assertTrue(GraphMockA.class.isInstance(graphA));
-        GraphMockA graphmock = GraphMockA.class.cast(graphA);
+        Assertions.assertTrue(graphA instanceof GraphMockA);
+        GraphMockA graphmock = (GraphMockA) graphA;
         Assertions.assertEquals("valueA", graphmock.get("key"));
         Assertions.assertEquals("value2A", graphmock.get("key2"));
 
@@ -49,8 +49,8 @@ class GraphConfigurationProducerTest {
 
     @Test
     public void shouldInjectGraphB() {
-        Assertions.assertTrue(GraphMockB.class.isInstance(graphB));
-        GraphMockB graphmock = GraphMockB.class.cast(graphB);
+        Assertions.assertTrue(graphB instanceof GraphMockB);
+        GraphMockB graphmock = (GraphMockB) graphB;
         Assertions.assertEquals("valueB", graphmock.get("key"));
         Assertions.assertEquals("value2B", graphmock.get("key2"));
 

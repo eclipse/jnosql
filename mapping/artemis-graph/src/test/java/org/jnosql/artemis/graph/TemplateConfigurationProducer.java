@@ -41,14 +41,14 @@ public class TemplateConfigurationProducer {
     @Test
     public void shouldTemplate() {
         Assertions.assertNotNull(templateA);
-        Graph graph = AbstractGraphTemplate.class.cast(templateA).getGraph();
+        Graph graph = ((AbstractGraphTemplate) templateA).getGraph();
         Assertions.assertNotNull(graph);
     }
 
     @Test
     public void shouldTemplateB() {
         Assertions.assertNotNull(templateB);
-        Graph graph = AbstractGraphTemplate.class.cast(templateB).getGraph();
+        Graph graph = ((AbstractGraphTemplate) templateB).getGraph();
         Assertions.assertNotNull(graph);
     }
 }

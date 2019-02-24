@@ -56,7 +56,7 @@ class DocumentFieldConverters {
         }
 
         private boolean isCollectionEmbeddable(FieldMapping field) {
-            return COLLECTION.equals(field.getType()) && GenericFieldMapping.class.cast(field).isEmbeddable();
+            return COLLECTION.equals(field.getType()) && ((GenericFieldMapping) field).isEmbeddable();
         }
     }
 
@@ -69,8 +69,8 @@ class DocumentFieldConverters {
             if (document.isPresent()) {
                 Document sudDocument = document.get();
                 Object value = sudDocument.get();
-                if (Map.class.isInstance(value)) {
-                    Map map = Map.class.cast(value);
+                if (value instanceof Map) {
+                    Map map = (Map) value;
                     List<Document> embeddedDocument = new ArrayList<>();
 
                     for (Map.Entry entry : (Set<Map.Entry>) map.entrySet()) {
@@ -132,7 +132,7 @@ class DocumentFieldConverters {
 
         private <T> Consumer<Document> convertDocument(T instance, FieldMapping field, AbstractDocumentEntityConverter converter) {
             return document -> {
-                GenericFieldMapping genericField = GenericFieldMapping.class.cast(field);
+                GenericFieldMapping genericField = (GenericFieldMapping) field;
                 Collection collection = genericField.getCollectionInstance();
                 List<List<Document>> embeddable = (List<List<Document>>) document.get();
                 for (List<Document> documentList : embeddable) {

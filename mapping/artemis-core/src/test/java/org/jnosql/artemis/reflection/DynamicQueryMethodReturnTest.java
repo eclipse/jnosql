@@ -55,8 +55,8 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(Optional.class.isInstance(execute));
-        Optional<Person> optional = Optional.class.cast(execute);
+        Assertions.assertTrue(execute instanceof Optional);
+        Optional<Person> optional = (Optional) execute;
         Assertions.assertFalse(optional.isPresent());
     }
 
@@ -74,8 +74,8 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(Optional.class.isInstance(execute));
-        Optional<Person> optional = Optional.class.cast(execute);
+        Assertions.assertTrue(execute instanceof Optional);
+        Optional<Person> optional = (Optional) execute;
         Assertions.assertTrue(optional.isPresent());
         Assertions.assertEquals(new Person("Ada"), optional.get());
     }
@@ -113,8 +113,8 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(Person.class.isInstance(execute));
-        Person person = Person.class.cast(execute);
+        Assertions.assertTrue(execute instanceof Person);
+        Person person = (Person) execute;
         Assertions.assertEquals(new Person("Ada"), person);
     }
 
@@ -151,8 +151,8 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(List.class.isInstance(execute));
-        List<Person> persons = List.class.cast(execute);
+        Assertions.assertTrue(execute instanceof List);
+        List<Person> persons = (List) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.get(0));
     }
@@ -172,8 +172,8 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(Iterable.class.isInstance(execute));
-        Iterable<Person> persons = List.class.cast(execute);
+        Assertions.assertTrue(execute instanceof Iterable);
+        Iterable<Person> persons = (List) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
@@ -190,8 +190,8 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(Collection.class.isInstance(execute));
-        Collection<Person> persons = Collection.class.cast(execute);
+        Assertions.assertTrue(execute instanceof Collection);
+        Collection<Person> persons = (Collection) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
@@ -210,8 +210,8 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(Queue.class.isInstance(execute));
-        Queue<Person> persons = Queue.class.cast(execute);
+        Assertions.assertTrue(execute instanceof Queue);
+        Queue<Person> persons = (Queue) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
@@ -229,8 +229,8 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(Stream.class.isInstance(execute));
-        Stream<Person> persons = Stream.class.cast(execute);
+        Assertions.assertTrue(execute instanceof Stream);
+        Stream<Person> persons = (Stream) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
@@ -252,8 +252,8 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(Iterable.class.isInstance(execute));
-        Iterable<Person> persons = List.class.cast(execute);
+        Assertions.assertTrue(execute instanceof Iterable);
+        Iterable<Person> persons = (List) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 

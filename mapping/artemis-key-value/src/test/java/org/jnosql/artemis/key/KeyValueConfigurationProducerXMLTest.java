@@ -41,8 +41,8 @@ public class KeyValueConfigurationProducerXMLTest {
     @Test
     public void shouldReadBucketManager() {
         factoryA.getBucketManager("database");
-        assertTrue(KeyValueConfigurationMock.BucketManagerFactoryMock.class.isInstance(factoryA));
-        KeyValueConfigurationMock.BucketManagerFactoryMock mock = KeyValueConfigurationMock.BucketManagerFactoryMock.class.cast(factoryA);
+        assertTrue(factoryA instanceof KeyValueConfigurationMock.BucketManagerFactoryMock);
+        KeyValueConfigurationMock.BucketManagerFactoryMock mock = (KeyValueConfigurationMock.BucketManagerFactoryMock) factoryA;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
@@ -51,8 +51,8 @@ public class KeyValueConfigurationProducerXMLTest {
     @Test
     public void shouldReadBucketManagerB() {
         factoryB.getBucketManager("database");
-        assertTrue(KeyValueConfigurationMock.BucketManagerFactoryMock.class.isInstance(factoryB));
-        KeyValueConfigurationMock.BucketManagerFactoryMock mock = KeyValueConfigurationMock.BucketManagerFactoryMock.class.cast(factoryB);
+        assertTrue(factoryB instanceof KeyValueConfigurationMock.BucketManagerFactoryMock);
+        KeyValueConfigurationMock.BucketManagerFactoryMock mock = (KeyValueConfigurationMock.BucketManagerFactoryMock) factoryB;
         Map<String, Object> settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));

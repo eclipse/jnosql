@@ -137,7 +137,7 @@ abstract class AbstractGraphConverterTest {
         Vertex vertex = getConverter().toVertex(movie);
 
         assertEquals("movie", vertex.label());
-        assertEquals(1999, Number.class.cast(vertex.value("movie_year")).intValue());
+        assertEquals(1999, ((Number) vertex.value("movie_year")).intValue());
         assertEquals("Matrix", vertex.value("title"));
     }
 
