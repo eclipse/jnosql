@@ -15,20 +15,14 @@
 package org.jnosql.artemis.key.query;
 
 import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.Param;
-import org.jnosql.artemis.PreparedStatement;
-import org.jnosql.artemis.Query;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.query.RepositoryType;
+import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
+import org.jnosql.artemis.reflection.DynamicReturnConverter;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHandler {
 
@@ -38,6 +32,8 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
     protected abstract KeyValueTemplate getTemplate();
 
     protected abstract Class<T> getEntityClass();
+
+    private final DynamicReturnConverter returnConverter = DynamicReturnConverter.INSTANCE;
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
@@ -49,40 +45,16 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
             case OBJECT_METHOD:
                 return method.invoke(this, args);
             case JNOSQL_QUERY:
-                return executeQuery(method, args, getQuery(method));
+                Class<?> typeClass = getEntityClass();
+                DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
+                        .withArgs(args)
+                        .withMethod(method)
+                        .withTypeClass(typeClass)
+                        .withPrepareConverter(q -> getTemplate().prepare(q, typeClass))
+                        .withQueryConverter(q -> getTemplate().query(q, typeClass)).build();
+                return returnConverter.convert(methodReturn);
             default:
                 throw new DynamicQueryException("Key Value repository does not support query method");
         }
-    }
-
-    private Object executeQuery(Method method, Object[] args, String query) {
-        Map<String, Object> params = getParams(method, args);
-        List<T> entities;
-        if (params.isEmpty()) {
-            entities = getTemplate().query(query, getEntityClass());
-        } else {
-            PreparedStatement prepare = getTemplate().prepare(query, getEntityClass());
-            params.forEach(prepare::bind);
-            entities = prepare.getResultList();
-        }
-        return ReturnTypeConverterUtil.returnObject(entities, getEntityClass(), method);
-    }
-
-    private Map<String, Object> getParams(Method method, Object[] args) {
-        Map<String, Object> params = new HashMap<>();
-
-        Parameter[] parameters = method.getParameters();
-        for (int index = 0; index < parameters.length; index++) {
-            Parameter parameter = parameters[index];
-            Param param = parameter.getAnnotation(Param.class);
-            if (Objects.nonNull(param)) {
-                params.put(param.value(), args[index]);
-            }
-        }
-        return params;
-    }
-
-    private String getQuery(Method method) {
-        return method.getAnnotation(Query.class).value();
     }
 }
