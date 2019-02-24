@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The default implementation of {@link DynamicReturn}
+ * This instance has information to return at the dynamic query in Repository.
  * To create an instance, use, {@link DefaultDynamicReturn#builder()}
  *
  * @param <T> the source type
@@ -70,22 +70,34 @@ public class DefaultDynamicReturn<T> implements DynamicReturn {
         this.list = list;
     }
 
-    @Override
+    /**
+     * The repository class type source.
+     * @return The repository class type source.
+     */
     public Class<T> typeClass() {
         return classSource;
     }
 
-    @Override
+    /**
+     * The method source at the Repository
+     * @return The method source at the Repository
+     */
     public Method getMethod() {
         return methodSource;
     }
 
-    @Override
+    /**
+     * Returns the result as single result
+     * @return the result as single result
+     */
     public Optional<T> singleResult() {
         return singleResult.get();
     }
 
-    @Override
+    /**
+     * Returns the result as {@link List}
+     * @return the result as {@link List}
+     */
     public List<T> list() {
         return list.get();
     }
