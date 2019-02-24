@@ -15,22 +15,17 @@
 package org.jnosql.artemis.document.query;
 
 
-import org.jnosql.artemis.PreparedStatement;
-import org.jnosql.artemis.Query;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DefaultDynamicReturn;
+import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 import org.jnosql.artemis.reflection.DynamicReturnConverter;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.select;
 
@@ -87,28 +82,13 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
     }
 
     private Object getJnosqlQuery(Method method, Object[] args, Class<?> typeClass) {
-        String value = method.getAnnotation(Query.class).value();
-        Map<String, Object> params = getParams(method, args);
-        List<T> entities;
-        if (params.isEmpty()) {
-            entities = getTemplate().query(value);
-        } else {
-            PreparedStatement prepare = getTemplate().prepare(value);
-            params.forEach(prepare::bind);
-            entities = prepare.getResultList();
-        }
-
-        Supplier<List<?>> listSupplier = () -> entities;
-        Supplier<Optional<?>> singleSupplier = DefaultDynamicReturn.toSingleResult(method).apply(listSupplier);
-
-        DefaultDynamicReturn dynamicReturn = DefaultDynamicReturn.builder()
-                .withClassSource(typeClass)
-                .withMethodSource(method)
-                .withList(listSupplier)
-                .withSingleResult(singleSupplier)
-                .build();
-
-        return returnConverter.convert(dynamicReturn);
+        DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
+                .withArgs(args)
+                .withMethod(method)
+                .withTypeClass(typeClass)
+                .withPrepareConverter(q -> getTemplate().prepare(q))
+                .withQueryConverter(q -> getTemplate().query(q)).build();
+        return returnConverter.convert(methodReturn);
     }
 
 }

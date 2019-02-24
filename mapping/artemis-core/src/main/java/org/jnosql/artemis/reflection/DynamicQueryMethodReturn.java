@@ -60,6 +60,9 @@ public final class DynamicQueryMethodReturn {
         return prepareConverter;
     }
 
+    public static DynamicQueryMethodReturnBuilder builder() {
+        return new DynamicQueryMethodReturnBuilder();
+    }
 
     public static class DynamicQueryMethodReturnBuilder {
 
