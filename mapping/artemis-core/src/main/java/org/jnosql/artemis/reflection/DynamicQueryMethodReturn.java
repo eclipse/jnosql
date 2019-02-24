@@ -105,7 +105,6 @@ public final class DynamicQueryMethodReturn {
         }
         public DynamicQueryMethodReturn build() {
             Objects.requireNonNull(method, "method is required");
-            Objects.requireNonNull(args, "args is required");
             Objects.requireNonNull(typeClass, "typeClass is required");
             Objects.requireNonNull(queryConverter, "queryConverter is required");
             Objects.requireNonNull(prepareConverter, "prepareConverter is required");
