@@ -67,7 +67,7 @@ public class ParamsBinder {
         }
         for (int index = 0; index < names.size(); index++) {
             String name = names.get(index);
-            String fieldName = name.substring(0, name.lastIndexOf("_"));
+            String fieldName = name.substring(0, name.lastIndexOf('_'));
             Optional<FieldMapping> field = this.mapping.getFields().stream()
                     .filter(f -> f.getName().equals(fieldName)).findFirst();
 
