@@ -98,9 +98,9 @@ public enum DynamicReturnConverter {
 
         Supplier<List<?>> listSupplier = () -> entities;
 
-        Supplier<Optional<?>> singleSupplier = DefaultDynamicReturn.toSingleResult(method).apply(listSupplier);
+        Supplier<Optional<?>> singleSupplier = DynamicReturn.toSingleResult(method).apply(listSupplier);
 
-        DefaultDynamicReturn dynamicReturn = DefaultDynamicReturn.builder()
+        DynamicReturn dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
                 .withList(listSupplier)

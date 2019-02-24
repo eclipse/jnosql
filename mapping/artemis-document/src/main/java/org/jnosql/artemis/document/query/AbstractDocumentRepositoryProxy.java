@@ -18,7 +18,7 @@ package org.jnosql.artemis.document.query;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.query.RepositoryType;
-import org.jnosql.artemis.reflection.DefaultDynamicReturn;
+import org.jnosql.artemis.reflection.DynamicReturn;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 import org.jnosql.artemis.reflection.DynamicReturnConverter;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
@@ -55,7 +55,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 return method.invoke(getRepository(), args);
             case FIND_BY:
                 DocumentQuery query = getQuery(method, args);
-                DefaultDynamicReturn<?> dynamicReturn = DefaultDynamicReturn.builder()
+                DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                         .withClassSource(typeClass)
                         .withMethodSource(method).withList(() -> getTemplate().select(query))
                         .withSingleResult(() -> getTemplate().singleResult(query)).build();
@@ -63,7 +63,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 return returnConverter.convert(dynamicReturn);
             case FIND_ALL:
                 DocumentQuery queryFindAll = select().from(getClassMapping().getName()).build();
-                DefaultDynamicReturn<?> dynamicReturnFindAll = DefaultDynamicReturn.builder()
+                DynamicReturn<?> dynamicReturnFindAll = DynamicReturn.builder()
                         .withClassSource(typeClass)
                         .withMethodSource(method).withList(() -> getTemplate().select(queryFindAll))
                         .withSingleResult(() -> getTemplate().singleResult(queryFindAll)).build();
