@@ -39,7 +39,7 @@ class DynamicReturnTest {
     public void shouldReturnEmptyOptional() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getOptional");
-        Supplier<List<?>> list = () -> Collections.emptyList();
+        Supplier<List<?>> list = Collections::emptyList;
         Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
@@ -79,7 +79,7 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
 
-        Assertions.assertThrows(NonUniqueResultException.class, () -> dynamicReturn.execute());
+        Assertions.assertThrows(NonUniqueResultException.class, dynamicReturn::execute);
 
     }
 
@@ -104,7 +104,7 @@ class DynamicReturnTest {
     public void shouldReturnNull() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getInstance");
-        Supplier<List<?>> list = () -> Collections.emptyList();
+        Supplier<List<?>> list = Collections::emptyList;
         Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)

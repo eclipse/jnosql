@@ -30,7 +30,7 @@ final class DeleteQueryConverter extends AbstractQueryConvert implements Functio
         DeleteMethodFactory factory = DeleteMethodFactory.get();
         DeleteQuery deleteQuery = factory.apply(graphQuery.getMethod(), graphQuery.getEntityName());
         ClassMapping mapping = graphQuery.getMapping();
-        GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, () -> deleteQuery.getWhere(), mapping);
+        GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, deleteQuery::getWhere, mapping);
         traversal.hasLabel(mapping.getName());
         return traversal.toList();
     }

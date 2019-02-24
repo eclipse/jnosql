@@ -95,7 +95,7 @@ class DynamicQueryMethodReturnTest {
                 .withPrepareConverter(s -> preparedStatement)
                 .build();
 
-        Assertions.assertThrows(NonUniqueResultException.class, () -> dynamicReturn.execute());
+        Assertions.assertThrows(NonUniqueResultException.class, dynamicReturn::execute);
     }
 
 

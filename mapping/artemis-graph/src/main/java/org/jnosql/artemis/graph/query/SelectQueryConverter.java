@@ -38,7 +38,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements Functio
         SelectQuery query = selectMethodFactory.apply(graphQuery.getMethod(), graphQuery.getEntityName());
         ClassMapping mapping = graphQuery.getMapping();
 
-        GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, () -> query.getWhere(), mapping);
+        GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, query::getWhere, mapping);
 
         if (query.getSkip() > 0) {
             traversal.skip(query.getSkip());
