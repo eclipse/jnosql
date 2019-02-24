@@ -41,9 +41,6 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
 
     protected abstract DocumentTemplate getTemplate();
 
-    private final DynamicReturnConverter returnConverter = DynamicReturnConverter.INSTANCE;
-
-
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
@@ -60,7 +57,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                         .withMethodSource(method).withList(() -> getTemplate().select(query))
                         .withSingleResult(() -> getTemplate().singleResult(query)).build();
 
-                return returnConverter.convert(dynamicReturn);
+                return dynamicReturn.execute();
             case FIND_ALL:
                 DocumentQuery queryFindAll = select().from(getClassMapping().getName()).build();
                 DynamicReturn<?> dynamicReturnFindAll = DynamicReturn.builder()

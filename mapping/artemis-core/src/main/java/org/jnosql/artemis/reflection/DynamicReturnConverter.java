@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 /**
  * The converter within the return method at Repository class.
  */
-public enum DynamicReturnConverter {
+enum DynamicReturnConverter {
 
     INSTANCE;
 
