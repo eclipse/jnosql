@@ -63,38 +63,14 @@ public abstract class AbstractColumnRepositoryAsyncProxy<T> extends BaseColumnRe
             case OBJECT_METHOD:
                 return method.invoke(this, args);
             case JNOSQL_QUERY:
+
+                RepositoryReflectionUtils.INSTANCE.getJnosqlQuery()
                 return getJnosqlQuery(method, args);
             default:
                 return Void.class;
         }
     }
 
-    private Object getJnosqlQuery(Method method, Object[] args) {
-        String value = method.getAnnotation(Query.class).value();
-        Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
-        Consumer<List<T>> consumer = getConsumer(args);
-        if (params.isEmpty()) {
-            getTemplate().query(value, consumer);
-        } else {
-            PreparedStatementAsync prepare = getTemplate().prepare(value);
-            params.forEach(prepare::bind);
-            prepare.getResultList(consumer);
-        }
-
-        return Void.class;
-    }
-
-    private Consumer<List<T>> getConsumer(Object[] args) {
-        Consumer<List<T>> consumer;
-        Object callBack = getCallback(args);
-        if (callBack instanceof Consumer) {
-            consumer = Consumer.class.cast(callBack);
-        } else {
-            consumer = l -> {
-            };
-        }
-        return consumer;
-    }
 
 
     private Object executeDelete(Object arg, ColumnDeleteQuery deleteQuery) {

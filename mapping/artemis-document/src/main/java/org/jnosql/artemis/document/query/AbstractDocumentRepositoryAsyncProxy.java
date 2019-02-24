@@ -16,18 +16,15 @@ package org.jnosql.artemis.document.query;
 
 
 import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.PreparedStatementAsync;
-import org.jnosql.artemis.Query;
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.query.RepositoryType;
+import org.jnosql.artemis.reflection.DynamicAsyncQueryMethodReturn;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -60,7 +57,15 @@ public abstract class AbstractDocumentRepositoryAsyncProxy<T> extends BaseDocume
             case OBJECT_METHOD:
                 return method.invoke(this, args);
             case JNOSQL_QUERY:
-                return getJnosqlQuery(method, args);
+
+                DynamicAsyncQueryMethodReturn<Object> nativeQuery = DynamicAsyncQueryMethodReturn.builder()
+                        .withArgs(args)
+                        .withMethod(method)
+                        .withAsyncConsumer(getTemplate()::query)
+                        .withPrepareConverter(q -> getTemplate().prepare(q))
+                        .build();
+                nativeQuery.execute();
+                return Void.class;
             default:
                 return Void.class;
         }
@@ -89,41 +94,6 @@ public abstract class AbstractDocumentRepositoryAsyncProxy<T> extends BaseDocume
                     " as end parameter as callback");
         }
         return Void.class;
-    }
-
-
-    private Object getJnosqlQuery(Method method, Object[] args) {
-        String value = method.getAnnotation(Query.class).value();
-        Map<String, Object> params = getParams(method, args);
-        Consumer<List<T>> consumer = getConsumer(args);
-        if (params.isEmpty()) {
-            getTemplate().query(value, consumer);
-        } else {
-            PreparedStatementAsync prepare = getTemplate().prepare(value);
-            params.forEach(prepare::bind);
-            prepare.getResultList(consumer);
-        }
-
-        return Void.class;
-    }
-
-    private Consumer<List<T>> getConsumer(Object[] args) {
-        Consumer<List<T>> consumer;
-        Object callBack = getCallback(args);
-        if (callBack instanceof Consumer) {
-            consumer = Consumer.class.cast(callBack);
-        } else {
-            consumer = l -> {
-            };
-        }
-        return consumer;
-    }
-
-    private Object getCallback(Object[] args) {
-        if (args == null || args.length == 0) {
-            return null;
-        }
-        return args[args.length - 1];
     }
 
 }

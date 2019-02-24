@@ -62,4 +62,8 @@ public enum RepositoryReflectionUtils {
     public String getQuery(Method method) {
         return method.getAnnotation(Query.class).value();
     }
+
+
+
+
 }

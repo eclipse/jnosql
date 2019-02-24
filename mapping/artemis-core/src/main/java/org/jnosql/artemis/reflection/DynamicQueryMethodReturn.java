@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+/**
+ * This instance has the information to run the JNoSQL native query at {@link org.jnosql.artemis.Repository}
+ */
 public final class DynamicQueryMethodReturn {
 
 
