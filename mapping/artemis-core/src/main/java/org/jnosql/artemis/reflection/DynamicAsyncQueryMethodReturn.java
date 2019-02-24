@@ -26,13 +26,13 @@ import java.util.function.Function;
 
 /**
  * This instance has the information to run the JNoSQL native query at {@link org.jnosql.artemis.RepositoryAsync}
- *
+ * To create an instance use {@link DynamicAsyncQueryMethodReturn#builder()}
  */
 public class DynamicAsyncQueryMethodReturn<T> {
 
     private final Method method;
     private final Object[] args;
-    private final BiConsumer<String,Consumer<List<T>>> asyncConsumer;
+    private final BiConsumer<String, Consumer<List<T>>> asyncConsumer;
     private final Function<String, PreparedStatementAsync> prepareConverter;
 
     private DynamicAsyncQueryMethodReturn(Method method, Object[] args, BiConsumer<String,
@@ -61,7 +61,7 @@ public class DynamicAsyncQueryMethodReturn<T> {
     }
 
 
-    public  void execute() {
+    public void execute() {
         String value = RepositoryReflectionUtils.INSTANCE.getQuery(method);
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
         Consumer<List<T>> consumer = getConsumer(args);
@@ -87,12 +87,18 @@ public class DynamicAsyncQueryMethodReturn<T> {
     }
 
     private Object getCallback(Object[] args) {
-        if(args == null || args.length == 0) {
+        if (args == null || args.length == 0) {
             return null;
         }
         return args[args.length - 1];
     }
 
+    /**
+     * Creates a builder class
+     *
+     * @param <T> the type
+     * @return a builder instance
+     */
     public static <T> DynamicAsyncQueryMethodReturnBuilder<T> builder() {
         return new DynamicAsyncQueryMethodReturnBuilder<>();
     }
@@ -103,7 +109,7 @@ public class DynamicAsyncQueryMethodReturn<T> {
 
         private Object[] args;
 
-        private BiConsumer<String,Consumer<List<T>>> asyncConsumer;
+        private BiConsumer<String, Consumer<List<T>>> asyncConsumer;
 
         private Function<String, PreparedStatementAsync> prepareConverter;
 
