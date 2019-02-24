@@ -19,7 +19,6 @@ import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
-import org.jnosql.artemis.reflection.DynamicReturnConverter;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -33,7 +32,6 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
 
     protected abstract Class<T> getEntityClass();
 
-    private final DynamicReturnConverter returnConverter = DynamicReturnConverter.INSTANCE;
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
@@ -52,7 +50,7 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
                         .withTypeClass(typeClass)
                         .withPrepareConverter(q -> getTemplate().prepare(q, typeClass))
                         .withQueryConverter(q -> getTemplate().query(q, typeClass)).build();
-                return returnConverter.convert(methodReturn);
+                return methodReturn.execute();
             default:
                 throw new DynamicQueryException("Key Value repository does not support query method");
         }

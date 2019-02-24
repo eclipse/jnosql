@@ -24,7 +24,6 @@ import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 import org.jnosql.artemis.reflection.DynamicReturn;
-import org.jnosql.artemis.reflection.DynamicReturnConverter;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -46,8 +45,6 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
     private final SelectQueryConverter converter = new SelectQueryConverter();
 
     private final DeleteQueryConverter deleteConverter = new DeleteQueryConverter();
-
-    private final DynamicReturnConverter returnConverter = DynamicReturnConverter.INSTANCE;
 
     protected abstract ClassMapping getClassMapping();
 
@@ -87,7 +84,7 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
                         .withTypeClass(typeClass)
                         .withPrepareConverter(q -> getTemplate().prepare(q))
                         .withQueryConverter(q -> getTemplate().query(q)).build();
-                return returnConverter.convert(methodReturn);
+                return methodReturn.execute();
             default:
                 return Void.class;
 
@@ -134,7 +131,7 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
                 .withSingleResult(singleSupplier)
                 .build();
 
-        return returnConverter.convert(dynamicReturn);
+        return dynamicReturn.execute();
     }
 
     private Object executeDeleteMethod(Method method, Object[] args) {
