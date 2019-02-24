@@ -19,8 +19,6 @@ package org.jnosql.artemis.reflection;
  */
 class ReflectionClassOperation implements ClassOperation {
 
-    private final Reflections reflections;
-
     private final ReflectionInstanceSupplierFactory supplierFactory;
 
     private final ReflectionFieldWriterFactory writerFactory;
@@ -28,7 +26,6 @@ class ReflectionClassOperation implements ClassOperation {
     private final ReflectionFieldReaderFactory readerFactory;
 
     ReflectionClassOperation(Reflections reflections) {
-        this.reflections = reflections;
         supplierFactory = new ReflectionInstanceSupplierFactory(reflections);
         writerFactory = new ReflectionFieldWriterFactory(reflections);
         readerFactory = new ReflectionFieldReaderFactory(reflections);

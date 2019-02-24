@@ -16,7 +16,6 @@ package org.jnosql.artemis.key.spi;
 
 import org.jnosql.artemis.ConfigurationException;
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.artemis.key.KeyValueTemplateProducer;
 import org.jnosql.artemis.util.StringUtils;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.BucketManagerFactory;
@@ -36,9 +35,6 @@ class ManagerConfigurationProducer {
 
     @Inject
     private KeyValueConfigurationProducer configurationProducer;
-
-    @Inject
-    private KeyValueTemplateProducer producer;
 
     @ConfigurationUnit
     @Produces

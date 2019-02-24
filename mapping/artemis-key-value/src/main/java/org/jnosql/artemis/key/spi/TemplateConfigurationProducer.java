@@ -30,9 +30,6 @@ import javax.inject.Inject;
 class TemplateConfigurationProducer {
 
     @Inject
-    private KeyValueConfigurationProducer configurationProducer;
-
-    @Inject
     private KeyValueTemplateProducer producer;
 
     @Inject
