@@ -18,25 +18,23 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.Param;
-import org.jnosql.artemis.PreparedStatement;
-import org.jnosql.artemis.Query;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.ClassMapping;
+import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
+import org.jnosql.artemis.reflection.DynamicReturn;
+import org.jnosql.artemis.reflection.DynamicReturnConverter;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static org.jnosql.artemis.graph.query.ReturnTypeConverterUtil.returnObject;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Template method to {@link Repository} proxy on Graph
@@ -48,7 +46,10 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
 
 
     private final SelectQueryConverter converter = new SelectQueryConverter();
+
     private final DeleteQueryConverter deleteConverter = new DeleteQueryConverter();
+
+    private final DynamicReturnConverter returnConverter = DynamicReturnConverter.INSTANCE;
 
     protected abstract ClassMapping getClassMapping();
 
@@ -65,28 +66,73 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
-        String methodName = method.getName();
+
         RepositoryType type = RepositoryType.of(method);
         Class<?> typeClass = getClassMapping().getClassInstance();
+        Class<?> classInstance = getClassMapping().getClassInstance();
 
         switch (type) {
             case DEFAULT:
                 return method.invoke(getRepository(), args);
             case FIND_BY:
-                return executeFindByMethod(method, args);
+                return findById(method, args, typeClass);
             case DELETE_BY:
                 return executeDeleteMethod(method, args);
             case FIND_ALL:
-                return executeFindAll(method, args);
+                return findAll(method, typeClass);
             case OBJECT_METHOD:
                 return method.invoke(this, args);
             case UNKNOWN:
             case JNOSQL_QUERY:
-                return getJnosqlQuery(method, args, typeClass);
+                DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
+                        .withArgs(args)
+                        .withMethod(method)
+                        .withTypeClass(typeClass)
+                        .withPrepareConverter(q -> getTemplate().prepare(q))
+                        .withQueryConverter(q -> getTemplate().query(q)).build();
+                return returnConverter.convert(methodReturn);
             default:
                 return Void.class;
 
         }
+    }
+
+    private Object findAll(Method method, Class<?> typeClass) {
+        GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
+        List<Vertex> vertices = traversal.hasLabel(getClassMapping().getName()).toList();
+        Stream<T> stream = vertices.stream().map(getConverter()::toEntity);
+        Supplier<List<?>> querySupplier = () ->
+                traversal.hasLabel(getClassMapping().getName()).toList().stream()
+                        .map(getConverter()::toEntity).collect(toList());
+
+        return converter(method, typeClass, querySupplier);
+    }
+
+    private Object findById(Method method, Object[] args, Class<?> typeClass) {
+        GraphQueryMethod queryMethod = new GraphQueryMethod(getClassMapping(),
+                getGraph().traversal().V(),
+                getConverters(), method, args);
+
+        Supplier<List<?>> querySupplier = () -> converter.apply(queryMethod)
+                .stream()
+                .map(getConverter()::toEntity)
+                .collect(toList());
+
+        return converter(method, typeClass, querySupplier);
+    }
+
+    private Object converter(Method method, Class<?> typeClass, Supplier<List<?>> querySupplier) {
+        Supplier<Optional<?>> singleSupplier =
+                DynamicReturn.toSingleResult(method).apply(querySupplier);
+
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(typeClass)
+                .withMethodSource(method)
+                .withList(querySupplier)
+                .withSingleResult(singleSupplier)
+                .build();
+
+        return returnConverter.convert(dynamicReturn);
     }
 
     private Object executeDeleteMethod(Method method, Object[] args) {
@@ -98,54 +144,6 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
         List<Vertex> vertices = deleteConverter.apply(queryMethod);
         vertices.forEach(Vertex::remove);
         return Void.class;
-    }
-
-    private Object executeFindByMethod(Method method, Object[] args) {
-        Class<?> classInstance = getClassMapping().getClassInstance();
-        GraphQueryMethod queryMethod = new GraphQueryMethod(getClassMapping(),
-                getGraph().traversal().V(),
-                getConverters(), method, args);
-
-        List<Vertex> vertices = converter.apply(queryMethod);
-        Stream<T> stream = vertices.stream().map(getConverter()::toEntity);
-
-        return returnObject(stream, classInstance, method);
-    }
-
-    private Object executeFindAll(Method method, Object[] args) {
-        Class<?> classInstance = getClassMapping().getClassInstance();
-        GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V();
-        List<Vertex> vertices = traversal.hasLabel(getClassMapping().getName()).toList();
-        Stream<T> stream = vertices.stream().map(getConverter()::toEntity);
-        return returnObject(stream, classInstance, method);
-    }
-
-    private Object getJnosqlQuery(Method method, Object[] args, Class<?> typeClass) {
-        String value = method.getAnnotation(Query.class).value();
-        Map<String, Object> params = getParams(method, args);
-        List<T> entities;
-        if (params.isEmpty()) {
-            entities = getTemplate().query(value);
-        } else {
-            PreparedStatement prepare = getTemplate().prepare(value);
-            params.forEach(prepare::bind);
-            entities = prepare.getResultList();
-        }
-        return ReturnTypeConverterUtil.returnObject(entities, typeClass, method);
-    }
-
-    private Map<String, Object> getParams(Method method, Object[] args) {
-        Map<String, Object> params = new HashMap<>();
-
-        Parameter[] parameters = method.getParameters();
-        for (int index = 0; index < parameters.length; index++) {
-            Parameter parameter = parameters[index];
-            Param param = parameter.getAnnotation(Param.class);
-            if (Objects.nonNull(param)) {
-                params.put(param.value(), args[index]);
-            }
-        }
-        return params;
     }
 
 }
