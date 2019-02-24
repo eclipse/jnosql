@@ -17,7 +17,6 @@ package org.jnosql.artemis.column.query;
 import org.jnosql.aphrodite.antlr.method.DeleteMethodFactory;
 import org.jnosql.aphrodite.antlr.method.SelectMethodFactory;
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.Param;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.util.ParamsBinder;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
@@ -32,9 +31,6 @@ import org.jnosql.query.Params;
 import org.jnosql.query.SelectQuery;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 abstract class BaseColumnRepository {

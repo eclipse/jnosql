@@ -67,6 +67,7 @@ public abstract class AbstractColumnRepositoryAsyncProxy<T> extends BaseColumnRe
                         .withPrepareConverter(q -> getTemplate().prepare(q))
                         .build();
                 nativeQuery.execute();
+                return Void.class;
             default:
                 return Void.class;
         }
