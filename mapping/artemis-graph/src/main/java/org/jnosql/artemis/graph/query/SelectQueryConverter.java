@@ -40,13 +40,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements Functio
         SelectQuery query = selectMethodFactory.apply(graphQuery.getMethod(), graphQuery.getEntityName());
         ClassMapping mapping = graphQuery.getMapping();
 
-        GraphTraversal<Vertex, Vertex> traversal = graphQuery.getTraversal();
-        if (query.getWhere().isPresent()) {
-            Where where = query.getWhere().get();
-
-            Condition condition = where.getCondition();
-            traversal.filter(getPredicate(graphQuery, condition, mapping));
-        }
+        GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, () -> query.getWhere(), mapping);
 
         if (query.getSkip() > 0) {
             traversal.skip(query.getSkip());
@@ -59,6 +53,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements Functio
         traversal.hasLabel(mapping.getName());
         return traversal.toList();
     }
+
 
     private Consumer<Sort> getSort(GraphTraversal<Vertex, Vertex> traversal, ClassMapping mapping) {
         return o -> {

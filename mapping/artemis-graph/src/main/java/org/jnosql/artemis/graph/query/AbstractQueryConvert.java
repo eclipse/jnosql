@@ -22,6 +22,11 @@ import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.query.Condition;
 import org.jnosql.query.ConditionValue;
 import org.jnosql.query.Operator;
+import org.jnosql.query.SelectQuery;
+import org.jnosql.query.Where;
+
+import java.util.Optional;
+import java.util.function.Supplier;
 
 abstract class AbstractQueryConvert {
 
@@ -62,5 +67,21 @@ abstract class AbstractQueryConvert {
 
 
         }
+    }
+
+    protected GraphTraversal<Vertex, Vertex> getGraphTraversal(GraphQueryMethod graphQuery,
+                                                               Supplier<Optional<Where>> whereSupplier,
+                                                               ClassMapping mapping) {
+
+        GraphTraversal<Vertex, Vertex> traversal = graphQuery.getTraversal();
+        Optional<Where> whereOptional = whereSupplier.get();
+
+        if (whereOptional.isPresent()) {
+            Where where = whereOptional.get();
+
+            Condition condition = where.getCondition();
+            traversal.filter(getPredicate(graphQuery, condition, mapping));
+        }
+        return traversal;
     }
 }
