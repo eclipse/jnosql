@@ -69,7 +69,6 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
 
         RepositoryType type = RepositoryType.of(method);
         Class<?> typeClass = getClassMapping().getClassInstance();
-        Class<?> classInstance = getClassMapping().getClassInstance();
 
         switch (type) {
             case DEFAULT:
