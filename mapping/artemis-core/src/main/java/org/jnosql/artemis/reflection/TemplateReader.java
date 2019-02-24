@@ -44,7 +44,7 @@ enum TemplateReader implements Function<String, String> {
         }
     }
 
-    class TemplateReaderException extends RuntimeException {
+   static class TemplateReaderException extends RuntimeException {
 
         public TemplateReaderException(String message, IOException ex) {
             super(message, ex);

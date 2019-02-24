@@ -67,7 +67,7 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         return new DefaultGraphTraversalSourceTemplate(instance, classMappings, converter, workflow);
     }
 
-    class SingleInstance<T> implements Instance<T> {
+    static class SingleInstance<T> implements Instance<T> {
 
         private final T instance;
 
