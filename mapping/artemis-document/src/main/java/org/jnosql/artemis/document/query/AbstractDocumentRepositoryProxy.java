@@ -75,20 +75,16 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
             case OBJECT_METHOD:
                 return method.invoke(this, args);
             case JNOSQL_QUERY:
-                return getJnosqlQuery(method, args, typeClass);
+                DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
+                        .withArgs(args)
+                        .withMethod(method)
+                        .withTypeClass(typeClass)
+                        .withPrepareConverter(q -> getTemplate().prepare(q))
+                        .withQueryConverter(q -> getTemplate().query(q)).build();
+                return returnConverter.convert(methodReturn);
             default:
                 return Void.class;
         }
-    }
-
-    private Object getJnosqlQuery(Method method, Object[] args, Class<?> typeClass) {
-        DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
-                .withArgs(args)
-                .withMethod(method)
-                .withTypeClass(typeClass)
-                .withPrepareConverter(q -> getTemplate().prepare(q))
-                .withQueryConverter(q -> getTemplate().query(q)).build();
-        return returnConverter.convert(methodReturn);
     }
 
 }
