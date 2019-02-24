@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @param <T> the source type
  */
-public class DynamicReturn<T>  {
+public class DynamicReturn<T> {
 
 
     /**
@@ -39,19 +39,32 @@ public class DynamicReturn<T>  {
      * @param method the method source
      * @return the function that does this conversion
      */
-    public static  Function<Supplier<List<?>>, Supplier<Optional<?>>> toSingleResult(final Method method) {
-        return l -> {
-            List<?> entities = l.get();
-            if (entities.isEmpty()) {
-                return () -> Optional.empty();
-            }
-            if (entities.size() == 1) {
-                return () -> Optional.ofNullable(entities.get(0));
-            }
-            throw new NonUniqueResultException("No unique result to the method: " + method);
-        };
+    public static Function<Supplier<List<?>>, Supplier<Optional<?>>> toSingleResult(final Method method) {
+        return new SupplierConverter(method);
     }
 
+    private static class SupplierConverter implements Function<Supplier<List<?>>, Supplier<Optional<?>>> {
+
+        private final Method method;
+
+        SupplierConverter(Method method) {
+            this.method = method;
+        }
+
+        @Override
+        public Supplier<Optional<?>> apply(Supplier<List<?>> l) {
+            return () -> {
+                List<?> entities = l.get();
+                if (entities.isEmpty()) {
+                    return Optional.empty();
+                }
+                if (entities.size() == 1) {
+                    return Optional.ofNullable(entities.get(0));
+                }
+                throw new NonUniqueResultException("No unique result to the method: " + method);
+            };
+        }
+    }
 
     private final Class<T> classSource;
 
@@ -72,6 +85,7 @@ public class DynamicReturn<T>  {
 
     /**
      * The repository class type source.
+     *
      * @return The repository class type source.
      */
     public Class<T> typeClass() {
@@ -80,6 +94,7 @@ public class DynamicReturn<T>  {
 
     /**
      * The method source at the Repository
+     *
      * @return The method source at the Repository
      */
     public Method getMethod() {
@@ -88,6 +103,7 @@ public class DynamicReturn<T>  {
 
     /**
      * Returns the result as single result
+     *
      * @return the result as single result
      */
     public Optional<T> singleResult() {
@@ -96,6 +112,7 @@ public class DynamicReturn<T>  {
 
     /**
      * Returns the result as {@link List}
+     *
      * @return the result as {@link List}
      */
     public List<T> list() {
@@ -115,7 +132,6 @@ public class DynamicReturn<T>  {
 
     /**
      * A builder of {@link DynamicReturn}
-     *
      */
     public static class DefaultDynamicReturnBuilder {
 
@@ -131,7 +147,7 @@ public class DynamicReturn<T>  {
         }
 
         public DefaultDynamicReturnBuilder withClassSource(Class<?> classSource) {
-            this.classSource =  classSource;
+            this.classSource = classSource;
             return this;
         }
 
