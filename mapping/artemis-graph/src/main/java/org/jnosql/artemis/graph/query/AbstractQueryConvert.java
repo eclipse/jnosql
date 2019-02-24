@@ -22,7 +22,6 @@ import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.query.Condition;
 import org.jnosql.query.ConditionValue;
 import org.jnosql.query.Operator;
-import org.jnosql.query.SelectQuery;
 import org.jnosql.query.Where;
 
 import java.util.Optional;
