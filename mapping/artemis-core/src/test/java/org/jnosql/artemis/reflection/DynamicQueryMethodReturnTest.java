@@ -256,7 +256,7 @@ class DynamicQueryMethodReturnTest {
         Iterable<Person> persons = List.class.cast(execute);
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
-    //criar um com prepare statement
+
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
                 .filter(m -> m.getName().equals(methodName))
