@@ -80,7 +80,7 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
 
         private Class<?> typeClass;
 
-        private java.util.function.Function<String, List<?>> queryConverter;
+        private Function<String, List<?>> queryConverter;
 
         private Function<String, PreparedStatement> prepareConverter;
 
