@@ -18,10 +18,8 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.aphrodite.antlr.method.SelectMethodFactory;
 import org.jnosql.artemis.reflection.ClassMapping;
-import org.jnosql.query.Condition;
 import org.jnosql.query.SelectQuery;
 import org.jnosql.query.Sort;
-import org.jnosql.query.Where;
 
 import java.util.List;
 import java.util.function.Consumer;
