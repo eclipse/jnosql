@@ -18,9 +18,8 @@ package org.jnosql.artemis.document.query;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.query.RepositoryType;
-import org.jnosql.artemis.reflection.DynamicReturn;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
-import org.jnosql.artemis.reflection.DynamicReturnConverter;
+import org.jnosql.artemis.reflection.DynamicReturn;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentQuery;
 
@@ -64,7 +63,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                         .withClassSource(typeClass)
                         .withMethodSource(method).withList(() -> getTemplate().select(queryFindAll))
                         .withSingleResult(() -> getTemplate().singleResult(queryFindAll)).build();
-                return returnConverter.convert(dynamicReturnFindAll);
+                return dynamicReturnFindAll.execute();
             case DELETE_BY:
                 DocumentDeleteQuery documentDeleteQuery = getDeleteQuery(method, args);
                 getTemplate().delete(documentDeleteQuery);
@@ -78,7 +77,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                         .withTypeClass(typeClass)
                         .withPrepareConverter(q -> getTemplate().prepare(q))
                         .withQueryConverter(q -> getTemplate().query(q)).build();
-                return returnConverter.convert(methodReturn);
+                return methodReturn.execute();
             default:
                 return Void.class;
         }

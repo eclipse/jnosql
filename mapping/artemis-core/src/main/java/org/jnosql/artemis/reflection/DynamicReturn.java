@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @param <T> the source type
  */
-public class DynamicReturn<T> implements MethodDynamicExecutable{
+public class DynamicReturn<T> implements MethodDynamicExecutable {
 
 
     /**
@@ -94,7 +94,7 @@ public class DynamicReturn<T> implements MethodDynamicExecutable{
      *
      * @return The repository class type source.
      */
-    public Class<T> typeClass() {
+    Class<T> typeClass() {
         return classSource;
     }
 
@@ -103,7 +103,7 @@ public class DynamicReturn<T> implements MethodDynamicExecutable{
      *
      * @return The method source at the Repository
      */
-    public Method getMethod() {
+    Method getMethod() {
         return methodSource;
     }
 
@@ -112,7 +112,7 @@ public class DynamicReturn<T> implements MethodDynamicExecutable{
      *
      * @return the result as single result
      */
-    public Optional<T> singleResult() {
+    Optional<T> singleResult() {
         return singleResult.get();
     }
 
@@ -121,7 +121,7 @@ public class DynamicReturn<T> implements MethodDynamicExecutable{
      *
      * @return the result as {@link List}
      */
-    public List<T> list() {
+    List<T> list() {
         return list.get();
     }
 

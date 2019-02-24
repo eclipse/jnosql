@@ -25,7 +25,7 @@ import java.util.function.Function;
 /**
  * This instance has the information to run the JNoSQL native query at {@link org.jnosql.artemis.Repository}
  */
-public final class DynamicQueryMethodReturn {
+public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
 
 
     private final Method method;
@@ -43,28 +43,33 @@ public final class DynamicQueryMethodReturn {
         this.prepareConverter = prepareConverter;
     }
 
-    public Method getMethod() {
+    Method getMethod() {
         return method;
     }
 
-    public Object[] getArgs() {
+    Object[] getArgs() {
         return args;
     }
 
-    public Class<?> getTypeClass() {
+    Class<?> getTypeClass() {
         return typeClass;
     }
 
-    public Function<String, List<?>> getQueryConverter() {
+    Function<String, List<?>> getQueryConverter() {
         return queryConverter;
     }
 
-    public Function<String, PreparedStatement> getPrepareConverter() {
+    Function<String, PreparedStatement> getPrepareConverter() {
         return prepareConverter;
     }
 
     public static DynamicQueryMethodReturnBuilder builder() {
         return new DynamicQueryMethodReturnBuilder();
+    }
+
+    @Override
+    public Object execute() {
+        return DynamicReturnConverter.INSTANCE.convert(this);
     }
 
     public static class DynamicQueryMethodReturnBuilder {
