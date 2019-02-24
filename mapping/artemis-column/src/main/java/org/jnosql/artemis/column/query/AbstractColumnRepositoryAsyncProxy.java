@@ -21,6 +21,7 @@ import org.jnosql.artemis.Query;
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.artemis.query.RepositoryType;
+import org.jnosql.artemis.reflection.RepositoryReflectionUtils;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnQuery;
 
@@ -70,7 +71,7 @@ public abstract class AbstractColumnRepositoryAsyncProxy<T> extends BaseColumnRe
 
     private Object getJnosqlQuery(Method method, Object[] args) {
         String value = method.getAnnotation(Query.class).value();
-        Map<String, Object> params = getParams(method, args);
+        Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
         Consumer<List<T>> consumer = getConsumer(args);
         if (params.isEmpty()) {
             getTemplate().query(value, consumer);

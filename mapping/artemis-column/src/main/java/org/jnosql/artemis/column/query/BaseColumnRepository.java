@@ -87,17 +87,4 @@ abstract class BaseColumnRepository {
         return paramsBinder;
     }
 
-    protected Map<String, Object> getParams(Method method, Object[] args) {
-        Map<String, Object> params = new HashMap<>();
-
-        Parameter[] parameters = method.getParameters();
-        for (int index = 0; index < parameters.length; index++) {
-            Parameter parameter = parameters[index];
-            Param param = parameter.getAnnotation(Param.class);
-            if (Objects.nonNull(param)) {
-                params.put(param.value(), args[index]);
-            }
-        }
-        return params;
-    }
 }

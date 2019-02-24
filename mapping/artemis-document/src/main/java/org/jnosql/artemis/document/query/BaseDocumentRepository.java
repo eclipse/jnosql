@@ -17,7 +17,6 @@ package org.jnosql.artemis.document.query;
 import org.jnosql.aphrodite.antlr.method.DeleteMethodFactory;
 import org.jnosql.aphrodite.antlr.method.SelectMethodFactory;
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.Param;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.util.ParamsBinder;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
@@ -32,9 +31,6 @@ import org.jnosql.query.Params;
 import org.jnosql.query.SelectQuery;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 abstract class BaseDocumentRepository {
@@ -88,17 +84,4 @@ abstract class BaseDocumentRepository {
         return paramsBinder;
     }
 
-    protected Map<String, Object> getParams(Method method, Object[] args) {
-        Map<String, Object> params = new HashMap<>();
-
-        Parameter[] parameters = method.getParameters();
-        for (int index = 0; index < parameters.length; index++) {
-            Parameter parameter = parameters[index];
-            Param param = parameter.getAnnotation(Param.class);
-            if (Objects.nonNull(param)) {
-                params.put(param.value(), args[index]);
-            }
-        }
-        return params;
-    }
 }
