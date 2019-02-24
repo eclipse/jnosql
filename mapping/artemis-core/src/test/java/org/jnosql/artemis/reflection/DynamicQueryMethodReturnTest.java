@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
+import org.jnosql.artemis.Param;
 import org.jnosql.artemis.PreparedStatement;
 import org.jnosql.artemis.Query;
 import org.jnosql.artemis.Repository;
@@ -233,6 +234,28 @@ class DynamicQueryMethodReturnTest {
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
+    @Test
+    public void shouldReturnFromPrepareStatment() throws NoSuchMethodException {
+        PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
+        Mockito.when(preparedStatement.<Person>getResultList())
+                .thenReturn(singletonList(new Person("Ada")));
+
+        Method method = getMethod(PersonRepository.class, "query");
+
+
+        Function<String, List<?>> list = q -> singletonList(new Person("Ada"));
+        DynamicQueryMethodReturn dynamicReturn = DynamicQueryMethodReturn.builder()
+                .withTypeClass(Person.class)
+                .withMethod(method)
+                .withQueryConverter(list)
+                .withArgs(new Object[]{"Ada"})
+                .withPrepareConverter(s -> preparedStatement)
+                .build();
+        Object execute = dynamicReturn.execute();
+        Assertions.assertTrue(Iterable.class.isInstance(execute));
+        Iterable<Person> persons = List.class.cast(execute);
+        Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
+    }
     //criar um com prepare statement
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
@@ -292,6 +315,9 @@ class DynamicQueryMethodReturnTest {
 
         @Query("query")
         Stream<Person> getStream();
+
+        @Query("query")
+        List<Person> query(@Param("name") String name);
     }
 
 }
