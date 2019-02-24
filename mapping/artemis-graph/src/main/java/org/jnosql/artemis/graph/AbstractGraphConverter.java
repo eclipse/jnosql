@@ -26,7 +26,6 @@ import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.reflection.FieldMapping;
 import org.jnosql.diana.api.Value;
 
-import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -157,7 +156,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         Object vertexId = vertex.id();
         if (Objects.nonNull(vertexId) && id.isPresent()) {
             FieldMapping fieldMapping = id.get();
-            Field fieldId = fieldMapping.getNativeField();
+
             if (fieldMapping.getConverter().isPresent()) {
                 AttributeConverter attributeConverter = getConverters().get(fieldMapping.getConverter().get());
                 Object attributeConverted = attributeConverter.convertToEntityAttribute(vertexId);
