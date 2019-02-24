@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @param <T> the source type
  */
-public class DynamicReturn<T> {
+public class DynamicReturn<T> implements MethodDynamicExecutable{
 
 
     /**
@@ -41,6 +41,12 @@ public class DynamicReturn<T> {
      */
     public static Function<Supplier<List<?>>, Supplier<Optional<?>>> toSingleResult(final Method method) {
         return new SupplierConverter(method);
+    }
+
+
+    @Override
+    public Object execute() {
+        return DynamicReturnConverter.INSTANCE.convert(this);
     }
 
     private static class SupplierConverter implements Function<Supplier<List<?>>, Supplier<Optional<?>>> {
