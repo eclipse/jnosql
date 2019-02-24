@@ -186,7 +186,6 @@ public class GraphRepositoryProxyTest {
     public void shouldFindByAge() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
         Optional<Person> person = personRepository.findByAge(20);
         assertTrue(person.isPresent());

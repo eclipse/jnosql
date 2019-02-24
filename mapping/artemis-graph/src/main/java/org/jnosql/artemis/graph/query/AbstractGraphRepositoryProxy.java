@@ -108,14 +108,17 @@ abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler 
     }
 
     private Object findById(Method method, Object[] args, Class<?> typeClass) {
-        GraphQueryMethod queryMethod = new GraphQueryMethod(getClassMapping(),
-                getGraph().traversal().V(),
-                getConverters(), method, args);
 
-        Supplier<List<?>> querySupplier = () -> converter.apply(queryMethod)
-                .stream()
-                .map(getConverter()::toEntity)
-                .collect(toList());
+        Supplier<List<?>> querySupplier = () -> {
+            GraphQueryMethod queryMethod = new GraphQueryMethod(getClassMapping(),
+                    getGraph().traversal().V(),
+                    getConverters(), method, args);
+
+            return converter.apply(queryMethod)
+                    .stream()
+                    .map(getConverter()::toEntity)
+                    .collect(toList());
+        };
 
         return converter(method, typeClass, querySupplier);
     }
