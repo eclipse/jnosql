@@ -1,6 +1,6 @@
 # Eclipse JNoSQL
 
-![Eclipse JNOSQL logo](https://www.eclipse.org/community/eclipse_newsletter/2018/april/images/eclipse_jnosql.png)
+![Eclipse JNOSQL logo](http://www.jnosql.org/images/home_logo.png)
 
 Eclipse JNoSQL is a Java framework that streamlines the integration of Java applications with NoSQL databases. It defines a set of APIs and provides a standard implementation for most NoSQL databases. This clearly helps to achieve very low coupling with the underlying NoSQL technologies used in applications. The project has two layers:
 
