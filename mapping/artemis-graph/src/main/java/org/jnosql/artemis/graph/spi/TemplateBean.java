@@ -31,8 +31,6 @@ import java.util.Set;
 
 class TemplateBean extends AbstractBean<GraphTemplate> {
 
-    private final BeanManager beanManager;
-
     private final Set<Type> types;
 
     private final String provider;
@@ -67,10 +65,10 @@ class TemplateBean extends AbstractBean<GraphTemplate> {
     }
 
     private Graph getGraph() {
-        Bean<Graph> bean = (Bean<Graph>) beanManager.getBeans(Graph.class,
+        Bean<Graph> bean = (Bean<Graph>) getBeanManager().getBeans(Graph.class,
                 DatabaseQualifier.ofGraph(provider) ).iterator().next();
-        CreationalContext<Graph> ctx = beanManager.createCreationalContext(bean);
-        return (Graph) beanManager.getReference(bean, Graph.class, ctx);
+        CreationalContext<Graph> ctx = getBeanManager().createCreationalContext(bean);
+        return (Graph) getBeanManager().getReference(bean, Graph.class, ctx);
     }
 
     @Override
