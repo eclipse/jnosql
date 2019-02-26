@@ -14,8 +14,6 @@
  */
 package org.jnosql.artemis.spi;
 
-import org.jnosql.artemis.DatabaseQualifier;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
@@ -49,8 +47,8 @@ public abstract class AbstractBean<T> implements Bean<T>, PassivationCapable {
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
 
-    protected <T> T getInstance(Class<T> clazz, String name) {
-        Bean bean = beanManager.getBeans(clazz, DatabaseQualifier.ofDocument(name)).iterator().next();
+    protected <T> T getInstance(Class<T> clazz, String name, Annotation qualifier) {
+        Bean bean = beanManager.getBeans(clazz, qualifier).iterator().next();
         CreationalContext ctx = beanManager.createCreationalContext(bean);
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
