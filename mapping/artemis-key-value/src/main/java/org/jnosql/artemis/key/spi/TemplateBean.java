@@ -19,22 +19,18 @@ import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.key.KeyValueTemplateProducer;
+import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.diana.api.key.BucketManager;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.enterprise.inject.spi.PassivationCapable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class TemplateBean implements Bean<KeyValueTemplate>, PassivationCapable {
-
-    private final BeanManager beanManager;
+class TemplateBean extends AbstractBean<KeyValueTemplate> {
 
     private final Set<Type> types;
 
@@ -49,7 +45,7 @@ class TemplateBean implements Bean<KeyValueTemplate>, PassivationCapable {
      * @param provider    the provider name, that must be a
      */
     public TemplateBean(BeanManager beanManager, String provider) {
-        this.beanManager = beanManager;
+        super(beanManager);
         this.types = Collections.singleton(KeyValueTemplate.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofKeyValue(provider));
@@ -61,16 +57,6 @@ class TemplateBean implements Bean<KeyValueTemplate>, PassivationCapable {
     }
 
     @Override
-    public Set<InjectionPoint> getInjectionPoints() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isNullable() {
-        return false;
-    }
-
-    @Override
     public KeyValueTemplate create(CreationalContext<KeyValueTemplate> creationalContext) {
 
         KeyValueTemplateProducer producer = getInstance(KeyValueTemplateProducer.class);
@@ -79,23 +65,13 @@ class TemplateBean implements Bean<KeyValueTemplate>, PassivationCapable {
     }
 
     private BucketManager getManager() {
-        Bean<BucketManager> bean = (Bean<BucketManager>) beanManager.getBeans(BucketManager.class,
+        Bean<BucketManager> bean = (Bean<BucketManager>) getBeanManager().getBeans(BucketManager.class,
                 DatabaseQualifier.ofKeyValue(provider) ).iterator().next();
-        CreationalContext<BucketManager> ctx = beanManager.createCreationalContext(bean);
-        return (BucketManager) beanManager.getReference(bean, BucketManager.class, ctx);
+        CreationalContext<BucketManager> ctx = getBeanManager().createCreationalContext(bean);
+        return (BucketManager) getBeanManager().getReference(bean, BucketManager.class, ctx);
     }
 
 
-    private <T> T getInstance(Class<T> clazz) {
-        Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
-        CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
-    @Override
-    public void destroy(KeyValueTemplate instance, CreationalContext<KeyValueTemplate> creationalContext) {
-
-    }
 
     @Override
     public Set<Type> getTypes() {
@@ -107,25 +83,6 @@ class TemplateBean implements Bean<KeyValueTemplate>, PassivationCapable {
         return qualifiers;
     }
 
-    @Override
-    public Class<? extends Annotation> getScope() {
-        return ApplicationScoped.class;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public Set<Class<? extends Annotation>> getStereotypes() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isAlternative() {
-        return false;
-    }
 
     @Override
     public String getId() {

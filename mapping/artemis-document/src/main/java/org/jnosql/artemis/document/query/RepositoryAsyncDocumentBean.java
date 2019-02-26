@@ -20,14 +20,11 @@ import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.reflection.ClassMappings;
+import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.AnnotationLiteralUtil;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.enterprise.inject.spi.PassivationCapable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -38,12 +35,9 @@ import java.util.Set;
 /**
  * Artemis discoveryBean to CDI extension to register {@link org.jnosql.artemis.RepositoryAsync}
  */
-public class DocumentRepositoryAsyncBean implements Bean<RepositoryAsync>, PassivationCapable {
-
+public class RepositoryAsyncDocumentBean extends AbstractBean<RepositoryAsync>{
 
     private final Class type;
-
-    private final BeanManager beanManager;
 
     private final Set<Type> types;
 
@@ -58,9 +52,9 @@ public class DocumentRepositoryAsyncBean implements Bean<RepositoryAsync>, Passi
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public DocumentRepositoryAsyncBean(Class type, BeanManager beanManager, String provider) {
+    public RepositoryAsyncDocumentBean(Class type, BeanManager beanManager, String provider) {
+        super(beanManager);
         this.type = type;
-        this.beanManager = beanManager;
         this.types = Collections.singleton(type);
         this.provider = provider;
         if (provider.isEmpty()) {
@@ -78,20 +72,10 @@ public class DocumentRepositoryAsyncBean implements Bean<RepositoryAsync>, Passi
     }
 
     @Override
-    public Set<InjectionPoint> getInjectionPoints() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isNullable() {
-        return false;
-    }
-
-    @Override
     public RepositoryAsync create(CreationalContext<RepositoryAsync> creationalContext) {
         ClassMappings classMappings = getInstance(ClassMappings.class);
         DocumentTemplateAsync repository = provider.isEmpty() ? getInstance(DocumentTemplateAsync.class) :
-                getInstance(DocumentTemplateAsync.class, provider);
+                getInstance(DocumentTemplateAsync.class, DatabaseQualifier.ofDocument(provider));
         Converters converters = getInstance(Converters.class);
 
         DocumentRepositoryAsyncProxy handler = new DocumentRepositoryAsyncProxy(repository,
@@ -99,25 +83,6 @@ public class DocumentRepositoryAsyncBean implements Bean<RepositoryAsync>, Passi
         return (RepositoryAsync) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
-    }
-
-
-    private <T> T getInstance(Class<T> clazz) {
-        Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
-        CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
-    private <T> T getInstance(Class<T> clazz, String name) {
-        Bean bean = beanManager.getBeans(clazz, DatabaseQualifier.ofDocument(name)).iterator().next();
-        CreationalContext ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
-
-    @Override
-    public void destroy(RepositoryAsync instance, CreationalContext<RepositoryAsync> creationalContext) {
-
     }
 
     @Override
@@ -130,25 +95,6 @@ public class DocumentRepositoryAsyncBean implements Bean<RepositoryAsync>, Passi
         return qualifiers;
     }
 
-    @Override
-    public Class<? extends Annotation> getScope() {
-        return ApplicationScoped.class;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public Set<Class<? extends Annotation>> getStereotypes() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isAlternative() {
-        return false;
-    }
 
     @Override
     public String getId() {

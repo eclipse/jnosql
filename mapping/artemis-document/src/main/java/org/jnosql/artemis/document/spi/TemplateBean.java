@@ -19,6 +19,7 @@ import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateProducer;
+import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -26,15 +27,12 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
-import javax.enterprise.inject.spi.PassivationCapable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class TemplateBean implements Bean<DocumentTemplate>, PassivationCapable {
-
-    private final BeanManager beanManager;
+class TemplateBean extends AbstractBean<DocumentTemplate> {
 
     private final Set<Type> types;
 
@@ -49,7 +47,7 @@ class TemplateBean implements Bean<DocumentTemplate>, PassivationCapable {
      * @param provider    the provider name, that must be a
      */
     public TemplateBean(BeanManager beanManager, String provider) {
-        this.beanManager = beanManager;
+        super(beanManager);
         this.types = Collections.singleton(DocumentTemplate.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));
@@ -79,19 +77,11 @@ class TemplateBean implements Bean<DocumentTemplate>, PassivationCapable {
     }
 
     private DocumentCollectionManager getManager() {
-        Bean<DocumentCollectionManager> bean = (Bean<DocumentCollectionManager>) beanManager.getBeans(DocumentCollectionManager.class,
+        Bean<DocumentCollectionManager> bean = (Bean<DocumentCollectionManager>) getBeanManager().getBeans(DocumentCollectionManager.class,
                 DatabaseQualifier.ofDocument(provider) ).iterator().next();
-        CreationalContext<DocumentCollectionManager> ctx = beanManager.createCreationalContext(bean);
-        return (DocumentCollectionManager) beanManager.getReference(bean, DocumentCollectionManager.class, ctx);
+        CreationalContext<DocumentCollectionManager> ctx = getBeanManager().createCreationalContext(bean);
+        return (DocumentCollectionManager) getBeanManager().getReference(bean, DocumentCollectionManager.class, ctx);
     }
-
-
-    private <T> T getInstance(Class<T> clazz) {
-        Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
-        CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
 
     @Override
     public void destroy(DocumentTemplate instance, CreationalContext<DocumentTemplate> creationalContext) {

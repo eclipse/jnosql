@@ -19,22 +19,18 @@ import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateProducer;
+import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.enterprise.inject.spi.PassivationCapable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class TemplateBean implements Bean<ColumnTemplate>, PassivationCapable {
-
-    private final BeanManager beanManager;
+class TemplateBean extends AbstractBean<ColumnTemplate> {
 
     private final Set<Type> types;
 
@@ -49,7 +45,7 @@ class TemplateBean implements Bean<ColumnTemplate>, PassivationCapable {
      * @param provider    the provider name, that must be a
      */
     public TemplateBean(BeanManager beanManager, String provider) {
-        this.beanManager = beanManager;
+        super(beanManager);
         this.types = Collections.singleton(ColumnTemplate.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofColumn(provider));
@@ -60,15 +56,6 @@ class TemplateBean implements Bean<ColumnTemplate>, PassivationCapable {
         return ColumnTemplate.class;
     }
 
-    @Override
-    public Set<InjectionPoint> getInjectionPoints() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isNullable() {
-        return false;
-    }
 
     @Override
     public ColumnTemplate create(CreationalContext<ColumnTemplate> creationalContext) {
@@ -79,23 +66,10 @@ class TemplateBean implements Bean<ColumnTemplate>, PassivationCapable {
     }
 
     private ColumnFamilyManager getColumnFamilyManager() {
-        Bean<ColumnFamilyManager> bean = (Bean<ColumnFamilyManager>) beanManager.getBeans(ColumnFamilyManager.class,
+        Bean<ColumnFamilyManager> bean = (Bean<ColumnFamilyManager>) getBeanManager().getBeans(ColumnFamilyManager.class,
                 DatabaseQualifier.ofColumn(provider) ).iterator().next();
-        CreationalContext<ColumnFamilyManager> ctx = beanManager.createCreationalContext(bean);
-        return (ColumnFamilyManager) beanManager.getReference(bean, ColumnFamilyManager.class, ctx);
-    }
-
-
-    private <T> T getInstance(Class<T> clazz) {
-        Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
-        CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
-
-    @Override
-    public void destroy(ColumnTemplate instance, CreationalContext<ColumnTemplate> creationalContext) {
-
+        CreationalContext<ColumnFamilyManager> ctx = getBeanManager().createCreationalContext(bean);
+        return (ColumnFamilyManager) getBeanManager().getReference(bean, ColumnFamilyManager.class, ctx);
     }
 
     @Override
@@ -106,26 +80,6 @@ class TemplateBean implements Bean<ColumnTemplate>, PassivationCapable {
     @Override
     public Set<Annotation> getQualifiers() {
         return qualifiers;
-    }
-
-    @Override
-    public Class<? extends Annotation> getScope() {
-        return ApplicationScoped.class;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public Set<Class<? extends Annotation>> getStereotypes() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isAlternative() {
-        return false;
     }
 
     @Override
