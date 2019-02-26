@@ -74,7 +74,7 @@ public class KeyValueRepositoryBean extends AbstractBean<Repository> {
     @Override
     public Repository create(CreationalContext<Repository> creationalContext) {
         KeyValueTemplate repository = provider.isEmpty() ? getInstance(KeyValueTemplate.class) :
-                getInstance(KeyValueTemplate.class, provider);
+                getInstance(KeyValueTemplate.class, DatabaseQualifier.ofKeyValue(provider));
         KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(type, repository);
         return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
