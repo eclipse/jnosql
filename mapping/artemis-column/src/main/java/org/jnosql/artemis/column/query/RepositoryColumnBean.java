@@ -75,7 +75,7 @@ public class RepositoryColumnBean extends AbstractBean<Repository> {
     public Repository create(CreationalContext<Repository> creationalContext) {
         ClassMappings classMappings = getInstance(ClassMappings.class);
         ColumnTemplate template = provider.isEmpty() ? getInstance(ColumnTemplate.class) :
-                getInstance(ColumnTemplate.class, provider);
+                getInstance(ColumnTemplate.class, DatabaseQualifier.ofColumn(provider));
         Converters converters = getInstance(Converters.class);
 
         ColumnRepositoryProxy handler = new ColumnRepositoryProxy(template,

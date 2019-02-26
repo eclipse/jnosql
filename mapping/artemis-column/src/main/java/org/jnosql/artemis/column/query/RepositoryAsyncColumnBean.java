@@ -76,7 +76,7 @@ public class RepositoryAsyncColumnBean extends AbstractBean<RepositoryAsync> {
     public RepositoryAsync create(CreationalContext<RepositoryAsync> creationalContext) {
         ClassMappings classMappings = getInstance(ClassMappings.class);
         ColumnTemplateAsync repository = provider.isEmpty() ? getInstance(ColumnTemplateAsync.class) :
-                getInstance(ColumnTemplateAsync.class, provider);
+                getInstance(ColumnTemplateAsync.class, DatabaseQualifier.ofColumn(provider));
         Converters converters = getInstance(Converters.class);
 
         ColumnRepositoryAsyncProxy handler = new ColumnRepositoryAsyncProxy(repository,
