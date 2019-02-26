@@ -19,22 +19,19 @@ import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.document.DocumentTemplateAsyncProducer;
+import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.enterprise.inject.spi.PassivationCapable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class TemplateAsyncBean implements Bean<DocumentTemplateAsync>, PassivationCapable {
+class TemplateAsyncBean extends AbstractBean<DocumentTemplateAsync> {
 
-    private final BeanManager beanManager;
 
     private final Set<Type> types;
 
@@ -49,7 +46,7 @@ class TemplateAsyncBean implements Bean<DocumentTemplateAsync>, PassivationCapab
      * @param provider    the provider name, that must be a
      */
     public TemplateAsyncBean(BeanManager beanManager, String provider) {
-        this.beanManager = beanManager;
+        super(beanManager);
         this.types = Collections.singleton(DocumentTemplateAsync.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));
@@ -61,16 +58,6 @@ class TemplateAsyncBean implements Bean<DocumentTemplateAsync>, PassivationCapab
     }
 
     @Override
-    public Set<InjectionPoint> getInjectionPoints() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isNullable() {
-        return false;
-    }
-
-    @Override
     public DocumentTemplateAsync create(CreationalContext<DocumentTemplateAsync> creationalContext) {
 
         DocumentTemplateAsyncProducer producer = getInstance(DocumentTemplateAsyncProducer.class);
@@ -79,24 +66,12 @@ class TemplateAsyncBean implements Bean<DocumentTemplateAsync>, PassivationCapab
     }
 
     private DocumentCollectionManagerAsync getManager() {
-        Bean<DocumentCollectionManagerAsync> bean = (Bean<DocumentCollectionManagerAsync>) beanManager.getBeans(DocumentCollectionManagerAsync.class,
+        Bean<DocumentCollectionManagerAsync> bean = (Bean<DocumentCollectionManagerAsync>) getBeanManager().getBeans(DocumentCollectionManagerAsync.class,
                 DatabaseQualifier.ofDocument(provider)).iterator().next();
-        CreationalContext<DocumentCollectionManagerAsync> ctx = beanManager.createCreationalContext(bean);
-        return (DocumentCollectionManagerAsync) beanManager.getReference(bean, DocumentCollectionManagerAsync.class, ctx);
+        CreationalContext<DocumentCollectionManagerAsync> ctx = getBeanManager().createCreationalContext(bean);
+        return (DocumentCollectionManagerAsync) getBeanManager().getReference(bean, DocumentCollectionManagerAsync.class, ctx);
     }
 
-
-    private <T> T getInstance(Class<T> clazz) {
-        Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
-        CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
-    }
-
-
-    @Override
-    public void destroy(DocumentTemplateAsync instance, CreationalContext<DocumentTemplateAsync> creationalContext) {
-
-    }
 
     @Override
     public Set<Type> getTypes() {
@@ -106,26 +81,6 @@ class TemplateAsyncBean implements Bean<DocumentTemplateAsync>, PassivationCapab
     @Override
     public Set<Annotation> getQualifiers() {
         return qualifiers;
-    }
-
-    @Override
-    public Class<? extends Annotation> getScope() {
-        return ApplicationScoped.class;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public Set<Class<? extends Annotation>> getStereotypes() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isAlternative() {
-        return false;
     }
 
     @Override
