@@ -19,7 +19,7 @@ import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.RepositoryAsync;
-import org.jnosql.artemis.document.query.DocumentRepositoryAsyncBean;
+import org.jnosql.artemis.document.query.RepositoryAsyncDocumentBean;
 import org.jnosql.artemis.document.query.RepositoryDocumentBean;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
@@ -118,10 +118,10 @@ public class DocumentCollectionProducerExtension implements Extension {
 
         crudAsyncTypes.forEach(type -> {
             if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
-                afterBeanDiscovery.addBean(new DocumentRepositoryAsyncBean(type, beanManager, ""));
+                afterBeanDiscovery.addBean(new RepositoryAsyncDocumentBean(type, beanManager, ""));
             }
             databasesAsync.forEach(database -> {
-                final DocumentRepositoryAsyncBean bean = new DocumentRepositoryAsyncBean(type, beanManager,
+                final RepositoryAsyncDocumentBean bean = new RepositoryAsyncDocumentBean(type, beanManager,
                         database.getProvider());
                 afterBeanDiscovery.addBean(bean);
             });

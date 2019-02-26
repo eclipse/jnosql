@@ -18,7 +18,7 @@ package org.jnosql.artemis.key.spi;
 import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
 import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.key.query.KeyValueRepositoryBean;
+import org.jnosql.artemis.key.query.RepositorKeyValueyBean;
 import org.jnosql.diana.api.key.BucketManager;
 
 import javax.enterprise.event.Observes;
@@ -78,11 +78,11 @@ public class BucketManagerProducerExtension implements Extension {
         crudTypes.forEach(type -> {
 
             if (!databases.contains(DatabaseMetadata.DEFAULT_KEY_VALUE)) {
-                afterBeanDiscovery.addBean(new KeyValueRepositoryBean(type, beanManager, ""));
+                afterBeanDiscovery.addBean(new RepositorKeyValueyBean(type, beanManager, ""));
             }
 
             databases.forEach(database -> afterBeanDiscovery
-                    .addBean(new KeyValueRepositoryBean(type, beanManager, database.getProvider())));
+                    .addBean(new RepositorKeyValueyBean(type, beanManager, database.getProvider())));
         });
 
     }

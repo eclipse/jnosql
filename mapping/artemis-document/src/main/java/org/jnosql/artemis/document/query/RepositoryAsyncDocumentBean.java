@@ -35,7 +35,7 @@ import java.util.Set;
 /**
  * Artemis discoveryBean to CDI extension to register {@link org.jnosql.artemis.RepositoryAsync}
  */
-public class DocumentRepositoryAsyncBean extends AbstractBean<RepositoryAsync>{
+public class RepositoryAsyncDocumentBean extends AbstractBean<RepositoryAsync>{
 
     private final Class type;
 
@@ -52,7 +52,7 @@ public class DocumentRepositoryAsyncBean extends AbstractBean<RepositoryAsync>{
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public DocumentRepositoryAsyncBean(Class type, BeanManager beanManager, String provider) {
+    public RepositoryAsyncDocumentBean(Class type, BeanManager beanManager, String provider) {
         super(beanManager);
         this.type = type;
         this.types = Collections.singleton(type);
