@@ -15,7 +15,6 @@
 package org.jnosql.artemis.spi;
 
 import org.jnosql.artemis.DatabaseQualifier;
-import org.jnosql.artemis.RepositoryAsync;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
