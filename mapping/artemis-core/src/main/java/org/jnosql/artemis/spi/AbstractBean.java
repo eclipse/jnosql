@@ -27,6 +27,12 @@ import java.util.Collections;
 import java.util.Set;
 
 
+/**
+ * A template class to all the {@link Bean} at the Eclipse JNoSQL artemis project.
+ * It will work as Template method.
+ *
+ * @param <T> the bean type
+ */
 public abstract class AbstractBean<T> implements Bean<T>, PassivationCapable {
 
 
@@ -37,7 +43,7 @@ public abstract class AbstractBean<T> implements Bean<T>, PassivationCapable {
     }
 
 
-    protected  <T> T getInstance(Class<T> clazz) {
+    protected <T> T getInstance(Class<T> clazz) {
         Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
         CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
         return (T) beanManager.getReference(bean, clazz, ctx);
