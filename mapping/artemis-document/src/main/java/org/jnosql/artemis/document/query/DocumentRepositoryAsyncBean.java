@@ -75,7 +75,7 @@ public class DocumentRepositoryAsyncBean extends AbstractBean<RepositoryAsync>{
     public RepositoryAsync create(CreationalContext<RepositoryAsync> creationalContext) {
         ClassMappings classMappings = getInstance(ClassMappings.class);
         DocumentTemplateAsync repository = provider.isEmpty() ? getInstance(DocumentTemplateAsync.class) :
-                getInstance(DocumentTemplateAsync.class, provider);
+                getInstance(DocumentTemplateAsync.class, DatabaseQualifier.ofDocument(provider));
         Converters converters = getInstance(Converters.class);
 
         DocumentRepositoryAsyncProxy handler = new DocumentRepositoryAsyncProxy(repository,

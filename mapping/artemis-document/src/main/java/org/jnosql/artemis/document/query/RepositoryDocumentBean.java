@@ -75,7 +75,7 @@ public class RepositoryDocumentBean extends AbstractBean<Repository> {
     public Repository create(CreationalContext<Repository> creationalContext) {
         ClassMappings classMappings = getInstance(ClassMappings.class);
         DocumentTemplate repository = provider.isEmpty() ? getInstance(DocumentTemplate.class) :
-                getInstance(DocumentTemplate.class, provider);
+                getInstance(DocumentTemplate.class, DatabaseQualifier.ofDocument(provider));
 
         Converters converters = getInstance(Converters.class);
 
