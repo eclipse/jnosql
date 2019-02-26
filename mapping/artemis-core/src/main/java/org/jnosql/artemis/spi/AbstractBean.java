@@ -47,7 +47,7 @@ public abstract class AbstractBean<T> implements Bean<T>, PassivationCapable {
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
 
-    protected <T> T getInstance(Class<T> clazz, String name, Annotation qualifier) {
+    protected <T> T getInstance(Class<T> clazz, Annotation qualifier) {
         Bean bean = beanManager.getBeans(clazz, qualifier).iterator().next();
         CreationalContext ctx = beanManager.createCreationalContext(bean);
         return (T) beanManager.getReference(bean, clazz, ctx);

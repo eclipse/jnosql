@@ -77,10 +77,10 @@ public class RepositoryGraphBean extends AbstractBean<Repository>{
 
         ClassMappings classMappings = getInstance(ClassMappings.class);
         GraphTemplate repository = provider.isEmpty() ? getInstance(GraphTemplate.class) :
-                getInstance(GraphTemplate.class, provider);
+                getInstance(GraphTemplate.class, DatabaseQualifier.ofGraph(provider));
         GraphConverter converter = getInstance(GraphConverter.class);
         Graph graph = provider.isEmpty() ? getInstance(Graph.class) :
-                getInstance(Graph.class, provider);
+                getInstance(Graph.class, DatabaseQualifier.ofGraph(provider));
         Converters converters = getInstance(Converters.class);
 
         GraphRepositoryProxy handler = new GraphRepositoryProxy(repository,
