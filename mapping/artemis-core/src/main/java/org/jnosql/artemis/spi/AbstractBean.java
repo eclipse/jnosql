@@ -15,6 +15,7 @@
 package org.jnosql.artemis.spi;
 
 import org.jnosql.artemis.DatabaseQualifier;
+import org.jnosql.artemis.RepositoryAsync;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
@@ -55,6 +56,10 @@ public abstract class AbstractBean<T> implements Bean<T>, PassivationCapable {
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
 
+    protected BeanManager getBeanManager() {
+        return beanManager;
+    }
+
     @Override
     public Set<InjectionPoint> getInjectionPoints() {
         return Collections.emptySet();
@@ -83,6 +88,11 @@ public abstract class AbstractBean<T> implements Bean<T>, PassivationCapable {
     @Override
     public boolean isAlternative() {
         return false;
+    }
+
+    @Override
+    public void destroy(T instance, CreationalContext<T> creationalContext) {
+
     }
 
 }
