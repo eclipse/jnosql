@@ -17,7 +17,6 @@
 package org.jnosql.diana.api;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -62,9 +61,7 @@ public interface Settings extends Map<String, Object> {
      */
     @SafeVarargs
     static Settings of(Map<String, Object>... settings) {
-        if (Stream.of(settings).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The settings element cannot be null");
-        }
+        Stream.of(settings).forEach(s -> requireNonNull(s, "Settings is required"));
 
         SettingsBuilder builder = new SettingsBuilder();
         Stream.of(settings).forEach(builder::putAll);
