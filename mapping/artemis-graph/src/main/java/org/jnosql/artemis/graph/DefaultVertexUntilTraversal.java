@@ -87,27 +87,21 @@ class DefaultVertexUntilTraversal extends AbstractVertexTraversal implements Ver
 
     @Override
     public VertexTraversal out(String... labels) {
-        if (Stream.of(labels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one label element cannot be null");
-        }
+        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "label is required"));
         Traversal<?, Vertex> condition = __.out(labels);
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.until(condition)), converter);
     }
 
     @Override
     public VertexTraversal in(String... labels) {
-        if (Stream.of(labels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one label element cannot be null");
-        }
+        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "label is required"));
         Traversal<?, Vertex> condition = __.in(labels);
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.until(condition)), converter);
     }
 
     @Override
     public VertexTraversal both(String... labels) {
-        if (Stream.of(labels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one label element cannot be null");
-        }
+        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "label is required"));
         Traversal<?, Vertex> condition = __.both(labels);
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.until(condition)), converter);
     }

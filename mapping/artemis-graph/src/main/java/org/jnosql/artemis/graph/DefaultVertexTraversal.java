@@ -102,42 +102,32 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     @Override
     public EdgeTraversal outE(String... edgeLabels) {
-        if (Stream.of(edgeLabels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one edgeLabels element cannot be null");
-        }
+        Stream.of(edgeLabels).forEach(l -> Objects.requireNonNull(l, "label is required"));
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.outE(edgeLabels)), converter);
     }
 
     @Override
     public VertexTraversal in(String... labels) {
-        if (Stream.of(labels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one label element cannot be null");
-        }
+        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "label is required"));
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.in(labels)), converter);
     }
 
     @Override
     public EdgeTraversal inE(String... edgeLabels) {
-        if (Stream.of(edgeLabels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one edgeLabels element cannot be null");
-        }
+        Stream.of(edgeLabels).forEach(l -> Objects.requireNonNull(l, "edgeLabel is required"));
 
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.inE(edgeLabels)), converter);
     }
 
     @Override
     public VertexTraversal both(String... labels) {
-        if (Stream.of(labels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one label element cannot be null");
-        }
+        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "labels is required"));
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.both(labels)), converter);
     }
 
     @Override
     public EdgeTraversal bothE(String... edgeLabels) {
-        if (Stream.of(edgeLabels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one edgeLabels element cannot be null");
-        }
+        Stream.of(edgeLabels).forEach(l -> Objects.requireNonNull(l, "edgeLabel is required"));
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.bothE(edgeLabels)), converter);
     }
 

@@ -77,27 +77,21 @@ class DefaultVertexRepeatTraversal extends AbstractVertexTraversal implements Ve
 
     @Override
     public VertexRepeatStepTraversal out(String... labels) {
-        if (Stream.of(labels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one label element cannot be null");
-        }
+        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "label is required"));
         Traversal<?, Vertex> condition = __.out(labels);
         return new DefaultVertexRepeatStepTraversal(supplier, flow.andThen(g -> g.repeat(condition)), converter);
     }
 
     @Override
     public VertexRepeatStepTraversal in(String... labels) {
-        if (Stream.of(labels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one label element cannot be null");
-        }
+        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "label is required"));
         Traversal<?, Vertex> condition = __.in(labels);
         return new DefaultVertexRepeatStepTraversal(supplier, flow.andThen(g -> g.repeat(condition)), converter);
     }
 
     @Override
     public VertexRepeatStepTraversal both(String... labels) {
-        if (Stream.of(labels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one label element cannot be null");
-        }
+        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "label is required"));
         Traversal<?, Vertex> condition = __.both(labels);
         return new DefaultVertexRepeatStepTraversal(supplier, flow.andThen(g -> g.repeat(condition)), converter);
     }
