@@ -137,8 +137,8 @@ final class DefaultColumnCondition implements ColumnCondition {
     public ColumnCondition or(ColumnCondition condition) {
         requireNonNull(condition, "Condition is required");
         if (OR.equals(this.condition)) {
-            Column column = getConditions(condition, OR);
-            return new DefaultColumnCondition(column, OR);
+            Column newColumn = getConditions(condition, OR);
+            return new DefaultColumnCondition(newColumn, OR);
         }
         return DefaultColumnCondition.or(this, condition);
     }
