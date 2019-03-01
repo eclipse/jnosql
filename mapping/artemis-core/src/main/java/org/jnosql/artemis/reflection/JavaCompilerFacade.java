@@ -21,10 +21,13 @@ import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileManager;
 import javax.tools.ToolProvider;
 import java.io.IOException;
+import java.security.PrivilegedAction;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static java.security.AccessController.doPrivileged;
 
 /**
  * Class that converts a {@link JavaSource} to a compiled class
@@ -39,7 +42,9 @@ final class JavaCompilerFacade {
     public JavaCompilerFacade(ClassLoader loader) {
         this.compiler = Optional.ofNullable(ToolProvider.getSystemJavaCompiler())
                 .orElseThrow(() -> new IllegalStateException("Cannot find the system Java compiler"));
-        this.classLoader = new JavaCompilerClassLoader(loader);
+
+        PrivilegedAction<JavaCompilerClassLoader> action = () -> new JavaCompilerClassLoader(loader);
+        this.classLoader = doPrivileged(action);
         this.diagnosticCollector = new DiagnosticCollector<>();
     }
 
