@@ -127,8 +127,8 @@ final class DefaultDocumentCondition implements DocumentCondition {
         if (NOT.equals(this.condition)) {
             return this.document.get(DocumentCondition.class);
         } else {
-            Document document = Document.of(NOT.getNameField(), this);
-            return new DefaultDocumentCondition(document, NOT);
+            Document newDocument = Document.of(NOT.getNameField(), this);
+            return new DefaultDocumentCondition(newDocument, NOT);
         }
     }
 
@@ -136,8 +136,8 @@ final class DefaultDocumentCondition implements DocumentCondition {
     public DocumentCondition or(DocumentCondition condition) {
         requireNonNull(condition, "Condition is required");
         if (OR.equals(this.condition)) {
-            Document document = getConditions(condition, OR);
-            return new DefaultDocumentCondition(document, OR);
+            Document newDocument = getConditions(condition, OR);
+            return new DefaultDocumentCondition(newDocument, OR);
         }
         return DefaultDocumentCondition.or(this, condition);
     }
