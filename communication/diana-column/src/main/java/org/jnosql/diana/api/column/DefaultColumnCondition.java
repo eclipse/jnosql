@@ -116,8 +116,8 @@ final class DefaultColumnCondition implements ColumnCondition {
     public ColumnCondition and(ColumnCondition condition) {
         requireNonNull(condition, "Conditions is required");
         if (AND.equals(this.condition)) {
-            Column column = getConditions(condition, AND);
-            return new DefaultColumnCondition(column, AND);
+            Column newColumn = getConditions(condition, AND);
+            return new DefaultColumnCondition(newColumn, AND);
         }
         return DefaultColumnCondition.and(this, condition);
     }
@@ -127,8 +127,8 @@ final class DefaultColumnCondition implements ColumnCondition {
         if (NOT.equals(this.condition)) {
             return this.column.get(ColumnCondition.class);
         } else {
-            Column column = Column.of(NOT.getNameField(), this);
-            return new DefaultColumnCondition(column, NOT);
+            Column newColumn = Column.of(NOT.getNameField(), this);
+            return new DefaultColumnCondition(newColumn, NOT);
         }
 
     }
