@@ -84,20 +84,27 @@ abstract class BaseQueryBuilder {
 
 
     protected void appendCondition(ColumnCondition newCondition) {
-        if (negate) {
-            newCondition = newCondition.negate();
-        }
+
+        ColumnCondition columnCondition = getColumnCondition(newCondition);
+
         if (nonNull(condition)) {
             if (and) {
-                this.condition = condition.and(newCondition);
+                this.condition = condition.and(columnCondition);
             } else {
-                this.condition = condition.or(newCondition);
+                this.condition = condition.or(columnCondition);
             }
         } else {
-            this.condition = newCondition;
+            this.condition = columnCondition;
         }
         this.negate = false;
         this.name = null;
     }
 
+    private ColumnCondition getColumnCondition(ColumnCondition newCondition) {
+        if (negate) {
+            return newCondition.negate();
+        } else {
+            return newCondition;
+        }
+    }
 }
