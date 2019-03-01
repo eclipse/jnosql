@@ -28,7 +28,7 @@ import java.util.Map;
 
 final class JsonObjects {
 
-    private final static Jsonb JSON = JsonbBuilder.create();
+    private static final Jsonb JSON = JsonbBuilder.create();
 
     private JsonObjects() {
     }
