@@ -52,8 +52,7 @@ abstract class BaseDocumentRepository {
         DocumentQueryParams queryParams = converter.apply(selectQuery, getParser());
         DocumentQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
-        ParamsBinder paramsBinder = getParamsBinder();
-        paramsBinder.bind(params, args, method);
+        getParamsBinder().bind(params, args, method);
         return query;
     }
 
@@ -64,8 +63,7 @@ abstract class BaseDocumentRepository {
         DocumentDeleteQueryParams queryParams = converter.apply(deleteQuery, getParser());
         DocumentDeleteQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
-        ParamsBinder paramsBinder = getParamsBinder();
-        paramsBinder.bind(params, args, method);
+        getParamsBinder().bind(params, args, method);
         return query;
     }
 

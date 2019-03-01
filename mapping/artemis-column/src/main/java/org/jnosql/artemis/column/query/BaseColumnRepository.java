@@ -51,8 +51,7 @@ abstract class BaseColumnRepository {
         ColumnQueryParams queryParams = converter.apply(selectQuery, getParser());
         ColumnQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
-        ParamsBinder paramsBinder = getParamsBinder();
-        paramsBinder.bind(params, args, method);
+        getParamsBinder().bind(params, args, method);
         return query;
     }
 
@@ -63,8 +62,7 @@ abstract class BaseColumnRepository {
         ColumnDeleteQueryParams queryParams = converter.apply(deleteQuery, getParser());
         ColumnDeleteQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
-        ParamsBinder paramsBinder = getParamsBinder();
-        paramsBinder.bind(params, args, method);
+        getParamsBinder().bind(params, args, method);
         return query;
     }
 
