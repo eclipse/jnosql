@@ -124,7 +124,9 @@ public final class DynamicAsyncQueryMethodReturn<T> implements MethodDynamicExec
         }
 
         public DynamicAsyncQueryMethodReturnBuilder<T> withArgs(Object[] args) {
-            this.args = args;
+            if(args != null) {
+                this.args = args.clone();
+            }
             return this;
         }
 

@@ -93,7 +93,9 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
         }
 
         public DynamicQueryMethodReturnBuilder withArgs(Object[] args) {
-            this.args = args;
+            if(args != null) {
+                this.args = args.clone();
+            }
             return this;
         }
 
