@@ -57,17 +57,16 @@ abstract class AbstractMapperQuery {
     }
 
     protected void appendCondition(DocumentCondition newCondition) {
-        if (negate) {
-            newCondition = newCondition.negate();
-        }
+        DocumentCondition documentCondition = getDocumentCondition(newCondition);
+
         if (nonNull(condition)) {
             if (and) {
-                this.condition = condition.and(newCondition);
+                this.condition = condition.and(documentCondition);
             } else {
-                this.condition = condition.or(newCondition);
+                this.condition = condition.or(documentCondition);
             }
         } else {
-            this.condition = newCondition;
+            this.condition = documentCondition;
         }
         this.negate = false;
         this.name = null;
@@ -138,5 +137,13 @@ abstract class AbstractMapperQuery {
 
     protected Object getValue(Object value) {
         return ConverterUtil.getValue(value, mapping, name, converters);
+    }
+
+    private DocumentCondition getDocumentCondition(DocumentCondition newCondition) {
+        if (negate) {
+            return newCondition.negate();
+        } else {
+            return newCondition;
+        }
     }
 }
