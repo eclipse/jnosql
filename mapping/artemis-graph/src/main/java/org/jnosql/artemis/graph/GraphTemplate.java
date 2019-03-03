@@ -78,11 +78,11 @@ public interface GraphTemplate {
      *
      * @param id   the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
      * @param <T>  the entity type
-     * @param <ID> the id type
+     * @param <K> the id type
      * @return the entity found otherwise {@link Optional#empty()}
      * @throws NullPointerException when id is null
      */
-    <T, ID> Optional<T> find(ID id);
+    <T, K> Optional<T> find(K id);
 
     /**
      * Either find or create an Edge between this two entities.
@@ -109,14 +109,14 @@ public interface GraphTemplate {
      * @param incoming the incoming entity
      * @param label    the Edge label
      * @param outgoing the outgoing entity
-     * @param <IN>     the incoming type
-     * @param <OUT>    the outgoing type
+     * @param <I>     the incoming type
+     * @param <O>    the outgoing type
      * @return the {@link EdgeEntity} of these two entities
      * @throws NullPointerException                       Either when any elements are null or the entity is null
      * @throws org.jnosql.artemis.IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
      * @throws org.jnosql.artemis.EntityNotFoundException when neither outgoing or incoming is found
      */
-    default <OUT, IN> EdgeEntity edge(OUT outgoing, Supplier<String> label, IN incoming) {
+    default <O, I> EdgeEntity edge(O outgoing, Supplier<String> label, I incoming) {
         Objects.requireNonNull(label, "supplier is required");
         return edge(outgoing, label.get(), incoming);
     }
@@ -128,11 +128,11 @@ public interface GraphTemplate {
      * @param id        the id
      * @param direction the direction
      * @param labels    the edge labels
-     * @param <ID>      the ID type
+     * @param <K>      the K type
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, String... labels);
+    <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction, String... labels);
 
     /**
      * returns the edges of from a vertex id
@@ -140,22 +140,22 @@ public interface GraphTemplate {
      * @param id        the id
      * @param direction the direction
      * @param labels    the edge labels
-     * @param <ID>      the ID type
+     * @param <K>      the K type
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels);
+    <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction, Supplier<String>... labels);
 
     /**
      * returns the edges of from a vertex id
      *
      * @param id        the id
      * @param direction the direction
-     * @param <ID>      the ID type
+     * @param <K>      the K type
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction);
+    <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction);
 
 
     /**

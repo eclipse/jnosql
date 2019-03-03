@@ -111,14 +111,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T, ID> Optional<T> find(ID idValue) {
+    public <T, K> Optional<T> find(K idValue) {
         requireNonNull(idValue, "id is required");
         Optional<Vertex> vertex = getTraversal().V(idValue).tryNext();
         return vertex.map(getConverter()::toEntity);
     }
 
     @Override
-    public <OUT, IN> EdgeEntity edge(OUT outgoing, String label, IN incoming) {
+    public <O, I> EdgeEntity edge(O outgoing, String label, I incoming) {
 
         requireNonNull(incoming, "incoming is required");
         requireNonNull(label, "label is required");
@@ -189,18 +189,18 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
 
     @Override
-    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, String... labels) {
+    public <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction, String... labels) {
         return getEdgesByIdImpl(id, direction, labels);
     }
 
     @Override
-    public <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction) {
+    public <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction) {
         return getEdgesByIdImpl(id, direction);
     }
 
     @SafeVarargs
     @Override
-    public final <ID> Collection<EdgeEntity> getEdgesById(ID id, Direction direction, Supplier<String>... labels) {
+    public final <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction, Supplier<String>... labels) {
         checkLabelsSupplier(labels);
         return getEdgesByIdImpl(id, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
     }
@@ -276,7 +276,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
 
-    private <ID> Collection<EdgeEntity> getEdgesByIdImpl(ID id, Direction direction, String... labels) {
+    private <K> Collection<EdgeEntity> getEdgesByIdImpl(K id, Direction direction, String... labels) {
 
         requireNonNull(id, "id is required");
         requireNonNull(direction, "direction is required");
