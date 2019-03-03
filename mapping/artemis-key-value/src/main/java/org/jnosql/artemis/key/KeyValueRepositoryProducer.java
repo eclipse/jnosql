@@ -27,24 +27,24 @@ public interface KeyValueRepositoryProducer {
      * Produces a Repository class from repository class and {@link BucketManager}
      * @param repositoryClass the repository class
      * @param manager the manager
-     * @param <E> the entity of repository
-     * @param <ID> the ID of the entity
-     * @param <T> the repository type
+     * @param <T> the entity of repository
+     * @param <K> the K of the entity
+     * @param <R> the repository type
      * @return a {@link Repository} interface
      * @throws NullPointerException when there is null parameter
      */
-    <E,ID, T extends Repository<E,ID>> T get(Class<T> repositoryClass, BucketManager manager);
+    <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, BucketManager manager);
 
     /**
      * Produces a Repository class from repository class and {@link KeyValueTemplate}
      * @param repositoryClass the repository class
      * @param template the template
-     * @param <E> the entity of repository
-     * @param <ID> the ID of the entity
-     * @param <T> the repository type
+     * @param <T> the entity of repository
+     * @param <K> the K of the entity
+     * @param <R> the repository type
      * @return a {@link Repository} interface
      * @throws NullPointerException when there is null parameter
      */
-    <E,ID, T extends Repository<E,ID>> T get(Class<T> repositoryClass, KeyValueTemplate template);
+    <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, KeyValueTemplate template);
 
 }
