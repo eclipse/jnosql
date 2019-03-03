@@ -22,9 +22,9 @@ package org.jnosql.diana.api.column;
  * When the application has finished using the column family manager factory, and/or at application shutdown,
  * the application should close the column family manager factory.
  *
- * @param <SYNC>  the {@link ColumnFamilyManager} type
+ * @param <S>  the {@link ColumnFamilyManager} type
  */
-public interface ColumnFamilyManagerFactory<SYNC extends ColumnFamilyManager> extends AutoCloseable {
+public interface ColumnFamilyManagerFactory<S extends ColumnFamilyManager> extends AutoCloseable {
 
     /**
      * Creates a {@link ColumnFamilyManager} from database's name
@@ -34,7 +34,7 @@ public interface ColumnFamilyManagerFactory<SYNC extends ColumnFamilyManager> ex
      * @throws UnsupportedOperationException when this operation is not supported
      *                                       throws {@link NullPointerException} when the database is null
      */
-    SYNC get(String database);
+    S get(String database);
 
     /**
      * closes a resource
