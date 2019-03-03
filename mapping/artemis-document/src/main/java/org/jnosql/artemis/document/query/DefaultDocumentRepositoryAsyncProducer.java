@@ -38,7 +38,7 @@ class DefaultDocumentRepositoryAsyncProducer implements DocumentRepositoryAsyncP
     private DocumentTemplateAsyncProducer producer;
 
     @Override
-    public <E, ID, T extends RepositoryAsync<E, ID>> T get(Class<T> repositoryClass, DocumentCollectionManagerAsync manager) {
+    public <T, K, R extends RepositoryAsync<T, K>> R get(Class<R> repositoryClass, DocumentCollectionManagerAsync manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         DocumentTemplateAsync template = producer.get(manager);
@@ -46,13 +46,13 @@ class DefaultDocumentRepositoryAsyncProducer implements DocumentRepositoryAsyncP
     }
 
     @Override
-    public <E, ID, T extends RepositoryAsync<E, ID>> T get(Class<T> repositoryClass, DocumentTemplateAsync template) {
+    public <T, K, R extends RepositoryAsync<T, K>> R get(Class<R> repositoryClass, DocumentTemplateAsync template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 
-        DocumentRepositoryAsyncProxy<T> handler = new DocumentRepositoryAsyncProxy<>(template,
+        DocumentRepositoryAsyncProxy<R> handler = new DocumentRepositoryAsyncProxy<>(template,
                 classMappings, repositoryClass, converters);
-        return (T) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
+        return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);
     }
