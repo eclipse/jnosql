@@ -232,12 +232,12 @@ public interface DocumentTemplateAsync {
      * @param entityClass the entity class
      * @param id          the id value
      * @param <T>         the entity class type
-     * @param <ID>        the id type
+     * @param <K>        the id type
      * @param callBack    the callBack
      * @throws NullPointerException                   when either the entityClass or id are null
      * @throws org.jnosql.artemis.IdNotFoundException when the entityClass does not have the Id annotation
      */
-    <T, ID> void find(Class<T> entityClass, ID id, Consumer<Optional<T>> callBack);
+    <T, K> void find(Class<T> entityClass, K id, Consumer<Optional<T>> callBack);
 
     /**
      * Deletes by Id.
@@ -245,12 +245,12 @@ public interface DocumentTemplateAsync {
      * @param entityClass the entity class
      * @param id          the id value
      * @param <T>         the entity class type
-     * @param <ID>        the id type
+     * @param <K>        the id type
      * @param callBack    the callBack
      * @throws NullPointerException                   when either the entityClass or id are null
      * @throws org.jnosql.artemis.IdNotFoundException when the entityClass does not have the Id annotation
      */
-    <T, ID> void delete(Class<T> entityClass, ID id, Consumer<Void> callBack);
+    <T, K> void delete(Class<T> entityClass, K id, Consumer<Void> callBack);
 
     /**
      * Deletes by Id.
