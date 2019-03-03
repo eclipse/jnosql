@@ -22,9 +22,9 @@ import org.jnosql.diana.api.Settings;
 /**
  * The diana configuration to create a {@link BucketManagerFactory}
  *
- * @param <SYNC> the BucketManagerFactory type
+ * @param <S> the BucketManagerFactory type
  */
-public interface KeyValueConfiguration<SYNC extends BucketManagerFactory> {
+public interface KeyValueConfiguration<S extends BucketManagerFactory> {
 
     /**
      * Reads configuration either from default configuration or a file defined by NoSQL provider
@@ -32,7 +32,7 @@ public interface KeyValueConfiguration<SYNC extends BucketManagerFactory> {
      *
      * @return a {@link BucketManagerFactory} instance
      */
-    SYNC get();
+    S get();
 
     /**
      * Reads configuration from the {@link Settings} instance, the parameters are defined by NoSQL
@@ -44,5 +44,5 @@ public interface KeyValueConfiguration<SYNC extends BucketManagerFactory> {
      * @see Settings
      * @see Settings {@link java.util.Map}
      */
-    SYNC get(Settings settings);
+    S get(Settings settings);
 }

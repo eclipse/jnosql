@@ -135,7 +135,7 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
     }
 
     @Override
-    public <T, ID> void find(Class<T> entityClass, ID id, Consumer<Optional<T>> callback) {
+    public <T, K> void find(Class<T> entityClass, K id, Consumer<Optional<T>> callback) {
 
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
@@ -154,7 +154,7 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
     }
 
     @Override
-    public <T, ID> void delete(Class<T> entityClass, ID id, Consumer<Void> callback) {
+    public <T, K> void delete(Class<T> entityClass, K id, Consumer<Void> callback) {
 
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
@@ -167,7 +167,7 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
 
 
     @Override
-    public <T, ID> void delete(Class<T> entityClass, ID id) {
+    public <T, K> void delete(Class<T> entityClass, K id) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
 
@@ -225,7 +225,7 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
     }
 
 
-    private <T, ID> ColumnDeleteQuery getDeleteQuery(Class<T> entityClass, ID id) {
+    private <T, K> ColumnDeleteQuery getDeleteQuery(Class<T> entityClass, K id) {
         ClassMapping classMapping = getClassMappings().get(entityClass);
         FieldMapping idField = classMapping.getId()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));

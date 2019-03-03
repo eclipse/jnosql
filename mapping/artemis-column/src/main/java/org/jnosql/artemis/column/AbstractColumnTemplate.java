@@ -116,7 +116,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     }
 
     @Override
-    public <T, ID> Optional<T> find(Class<T> entityClass, ID id) {
+    public <T, K> Optional<T> find(Class<T> entityClass, K id) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
         ClassMapping classMapping = getClassMappings().get(entityClass);
@@ -131,7 +131,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     }
 
     @Override
-    public <T, ID> void delete(Class<T> entityClass, ID id) {
+    public <T, K> void delete(Class<T> entityClass, K id) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
 

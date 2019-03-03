@@ -23,9 +23,9 @@ import org.jnosql.diana.api.Settings;
  * The diana configuration to create a {@link DocumentCollectionManagerFactory}
  * and {@link DocumentCollectionManagerAsyncFactory}
  *
- * @param <SYNC>  the type to DocumentCollectionManagerFactory
+ * @param <S>  the type to DocumentCollectionManagerFactory
  */
-public interface DocumentConfiguration<SYNC extends DocumentCollectionManagerFactory> {
+public interface DocumentConfiguration<S extends DocumentCollectionManagerFactory> {
 
 
     /**
@@ -34,7 +34,7 @@ public interface DocumentConfiguration<SYNC extends DocumentCollectionManagerFac
      *
      * @return a {@link DocumentCollectionManagerFactory} instance
      */
-    SYNC get();
+    S get();
 
 
     /**
@@ -47,5 +47,5 @@ public interface DocumentConfiguration<SYNC extends DocumentCollectionManagerFac
      * @see Settings
      * @see Settings {@link java.util.Map}
      */
-    SYNC get(Settings settings);
+    S get(Settings settings);
 }

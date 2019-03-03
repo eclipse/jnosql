@@ -40,9 +40,9 @@ import java.util.Optional;
  * <p><b>OrderBy_____ASC</b></p>
  *
  * @param <T>  the bean type
- * @param <ID> the ID type
+ * @param <K> the K type
  */
-public interface Repository<T, ID> {
+public interface Repository<T, K> {
 
     /**
      * Saves entity
@@ -71,7 +71,7 @@ public interface Repository<T, ID> {
      * @param id the id
      * @throws NullPointerException when id is null
      */
-    void deleteById(ID id);
+    void deleteById(K id);
 
     /**
      * Deletes the entity with the given ids.
@@ -79,16 +79,16 @@ public interface Repository<T, ID> {
      * @param ids the ids
      * @throws NullPointerException when either ids or same element is null
      */
-    void deleteById(Iterable<ID> ids);
+    void deleteById(Iterable<K> ids);
 
     /**
      * Finds an entity given the id
      *
      * @param id the id
-     * @return the entity given the ID
+     * @return the entity given the K
      * @throws NullPointerException when id is null
      */
-    Optional<T> findById(ID id);
+    Optional<T> findById(K id);
 
     /**
      * Finds the entities given ids
@@ -97,7 +97,7 @@ public interface Repository<T, ID> {
      * @return the entities from ids
      * @throws NullPointerException when the id is null
      */
-    Iterable<T> findById(Iterable<ID> ids);
+    Iterable<T> findById(Iterable<K> ids);
 
     /**
      * Returns whether an entity with the given id exists.
@@ -106,7 +106,7 @@ public interface Repository<T, ID> {
      * @return if the entity does exist or not
      * @throws NullPointerException when id is null
      */
-    boolean existsById(ID id);
+    boolean existsById(K id);
 
     /**
      * Returns the number of entities available.

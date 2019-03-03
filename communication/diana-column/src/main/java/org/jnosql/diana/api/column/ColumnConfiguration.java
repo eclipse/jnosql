@@ -23,9 +23,9 @@ import org.jnosql.diana.api.Settings;
 /**
  * The diana configuration to create a {@link ColumnFamilyManagerFactory}
  *
- * @param <SYNC> the ColumnFamilyManagerFactory type
+ * @param <S> the ColumnFamilyManagerFactory type
  */
-public interface ColumnConfiguration<SYNC extends ColumnFamilyManagerFactory> {
+public interface ColumnConfiguration<S extends ColumnFamilyManagerFactory> {
 
     /**
      * Reads configuration either from default configuration or a file defined by NoSQL
@@ -33,7 +33,7 @@ public interface ColumnConfiguration<SYNC extends ColumnFamilyManagerFactory> {
      *
      * @return a {@link ColumnFamilyManagerFactory}
      */
-    SYNC get();
+    S get();
 
 
     /**
@@ -46,6 +46,6 @@ public interface ColumnConfiguration<SYNC extends ColumnFamilyManagerFactory> {
      * @see Settings
      * @see Settings {@link java.util.Map}
      */
-    SYNC get(Settings settings);
+    S get(Settings settings);
 
 }

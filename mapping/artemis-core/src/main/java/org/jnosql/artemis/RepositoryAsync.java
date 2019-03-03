@@ -37,9 +37,9 @@ import java.util.function.Consumer;
  * <p><b>OrderBy_____ASC</b></p>
  *
  * @param <T>  the bean type
- * @param <ID> the ID type
+ * @param <K> the K type
  */
-public interface RepositoryAsync<T, ID> {
+public interface RepositoryAsync<T, K> {
 
 
     /**
@@ -71,7 +71,7 @@ public interface RepositoryAsync<T, ID> {
      * @param id the id
      * @throws NullPointerException when id is null
      */
-    void deleteById(ID id);
+    void deleteById(K id);
 
     /**
      * Finds an entity given the id
@@ -80,7 +80,7 @@ public interface RepositoryAsync<T, ID> {
      * @param callBack the callback
      * @throws NullPointerException when id is null
      */
-    void findById(ID id, Consumer<Optional<T>> callBack);
+    void findById(K id, Consumer<Optional<T>> callBack);
 
 
     /**
@@ -90,7 +90,7 @@ public interface RepositoryAsync<T, ID> {
      * @param callBack the callback
      * @throws NullPointerException when id is null
      */
-    void existsById(ID id, Consumer<Boolean> callBack);
+    void existsById(K id, Consumer<Boolean> callBack);
 
     /**
      * Returns the number of entities available.

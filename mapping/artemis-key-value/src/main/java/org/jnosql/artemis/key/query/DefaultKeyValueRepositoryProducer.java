@@ -32,7 +32,7 @@ class DefaultKeyValueRepositoryProducer implements KeyValueRepositoryProducer {
     private KeyValueTemplateProducer producer;
 
     @Override
-    public <E, ID, T extends Repository<E, ID>> T get(Class<T> repositoryClass, BucketManager manager) {
+    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, BucketManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         KeyValueTemplate template = producer.get(manager);
@@ -40,12 +40,12 @@ class DefaultKeyValueRepositoryProducer implements KeyValueRepositoryProducer {
     }
 
     @Override
-    public <E, ID, T extends Repository<E, ID>> T get(Class<T> repositoryClass, KeyValueTemplate template) {
+    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, KeyValueTemplate template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 
         KeyValueRepositoryProxy<T> handler = new KeyValueRepositoryProxy<>(repositoryClass, template);
-        return (T) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
+        return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);
     }

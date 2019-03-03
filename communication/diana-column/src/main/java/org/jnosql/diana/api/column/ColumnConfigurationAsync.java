@@ -22,9 +22,9 @@ import org.jnosql.diana.api.Settings;
 /**
  * The diana configuration to create a {@link ColumnFamilyManagerAsyncFactory}
  *
- * @param <ASYNC> the ColumnFamilyManagerAsyncFactory type
+ * @param <A> the ColumnFamilyManagerAsyncFactory type
  */
-public interface ColumnConfigurationAsync<ASYNC extends ColumnFamilyManagerAsyncFactory> {
+public interface ColumnConfigurationAsync<A extends ColumnFamilyManagerAsyncFactory> {
 
     /**
      * Reads configuration either from default configuration or a file defined by NoSQL
@@ -32,7 +32,7 @@ public interface ColumnConfigurationAsync<ASYNC extends ColumnFamilyManagerAsync
      *
      * @return a {@link ColumnFamilyManagerAsyncFactory}
      */
-    ASYNC getAsync();
+    A getAsync();
 
     /**
      * Reads configuration from the {@link Settings} instance, the parameters are defined by NoSQL
@@ -44,6 +44,6 @@ public interface ColumnConfigurationAsync<ASYNC extends ColumnFamilyManagerAsync
      * @see Settings
      * @see Settings {@link java.util.Map}
      */
-    ASYNC getAsync(Settings settings);
+    A getAsync(Settings settings);
 
 }

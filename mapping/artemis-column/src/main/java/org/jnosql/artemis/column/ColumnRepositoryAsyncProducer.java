@@ -27,24 +27,24 @@ public interface ColumnRepositoryAsyncProducer {
      * Produces a Repository class from repository class and {@link ColumnFamilyManagerAsync}
      * @param repositoryClass the repository class
      * @param manager the manager
-     * @param <E> the entity of repository
-     * @param <ID> the ID of the entity
-     * @param <T> the repository type
+     * @param <T> the entity of repository
+     * @param <K> the K of the entity
+     * @param <R> the repository type
      * @return a {@link RepositoryAsync} interface
      * @throws NullPointerException when there is null parameter
      */
-    <E,ID, T extends RepositoryAsync<E,ID>> T get(Class<T> repositoryClass, ColumnFamilyManagerAsync manager);
+    <T, K, R extends RepositoryAsync<T, K>> R get(Class<R> repositoryClass, ColumnFamilyManagerAsync manager);
 
     /**
      * Produces a Repository class from repository class and {@link ColumnTemplateAsync}
      * @param repositoryClass the repository class
      * @param template the template
-     * @param <E> the entity of repository
-     * @param <ID> the ID of the entity
-     * @param <T> the repository type
+     * @param <T> the entity of repository
+     * @param <K> the K of the entity
+     * @param <R> the repository type
      * @return a {@link RepositoryAsync} interface
      * @throws NullPointerException when there is null parameter
      */
-    <E,ID, T extends RepositoryAsync<E,ID>> T get(Class<T> repositoryClass, ColumnTemplateAsync template);
+    <T, K, R extends RepositoryAsync<T, K>> R get(Class<R> repositoryClass, ColumnTemplateAsync template);
 
 }

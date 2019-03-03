@@ -40,7 +40,7 @@ class DefaultColumnRepositoryProducer implements ColumnRepositoryProducer {
     private ColumnTemplateProducer producer;
 
     @Override
-    public <E, ID, T extends Repository<E, ID>> T get(Class<T> repositoryClass, ColumnFamilyManager manager) {
+    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, ColumnFamilyManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         ColumnTemplate template = producer.get(manager);
@@ -48,13 +48,13 @@ class DefaultColumnRepositoryProducer implements ColumnRepositoryProducer {
     }
 
     @Override
-    public <E, ID, T extends Repository<E, ID>> T get(Class<T> repositoryClass, ColumnTemplate template) {
+    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, ColumnTemplate template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 
-        ColumnRepositoryProxy<E,ID> handler = new ColumnRepositoryProxy<>(template,
+        ColumnRepositoryProxy<T, K> handler = new ColumnRepositoryProxy<>(template,
                 classMappings, repositoryClass, converters);
-        return (T) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
+        return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);
     }
