@@ -28,9 +28,9 @@ import java.lang.reflect.ParameterizedType;
  * Proxy handle to generate {@link Repository}
  *
  * @param <T>  the type
- * @param <ID> the ID type
+ * @param <K> the K type
  */
-class GraphRepositoryProxy<T, ID> extends AbstractGraphRepositoryProxy<T, ID> {
+class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
 
 
     private final GraphRepository repository;
