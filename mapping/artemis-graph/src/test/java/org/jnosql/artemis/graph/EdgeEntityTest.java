@@ -54,7 +54,7 @@ public class EdgeEntityTest {
 
     @Test
     public void shouldReturnErrorWhenOutboundIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(IllegalStateException.class, () -> {
             Person person = Person.builder().withName("Poliana").withAge().build();
             Book book = Book.builder().withAge(2007).withName("The Shack").build();
             graphTemplate.edge(person, "reads", book);
@@ -72,7 +72,7 @@ public class EdgeEntityTest {
 
     @Test
     public void shouldReturnNullWhenInboundIdIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(IllegalStateException.class, () -> {
             Person person = Person.builder().withName("Poliana").withAge().build();
             Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
             graphTemplate.edge(person, "reads", book);
@@ -82,7 +82,7 @@ public class EdgeEntityTest {
 
     @Test
     public void shouldReturnNullWhenOutboundIdIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(IllegalStateException.class, () -> {
             Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
             Book book = Book.builder().withAge(2007).withName("The Shack").build();
             graphTemplate.edge(person, "reads", book);
