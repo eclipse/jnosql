@@ -23,9 +23,9 @@ package org.jnosql.diana.api.document;
  * When the application has finished using the document collection manager factory, and/or at application shutdown,
  * the application should close the column family manager factory.
  *
- * @param <SYNC> the {@link DocumentCollectionManager} type
+ * @param <S> the {@link DocumentCollectionManager} type
  */
-public interface DocumentCollectionManagerFactory<SYNC extends DocumentCollectionManager> extends AutoCloseable {
+public interface DocumentCollectionManagerFactory<S extends DocumentCollectionManager> extends AutoCloseable {
 
     /**
      * Creates a {@link DocumentCollectionManager} from database's name
@@ -35,7 +35,7 @@ public interface DocumentCollectionManagerFactory<SYNC extends DocumentCollectio
      * @throws UnsupportedOperationException when this operation is not supported
      * @throws NullPointerException          when the database is null
      */
-    SYNC get(String database);
+    S get(String database);
 
 
     /**

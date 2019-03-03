@@ -21,9 +21,9 @@ import org.jnosql.diana.api.Settings;
 /**
  * The diana configuration to create a {@link DocumentCollectionManagerFactory}
  *
- * @param <ASYNC> the type {@link DocumentCollectionManagerAsyncFactory}
+ * @param <A> the type {@link DocumentCollectionManagerAsyncFactory}
  */
-public interface DocumentConfigurationAsync<ASYNC extends DocumentCollectionManagerAsyncFactory> {
+public interface DocumentConfigurationAsync<A extends DocumentCollectionManagerAsyncFactory> {
 
     /**
      * Reads configuration either from default configuration or a file defined by NoSQL provider and then creates a
@@ -31,7 +31,7 @@ public interface DocumentConfigurationAsync<ASYNC extends DocumentCollectionMana
      *
      * @return a {@link DocumentCollectionManagerAsyncFactory} instance
      */
-    ASYNC getAsync();
+    A getAsync();
 
     /**
      * Reads configuration from the {@link Settings} instance, the parameters are defined by NoSQL
@@ -43,5 +43,5 @@ public interface DocumentConfigurationAsync<ASYNC extends DocumentCollectionMana
      * @see Settings
      * @see Settings {@link java.util.Map}
      */
-    ASYNC getAsync(Settings settings);
+    A getAsync(Settings settings);
 }
