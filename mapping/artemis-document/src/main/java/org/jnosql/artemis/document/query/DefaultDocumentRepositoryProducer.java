@@ -40,7 +40,7 @@ class DefaultDocumentRepositoryProducer implements DocumentRepositoryProducer {
     private DocumentTemplateProducer producer;
 
     @Override
-    public <E, ID, T extends Repository<E, ID>> T get(Class<T> repositoryClass, DocumentCollectionManager manager) {
+    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, DocumentCollectionManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         DocumentTemplate template = producer.get(manager);
@@ -48,13 +48,13 @@ class DefaultDocumentRepositoryProducer implements DocumentRepositoryProducer {
     }
 
     @Override
-    public <E, ID, T extends Repository<E, ID>> T get(Class<T> repositoryClass, DocumentTemplate template) {
+    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, DocumentTemplate template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 
-        DocumentRepositoryProxy<T> handler = new DocumentRepositoryProxy<>(template,
+        DocumentRepositoryProxy<R> handler = new DocumentRepositoryProxy<>(template,
                 classMappings, repositoryClass, converters);
-        return (T) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
+        return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);
     }

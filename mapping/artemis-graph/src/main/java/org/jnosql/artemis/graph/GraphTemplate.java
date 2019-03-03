@@ -92,14 +92,14 @@ public interface GraphTemplate {
      * @param incoming the incoming entity
      * @param label    the Edge label
      * @param outgoing the outgoing entity
-     * @param <IN>     the incoming type
-     * @param <OUT>    the outgoing type
+     * @param <I>     the incoming type
+     * @param <O>    the outgoing type
      * @return the {@link EdgeEntity} of these two entities
      * @throws NullPointerException                       Either when any elements are null or the entity is null
      * @throws org.jnosql.artemis.IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
      * @throws org.jnosql.artemis.EntityNotFoundException when neither outgoing or incoming is found
      */
-    <OUT, IN> EdgeEntity edge(OUT outgoing, String label, IN incoming);
+    <O, I> EdgeEntity edge(O outgoing, String label, I incoming);
 
     /**
      * Either find or create an Edge between this two entities.

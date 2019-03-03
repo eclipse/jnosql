@@ -39,7 +39,7 @@ class DefaultColumnRepositoryAsyncProducer implements ColumnRepositoryAsyncProdu
     private ColumnTemplateAsyncProducer producer;
 
     @Override
-    public <E, ID, T extends RepositoryAsync<E, ID>> T get(Class<T> repositoryClass, ColumnFamilyManagerAsync manager) {
+    public <T, K, R extends RepositoryAsync<T, K>> R get(Class<R> repositoryClass, ColumnFamilyManagerAsync manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         ColumnTemplateAsync template = producer.get(manager);
@@ -47,13 +47,13 @@ class DefaultColumnRepositoryAsyncProducer implements ColumnRepositoryAsyncProdu
     }
 
     @Override
-    public <E, ID, T extends RepositoryAsync<E, ID>> T get(Class<T> repositoryClass, ColumnTemplateAsync template) {
+    public <T, K, R extends RepositoryAsync<T, K>> R get(Class<R> repositoryClass, ColumnTemplateAsync template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 
-        ColumnRepositoryAsyncProxy<T> handler = new ColumnRepositoryAsyncProxy<>(template,
+        ColumnRepositoryAsyncProxy<R> handler = new ColumnRepositoryAsyncProxy<>(template,
                 classMappings, repositoryClass, converters);
-        return (T) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
+        return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);
     }
