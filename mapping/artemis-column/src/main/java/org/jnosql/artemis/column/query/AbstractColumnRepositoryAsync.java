@@ -30,7 +30,7 @@ import static org.jnosql.artemis.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUP
 /**
  * The template method to {@link RepositoryAsync}
  */
-public abstract class AbstractColumnRepositoryAsync<T, ID> implements RepositoryAsync<T, ID> {
+public abstract class AbstractColumnRepositoryAsync<T, K> implements RepositoryAsync<T, K> {
 
     protected abstract ColumnTemplateAsync getTemplate();
 
@@ -53,7 +53,7 @@ public abstract class AbstractColumnRepositoryAsync<T, ID> implements Repository
                 getTemplate().insert(entity);
             }
         };
-        existsById((ID) id, callBack);
+        existsById((K) id, callBack);
     }
 
 
@@ -65,21 +65,21 @@ public abstract class AbstractColumnRepositoryAsync<T, ID> implements Repository
 
 
     @Override
-    public void deleteById(ID id) {
+    public void deleteById(K id) {
         requireNonNull(id, "is is required");
         getTemplate().delete(getEntityClass(), id);
     }
 
 
     @Override
-    public void existsById(ID id, Consumer<Boolean> callBack) {
+    public void existsById(K id, Consumer<Boolean> callBack) {
         Consumer<Optional<T>> as = o -> callBack.accept(o.isPresent());
         findById(id, as);
     }
 
 
     @Override
-    public void findById(ID id, Consumer<Optional<T>> callBack) {
+    public void findById(K id, Consumer<Optional<T>> callBack) {
         requireNonNull(id, "id is required");
         requireNonNull(callBack, "callBack is required");
 

@@ -33,9 +33,9 @@ import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
  * Template method to {@link Repository} proxy on column
  *
  * @param <T>  the entity type
- * @param <ID> the ID entity
+ * @param <K> the K entity
  */
-public abstract class AbstractColumnRepositoryProxy<T, ID> extends  BaseColumnRepository implements InvocationHandler {
+public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRepository implements InvocationHandler {
 
     protected abstract Repository getRepository();
 

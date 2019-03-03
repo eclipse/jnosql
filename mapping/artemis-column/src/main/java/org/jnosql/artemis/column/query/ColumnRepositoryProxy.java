@@ -28,9 +28,9 @@ import java.lang.reflect.ParameterizedType;
  * Proxy handle to generate {@link Repository}
  *
  * @param <T>  the type
- * @param <ID> the ID type
+ * @param <K> the K type
  */
-class ColumnRepositoryProxy<T, ID> extends AbstractColumnRepositoryProxy {
+class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
 
 
     private final ColumnTemplate template;
