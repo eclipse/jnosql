@@ -34,7 +34,7 @@ import static org.jnosql.artemis.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUP
 /**
  * The {@link Repository} template method
  */
-public abstract class AbstractColumnRepository<T, ID> implements Repository<T, ID> {
+public abstract class AbstractColumnRepository<T, K> implements Repository<T, K> {
 
     protected abstract ColumnTemplate getTemplate();
 
@@ -46,7 +46,7 @@ public abstract class AbstractColumnRepository<T, ID> implements Repository<T, I
         Objects.requireNonNull(entity, "Entity is required");
 
         Object id = getIdField().read(entity);
-        if (nonNull(id) && existsById((ID) id)) {
+        if (nonNull(id) && existsById((K) id)) {
             return getTemplate().update(entity);
         } else {
             return getTemplate().insert(entity);
@@ -62,19 +62,19 @@ public abstract class AbstractColumnRepository<T, ID> implements Repository<T, I
 
 
     @Override
-    public void deleteById(ID id) {
+    public void deleteById(K id) {
         requireNonNull(id, "is is required");
         getTemplate().delete(getEntityClass(), id);
     }
 
     @Override
-    public void deleteById(Iterable<ID> ids) {
+    public void deleteById(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         ids.forEach(this::deleteById);
     }
 
     @Override
-    public Optional<T> findById(ID id) {
+    public Optional<T> findById(K id) {
         requireNonNull(id, "id is required");
 
         return getTemplate().find(getEntityClass(), id);
@@ -90,7 +90,7 @@ public abstract class AbstractColumnRepository<T, ID> implements Repository<T, I
     }
 
     @Override
-    public Iterable<T> findById(Iterable<ID> ids) {
+    public Iterable<T> findById(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         return (Iterable) stream(ids.spliterator(), false)
                 .flatMap(optionalToStream()).collect(toList());
@@ -102,13 +102,13 @@ public abstract class AbstractColumnRepository<T, ID> implements Repository<T, I
 
     private Function optionalToStream() {
         return id -> {
-            Optional entity = this.findById((ID) id);
+            Optional entity = this.findById((K) id);
             return entity.isPresent() ? Stream.of(entity.get()) : Stream.empty();
         };
     }
 
     @Override
-    public boolean existsById(ID id) {
+    public boolean existsById(K id) {
         return findById(id).isPresent();
     }
 
