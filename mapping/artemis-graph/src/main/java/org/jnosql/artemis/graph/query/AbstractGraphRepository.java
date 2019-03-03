@@ -31,7 +31,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 import static org.jnosql.artemis.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
-abstract class AbstractGraphRepository<T, ID> implements Repository<T, ID> {
+abstract class AbstractGraphRepository<T, K> implements Repository<T, K> {
 
     protected abstract GraphTemplate getTemplate();
 
@@ -42,7 +42,7 @@ abstract class AbstractGraphRepository<T, ID> implements Repository<T, ID> {
     public <S extends T> S save(S entity) {
         Objects.requireNonNull(entity, "Entity is required");
         Object id = getIdField().read(entity);
-        if (nonNull(id) && existsById((ID) id)) {
+        if (nonNull(id) && existsById((K) id)) {
             return getTemplate().update(entity);
         } else {
             return getTemplate().insert(entity);
@@ -56,32 +56,32 @@ abstract class AbstractGraphRepository<T, ID> implements Repository<T, ID> {
     }
 
     @Override
-    public void deleteById(ID id) {
+    public void deleteById(K id) {
         requireNonNull(id, "is is required");
         getTemplate().delete(id);
     }
 
     @Override
-    public void deleteById(Iterable<ID> ids) {
+    public void deleteById(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         ids.forEach(this::deleteById);
     }
 
     @Override
-    public Optional<T> findById(ID id) {
+    public Optional<T> findById(K id) {
         requireNonNull(id, "id is required");
         return getTemplate().find(id);
     }
 
     @Override
-    public Iterable<T> findById(Iterable<ID> ids) {
+    public Iterable<T> findById(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         return (Iterable) stream(ids.spliterator(), false)
                 .flatMap(optionalToStream()).collect(toList());
     }
 
     @Override
-    public boolean existsById(ID id) {
+    public boolean existsById(K id) {
         return findById(id).isPresent();
     }
 
@@ -96,7 +96,7 @@ abstract class AbstractGraphRepository<T, ID> implements Repository<T, ID> {
 
     private Function optionalToStream() {
         return id -> {
-            Optional entity = this.findById((ID) id);
+            Optional entity = this.findById((K) id);
             return entity.isPresent() ? Stream.of(entity.get()) : Stream.empty();
         };
     }

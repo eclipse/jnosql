@@ -44,13 +44,13 @@ class DefaultGraphRepositoryProducer implements GraphRepositoryProducer {
     private Converters converters;
 
     @Override
-    public <E, ID, T extends Repository<E, ID>> T get(Class<T> repositoryClass, Graph manager) {
+    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, Graph manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         GraphTemplate template = producer.get(manager);
-        GraphRepositoryProxy<T, ID> handler = new GraphRepositoryProxy(template,
+        GraphRepositoryProxy<R, K> handler = new GraphRepositoryProxy(template,
                 classMappings, repositoryClass, manager, converter, converters);
-        return (T) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
+        return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);
     }

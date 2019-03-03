@@ -37,9 +37,9 @@ import static java.util.stream.Collectors.toList;
  * Template method to {@link Repository} proxy on Graph
  *
  * @param <T>  the entity type
- * @param <ID> the ID entity
+ * @param <K> the K entity
  */
-abstract class AbstractGraphRepositoryProxy<T, ID> implements InvocationHandler {
+abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
 
     private final SelectQueryConverter converter = new SelectQueryConverter();
