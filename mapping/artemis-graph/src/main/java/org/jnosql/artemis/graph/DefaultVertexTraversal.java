@@ -86,9 +86,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     @Override
     public VertexTraversal out(String... labels) {
-        if (Stream.of(labels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("The no one label element cannot be null");
-        }
+        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "label is required"));
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.out(labels)), converter);
     }
 

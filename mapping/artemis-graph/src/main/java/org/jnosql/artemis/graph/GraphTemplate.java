@@ -47,7 +47,7 @@ public interface GraphTemplate {
      * @param entity entity to be updated
      * @param <T>    the instance type
      * @return the entity saved
-     * @throws NullPointerException                   when document is null
+     * @throws IllegalStateException                   when document is null
      * @throws org.jnosql.artemis.IdNotFoundException when an entity is null
      */
     <T> T update(T entity);
@@ -200,7 +200,7 @@ public interface GraphTemplate {
      * @param edgeId the edge id
      * @param <E>    the edge id type
      * @return the {@link EdgeEntity} otherwise {@link Optional#empty()}
-     * @throws NullPointerException when edgeId is null
+     * @throws IllegalStateException when edgeId is null
      */
     <E> Optional<EdgeEntity> edge(E edgeId);
 
@@ -210,7 +210,7 @@ public interface GraphTemplate {
      *
      * @param vertexIds get ids
      * @return a {@link VertexTraversal} instance
-     * @throws NullPointerException if any id element is null
+     * @throws IllegalStateException if any id element is null
      */
     VertexTraversal getTraversalVertex(Object... vertexIds);
 
@@ -220,7 +220,7 @@ public interface GraphTemplate {
      *
      * @param edgeIds get ids
      * @return a {@link VertexTraversal} instance
-     * @throws NullPointerException if any id element is null
+     * @throws IllegalStateException if any id element is null
      */
     EdgeTraversal getTraversalEdge(Object... edgeIds);
 

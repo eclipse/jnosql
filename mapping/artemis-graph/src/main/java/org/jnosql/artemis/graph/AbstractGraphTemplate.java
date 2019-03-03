@@ -87,7 +87,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(entity, "entity is required");
         checkId(entity);
         if (isIdNull(entity)) {
-            throw new NullPointerException("to update a graph id cannot be null");
+            throw new IllegalStateException("to update a graph id cannot be null");
         }
         getVertex(entity).orElseThrow(() -> new EntityNotFoundException("Entity does not find in the update"));
 
@@ -128,11 +128,11 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         checkId(incoming);
 
         if (isIdNull(outgoing)) {
-            throw new NullPointerException("outgoing Id field is required");
+            throw new IllegalStateException("outgoing Id field is required");
         }
 
         if (isIdNull(incoming)) {
-            throw new NullPointerException("incoming Id field is required");
+            throw new IllegalStateException("incoming Id field is required");
         }
 
 
@@ -209,7 +209,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public VertexTraversal getTraversalVertex(Object... vertexIds) {
         if (Stream.of(vertexIds).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("No one vertexId element cannot be null");
+            throw new IllegalStateException("No one vertexId element cannot be null");
         }
         return new DefaultVertexTraversal(() -> getTraversal().V(vertexIds), INITIAL_VERTEX, getConverter());
     }
@@ -217,7 +217,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public EdgeTraversal getTraversalEdge(Object... edgeIds) {
         if (Stream.of(edgeIds).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("No one edgeId element cannot be null");
+            throw new IllegalStateException("No one edgeId element cannot be null");
         }
         return new DefaultEdgeTraversal(() -> getTraversal().E(edgeIds), INITIAL_EDGE, getConverter());
     }
@@ -306,7 +306,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(entity, "entity is required");
 
         if (isIdNull(entity)) {
-            throw new NullPointerException("Entity id is required");
+            throw new IllegalStateException("Entity id is required");
         }
 
         if (!getVertex(entity).isPresent()) {
@@ -318,7 +318,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     private void checkLabelsSupplier(Supplier<String>[] labels) {
         if (Stream.of(labels).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("Item cannot be null");
+            throw new IllegalStateException("Item cannot be null");
         }
     }
 

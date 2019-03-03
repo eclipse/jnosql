@@ -87,7 +87,7 @@ public abstract class AbstractGraphTemplateTest {
 
     @Test
     public void shouldGetErrorWhenIdIsNullWhenUpdate() {
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             Person person = builder().withAge()
                     .withName("Otavio").build();
             getGraphTemplate().update(person);
@@ -206,7 +206,7 @@ public abstract class AbstractGraphTemplateTest {
 
     @Test
     public void shouldReturnErrorWhenGetEdgesHasNullId2() {
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             Person otavio = builder().withAge().withName("Otavio").build();
             getGraphTemplate().getEdges(otavio, Direction.BOTH);
         });
