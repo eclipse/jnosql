@@ -133,12 +133,12 @@ public interface EdgeEntity {
      * @param outgoing the outgoing
      * @param edge     the Tinkerpop edge
      * @param incoming the incoming object
-     * @param <OUT>    the outgoing type
-     * @param <IN>     the incoming type
+     * @param <O>    the outgoing type
+     * @param <I>     the incoming type
      * @return an {@link EdgeEntity} instance
      * @throws NullPointerException if any parameters is null
      */
-    static <OUT, IN> EdgeEntity of(OUT outgoing, Edge edge, IN incoming) {
+    static <O, I> EdgeEntity of(O outgoing, Edge edge, I incoming) {
         requireNonNull(outgoing, "outgoing is required");
         requireNonNull(edge, "edge is required");
         requireNonNull(incoming, "incoming is required");

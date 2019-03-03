@@ -27,15 +27,15 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
-class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
+class DefaultEdgeEntity<O, I> implements EdgeEntity {
 
-    private final OUT outgoing;
+    private final O outgoing;
 
     private final Edge edge;
 
-    private final IN incoming;
+    private final I incoming;
 
-    DefaultEdgeEntity(Edge edge, IN incoming, OUT outgoing) {
+    DefaultEdgeEntity(Edge edge, I incoming, O outgoing) {
         this.edge = edge;
         this.incoming = incoming;
         this.outgoing = outgoing;
@@ -52,12 +52,12 @@ class DefaultEdgeEntity<OUT, IN> implements EdgeEntity {
     }
 
     @Override
-    public IN getIncoming() {
+    public I getIncoming() {
         return incoming;
     }
 
     @Override
-    public OUT getOutgoing() {
+    public O getOutgoing() {
         return outgoing;
     }
 
