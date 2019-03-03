@@ -28,24 +28,24 @@ public interface DocumentRepositoryProducer {
      * Produces a Repository class from repository class and {@link DocumentCollectionManager}
      * @param repositoryClass the repository class
      * @param manager the manager
-     * @param <E> the entity of repository
-     * @param <ID> the ID of the entity
-     * @param <T> the repository type
+     * @param <T> the entity of repository
+     * @param <K> the K of the entity
+     * @param <R> the repository type
      * @return a {@link Repository} interface
      * @throws NullPointerException when there is null parameter
      */
-    <E,ID, T extends Repository<E,ID>> T get(Class<T> repositoryClass, DocumentCollectionManager manager);
+    <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, DocumentCollectionManager manager);
 
     /**
      * Produces a Repository class from repository class and {@link DocumentTemplate}
      * @param repositoryClass the repository class
      * @param template the template
-     * @param <E> the entity of repository
-     * @param <ID> the ID of the entity
-     * @param <T> the repository type
+     * @param <T> the entity of repository
+     * @param <K> the K of the entity
+     * @param <R> the repository type
      * @return a {@link Repository} interface
      * @throws NullPointerException when there is null parameter
      */
-    <E,ID, T extends Repository<E,ID>> T get(Class<T> repositoryClass, DocumentTemplate template);
+    <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, DocumentTemplate template);
 
 }

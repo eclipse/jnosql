@@ -28,12 +28,12 @@ public interface GraphRepositoryProducer {
      * Produces a Repository class from repository class and {@link Graph}
      * @param repositoryClass the repository class
      * @param graph the graph
-     * @param <E> the entity of repository
-     * @param <ID> the ID of the entity
-     * @param <T> the repository type
+     * @param <T> the entity of repository
+     * @param <K> the K of the entity
+     * @param <R> the repository type
      * @return a {@link Repository} interface
      * @throws NullPointerException when there is null parameter
      */
-    <E,ID, T extends Repository<E,ID>> T get(Class<T> repositoryClass, Graph graph);
+    <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, Graph graph);
 
 }
