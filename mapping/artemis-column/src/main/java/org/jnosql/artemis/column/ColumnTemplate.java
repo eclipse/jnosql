@@ -184,11 +184,11 @@ public interface ColumnTemplate {
      * @param entityClass the entity class
      * @param id          the id value
      * @param <T>         the entity class type
-     * @param <ID>        the id type
+     * @param <K>        the id type
      * @throws NullPointerException                   when either the entityClass or id are null
      * @throws org.jnosql.artemis.IdNotFoundException when the entityClass does not have the Id annotation
      */
-    <T, ID> void delete(Class<T> entityClass, ID id);
+    <T, K> void delete(Class<T> entityClass, K id);
 
     /**
      * Returns the number of elements from column family
