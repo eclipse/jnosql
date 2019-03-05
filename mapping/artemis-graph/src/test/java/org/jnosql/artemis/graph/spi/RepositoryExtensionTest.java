@@ -17,7 +17,6 @@ package org.jnosql.artemis.graph.spi;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.graph.BookRepository;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
-import org.jnosql.artemis.graph.model.Book;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -30,27 +29,23 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class RepositoryExtensionTest {
 
     @Inject
-    @ConfigurationUnit(database = "database", fileName = "graph.json", name = "name")
+    @ConfigurationUnit(database = "database", fileName = "graph.json", name = "graphA")
     private BookRepository repositoryMock;
 
 
     @Inject
-    @ConfigurationUnit(database = "database", fileName = "graph.json", name = "name", repository = GRAPH)
+    @ConfigurationUnit(database = "database", fileName = "graph.json", name = "graphA", repository = GRAPH)
     private BookRepository repositoryMock2;
 
     @Test
     public void shouldUseUserRepository() {
         assertNotNull(repositoryMock);
-        Book book = repositoryMock.save(Book.builder().withName("name").withAge(21).withId(12L).build());
-        assertNotNull(book);
 
     }
 
     @Test
     public void shouldUseUserRepository2() {
         assertNotNull(repositoryMock2);
-        Book book = repositoryMock2.save(Book.builder().withName("name").withAge(21).withId(12L).build());
-        assertNotNull(book);
 
     }
 }
