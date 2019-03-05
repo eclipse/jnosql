@@ -105,7 +105,7 @@ public class BucketManagerProducerExtension implements Extension {
             Type type = injectionPoint.getType();
             ConfigurationUnitRepository unitRepository = ConfigurationUnitRepository.of((Class<?>) type, configurationUnit);
             if (unitRepository.isKey()) {
-                LOGGER.info(String.format("Found Repository key to configuration name %s fileName %s database: %s repository: %s",
+                LOGGER.info(String.format("Found Repository to configuration unit key to configuration name %s fileName %s database: %s repository: %s",
                         configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
                 repositoryConfigurationUnit.add(unitRepository);
 
