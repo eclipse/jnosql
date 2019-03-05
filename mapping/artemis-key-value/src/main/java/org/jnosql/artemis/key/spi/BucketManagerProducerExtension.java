@@ -56,11 +56,11 @@ public class BucketManagerProducerExtension implements Extension {
 
     private final Collection<RepositoryUnit> repositoryUnits = new HashSet<>();
 
-    <T, X extends BucketManager> void processProducer(@Observes final ProcessProducer<T, X> pp) {
+    <T, X extends BucketManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, KEY_VALUE, databases);
     }
 
-    <T extends Repository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
         if (Repository.class.equals(javaClass)) {
@@ -74,7 +74,7 @@ public class BucketManagerProducerExtension implements Extension {
         }
     }
 
-    <T, R extends Repository<?, ?>> void processClassesContainingMediators(@Observes ProcessInjectionPoint<T, R> event) {
+    <T, R extends Repository<?, ?>> void observes(@Observes ProcessInjectionPoint<T, R> event) {
 
         InjectionPoint injectionPoint = event.getInjectionPoint();
 
