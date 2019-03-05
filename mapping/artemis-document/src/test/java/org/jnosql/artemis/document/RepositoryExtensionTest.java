@@ -14,16 +14,18 @@
  */
 package org.jnosql.artemis.document;
 
+import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.UserRepository;
-import org.jnosql.artemis.model.User;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
 import static org.jnosql.artemis.DatabaseType.DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@ExtendWith(CDIExtension.class)
 public class RepositoryExtensionTest {
 
 
@@ -39,16 +41,12 @@ public class RepositoryExtensionTest {
     @Test
     public void shouldUseUserRepository() {
         assertNotNull(userRepositoryMock);
-        User user = userRepositoryMock.save(new User("nickname", "name", 10));
-        assertNotNull(user);
 
     }
 
     @Test
     public void shouldUseUserRepository2() {
         assertNotNull(userRepositoryMock2);
-        User user = userRepositoryMock2.save(new User("nickname", "name", 10));
-        assertNotNull(user);
 
     }
 }
