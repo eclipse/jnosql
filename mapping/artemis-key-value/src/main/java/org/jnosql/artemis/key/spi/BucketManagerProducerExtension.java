@@ -54,7 +54,7 @@ public class BucketManagerProducerExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    private final Collection<RepositoryUnit> repositoryConfigurationUnit = new HashSet<>();
+    private final Collection<RepositoryUnit> repositoryUnits = new HashSet<>();
 
     <T, X extends BucketManager> void processProducer(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, KEY_VALUE, databases);
@@ -93,7 +93,7 @@ public class BucketManagerProducerExtension implements Extension {
                     .addBean(new RepositoryKeyValueBean(type, beanManager, database.getProvider())));
         });
 
-        repositoryConfigurationUnit.forEach(type -> {
+        repositoryUnits.forEach(type -> {
             afterBeanDiscovery.addBean(new RepositoryUnitKeyValueBean(beanManager, type));
         });
 
@@ -111,7 +111,7 @@ public class BucketManagerProducerExtension implements Extension {
             if (unitRepository.isKey()) {
                 LOGGER.info(String.format("Found Repository to configuration unit key to configuration name %s fileName %s database: %s repository: %s",
                         configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
-                repositoryConfigurationUnit.add(unitRepository);
+                repositoryUnits.add(unitRepository);
 
             }
         }
