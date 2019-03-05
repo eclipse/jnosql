@@ -28,7 +28,7 @@ import javax.inject.Inject;
 public class RepositoryExtensionTest {
 
     @Inject
-    @ConfigurationUnit(database = "database")
+    @ConfigurationUnit(database = "database", fileName = "key-value.json")
     private UserRepository userRepositoryMock;
 
 
