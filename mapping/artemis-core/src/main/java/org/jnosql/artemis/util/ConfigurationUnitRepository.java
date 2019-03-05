@@ -19,7 +19,7 @@ import org.jnosql.artemis.ConfigurationUnit;
 import java.util.Objects;
 
 /**
- * An instance that has a class of repository and a databasetype
+ * An instance that has a class of repository and a ConfigurationUnit
  */
 public final class ConfigurationUnitRepository {
 
@@ -62,7 +62,7 @@ public final class ConfigurationUnitRepository {
     public String toString() {
         return "ConfigurationUnitRepository{" +
                 "repository=" + repository +
-                ", type=" + type +
+                ", unit=" + unit +
                 '}';
     }
 
