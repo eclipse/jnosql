@@ -16,7 +16,6 @@ package org.jnosql.artemis.key.spi;
 
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.key.KeyValueRepositoryProducer;
-import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;
 import org.jnosql.diana.api.key.BucketManager;
