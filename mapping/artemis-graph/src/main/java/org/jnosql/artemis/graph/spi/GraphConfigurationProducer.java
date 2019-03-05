@@ -47,6 +47,10 @@ class GraphConfigurationProducer {
     private Graph getGraphImpl(InjectionPoint injectionPoint) {
 
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
+        return getGraph(annotation);
+    }
+
+    Graph getGraph(ConfigurationUnit annotation) {
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, GraphProducer.class);
         Class<GraphProducer> configurationClass = unit.<GraphProducer>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The GraphProducer provider is required in the configuration"));
