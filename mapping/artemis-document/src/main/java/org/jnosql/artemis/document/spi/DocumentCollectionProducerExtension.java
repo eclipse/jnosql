@@ -154,6 +154,10 @@ public class DocumentCollectionProducerExtension implements Extension {
             });
         });
 
+        repositoryUnits.forEach(type -> {
+            afterBeanDiscovery.addBean(new RepositoryUnitDocumentBean(beanManager, type));
+        });
+
     }
 
 }
