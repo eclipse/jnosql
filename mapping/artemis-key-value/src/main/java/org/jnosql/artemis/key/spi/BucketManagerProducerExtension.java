@@ -15,18 +15,25 @@
 package org.jnosql.artemis.key.spi;
 
 
+import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.key.query.RepositorKeyValueyBean;
 import org.jnosql.diana.api.key.BucketManager;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
+import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
+import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
+import javax.enterprise.inject.spi.ProcessInjectionPoint;
+import javax.enterprise.inject.spi.ProcessManagedBean;
 import javax.enterprise.inject.spi.ProcessProducer;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
@@ -86,4 +93,16 @@ public class BucketManagerProducerExtension implements Extension {
         });
 
     }
+
+    <T, R extends Repository<?,?>> void processClassesContainingMediators(@Observes ProcessInjectionPoint<T, R> event) {
+        InjectionPoint injectionPoint = event.getInjectionPoint();
+        Set<Annotation> qualifiers = injectionPoint.getQualifiers();
+        if(injectionPoint.getQualifiers().stream()
+                .anyMatch(annotation -> ConfigurationUnit.class.equals(annotation.annotationType()))){
+
+            System.out.println("hey");
+        }
+
+    }
+
 }

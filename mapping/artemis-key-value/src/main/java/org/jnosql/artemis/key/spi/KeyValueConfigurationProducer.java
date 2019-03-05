@@ -25,7 +25,6 @@ import org.jnosql.diana.api.key.KeyValueConfiguration;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 
@@ -57,8 +56,7 @@ class KeyValueConfigurationProducer {
     }
 
     private <T extends BucketManager> BucketManagerFactory<T> getBuckerManagerFactocy(InjectionPoint injectionPoint) {
-        Annotated annotated = injectionPoint.getAnnotated();
-        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, annotated);
+        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
 
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, KeyValueConfiguration.class);
         Class<KeyValueConfiguration> configurationClass = unit.<KeyValueConfiguration>getProvider()

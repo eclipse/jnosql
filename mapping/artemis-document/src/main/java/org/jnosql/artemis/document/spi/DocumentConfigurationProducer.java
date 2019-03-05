@@ -78,9 +78,8 @@ class DocumentConfigurationProducer {
     private <T extends DocumentCollectionManagerAsync> DocumentCollectionManagerAsyncFactory<T>
     getDocumentCollectionAsync(InjectionPoint injectionPoint) {
 
-        Annotated annotated = injectionPoint.getAnnotated();
 
-        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, annotated);
+        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
 
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, DocumentConfigurationAsync.class);
         Class<DocumentConfigurationAsync> configurationClass = unit.<DocumentConfigurationAsync>getProvider()
@@ -91,9 +90,8 @@ class DocumentConfigurationProducer {
     }
 
     private <T extends DocumentCollectionManager> DocumentCollectionManagerFactory<T> getDocumentCollection(InjectionPoint injectionPoint) {
-        Annotated annotated = injectionPoint.getAnnotated();
 
-        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, annotated);
+        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
 
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, DocumentConfiguration.class);
         Class<DocumentConfiguration> configurationClass = unit.<DocumentConfiguration>getProvider()

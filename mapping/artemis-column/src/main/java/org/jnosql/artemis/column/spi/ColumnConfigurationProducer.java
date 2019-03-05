@@ -28,7 +28,6 @@ import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 
@@ -76,9 +75,8 @@ class ColumnConfigurationProducer {
 
 
     private <T extends ColumnFamilyManagerAsync> ColumnFamilyManagerAsyncFactory<T> gettColumnFamilyManagerAsyncFactory(InjectionPoint injectionPoint) {
-        Annotated annotated = injectionPoint.getAnnotated();
 
-        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, annotated);
+        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
 
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, ColumnConfigurationAsync.class);
         Class<ColumnConfigurationAsync> configurationClass = unit.<ColumnConfigurationAsync>getProvider()
@@ -90,9 +88,8 @@ class ColumnConfigurationProducer {
     }
 
     private <T extends ColumnFamilyManager> ColumnFamilyManagerFactory<T> gettColumnFamilyManagerFactory(InjectionPoint injectionPoint) {
-        Annotated annotated = injectionPoint.getAnnotated();
 
-        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, annotated);
+        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
 
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, ColumnConfiguration.class);
         Class<ColumnConfiguration> configurationClass = unit.<ColumnConfiguration>getProvider()
