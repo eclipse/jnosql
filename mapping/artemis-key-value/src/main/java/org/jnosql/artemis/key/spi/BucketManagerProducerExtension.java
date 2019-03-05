@@ -93,6 +93,10 @@ public class BucketManagerProducerExtension implements Extension {
                     .addBean(new RepositoryKeyValueBean(type, beanManager, database.getProvider())));
         });
 
+        repositoryConfigurationUnit.forEach(type -> {
+            afterBeanDiscovery.addBean(new RepositoryUnitKeyValueBean(beanManager, type));
+        });
+
     }
 
     <T, R extends Repository<?, ?>> void processClassesContainingMediators(@Observes ProcessInjectionPoint<T, R> event) {
