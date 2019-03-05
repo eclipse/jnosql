@@ -18,23 +18,39 @@ import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.UserRepository;
 import org.jnosql.artemis.model.User;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
+import static org.jnosql.artemis.DatabaseType.KEY_VALUE;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @ExtendWith(CDIExtension.class)
 public class RepositoryExtensionTest {
 
     @Inject
-    @ConfigurationUnit(database = "database", fileName = "key-value.json")
+    @ConfigurationUnit(database = "database", fileName = "key-value.json", name = "name")
     private UserRepository userRepositoryMock;
 
 
+    @Inject
+    @ConfigurationUnit(database = "database", fileName = "key-value.json", name = "name", repository = KEY_VALUE)
+    private UserRepository userRepositoryMock2;
+
     @Test
     public void shouldUseUserRepository() {
-        Assertions.assertNotNull(userRepositoryMock);
-        userRepositoryMock.save(new User("nickname", "name", 10));
+        assertNotNull(userRepositoryMock);
+        User user = userRepositoryMock.save(new User("nickname", "name", 10));
+        assertNotNull(user);
+
+    }
+
+    @Test
+    public void shouldUseUserRepository2() {
+        assertNotNull(userRepositoryMock2);
+        User user = userRepositoryMock2.save(new User("nickname", "name", 10));
+        assertNotNull(user);
+
     }
 }
