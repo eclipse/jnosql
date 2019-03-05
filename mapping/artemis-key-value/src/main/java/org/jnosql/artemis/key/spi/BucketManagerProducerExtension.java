@@ -20,6 +20,7 @@ import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.key.query.RepositorKeyValueyBean;
+import org.jnosql.artemis.util.ConfigurationUnitUtils;
 import org.jnosql.diana.api.key.BucketManager;
 
 import javax.enterprise.event.Observes;
@@ -31,6 +32,7 @@ import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessInjectionPoint;
 import javax.enterprise.inject.spi.ProcessProducer;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -50,6 +52,8 @@ public class BucketManagerProducerExtension implements Extension {
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
+
+    private final Collection<Class<?>> repositoryConfigurationUnit = new HashSet<>();
 
     <T, X extends BucketManager> void processProducer(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, KEY_VALUE, databases);
@@ -90,12 +94,16 @@ public class BucketManagerProducerExtension implements Extension {
 
     }
 
-    <T, R extends Repository<?,?>> void processClassesContainingMediators(@Observes ProcessInjectionPoint<T, R> event) {
-        InjectionPoint injectionPoint = event.getInjectionPoint();
-        if(injectionPoint.getQualifiers().stream()
-                .anyMatch(annotation -> ConfigurationUnit.class.equals(annotation.annotationType()))){
+    <T, R extends Repository<?, ?>> void processClassesContainingMediators(@Observes ProcessInjectionPoint<T, R> event) {
 
-            System.out.println("hey");
+        InjectionPoint injectionPoint = event.getInjectionPoint();
+
+        if (ConfigurationUnitUtils.hasConfigurationUnit(injectionPoint)) {
+
+            ConfigurationUnit configurationUnit = ConfigurationUnitUtils.getConfigurationUnit(injectionPoint);
+            Type type = injectionPoint.getType();
+            LOGGER.info(String.format("Found Repository key to configuration name %s fileName %s database: %s repository: %s",
+                    configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
         }
 
     }
