@@ -52,4 +52,11 @@ public @interface ConfigurationUnit {
      */
     @Nonbinding
     String database() default "";
+
+    /**
+     * Defines a source implementation to the repository. This attribute is used just to inject a Repository implementation.
+     * @return the repository implementation
+     */
+    DatabaseType repository() default DatabaseType.SHARED;
+
 }
