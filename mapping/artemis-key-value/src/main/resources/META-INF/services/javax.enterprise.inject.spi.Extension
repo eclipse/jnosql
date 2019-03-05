@@ -13,4 +13,3 @@
 #   Otavio Santana
 #
 org.jnosql.artemis.key.spi.BucketManagerProducerExtension
-org.jnosql.artemis.key.spi.KeyValueConfigurationUnitExtension
