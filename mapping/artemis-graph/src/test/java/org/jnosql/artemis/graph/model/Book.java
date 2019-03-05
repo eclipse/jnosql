@@ -73,14 +73,12 @@ public class Book {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Book{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", age=").append(age);
-        sb.append('}');
-        return sb.toString();
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
-
 
     public static BookBuilder builder() {
         return new BookBuilder();
