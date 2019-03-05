@@ -19,5 +19,5 @@ package org.jnosql.artemis;
  * Defines the database type supported on Artemis.
  */
 public enum DatabaseType {
-    DOCUMENT, COLUMN, KEY_VALUE, GRAPH
+    DOCUMENT, COLUMN, KEY_VALUE, GRAPH, SHARED;
 }
