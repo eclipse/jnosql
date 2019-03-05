@@ -42,6 +42,13 @@ public final class RepositoryUnit {
     }
 
     /**
+     * @return the {@link ConfigurationUnit#database()}
+     */
+    public String getDatabase() {
+        return unit.database();
+    }
+
+    /**
      * @return Returns true if the repository unit is of key type
      */
     public boolean isKey() {
