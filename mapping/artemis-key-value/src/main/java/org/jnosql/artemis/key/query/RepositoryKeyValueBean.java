@@ -33,7 +33,7 @@ import java.util.Set;
 /**
  * Artemis discoveryBean to CDI extension to register {@link KeyValueTemplate}
  */
-public class RepositorKeyValueyBean extends AbstractBean<Repository> {
+public class RepositoryKeyValueBean extends AbstractBean<Repository> {
 
     private final Class type;
 
@@ -50,7 +50,7 @@ public class RepositorKeyValueyBean extends AbstractBean<Repository> {
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public RepositorKeyValueyBean(Class type, BeanManager beanManager, String provider) {
+    public RepositoryKeyValueBean(Class type, BeanManager beanManager, String provider) {
         super(beanManager);
         this.type = type;
         this.types = Collections.singleton(type);

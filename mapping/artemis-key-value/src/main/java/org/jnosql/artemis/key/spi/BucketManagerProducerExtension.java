@@ -19,7 +19,7 @@ import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
 import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.key.query.RepositorKeyValueyBean;
+import org.jnosql.artemis.key.query.RepositoryKeyValueBean;
 import org.jnosql.artemis.util.ConfigurationUnitUtils;
 import org.jnosql.diana.api.key.BucketManager;
 
@@ -85,11 +85,11 @@ public class BucketManagerProducerExtension implements Extension {
         crudTypes.forEach(type -> {
 
             if (!databases.contains(DatabaseMetadata.DEFAULT_KEY_VALUE)) {
-                afterBeanDiscovery.addBean(new RepositorKeyValueyBean(type, beanManager, ""));
+                afterBeanDiscovery.addBean(new RepositoryKeyValueBean(type, beanManager, ""));
             }
 
             databases.forEach(database -> afterBeanDiscovery
-                    .addBean(new RepositorKeyValueyBean(type, beanManager, database.getProvider())));
+                    .addBean(new RepositoryKeyValueBean(type, beanManager, database.getProvider())));
         });
 
     }
