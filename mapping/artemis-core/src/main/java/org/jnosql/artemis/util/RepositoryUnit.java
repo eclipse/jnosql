@@ -62,6 +62,13 @@ public final class RepositoryUnit {
         return isType(DatabaseType.GRAPH);
     }
 
+    /**
+     * @return Returns true if the repository unit is of Document type
+     */
+    public boolean isDocument() {
+        return isType(DatabaseType.DOCUMENT);
+    }
+
     private boolean isType(DatabaseType graph) {
         DatabaseType type = unit.repository();
         return graph.equals(type) || DatabaseType.SHARED.equals(type);
