@@ -43,9 +43,10 @@ public final class RepositoryUnit {
 
     /**
      * @return the {@link ConfigurationUnit#database()}
+     * @throws NullPointerException when {@link ConfigurationUnit#database()} is null
      */
     public String getDatabase() {
-        return unit.database();
+        return Objects.requireNonNull(unit.database(), "databse is required");
     }
 
     /**
