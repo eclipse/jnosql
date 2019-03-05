@@ -22,13 +22,13 @@ import java.util.Objects;
 /**
  * An instance that has a class of repository and a ConfigurationUnit
  */
-public final class ConfigurationUnitRepository {
+public final class RepositoryUnit {
 
     private final Class<?> repository;
 
     private final ConfigurationUnit unit;
 
-    private ConfigurationUnitRepository(Class<?> repository, ConfigurationUnit unit) {
+    private RepositoryUnit(Class<?> repository, ConfigurationUnit unit) {
         this.repository = repository;
         this.unit = unit;
     }
@@ -57,7 +57,7 @@ public final class ConfigurationUnitRepository {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ConfigurationUnitRepository that = (ConfigurationUnitRepository) o;
+        RepositoryUnit that = (RepositoryUnit) o;
         return Objects.equals(repository, that.repository) &&
                 unit == that.unit;
     }
@@ -69,24 +69,24 @@ public final class ConfigurationUnitRepository {
 
     @Override
     public String toString() {
-        return "ConfigurationUnitRepository{" +
+        return "RepositoryUnit{" +
                 "repository=" + repository +
                 ", unit=" + unit +
                 '}';
     }
 
     /**
-     * Creates a {@link ConfigurationUnitRepository} instance
+     * Creates a {@link RepositoryUnit} instance
      *
      * @param repository the repository class
      * @param unit       the database type
      * @return a instance
      * @throws NullPointerException when there is null parameter
      */
-    public static ConfigurationUnitRepository of(Class<?> repository, ConfigurationUnit unit) {
+    public static RepositoryUnit of(Class<?> repository, ConfigurationUnit unit) {
         Objects.requireNonNull(repository, "repository is required");
         Objects.requireNonNull(unit, "unit is required");
-        return new ConfigurationUnitRepository(repository, unit);
+        return new RepositoryUnit(repository, unit);
     }
 
 }
