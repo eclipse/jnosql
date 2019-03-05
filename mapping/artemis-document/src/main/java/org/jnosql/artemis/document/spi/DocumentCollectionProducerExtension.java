@@ -15,12 +15,15 @@
 package org.jnosql.artemis.document.spi;
 
 
+import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.document.query.RepositoryAsyncDocumentBean;
 import org.jnosql.artemis.document.query.RepositoryDocumentBean;
+import org.jnosql.artemis.util.ConfigurationUnitUtils;
+import org.jnosql.artemis.util.RepositoryUnit;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 
@@ -28,9 +31,12 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
+import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
+import javax.enterprise.inject.spi.ProcessInjectionPoint;
 import javax.enterprise.inject.spi.ProcessProducer;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -55,8 +61,10 @@ public class DocumentCollectionProducerExtension implements Extension {
 
     private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
 
+    private final Collection<RepositoryUnit> repositoryUnits = new HashSet<>();
 
-    <T extends Repository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
+
+    <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
         if (Repository.class.equals(javaClass)) {
             return;
@@ -70,7 +78,7 @@ public class DocumentCollectionProducerExtension implements Extension {
         }
     }
 
-    <T extends RepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends RepositoryAsync> void observesAsync(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
         if (RepositoryAsync.class.equals(javaClass)) {
@@ -84,12 +92,31 @@ public class DocumentCollectionProducerExtension implements Extension {
         }
     }
 
-    <T, X extends DocumentCollectionManager> void processProducer(@Observes final ProcessProducer<T, X> pp) {
+    <T, X extends DocumentCollectionManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, DOCUMENT, databases);
     }
 
-    <T, X extends DocumentCollectionManagerAsync> void processProducerAsync(@Observes final ProcessProducer<T, X> pp) {
+    <T, X extends DocumentCollectionManagerAsync> void observesAsync(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, DOCUMENT, databasesAsync);
+    }
+
+    <T, R extends Repository<?, ?>> void observes(@Observes ProcessInjectionPoint<T, R> event) {
+
+        InjectionPoint injectionPoint = event.getInjectionPoint();
+
+        if (ConfigurationUnitUtils.hasConfigurationUnit(injectionPoint)) {
+
+            ConfigurationUnit configurationUnit = ConfigurationUnitUtils.getConfigurationUnit(injectionPoint);
+            Type type = injectionPoint.getType();
+            RepositoryUnit unitRepository = RepositoryUnit.of((Class<?>) type, configurationUnit);
+            if (unitRepository.isDocument()) {
+                LOGGER.info(String.format("Found Repository to configuration unit document to configuration name %s fileName %s database: %s repository: %s",
+                        configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
+                repositoryUnits.add(unitRepository);
+
+            }
+        }
+
     }
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
