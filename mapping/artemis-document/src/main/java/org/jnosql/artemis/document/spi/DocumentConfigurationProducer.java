@@ -28,7 +28,6 @@ import org.jnosql.diana.api.document.DocumentConfigurationAsync;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 
