@@ -15,8 +15,12 @@
 package org.jnosql.artemis.key.spi;
 
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.key.KeyValueRepositoryProducer;
+import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;
+import org.jnosql.diana.api.key.BucketManager;
+import org.jnosql.diana.api.key.BucketManagerFactory;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
@@ -47,8 +51,17 @@ final class RepositoryUnitKeyValueBean extends AbstractBean<Repository<?, ?>> {
     }
 
     @Override
-    public Repository<?, ?> create(CreationalContext<Repository<?, ?>> creationalContext) {
-        return null;
+    public Repository<?, ?> create(CreationalContext<Repository<?, ?>> context) {
+        return get();
+    }
+
+    private <T, K, R extends Repository<T, K>> R get() {
+        KeyValueRepositoryProducer producer = getInstance(KeyValueRepositoryProducer.class);
+        KeyValueConfigurationProducer templateProducer = getInstance(KeyValueConfigurationProducer.class);
+        Class<R> repository  = (Class<R>) repositoryUnit.getRepository();
+        BucketManagerFactory<BucketManager> managerFactory = templateProducer.getBucketManagerFactory(repositoryUnit.getUnit());
+        BucketManager bucketManager = managerFactory.getBucketManager(repositoryUnit.getDatabase());
+        return producer.get(repository, bucketManager);
     }
 
     @Override

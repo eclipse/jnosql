@@ -46,18 +46,16 @@ class KeyValueConfigurationProducer {
     @ConfigurationUnit
     @Produces
     public <T extends BucketManager> BucketManagerFactory<T> getGenerics(InjectionPoint injectionPoint) {
-        return getBuckerManagerFactocy(injectionPoint);
+        return getBucketManagerFactory(injectionPoint);
     }
 
     @ConfigurationUnit
     @Produces
     public BucketManagerFactory get(InjectionPoint injectionPoint) {
-        return getBuckerManagerFactocy(injectionPoint);
+        return getBucketManagerFactory(injectionPoint);
     }
 
-    private <T extends BucketManager> BucketManagerFactory<T> getBuckerManagerFactocy(InjectionPoint injectionPoint) {
-        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
-
+    <T extends BucketManager> BucketManagerFactory<T> getBucketManagerFactory(ConfigurationUnit annotation) {
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, KeyValueConfiguration.class);
         Class<KeyValueConfiguration> configurationClass = unit.<KeyValueConfiguration>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The KeyValueConfiguration provider is required in the configuration"));
@@ -65,6 +63,11 @@ class KeyValueConfigurationProducer {
         KeyValueConfiguration configuration = reflections.newInstance(configurationClass);
 
         return configuration.get(unit.getSettings());
+    }
+
+    private <T extends BucketManager> BucketManagerFactory<T> getBucketManagerFactory(InjectionPoint injectionPoint) {
+        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
+        return getBucketManagerFactory(annotation);
     }
 
 }
