@@ -52,8 +52,19 @@ public final class RepositoryUnit {
      * @return Returns true if the repository unit is of key type
      */
     public boolean isKey() {
+        return isType(DatabaseType.KEY_VALUE);
+    }
+
+    /**
+     * @return Returns true if the repository unit is of Graph type
+     */
+    public boolean isGraph() {
+        return isType(DatabaseType.GRAPH);
+    }
+
+    private boolean isType(DatabaseType graph) {
         DatabaseType type = unit.repository();
-        return DatabaseType.KEY_VALUE.equals(type) || DatabaseType.SHARED.equals(type);
+        return graph.equals(type) || DatabaseType.SHARED.equals(type);
     }
 
     @Override
@@ -95,5 +106,6 @@ public final class RepositoryUnit {
         Objects.requireNonNull(unit, "unit is required");
         return new RepositoryUnit(repository, unit);
     }
+
 
 }
