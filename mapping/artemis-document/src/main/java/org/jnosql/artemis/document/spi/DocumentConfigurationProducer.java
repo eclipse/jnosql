@@ -88,10 +88,7 @@ class DocumentConfigurationProducer {
         return documentConfiguration.getAsync(unit.getSettings());
     }
 
-    private <T extends DocumentCollectionManager> DocumentCollectionManagerFactory<T> getDocumentCollection(InjectionPoint injectionPoint) {
-
-        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
-
+    <T extends DocumentCollectionManager> DocumentCollectionManagerFactory<T> getFactory(ConfigurationUnit annotation) {
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, DocumentConfiguration.class);
         Class<DocumentConfiguration> configurationClass = unit.<DocumentConfiguration>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The DocumentConfiguration provider is required in the configuration"));
@@ -100,5 +97,12 @@ class DocumentConfigurationProducer {
 
         return configuration.get(unit.getSettings());
     }
+
+    private <T extends DocumentCollectionManager> DocumentCollectionManagerFactory<T> getDocumentCollection(InjectionPoint injectionPoint) {
+
+        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
+        return getFactory(annotation);
+    }
+
 
 }
