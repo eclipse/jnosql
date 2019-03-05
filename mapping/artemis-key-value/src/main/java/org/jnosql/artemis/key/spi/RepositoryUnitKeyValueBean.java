@@ -56,9 +56,9 @@ final class RepositoryUnitKeyValueBean extends AbstractBean<Repository<?, ?>> {
 
     private <T, K, R extends Repository<T, K>> R get() {
         KeyValueRepositoryProducer producer = getInstance(KeyValueRepositoryProducer.class);
-        KeyValueConfigurationProducer templateProducer = getInstance(KeyValueConfigurationProducer.class);
+        KeyValueConfigurationProducer configurationProducer = getInstance(KeyValueConfigurationProducer.class);
         Class<R> repository  = (Class<R>) repositoryUnit.getRepository();
-        BucketManagerFactory<BucketManager> managerFactory = templateProducer.getBucketManagerFactory(repositoryUnit.getUnit());
+        BucketManagerFactory<BucketManager> managerFactory = configurationProducer.getBucketManagerFactory(repositoryUnit.getUnit());
         BucketManager bucketManager = managerFactory.getBucketManager(repositoryUnit.getDatabase());
         return producer.get(repository, bucketManager);
     }
