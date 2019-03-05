@@ -74,6 +74,25 @@ public class BucketManagerProducerExtension implements Extension {
         }
     }
 
+    <T, R extends Repository<?, ?>> void processClassesContainingMediators(@Observes ProcessInjectionPoint<T, R> event) {
+
+        InjectionPoint injectionPoint = event.getInjectionPoint();
+
+        if (ConfigurationUnitUtils.hasConfigurationUnit(injectionPoint)) {
+
+            ConfigurationUnit configurationUnit = ConfigurationUnitUtils.getConfigurationUnit(injectionPoint);
+            Type type = injectionPoint.getType();
+            RepositoryUnit unitRepository = RepositoryUnit.of((Class<?>) type, configurationUnit);
+            if (unitRepository.isKey()) {
+                LOGGER.info(String.format("Found Repository to configuration unit key to configuration name %s fileName %s database: %s repository: %s",
+                        configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
+                repositoryUnits.add(unitRepository);
+
+            }
+        }
+
+    }
+
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info(String.format("Processing buckets: %d databases crud %d ",
                 databases.size(), crudTypes.size()));
@@ -96,25 +115,6 @@ public class BucketManagerProducerExtension implements Extension {
         repositoryUnits.forEach(type -> {
             afterBeanDiscovery.addBean(new RepositoryUnitKeyValueBean(beanManager, type));
         });
-
-    }
-
-    <T, R extends Repository<?, ?>> void processClassesContainingMediators(@Observes ProcessInjectionPoint<T, R> event) {
-
-        InjectionPoint injectionPoint = event.getInjectionPoint();
-
-        if (ConfigurationUnitUtils.hasConfigurationUnit(injectionPoint)) {
-
-            ConfigurationUnit configurationUnit = ConfigurationUnitUtils.getConfigurationUnit(injectionPoint);
-            Type type = injectionPoint.getType();
-            RepositoryUnit unitRepository = RepositoryUnit.of((Class<?>) type, configurationUnit);
-            if (unitRepository.isKey()) {
-                LOGGER.info(String.format("Found Repository to configuration unit key to configuration name %s fileName %s database: %s repository: %s",
-                        configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
-                repositoryUnits.add(unitRepository);
-
-            }
-        }
 
     }
 
