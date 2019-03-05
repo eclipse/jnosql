@@ -20,6 +20,7 @@ import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.key.query.RepositoryKeyValueBean;
+import org.jnosql.artemis.util.ConfigurationUnitRepository;
 import org.jnosql.artemis.util.ConfigurationUnitUtils;
 import org.jnosql.diana.api.key.BucketManager;
 
@@ -53,7 +54,7 @@ public class BucketManagerProducerExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    private final Collection<Class<?>> repositoryConfigurationUnit = new HashSet<>();
+    private final Collection<ConfigurationUnitRepository> repositoryConfigurationUnit = new HashSet<>();
 
     <T, X extends BucketManager> void processProducer(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, KEY_VALUE, databases);
@@ -102,8 +103,13 @@ public class BucketManagerProducerExtension implements Extension {
 
             ConfigurationUnit configurationUnit = ConfigurationUnitUtils.getConfigurationUnit(injectionPoint);
             Type type = injectionPoint.getType();
-            LOGGER.info(String.format("Found Repository key to configuration name %s fileName %s database: %s repository: %s",
-                    configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
+            ConfigurationUnitRepository unitRepository = ConfigurationUnitRepository.of((Class<?>) type, configurationUnit);
+            if (unitRepository.isKey()) {
+                LOGGER.info(String.format("Found Repository key to configuration name %s fileName %s database: %s repository: %s",
+                        configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
+                repositoryConfigurationUnit.add(unitRepository);
+
+            }
         }
 
     }

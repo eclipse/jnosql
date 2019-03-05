@@ -15,6 +15,7 @@
 package org.jnosql.artemis.util;
 
 import org.jnosql.artemis.ConfigurationUnit;
+import org.jnosql.artemis.DatabaseType;
 
 import java.util.Objects;
 
@@ -38,6 +39,14 @@ public final class ConfigurationUnitRepository {
 
     public ConfigurationUnit getUnit() {
         return unit;
+    }
+
+    /**
+     * @return Returns true if the repository unit is of key type
+     */
+    public boolean isKey() {
+        DatabaseType type = unit.repository();
+        return DatabaseType.KEY_VALUE.equals(type) || DatabaseType.SHARED.equals(type);
     }
 
     @Override
