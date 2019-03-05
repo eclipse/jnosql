@@ -24,7 +24,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 
 import static org.jnosql.artemis.DatabaseType.GRAPH;
-import static org.jnosql.artemis.DatabaseType.KEY_VALUE;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(CDIExtension.class)
