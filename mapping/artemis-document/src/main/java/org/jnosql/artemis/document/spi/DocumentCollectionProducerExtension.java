@@ -63,6 +63,8 @@ public class DocumentCollectionProducerExtension implements Extension {
 
     private final Collection<RepositoryUnit> repositoryUnits = new HashSet<>();
 
+    private final Collection<RepositoryUnit> repositoryAsyncUnits = new HashSet<>();
+
 
     <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
@@ -101,8 +103,14 @@ public class DocumentCollectionProducerExtension implements Extension {
     }
 
     <T, R extends Repository<?, ?>> void observes(@Observes ProcessInjectionPoint<T, R> event) {
+        observes(event.getInjectionPoint(), repositoryUnits);
+    }
 
-        InjectionPoint injectionPoint = event.getInjectionPoint();
+    <T, R extends RepositoryAsync<?, ?>> void observesAsync(@Observes ProcessInjectionPoint<T, R> event) {
+        observes(event.getInjectionPoint(), repositoryAsyncUnits);
+    }
+
+    private void observes(InjectionPoint injectionPoint, Collection<RepositoryUnit> repositoryAsyncUnits) {
 
         if (ConfigurationUnitUtils.hasConfigurationUnit(injectionPoint)) {
 
@@ -112,11 +120,10 @@ public class DocumentCollectionProducerExtension implements Extension {
             if (unitRepository.isDocument()) {
                 LOGGER.info(String.format("Found Repository to configuration unit document to configuration name %s fileName %s database: %s repository: %s",
                         configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
-                repositoryUnits.add(unitRepository);
+                repositoryAsyncUnits.add(unitRepository);
 
             }
         }
-
     }
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
@@ -156,6 +163,10 @@ public class DocumentCollectionProducerExtension implements Extension {
 
         repositoryUnits.forEach(type -> {
             afterBeanDiscovery.addBean(new RepositoryUnitDocumentBean(beanManager, type));
+        });
+
+        repositoryAsyncUnits.forEach(type -> {
+            afterBeanDiscovery.addBean(new RepositoryAsyncUnitDocumentBean(beanManager, type));
         });
 
     }

@@ -77,9 +77,11 @@ class DocumentConfigurationProducer {
     private <T extends DocumentCollectionManagerAsync> DocumentCollectionManagerAsyncFactory<T>
     getDocumentCollectionAsync(InjectionPoint injectionPoint) {
 
-
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
+        return getFactoryAsync(annotation);
+    }
 
+    <T extends DocumentCollectionManagerAsync> DocumentCollectionManagerAsyncFactory<T> getFactoryAsync(ConfigurationUnit annotation) {
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, DocumentConfigurationAsync.class);
         Class<DocumentConfigurationAsync> configurationClass = unit.<DocumentConfigurationAsync>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The DocumentConfiguration provider is required in the configuration"));
