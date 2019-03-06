@@ -152,6 +152,14 @@ public class ColumnFamilyProducerExtension implements Extension {
                     .addBean(new RepositoryAsyncColumnBean(type, beanManager, database.getProvider())));
         });
 
+        repositoryUnits.forEach(type -> {
+            afterBeanDiscovery.addBean(new RepositoryUnitColumnBean(beanManager, type));
+        });
+
+        repositoryAsyncUnits.forEach(type -> {
+            afterBeanDiscovery.addBean(new RepositoryAsyncUnitColumnBean(beanManager, type));
+        });
+
 
     }
 
