@@ -78,6 +78,10 @@ class ColumnConfigurationProducer {
 
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
 
+        return getFactoryAsync(annotation);
+    }
+
+    <T extends ColumnFamilyManagerAsync> ColumnFamilyManagerAsyncFactory<T> getFactoryAsync(ConfigurationUnit annotation) {
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, ColumnConfigurationAsync.class);
         Class<ColumnConfigurationAsync> configurationClass = unit.<ColumnConfigurationAsync>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The ColumnConfiguration provider is required in the configuration"));
@@ -87,10 +91,7 @@ class ColumnConfigurationProducer {
         return columnConfiguration.getAsync(unit.getSettings());
     }
 
-    private <T extends ColumnFamilyManager> ColumnFamilyManagerFactory<T> gettColumnFamilyManagerFactory(InjectionPoint injectionPoint) {
-
-        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
-
+    <T extends ColumnFamilyManager> ColumnFamilyManagerFactory<T> getFactory(ConfigurationUnit annotation) {
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, ColumnConfiguration.class);
         Class<ColumnConfiguration> configurationClass = unit.<ColumnConfiguration>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The ColumnConfiguration provider is required in the configuration"));
@@ -99,4 +100,13 @@ class ColumnConfigurationProducer {
 
         return configuration.get(unit.getSettings());
     }
+
+    private <T extends ColumnFamilyManager> ColumnFamilyManagerFactory<T> gettColumnFamilyManagerFactory(InjectionPoint injectionPoint) {
+
+        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
+
+        return getFactory(annotation);
+    }
+
+
 }
