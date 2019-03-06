@@ -63,8 +63,8 @@
 
 
     <properties>
-        <tinkerpop.version>3.3.3</tinkerpop.version>
-        <neo4j.connector.version>0.7-3.2.3</neo4j.connector.version>
+        <tinkerpop.version>3.3.4</tinkerpop.version>
+        <neo4j.connector.version>0.9-3.4.0</neo4j.connector.version>
     </properties>
     <dependencies>
         <dependency>
