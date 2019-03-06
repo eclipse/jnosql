@@ -16,6 +16,7 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
+import org.jnosql.artemis.PersonRepositoryAsync;
 import org.jnosql.artemis.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +38,15 @@ public class RepositoryExtensionTest {
     @Inject
     @ConfigurationUnit(database = "name", fileName = "document.json", name = "name", repository = DOCUMENT)
     private UserRepository repository2;
+
+
+    @Inject
+    @ConfigurationUnit(database = "name", fileName = "document.json", name = "name")
+    private PersonRepositoryAsync repositoryAsync;
+
+    @Inject
+    @ConfigurationUnit(database = "name", fileName = "document.json", name = "name", repository = DOCUMENT)
+    private PersonRepositoryAsync repositoryAsync2;
 
 
 
