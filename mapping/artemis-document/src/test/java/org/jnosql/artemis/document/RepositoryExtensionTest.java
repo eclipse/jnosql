@@ -61,4 +61,16 @@ public class RepositoryExtensionTest {
         assertNotNull(repository2);
 
     }
+
+    @Test
+    public void shouldUseUserRepositoryAsync() {
+        assertNotNull(repositoryAsync);
+
+    }
+
+    @Test
+    public void shouldUseUserRepositoryAsync2() {
+        assertNotNull(repositoryAsync2);
+
+    }
 }
