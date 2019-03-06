@@ -70,6 +70,13 @@ public final class RepositoryUnit {
         return isType(DatabaseType.DOCUMENT);
     }
 
+    /**
+     * @return Returns true if the repository unit is of Column type
+     */
+    public boolean isColumn() {
+        return isType(DatabaseType.COLUMN);
+    }
+
     private boolean isType(DatabaseType graph) {
         DatabaseType type = unit.repository();
         return graph.equals(type) || DatabaseType.SHARED.equals(type);
