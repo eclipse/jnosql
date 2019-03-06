@@ -48,6 +48,7 @@ public @interface ConfigurationUnit {
 
     /**
      * It creates both templates and repositories instances using from the respective database.
+     *
      * @return The database to templates and repositories classes.
      */
     @Nonbinding
@@ -55,13 +56,14 @@ public @interface ConfigurationUnit {
 
     /**
      * Defines a source implementation to the repository. This attribute is used just to inject a Repository implementation.
+     *
      * @return the repository implementation
      */
     DatabaseType repository() default DatabaseType.SHARED;
 
     /**
-     *
      * @return A qualifier that provides various implementations of a particular repository type.
+     * E.g.: when there are several configurations to a specific bean type.
      */
     String qualifier() default "";
 
