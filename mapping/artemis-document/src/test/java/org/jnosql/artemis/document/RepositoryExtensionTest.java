@@ -31,22 +31,24 @@ public class RepositoryExtensionTest {
 
     @Inject
     @ConfigurationUnit(database = "name", fileName = "document.json", name = "name")
-    private UserRepository userRepositoryMock;
+    private UserRepository repository;
 
 
     @Inject
     @ConfigurationUnit(database = "name", fileName = "document.json", name = "name", repository = DOCUMENT)
-    private UserRepository userRepositoryMock2;
+    private UserRepository repository2;
+
+
 
     @Test
     public void shouldUseUserRepository() {
-        assertNotNull(userRepositoryMock);
+        assertNotNull(repository);
 
     }
 
     @Test
     public void shouldUseUserRepository2() {
-        assertNotNull(userRepositoryMock2);
+        assertNotNull(repository2);
 
     }
 }
