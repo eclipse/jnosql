@@ -55,7 +55,8 @@ public @interface ConfigurationUnit {
     String database() default "";
 
     /**
-     * Defines a source implementation to the repository. This attribute is used just to inject a Repository implementation.
+     * Defines a source implementation to the repository. This attribute is used where there are two or more mappers
+     * within an application classpath, e.g., mapper-document and mapper-column. Otherwise, it will return an Ambiguous dependency error.
      *
      * @return the repository implementation
      */
