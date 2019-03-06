@@ -342,6 +342,8 @@ Storage of the database's configuration such as password and users outside the c
 * *fileName*: the field name at the folder, the default value is `jnosql.json`
 * *name*: the name works as ID to find the respective configuration. The default value is empty which will work when there is just a configuration at the file.
 * *database*: to inject the Template, Repository and manager communication the database name is required.
+* *repository*: Defines a source implementation to the repository. This attribute is used where there are two or more mappers within an application classpath, e.g., mapper-document and mapper-column. Otherwise, it will return an Ambiguous dependency error.
+* *qualifier*: A qualifier that provides various implementations of a particular repository type. E.g.: when there are several configurations to a specific bean type.
 
 
 
