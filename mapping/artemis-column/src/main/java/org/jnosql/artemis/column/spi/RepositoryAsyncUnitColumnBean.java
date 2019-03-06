@@ -75,6 +75,6 @@ class RepositoryUnitColumnBean  extends AbstractBean<Repository<?, ?>> {
 
     @Override
     public String getId() {
-        return "column: " + repositoryUnit.toString();
+        return "document: " + repositoryUnit.toString();
     }
 }
