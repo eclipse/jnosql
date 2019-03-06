@@ -15,19 +15,25 @@
 package org.jnosql.artemis.key.spi;
 
 
+import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
 import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.key.query.RepositorKeyValueyBean;
+import org.jnosql.artemis.key.query.RepositoryKeyValueBean;
+import org.jnosql.artemis.util.RepositoryUnit;
+import org.jnosql.artemis.util.ConfigurationUnitUtils;
 import org.jnosql.diana.api.key.BucketManager;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
+import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
+import javax.enterprise.inject.spi.ProcessInjectionPoint;
 import javax.enterprise.inject.spi.ProcessProducer;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -48,11 +54,13 @@ public class BucketManagerProducerExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    <T, X extends BucketManager> void processProducer(@Observes final ProcessProducer<T, X> pp) {
+    private final Collection<RepositoryUnit> repositoryUnits = new HashSet<>();
+
+    <T, X extends BucketManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, KEY_VALUE, databases);
     }
 
-    <T extends Repository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
         if (Repository.class.equals(javaClass)) {
@@ -64,6 +72,25 @@ public class BucketManagerProducerExtension implements Extension {
             LOGGER.info("Adding a new KeyValueRepository as discovered on key-value: " + javaClass);
             crudTypes.add(repo.getAnnotatedType().getJavaClass());
         }
+    }
+
+    <T, R extends Repository<?, ?>> void observes(@Observes ProcessInjectionPoint<T, R> event) {
+
+        InjectionPoint injectionPoint = event.getInjectionPoint();
+
+        if (ConfigurationUnitUtils.hasConfigurationUnit(injectionPoint)) {
+
+            ConfigurationUnit configurationUnit = ConfigurationUnitUtils.getConfigurationUnit(injectionPoint);
+            Type type = injectionPoint.getType();
+            RepositoryUnit unitRepository = RepositoryUnit.of((Class<?>) type, configurationUnit);
+            if (unitRepository.isKey()) {
+                LOGGER.info(String.format("Found Repository to configuration unit key to configuration name %s fileName %s database: %s repository: %s",
+                        configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
+                repositoryUnits.add(unitRepository);
+
+            }
+        }
+
     }
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
@@ -78,12 +105,17 @@ public class BucketManagerProducerExtension implements Extension {
         crudTypes.forEach(type -> {
 
             if (!databases.contains(DatabaseMetadata.DEFAULT_KEY_VALUE)) {
-                afterBeanDiscovery.addBean(new RepositorKeyValueyBean(type, beanManager, ""));
+                afterBeanDiscovery.addBean(new RepositoryKeyValueBean(type, beanManager, ""));
             }
 
             databases.forEach(database -> afterBeanDiscovery
-                    .addBean(new RepositorKeyValueyBean(type, beanManager, database.getProvider())));
+                    .addBean(new RepositoryKeyValueBean(type, beanManager, database.getProvider())));
+        });
+
+        repositoryUnits.forEach(type -> {
+            afterBeanDiscovery.addBean(new RepositoryUnitKeyValueBean(beanManager, type));
         });
 
     }
+
 }

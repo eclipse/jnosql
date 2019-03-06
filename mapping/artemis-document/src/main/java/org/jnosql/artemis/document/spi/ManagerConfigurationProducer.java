@@ -42,7 +42,7 @@ class ManagerConfigurationProducer {
     @Produces
     public DocumentCollectionManager get(InjectionPoint injectionPoint) {
         DocumentCollectionManagerFactory<?> managerFactory = configurationProducer.get(injectionPoint);
-        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
+        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
             throw new ConfigurationException("The field database at ConfigurationUnit annotation is required");
@@ -54,7 +54,7 @@ class ManagerConfigurationProducer {
     @Produces
     public DocumentCollectionManagerAsync getAsync(InjectionPoint injectionPoint) {
         DocumentCollectionManagerAsyncFactory<?> managerFactory = configurationProducer.getAsync(injectionPoint);
-        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, injectionPoint.getAnnotated());
+        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
             throw new ConfigurationException("The field database at ConfigurationUnit annotation is required");

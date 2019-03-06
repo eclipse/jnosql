@@ -24,7 +24,6 @@ import org.jnosql.artemis.reflection.Reflections;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.Annotated;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 
@@ -46,9 +45,12 @@ class GraphConfigurationProducer {
     }
 
     private Graph getGraphImpl(InjectionPoint injectionPoint) {
-        Annotated annotated = injectionPoint.getAnnotated();
-        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint, annotated);
 
+        ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
+        return getGraph(annotation);
+    }
+
+    Graph getGraph(ConfigurationUnit annotation) {
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, GraphProducer.class);
         Class<GraphProducer> configurationClass = unit.<GraphProducer>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The GraphProducer provider is required in the configuration"));

@@ -12,40 +12,40 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.column;
+package org.jnosql.artemis.graph.spi;
 
-import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.PersonRepository;
-import org.jnosql.artemis.PersonRepositoryAsync;
+import org.jnosql.artemis.ConfigurationUnit;
+import org.jnosql.artemis.graph.BookRepository;
+import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
+import static org.jnosql.artemis.DatabaseType.GRAPH;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(CDIExtension.class)
-public class ColumnRepositoryConfigurationTest {
+public class RepositoryExtensionTest {
+
+    @Inject
+    @ConfigurationUnit(database = "database", fileName = "graph.json", name = "graphA")
+    private BookRepository repositoryMock;
 
 
     @Inject
-    private RepositoryService services;
+    @ConfigurationUnit(database = "database", fileName = "graph.json", name = "graphA", repository = GRAPH)
+    private BookRepository repositoryMock2;
 
     @Test
-    public void shouldRepository() {
-        ColumnRepositorySupplier<PersonRepository> supplier = services.getRepository();
-        assertNotNull(supplier);
-        PersonRepository repository = supplier.get();
-        assertNotNull(repository);
+    public void shouldUseUserRepository() {
+        assertNotNull(repositoryMock);
 
     }
 
     @Test
-    public void shouldRepositoryAsync() {
-        ColumnRepositoryAsyncSupplier<PersonRepositoryAsync> supplier = services.getRepositoryAsync();
-        assertNotNull(supplier);
-        PersonRepositoryAsync repository = supplier.get();
-        assertNotNull(repository);
+    public void shouldUseUserRepository2() {
+        assertNotNull(repositoryMock2);
 
     }
 }

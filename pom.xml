@@ -71,7 +71,7 @@
         <yasson.version>1.0.3</yasson.version>
         <javax.validation.version>2.0.1.Final</javax.validation.version>
         <json.b.version>1.0.2</json.b.version>
-        <junit.version>5.4.0-RC2</junit.version>
+        <junit.version>5.4.0</junit.version>
         <junit.platform.surefire>1.3.1</junit.platform.surefire>
         <maven-javadoc-plugin.vesion>3.0.1</maven-javadoc-plugin.vesion>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
@@ -80,7 +80,7 @@
         <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
         <maven.compile.version>3.8.0</maven.compile.version>
         <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
-        <mockito.verson>2.24.0</mockito.verson>
+        <mockito.verson>2.25.0</mockito.verson>
         <org.awaitility.version>3.1.6</org.awaitility.version>
         <owb.version>2.0.3</owb.version>
         <sonar.maven.version>3.3.0.603</sonar.maven.version>

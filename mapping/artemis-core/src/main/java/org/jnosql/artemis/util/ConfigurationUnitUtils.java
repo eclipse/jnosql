@@ -32,19 +32,29 @@ public final class ConfigurationUnitUtils {
 
     /**
      * Returns a {@link ConfigurationUnit} instance from the {@link Annotated} instance
+     *
      * @param injectionPoint the injectionPoint
-     * @param annotated the annotated
      * @return a {@link ConfigurationUnit} annotation
-     * @throws NullPointerException when injectionPoint is null
+     * @throws NullPointerException  when injectionPoint is null
      * @throws IllegalStateException when annotation is not found
      */
-    public static ConfigurationUnit getConfigurationUnit(InjectionPoint injectionPoint, Annotated annotated) {
-
-        return configurationUnit(injectionPoint, annotated)
+    public static ConfigurationUnit getConfigurationUnit(InjectionPoint injectionPoint) {
+        return configurationUnit(injectionPoint)
                 .orElseThrow(() -> new IllegalStateException("The @ConfigurationUnit does not found"));
     }
 
-    private static Optional<ConfigurationUnit> configurationUnit(InjectionPoint injectionPoint, Annotated annotated) {
+    /**
+     * Checks if the {@link InjectionPoint} has {@link ConfigurationUnit} annotation
+     *
+     * @param injectionPoint the injectionPoint
+     * @return check if the injection point has {@link ConfigurationUnit} annotation
+     */
+    public static boolean hasConfigurationUnit(InjectionPoint injectionPoint) {
+        return configurationUnit(injectionPoint).isPresent();
+    }
+
+    private static Optional<ConfigurationUnit> configurationUnit(InjectionPoint injectionPoint) {
+        Annotated annotated = injectionPoint.getAnnotated();
         if (annotated == null) {
             return injectionPoint.getQualifiers().stream()
                     .filter(annotation -> ConfigurationUnit.class.equals(annotation.annotationType()))

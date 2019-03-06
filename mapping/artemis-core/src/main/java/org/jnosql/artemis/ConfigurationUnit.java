@@ -48,8 +48,25 @@ public @interface ConfigurationUnit {
 
     /**
      * It creates both templates and repositories instances using from the respective database.
+     *
      * @return The database to templates and repositories classes.
      */
     @Nonbinding
     String database() default "";
+
+    /**
+     * Defines a source implementation to the repository. This attribute is used where there are two or more mappers
+     * within an application classpath, e.g., mapper-document and mapper-column. Otherwise, it will return an Ambiguous dependency error.
+     *
+     * @return the repository implementation
+     */
+    DatabaseType repository() default DatabaseType.SHARED;
+
+    /**
+     * @return A qualifier that provides various implementations of a particular repository type.
+     * E.g.: when there are several configurations to a specific bean type.
+     */
+    String qualifier() default "";
+
+
 }
