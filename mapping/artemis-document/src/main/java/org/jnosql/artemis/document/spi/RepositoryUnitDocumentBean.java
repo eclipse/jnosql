@@ -75,6 +75,6 @@ class RepositoryUnitDocumentBean extends AbstractBean<Repository<?, ?>> {
 
     @Override
     public String getId() {
-        return "key-value: " + repositoryUnit.toString();
+        return "document: " + repositoryUnit.toString();
     }
 }
