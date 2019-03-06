@@ -75,6 +75,6 @@ class RepositoryAsyncUnitColumnBean extends AbstractBean<RepositoryAsync<?, ?>> 
 
     @Override
     public String getId() {
-        return "document: " + repositoryUnit.toString();
+        return "column-async: " + repositoryUnit.toString();
     }
 }
