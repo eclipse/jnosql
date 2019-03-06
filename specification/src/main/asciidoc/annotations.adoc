@@ -436,6 +436,22 @@ private PersonRepository personRepository;
 private PersonRepository personRepository;
 ----
 
+IMPORTANT: When there is more than one configuration to a repository type, the qualifier field is required.
+
+[source,java]
+----
+
+@Inject
+@ConfigurationUnit(fileName = "document.json", name = "nameA", database = "database", qualifier = "databaseA")
+private PersonRepository personRepository;
+
+@Inject
+@ConfigurationUnit(fileName = "document.json", name = "nameB", database = "database", qualifier = "databaseB")
+private PersonRepository personRepository;
+
+----
+
+
 ===== The configuration structure
 
 Each configuration has four fields:
