@@ -44,20 +44,12 @@ public final class DynamicAsyncQueryMethodReturn<T> implements MethodDynamicExec
         this.prepareConverter = prepareConverter;
     }
 
-    public Method getMethod() {
+    Method getMethod() {
         return method;
     }
 
-    public Object[] getArgs() {
+    Object[] getArgs() {
         return args;
-    }
-
-    public BiConsumer<String, Consumer<List<T>>> getAsyncConsumer() {
-        return asyncConsumer;
-    }
-
-    public Function<String, PreparedStatementAsync> getPrepareConverter() {
-        return prepareConverter;
     }
 
 
