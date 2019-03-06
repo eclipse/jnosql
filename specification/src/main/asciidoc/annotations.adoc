@@ -422,6 +422,20 @@ private GraphTemplate graphTemplate;
 private PersonRepository repositorySupplier;
 ----
 
+IMPORTANT: When there is more than one mapper implementation at the application classpath use the repository attribute, otherwise, it will return an Ambiguous dependency error.
+
+[source,java]
+----
+
+@Inject
+@ConfigurationUnit(fileName = "document.json", name = "name", database = "database", repository = DOCUMENT)
+private PersonRepository personRepository;
+
+@Inject
+@ConfigurationUnit(fileName = "column.json", name = "name", database = "database", repository = COLUMN)
+private PersonRepository personRepository;
+----
+
 ===== The configuration structure
 
 Each configuration has four fields:
