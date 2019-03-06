@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.column.spi;
 
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.column.ColumnRepositoryProducer;
+import org.jnosql.artemis.RepositoryAsync;
+import org.jnosql.artemis.column.ColumnRepositoryAsyncProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
-import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
+import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
+import org.jnosql.diana.api.column.ColumnFamilyManagerAsyncFactory;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
@@ -28,7 +28,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class RepositoryUnitColumnBean  extends AbstractBean<Repository<?, ?>> {
+class RepositoryAsyncUnitColumnBean extends AbstractBean<RepositoryAsync<?, ?>> {
 
     private final Set<Type> types;
 
@@ -36,7 +36,7 @@ class RepositoryUnitColumnBean  extends AbstractBean<Repository<?, ?>> {
 
     private final RepositoryUnit repositoryUnit;
 
-    RepositoryUnitColumnBean(BeanManager beanManager, RepositoryUnit repositoryUnit) {
+    RepositoryAsyncUnitColumnBean(BeanManager beanManager, RepositoryUnit repositoryUnit) {
         super(beanManager);
         this.types = Collections.singleton(repositoryUnit.getRepository());
         this.qualifiers = Collections.singleton(repositoryUnit.getUnit());
@@ -50,16 +50,16 @@ class RepositoryUnitColumnBean  extends AbstractBean<Repository<?, ?>> {
     }
 
     @Override
-    public Repository<?, ?> create(CreationalContext<Repository<?, ?>> context) {
+    public RepositoryAsync<?, ?> create(CreationalContext<RepositoryAsync<?, ?>> context) {
         return get();
     }
 
-    private <T, K, R extends Repository<T, K>> R get() {
-        ColumnRepositoryProducer producer = getInstance(ColumnRepositoryProducer.class);
+    private <T, K, R extends RepositoryAsync<T, K>> R get() {
+        ColumnRepositoryAsyncProducer producer = getInstance(ColumnRepositoryAsyncProducer.class);
         ColumnConfigurationProducer configurationProducer = getInstance(ColumnConfigurationProducer.class);
         Class<R> repository  = (Class<R>) repositoryUnit.getRepository();
-        ColumnFamilyManagerFactory<ColumnFamilyManager> managerFactory = configurationProducer.getFactory(repositoryUnit.getUnit());
-        ColumnFamilyManager manager = managerFactory.get(repositoryUnit.getDatabase());
+        ColumnFamilyManagerAsyncFactory<ColumnFamilyManagerAsync> managerFactory = configurationProducer.getFactoryAsync(repositoryUnit.getUnit());
+        ColumnFamilyManagerAsync manager = managerFactory.getAsync(repositoryUnit.getDatabase());
         return producer.get(repository, manager);
     }
 
