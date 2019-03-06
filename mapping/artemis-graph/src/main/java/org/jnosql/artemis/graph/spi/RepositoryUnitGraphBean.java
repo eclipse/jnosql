@@ -73,6 +73,6 @@ class RepositoryUnitGraphBean  extends AbstractBean<Repository<?, ?>> {
 
     @Override
     public String getId() {
-        return "key-value: " + repositoryUnit.toString();
+        return "graph: " + repositoryUnit.toString();
     }
 }
