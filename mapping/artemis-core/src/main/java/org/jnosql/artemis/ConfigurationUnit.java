@@ -59,4 +59,11 @@ public @interface ConfigurationUnit {
      */
     DatabaseType repository() default DatabaseType.SHARED;
 
+    /**
+     *
+     * @return A qualifier that provides various implementations of a particular repository type.
+     */
+    String qualifier() default "";
+
+
 }
