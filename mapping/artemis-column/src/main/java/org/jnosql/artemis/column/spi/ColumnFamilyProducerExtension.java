@@ -21,6 +21,7 @@ import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.column.query.RepositoryAsyncColumnBean;
 import org.jnosql.artemis.column.query.RepositoryColumnBean;
+import org.jnosql.artemis.util.RepositoryUnit;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 
@@ -55,8 +56,12 @@ public class ColumnFamilyProducerExtension implements Extension {
 
     private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
 
+    private final Collection<RepositoryUnit> repositoryUnits = new HashSet<>();
 
-    <T extends Repository> void onProcessAnnotatedType(@Observes final ProcessAnnotatedType<T> repo) {
+    private final Collection<RepositoryUnit> repositoryAsyncUnits = new HashSet<>();
+
+
+    <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
         if (Repository.class.equals(javaClass)) {
             return;
@@ -68,7 +73,7 @@ public class ColumnFamilyProducerExtension implements Extension {
         }
     }
 
-    <T extends RepositoryAsync> void onProcessAnnotatedTypeAsync(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends RepositoryAsync> void observesAsync(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
         if (RepositoryAsync.class.equals(javaClass)) {
             return;
@@ -80,11 +85,11 @@ public class ColumnFamilyProducerExtension implements Extension {
         }
     }
 
-    <T, X extends ColumnFamilyManager> void processProducer(@Observes final ProcessProducer<T, X> pp) {
+    <T, X extends ColumnFamilyManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, COLUMN, databases);
     }
 
-    <T, X extends ColumnFamilyManagerAsync> void processProducerAsync(@Observes final ProcessProducer<T, X> pp) {
+    <T, X extends ColumnFamilyManagerAsync> void observesAsync(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, COLUMN, databasesAsync);
     }
 
