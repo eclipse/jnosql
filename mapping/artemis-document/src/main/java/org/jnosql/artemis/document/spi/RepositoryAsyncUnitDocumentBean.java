@@ -75,6 +75,6 @@ class RepositoryAsyncUnitDocumentBean extends AbstractBean<RepositoryAsync<?, ?>
 
     @Override
     public String getId() {
-        return "key-value: " + repositoryUnit.toString();
+        return "document-async: " + repositoryUnit.toString();
     }
 }
