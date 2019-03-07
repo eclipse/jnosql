@@ -17,6 +17,7 @@ package org.jnosql.artemis.key;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.model.Car;
+import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Plate;
 import org.jnosql.artemis.model.User;
 import org.jnosql.artemis.model.Worker;
@@ -134,11 +135,18 @@ public class DefaultKeyValueEntityConverterTest {
     @Test
     public void shouldConvertToEntityKeyWhenKeyTypeIsDifferent() {
 
+        Person person = Person.builder().withName("Ada").build();
+        Person ada = converter.toEntity(Person.class, KeyValueEntity.of("123", person));
+
+        Assertions.assertEquals(123L, ada.getId());
+        Assertions.assertEquals(ada.getName(), person.getName());
     }
 
     @Test
     public void shouldConvertToKeyWhenKeyTypeIsDifferent() {
-
+        Person person = Person.builder().withId(123L).withName("Ada").build();
+        KeyValueEntity<Long> entity = converter.toKeyValue(person);
+        Assertions.assertEquals(123L, entity.getKey());
     }
 
 }
