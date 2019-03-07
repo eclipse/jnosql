@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.model;
 
+import java.util.Objects;
+
 public class Plate {
 
     private final int prefix;
@@ -37,6 +39,24 @@ public class Plate {
     @Override
     public String toString() {
         return prefix + '-' + sufix;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Plate plate = (Plate) o;
+        return prefix == plate.prefix &&
+                Objects.equals(sufix, plate.sufix);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(prefix, sufix);
     }
 
     public static Plate of(String value) {
