@@ -106,5 +106,24 @@ public class DefaultKeyValueEntityConverterTest {
         assertEquals(expectedUser, user);
     }
 
+    @Test
+    public void shouldConvertToEntityKeyWhenThereIsConverterAnnotation() {
+
+    }
+
+    @Test
+    public void shouldConvertToKeyWhenThereIsConverterAnnotation() {
+
+    }
+
+    @Test
+    public void shouldConvertToEntityKeyWhenKeyTypeIsDifferent() {
+
+    }
+
+    @Test
+    public void shouldConvertToKeyWhenKeyTypeIsDifferent() {
+
+    }
 
 }
