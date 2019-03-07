@@ -16,6 +16,8 @@ package org.jnosql.artemis.key;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.IdNotFoundException;
+import org.jnosql.artemis.model.Car;
+import org.jnosql.artemis.model.Plate;
 import org.jnosql.artemis.model.User;
 import org.jnosql.artemis.model.Worker;
 import org.jnosql.diana.api.Value;
@@ -67,12 +69,14 @@ public class DefaultKeyValueEntityConverterTest {
 
     @Test
     public void shouldReturnNPEWhenClassIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> converter.toEntity(null, KeyValueEntity.of("user", new User("nickname", "name", 21))));
+        Assertions.assertThrows(NullPointerException.class, () -> converter.toEntity(null,
+                KeyValueEntity.of("user", new User("nickname", "name", 21))));
     }
 
     @Test
     public void shouldReturnErrorWhenTheKeyIsMissing() {
-        Assertions.assertThrows(IdNotFoundException.class, () -> converter.toEntity(Worker.class, KeyValueEntity.of("worker", new Worker())));
+        Assertions.assertThrows(IdNotFoundException.class, () -> converter.toEntity(Worker.class,
+                KeyValueEntity.of("worker", new Worker())));
     }
 
     @Test
@@ -102,13 +106,18 @@ public class DefaultKeyValueEntityConverterTest {
     @Test
     public void shouldConvertValueToEntity() {
         User expectedUser = new User("nickname", "name", 21);
-        User user = converter.toEntity(User.class, Value.of(expectedUser));
+        User user = converter.toEntity(User.class, KeyValueEntity.of("nickname", Value.of(expectedUser)));
         assertEquals(expectedUser, user);
     }
 
     @Test
     public void shouldConvertToEntityKeyWhenThereIsConverterAnnotation() {
+        Car car = new Car();
+        car.setName("Ferrari");
 
+        Car ferrari = converter.toEntity(Car.class, KeyValueEntity.of("123-BRL", car));
+        assertEquals(Plate.of("123-BRL"), ferrari.getPlate());
+        assertEquals(car.getName(), ferrari.getName());
     }
 
     @Test
