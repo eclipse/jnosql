@@ -41,6 +41,16 @@ final class DefaultKeyValueEntity<T> implements KeyValueEntity {
         return key;
     }
 
+    @Override
+    public Object getKey(TypeSupplier typeSupplier) {
+        return Value.of(key).get(typeSupplier);
+    }
+
+    @Override
+    public Object getKey(Class clazz) {
+        return Value.of(key).get(clazz);
+    }
+
     public Value getValue() {
         return value;
     }
