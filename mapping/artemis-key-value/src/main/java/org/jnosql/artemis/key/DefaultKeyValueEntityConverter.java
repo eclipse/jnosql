@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.key;
 
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassMappings;
 
 import javax.inject.Inject;
@@ -26,9 +27,17 @@ class DefaultKeyValueEntityConverter extends AbstractKeyValueEntityConverter imp
     @Inject
     private ClassMappings classMappings;
 
+    @Inject
+    private Converters converters;
+
     @Override
     protected ClassMappings getClassMappings() {
         return classMappings;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
     }
 
 }
