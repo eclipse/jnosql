@@ -58,10 +58,8 @@ class DefaultPagination implements Pagination {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultPagination{");
-        sb.append("limit=").append(limit);
-        sb.append(", start=").append(start);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultPagination{" + "limit=" + limit +
+                ", start=" + start +
+                '}';
     }
 }

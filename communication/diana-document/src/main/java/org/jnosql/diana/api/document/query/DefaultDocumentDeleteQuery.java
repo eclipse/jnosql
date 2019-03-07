@@ -80,11 +80,9 @@ class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultDocumentDeleteQuery{");
-        sb.append("documentCollection='").append(documentCollection).append('\'');
-        sb.append(", condition=").append(condition);
-        sb.append(", documents=").append(documents);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultDocumentDeleteQuery{" + "documentCollection='" + documentCollection + '\'' +
+                ", condition=" + condition +
+                ", documents=" + documents +
+                '}';
     }
 }

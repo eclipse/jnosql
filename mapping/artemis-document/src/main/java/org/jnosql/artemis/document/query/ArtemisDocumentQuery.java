@@ -91,15 +91,13 @@ class ArtemisDocumentQuery implements DocumentQuery {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ArtemisDocumentQuery{");
-        sb.append("limit=").append(limit);
-        sb.append(", skip=").append(skip);
-        sb.append(", documentCollection='").append(documentCollection).append('\'');
-        sb.append(", condition=").append(condition);
-        sb.append(", sorts=").append(sorts);
-        sb.append(", documents=").append(Collections.emptyList());
-        sb.append('}');
-        return sb.toString();
+        return "ArtemisDocumentQuery{" + "limit=" + limit +
+                ", skip=" + skip +
+                ", documentCollection='" + documentCollection + '\'' +
+                ", condition=" + condition +
+                ", sorts=" + sorts +
+                ", documents=" + Collections.emptyList() +
+                '}';
     }
 }
 

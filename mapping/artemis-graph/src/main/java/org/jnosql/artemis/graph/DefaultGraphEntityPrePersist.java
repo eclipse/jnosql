@@ -54,9 +54,7 @@ class DefaultGraphEntityPrePersist implements GraphEntityPrePersist {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultGraphEntityPrePersist{");
-        sb.append("vertex=").append(vertex);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultGraphEntityPrePersist{" + "vertex=" + vertex +
+                '}';
     }
 }

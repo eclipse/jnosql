@@ -60,9 +60,7 @@ public final class ValueWriterDecorator implements ValueWriter {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ValueWriterDecorator{");
-        sb.append("writers=").append(writers);
-        sb.append('}');
-        return sb.toString();
+        return "ValueWriterDecorator{" + "writers=" + writers +
+                '}';
     }
 }

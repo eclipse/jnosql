@@ -53,34 +53,24 @@ class DefaultDocumentQueryParserAsyncTest {
     public void shouldReturnNPEWhenThereIsNullParameter() {
 
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query(null, documentCollection, s -> {
-            }, DocumentObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> parser.query(null, documentCollection, s -> {
+        }, DocumentObserverParser.EMPTY));
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query("select * from God", null, s -> {
-            }, DocumentObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> parser.query("select * from God", null, s -> {
+        }, DocumentObserverParser.EMPTY));
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query("select * from God", documentCollection, null, DocumentObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> parser.query("select * from God", documentCollection, null, DocumentObserverParser.EMPTY));
 
     }
 
     @Test
     public void shouldReturnErrorWhenHasInvalidQuery() {
 
-        Assertions.assertThrows(QueryException.class, () -> {
-            parser.query("inva", documentCollection, s -> {
-            }, DocumentObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(QueryException.class, () -> parser.query("inva", documentCollection, s -> {
+        }, DocumentObserverParser.EMPTY));
 
-        Assertions.assertThrows(QueryException.class, () -> {
-            parser.query("invalid", documentCollection, s -> {
-            }, DocumentObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(QueryException.class, () -> parser.query("invalid", documentCollection, s -> {
+        }, DocumentObserverParser.EMPTY));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

@@ -57,10 +57,8 @@ public final class ValueReaderDecorator implements ValueReader {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ValueReaderDecorator{");
-        sb.append("readers=").append(readers);
-        sb.append('}');
-        return sb.toString();
+        return  "ValueReaderDecorator{" + "readers=" + readers +
+                '}';
     }
 
 

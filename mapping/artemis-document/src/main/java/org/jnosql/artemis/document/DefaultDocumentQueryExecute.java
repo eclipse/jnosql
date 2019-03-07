@@ -51,9 +51,7 @@ class DefaultDocumentQueryExecute implements DocumentQueryExecute {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultDocumentQueryExecute{");
-        sb.append("query=").append(query);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultDocumentQueryExecute{" + "query=" + query +
+                '}';
     }
 }

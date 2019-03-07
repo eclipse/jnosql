@@ -16,6 +16,9 @@ package org.jnosql.artemis.key;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.IdNotFoundException;
+import org.jnosql.artemis.model.Car;
+import org.jnosql.artemis.model.Person;
+import org.jnosql.artemis.model.Plate;
 import org.jnosql.artemis.model.User;
 import org.jnosql.artemis.model.Worker;
 import org.jnosql.diana.api.Value;
@@ -67,12 +70,14 @@ public class DefaultKeyValueEntityConverterTest {
 
     @Test
     public void shouldReturnNPEWhenClassIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> converter.toEntity(null, KeyValueEntity.of("user", new User("nickname", "name", 21))));
+        Assertions.assertThrows(NullPointerException.class, () -> converter.toEntity(null,
+                KeyValueEntity.of("user", new User("nickname", "name", 21))));
     }
 
     @Test
     public void shouldReturnErrorWhenTheKeyIsMissing() {
-        Assertions.assertThrows(IdNotFoundException.class, () -> converter.toEntity(Worker.class, KeyValueEntity.of("worker", new Worker())));
+        Assertions.assertThrows(IdNotFoundException.class, () -> converter.toEntity(Worker.class,
+                KeyValueEntity.of("worker", new Worker())));
     }
 
     @Test
@@ -102,9 +107,46 @@ public class DefaultKeyValueEntityConverterTest {
     @Test
     public void shouldConvertValueToEntity() {
         User expectedUser = new User("nickname", "name", 21);
-        User user = converter.toEntity(User.class, Value.of(expectedUser));
+        User user = converter.toEntity(User.class, KeyValueEntity.of("nickname", Value.of(expectedUser)));
         assertEquals(expectedUser, user);
     }
 
+    @Test
+    public void shouldConvertToEntityKeyWhenThereIsConverterAnnotation() {
+        Car car = new Car();
+        car.setName("Ferrari");
+
+        Car ferrari = converter.toEntity(Car.class, KeyValueEntity.of("123-BRL", car));
+        assertEquals(Plate.of("123-BRL"), ferrari.getPlate());
+        assertEquals(car.getName(), ferrari.getName());
+    }
+
+    @Test
+    public void shouldConvertToKeyWhenThereIsConverterAnnotation() {
+        Car car = new Car();
+        car.setPlate(Plate.of("123-BRL"));
+        car.setName("Ferrari");
+        KeyValueEntity<String> entity = converter.toKeyValue(car);
+
+        Assertions.assertEquals("123-BRL", entity.getKey());
+        Assertions.assertEquals(car, entity.get());
+    }
+
+    @Test
+    public void shouldConvertToEntityKeyWhenKeyTypeIsDifferent() {
+
+        Person person = Person.builder().withName("Ada").build();
+        Person ada = converter.toEntity(Person.class, KeyValueEntity.of("123", person));
+
+        Assertions.assertEquals(123L, ada.getId());
+        Assertions.assertEquals(ada.getName(), person.getName());
+    }
+
+    @Test
+    public void shouldConvertToKeyWhenKeyTypeIsDifferent() {
+        Person person = Person.builder().withId(123L).withName("Ada").build();
+        KeyValueEntity<Long> entity = converter.toKeyValue(person);
+        Assertions.assertEquals(123L, entity.getKey());
+    }
 
 }

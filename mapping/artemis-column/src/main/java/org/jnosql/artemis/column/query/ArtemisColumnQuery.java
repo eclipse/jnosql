@@ -94,14 +94,12 @@ class ArtemisColumnQuery implements ColumnQuery {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ArtemisColumnQuery{");
-        sb.append("limit=").append(limit);
-        sb.append(", skip=").append(skip);
-        sb.append(", columnFamily='").append(columnFamily).append('\'');
-        sb.append(", columns=").append(emptyList());
-        sb.append(", sorts=").append(sorts);
-        sb.append(", condition=").append(condition);
-        sb.append('}');
-        return sb.toString();
+        return  "ArtemisColumnQuery{" + "limit=" + limit +
+                ", skip=" + skip +
+                ", columnFamily='" + columnFamily + '\'' +
+                ", columns=" + emptyList() +
+                ", sorts=" + sorts +
+                ", condition=" + condition +
+                '}';
     }
 }

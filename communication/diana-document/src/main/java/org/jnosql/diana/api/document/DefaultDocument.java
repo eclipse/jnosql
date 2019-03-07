@@ -83,10 +83,8 @@ final class DefaultDocument implements Document {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Document{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", value=").append(value);
-        sb.append('}');
-        return sb.toString();
+        return  "Document{" + "name='" + name + '\'' +
+                ", value=" + value +
+                '}';
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2019 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,41 +14,41 @@
  */
 package org.jnosql.artemis.model;
 
-import java.util.Objects;
+import org.jnosql.artemis.Convert;
+import org.jnosql.artemis.Entity;
+import org.jnosql.artemis.Id;
 
-public class Animal {
+@Entity
+public class Car {
+
+    @Id
+    @Convert(PlateConverter.class)
+    private Plate plate;
 
     private String name;
 
-    public Animal(String name) {
-        this.name = name;
+
+    public Plate getPlate() {
+        return plate;
+    }
+
+    public void setPlate(Plate plate) {
+        this.plate = plate;
     }
 
     public String getName() {
         return name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Animal animal = (Animal) o;
-        return Objects.equals(name, animal.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Animal{" + "name='" + name + '\'' +
+        return "Car{" +
+                "plate=" + plate +
+                ", name='" + name + '\'' +
                 '}';
-
     }
 }

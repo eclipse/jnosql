@@ -15,11 +15,14 @@
 package org.jnosql.artemis;
 
 
+import org.jnosql.artemis.reflection.Reflections;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
+import java.util.Iterator;
 import java.util.Objects;
 
 /**
@@ -31,6 +34,9 @@ class DefaultConverters implements Converters {
     @Inject
     private BeanManager beanManager;
 
+    @Inject
+    private Reflections reflections;
+
     @Override
     public AttributeConverter get(Class<? extends AttributeConverter> converterClass) {
         Objects.requireNonNull(converterClass, "The converterClass is required");
@@ -38,16 +44,21 @@ class DefaultConverters implements Converters {
     }
 
     private <T> T getInstance(Class<T> clazz) {
-        Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
-        CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, clazz, ctx);
+        Iterator<Bean<?>> iterator = beanManager.getBeans(clazz).iterator();
+        if (iterator.hasNext()) {
+            Bean<T> bean = (Bean<T>) iterator.next();
+            CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
+            return (T) beanManager.getReference(bean, clazz, ctx);
+        } else {
+            return reflections.newInstance(clazz.getConstructors()[0]);
+        }
+
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultConverters{");
-        sb.append("beanManager=").append(beanManager);
-        sb.append('}');
-        return sb.toString();
+        return "DefaultConverters{" +
+                "beanManager=" + beanManager +
+                '}';
     }
 }

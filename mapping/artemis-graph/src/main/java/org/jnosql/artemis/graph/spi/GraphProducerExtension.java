@@ -109,9 +109,7 @@ public class GraphProducerExtension implements Extension {
                     .addBean(new RepositoryGraphBean(type, beanManager, database.getProvider())));
         });
 
-        repositoryUnits.forEach(type -> {
-            afterBeanDiscovery.addBean(new RepositoryUnitGraphBean(beanManager, type));
-        });
+        repositoryUnits.forEach(type -> afterBeanDiscovery.addBean(new RepositoryUnitGraphBean(beanManager, type)));
 
     }
 }

@@ -169,11 +169,9 @@ final class DefaultDocumentCondition implements DocumentCondition {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultDocumentCondition{");
-        sb.append("document=").append(document);
-        sb.append(", condition=").append(condition);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultDocumentCondition{" + "document=" + document +
+                ", condition=" + condition +
+                '}';
     }
 
 

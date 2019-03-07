@@ -80,11 +80,9 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultColumnDeleteQuery{");
-        sb.append("columnFamily='").append(columnFamily).append('\'');
-        sb.append(", condition=").append(condition);
-        sb.append(", columns=").append(columns);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultColumnDeleteQuery{" + "columnFamily='" + columnFamily + '\'' +
+                ", condition=" + condition +
+                ", columns=" + columns +
+                '}';
     }
 }

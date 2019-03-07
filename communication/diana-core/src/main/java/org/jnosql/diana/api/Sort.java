@@ -78,11 +78,9 @@ public final class Sort {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Sort{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", type=").append(type);
-        sb.append('}');
-        return sb.toString();
+        return "Sort{" + "name='" + name + '\'' +
+                ", type=" + type +
+                '}';
     }
 
     /**

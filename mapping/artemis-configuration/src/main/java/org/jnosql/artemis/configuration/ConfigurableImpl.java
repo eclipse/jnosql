@@ -89,12 +89,10 @@ public class ConfigurableImpl implements Configurable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ConfigurableJSON{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", provider='").append(provider).append('\'');
-        sb.append(", settings=").append(settings);
-        sb.append('}');
-        return sb.toString();
+        return  "ConfigurableJSON{" + "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", provider='" + provider + '\'' +
+                ", settings=" + settings +
+                '}';
     }
 }

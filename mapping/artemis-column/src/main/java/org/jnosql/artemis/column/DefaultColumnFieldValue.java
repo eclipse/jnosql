@@ -98,10 +98,8 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ColumnFieldValue{");
-        sb.append("fieldValue=").append(fieldValue);
-        sb.append('}');
-        return sb.toString();
+        return  "ColumnFieldValue{" + "fieldValue=" + fieldValue +
+                '}';
     }
 
     static ColumnFieldValue of(Object value, FieldMapping field) {

@@ -62,14 +62,12 @@ public class DefaultFieldMapping extends AbstractFieldMapping {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultFieldMapping{");
-        sb.append("id=").append(id);
-        sb.append(", type=").append(type);
-        sb.append(", field=").append(field);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", fieldName='").append(fieldName).append('\'');
-        sb.append(", converter=").append(converter);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultFieldMapping{" + "id=" + id +
+                ", type=" + type +
+                ", field=" + field +
+                ", name='" + name + '\'' +
+                ", fieldName='" + fieldName + '\'' +
+                ", converter=" + converter +
+                '}';
     }
 }

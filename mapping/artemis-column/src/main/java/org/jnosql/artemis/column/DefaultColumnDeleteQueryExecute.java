@@ -54,9 +54,7 @@ class DefaultColumnDeleteQueryExecute implements ColumnDeleteQueryExecute {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultColumnDeleteQueryExecute{");
-        sb.append("query=").append(query);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultColumnDeleteQueryExecute{" + "query=" + query +
+                '}';
     }
 }

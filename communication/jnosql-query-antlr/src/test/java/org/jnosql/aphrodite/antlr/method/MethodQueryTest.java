@@ -23,9 +23,7 @@ class MethodQueryTest {
 
     @Test
     public void shouldReturnNullWhenQueryIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () ->{
-           MethodQuery.of(null);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> MethodQuery.of(null));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

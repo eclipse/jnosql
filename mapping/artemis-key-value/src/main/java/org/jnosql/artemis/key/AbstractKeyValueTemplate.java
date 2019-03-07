@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
@@ -76,7 +77,7 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
         requireNonNull(entityClass, "entity class is required");
 
         Optional<Value> value = getManager().get(key);
-        return value.map(v -> getConverter().toEntity(entityClass, v))
+        return value.map(v -> getConverter().toEntity(entityClass, KeyValueEntity.of(key, v)))
                 .filter(Objects::nonNull);
     }
 
@@ -84,11 +85,12 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     public <K, T> Iterable<T> get(Iterable<K> keys, Class<T> entityClass) {
         requireNonNull(keys, "keys is required");
         requireNonNull(entityClass, "entity class is required");
-        return StreamSupport.stream(getManager()
-                .get(keys).spliterator(), false)
-                .map(v -> getConverter().toEntity(entityClass, v))
-                .filter(Objects::nonNull)
-                .collect(toList());
+        return StreamSupport.stream(keys.spliterator(), false)
+                .map(k -> getManager().get(k)
+                        .map(v -> KeyValueEntity.of(k, v)))
+                .filter(Optional::isPresent)
+                .map(e -> getConverter().toEntity(entityClass, e.get()))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -77,7 +77,8 @@ public class DefaultReflections implements Reflections {
     @Override
     public <T> T newInstance(Class<T> clazz) {
         try {
-            return clazz.newInstance();
+            Constructor constructor = makeAccessible(clazz);
+            return newInstance(constructor);
         } catch (Exception exception) {
             Logger.getLogger(Reflections.class.getName()).log(Level.SEVERE, null, exception);
             return null;

@@ -63,12 +63,10 @@ public class Address {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Address{");
-        sb.append("street='").append(street).append('\'');
-        sb.append(", city='").append(city).append('\'');
-        sb.append(", state='").append(state).append('\'');
-        sb.append(", zipcode=").append(zipcode);
-        sb.append('}');
-        return sb.toString();
+        return  "Address{" + "street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipcode=" + zipcode +
+                '}';
     }
 }

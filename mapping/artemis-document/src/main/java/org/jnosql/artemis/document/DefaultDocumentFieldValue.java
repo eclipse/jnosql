@@ -102,9 +102,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DocumentFieldValue{");
-        sb.append("fieldValue=").append(fieldValue);
-        sb.append('}');
-        return sb.toString();
+        return  "DocumentFieldValue{" + "fieldValue=" + fieldValue +
+                '}';
     }
 }

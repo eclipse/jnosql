@@ -107,14 +107,12 @@ class DefaultDocumentQuery implements DocumentQuery {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultDocumentQuery{");
-        sb.append("maxResult=").append(maxResult);
-        sb.append(", firstResult=").append(firstResult);
-        sb.append(", documentCollection='").append(documentCollection).append('\'');
-        sb.append(", condition=").append(condition);
-        sb.append(", sorts=").append(sorts);
-        sb.append(", documents=").append(documents);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultDocumentQuery{" + "maxResult=" + maxResult +
+                ", firstResult=" + firstResult +
+                ", documentCollection='" + documentCollection + '\'' +
+                ", condition=" + condition +
+                ", sorts=" + sorts +
+                ", documents=" + documents +
+                '}';
     }
 }

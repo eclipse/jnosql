@@ -77,11 +77,9 @@ final class FieldGraph {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("FieldGraph{");
-        sb.append("value=").append(value);
-        sb.append(", field=").append(field);
-        sb.append('}');
-        return sb.toString();
+        return  "FieldGraph{" + "value=" + value +
+                ", field=" + field +
+                '}';
     }
 
     public static FieldGraph of(Object value, FieldMapping field) {

@@ -51,9 +51,7 @@ class DefaultDocumentDeleteQueryExecute implements DocumentDeleteQueryExecute {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultDocumentDeleteQueryExecute{");
-        sb.append("query=").append(query);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultDocumentDeleteQueryExecute{" + "query=" + query +
+                '}';
     }
 }

@@ -50,9 +50,7 @@ class DefaultColumnQueryExecute implements ColumnQueryExecute {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultColumnQueryExecute{");
-        sb.append("query=").append(query);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultColumnQueryExecute{" + "query=" + query +
+                '}';
     }
 }

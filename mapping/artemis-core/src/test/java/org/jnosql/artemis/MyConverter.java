@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2019 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,27 +12,22 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.configuration;
+package org.jnosql.artemis;
 
-import javax.enterprise.util.AnnotationLiteral;
-import javax.inject.Named;
+import javax.inject.Inject;
 
-class NamedLiteral extends AnnotationLiteral<Named> implements Named {
+public class MyConverter implements AttributeConverter<String, String>{
 
-    private final String value;
+    @Inject
+    private RandomText text;
 
-    NamedLiteral(String value) {
-        this.value = value;
+    @Override
+    public String convertToDatabaseColumn(String attribute) {
+        return text.get();
     }
 
     @Override
-    public String value() {
-        return value;
-    }
-
-    @Override
-    public String toString() {
-        return  "NamedLiteral{" + "value='" + value + '\'' +
-                '}';
+    public String convertToEntityAttribute(String dbData) {
+        return text.get();
     }
 }

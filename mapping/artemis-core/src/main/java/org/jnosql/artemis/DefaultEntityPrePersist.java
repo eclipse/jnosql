@@ -52,9 +52,7 @@ class DefaultEntityPrePersist implements EntityPrePersist {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultEntityPrePersist{");
-        sb.append("value=").append(value);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultEntityPrePersist{" + "value=" + value +
+                '}';
     }
 }

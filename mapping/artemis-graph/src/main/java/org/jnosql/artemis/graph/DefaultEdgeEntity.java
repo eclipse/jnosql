@@ -137,11 +137,9 @@ class DefaultEdgeEntity<O, I> implements EdgeEntity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(outgoing);
-        sb.append("---").append(edge.label());
-        sb.append(" --->").append(incoming);
-        return sb.toString();
+        return  String.valueOf(outgoing) +
+                "---" + edge.label() +
+                " --->" + incoming;
     }
 
 }

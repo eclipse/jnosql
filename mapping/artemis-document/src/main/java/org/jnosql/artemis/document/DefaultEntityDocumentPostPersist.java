@@ -49,9 +49,7 @@ class DefaultEntityDocumentPostPersist implements EntityDocumentPostPersist {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultEntityDocumentPostPersist{");
-        sb.append("value=").append(value);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultEntityDocumentPostPersist{" + "value=" + value +
+                '}';
     }
 }

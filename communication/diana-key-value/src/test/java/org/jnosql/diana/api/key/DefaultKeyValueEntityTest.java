@@ -18,6 +18,7 @@ package org.jnosql.diana.api.key;
 
 import org.hamcrest.Matchers;
 import org.jnosql.diana.api.TypeReference;
+import org.jnosql.diana.api.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -59,4 +60,50 @@ public class DefaultKeyValueEntityTest {
         assertThat(singletonList(10), Matchers.contains(entity.get(new TypeReference<List<Integer>>() {
         }).get(0)));
     }
+
+    @Test
+    public void shouldGetValue() {
+        Value value = Value.of("value");
+        KeyValueEntity<String> entity = KeyValueEntity.of("key", value);
+        assertNotNull(entity);
+        assertEquals(value, entity.getValue());
+    }
+
+
+    @Test
+    public void shouldGetKeyClass() {
+        Value value = Value.of("value");
+        KeyValueEntity<String> entity = KeyValueEntity.of("10", value);
+        assertNotNull(entity);
+        assertEquals(10L, entity.getKey(Long.class));
+    }
+
+
+    @Test
+    public void shouldReturnErrorWhenGetKeyClassIsNull() {
+        Value value = Value.of("value");
+        KeyValueEntity<String> entity = KeyValueEntity.of("10", value);
+        assertNotNull(entity);
+        Assertions.assertThrows(NullPointerException.class, () -> entity.getKey((Class<Object>) null));
+    }
+
+
+    @Test
+    public void shouldGetKeyValueSupplier() {
+        String value = "10";
+        KeyValueEntity<String> entity = KeyValueEntity.of(value, value);
+        assertEquals(value, entity.get());
+        assertEquals(Integer.valueOf(10), entity.getKey(Integer.class));
+        assertThat(singletonList(10), Matchers.contains(entity.get(new TypeReference<List<Integer>>() {
+        }).get(0)));
+    }
+
+    @Test
+    public void shouldReturnErrorWhenGetKeySupplierIsNull() {
+        Value value = Value.of("value");
+        KeyValueEntity<String> entity = KeyValueEntity.of("10", value);
+        assertNotNull(entity);
+        Assertions.assertThrows(NullPointerException.class, () -> entity.getKey((TypeReference<Object>) null));
+    }
+
 }

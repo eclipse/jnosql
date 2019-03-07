@@ -73,12 +73,10 @@ public class Contact {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Contact{");
-        sb.append("type=").append(type);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", information='").append(information).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return  "Contact{" + "type=" + type +
+                ", name='" + name + '\'' +
+                ", information='" + information + '\'' +
+                '}';
     }
 
     public static ContactBuilder builder() {

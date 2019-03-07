@@ -81,12 +81,10 @@ class DefaultConfigurationSettingsUnit implements ConfigurationSettingsUnit {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultConfigurationSettingsUnit{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", provider=").append(provider);
-        sb.append(", settings=").append(settings);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultConfigurationSettingsUnit{" + "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", provider=" + provider +
+                ", settings=" + settings +
+                '}';
     }
 }

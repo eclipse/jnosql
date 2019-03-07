@@ -83,12 +83,10 @@ public class Person {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Person{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", age=").append(age);
-        sb.append(", salary=").append(salary);
-        sb.append(", phones=").append(phones);
-        sb.append('}');
-        return sb.toString();
+        return  "Person{" + "name='" + name + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                ", phones=" + phones +
+                '}';
     }
 }

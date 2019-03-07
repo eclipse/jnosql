@@ -50,9 +50,7 @@ class DefaultEntityColumnPrePersist implements EntityColumnPrePersist {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultEntityColumnPrePersist{");
-        sb.append("value=").append(value);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultEntityColumnPrePersist{" + "value=" + value +
+                '}';
     }
 }

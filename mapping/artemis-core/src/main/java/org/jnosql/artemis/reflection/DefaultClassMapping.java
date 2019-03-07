@@ -125,16 +125,14 @@ class DefaultClassMapping implements ClassMapping {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultClassMapping{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", fieldsName=").append(fieldsName);
-        sb.append(", classInstance=").append(classInstance);
-        sb.append(", fields=").append(fields);
-        sb.append(", javaFieldGroupedByColumn=").append(javaFieldGroupedByColumn);
-        sb.append(", fieldsGroupedByName=").append(fieldsGroupedByName);
-        sb.append(", id=").append(id);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultClassMapping{" + "name='" + name + '\'' +
+                ", fieldsName=" + fieldsName +
+                ", classInstance=" + classInstance +
+                ", fields=" + fields +
+                ", javaFieldGroupedByColumn=" + javaFieldGroupedByColumn +
+                ", fieldsGroupedByName=" + fieldsGroupedByName +
+                ", id=" + id +
+                '}';
     }
 
     /**

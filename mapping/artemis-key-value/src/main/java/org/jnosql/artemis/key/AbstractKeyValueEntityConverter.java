@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.key;
 
+import org.jnosql.artemis.AttributeConverter;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
@@ -21,7 +23,6 @@ import org.jnosql.artemis.reflection.FieldMapping;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.KeyValueEntity;
 
-import java.util.List;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
@@ -33,50 +34,51 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
 
     protected abstract ClassMappings getClassMappings();
 
+    protected abstract Converters getConverters();
 
     @Override
     public KeyValueEntity<?> toKeyValue(Object entityInstance) {
         requireNonNull(entityInstance, "Object is required");
         Class<?> clazz = entityInstance.getClass();
-        ClassMapping mapping = getClassMappings().get(clazz);
 
-        FieldMapping key = getId(clazz, mapping);
-
+        FieldMapping key = getId(clazz);
         Object value = key.read(entityInstance);
-        requireNonNull(value, String.format("The key field %s is required", key.getName()));
 
-        return KeyValueEntity.of(value, entityInstance);
+        requireNonNull(value, String.format("The key field %s is required", key.getName()));
+        return KeyValueEntity.of(getKey(value, clazz, false), entityInstance);
     }
 
     @Override
     public <T> T toEntity(Class<T> entityClass, KeyValueEntity<?> entity) {
 
         Value value = entity.getValue();
-        T t = value.get(entityClass);
-        if (Objects.isNull(t)) {
+        T bean = value.get(entityClass);
+        if (Objects.isNull(bean)) {
             return null;
         }
-        FieldMapping key = getId(entityClass, getClassMappings().get(entityClass));
 
-        Object keyValue = key.read(t);
-        if (Objects.isNull(keyValue) || !keyValue.equals(entity.getKey())) {
-            key.write(t, entity.getKey());
-        }
-        return t;
+        Object key = getKey(entity.getKey(), entityClass, true);
+        FieldMapping id = getId(entityClass);
+        id.write(bean, key);
+        return bean;
     }
 
-    @Override
-    public <T> T toEntity(Class<T> entityClass, Value value) {
-        T t = value.get(entityClass);
-        if (Objects.isNull(t)) {
-            return null;
+    private <T> Object getKey(Object key, Class<T> entityClass, boolean toEntity) {
+        FieldMapping id = getId(entityClass);
+        if (id.getConverter().isPresent()) {
+            AttributeConverter attributeConverter = getConverters().get(id.getConverter().get());
+            if(toEntity) {
+                return attributeConverter.convertToEntityAttribute(key);
+            } else {
+                return attributeConverter.convertToDatabaseColumn(key);
+            }
+        } else {
+            return Value.of(key).get(id.getNativeField().getType());
         }
-        return t;
     }
 
-    private FieldMapping getId(Class<?> clazz, ClassMapping mapping) {
-        List<FieldMapping> fields = mapping.getFields();
-        return fields.stream().filter(FieldMapping::isId)
-                .findFirst().orElseThrow(() -> IdNotFoundException.newInstance(clazz));
+    private FieldMapping getId(Class<?> clazz) {
+        ClassMapping mapping = getClassMappings().get(clazz);
+        return mapping.getId().orElseThrow(() -> IdNotFoundException.newInstance(clazz));
     }
 }

@@ -51,9 +51,9 @@ public class BucketManagerProducerExtensionTest {
 
     @Test
     public void shouldUseMock() {
-        Person person = repository.get("key", Person.class).get();
+        Person person = repository.get(10L, Person.class).get();
 
-        Person personMock = repositoryMock.get("key", Person.class).get();
+        Person personMock = repositoryMock.get(10L, Person.class).get();
 
         assertEquals("Default", person.getName());
         assertEquals("keyvalueMock", personMock.getName());

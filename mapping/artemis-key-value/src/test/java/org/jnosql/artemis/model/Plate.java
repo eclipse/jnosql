@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2019 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,23 +12,33 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.key;
-
-import org.jnosql.diana.api.key.KeyValueEntity;
+package org.jnosql.artemis.model;
 
 import java.util.Objects;
 
-class DefaultKeyValueEntityPostPersist implements KeyValueEntityPostPersist {
+public class Plate {
 
-    private final KeyValueEntity<?> entity;
+    private final int prefix;
 
-    DefaultKeyValueEntityPostPersist(KeyValueEntity<?> entity) {
-        this.entity = entity;
+    private final String sufix;
+
+
+    private Plate(int prefix, String sufix) {
+        this.prefix = prefix;
+        this.sufix = sufix;
+    }
+
+    public int getPrefix() {
+        return prefix;
+    }
+
+    public String getSufix() {
+        return sufix;
     }
 
     @Override
-    public KeyValueEntity<?> getEntity() {
-        return entity;
+    public String toString() {
+        return Integer.toString(prefix) + '-' + sufix;
     }
 
     @Override
@@ -39,18 +49,20 @@ class DefaultKeyValueEntityPostPersist implements KeyValueEntityPostPersist {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultKeyValueEntityPostPersist that = (DefaultKeyValueEntityPostPersist) o;
-        return Objects.equals(entity, that.entity);
+        Plate plate = (Plate) o;
+        return prefix == plate.prefix &&
+                Objects.equals(sufix, plate.sufix);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(entity);
+        return Objects.hash(prefix, sufix);
     }
 
-    @Override
-    public String toString() {
-        return  "DefaultKeyValueEntityPostPersist{" + "entity=" + entity +
-                '}';
+    public static Plate of(String value) {
+        String[] values = value.split("-");
+        return new Plate(Integer.valueOf(values[0]), values[1]);
     }
+
+
 }

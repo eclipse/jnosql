@@ -68,11 +68,9 @@ class ArtemisDocumentDeleteQuery implements DocumentDeleteQuery {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ArtemisDocumentDeleteQuery{");
-        sb.append("documentCollection='").append(documentCollection).append('\'');
-        sb.append(", condition=").append(condition);
-        sb.append(", documents=").append(Collections.emptyList());
-        sb.append('}');
-        return sb.toString();
+        return  "ArtemisDocumentDeleteQuery{" + "documentCollection='" + documentCollection + '\'' +
+                ", condition=" + condition +
+                ", documents=" + Collections.emptyList() +
+                '}';
     }
 }

@@ -56,10 +56,8 @@ public final class TypeReferenceReaderDecorator implements TypeReferenceReader {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("TypeReferenceReaderDecorator{");
-        sb.append("readers=").append(readers);
-        sb.append('}');
-        return sb.toString();
+        return  "TypeReferenceReaderDecorator{" + "readers=" + readers +
+                '}';
     }
 
 

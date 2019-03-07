@@ -52,7 +52,7 @@ class RepositoryUnitTest {
         when(unit.database()).thenReturn(null);
         RepositoryUnit repositoryUnit = RepositoryUnit.of(UnitRepository.class, this.unit);
 
-        assertThrows(NullPointerException.class, () -> repositoryUnit.getDatabase());
+        assertThrows(NullPointerException.class, repositoryUnit::getDatabase);
     }
 
     @Test
