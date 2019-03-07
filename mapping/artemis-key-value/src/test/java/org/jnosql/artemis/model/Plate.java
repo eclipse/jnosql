@@ -38,7 +38,7 @@ public class Plate {
 
     @Override
     public String toString() {
-        return prefix + '-' + sufix;
+        return Integer.toString(prefix) + '-' + sufix;
     }
 
     @Override
