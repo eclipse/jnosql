@@ -42,14 +42,12 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
     public KeyValueEntity<?> toKeyValue(Object entityInstance) {
         requireNonNull(entityInstance, "Object is required");
         Class<?> clazz = entityInstance.getClass();
-        ClassMapping mapping = getClassMappings().get(clazz);
 
-        FieldMapping key = getId(clazz, mapping);
-
+        FieldMapping key = getId(clazz);
         Object value = key.read(entityInstance);
-        requireNonNull(value, String.format("The key field %s is required", key.getName()));
 
-        return KeyValueEntity.of(value, entityInstance);
+        requireNonNull(value, String.format("The key field %s is required", key.getName()));
+        return KeyValueEntity.of(getKey(value, clazz, false), entityInstance);
     }
 
     @Override
@@ -61,19 +59,28 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
             return null;
         }
 
-        FieldMapping key = getId(entityClass, getClassMappings().get(entityClass));
-        if (key.getConverter().isPresent()) {
-            AttributeConverter attributeConverter = getConverters().get(key.getConverter().get());
-            Object keyConverted = attributeConverter.convertToEntityAttribute(entity.getKey());
-            key.write(bean, keyConverted);
-        } else {
-            key.write(bean, entity.getKey(key.getNativeField().getType()));
-        }
-
+        Object key = getKey(entity, entityClass, true);
+        FieldMapping id = getId(entityClass);
+        id.write(bean, key);
         return bean;
     }
 
-    private FieldMapping getId(Class<?> clazz, ClassMapping mapping) {
+    private <T> Object getKey(Object key, Class<T> entityClass, boolean toEntity) {
+        FieldMapping id = getId(entityClass);
+        if (id.getConverter().isPresent()) {
+            AttributeConverter attributeConverter = getConverters().get(id.getConverter().get());
+            if(toEntity) {
+                return attributeConverter.convertToEntityAttribute(key);
+            } else {
+                return attributeConverter.convertToDatabaseColumn(key);
+            }
+        } else {
+            return Value.of(key).get(id.getNativeField().getType());
+        }
+    }
+
+    private FieldMapping getId(Class<?> clazz) {
+        ClassMapping mapping = getClassMappings().get(clazz);
         return mapping.getId().orElseThrow(() -> IdNotFoundException.newInstance(clazz));
     }
 }
