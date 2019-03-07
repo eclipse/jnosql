@@ -20,8 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(CDIExtension.class)
 class DefaultConvertersTest {
 
