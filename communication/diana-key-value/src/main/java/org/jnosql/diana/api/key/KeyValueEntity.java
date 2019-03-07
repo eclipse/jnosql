@@ -80,7 +80,7 @@ public interface KeyValueEntity<T>  {
     <K> K getKey(Class<K> clazz);
 
     /**
-     * Alias to {@link TypeSupplier)
+     * Alias to {@link Value#get(TypeSupplier)}
      *
      * @param typeSupplier {@link Value#get(TypeSupplier)}
      * @param <K>          {@link Value#get(TypeSupplier)}
