@@ -18,6 +18,7 @@ package org.jnosql.diana.api.key;
 
 import org.hamcrest.Matchers;
 import org.jnosql.diana.api.TypeReference;
+import org.jnosql.diana.api.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -59,4 +60,14 @@ public class DefaultKeyValueEntityTest {
         assertThat(singletonList(10), Matchers.contains(entity.get(new TypeReference<List<Integer>>() {
         }).get(0)));
     }
+
+    @Test
+    public void shouldGetValue() {
+        Value value = Value.of("value");
+        KeyValueEntity<String> entity = KeyValueEntity.of("key", value);
+        assertNotNull(entity);
+        assertEquals(value, entity.getValue());
+    }
+
+
 }
