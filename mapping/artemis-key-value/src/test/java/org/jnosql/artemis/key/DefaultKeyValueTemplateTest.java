@@ -140,7 +140,7 @@ public class DefaultKeyValueTemplateTest {
     public void shouldGetIterable() {
         User user = new User(KEY, "otavio", 27);
 
-        when(manager.get(singletonList(KEY))).thenReturn(singletonList(Value.of(user)));
+        when(manager.get(KEY)).thenReturn(Optional.of(Value.of(user)));
         List<User> userOptional = stream(subject.get(singletonList(KEY), User.class).spliterator(), false)
                 .collect(toList());
 
@@ -148,6 +148,16 @@ public class DefaultKeyValueTemplateTest {
         assertEquals(user, userOptional.get(0));
     }
 
+    @Test
+    public void shouldReturnEmptyIterable() {
+        User user = new User(KEY, "otavio", 27);
+
+        when(manager.get(KEY)).thenReturn(Optional.empty());
+        List<User> userOptional = stream(subject.get(singletonList(KEY), User.class).spliterator(), false)
+                .collect(toList());
+
+        assertTrue(userOptional.isEmpty());
+    }
 
     @Test
     public void shouldRemove() {
