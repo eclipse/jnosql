@@ -101,12 +101,10 @@ class DefaultClassMappings implements ClassMappings {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultClassMappings{");
-        sb.append("mappings-size=").append(mappings.size());
-        sb.append(", classes=").append(classes);
-        sb.append(", classConverter=").append(classConverter);
-        sb.append(", extension=").append(extension);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultClassMappings{" + "mappings-size=" + mappings.size() +
+                ", classes=" + classes +
+                ", classConverter=" + classConverter +
+                ", extension=" + extension +
+                '}';
     }
 }

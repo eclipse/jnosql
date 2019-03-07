@@ -50,9 +50,7 @@ class DefaultKeyValueEntityPrePersist implements KeyValueEntityPrePersist {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultKeyValueEntityPrePersist{");
-        sb.append("entity=").append(entity);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultKeyValueEntityPrePersist{" + "entity=" + entity +
+                '}';
     }
 }

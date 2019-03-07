@@ -80,10 +80,8 @@ final class DefaultColumn implements Column {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultColumn{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", value=").append(value);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultColumn{" + "name='" + name + '\'' +
+                ", value=" + value +
+                '}';
     }
 }

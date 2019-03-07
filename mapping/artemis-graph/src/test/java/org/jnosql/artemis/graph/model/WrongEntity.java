@@ -50,9 +50,7 @@ public class WrongEntity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Animal{");
-        sb.append("name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return  "Animal{" + "name='" + name + '\'' +
+                '}';
     }
 }

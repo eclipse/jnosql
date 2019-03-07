@@ -53,9 +53,7 @@ class DefaultGraphEntityPostPersist implements GraphEntityPostPersist {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultGraphEntityPostPersist{");
-        sb.append("entity=").append(entity);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultGraphEntityPostPersist{" + "entity=" + entity +
+                '}';
     }
 }

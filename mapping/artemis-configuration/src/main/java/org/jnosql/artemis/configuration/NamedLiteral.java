@@ -32,9 +32,7 @@ class NamedLiteral extends AnnotationLiteral<Named> implements Named {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("NamedLiteral{");
-        sb.append("value='").append(value).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return  "NamedLiteral{" + "value='" + value + '\'' +
+                '}';
     }
 }

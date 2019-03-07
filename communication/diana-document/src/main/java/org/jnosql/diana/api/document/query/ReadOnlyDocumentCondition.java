@@ -76,9 +76,7 @@ class ReadOnlyDocumentCondition implements DocumentCondition {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ReadOnlyDocumentCondition{");
-        sb.append("condition=").append(condition);
-        sb.append('}');
-        return sb.toString();
+        return  "ReadOnlyDocumentCondition{" + "condition=" + condition +
+                '}';
     }
 }

@@ -52,10 +52,8 @@ final class CacheQuery<V> {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("CacheQuery{");
-        sb.append("store=").append(store);
-        sb.append('}');
-        return sb.toString();
+        return  "CacheQuery{" + "store=" + store +
+                '}';
     }
 
     public static <V> CacheQuery<V> of(Function<String, V> supplier) {

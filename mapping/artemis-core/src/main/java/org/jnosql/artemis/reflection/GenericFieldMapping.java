@@ -117,14 +117,12 @@ public class GenericFieldMapping extends AbstractFieldMapping {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("GenericFieldMapping{");
-        sb.append("typeSupplier=").append(typeSupplier);
-        sb.append(", type=").append(type);
-        sb.append(", field=").append(field);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", fieldName='").append(fieldName).append('\'');
-        sb.append(", converter=").append(converter);
-        sb.append('}');
-        return sb.toString();
+        return "GenericFieldMapping{" + "typeSupplier=" + typeSupplier +
+                ", type=" + type +
+                ", field=" + field +
+                ", name='" + name + '\'' +
+                ", fieldName='" + fieldName + '\'' +
+                ", converter=" + converter +
+                '}';
     }
 }

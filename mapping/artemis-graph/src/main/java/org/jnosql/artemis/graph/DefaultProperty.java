@@ -59,11 +59,9 @@ final class DefaultProperty<V> implements Property<V> {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultProperty{");
-        sb.append("key='").append(key).append('\'');
-        sb.append(", value=").append(value);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultProperty{" + "key='" + key + '\'' +
+                ", value=" + value +
+                '}';
     }
 
     @Override

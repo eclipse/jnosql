@@ -109,14 +109,12 @@ class DefaultColumnQuery implements ColumnQuery {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultColumnQuery{");
-        sb.append("maxResults=").append(maxResults);
-        sb.append(", firstResult=").append(firstResult);
-        sb.append(", columnFamily='").append(columnFamily).append('\'');
-        sb.append(", columns=").append(columns);
-        sb.append(", sorts=").append(sorts);
-        sb.append(", condition=").append(condition);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultColumnQuery{" + "maxResults=" + maxResults +
+                ", firstResult=" + firstResult +
+                ", columnFamily='" + columnFamily + '\'' +
+                ", columns=" + columns +
+                ", sorts=" + sorts +
+                ", condition=" + condition +
+                '}';
     }
 }

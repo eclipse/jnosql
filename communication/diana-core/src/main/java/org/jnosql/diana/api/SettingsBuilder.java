@@ -70,10 +70,8 @@ public class SettingsBuilder {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("SettingsBuilder{");
-        sb.append("settings=").append(settings);
-        sb.append('}');
-        return sb.toString();
+        return "SettingsBuilder{" + "settings=" + settings +
+                '}';
     }
 
 }

@@ -75,14 +75,12 @@ public class Person {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Person{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", age=").append(age);
-        sb.append(", phones=").append(phones);
-        sb.append(", ignore='").append(ignore).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return  "Person{" + "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", phones=" + phones +
+                ", ignore='" + ignore + '\'' +
+                '}';
     }
 
     @Override

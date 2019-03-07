@@ -192,10 +192,8 @@ final class DefaultColumnEntity implements ColumnEntity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultColumnEntity{");
-        sb.append("columns=").append(toMap());
-        sb.append(", name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultColumnEntity{" + "columns=" + toMap() +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

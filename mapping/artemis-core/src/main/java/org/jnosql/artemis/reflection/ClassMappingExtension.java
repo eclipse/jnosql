@@ -93,11 +93,9 @@ public class ClassMappingExtension implements Extension {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ClassMappingExtension{");
-        sb.append("classConverter=").append(classConverter);
-        sb.append(", mappings-size=").append(mappings.size());
-        sb.append(", classes=").append(classes);
-        sb.append('}');
-        return sb.toString();
+        return  "ClassMappingExtension{" + "classConverter=" + classConverter +
+                ", mappings-size=" + mappings.size() +
+                ", classes=" + classes +
+                '}';
     }
 }

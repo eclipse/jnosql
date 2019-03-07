@@ -75,9 +75,7 @@ class ReadOnlyColumnCondition implements ColumnCondition {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ReadOnlyColumnCondition{");
-        sb.append("condition=").append(condition);
-        sb.append('}');
-        return sb.toString();
+        return  "ReadOnlyColumnCondition{" + "condition=" + condition +
+                '}';
     }
 }

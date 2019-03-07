@@ -46,10 +46,8 @@ public class Zipcode {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Zipcode{");
-        sb.append("zip='").append(zip).append('\'');
-        sb.append(", plusFour='").append(plusFour).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return  "Zipcode{" + "zip='" + zip + '\'' +
+                ", plusFour='" + plusFour + '\'' +
+                '}';
     }
 }

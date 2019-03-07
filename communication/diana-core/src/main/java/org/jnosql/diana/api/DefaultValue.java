@@ -75,9 +75,7 @@ final class DefaultValue implements Value {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultValue{");
-        sb.append("value=").append(value);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultValue{" + "value=" + value +
+                '}';
     }
 }

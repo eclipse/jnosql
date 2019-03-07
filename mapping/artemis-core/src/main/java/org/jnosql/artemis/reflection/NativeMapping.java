@@ -55,11 +55,9 @@ final class NativeMapping {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("NativeMapping{");
-        sb.append("nativeField='").append(nativeField).append('\'');
-        sb.append(", fieldMapping=").append(fieldMapping);
-        sb.append('}');
-        return sb.toString();
+        return  "NativeMapping{" + "nativeField='" + nativeField + '\'' +
+                ", fieldMapping=" + fieldMapping +
+                '}';
     }
 
     public static NativeMapping of(String nativeField, FieldMapping field) {

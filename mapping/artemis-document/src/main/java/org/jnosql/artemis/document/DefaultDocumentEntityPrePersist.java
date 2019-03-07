@@ -54,9 +54,7 @@ class DefaultDocumentEntityPrePersist implements DocumentEntityPrePersist {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultDocumentEntityPrePersist{");
-        sb.append("entity=").append(entity);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultDocumentEntityPrePersist{" + "entity=" + entity +
+                '}';
     }
 }

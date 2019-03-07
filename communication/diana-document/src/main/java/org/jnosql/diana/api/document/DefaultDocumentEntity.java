@@ -189,10 +189,8 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultDocumentEntity{");
-        sb.append("documents=").append(toMap());
-        sb.append(", name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultDocumentEntity{" + "documents=" + toMap() +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

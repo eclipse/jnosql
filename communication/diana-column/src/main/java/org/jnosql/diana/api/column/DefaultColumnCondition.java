@@ -170,10 +170,8 @@ final class DefaultColumnCondition implements ColumnCondition {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultColumnCondition{");
-        sb.append("column=").append(column);
-        sb.append(", condition=").append(condition);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultColumnCondition{" + "column=" + column +
+                ", condition=" + condition +
+                '}';
     }
 }

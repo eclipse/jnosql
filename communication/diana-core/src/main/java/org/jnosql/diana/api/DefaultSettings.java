@@ -109,9 +109,7 @@ class DefaultSettings implements Settings {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultSettings{");
-        sb.append("configurations=").append(configurations);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultSettings{" + "configurations=" + configurations +
+                '}';
     }
 }

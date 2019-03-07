@@ -50,9 +50,7 @@ class DefaultKeyValueEntityPostPersist implements KeyValueEntityPostPersist {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultKeyValueEntityPostPersist{");
-        sb.append("entity=").append(entity);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultKeyValueEntityPostPersist{" + "entity=" + entity +
+                '}';
     }
 }

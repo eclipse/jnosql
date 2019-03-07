@@ -54,9 +54,7 @@ class DefaultColumnEntityPostPersist implements ColumnEntityPostPersist {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultColumnEntityPostPersist{");
-        sb.append("entity=").append(entity);
-        sb.append('}');
-        return sb.toString();
+        return  "DefaultColumnEntityPostPersist{" + "entity=" + entity +
+                '}';
     }
 }
