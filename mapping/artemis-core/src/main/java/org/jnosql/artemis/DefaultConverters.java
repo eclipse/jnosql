@@ -45,9 +45,8 @@ class DefaultConverters implements Converters {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DefaultConverters{");
-        sb.append("beanManager=").append(beanManager);
-        sb.append('}');
-        return sb.toString();
+        return "DefaultConverters{" +
+                "beanManager=" + beanManager +
+                '}';
     }
 }
