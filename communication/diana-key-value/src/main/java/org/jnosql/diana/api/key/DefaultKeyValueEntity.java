@@ -67,10 +67,9 @@ final class DefaultKeyValueEntity<T> implements KeyValueEntity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("KeyValueEntity{");
-        sb.append("key='").append(key).append('\'');
-        sb.append(", value=").append(value);
-        sb.append('}');
-        return sb.toString();
+        return "DefaultKeyValueEntity{" +
+                "key=" + key +
+                ", value=" + value +
+                '}';
     }
 }
