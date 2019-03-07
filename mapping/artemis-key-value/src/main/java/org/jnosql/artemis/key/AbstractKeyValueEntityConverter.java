@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.key;
 
+import org.jnosql.artemis.AttributeConverter;
+import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
@@ -23,6 +25,7 @@ import org.jnosql.diana.api.key.KeyValueEntity;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
@@ -33,6 +36,7 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
 
     protected abstract ClassMappings getClassMappings();
 
+    protected abstract Converters getConverters();
 
     @Override
     public KeyValueEntity<?> toKeyValue(Object entityInstance) {
@@ -52,22 +56,24 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
     public <T> T toEntity(Class<T> entityClass, KeyValueEntity<?> entity) {
 
         Value value = entity.getValue();
-        T t = value.get(entityClass);
-        if (Objects.isNull(t)) {
+        T bean = value.get(entityClass);
+        if (Objects.isNull(bean)) {
             return null;
         }
-        FieldMapping key = getId(entityClass, getClassMappings().get(entityClass));
 
-        Object keyValue = key.read(t);
-        if (Objects.isNull(keyValue) || !keyValue.equals(entity.getKey())) {
-            key.write(t, entity.getKey());
+        FieldMapping key = getId(entityClass, getClassMappings().get(entityClass));
+        if (key.getConverter().isPresent()) {
+            AttributeConverter attributeConverter = getConverters().get(key.getConverter().get());
+            Object keyConverted = attributeConverter.convertToEntityAttribute(entity.getKey());
+            key.write(bean, keyConverted);
+        } else {
+            key.write(bean, entity.getKey(key.getNativeField().getType()));
         }
-        return t;
+
+        return bean;
     }
 
     private FieldMapping getId(Class<?> clazz, ClassMapping mapping) {
-        List<FieldMapping> fields = mapping.getFields();
-        return fields.stream().filter(FieldMapping::isId)
-                .findFirst().orElseThrow(() -> IdNotFoundException.newInstance(clazz));
+        return mapping.getId().orElseThrow(() -> IdNotFoundException.newInstance(clazz));
     }
 }
