@@ -110,7 +110,7 @@ class GetQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        assertThrows(QueryException.class, () -> prepare.getResultList());
+        assertThrows(QueryException.class, prepare::getResultList);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

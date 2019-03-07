@@ -188,7 +188,7 @@ class InsertQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, () -> prepare.getResultList());
+        assertThrows(QueryException.class, prepare::getResultList);
     }
 
 

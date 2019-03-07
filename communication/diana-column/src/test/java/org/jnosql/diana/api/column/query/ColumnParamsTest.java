@@ -45,7 +45,7 @@ class ColumnParamsTest {
     public void shouldNotUseValueWhenIsInvalid() {
         ColumnParams params = new ColumnParams();
         Value name = params.add("name");
-        assertThrows(QueryException.class, () -> name.get());
+        assertThrows(QueryException.class, name::get);
 
         assertThrows(QueryException.class, () -> name.get(String.class));
     }

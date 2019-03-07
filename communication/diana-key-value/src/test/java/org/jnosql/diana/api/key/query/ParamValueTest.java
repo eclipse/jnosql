@@ -44,7 +44,7 @@ class ParamsTest {
     public void shouldNotUseValueWhenIsInvalid() {
         Params params = new Params();
         Value name = params.add("name");
-        assertThrows(QueryException.class, () -> name.get());
+        assertThrows(QueryException.class, name::get);
 
         assertThrows(QueryException.class, () -> name.get(String.class));
     }

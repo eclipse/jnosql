@@ -392,7 +392,7 @@ class DeleteQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, () -> prepare.getResultList());
+        assertThrows(QueryException.class, prepare::getResultList);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

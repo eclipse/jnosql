@@ -82,7 +82,7 @@ class UpdateQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
-        assertThrows(QueryException.class, () -> prepare.getResultList());
+        assertThrows(QueryException.class, prepare::getResultList);
     }
 
 
