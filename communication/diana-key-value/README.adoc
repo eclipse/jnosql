@@ -1,13 +1,13 @@
-![Eclipse JNoSQL Diana Key-Value](https://github.com/JNOSQL/jnosql.github.io/blob/master/images/duke-diana.png)
+image::https://github.com/JNOSQL/jnosql.github.io/blob/master/images/duke-diana.png[Eclipse JNoSQL Diana Key-Value,align="center"]
 
-# Eclipse JNoSQL Diana Key-Value
+= Eclipse JNoSQL Diana Key-Value
 
 
 The JNoSQL communication API layer to key-value database.
 
-## NoSQL key-value type
+== NoSQL key-value type
 
- Key-value (KV) stores use the associative array (also known as a map or dictionary) as their fundamental data model.
+Key-value (KV) stores use the associative array (also known as a map or dictionary) as their fundamental data model.
 In this model, data is represented as a collection of key-value pairs, such that each possible key appears at most
 once in the collection. The key-value model is one of the simplest non-trivial data models, and richer data models are often implemented as an extension of it.
 The key-value model can be extended to a discretely ordered model that maintains keys in lexicographic order.
@@ -16,16 +16,17 @@ Key-value stores can use consistency models ranging from eventual consistency to
 Some databases support ordering of keys. There are various hardware implementations, and some users maintain
 data in memory (RAM), while others employ solid-state drives or rotating disks.
  
- ## Code structure
+== Code structure
  
- The Key-value API has the following structure:
+The Key-value API has the following structure:
 
-* **KeyValueConfiguration**: This interface represents the configuration whose a database has. These settings such as password, user, clients are storage and use to create a manager factory.
-* **BucketManagerFactory**: This interface represents the factory whose creates an entity manager.
-* **BucketManager**: The entity manager, that class that interacts with the KeyValueEntity, to do a CRUD Operation. This interface might be extended to capture particular behavior in a NoSQL database.
-* **KeyValueEntity**: The key and it respective value.
+* *KeyValueConfiguration*: This interface represents the configuration whose a database has. These settings such as password, user, clients are storage and use to create a manager factory.
+* *BucketManagerFactory*: This interface represents the factory whose creates an entity manager.
+* *BucketManager*: The entity manager, that class that interacts with the KeyValueEntity, to do a CRUD Operation. This interface might be extended to capture particular behavior in a NoSQL database.
+* *KeyValueEntity*: The key and it respective value.
 
-```java
+[source,java]
+----
 
 
     public static void main(String[] args) {
@@ -43,4 +44,4 @@ data in memory (RAM), while others employ solid-state drives or rotating disks.
 
 
     }
-```
+----
