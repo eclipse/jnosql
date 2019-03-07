@@ -65,15 +65,6 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
         return t;
     }
 
-    @Override
-    public <T> T toEntity(Class<T> entityClass, Value value) {
-        T t = value.get(entityClass);
-        if (Objects.isNull(t)) {
-            return null;
-        }
-        return t;
-    }
-
     private FieldMapping getId(Class<?> clazz, ClassMapping mapping) {
         List<FieldMapping> fields = mapping.getFields();
         return fields.stream().filter(FieldMapping::isId)
