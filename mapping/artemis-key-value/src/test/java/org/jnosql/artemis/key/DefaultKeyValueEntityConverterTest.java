@@ -122,7 +122,13 @@ public class DefaultKeyValueEntityConverterTest {
 
     @Test
     public void shouldConvertToKeyWhenThereIsConverterAnnotation() {
+        Car car = new Car();
+        car.setPlate(Plate.of("123-BRL"));
+        car.setName("Ferrari");
+        KeyValueEntity<String> entity = converter.toKeyValue(car);
 
+        Assertions.assertEquals("123-BRL", entity.getKey());
+        Assertions.assertEquals(car, entity.get());
     }
 
     @Test
