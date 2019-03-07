@@ -102,23 +102,23 @@ public interface KeyValueEntity<T>  {
      * Alias to {@link org.jnosql.diana.api.Value#get(Class)}
      *
      * @param clazz {@link org.jnosql.diana.api.Value#get(Class)}
-     * @param <T>   {@link org.jnosql.diana.api.Value#get(Class)}
+     * @param <V>   {@link org.jnosql.diana.api.Value#get(Class)}
      * @return {@link org.jnosql.diana.api.Value#get(Class)}
      * @throws NullPointerException          see {@link org.jnosql.diana.api.Value#get(Class)}
      * @throws UnsupportedOperationException see {@link org.jnosql.diana.api.Value#get(Class)}
      */
-    <T> T get(Class<T> clazz);
+    <V> V get(Class<V> clazz);
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      *
      * @param typeSupplier {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
-     * @param <T>          {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
+     * @param <V>          {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @return {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @throws NullPointerException          see {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      * @throws UnsupportedOperationException see {@link org.jnosql.diana.api.Value#get(TypeSupplier)}
      */
-    <T> T get(TypeSupplier<T> typeSupplier);
+    <V> V get(TypeSupplier<V> typeSupplier);
 
     /**
      * Alias to {@link org.jnosql.diana.api.Value#get()}
