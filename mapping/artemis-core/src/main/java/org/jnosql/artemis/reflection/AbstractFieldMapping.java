@@ -93,14 +93,15 @@ abstract class AbstractFieldMapping implements FieldMapping {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("AbstractFieldMapping{");
-        sb.append("type=").append(type);
-        sb.append(", field=").append(field);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", fieldName='").append(fieldName).append('\'');
-        sb.append(", converter=").append(converter);
-        sb.append('}');
-        return sb.toString();
+        return "AbstractFieldMapping{" +
+                "type=" + type +
+                ", field=" + field +
+                ", name='" + name + '\'' +
+                ", fieldName='" + fieldName + '\'' +
+                ", converter=" + converter +
+                ", reader=" + reader +
+                ", writer=" + writer +
+                '}';
     }
 
     public Object getValue(Value value) {
