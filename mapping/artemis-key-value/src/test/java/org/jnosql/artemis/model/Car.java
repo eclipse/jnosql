@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.model;
 
+import org.jnosql.artemis.Convert;
 import org.jnosql.artemis.Entity;
 import org.jnosql.artemis.Id;
 
@@ -21,6 +22,7 @@ import org.jnosql.artemis.Id;
 public class Car {
 
     @Id
+    @Convert(PlateConverter.class)
     private Plate plate;
 
     private String name;
