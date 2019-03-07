@@ -15,7 +15,6 @@
 package org.jnosql.artemis.key;
 
 
-import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.KeyValueEntity;
 
 /**
