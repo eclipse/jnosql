@@ -59,7 +59,7 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
             return null;
         }
 
-        Object key = getKey(entity, entityClass, true);
+        Object key = getKey(entity.getKey(), entityClass, true);
         FieldMapping id = getId(entityClass);
         id.write(bean, key);
         return bean;
