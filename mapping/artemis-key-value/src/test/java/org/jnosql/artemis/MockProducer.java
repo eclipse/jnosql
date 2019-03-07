@@ -35,6 +35,7 @@ public class MockProducer {
         BucketManager bucketManager = Mockito.mock(BucketManager.class);
         Person person = Person.builder().withName("Default").build();
         when(bucketManager.get("key")).thenReturn(Optional.ofNullable(Value.of(person)));
+        when(bucketManager.get(10L)).thenReturn(Optional.ofNullable(Value.of(person)));
         when(bucketManager.get("user")).thenReturn(Optional.of(Value.of(new User("Default", "Default", 10))));
         return bucketManager;
     }
@@ -45,6 +46,7 @@ public class MockProducer {
         BucketManager bucketManager = Mockito.mock(BucketManager.class);
         Person person = Person.builder().withName("keyvalueMock").build();
         when(bucketManager.get("key")).thenReturn(Optional.ofNullable(Value.of(person)));
+        when(bucketManager.get(10L)).thenReturn(Optional.ofNullable(Value.of(person)));
         when(bucketManager.get("user")).thenReturn(Optional.of(Value.of(new User("keyvalueMock", "keyvalueMock", 10))));
         return bucketManager;
     }
