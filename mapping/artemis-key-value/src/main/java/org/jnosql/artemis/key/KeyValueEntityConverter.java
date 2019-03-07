@@ -46,16 +46,4 @@ public interface KeyValueEntityConverter {
      */
     <T> T toEntity(Class<T> entityClass, KeyValueEntity<?> entity);
 
-    /**
-     * Converts a {@link Value} to entity
-     *
-     * @param entityClass the entity class
-     * @param value      the {@link KeyValueEntity} to be converted
-     * @param <T>         the entity type
-     * @return the instance from {@link KeyValueEntity}
-     * @throws org.jnosql.artemis.IdNotFoundException when the entityInstance hasn't a field with {@link org.jnosql.artemis.Id}
-     * @throws NullPointerException when the entityInstance is null
-     */
-    <T> T toEntity(Class<T> entityClass, Value value);
-
 }
