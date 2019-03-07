@@ -112,9 +112,7 @@ public class BucketManagerProducerExtension implements Extension {
                     .addBean(new RepositoryKeyValueBean(type, beanManager, database.getProvider())));
         });
 
-        repositoryUnits.forEach(type -> {
-            afterBeanDiscovery.addBean(new RepositoryUnitKeyValueBean(beanManager, type));
-        });
+        repositoryUnits.forEach(type -> afterBeanDiscovery.addBean(new RepositoryUnitKeyValueBean(beanManager, type)));
 
     }
 

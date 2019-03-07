@@ -45,13 +45,9 @@ class DocumentParamsTest {
     public void shouldNotUseValueWhenIsInvalid() {
         DocumentParams params = new DocumentParams();
         Value name = params.add("name");
-        assertThrows(QueryException.class, () ->{
-            name.get();
-        });
+        assertThrows(QueryException.class, () -> name.get());
 
-        assertThrows(QueryException.class, () ->{
-            name.get(String.class);
-        });
+        assertThrows(QueryException.class, () -> name.get(String.class));
     }
 
     @Test

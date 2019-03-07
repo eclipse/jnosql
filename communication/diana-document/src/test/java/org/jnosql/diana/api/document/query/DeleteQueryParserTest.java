@@ -374,9 +374,7 @@ class DeleteQueryParserTest {
     @ValueSource(strings = {"delete  from God where age = @age"})
     public void shouldReturnErrorWhenNeedPrepareStatement(String query) {
 
-        assertThrows(QueryException.class, () -> {
-            parser.query(query, documentCollection, observer);
-        });
+        assertThrows(QueryException.class, () -> parser.query(query, documentCollection, observer));
 
 
     }
@@ -385,9 +383,7 @@ class DeleteQueryParserTest {
     @ValueSource(strings = {"delete from God where age = @age"})
     public void shouldReturnErrorWhenIsQueryWithParam(String query) {
 
-        assertThrows(QueryException.class, () -> {
-            parser.query(query, documentCollection, observer);
-        });
+        assertThrows(QueryException.class, () -> parser.query(query, documentCollection, observer));
 
     }
 
@@ -396,9 +392,7 @@ class DeleteQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
-        assertThrows(QueryException.class, () -> {
-            prepare.getResultList();
-        });
+        assertThrows(QueryException.class, () -> prepare.getResultList());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -422,9 +416,7 @@ class DeleteQueryParserTest {
     @ValueSource(strings = {"delete from God where age = @age"})
     public void shouldReturnErrorWhenIsQueryWithParamAsync(String query) {
 
-        assertThrows(QueryException.class, () -> {
-            parser.queryAsync(query, documentCollectionAsync, s->{}, observer);
-        });
+        assertThrows(QueryException.class, () -> parser.queryAsync(query, documentCollectionAsync, s->{}, observer));
 
     }
 
@@ -433,9 +425,7 @@ class DeleteQueryParserTest {
     public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
 
         DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
-        assertThrows(QueryException.class, () -> {
-            prepare.getResultList(s ->{});
-        });
+        assertThrows(QueryException.class, () -> prepare.getResultList(s ->{}));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

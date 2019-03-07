@@ -71,9 +71,7 @@ class PutQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {\"Diana\", @value}"})
     public void shouldReturnErrorWhenUseParameterInQuery(String query) {
-        assertThrows(QueryException.class, () -> {
-            parser.query(query, manager);
-        });
+        assertThrows(QueryException.class, () -> parser.query(query, manager));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -81,9 +79,7 @@ class PutQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        assertThrows(QueryException.class, () -> {
-            prepare.getResultList();
-        });
+        assertThrows(QueryException.class, () -> prepare.getResultList());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

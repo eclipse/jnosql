@@ -488,9 +488,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where age = @age"})
     public void shouldReturnErrorWhenIsQueryWithParam(String query) {
 
-        assertThrows(QueryException.class, () -> {
-            parser.query(query, manager, observer);
-        });
+        assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
 
 
     }
@@ -501,9 +499,7 @@ public class SelectQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, () -> {
-            prepare.getResultList();
-        });
+        assertThrows(QueryException.class, () -> prepare.getResultList());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -528,10 +524,8 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where age = @age"})
     public void shouldReturnErrorWhenIsQueryWithParamAsync(String query) {
 
-        assertThrows(QueryException.class, () -> {
-            parser.queryAsync(query, managerAsync, s -> {
-            }, observer);
-        });
+        assertThrows(QueryException.class, () -> parser.queryAsync(query, managerAsync, s -> {
+        }, observer));
 
 
     }
@@ -542,10 +536,8 @@ public class SelectQueryParserTest {
     public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
 
         ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        assertThrows(QueryException.class, () -> {
-            prepare.getResultList(s -> {
-            });
-        });
+        assertThrows(QueryException.class, () -> prepare.getResultList(s -> {
+        }));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

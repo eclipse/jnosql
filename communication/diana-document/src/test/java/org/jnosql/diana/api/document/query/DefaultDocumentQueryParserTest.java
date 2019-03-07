@@ -50,25 +50,17 @@ class DefaultDocumentQueryParserTest {
     public void shouldReturnNPEWhenThereIsNullParameter() {
 
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query(null, documentCollection, DocumentObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> parser.query(null, documentCollection, DocumentObserverParser.EMPTY));
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query("select * from God", null, DocumentObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> parser.query("select * from God", null, DocumentObserverParser.EMPTY));
     }
 
     @Test
     public void shouldReturnErrorWhenHasInvalidQuery() {
 
-        Assertions.assertThrows(QueryException.class, () -> {
-            parser.query("inva", documentCollection, DocumentObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(QueryException.class, () -> parser.query("inva", documentCollection, DocumentObserverParser.EMPTY));
 
-        Assertions.assertThrows(QueryException.class, () -> {
-            parser.query("invalid", documentCollection, DocumentObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(QueryException.class, () -> parser.query("invalid", documentCollection, DocumentObserverParser.EMPTY));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

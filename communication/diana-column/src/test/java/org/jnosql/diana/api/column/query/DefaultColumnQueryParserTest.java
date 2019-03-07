@@ -49,25 +49,17 @@ public class DefaultColumnQueryParserTest {
     public void shouldReturnNPEWhenThereIsNullParameter() {
 
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query(null, manager, ColumnObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> parser.query(null, manager, ColumnObserverParser.EMPTY));
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            parser.query("select * from God", null, ColumnObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> parser.query("select * from God", null, ColumnObserverParser.EMPTY));
     }
 
     @Test
     public void shouldReturnErrorWhenHasInvalidQuery() {
 
-        Assertions.assertThrows(QueryException.class, () -> {
-            parser.query("inva", manager, ColumnObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(QueryException.class, () -> parser.query("inva", manager, ColumnObserverParser.EMPTY));
 
-        Assertions.assertThrows(QueryException.class, () -> {
-            parser.query("invalid", manager, ColumnObserverParser.EMPTY);
-        });
+        Assertions.assertThrows(QueryException.class, () -> parser.query("invalid", manager, ColumnObserverParser.EMPTY));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

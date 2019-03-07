@@ -161,13 +161,9 @@ public class DocumentCollectionProducerExtension implements Extension {
             });
         });
 
-        repositoryUnits.forEach(type -> {
-            afterBeanDiscovery.addBean(new RepositoryUnitDocumentBean(beanManager, type));
-        });
+        repositoryUnits.forEach(type -> afterBeanDiscovery.addBean(new RepositoryUnitDocumentBean(beanManager, type)));
 
-        repositoryAsyncUnits.forEach(type -> {
-            afterBeanDiscovery.addBean(new RepositoryAsyncUnitDocumentBean(beanManager, type));
-        });
+        repositoryAsyncUnits.forEach(type -> afterBeanDiscovery.addBean(new RepositoryAsyncUnitDocumentBean(beanManager, type)));
 
     }
 

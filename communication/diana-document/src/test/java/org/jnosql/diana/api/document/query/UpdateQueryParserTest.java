@@ -74,9 +74,7 @@ class UpdateQueryParserTest {
     @ValueSource(strings = {"update God (name = @name)"})
     public void shouldReturnParserQuery8(String query) {
 
-        assertThrows(QueryException.class, () -> {
-            parser.query(query, documentCollection, observer);
-        });
+        assertThrows(QueryException.class, () -> parser.query(query, documentCollection, observer));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -84,9 +82,7 @@ class UpdateQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
-        assertThrows(QueryException.class, () -> {
-            prepare.getResultList();
-        });
+        assertThrows(QueryException.class, () -> prepare.getResultList());
     }
 
 
@@ -108,9 +104,7 @@ class UpdateQueryParserTest {
     @ValueSource(strings = {"update God (name = @name)"})
     public void shouldReturnErrorWhenShouldUsePrepareStatmentAsync(String query) {
 
-        assertThrows(QueryException.class, () -> {
-            parser.queryAsync(query, documentCollectionAsync, s->{}, observer);
-        });
+        assertThrows(QueryException.class, () -> parser.queryAsync(query, documentCollectionAsync, s->{}, observer));
     }
 
 
@@ -119,9 +113,7 @@ class UpdateQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQueryAsync(String query) {
 
         DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
-        assertThrows(QueryException.class, () -> {
-            prepare.getResultList(s ->{});
-        });
+        assertThrows(QueryException.class, () -> prepare.getResultList(s ->{}));
     }
 
 

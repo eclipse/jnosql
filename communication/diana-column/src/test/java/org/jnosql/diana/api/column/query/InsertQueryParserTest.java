@@ -179,9 +179,7 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldReturnErrorWhenShouldUsePrepareStatment(String query) {
 
-        assertThrows(QueryException.class, () -> {
-            parser.query(query, manager, observer);
-        });
+        assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
     }
 
 
@@ -190,9 +188,7 @@ class InsertQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, () -> {
-            prepare.getResultList();
-        });
+        assertThrows(QueryException.class, () -> prepare.getResultList());
     }
 
 
@@ -214,9 +210,7 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldReturnErrorWhenShouldUsePrepareStatmentAsync(String query) {
 
-        assertThrows(QueryException.class, () -> {
-            parser.queryAsync(query, managerAsync, s->{}, observer);
-        });
+        assertThrows(QueryException.class, () -> parser.queryAsync(query, managerAsync, s->{}, observer));
     }
 
 
@@ -225,9 +219,7 @@ class InsertQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQueryAsync(String query) {
 
         ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        assertThrows(QueryException.class, () -> {
-            prepare.getResultList(s ->{});
-        });
+        assertThrows(QueryException.class, () -> prepare.getResultList(s ->{}));
     }
 
 
