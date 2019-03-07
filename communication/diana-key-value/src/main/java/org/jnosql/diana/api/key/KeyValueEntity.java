@@ -67,6 +67,18 @@ public interface KeyValueEntity<T>  {
      */
     T getKey();
 
+
+    /**
+     * Alias to {@link Value#get(Class)}
+     *
+     * @param clazz {@link Value#get(Class)}
+     * @param <K>   {@link Value#get(Class)}
+     * @return {@link Value#get(Class)}
+     * @throws NullPointerException          see {@link Value#get(Class)}
+     * @throws UnsupportedOperationException see {@link Value#get(Class)}
+     */
+    <K> K getKey(Class<K> clazz);
+
     /**
      * The value
      *
