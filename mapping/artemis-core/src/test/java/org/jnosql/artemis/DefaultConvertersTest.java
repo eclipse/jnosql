@@ -43,7 +43,10 @@ class DefaultConvertersTest {
 
     @Test
     public void shouldCreateNotUsingInjections() {
-
+        AttributeConverter attributeConverter = converters.get(VetedConverter.class);
+        Object text = attributeConverter.convertToDatabaseColumn("Text");
+        Assertions.assertNotNull(text);
+        Assertions.assertEquals("Text", text);
     }
 
 }
