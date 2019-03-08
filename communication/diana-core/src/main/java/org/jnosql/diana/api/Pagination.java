@@ -55,4 +55,18 @@ public interface Pagination {
      * @return
      */
     Pagination next();
+
+    /**
+     * A builder to {@link Pagination}, as the first step it defines the page number or the page index that starts from page one.
+     *
+     * @param page the page index
+     * @return a new {@link PaginationBuilder} instance
+     * @throws IllegalArgumentException when page is lesser equals than zero
+     */
+    static PaginationBuilder page(long page) {
+        if (page <= 0) {
+            throw new IllegalArgumentException("The page index cannot be less equals than zero.");
+        }
+        return new PaginationBuilder(page);
+    }
 }
