@@ -37,11 +37,16 @@ public interface Pagination {
     int getPageSize();
 
     /**
-     * Returns the offset to be taken according to the underlying page and page size.
-     *
-     * @return the offset to be taken
+     * @return The maximum number of results the select object was set to retrieve.
+     * According to the underlying page and page size.
      */
-    long getOffset();
+    long getLimit();
+
+    /**
+     * @return The position of the first result the select object was set to retrieve.
+     * According to the underlying page and page size.
+     */
+    long getSkip();
 
 
     /**
