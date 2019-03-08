@@ -1,7 +1,7 @@
-![Eclipse JNoSQL Artemis Project](https://github.com/JNOSQL/jnosql.github.io/blob/master/images/duke-artemis.png)
+image::https://github.com/JNOSQL/jnosql.github.io/blob/master/images/duke-artemis.png[Eclipse JNoSQL Artemis Project,align="center"]
 
-# Eclipse JNoSQL Artemis
- Eclipse JNoSQL Artemis is a flexible and extensible OxM to connect NoSQL databases. It brings an easy interface to support key-value, column family, document oriented and graph databases using as base Diana in CDI based.
+= Eclipse JNoSQL Artemis
+Eclipse JNoSQL Artemis is a flexible and extensible OxM to connect NoSQL databases. It brings an easy interface to support key-value, column family, document oriented and graph databases using as base Diana in CDI based.
 
 * CDI Based
 * Diana Based
@@ -10,26 +10,26 @@
 * OxM Annotation Based
 * Configurable and extensible
 
-The API's focus is on simplicity and ease of use. Developers should only have to know a minimal set of artifacts to work with the solution. The API is built on latest Java 8 features and therefore fit perfectly with the functional features of Java 8. 
+The API's focus is on simplicity and ease of use. Developers should only have to know a minimal set of artifacts to work with the solution. The API is built on latest Java 8 features and therefore fit perfectly with the functional features of Java 8.
 
 The project has five modules:
 
-* *The **artemis-core**: The Eclipse JNoSQL mapping, Artemis, commons project.
-* The **artemis-configuration**: The Eclipse JNoSQL reader to Artemis project.
-* The **artemis-column**: The Eclipse JNoSQL mapping, Artemis, to column NoSQL database.
-* The **artemis-document**: The Eclipse JNoSQL mapping, Artemis, to document NoSQL database.
-* The **artemis-key-value**: The Eclipse JNoSQL mapping, Artemis, to key-value NoSQL database.
-* The **artemis-validation**: The Eclipse JNoSQL mapping, Artemis, that offers support to Bean Validation
+* The *artemis-core*: The Eclipse JNoSQL mapping, Artemis, commons project.
+* The *artemis-configuration*: The Eclipse JNoSQL reader to Artemis project.
+* The *artemis-column*: The Eclipse JNoSQL mapping, Artemis, to column NoSQL database.
+* The *artemis-document*: The Eclipse JNoSQL mapping, Artemis, to document NoSQL database.
+* The *artemis-key-value*: The Eclipse JNoSQL mapping, Artemis, to key-value NoSQL database.
+* The *artemis-validation*: The Eclipse JNoSQL mapping, Artemis, that offers support to Bean Validation
 
 
 The graph API is an extension because the communication layer to the graph is Apache TinkerPop.
 
-## Eclipse JNoSQL Artemis Core
+== Eclipse JNoSQL Artemis Core
 
 
 The Eclipse JNoSQL Artemis Core is the commons project in the mapping project. It has the commons annotations.
 
-### Entities Mapping
+=== Entities Mapping
 
 * `@Entity`: Specifies that the class is an entity. This annotation is applied to the entity class.
 * `@Column`: Specifies a mapped column for a persistent property or field.
@@ -40,7 +40,8 @@ The Eclipse JNoSQL Artemis Core is the commons project in the mapping project. I
 
 E.g.:
 
-```java
+[source,java]
+----
 @Entity
 public class Person {
 
@@ -55,13 +56,14 @@ public class Person {
 
     @Column
     private List<String> phones;
-}    
-```
+}
+----
 
 
-#### Convert annotation
+==== Convert annotation
 
-```java
+[source,java]
+----
 public class MoneyConverter implements AttributeConverter<Money, String>{
 
     @Override
@@ -88,28 +90,30 @@ public class Worker {
     @Convert(MoneyConverter.class)//converts to String on the database
     private Money salary;
 }
-```
+----
 
-## @ConfigurationUnit
+== @ConfigurationUnit
 
 Expresses a dependency to a configuration and its associated persistence unit.
 
-```java
+[source,java]
+----
 
 @ConfigurationUnit
 private ColumnFamilyManagerFactory<DatabaseImplementation> factory;
-   
+
 @ConfigurationUnit(fileName = "column.json", name = "name")
 private ColumnFamilyManagerFactory<?> factoryB;
-    
-```
+
+----
 
 
-### @Database
+=== @Database
 
 The database qualifier used on Eclipse JNoSQL Artemis such as defines which interpreter will be used on Repository.
 
-```java
+[source,java]
+----
 public interface PersonRepository extends Repository<Person, Long> {
 }
 
@@ -124,6 +128,6 @@ public interface PersonRepository extends Repository<Person, Long> {
 
     @Inject
     @Database(value = DatabaseType.KEY_VALUE)
-    private PersonRepository repository;        
-    
-```
+    private PersonRepository repository;
+
+----
