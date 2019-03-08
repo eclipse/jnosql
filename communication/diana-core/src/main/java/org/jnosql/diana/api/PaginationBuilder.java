@@ -17,7 +17,27 @@
 package org.jnosql.diana.api;
 
 /**
- * The builder of {@link Pagination}, that is the first step at the pagination.
+ * The builder of {@link Pagination}
  */
-public class PaginationPageBuilder {
+public class PaginationBuilder {
+
+    private final long page;
+
+    PaginationBuilder(long page) {
+        this.page = page;
+    }
+
+    /**
+     * Defines the size of a pagination
+     *
+     * @param size the size of pagination
+     * @return a {@link Pagination} instance
+     * @throws IllegalArgumentException when size is either zero or negative
+     */
+    public Pagination of(long size) {
+        if (size < 1) {
+            throw new IllegalArgumentException("A pagination size cannot be zero or negative");
+        }
+        return new DefaultPagination(page, size);
+    }
 }
