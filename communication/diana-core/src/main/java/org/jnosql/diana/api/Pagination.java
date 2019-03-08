@@ -27,14 +27,14 @@ public interface Pagination {
      *
      * @return the page to be returned.
      */
-    int getPageNumber();
+    long getPageNumber();
 
     /**
      * Returns the number of items to be returned.
      *
      * @return the number of items of that page
      */
-    int getPageSize();
+    long getPageSize();
 
     /**
      * @return The maximum number of results the select object was set to retrieve.
