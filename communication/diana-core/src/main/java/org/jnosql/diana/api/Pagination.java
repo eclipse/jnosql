@@ -52,7 +52,7 @@ public interface Pagination {
     /**
      * Returns the {@link Pagination} requesting the next {@link Pagination}.
      *
-     * @return
+     * @return the next pagination
      */
     Pagination next();
 
