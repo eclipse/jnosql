@@ -44,7 +44,7 @@ final class DefaultPagination implements Pagination {
 
     @Override
     public long getLimit() {
-        return 0;
+        return size;
     }
 
     @Override
