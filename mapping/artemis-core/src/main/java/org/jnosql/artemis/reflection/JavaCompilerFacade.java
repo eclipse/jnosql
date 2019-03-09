@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.security.PrivilegedAction;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -33,6 +35,8 @@ import static java.security.AccessController.doPrivileged;
  * Class that converts a {@link JavaSource} to a compiled class
  */
 final class JavaCompilerFacade {
+
+    private static final Logger LOGGER = Logger.getLogger(JavaCompilerFacade.class.getName());
 
     private static final Pattern BREAK_LINE = Pattern.compile("\n");
     private final JavaCompilerClassLoader classLoader;
@@ -48,8 +52,16 @@ final class JavaCompilerFacade {
         this.diagnosticCollector = new DiagnosticCollector<>();
     }
 
-    public <T> Class<? extends T> apply(JavaSource<T> source) {
-        return compile(source);
+    public <T> Optional<Class<? extends T>> apply(JavaSource<T> source) {
+        try {
+            return Optional.of(compile(source));
+        } catch (CompilerAccessException exp) {
+            LOGGER.info(exp.getMessage());
+            if (LOGGER.isLoggable(Level.FINEST)) {
+                LOGGER.log(Level.FINEST, "Error when tries to optmizes the accessor", exp);
+            }
+            return Optional.empty();
+        }
     }
 
     private synchronized <T> Class<? extends T> compile(JavaSource<T> source) {
