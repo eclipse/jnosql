@@ -30,4 +30,14 @@ class CompilerAccessException extends JNoSQLException {
     CompilerAccessException(String message) {
         super(message);
     }
+
+    /**
+     * Constructs a new runtime exception with the specified detail message and cause.
+     *
+     * @param message the message
+     * @param cause   the cause
+     */
+    CompilerAccessException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
