@@ -24,11 +24,9 @@ import org.jnosql.diana.api.ValueReaderDecorator;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.Set;
 
 import static java.util.Collections.singleton;
-import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.StreamSupport.stream;
 
@@ -60,7 +58,7 @@ public class SetTypeReferenceReader implements TypeReferenceReader {
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);
             return (T) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(classType, o))
-                    .collect(collectingAndThen(toSet(), Collections::unmodifiableSet));
+                    .collect(toSet());
         }
         return (T) singleton(SERVICE_PROVIDER.read(classType, value));
     }
