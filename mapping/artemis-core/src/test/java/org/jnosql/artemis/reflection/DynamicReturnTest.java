@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
+import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.Repository;
 import org.jnosql.diana.api.NonUniqueResultException;
 import org.junit.jupiter.api.Assertions;
@@ -272,11 +273,36 @@ class DynamicReturnTest {
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
+    @Test
+    public void shouldReturnErrorNavigableSetEntityIsNotComparable() throws NoSuchMethodException {
+
+        Method method = getMethod(AnimalRepository.class, "getSortedSet");
+        Supplier<List<?>> list = () -> singletonList(new Animal("Ada"));
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(Animal.class)
+                .withMethodSource(method).withList(list)
+                .withSingleResult(singlResult).build();
+
+        Assertions.assertThrows(DynamicQueryException.class, dynamicReturn::execute);
+    }
+
 
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
                 .filter(m -> m.getName().equals(methodName))
                 .findFirst().get();
+
+    }
+
+
+    private static class Animal {
+        private final String name;
+
+        private Animal(String name) {
+            this.name = name;
+        }
+
 
     }
 
@@ -309,6 +335,11 @@ class DynamicReturnTest {
         public int compareTo(Person o) {
             return name.compareTo(o.name);
         }
+    }
+
+    private interface AnimalRepository extends Repository<Animal, String> {
+
+        SortedSet<Person> getSortedSet();
     }
 
     private interface PersonRepository extends Repository<Person, String> {
