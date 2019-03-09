@@ -23,11 +23,14 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -218,6 +221,59 @@ class DynamicReturnTest {
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
+    @Test
+    public void shouldReturnSortedSet() throws NoSuchMethodException {
+
+        Method method = getMethod(PersonRepository.class, "getSortedSet");
+        Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(Person.class)
+                .withMethodSource(method).withList(list)
+                .withSingleResult(singlResult).build();
+        Object execute = dynamicReturn.execute();
+        Assertions.assertTrue(execute instanceof SortedSet);
+        SortedSet<Person> persons = (SortedSet) execute;
+        Assertions.assertFalse(persons.isEmpty());
+        Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
+    }
+
+    @Test
+    public void shouldReturnNavigableSet() throws NoSuchMethodException {
+
+        Method method = getMethod(PersonRepository.class, "getNavigableSet");
+        Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(Person.class)
+                .withMethodSource(method).withList(list)
+                .withSingleResult(singlResult).build();
+        Object execute = dynamicReturn.execute();
+        Assertions.assertTrue(execute instanceof NavigableSet);
+        NavigableSet<Person> persons = (NavigableSet) execute;
+        Assertions.assertFalse(persons.isEmpty());
+        Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
+    }
+
+
+    @Test
+    public void shouldReturnDeque() throws NoSuchMethodException {
+
+        Method method = getMethod(PersonRepository.class, "getDeque");
+        Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(Person.class)
+                .withMethodSource(method).withList(list)
+                .withSingleResult(singlResult).build();
+        Object execute = dynamicReturn.execute();
+        Assertions.assertTrue(execute instanceof Deque);
+        Deque<Person> persons = (Deque) execute;
+        Assertions.assertFalse(persons.isEmpty());
+        Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
+    }
+
+
 
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
@@ -269,6 +325,12 @@ class DynamicReturnTest {
         Queue<Person> getQueue();
 
         Stream<Person> getStream();
+
+        SortedSet<Person> getSortedSet();
+
+        NavigableSet<Person> getNavigableSet();
+
+        Deque<Person> getDeque();
     }
 
 
