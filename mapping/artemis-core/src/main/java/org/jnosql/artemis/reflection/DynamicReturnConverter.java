@@ -75,15 +75,15 @@ enum DynamicReturnConverter {
         } else if (Deque.class.equals(returnType)) {
             return new ArrayDeque<>(dynamic.list());
         } else if (NavigableSet.class.equals(returnType) || SortedSet.class.equals(returnType)) {
-            checkImplementsComparable(typeClass, returnType);
+            checkImplementsComparable(typeClass);
             return new TreeSet<>(dynamic.list());
         }
 
         return dynamic.list();
     }
 
-    private void checkImplementsComparable(Class<?> typeClass, Class<?> returnType) {
-        if (!Comparable.class.isAssignableFrom(returnType)) {
+    private void checkImplementsComparable(Class<?> typeClass) {
+        if (!Comparable.class.isAssignableFrom(typeClass)) {
             throw new DynamicQueryException(String.format("To use either NavigableSet or SortedSet the entity %s must implement Comparable.", typeClass));
         }
     }
