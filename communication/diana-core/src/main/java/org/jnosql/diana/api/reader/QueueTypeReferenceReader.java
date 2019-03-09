@@ -25,6 +25,7 @@ import org.jnosql.diana.api.ValueReaderDecorator;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.StreamSupport.stream;
 
 /**
- * The {@link TypeReferenceReader} to {@link Queue}
+ * The {@link TypeReferenceReader} to {@link Queue} and {@link Deque}
  */
 @SuppressWarnings("unchecked")
 public class QueueTypeReferenceReader implements TypeReferenceReader {
@@ -45,9 +46,10 @@ public class QueueTypeReferenceReader implements TypeReferenceReader {
         if (ParameterizedType.class.isInstance(type)) {
             ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 
-            return (Queue.class.equals(parameterizedType.getRawType())
-                    &&
-                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]));
+            boolean isCollectionRight = Queue.class.equals(parameterizedType.getRawType())
+                    || Deque.class.equals(parameterizedType.getRawType());
+            return isCollectionRight &&
+                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
         }
         return false;
     }

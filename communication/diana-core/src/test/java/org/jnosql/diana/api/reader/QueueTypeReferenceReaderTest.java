@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,11 @@ class QueueTypeReferenceReaderTest {
         assertTrue(referenceReader.isCompatible(new TypeReference<Queue<String>>() {
         }));
         assertTrue(referenceReader.isCompatible(new TypeReference<Queue<Long>>() {
+        }));
+
+        assertTrue(referenceReader.isCompatible(new TypeReference<Deque<String>>() {
+        }));
+        assertTrue(referenceReader.isCompatible(new TypeReference<Deque<Long>>() {
         }));
 
     }
