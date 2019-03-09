@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -42,9 +43,15 @@ public class ListTypeReferenceReaderTest {
     @Test
     public void shouldBeCompatible() {
 
+
         assertTrue(referenceReader.isCompatible(new TypeReference<List<String>>() {
         }));
         assertTrue(referenceReader.isCompatible(new TypeReference<List<Long>>() {
+        }));
+
+        assertTrue(referenceReader.isCompatible(new TypeReference<Collection<String>>() {
+        }));
+        assertTrue(referenceReader.isCompatible(new TypeReference<Collection<Long>>() {
         }));
         assertTrue(referenceReader.isCompatible(new TypeReference<Iterable<String>>() {
         }));
@@ -75,6 +82,11 @@ public class ListTypeReferenceReaderTest {
         assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<List<String>>() {
         }, "123"));
         assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<List<Long>>() {
+        }, "123"));
+
+        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<Collection<String>>() {
+        }, "123"));
+        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<Collection<Long>>() {
         }, "123"));
 
         assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<Iterable<String>>() {
