@@ -25,6 +25,7 @@ import org.jnosql.diana.api.ValueReaderDecorator;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,7 +48,8 @@ public class ListTypeReferenceReader implements TypeReferenceReader {
             ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 
             return (List.class.equals(parameterizedType.getRawType())
-                    || Iterable.class.equals(parameterizedType.getRawType())) &&
+                    || Iterable.class.equals(parameterizedType.getRawType())
+                    || Collection.class.equals(parameterizedType.getRawType())) &&
                     Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
         }
         return false;
