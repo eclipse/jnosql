@@ -27,7 +27,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
-import java.util.Queue;
 import java.util.stream.Collectors;
 
 import static java.util.stream.StreamSupport.stream;
