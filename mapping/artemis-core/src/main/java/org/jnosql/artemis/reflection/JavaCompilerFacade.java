@@ -90,7 +90,7 @@ final class JavaCompilerFacade {
                         .getLineNumber() <= 0 ? "" : BREAK_LINE.splitAsStream(source.getJavaSource())
                         .skip(d.getLineNumber() - 1).findFirst().orElse("")))
                 .collect(Collectors.joining("\n"));
-        throw new IllegalStateException("The generated class (" + source.getSimpleName() + ") failed to compile.\n"
+        throw new CompilerAccessException("The generated class (" + source.getSimpleName() + ") failed to compile.\n"
                 + compilationMessages);
     }
 
