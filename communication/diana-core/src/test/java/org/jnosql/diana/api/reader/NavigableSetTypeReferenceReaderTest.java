@@ -54,6 +54,12 @@ class NavigableSetTypeReferenceReaderTest {
 
     @Test
     public void shouldNotBeCompatible() {
+
+        assertFalse(referenceReader.isCompatible(new TypeReference<SortedSet<Animal>>() {
+        }));
+        assertFalse(referenceReader.isCompatible(new TypeReference<NavigableSet<Animal>>() {
+        }));
+
         assertFalse(referenceReader.isCompatible(new TypeReference<ArrayList<BigDecimal>>() {
         }));
         assertFalse(referenceReader.isCompatible(new TypeReference<String>() {
@@ -96,6 +102,10 @@ class NavigableSetTypeReferenceReaderTest {
         }, Arrays.asList("123", "32"));
         strings.add("456");
         Assertions.assertEquals(3, strings.size());
+    }
+
+    private static class Animal {
+
     }
 
 }

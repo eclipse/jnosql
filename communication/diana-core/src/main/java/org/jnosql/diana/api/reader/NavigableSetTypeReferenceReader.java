@@ -53,7 +53,7 @@ public class NavigableSetTypeReferenceReader implements TypeReferenceReader {
                     ||
                     SortedSet.class.equals(collectionType));
             boolean isElementCompatible = Class.class.isInstance(elementType)
-                    && Comparable.class.isInstance(elementType);
+                    && Comparable.class.isAssignableFrom((Class<?>) elementType);
 
             return isNavigableSet && isElementCompatible;
         }
