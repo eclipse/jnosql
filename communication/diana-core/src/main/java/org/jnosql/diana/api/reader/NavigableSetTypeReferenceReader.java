@@ -24,19 +24,19 @@ import org.jnosql.diana.api.ValueReaderDecorator;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayDeque;
 import java.util.Collections;
-import java.util.Deque;
-import java.util.Queue;
+import java.util.NavigableSet;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import static java.util.stream.StreamSupport.stream;
 
 /**
- * The {@link TypeReferenceReader} to {@link Queue}
+ * The {@link TypeReferenceReader} to {@link NavigableSet} and {@link SortedSet}
  */
 @SuppressWarnings("unchecked")
-public class DequeTypeReferenceReader implements TypeReferenceReader {
+public class NavigableSetTypeReferenceReader implements TypeReferenceReader {
 
     private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
 
@@ -46,9 +46,11 @@ public class DequeTypeReferenceReader implements TypeReferenceReader {
         if (ParameterizedType.class.isInstance(type)) {
             ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 
-            return (Deque.class.equals(parameterizedType.getRawType())
+            return (NavigableSet.class.equals(parameterizedType.getRawType())
+                    ||
+                    SortedSet.class.equals(parameterizedType.getRawType()))
                     &&
-                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]));
+                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
         }
         return false;
     }
@@ -61,9 +63,9 @@ public class DequeTypeReferenceReader implements TypeReferenceReader {
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);
             return (T) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(classType, o))
-                    .collect(Collectors.toCollection(ArrayDeque::new));
+                    .collect(Collectors.toCollection(TreeSet::new));
         }
-        return (T) new ArrayDeque<>(Collections.singletonList(SERVICE_PROVIDER.read(classType, value)));
+        return (T) new TreeSet<>(Collections.singletonList(SERVICE_PROVIDER.read(classType, value)));
     }
 
 
