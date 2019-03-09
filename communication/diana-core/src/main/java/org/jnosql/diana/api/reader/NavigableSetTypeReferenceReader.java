@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2019 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -24,18 +24,19 @@ import org.jnosql.diana.api.ValueReaderDecorator;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collections;
+import java.util.NavigableSet;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
-import static java.util.Collections.singleton;
-import static java.util.stream.Collectors.toSet;
 import static java.util.stream.StreamSupport.stream;
 
 /**
- * The {@link TypeReferenceReader} to {@link Set}
+ * The {@link TypeReferenceReader} to {@link NavigableSet} and {@link SortedSet}
  */
 @SuppressWarnings("unchecked")
-public class SetTypeReferenceReader implements TypeReferenceReader {
+public class NavigableSetTypeReferenceReader implements TypeReferenceReader {
 
     private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
 
@@ -45,8 +46,16 @@ public class SetTypeReferenceReader implements TypeReferenceReader {
         if (ParameterizedType.class.isInstance(type)) {
             ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 
-            return Set.class.equals(parameterizedType.getRawType()) &&
-                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
+            Type collectionType = parameterizedType.getRawType();
+            Type elementType = parameterizedType.getActualTypeArguments()[0];
+
+            boolean isNavigableSet = (NavigableSet.class.equals(collectionType)
+                    ||
+                    SortedSet.class.equals(collectionType));
+            boolean isElementCompatible = Class.class.isInstance(elementType)
+                    && Comparable.class.isAssignableFrom((Class<?>) elementType);
+
+            return isNavigableSet && isElementCompatible;
         }
         return false;
     }
@@ -59,9 +68,9 @@ public class SetTypeReferenceReader implements TypeReferenceReader {
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);
             return (T) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(classType, o))
-                    .collect(toSet());
+                    .collect(Collectors.toCollection(TreeSet::new));
         }
-        return (T) new HashSet<>(singleton(SERVICE_PROVIDER.read(classType, value)));
+        return (T) new TreeSet<>(Collections.singletonList(SERVICE_PROVIDER.read(classType, value)));
     }
 
 

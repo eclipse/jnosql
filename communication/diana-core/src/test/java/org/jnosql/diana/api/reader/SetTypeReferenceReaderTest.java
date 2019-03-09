@@ -18,8 +18,10 @@ package org.jnosql.diana.api.reader;
 
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.TypeReferenceReader;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -59,4 +61,19 @@ public class SetTypeReferenceReaderTest {
         assertEquals(singleton(123L), referenceReader.convert(new TypeReference<List<Long>>(){}, "123"));
     }
 
+    @Test
+    public void shouldConvertAndBeMutuable() {
+        Set<String> strings = referenceReader.convert(new TypeReference<Set<String>>() {
+        }, "123");
+        strings.add("456");
+        Assertions.assertEquals(2, strings.size());
+    }
+
+    @Test
+    public void shouldConvertAndBeMutuable2() {
+        Set<String> strings = referenceReader.convert(new TypeReference<Set<String>>() {
+        }, Arrays.asList("123", "32"));
+        strings.add("456");
+        Assertions.assertEquals(3, strings.size());
+    }
 }

@@ -14,17 +14,23 @@
  */
 package org.jnosql.artemis.reflection;
 
+import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.PreparedStatement;
 
 import java.lang.reflect.Method;
+import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -66,9 +72,20 @@ enum DynamicReturnConverter {
             return new PriorityQueue<>(dynamic.list());
         } else if (Stream.class.equals(returnType)) {
             return dynamic.list().stream();
+        } else if (Deque.class.equals(returnType)) {
+            return new ArrayDeque<>(dynamic.list());
+        } else if (NavigableSet.class.equals(returnType) || SortedSet.class.equals(returnType)) {
+            checkImplementsComparable(typeClass);
+            return new TreeSet<>(dynamic.list());
         }
 
         return dynamic.list();
+    }
+
+    private void checkImplementsComparable(Class<?> typeClass) {
+        if (!Comparable.class.isAssignableFrom(typeClass)) {
+            throw new DynamicQueryException(String.format("To use either NavigableSet or SortedSet the entity %s must implement Comparable.", typeClass));
+        }
     }
 
     /**

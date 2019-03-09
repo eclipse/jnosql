@@ -105,7 +105,7 @@ public class GenericFieldMapping extends AbstractFieldMapping {
         Class<?> type = getNativeField().getType();
         if (Deque.class.equals(type) || Queue.class.equals(type)) {
             return new LinkedList<>();
-        } else if (List.class.equals(type) || Iterable.class.equals(type)) {
+        } else if (List.class.equals(type) || Iterable.class.equals(type) || Collection.class.equals(type)) {
             return new ArrayList<>();
         } else if (NavigableSet.class.equals(type) || SortedSet.class.equals(type)) {
             return new TreeSet<>();

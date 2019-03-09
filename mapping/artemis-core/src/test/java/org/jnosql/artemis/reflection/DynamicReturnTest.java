@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
+import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.Repository;
 import org.jnosql.diana.api.NonUniqueResultException;
 import org.junit.jupiter.api.Assertions;
@@ -23,11 +24,14 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -149,7 +153,6 @@ class DynamicReturnTest {
     }
 
 
-
     @Test
     public void shouldReturnCollection() throws NoSuchMethodException {
 
@@ -218,6 +221,72 @@ class DynamicReturnTest {
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
+    @Test
+    public void shouldReturnSortedSet() throws NoSuchMethodException {
+
+        Method method = getMethod(PersonRepository.class, "getSortedSet");
+        Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(Person.class)
+                .withMethodSource(method).withList(list)
+                .withSingleResult(singlResult).build();
+        Object execute = dynamicReturn.execute();
+        Assertions.assertTrue(execute instanceof SortedSet);
+        SortedSet<Person> persons = (SortedSet) execute;
+        Assertions.assertFalse(persons.isEmpty());
+        Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
+    }
+
+    @Test
+    public void shouldReturnNavigableSet() throws NoSuchMethodException {
+
+        Method method = getMethod(PersonRepository.class, "getNavigableSet");
+        Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(Person.class)
+                .withMethodSource(method).withList(list)
+                .withSingleResult(singlResult).build();
+        Object execute = dynamicReturn.execute();
+        Assertions.assertTrue(execute instanceof NavigableSet);
+        NavigableSet<Person> persons = (NavigableSet) execute;
+        Assertions.assertFalse(persons.isEmpty());
+        Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
+    }
+
+
+    @Test
+    public void shouldReturnDeque() throws NoSuchMethodException {
+
+        Method method = getMethod(PersonRepository.class, "getDeque");
+        Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(Person.class)
+                .withMethodSource(method).withList(list)
+                .withSingleResult(singlResult).build();
+        Object execute = dynamicReturn.execute();
+        Assertions.assertTrue(execute instanceof Deque);
+        Deque<Person> persons = (Deque) execute;
+        Assertions.assertFalse(persons.isEmpty());
+        Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
+    }
+
+    @Test
+    public void shouldReturnErrorNavigableSetEntityIsNotComparable() throws NoSuchMethodException {
+
+        Method method = getMethod(AnimalRepository.class, "getSortedSet");
+        Supplier<List<?>> list = () -> singletonList(new Animal("Ada"));
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(Animal.class)
+                .withMethodSource(method).withList(list)
+                .withSingleResult(singlResult).build();
+
+        Assertions.assertThrows(DynamicQueryException.class, dynamicReturn::execute);
+    }
+
 
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
@@ -226,7 +295,18 @@ class DynamicReturnTest {
 
     }
 
-    private static class Person {
+
+    private static class Animal {
+        private final String name;
+
+        private Animal(String name) {
+            this.name = name;
+        }
+
+
+    }
+
+    private static class Person implements Comparable<Person> {
 
         private final String name;
 
@@ -250,6 +330,16 @@ class DynamicReturnTest {
         public int hashCode() {
             return Objects.hashCode(name);
         }
+
+        @Override
+        public int compareTo(Person o) {
+            return name.compareTo(o.name);
+        }
+    }
+
+    private interface AnimalRepository extends Repository<Animal, String> {
+
+        SortedSet<Person> getSortedSet();
     }
 
     private interface PersonRepository extends Repository<Person, String> {
@@ -269,6 +359,12 @@ class DynamicReturnTest {
         Queue<Person> getQueue();
 
         Stream<Person> getStream();
+
+        SortedSet<Person> getSortedSet();
+
+        NavigableSet<Person> getNavigableSet();
+
+        Deque<Person> getDeque();
     }
 
 

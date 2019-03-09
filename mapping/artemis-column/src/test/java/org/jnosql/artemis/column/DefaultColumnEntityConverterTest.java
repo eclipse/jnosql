@@ -25,12 +25,14 @@ import org.jnosql.artemis.model.Job;
 import org.jnosql.artemis.model.Money;
 import org.jnosql.artemis.model.Movie;
 import org.jnosql.artemis.model.Person;
+import org.jnosql.artemis.model.Vendor;
 import org.jnosql.artemis.model.Worker;
 import org.jnosql.artemis.model.Zipcode;
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnEntity;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -378,6 +380,19 @@ public class DefaultColumnEntityConverterTest {
         assertEquals("Bahia", address.getState());
         assertEquals("12321", address.getZipcode().getZip());
         assertEquals("1234", address.getZipcode().getPlusFour());
+
+    }
+
+    @Test
+    public void shouldConvertAndDoNotUseUnmodifiableCollection() {
+        ColumnEntity entity = ColumnEntity.of("vendors");
+        entity.add("name", "name");
+        entity.add("prefixes", Arrays.asList("value", "value2"));
+
+        Vendor vendor = converter.toEntity(entity);
+        vendor.add("value3");
+
+        Assertions.assertEquals(3, vendor.getPrefixes().size());
 
     }
 

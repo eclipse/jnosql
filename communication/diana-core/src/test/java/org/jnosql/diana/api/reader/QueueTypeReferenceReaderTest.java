@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2019 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -24,39 +24,33 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
 import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
+class QueueTypeReferenceReaderTest {
 
-public class ListTypeReferenceReaderTest {
-
-    private TypeReferenceReader referenceReader = new ListTypeReferenceReader();
+    private TypeReferenceReader referenceReader = new QueueTypeReferenceReader();
 
     @Test
     public void shouldBeCompatible() {
 
+        assertTrue(referenceReader.isCompatible(new TypeReference<Queue<String>>() {
+        }));
+        assertTrue(referenceReader.isCompatible(new TypeReference<Queue<Long>>() {
+        }));
 
-        assertTrue(referenceReader.isCompatible(new TypeReference<List<String>>() {
+        assertTrue(referenceReader.isCompatible(new TypeReference<Deque<String>>() {
         }));
-        assertTrue(referenceReader.isCompatible(new TypeReference<List<Long>>() {
+        assertTrue(referenceReader.isCompatible(new TypeReference<Deque<Long>>() {
         }));
 
-        assertTrue(referenceReader.isCompatible(new TypeReference<Collection<String>>() {
-        }));
-        assertTrue(referenceReader.isCompatible(new TypeReference<Collection<Long>>() {
-        }));
-        assertTrue(referenceReader.isCompatible(new TypeReference<Iterable<String>>() {
-        }));
-        assertTrue(referenceReader.isCompatible(new TypeReference<Iterable<Long>>() {
-        }));
     }
 
 
@@ -70,8 +64,6 @@ public class ListTypeReferenceReaderTest {
         }));
         assertFalse(referenceReader.isCompatible(new TypeReference<List<List<String>>>() {
         }));
-        assertFalse(referenceReader.isCompatible(new TypeReference<Queue<String>>() {
-        }));
         assertFalse(referenceReader.isCompatible(new TypeReference<Map<Integer, String>>() {
         }));
     }
@@ -79,25 +71,16 @@ public class ListTypeReferenceReaderTest {
 
     @Test
     public void shouldConvert() {
-        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<List<String>>() {
+        assertEquals(new LinkedList<>(singletonList("123")), referenceReader.convert(new TypeReference<Queue<String>>() {
         }, "123"));
-        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<List<Long>>() {
-        }, "123"));
-
-        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<Collection<String>>() {
-        }, "123"));
-        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<Collection<Long>>() {
+        assertEquals(new LinkedList<>(singletonList(123L)), referenceReader.convert(new TypeReference<Queue<Long>>() {
         }, "123"));
 
-        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<Iterable<String>>() {
-        }, "123"));
-        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<Iterable<Long>>() {
-        }, "123"));
     }
 
     @Test
     public void shouldConvertAndBeMutuable() {
-        List<String> strings = referenceReader.convert(new TypeReference<List<String>>() {
+        Queue<String> strings = referenceReader.convert(new TypeReference<Queue<String>>() {
         }, "123");
         strings.add("456");
         Assertions.assertEquals(2, strings.size());
@@ -105,7 +88,7 @@ public class ListTypeReferenceReaderTest {
 
     @Test
     public void shouldConvertAndBeMutuable2() {
-        List<String> strings = referenceReader.convert(new TypeReference<List<String>>() {
+        Queue<String> strings = referenceReader.convert(new TypeReference<Queue<String>>() {
         }, Arrays.asList("123", "32"));
         strings.add("456");
         Assertions.assertEquals(3, strings.size());

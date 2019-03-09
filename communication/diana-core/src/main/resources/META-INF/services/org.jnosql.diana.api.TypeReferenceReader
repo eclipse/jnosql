@@ -19,4 +19,7 @@ org.jnosql.diana.api.reader.SetTypeReferenceReader
 org.jnosql.diana.api.reader.MapTypeReferenceReader
 org.jnosql.diana.api.reader.StreamTypeReferenceReader
 org.jnosql.diana.api.reader.OptionalTypeReferenceReader
+org.jnosql.diana.api.reader.QueueTypeReferenceReader
+org.jnosql.diana.api.reader.NavigableSetTypeReferenceReader
+
 

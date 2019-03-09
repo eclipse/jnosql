@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -63,4 +64,27 @@ public class MapTypeReferenceReaderTest {
         assertEquals(singletonMap(123L, 123), referenceReader.convert(new TypeReference<Map<Long, Integer>>(){}, singletonMap("123", "123")));
     }
 
+    @Test
+    public void shouldSholdcreateMutuableMap() {
+        Map<String, String> map = referenceReader.convert(new TypeReference<Map<String, String>>() {
+        }, singletonMap(123, 123L));
+
+        map.put("23", "123");
+
+        assertEquals(2, map.size());
+    }
+
+
+    @Test
+    public void shouldSholdcreateMutuableMap2() {
+        Map<Integer, Long> oldMap = new HashMap<>();
+        oldMap.put(1, 234L);
+        oldMap.put(2, 2345L);
+        Map<String, String> map = referenceReader.convert(new TypeReference<Map<String, String>>() {
+        }, oldMap);
+
+        map.put("23", "123");
+
+        assertEquals(3, map.size());
+    }
 }

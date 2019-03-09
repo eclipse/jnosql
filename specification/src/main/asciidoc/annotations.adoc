@@ -245,7 +245,7 @@ It has support to:
 * `java.util.Iterable`
 * `java.util.NavigableSet`
 * `java.util.SortedSet`
-* `java.util.HashSet`
+* `java.util.Collection`
 
 
 [source,java]
