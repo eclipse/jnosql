@@ -46,8 +46,8 @@ public class QueueTypeReferenceReader implements TypeReferenceReader {
             ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
 
             return (Queue.class.equals(parameterizedType.getRawType())
-                    &&
-                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]));
+                    || Iterable.class.equals(parameterizedType.getRawType())) &&
+                    Class.class.isInstance(parameterizedType.getActualTypeArguments()[0]);
         }
         return false;
     }
