@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.StreamSupport.stream;
 
 /**
- * The {@link TypeReferenceReader} to {@link Deque}
+ * The {@link TypeReferenceReader} to {@link Queue}
  */
 @SuppressWarnings("unchecked")
 public class DequeTypeReferenceReader implements TypeReferenceReader {
