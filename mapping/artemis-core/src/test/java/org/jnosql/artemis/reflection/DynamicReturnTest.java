@@ -152,7 +152,6 @@ class DynamicReturnTest {
     }
 
 
-
     @Test
     public void shouldReturnCollection() throws NoSuchMethodException {
 
@@ -274,7 +273,6 @@ class DynamicReturnTest {
     }
 
 
-
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
                 .filter(m -> m.getName().equals(methodName))
@@ -282,7 +280,7 @@ class DynamicReturnTest {
 
     }
 
-    private static class Person {
+    private static class Person implements Comparable<Person> {
 
         private final String name;
 
@@ -305,6 +303,11 @@ class DynamicReturnTest {
         @Override
         public int hashCode() {
             return Objects.hashCode(name);
+        }
+
+        @Override
+        public int compareTo(Person o) {
+            return name.compareTo(o.name);
         }
     }
 
