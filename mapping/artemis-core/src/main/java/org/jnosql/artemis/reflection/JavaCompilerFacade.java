@@ -65,18 +65,18 @@ final class JavaCompilerFacade {
                 return createCompilerErrorMessage(source);
             }
         } catch (IOException e) {
-            throw new IllegalStateException("The generated class (" + source.getSimpleName() + ") failed to compile because the "
+            throw new CompilerAccessException("The generated class (" + source.getSimpleName() + ") failed to compile because the "
                     + JavaFileManager.class.getSimpleName() + " didn't close.", e);
         }
         try {
             Class<T> compiledClass = (Class<T>) classLoader.loadClass(source.getName());
             if (!source.getType().isAssignableFrom(compiledClass)) {
-                throw new ClassCastException("The generated compiledClass (" + compiledClass
+                throw new CompilerAccessException("The generated compiledClass (" + compiledClass
                         + ") cannot be assigned to the superclass/interface (" + source.getType() + ").");
             }
             return compiledClass;
         } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("The generated class (" + source.getSimpleName()
+            throw new CompilerAccessException("The generated class (" + source.getSimpleName()
                     + ") compiled, but failed to load.", e);
         }
 
