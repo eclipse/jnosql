@@ -18,10 +18,12 @@ package org.jnosql.diana.api.reader;
 
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.TypeReferenceReader;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -40,31 +42,61 @@ public class ListTypeReferenceReaderTest {
     @Test
     public void shouldBeCompatible() {
 
-        assertTrue(referenceReader.isCompatible(new TypeReference<List<String>>(){}));
-        assertTrue(referenceReader.isCompatible(new TypeReference<List<Long>>(){}));
-        assertTrue(referenceReader.isCompatible(new TypeReference<Iterable<String>>(){}));
-        assertTrue(referenceReader.isCompatible(new TypeReference<Iterable<Long>>(){}));
+        assertTrue(referenceReader.isCompatible(new TypeReference<List<String>>() {
+        }));
+        assertTrue(referenceReader.isCompatible(new TypeReference<List<Long>>() {
+        }));
+        assertTrue(referenceReader.isCompatible(new TypeReference<Iterable<String>>() {
+        }));
+        assertTrue(referenceReader.isCompatible(new TypeReference<Iterable<Long>>() {
+        }));
     }
 
 
     @Test
     public void shouldNotBeCompatible() {
-        assertFalse(referenceReader.isCompatible(new TypeReference<ArrayList<BigDecimal>>(){}));
-        assertFalse(referenceReader.isCompatible(new TypeReference<String>(){}));
-        assertFalse(referenceReader.isCompatible(new TypeReference<Set<String>>(){}));
-        assertFalse(referenceReader.isCompatible(new TypeReference<List<List<String>>>(){}));
-        assertFalse(referenceReader.isCompatible(new TypeReference<Queue<String>>(){}));
-        assertFalse(referenceReader.isCompatible(new TypeReference<Map<Integer, String>>(){}));
+        assertFalse(referenceReader.isCompatible(new TypeReference<ArrayList<BigDecimal>>() {
+        }));
+        assertFalse(referenceReader.isCompatible(new TypeReference<String>() {
+        }));
+        assertFalse(referenceReader.isCompatible(new TypeReference<Set<String>>() {
+        }));
+        assertFalse(referenceReader.isCompatible(new TypeReference<List<List<String>>>() {
+        }));
+        assertFalse(referenceReader.isCompatible(new TypeReference<Queue<String>>() {
+        }));
+        assertFalse(referenceReader.isCompatible(new TypeReference<Map<Integer, String>>() {
+        }));
     }
 
 
     @Test
     public void shouldConvert() {
-        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<List<String>>(){}, "123"));
-        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<List<Long>>(){}, "123"));
+        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<List<String>>() {
+        }, "123"));
+        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<List<Long>>() {
+        }, "123"));
 
-        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<Iterable<String>>(){}, "123"));
-        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<Iterable<Long>>(){}, "123"));
+        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<Iterable<String>>() {
+        }, "123"));
+        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<Iterable<Long>>() {
+        }, "123"));
+    }
+
+    @Test
+    public void shouldConvertAndBeMutuable() {
+        List<String> strings = referenceReader.convert(new TypeReference<List<String>>() {
+        }, "123");
+        strings.add("456");
+        Assertions.assertEquals(2, strings.size());
+    }
+
+    @Test
+    public void shouldConvertAndBeMutuable2() {
+        List<String> strings = referenceReader.convert(new TypeReference<List<String>>() {
+        }, Arrays.asList("123", "32"));
+        strings.add("456");
+        Assertions.assertEquals(3, strings.size());
     }
 
 }

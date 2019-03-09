@@ -24,6 +24,8 @@ import org.jnosql.diana.api.ValueReaderDecorator;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
@@ -61,7 +63,7 @@ public class ListTypeReferenceReader implements TypeReferenceReader {
             return (T) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(classType, o))
                     .collect(toList());
         }
-        return (T) singletonList(SERVICE_PROVIDER.read(classType, value));
+        return (T) new ArrayList<>(Collections.singletonList(SERVICE_PROVIDER.read(classType, value)));
     }
 
 
