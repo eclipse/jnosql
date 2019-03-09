@@ -24,9 +24,9 @@ import org.jnosql.diana.api.ValueReaderDecorator;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
@@ -61,9 +61,9 @@ public class DequeTypeReferenceReader implements TypeReferenceReader {
         if (Iterable.class.isInstance(value)) {
             Iterable iterable = Iterable.class.cast(value);
             return (T) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(classType, o))
-                    .collect(Collectors.toCollection(LinkedList::new));
+                    .collect(Collectors.toCollection(ArrayDeque::new));
         }
-        return (T) new LinkedList<>(Collections.singletonList(SERVICE_PROVIDER.read(classType, value)));
+        return (T) new ArrayDeque<>(Collections.singletonList(SERVICE_PROVIDER.read(classType, value)));
     }
 
 
