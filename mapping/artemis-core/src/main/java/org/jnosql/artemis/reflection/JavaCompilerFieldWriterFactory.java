@@ -55,10 +55,8 @@ final class JavaCompilerFieldWriterFactory implements FieldWriterFactory {
         Class<?> declaringClass = field.getDeclaringClass();
         Optional<String> methodName = getMethodName(declaringClass, field);
 
-        FieldWriter fieldWriter = methodName.map(compile(declaringClass, field.getType()))
+        return methodName.map(compile(declaringClass, field.getType()))
                 .orElseGet(() -> fallback.apply(field));
-
-        return fieldWriter;
     }
 
     private Function<String, FieldWriter> compile(Class<?> declaringClass, Class<?> type) {
@@ -72,8 +70,8 @@ final class JavaCompilerFieldWriterFactory implements FieldWriterFactory {
                     newInstance, method, typeCast);
 
             FieldWriterJavaSource source = new FieldWriterJavaSource(name, simpleName, javaSource);
-            Class<FieldWriter> reader = (Class<FieldWriter>) compilerFacade.apply(source);
-            return reflections.newInstance(reader);
+            Optional<Class<? extends FieldWriter>> reader =  compilerFacade.apply(source);
+            return reader.map(reflections::newInstance).orElse(null);
         };
     }
 

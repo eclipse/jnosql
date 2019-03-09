@@ -54,7 +54,7 @@ class JavaCompilerBeanPropertyReaderFactory {
                 return ReadFromGetterMethod.class;
             }
         };
-        Class<? extends ReadFromGetterMethod> compiledClass = compilerFacade.apply(javaSource);
+        Class<? extends ReadFromGetterMethod> compiledClass = compilerFacade.apply(javaSource).get();
         try {
             return compiledClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
