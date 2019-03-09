@@ -21,6 +21,7 @@ import org.jnosql.artemis.model.AppointmentBook;
 import org.jnosql.artemis.model.Contact;
 import org.jnosql.artemis.model.ContactType;
 import org.jnosql.artemis.model.Director;
+import org.jnosql.artemis.model.Download;
 import org.jnosql.artemis.model.Job;
 import org.jnosql.artemis.model.Money;
 import org.jnosql.artemis.model.Movie;
@@ -396,6 +397,19 @@ public class DefaultDocumentEntityConverterTest {
 
         Assertions.assertEquals(3, vendor.getPrefixes().size());
 
+    }
+
+    @Test
+    public void shouldConvertEntityToDocumentWithArray() {
+        byte[] contents = {1, 2, 3, 4, 5, 6};
+
+        DocumentEntity entity = DocumentEntity.of("download");
+        entity.add("id", 1L);
+        entity.add("contents", contents);
+
+        Download download = converter.toEntity(entity);
+        Assertions.assertEquals(1L, download.getId());
+        Assertions.assertEquals(contents, download.getContents());
     }
 
     private Object getValue(Optional<Document> document) {
