@@ -24,6 +24,7 @@ import org.jnosql.diana.api.ValueReaderDecorator;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashSet;
 import java.util.Set;
 
 import static java.util.Collections.singleton;
@@ -60,7 +61,7 @@ public class SetTypeReferenceReader implements TypeReferenceReader {
             return (T) stream(iterable.spliterator(), false).map(o -> SERVICE_PROVIDER.read(classType, o))
                     .collect(toSet());
         }
-        return (T) singleton(SERVICE_PROVIDER.read(classType, value));
+        return (T) new HashSet<>(singleton(SERVICE_PROVIDER.read(classType, value)));
     }
 
 
