@@ -17,19 +17,23 @@
 package org.jnosql.artemis.model;
 
 import org.jnosql.artemis.Column;
+import org.jnosql.artemis.Entity;
 import org.jnosql.artemis.Id;
 
 import java.util.Collections;
 import java.util.Set;
 
+@Entity("vendors")
 public class Vendor {
+
     @Id
-    private  String name;
+    private String name;
 
     @Column
     private Set<String> prefixes;
 
-    Vendor() {}
+    Vendor() {
+    }
 
     public Vendor(String name) {
         this.name = name;
@@ -50,5 +54,9 @@ public class Vendor {
 
     public void setPrefixes(Set<String> prefixes) {
         this.prefixes = prefixes;
+    }
+
+    public void add(String prefix) {
+        this.prefixes.add(prefix);
     }
 }
