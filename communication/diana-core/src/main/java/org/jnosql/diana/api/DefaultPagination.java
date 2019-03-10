@@ -54,7 +54,7 @@ final class DefaultPagination implements Pagination {
 
     @Override
     public Pagination next() {
-        return null;
+        return new DefaultPagination(page + 1, size);
     }
 
     @Override
