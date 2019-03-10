@@ -55,10 +55,9 @@ final class JavaCompilerFieldReaderFactory implements FieldReaderFactory {
         Class<?> declaringClass = field.getDeclaringClass();
         Optional<String> methodName = getMethodName(declaringClass, field);
 
-        FieldReader fieldReader = methodName.map(compile(declaringClass))
+        return methodName.map(compile(declaringClass))
                 .orElseGet(() -> fallback.apply(field));
 
-        return fieldReader;
     }
 
     private Function<String, FieldReader> compile(Class<?> declaringClass) {
@@ -70,8 +69,8 @@ final class JavaCompilerFieldReaderFactory implements FieldReaderFactory {
             String name = declaringClass.getName() + "$" + method;
             String javaSource = StringFormatter.INSTANCE.format(TEMPLATE, packageName, simpleName, newInstance, method);
             FieldReaderJavaSource source = new FieldReaderJavaSource(name, simpleName, javaSource);
-            Class<FieldReader> reader = (Class<FieldReader>) compilerFacade.apply(source);
-            return reflections.newInstance(reader);
+            Optional<Class<? extends FieldReader>> reader = compilerFacade.apply(source);
+            return reader.map(reflections::newInstance).orElse(null);
         };
     }
 

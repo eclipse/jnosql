@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.security.PrivilegedAction;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -33,6 +35,8 @@ import static java.security.AccessController.doPrivileged;
  * Class that converts a {@link JavaSource} to a compiled class
  */
 final class JavaCompilerFacade {
+
+    private static final Logger LOGGER = Logger.getLogger(JavaCompilerFacade.class.getName());
 
     private static final Pattern BREAK_LINE = Pattern.compile("\n");
     private final JavaCompilerClassLoader classLoader;
@@ -48,8 +52,16 @@ final class JavaCompilerFacade {
         this.diagnosticCollector = new DiagnosticCollector<>();
     }
 
-    public <T> Class<? extends T> apply(JavaSource<T> source) {
-        return compile(source);
+    public <T> Optional<Class<? extends T>> apply(JavaSource<T> source) {
+        try {
+            return Optional.of(compile(source));
+        } catch (CompilerAccessException exp) {
+            LOGGER.info(exp.getMessage());
+            if (LOGGER.isLoggable(Level.FINEST)) {
+                LOGGER.log(Level.FINEST, "Error when tries to optmizes the accessor", exp);
+            }
+            return Optional.empty();
+        }
     }
 
     private synchronized <T> Class<? extends T> compile(JavaSource<T> source) {
@@ -65,18 +77,18 @@ final class JavaCompilerFacade {
                 return createCompilerErrorMessage(source);
             }
         } catch (IOException e) {
-            throw new IllegalStateException("The generated class (" + source.getSimpleName() + ") failed to compile because the "
+            throw new CompilerAccessException("The generated class (" + source.getSimpleName() + ") failed to compile because the "
                     + JavaFileManager.class.getSimpleName() + " didn't close.", e);
         }
         try {
             Class<T> compiledClass = (Class<T>) classLoader.loadClass(source.getName());
             if (!source.getType().isAssignableFrom(compiledClass)) {
-                throw new ClassCastException("The generated compiledClass (" + compiledClass
+                throw new CompilerAccessException("The generated compiledClass (" + compiledClass
                         + ") cannot be assigned to the superclass/interface (" + source.getType() + ").");
             }
             return compiledClass;
         } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("The generated class (" + source.getSimpleName()
+            throw new CompilerAccessException("The generated class (" + source.getSimpleName()
                     + ") compiled, but failed to load.", e);
         }
 
@@ -90,7 +102,7 @@ final class JavaCompilerFacade {
                         .getLineNumber() <= 0 ? "" : BREAK_LINE.splitAsStream(source.getJavaSource())
                         .skip(d.getLineNumber() - 1).findFirst().orElse("")))
                 .collect(Collectors.joining("\n"));
-        throw new IllegalStateException("The generated class (" + source.getSimpleName() + ") failed to compile.\n"
+        throw new CompilerAccessException("The generated class (" + source.getSimpleName() + ") failed to compile.\n"
                 + compilationMessages);
     }
 

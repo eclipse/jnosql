@@ -16,6 +16,7 @@ package org.jnosql.artemis.reflection;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -51,8 +52,8 @@ final class JavaCompilerInstanceSupplierFactory implements InstanceSupplierFacto
             String name = declaringClass.getName() + "$InstanceSupplier";
             String javaSource = StringFormatter.INSTANCE.format(TEMPLATE, packageName, simpleName, newInstance);
             InstanceJavaSource source = new InstanceJavaSource(name, simpleName, javaSource);
-            Class<? extends InstanceSupplier> supplier = compilerFacade.apply(source);
-            return reflections.newInstance(supplier);
+            Optional<Class<? extends InstanceSupplier>> supplier = compilerFacade.apply(source);
+            return supplier.map(reflections::newInstance).orElse(null);
         }
 
         LOGGER.fine(String.format("The constructor to the class %s is not public, using fallback with Reflectioin",

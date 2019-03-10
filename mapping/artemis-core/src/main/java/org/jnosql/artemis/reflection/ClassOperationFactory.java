@@ -63,9 +63,9 @@ enum ClassOperationFactory implements Supplier<ClassOperation> {
             boolean isDisableCompiler = Boolean.valueOf(System.getProperty(DISABLE_COMPILER));
             if (isDisableCompiler) {
                 LOGGER.fine(LOG_MESSAGE);
-                return compiler;
+                return reflection;
             }
-            return reflection;
+            return compiler;
         }
 
 
