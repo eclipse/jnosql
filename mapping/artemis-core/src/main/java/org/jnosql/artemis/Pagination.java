@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.api;
+package org.jnosql.artemis;
 
 /**
  * Pagination is the process of separating print or digital content into discrete pages.

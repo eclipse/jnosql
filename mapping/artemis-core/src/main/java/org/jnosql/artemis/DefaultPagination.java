@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.api;
+package org.jnosql.artemis;
 
 import java.util.Objects;
 
