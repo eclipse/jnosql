@@ -49,7 +49,7 @@ final class DefaultPagination implements Pagination {
 
     @Override
     public long getSkip() {
-        return 0;
+        return size * (page - 1);
     }
 
     @Override
