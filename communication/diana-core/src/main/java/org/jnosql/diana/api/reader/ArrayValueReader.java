@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static java.util.Optional.ofNullable;
-
 
 /**
  * Class to reads and converts to array
@@ -38,9 +36,7 @@ public class ArrayValueReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {
-
-        return clazz.isArray() && ofNullable(clazz.getComponentType())
-                .map(Class::isPrimitive).orElse(false);
+        return clazz.isArray();
     }
 
     @Override
