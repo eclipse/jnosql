@@ -55,6 +55,12 @@ final class DefaultValue implements Value {
         throw new UnsupportedOperationException("The type " + typeReference + " is not supported");
     }
 
+    @Override
+    public boolean isInstanceOf(Class<?> typeClass) {
+        Objects.requireNonNull(typeClass, "typeClass is required");
+        return typeClass.isInstance(typeClass);
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -75,7 +81,7 @@ final class DefaultValue implements Value {
 
     @Override
     public String toString() {
-        return  "DefaultValue{" + "value=" + value +
+        return "DefaultValue{" + "value=" + value +
                 '}';
     }
 }
