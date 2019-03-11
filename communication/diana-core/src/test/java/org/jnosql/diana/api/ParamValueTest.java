@@ -45,13 +45,28 @@ class ParamValueTest {
     public void shouldSetParameter() {
         Params params = new Params();
         Value name = params.add("name");
-        KeyValueEntity<String> entity = KeyValueEntity.of("name", name);
+
         params.bind("name", "Ada Lovelace");
 
-        assertEquals("Ada Lovelace", entity.get());
-
-        params.bind("name", "Diana");
-        assertEquals("Diana", entity.get());
+        assertEquals("Ada Lovelace", name.get());
     }
 
+    @Test
+    public void shouldReturnsTrueWhenValueIsEmpty() {
+        Params params = new Params();
+        Value name = params.add("name");
+        assertTrue(name.isInstanceOf(Integer.class));
+    }
+
+    @Test
+    public void shouldisInstanceOf() {
+        Params params = new Params();
+        Value name = params.add("name");
+        assertTrue(name.isInstanceOf(Integer.class));
+
+        params.bind("name", "Ada Lovelace");
+        assertTrue(name.isInstanceOf(String.class));
+        assertFalse(name.isInstanceOf(Integer.class));
+
+    }
 }
