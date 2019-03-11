@@ -20,6 +20,7 @@ package org.jnosql.diana.api.document;
 
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
+import org.jnosql.diana.api.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,13 +59,13 @@ final class DefaultDocumentCondition implements DocumentCondition {
 
     static DocumentCondition in(Document document) {
         Objects.requireNonNull(document, "document is required");
-        Object value = document.get();
+        Value value = document.getValue();
         checkInClause(value);
         return new DefaultDocumentCondition(document, Condition.IN);
     }
 
-    private static void checkInClause(Object value) {
-        if (!Iterable.class.isInstance(value)) {
+    private static void checkInClause(Value value) {
+        if (!value.isInstanceOf(Iterable.class)) {
             throw new IllegalArgumentException("On DocumentCondition#in you must use an iterable" +
                     " instead of class: " + value.getClass().getName());
         }
@@ -169,7 +170,7 @@ final class DefaultDocumentCondition implements DocumentCondition {
 
     @Override
     public String toString() {
-        return  "DefaultDocumentCondition{" + "document=" + document +
+        return "DefaultDocumentCondition{" + "document=" + document +
                 ", condition=" + condition +
                 '}';
     }
