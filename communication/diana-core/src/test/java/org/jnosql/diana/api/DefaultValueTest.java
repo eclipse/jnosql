@@ -21,6 +21,7 @@ package org.jnosql.diana.api;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.inject.Inject;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
@@ -143,4 +144,14 @@ public class DefaultValueTest {
         });
     }
 
+    @Test
+    public void shouldReturnErrorWhenIsInstanceIsNull() {
+        Assertions.assertThrows(NullPointerException.class, () -> Value.of(12).isInstanceOf(null));
+    }
+
+    @Test
+    public void shouldIsInstanceOf() {
+        Assertions.assertTrue(Value.of("12").isInstanceOf(String.class));
+        Assertions.assertFalse(Value.of("12").isInstanceOf(Integer.class));
+    }
 }

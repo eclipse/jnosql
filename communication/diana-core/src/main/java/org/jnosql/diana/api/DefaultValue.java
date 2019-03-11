@@ -58,7 +58,7 @@ final class DefaultValue implements Value {
     @Override
     public boolean isInstanceOf(Class<?> typeClass) {
         Objects.requireNonNull(typeClass, "typeClass is required");
-        return typeClass.isInstance(typeClass);
+        return typeClass.isInstance(value);
     }
 
 
