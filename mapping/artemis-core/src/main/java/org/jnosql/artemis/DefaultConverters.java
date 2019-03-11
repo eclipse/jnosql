@@ -15,8 +15,6 @@
 package org.jnosql.artemis;
 
 
-import org.jnosql.artemis.reflection.Reflections;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
