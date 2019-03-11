@@ -20,6 +20,8 @@ import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.diana.api.column.ColumnQuery;
 
+import java.util.Objects;
+
 /**
  * A {@link ColumnQuery} that allows select based on pagination.
  */
@@ -39,4 +41,19 @@ public interface ColumnQueryPagination extends ColumnQuery {
      * @return a current {@link Pagination}
      */
     Pagination getPagination();
+
+
+    /**
+     * Creates a new instance of {@link ColumnQueryPagination}
+     *
+     * @param query      the query
+     * @param pagination the pagination
+     * @return a {@link ColumnQueryPagination} instance
+     * @throws NullPointerException when there is null parameter
+     */
+    static ColumnQueryPagination of(ColumnQuery query, Pagination pagination) {
+        Objects.requireNonNull(query, "query is required");
+        Objects.requireNonNull(pagination, "pagination is required");
+        return new DefaultColumnQueryPagination(query, pagination);
+    }
 }
