@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  *
  * @param <T> the entity type
  */
-public interface Page<T> extends Supplier<List<T>> {
+public interface Page<T> {
 
     /**
      * Returns the {@link Pagination} of the current {@link Page}
