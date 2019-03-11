@@ -56,9 +56,8 @@ final class JavaCompilerFacade {
         try {
             return Optional.of(compile(source));
         } catch (CompilerAccessException exp) {
-            LOGGER.info(exp.getMessage());
             if (LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.log(Level.FINEST, "Error when tries to optmizes the accessor", exp);
+                LOGGER.log(Level.FINEST, "Error when tries to optimizes the accessor", exp);
             }
             return Optional.empty();
         }
