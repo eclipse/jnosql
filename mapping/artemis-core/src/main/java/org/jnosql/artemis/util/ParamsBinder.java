@@ -18,7 +18,7 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.query.Params;
+import org.jnosql.diana.api.Params;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -60,7 +60,7 @@ public class ParamsBinder {
         Objects.requireNonNull(args, "args is required");
         Objects.requireNonNull(method, "method is required");
 
-        List<String> names = params.getNames();
+        List<String> names = params.getParametersNames();
         if (names.size() > args.length) {
             throw new DynamicQueryException("The number of parameters in a query is bigger than the number of " +
                     "parameters in the method: " + method);

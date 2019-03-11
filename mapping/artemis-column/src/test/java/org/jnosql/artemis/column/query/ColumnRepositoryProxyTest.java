@@ -57,6 +57,7 @@ import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.BETWEEN;
 import static org.jnosql.diana.api.Condition.EQUALS;
 import static org.jnosql.diana.api.Condition.GREATER_THAN;
+import static org.jnosql.diana.api.Condition.IN;
 import static org.jnosql.diana.api.Condition.LESSER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.LESSER_THAN;
 import static org.jnosql.diana.api.Condition.LIKE;
@@ -482,6 +483,25 @@ public class ColumnRepositoryProxyTest {
 
     }
 
+    @Test
+    public void shouldFindByIn() {
+        Vendor vendor = new Vendor("vendor");
+        vendor.setPrefixes(Collections.singleton("prefix"));
+
+        when(template.select(any(ColumnQuery.class)))
+                .thenReturn(singletonList(vendor));
+
+        vendorRepository.findByPrefixesIn(singletonList("prefix"));
+
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).singleResult(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.getCondition().get();
+        assertEquals("vendors", query.getColumnFamily());
+        assertEquals(IN, condition.getCondition());
+
+    }
+
 
     @Test
     public void shouldConvertFieldToTheType() {
@@ -557,6 +577,8 @@ public class ColumnRepositoryProxyTest {
     public interface VendorRepository extends Repository<Vendor, String> {
 
         Vendor findByPrefixes(String prefix);
+
+        Vendor findByPrefixesIn(List<String> prefix);
 
     }
 }
