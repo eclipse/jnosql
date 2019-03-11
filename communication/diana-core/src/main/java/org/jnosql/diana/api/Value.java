@@ -21,7 +21,7 @@ package org.jnosql.diana.api;
 /**
  * This interface represents the value that will be storage in the database.
  */
-public interface Value  {
+public interface Value {
 
     /**
      * Returns the real value without conversion.
@@ -53,6 +53,15 @@ public interface Value  {
      * @see ValueReader
      */
     <T> T get(TypeSupplier<T> typeSupplier);
+
+    /**
+     * A wrapper of {@link Class#isInstance(Object)} to check the value instance within the {@link Value}
+     *
+     * @param typeClass the type
+     * @return {@link Class#isInstance(Object)}
+     * @throws NullPointerException when typeClass is null
+     */
+    boolean isInstanceOf(Class<?> typeClass);
 
 
     /**
