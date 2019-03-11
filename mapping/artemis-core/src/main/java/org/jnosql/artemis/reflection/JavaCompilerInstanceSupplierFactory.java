@@ -53,7 +53,9 @@ final class JavaCompilerInstanceSupplierFactory implements InstanceSupplierFacto
             String javaSource = StringFormatter.INSTANCE.format(TEMPLATE, packageName, simpleName, newInstance);
             InstanceJavaSource source = new InstanceJavaSource(name, simpleName, javaSource);
             Optional<Class<? extends InstanceSupplier>> supplier = compilerFacade.apply(source);
-            return supplier.map(reflections::newInstance).orElse(null);
+            Optional<InstanceSupplier> instanceSupplier = supplier.map(reflections::newInstance);
+            return instanceSupplier.orElseGet(() -> fallback.apply(constructor));
+
         }
 
         LOGGER.fine(String.format("The constructor to the class %s is not public, using fallback with Reflectioin",
