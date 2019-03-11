@@ -20,6 +20,9 @@ import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.diana.api.column.ColumnQuery;
 
+/**
+ * A {@link ColumnQuery} that allows select based on pagination.
+ */
 public interface ColumnQueryPagination extends ColumnQuery {
 
 
