@@ -55,6 +55,7 @@ public interface Page<T> {
      * @param collectionFactory the collectionFactory
      * @param <C>               the collection type
      * @return a content of this page as {@link Collection} from collectionFactory
+     * @throws NullPointerException when collectionFactory is null
      */
     <C extends Collection<T>> C getContent(Supplier<C> collectionFactory);
 
