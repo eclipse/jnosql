@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
@@ -63,7 +64,7 @@ final class SelectQueryParser  implements SelectQueryConverter{
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
-        DocumentParams params = new DocumentParams();
+        Params params = new Params();
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
@@ -73,7 +74,7 @@ final class SelectQueryParser  implements SelectQueryConverter{
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager,
                                                 DocumentObserverParser observer) {
-        DocumentParams params = new DocumentParams();
+        Params params = new Params();
 
         SelectQuery selectQuery = selectQuerySupplier.apply(query);
 
@@ -85,7 +86,7 @@ final class SelectQueryParser  implements SelectQueryConverter{
     public DocumentQueryParams apply(SelectQuery selectQuery, DocumentObserverParser observer) {
         Objects.requireNonNull(selectQuery, "selectQuery is required");
         Objects.requireNonNull(observer, "observer is required");
-        DocumentParams params = new DocumentParams();
+        Params params = new Params();
         DocumentQuery columnQuery = getDocumentQuery(params, selectQuery, observer);
         return new DefaultDocumentQueryParams(columnQuery, params);
     }
@@ -102,7 +103,7 @@ final class SelectQueryParser  implements SelectQueryConverter{
         List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, collection))
                 .collect(toList());
         DocumentCondition condition = null;
-        DocumentParams params = new DocumentParams();
+        Params params = new Params();
         if (selectQuery.getWhere().isPresent()) {
             condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
         }
@@ -113,7 +114,7 @@ final class SelectQueryParser  implements SelectQueryConverter{
         return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
-    private DocumentQuery getDocumentQuery(DocumentParams params, SelectQuery selectQuery, DocumentObserverParser observer) {
+    private DocumentQuery getDocumentQuery(Params params, SelectQuery selectQuery, DocumentObserverParser observer) {
 
         String collection = observer.fireEntity(selectQuery.getEntity());
         long limit = selectQuery.getLimit();
