@@ -17,7 +17,7 @@
 package org.jnosql.artemis.column.query;
 
 import org.jnosql.artemis.Page;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.artemis.column.ColumnQueryPagination;
 
 /**
  *
@@ -27,9 +27,9 @@ public interface ColumnPage<T> extends Page<T> {
 
     /**
      * The query of the current {@link Page}
-     * @return {@link ColumnQuery}
+     * @return {@link ColumnQueryPagination}
      */
-    ColumnQuery getQuery();
+    ColumnQueryPagination getQuery();
 
     /**
      * Returns the {@link Page} requesting the next {@link Page}.
