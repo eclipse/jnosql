@@ -23,6 +23,7 @@ import org.jnosql.artemis.Query;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.model.Person;
+import org.jnosql.artemis.model.Vendor;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
@@ -532,5 +533,11 @@ public class DocumentRepositoryProxyTest {
 
         @Query("select * from Person where id = @id")
         Optional<Person> findByQuery(@Param("id") String id);
+    }
+
+    public interface VendorRepository extends Repository<Vendor, String> {
+
+        Vendor findByPrefixes(String prefix);
+
     }
 }
