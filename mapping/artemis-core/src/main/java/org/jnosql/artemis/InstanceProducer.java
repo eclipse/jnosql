@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis;
 
+
 /**
  * An instance producer from the Class
  */
