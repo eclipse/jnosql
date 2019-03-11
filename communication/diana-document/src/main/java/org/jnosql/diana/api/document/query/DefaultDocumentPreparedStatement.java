@@ -17,12 +17,13 @@
 package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.api.Params;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentQuery;
-import org.jnosql.query.QueryException;
 
 import java.time.Duration;
 import java.util.List;
@@ -42,7 +43,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
 
     private final PreparedStatementType type;
 
-    private final DocumentParams params;
+    private final Params params;
 
     private final String query;
 
@@ -56,7 +57,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
                                              DocumentQuery documentQuery,
                                              DocumentDeleteQuery documentDeleteQuery,
                                              PreparedStatementType type,
-                                             DocumentParams params,
+                                             Params params,
                                              String query,
                                              List<String> paramsLeft,
                                              Duration duration,
@@ -132,7 +133,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
 
     static DocumentPreparedStatement select(
             DocumentQuery documentQuery,
-            DocumentParams params,
+            Params params,
             String query,
             DocumentCollectionManager manager) {
         return new DefaultDocumentPreparedStatement(null, documentQuery,
@@ -142,7 +143,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
     }
 
     static DocumentPreparedStatement delete(DocumentDeleteQuery documentDeleteQuery,
-                                            DocumentParams params,
+                                            Params params,
                                             String query,
                                             DocumentCollectionManager manager) {
 
@@ -153,7 +154,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
     }
 
     static DocumentPreparedStatement insert(DocumentEntity entity,
-                                            DocumentParams params,
+                                            Params params,
                                             String query,
                                             Duration duration,
                                             DocumentCollectionManager manager) {
@@ -164,7 +165,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
     }
 
     static DocumentPreparedStatement update(DocumentEntity entity,
-                                            DocumentParams params,
+                                            Params params,
                                             String query,
                                             DocumentCollectionManager manager) {
         return new DefaultDocumentPreparedStatement(entity, null,

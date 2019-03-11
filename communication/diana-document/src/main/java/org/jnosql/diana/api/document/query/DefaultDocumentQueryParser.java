@@ -21,7 +21,7 @@ import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentQueryParser;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 
 import java.util.List;
 import java.util.Objects;

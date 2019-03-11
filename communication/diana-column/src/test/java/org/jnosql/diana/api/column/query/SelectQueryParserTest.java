@@ -28,7 +28,7 @@ import org.jnosql.diana.api.column.ColumnObserverParser;
 import org.jnosql.diana.api.column.ColumnPreparedStatement;
 import org.jnosql.diana.api.column.ColumnPreparedStatementAsync;
 import org.jnosql.diana.api.column.ColumnQuery;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;

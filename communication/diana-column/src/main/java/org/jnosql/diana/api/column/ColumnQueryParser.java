@@ -17,6 +17,8 @@
 package org.jnosql.diana.api.column;
 
 
+import org.jnosql.diana.api.QueryException;
+
 import java.util.List;
 
 /**
@@ -34,7 +36,7 @@ public interface ColumnQueryParser {
      * @return the result of the operation if delete it will always return an empty list
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
-     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     * @throws QueryException when there is error in the syntax
      */
     List<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer);
 
@@ -48,7 +50,7 @@ public interface ColumnQueryParser {
      * @return a {@link ColumnPreparedStatement} instance
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
-     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     * @throws QueryException when there is error in the syntax
      */
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer);
 

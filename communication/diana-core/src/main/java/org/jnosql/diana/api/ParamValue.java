@@ -1,27 +1,21 @@
 /*
- *
- *  Copyright (c) 2017 Otávio Santana and others
- *   All rights reserved. This program and the accompanying materials
- *   are made available under the terms of the Eclipse Public License v1.0
- *   and Apache License v2.0 which accompanies this distribution.
- *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
- *
- *   You may elect to redistribute this code under either of these licenses.
- *
- *   Contributors:
- *
- *   Otavio Santana
- *
+ *  Copyright (c) 2019 Otávio Santana and others
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  and Apache License v2.0 which accompanies this distribution.
+ *  The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ *  and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ *  You may elect to redistribute this code under either of these licenses.
+ *  Contributors:
+ *  Otavio Santana
  */
-package org.jnosql.diana.api.key.query;
-
-import org.jnosql.diana.api.TypeSupplier;
-import org.jnosql.diana.api.Value;
-import org.jnosql.query.QueryException;
+package org.jnosql.diana.api;
 
 import java.util.Objects;
 
+/**
+ * A Value that allows to set value instead of be immutable. This Value will use at the Dynamic query.
+ */
 final class ParamValue implements Value {
 
     private final String name;
@@ -56,6 +50,20 @@ final class ParamValue implements Value {
     public <T> T get(TypeSupplier<T> typeSupplier) {
         validValue();
         return Value.of(value).get(typeSupplier);
+    }
+
+    @Override
+    public boolean isInstanceOf(Class<?> typeClass) {
+        Objects.requireNonNull(typeClass, "typeClass is required");
+
+        if (value == null) {
+            return true;
+        }
+        return typeClass.isInstance(value);
+    }
+
+    public boolean isEmpty() {
+        return Objects.isNull(value);
     }
 
     private void validValue() {

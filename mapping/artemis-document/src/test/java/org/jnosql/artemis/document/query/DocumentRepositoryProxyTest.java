@@ -57,6 +57,7 @@ import static org.jnosql.diana.api.Condition.AND;
 import static org.jnosql.diana.api.Condition.BETWEEN;
 import static org.jnosql.diana.api.Condition.EQUALS;
 import static org.jnosql.diana.api.Condition.GREATER_THAN;
+import static org.jnosql.diana.api.Condition.IN;
 import static org.jnosql.diana.api.Condition.LESSER_EQUALS_THAN;
 import static org.jnosql.diana.api.Condition.LESSER_THAN;
 import static org.jnosql.diana.api.Condition.LIKE;
@@ -491,6 +492,26 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
+    public void shouldFindByIn() {
+        Vendor vendor = new Vendor("vendor");
+        vendor.setPrefixes(Collections.singleton("prefix"));
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(singletonList(vendor));
+
+        vendorRepository.findByPrefixesIn(singletonList("prefix"));
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).singleResult(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.getCondition().get();
+        assertEquals("vendors", query.getDocumentCollection());
+        assertEquals(IN, condition.getCondition());
+
+    }
+
+
+    @Test
     public void shouldConvertFieldToTheType() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
@@ -563,6 +584,8 @@ public class DocumentRepositoryProxyTest {
     public interface VendorRepository extends Repository<Vendor, String> {
 
         Vendor findByPrefixes(String prefix);
+
+        Vendor findByPrefixesIn(List<String> prefix);
 
     }
 }

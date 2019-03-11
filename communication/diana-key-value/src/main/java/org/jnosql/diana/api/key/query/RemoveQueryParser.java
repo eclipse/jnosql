@@ -16,10 +16,11 @@
  */
 package org.jnosql.diana.api.key.query;
 
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValuePreparedStatement;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.query.RemoveQuery;
 import org.jnosql.query.RemoveQuerySupplier;
 

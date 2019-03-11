@@ -17,12 +17,13 @@
 package org.jnosql.diana.api.column.query;
 
 
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnObserverParser;
 import org.jnosql.query.Condition;
 import org.jnosql.query.ConditionValue;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.query.Where;
 
 import static org.jnosql.diana.api.column.ColumnCondition.and;
@@ -41,12 +42,12 @@ final class Conditions {
     private Conditions() {
     }
 
-    static ColumnCondition getCondition(Where where, ColumnParams params, ColumnObserverParser observer, String entity) {
+    static ColumnCondition getCondition(Where where, Params params, ColumnObserverParser observer, String entity) {
         Condition condition = where.getCondition();
         return getCondition(condition, params, observer, entity);
     }
 
-    static ColumnCondition getCondition(Condition condition, ColumnParams parameters, ColumnObserverParser observer, String entity) {
+    static ColumnCondition getCondition(Condition condition, Params parameters, ColumnObserverParser observer, String entity) {
         switch (condition.getOperator()) {
             case EQUALS:
                 return eq(Column.of(getName(condition, observer, entity),

@@ -27,8 +27,10 @@ import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
+import org.jnosql.artemis.graph.model.Vendor;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +39,7 @@ import org.mockito.Mockito;
 
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +47,8 @@ import java.util.Set;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.jnosql.diana.api.Condition.EQUALS;
+import static org.jnosql.diana.api.Condition.IN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -63,7 +68,6 @@ public class GraphRepositoryProxyTest {
     @Inject
     private ClassMappings classMappings;
 
-    private PersonRepository personRepository;
 
     @Inject
     private Graph graph;
@@ -74,6 +78,10 @@ public class GraphRepositoryProxyTest {
     @Inject
     private Converters converters;
 
+    private PersonRepository personRepository;
+
+    private VendorRepository vendorRepository;
+
     @BeforeEach
     public void setUp() {
 
@@ -83,14 +91,23 @@ public class GraphRepositoryProxyTest {
 
         this.template = Mockito.mock(GraphTemplate.class);
 
-        GraphRepositoryProxy handler = new GraphRepositoryProxy(template,
+        GraphRepositoryProxy personHandler = new GraphRepositoryProxy(template,
                 classMappings, PersonRepository.class,graph, converter, converters);
+
+        GraphRepositoryProxy vendorHandler = new GraphRepositoryProxy(template,
+                classMappings, VendorRepository.class,graph, converter, converters);
+
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
+
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
-                handler);
+                personHandler);
+
+        vendorRepository = (VendorRepository) Proxy.newProxyInstance(VendorRepository.class.getClassLoader(),
+                new Class[]{VendorRepository.class},
+                vendorHandler);
     }
 
     @AfterEach
@@ -321,6 +338,33 @@ public class GraphRepositoryProxyTest {
         verify(preparedStatement).bind("name", "Ada");
     }
 
+    @Test
+    public void shouldFindByStringWhenFieldIsSet() {
+        Vendor vendor = new Vendor("vendor");
+        vendor.setPrefixes(Collections.singleton("prefix"));
+
+        graph.addVertex(T.label, "vendors", "name", "name", "prefixes", "prefix");
+
+
+        Vendor prefix = vendorRepository.findByPrefixes("prefix");
+        Assertions.assertNotNull(prefix);
+    }
+
+    @Test
+    public void shouldFindByIn() {
+        Vendor vendor = new Vendor("vendor");
+        vendor.setPrefixes(Collections.singleton("prefix"));
+
+        graph.addVertex(T.label, "vendors", "name", "name", "prefixes", "prefix");
+        graph.addVertex(T.label, "vendors", "name", "name", "prefixes", "prefix1");
+        graph.addVertex(T.label, "vendors", "name", "name", "prefixes", "prefix2");
+
+
+        Vendor prefix = vendorRepository.findByPrefixesIn(Collections.singletonList("prefix"));
+        Assertions.assertNotNull(prefix);
+
+    }
+
 
     interface PersonRepository extends Repository<Person, Long> {
 
@@ -344,6 +388,13 @@ public class GraphRepositoryProxyTest {
         @Query("g.V().hasLabel('Person').has('name', name).toList()")
         List<Person> findByQuery(@Param("name") String name);
 
+    }
+
+    public interface VendorRepository extends Repository<Vendor, String> {
+
+        Vendor findByPrefixes(String prefix);
+
+        Vendor findByPrefixesIn(List<String> prefix);
 
     }
 }

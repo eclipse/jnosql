@@ -32,6 +32,7 @@ import java.util.function.Consumer;
  * <p><b>LessThanEqual</b></p>
  * <p><b>GreaterThanEqual</b></p>
  * <p><b>Like</b></p>
+ * <p><b>In</b></p>
  * <p><b>OrderBy</b></p>
  * <p><b>OrderBy____Desc</b></p>
  * <p><b>OrderBy_____ASC</b></p>

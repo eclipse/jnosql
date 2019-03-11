@@ -16,8 +16,8 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
-import org.jnosql.query.Params;
 
 /**
  * The result of {@link DocumentDeleteQueryParams} that has {@link DocumentDeleteQuery} and {@link Params}.

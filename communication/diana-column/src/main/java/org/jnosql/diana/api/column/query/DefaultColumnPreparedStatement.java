@@ -17,12 +17,13 @@
 package org.jnosql.diana.api.column.query;
 
 import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.api.Params;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnPreparedStatement;
 import org.jnosql.diana.api.column.ColumnQuery;
-import org.jnosql.query.QueryException;
 
 import java.time.Duration;
 import java.util.List;
@@ -42,7 +43,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
 
     private final PreparedStatementType type;
 
-    private final ColumnParams params;
+    private final Params params;
 
     private final String query;
 
@@ -53,14 +54,14 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
     private final ColumnFamilyManager manager;
 
     private DefaultColumnPreparedStatement(ColumnEntity entity,
-                                             ColumnQuery columnQuery,
-                                             ColumnDeleteQuery columnDeleteQuery,
-                                             PreparedStatementType type,
-                                             ColumnParams params,
-                                             String query,
-                                             List<String> paramsLeft,
-                                             Duration duration,
-                                             ColumnFamilyManager manager) {
+                                           ColumnQuery columnQuery,
+                                           ColumnDeleteQuery columnDeleteQuery,
+                                           PreparedStatementType type,
+                                           Params params,
+                                           String query,
+                                           List<String> paramsLeft,
+                                           Duration duration,
+                                           ColumnFamilyManager manager) {
         this.entity = entity;
         this.columnQuery = columnQuery;
         this.columnDeleteQuery = columnDeleteQuery;
@@ -132,7 +133,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
 
     static ColumnPreparedStatement select(
             ColumnQuery columnQuery,
-            ColumnParams params,
+            Params params,
             String query,
             ColumnFamilyManager manager) {
         return new DefaultColumnPreparedStatement(null, columnQuery,
@@ -142,8 +143,8 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
     }
 
     static ColumnPreparedStatement delete(ColumnDeleteQuery columnDeleteQuery,
-                                            ColumnParams params,
-                                            String query,
+                                          Params params,
+                                          String query,
                                           ColumnFamilyManager manager) {
 
         return new DefaultColumnPreparedStatement(null, null,
@@ -153,9 +154,9 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
     }
 
     static ColumnPreparedStatement insert(ColumnEntity entity,
-                                            ColumnParams params,
-                                            String query,
-                                            Duration duration,
+                                          Params params,
+                                          String query,
+                                          Duration duration,
                                           ColumnFamilyManager manager) {
         return new DefaultColumnPreparedStatement(entity, null,
                 null, PreparedStatementType.INSERT, params, query,
@@ -164,8 +165,8 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
     }
 
     static ColumnPreparedStatement update(ColumnEntity entity,
-                                            ColumnParams params,
-                                            String query,
+                                          Params params,
+                                          String query,
                                           ColumnFamilyManager manager) {
         return new DefaultColumnPreparedStatement(entity, null,
                 null, PreparedStatementType.UPDATE, params, query,

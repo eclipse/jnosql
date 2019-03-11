@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.key;
 
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.diana.api.Value;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public interface KeyValueQueryParser {
      * @return the result of the operation if delete it will always return an empty list
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
-     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     * @throws QueryException when there is error in the syntax
      */
     List<Value> query(String query, BucketManager manager);
 
@@ -47,7 +48,7 @@ public interface KeyValueQueryParser {
      * @return a {@link KeyValuePreparedStatement} instance
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
-     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     * @throws QueryException when there is error in the syntax
      */
     KeyValuePreparedStatement prepare(String query, BucketManager manager);
 

@@ -17,9 +17,10 @@
 package org.jnosql.diana.api.document.query;
 
 import org.hamcrest.MatcherAssert;
+import org.jnosql.diana.api.Params;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.document.Document;
-import org.jnosql.query.QueryException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -35,7 +36,7 @@ class DocumentParamsTest {
 
     @Test
     public void shouldAddParamter() {
-        DocumentParams params = new DocumentParams();
+        Params params = new Params();
         Value name = params.add("name");
         assertNotNull(name);
         MatcherAssert.<List<String>>assertThat(params.getParametersNames(), containsInAnyOrder("name"));
@@ -43,7 +44,7 @@ class DocumentParamsTest {
 
     @Test
     public void shouldNotUseValueWhenIsInvalid() {
-        DocumentParams params = new DocumentParams();
+        Params params = new Params();
         Value name = params.add("name");
         assertThrows(QueryException.class, name::get);
 
@@ -52,7 +53,7 @@ class DocumentParamsTest {
 
     @Test
     public void shouldSetParameter() {
-        DocumentParams params = new DocumentParams();
+        Params params = new Params();
         Value name = params.add("name");
         Document document = Document.of("name", name);
         params.bind("name", "Ada Lovelace");

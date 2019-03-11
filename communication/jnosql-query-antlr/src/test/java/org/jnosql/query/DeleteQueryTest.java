@@ -23,6 +23,7 @@ import org.jnosql.aphrodite.antlr.QueryLexer;
 import org.jnosql.aphrodite.antlr.QueryParser;
 import org.jnosql.aphrodite.provider.DeleteQueryArgumentProvider;
 import org.jnosql.aphrodite.provider.WrongDeleteQueryArgumentProvider;
+import org.jnosql.diana.api.QueryException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

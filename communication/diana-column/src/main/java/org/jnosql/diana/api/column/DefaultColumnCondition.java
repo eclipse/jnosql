@@ -20,6 +20,7 @@ package org.jnosql.diana.api.column;
 
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
+import org.jnosql.diana.api.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,12 +75,12 @@ final class DefaultColumnCondition implements ColumnCondition {
 
     static DefaultColumnCondition in(Column column) {
         Objects.requireNonNull(column, "column is required");
-        checkInClause(column.get());
+        checkInClause(column.getValue());
         return new DefaultColumnCondition(column, IN);
     }
 
-    private static void checkInClause(Object value) {
-        if (!Iterable.class.isInstance(value)) {
+    private static void checkInClause(Value value) {
+        if (!value.isInstanceOf(Iterable.class)) {
             throw new IllegalArgumentException("On Columncondition#in you must use an iterable" +
                     " instead of class: " + value.getClass().getName());
         }
@@ -89,10 +90,6 @@ final class DefaultColumnCondition implements ColumnCondition {
         if (Iterable.class.isInstance(value)) {
 
             long count = (int) StreamSupport.stream(Iterable.class.cast(value).spliterator(), false).count();
-            if (count > 2) {
-                throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
-                        " with two elements");
-            }
             if (count != 2) {
                 throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
                         " with two elements");
@@ -170,7 +167,7 @@ final class DefaultColumnCondition implements ColumnCondition {
 
     @Override
     public String toString() {
-        return  "DefaultColumnCondition{" + "column=" + column +
+        return "DefaultColumnCondition{" + "column=" + column +
                 ", condition=" + condition +
                 '}';
     }

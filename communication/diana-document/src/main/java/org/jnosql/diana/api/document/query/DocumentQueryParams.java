@@ -16,11 +16,11 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.document.DocumentQuery;
-import org.jnosql.query.Params;
 
 /**
- * The result of {@link SelectQueryConverter} that has {@link DocumentQuery} and {@link org.jnosql.query.Params}.
+ * The result of {@link SelectQueryConverter} that has {@link DocumentQuery} and {@link Params}.
  */
 public interface DocumentQueryParams {
 
@@ -32,9 +32,9 @@ public interface DocumentQueryParams {
     DocumentQuery getQuery();
 
     /**
-     * The {@link org.jnosql.query.Params}
+     * The {@link Params}
      *
-     * @return a {@link org.jnosql.query.Params} instance
+     * @return a {@link Params} instance
      */
     Params getParams();
 }

@@ -16,6 +16,8 @@
  */
 package org.jnosql.diana.api.column.query;
 
+import org.jnosql.diana.api.Params;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
@@ -25,7 +27,6 @@ import org.jnosql.diana.api.column.ColumnPreparedStatement;
 import org.jnosql.diana.api.column.ColumnPreparedStatementAsync;
 import org.jnosql.query.InsertQuery;
 import org.jnosql.query.InsertQuerySupplier;
-import org.jnosql.query.QueryException;
 
 import java.time.Duration;
 import java.util.List;
@@ -47,7 +48,7 @@ final class InsertQueryParser {
         InsertQuery insertQuery = supplier.apply(query);
 
         String columnFamily = insertQuery.getEntity();
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
 
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
 
@@ -70,7 +71,7 @@ final class InsertQueryParser {
 
         String columnFamily = observer.fireEntity(insertQuery.getEntity());
 
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
 
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
 
@@ -90,7 +91,7 @@ final class InsertQueryParser {
         InsertQuery insertQuery = supplier.apply(query);
 
         String columnFamily = observer.fireEntity(insertQuery.getEntity());
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
 
         Optional<Duration> ttl = insertQuery.getTtl();
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
@@ -101,7 +102,7 @@ final class InsertQueryParser {
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
 
         InsertQuery insertQuery = supplier.apply(query);
         String columnFamily = observer.fireEntity(insertQuery.getEntity());
@@ -111,7 +112,7 @@ final class InsertQueryParser {
         return DefaultColumnPreparedStatementAsync.insert(entity, params, query, ttl.orElse(null), manager);
     }
 
-    private ColumnEntity getEntity(InsertQuery insertQuery, String columnFamily, ColumnParams params,
+    private ColumnEntity getEntity(InsertQuery insertQuery, String columnFamily, Params params,
                                    ColumnObserverParser observer) {
         ColumnEntity entity = ColumnEntity.of(columnFamily);
 

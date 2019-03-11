@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
@@ -26,7 +27,7 @@ import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
 import org.jnosql.query.DeleteQuery;
 import org.jnosql.query.DeleteQuerySupplier;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 
 import java.util.Collections;
 import java.util.List;
@@ -60,7 +61,7 @@ final class DeleteQueryParser implements DeleteQueryConverter {
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager,
                                       DocumentObserverParser observer) {
-        DocumentParams params = new DocumentParams();
+        Params params = new Params();
         DocumentDeleteQuery documentQuery = getQuery(query, params, observer);
         return DefaultDocumentPreparedStatement.delete(documentQuery, params, query, collectionManager);
     }
@@ -68,7 +69,7 @@ final class DeleteQueryParser implements DeleteQueryConverter {
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager,
                                                 DocumentObserverParser observer) {
-        DocumentParams params = new DocumentParams();
+        Params params = new Params();
         DocumentDeleteQuery documentQuery = getQuery(query, params, observer);
         return DefaultDocumentPreparedStatementAsync.delete(documentQuery, params, query, collectionManager);
 
@@ -78,18 +79,18 @@ final class DeleteQueryParser implements DeleteQueryConverter {
     public DocumentDeleteQueryParams apply(DeleteQuery deleteQuery, DocumentObserverParser observer) {
         Objects.requireNonNull(deleteQuery, "deleteQuery is required");
         Objects.requireNonNull(observer, "observer is required");
-        DocumentParams params = new DocumentParams();
+        Params params = new Params();
         DocumentDeleteQuery query = getQuery(params, observer, deleteQuery);
         return new DefaultDocumentDeleteQueryParams(query, params);
     }
 
-    private DocumentDeleteQuery getQuery(String query, DocumentParams params, DocumentObserverParser observer) {
+    private DocumentDeleteQuery getQuery(String query, Params params, DocumentObserverParser observer) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
         return getQuery(params, observer, deleteQuery);
     }
 
-    private DocumentDeleteQuery getQuery(DocumentParams params, DocumentObserverParser observer,
+    private DocumentDeleteQuery getQuery(Params params, DocumentObserverParser observer,
                                          DeleteQuery deleteQuery) {
         String collection = observer.fireEntity(deleteQuery.getEntity());
         List<String> documents = deleteQuery.getFields().stream()
@@ -112,7 +113,7 @@ final class DeleteQueryParser implements DeleteQueryConverter {
                 .map(f -> observer.fireField(collection, f))
                 .collect(Collectors.toList());
         DocumentCondition condition = null;
-        DocumentParams params = new DocumentParams();
+        Params params = new Params();
 
         if (deleteQuery.getWhere().isPresent()) {
             condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();

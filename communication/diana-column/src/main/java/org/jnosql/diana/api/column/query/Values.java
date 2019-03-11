@@ -16,12 +16,13 @@
  */
 package org.jnosql.diana.api.column.query;
 
+import org.jnosql.diana.api.Params;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.query.ArrayValue;
 import org.jnosql.query.Function;
 import org.jnosql.query.FunctionValue;
 import org.jnosql.query.JSONValue;
 import org.jnosql.query.ParamValue;
-import org.jnosql.query.QueryException;
 import org.jnosql.query.Value;
 import org.jnosql.query.ValueType;
 
@@ -35,7 +36,7 @@ final class Values {
     private Values() {
     }
 
-    static Object get(Value<?> value, ColumnParams parameters) {
+    static Object get(Value<?> value, Params parameters) {
 
         ValueType type = value.getType();
         switch (type) {

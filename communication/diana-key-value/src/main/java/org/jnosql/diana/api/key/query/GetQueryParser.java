@@ -16,12 +16,13 @@
  */
 package org.jnosql.diana.api.key.query;
 
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValuePreparedStatement;
 import org.jnosql.query.GetQuery;
 import org.jnosql.query.GetQuerySupplier;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 
 import java.util.ArrayList;
 import java.util.List;

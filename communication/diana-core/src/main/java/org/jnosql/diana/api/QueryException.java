@@ -10,12 +10,12 @@
  *  Otavio Santana
  */
 
-package org.jnosql.query;
+package org.jnosql.diana.api;
 
 /**
  * The exception class to query
  */
-public class QueryException extends RuntimeException {
+public class QueryException extends JNoSQLException {
 
     /**
      * creates an error with an error message

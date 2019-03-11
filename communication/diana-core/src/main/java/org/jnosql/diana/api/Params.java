@@ -14,33 +14,45 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.api.column.query;
-
-import org.jnosql.diana.api.Value;
-import org.jnosql.query.Params;
+package org.jnosql.diana.api;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
-final class ColumnParams implements Params {
+/**
+ * A group of params to a dynamic query
+ */
+public class Params {
+
 
     private final List<ParamValue> parameters = new ArrayList<>();
 
-    boolean isNotEmpty() {
+    /**
+     * @return if the params list is not empty
+     */
+    public boolean isNotEmpty() {
         return !parameters.isEmpty();
     }
 
-    Value add(String param) {
+    /**
+     * Adds a new value at the params
+     *
+     * @param param
+     * @return
+     */
+    public Value add(String param) {
         ParamValue value = new ParamValue(param);
         parameters.add(value);
         return value;
     }
 
-    List<String> getParametersNames() {
+    /**
+     * @return the parameters names at the params
+     */
+    public List<String> getParametersNames() {
         return parameters.stream().map(ParamValue::getName).collect(toList());
     }
 
@@ -49,23 +61,13 @@ final class ColumnParams implements Params {
         return parameters.stream().map(ParamValue::getName).collect(joining(","));
     }
 
-    @Override
-    public boolean isEmpty() {
-        return getNames().isEmpty();
-    }
-
-    @Override
-    public List<String> getNames() {
-        return parameters.stream()
-                .filter(ParamValue::isEmpty)
-                .map(ParamValue::getName)
-                .collect(toList());
-    }
-
-    @Override
+    /**
+     * set the value from the class
+     *
+     * @param name
+     * @param value
+     */
     public void bind(String name, Object value) {
-        Objects.requireNonNull(name, "name is required");
-        Objects.requireNonNull(value, "value is required");
         parameters.stream().filter(p -> p.getName().equals(name)).forEach(p -> p.setValue(value));
     }
 }
