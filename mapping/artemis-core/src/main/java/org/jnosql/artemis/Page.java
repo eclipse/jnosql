@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  *
  * @param <T> the entity type
  */
-public interface Page<T> {
+public interface Page<T> extends Supplier<Stream<T>> {
 
     /**
      * Returns the {@link Pagination} of the current {@link Page}
@@ -58,12 +58,5 @@ public interface Page<T> {
      * @throws NullPointerException when collectionFactory is null
      */
     <C extends Collection<T>> C getContent(Supplier<C> collectionFactory);
-
-    /**
-     * Returns the page content as {@link Stream}
-     *
-     * @return the content as {@link Stream}
-     */
-    Stream<T> stream();
 
 }
