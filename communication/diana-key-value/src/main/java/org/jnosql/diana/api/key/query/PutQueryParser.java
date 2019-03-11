@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.key.query;
 
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValueEntity;

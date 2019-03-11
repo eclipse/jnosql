@@ -52,7 +52,7 @@ public class Params {
     /**
      * @return the parameters names at the params
      */
-    List<String> getParametersNames() {
+    public List<String> getParametersNames() {
         return parameters.stream().map(ParamValue::getName).collect(toList());
     }
 

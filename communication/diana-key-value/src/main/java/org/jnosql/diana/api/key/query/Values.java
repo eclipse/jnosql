@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.key.query;
 
+import org.jnosql.diana.api.Params;
 import org.jnosql.query.ArrayValue;
 import org.jnosql.query.Function;
 import org.jnosql.query.FunctionValue;

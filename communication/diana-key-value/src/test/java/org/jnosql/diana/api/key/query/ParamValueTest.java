@@ -17,6 +17,7 @@
 package org.jnosql.diana.api.key.query;
 
 import org.hamcrest.MatcherAssert;
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.KeyValueEntity;
 import org.jnosql.diana.api.QueryException;
