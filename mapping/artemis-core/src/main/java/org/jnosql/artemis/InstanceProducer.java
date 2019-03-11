@@ -14,8 +14,6 @@
  */
 package org.jnosql.artemis;
 
-import java.util.function.Function;
-
 /**
  * An instance producer from the Class
  */
