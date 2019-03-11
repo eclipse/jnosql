@@ -484,9 +484,9 @@ public class DocumentRepositoryProxyTest {
         verify(template).singleResult(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.getCondition().get();
-        assertEquals("Vendor", query.getDocumentCollection());
+        assertEquals("vendors", query.getDocumentCollection());
         assertEquals(EQUALS, condition.getCondition());
-        assertEquals(Document.of("prefix", "prefix"), condition.getDocument());
+        assertEquals(Document.of("prefixes", "prefix"), condition.getDocument());
 
     }
 
