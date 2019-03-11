@@ -18,7 +18,7 @@ package org.jnosql.diana.api.key.query;
 
 import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 
 import java.util.Objects;
 

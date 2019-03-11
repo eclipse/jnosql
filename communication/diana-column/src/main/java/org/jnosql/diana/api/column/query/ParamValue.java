@@ -18,7 +18,7 @@ package org.jnosql.diana.api.column.query;
 
 import org.jnosql.diana.api.TypeSupplier;
 import org.jnosql.diana.api.Value;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 
 import java.util.Objects;
 
@@ -56,6 +56,15 @@ final class ParamValue implements Value {
     public <T> T get(TypeSupplier<T> typeSupplier) {
         validValue();
         return Value.of(value).get(typeSupplier);
+    }
+
+    @Override
+    public boolean isInstanceOf(Class<?> typeClass) {
+        Objects.requireNonNull(typeClass, "typeClass is required");
+        if(value == null) {
+            return true;
+        }
+        return true;
     }
 
     public boolean isEmpty() {

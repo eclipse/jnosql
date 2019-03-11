@@ -20,7 +20,7 @@ import org.jnosql.diana.api.Value;
 import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValuePreparedStatement;
 import org.jnosql.diana.api.key.KeyValueQueryParser;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 
 import java.util.List;
 import java.util.Objects;

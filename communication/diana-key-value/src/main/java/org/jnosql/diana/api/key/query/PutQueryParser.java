@@ -22,7 +22,7 @@ import org.jnosql.diana.api.key.KeyValueEntity;
 import org.jnosql.diana.api.key.KeyValuePreparedStatement;
 import org.jnosql.query.PutQuery;
 import org.jnosql.query.PutQuerySupplier;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 
 import java.time.Duration;
 import java.util.Collections;

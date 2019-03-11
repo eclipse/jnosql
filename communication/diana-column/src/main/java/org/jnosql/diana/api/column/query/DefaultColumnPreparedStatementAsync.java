@@ -22,7 +22,7 @@ import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 import org.jnosql.diana.api.column.ColumnPreparedStatementAsync;
 import org.jnosql.diana.api.column.ColumnQuery;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 
 import java.time.Duration;
 import java.util.Collections;

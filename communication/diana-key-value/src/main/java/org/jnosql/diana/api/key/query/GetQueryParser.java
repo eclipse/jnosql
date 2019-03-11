@@ -21,7 +21,7 @@ import org.jnosql.diana.api.key.BucketManager;
 import org.jnosql.diana.api.key.KeyValuePreparedStatement;
 import org.jnosql.query.GetQuery;
 import org.jnosql.query.GetQuerySupplier;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 
 import java.util.ArrayList;
 import java.util.List;

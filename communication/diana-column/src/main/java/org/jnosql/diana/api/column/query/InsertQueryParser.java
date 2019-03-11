@@ -25,7 +25,7 @@ import org.jnosql.diana.api.column.ColumnPreparedStatement;
 import org.jnosql.diana.api.column.ColumnPreparedStatementAsync;
 import org.jnosql.query.InsertQuery;
 import org.jnosql.query.InsertQuerySupplier;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 
 import java.time.Duration;
 import java.util.List;

@@ -21,7 +21,7 @@ import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 import org.jnosql.diana.api.column.ColumnObserverParser;
 import org.jnosql.diana.api.column.ColumnPreparedStatementAsync;
 import org.jnosql.diana.api.column.ColumnQueryParserAsync;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 
 import java.util.List;
 import java.util.function.Consumer;

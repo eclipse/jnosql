@@ -12,7 +12,7 @@
 
 package org.jnosql.aphrodite.antlr;
 
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.query.Value;
 
 import java.util.Objects;

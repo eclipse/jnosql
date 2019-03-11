@@ -21,7 +21,7 @@ import org.jnosql.query.Function;
 import org.jnosql.query.FunctionValue;
 import org.jnosql.query.JSONValue;
 import org.jnosql.query.ParamValue;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.query.Value;
 import org.jnosql.query.ValueType;
 

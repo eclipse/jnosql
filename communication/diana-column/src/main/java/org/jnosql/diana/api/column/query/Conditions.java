@@ -22,7 +22,7 @@ import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnObserverParser;
 import org.jnosql.query.Condition;
 import org.jnosql.query.ConditionValue;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.query.Where;
 
 import static org.jnosql.diana.api.column.ColumnCondition.and;

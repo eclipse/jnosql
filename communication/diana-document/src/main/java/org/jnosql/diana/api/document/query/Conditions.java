@@ -21,7 +21,7 @@ import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.query.Condition;
 import org.jnosql.query.ConditionValue;
-import org.jnosql.query.QueryException;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.query.Where;
 
 import static org.jnosql.diana.api.document.DocumentCondition.and;

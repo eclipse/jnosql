@@ -19,6 +19,7 @@ package org.jnosql.diana.api.column;
 
 
 import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.api.QueryException;
 
 import java.time.Duration;
 import java.util.List;
@@ -201,7 +202,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalArgumentException        when the query has value parameters
      * @throws IllegalStateException           when there is not {@link ColumnQueryParserAsync}
-     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     * @throws QueryException when there is error in the syntax
      */
     default void query(String query, Consumer<List<ColumnEntity>> callBack) {
         Objects.requireNonNull(query, "query is required");
@@ -218,7 +219,7 @@ public interface ColumnFamilyManagerAsync extends AutoCloseable {
      * @return a {@link ColumnPreparedStatementAsync} instance
      * @throws NullPointerException            when there is parameter null
      * @throws IllegalStateException           when there is not {@link ColumnQueryParserAsync}
-     * @throws org.jnosql.query.QueryException when there is error in the syntax
+     * @throws QueryException when there is error in the syntax
      */
     default ColumnPreparedStatementAsync prepare(String query) {
         Objects.requireNonNull(query, "query is required");
