@@ -27,6 +27,7 @@ public interface InstanceProducer {
      * @param instanceType the instance class
      * @param <T>          the instance type
      * @return a new instance
+     * @throws NullPointerException when instanceType is null
      */
     <T> T create(Class<T> instanceType);
 }
