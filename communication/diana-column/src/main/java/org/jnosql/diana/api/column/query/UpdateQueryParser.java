@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.column.query;
 
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
@@ -44,7 +45,7 @@ final class UpdateQueryParser {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
 
@@ -59,7 +60,7 @@ final class UpdateQueryParser {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
 
@@ -71,7 +72,7 @@ final class UpdateQueryParser {
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
 
         UpdateQuery updateQuery = supplier.apply(query);
 
@@ -82,7 +83,7 @@ final class UpdateQueryParser {
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
         UpdateQuery updateQuery = supplier.apply(query);
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
@@ -90,7 +91,7 @@ final class UpdateQueryParser {
         return DefaultColumnPreparedStatementAsync.update(entity, params, query, manager);
     }
 
-    private ColumnEntity getEntity(ColumnParams params, UpdateQuery updateQuery, ColumnObserverParser observer) {
+    private ColumnEntity getEntity(Params params, UpdateQuery updateQuery, ColumnObserverParser observer) {
         String columnFamily = observer.fireEntity(updateQuery.getEntity());
 
         ColumnEntity entity = ColumnEntity.of(columnFamily);

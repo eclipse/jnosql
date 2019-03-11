@@ -16,6 +16,8 @@
  */
 package org.jnosql.diana.api.column.query;
 
+import org.jnosql.diana.api.Params;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnEntity;
@@ -26,7 +28,6 @@ import org.jnosql.diana.api.column.ColumnPreparedStatement;
 import org.jnosql.diana.api.column.ColumnPreparedStatementAsync;
 import org.jnosql.query.DeleteQuery;
 import org.jnosql.query.DeleteQuerySupplier;
-import org.jnosql.diana.api.QueryException;
 
 import java.util.Collections;
 import java.util.List;
@@ -61,7 +62,7 @@ final class DeleteQueryParser implements DeleteQueryConverter{
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager,
                                     ColumnObserverParser observer) {
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
         ColumnDeleteQuery columnDeleteQuery = getQuery(query, params, observer);
         return DefaultColumnPreparedStatement.delete(columnDeleteQuery, params, query, manager);
     }
@@ -69,7 +70,7 @@ final class DeleteQueryParser implements DeleteQueryConverter{
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
         ColumnDeleteQuery columnDeleteQuery = getQuery(query, params, observer);
         return DefaultColumnPreparedStatementAsync.delete(columnDeleteQuery, params, query, manager);
 
@@ -81,18 +82,18 @@ final class DeleteQueryParser implements DeleteQueryConverter{
 
         requireNonNull(deleteQuery, "deleteQuery is required");
         requireNonNull(columnObserverParser, "columnObserverParser is required");
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
         ColumnDeleteQuery query = getQuery(params, columnObserverParser, deleteQuery);
         return new DefaultColumnDeleteQueryParams(query, params);
     }
 
-    private ColumnDeleteQuery getQuery(String query, ColumnParams params, ColumnObserverParser observer) {
+    private ColumnDeleteQuery getQuery(String query, Params params, ColumnObserverParser observer) {
         DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
 
         return getQuery(params, observer, deleteQuery);
     }
 
-    private ColumnDeleteQuery getQuery(ColumnParams params, ColumnObserverParser observer, DeleteQuery deleteQuery) {
+    private ColumnDeleteQuery getQuery(Params params, ColumnObserverParser observer, DeleteQuery deleteQuery) {
         String columnFamily = observer.fireEntity(deleteQuery.getEntity());
         List<String> columns = deleteQuery.getFields().stream()
                 .map(f -> observer.fireField(columnFamily, f))
@@ -114,7 +115,7 @@ final class DeleteQueryParser implements DeleteQueryConverter{
                 .map(f -> observer.fireField(columnFamily, f))
                 .collect(Collectors.toList());
         ColumnCondition condition = null;
-        ColumnParams params = new ColumnParams();
+        Params params = new Params();
 
         if (deleteQuery.getWhere().isPresent()) {
             condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();

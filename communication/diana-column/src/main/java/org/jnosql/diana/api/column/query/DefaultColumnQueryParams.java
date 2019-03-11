@@ -16,8 +16,8 @@
  */
 package org.jnosql.diana.api.column.query;
 
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.column.ColumnQuery;
-import org.jnosql.query.Params;
 
 import java.util.Objects;
 
