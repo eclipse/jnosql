@@ -17,6 +17,7 @@ package org.jnosql.artemis.reflection;
 import org.jnosql.artemis.Column;
 import org.jnosql.artemis.Entity;
 import org.jnosql.artemis.Id;
+import org.jnosql.artemis.InstanceProducer;
 import org.jnosql.artemis.MappedSuperclass;
 import org.jnosql.artemis.util.StringUtils;
 
@@ -27,6 +28,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -37,7 +39,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
 @ApplicationScoped
-public class DefaultReflections implements Reflections {
+public class DefaultReflections implements Reflections, InstanceProducer {
 
     @Override
     public Object getValue(Object object, Field field) {
@@ -141,6 +143,12 @@ public class DefaultReflections implements Reflections {
     }
 
     @Override
+    public <T> T create(Class<T> instanceType) {
+        Objects.requireNonNull(instanceType, "instanceType is required");
+        return newInstance(instanceType);
+    }
+
+    @Override
     public String getEntityName(Class classEntity) {
         requireNonNull(classEntity, "class entity is required");
 
@@ -197,5 +205,6 @@ public class DefaultReflections implements Reflections {
                 .filter(StringUtils::isNotBlank)
                 .orElse(field.getName());
     }
+
 
 }

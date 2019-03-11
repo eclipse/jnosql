@@ -26,9 +26,12 @@ import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 public final class ConverterUtil {
 
+    private static final Logger LOGGER = Logger.getLogger(ConverterUtil.class.getName());
 
     private ConverterUtil() {
 
@@ -37,10 +40,10 @@ public final class ConverterUtil {
     /**
      * Converts the value to database format
      *
-     * @param value          the value
-     * @param mapping the class mapped
-     * @param name           the java fieldName
-     * @param converters     the collection of converter
+     * @param value      the value
+     * @param mapping    the class mapped
+     * @param name       the java fieldName
+     * @param converters the collection of converter
      * @return the value converted
      */
     public static Object getValue(Object value, ClassMapping mapping, String name, Converters converters) {
@@ -66,13 +69,29 @@ public final class ConverterUtil {
             return field.getConverter()
                     .map(converters::get)
                     .map(useConverter(value))
-                    .orElseGet(() -> Value.of(value).get(nativeField.getType()));
+                    .orElseGet(getSupplier(value, nativeField));
         }
 
         return field.getConverter()
                 .map(converters::get)
                 .map(useConverter(value))
                 .orElse(value);
+    }
+
+    private static Supplier<Object> getSupplier(Object value, Field nativeField) {
+        return () -> {
+            if (Iterable.class.isAssignableFrom(nativeField.getType())) {
+                return value;
+            }
+            try {
+                return Value.of(value).get(nativeField.getType());
+            } catch (UnsupportedOperationException ex) {
+                LOGGER.fine(String.format("There is an error when try to convert the type %s to the type %s",
+                        value, nativeField.getType()));
+                return value;
+            }
+
+        };
     }
 
     private static Function<AttributeConverter, Object> useConverter(Object value) {

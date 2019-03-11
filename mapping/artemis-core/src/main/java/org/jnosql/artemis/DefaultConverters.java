@@ -35,7 +35,7 @@ class DefaultConverters implements Converters {
     private BeanManager beanManager;
 
     @Inject
-    private Reflections reflections;
+    private InstanceProducer instanceProducer;
 
     @Override
     public AttributeConverter get(Class<? extends AttributeConverter> converterClass) {
@@ -50,7 +50,7 @@ class DefaultConverters implements Converters {
             CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
             return (T) beanManager.getReference(bean, clazz, ctx);
         } else {
-            return reflections.newInstance(clazz.getConstructors()[0]);
+            return instanceProducer.create(clazz);
         }
 
     }

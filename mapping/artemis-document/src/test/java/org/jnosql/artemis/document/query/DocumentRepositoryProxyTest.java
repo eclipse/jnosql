@@ -23,6 +23,7 @@ import org.jnosql.artemis.Query;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.model.Person;
+import org.jnosql.artemis.model.Vendor;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
@@ -41,6 +42,7 @@ import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
@@ -81,22 +83,28 @@ public class DocumentRepositoryProxyTest {
 
     private PersonRepository personRepository;
 
+    private VendorRepository vendorRepository;
+
 
     @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(DocumentTemplate.class);
 
-        DocumentRepositoryProxy handler = new DocumentRepositoryProxy(template,
+        DocumentRepositoryProxy personHandler = new DocumentRepositoryProxy(template,
                 classMappings, PersonRepository.class, converters);
+
+        DocumentRepositoryProxy vendorHandler = new DocumentRepositoryProxy(template,
+                classMappings, VendorRepository.class, converters);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
-                handler);
+                personHandler);
+        vendorRepository = (VendorRepository) Proxy.newProxyInstance(VendorRepository.class.getClassLoader(),
+                new Class[]{VendorRepository.class}, vendorHandler);
     }
-
 
 
     @Test
@@ -131,8 +139,6 @@ public class DocumentRepositoryProxyTest {
         Person value = captor.getValue();
         assertEquals(person, value);
     }
-
-
 
 
     @Test
@@ -431,7 +437,7 @@ public class DocumentRepositoryProxyTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(singletonList(ada));
 
-        personRepository.findByAgeBetween(10,15);
+        personRepository.findByAgeBetween(10, 15);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
@@ -462,6 +468,26 @@ public class DocumentRepositoryProxyTest {
         assertEquals("Person", query.getDocumentCollection());
         assertEquals(LIKE, condition.getCondition());
         assertEquals(Document.of("name", "Ada"), condition.getDocument());
+    }
+
+    @Test
+    public void shouldFindByStringWhenFieldIsSet() {
+        Vendor vendor = new Vendor("vendor");
+        vendor.setPrefixes(Collections.singleton("prefix"));
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(singletonList(vendor));
+
+        vendorRepository.findByPrefixes("prefix");
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).singleResult(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.getCondition().get();
+        assertEquals("vendors", query.getDocumentCollection());
+        assertEquals(EQUALS, condition.getCondition());
+        assertEquals(Document.of("prefixes", "prefix"), condition.getDocument());
+
     }
 
     @Test
@@ -532,5 +558,11 @@ public class DocumentRepositoryProxyTest {
 
         @Query("select * from Person where id = @id")
         Optional<Person> findByQuery(@Param("id") String id);
+    }
+
+    public interface VendorRepository extends Repository<Vendor, String> {
+
+        Vendor findByPrefixes(String prefix);
+
     }
 }

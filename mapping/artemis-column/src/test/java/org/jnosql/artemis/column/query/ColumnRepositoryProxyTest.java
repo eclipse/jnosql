@@ -23,6 +23,7 @@ import org.jnosql.artemis.Query;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.model.Person;
+import org.jnosql.artemis.model.Vendor;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.Condition;
 import org.jnosql.diana.api.TypeReference;
@@ -41,6 +42,7 @@ import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
@@ -81,20 +83,28 @@ public class ColumnRepositoryProxyTest {
 
     private PersonRepository personRepository;
 
+    private VendorRepository vendorRepository;
+
 
     @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(ColumnTemplate.class);
 
-        ColumnRepositoryProxy handler = new ColumnRepositoryProxy(template,
+        ColumnRepositoryProxy personHandler = new ColumnRepositoryProxy(template,
                 classMappings, PersonRepository.class, converters);
+
+        ColumnRepositoryProxy vendorHandler = new ColumnRepositoryProxy(template,
+                classMappings, VendorRepository.class, converters);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
+
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
-                handler);
+                personHandler);
+        vendorRepository = (VendorRepository) Proxy.newProxyInstance(VendorRepository.class.getClassLoader(),
+                new Class[]{VendorRepository.class}, vendorHandler);
     }
 
 
@@ -451,6 +461,28 @@ public class ColumnRepositoryProxyTest {
 
     }
 
+
+    @Test
+    public void shouldFindByStringWhenFieldIsSet() {
+        Vendor vendor = new Vendor("vendor");
+        vendor.setPrefixes(Collections.singleton("prefix"));
+
+        when(template.select(any(ColumnQuery.class)))
+                .thenReturn(singletonList(vendor));
+
+        vendorRepository.findByPrefixes("prefix");
+
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).singleResult(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.getCondition().get();
+        assertEquals("vendors", query.getColumnFamily());
+        assertEquals(EQUALS, condition.getCondition());
+        assertEquals(Column.of("prefixes", "prefix"), condition.getColumn());
+
+    }
+
+
     @Test
     public void shouldConvertFieldToTheType() {
         Person ada = Person.builder()
@@ -520,5 +552,11 @@ public class ColumnRepositoryProxyTest {
 
         @Query("select * from Person where id = @id")
         Optional<Person> findByQuery(@Param("id") String id);
+    }
+
+    public interface VendorRepository extends Repository<Vendor, String> {
+
+        Vendor findByPrefixes(String prefix);
+
     }
 }
