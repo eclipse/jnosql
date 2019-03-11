@@ -17,6 +17,7 @@
 package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
 import org.jnosql.diana.api.document.DocumentEntity;
@@ -41,7 +42,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
 
     private final PreparedStatementType type;
 
-    private final DocumentParams params;
+    private final Params params;
 
     private final String query;
 
@@ -55,7 +56,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
                                                   DocumentQuery documentQuery,
                                                   DocumentDeleteQuery documentDeleteQuery,
                                                   PreparedStatementType type,
-                                                  DocumentParams params,
+                                                  Params params,
                                                   String query,
                                                   List<String> paramsLeft,
                                                   Duration duration,
@@ -140,7 +141,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
 
     static DefaultDocumentPreparedStatementAsync select(
             DocumentQuery documentQuery,
-            DocumentParams params,
+            Params params,
             String query,
             DocumentCollectionManagerAsync manager) {
         return new DefaultDocumentPreparedStatementAsync(null, documentQuery,
@@ -150,7 +151,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
     }
 
     static DefaultDocumentPreparedStatementAsync delete(DocumentDeleteQuery documentDeleteQuery,
-                                            DocumentParams params,
+                                                        Params params,
                                             String query,
                                             DocumentCollectionManagerAsync manager) {
 
@@ -161,7 +162,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
     }
 
     static DefaultDocumentPreparedStatementAsync insert(DocumentEntity entity,
-                                            DocumentParams params,
+                                                        Params params,
                                             String query,
                                             Duration duration,
                                             DocumentCollectionManagerAsync manager) {
@@ -172,7 +173,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
     }
 
     static DefaultDocumentPreparedStatementAsync update(DocumentEntity entity,
-                                            DocumentParams params,
+                                                        Params params,
                                             String query,
                                             DocumentCollectionManagerAsync manager) {
         return new DefaultDocumentPreparedStatementAsync(entity, null,
