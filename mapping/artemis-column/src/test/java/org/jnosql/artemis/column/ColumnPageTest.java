@@ -23,6 +23,7 @@ import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.api.column.Column;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.api.column.ColumnQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -179,6 +180,41 @@ class ColumnPageTest {
 
         nextPage = nextPage.next();
         assertEquals(7L, nextPage.get().map(Person::getId).findFirst().orElse(-0L));
+    }
+
+    @Test
+    public void shouldExecutePaginationAsQuery() {
+        Pagination pagination = Pagination.page(1).of(1);
+        ColumnQueryPagination queryPagination = ColumnQueryPagination.of(select().from("person").build(), pagination);
+        ColumnQuery query = queryPagination;
+        List<Person> people = subject.select(query);
+        assertEquals(0L, people.stream().map(Person::getId).findFirst().orElse(-0L));
+
+        queryPagination = queryPagination.next();
+        query = queryPagination;
+        people = subject.select(query);
+        assertEquals(1L, people.stream().map(Person::getId).findFirst().orElse(-0L));
+
+
+        queryPagination = queryPagination.next();
+        query = queryPagination;
+        people = subject.select(query);
+        assertEquals(2L, people.stream().map(Person::getId).findFirst().orElse(-0L));
+
+        queryPagination = queryPagination.next();
+        query = queryPagination;
+        people = subject.select(query);
+        assertEquals(3L, people.stream().map(Person::getId).findFirst().orElse(-0L));
+
+        queryPagination = queryPagination.next();
+        query = queryPagination;
+        people = subject.select(query);
+        assertEquals(4L, people.stream().map(Person::getId).findFirst().orElse(-0L));
+
+        queryPagination = queryPagination.next();
+        query = queryPagination;
+        people = subject.select(query);
+        assertEquals(5L, people.stream().map(Person::getId).findFirst().orElse(-0L));
     }
 
     private Page<Person> createPage(Pagination pagination) {
