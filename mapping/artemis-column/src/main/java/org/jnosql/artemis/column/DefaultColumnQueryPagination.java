@@ -73,7 +73,7 @@ final class DefaultColumnQueryPagination implements ColumnQueryPagination {
 
     @Override
     public Pagination getPagination() {
-        return pagination;
+        return pagination.unmodifiable();
     }
 
     @Override
