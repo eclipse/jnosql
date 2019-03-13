@@ -57,6 +57,13 @@ public interface Pagination {
     Pagination next();
 
     /**
+     * Returns a pagination instance that is read-only, in other words, that is not allowed to use the {@link Pagination#next()}.
+     *
+     * @return a read-onlye {@link Pagination} instance
+     */
+    Pagination unmodifiable();
+
+    /**
      * A builder to {@link Pagination}, as the first step it defines the page number or the page index that starts from page one.
      *
      * @param page the page index
