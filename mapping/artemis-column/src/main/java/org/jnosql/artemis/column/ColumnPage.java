@@ -24,6 +24,11 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * An implementation of {@link Page} to Column.
+ *
+ * @param <T> the entity type
+ */
 final class ColumnPage<T> implements Page<T> {
 
     private final ColumnTemplate template;
