@@ -17,13 +17,13 @@
 package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.Pagination;
-import org.jnosql.artemis.column.query.ColumnQueryMapperBuilder;
 import org.jnosql.diana.api.column.ColumnQuery;
-import org.jnosql.diana.api.column.query.ColumnQueryBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DefaultColumnQueryPaginationTest {
 
@@ -37,25 +37,60 @@ class DefaultColumnQueryPaginationTest {
     @Test
     public void shouldReturnNPEWhenPaginationIsNull() {
         Assertions.assertThrows(NullPointerException.class, () ->
-                ColumnQueryPagination.of(ColumnQueryBuilder.select().from("column").build(), null));
+                ColumnQueryPagination.of(select().from("column").build(), null));
     }
 
     @Test
     public void shouldCreateColumnQueryPagination() {
-        ColumnQuery query = ColumnQueryBuilder.select().from("column").build();
+        ColumnQuery query = select().from("column").build();
         Pagination pagination = Pagination.page(1).of(2);
         ColumnQueryPagination queryPagination = ColumnQueryPagination.of(query, pagination);
 
-        Assertions.assertNotNull(queryPagination);
+        assertNotNull(queryPagination);
 
-        Assertions.assertEquals(query.getColumnFamily(), queryPagination.getColumnFamily());
-        Assertions.assertEquals(query.getColumns(), queryPagination.getColumns());
-        Assertions.assertEquals(query.getLimit(), queryPagination.getLimit());
-        Assertions.assertEquals(query.getSkip(), queryPagination.getSkip());
-        Assertions.assertEquals(query.getSorts(), queryPagination.getSorts());
-        Assertions.assertEquals(query.getCondition().orElse(null), queryPagination.getCondition().orElse(null));
+        isQueryEquals(query, pagination, queryPagination);
+    }
+
+    @Test
+    public void shouldOverrideSkipLimit() {
+
+        ColumnQuery query = select().from("column").build();
+        Pagination pagination = Pagination.page(1).of(2);
+        ColumnQueryPagination queryPagination = ColumnQueryPagination.of(query, pagination);
+
+        assertNotNull(queryPagination);
+        assertEquals(pagination.getLimit(), queryPagination.getLimit());
+        assertEquals(pagination.getSkip(), queryPagination.getSkip());
+
+    }
+
+    @Test
+    public void shouldNext() {
+        ColumnQuery query = select().from("column").where("name").eq("Ada").build();
+        Pagination pagination = Pagination.page(1).of(2);
+        Pagination secondPage = pagination.next();
+
+        ColumnQueryPagination queryPagination = ColumnQueryPagination.of(query, pagination);
+
+        assertNotNull(queryPagination);
+        assertEquals(pagination.getLimit(), queryPagination.getLimit());
+        assertEquals(pagination.getSkip(), queryPagination.getSkip());
+
+        isQueryEquals(query, pagination, queryPagination);
+
+        ColumnQueryPagination next = queryPagination.next();
+
+        isQueryEquals(query, secondPage, next);
     }
 
 
+    private void isQueryEquals(ColumnQuery query, Pagination pagination, ColumnQueryPagination queryPagination) {
+        assertEquals(query.getColumnFamily(), queryPagination.getColumnFamily());
+        assertEquals(query.getColumns(), queryPagination.getColumns());
+        assertEquals(pagination, queryPagination.getPagination());
+
+        assertEquals(query.getSorts(), queryPagination.getSorts());
+        assertEquals(query.getCondition().orElse(null), queryPagination.getCondition().orElse(null));
+    }
 
 }
