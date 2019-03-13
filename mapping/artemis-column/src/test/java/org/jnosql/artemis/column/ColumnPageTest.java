@@ -48,13 +48,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(CDIExtension.class)
 class ColumnPageTest {
 
-    private Person person = Person.builder().
-            withAge().
-            withPhones(Arrays.asList("234", "432")).
-            withName("Name")
-            .withId(19)
-            .withIgnore().build();
-
     @Inject
     private ColumnEntityConverter converter;
 
@@ -91,7 +84,7 @@ class ColumnPageTest {
             Column[] columns = new Column[]{
                     Column.of("age", index),
                     Column.of("name", "Ada " + index),
-                    Column.of("id", (long) index)};
+                    Column.of("_id", (long) index)};
             ColumnEntity columnEntity = ColumnEntity.of("Person");
             columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
 
@@ -167,8 +160,7 @@ class ColumnPageTest {
 
         Page<Person> nextPage = page.next();
         assertEquals(pagination.next(), nextPage.getPagination());
-
-        assertEquals(0L, nextPage.get().map(Person::getId).findFirst().orElse(-0L));
+        assertEquals(1L, nextPage.get().map(Person::getId).findFirst().orElse(-0L));
 
     }
 
