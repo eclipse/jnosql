@@ -162,6 +162,23 @@ class ColumnPageTest {
         assertEquals(pagination.next(), nextPage.getPagination());
         assertEquals(1L, nextPage.get().map(Person::getId).findFirst().orElse(-0L));
 
+        nextPage = nextPage.next();
+        assertEquals(2L, nextPage.get().map(Person::getId).findFirst().orElse(-0L));
+
+        nextPage = nextPage.next();
+        assertEquals(3L, nextPage.get().map(Person::getId).findFirst().orElse(-0L));
+
+        nextPage = nextPage.next();
+        assertEquals(4L, nextPage.get().map(Person::getId).findFirst().orElse(-0L));
+
+        nextPage = nextPage.next();
+        assertEquals(5L, nextPage.get().map(Person::getId).findFirst().orElse(-0L));
+
+        nextPage = nextPage.next();
+        assertEquals(6L, nextPage.get().map(Person::getId).findFirst().orElse(-0L));
+
+        nextPage = nextPage.next();
+        assertEquals(7L, nextPage.get().map(Person::getId).findFirst().orElse(-0L));
     }
 
     private Page<Person> createPage(Pagination pagination) {
