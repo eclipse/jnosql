@@ -51,7 +51,7 @@ final class ColumnPage<T> implements Page<T> {
 
     @Override
     public Page<T> next() {
-        return null;
+        return template.select(query.next());
     }
 
     @Override
