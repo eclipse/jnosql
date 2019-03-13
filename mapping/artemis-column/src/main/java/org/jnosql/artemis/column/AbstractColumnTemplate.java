@@ -17,6 +17,7 @@ package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.IdNotFoundException;
+import org.jnosql.artemis.Page;
 import org.jnosql.artemis.PreparedStatement;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
@@ -108,11 +109,14 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
     @Override
     public <T> List<T> select(ColumnQuery query) {
-        requireNonNull(query, "query is required");
-        getEventManager().firePreQuery(query);
-        List<ColumnEntity> entities = getManager().select(query);
-        Function<ColumnEntity, T> function = e -> getConverter().toEntity(e);
-        return entities.stream().map(function).collect(toList());
+        return executeQuery(query);
+    }
+
+
+    @Override
+    public <T> Page<T> select(ColumnQueryPagination query) {
+        List<T> entities = executeQuery(query);
+        return new ColumnPage<>(this, entities, query);
     }
 
     @Override
@@ -149,7 +153,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     @Override
     public <T> List<T> query(String query) {
         requireNonNull(query, "query is required");
-        return PARSER.query(query,getManager(), getObserver()).stream().map(c -> (T) getConverter().toEntity(c))
+        return PARSER.query(query, getManager(), getObserver()).stream().map(c -> (T) getConverter().toEntity(c))
                 .collect(toList());
     }
 
@@ -178,9 +182,17 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
 
     @Override
-    public <T> long count(Class<T> entityClass){
+    public <T> long count(Class<T> entityClass) {
         requireNonNull(entityClass, "entity class is required");
         ClassMapping classMapping = getClassMappings().get(entityClass);
         return getManager().count(classMapping.getName());
+    }
+
+    private <T> List<T> executeQuery(ColumnQuery query) {
+        requireNonNull(query, "query is required");
+        getEventManager().firePreQuery(query);
+        List<ColumnEntity> entities = getManager().select(query);
+        Function<ColumnEntity, T> function = e -> getConverter().toEntity(e);
+        return entities.stream().map(function).collect(toList());
     }
 }
