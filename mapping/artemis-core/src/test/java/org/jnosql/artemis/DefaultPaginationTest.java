@@ -5,28 +5,29 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DefaultPaginationTest {
 
 
     @Test
     public void shouldReturnErrorWhenPageIsZero() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Pagination.page(0));
+        assertThrows(IllegalArgumentException.class, () -> Pagination.page(0));
     }
 
     @Test
     public void shouldReturnErrorWhenPageIsNegative() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Pagination.page(-1));
+        assertThrows(IllegalArgumentException.class, () -> Pagination.page(-1));
     }
 
     @Test
     public void shouldReturnErrorWhenSizeIsZero() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Pagination.page(2).of(0));
+        assertThrows(IllegalArgumentException.class, () -> Pagination.page(2).of(0));
     }
 
     @Test
     public void shouldReturnErrorWhenSizeIsNegative() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Pagination.page(2).of(-1));
+        assertThrows(IllegalArgumentException.class, () -> Pagination.page(2).of(-1));
     }
 
 
@@ -58,6 +59,16 @@ class DefaultPaginationTest {
 
         Pagination fifthPage = fourthPage.next();
         checkPagination(fifthPage, 5, 8, 2, 2);
+    }
+
+
+    @Test
+    public void shouldReturnReadOnly(){
+
+        Pagination pagination = Pagination.page(1).of(2);
+        Pagination unmodifiable = pagination.unmodifiable();
+        assertThrows(UnsupportedOperationException.class, unmodifiable::next);
+
 
     }
 

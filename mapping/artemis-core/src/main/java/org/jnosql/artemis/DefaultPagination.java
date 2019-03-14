@@ -61,7 +61,11 @@ final class DefaultPagination implements Pagination {
 
     @Override
     public Pagination next() {
-        return new DefaultPagination(page + 1, size);
+        if (readOnly) {
+            throw new UnsupportedOperationException("the next method is not authorized when the pagination is read-only.");
+        } else {
+            return new DefaultPagination(page + 1, size);
+        }
     }
 
     @Override
