@@ -15,6 +15,7 @@
 package org.jnosql.artemis.reflection;
 
 import org.jnosql.artemis.DynamicQueryException;
+import org.jnosql.artemis.Page;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
@@ -102,6 +103,13 @@ class DynamicReturnTypeTest {
         DynamicReturnType returnType = DynamicReturnType.of(Person.class, Stream.class);
         assertEquals(DynamicReturnType.STREAM, returnType);
     }
+
+    @Test
+    public void shouldReturnPage() {
+        DynamicReturnType returnType = DynamicReturnType.of(Person.class, Page.class);
+        assertEquals(DynamicReturnType.PAGE, returnType);
+    }
+
 
     @Test
     public void shouldReturnErrorWhenSortedSetAndEntityIsNotComparable() {
