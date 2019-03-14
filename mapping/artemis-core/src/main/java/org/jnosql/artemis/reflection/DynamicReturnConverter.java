@@ -56,37 +56,65 @@ enum DynamicReturnConverter {
         Class<?> typeClass = dynamic.typeClass();
         Class<?> returnType = method.getReturnType();
 
-        if (typeClass.equals(returnType)) {
-            Optional<?> optional = dynamic.singleResult();
-            return optional.orElse(null);
+        DynamicReturnType type = DynamicReturnType.of(typeClass, returnType);
+        DynamicExecuteQueryConverter converter = null;
 
-        } else if (Optional.class.equals(returnType)) {
-            return dynamic.singleResult();
-        } else if (List.class.equals(returnType)
-                || Iterable.class.equals(returnType)
-                || Collection.class.equals(returnType)) {
-            return dynamic.list();
-        } else if (Set.class.equals(returnType)) {
-            return new HashSet<>(dynamic.list());
-        } else if (Queue.class.equals(returnType)) {
-            return new PriorityQueue<>(dynamic.list());
-        } else if (Stream.class.equals(returnType)) {
-            return dynamic.list().stream();
-        } else if (Deque.class.equals(returnType)) {
-            return new ArrayDeque<>(dynamic.list());
-        } else if (NavigableSet.class.equals(returnType) || SortedSet.class.equals(returnType)) {
-            checkImplementsComparable(typeClass);
-            return new TreeSet<>(dynamic.list());
+        switch (type) {
+            case INSTANCE:
+                return converter.toInstance(dynamic);
+            case OPTIONAL:
+                return converter.toOptional(dynamic);
+            case LIST:
+            case ITERABLE:
+            case COLLECTION:
+                return converter.toList(dynamic);
+            case SET:
+                return converter.toSet(dynamic);
+            case QUEUE:
+            case DEQUE:
+                return converter.toQueue(dynamic);
+            case NAVIGABLE_SET:
+            case SORTED_SET:
+                return converter.toTreeSet(dynamic);
+            case STREAM:
+                return converter.toStream(dynamic);
+            case PAGE:
+                return converter.toStream(dynamic);
+            default:
+                return converter.toDefault(dynamic);
+
         }
-
-        return dynamic.list();
+//        if (typeClass.equals(returnType)) {
+//            Optional<?> optional = dynamic.singleResult();
+//            return optional.orElse(null);
+//
+//        } else if (Optional.class.equals(returnType)) {
+//            return dynamic.singleResult();
+//        } else if (List.class.equals(returnType)
+//                || Iterable.class.equals(returnType)
+//                || Collection.class.equals(returnType)) {
+//            return dynamic.list();
+//        } else if (Set.class.equals(returnType)) {
+//            return new HashSet<>(dynamic.list());
+//        } else if (Queue.class.equals(returnType)) {
+//            return new PriorityQueue<>(dynamic.list());
+//        } else if (Stream.class.equals(returnType)) {
+//            return dynamic.list().stream();
+//        } else if (Deque.class.equals(returnType)) {
+//            return new ArrayDeque<>(dynamic.list());
+//        } else if (NavigableSet.class.equals(returnType) || SortedSet.class.equals(returnType)) {
+//            checkImplementsComparable(typeClass);
+//            return new TreeSet<>(dynamic.list());
+//        }
+//
+//        return dynamic.list();
     }
 
-    private void checkImplementsComparable(Class<?> typeClass) {
-        if (!Comparable.class.isAssignableFrom(typeClass)) {
-            throw new DynamicQueryException(String.format("To use either NavigableSet or SortedSet the entity %s must implement Comparable.", typeClass));
-        }
-    }
+//    private void checkImplementsComparable(Class<?> typeClass) {
+//        if (!Comparable.class.isAssignableFrom(typeClass)) {
+//            throw new DynamicQueryException(String.format("To use either NavigableSet or SortedSet the entity %s must implement Comparable.", typeClass));
+//        }
+//    }
 
     /**
      * Reads and execute JNoSQL query from the Method that has the {@link org.jnosql.artemis.Query} annotation

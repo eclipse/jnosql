@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
 
-interface DynamicConvertible {
+interface DynamicExecuteQueryConverter {
 
     <T> T toInstance(DynamicReturn<T> dynamicReturn);
 
