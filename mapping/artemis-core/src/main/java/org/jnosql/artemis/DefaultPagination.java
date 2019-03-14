@@ -27,9 +27,16 @@ final class DefaultPagination implements Pagination {
 
     private final long size;
 
+    private final boolean readOnly;
+
     DefaultPagination(long page, long size) {
+        this(page, size, false);
+    }
+
+    DefaultPagination(long page, long size, boolean readOnly) {
         this.page = page;
         this.size = size;
+        this.readOnly = readOnly;
     }
 
     @Override
@@ -55,6 +62,14 @@ final class DefaultPagination implements Pagination {
     @Override
     public Pagination next() {
         return new DefaultPagination(page + 1, size);
+    }
+
+    @Override
+    public Pagination unmodifiable() {
+        if (readOnly) {
+            return this;
+        }
+        return new DefaultPagination(page, size, true);
     }
 
     @Override
