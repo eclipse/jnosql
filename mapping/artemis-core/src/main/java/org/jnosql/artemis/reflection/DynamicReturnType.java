@@ -15,6 +15,7 @@
 package org.jnosql.artemis.reflection;
 
 import org.jnosql.artemis.DynamicQueryException;
+import org.jnosql.artemis.Page;
 
 import java.util.Collection;
 import java.util.Deque;
@@ -56,6 +57,7 @@ enum DynamicReturnType {
         }
     },
     STREAM(Stream.class),
+    PAGE(Page.class),
     DEFAULT(Void.class);
 
     private final Class<?> typeClass;
