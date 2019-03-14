@@ -14,6 +14,9 @@
  */
 package org.jnosql.artemis.reflection;
 
+import org.jnosql.artemis.DynamicQueryException;
+import org.jnosql.artemis.Page;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,6 +66,11 @@ final class DefaultDynamicExecuteQueryConverter implements DynamicExecuteQueryCo
 
     @Override
     public <T> Object toDefault(DynamicReturn<T> dynamic) {
-        return null;
+        return dynamic.list();
+    }
+
+    @Override
+    public <T> Page<T> toPage(DynamicReturn<?> dynamic) {
+        throw new DynamicQueryException("There is not support to normal query");
     }
 }
