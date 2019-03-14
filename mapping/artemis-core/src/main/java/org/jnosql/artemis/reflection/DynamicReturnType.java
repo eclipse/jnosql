@@ -77,7 +77,7 @@ enum DynamicReturnType {
                 .filter(d -> d.isCompatible(typeClass, returnType))
                 .findFirst()
                 .orElse(DEFAULT);
-        type.validate(returnType);
+        type.validate(typeClass);
         return type;
     }
 
