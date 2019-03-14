@@ -26,6 +26,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
 
+
+/**
+ * The default implementation to {@link DynamicExecuteQueryConverter}.
+ * This implementation won't work with pagination
+ */
 final class DefaultDynamicExecuteQueryConverter implements DynamicExecuteQueryConverter {
 
     @Override
