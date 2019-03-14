@@ -50,14 +50,14 @@ enum DynamicReturnConverter {
      * @return the conversion result
      * @throws NullPointerException when the dynamic is null
      */
-    public Object convert(DynamicReturn dynamic) {
+    public Object convert(DynamicReturn<?> dynamic) {
 
         Method method = dynamic.getMethod();
         Class<?> typeClass = dynamic.typeClass();
         Class<?> returnType = method.getReturnType();
 
         if (typeClass.equals(returnType)) {
-            Optional<Object> optional = dynamic.singleResult();
+            Optional<?> optional = dynamic.singleResult();
             return optional.orElse(null);
 
         } else if (Optional.class.equals(returnType)) {
