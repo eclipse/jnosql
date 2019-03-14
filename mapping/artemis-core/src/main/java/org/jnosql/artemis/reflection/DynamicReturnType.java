@@ -31,34 +31,58 @@ import java.util.stream.Stream;
  */
 enum DynamicReturnType {
 
-    INSTANCE, OPTIONAL, LIST, ITERABLE, COLLECTION, SET, QUEUE, DEQUE, NAVIGABLE_SET, SORTED_SET, STREAM, DEFAULT;
-
-
-    static DynamicReturnType of(Class<?> typeClass, Class<?> returnType) {
-        if (typeClass.equals(returnType)) {
-            return INSTANCE;
-        } else if (Optional.class.equals(returnType)) {
-            return OPTIONAL;
-        } else if (List.class.equals(returnType)
-                || Iterable.class.equals(returnType)
-                || Collection.class.equals(returnType)) {
-            return LIST;
-        } else if (Set.class.equals(returnType)) {
-            return SET;
-        } else if (Queue.class.equals(returnType)) {
-            return DEQUE;
-        } else if (Stream.class.equals(returnType)) {
-            return STREAM;
-        } else if (Deque.class.equals(returnType)) {
-            return DEQUE;
-        } else if (NavigableSet.class.equals(returnType) || SortedSet.class.equals(returnType)) {
-            checkImplementsComparable(typeClass);
-            return NAVIGABLE_SET;
+    INSTANCE(null) {
+        @Override
+        public boolean isCompatible(Class<?> entityClass, Class<?> returnType) {
+            return entityClass.equals(returnType);
         }
-        return DEFAULT;
+    }, OPTIONAL(Optional.class),
+    LIST(List.class),
+    ITERABLE(Iterable.class),
+    COLLECTION(Collection.class),
+    SET(Set.class),
+    QUEUE(Queue.class),
+    DEQUE(Deque.class),
+    NAVIGABLE_SET(NavigableSet.class) {
+        @Override
+        public void validate(Class<?> typeClass) {
+            checkImplementsComparable(typeClass);
+        }
+    },
+    SORTED_SET(SortedSet.class) {
+        @Override
+        public void validate(Class<?> typeClass) {
+            checkImplementsComparable(typeClass);
+        }
+    },
+    STREAM(Stream.class),
+    DEFAULT(Void.class);
+
+    private final Class<?> typeClass;
+
+    DynamicReturnType(Class<?> clazz) {
+        this.typeClass = clazz;
     }
 
-    private static void checkImplementsComparable(Class<?> typeClass) {
+    public boolean isCompatible(Class<?> entityClass, Class<?> returnType) {
+        return typeClass.equals(returnType);
+    }
+
+    public void validate(Class<?> typeClass) {
+
+    }
+
+    static DynamicReturnType of(Class<?> typeClass, Class<?> returnType) {
+        DynamicReturnType type = Stream.of(DynamicReturnType.values())
+                .filter(d -> d.isCompatible(typeClass, returnType))
+                .findFirst()
+                .orElse(DEFAULT);
+        type.validate(returnType);
+        return type;
+    }
+
+
+    void checkImplementsComparable(Class<?> typeClass) {
         if (!Comparable.class.isAssignableFrom(typeClass)) {
             throw new DynamicQueryException(String.format("To use either NavigableSet or SortedSet the entity %s must implement Comparable.", typeClass));
         }
