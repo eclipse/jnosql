@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
@@ -76,6 +75,6 @@ final class DefaultDynamicExecutorQueryConverter implements DynamicExecutorQuery
 
     @Override
     public <T> Page<T> toPage(DynamicReturn<?> dynamic) {
-        throw new DynamicQueryException("There is not support to normal query");
+        throw new DynamicQueryException("There is not pagination at the method: " + dynamic.getMethod());
     }
 }
