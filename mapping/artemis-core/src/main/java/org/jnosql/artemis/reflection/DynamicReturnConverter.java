@@ -45,7 +45,7 @@ enum DynamicReturnConverter {
         Class<?> returnType = method.getReturnType();
 
         DynamicReturnType type = DynamicReturnType.of(typeClass, returnType);
-        DynamicExecuteQueryConverter converter = null;
+        DynamicExecutorQueryConverter converter = null;
 
         switch (type) {
             case INSTANCE:

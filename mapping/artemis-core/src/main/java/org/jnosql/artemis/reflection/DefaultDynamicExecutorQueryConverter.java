@@ -28,10 +28,10 @@ import java.util.stream.Stream;
 
 
 /**
- * The default implementation to {@link DynamicExecuteQueryConverter}.
+ * The default implementation to {@link DynamicExecutorQueryConverter}.
  * This implementation won't work with pagination
  */
-final class DefaultDynamicExecuteQueryConverter implements DynamicExecuteQueryConverter {
+final class DefaultDynamicExecutorQueryConverter implements DynamicExecutorQueryConverter {
 
     @Override
     public <T> T toInstance(DynamicReturn<T> dynamic) {

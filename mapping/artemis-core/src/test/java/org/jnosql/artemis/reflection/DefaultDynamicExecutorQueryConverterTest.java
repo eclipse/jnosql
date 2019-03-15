@@ -17,7 +17,6 @@ package org.jnosql.artemis.reflection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -26,16 +25,16 @@ import java.util.Optional;
 import static java.util.Objects.requireNonNull;
 
 
-class DefaultDynamicExecuteQueryConverterTest {
+class DefaultDynamicExecutorQueryConverterTest {
 
     private DynamicReturn<Person> dynamic;
 
-    private DynamicExecuteQueryConverter converter;
+    private DynamicExecutorQueryConverter converter;
 
 
     @BeforeEach
     public void setUp() {
-        this.converter = new DefaultDynamicExecuteQueryConverter();
+        this.converter = new DefaultDynamicExecutorQueryConverter();
     }
 
     @Test
