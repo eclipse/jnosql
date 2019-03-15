@@ -55,7 +55,7 @@ final class DefaultDynamicExecutorQueryConverter implements DynamicExecutorQuery
     }
 
     @Override
-    public <T> Queue<T> toLinkedList(DynamicReturn<T> dynamic) {
+    public <T> LinkedList<T> toLinkedList(DynamicReturn<T> dynamic) {
         return new LinkedList<>(dynamic.list());
     }
 

@@ -16,6 +16,7 @@ package org.jnosql.artemis.reflection;
 
 import org.jnosql.artemis.Page;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
@@ -37,7 +38,7 @@ interface DynamicExecutorQueryConverter {
 
     <T> Set<T> toSet(DynamicReturn<T> dynamicReturn);
 
-    <T> Queue<T> toLinkedList(DynamicReturn<T> dynamicReturn);
+    <T> LinkedList<T> toLinkedList(DynamicReturn<T> dynamicReturn);
 
     <T> Stream<T> toStream(DynamicReturn<T> dynamicReturn);
 
