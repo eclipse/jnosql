@@ -45,5 +45,5 @@ interface DynamicExecutorQueryConverter {
 
     <T> Object toDefault(DynamicReturn<T> dynamicReturn);
 
-    <T> Page<T> toPage(DynamicReturn<?> dynamic);
+    <T> Page<T> toPage(DynamicReturn<T> dynamic);
 }
