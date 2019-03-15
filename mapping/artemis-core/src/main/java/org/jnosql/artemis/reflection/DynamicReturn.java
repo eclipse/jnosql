@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
+import org.jnosql.artemis.Pagination;
 import org.jnosql.diana.api.NonUniqueResultException;
 
 import java.lang.reflect.Method;
@@ -80,13 +81,16 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     private final Supplier<List<T>> list;
 
+    private final Pagination pagination;
 
-    private DynamicReturn(Class<T> classSource, Method methodSource, Supplier<Optional<T>> singleResult,
-                          Supplier<List<T>> list) {
+    private DynamicReturn(Class<T> classSource, Method methodSource,
+                          Supplier<Optional<T>> singleResult,
+                          Supplier<List<T>> list, Pagination pagination) {
         this.classSource = classSource;
         this.methodSource = methodSource;
         this.singleResult = singleResult;
         this.list = list;
+        this.pagination = pagination;
     }
 
     /**
@@ -125,6 +129,12 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         return list.get();
     }
 
+    /**
+     * @return the pagination
+     */
+    Optional<Pagination> getPagination() {
+        return Optional.ofNullable(pagination);
+    }
 
     /**
      * Creates a builder to DynamicReturn
@@ -149,11 +159,12 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
         private Supplier<List<?>> list;
 
+        private Pagination pagination;
+
         private DefaultDynamicReturnBuilder() {
         }
 
         /**
-         *
          * @param classSource set the classSource
          * @return the instance
          */
@@ -163,7 +174,6 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         /**
-         *
          * @param methodSource the method source
          * @return the builder instance
          */
@@ -173,7 +183,6 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         /**
-         *
          * @param singleResult the singleResult source
          * @return the builder instance
          */
@@ -183,12 +192,20 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         /**
-         *
          * @param list the list
          * @return the builder instance
          */
         public DefaultDynamicReturnBuilder withList(Supplier<List<?>> list) {
             this.list = list;
+            return this;
+        }
+
+        /**
+         * @param pagination the pagination
+         * @return the builder instance
+         */
+        public DefaultDynamicReturnBuilder withPagination(Pagination pagination) {
+            this.pagination = pagination;
             return this;
         }
 
@@ -204,7 +221,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
             requireNonNull(singleResult, "the single result supplier is required");
             requireNonNull(list, "the list result supplier is required");
 
-            return new DynamicReturn(classSource, methodSource, singleResult, list);
+            return new DynamicReturn(classSource, methodSource, singleResult, list, pagination);
         }
     }
 
