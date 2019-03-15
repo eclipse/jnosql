@@ -176,7 +176,8 @@ class DefaultDynamicExecutorQueryConverterTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenTrytoUsePage() {
+    public void shouldReturnErrorWhenUsePage() {
+
         Person ada = new Person("Ada");
         dynamic = DynamicReturn.builder()
                 .withSingleResult(() -> Optional.empty())
