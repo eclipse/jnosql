@@ -23,6 +23,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
 
+/**
+ * Once defined the conversion type through to {@link DynamicReturnType}.
+ * This instance will convert action from a {@link DynamicReturn}.
+ */
 interface DynamicExecuteQueryConverter {
 
     <T> T toInstance(DynamicReturn<T> dynamicReturn);
