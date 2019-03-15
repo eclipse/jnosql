@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
+import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.diana.api.NonUniqueResultException;
 
@@ -83,14 +84,26 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     private final Pagination pagination;
 
+    private final Function<Pagination, Optional<T>> singleResultPagination;
+
+    private final Function<Pagination, Optional<T>> listPagination;
+
+    private final Function<Pagination, Page<T>> page;
+
     private DynamicReturn(Class<T> classSource, Method methodSource,
                           Supplier<Optional<T>> singleResult,
-                          Supplier<List<T>> list, Pagination pagination) {
+                          Supplier<List<T>> list, Pagination pagination,
+                          Function<Pagination, Optional<T>> singleResultPagination,
+                          Function<Pagination, Optional<T>> listPagination,
+                          Function<Pagination, Page<T>> page) {
         this.classSource = classSource;
         this.methodSource = methodSource;
         this.singleResult = singleResult;
         this.list = list;
         this.pagination = pagination;
+        this.singleResultPagination = singleResultPagination;
+        this.listPagination = listPagination;
+        this.page = page;
     }
 
     /**
@@ -136,6 +149,18 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         return Optional.ofNullable(pagination);
     }
 
+    Function<Pagination, Optional<T>> getSingleResultPagination() {
+        return singleResultPagination;
+    }
+
+    Function<Pagination, Optional<T>> getListPagination() {
+        return listPagination;
+    }
+
+    Function<Pagination, Page<T>> getPage() {
+        return page;
+    }
+
     /**
      * Creates a builder to DynamicReturn
      *
@@ -160,6 +185,12 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         private Supplier<List<?>> list;
 
         private Pagination pagination;
+
+        private Function<Pagination, Optional<?>> singleResultPagination;
+
+        private Function<Pagination, Optional<?>> listPagination;
+
+        private Function<Pagination, Page<?>> page;
 
         private DefaultDynamicReturnBuilder() {
         }
@@ -210,6 +241,33 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         /**
+         * @param singleResultPagination the single result pagination
+         * @return the builder instance
+         */
+        public DefaultDynamicReturnBuilder withSingleResultPagination(Function<Pagination, Optional<?>> singleResultPagination) {
+            this.singleResultPagination = singleResultPagination;
+            return this;
+        }
+
+        /**
+         * @param listPagination the list pagination
+         * @return the builder instance
+         */
+        public DefaultDynamicReturnBuilder withListPagination(Function<Pagination, Optional<?>> listPagination) {
+            this.listPagination = listPagination;
+            return this;
+        }
+
+        /**
+         * @param page the page
+         * @return the builder instance
+         */
+        public DefaultDynamicReturnBuilder withPage(Function<Pagination, Page<?>> page) {
+            this.page = page;
+            return this;
+        }
+
+        /**
          * Creates a {@link DynamicReturn} from the parameters, all fields are required
          *
          * @return a new instance
@@ -221,7 +279,14 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
             requireNonNull(singleResult, "the single result supplier is required");
             requireNonNull(list, "the list result supplier is required");
 
-            return new DynamicReturn(classSource, methodSource, singleResult, list, pagination);
+            if (pagination != null) {
+                requireNonNull(singleResultPagination, "singleResultPagination is required when pagination is not null");
+                requireNonNull(listPagination, "listPagination is required when pagination is not null");
+                requireNonNull(page, "page is required when pagination is not null");
+            }
+
+            return new DynamicReturn(classSource, methodSource, singleResult, list,
+                    pagination, singleResultPagination, listPagination, page);
         }
     }
 
