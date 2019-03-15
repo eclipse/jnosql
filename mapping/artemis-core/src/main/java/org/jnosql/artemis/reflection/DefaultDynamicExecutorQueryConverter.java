@@ -74,7 +74,7 @@ final class DefaultDynamicExecutorQueryConverter implements DynamicExecutorQuery
     }
 
     @Override
-    public <T> Page<T> toPage(DynamicReturn<?> dynamic) {
+    public <T> Page<T> toPage(DynamicReturn<T> dynamic) {
         throw new DynamicQueryException("There is not pagination at the method: " + dynamic.getMethod());
     }
 }

@@ -14,9 +14,11 @@
  */
 package org.jnosql.artemis.reflection;
 
+import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -29,54 +31,50 @@ import java.util.stream.Stream;
  */
 final class PaginationDynamicExecutorQueryConverter implements DynamicExecutorQueryConverter {
 
-    private final Pagination pagination;
 
-    PaginationDynamicExecutorQueryConverter(Pagination pagination) {
-        this.pagination = pagination;
+    @Override
+    public <T> T toInstance(DynamicReturn<T> dynamic) {
+        Optional<T> optional = dynamic.singleResultPagination();
+        return optional.orElse(null);
     }
 
     @Override
-    public <T> T toInstance(DynamicReturn<T> dynamicReturn) {
-        return null;
+    public <T> Optional<T> toOptional(DynamicReturn<T> dynamic) {
+        return dynamic.singleResultPagination();
     }
 
     @Override
-    public <T> Optional<T> toOptional(DynamicReturn<T> dynamicReturn) {
-        return Optional.empty();
+    public <T> List<T> toList(DynamicReturn<T> dynamic) {
+        return dynamic.listPagination();
     }
 
     @Override
-    public <T> List<T> toList(DynamicReturn<T> dynamicReturn) {
-        return null;
+    public <T> Set<T> toSet(DynamicReturn<T> dynamic) {
+        return new HashSet<>(dynamic.listPagination());
     }
 
     @Override
-    public <T> Set<T> toSet(DynamicReturn<T> dynamicReturn) {
-        return null;
+    public <T> LinkedList<T> toLinkedList(DynamicReturn<T> dynamic) {
+        return new LinkedList<>(dynamic.listPagination());
     }
 
     @Override
-    public <T> LinkedList<T> toLinkedList(DynamicReturn<T> dynamicReturn) {
-        return null;
+    public <T> Stream<T> toStream(DynamicReturn<T> dynamic) {
+        return dynamic.listPagination().stream();
     }
 
     @Override
-    public <T> Stream<T> toStream(DynamicReturn<T> dynamicReturn) {
-        return null;
+    public <T> TreeSet<T> toTreeSet(DynamicReturn<T> dynamic) {
+        return new TreeSet<>(dynamic.listPagination());
     }
 
     @Override
-    public <T> TreeSet<T> toTreeSet(DynamicReturn<T> dynamicReturn) {
-        return null;
+    public <T> Object toDefault(DynamicReturn<T> dynamic) {
+        return dynamic.listPagination();
     }
 
     @Override
-    public <T> Object toDefault(DynamicReturn<T> dynamicReturn) {
-        return null;
-    }
-
-    @Override
-    public <T> Page<T> toPage(DynamicReturn<?> dynamic) {
-        return null;
+    public <T> Page<T> toPage(DynamicReturn<T> dynamic) {
+        return dynamic.getPage();
     }
 }
