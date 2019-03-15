@@ -213,7 +213,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * Creates a {@link DynamicReturn} from the parameters, all fields are required
          *
          * @return a new instance
-         * @throws NullPointerException when there is null atributes
+         * @throws NullPointerException when there is null attributes
          */
         public DynamicReturn build() {
             requireNonNull(classSource, "the class Source is required");
