@@ -15,6 +15,7 @@
 package org.jnosql.artemis.reflection;
 
 import org.jnosql.artemis.DynamicQueryException;
+import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.Repository;
 import org.jnosql.diana.api.NonUniqueResultException;
 import org.junit.jupiter.api.Assertions;
@@ -38,6 +39,20 @@ import java.util.stream.Stream;
 import static java.util.Collections.singletonList;
 
 class DynamicReturnTest {
+
+    @Test
+    public void shouldReturnNPEWhenThereIsPagination() throws NoSuchMethodException {
+        Method method = getMethod(PersonRepository.class, "getOptional");
+        Supplier<List<?>> list = Collections::emptyList;
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        Assertions.assertThrows(NullPointerException.class, () ->
+                DynamicReturn.builder()
+                        .withClassSource(Person.class)
+                        .withMethodSource(method).withList(list)
+                        .withSingleResult(singlResult)
+                        .withPagination(Pagination.page(1L).of(2L)).build());
+
+    }
 
     @Test
     public void shouldReturnEmptyOptional() throws NoSuchMethodException {
