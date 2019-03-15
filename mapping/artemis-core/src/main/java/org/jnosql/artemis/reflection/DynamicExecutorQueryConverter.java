@@ -19,7 +19,6 @@ import org.jnosql.artemis.Page;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
