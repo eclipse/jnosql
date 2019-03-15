@@ -14,9 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.Page;
-import org.jnosql.artemis.Pagination;
 
 import java.util.HashSet;
 import java.util.LinkedList;
