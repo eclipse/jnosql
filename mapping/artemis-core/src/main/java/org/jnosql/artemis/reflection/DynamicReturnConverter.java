@@ -31,6 +31,8 @@ enum DynamicReturnConverter {
     INSTANCE;
 
 
+    private final DynamicExecutorQueryConverter converter = new DefaultDynamicExecutorQueryConverter();
+
     /**
      * Converts the entity from the Method return type.
      *
@@ -45,7 +47,7 @@ enum DynamicReturnConverter {
         Class<?> returnType = method.getReturnType();
 
         DynamicReturnType type = DynamicReturnType.of(typeClass, returnType);
-        DynamicExecutorQueryConverter converter = null;
+
 
         switch (type) {
             case INSTANCE:
@@ -72,37 +74,7 @@ enum DynamicReturnConverter {
                 return converter.toDefault(dynamic);
 
         }
-//        if (typeClass.equals(returnType)) {
-//            Optional<?> optional = dynamic.singleResult();
-//            return optional.orElse(null);
-//
-//        } else if (Optional.class.equals(returnType)) {
-//            return dynamic.singleResult();
-//        } else if (List.class.equals(returnType)
-//                || Iterable.class.equals(returnType)
-//                || Collection.class.equals(returnType)) {
-//            return dynamic.list();
-//        } else if (Set.class.equals(returnType)) {
-//            return new HashSet<>(dynamic.list());
-//        } else if (Queue.class.equals(returnType)) {
-//            return new PriorityQueue<>(dynamic.list());
-//        } else if (Stream.class.equals(returnType)) {
-//            return dynamic.list().stream();
-//        } else if (Deque.class.equals(returnType)) {
-//            return new ArrayDeque<>(dynamic.list());
-//        } else if (NavigableSet.class.equals(returnType) || SortedSet.class.equals(returnType)) {
-//            checkImplementsComparable(typeClass);
-//            return new TreeSet<>(dynamic.list());
-//        }
-//
-//        return dynamic.list();
     }
-
-//    private void checkImplementsComparable(Class<?> typeClass) {
-//        if (!Comparable.class.isAssignableFrom(typeClass)) {
-//            throw new DynamicQueryException(String.format("To use either NavigableSet or SortedSet the entity %s must implement Comparable.", typeClass));
-//        }
-//    }
 
     /**
      * Reads and execute JNoSQL query from the Method that has the {@link org.jnosql.artemis.Query} annotation

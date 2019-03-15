@@ -28,8 +28,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
 
-import static java.util.Objects.requireNonNull;
-
 
 class DefaultDynamicExecutorQueryConverterTest {
 
