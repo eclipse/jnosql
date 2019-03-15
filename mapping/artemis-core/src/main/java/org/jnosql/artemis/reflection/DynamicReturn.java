@@ -86,7 +86,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     private final Function<Pagination, Optional<T>> singleResultPagination;
 
-    private final Function<Pagination, Optional<T>> listPagination;
+    private final Function<Pagination, List<T>> listPagination;
 
     private final Function<Pagination, Page<T>> page;
 
@@ -94,7 +94,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
                           Supplier<Optional<T>> singleResult,
                           Supplier<List<T>> list, Pagination pagination,
                           Function<Pagination, Optional<T>> singleResultPagination,
-                          Function<Pagination, Optional<T>> listPagination,
+                          Function<Pagination, List<T>> listPagination,
                           Function<Pagination, Page<T>> page) {
         this.classSource = classSource;
         this.methodSource = methodSource;
@@ -149,16 +149,16 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         return Optional.ofNullable(pagination);
     }
 
-    Function<Pagination, Optional<T>> getSingleResultPagination() {
-        return singleResultPagination;
+    Optional<T> singleResultPagination() {
+        return singleResultPagination.apply(pagination);
     }
 
-    Function<Pagination, Optional<T>> getListPagination() {
-        return listPagination;
+    List<T> listPagination() {
+        return listPagination.apply(pagination);
     }
 
-    Function<Pagination, Page<T>> getPage() {
-        return page;
+    Page<T> getPage() {
+        return page.apply(pagination);
     }
 
     /**
@@ -188,7 +188,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
         private Function<Pagination, Optional<?>> singleResultPagination;
 
-        private Function<Pagination, Optional<?>> listPagination;
+        private Function<Pagination, List<?>> listPagination;
 
         private Function<Pagination, Page<?>> page;
 
@@ -253,7 +253,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param listPagination the list pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withListPagination(Function<Pagination, Optional<?>> listPagination) {
+        public DefaultDynamicReturnBuilder withListPagination(Function<Pagination, List<?>> listPagination) {
             this.listPagination = listPagination;
             return this;
         }
