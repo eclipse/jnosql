@@ -152,21 +152,41 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         private DefaultDynamicReturnBuilder() {
         }
 
+        /**
+         *
+         * @param classSource set the classSource
+         * @return the instance
+         */
         public DefaultDynamicReturnBuilder withClassSource(Class<?> classSource) {
             this.classSource = classSource;
             return this;
         }
 
+        /**
+         *
+         * @param methodSource the method source
+         * @return the builder instance
+         */
         public DefaultDynamicReturnBuilder withMethodSource(Method methodSource) {
             this.methodSource = methodSource;
             return this;
         }
 
+        /**
+         *
+         * @param singleResult the singleResult source
+         * @return the builder instance
+         */
         public DefaultDynamicReturnBuilder withSingleResult(Supplier<Optional<?>> singleResult) {
             this.singleResult = singleResult;
             return this;
         }
 
+        /**
+         *
+         * @param list the list
+         * @return the builder instance
+         */
         public DefaultDynamicReturnBuilder withList(Supplier<List<?>> list) {
             this.list = list;
             return this;
