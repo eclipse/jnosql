@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -49,7 +50,20 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     /**
      * A predicate to check it the object is instance of {@link Pagination}
      */
-    public static final Predicate<Object> IS_PAGINATION = Pagination.class::isInstance;
+    private static final Predicate<Object> IS_PAGINATION = Pagination.class::isInstance;
+
+    /**
+     * Finds {@link Pagination} from array object
+     *
+     * @param params the params
+     * @return a {@link Pagination} or null
+     */
+    public static Pagination findPagination(Object[] params) {
+        return Stream.of(params)
+                .filter(IS_PAGINATION)
+                .map(Pagination.class::cast)
+                .findFirst().orElse(null);
+    }
 
 
     @Override
