@@ -14,6 +14,9 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -31,8 +34,9 @@ public interface VertexTraversal extends VertexConditionTraversal {
 
     /**
      * Does a filter predicate based
+     *
      * @param predicate a predicate to apply to each element to determine if it should be included
-     * @param <T> the type
+     * @param <T>       the type
      * @return a {@link EdgeTraversal} with the Vertex predicate
      * @throws NullPointerException when predicate is null
      */
@@ -125,8 +129,9 @@ public interface VertexTraversal extends VertexConditionTraversal {
 
     /**
      * Returns a VertexTraversal with range defined
+     *
      * @param start the start inclusive
-     * @param end the end exclusive
+     * @param end   the end exclusive
      * @return a {@link VertexTraversal} with the range set
      */
     VertexTraversal range(long start, long end);
@@ -151,6 +156,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
 
     /**
      * Concludes the traversal that returns a single result
+     *
      * @param <T> the type
      * @return the entity result otherwise {@link Optional#empty()}
      * @throws org.jnosql.diana.api.NonUniqueResultException when there is more than one result
@@ -158,7 +164,18 @@ public interface VertexTraversal extends VertexConditionTraversal {
     <T> Optional<T> getSingleResult();
 
     /**
+     * creates a {@link Page} instance
+     *
+     * @param pagination the pagination
+     * @param <T>        the entity type
+     * @return a {@link Page} instance
+     * @throws NullPointerException when pagination is null
+     */
+    <T> Page<T> page(Pagination pagination);
+
+    /**
      * Concludes the traversal then returns the result as list.
+     *
      * @param <T> the type
      * @return the entities result
      */
