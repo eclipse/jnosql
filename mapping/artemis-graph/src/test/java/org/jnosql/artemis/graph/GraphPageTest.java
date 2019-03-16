@@ -156,16 +156,18 @@ class GraphPageTest {
         assertEquals(otavio.getName(), people.map(Person::getName).collect(joining()));
 
         pagination = pagination.next();
-        page = page.next();
 
+        page = page.next();
+        people = page.get();
         assertEquals(pagination, page.getPagination());
-        assertEquals(paulo.getName(), people.map(Person::getName).collect(joining()));
+        assertEquals(poliana.getName(), people.map(Person::getName).collect(joining()));
 
         pagination = pagination.next();
         page = page.next();
+        people = page.get();
 
         assertEquals(pagination, page.getPagination());
-        assertEquals(poliana.getName(), people.map(Person::getName).collect(joining()));
+        assertEquals(paulo.getName(), people.map(Person::getName).collect(joining()));
 
     }
 
