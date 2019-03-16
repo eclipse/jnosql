@@ -29,6 +29,11 @@ import java.util.stream.Stream;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toCollection;
 
+/**
+ * The {@link Page} implementation to Graph database
+ *
+ * @param <T> the entity type
+ */
 public final class GraphPage<T> implements Page<T> {
 
     private final Pagination pagination;
@@ -39,16 +44,13 @@ public final class GraphPage<T> implements Page<T> {
 
     private final List<T> entities;
 
-    GraphPage(Pagination pagination, GraphConverter converter, GraphTraversal<?, ?> graphTraversal) {
+
+    private GraphPage(Pagination pagination, GraphConverter converter, GraphTraversal<?, ?> graphTraversal, List<T> entities) {
         this.pagination = pagination;
         this.converter = converter;
         this.graphTraversal = graphTraversal;
-        this.entities = (List<T>) graphTraversal
-                .next((int) pagination.getLimit()).stream()
-                .map(v -> converter.toEntity((Vertex) v))
-                .collect(Collectors.toList());
+        this.entities = entities;
     }
-
 
     @Override
     public Pagination getPagination() {
@@ -57,7 +59,7 @@ public final class GraphPage<T> implements Page<T> {
 
     @Override
     public Page<T> next() {
-        return new GraphPage<>(pagination.next(), converter, graphTraversal);
+        return GraphPage.of(pagination.next(), converter, graphTraversal);
     }
 
     @Override
@@ -102,5 +104,50 @@ public final class GraphPage<T> implements Page<T> {
                 ", graphTraversal=" + graphTraversal +
                 ", entities=" + entities +
                 '}';
+    }
+
+    /**
+     * Creates a {@link Page} instance to Graph
+     *
+     * @param pagination     the pagination
+     * @param converter      the converter
+     * @param graphTraversal the traversal
+     * @param <T>            the type
+     * @return a new {@link Page} instance
+     * @throws NullPointerException when there are null parameters
+     */
+    public static <T> Page<T> of(Pagination pagination, GraphConverter converter,
+                                 GraphTraversal<?, ?> graphTraversal) {
+
+        Objects.requireNonNull(pagination, "pagination is required");
+        Objects.requireNonNull(converter, "converter is required");
+        Objects.requireNonNull(graphTraversal, "graphTraversal is required");
+        graphTraversal.skip(pagination.getSkip());
+        return new GraphPage<>(pagination, converter, graphTraversal,
+                (List<T>) graphTraversal
+                        .next((int) pagination.getLimit()).stream()
+                        .map(v -> converter.toEntity((Vertex) v))
+                        .collect(Collectors.toList()));
+    }
+
+    /**
+     * Creates a {@link Page} instance to Graph
+     *
+     * @param pagination     the pagination
+     * @param converter      the converter
+     * @param graphTraversal the traversal
+     * @param entities       the entities at the first interaction
+     * @param <T>            the type
+     * @return a new {@link Page} instance
+     * @throws NullPointerException when there are null parameters
+     */
+    public static <T> Page<T> of(Pagination pagination, GraphConverter converter,
+                                 GraphTraversal<?, ?> graphTraversal, List<T> entities) {
+
+        Objects.requireNonNull(pagination, "pagination is required");
+        Objects.requireNonNull(converter, "converter is required");
+        Objects.requireNonNull(graphTraversal, "graphTraversal is required");
+        Objects.requireNonNull(entities, "entities is required");
+        return new GraphPage<>(pagination, converter, graphTraversal, entities);
     }
 }
