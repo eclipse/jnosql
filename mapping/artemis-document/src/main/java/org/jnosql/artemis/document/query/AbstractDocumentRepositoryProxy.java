@@ -15,7 +15,10 @@
 package org.jnosql.artemis.document.query;
 
 
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.document.DocumentQueryPagination;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
@@ -25,6 +28,9 @@ import org.jnosql.diana.api.document.DocumentQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.select;
 
@@ -51,19 +57,10 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 return method.invoke(getRepository(), args);
             case FIND_BY:
                 DocumentQuery query = getQuery(method, args);
-                DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                        .withClassSource(typeClass)
-                        .withMethodSource(method).withList(() -> getTemplate().select(query))
-                        .withSingleResult(() -> getTemplate().singleResult(query)).build();
-
-                return dynamicReturn.execute();
+                return executeQuery(method, args, typeClass, query);
             case FIND_ALL:
                 DocumentQuery queryFindAll = select().from(getClassMapping().getName()).build();
-                DynamicReturn<?> dynamicReturnFindAll = DynamicReturn.builder()
-                        .withClassSource(typeClass)
-                        .withMethodSource(method).withList(() -> getTemplate().select(queryFindAll))
-                        .withSingleResult(() -> getTemplate().singleResult(queryFindAll)).build();
-                return dynamicReturnFindAll.execute();
+                return executeQuery(method, args, typeClass, queryFindAll);
             case DELETE_BY:
                 DocumentDeleteQuery documentDeleteQuery = getDeleteQuery(method, args);
                 getTemplate().delete(documentDeleteQuery);
@@ -83,4 +80,35 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
         }
     }
 
+
+    private Object executeQuery(Method method, Object[] args, Class<?> typeClass, DocumentQuery query) {
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(typeClass)
+                .withMethodSource(method)
+                .withList(() -> getTemplate().select(query))
+                .withSingleResult(() -> getTemplate().singleResult(query))
+                .withPagination(DynamicReturn.findPagination(args))
+                .withListPagination(listPagination(query))
+                .withSingleResultPagination(getSingleResult(query))
+                .withPage(getPage(query))
+                .build();
+        return dynamicReturn.execute();
+    }
+    private Function<Pagination, Page<T>> getPage(DocumentQuery query) {
+        return p -> getTemplate().select(DocumentQueryPagination.of(query, p));
+    }
+
+    private Function<Pagination, Optional<T>> getSingleResult(DocumentQuery query) {
+        return p -> {
+            DocumentQuery queryPagination = DocumentQueryPagination.of(query, p);
+            return getTemplate().singleResult(queryPagination);
+        };
+    }
+
+    private Function<Pagination, List<T>> listPagination(DocumentQuery query) {
+        return p -> {
+            DocumentQuery queryPagination = DocumentQueryPagination.of(query, p);
+            return getTemplate().select(queryPagination);
+        };
+    }
 }
