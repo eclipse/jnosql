@@ -64,7 +64,7 @@ class PaginationDynamicExecutorQueryConverterTest {
                 .withSingleResultPagination(p -> Optional.of(ada))
                 .withListPagination(p -> Collections.emptyList())
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).of(2))
+                .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
         Person person = converter.toInstance(dynamic);
@@ -81,7 +81,7 @@ class PaginationDynamicExecutorQueryConverterTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withListPagination(p -> Collections.emptyList())
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).of(2))
+                .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
         Person person = converter.toInstance(dynamic);
@@ -99,7 +99,7 @@ class PaginationDynamicExecutorQueryConverterTest {
                 .withSingleResultPagination(p -> Optional.of(ada))
                 .withListPagination(p -> Collections.emptyList())
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).of(2))
+                .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
         Optional<Person> person = converter.toOptional(dynamic);
@@ -118,7 +118,7 @@ class PaginationDynamicExecutorQueryConverterTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withListPagination(p -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).of(2))
+                .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
         List<Person> person = converter.toList(dynamic);
@@ -137,7 +137,7 @@ class PaginationDynamicExecutorQueryConverterTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withListPagination(p -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).of(2))
+                .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
         Set<Person> person = converter.toSet(dynamic);
@@ -157,7 +157,7 @@ class PaginationDynamicExecutorQueryConverterTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withListPagination(p -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).of(2))
+                .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
         LinkedList<Person> person = converter.toLinkedList(dynamic);
@@ -176,7 +176,7 @@ class PaginationDynamicExecutorQueryConverterTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withListPagination(p -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).of(2))
+                .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
         TreeSet<Person> person = converter.toTreeSet(dynamic);
@@ -195,7 +195,7 @@ class PaginationDynamicExecutorQueryConverterTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withListPagination(p -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).of(2))
+                .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
         Stream<Person> person = converter.toStream(dynamic);
@@ -214,7 +214,7 @@ class PaginationDynamicExecutorQueryConverterTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withListPagination(p -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).of(2))
+                .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
         Object person = converter.toDefault(dynamic);
@@ -235,7 +235,7 @@ class PaginationDynamicExecutorQueryConverterTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withListPagination(p -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).of(2))
+                .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
 

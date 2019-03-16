@@ -52,7 +52,7 @@ class DynamicReturnTest {
                         .withClassSource(Person.class)
                         .withMethodSource(method).withList(list)
                         .withSingleResult(singlResult)
-                        .withPagination(Pagination.page(1L).of(2L)).build());
+                        .withPagination(Pagination.page(1L).size(2L)).build());
 
     }
 

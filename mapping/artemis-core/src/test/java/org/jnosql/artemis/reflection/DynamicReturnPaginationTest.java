@@ -14,11 +14,9 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.Repository;
-import org.jnosql.diana.api.NonUniqueResultException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +25,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
@@ -42,7 +39,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static java.util.Collections.singletonList;
 import static java.util.concurrent.ThreadLocalRandom.current;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -520,7 +516,7 @@ class DynamicReturnPaginationTest {
     }
 
     private Pagination getPagination() {
-        return Pagination.page(getrandomLong()).of(getrandomLong());
+        return Pagination.page(getrandomLong()).size(getrandomLong());
     }
 
 }

@@ -34,7 +34,7 @@ public class PaginationBuilder {
      * @return a {@link Pagination} instance
      * @throws IllegalArgumentException when size is either zero or negative
      */
-    public Pagination of(long size) {
+    public Pagination size(long size) {
         if (size < 1) {
             throw new IllegalArgumentException("A pagination size cannot be zero or negative");
         }

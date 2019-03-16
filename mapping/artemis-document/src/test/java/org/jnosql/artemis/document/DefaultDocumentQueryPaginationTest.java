@@ -31,7 +31,7 @@ class DefaultDocumentQueryPaginationTest {
     @Test
     public void shouldReturnNPEWhenQueryIsNull() {
         Assertions.assertThrows(NullPointerException.class, () ->
-                DocumentQueryPagination.of(null, Pagination.page(1).of(2)));
+                DocumentQueryPagination.of(null, Pagination.page(1).size(2)));
     }
 
     @Test
@@ -43,7 +43,7 @@ class DefaultDocumentQueryPaginationTest {
     @Test
     public void shouldCreateDocumentQueryPagination() {
         DocumentQuery query = select().from("column").build();
-        Pagination pagination = Pagination.page(1).of(2);
+        Pagination pagination = Pagination.page(1).size(2);
         DocumentQueryPagination queryPagination = DocumentQueryPagination.of(query, pagination);
 
         assertNotNull(queryPagination);
@@ -55,7 +55,7 @@ class DefaultDocumentQueryPaginationTest {
     public void shouldOverrideSkipLimit() {
 
         DocumentQuery query = select().from("column").build();
-        Pagination pagination = Pagination.page(1).of(2);
+        Pagination pagination = Pagination.page(1).size(2);
         DocumentQueryPagination queryPagination = DocumentQueryPagination.of(query, pagination);
 
         assertNotNull(queryPagination);
@@ -67,7 +67,7 @@ class DefaultDocumentQueryPaginationTest {
     @Test
     public void shouldNext() {
         DocumentQuery query = select().from("column").where("name").eq("Ada").build();
-        Pagination pagination = Pagination.page(1).of(2);
+        Pagination pagination = Pagination.page(1).size(2);
         Pagination secondPage = pagination.next();
 
         DocumentQueryPagination queryPagination = DocumentQueryPagination.of(query, pagination);

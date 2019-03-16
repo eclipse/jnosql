@@ -76,7 +76,7 @@ class ColumnPageTest {
         this.subject = new DefaultColumnTemplate(converter, instance, new DefaultColumnWorkflow(columnEventPersistManager, converter),
                 columnEventPersistManager, classMappings, converters);
 
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         ColumnQueryPagination query = ColumnQueryPagination.of(select().from("person").build(), pagination);
 
         for (int index = 0; index <= 10; index++) {
@@ -97,7 +97,7 @@ class ColumnPageTest {
     @Test
     public void shouldExecuteQueryPagination() {
 
-        Pagination pagination = Pagination.page(1).of(2);
+        Pagination pagination = Pagination.page(1).size(2);
         ColumnQueryPagination query = ColumnQueryPagination.of(select().from("person").build(), pagination);
         subject.select(query);
         verify(managerMock).select(query);
@@ -105,7 +105,7 @@ class ColumnPageTest {
 
     @Test
     public void shouldExecutePagination() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         ColumnQueryPagination query = ColumnQueryPagination.of(select().from("person").build(), pagination);
         Page<Person> page = subject.select(query);
 
@@ -117,14 +117,14 @@ class ColumnPageTest {
 
     @Test
     public void shouldReturnNPEWhenCollectionFactoryIsNull() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
         assertThrows(NullPointerException.class, () -> page.getContent(null));
     }
 
     @Test
     public void shouldGetContent() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
 
         List<Person> people = page.getContent();
@@ -134,7 +134,7 @@ class ColumnPageTest {
 
     @Test
     public void shouldGetAsStream() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
 
         Stream<Person> stream = page.get();
@@ -144,7 +144,7 @@ class ColumnPageTest {
 
     @Test
     public void shouldCreateCollectionFromCollectionFactory() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
 
         ArrayList<Person> people = page.getContent(ArrayList::new);
@@ -153,7 +153,7 @@ class ColumnPageTest {
 
     @Test
     public void shouldCreatePagination() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
 
         assertEquals(0L, page.get().map(Person::getId).findFirst().orElse(-0L));
@@ -183,7 +183,7 @@ class ColumnPageTest {
 
     @Test
     public void shouldExecutePaginationAsQuery() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         ColumnQueryPagination queryPagination = ColumnQueryPagination.of(select().from("person").build(), pagination);
         ColumnQuery query = queryPagination;
         List<Person> people = subject.select(query);

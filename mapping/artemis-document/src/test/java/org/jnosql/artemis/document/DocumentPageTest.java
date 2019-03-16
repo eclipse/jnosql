@@ -78,7 +78,7 @@ class DocumentPageTest {
         this.subject = new DefaultDocumentTemplate(converter, instance, new DefaultDocumentWorkflow(columnEventPersistManager, converter),
                 columnEventPersistManager, classMappings, converters);
 
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         DocumentQueryPagination query = DocumentQueryPagination.of(select().from("person").build(), pagination);
 
         for (int index = 0; index <= 10; index++) {
@@ -99,7 +99,7 @@ class DocumentPageTest {
     @Test
     public void shouldExecuteQueryPagination() {
 
-        Pagination pagination = Pagination.page(1).of(2);
+        Pagination pagination = Pagination.page(1).size(2);
         DocumentQueryPagination query = DocumentQueryPagination.of(select().from("person").build(), pagination);
         subject.select(query);
         verify(managerMock).select(query);
@@ -107,7 +107,7 @@ class DocumentPageTest {
 
     @Test
     public void shouldExecutePagination() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         DocumentQueryPagination query = DocumentQueryPagination.of(select().from("person").build(), pagination);
         Page<Person> page = subject.select(query);
 
@@ -119,14 +119,14 @@ class DocumentPageTest {
 
     @Test
     public void shouldReturnNPEWhenCollectionFactoryIsNull() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
         assertThrows(NullPointerException.class, () -> page.getContent(null));
     }
 
     @Test
     public void shouldGetContent() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
 
         List<Person> people = page.getContent();
@@ -136,7 +136,7 @@ class DocumentPageTest {
 
     @Test
     public void shouldGetAsStream() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
 
         Stream<Person> stream = page.get();
@@ -146,7 +146,7 @@ class DocumentPageTest {
 
     @Test
     public void shouldCreateCollectionFromCollectionFactory() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
 
         ArrayList<Person> people = page.getContent(ArrayList::new);
@@ -155,7 +155,7 @@ class DocumentPageTest {
 
     @Test
     public void shouldCreatePagination() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
 
         assertEquals(0L, page.get().map(Person::getId).findFirst().orElse(-0L));
@@ -185,7 +185,7 @@ class DocumentPageTest {
 
     @Test
     public void shouldExecutePaginationAsQuery() {
-        Pagination pagination = Pagination.page(1).of(1);
+        Pagination pagination = Pagination.page(1).size(1);
         DocumentQueryPagination queryPagination = DocumentQueryPagination.of(select().from("person").build(), pagination);
         DocumentQuery query = queryPagination;
         List<Person> people = subject.select(query);

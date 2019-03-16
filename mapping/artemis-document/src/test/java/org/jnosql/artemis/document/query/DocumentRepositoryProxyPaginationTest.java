@@ -458,7 +458,7 @@ class DocumentRepositoryProxyPaginationTest {
 
 
     private Pagination getPagination() {
-        return Pagination.page(current().nextLong(1, 10)).of(current().nextLong(1, 10));
+        return Pagination.page(current().nextLong(1, 10)).size(current().nextLong(1, 10));
     }
     interface PersonRepository extends Repository<Person, Long> {
 

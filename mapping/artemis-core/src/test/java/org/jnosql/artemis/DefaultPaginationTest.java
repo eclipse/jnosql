@@ -35,18 +35,18 @@ class DefaultPaginationTest {
 
     @Test
     public void shouldReturnErrorWhenSizeIsZero() {
-        assertThrows(IllegalArgumentException.class, () -> Pagination.page(2).of(0));
+        assertThrows(IllegalArgumentException.class, () -> Pagination.page(2).size(0));
     }
 
     @Test
     public void shouldReturnErrorWhenSizeIsNegative() {
-        assertThrows(IllegalArgumentException.class, () -> Pagination.page(2).of(-1));
+        assertThrows(IllegalArgumentException.class, () -> Pagination.page(2).size(-1));
     }
 
 
     @Test
     public void shouldCreatePaginationInstance() {
-        Pagination pagination = Pagination.page(1).of(2);
+        Pagination pagination = Pagination.page(1).size(2);
         assertEquals(1, pagination.getPageNumber());
         assertEquals(2L, pagination.getPageSize());
         assertEquals(2L, pagination.getLimit());
@@ -56,7 +56,7 @@ class DefaultPaginationTest {
 
     @Test
     public void shouldNext() {
-        Pagination pagination = Pagination.page(1).of(2);
+        Pagination pagination = Pagination.page(1).size(2);
 
         checkPagination(pagination, 1, 0, 2, 2);
         Pagination secondPage = pagination.next();
@@ -78,7 +78,7 @@ class DefaultPaginationTest {
     @Test
     public void shouldReturnReadOnly(){
 
-        Pagination pagination = Pagination.page(1).of(2);
+        Pagination pagination = Pagination.page(1).size(2);
         Pagination unmodifiable = pagination.unmodifiable();
         assertThrows(UnsupportedOperationException.class, unmodifiable::next);
 

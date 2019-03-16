@@ -96,6 +96,6 @@ final class DefaultPagination implements Pagination {
 
     @Override
     public String toString() {
-        return "page " + page + " of " + size;
+        return "page " + page + " size " + size;
     }
 }

@@ -261,7 +261,7 @@ public class DefaultColumnMapperSelectBuilderTest {
 
     @Test
     public void shouldCreateQueryWithPagination() {
-        Pagination pagination = Pagination.page(2).of(2);
+        Pagination pagination = Pagination.page(2).size(2);
         ColumnMapperFrom columnFrom = mapperBuilder.selectFrom(Person.class);
         ColumnQuery query = columnFrom.build(pagination);
         assertEquals(pagination.getLimit(), query.getLimit());
@@ -270,7 +270,7 @@ public class DefaultColumnMapperSelectBuilderTest {
 
     @Test
     public void shouldExecuteQueryPagination() {
-        Pagination pagination = Pagination.page(2).of(2);
+        Pagination pagination = Pagination.page(2).size(2);
         ColumnTemplate template = Mockito.mock(ColumnTemplate.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         mapperBuilder.selectFrom(Person.class).execute(template, pagination);
@@ -282,7 +282,7 @@ public class DefaultColumnMapperSelectBuilderTest {
 
     @Test
     public void shouldExecuteSingleQueryPagination() {
-        Pagination pagination = Pagination.page(2).of(2);
+        Pagination pagination = Pagination.page(2).size(2);
         ColumnTemplate template = Mockito.mock(ColumnTemplate.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         mapperBuilder.selectFrom(Person.class).executeSingle(template, pagination);
@@ -294,7 +294,7 @@ public class DefaultColumnMapperSelectBuilderTest {
 
     @Test
     public void shouldCreatePage() {
-        Pagination pagination = Pagination.page(2).of(2);
+        Pagination pagination = Pagination.page(2).size(2);
         ColumnTemplate template = Mockito.mock(ColumnTemplate.class);
         ArgumentCaptor<ColumnQueryPagination> queryCaptor = ArgumentCaptor.forClass(ColumnQueryPagination.class);
         Page<Person> page = mapperBuilder.selectFrom(Person.class).page(template, pagination);
