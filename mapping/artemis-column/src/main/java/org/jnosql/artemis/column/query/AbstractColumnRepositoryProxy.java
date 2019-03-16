@@ -32,9 +32,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
-import static org.jnosql.artemis.reflection.DynamicReturn.IS_PAGINATION;
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
 
 /**
