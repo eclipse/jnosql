@@ -183,6 +183,20 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
     }
 
     @Override
+    public <T> List<T> execute(ColumnTemplate template, Pagination pagination) {
+        requireNonNull(template, "template is required");
+        requireNonNull(pagination, "pagination is required");
+        return template.select(this.build(pagination));
+    }
+
+    @Override
+    public <T> Optional<T> executeSingle(ColumnTemplate template, Pagination pagination) {
+        requireNonNull(template, "template is required");
+        requireNonNull(pagination, "pagination is required");
+        return template.singleResult(this.build(pagination));
+    }
+
+    @Override
     public <T> void execute(ColumnTemplateAsync template, Consumer<List<T>> callback) {
         requireNonNull(template, "template is required");
         requireNonNull(callback, "callback is required");
