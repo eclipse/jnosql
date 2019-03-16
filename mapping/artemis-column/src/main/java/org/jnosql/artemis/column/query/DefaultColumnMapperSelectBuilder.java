@@ -211,7 +211,7 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
     }
 
     @Override
-    public <T> Page<T> page(Pagination pagination, ColumnTemplate template) {
+    public <T> Page<T> page(ColumnTemplate template, Pagination pagination) {
         requireNonNull(pagination, "pagination is required");
         requireNonNull(template, "template is required");
         return template.select(ColumnQueryPagination.of(build(), pagination));

@@ -120,5 +120,5 @@ public interface ColumnMapperQueryBuild {
      * @return a {@link Page} from instance
      * @throws NullPointerException when there are null parameters
      */
-    <T> Page<T> page(Pagination pagination, ColumnTemplate template);
+    <T> Page<T> page(ColumnTemplate template, Pagination pagination);
 }
