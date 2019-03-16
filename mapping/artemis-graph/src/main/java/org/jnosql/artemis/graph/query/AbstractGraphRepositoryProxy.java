@@ -17,6 +17,7 @@ package org.jnosql.artemis.graph.query;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
@@ -36,7 +37,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * Template method to {@link Repository} proxy on Graph
  *
- * @param <T>  the entity type
+ * @param <T> the entity type
  * @param <K> the K entity
  */
 abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
@@ -70,10 +71,10 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 return method.invoke(getRepository(), args);
             case FIND_BY:
                 return findById(method, args, typeClass);
-            case DELETE_BY:
-                return executeDeleteMethod(method, args);
             case FIND_ALL:
                 return findAll(method, typeClass);
+            case DELETE_BY:
+                return executeDeleteMethod(method, args);
             case OBJECT_METHOD:
                 return method.invoke(this, args);
             case UNKNOWN:
@@ -110,6 +111,13 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
             GraphQueryMethod queryMethod = new GraphQueryMethod(getClassMapping(),
                     getGraph().traversal().V(),
                     getConverters(), method, args);
+
+            Pagination pagination = DynamicReturn.findPagination(args);
+            if (pagination != null) {
+                queryMethod.getTraversal()
+                        .limit(pagination.getLimit())
+                        .skip(pagination.getLimit());
+            }
 
             return converter.apply(queryMethod)
                     .stream()
