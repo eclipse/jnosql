@@ -31,7 +31,9 @@ enum DynamicReturnConverter {
     INSTANCE;
 
 
-    private final DynamicExecutorQueryConverter converter = new DefaultDynamicExecutorQueryConverter();
+    private final DynamicExecutorQueryConverter defaultConverter = new DefaultDynamicExecutorQueryConverter();
+
+    private final DynamicExecutorQueryConverter paginationConverter = new PaginationDynamicExecutorQueryConverter();
 
     /**
      * Converts the entity from the Method return type.
@@ -47,7 +49,7 @@ enum DynamicReturnConverter {
         Class<?> returnType = method.getReturnType();
 
         DynamicReturnType type = DynamicReturnType.of(typeClass, returnType);
-
+        DynamicExecutorQueryConverter converter = getConverter(dynamic);
 
         switch (type) {
             case INSTANCE:
@@ -113,5 +115,14 @@ enum DynamicReturnConverter {
                 .build();
 
         return convert(dynamicReturn);
+    }
+
+
+    private DynamicExecutorQueryConverter getConverter(DynamicReturn<?> dynamic) {
+        if (dynamic.hasPagination()) {
+            return defaultConverter;
+        } else {
+            return paginationConverter;
+        }
     }
 }
