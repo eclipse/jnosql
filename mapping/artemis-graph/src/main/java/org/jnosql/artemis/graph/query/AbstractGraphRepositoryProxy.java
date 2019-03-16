@@ -103,9 +103,8 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
             GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V().hasLabel(getClassMapping().getName());
             Pagination pagination = DynamicReturn.findPagination(args);
             if (pagination != null) {
-                traversal
-                        .limit(pagination.getLimit())
-                        .skip(pagination.getSkip());
+                traversal.skip(pagination.getSkip())
+                .limit(pagination.getLimit());
             }
             return traversal.toList()
                     .stream()
@@ -126,8 +125,8 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
             Pagination pagination = DynamicReturn.findPagination(args);
             if (pagination != null) {
                 queryMethod.getTraversal()
-                        .limit(pagination.getLimit())
-                        .skip(pagination.getSkip());
+                        .skip(pagination.getSkip())
+                        .limit(pagination.getLimit());
             }
 
             return converter.apply(queryMethod)

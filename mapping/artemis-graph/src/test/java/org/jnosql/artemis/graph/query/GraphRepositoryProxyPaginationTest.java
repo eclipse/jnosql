@@ -148,8 +148,9 @@ public class GraphRepositoryProxyPaginationTest {
     public void shouldFindAll() {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        List<Person> people = personRepository.findAll(Pagination.page(1).size(2));
+        List<Person> people = personRepository.findAll(Pagination.page(2).size(1));
         assertFalse(people.isEmpty());
+        assertEquals(1, people.size());
     }
 
     @Test
