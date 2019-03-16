@@ -117,7 +117,7 @@ public final class GraphPage<T> implements Page<T> {
      * @return a new {@link Page} instance
      * @throws NullPointerException when there are null parameters
      */
-    public static <T> Page<T> of(Pagination pagination, GraphConverter converter,
+    static <T> Page<T> of(Pagination pagination, GraphConverter converter,
                                  GraphTraversal<?, ?> graphTraversal) {
 
         Objects.requireNonNull(pagination, "pagination is required");
