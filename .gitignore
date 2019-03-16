@@ -14,3 +14,11 @@ test-output/
 /.project
 /.idea
 .settings/
+
+# Eclipse metadata
+.project
+.factorypath
+
+# Annotation processor metadata
+.apt_generated/
+.apt_generated_tests/
