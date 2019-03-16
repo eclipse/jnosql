@@ -116,7 +116,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
             if (pagination != null) {
                 queryMethod.getTraversal()
                         .limit(pagination.getLimit())
-                        .skip(pagination.getLimit());
+                        .skip(pagination.getSkip());
             }
 
             return converter.apply(queryMethod)
