@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
@@ -44,6 +45,11 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     public static Function<Supplier<List<?>>, Supplier<Optional<?>>> toSingleResult(final Method method) {
         return new SupplierConverter(method);
     }
+
+    /**
+     * A predicate to check it the object is instance of {@link Pagination}
+     */
+    public static final Predicate<Object> IS_PAGINATION = Pagination.class::isInstance;
 
 
     @Override
@@ -74,7 +80,6 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
             };
         }
     }
-
 
 
     private final Class<T> classSource;
