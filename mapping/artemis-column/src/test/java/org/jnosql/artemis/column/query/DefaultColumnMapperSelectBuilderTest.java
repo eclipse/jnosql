@@ -15,6 +15,9 @@
 package org.jnosql.artemis.column.query;
 
 import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
+import org.jnosql.artemis.column.ColumnQueryPagination;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.artemis.model.Address;
@@ -254,6 +257,51 @@ public class DefaultColumnMapperSelectBuilderTest {
         ColumnQuery query = queryCaptor.getValue();
         ColumnQuery queryExpected = ColumnQueryBuilder.select().from("Person").build();
         assertEquals(queryExpected, query);
+    }
+
+    @Test
+    public void shouldCreateQueryWithPagination() {
+        Pagination pagination = Pagination.page(2).of(2);
+        ColumnMapperFrom columnFrom = mapperBuilder.selectFrom(Person.class);
+        ColumnQuery query = columnFrom.build(pagination);
+        assertEquals(pagination.getLimit(), query.getLimit());
+        assertEquals(pagination.getSkip(), query.getSkip());
+    }
+
+    @Test
+    public void shouldExecuteQueryPagination() {
+        Pagination pagination = Pagination.page(2).of(2);
+        ColumnTemplate template = Mockito.mock(ColumnTemplate.class);
+        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
+        mapperBuilder.selectFrom(Person.class).execute(template, pagination);
+        Mockito.verify(template).select(queryCaptor.capture());
+        ColumnQuery query = queryCaptor.getValue();
+        assertEquals(pagination.getLimit(), query.getLimit());
+        assertEquals(pagination.getSkip(), query.getSkip());
+    }
+
+    @Test
+    public void shouldExecuteSingleQueryPagination() {
+        Pagination pagination = Pagination.page(2).of(2);
+        ColumnTemplate template = Mockito.mock(ColumnTemplate.class);
+        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
+        mapperBuilder.selectFrom(Person.class).executeSingle(template, pagination);
+        Mockito.verify(template).singleResult(queryCaptor.capture());
+        ColumnQuery query = queryCaptor.getValue();
+        assertEquals(pagination.getLimit(), query.getLimit());
+        assertEquals(pagination.getSkip(), query.getSkip());
+    }
+
+    @Test
+    public void shouldCreatePage() {
+        Pagination pagination = Pagination.page(2).of(2);
+        ColumnTemplate template = Mockito.mock(ColumnTemplate.class);
+        ArgumentCaptor<ColumnQueryPagination> queryCaptor = ArgumentCaptor.forClass(ColumnQueryPagination.class);
+        Page<Person> page = mapperBuilder.selectFrom(Person.class).page(template, pagination);
+        Mockito.verify(template).select(queryCaptor.capture());
+        ColumnQuery query = queryCaptor.getValue();
+        assertEquals(pagination.getLimit(), query.getLimit());
+        assertEquals(pagination.getSkip(), query.getSkip());
     }
 
 }
