@@ -75,6 +75,8 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
     }
 
+
+
     private final Class<T> classSource;
 
     private final Method methodSource;
@@ -191,23 +193,23 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     /**
      * A builder of {@link DynamicReturn}
      */
-    public static final class DefaultDynamicReturnBuilder {
+    public static final class DefaultDynamicReturnBuilder<T> {
 
         private Class<?> classSource;
 
         private Method methodSource;
 
-        private Supplier<Optional<?>> singleResult;
+        private Supplier<Optional<T>> singleResult;
 
-        private Supplier<List<?>> list;
+        private Supplier<List<T>> list;
 
         private Pagination pagination;
 
-        private Function<Pagination, Optional<?>> singleResultPagination;
+        private Function<Pagination, Optional<T>> singleResultPagination;
 
-        private Function<Pagination, List<?>> listPagination;
+        private Function<Pagination, List<T>> listPagination;
 
-        private Function<Pagination, Page<?>> page;
+        private Function<Pagination, Page<T>> page;
 
         private DefaultDynamicReturnBuilder() {
         }
@@ -234,7 +236,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param singleResult the singleResult source
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withSingleResult(Supplier<Optional<?>> singleResult) {
+        public DefaultDynamicReturnBuilder withSingleResult(Supplier<Optional<T>> singleResult) {
             this.singleResult = singleResult;
             return this;
         }
@@ -243,7 +245,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param list the list
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withList(Supplier<List<?>> list) {
+        public DefaultDynamicReturnBuilder withList(Supplier<List<T>> list) {
             this.list = list;
             return this;
         }
@@ -261,7 +263,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param singleResultPagination the single result pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withSingleResultPagination(Function<Pagination, Optional<?>> singleResultPagination) {
+        public DefaultDynamicReturnBuilder withSingleResultPagination(Function<Pagination, Optional<T>> singleResultPagination) {
             this.singleResultPagination = singleResultPagination;
             return this;
         }
@@ -270,7 +272,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param listPagination the list pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withListPagination(Function<Pagination, List<?>> listPagination) {
+        public DefaultDynamicReturnBuilder withListPagination(Function<Pagination, List<T>> listPagination) {
             this.listPagination = listPagination;
             return this;
         }
@@ -279,7 +281,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param page the page
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withPage(Function<Pagination, Page<?>> page) {
+        public DefaultDynamicReturnBuilder withPage(Function<Pagination, Page<T>> page) {
             this.page = page;
             return this;
         }
