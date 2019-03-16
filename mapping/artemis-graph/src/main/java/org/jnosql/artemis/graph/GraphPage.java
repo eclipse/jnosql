@@ -59,7 +59,8 @@ public final class GraphPage<T> implements Page<T> {
 
     @Override
     public Page<T> next() {
-        return GraphPage.of(pagination.next(), converter, graphTraversal);
+        return new GraphPage(pagination.next(), converter, graphTraversal,
+                toEntity(pagination, converter, graphTraversal));
     }
 
     @Override
@@ -124,9 +125,14 @@ public final class GraphPage<T> implements Page<T> {
         Objects.requireNonNull(graphTraversal, "graphTraversal is required");
         graphTraversal.skip(pagination.getSkip());
         return new GraphPage<>(pagination, converter, graphTraversal,
-                (List<T>) graphTraversal
-                        .next((int) pagination.getLimit()).stream()
-                        .map(v -> converter.toEntity((Vertex) v))
-                        .collect(Collectors.toList()));
+                toEntity(pagination, converter, graphTraversal));
+    }
+
+    private static <T> List<T> toEntity(Pagination pagination, GraphConverter converter,
+                                        GraphTraversal<?, ?> graphTraversal) {
+        return (List<T>) graphTraversal
+                .next((int) pagination.getLimit()).stream()
+                .map(v -> converter.toEntity((Vertex) v))
+                .collect(Collectors.toList());
     }
 }
