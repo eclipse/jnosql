@@ -17,6 +17,7 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.IdNotFoundException;
+import org.jnosql.artemis.Page;
 import org.jnosql.artemis.PreparedStatement;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
@@ -37,7 +38,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
@@ -109,11 +109,13 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     @Override
     public <T> List<T> select(DocumentQuery query) {
-        Objects.requireNonNull(query, "query is required");
-        getPersistManager().firePreQuery(query);
-        List<DocumentEntity> entities = getManager().select(query);
-        Function<DocumentEntity, T> function = e -> getConverter().toEntity(e);
-        return entities.stream().map(function).collect(Collectors.toList());
+        return executeQuery(query);
+    }
+
+    @Override
+    public <T> Page<T> select(DocumentQueryPagination query) {
+        List<T> entities = executeQuery(query);
+        return new DocumentPage<>(this, entities, query);
     }
 
     @Override
@@ -182,5 +184,14 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         ClassMapping classMapping = getClassMappings().get(entityClass);
         return getManager().count(classMapping.getName());
     }
+
+    private <T> List<T> executeQuery(DocumentQuery query) {
+        requireNonNull(query, "query is required");
+        getPersistManager().firePreQuery(query);
+        List<DocumentEntity> entities = getManager().select(query);
+        Function<DocumentEntity, T> function = e -> getConverter().toEntity(e);
+        return entities.stream().map(function).collect(toList());
+    }
+
 
 }
