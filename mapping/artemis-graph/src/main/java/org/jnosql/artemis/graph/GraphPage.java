@@ -15,11 +15,13 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -43,7 +45,7 @@ public final class GraphPage<T> implements Page<T> {
         this.graphTraversal = graphTraversal;
         this.entities = (List<T>) graphTraversal
                 .next((int) pagination.getLimit()).stream()
-                .map(converter::toVertex)
+                .map(v -> converter.toEntity((Vertex) v))
                 .collect(Collectors.toList());
     }
 
@@ -72,5 +74,33 @@ public final class GraphPage<T> implements Page<T> {
     @Override
     public Stream<T> get() {
         return entities.stream();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        GraphPage<?> graphPage = (GraphPage<?>) o;
+        return Objects.equals(pagination, graphPage.pagination) &&
+                Objects.equals(graphTraversal, graphPage.graphTraversal) &&
+                Objects.equals(entities, graphPage.entities);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pagination, graphTraversal, entities);
+    }
+
+    @Override
+    public String toString() {
+        return "GraphPage{" +
+                "pagination=" + pagination +
+                ", graphTraversal=" + graphTraversal +
+                ", entities=" + entities +
+                '}';
     }
 }
