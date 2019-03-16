@@ -26,7 +26,6 @@ import org.jnosql.diana.api.column.ColumnQuery;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -166,7 +165,7 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
 
     @Override
     public ColumnQuery build(Pagination pagination) {
-        Objects.requireNonNull(pagination, "pagination is required");
+        requireNonNull(pagination, "pagination is required");
         return ColumnQueryPagination.of(build(), pagination);
     }
 
