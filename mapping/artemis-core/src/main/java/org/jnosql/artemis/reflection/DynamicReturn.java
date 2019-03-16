@@ -51,6 +51,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         return DynamicReturnConverter.INSTANCE.convert(this);
     }
 
+
     private static class SupplierConverter implements Function<Supplier<List<?>>, Supplier<Optional<?>>> {
 
         private final Method method;
@@ -149,16 +150,32 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         return Optional.ofNullable(pagination);
     }
 
+    /**
+     * @return returns a single result with pagination
+     */
     Optional<T> singleResultPagination() {
         return singleResultPagination.apply(pagination);
     }
 
+    /**
+     * @return a list result using pagination
+     */
     List<T> listPagination() {
         return listPagination.apply(pagination);
     }
 
+    /**
+     * @return the page
+     */
     Page<T> getPage() {
         return page.apply(pagination);
+    }
+
+    /**
+     * @return check if there is pagination
+     */
+    boolean hasPagination() {
+        return pagination != null;
     }
 
     /**
