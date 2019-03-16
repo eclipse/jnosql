@@ -16,6 +16,8 @@
  */
 package org.jnosql.artemis.column.query;
 
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.diana.api.column.ColumnQuery;
@@ -38,6 +40,12 @@ public interface ColumnMapperQueryBuild {
      */
     ColumnQuery build();
 
+    /**
+     * Creates a new instance of {@link ColumnQuery} from {@link Pagination}
+     * @param pagination the pagination
+     * @return a new {@link ColumnQuery} instance from {@link Pagination}
+     */
+    ColumnQuery build(Pagination pagination);
 
     /**
      * Executes {@link ColumnTemplate#select(ColumnQuery)}
@@ -78,4 +86,15 @@ public interface ColumnMapperQueryBuild {
      * @throws NullPointerException when there is null parameter
      */
     <T> void executeSingle(ColumnTemplateAsync template, Consumer<Optional<T>> callback);
+
+    /**
+     * Creates a {@link Page} from pagination
+     *
+     * @param pagination the pagination
+     * @param template   the template
+     * @param <T>        the type
+     * @return a {@link Page} from instance
+     * @throws NullPointerException when there are null parameters
+     */
+    <T> Page<T> page(Pagination pagination, ColumnTemplate template);
 }
