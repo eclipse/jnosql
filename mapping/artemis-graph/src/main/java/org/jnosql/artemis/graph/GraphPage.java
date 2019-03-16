@@ -129,25 +129,4 @@ public final class GraphPage<T> implements Page<T> {
                         .map(v -> converter.toEntity((Vertex) v))
                         .collect(Collectors.toList()));
     }
-
-    /**
-     * Creates a {@link Page} instance to Graph
-     *
-     * @param pagination     the pagination
-     * @param converter      the converter
-     * @param graphTraversal the traversal
-     * @param entities       the entities at the first interaction
-     * @param <T>            the type
-     * @return a new {@link Page} instance
-     * @throws NullPointerException when there are null parameters
-     */
-    public static <T> Page<T> of(Pagination pagination, GraphConverter converter,
-                                 GraphTraversal<?, ?> graphTraversal, List<T> entities) {
-
-        Objects.requireNonNull(pagination, "pagination is required");
-        Objects.requireNonNull(converter, "converter is required");
-        Objects.requireNonNull(graphTraversal, "graphTraversal is required");
-        Objects.requireNonNull(entities, "entities is required");
-        return new GraphPage<>(pagination, converter, graphTraversal, entities);
-    }
 }
