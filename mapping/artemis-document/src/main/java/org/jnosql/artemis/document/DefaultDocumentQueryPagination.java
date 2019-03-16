@@ -18,7 +18,6 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.Pagination;
 import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentQuery;
 
