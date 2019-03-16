@@ -212,7 +212,9 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
 
     @Override
     public <T> Page<T> page(DocumentTemplate template, Pagination pagination) {
-        return null;
+        requireNonNull(pagination, "pagination is required");
+        requireNonNull(template, "template is required");
+        return template.select(DocumentQueryPagination.of(build(), pagination));
     }
 
 }
