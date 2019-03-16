@@ -37,7 +37,7 @@ public final class GraphPage<T> implements Page<T> {
 
     private final List<T> entities;
 
-    private GraphPage(Pagination pagination, GraphConverter converter, GraphTraversal<?, ?> graphTraversal) {
+    GraphPage(Pagination pagination, GraphConverter converter, GraphTraversal<?, ?> graphTraversal) {
         this.pagination = pagination;
         this.converter = converter;
         this.graphTraversal = graphTraversal;
