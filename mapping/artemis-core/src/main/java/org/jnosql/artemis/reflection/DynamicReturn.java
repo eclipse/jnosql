@@ -59,6 +59,9 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      * @return a {@link Pagination} or null
      */
     public static Pagination findPagination(Object[] params) {
+        if(params == null || params.length == 0) {
+            return null;
+        }
         return Stream.of(params)
                 .filter(IS_PAGINATION)
                 .map(Pagination.class::cast)
