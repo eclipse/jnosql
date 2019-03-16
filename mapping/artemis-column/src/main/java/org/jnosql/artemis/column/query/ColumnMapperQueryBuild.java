@@ -42,6 +42,7 @@ public interface ColumnMapperQueryBuild {
 
     /**
      * Creates a new instance of {@link ColumnQuery} from {@link Pagination}
+     *
      * @param pagination the pagination
      * @return a new {@link ColumnQuery} instance from {@link Pagination}
      */
@@ -66,6 +67,29 @@ public interface ColumnMapperQueryBuild {
      * @throws NullPointerException when manager is null
      */
     <T> Optional<T> executeSingle(ColumnTemplate template);
+
+    /**
+     * Executes {@link ColumnTemplate#select(ColumnQuery)} using {@link Pagination}
+     *
+     * @param <T>        the entity type
+     * @param template   the column template
+     * @param pagination the pagination
+     * @return the result of {@link ColumnTemplate#select(ColumnQuery)}
+     * @throws NullPointerException when there are null parameters
+     */
+    <T> List<T> execute(ColumnTemplate template, Pagination pagination);
+
+    /**
+     * Executes {@link ColumnTemplate#singleResult(ColumnQuery)} using {@link Pagination}
+     *
+     * @param <T>        the entity type
+     * @param template   the column template
+     * @param pagination the pagination
+     * @return the result of {@link ColumnTemplate#singleResult(ColumnQuery)}
+     * @throws NullPointerException when there are null parameters
+     */
+    <T> Optional<T> executeSingle(ColumnTemplate template, Pagination pagination);
+
 
     /**
      * Executes {@link ColumnTemplateAsync#select(ColumnQuery, Consumer)}
