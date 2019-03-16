@@ -20,10 +20,11 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Entity;
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
 import org.jnosql.diana.api.NonUniqueResultException;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -86,7 +87,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     @Override
     public VertexTraversal out(String... labels) {
-        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "label is required"));
+        Stream.of(labels).forEach(l -> requireNonNull(l, "label is required"));
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.out(labels)), converter);
     }
 
@@ -100,32 +101,32 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     @Override
     public EdgeTraversal outE(String... edgeLabels) {
-        Stream.of(edgeLabels).forEach(l -> Objects.requireNonNull(l, "label is required"));
+        Stream.of(edgeLabels).forEach(l -> requireNonNull(l, "label is required"));
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.outE(edgeLabels)), converter);
     }
 
     @Override
     public VertexTraversal in(String... labels) {
-        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "label is required"));
+        Stream.of(labels).forEach(l -> requireNonNull(l, "label is required"));
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.in(labels)), converter);
     }
 
     @Override
     public EdgeTraversal inE(String... edgeLabels) {
-        Stream.of(edgeLabels).forEach(l -> Objects.requireNonNull(l, "edgeLabel is required"));
+        Stream.of(edgeLabels).forEach(l -> requireNonNull(l, "edgeLabel is required"));
 
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.inE(edgeLabels)), converter);
     }
 
     @Override
     public VertexTraversal both(String... labels) {
-        Stream.of(labels).forEach(l -> Objects.requireNonNull(l, "labels is required"));
+        Stream.of(labels).forEach(l -> requireNonNull(l, "labels is required"));
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.both(labels)), converter);
     }
 
     @Override
     public EdgeTraversal bothE(String... edgeLabels) {
-        Stream.of(edgeLabels).forEach(l -> Objects.requireNonNull(l, "edgeLabel is required"));
+        Stream.of(edgeLabels).forEach(l -> requireNonNull(l, "edgeLabel is required"));
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.bothE(edgeLabels)), converter);
     }
 
@@ -147,7 +148,7 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     @Override
     public VertexTraversal hasLabel(String label) {
-        Objects.requireNonNull(label, "label is required");
+        requireNonNull(label, "label is required");
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(label)), converter);
     }
 
@@ -196,6 +197,14 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
             return Optional.of(result.get(0));
         }
         throw new NonUniqueResultException("The Vertex traversal query returns more than one result");
+    }
+
+    @Override
+    public <T> Page<T> page(Pagination pagination) {
+        requireNonNull(pagination, "pagination is required");
+        GraphTraversal<?, ?> graphTraversal = supplier.get();
+        graphTraversal.skip(pagination.getSkip());
+        return new GraphPage<>(pagination, converter, graphTraversal);
     }
 
     @Override
