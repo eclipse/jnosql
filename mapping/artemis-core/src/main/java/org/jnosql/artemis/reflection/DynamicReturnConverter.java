@@ -120,9 +120,9 @@ enum DynamicReturnConverter {
 
     private DynamicExecutorQueryConverter getConverter(DynamicReturn<?> dynamic) {
         if (dynamic.hasPagination()) {
-            return defaultConverter;
-        } else {
             return paginationConverter;
+        } else {
+            return defaultConverter;
         }
     }
 }

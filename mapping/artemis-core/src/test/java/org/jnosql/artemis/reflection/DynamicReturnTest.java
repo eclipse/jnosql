@@ -15,6 +15,7 @@
 package org.jnosql.artemis.reflection;
 
 import org.jnosql.artemis.DynamicQueryException;
+import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.Repository;
 import org.jnosql.diana.api.NonUniqueResultException;
@@ -37,6 +38,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DynamicReturnTest {
 
@@ -45,7 +47,7 @@ class DynamicReturnTest {
         Method method = getMethod(PersonRepository.class, "getOptional");
         Supplier<List<?>> list = Collections::emptyList;
         Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
-        Assertions.assertThrows(NullPointerException.class, () ->
+        assertThrows(NullPointerException.class, () ->
                 DynamicReturn.builder()
                         .withClassSource(Person.class)
                         .withMethodSource(method).withList(list)
@@ -98,7 +100,7 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
 
-        Assertions.assertThrows(NonUniqueResultException.class, dynamicReturn::execute);
+        assertThrows(NonUniqueResultException.class, dynamicReturn::execute);
 
     }
 
@@ -289,6 +291,19 @@ class DynamicReturnTest {
     }
 
     @Test
+    public void shouldReturnErrorWhenExecutePage() throws NoSuchMethodException{
+        Method method = getMethod(PersonRepository.class, "getPage");
+        Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(Person.class)
+                .withMethodSource(method).withList(list)
+                .withSingleResult(singlResult).build();
+
+        assertThrows(DynamicQueryException.class, dynamicReturn::execute);
+    }
+
+    @Test
     public void shouldReturnErrorNavigableSetEntityIsNotComparable() throws NoSuchMethodException {
 
         Method method = getMethod(AnimalRepository.class, "getSortedSet");
@@ -299,7 +314,7 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
 
-        Assertions.assertThrows(DynamicQueryException.class, dynamicReturn::execute);
+        assertThrows(DynamicQueryException.class, dynamicReturn::execute);
     }
 
 
@@ -380,6 +395,8 @@ class DynamicReturnTest {
         NavigableSet<Person> getNavigableSet();
 
         Deque<Person> getDeque();
+
+        Page<Person> getPage();
     }
 
 
