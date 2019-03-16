@@ -57,7 +57,7 @@ public final class GraphPage<T> implements Page<T> {
 
     @Override
     public Page<T> next() {
-        return new GraphPage<>(pagination, converter, graphTraversal);
+        return new GraphPage<>(pagination.next(), converter, graphTraversal);
     }
 
     @Override
