@@ -195,6 +195,7 @@ Also, the operators:
 * LessThanEqual
 * GreaterThanEqual
 * Like
+* In
 * OrderBy
 * OrderBy\_\_\_\_Desc
 * OrderBy\_\_\_\_\_ASC
