@@ -12,7 +12,7 @@
 //
 //   Otavio Santana
 
-====  Pagination
+===  Pagination
 
 Pagination is the process of separating the contents into discrete pages. Each page has a list of entities from the database. The pagination allows retrieving a considerable number of elements from datastore into small blocks, e.g., returns ten pages with one hundred elements instead of return one thousand in a big shot at the storage engine.
 
@@ -27,6 +27,154 @@ Pagination next = pagination.next();
 ----
 
 
-===== Column
+==== Column
+
+A `ColumnQueryPagination` is a specialization of `ColumnQuery` that allows the pagination resource at the query. Thus it overwrites the **skip** and **limit** and use the values from a `Pagination` instance.
+
+[source,java]
+----
+Pagination pagination = ...;
+ColumnQuery query =...;
+
+ColumnQueryPagination queryPagination = ColumnQueryPagination.of(query, pagination);
+
+ColumnQueryPagination nextQueryPagination =
+ queryPagination.next();
+----
+
+
+===== Template
+
+Through the `Template` there are two ways to use the pagination resource. The first one is to define the value as `ColumnQuery`. Thus it will return a query as a list; however, it will break the results into pages.
+
+
+[source,java]
+----
+ColumnTemplate template =...;
+Pagination pagination = Pagination.page(1).size(1);
+ColumnQuery query = ColumnQueryPagination.of(select().from("person").build(), pagination);
+List<Person> people = template.select(query);
+----
+
+The second one is representing the page with the `Page` instance. A page is a fixed-length contiguous block of entities from the database, it has the feature to generate the next page.
+
+[source,java]
+----
+ColumnTemplate template =...;
+Pagination pagination = Pagination.page(1).size(1);
+ColumnQueryPagination query = ColumnQueryPagination.of(select().from("person").build(), pagination);
+Page<Person> firstPage = template.select(query);
+List<Person> firstPageContents = page.getContent();
+Page<Person> secondPage = firstPage.next();
+----
+
+
+===== Query Mapper
+
+
+From a mapper query is possible either creates a query that executes using the pagination or creates a `Page` instance.
+
+
+[source,java]
+----
+ColumnQueryMapperBuilder mapperBuilder = ...;
+
+Pagination pagination = Pagination.page(2).size(2);
+ColumnQuery query = mapperBuilder.selectFrom(Person.class).build(pagination);
+Page<Person> page = mapperBuilder.selectFrom(Person.class).page(template, pagination);
+List<Person> people = mapperBuilder.selectFrom(Person.class).execute(template, pagination);
+----
+
+
+===== Repository
+
+A Repository interface also allows using the pagination feature at these interfaces. To enable it creates a `Pagination` parameter as the last parameter.
+
+[source,java]
+----
+ interface PersonRepository extends Repository<Person, Long> {
+
+    List<Person> findAll(Pagination pagination);
+
+    Set<Person> findByName(String name, Pagination pagination);
+
+    Page<Person> findByAge(Integer age, Pagination pagination);
+}
+----
+
+==== Document
+
+A `DocumentQueryPagination` is a specialization of `DocumentQuery` that allows the pagination resource at the query. Thus it overwrites the **skip** and **limit** and use the values from a `Pagination` instance.
+
+[source,java]
+----
+Pagination pagination = ...;
+DocumentQuery query =...;
+
+DocumentQueryPagination queryPagination = DocumentQueryPagination.of(query, pagination);
+
+DocumentQueryPagination nextQueryPagination =
+ queryPagination.next();
+----
+
+
+===== Template
+
+Through the `Template` there are two ways to use the pagination resource. The first one is to define the value as `DocumentQuery`. Thus it will return a query as a list; however, it will break the results into pages.
+
+
+[source,java]
+----
+DocumentTemplate template =...;
+Pagination pagination = Pagination.page(1).size(1);
+DocumentQuery query = DocumentQueryPagination.of(select().from("person").build(), pagination);
+List<Person> people = template.select(query);
+----
+
+The second one is representing the page with the `Page` instance. A page is a fixed-length contiguous block of entities from the database, it has the feature to generate the next page.
+
+[source,java]
+----
+DocumentTemplate template =...;
+Pagination pagination = Pagination.page(1).size(1);
+DocumentQueryPagination query = DocumentQueryPagination.of(select().from("person").build(), pagination);
+Page<Person> firstPage = template.select(query);
+List<Person> firstPageContents = page.getContent();
+Page<Person> secondPage = firstPage.next();
+----
+
+
+===== Query Mapper
+
+
+From a mapper query is possible either creates a query that executes using the pagination or creates a `Page` instance.
+
+
+[source,java]
+----
+DocumentQueryMapperBuilder mapperBuilder = ...;
+
+Pagination pagination = Pagination.page(2).size(2);
+DocumentQuery query = mapperBuilder.selectFrom(Person.class).build(pagination);
+Page<Person> page = mapperBuilder.selectFrom(Person.class).page(template, pagination);
+List<Person> people = mapperBuilder.selectFrom(Person.class).execute(template, pagination);
+----
+
+
+===== Repository
+
+A Repository interface also allows using the pagination feature at these interfaces. To enable it creates a `Pagination` parameter as the last parameter.
+
+[source,java]
+----
+ interface PersonRepository extends Repository<Person, Long> {
+
+    List<Person> findAll(Pagination pagination);
+
+    Set<Person> findByName(String name, Pagination pagination);
+
+    Page<Person> findByAge(Integer age, Pagination pagination);
+}
+----
 
 
