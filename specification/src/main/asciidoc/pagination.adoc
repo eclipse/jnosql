@@ -18,6 +18,9 @@ Pagination is the process of separating the contents into discrete pages. Each p
 
 At this project, there an interface that represents the pagination there is the `Pagination` interface.
 
+.The pagination, instead of query a bunch of elements. The pagination process allows retrieving a small fixed block of entities in a database.
+image::pagination.png[Pagination]
+
 [source,java]
 ----
 Pagination pagination = Pagination.page(1).size(2);
