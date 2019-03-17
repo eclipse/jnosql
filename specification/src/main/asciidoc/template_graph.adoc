@@ -56,6 +56,8 @@ Book in = edge.getIncoming();
 
 ===== Querying with traversal
 
+Traversals in Gremlin are spawned from a TraversalSource. The GraphTraversalSource is the typical "graph-oriented" DSL used throughout the documentation and will most likely be the most used DSL in a TinkerPop application.
+
 To run a query in Graph with Gremlin, there are traversal interfaces. These interfaces are lazy; in other words, they just run after any finalizing method.
 
 E.g.:
