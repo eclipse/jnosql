@@ -218,6 +218,16 @@ interface PersonRepository extends Repository<Person, Long> {
 
 Using these keywords, Mapping will create the queries.
 
+===== Special Parameters
+
+In addition to the use of use the query method, the repository has support to a special instance at the parameters in a method:
+
+
+* `Pagination`: This parameter enables the resource of pagination at a repository.
+
+WARNING: All these special instances must be at the end, thus after the parameters that will be used at a query.
+
+
 ==== Using Repository as an asynchronous way
 
 The RepositoryAsync interface works similarly as Repository but with asynchronous work.
