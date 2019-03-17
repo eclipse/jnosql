@@ -27,6 +27,9 @@ Pagination next = pagination.next();
 ----
 
 
+TIP: The Column-Family, Document and Graph API has method such as **skip** and **limit** to jump values into a query and to define a maximum size of elements to return in a query respectively.
+
+
 ==== Column
 
 A `ColumnQueryPagination` is a specialization of `ColumnQuery` that allows the pagination resource at the query. Thus it overwrites the **skip** and **limit** and use the values from a `Pagination` instance.
@@ -178,3 +181,33 @@ A Repository interface also allows using the pagination feature at these interfa
 ----
 
 
+==== Graph
+
+At the Graph database, the `Pagination` implementation works within a `GraphTraversal`. A `GraphTraversal` is a DSL that is oriented towards the semantics of the raw graph.
+
+
+[source,java]
+----
+Pagination pagination = Pagination.page(1).size(1);
+Page<Person> page = template.getTraversalVertex()
+    .orderBy("name")
+    .desc()
+    .page(pagination);
+----
+
+===== Repository
+
+A Repository interface also allows using the pagination feature at these interfaces. To enable it creates a `Pagination` parameter as the last parameter.
+
+[source,java]
+----
+ interface PersonRepository extends Repository<Person, Long> {
+
+    List<Person> findAll(Pagination pagination);
+
+    Set<Person> findByName(String name, Pagination pagination);
+
+}
+----
+
+CAUTION: Graph repository implementation does not support the `Page` conversion.
