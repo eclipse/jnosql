@@ -40,14 +40,29 @@ public final class Sort {
     }
 
     /**
-     * Creates a bew Sort instance to be used in a NoSQL query.
+     * Creates a wew Sort instance to be used in a NoSQL query.
      *
      * @param name - the field name be used in a sort process
      * @param type - the way to be sorted
      * @return a sort instance
+     * @throws NullPointerException when there are null parameters
      */
     public static Sort of(String name, SortType type) {
         return new Sort(name, type);
+    }
+
+    /**
+     * Creates a new Sort of the type {@link SortType.#ASC}
+     * @param name the field name be used in a sort process
+     * @return a sort instance
+     * @throws NullPointerException when name is null
+     */
+    public static Sort asc(String name) {
+        return new Sort(name, SortType.ASC);
+    }
+
+    public static Sort desc(String name) {
+        return new Sort(name, SortType.DESC);
     }
 
     public String getName() {
