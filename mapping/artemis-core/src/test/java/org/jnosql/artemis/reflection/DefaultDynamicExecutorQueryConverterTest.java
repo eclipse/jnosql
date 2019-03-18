@@ -48,7 +48,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(() -> Optional.of(ada))
                 .withClassSource(Person.class)
-                .withList(() -> Collections.emptyList())
+                .withList(Collections::emptyList)
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Person person = converter.toInstance(dynamic);
@@ -59,9 +59,9 @@ class DefaultDynamicExecutorQueryConverterTest {
     @Test
     public void shouldReturnNullAsInstance() {
         dynamic = DynamicReturn.builder()
-                .withSingleResult(() -> Optional.empty())
+                .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
-                .withList(() -> Collections.emptyList())
+                .withList(Collections::emptyList)
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Person person = converter.toInstance(dynamic);
@@ -75,7 +75,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(() -> Optional.of(ada))
                 .withClassSource(Person.class)
-                .withList(() -> Collections.emptyList())
+                .withList(Collections::emptyList)
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Optional<Person> person = converter.toOptional(dynamic);
@@ -88,7 +88,7 @@ class DefaultDynamicExecutorQueryConverterTest {
     public void shouldReturnList() {
         Person ada = new Person("Ada");
         dynamic = DynamicReturn.builder()
-                .withSingleResult(() -> Optional.empty())
+                .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
                 .withList(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
@@ -103,7 +103,7 @@ class DefaultDynamicExecutorQueryConverterTest {
     public void shouldReturnSet() {
         Person ada = new Person("Ada");
         dynamic = DynamicReturn.builder()
-                .withSingleResult(() -> Optional.empty())
+                .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
                 .withList(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
@@ -119,7 +119,7 @@ class DefaultDynamicExecutorQueryConverterTest {
     public void shouldReturnLinkedList() {
         Person ada = new Person("Ada");
         dynamic = DynamicReturn.builder()
-                .withSingleResult(() -> Optional.empty())
+                .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
                 .withList(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
@@ -134,7 +134,7 @@ class DefaultDynamicExecutorQueryConverterTest {
     public void shouldReturnTreeSet() {
         Person ada = new Person("Ada");
         dynamic = DynamicReturn.builder()
-                .withSingleResult(() -> Optional.empty())
+                .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
                 .withList(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
@@ -149,7 +149,7 @@ class DefaultDynamicExecutorQueryConverterTest {
     public void shouldReturnStream() {
         Person ada = new Person("Ada");
         dynamic = DynamicReturn.builder()
-                .withSingleResult(() -> Optional.empty())
+                .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
                 .withList(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
@@ -164,7 +164,7 @@ class DefaultDynamicExecutorQueryConverterTest {
     public void shouldReturnDefault() {
         Person ada = new Person("Ada");
         dynamic = DynamicReturn.builder()
-                .withSingleResult(() -> Optional.empty())
+                .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
                 .withList(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
@@ -178,7 +178,7 @@ class DefaultDynamicExecutorQueryConverterTest {
 
         Person ada = new Person("Ada");
         dynamic = DynamicReturn.builder()
-                .withSingleResult(() -> Optional.empty())
+                .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
                 .withList(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
