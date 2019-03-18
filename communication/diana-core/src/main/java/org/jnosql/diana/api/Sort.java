@@ -50,6 +50,8 @@ public final class Sort {
      * @throws NullPointerException when there are null parameters
      */
     public static Sort of(String name, SortType type) {
+        requireNonNull(name, "name is required");
+        requireNonNull(type, "type is required");
         return new Sort(name, type);
     }
 
