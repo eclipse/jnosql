@@ -66,7 +66,7 @@ public interface ClassMapping {
      * Gets the {@link FieldMapping} from the java field name
      *
      * @param javaField the java field
-     * @return the field otherwise {@link Optional#EMPTY}
+     * @return the field otherwise {@link Optional#empty()}
      * @throws NullPointerException when the javaField is null
      */
     Optional<FieldMapping> getFieldMapping(String javaField);
