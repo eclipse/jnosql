@@ -28,6 +28,8 @@ class SortTest {
     public void shouldReturnErrorWhenParameterIsRequired() {
         Assertions.assertThrows(NullPointerException.class, ()-> Sort.of(null, Sort.SortType.ASC));
         Assertions.assertThrows(NullPointerException.class, ()-> Sort.of("name", null));
+        Assertions.assertThrows(NullPointerException.class, ()-> Sort.asc(null));
+        Assertions.assertThrows(NullPointerException.class, ()-> Sort.desc(null));
     }
 
     @Test
