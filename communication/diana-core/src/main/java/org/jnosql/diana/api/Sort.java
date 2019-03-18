@@ -20,6 +20,8 @@ package org.jnosql.diana.api;
 
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * This element represents a required order to be used in a query, it's has two attributes:
  * -- The name - the field's name to be sorted
@@ -52,17 +54,23 @@ public final class Sort {
     }
 
     /**
-     * Creates a new Sort of the type {@link SortType.#ASC}
+     * Creates a new Sort of the type {@link SortType#ASC}
      * @param name the field name be used in a sort process
      * @return a sort instance
      * @throws NullPointerException when name is null
      */
     public static Sort asc(String name) {
-        return new Sort(name, SortType.ASC);
+        return new Sort(requireNonNull(name, "name is required"), SortType.ASC);
     }
 
+    /**
+     * Creates a new Sort of the type {@link SortType#DESC}
+     * @param name the field name be used in a sort process
+     * @return a sort instance
+     * @throws NullPointerException when name is null
+     */
     public static Sort desc(String name) {
-        return new Sort(name, SortType.DESC);
+        return new Sort(requireNonNull(name, "name is required"), SortType.DESC);
     }
 
     public String getName() {
