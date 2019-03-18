@@ -40,7 +40,6 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static java.util.concurrent.ThreadLocalRandom.current;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
