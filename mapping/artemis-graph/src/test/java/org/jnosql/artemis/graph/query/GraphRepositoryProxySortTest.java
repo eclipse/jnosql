@@ -18,15 +18,20 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.Sorts;
 import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.reflection.ClassMappings;
+import org.jnosql.diana.api.Sort;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,17 +40,15 @@ import org.mockito.Mockito;
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
+import static java.util.concurrent.ThreadLocalRandom.current;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(CDIExtension.class)
-public class GraphRepositoryProxyPaginationTest {
+public class GraphRepositoryProxySortTest {
 
 
     private GraphTemplate template;
@@ -75,8 +78,7 @@ public class GraphRepositoryProxyPaginationTest {
         this.template = Mockito.mock(GraphTemplate.class);
 
         GraphRepositoryProxy personHandler = new GraphRepositoryProxy(template,
-                classMappings, PersonRepository.class,graph, converter, converters);
-
+                classMappings, PersonRepository.class, graph, converter, converters);
 
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
@@ -85,6 +87,13 @@ public class GraphRepositoryProxyPaginationTest {
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
                 personHandler);
+
+        graph.addVertex(T.label, "Person", "name", "name1", "age", 21);
+        graph.addVertex(T.label, "Person", "name", "name2", "age", 22);
+        graph.addVertex(T.label, "Person", "name", "name3", "age", 23);
+        graph.addVertex(T.label, "Person", "name", "name4", "age", 24);
+        graph.addVertex(T.label, "Person", "name", "name5", "age", 25);
+        graph.addVertex(T.label, "Person", "name", "name6", "age", 26);
     }
 
     @AfterEach
@@ -95,66 +104,50 @@ public class GraphRepositoryProxyPaginationTest {
     }
 
     @Test
-    public void shouldFindByNameAndAge() {
+    public void shouldFindAll() {
 
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-
-        List<Person> people = personRepository.findByNameAndAge("name", 20, Pagination.page(1).size(2));
+        List<Person> people = personRepository.findAll(Pagination.page(1).size(2), Sorts.sorts().desc("name"));
         assertEquals(2, people.size());
 
+        List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
+        MatcherAssert.assertThat(names, Matchers.contains("name6", "name5"));
     }
 
     @Test
-    public void shouldFindByAgeAndName() {
+    public void shouldFindByName() {
 
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-
-        Set<Person> people = personRepository.findByAgeAndName(20, "name", Pagination.page(1).size(3));
-        assertEquals(3, people.size());
-
-    }
-
-    @Test
-    public void shouldFindByAge() {
-
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        Optional<Person> person = personRepository.findByAge(20, Pagination.page(1).size(2));
-        assertTrue(person.isPresent());
-    }
-
-
-    @Test
-    public void shouldFindAll() {
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        List<Person> people = personRepository.findAll(Pagination.page(2).size(1));
-        assertFalse(people.isEmpty());
+        List<Person> people = personRepository.findByName("name1", Pagination.page(1).size(2), Sort.desc("name"));
         assertEquals(1, people.size());
+
+        List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
+        MatcherAssert.assertThat(names, Matchers.contains("name1"));
     }
 
+
     @Test
-    public void shouldReturnEmptyAtFindAll() {
-        List<Person> people = personRepository.findAll(Pagination.page(1).size(2));
-        assertTrue(people.isEmpty());
+    public void shouldFindByAgeGreaterThan() {
+        List<Person> people = personRepository.findByAgeGreaterThan(22, Sort.desc("name"));
+        Assertions.assertEquals(6, people.size());
+        List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
+        MatcherAssert.assertThat(names, Matchers.contains("name6", "name5", "name4", "name3"));
+
     }
+
 
     interface PersonRepository extends Repository<Person, Long> {
 
-        List<Person> findAll(Pagination pagination);
+        List<Person> findAll(Pagination pagination, Sorts sorts);
 
-        Optional<Person> findByAge(Integer age, Pagination pagination);
+        List<Person> findByName(String name, Pagination pagination, Sort sort);
 
-        List<Person> findByNameAndAge(String name, Integer age, Pagination pagination);
+        List<Person> findByAgeGreaterThan(Integer age, Sort sort);
 
-        Set<Person> findByAgeAndName(Integer age, String name, Pagination pagination);
+        List<Person> findByNameAndAgeGreaterThan(String name, Integer age, Sorts sorts);
+
+        List<Person> findByGreaterThanAgeOrderByName(String name, Pagination pagination, Sort sort);
+
+        List<Person> findByGreaterThanAgeOrderByName(String name, Pagination pagination, Sorts sorts);
+
 
     }
 
