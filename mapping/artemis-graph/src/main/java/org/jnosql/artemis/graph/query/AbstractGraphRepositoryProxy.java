@@ -28,7 +28,6 @@ import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 import org.jnosql.artemis.reflection.DynamicReturn;
-import org.jnosql.diana.api.Sort;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -38,8 +37,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static java.util.stream.Collectors.toList;
-import static org.apache.tinkerpop.gremlin.process.traversal.Order.asc;
-import static org.apache.tinkerpop.gremlin.process.traversal.Order.desc;
 
 /**
  * Template method to {@link Repository} proxy on Graph
@@ -77,7 +74,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
             case DEFAULT:
                 return method.invoke(getRepository(), args);
             case FIND_BY:
-                return findById(method, args, typeClass);
+                return findBy(method, args, typeClass);
             case FIND_ALL:
                 return findAll(method, typeClass, args);
             case DELETE_BY:
@@ -105,8 +102,8 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
             GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V().hasLabel(getClassMapping().getName());
 
-            setSort(args, traversal);
-            setPagination(args, traversal);
+            SelectQueryConverter.setSort(args, traversal);
+            SelectQueryConverter.setPagination(args, traversal);
             return traversal.toList()
                     .stream()
                     .map(getConverter()::toEntity)
@@ -118,17 +115,15 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
 
 
-    private Object findById(Method method, Object[] args, Class<?> typeClass) {
+    private Object findBy(Method method, Object[] args, Class<?> typeClass) {
 
         Supplier<List<?>> querySupplier = () -> {
             GraphQueryMethod queryMethod = new GraphQueryMethod(getClassMapping(),
                     getGraph().traversal().V(),
                     getConverters(), method, args);
 
-            setSort(args, queryMethod.getTraversal());
-            setPagination(args, queryMethod.getTraversal());
 
-            return converter.apply(queryMethod)
+            return converter.apply(queryMethod, args)
                     .stream()
                     .map(getConverter()::toEntity)
                     .collect(toList());
@@ -137,22 +132,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
         return converter(method, typeClass, querySupplier, args);
     }
 
-    private void setPagination(Object[] args, GraphTraversal<Vertex, Vertex> traversal) {
-        Pagination pagination = DynamicReturn.findPagination(args);
-        if (pagination != null) {
-            traversal.skip(pagination.getSkip())
-                    .limit(pagination.getLimit());
-        }
-    }
 
-    private void setSort(Object[] args, GraphTraversal<Vertex, Vertex> traversal) {
-        List<Sort> sorts = DynamicReturn.findSorts(args);
-        if (!sorts.isEmpty()) {
-            for (Sort sort : sorts) {
-                traversal.order().by(sort.getName(), sort.getType() == Sort.SortType.ASC ? asc : desc);
-            }
-        }
-    }
     private Object converter(Method method, Class<?> typeClass,
                              Supplier<List<?>> querySupplier,
                              Object[] args) {
