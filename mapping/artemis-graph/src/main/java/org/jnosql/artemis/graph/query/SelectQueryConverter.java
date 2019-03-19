@@ -26,13 +26,9 @@ import org.jnosql.query.Sort;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
-import static java.util.Comparator.reverseOrder;
 import static org.apache.tinkerpop.gremlin.process.traversal.Order.asc;
-import static org.apache.tinkerpop.gremlin.process.traversal.Order.decr;
 import static org.apache.tinkerpop.gremlin.process.traversal.Order.desc;
-import static org.apache.tinkerpop.gremlin.process.traversal.Order.incr;
 
 final class SelectQueryConverter extends AbstractQueryConvert implements BiFunction<GraphQueryMethod, Object[], List<Vertex>> {
 
