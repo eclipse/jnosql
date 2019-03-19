@@ -16,10 +16,10 @@ package org.jnosql.artemis;
 
 import org.hamcrest.Matchers;
 import org.jnosql.diana.api.Sort;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultSortsTest {
@@ -59,9 +59,9 @@ class DefaultSortsTest {
 
     @Test
     public void shouldReturnErrorWhenUsesNullParameters(){
-        Assertions.assertThrows(NullPointerException.class, () -> Sorts.sorts().asc(null));
-        Assertions.assertThrows(NullPointerException.class, () -> Sorts.sorts().desc(null));
-        Assertions.assertThrows(NullPointerException.class, () -> Sorts.sorts().add(null));
-        Assertions.assertThrows(NullPointerException.class, () -> Sorts.sorts().remove(null));
+        assertThrows(NullPointerException.class, () -> Sorts.sorts().asc(null));
+        assertThrows(NullPointerException.class, () -> Sorts.sorts().desc(null));
+        assertThrows(NullPointerException.class, () -> Sorts.sorts().add(null));
+        assertThrows(NullPointerException.class, () -> Sorts.sorts().remove(null));
     }
 }
