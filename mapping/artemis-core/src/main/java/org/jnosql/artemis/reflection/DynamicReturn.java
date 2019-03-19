@@ -16,9 +16,14 @@ package org.jnosql.artemis.reflection;
 
 import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
+import org.jnosql.artemis.Sorts;
 import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.api.Sort;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -59,13 +64,29 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      * @return a {@link Pagination} or null
      */
     public static Pagination findPagination(Object[] params) {
-        if(params == null || params.length == 0) {
+        if (params == null || params.length == 0) {
             return null;
         }
         return Stream.of(params)
                 .filter(IS_PAGINATION)
                 .map(Pagination.class::cast)
                 .findFirst().orElse(null);
+    }
+
+    public static List<Sort> findSorts(Object[] params) {
+        if (params == null || params.length == 0) {
+            return Collections.emptyList();
+        }
+
+        List<Sort> sorts = new ArrayList<>();
+        for (Object param : Arrays.asList(params)) {
+            if (param instanceof Sort) {
+                sorts.add(Sort.class.cast(param));
+            } else if (param instanceof Sorts) {
+                sorts.addAll(Sorts.class.cast(param).getSorts());
+            }
+        }
+        return sorts;
     }
 
 
