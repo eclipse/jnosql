@@ -60,7 +60,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 return executeQuery(method, args, typeClass, query);
             case FIND_ALL:
                 DocumentQuery queryFindAll = select().from(getClassMapping().getName()).build();
-                return executeQuery(method, args, typeClass, queryFindAll);
+                return executeQuery(method, args, typeClass, getQuerySorts(args, queryFindAll));
             case DELETE_BY:
                 DocumentDeleteQuery documentDeleteQuery = getDeleteQuery(method, args);
                 getTemplate().delete(documentDeleteQuery);
@@ -94,6 +94,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 .build();
         return dynamicReturn.execute();
     }
+
     private Function<Pagination, Page<T>> getPage(DocumentQuery query) {
         return p -> getTemplate().select(DocumentQueryPagination.of(query, p));
     }
