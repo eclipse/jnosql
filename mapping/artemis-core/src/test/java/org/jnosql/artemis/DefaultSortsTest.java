@@ -14,14 +14,13 @@
  */
 package org.jnosql.artemis;
 
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.jnosql.diana.api.Sort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultSortsTest {
 
