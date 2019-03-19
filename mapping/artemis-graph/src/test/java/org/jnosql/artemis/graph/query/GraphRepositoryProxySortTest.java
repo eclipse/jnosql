@@ -127,11 +127,36 @@ public class GraphRepositoryProxySortTest {
     @Test
     public void shouldFindByAgeGreaterThan() {
         List<Person> people = personRepository.findByAgeGreaterThan(22, Sort.desc("name"));
-        Assertions.assertEquals(6, people.size());
+        Assertions.assertEquals(4, people.size());
         List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
         MatcherAssert.assertThat(names, Matchers.contains("name6", "name5", "name4", "name3"));
 
     }
+
+    @Test
+    public void shouldFindByNameAndAgeGreaterThan() {
+        List<Person> people = personRepository.findByNameAndAgeGreaterThan("name4", 22, Sorts.sorts().desc("name"));
+        Assertions.assertEquals(1, people.size());
+        List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
+        MatcherAssert.assertThat(names, Matchers.contains("name4"));
+    }
+
+    @Test
+    public void shouldFindByGreaterThanAgeOrderByName() {
+        List<Person> people = personRepository.findByAgeGreaterThanOrderByName(22, Pagination.page(2).size(3), Sort.desc("age"));
+        Assertions.assertEquals(1, people.size());
+        List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
+        MatcherAssert.assertThat(names, Matchers.contains("name3"));
+    }
+
+    @Test
+    public void shouldFindByGreaterThanAgeOrderByName2() {
+        List<Person> people = personRepository.findByAgeGreaterThanOrderByName(22, Pagination.page(2).size(3), Sorts.sorts().desc("age"));
+        Assertions.assertEquals(1, people.size());
+        List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
+        MatcherAssert.assertThat(names, Matchers.contains("name3"));
+    }
+
 
 
     interface PersonRepository extends Repository<Person, Long> {
@@ -144,9 +169,9 @@ public class GraphRepositoryProxySortTest {
 
         List<Person> findByNameAndAgeGreaterThan(String name, Integer age, Sorts sorts);
 
-        List<Person> findByGreaterThanAgeOrderByName(String name, Pagination pagination, Sort sort);
+        List<Person> findByAgeGreaterThanOrderByName(int age, Pagination pagination, Sort sort);
 
-        List<Person> findByGreaterThanAgeOrderByName(String name, Pagination pagination, Sorts sorts);
+        List<Person> findByAgeGreaterThanOrderByName(int age, Pagination pagination, Sorts sorts);
 
 
     }
