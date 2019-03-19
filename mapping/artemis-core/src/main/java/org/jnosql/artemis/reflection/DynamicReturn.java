@@ -73,6 +73,12 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
                 .findFirst().orElse(null);
     }
 
+    /**
+     * Finds {@link Sort} and {@link Sorts} at the parameter array
+     *
+     * @param params the params
+     * @return a list of {@link Sort} found
+     */
     public static List<Sort> findSorts(Object[] params) {
         if (params == null || params.length == 0) {
             return Collections.emptyList();
