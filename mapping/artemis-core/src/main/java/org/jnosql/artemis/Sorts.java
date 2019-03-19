@@ -67,4 +67,15 @@ public interface Sorts {
      */
     List<Sort> getSorts();
 
+
+    /**
+     * Creates a new instance of {@link Sorts}
+     *
+     * @return a {@link Sorts} instance
+     */
+    static Sorts sorts() {
+        return new DefaultSorts();
+    }
+
+
 }
