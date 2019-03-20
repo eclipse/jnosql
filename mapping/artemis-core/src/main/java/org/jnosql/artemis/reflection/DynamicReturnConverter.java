@@ -14,26 +14,14 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.PreparedStatement;
 
 import java.lang.reflect.Method;
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.NavigableSet;
 import java.util.Optional;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 /**
  * The converter within the return method at Repository class.
@@ -43,6 +31,10 @@ enum DynamicReturnConverter {
     INSTANCE;
 
 
+    private final DynamicExecutorQueryConverter defaultConverter = new DefaultDynamicExecutorQueryConverter();
+
+    private final DynamicExecutorQueryConverter paginationConverter = new PaginationDynamicExecutorQueryConverter();
+
     /**
      * Converts the entity from the Method return type.
      *
@@ -50,41 +42,39 @@ enum DynamicReturnConverter {
      * @return the conversion result
      * @throws NullPointerException when the dynamic is null
      */
-    public Object convert(DynamicReturn dynamic) {
+    public Object convert(DynamicReturn<?> dynamic) {
 
         Method method = dynamic.getMethod();
         Class<?> typeClass = dynamic.typeClass();
         Class<?> returnType = method.getReturnType();
 
-        if (typeClass.equals(returnType)) {
-            Optional<Object> optional = dynamic.singleResult();
-            return optional.orElse(null);
+        DynamicReturnType type = DynamicReturnType.of(typeClass, returnType);
+        DynamicExecutorQueryConverter converter = getConverter(dynamic);
 
-        } else if (Optional.class.equals(returnType)) {
-            return dynamic.singleResult();
-        } else if (List.class.equals(returnType)
-                || Iterable.class.equals(returnType)
-                || Collection.class.equals(returnType)) {
-            return dynamic.list();
-        } else if (Set.class.equals(returnType)) {
-            return new HashSet<>(dynamic.list());
-        } else if (Queue.class.equals(returnType)) {
-            return new PriorityQueue<>(dynamic.list());
-        } else if (Stream.class.equals(returnType)) {
-            return dynamic.list().stream();
-        } else if (Deque.class.equals(returnType)) {
-            return new ArrayDeque<>(dynamic.list());
-        } else if (NavigableSet.class.equals(returnType) || SortedSet.class.equals(returnType)) {
-            checkImplementsComparable(typeClass);
-            return new TreeSet<>(dynamic.list());
-        }
+        switch (type) {
+            case INSTANCE:
+                return converter.toInstance(dynamic);
+            case OPTIONAL:
+                return converter.toOptional(dynamic);
+            case LIST:
+            case ITERABLE:
+            case COLLECTION:
+                return converter.toList(dynamic);
+            case SET:
+                return converter.toSet(dynamic);
+            case QUEUE:
+            case DEQUE:
+                return converter.toLinkedList(dynamic);
+            case NAVIGABLE_SET:
+            case SORTED_SET:
+                return converter.toTreeSet(dynamic);
+            case STREAM:
+                return converter.toStream(dynamic);
+            case PAGE:
+                return converter.toPage(dynamic);
+            default:
+                return converter.toDefault(dynamic);
 
-        return dynamic.list();
-    }
-
-    private void checkImplementsComparable(Class<?> typeClass) {
-        if (!Comparable.class.isAssignableFrom(typeClass)) {
-            throw new DynamicQueryException(String.format("To use either NavigableSet or SortedSet the entity %s must implement Comparable.", typeClass));
         }
     }
 
@@ -125,5 +115,14 @@ enum DynamicReturnConverter {
                 .build();
 
         return convert(dynamicReturn);
+    }
+
+
+    private DynamicExecutorQueryConverter getConverter(DynamicReturn<?> dynamic) {
+        if (dynamic.hasPagination()) {
+            return paginationConverter;
+        } else {
+            return defaultConverter;
+        }
     }
 }

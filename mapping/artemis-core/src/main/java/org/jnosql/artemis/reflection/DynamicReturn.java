@@ -14,13 +14,22 @@
  */
 package org.jnosql.artemis.reflection;
 
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
+import org.jnosql.artemis.Sorts;
 import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.api.Sort;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -43,11 +52,55 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         return new SupplierConverter(method);
     }
 
+    /**
+     * A predicate to check it the object is instance of {@link Pagination}
+     */
+    private static final Predicate<Object> IS_PAGINATION = Pagination.class::isInstance;
+
+    /**
+     * Finds {@link Pagination} from array object
+     *
+     * @param params the params
+     * @return a {@link Pagination} or null
+     */
+    public static Pagination findPagination(Object[] params) {
+        if (params == null || params.length == 0) {
+            return null;
+        }
+        return Stream.of(params)
+                .filter(IS_PAGINATION)
+                .map(Pagination.class::cast)
+                .findFirst().orElse(null);
+    }
+
+    /**
+     * Finds {@link Sort} and {@link Sorts} at the parameter array
+     *
+     * @param params the params
+     * @return a list of {@link Sort} found
+     */
+    public static List<Sort> findSorts(Object[] params) {
+        if (params == null || params.length == 0) {
+            return Collections.emptyList();
+        }
+
+        List<Sort> sorts = new ArrayList<>();
+        for (Object param : Arrays.asList(params)) {
+            if (param instanceof Sort) {
+                sorts.add(Sort.class.cast(param));
+            } else if (param instanceof Sorts) {
+                sorts.addAll(Sorts.class.cast(param).getSorts());
+            }
+        }
+        return sorts;
+    }
+
 
     @Override
     public Object execute() {
         return DynamicReturnConverter.INSTANCE.convert(this);
     }
+
 
     private static class SupplierConverter implements Function<Supplier<List<?>>, Supplier<Optional<?>>> {
 
@@ -72,6 +125,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
     }
 
+
     private final Class<T> classSource;
 
     private final Method methodSource;
@@ -80,13 +134,28 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     private final Supplier<List<T>> list;
 
+    private final Pagination pagination;
 
-    private DynamicReturn(Class<T> classSource, Method methodSource, Supplier<Optional<T>> singleResult,
-                          Supplier<List<T>> list) {
+    private final Function<Pagination, Optional<T>> singleResultPagination;
+
+    private final Function<Pagination, List<T>> listPagination;
+
+    private final Function<Pagination, Page<T>> page;
+
+    private DynamicReturn(Class<T> classSource, Method methodSource,
+                          Supplier<Optional<T>> singleResult,
+                          Supplier<List<T>> list, Pagination pagination,
+                          Function<Pagination, Optional<T>> singleResultPagination,
+                          Function<Pagination, List<T>> listPagination,
+                          Function<Pagination, Page<T>> page) {
         this.classSource = classSource;
         this.methodSource = methodSource;
         this.singleResult = singleResult;
         this.list = list;
+        this.pagination = pagination;
+        this.singleResultPagination = singleResultPagination;
+        this.listPagination = listPagination;
+        this.page = page;
     }
 
     /**
@@ -125,6 +194,40 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         return list.get();
     }
 
+    /**
+     * @return the pagination
+     */
+    Optional<Pagination> getPagination() {
+        return Optional.ofNullable(pagination);
+    }
+
+    /**
+     * @return returns a single result with pagination
+     */
+    Optional<T> singleResultPagination() {
+        return singleResultPagination.apply(pagination);
+    }
+
+    /**
+     * @return a list result using pagination
+     */
+    List<T> listPagination() {
+        return listPagination.apply(pagination);
+    }
+
+    /**
+     * @return the page
+     */
+    Page<T> getPage() {
+        return page.apply(pagination);
+    }
+
+    /**
+     * @return check if there is pagination
+     */
+    boolean hasPagination() {
+        return pagination != null;
+    }
 
     /**
      * Creates a builder to DynamicReturn
@@ -139,36 +242,96 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     /**
      * A builder of {@link DynamicReturn}
      */
-    public static final class DefaultDynamicReturnBuilder {
+    public static final class DefaultDynamicReturnBuilder<T> {
 
         private Class<?> classSource;
 
         private Method methodSource;
 
-        private Supplier<Optional<?>> singleResult;
+        private Supplier<Optional<T>> singleResult;
 
-        private Supplier<List<?>> list;
+        private Supplier<List<T>> list;
+
+        private Pagination pagination;
+
+        private Function<Pagination, Optional<T>> singleResultPagination;
+
+        private Function<Pagination, List<T>> listPagination;
+
+        private Function<Pagination, Page<T>> page;
 
         private DefaultDynamicReturnBuilder() {
         }
 
+        /**
+         * @param classSource set the classSource
+         * @return the instance
+         */
         public DefaultDynamicReturnBuilder withClassSource(Class<?> classSource) {
             this.classSource = classSource;
             return this;
         }
 
+        /**
+         * @param methodSource the method source
+         * @return the builder instance
+         */
         public DefaultDynamicReturnBuilder withMethodSource(Method methodSource) {
             this.methodSource = methodSource;
             return this;
         }
 
-        public DefaultDynamicReturnBuilder withSingleResult(Supplier<Optional<?>> singleResult) {
+        /**
+         * @param singleResult the singleResult source
+         * @return the builder instance
+         */
+        public DefaultDynamicReturnBuilder withSingleResult(Supplier<Optional<T>> singleResult) {
             this.singleResult = singleResult;
             return this;
         }
 
-        public DefaultDynamicReturnBuilder withList(Supplier<List<?>> list) {
+        /**
+         * @param list the list
+         * @return the builder instance
+         */
+        public DefaultDynamicReturnBuilder withList(Supplier<List<T>> list) {
             this.list = list;
+            return this;
+        }
+
+        /**
+         * @param pagination the pagination
+         * @return the builder instance
+         */
+        public DefaultDynamicReturnBuilder withPagination(Pagination pagination) {
+            this.pagination = pagination;
+            return this;
+        }
+
+        /**
+         * @param singleResultPagination the single result pagination
+         * @return the builder instance
+         */
+        public DefaultDynamicReturnBuilder withSingleResultPagination(Function<Pagination, Optional<T>> singleResultPagination) {
+            this.singleResultPagination = singleResultPagination;
+            return this;
+        }
+
+        /**
+         * @param listPagination the list pagination
+         * @return the builder instance
+         */
+        public DefaultDynamicReturnBuilder withListPagination(Function<Pagination, List<T>> listPagination) {
+            this.listPagination = listPagination;
+            return this;
+        }
+
+        /**
+         * @param page the page
+         * @return the builder instance
+         */
+        public DefaultDynamicReturnBuilder withPage(Function<Pagination, Page<T>> page) {
+            this.page = page;
             return this;
         }
 
@@ -176,7 +339,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * Creates a {@link DynamicReturn} from the parameters, all fields are required
          *
          * @return a new instance
-         * @throws NullPointerException when there is null atributes
+         * @throws NullPointerException when there is null attributes
          */
         public DynamicReturn build() {
             requireNonNull(classSource, "the class Source is required");
@@ -184,7 +347,14 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
             requireNonNull(singleResult, "the single result supplier is required");
             requireNonNull(list, "the list result supplier is required");
 
-            return new DynamicReturn(classSource, methodSource, singleResult, list);
+            if (pagination != null) {
+                requireNonNull(singleResultPagination, "singleResultPagination is required when pagination is not null");
+                requireNonNull(listPagination, "listPagination is required when pagination is not null");
+                requireNonNull(page, "page is required when pagination is not null");
+            }
+
+            return new DynamicReturn(classSource, methodSource, singleResult, list,
+                    pagination, singleResultPagination, listPagination, page);
         }
     }
 

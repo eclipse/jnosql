@@ -20,6 +20,8 @@ package org.jnosql.diana.api;
 
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * This element represents a required order to be used in a query, it's has two attributes:
  * -- The name - the field's name to be sorted
@@ -40,14 +42,37 @@ public final class Sort {
     }
 
     /**
-     * Creates a bew Sort instance to be used in a NoSQL query.
+     * Creates a wew Sort instance to be used in a NoSQL query.
      *
      * @param name - the field name be used in a sort process
      * @param type - the way to be sorted
      * @return a sort instance
+     * @throws NullPointerException when there are null parameters
      */
     public static Sort of(String name, SortType type) {
+        requireNonNull(name, "name is required");
+        requireNonNull(type, "type is required");
         return new Sort(name, type);
+    }
+
+    /**
+     * Creates a new Sort of the type {@link SortType#ASC}
+     * @param name the field name be used in a sort process
+     * @return a sort instance
+     * @throws NullPointerException when name is null
+     */
+    public static Sort asc(String name) {
+        return new Sort(requireNonNull(name, "name is required"), SortType.ASC);
+    }
+
+    /**
+     * Creates a new Sort of the type {@link SortType#DESC}
+     * @param name the field name be used in a sort process
+     * @return a sort instance
+     * @throws NullPointerException when name is null
+     */
+    public static Sort desc(String name) {
+        return new Sort(requireNonNull(name, "name is required"), SortType.DESC);
     }
 
     public String getName() {

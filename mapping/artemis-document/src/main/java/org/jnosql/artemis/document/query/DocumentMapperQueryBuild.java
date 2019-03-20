@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.document.query;
 
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.diana.api.document.DocumentQuery;
@@ -39,6 +41,14 @@ public interface DocumentMapperQueryBuild {
     DocumentQuery build();
 
     /**
+     * Creates a new instance of {@link DocumentQuery} from {@link Pagination}
+     *
+     * @param pagination the pagination
+     * @return a new {@link DocumentQuery} instance from {@link Pagination}
+     */
+    DocumentQuery build(Pagination pagination);
+
+    /**
      * Executes {@link DocumentTemplate#select(DocumentQuery)}
      *
      * @param <T>      the entity type
@@ -59,6 +69,28 @@ public interface DocumentMapperQueryBuild {
     <T> Optional<T> executeSingle(DocumentTemplate template);
 
     /**
+     * Executes {@link DocumentTemplate#select(DocumentQuery)} using {@link Pagination}
+     *
+     * @param <T>        the entity type
+     * @param template   the document template
+     * @param pagination the pagination
+     * @return the result of {@link DocumentTemplate#select(DocumentQuery)}
+     * @throws NullPointerException when there are null parameters
+     */
+    <T> List<T> execute(DocumentTemplate template, Pagination pagination);
+
+    /**
+     * Executes {@link DocumentTemplate#singleResult(DocumentQuery)} using {@link Pagination}
+     *
+     * @param <T>        the entity type
+     * @param template   the document template
+     * @param pagination the pagination
+     * @return the result of {@link DocumentTemplate#singleResult(DocumentQuery)}
+     * @throws NullPointerException when there are null parameters
+     */
+    <T> Optional<T> executeSingle(DocumentTemplate template, Pagination pagination);
+
+    /**
      * Executes {@link DocumentTemplateAsync#select(DocumentQuery, Consumer)}
      *
      * @param <T>           the entity type
@@ -77,5 +109,16 @@ public interface DocumentMapperQueryBuild {
      * @throws NullPointerException when there is null parameter
      */
     <T> void executeSingle(DocumentTemplateAsync templateAsync, Consumer<Optional<T>> callback);
+
+    /**
+     * Creates a {@link Page} from pagination
+     *
+     * @param pagination the pagination
+     * @param template   the template
+     * @param <T>        the type
+     * @return a {@link Page} from instance
+     * @throws NullPointerException when there are null parameters
+     */
+    <T> Page<T> page(DocumentTemplate template, Pagination pagination);
 
 }

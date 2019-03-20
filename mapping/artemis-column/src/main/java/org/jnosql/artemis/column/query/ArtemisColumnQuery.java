@@ -32,7 +32,7 @@ class ArtemisColumnQuery implements ColumnQuery {
     private final ColumnCondition condition;
     private final String columnFamily;
 
-    public ArtemisColumnQuery(List<Sort> sorts, long limit, long skip, ColumnCondition condition, String columnFamily) {
+    ArtemisColumnQuery(List<Sort> sorts, long limit, long skip, ColumnCondition condition, String columnFamily) {
         this.sorts = sorts;
         this.limit = limit;
         this.skip = skip;

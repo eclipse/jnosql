@@ -18,8 +18,10 @@ import org.jnosql.aphrodite.antlr.method.DeleteMethodFactory;
 import org.jnosql.aphrodite.antlr.method.SelectMethodFactory;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassMapping;
+import org.jnosql.artemis.reflection.DynamicReturn;
 import org.jnosql.artemis.util.ParamsBinder;
 import org.jnosql.diana.api.Params;
+import org.jnosql.diana.api.Sort;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
 import org.jnosql.diana.api.column.ColumnObserverParser;
 import org.jnosql.diana.api.column.ColumnQuery;
@@ -31,6 +33,8 @@ import org.jnosql.query.DeleteQuery;
 import org.jnosql.query.SelectQuery;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 abstract class BaseColumnRepository {
@@ -52,7 +56,7 @@ abstract class BaseColumnRepository {
         ColumnQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
         getParamsBinder().bind(params, args, method);
-        return query;
+        return getQuerySorts(args, query);
     }
 
     protected ColumnDeleteQuery getDeleteQuery(Method method, Object[] args) {
@@ -63,6 +67,18 @@ abstract class BaseColumnRepository {
         ColumnDeleteQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
         getParamsBinder().bind(params, args, method);
+        return query;
+    }
+
+    protected ColumnQuery getQuerySorts(Object[] args, ColumnQuery query) {
+        List<Sort> sorts = DynamicReturn.findSorts(args);
+        if (!sorts.isEmpty()) {
+            List<Sort> newOrders = new ArrayList<>();
+            newOrders.addAll(query.getSorts());
+            newOrders.addAll(sorts);
+            return new ArtemisColumnQuery(newOrders, query.getLimit(), query.getSkip(),
+                    query.getCondition().orElse(null), query.getColumnFamily());
+        }
         return query;
     }
 

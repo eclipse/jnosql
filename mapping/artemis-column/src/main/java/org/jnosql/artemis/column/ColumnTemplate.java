@@ -15,6 +15,7 @@
 package org.jnosql.artemis.column;
 
 
+import org.jnosql.artemis.Page;
 import org.jnosql.artemis.PreparedStatement;
 import org.jnosql.diana.api.NonUniqueResultException;
 import org.jnosql.diana.api.column.ColumnDeleteQuery;
@@ -134,6 +135,16 @@ public interface ColumnTemplate {
      * @throws NullPointerException when query is null
      */
     <T> List<T> select(ColumnQuery query);
+
+    /**
+     * Finds entities from query using pagination
+     *
+     * @param query - query to figure out entities
+     * @param <T>   the instance type
+     * @return entities found by query
+     * @throws NullPointerException when query is null
+     */
+    <T> Page<T> select(ColumnQueryPagination query);
 
     /**
      * Executes a query then bring the result as a {@link List}

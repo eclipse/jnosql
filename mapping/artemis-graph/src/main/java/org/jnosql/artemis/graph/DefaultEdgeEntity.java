@@ -137,7 +137,7 @@ class DefaultEdgeEntity<O, I> implements EdgeEntity {
 
     @Override
     public String toString() {
-        return  String.valueOf(outgoing) +
+        return outgoing +
                 "---" + edge.label() +
                 " --->" + incoming;
     }

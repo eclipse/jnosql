@@ -16,7 +16,10 @@ package org.jnosql.artemis.column.query;
 
 
 import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.column.ColumnQueryPagination;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
@@ -26,6 +29,9 @@ import org.jnosql.diana.api.column.ColumnQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
 
@@ -54,21 +60,10 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
                 return method.invoke(getRepository(), args);
             case FIND_BY:
                 ColumnQuery query = getQuery(method, args);
-                DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                        .withClassSource(typeClass)
-                        .withMethodSource(method).withList(() -> getTemplate().select(query))
-                        .withSingleResult(() -> getTemplate().singleResult(query)).build();
-
-                return dynamicReturn.execute();
+                return executeQuery(method, args, typeClass, query);
             case FIND_ALL:
-
                 ColumnQuery queryFindAll = select().from(getClassMapping().getName()).build();
-                DynamicReturn<?> dynamicReturnFindAll = DynamicReturn.builder()
-                        .withClassSource(typeClass)
-                        .withMethodSource(method).withList(() -> getTemplate().select(queryFindAll))
-                        .withSingleResult(() -> getTemplate().singleResult(queryFindAll)).build();
-                return dynamicReturnFindAll.execute();
-
+                return executeQuery(method, args, typeClass, getQuerySorts(args, queryFindAll));
             case DELETE_BY:
                 ColumnDeleteQuery deleteQuery = getDeleteQuery(method, args);
                 getTemplate().delete(deleteQuery);
@@ -87,6 +82,38 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
                 return Void.class;
 
         }
+    }
+
+    private Object executeQuery(Method method, Object[] args, Class<?> typeClass, ColumnQuery query) {
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(typeClass)
+                .withMethodSource(method)
+                .withList(() -> getTemplate().select(query))
+                .withSingleResult(() -> getTemplate().singleResult(query))
+                .withPagination(DynamicReturn.findPagination(args))
+                .withListPagination(listPagination(query))
+                .withSingleResultPagination(getSingleResult(query))
+                .withPage(getPage(query))
+                .build();
+        return dynamicReturn.execute();
+    }
+
+    private Function<Pagination, Page<T>> getPage(ColumnQuery query) {
+        return p -> getTemplate().select(ColumnQueryPagination.of(query, p));
+    }
+
+    private Function<Pagination, Optional<T>> getSingleResult(ColumnQuery query) {
+        return p -> {
+            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
+            return getTemplate().singleResult(queryPagination);
+        };
+    }
+
+    private Function<Pagination, List<T>> listPagination(ColumnQuery query) {
+        return p -> {
+            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
+            return getTemplate().select(queryPagination);
+        };
     }
 
 }

@@ -20,8 +20,8 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.Order.decr;
-import static org.apache.tinkerpop.gremlin.process.traversal.Order.incr;
+import static org.apache.tinkerpop.gremlin.process.traversal.Order.asc;
+import static org.apache.tinkerpop.gremlin.process.traversal.Order.desc;
 
 final class DefaultVertexTraversalOrder extends AbstractVertexTraversal implements VertexTraversalOrder {
 
@@ -35,11 +35,11 @@ final class DefaultVertexTraversalOrder extends AbstractVertexTraversal implemen
 
     @Override
     public VertexTraversal asc() {
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.order().by(property, incr)), converter);
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.order().by(property, asc)), converter);
     }
 
     @Override
     public VertexTraversal desc() {
-        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.order().by(property, decr)), converter);
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.order().by(property, desc)), converter);
     }
 }

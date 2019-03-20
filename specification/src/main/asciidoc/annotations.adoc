@@ -389,7 +389,6 @@ To templates and managers classes the databases field are required:
 * Graph
 * GraphTemplate
 * Repository
-* Repository
 
 
 [source,java]

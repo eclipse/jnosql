@@ -21,8 +21,8 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.Order.decr;
-import static org.apache.tinkerpop.gremlin.process.traversal.Order.incr;
+import static org.apache.tinkerpop.gremlin.process.traversal.Order.asc;
+import static org.apache.tinkerpop.gremlin.process.traversal.Order.desc;
 
 final class DefaultEdgeTraversalOrder extends AbstractEdgeTraversal implements EdgeTraversalOrder {
 
@@ -37,11 +37,11 @@ final class DefaultEdgeTraversalOrder extends AbstractEdgeTraversal implements E
 
     @Override
     public EdgeTraversal asc() {
-        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.order().by(property, incr)), converter);
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.order().by(property, asc)), converter);
     }
 
     @Override
     public EdgeTraversal desc() {
-        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.order().by(property, decr)), converter);
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.order().by(property, desc)), converter);
     }
 }

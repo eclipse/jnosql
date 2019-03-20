@@ -14,9 +14,13 @@
  */
 package org.jnosql.artemis.graph.query;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.DynamicQueryException;
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
@@ -29,6 +33,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static java.util.stream.Collectors.toList;
@@ -36,7 +41,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * Template method to {@link Repository} proxy on Graph
  *
- * @param <T>  the entity type
+ * @param <T> the entity type
  * @param <K> the K entity
  */
 abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
@@ -69,11 +74,11 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
             case DEFAULT:
                 return method.invoke(getRepository(), args);
             case FIND_BY:
-                return findById(method, args, typeClass);
+                return findBy(method, args, typeClass);
+            case FIND_ALL:
+                return findAll(method, typeClass, args);
             case DELETE_BY:
                 return executeDeleteMethod(method, args);
-            case FIND_ALL:
-                return findAll(method, typeClass);
             case OBJECT_METHOD:
                 return method.invoke(this, args);
             case UNKNOWN:
@@ -91,44 +96,63 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
         }
     }
 
-    private Object findAll(Method method, Class<?> typeClass) {
+    private Object findAll(Method method, Class<?> typeClass, Object[] args) {
 
-        Supplier<List<?>> querySupplier = () ->
-                getGraph().traversal().V()
-                        .hasLabel(getClassMapping().getName())
-                        .toList()
-                        .stream()
-                        .map(getConverter()::toEntity)
-                        .collect(toList());
+        Supplier<List<?>> querySupplier = () -> {
 
-        return converter(method, typeClass, querySupplier);
+            GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V().hasLabel(getClassMapping().getName());
+
+            SelectQueryConverter.setSort(args, traversal);
+            SelectQueryConverter.setPagination(args, traversal);
+            return traversal.toList()
+                    .stream()
+                    .map(getConverter()::toEntity)
+                    .collect(toList());
+        };
+
+        return converter(method, typeClass, querySupplier, args);
     }
 
-    private Object findById(Method method, Object[] args, Class<?> typeClass) {
+
+
+    private Object findBy(Method method, Object[] args, Class<?> typeClass) {
 
         Supplier<List<?>> querySupplier = () -> {
             GraphQueryMethod queryMethod = new GraphQueryMethod(getClassMapping(),
                     getGraph().traversal().V(),
                     getConverters(), method, args);
 
-            return converter.apply(queryMethod)
+
+            return converter.apply(queryMethod, args)
                     .stream()
                     .map(getConverter()::toEntity)
                     .collect(toList());
         };
 
-        return converter(method, typeClass, querySupplier);
+        return converter(method, typeClass, querySupplier, args);
     }
 
-    private Object converter(Method method, Class<?> typeClass, Supplier<List<?>> querySupplier) {
+
+    private Object converter(Method method, Class<?> typeClass,
+                             Supplier<List<?>> querySupplier,
+                             Object[] args) {
+
         Supplier<Optional<?>> singleSupplier =
                 DynamicReturn.toSingleResult(method).apply(querySupplier);
+
+        Function<Pagination, Page<?>> pageFunction = p -> {
+            throw new DynamicQueryException("Graph database repository does not support Page as return Type");
+        };
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
                 .withList(querySupplier)
                 .withSingleResult(singleSupplier)
+                .withPagination(DynamicReturn.findPagination(args))
+                .withListPagination(p -> querySupplier.get())
+                .withSingleResultPagination(p -> singleSupplier.get())
+                .withPage(pageFunction)
                 .build();
 
         return dynamicReturn.execute();

@@ -195,6 +195,7 @@ Also, the operators:
 * LessThanEqual
 * GreaterThanEqual
 * Like
+* In
 * OrderBy
 * OrderBy\_\_\_\_Desc
 * OrderBy\_\_\_\_\_ASC
@@ -216,6 +217,46 @@ interface PersonRepository extends Repository<Person, Long> {
 ----
 
 Using these keywords, Mapping will create the queries.
+
+===== Special Parameters
+
+In addition to the use of use the query method, the repository has support to a special instance at the parameters in a method:
+
+
+* `Pagination`: This parameter enables the resource of pagination at a repository.
+* `Sort`: It appends sort in the query dynamically if the query method has the `OderBy` keyword. This parameter will add the sort after the sort information from the method.
+* `Sorts`: It is a group of a sort, therefore, it appends one or more sort dynamically.
+
+
+[source,java]
+----
+   interface PersonRepository extends Repository<Person, Long> {
+
+        List<Person> findAll(Pagination pagination);
+
+        List<Person> findByName(String name, Sort sort);
+
+        List<Person> findByAgeGreaterThan(Integer age, Sorts sorts);
+
+    }
+----
+
+This resource allows pagination and a dynamical sort in a smooth way.
+
+[source,java]
+----
+PersonRepository personRepository = ...;
+Sort sort = Sort.asc("name");
+Sorts sorts = Sorts.sorts().asc("name").desc("age");
+Pagination pagination = Pagination.page(1).size(10);
+
+List<Person> all = personRepository.findAll(pagination);//findAll by pagination
+List<Person> byName = personRepository.findByName("Ada", sort);//find by name order by name asc
+List<Person> byAgeGreaterThan = personRepository.findByAgeGreaterThan(22, sorts);//find age greater than 22 sort name asc then age desc
+----
+
+WARNING: All these special instances must be at the end, thus after the parameters that will be used at a query.
+
 
 ==== Using Repository as an asynchronous way
 

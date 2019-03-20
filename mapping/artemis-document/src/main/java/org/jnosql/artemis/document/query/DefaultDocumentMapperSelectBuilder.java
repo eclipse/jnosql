@@ -15,6 +15,9 @@
 package org.jnosql.artemis.document.query;
 
 import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
+import org.jnosql.artemis.document.DocumentQueryPagination;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.reflection.ClassMapping;
@@ -162,6 +165,12 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
     }
 
     @Override
+    public DocumentQuery build(Pagination pagination) {
+        requireNonNull(pagination, "pagination is required");
+        return DocumentQueryPagination.of(build(), pagination);
+    }
+
+    @Override
     public <T> List<T> execute(DocumentTemplate template) {
         Objects.requireNonNull(template, "template is required");
         return template.select(this.build());
@@ -171,6 +180,20 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
     public <T> Optional<T> executeSingle(DocumentTemplate template) {
         Objects.requireNonNull(template, "template is required");
         return template.singleResult(this.build());
+    }
+
+    @Override
+    public <T> List<T> execute(DocumentTemplate template, Pagination pagination) {
+        requireNonNull(template, "template is required");
+        requireNonNull(pagination, "pagination is required");
+        return template.select(this.build(pagination));
+    }
+
+    @Override
+    public <T> Optional<T> executeSingle(DocumentTemplate template, Pagination pagination) {
+        requireNonNull(template, "template is required");
+        requireNonNull(pagination, "pagination is required");
+        return template.singleResult(this.build(pagination));
     }
 
     @Override
@@ -185,6 +208,13 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
         Objects.requireNonNull(template, "template is required");
         Objects.requireNonNull(callback, "callback is required");
         template.singleResult(this.build(), callback);
+    }
+
+    @Override
+    public <T> Page<T> page(DocumentTemplate template, Pagination pagination) {
+        requireNonNull(pagination, "pagination is required");
+        requireNonNull(template, "template is required");
+        return template.select(DocumentQueryPagination.of(build(), pagination));
     }
 
 }

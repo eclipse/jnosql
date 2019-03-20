@@ -16,6 +16,8 @@
  */
 package org.jnosql.artemis.column.query;
 
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.diana.api.column.ColumnQuery;
@@ -38,6 +40,13 @@ public interface ColumnMapperQueryBuild {
      */
     ColumnQuery build();
 
+    /**
+     * Creates a new instance of {@link ColumnQuery} from {@link Pagination}
+     *
+     * @param pagination the pagination
+     * @return a new {@link ColumnQuery} instance from {@link Pagination}
+     */
+    ColumnQuery build(Pagination pagination);
 
     /**
      * Executes {@link ColumnTemplate#select(ColumnQuery)}
@@ -60,6 +69,29 @@ public interface ColumnMapperQueryBuild {
     <T> Optional<T> executeSingle(ColumnTemplate template);
 
     /**
+     * Executes {@link ColumnTemplate#select(ColumnQuery)} using {@link Pagination}
+     *
+     * @param <T>        the entity type
+     * @param template   the column template
+     * @param pagination the pagination
+     * @return the result of {@link ColumnTemplate#select(ColumnQuery)}
+     * @throws NullPointerException when there are null parameters
+     */
+    <T> List<T> execute(ColumnTemplate template, Pagination pagination);
+
+    /**
+     * Executes {@link ColumnTemplate#singleResult(ColumnQuery)} using {@link Pagination}
+     *
+     * @param <T>        the entity type
+     * @param template   the column template
+     * @param pagination the pagination
+     * @return the result of {@link ColumnTemplate#singleResult(ColumnQuery)}
+     * @throws NullPointerException when there are null parameters
+     */
+    <T> Optional<T> executeSingle(ColumnTemplate template, Pagination pagination);
+
+
+    /**
      * Executes {@link ColumnTemplateAsync#select(ColumnQuery, Consumer)}
      *
      * @param <T>      the entity type
@@ -78,4 +110,15 @@ public interface ColumnMapperQueryBuild {
      * @throws NullPointerException when there is null parameter
      */
     <T> void executeSingle(ColumnTemplateAsync template, Consumer<Optional<T>> callback);
+
+    /**
+     * Creates a {@link Page} from pagination
+     *
+     * @param pagination the pagination
+     * @param template   the template
+     * @param <T>        the type
+     * @return a {@link Page} from instance
+     * @throws NullPointerException when there are null parameters
+     */
+    <T> Page<T> page(ColumnTemplate template, Pagination pagination);
 }

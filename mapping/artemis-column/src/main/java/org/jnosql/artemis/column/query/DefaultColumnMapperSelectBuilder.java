@@ -15,6 +15,9 @@
 package org.jnosql.artemis.column.query;
 
 import org.jnosql.artemis.Converters;
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
+import org.jnosql.artemis.column.ColumnQueryPagination;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.artemis.reflection.ClassMapping;
@@ -161,6 +164,12 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
     }
 
     @Override
+    public ColumnQuery build(Pagination pagination) {
+        requireNonNull(pagination, "pagination is required");
+        return ColumnQueryPagination.of(build(), pagination);
+    }
+
+    @Override
     public <T> List<T> execute(ColumnTemplate template) {
         requireNonNull(template, "template is required");
         return template.select(this.build());
@@ -170,6 +179,20 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
     public <T> Optional<T> executeSingle(ColumnTemplate template) {
         requireNonNull(template, "template is required");
         return template.singleResult(this.build());
+    }
+
+    @Override
+    public <T> List<T> execute(ColumnTemplate template, Pagination pagination) {
+        requireNonNull(template, "template is required");
+        requireNonNull(pagination, "pagination is required");
+        return template.select(this.build(pagination));
+    }
+
+    @Override
+    public <T> Optional<T> executeSingle(ColumnTemplate template, Pagination pagination) {
+        requireNonNull(template, "template is required");
+        requireNonNull(pagination, "pagination is required");
+        return template.singleResult(this.build(pagination));
     }
 
     @Override
@@ -184,6 +207,13 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
         requireNonNull(template, "template is required");
         requireNonNull(callback, "callback is required");
         template.singleResult(this.build(), callback);
+    }
+
+    @Override
+    public <T> Page<T> page(ColumnTemplate template, Pagination pagination) {
+        requireNonNull(pagination, "pagination is required");
+        requireNonNull(template, "template is required");
+        return template.select(ColumnQueryPagination.of(build(), pagination));
     }
 
 }

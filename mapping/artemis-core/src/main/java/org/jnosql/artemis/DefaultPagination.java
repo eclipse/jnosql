@@ -1,5 +1,6 @@
 /*
- *  Copyright (c) 2017 Otávio Santana and others
+ *
+ *  Copyright (c) 2019 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -11,31 +12,68 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *
  */
 package org.jnosql.artemis;
 
-
 import java.util.Objects;
 
-class DefaultPagination implements Pagination {
+/**
+ * The default implementation of {@link Pagination}
+ */
+final class DefaultPagination implements Pagination {
 
-    private final long limit;
+    private final long page;
 
-    private final long start;
+    private final long size;
 
-    DefaultPagination(long limit, long start) {
-        this.limit = limit;
-        this.start = start;
+    private final boolean readOnly;
+
+    DefaultPagination(long page, long size) {
+        this(page, size, false);
+    }
+
+    DefaultPagination(long page, long size, boolean readOnly) {
+        this.page = page;
+        this.size = size;
+        this.readOnly = readOnly;
+    }
+
+    @Override
+    public long getPageNumber() {
+        return page;
+    }
+
+    @Override
+    public long getPageSize() {
+        return size;
     }
 
     @Override
     public long getLimit() {
-        return limit;
+        return size;
     }
 
     @Override
     public long getSkip() {
-        return start;
+        return size * (page - 1);
+    }
+
+    @Override
+    public Pagination next() {
+        if (readOnly) {
+            throw new UnsupportedOperationException("the next method is not authorized when the pagination is read-only.");
+        } else {
+            return new DefaultPagination(page + 1, size);
+        }
+    }
+
+    @Override
+    public Pagination unmodifiable() {
+        if (readOnly) {
+            return this;
+        }
+        return new DefaultPagination(page, size, true);
     }
 
     @Override
@@ -43,23 +81,21 @@ class DefaultPagination implements Pagination {
         if (this == o) {
             return true;
         }
-        if (o == null || Pagination.class != o.getClass()) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Pagination that = (Pagination) o;
-        return limit == that.getLimit() &&
-                start == that.getSkip();
+        DefaultPagination that = (DefaultPagination) o;
+        return page == that.page &&
+                size == that.size;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(limit, start);
+        return Objects.hash(page, size);
     }
 
     @Override
     public String toString() {
-        return  "DefaultPagination{" + "limit=" + limit +
-                ", start=" + start +
-                '}';
+        return "page " + page + " size " + size;
     }
 }

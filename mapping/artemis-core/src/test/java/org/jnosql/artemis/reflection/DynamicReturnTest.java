@@ -14,13 +14,20 @@
  */
 package org.jnosql.artemis.reflection;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.jnosql.artemis.DynamicQueryException;
+import org.jnosql.artemis.Page;
+import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.Repository;
+import org.jnosql.artemis.Sorts;
 import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.api.Sort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,11 +43,31 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.jnosql.artemis.Sorts.sorts;
+import static org.jnosql.artemis.reflection.DynamicReturn.findSorts;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DynamicReturnTest {
 
     @Test
-    public void shouldReturnEmptyOptional() throws NoSuchMethodException {
+    public void shouldReturnNPEWhenThereIsPagination() {
+        Method method = getMethod(PersonRepository.class, "getOptional");
+        Supplier<List<?>> list = Collections::emptyList;
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        assertThrows(NullPointerException.class, () ->
+                DynamicReturn.builder()
+                        .withClassSource(Person.class)
+                        .withMethodSource(method).withList(list)
+                        .withSingleResult(singlResult)
+                        .withPagination(Pagination.page(1L).size(2L)).build());
+
+    }
+
+    @Test
+    public void shouldReturnEmptyOptional() {
 
         Method method = getMethod(PersonRepository.class, "getOptional");
         Supplier<List<?>> list = Collections::emptyList;
@@ -50,13 +77,13 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Optional);
+        assertTrue(execute instanceof Optional);
         Optional<Person> optional = (Optional) execute;
         Assertions.assertFalse(optional.isPresent());
     }
 
     @Test
-    public void shouldReturnOptional() throws NoSuchMethodException {
+    public void shouldReturnOptional() {
 
         Method method = getMethod(PersonRepository.class, "getOptional");
         Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
@@ -66,14 +93,14 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Optional);
+        assertTrue(execute instanceof Optional);
         Optional<Person> optional = (Optional) execute;
-        Assertions.assertTrue(optional.isPresent());
+        assertTrue(optional.isPresent());
         Assertions.assertEquals(new Person("Ada"), optional.get());
     }
 
     @Test
-    public void shouldReturnOptionalError() throws NoSuchMethodException {
+    public void shouldReturnOptionalError() {
 
         Method method = getMethod(PersonRepository.class, "getOptional");
         Supplier<List<?>> list = () -> Arrays.asList(new Person("Poliana"), new Person("Otavio"));
@@ -83,13 +110,13 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
 
-        Assertions.assertThrows(NonUniqueResultException.class, dynamicReturn::execute);
+        assertThrows(NonUniqueResultException.class, dynamicReturn::execute);
 
     }
 
 
     @Test
-    public void shouldReturnAnInstance() throws NoSuchMethodException {
+    public void shouldReturnAnInstance() {
         Method method = getMethod(PersonRepository.class, "getInstance");
         Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
         Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
@@ -98,14 +125,14 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Person);
+        assertTrue(execute instanceof Person);
         Person person = (Person) execute;
         Assertions.assertEquals(new Person("Ada"), person);
     }
 
 
     @Test
-    public void shouldReturnNull() throws NoSuchMethodException {
+    public void shouldReturnNull() {
 
         Method method = getMethod(PersonRepository.class, "getInstance");
         Supplier<List<?>> list = Collections::emptyList;
@@ -115,12 +142,12 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertNull(execute);
+        assertNull(execute);
     }
 
 
     @Test
-    public void shouldReturnList() throws NoSuchMethodException {
+    public void shouldReturnList() {
 
         Method method = getMethod(PersonRepository.class, "getList");
         Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
@@ -130,14 +157,14 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof List);
+        assertTrue(execute instanceof List);
         List<Person> persons = (List) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.get(0));
     }
 
     @Test
-    public void shouldReturnIterable() throws NoSuchMethodException {
+    public void shouldReturnIterable() {
 
         Method method = getMethod(PersonRepository.class, "getIterable");
         Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
@@ -147,14 +174,14 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Iterable);
+        assertTrue(execute instanceof Iterable);
         Iterable<Person> persons = (List) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
 
     @Test
-    public void shouldReturnCollection() throws NoSuchMethodException {
+    public void shouldReturnCollection() {
 
         Method method = getMethod(PersonRepository.class, "getCollection");
         Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
@@ -164,14 +191,14 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Collection);
+        assertTrue(execute instanceof Collection);
         Collection<Person> persons = (Collection) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
     @Test
-    public void shouldReturnSet() throws NoSuchMethodException {
+    public void shouldReturnSet() {
 
         Method method = getMethod(PersonRepository.class, "getSet");
         Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
@@ -181,14 +208,14 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Set);
+        assertTrue(execute instanceof Set);
         Set<Person> persons = (Set) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
     @Test
-    public void shouldReturnQueue() throws NoSuchMethodException {
+    public void shouldReturnQueue() {
 
         Method method = getMethod(PersonRepository.class, "getQueue");
         Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
@@ -198,7 +225,7 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Queue);
+        assertTrue(execute instanceof Queue);
         Queue<Person> persons = (Queue) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
@@ -206,7 +233,7 @@ class DynamicReturnTest {
 
 
     @Test
-    public void shouldReturnStream() throws NoSuchMethodException {
+    public void shouldReturnStream() {
 
         Method method = getMethod(PersonRepository.class, "getStream");
         Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
@@ -216,13 +243,13 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Stream);
+        assertTrue(execute instanceof Stream);
         Stream<Person> persons = (Stream) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
     @Test
-    public void shouldReturnSortedSet() throws NoSuchMethodException {
+    public void shouldReturnSortedSet() {
 
         Method method = getMethod(PersonRepository.class, "getSortedSet");
         Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
@@ -232,14 +259,14 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof SortedSet);
+        assertTrue(execute instanceof SortedSet);
         SortedSet<Person> persons = (SortedSet) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
     @Test
-    public void shouldReturnNavigableSet() throws NoSuchMethodException {
+    public void shouldReturnNavigableSet() {
 
         Method method = getMethod(PersonRepository.class, "getNavigableSet");
         Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
@@ -249,7 +276,7 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof NavigableSet);
+        assertTrue(execute instanceof NavigableSet);
         NavigableSet<Person> persons = (NavigableSet) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
@@ -257,7 +284,7 @@ class DynamicReturnTest {
 
 
     @Test
-    public void shouldReturnDeque() throws NoSuchMethodException {
+    public void shouldReturnDeque() {
 
         Method method = getMethod(PersonRepository.class, "getDeque");
         Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
@@ -267,14 +294,27 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
         Object execute = dynamicReturn.execute();
-        Assertions.assertTrue(execute instanceof Deque);
+        assertTrue(execute instanceof Deque);
         Deque<Person> persons = (Deque) execute;
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
     }
 
     @Test
-    public void shouldReturnErrorNavigableSetEntityIsNotComparable() throws NoSuchMethodException {
+    public void shouldReturnErrorWhenExecutePage() {
+        Method method = getMethod(PersonRepository.class, "getPage");
+        Supplier<List<?>> list = () -> singletonList(new Person("Ada"));
+        Supplier<Optional<?>> singlResult = DynamicReturn.toSingleResult(method).apply(list);
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(Person.class)
+                .withMethodSource(method).withList(list)
+                .withSingleResult(singlResult).build();
+
+        assertThrows(DynamicQueryException.class, dynamicReturn::execute);
+    }
+
+    @Test
+    public void shouldReturnErrorNavigableSetEntityIsNotComparable() {
 
         Method method = getMethod(AnimalRepository.class, "getSortedSet");
         Supplier<List<?>> list = () -> singletonList(new Animal("Ada"));
@@ -284,11 +324,69 @@ class DynamicReturnTest {
                 .withMethodSource(method).withList(list)
                 .withSingleResult(singlResult).build();
 
-        Assertions.assertThrows(DynamicQueryException.class, dynamicReturn::execute);
+        assertThrows(DynamicQueryException.class, dynamicReturn::execute);
+    }
+
+    @Test
+    public void shouldReturnNullWhenParamIsEmptyOnFindPagination() {
+        assertNull(DynamicReturn.findPagination(null));
+        assertNull(DynamicReturn.findPagination(new Object[0]));
+    }
+
+    @Test
+    public void shouldFindPagination() {
+        Pagination pagination = Pagination.page(1L).size(2);
+        Pagination pagination1 = DynamicReturn.findPagination(new Object[]{"value", 23, pagination});
+        Assertions.assertEquals(pagination, pagination1);
+    }
+
+    @Test
+    public void shouldReturnNullWhenThereIsNotPagination() {
+        Pagination pagination = DynamicReturn.findPagination(new Object[]{"value", 23, BigDecimal.TEN});
+        assertNull(pagination);
+    }
+
+    @Test
+    public void shouldReturnEmptyWhenThereIsNotParametersAtSorts() {
+        assertTrue(findSorts(null).isEmpty());
+        assertTrue(findSorts(new Object[0]).isEmpty());
+    }
+
+    @Test
+    public void shouldShouldFindSortAtMethod() {
+        Sort name = Sort.asc("name");
+        Sort age = Sort.desc("age");
+        List<Sort> sorts = findSorts(new Object[]{"Otavio", 23, Pagination.page(2).size(2), name, age});
+        assertThat(sorts, Matchers.contains(name, age));
+    }
+
+    @Test
+    public void shouldShouldFindSortsAtMethod() {
+        Sort name = Sort.asc("name");
+        Sort age = Sort.desc("age");
+        List<Sort> sorts = findSorts(new Object[]{"Otavio", 23, Pagination.page(2).size(2), sorts().add(name).add(age)});
+        assertThat(sorts, Matchers.contains(name, age));
+    }
+
+    @Test
+    public void shouldShouldFindSortAndSortsAtMethod() {
+
+        Sort name = Sort.asc("name");
+        Sort age = Sort.desc("age");
+        List<Sort> sorts = findSorts(new Object[]{"Otavio", 23, Pagination.page(2).size(2), name, age,
+                Sorts.sorts().desc("name").asc("age")});
+
+        assertThat(sorts, Matchers.contains(name, age, Sort.desc("name"), Sort.asc("age")));
+    }
+
+    @Test
+    public void shouldFindEmptyListWhenThereIsNotSortOrSorts() {
+        List<Sort> sorts = findSorts(new Object[]{"Otavio", 23, Pagination.page(2).size(2)});
+        assertTrue(sorts.isEmpty());
     }
 
 
-    private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
+    private Method getMethod(Class<?> repository, String methodName) {
         return Stream.of(repository.getDeclaredMethods())
                 .filter(m -> m.getName().equals(methodName))
                 .findFirst().get();
@@ -365,6 +463,8 @@ class DynamicReturnTest {
         NavigableSet<Person> getNavigableSet();
 
         Deque<Person> getDeque();
+
+        Page<Person> getPage();
     }
 
 

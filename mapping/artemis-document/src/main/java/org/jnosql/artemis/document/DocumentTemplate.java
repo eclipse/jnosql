@@ -15,6 +15,7 @@
 package org.jnosql.artemis.document;
 
 
+import org.jnosql.artemis.Page;
 import org.jnosql.artemis.PreparedStatement;
 import org.jnosql.diana.api.NonUniqueResultException;
 import org.jnosql.diana.api.document.DocumentDeleteQuery;
@@ -132,6 +133,16 @@ public interface DocumentTemplate {
     <T> List<T> select(DocumentQuery query);
 
     /**
+     * Finds entities from query using pagination
+     *
+     * @param query - query to figure out entities
+     * @param <T>   the instance type
+     * @return entities found by query
+     * @throws NullPointerException when query is null
+     */
+    <T> Page<T> select(DocumentQueryPagination query);
+
+    /**
      * Executes a query then bring the result as a {@link List}
      *
      * @param query the query
@@ -167,10 +178,10 @@ public interface DocumentTemplate {
      * @param entityClass the entity class
      * @param id          the id value
      * @param <T>         the entity class type
-     * @param <K>        the id type
+     * @param <K>         the id type
      * @return the entity instance otherwise {@link Optional#empty()}
-     * @throws NullPointerException when either the entityClass or id are null
-     * @throws org.jnosql.artemis.IdNotFoundException  when the entityClass does not have the Id annotation
+     * @throws NullPointerException                   when either the entityClass or id are null
+     * @throws org.jnosql.artemis.IdNotFoundException when the entityClass does not have the Id annotation
      */
     <T, K> Optional<T> find(Class<T> entityClass, K id);
 
@@ -180,9 +191,9 @@ public interface DocumentTemplate {
      * @param entityClass the entity class
      * @param id          the id value
      * @param <T>         the entity class type
-     * @param <K>        the id type
-     * @throws NullPointerException when either the entityClass or id are null
-     * @throws org.jnosql.artemis.IdNotFoundException  when the entityClass does not have the Id annotation
+     * @param <K>         the id type
+     * @throws NullPointerException                   when either the entityClass or id are null
+     * @throws org.jnosql.artemis.IdNotFoundException when the entityClass does not have the Id annotation
      */
     <T, K> void delete(Class<T> entityClass, K id);
 
@@ -198,7 +209,8 @@ public interface DocumentTemplate {
 
     /**
      * Returns the number of elements from document collection
-     * @param <T> entityType
+     *
+     * @param <T>        entityType
      * @param entityType the document collection
      * @return the number of elements
      * @throws NullPointerException          when document collection is null
