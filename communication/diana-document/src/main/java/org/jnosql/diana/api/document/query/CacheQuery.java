@@ -18,7 +18,6 @@ package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.document.DocumentObserverParser;
 
-import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
@@ -29,7 +28,6 @@ import static java.util.Collections.synchronizedMap;
 final class CacheQuery<V> {
 
     private final Map<String, V> store = synchronizedMap(new WeakHashMap<>());
-    private final Map<String, WeakReference<String>> mutex = synchronizedMap(new WeakHashMap<>());
     private final BiFunction<String, DocumentObserverParser, V> supplier;
 
     CacheQuery(BiFunction<String, DocumentObserverParser, V> supplier) {
@@ -40,10 +38,10 @@ final class CacheQuery<V> {
     public V get(String key, DocumentObserverParser observer) {
         V value = this.store.get(key);
         if (Objects.isNull(value)) {
-            String synchronizedKey = mutex.computeIfAbsent(key, (a) -> new WeakReference<>(key)).get();
-            synchronized (synchronizedKey) {
-                value = supplier.apply(synchronizedKey, observer);
-                put(synchronizedKey, value);
+
+            synchronized (key) {
+                value = supplier.apply(key, observer);
+                put(key, value);
             }
         }
         return value;
