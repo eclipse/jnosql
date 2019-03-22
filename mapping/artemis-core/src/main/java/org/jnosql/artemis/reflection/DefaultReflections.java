@@ -17,7 +17,6 @@ package org.jnosql.artemis.reflection;
 import org.jnosql.artemis.Column;
 import org.jnosql.artemis.Entity;
 import org.jnosql.artemis.Id;
-import org.jnosql.artemis.InstanceProducer;
 import org.jnosql.artemis.MappedSuperclass;
 import org.jnosql.artemis.util.StringUtils;
 
@@ -28,7 +27,6 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Level;

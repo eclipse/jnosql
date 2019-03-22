@@ -20,6 +20,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Objects;
 
+/**
+ * The default implementation of {@link InstanceProducer}
+ */
 @ApplicationScoped
 class DefaultInstanceProducer implements InstanceProducer {
 
