@@ -39,7 +39,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
 @ApplicationScoped
-public class DefaultReflections implements Reflections, InstanceProducer {
+public class DefaultReflections implements Reflections {
 
     @Override
     public Object getValue(Object object, Field field) {
@@ -140,12 +140,6 @@ public class DefaultReflections implements Reflections, InstanceProducer {
         Constructor constructor = constructors.get(0);
         constructor.setAccessible(true);
         return constructor;
-    }
-
-    @Override
-    public <T> T create(Class<T> instanceType) {
-        Objects.requireNonNull(instanceType, "instanceType is required");
-        return newInstance(instanceType);
     }
 
     @Override
