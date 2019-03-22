@@ -15,16 +15,34 @@
 package org.jnosql.artemis.reflection;
 
 import org.jnosql.artemis.CDIExtension;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(CDIExtension.class)
 class DefaultInstanceProducerTest {
 
     @Inject
     private DefaultInstanceProducer producer;
+
+
+    @Test
+    public void shouldReturnNPEWhenParameterIsNull() {
+        Assertions.assertThrows(NullPointerException.class, () -> producer.create(null));
+    }
+
+
+    @Test
+    public void shouldCreateInstance() {
+        Instance instance = producer.create(Instance.class);
+        Assertions.assertNotNull(instance);
+    }
+
+
+    public static class Instance {
+
+    }
 
 }
