@@ -17,6 +17,7 @@
 package org.jnosql.diana.api;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -26,8 +27,17 @@ import static java.util.Objects.requireNonNull;
  *
  * @see Settings#of(Map[])
  */
-public interface Settings extends Map<String, Object> {
+public interface Settings  {
 
+    Set<Map.Entry<String, Object>> entrySet();
+
+    Set<String> keySet();
+
+    Object get(String key);
+
+    <T> T get(String key, Class<T> type);
+
+    <T> T getOrDefault(Object key, T defaultValue);
 
     /**
      * Creates a {@link SettingsBuilder}
