@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @see Settings#of(Map[])
  */
-public interface Settings  {
+public interface Settings {
 
     Set<Map.Entry<String, Object>> entrySet();
 
@@ -39,8 +39,11 @@ public interface Settings  {
 
     <T> T getOrDefault(Object key, T defaultValue);
 
+    int size();
+
     /**
      * Creates a {@link SettingsBuilder}
+     *
      * @return a {@link SettingsBuilder} instance
      */
     static SettingsBuilder builder() {
