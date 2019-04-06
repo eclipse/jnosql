@@ -39,7 +39,12 @@ public interface Settings {
 
     <T> T getOrDefault(Object key, T defaultValue);
 
+    boolean isEmpty();
+
     int size();
+
+    boolean containsKey(String key);
+
 
     /**
      * Creates a {@link SettingsBuilder}
