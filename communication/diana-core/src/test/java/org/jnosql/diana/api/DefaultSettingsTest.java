@@ -59,40 +59,12 @@ public class DefaultSettingsTest {
         assertFalse(settings.containsKey("key2"));
     }
 
-    @Test
-    public void shouldContainsValue() {
-        Settings settings = Settings.of(singletonMap("key", "value"));
-        assertTrue(settings.containsValue("value"));
-        assertFalse(settings.containsKey("value2"));
-    }
-
-    @Test
-    public void shouldPutAnElement() {
-        Settings settings = Settings.of();
-        settings.put("key", "value");
-        assertEquals(1, settings.size());
-        assertTrue(settings.containsKey("key"));
-    }
-
-    @Test
-    public void shouldRemove() {
-        Settings settings = Settings.of(singletonMap("key", "value"));
-        settings.remove("key");
-        assertTrue(settings.isEmpty());
-    }
 
     @Test
     public void shouldGetKeys() {
         Settings settings = Settings.of(singletonMap("key", "value"));
         assertThat(settings.keySet(), contains("key"));
     }
-
-    @Test
-    public void shouldGetValues() {
-        Settings settings = Settings.of(singletonMap("key", "value"));
-        assertThat(settings.values(), contains("value"));
-    }
-
 
     @Test
     public void shouldGetEntrySet() {
