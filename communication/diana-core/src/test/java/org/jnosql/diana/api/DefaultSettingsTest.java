@@ -19,12 +19,14 @@ package org.jnosql.diana.api;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.Matchers.contains;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -70,5 +72,32 @@ public class DefaultSettingsTest {
     public void shouldGetEntrySet() {
         Settings settings = Settings.of(singletonMap("key", "value"));
         assertEquals(settings.entrySet().stream().findFirst().get().getKey(), "key");
+    }
+
+    @Test
+    public void shouldSize() {
+        Settings settings = Settings.of(singletonMap("key", "value"));
+        assertEquals(1, settings.size());
+        settings = Settings.of(Collections.emptyMap());
+        assertEquals(0, settings.size());
+    }
+
+    @Test
+    public void shouldIsEmpty() {
+        Settings settings = Settings.of(singletonMap("key", "value"));
+        assertFalse(settings.isEmpty());
+        settings = Settings.of(Collections.emptyMap());
+        assertTrue(settings.isEmpty());
+    }
+
+    @Test
+    public void shouldGetValueClass() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+
+        Integer value = settings.get("key", Integer.class);
+        assertEquals(12, value);
+
+        value = settings.get("key2", Integer.class);
+        assertNull(value);
     }
 }
