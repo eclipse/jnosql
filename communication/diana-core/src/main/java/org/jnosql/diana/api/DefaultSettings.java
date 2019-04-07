@@ -16,7 +16,7 @@
  */
 package org.jnosql.diana.api;
 
-import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -41,53 +41,40 @@ class DefaultSettings implements Settings {
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(String key) {
         return configurations.containsKey(key);
     }
 
     @Override
-    public boolean containsValue(Object value) {
-        return configurations.containsValue(value);
-    }
-
-    @Override
-    public Object get(Object key) {
+    public Object get(String key) {
         return configurations.get(key);
     }
 
     @Override
-    public Object put(String key, Object value) {
-        return configurations.put(key, value);
+    public <T> T get(String key, Class<T> type) {
+        Objects.requireNonNull(key, "key is required");
+        Objects.requireNonNull(type, "type is required");
+        Object value = configurations.get(key);
+        return Value.of(value).get(type);
     }
 
     @Override
-    public Object remove(Object key) {
-        return configurations.remove(key);
+    public <T> T getOrDefault(Object key, T defaultValue) {
+        Objects.requireNonNull(key, "key is required");
+        Object value = configurations.getOrDefault(key, defaultValue);
+        return (T) value;
     }
 
-    @Override
-    public void putAll(Map<? extends String, ?> map) {
-        this.configurations.putAll(map);
-    }
-
-    @Override
-    public void clear() {
-        configurations.clear();
-    }
 
     @Override
     public Set<String> keySet() {
-        return configurations.keySet();
+        return Collections.unmodifiableSet(configurations.keySet());
     }
 
-    @Override
-    public Collection<Object> values() {
-        return configurations.values();
-    }
 
     @Override
-    public Set<Entry<String, Object>> entrySet() {
-        return configurations.entrySet();
+    public Set<Map.Entry<String, Object>> entrySet() {
+        return Collections.unmodifiableSet(configurations.entrySet());
     }
 
     @Override
@@ -109,7 +96,7 @@ class DefaultSettings implements Settings {
 
     @Override
     public String toString() {
-        return  "DefaultSettings{" + "configurations=" + configurations +
+        return "DefaultSettings{" + "configurations=" + configurations +
                 '}';
     }
 }
