@@ -29,8 +29,6 @@ import static java.util.Objects.requireNonNull;
  */
 public interface Settings {
 
-    Set<Map.Entry<String, Object>> entrySet();
-
     Set<String> keySet();
 
     Object get(String key);
@@ -45,6 +43,7 @@ public interface Settings {
 
     boolean containsKey(String key);
 
+    Set<Map.Entry<String, Object>> entrySet();
 
     /**
      * Creates a {@link SettingsBuilder}
