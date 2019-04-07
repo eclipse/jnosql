@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import static java.util.Optional.ofNullable;
+
 class DefaultSettings implements Settings {
 
     private final Map<String, Object> configurations;
@@ -55,7 +57,7 @@ class DefaultSettings implements Settings {
         Objects.requireNonNull(key, "key is required");
         Objects.requireNonNull(type, "type is required");
         Object value = configurations.get(key);
-        return Value.of(value).get(type);
+        return ofNullable(value).map(Value::of).map(v -> v.get(type)).orElse(null);
     }
 
     @Override
