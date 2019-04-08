@@ -16,13 +16,13 @@ package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
+import org.jnosql.diana.api.Settings;
 import org.jnosql.diana.api.column.ColumnFamilyManagerAsyncFactory;
 import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -54,7 +54,7 @@ public class ColumnConfigurationProducerXMLTest {
         factoryA.get("database");
         assertTrue(factoryA instanceof ColumnFamilyManagerMock.MockFamilyManager);
         ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryA;
-        Map<String, Object> settings = mock.getSettings();
+        Settings settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
     }
@@ -64,7 +64,7 @@ public class ColumnConfigurationProducerXMLTest {
         factoryB.get("database");
         assertTrue(factoryB instanceof ColumnFamilyManagerMock.MockFamilyManager);
         ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryB;
-        Map<String, Object> settings = mock.getSettings();
+        Settings settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
         assertEquals("value3", settings.get("key3"));
@@ -75,7 +75,7 @@ public class ColumnConfigurationProducerXMLTest {
         factoryAsyncA.getAsync("database");
         assertTrue(factoryAsyncA instanceof ColumnFamilyManagerMock.MockFamilyManager);
         ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryAsyncA;
-        Map<String, Object> settings = mock.getSettings();
+        Settings settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
     }
@@ -85,7 +85,7 @@ public class ColumnConfigurationProducerXMLTest {
         factoryAsyncB.getAsync("database");
         assertTrue(factoryAsyncB instanceof ColumnFamilyManagerMock.MockFamilyManager);
         ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryAsyncB;
-        Map<String, Object> settings = mock.getSettings();
+        Settings settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
         assertEquals("value3", settings.get("key3"));

@@ -16,13 +16,13 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
+import org.jnosql.diana.api.Settings;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsyncFactory;
 import org.jnosql.diana.api.document.DocumentCollectionManagerFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,7 +53,7 @@ public class DocumentConfigurationProducerTest {
         factoryA.get("database");
         assertTrue(factoryA instanceof DocumentCollectionManagerMock.DocumentMock);
         DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryA;
-        Map<String, Object> settings = mock.getSettings();
+        Settings settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
     }
@@ -63,7 +63,7 @@ public class DocumentConfigurationProducerTest {
         factoryB.get("database");
         assertTrue(factoryB instanceof DocumentCollectionManagerMock.DocumentMock);
         DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryB;
-        Map<String, Object> settings = mock.getSettings();
+        Settings settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
         assertEquals("value3", settings.get("key3"));
@@ -74,7 +74,7 @@ public class DocumentConfigurationProducerTest {
         factoryAsyncA.getAsync("database");
         assertTrue(factoryAsyncA instanceof DocumentCollectionManagerMock.DocumentMock);
         DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryAsyncA;
-        Map<String, Object> settings = mock.getSettings();
+        Settings settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
     }
@@ -85,7 +85,7 @@ public class DocumentConfigurationProducerTest {
         assertTrue(factoryAsyncB instanceof DocumentCollectionManagerMock.DocumentMock);
         DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryAsyncB;
 
-        Map<String, Object> settings = mock.getSettings();
+        Settings settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
         assertEquals("value3", settings.get("key3"));

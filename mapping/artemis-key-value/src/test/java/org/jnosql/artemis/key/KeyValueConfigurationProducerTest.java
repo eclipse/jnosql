@@ -16,12 +16,12 @@ package org.jnosql.artemis.key;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
+import org.jnosql.diana.api.Settings;
 import org.jnosql.diana.api.key.BucketManagerFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,7 +43,7 @@ public class KeyValueConfigurationProducerTest {
         factoryA.getBucketManager("database");
         assertTrue(factoryA instanceof KeyValueConfigurationMock.BucketManagerFactoryMock);
         KeyValueConfigurationMock.BucketManagerFactoryMock mock = (KeyValueConfigurationMock.BucketManagerFactoryMock) factoryA;
-        Map<String, Object> settings = mock.getSettings();
+        Settings settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
     }
@@ -53,7 +53,7 @@ public class KeyValueConfigurationProducerTest {
         factoryB.getBucketManager("database");
         assertTrue(factoryB instanceof KeyValueConfigurationMock.BucketManagerFactoryMock);
         KeyValueConfigurationMock.BucketManagerFactoryMock mock = (KeyValueConfigurationMock.BucketManagerFactoryMock) factoryB;
-        Map<String, Object> settings = mock.getSettings();
+        Settings settings = mock.getSettings();
         assertEquals("value", settings.get("key"));
         assertEquals("value2", settings.get("key2"));
         assertEquals("value3", settings.get("key3"));
