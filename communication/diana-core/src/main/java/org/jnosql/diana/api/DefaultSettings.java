@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static java.util.Optional.ofNullable;
 
@@ -84,6 +86,21 @@ class DefaultSettings implements Settings {
     public void forEach(BiConsumer<String, Object> action) {
         Objects.requireNonNull(action, "action is null");
         configurations.forEach(action);
+    }
+
+    @Override
+    public void computeIfPresent(String key, BiConsumer<String, Object> action) {
+        Objects.requireNonNull(action, "action is required");
+        configurations.computeIfPresent(key, (k, v) -> {
+            action.accept(k, v);
+            return v;
+        });
+    }
+
+    @Override
+    public void computeIfAbsent(String key, Function<String, Object> action) {
+        Objects.requireNonNull(action, "action is required");
+        configurations.computeIfAbsent(key, action);
     }
 
     @Override
