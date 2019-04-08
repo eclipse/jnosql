@@ -101,6 +101,7 @@ public interface Settings {
      * Performs the given action for each entry in this map until all entries have been processed or the action throws an exception.
      *
      * @param action the action
+     * @throws NullPointerException when action is null
      */
     void forEach(BiConsumer<String, Object> action);
 
