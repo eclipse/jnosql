@@ -18,6 +18,7 @@ package org.jnosql.diana.api;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -95,6 +96,13 @@ public interface Settings {
      * @return a set view of the mappings contained in this map
      */
     Set<Map.Entry<String, Object>> entrySet();
+
+    /**
+     * Performs the given action for each entry in this map until all entries have been processed or the action throws an exception.
+     *
+     * @param action the action
+     */
+    void forEach(BiConsumer<String, Object> action);
 
     /**
      * Creates a {@link SettingsBuilder}
