@@ -84,7 +84,7 @@
         <org.awaitility.version>3.1.6</org.awaitility.version>
         <owb.version>2.0.3</owb.version>
         <sonar.maven.version>3.3.0.603</sonar.maven.version>
-        <testcontainers.version>1.9.1</testcontainers.version>
+        <testcontainers.version>1.11.1</testcontainers.version>
         <weld.se.core.version>3.1.0.Final</weld.se.core.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <checkstyle.excludes>**/antlr/**</checkstyle.excludes>
