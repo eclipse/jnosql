@@ -19,16 +19,19 @@ package org.jnosql.diana.api;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class DefaultSettingsTest {
 
@@ -99,5 +102,18 @@ public class DefaultSettingsTest {
 
         value = settings.get("key2", Integer.class);
         assertNull(value);
+    }
+
+    @Test
+    public void shouldInterateUsingForEach() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        List<Map.Entry<String, Object>> references = new ArrayList<>();
+        settings.forEach((k, v) -> references.add(new AbstractMap.SimpleEntry<>(k, v)));
+
+        Assertions.assertFalse(references.isEmpty());
+        Map.Entry<String, Object> entry = references.get(0);
+        Assertions.assertEquals("key", entry.getKey());
+        Assertions.assertEquals("12", entry.getValue());
+
     }
 }
