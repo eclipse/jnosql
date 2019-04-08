@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 import static java.util.Optional.ofNullable;
 
@@ -77,6 +78,12 @@ class DefaultSettings implements Settings {
     @Override
     public Set<Map.Entry<String, Object>> entrySet() {
         return Collections.unmodifiableSet(configurations.entrySet());
+    }
+
+    @Override
+    public void forEach(BiConsumer<String, Object> action) {
+        Objects.requireNonNull(action, "action is null");
+        configurations.forEach(action);
     }
 
     @Override
