@@ -80,7 +80,7 @@
         <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
         <maven.compile.version>3.8.0</maven.compile.version>
         <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
-        <mockito.verson>2.25.0</mockito.verson>
+        <mockito.verson>2.26.0</mockito.verson>
         <org.awaitility.version>3.1.6</org.awaitility.version>
         <owb.version>2.0.3</owb.version>
         <sonar.maven.version>3.3.0.603</sonar.maven.version>
