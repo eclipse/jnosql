@@ -19,6 +19,7 @@ package org.jnosql.diana.api;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -104,6 +105,25 @@ public interface Settings {
      * @throws NullPointerException when action is null
      */
     void forEach(BiConsumer<String, Object> action);
+
+    /**
+     * If the value for the specified key is present and non-null, attempts to compute a new mapping given the key and its current mapped value.
+     *
+     * @param key    the key
+     * @param action the action
+     * @throws NullPointerException when there is null parameter
+     */
+    void computeIfPresent(String key, BiConsumer<String, Object> action);
+
+    /**
+     * If the specified key is not already associated with a value (or is mapped to null),
+     * attempts to compute its value using the given mapping function and enters it into this map unless null.
+     *
+     * @param key    the key
+     * @param action the action
+     * @throws NullPointerException when there is null parameter
+     */
+    void computeIfAbsent(String key, Function<String, Object> action);
 
     /**
      * Creates a {@link SettingsBuilder}
