@@ -24,7 +24,23 @@ package org.jnosql.diana.api;
  */
 public interface SettingsEncryption {
 
-    String encrypt(String property);
+    /**
+     * Encrypts a property
+     *
+     * @param property encrypted property
+     * @param settings Settings to read using the priority
+     * @return the value encrypted
+     * @throws NullPointerException when there is null parameters
+     */
+    String encrypt(String property, Settings settings);
 
-    String decrypt(String property);
+    /**
+     * Decrypts a property
+     *
+     * @param property decrypted property
+     * @param settings Settings to read using the priority
+     * @return the value decrypted
+     * @throws NullPointerException when there is null parameters
+     */
+    String decrypt(String property, Settings settings);
 }
