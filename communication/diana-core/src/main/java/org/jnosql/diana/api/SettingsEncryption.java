@@ -16,6 +16,12 @@
  */
 package org.jnosql.diana.api;
 
+/**
+ * This instance will encrypt and decrypt properties of {@link Settings}.
+ * To set the encryption, put the value on the property: <b>jakarta.nosql.settings.encryption</b>.
+ * The value is the {@link Class#getSimpleName()} from implementation and might define from {@link System#getProperties()}, {@link System#getenv()} and {@link Settings},
+ * in other words, the same priority from Eclipse MicroProfile Configuration and JSR 382.
+ */
 public interface SettingsEncryption {
 
     String encrypt(String property);
