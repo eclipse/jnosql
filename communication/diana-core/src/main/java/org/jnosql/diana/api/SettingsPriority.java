@@ -16,5 +16,11 @@
  */
 package org.jnosql.diana.api;
 
-public class SettingsPriority {
+/**
+ * A utilitarian class that defines the priority to settings. It follows using Eclipse MicroProfile Configuration and JSR 382.
+ * {@link System#getProperties()}, {@link System#getenv()} and {@link Settings}
+ */
+public final class SettingsPriority {
+    private SettingsPriority() {
+    }
 }
