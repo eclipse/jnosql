@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,5 +55,31 @@ class SettingsPriorityTest {
         String key = properties.keySet().stream().findFirst().get().toString();
         Settings settings = SettingsPriority.get(Collections.singletonMap(key, "value"));
         assertEquals(properties.get(key), settings.get(key));
+    }
+
+    @Test
+    public void shouldReturnEnvProperty() {
+        Map<String, String> env = System.getenv();
+        String key = env.keySet().stream().findFirst().get();
+        Settings settings = Settings.of(Collections.singletonMap(key, "value"));
+        Optional<Object> value = SettingsPriority.get(key, settings);
+        assertEquals(env.get(key), value.get());
+    }
+
+    @Test
+    public void shouldReturnJavaProperty() {
+        Properties properties = System.getProperties();
+        String key = properties.keySet().stream().findFirst().get().toString();
+        Settings settings = Settings.of(Collections.singletonMap(key, "value"));
+        Optional<Object> value = SettingsPriority.get(key, settings);
+        assertEquals(properties.get(key), value.get());
+    }
+
+    @Test
+    public void shouldReturnFromSettings() {
+        String key = "key";
+        Settings settings = Settings.of(Collections.singletonMap(key, "value"));
+        Optional<Object> value = SettingsPriority.get(key, settings);
+        assertEquals("value", value.get());
     }
 }
