@@ -38,9 +38,12 @@ import static java.util.Objects.requireNonNull;
  * Symmetric-Key Cryptography is an encryption system in which the same key is used for the encoding and
  * decoding of the data. The safe distribution of the key is one of the drawbacks of this method,
  * but what it lacks in security it gains in time complexity.
+ *The SettingsEncryption has two properties configurations.
  *
- * In cryptography, Triple DES (3DES or TDES), officially the Triple Data Encryption Algorithm (TDEA or Triple DEA),
- * is a symmetric-key block cipher, which applies the DES cipher algorithm three times to each data block.
+ * {@link SymmetricSettingsEncryption#KEY_PROPERTY} The mandatory configuration that defines the password to both encrypt and decrypt the property.
+ * {@link SymmetricSettingsEncryption#CRYPT_PROPERTY} This property defines the crypt algorithm that will use on the symmetric encryption process. The default value is DESede.
+ * To know more about: https://docs.oracle.com/javase/8/docs/technotes/guides/security/SunProviders.html
+ *
  */
 public class SymmetricSettingsEncryption implements SettingsEncryption {
 
@@ -48,6 +51,7 @@ public class SymmetricSettingsEncryption implements SettingsEncryption {
      * The key property
      */
     public static final String KEY_PROPERTY = "jakarta.nosql.encryption.symmetric.key";
+    public static final String CRYPT_PROPERTY = "jakarta.nosql.encryption.symmetric.crypt";
 
     private static final String MISSING_KEY_MESSAGE = "To use 3DES encryption you need to set the key using the property;" +
             KEY_PROPERTY;
@@ -95,8 +99,11 @@ public class SymmetricSettingsEncryption implements SettingsEncryption {
         for (int j = 0, k = 16; j < 8;) {
             keyBytes[k++] = keyBytes[j++];
         }
-        SecretKey secretKey = new SecretKeySpec(keyBytes, CRYPT_DEFAULT_ALGORITHM);
-        Cipher cipher = Cipher.getInstance(CRYPT_DEFAULT_ALGORITHM);
+        String crypt = SettingsPriority.get(CRYPT_PROPERTY, settings)
+                .map(Object::toString)
+                .orElse(CRYPT_DEFAULT_ALGORITHM);
+        SecretKey secretKey = new SecretKeySpec(keyBytes, crypt);
+        Cipher cipher = Cipher.getInstance(crypt);
         cipher.init(mode, secretKey);
         return cipher;
     }
