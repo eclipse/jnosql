@@ -18,7 +18,17 @@ package org.jnosql.diana.api.encryption;
 
 import org.jnosql.diana.api.JNoSQLException;
 
-class EncryptionException extends JNoSQLException {
+/**
+ * An exception specific to property encryption/decryption process
+ */
+public class EncryptionException extends JNoSQLException {
+
+    /**
+     * Constructs a new runtime exception with the specified detail message and cause.
+     *
+     * @param message the message
+     * @param cause   the cause
+     */
     EncryptionException(String message, Throwable cause) {
         super(message, cause);
     }

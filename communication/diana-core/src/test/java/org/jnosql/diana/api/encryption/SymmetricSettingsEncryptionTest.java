@@ -22,7 +22,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SymmetricSettingsEncryptionTest {
 
@@ -39,23 +43,44 @@ class SymmetricSettingsEncryptionTest {
                 .put(SymmetricSettingsEncryption.KEY_PROPERTY, "password")
                 .build();
         String encrypt = settingsEncryption.encrypt("Ada Lovelace", settings);
-        Assertions.assertNotNull(encrypt);
+        assertNotNull(encrypt);
     }
 
     @Test
-    public void shoulDecrypt() {
+    public void shouldReturnErrorWhenThereIsNotPassword() {
+        Settings settings = Settings.of(Collections.emptyMap());
+        assertThrows(EncryptionException.class, () -> settingsEncryption.encrypt("Ada Lovelace", settings) );
+        assertThrows(EncryptionException.class, () -> settingsEncryption.decrypt("Ada Lovelace", settings) );
+
+    }
+
+    @Test
+    public void shouldDecrypt() {
         Settings settings = Settings.builder()
                 .put(SymmetricSettingsEncryption.KEY_PROPERTY, "password")
                 .build();
         String text = "Ada Lovelace";
         String encrypt = settingsEncryption.encrypt(text, settings);
         String decrypt = settingsEncryption.decrypt(encrypt, settings);
-        Assertions.assertNotNull(encrypt);
-        Assertions.assertNotNull(decrypt);
+        assertNotNull(encrypt);
+        assertNotNull(decrypt);
         assertEquals(text, decrypt);
     }
 
-    //quando nao usar a chave
-    //quando a chave for muito pequena
+    @Test
+    public void shouldAllowToUseDifferentCrypt() {
+        Settings settings = Settings.builder()
+                .put(SymmetricSettingsEncryption.KEY_PROPERTY, "password")
+                .put(SymmetricSettingsEncryption.CRYPT_PROPERTY, "AES")
+                .build();
+
+        String text = "Ada Lovelace";
+        String encrypt = settingsEncryption.encrypt(text, settings);
+        String decrypt = settingsEncryption.decrypt(encrypt, settings);
+        assertNotNull(encrypt);
+        assertNotNull(decrypt);
+        assertEquals(text, decrypt);
+    }
+
 
 }
