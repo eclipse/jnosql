@@ -18,7 +18,9 @@ package org.jnosql.diana.api;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * A utilitarian class that defines the priority to settings. It follows using Eclipse MicroProfile Configuration and JSR 382.
@@ -38,7 +40,7 @@ public final class SettingsPriority {
      * @throws NullPointerException when settins is null
      */
     public static Settings get(Map<String, Object> settings) {
-        Objects.requireNonNull(settings, "settings is required");
+        requireNonNull(settings, "settings is required");
         return getSettings(settings);
     }
 
@@ -51,8 +53,31 @@ public final class SettingsPriority {
      * @throws NullPointerException when settins is null
      */
     public static Settings get(Settings settings) {
-        Objects.requireNonNull(settings, "settings is required");
+        requireNonNull(settings, "settings is required");
         return getSettings(settings.toMap());
+    }
+
+
+    /**
+     * Finds a property from key using the priority
+     *
+     * @param key      the key
+     * @param settings the settings
+     * @return a property or {@link Optional#empty()}
+     * @throws NullPointerException when there is null parameter
+     */
+    public static Optional<Object> get(String key, Settings settings) {
+        requireNonNull(key, "key is required");
+        requireNonNull(settings, "settings is required");
+        String value = System.getenv().get(key);
+        if (value != null) {
+            return Optional.of(value);
+        }
+        value = System.getProperty(key);
+        if (value != null) {
+            return Optional.of(value);
+        }
+        return Optional.ofNullable(settings.get(key));
     }
 
     private static Settings getSettings(Map<String, Object> settings) {
