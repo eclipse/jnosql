@@ -57,7 +57,7 @@ public final class SettingsPriority {
 
     private static Settings getSettings(Map<String, Object> settings) {
         Map<String, Object> configurations = new HashMap<>(settings);
-        settings.putAll(System.getenv());
+        configurations.putAll(System.getenv());
         System.getProperties().forEach((k, v) -> configurations.put(k.toString(), v));
         return Settings.of(configurations);
     }
