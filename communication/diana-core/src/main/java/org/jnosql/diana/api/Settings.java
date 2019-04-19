@@ -43,6 +43,13 @@ public interface Settings {
     Set<String> keySet();
 
     /**
+     * Converts the settings to {@link Map}
+     *
+     * @return a {@link Map} instance from {@link Settings}
+     */
+    Map<String, Object> toMap();
+
+    /**
      * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
      *
      * @param key the key whose associated value is to be returned
