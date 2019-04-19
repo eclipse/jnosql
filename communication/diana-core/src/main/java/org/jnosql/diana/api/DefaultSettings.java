@@ -74,6 +74,11 @@ class DefaultSettings implements Settings {
         return Collections.unmodifiableSet(configurations.keySet());
     }
 
+    @Override
+    public Map<String, Object> toMap() {
+        return Collections.unmodifiableMap(configurations);
+    }
+
 
     @Override
     public Set<Map.Entry<String, Object>> entrySet() {
