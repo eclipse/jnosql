@@ -35,21 +35,25 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 /**
+ * Symmetric-Key Cryptography is an encryption system in which the same key is used for the encoding and
+ * decoding of the data. The safe distribution of the key is one of the drawbacks of this method,
+ * but what it lacks in security it gains in time complexity.
+ *
  * In cryptography, Triple DES (3DES or TDES), officially the Triple Data Encryption Algorithm (TDEA or Triple DEA),
  * is a symmetric-key block cipher, which applies the DES cipher algorithm three times to each data block.
  */
-public class TripleDESSettingsEncryption implements SettingsEncryption {
+public class SymmetricSettingsEncryption implements SettingsEncryption {
 
     /**
      * The key property
      */
-    public static final String KEY_PROPERTY = "jakarta.nosql.encryption.3des.key";
+    public static final String KEY_PROPERTY = "jakarta.nosql.encryption.symmetric.key";
 
     private static final String MISSING_KEY_MESSAGE = "To use 3DES encryption you need to set the key using the property;" +
             KEY_PROPERTY;
     private static final int MIN_VALUE = 24;
     private static final String ALGORITHM = "md5";
-    private static final String CRYPT_ALGORITHM = "DESede";
+    private static final String CRYPT_DEFAULT_ALGORITHM = "DESede";
 
     @Override
     public String encrypt(String property, Settings settings) {
@@ -91,8 +95,8 @@ public class TripleDESSettingsEncryption implements SettingsEncryption {
         for (int j = 0, k = 16; j < 8;) {
             keyBytes[k++] = keyBytes[j++];
         }
-        SecretKey secretKey = new SecretKeySpec(keyBytes, CRYPT_ALGORITHM);
-        Cipher cipher = Cipher.getInstance(CRYPT_ALGORITHM);
+        SecretKey secretKey = new SecretKeySpec(keyBytes, CRYPT_DEFAULT_ALGORITHM);
+        Cipher cipher = Cipher.getInstance(CRYPT_DEFAULT_ALGORITHM);
         cipher.init(mode, secretKey);
         return cipher;
     }

@@ -24,19 +24,19 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TripleDESSettingsEncryptionTest {
+class SymmetricSettingsEncryptionTest {
 
     private SettingsEncryption settingsEncryption;
 
     @BeforeEach
     public void setUp() {
-        this.settingsEncryption = new TripleDESSettingsEncryption();
+        this.settingsEncryption = new SymmetricSettingsEncryption();
     }
 
     @Test
     public void shouldEncrypt() {
         Settings settings = Settings.builder()
-                .put(TripleDESSettingsEncryption.KEY_PROPERTY, "password")
+                .put(SymmetricSettingsEncryption.KEY_PROPERTY, "password")
                 .build();
         String encrypt = settingsEncryption.encrypt("Ada Lovelace", settings);
         Assertions.assertNotNull(encrypt);
@@ -45,7 +45,7 @@ class TripleDESSettingsEncryptionTest {
     @Test
     public void shoulDecrypt() {
         Settings settings = Settings.builder()
-                .put(TripleDESSettingsEncryption.KEY_PROPERTY, "password")
+                .put(SymmetricSettingsEncryption.KEY_PROPERTY, "password")
                 .build();
         String text = "Ada Lovelace";
         String encrypt = settingsEncryption.encrypt(text, settings);
