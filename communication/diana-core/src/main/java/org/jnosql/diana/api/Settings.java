@@ -78,7 +78,7 @@ public interface Settings {
      * @param <T>          the type value
      * @return the value to which the specified key is mapped, or defaultValue if this map contains no mapping for the key
      */
-    <T> T getOrDefault(Object key, T defaultValue);
+    <T> T getOrDefault(String key, T defaultValue);
 
     /**
      * @return Returns true if this map contains no key-value mappings.
