@@ -102,7 +102,7 @@ public class DefaultSettingsTest {
     }
 
     @Test
-    public void shouldInterateUsingForEach() {
+    public void shouldIterateUsingForEach() {
         Settings settings = Settings.of(singletonMap("key", "12"));
         List<Map.Entry<String, Object>> references = new ArrayList<>();
         settings.forEach((k, v) -> references.add(new AbstractMap.SimpleEntry<>(k, v)));
@@ -129,5 +129,12 @@ public class DefaultSettingsTest {
         Settings settings = Settings.of(singletonMap("key", "12"));
         settings.computeIfAbsent("non", (k) -> "no key");
         Assertions.assertEquals("no key", settings.get("non").get());
+    }
+
+    @Test
+    public void shouldGetOrDefault() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Assertions.assertEquals("12", settings.getOrDefault("key", "13"));
+        Assertions.assertEquals("13", settings.getOrDefault("key-1", "13"));
     }
 }

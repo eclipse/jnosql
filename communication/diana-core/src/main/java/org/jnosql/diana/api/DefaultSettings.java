@@ -68,9 +68,9 @@ final class DefaultSettings implements Settings {
     }
 
     @Override
-    public <T> T getOrDefault(String key, T defaultValue) {
+    public Object getOrDefault(String key, Object defaultValue) {
         Objects.requireNonNull(key, "key is required");
-        return (T) get(key).orElse(defaultValue);
+        return get(key).orElse(defaultValue);
     }
 
 
