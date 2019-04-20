@@ -17,6 +17,7 @@
 package org.jnosql.diana.api;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -56,7 +57,7 @@ public interface Settings {
      * @return the value to which the specified key is mapped, or null if this map contains no mapping for the key
      * @throws NullPointerException when key is null
      */
-    Object get(String key);
+    Optional<Object> get(String key);
 
     /**
      * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
@@ -67,7 +68,7 @@ public interface Settings {
      * @return the value to which the specified key is mapped, or null if this map contains no mapping for the key
      * @throws NullPointerException when there are null parameters
      */
-    <T> T get(String key, Class<T> type);
+    <T> Optional<T> get(String key, Class<T> type);
 
     /**
      * Returns the value to which the specified key is mapped, or defaultValue if this map contains no mapping for the key.
