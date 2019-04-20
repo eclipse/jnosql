@@ -46,11 +46,14 @@ import static java.util.Objects.requireNonNull;
  * functions. Effective security only requires keeping the private key private;
  * the public key can be openly distributed without compromising security.
  *
- * <p>{@link AsymmetricSettingsEncryption#PRIVATE_PROPERTY} Either the resource URL or absolute path of a public key, to know more:
+ * <p>{@link AsymmetricSettingsEncryption#PRIVATE_PROPERTY} Either the resource URL or absolute path of a public key,
+ * to know more:
  * https://docs.oracle.com/javase/8/docs/api/java/security/spec/X509EncodedKeySpec.html</p>
- * <p>{@link AsymmetricSettingsEncryption#PUBLIC_PROPERTY} Either the resource URL or absolute path of a private key, to know more:
+ * <p>{@link AsymmetricSettingsEncryption#PUBLIC_PROPERTY} Either the resource URL or absolute path of a private key,
+ * to know more:
  * https://docs.oracle.com/javase/8/docs/api/java/security/spec/X509EncodedKeySpec.html</p>
- * <p>{@link AsymmetricSettingsEncryption#CRYPT_PROPERTY} This property defines the crypt algorithm that will use on the symmetric encryption process. The default value is <b>RSA</b>
+ * <p>{@link AsymmetricSettingsEncryption#CRYPT_PROPERTY} This property defines the crypt algorithm that will use
+ * on the symmetric encryption process. The default value is <b>RSA</b>
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/SunProviders.html.
  * </p>
  */
