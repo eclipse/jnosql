@@ -14,8 +14,10 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.api.encryption;
+package org.jnosql.diana.api;
 
+import org.jnosql.diana.api.AsymmetricSettingsEncryption;
+import org.jnosql.diana.api.EncryptionException;
 import org.jnosql.diana.api.Settings;
 import org.jnosql.diana.api.SettingsEncryption;
 import org.junit.jupiter.api.AfterAll;
@@ -23,7 +25,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

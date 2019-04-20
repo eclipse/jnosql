@@ -14,11 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.api.encryption;
-
-import org.jnosql.diana.api.Settings;
-import org.jnosql.diana.api.SettingsEncryption;
-import org.jnosql.diana.api.SettingsPriority;
+package org.jnosql.diana.api;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

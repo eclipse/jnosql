@@ -14,11 +14,12 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.api.encryption;
+package org.jnosql.diana.api;
 
+import org.jnosql.diana.api.EncryptionException;
 import org.jnosql.diana.api.Settings;
 import org.jnosql.diana.api.SettingsEncryption;
-import org.junit.jupiter.api.Assertions;
+import org.jnosql.diana.api.SymmetricSettingsEncryption;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

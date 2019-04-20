@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.api.encryption;
+package org.jnosql.diana.api;
 
 import org.jnosql.diana.api.JNoSQLException;
 
