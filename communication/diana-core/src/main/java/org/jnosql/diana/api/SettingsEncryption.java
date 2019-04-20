@@ -23,6 +23,8 @@ import java.util.Objects;
  * To set the encryption, put the value on the property: <b>jakarta.nosql.settings.encryption</b>.
  * The value is the {@link Class#getName()} from implementation and might define from {@link SettingsPriority},
  * in other words, the same priority from Eclipse MicroProfile Configuration and JSR 382.
+ * Where the when sets the value: "symmetric" it will return {@link SymmetricSettingsEncryption}
+ * and symmetric it will return {@link AsymmetricSettingsEncryption}
  */
 public interface SettingsEncryption {
 
