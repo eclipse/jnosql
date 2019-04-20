@@ -36,7 +36,7 @@ final class DefaultSettings implements Settings {
     DefaultSettings(Map<String, Object> configurations) {
         this.configurations = configurations.entrySet().stream()
                 .collect(Collectors.toMap(e -> e.getKey(),
-                        e -> getValue(e.getKey()).get()));
+                        e -> getValue(e.getValue())));
     }
 
 
@@ -135,11 +135,11 @@ final class DefaultSettings implements Settings {
     }
 
 
-    private Optional<Object> getValue(Object value) {
+    private Object getValue(Object value) {
         if (value != null) {
-            Optional.of(READER.apply(value, this));
+            return READER.apply(value, this);
         }
-        return Optional.empty();
+        return null;
     }
 
 }

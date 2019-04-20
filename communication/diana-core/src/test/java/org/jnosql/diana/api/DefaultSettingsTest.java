@@ -30,7 +30,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultSettingsTest {
@@ -54,7 +53,7 @@ public class DefaultSettingsTest {
         Settings settings = Settings.of(singletonMap("key", "value"));
         assertFalse(settings.isEmpty());
         assertEquals(1, settings.size());
-        assertEquals("value", settings.get("key"));
+        assertEquals("value", settings.get("key").get());
     }
 
     @Test
@@ -97,11 +96,9 @@ public class DefaultSettingsTest {
     public void shouldGetValueClass() {
         Settings settings = Settings.of(singletonMap("key", "12"));
 
-        Integer value = settings.get("key", Integer.class);
+        Integer value = settings.get("key", Integer.class).get();
         assertEquals(12, value);
-
-        value = settings.get("key2", Integer.class);
-        assertNull(value);
+        assertFalse(settings.get("key2", Integer.class).isPresent());
     }
 
     @Test
@@ -110,7 +107,7 @@ public class DefaultSettingsTest {
         List<Map.Entry<String, Object>> references = new ArrayList<>();
         settings.forEach((k, v) -> references.add(new AbstractMap.SimpleEntry<>(k, v)));
 
-        Assertions.assertFalse(references.isEmpty());
+        assertFalse(references.isEmpty());
         Map.Entry<String, Object> entry = references.get(0);
         Assertions.assertEquals("key", entry.getKey());
         Assertions.assertEquals("12", entry.getValue());
@@ -121,7 +118,7 @@ public class DefaultSettingsTest {
         Settings settings = Settings.of(singletonMap("key", "12"));
         List<Map.Entry<String, Object>> references = new ArrayList<>();
         settings.computeIfPresent("key", (k, v) -> references.add(new AbstractMap.SimpleEntry<>(k, v)));
-        Assertions.assertFalse(references.isEmpty());
+        assertFalse(references.isEmpty());
         Map.Entry<String, Object> entry = references.get(0);
         Assertions.assertEquals("key", entry.getKey());
         Assertions.assertEquals("12", entry.getValue());
@@ -131,6 +128,6 @@ public class DefaultSettingsTest {
     public void shouldComputeIAbsent() {
         Settings settings = Settings.of(singletonMap("key", "12"));
         settings.computeIfAbsent("non", (k) -> "no key");
-        Assertions.assertEquals("no key", settings.get("non"));
+        Assertions.assertEquals("no key", settings.get("non").get());
     }
 }
