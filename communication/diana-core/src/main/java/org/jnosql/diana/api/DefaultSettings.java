@@ -16,13 +16,16 @@
  */
 package org.jnosql.diana.api;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableMap;
@@ -58,6 +61,45 @@ final class DefaultSettings implements Settings {
     @Override
     public Optional<Object> get(String key) {
         return Optional.ofNullable(configurations.get(key));
+    }
+
+    @Override
+    public Optional<Object> get(Collection<String> keys) {
+        Objects.requireNonNull(keys, "keys is required");
+
+        Predicate<Map.Entry<String, Object>> equals = keys.stream()
+                .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().equals(prefix))
+                .reduce((a, b) -> a.or(b)).orElse(e -> false);
+
+        return configurations.entrySet().stream()
+                .filter(equals)
+                .findFirst()
+                .map(Map.Entry::getValue);
+    }
+
+    @Override
+    public List<Object> prefix(String prefix) {
+        Objects.requireNonNull(prefix, "prefix is required");
+        return configurations.entrySet().stream()
+                .filter(e -> e.getKey().startsWith(prefix))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Object> prefix(Collection<String> prefixes) {
+        Objects.requireNonNull(prefixes, "prefixes is required");
+        if (prefixes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Predicate<Map.Entry<String, Object>> prefixCondition = prefixes.stream()
+                .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().startsWith(prefix))
+                .reduce((a, b) -> a.or(b)).orElse(e -> false);
+
+        return configurations.entrySet().stream()
+                .filter(prefixCondition)
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
     }
 
     @Override
