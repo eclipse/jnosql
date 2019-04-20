@@ -54,7 +54,7 @@ import static java.util.Objects.requireNonNull;
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/SunProviders.html.
  * </p>
  */
-public class AsymmetricSettingsEncryption implements SettingsEncryption {
+public final class AsymmetricSettingsEncryption implements SettingsEncryption {
 
     public static final String PRIVATE_PROPERTY = "jakarta.nosql.encryption.asymmetric.private";
     public static final String PUBLIC_PROPERTY = "jakarta.nosql.encryption.asymmetric.public";
@@ -67,6 +67,7 @@ public class AsymmetricSettingsEncryption implements SettingsEncryption {
 
     private static final String ERROR_MESSAGE_PUBLIC = "The public key property is mandatory with either resource or" +
             " absolute path setting the property: " + PUBLIC_PROPERTY;
+
 
     @Override
     public String encrypt(String property, Settings settings) {

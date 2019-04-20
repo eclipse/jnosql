@@ -40,7 +40,7 @@ import static java.util.Objects.requireNonNull;
  * To know more about: https://docs.oracle.com/javase/8/docs/technotes/guides/security/SunProviders.html
  *
  */
-public class SymmetricSettingsEncryption implements SettingsEncryption {
+public final class SymmetricSettingsEncryption implements SettingsEncryption {
 
 
     public static final String KEY_PROPERTY = "jakarta.nosql.encryption.symmetric.key";
@@ -51,6 +51,8 @@ public class SymmetricSettingsEncryption implements SettingsEncryption {
     private static final int MIN_VALUE = 24;
     private static final String ALGORITHM = "md5";
     private static final String CRYPT_DEFAULT_ALGORITHM = "DESede";
+
+
 
     @Override
     public String encrypt(String property, Settings settings) {
