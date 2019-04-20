@@ -22,7 +22,9 @@ import java.util.regex.Pattern;
 /**
  * A reader that checks if it needs to use {@link SettingsEncryption}
  */
-final class SettingsPropertyReader {
+enum SettingsPropertyReader {
+
+    INSTANCE;
 
     private static final Pattern PATTERN = Pattern.compile("(ENC)\\(..*?\\)");
 

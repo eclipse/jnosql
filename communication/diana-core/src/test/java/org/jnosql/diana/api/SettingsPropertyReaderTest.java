@@ -12,7 +12,7 @@ class SettingsPropertyReaderTest {
 
     @BeforeEach
     public void before() {
-        this.reader = new SettingsPropertyReader();
+        this.reader = SettingsPropertyReader.INSTANCE;
     }
 
     @Test
