@@ -32,4 +32,13 @@ public class EncryptionException extends JNoSQLException {
     EncryptionException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    /**
+     * Constructs a new runtime exception with the specified detail message
+     *
+     * @param message the message
+     */
+    EncryptionException(String message) {
+        super(message);
+    }
 }
