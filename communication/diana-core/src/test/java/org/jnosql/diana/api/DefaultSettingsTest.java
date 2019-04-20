@@ -16,11 +16,15 @@
  */
 package org.jnosql.diana.api;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +32,10 @@ import java.util.Map;
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultSettingsTest {
@@ -37,7 +43,7 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldReturnNPEWhenInstanceIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> Settings.of((Map<String, Object>) null));
+        assertThrows(NullPointerException.class, () -> Settings.of((Map<String, Object>) null));
 
     }
 
@@ -137,4 +143,56 @@ public class DefaultSettingsTest {
         Assertions.assertEquals("12", settings.getOrDefault("key", "13"));
         Assertions.assertEquals("13", settings.getOrDefault("key-1", "13"));
     }
+
+    @Test
+    public void shouldReturnErrorWhenPrefixIsNull() {
+        Settings settings = Settings.builder()
+                .put("host", "host")
+                .put("host-1", "host-1")
+                .put("host-2", "host-2")
+                .put("host-3", "host-3")
+                .build();
+        assertThrows(NullPointerException.class, () -> settings.prefix((String) null));
+    }
+
+    @Test
+    public void shouldFindPrefix() {
+        Settings settings = Settings.builder()
+                .put("host", "host")
+                .put("host-1", "host-1")
+                .put("host-2", "host-2")
+                .put("host-3", "host-3")
+                .build();
+
+        List<Object> hosts = settings.prefix("host");
+        Assertions.assertEquals(4, hosts.size());
+        assertThat(hosts, containsInAnyOrder("host","host-1","host-2","host-3"));
+    }
+
+    @Test
+    public void shouldReturnErrorWhenPrefixesIsNull() {
+        Settings settings = Settings.builder()
+                .put("host", "host")
+                .put("host-1", "host-1")
+                .put("server", "server")
+                .put("server-1", "server-1")
+                .build();
+
+        List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
+        Assertions.assertEquals(4, hosts.size());
+        assertThat(hosts, containsInAnyOrder("host","host-1","server","server-1"));
+    }
+
+    @Test
+    public void shouldFindPrefixes() {
+        Settings settings = Settings.builder()
+                .put("host", "host")
+                .put("host-1", "host-1")
+                .put("host-2", "host-2")
+                .put("host-3", "host-3")
+                .build();
+        assertThrows(NullPointerException.class, () -> settings.prefix((Collection<String>) null));
+    }
+
+
 }
