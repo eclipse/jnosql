@@ -25,7 +25,7 @@ import java.util.function.Function;
 
 import static java.util.Optional.ofNullable;
 
-class DefaultSettings implements Settings {
+final class DefaultSettings implements Settings {
 
     private final Map<String, Object> configurations;
 
