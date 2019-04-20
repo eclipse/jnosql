@@ -20,8 +20,12 @@ import java.util.Collections;
 
 /**
  * An executable class that given property, that will be the first parameter, it will return print the property encrypted.
+ * To run it:
+ *
+ * {@code java -cp diana-core-0.0.9-SNAPSHOT.jar -Djakarta.nosql.settings.encryption="symmetric" -Djakarta.nosql.encryption.symmetric.key="password"
+ * org.jnosql.diana.api.EncryptionPropertyApp "Ada Lovelace"}
  */
-public class EncryptionPropertyApp {
+public final class EncryptionPropertyApp {
 
     public static void main(String[] args) {
         if (args.length == 0 || args[0] == null) {
@@ -30,7 +34,11 @@ public class EncryptionPropertyApp {
         String property = args[0];
         SettingsEncryption encryption = SettingsEncryption.get();
         String encrypted = encryption.encrypt(property, Settings.of(Collections.emptyMap()));
+        System.out.println(property);
         System.out.println("ENC(" + encrypted + ')');
 
+    }
+
+    private EncryptionPropertyApp() {
     }
 }
