@@ -16,5 +16,19 @@
  */
 package org.jnosql.diana.api;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * A reader that checks if it needs to use {@link SettingsEncryption}
+ */
 final class SettingsPropertyReader {
+
+    private static final Pattern PATTERN = Pattern.compile("(ENC)\\(..*\\)");
+
+    boolean isValid(String property){
+        Matcher matcher = PATTERN.matcher(property);
+        return matcher.matches();
+    }
 }
+
