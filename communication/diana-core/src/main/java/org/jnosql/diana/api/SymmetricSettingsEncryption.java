@@ -66,7 +66,7 @@ public final class SymmetricSettingsEncryption implements SettingsEncryption {
             byte[] base64Bytes = Base64.getEncoder().encode(buf);
             return new String(base64Bytes, UTF_8);
         } catch (Exception ex) {
-            throw new EncryptionException("An error when try to encrypt a property using 3DES", ex);
+            throw new EncryptionException("An error when try to encrypt a property using symmetric", ex);
         }
     }
 
@@ -79,7 +79,7 @@ public final class SymmetricSettingsEncryption implements SettingsEncryption {
             byte[] plainText = decipher.doFinal(message);
             return new String(plainText, UTF_8);
         } catch (Exception ex) {
-            throw new EncryptionException("An error when try to decrypt a property using 3DES", ex);
+            throw new EncryptionException("An error when try to decrypt a property using symmetric", ex);
         }
     }
 
