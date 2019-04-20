@@ -24,11 +24,22 @@ import java.util.regex.Pattern;
  */
 final class SettingsPropertyReader {
 
-    private static final Pattern PATTERN = Pattern.compile("(ENC)\\(..*\\)");
+    private static final Pattern PATTERN = Pattern.compile("(ENC)\\(..*?\\)");
 
-    boolean isValid(String property){
+    private static final Pattern EXTRACT = Pattern.compile("\\((.*?)\\)");
+
+    boolean isValid(String property) {
         Matcher matcher = PATTERN.matcher(property);
         return matcher.matches();
+    }
+
+    String extract(String property) {
+        Matcher matcher = EXTRACT.matcher(property);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+
+        return null;
     }
 }
 

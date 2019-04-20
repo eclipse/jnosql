@@ -30,4 +30,10 @@ class SettingsPropertyReaderTest {
         assertFalse(reader.isValid("ENC()"));
     }
 
+    @Test
+    public void shouldExtract() {
+        assertEquals("value", reader.extract("ENC(value)"));
+        assertEquals("asdfasdfa", reader.extract("ENC(asdfasdfa)"));
+    }
+
 }
