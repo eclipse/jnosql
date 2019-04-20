@@ -33,7 +33,8 @@ final class SettingsPropertyReader {
         if (value instanceof String) {
             String property = value.toString();
             if (isValid(property)) {
-
+                SettingsEncryption encryption = SettingsEncryption.get(settings);
+                return encryption.decrypt(extract(property), settings);
             }
             return value;
         }
