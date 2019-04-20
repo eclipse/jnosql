@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api;
 
+import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +28,18 @@ final class SettingsPropertyReader {
     private static final Pattern PATTERN = Pattern.compile("(ENC)\\(..*?\\)");
 
     private static final Pattern EXTRACT = Pattern.compile("\\((.*?)\\)");
+
+
+    public Object apply(Object value, Settings settings) {
+        if (value instanceof String) {
+            String property = value.toString();
+            if (isValid(property)) {
+
+            }
+            return value;
+        }
+        return value;
+    }
 
     boolean isValid(String property) {
         Matcher matcher = PATTERN.matcher(property);
@@ -41,5 +54,7 @@ final class SettingsPropertyReader {
 
         return null;
     }
+
+
 }
 
