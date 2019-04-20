@@ -54,7 +54,7 @@ public interface Settings {
      * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
      *
      * @param key the key whose associated value is to be returned
-     * @return the value to which the specified key is mapped, or null if this map contains no mapping for the key
+     * @return the value to which the specified key is mapped, or {@link Optional#empty()} if this map contains no mapping for the key
      * @throws NullPointerException when key is null
      */
     Optional<Object> get(String key);
@@ -65,7 +65,7 @@ public interface Settings {
      * @param key  the key whose associated value is to be returned
      * @param type the type be used as {@link Value#get(Class)}
      * @param <T>  the type value
-     * @return the value to which the specified key is mapped, or null if this map contains no mapping for the key
+     * @return the value to which the specified key is mapped, or {@link Optional#empty()} if this map contains no mapping for the key
      * @throws NullPointerException when there are null parameters
      */
     <T> Optional<T> get(String key, Class<T> type);
