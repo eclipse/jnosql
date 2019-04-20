@@ -19,18 +19,24 @@ package org.jnosql.diana.api;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import static java.util.Optional.ofNullable;
+import static java.util.Collections.unmodifiableMap;
 
 final class DefaultSettings implements Settings {
+
+    private static final SettingsPropertyReader READER = SettingsPropertyReader.INSTANCE;
 
     private final Map<String, Object> configurations;
 
     DefaultSettings(Map<String, Object> configurations) {
-        this.configurations = configurations;
+        this.configurations = configurations.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey(),
+                        e -> getValue(e.getKey()).get()));
     }
 
 
@@ -50,22 +56,21 @@ final class DefaultSettings implements Settings {
     }
 
     @Override
-    public Object get(String key) {
-        return configurations.get(key);
+    public Optional<Object> get(String key) {
+        return Optional.ofNullable(configurations.get(key));
     }
 
     @Override
-    public <T> T get(String key, Class<T> type) {
+    public <T> Optional<T> get(String key, Class<T> type) {
         Objects.requireNonNull(key, "key is required");
         Objects.requireNonNull(type, "type is required");
-        Object value = configurations.get(key);
-        return ofNullable(value).map(Value::of).map(v -> v.get(type)).orElse(null);
+        return get(key).map(Value::of).map(v -> v.get(type));
     }
 
     @Override
-    public <T> T getOrDefault(Object key, T defaultValue) {
+    public <T> T getOrDefault(String key, T defaultValue) {
         Objects.requireNonNull(key, "key is required");
-        return (T) configurations.getOrDefault(key, defaultValue);
+        return (T) get(key).orElse(defaultValue);
     }
 
 
@@ -76,13 +81,13 @@ final class DefaultSettings implements Settings {
 
     @Override
     public Map<String, Object> toMap() {
-        return Collections.unmodifiableMap(configurations);
+        return unmodifiableMap(configurations);
     }
 
 
     @Override
     public Set<Map.Entry<String, Object>> entrySet() {
-        return Collections.unmodifiableSet(configurations.entrySet());
+        return Collections.unmodifiableSet(toMap().entrySet());
     }
 
     @Override
@@ -128,4 +133,13 @@ final class DefaultSettings implements Settings {
         return "DefaultSettings{" + "configurations=" + configurations +
                 '}';
     }
+
+
+    private Optional<Object> getValue(Object value) {
+        if (value != null) {
+            Optional.of(READER.apply(value, this));
+        }
+        return Optional.empty();
+    }
+
 }
