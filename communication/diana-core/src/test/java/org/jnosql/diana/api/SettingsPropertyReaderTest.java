@@ -39,7 +39,6 @@ class SettingsPropertyReaderTest {
 
     @Test
     public void shouldReturnInstanceWhenIsNotString() {
-
         Object value = reader.apply(123, Settings.builder().build());
         Assertions.assertEquals(123, value);
     }
@@ -47,7 +46,22 @@ class SettingsPropertyReaderTest {
     @Test
     public void shouldReturnStringWhenThereIsNotEnc() {
         Object value = reader.apply("value", Settings.builder().build());
-        Assertions.assertEquals(123, value);
+        Assertions.assertEquals("value", value);
+    }
+
+    @Test
+    public void shouldDecrypt() {
+        Settings settings = Settings.builder()
+                .put(SymmetricSettingsEncryption.KEY_PROPERTY, "password")
+                .put(SettingsEncryption.ENCRYPTION_TYPE, "symmetric")
+                .build();
+
+        String text = "Ada Lovelace";
+        SymmetricSettingsEncryption settingsEncryption = new SymmetricSettingsEncryption();
+        String encrypt = settingsEncryption.encrypt(text, settings);
+
+        String value = reader.apply("ENC(" + encrypt + ")", settings).toString();
+        Assertions.assertEquals(text, value);
     }
 
 }
