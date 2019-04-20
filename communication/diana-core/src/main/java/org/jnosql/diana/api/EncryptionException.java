@@ -16,8 +16,6 @@
  */
 package org.jnosql.diana.api;
 
-import org.jnosql.diana.api.JNoSQLException;
-
 /**
  * An exception specific to property encryption/decryption process
  */
