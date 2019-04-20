@@ -130,7 +130,7 @@ public class AsymmetricSettingsEncryption implements SettingsEncryption {
             }
             Path path = Paths.get(file);
             if (Files.exists(path)) {
-                Files.readAllBytes(path);
+                return Files.readAllBytes(path);
             }
         } catch (IOException | URISyntaxException ex) {
             throw new EncryptionException("Error to read the file " + file, ex);
