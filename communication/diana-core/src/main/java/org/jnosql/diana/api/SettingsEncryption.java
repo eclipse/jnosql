@@ -16,6 +16,8 @@
  */
 package org.jnosql.diana.api;
 
+import java.util.Objects;
+
 /**
  * This instance will encrypt and decrypt properties of {@link Settings}.
  * To set the encryption, put the value on the property: <b>jakarta.nosql.settings.encryption</b>.
@@ -48,4 +50,26 @@ public interface SettingsEncryption {
      * @throws NullPointerException when there is null parameters
      */
     String decrypt(String property, Settings settings);
+
+
+    /**
+     * Returns a {@link SettingsEncryption} instance reading the {@link SettingsEncryption#ENCRYPTION_TYPE}
+     *
+     * @return a {@link SettingsEncryption} instance
+     */
+    static SettingsEncryption get() {
+        return SettingsEncryptionSupplier.INSTANCE.get();
+    }
+
+    /**
+     * Returns a {@link SettingsEncryption} instance reading the {@link SettingsEncryption#ENCRYPTION_TYPE}
+     *
+     * @param settings the settings
+     * @return a {@link SettingsEncryption} instance
+     * @throws NullPointerException when settings is null
+     */
+    static SettingsEncryption get(Settings settings) {
+        Objects.requireNonNull(settings, "settings is required");
+        return SettingsEncryptionSupplier.INSTANCE.get(settings);
+    }
 }
