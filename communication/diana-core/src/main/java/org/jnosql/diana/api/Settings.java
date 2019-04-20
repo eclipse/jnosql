@@ -31,6 +31,7 @@ import static java.util.Objects.requireNonNull;
  * The interface represents the settings used in a configuration.
  *
  * @see Settings#of(Map[])
+ * @see SettingsEncryption
  */
 public interface Settings {
 
