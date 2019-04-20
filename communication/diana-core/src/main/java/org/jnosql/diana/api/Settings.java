@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -58,6 +59,14 @@ public interface Settings {
      * @throws NullPointerException when key is null
      */
     Optional<Object> get(String key);
+
+    /**
+     * Finds all keys that have the key as prefix
+     * @param prefix the prefix
+     * @return all the keys from prefix
+     * @throws NullPointerException when prefix is null
+     */
+    List<Object> prefix(String prefix);
 
     /**
      * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
