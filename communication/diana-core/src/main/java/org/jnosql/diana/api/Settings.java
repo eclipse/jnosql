@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -52,7 +53,7 @@ public interface Settings {
     Map<String, Object> toMap();
 
     /**
-     * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
+     * Returns the value to which the specified key is mapped, or {@link Optional#empty()} if this map contains no mapping for the key.
      *
      * @param key the key whose associated value is to be returned
      * @return the value to which the specified key is mapped, or {@link Optional#empty()} if this map contains no mapping for the key
@@ -61,12 +62,33 @@ public interface Settings {
     Optional<Object> get(String key);
 
     /**
-     * Finds all keys that have the key as prefix
+     * Returns the value to which the specified from one of these keys is mapped, or {@link Optional#empty()}
+     * if this map contains no mapping for the key.
+     *
+     * @param keys the key whose associated value is to be returned
+     * @return the value to which the specified key is mapped, or {@link Optional#empty()}
+     * if this map contains no mapping for the key
+     * @throws NullPointerException when keys is null
+     */
+    Optional<Object> get(Collection<String> keys);
+
+    /**
+     * Finds all keys that have the parameter as a prefix
+     *
      * @param prefix the prefix
      * @return all the keys from prefix
      * @throws NullPointerException when prefix is null
      */
     List<Object> prefix(String prefix);
+
+    /**
+     * Finds all keys that have the parameter as a prefix
+     *
+     * @param prefixes the list of prefixes
+     * @return all the keys from prefix
+     * @throws NullPointerException when prefixes is null
+     */
+    List<Object> prefix(Collection<String> prefixes);
 
     /**
      * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
@@ -86,7 +108,7 @@ public interface Settings {
      * @param defaultValue the default mapping of the key
      * @return the value to which the specified key is mapped, or defaultValue if this map contains no mapping for the key
      */
-     Object getOrDefault(String key, Object defaultValue);
+    Object getOrDefault(String key, Object defaultValue);
 
     /**
      * @return Returns true if this map contains no key-value mappings.
