@@ -47,13 +47,11 @@ import static java.util.Objects.requireNonNull;
  */
 public class SymmetricSettingsEncryption implements SettingsEncryption {
 
-    /**
-     * The key property
-     */
+
     public static final String KEY_PROPERTY = "jakarta.nosql.encryption.symmetric.key";
     public static final String CRYPT_PROPERTY = "jakarta.nosql.encryption.symmetric.crypt";
 
-    private static final String MISSING_KEY_MESSAGE = "To use 3DES encryption you need to set the key using the property;" +
+    private static final String MISSING_KEY_MESSAGE = "To use symmetric encryption you need to set the key using the property; " +
             KEY_PROPERTY;
     private static final int MIN_VALUE = 24;
     private static final String ALGORITHM = "md5";
@@ -61,8 +59,7 @@ public class SymmetricSettingsEncryption implements SettingsEncryption {
 
     @Override
     public String encrypt(String property, Settings settings) {
-        requireNonNull(property, "property is required");
-        requireNonNull(settings, "settings is required");
+        checkArguments(property, settings);
 
         try {
             Cipher cipher = getCipher(settings, Cipher.ENCRYPT_MODE);
@@ -78,8 +75,7 @@ public class SymmetricSettingsEncryption implements SettingsEncryption {
 
     @Override
     public String decrypt(String property, Settings settings) {
-        requireNonNull(property, "property is required");
-        requireNonNull(settings, "settings is required");
+        checkArguments(property, settings);
         try {
             byte[] message = Base64.getDecoder().decode(property.getBytes(UTF_8));
             Cipher decipher = getCipher(settings, Cipher.DECRYPT_MODE);
@@ -112,5 +108,10 @@ public class SymmetricSettingsEncryption implements SettingsEncryption {
         return SettingsPriority.get(KEY_PROPERTY, settings)
                 .map(Object::toString)
                 .orElseThrow(() -> new JNoSQLException(MISSING_KEY_MESSAGE));
+    }
+
+    private void checkArguments(String property, Settings settings) {
+        requireNonNull(property, "property is required");
+        requireNonNull(settings, "settings is required");
     }
 }
