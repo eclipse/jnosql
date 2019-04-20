@@ -18,6 +18,10 @@ package org.jnosql.diana.api;
 
 import java.util.function.Supplier;
 
+/**
+ * This enum contains all the commons configurations that might be used to the NoSQL databases.
+ * It implements {@link Supplier} which returns the property value on the arrangement.
+ */
 public enum  Configurations implements Supplier<String> {
     USER("jakarta.nosql.user"),
     PASSWORD("jakarta.nosql.password"),
