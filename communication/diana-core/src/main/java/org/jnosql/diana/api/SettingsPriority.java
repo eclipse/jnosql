@@ -77,7 +77,7 @@ public final class SettingsPriority {
         if (value != null) {
             return Optional.of(value);
         }
-        return Optional.ofNullable(settings.get(key));
+        return settings.get(key);
     }
 
     private static Settings getSettings(Map<String, Object> settings) {

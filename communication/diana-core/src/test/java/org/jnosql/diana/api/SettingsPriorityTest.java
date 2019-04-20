@@ -38,7 +38,7 @@ class SettingsPriorityTest {
     @Test
     public void shouldReturnValueFromSettings() {
         Settings settings = SettingsPriority.get(Collections.singletonMap("key", "value"));
-        assertEquals("value", settings.get("key"));
+        assertEquals("value", settings.get("key").get());
     }
 
     @Test
@@ -46,7 +46,7 @@ class SettingsPriorityTest {
         Map<String, String> env = System.getenv();
         String key = env.keySet().stream().findFirst().get();
         Settings settings = SettingsPriority.get(Collections.singletonMap(key, "value"));
-        assertEquals(env.get(key), settings.get(key));
+        assertEquals(env.get(key), settings.get(key).get());
     }
 
     @Test
@@ -54,7 +54,7 @@ class SettingsPriorityTest {
         Properties properties = System.getProperties();
         String key = properties.keySet().stream().findFirst().get().toString();
         Settings settings = SettingsPriority.get(Collections.singletonMap(key, "value"));
-        assertEquals(properties.get(key), settings.get(key));
+        assertEquals(properties.get(key), settings.get(key).get());
     }
 
     @Test
