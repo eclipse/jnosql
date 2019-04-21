@@ -682,7 +682,7 @@ Each property unit has a tuple where the key is the name, and the value is the p
 Also, some standard configurations might be used to the NoSQL databases:
 
 * jakarta.nosql.user: to set a user in a NoSQL database
-* jakarta.nosql.password: to set a password
+* jakarta.nosql.password: to set a password in a database
 * jakarta.nosql.host: the host configuration that might have more than one with a number as a suffix, such as jakarta.nosql.host-1=localhost, jakarta.nosql.host-2=host2
 * jakarta.nosql.settings.encryption: A configuration to set the encryption to settings property.
 
@@ -694,11 +694,29 @@ In cryptography, encryption is the process of encoding a message or information 
 
 To enable the property encryption put the value in the `ENC(value),` then it will check the `jakarta.nosql.settings.encryption` to verify each implementation encryption it will use to the property.  It uses the Java Service Loader resource implementing the `SettingsEncryption` interface. There is two default implementation:
 
-* Symmetric-Key Cryptography is an encryption system in which the same key is used for the encoding and decoding of the data. The safe distribution of the key is one of the drawbacks of this method, but what it lacks in security it gains in time complexity. The SettingsEncryption has two properties configurations. To active use the value `symmetric` in the `jakarta.nosql.settings.encryption` property. It requires a password and to set the value set the property on `jakarta.nosql.encryption.symmetric.password`.
-*
+* Symmetric-Key Cryptography is an encryption system in which the same key is used for the encoding and decoding of the data. The safe distribution of the key is one of the drawbacks of this method, but what it lacks in security it gains in time complexity. The SettingsEncryption has two properties configurations. To active use the value **symmetric** in the `jakarta.nosql.settings.encryption` property. It requires a password and to set the value set the property on `jakarta.nosql.encryption.symmetric.password`.
+* Public-key cryptography, or asymmetric cryptography, is a cryptographic system that uses pairs of keys: public keys which may be disseminated widely, and private keys which are known only to the owner. The generation of such keys depends on cryptographic algorithms based on mathematical problems to produce one-way functions. Effective security only requires keeping the private key private; the public key can be openly distributed without compromising security. To active use the value **asymmetric** in the `jakarta.nosql.settings.encryption` property. It requires a private key to encryption and public key to the decryption process. To set there is the `jakarta.nosql.encryption.asymmetric.private` and `jakarta.nosql.encryption.asymmetric.public` respectively both value can be either absolute path or resource path.
+Stressing, it works in a lazy way, therefore, it will require the private key when encryption and public key when to decryption it will be used.
 
 
+In the Communication core API, there is an executable class that returns the encryption, the `EncryptionPropertyApp` class.
 
+.Demo execution using symmetric encryption.
+[source,bash]
+----
+java -cp diana-core-VERSION.jar -Djakarta.nosql.settings.encryption="symmetric" -Djakarta.nosql.encryption.symmetric.password="password" org.jnosql.diana.api.EncryptionPropertyApp "sensible data"
+----
+
+The output: `ENC(g9EdKdpjqQJkIqHPlJZTKQ==)`
+
+The next step is to put this sensitive data on the settings.
+
+[source,java]
+----
+Settings settings = Settings.builder().put("sensible", "ENC(g9EdKdpjqQJkIqHPlJZTKQ==)").build();
+----
+
+TIP: It is essential to define the encryption configuration when the Application run.
 
 ==== Document Configuration
 
