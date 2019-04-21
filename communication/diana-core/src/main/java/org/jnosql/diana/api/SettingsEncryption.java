@@ -20,7 +20,7 @@ import java.util.Objects;
 
 /**
  * This instance will encrypt and decrypt properties of {@link Settings}.
- * To set the encryption, put the value on the property: <b>jakarta.nosql.settings.encryption</b>.
+ * To set the encryption, put the value on the property: <b>{@link Configurations#ENCRYPTION}</b>.
  * The value is the {@link Class#getName()} from implementation and might define from {@link SettingsPriority},
  * in other words, the same priority from Eclipse MicroProfile Configuration and JSR 382.
  * Where the when sets the value: "symmetric" it will return {@link SymmetricSettingsEncryption}
@@ -28,11 +28,6 @@ import java.util.Objects;
  * To enable the property encryption put the value in the "ENC(value)";
  */
 public interface SettingsEncryption {
-
-    /**
-     * The property to set the implementation encryption to use when it is required.
-     */
-    String ENCRYPTION_TYPE = "jakarta.nosql.settings.encryption";
 
     /**
      * Encrypts a property
@@ -56,7 +51,7 @@ public interface SettingsEncryption {
 
 
     /**
-     * Returns a {@link SettingsEncryption} instance reading the {@link SettingsEncryption#ENCRYPTION_TYPE}
+     * Returns a {@link SettingsEncryption} instance reading the {@link Configurations#ENCRYPTION}
      *
      * @return a {@link SettingsEncryption} instance
      */
@@ -65,7 +60,7 @@ public interface SettingsEncryption {
     }
 
     /**
-     * Returns a {@link SettingsEncryption} instance reading the {@link SettingsEncryption#ENCRYPTION_TYPE}
+     * Returns a {@link SettingsEncryption} instance reading the {@link Configurations#ENCRYPTION}
      *
      * @param settings the settings
      * @return a {@link SettingsEncryption} instance
