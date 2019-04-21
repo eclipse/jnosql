@@ -166,7 +166,7 @@ public class DefaultSettingsTest {
 
         List<Object> hosts = settings.prefix("host");
         Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts, containsInAnyOrder("host","host-1","host-2","host-3"));
+        assertThat(hosts, containsInAnyOrder("host", "host-1", "host-2", "host-3"));
     }
 
     @Test
@@ -180,12 +180,23 @@ public class DefaultSettingsTest {
 
         List<Object> hosts = settings.prefix("host");
         Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts, contains("host","host-1","host-2","host-3"));
+        assertThat(hosts, contains("host", "host-1", "host-2", "host-3"));
     }
 
 
     @Test
     public void shouldReturnErrorWhenPrefixesIsNull() {
+        Settings settings = Settings.builder()
+                .put("host", "host")
+                .put("host-1", "host-1")
+                .put("host-2", "host-2")
+                .put("host-3", "host-3")
+                .build();
+        assertThrows(NullPointerException.class, () -> settings.prefix((Collection<String>) null));
+    }
+
+    @Test
+    public void shouldFindPrefixes() {
         Settings settings = Settings.builder()
                 .put("host", "host")
                 .put("host-1", "host-1")
@@ -195,18 +206,23 @@ public class DefaultSettingsTest {
 
         List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
         Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts, containsInAnyOrder("host","host-1","server","server-1"));
+        assertThat(hosts, containsInAnyOrder("host", "host-1", "server", "server-1"));
+
     }
 
     @Test
-    public void shouldFindPrefixes() {
+    public void shouldFindPrefixesSort() {
         Settings settings = Settings.builder()
-                .put("host", "host")
                 .put("host-1", "host-1")
-                .put("host-2", "host-2")
-                .put("host-3", "host-3")
+                .put("host", "host")
+                .put("server-1", "server-1")
+                .put("server", "server")
                 .build();
-        assertThrows(NullPointerException.class, () -> settings.prefix((Collection<String>) null));
+
+        List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
+        Assertions.assertEquals(4, hosts.size());
+        assertThat(hosts, containsInAnyOrder("host", "host-1", "server", "server-1"));
+
     }
 
 
