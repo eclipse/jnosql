@@ -54,8 +54,8 @@ public class DocumentConfigurationProducerTest {
         assertTrue(factoryA instanceof DocumentCollectionManagerMock.DocumentMock);
         DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryA;
         Settings settings = mock.getSettings();
-        assertEquals("value", settings.get("key"));
-        assertEquals("value2", settings.get("key2"));
+        assertEquals("value", settings.get("key").get());
+        assertEquals("value2", settings.get("key2").get());
     }
 
     @Test
@@ -64,9 +64,9 @@ public class DocumentConfigurationProducerTest {
         assertTrue(factoryB instanceof DocumentCollectionManagerMock.DocumentMock);
         DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryB;
         Settings settings = mock.getSettings();
-        assertEquals("value", settings.get("key"));
-        assertEquals("value2", settings.get("key2"));
-        assertEquals("value3", settings.get("key3"));
+        assertEquals("value", settings.get("key").get());
+        assertEquals("value2", settings.get("key2").get());
+        assertEquals("value3", settings.get("key3").get());
     }
 
     @Test
@@ -75,8 +75,8 @@ public class DocumentConfigurationProducerTest {
         assertTrue(factoryAsyncA instanceof DocumentCollectionManagerMock.DocumentMock);
         DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryAsyncA;
         Settings settings = mock.getSettings();
-        assertEquals("value", settings.get("key"));
-        assertEquals("value2", settings.get("key2"));
+        assertEquals("value", settings.get("key").get());
+        assertEquals("value2", settings.get("key2").get());
     }
 
     @Test
@@ -86,8 +86,8 @@ public class DocumentConfigurationProducerTest {
         DocumentCollectionManagerMock.DocumentMock mock = (DocumentCollectionManagerMock.DocumentMock) factoryAsyncB;
 
         Settings settings = mock.getSettings();
-        assertEquals("value", settings.get("key"));
-        assertEquals("value2", settings.get("key2"));
-        assertEquals("value3", settings.get("key3"));
+        assertEquals("value", settings.get("key").get());
+        assertEquals("value2", settings.get("key2").get());
+        assertEquals("value3", settings.get("key3").get());
     }
 }
