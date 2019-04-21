@@ -22,8 +22,8 @@ import java.util.Collections;
  * An executable class that given property, that will be the first parameter, it will return print the property encrypted.
  * To run it:
  *
- * {@code java -cp diana-core-0.0.9-SNAPSHOT.jar -Djakarta.nosql.settings.encryption="symmetric" -Djakarta.nosql.encryption.symmetric.key="password"
- * org.jnosql.diana.api.EncryptionPropertyApp "Ada Lovelace"}
+ * <p>{@code java -cp diana-core-VERSION.jar -Djakarta.nosql.settings.encryption="symmetric" -Djakarta.nosql.encryption.symmetric.key="password"
+ * org.jnosql.diana.api.EncryptionPropertyApp "password"}</p>
  */
 public final class EncryptionPropertyApp {
 
