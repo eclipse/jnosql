@@ -20,7 +20,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.jnosql.diana.api.Configurations.ENCRYPTION;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SettingsPropertyReaderTest {
 
@@ -69,7 +72,7 @@ class SettingsPropertyReaderTest {
     public void shouldDecrypt() {
         Settings settings = Settings.builder()
                 .put(SymmetricSettingsEncryption.PASSWORD_PROPERTY, "password")
-                .put(SettingsEncryption.ENCRYPTION_TYPE, "symmetric")
+                .put(ENCRYPTION.get(), "symmetric")
                 .build();
 
         String text = "Ada Lovelace";
