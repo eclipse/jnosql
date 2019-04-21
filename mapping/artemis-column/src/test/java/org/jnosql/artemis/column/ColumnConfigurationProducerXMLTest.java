@@ -55,8 +55,8 @@ public class ColumnConfigurationProducerXMLTest {
         assertTrue(factoryA instanceof ColumnFamilyManagerMock.MockFamilyManager);
         ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryA;
         Settings settings = mock.getSettings();
-        assertEquals("value", settings.get("key"));
-        assertEquals("value2", settings.get("key2"));
+        assertEquals("value", settings.get("key").get());
+        assertEquals("value2", settings.get("key2").get());
     }
 
     @Test
@@ -65,9 +65,9 @@ public class ColumnConfigurationProducerXMLTest {
         assertTrue(factoryB instanceof ColumnFamilyManagerMock.MockFamilyManager);
         ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryB;
         Settings settings = mock.getSettings();
-        assertEquals("value", settings.get("key"));
-        assertEquals("value2", settings.get("key2"));
-        assertEquals("value3", settings.get("key3"));
+        assertEquals("value", settings.get("key").get());
+        assertEquals("value2", settings.get("key2").get());
+        assertEquals("value3", settings.get("key3").get());
     }
 
     @Test
@@ -76,8 +76,8 @@ public class ColumnConfigurationProducerXMLTest {
         assertTrue(factoryAsyncA instanceof ColumnFamilyManagerMock.MockFamilyManager);
         ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryAsyncA;
         Settings settings = mock.getSettings();
-        assertEquals("value", settings.get("key"));
-        assertEquals("value2", settings.get("key2"));
+        assertEquals("value", settings.get("key").get());
+        assertEquals("value2", settings.get("key2").get());
     }
 
     @Test
@@ -86,9 +86,9 @@ public class ColumnConfigurationProducerXMLTest {
         assertTrue(factoryAsyncB instanceof ColumnFamilyManagerMock.MockFamilyManager);
         ColumnFamilyManagerMock.MockFamilyManager mock = (ColumnFamilyManagerMock.MockFamilyManager) factoryAsyncB;
         Settings settings = mock.getSettings();
-        assertEquals("value", settings.get("key"));
-        assertEquals("value2", settings.get("key2"));
-        assertEquals("value3", settings.get("key3"));
+        assertEquals("value", settings.get("key").get());
+        assertEquals("value2", settings.get("key2").get());
+        assertEquals("value3", settings.get("key3").get());
     }
 
 }
