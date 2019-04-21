@@ -34,7 +34,6 @@ public final class EncryptionPropertyApp {
         String property = args[0];
         SettingsEncryption encryption = SettingsEncryption.get();
         String encrypted = encryption.encrypt(property, Settings.of(Collections.emptyMap()));
-        System.out.println(property);
         System.out.println("ENC(" + encrypted + ')');
 
     }
