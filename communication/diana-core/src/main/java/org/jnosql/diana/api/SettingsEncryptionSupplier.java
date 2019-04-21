@@ -23,7 +23,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.jnosql.diana.api.SettingsEncryption.ENCRYPTION_TYPE;
+import static org.jnosql.diana.api.Configurations.ENCRYPTION;
+
 
 enum SettingsEncryptionSupplier implements Supplier<SettingsEncryption> {
 
@@ -47,10 +48,10 @@ enum SettingsEncryptionSupplier implements Supplier<SettingsEncryption> {
 
     public SettingsEncryption get(Settings settings) {
         String property = SettingsPriority
-                .get(ENCRYPTION_TYPE, settings)
+                .get(ENCRYPTION.get(), settings)
                 .map(Object::toString)
                 .orElseThrow(() -> new EncryptionException("To use encryption in property settings set the property: " +
-                        ENCRYPTION_TYPE));
+                        ENCRYPTION.get()));
 
         if ("symmetric".equals(property)) {
             return symmetric;
@@ -62,6 +63,6 @@ enum SettingsEncryptionSupplier implements Supplier<SettingsEncryption> {
                 .filter(s -> s.getClass().getName().equals(property))
                 .findFirst()
                 .orElseThrow(() -> new EncryptionException("There is no implementation with this Class#getName" +
-                        " at the property: " + ENCRYPTION_TYPE));
+                        " at the property: " + ENCRYPTION.get()));
     }
 }
