@@ -69,11 +69,11 @@ public final class SettingsPriority {
     public static Optional<Object> get(String key, Settings settings) {
         requireNonNull(key, "key is required");
         requireNonNull(settings, "settings is required");
-        String value = System.getenv().get(key);
+        String value = System.getProperty(key);
         if (value != null) {
             return Optional.of(value);
         }
-        value = System.getProperty(key);
+        value = System.getenv().get(key);
         if (value != null) {
             return Optional.of(value);
         }
