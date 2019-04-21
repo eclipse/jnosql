@@ -18,6 +18,7 @@ package org.jnosql.diana.api;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -82,6 +83,7 @@ final class DefaultSettings implements Settings {
         Objects.requireNonNull(prefix, "prefix is required");
         return configurations.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(prefix))
+                .sorted(Comparator.comparing(Map.Entry::getKey))
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
     }
@@ -98,6 +100,7 @@ final class DefaultSettings implements Settings {
 
         return configurations.entrySet().stream()
                 .filter(prefixCondition)
+                .sorted(Comparator.comparing(Map.Entry::getKey))
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
     }
