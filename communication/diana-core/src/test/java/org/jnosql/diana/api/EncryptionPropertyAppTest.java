@@ -35,12 +35,12 @@ class EncryptionPropertyAppTest {
 
     @Test
     public void shouldEncrypt() {
-        System.setProperty(SymmetricSettingsEncryption.KEY_PROPERTY, "password");
+        System.setProperty(SymmetricSettingsEncryption.PASSWORD_PROPERTY, "password");
         System.setProperty(Configurations.ENCRYPTION.get(), "symmetric");
 
         EncryptionPropertyApp.main(new String[]{"Ada Lovelace"});
 
-        System.clearProperty(SymmetricSettingsEncryption.KEY_PROPERTY);
+        System.clearProperty(SymmetricSettingsEncryption.PASSWORD_PROPERTY);
         System.clearProperty(Configurations.ENCRYPTION.get());
     }
 }

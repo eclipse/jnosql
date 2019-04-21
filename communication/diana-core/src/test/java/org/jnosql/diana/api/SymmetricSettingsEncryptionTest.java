@@ -37,7 +37,7 @@ class SymmetricSettingsEncryptionTest {
     @Test
     public void shouldEncrypt() {
         Settings settings = Settings.builder()
-                .put(SymmetricSettingsEncryption.KEY_PROPERTY, "password")
+                .put(SymmetricSettingsEncryption.PASSWORD_PROPERTY, "password")
                 .build();
         String encrypt = settingsEncryption.encrypt("Ada Lovelace", settings);
         assertNotNull(encrypt);
@@ -54,7 +54,7 @@ class SymmetricSettingsEncryptionTest {
     @Test
     public void shouldDecrypt() {
         Settings settings = Settings.builder()
-                .put(SymmetricSettingsEncryption.KEY_PROPERTY, "password")
+                .put(SymmetricSettingsEncryption.PASSWORD_PROPERTY, "password")
                 .build();
         String text = "Ada Lovelace";
         String encrypt = settingsEncryption.encrypt(text, settings);
@@ -67,7 +67,7 @@ class SymmetricSettingsEncryptionTest {
     @Test
     public void shouldAllowToUseDifferentCrypt() {
         Settings settings = Settings.builder()
-                .put(SymmetricSettingsEncryption.KEY_PROPERTY, "password")
+                .put(SymmetricSettingsEncryption.PASSWORD_PROPERTY, "password")
                 .put(SymmetricSettingsEncryption.CRYPT_PROPERTY, "AES")
                 .build();
 

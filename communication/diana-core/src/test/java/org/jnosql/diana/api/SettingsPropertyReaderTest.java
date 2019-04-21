@@ -68,7 +68,7 @@ class SettingsPropertyReaderTest {
     @Test
     public void shouldDecrypt() {
         Settings settings = Settings.builder()
-                .put(SymmetricSettingsEncryption.KEY_PROPERTY, "password")
+                .put(SymmetricSettingsEncryption.PASSWORD_PROPERTY, "password")
                 .put(SettingsEncryption.ENCRYPTION_TYPE, "symmetric")
                 .build();
 

@@ -35,7 +35,7 @@ import static java.util.Objects.requireNonNull;
  * but what it lacks in security it gains in time complexity.
  *The SettingsEncryption has two properties configurations.
  *
- * {@link SymmetricSettingsEncryption#KEY_PROPERTY} The mandatory configuration that defines the password to both encrypt and decrypt the property.
+ * {@link SymmetricSettingsEncryption#PASSWORD_PROPERTY} The mandatory configuration that defines the password to both encrypt and decrypt the property.
  * {@link SymmetricSettingsEncryption#CRYPT_PROPERTY} This property defines the crypt algorithm that will use on the symmetric encryption process. The default value is DESede.
  * To know more about: https://docs.oracle.com/javase/8/docs/technotes/guides/security/SunProviders.html
  *
@@ -43,11 +43,11 @@ import static java.util.Objects.requireNonNull;
 public final class SymmetricSettingsEncryption implements SettingsEncryption {
 
 
-    public static final String KEY_PROPERTY = "jakarta.nosql.encryption.symmetric.key";
+    public static final String PASSWORD_PROPERTY = "jakarta.nosql.encryption.symmetric.password";
     public static final String CRYPT_PROPERTY = "jakarta.nosql.encryption.symmetric.crypt";
 
-    private static final String MISSING_KEY_MESSAGE = "To use symmetric encryption you need to set the key using the property; " +
-            KEY_PROPERTY;
+    private static final String MISSING_KEY_MESSAGE = "To use symmetric encryption you need to set the password using the property; " +
+            PASSWORD_PROPERTY;
     private static final int MIN_VALUE = 24;
     private static final String ALGORITHM = "md5";
     private static final String CRYPT_DEFAULT_ALGORITHM = "DESede";
@@ -85,9 +85,9 @@ public final class SymmetricSettingsEncryption implements SettingsEncryption {
 
     private Cipher getCipher(Settings settings, int mode)
             throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
-        String key = getKey(settings);
+        String password = getPassword(settings);
         MessageDigest md = MessageDigest.getInstance(ALGORITHM);
-        byte[] digestOfPassword = md.digest(key.getBytes(UTF_8));
+        byte[] digestOfPassword = md.digest(password.getBytes(UTF_8));
         byte[] keyBytes = Arrays.copyOf(digestOfPassword, MIN_VALUE);
         for (int j = 0, k = 16; j < 8;) {
             keyBytes[k++] = keyBytes[j++];
@@ -101,8 +101,8 @@ public final class SymmetricSettingsEncryption implements SettingsEncryption {
         return cipher;
     }
 
-    private String getKey(Settings settings) {
-        return SettingsPriority.get(KEY_PROPERTY, settings)
+    private String getPassword(Settings settings) {
+        return SettingsPriority.get(PASSWORD_PROPERTY, settings)
                 .map(Object::toString)
                 .orElseThrow(() -> new JNoSQLException(MISSING_KEY_MESSAGE));
     }

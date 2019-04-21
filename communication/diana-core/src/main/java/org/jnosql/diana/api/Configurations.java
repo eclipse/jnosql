@@ -26,7 +26,6 @@ public enum  Configurations implements Supplier<String> {
     USER("jakarta.nosql.user"),
     PASSWORD("jakarta.nosql.password"),
     HOST("jakarta.nosql.host"),
-    QUERY("jakarta.nosql.query"),
     ENCRYPTION("jakarta.nosql.settings.encryption");
 
     private final String configuration;
