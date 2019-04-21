@@ -19,21 +19,22 @@ import org.jnosql.artemis.ConfigurationSettingsUnit;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.reflection.ConstructorException;
 import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.Settings;
+import org.jnosql.diana.api.SettingsPriority;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
-import static java.util.Collections.emptyMap;
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
@@ -70,10 +71,15 @@ class DefaultConfigurationReader implements ConfigurationReader {
 
         String name = configuration.getName();
         String description = configuration.getDescription();
-        Map<String, Object> settings = getSettings(configuration);
+
         Class<?> provider = getProvider(configurationClass, configuration);
 
-        return new DefaultConfigurationSettingsUnit(name, description, provider, Settings.of(settings));
+        return new DefaultConfigurationSettingsUnit(name, description, provider,
+                SettingsPriority.get(toMap(configuration)));
+    }
+
+    private Map<String, Object> toMap(Configurable configuration) {
+        return new HashMap<>(Optional.ofNullable(configuration.getSettings()).orElse(Collections.emptyMap()));
     }
 
     @Override
@@ -86,9 +92,8 @@ class DefaultConfigurationReader implements ConfigurationReader {
 
         String name = configuration.getName();
         String description = configuration.getDescription();
-        Map<String, Object> settings = getSettings(configuration);
-
-        return new DefaultConfigurationSettingsUnit(name, description, null, Settings.of(settings));
+        return new DefaultConfigurationSettingsUnit(name, description, null,
+                SettingsPriority.get(toMap(configuration)));
     }
 
 
@@ -104,12 +109,6 @@ class DefaultConfigurationReader implements ConfigurationReader {
         return select.get().read(stream, annotation);
     }
 
-    private Map<String, Object> getSettings(Configurable configuration) {
-        Map<String, Object> settings = new HashMap<>(ofNullable(configuration.getSettings()).orElse(emptyMap()));
-        settings.putAll(System.getenv());
-        System.getProperties().forEach((k, v) -> settings.put(k.toString(), v));
-        return settings;
-    }
 
     private String getExtension(ConfigurationUnit annotation) {
         String[] fileName = annotation.fileName().split("\\.");
@@ -131,7 +130,7 @@ class DefaultConfigurationReader implements ConfigurationReader {
             }
             reflections.makeAccessible(provider);
             return provider;
-        } catch (ClassNotFoundException| ConstructorException e) {
+        } catch (ClassNotFoundException | ConstructorException e) {
             throw new ConfigurationException("An error to load the provider class: " + configuration.getProvider(), e);
         }
     }
