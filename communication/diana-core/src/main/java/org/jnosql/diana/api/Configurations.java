@@ -22,10 +22,23 @@ import java.util.function.Supplier;
  * This enum contains all the commons configurations that might be used to the NoSQL databases.
  * It implements {@link Supplier} which returns the property value on the arrangement.
  */
-public enum  Configurations implements Supplier<String> {
+public enum Configurations implements Supplier<String> {
+    /**
+     * to set a user in a NoSQL database
+     */
     USER("jakarta.nosql.user"),
+    /**
+     * to set a password in a database
+     */
     PASSWORD("jakarta.nosql.password"),
+    /**
+     * the host configuration that might have more than one with a number as a suffix,
+     * such as jakarta.nosql.host-1=localhost, jakarta.nosql.host-2=host2
+     */
     HOST("jakarta.nosql.host"),
+    /**
+     * A configuration to set the encryption to settings property.
+     */
     ENCRYPTION("jakarta.nosql.settings.encryption");
 
     private final String configuration;
