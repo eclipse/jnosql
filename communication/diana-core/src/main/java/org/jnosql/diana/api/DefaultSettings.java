@@ -16,21 +16,31 @@
  */
 package org.jnosql.diana.api;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import static java.util.Optional.ofNullable;
+import static java.util.Collections.unmodifiableMap;
 
-class DefaultSettings implements Settings {
+final class DefaultSettings implements Settings {
+
+    private static final SettingsPropertyReader READER = SettingsPropertyReader.INSTANCE;
 
     private final Map<String, Object> configurations;
 
     DefaultSettings(Map<String, Object> configurations) {
-        this.configurations = configurations;
+        this.configurations = configurations.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey(),
+                        e -> getValue(e.getValue())));
     }
 
 
@@ -50,22 +60,62 @@ class DefaultSettings implements Settings {
     }
 
     @Override
-    public Object get(String key) {
-        return configurations.get(key);
+    public Optional<Object> get(String key) {
+        return Optional.ofNullable(configurations.get(key));
     }
 
     @Override
-    public <T> T get(String key, Class<T> type) {
+    public Optional<Object> get(Collection<String> keys) {
+        Objects.requireNonNull(keys, "keys is required");
+
+        Predicate<Map.Entry<String, Object>> equals = keys.stream()
+                .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().equals(prefix))
+                .reduce((a, b) -> a.or(b)).orElse(e -> false);
+
+        return configurations.entrySet().stream()
+                .filter(equals)
+                .findFirst()
+                .map(Map.Entry::getValue);
+    }
+
+    @Override
+    public List<Object> prefix(String prefix) {
+        Objects.requireNonNull(prefix, "prefix is required");
+        return configurations.entrySet().stream()
+                .filter(e -> e.getKey().startsWith(prefix))
+                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Object> prefix(Collection<String> prefixes) {
+        Objects.requireNonNull(prefixes, "prefixes is required");
+        if (prefixes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Predicate<Map.Entry<String, Object>> prefixCondition = prefixes.stream()
+                .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().startsWith(prefix))
+                .reduce((a, b) -> a.or(b)).orElse(e -> false);
+
+        return configurations.entrySet().stream()
+                .filter(prefixCondition)
+                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public <T> Optional<T> get(String key, Class<T> type) {
         Objects.requireNonNull(key, "key is required");
         Objects.requireNonNull(type, "type is required");
-        Object value = configurations.get(key);
-        return ofNullable(value).map(Value::of).map(v -> v.get(type)).orElse(null);
+        return get(key).map(Value::of).map(v -> v.get(type));
     }
 
     @Override
-    public <T> T getOrDefault(Object key, T defaultValue) {
+    public Object getOrDefault(String key, Object defaultValue) {
         Objects.requireNonNull(key, "key is required");
-        return (T) configurations.getOrDefault(key, defaultValue);
+        return get(key).orElse(defaultValue);
     }
 
 
@@ -74,10 +124,15 @@ class DefaultSettings implements Settings {
         return Collections.unmodifiableSet(configurations.keySet());
     }
 
+    @Override
+    public Map<String, Object> toMap() {
+        return unmodifiableMap(configurations);
+    }
+
 
     @Override
     public Set<Map.Entry<String, Object>> entrySet() {
-        return Collections.unmodifiableSet(configurations.entrySet());
+        return Collections.unmodifiableSet(toMap().entrySet());
     }
 
     @Override
@@ -123,4 +178,13 @@ class DefaultSettings implements Settings {
         return "DefaultSettings{" + "configurations=" + configurations +
                 '}';
     }
+
+
+    private Object getValue(Object value) {
+        if (value != null) {
+            return READER.apply(value, this);
+        }
+        return null;
+    }
+
 }

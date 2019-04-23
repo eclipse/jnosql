@@ -16,7 +16,10 @@
  */
 package org.jnosql.diana.api;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -28,6 +31,7 @@ import static java.util.Objects.requireNonNull;
  * The interface represents the settings used in a configuration.
  *
  * @see Settings#of(Map[])
+ * @see SettingsEncryption
  */
 public interface Settings {
 
@@ -43,13 +47,49 @@ public interface Settings {
     Set<String> keySet();
 
     /**
-     * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
+     * Converts the settings to {@link Map}
+     *
+     * @return a {@link Map} instance from {@link Settings}
+     */
+    Map<String, Object> toMap();
+
+    /**
+     * Returns the value to which the specified key is mapped, or {@link Optional#empty()} if this map contains no mapping for the key.
      *
      * @param key the key whose associated value is to be returned
-     * @return the value to which the specified key is mapped, or null if this map contains no mapping for the key
+     * @return the value to which the specified key is mapped, or {@link Optional#empty()} if this map contains no mapping for the key
      * @throws NullPointerException when key is null
      */
-    Object get(String key);
+    Optional<Object> get(String key);
+
+    /**
+     * Returns the value to which the specified from one of these keys is mapped, or {@link Optional#empty()}
+     * if this map contains no mapping for the key.
+     *
+     * @param keys the key whose associated value is to be returned
+     * @return the value to which the specified key is mapped, or {@link Optional#empty()}
+     * if this map contains no mapping for the key
+     * @throws NullPointerException when keys is null
+     */
+    Optional<Object> get(Collection<String> keys);
+
+    /**
+     * Finds all keys that have the parameter as a prefix
+     *
+     * @param prefix the prefix
+     * @return all the keys from prefix
+     * @throws NullPointerException when prefix is null
+     */
+    List<Object> prefix(String prefix);
+
+    /**
+     * Finds all keys that have the parameter as a prefix
+     *
+     * @param prefixes the list of prefixes
+     * @return all the keys from prefix
+     * @throws NullPointerException when prefixes is null
+     */
+    List<Object> prefix(Collection<String> prefixes);
 
     /**
      * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
@@ -57,20 +97,19 @@ public interface Settings {
      * @param key  the key whose associated value is to be returned
      * @param type the type be used as {@link Value#get(Class)}
      * @param <T>  the type value
-     * @return the value to which the specified key is mapped, or null if this map contains no mapping for the key
+     * @return the value to which the specified key is mapped, or {@link Optional#empty()} if this map contains no mapping for the key
      * @throws NullPointerException when there are null parameters
      */
-    <T> T get(String key, Class<T> type);
+    <T> Optional<T> get(String key, Class<T> type);
 
     /**
      * Returns the value to which the specified key is mapped, or defaultValue if this map contains no mapping for the key.
      *
      * @param key          the key whose associated value is to be returned
      * @param defaultValue the default mapping of the key
-     * @param <T>          the type value
      * @return the value to which the specified key is mapped, or defaultValue if this map contains no mapping for the key
      */
-    <T> T getOrDefault(Object key, T defaultValue);
+    Object getOrDefault(String key, Object defaultValue);
 
     /**
      * @return Returns true if this map contains no key-value mappings.

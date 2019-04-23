@@ -61,6 +61,6 @@ public class SettingsBuilderTest {
     public void shouldCreateSettingsBuilder() {
         Settings settings = Settings.builder().put("key", "value").build();
         assertNotNull(settings);
-        assertEquals("value", settings.get("key"));
+        assertEquals("value", settings.get("key").get());
     }
 }

@@ -44,8 +44,8 @@ public class KeyValueConfigurationProducerTest {
         assertTrue(factoryA instanceof KeyValueConfigurationMock.BucketManagerFactoryMock);
         KeyValueConfigurationMock.BucketManagerFactoryMock mock = (KeyValueConfigurationMock.BucketManagerFactoryMock) factoryA;
         Settings settings = mock.getSettings();
-        assertEquals("value", settings.get("key"));
-        assertEquals("value2", settings.get("key2"));
+        assertEquals("value", settings.get("key").get());
+        assertEquals("value2", settings.get("key2").get());
     }
 
     @Test
@@ -54,8 +54,8 @@ public class KeyValueConfigurationProducerTest {
         assertTrue(factoryB instanceof KeyValueConfigurationMock.BucketManagerFactoryMock);
         KeyValueConfigurationMock.BucketManagerFactoryMock mock = (KeyValueConfigurationMock.BucketManagerFactoryMock) factoryB;
         Settings settings = mock.getSettings();
-        assertEquals("value", settings.get("key"));
-        assertEquals("value2", settings.get("key2"));
-        assertEquals("value3", settings.get("key3"));
+        assertEquals("value", settings.get("key").get());
+        assertEquals("value2", settings.get("key2").get());
+        assertEquals("value3", settings.get("key3").get());
     }
 }

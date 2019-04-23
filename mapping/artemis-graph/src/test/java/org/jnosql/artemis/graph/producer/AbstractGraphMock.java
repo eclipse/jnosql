@@ -80,6 +80,6 @@ public class AbstractGraphMock implements Graph {
     }
 
     public String get(String key){
-        return Optional.ofNullable(settings.get(key)).map(Object::toString).orElse("");
+        return Optional.ofNullable(settings.get(key).get()).map(Object::toString).orElse("");
     }
 }
