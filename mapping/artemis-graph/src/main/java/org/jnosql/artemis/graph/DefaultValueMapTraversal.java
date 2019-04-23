@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
@@ -34,10 +35,10 @@ import static java.util.stream.Collectors.toList;
 class DefaultValueMapTraversal implements ValueMapTraversal {
 
     private final Supplier<GraphTraversal<?, ?>> supplier;
-    private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Map<String, Object>>> flow;
+    private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Map<Object, Object>>> flow;
 
     DefaultValueMapTraversal(Supplier<GraphTraversal<?, ?>> supplier, Function<GraphTraversal<?, ?>,
-            GraphTraversal<Vertex, Map<String, Object>>> flow) {
+            GraphTraversal<Vertex, Map<Object, Object>>> flow) {
         this.supplier = supplier;
         this.flow = flow;
     }
@@ -45,17 +46,18 @@ class DefaultValueMapTraversal implements ValueMapTraversal {
 
     @Override
     public Stream<Map<String, Object>> stream() {
-        return flow.apply(supplier.get()).toList().stream();
+        return flow.apply(supplier.get()).toList().stream().map(toMap());
     }
+
 
     @Override
     public Stream<Map<String, Object>> next(int limit) {
-        return flow.apply(supplier.get()).next(limit).stream();
+        return flow.apply(supplier.get()).next(limit).stream().map(toMap());
     }
 
     @Override
     public Map<String, Object> next() {
-        return flow.apply(supplier.get()).tryNext().orElse(emptyMap());
+        return flow.apply(supplier.get()).tryNext().map(toMap()).orElse(emptyMap());
     }
 
     @Override
@@ -78,5 +80,12 @@ class DefaultValueMapTraversal implements ValueMapTraversal {
     @Override
     public long count() {
         return flow.apply(supplier.get()).count().tryNext().orElse(0L);
+    }
+
+    private Function<Map<Object, Object>, Map<String, Object>> toMap() {
+        return map -> map
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(k -> k.getKey().toString(), v-> v.getValue()));
     }
 }
