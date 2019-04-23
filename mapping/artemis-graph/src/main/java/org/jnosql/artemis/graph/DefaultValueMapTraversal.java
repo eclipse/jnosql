@@ -35,10 +35,10 @@ import static java.util.stream.Collectors.toList;
 class DefaultValueMapTraversal implements ValueMapTraversal {
 
     private final Supplier<GraphTraversal<?, ?>> supplier;
-    private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Map<?, ?>>> flow;
+    private final Function<GraphTraversal<?, ?>, GraphTraversal<Vertex, Map<Object, Object>>> flow;
 
     DefaultValueMapTraversal(Supplier<GraphTraversal<?, ?>> supplier, Function<GraphTraversal<?, ?>,
-            GraphTraversal<Vertex, Map<?, ?>>> flow) {
+            GraphTraversal<Vertex, Map<Object, Object>>> flow) {
         this.supplier = supplier;
         this.flow = flow;
     }
@@ -86,6 +86,6 @@ class DefaultValueMapTraversal implements ValueMapTraversal {
         return map -> map
                 .entrySet()
                 .stream()
-                .collect(Collectors.toMap(k -> k.getKey().toString(), v-> v.getValue()));
+                .collect(Collectors.toMap(k -> k.getKey().toString(), v -> v.getValue()));
     }
 }
