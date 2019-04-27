@@ -93,7 +93,6 @@ public class DefaultDocumentTemplateTest {
 
     private DocumentEventPersistManager documentEventPersistManager;
 
-    @SuppressWarnings("unchecked")
     @BeforeEach
     public void setUp() {
         managerMock = Mockito.mock(DocumentCollectionManager.class);
@@ -107,7 +106,7 @@ public class DefaultDocumentTemplateTest {
     }
 
     @Test
-    public void shouldSave() {
+    public void shouldInsert() {
         DocumentEntity document = DocumentEntity.of("Person");
         document.addAll(Stream.of(documents).collect(Collectors.toList()));
 
@@ -125,6 +124,28 @@ public class DefaultDocumentTemplateTest {
         assertEquals("Person", value.getName());
         assertEquals(4, value.getDocuments().size());
     }
+
+    @Test
+    public void shouldMergeOnInsert() {
+        DocumentEntity document = DocumentEntity.of("Person");
+        document.addAll(Stream.of(documents).collect(Collectors.toList()));
+
+        when(managerMock
+                .insert(any(DocumentEntity.class)))
+                .thenReturn(document);
+
+        Person person = Person.builder().build();
+        Person result = subject.insert(person);
+        verify(managerMock).insert(captor.capture());
+        verify(documentEventPersistManager).firePostEntity(any(Person.class));
+        verify(documentEventPersistManager).firePreEntity(any(Person.class));
+        verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
+        verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
+        DocumentEntity value = captor.getValue();
+        assertTrue(person == result);
+        assertEquals(10, person.getAge());
+    }
+
 
     @Test
     public void shouldSaveTTL() {
@@ -169,6 +190,29 @@ public class DefaultDocumentTemplateTest {
         assertEquals("Person", value.getName());
         assertEquals(4, value.getDocuments().size());
     }
+
+    @Test
+    public void shouldMergeOnUpdate() {
+        DocumentEntity document = DocumentEntity.of("Person");
+        document.addAll(Stream.of(documents).collect(Collectors.toList()));
+
+        when(managerMock
+                .update(any(DocumentEntity.class)))
+                .thenReturn(document);
+
+        Person person = Person.builder().build();
+        Person result = subject.update(person);
+        verify(managerMock).update(captor.capture());
+        verify(documentEventPersistManager).firePostEntity(any(Person.class));
+        verify(documentEventPersistManager).firePreEntity(any(Person.class));
+        verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
+        verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
+        DocumentEntity value = captor.getValue();
+        assertTrue(person == result);
+        assertEquals(10, person.getAge());
+    }
+
+
 
 
     @Test
