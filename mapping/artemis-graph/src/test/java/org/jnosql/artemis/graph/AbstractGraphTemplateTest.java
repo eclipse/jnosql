@@ -84,6 +84,14 @@ public abstract class AbstractGraphTemplateTest {
         getGraphTemplate().delete(updated.getId());
     }
 
+    @Test
+    public void shouldMergeOnInsert() {
+        Person person = builder().withAge()
+                .withName("Otavio").build();
+        Person updated = getGraphTemplate().insert(person);
+        assertTrue(person == updated);
+    }
+
 
     @Test
     public void shouldGetErrorWhenIdIsNullWhenUpdate() {
@@ -122,6 +130,20 @@ public abstract class AbstractGraphTemplateTest {
         getGraphTemplate().delete(update.getId());
     }
 
+    @Test
+    public void shouldMergeOnUpdate() {
+        Person person = builder().withAge()
+                .withName("Otavio").build();
+        Person updated = getGraphTemplate().insert(person);
+        Person newPerson = builder()
+                .withAge()
+                .withId(updated.getId())
+                .withName("Otavio Updated").build();
+
+        Person update = getGraphTemplate().update(newPerson);
+
+        assertTrue(update == newPerson);
+    }
 
     @Test
     public void shouldReturnErrorInFindWhenIdIsNull() {
