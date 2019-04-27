@@ -88,6 +88,14 @@ public class DefaultKeyValueTemplateTest {
         assertEquals(user, entity.getValue().get());
     }
 
+
+    @Test
+    public void shouldMergeOnPut() {
+        User user = new User(KEY, "otavio", 27);
+        User result = subject.put(user);
+        assertTrue(user == result);
+    }
+
     @Test
     public void shouldPutIterable() {
         User user = new User(KEY, "otavio", 27);
