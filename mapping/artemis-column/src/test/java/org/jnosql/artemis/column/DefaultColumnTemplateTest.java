@@ -200,7 +200,7 @@ public class DefaultColumnTemplateTest {
 
         Person person = Person.builder().build();
         Person result = subject.update(person);
-        verify(managerMock).insert(captor.capture());
+        verify(managerMock).update(captor.capture());
         verify(columnEventPersistManager).firePostEntity(any(Person.class));
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
         verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
