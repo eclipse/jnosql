@@ -190,6 +190,29 @@ public class DefaultColumnTemplateTest {
     }
 
     @Test
+    public void shouldMergeOnUpdate() {
+        ColumnEntity columnEntity = ColumnEntity.of("Person");
+        columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
+
+        Mockito.when(managerMock
+                .update(any(ColumnEntity.class)))
+                .thenReturn(columnEntity);
+
+        Person person = Person.builder().build();
+        Person result = subject.update(person);
+        verify(managerMock).insert(captor.capture());
+        verify(columnEventPersistManager).firePostEntity(any(Person.class));
+        verify(columnEventPersistManager).firePreEntity(any(Person.class));
+        verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
+        verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
+        assertTrue(person == result);
+        assertEquals(10, person.getAge());
+
+    }
+
+
+
+    @Test
     public void shouldInsertEntitiesTTL() {
         ColumnEntity columnEntity = ColumnEntity.of("Person");
         columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
