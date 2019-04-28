@@ -18,7 +18,6 @@ package org.jnosql.diana.api.column.query;
 
 import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.QueryException;
-import org.jnosql.diana.api.column.ColumnCondition;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
