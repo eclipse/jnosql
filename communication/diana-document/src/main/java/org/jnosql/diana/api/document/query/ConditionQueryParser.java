@@ -36,7 +36,8 @@ abstract class ConditionQueryParser {
         DocumentEntity entity = DocumentEntity.of(collection);
 
         if (query.useJSONCondition()) {
-            JSONValue jsonValue = query.getValue().orElseThrow(() -> new QueryException(""));
+            JSONValue jsonValue = query.getValue().orElseThrow(() -> new QueryException("It is an invalid state of" +
+                    " either Update or Insert."));
             List<Document> documents = JsonObjects.getDocuments(jsonValue.get());
             entity.addAll(documents);
             return entity;
