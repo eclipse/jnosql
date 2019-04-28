@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.jnosql.query.Condition;
 import org.jnosql.query.InsertQuery;
 import org.jnosql.query.InsertQuerySupplier;
+import org.jnosql.query.JSONValue;
 import org.jnosql.query.Operator;
 import org.jnosql.query.Value;
 
@@ -37,6 +38,8 @@ public final class AntlrInsertQuerySupplier extends AbstractSupplier implements 
 
     private Duration duration;
 
+    private JSONValue value;
+
     @Override
     Function<QueryParser, ParseTree> getParserTree() {
         return QueryParser::insert;
@@ -50,6 +53,11 @@ public final class AntlrInsertQuerySupplier extends AbstractSupplier implements 
     @Override
     public void exitChanges(QueryParser.ChangesContext ctx) {
         this.conditions = ctx.change().stream().map(this::getCondition).collect(toList());
+    }
+
+    @Override
+    public void enterJson(QueryParser.JsonContext ctx) {
+        this.value = DefaultJSONValue.of(ctx);
     }
 
     private Condition getCondition(QueryParser.ChangeContext changeContext) {
@@ -67,6 +75,6 @@ public final class AntlrInsertQuerySupplier extends AbstractSupplier implements 
     @Override
     public InsertQuery apply(String query) {
         runQuery(query);
-        return new DefaultInsertQuery(entity, duration, conditions);
+        return new DefaultInsertQuery(entity, duration, conditions, value);
     }
 }
