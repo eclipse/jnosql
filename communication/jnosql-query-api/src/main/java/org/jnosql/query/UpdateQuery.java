@@ -13,6 +13,7 @@
 package org.jnosql.query;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Updating an entity is done using an <b>UPDATE</b> statement.
@@ -31,4 +32,13 @@ public interface UpdateQuery extends Query {
      * @return the conditions
      */
     List<Condition> getConditions();
+
+    /**
+     * Returns the value to update when the query uses JSON value instead of Conditions.
+     * In an insert, an operation is not able to use both: {@link UpdateQuery#getConditions()} and
+     * {@link UpdateQuery#getValue()}.
+     * Therefore, execution will use just one operation type.
+     * @return a {@link JSONValue} or {@link Optional#empty()} when it uses {@link UpdateQuery#getConditions()}
+     */
+    Optional<JSONValue> getValue();
 }
