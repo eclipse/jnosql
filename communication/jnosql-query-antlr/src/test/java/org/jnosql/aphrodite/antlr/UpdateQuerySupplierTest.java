@@ -14,6 +14,7 @@ package org.jnosql.aphrodite.antlr;
 import org.jnosql.query.Condition;
 import org.jnosql.query.Function;
 import org.jnosql.query.FunctionValue;
+import org.jnosql.query.InsertQuery;
 import org.jnosql.query.JSONValue;
 import org.jnosql.query.NumberValue;
 import org.jnosql.query.Operator;
@@ -27,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import java.time.LocalDate;
 import java.util.List;
@@ -154,6 +156,40 @@ public class UpdateQuerySupplierTest {
         value = condition.getValue();
         assertTrue(value instanceof StringValue);
         assertEquals("Artemis", StringValue.class.cast(value).get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"update Person {\"name\":\"Ada Lovelace\"}"})
+    public void shouldReturnParserQuery7(String query) {
+        UpdateQuery updateQuery = update.apply(query);
+        assertEquals("Person", updateQuery.getEntity());
+        Assertions.assertTrue(updateQuery.getConditions().isEmpty());
+        Assertions.assertTrue(updateQuery.getValue().isPresent());
+        JSONValue jsonValue = updateQuery.getValue().get();
+        JsonObject jsonObject = jsonValue.get();
+        assertEquals("Ada Lovelace", jsonObject.getString("name"));
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"update Person {\"name\": \"Ada Lovelace\", \"age\": 12, \"sibling\":" +
+            " [\"Ana\" ,\"Maria\"]," +
+            " \"address\":{\"country\": \"United Kingdom\", \"city\": \"London\"}}"})
+    public void shouldReturnParserQuery8(String query) {
+        UpdateQuery updateQuery = update.apply(query);
+        assertEquals("Person", updateQuery.getEntity());
+        Assertions.assertTrue(updateQuery.getConditions().isEmpty());
+        Assertions.assertTrue(updateQuery.getValue().isPresent());
+        JSONValue jsonValue = updateQuery.getValue().get();
+        JsonObject jsonObject = jsonValue.get();
+        JsonArray sibling = jsonObject.getJsonArray("sibling");
+        JsonObject address = jsonObject.getJsonObject("address");
+
+        assertEquals("Ada Lovelace", jsonObject.getString("name"));
+        assertEquals("Ana", sibling.getString(0));
+        assertEquals("Maria", sibling.getString(1));
+        assertEquals("United Kingdom", address.getString("country"));
+        assertEquals("London", address.getString("city"));
     }
 
     private UpdateQuery checkUpdateFromStart(String query) {
