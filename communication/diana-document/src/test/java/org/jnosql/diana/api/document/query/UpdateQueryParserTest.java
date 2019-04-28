@@ -77,7 +77,7 @@ class UpdateQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldReturnParserQuery8(String query) {
+    public void shouldReturnParserQuery2(String query) {
 
         assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
     }
@@ -85,7 +85,7 @@ class UpdateQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update Person {\"name\":\"Ada Lovelace\"}"})
-    public void shouldReturnParserQuery9(String query) {
+    public void shouldReturnParserQuery3(String query) {
 
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
 
@@ -102,7 +102,7 @@ class UpdateQueryParserTest {
     @ValueSource(strings = {"update Person {\"name\": \"Ada Lovelace\", \"age\": 12, \"sibling\":" +
             " [\"Ana\" ,\"Maria\"]," +
             " \"address\":{\"country\": \"United Kingdom\", \"city\": \"London\"}}"})
-    public void shouldReturnParserQuery10(String query) {
+    public void shouldReturnParserQuery4(String query) {
 
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
 
