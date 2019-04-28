@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -208,6 +209,98 @@ public class InsertQuerySupplierTest {
     public void shouldReturnParserQuery12(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
         checkTTL(insertQuery, Duration.ofNanos(10L));
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert God (name = 'Diana') 10 nanosecond"})
+    public void shouldReturnParserQuery13(String query) {
+        InsertQuery insertQuery = checkInsertFromStart(query);
+        checkTTL(insertQuery, Duration.ofNanos(10L));
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"}"})
+    public void shouldReturnParserQuery14(String query) {
+        InsertQuery insertQuery = insertQuerySupplier.apply(query);
+        assertEquals("Person", insertQuery.getEntity());
+        Assertions.assertTrue(insertQuery.getConditions().isEmpty());
+        Assertions.assertTrue(insertQuery.getValue().isPresent());
+        JSONValue jsonValue = insertQuery.getValue().get();
+        JsonObject jsonObject = jsonValue.get();
+        assertEquals("Ada Lovelace", jsonObject.getString("name"));
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"} 10 day"})
+    public void shouldReturnParserQuery15(String query) {
+        Duration duration = Duration.ofDays(10);
+        checkJSONInsertQuery(query, duration);
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"} 10 hour"})
+    public void shouldReturnParserQuery16(String query) {
+        Duration duration = Duration.ofHours(10);
+        checkJSONInsertQuery(query, duration);
+    }
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"} 10 minute"})
+    public void shouldReturnParserQuery17(String query) {
+        Duration duration = Duration.ofMinutes(10);
+        checkJSONInsertQuery(query, duration);
+    }
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"} 10 second"})
+    public void shouldReturnParserQuery18(String query) {
+        Duration duration = Duration.ofSeconds(10);
+        checkJSONInsertQuery(query, duration);
+    }
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"} 10 millisecond"})
+    public void shouldReturnParserQuery19(String query) {
+        Duration duration = Duration.ofMillis(10);
+        checkJSONInsertQuery(query, duration);
+    }
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"} 10 nanosecond"})
+    public void shouldReturnParserQuery20(String query) {
+        Duration duration = Duration.ofNanos(10);
+        checkJSONInsertQuery(query, duration);
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert Person {\"name\": \"Ada Lovelace\", \"age\": 12, \"sibling\":" +
+            " [\"Ana\" ,\"Maria\"]," +
+            " \"address\":{\"country\": \"United Kingdom\", \"city\": \"London\"}}"})
+    public void shouldReturnParserQuery21(String query) {
+        InsertQuery insertQuery = insertQuerySupplier.apply(query);
+        assertEquals("Person", insertQuery.getEntity());
+        Assertions.assertTrue(insertQuery.getConditions().isEmpty());
+        Assertions.assertTrue(insertQuery.getValue().isPresent());
+        JSONValue jsonValue = insertQuery.getValue().get();
+        JsonObject jsonObject = jsonValue.get();
+        JsonArray sibling = jsonObject.getJsonArray("sibling");
+        JsonObject address = jsonObject.getJsonObject("address");
+
+        assertEquals("Ada Lovelace", jsonObject.getString("name"));
+        assertEquals("Ana", sibling.getString(0));
+        assertEquals("Maria", sibling.getString(1));
+        assertEquals("United Kingdom", address.getString("country"));
+        assertEquals("London", address.getString("city"));
+    }
+
+
+    private void checkJSONInsertQuery(String query, Duration duration) {
+        InsertQuery insertQuery = insertQuerySupplier.apply(query);
+        assertEquals("Person", insertQuery.getEntity());
+        Assertions.assertTrue(insertQuery.getConditions().isEmpty());
+        Assertions.assertTrue(insertQuery.getValue().isPresent());
+        JSONValue jsonValue = insertQuery.getValue().get();
+        JsonObject jsonObject = jsonValue.get();
+        assertEquals("Ada Lovelace", jsonObject.getString("name"));
+        assertEquals(duration, insertQuery.getTtl().get());
     }
 
 
