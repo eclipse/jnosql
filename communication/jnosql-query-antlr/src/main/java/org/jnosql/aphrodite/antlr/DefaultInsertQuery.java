@@ -13,6 +13,7 @@ package org.jnosql.aphrodite.antlr;
 
 import org.jnosql.query.Condition;
 import org.jnosql.query.InsertQuery;
+import org.jnosql.query.JSONValue;
 
 import java.time.Duration;
 import java.util.List;
@@ -48,6 +49,11 @@ final class DefaultInsertQuery implements InsertQuery {
     @Override
     public List<Condition> getConditions() {
         return unmodifiableList(conditions);
+    }
+
+    @Override
+    public Optional<JSONValue> getValue() {
+        return Optional.empty();
     }
 
     @Override

@@ -12,11 +12,13 @@
 package org.jnosql.aphrodite.antlr;
 
 import org.jnosql.query.Condition;
+import org.jnosql.query.JSONValue;
 import org.jnosql.query.UpdateQuery;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 final class DefaultUpdateQuery implements UpdateQuery {
 
@@ -37,6 +39,11 @@ final class DefaultUpdateQuery implements UpdateQuery {
     @Override
     public List<Condition> getConditions() {
         return Collections.unmodifiableList(conditions);
+    }
+
+    @Override
+    public Optional<JSONValue> getValue() {
+        return Optional.empty();
     }
 
     @Override
