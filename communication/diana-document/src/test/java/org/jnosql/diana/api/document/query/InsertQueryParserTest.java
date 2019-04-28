@@ -175,6 +175,21 @@ class InsertQueryParserTest {
         assertEquals(Duration.ofNanos(10L), duration);
     }
 
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"}"})
+    public void shouldReturnParserQuery8(String query) {
+
+        ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
+
+        parser.query(query, documentCollection, observer);
+        Mockito.verify(documentCollection).insert(captor.capture());
+        DocumentEntity entity = captor.getValue();
+
+        assertEquals("Person", entity.getName());
+        assertEquals(Document.of("name", "Ada Lovelace"), entity.find("name").get());
+    }
+
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldReturnErrorWhenShouldUsePrepareStatment(String query) {
