@@ -25,8 +25,10 @@ import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 import org.jnosql.diana.api.column.ColumnObserverParser;
 import org.jnosql.diana.api.column.ColumnPreparedStatement;
 import org.jnosql.diana.api.column.ColumnPreparedStatementAsync;
+import org.jnosql.query.Condition;
 import org.jnosql.query.InsertQuery;
 import org.jnosql.query.InsertQuerySupplier;
+import org.jnosql.query.JSONValue;
 
 import java.time.Duration;
 import java.util.List;
@@ -35,7 +37,7 @@ import java.util.function.Consumer;
 
 import static java.util.Collections.singletonList;
 
-final class InsertQueryParser {
+final class InsertQueryParser extends ConditionQueryParser {
 
     private final InsertQuerySupplier supplier;
 
@@ -114,16 +116,26 @@ final class InsertQueryParser {
 
     private ColumnEntity getEntity(InsertQuery insertQuery, String columnFamily, Params params,
                                    ColumnObserverParser observer) {
-        ColumnEntity entity = ColumnEntity.of(columnFamily);
-
-        insertQuery.getConditions()
-                .stream()
-                .map(c -> Conditions.getCondition(c, params, observer, columnFamily))
-                .map(ColumnCondition::getColumn)
-                .forEach(entity::add);
-        return entity;
+        return getEntity(new InsertQueryConditionSupplier(insertQuery), columnFamily, params, observer);
     }
 
 
+    private class InsertQueryConditionSupplier implements ConditionQuerySupplier {
+        private final InsertQuery query;
+
+        private InsertQueryConditionSupplier(InsertQuery query) {
+            this.query = query;
+        }
+
+        @Override
+        public List<Condition> getConditions() {
+            return query.getConditions();
+        }
+
+        @Override
+        public Optional<JSONValue> getValue() {
+            return query.getValue();
+        }
+    }
 
 }
