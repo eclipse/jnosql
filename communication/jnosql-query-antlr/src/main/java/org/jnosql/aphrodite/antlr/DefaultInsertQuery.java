@@ -82,7 +82,8 @@ final class DefaultInsertQuery implements InsertQuery {
     public String toString() {
         if (conditions.isEmpty() && value != null) {
             return "insert " + entity + ' ' + value + ' ' + getTtl().map(Duration::toString).orElse("");
+        } else {
+            return "insert " + entity + " (" + conditions + ") " + getTtl().map(Duration::toString).orElse("");
         }
-        return "insert " + entity + " (" + conditions + ") " + getTtl().map(Duration::toString).orElse("");
     }
 }
