@@ -26,9 +26,12 @@ final class DefaultUpdateQuery implements UpdateQuery {
 
     private final List<Condition> conditions;
 
-    DefaultUpdateQuery(String entity, List<Condition> conditions) {
+    private final JSONValue value;
+
+    DefaultUpdateQuery(String entity, List<Condition> conditions, JSONValue value) {
         this.entity = entity;
         this.conditions = conditions;
+        this.value = value;
     }
 
     @Override
@@ -43,7 +46,7 @@ final class DefaultUpdateQuery implements UpdateQuery {
 
     @Override
     public Optional<JSONValue> getValue() {
-        return Optional.empty();
+        return Optional.ofNullable(value);
     }
 
     @Override
@@ -66,6 +69,10 @@ final class DefaultUpdateQuery implements UpdateQuery {
 
     @Override
     public String toString() {
-        return "update " + entity + " (" + conditions + ") ";
+        if (conditions.isEmpty() && value != null) {
+            return "update " + entity + ' ' + value;
+        } else {
+            return "update " + entity + " (" + conditions + ") ";
+        }
     }
 }
