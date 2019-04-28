@@ -16,8 +16,6 @@
  */
 package org.jnosql.diana.api.document.query;
 
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
@@ -47,8 +45,8 @@ class InsertQueryParserTest {
 
     private InsertQueryParser parser = new InsertQueryParser();
 
-    private DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
-    private DocumentCollectionManagerAsync documentCollectionAsync = Mockito.mock(DocumentCollectionManagerAsync.class);
+    private DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
+    private DocumentCollectionManagerAsync managerAsync = Mockito.mock(DocumentCollectionManagerAsync.class);
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };
 
@@ -57,8 +55,8 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (name = \"Diana\")"})
     public void shouldReturnParserQuery(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        parser.query(query, documentCollection, observer);
-        Mockito.verify(documentCollection).insert(captor.capture());
+        parser.query(query, manager, observer);
+        Mockito.verify(manager).insert(captor.capture());
         DocumentEntity entity = captor.getValue();
 
 
@@ -70,8 +68,8 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (age = 30, name = \"Artemis\")"})
     public void shouldReturnParserQuery1(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        parser.query(query, documentCollection, observer);
-        Mockito.verify(documentCollection).insert(captor.capture());
+        parser.query(query, manager, observer);
+        Mockito.verify(manager).insert(captor.capture());
         DocumentEntity entity = captor.getValue();
 
         assertEquals("God", entity.getName());
@@ -86,8 +84,8 @@ class InsertQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
 
-        parser.query(query, documentCollection, observer);
-        Mockito.verify(documentCollection).insert(captor.capture(), durationCaptor.capture());
+        parser.query(query, manager, observer);
+        Mockito.verify(manager).insert(captor.capture(), durationCaptor.capture());
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
@@ -103,8 +101,8 @@ class InsertQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
 
-        parser.query(query, documentCollection, observer);
-        Mockito.verify(documentCollection).insert(captor.capture(), durationCaptor.capture());
+        parser.query(query, manager, observer);
+        Mockito.verify(manager).insert(captor.capture(), durationCaptor.capture());
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
@@ -120,8 +118,8 @@ class InsertQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
 
-        parser.query(query, documentCollection, observer);
-        Mockito.verify(documentCollection).insert(captor.capture(), durationCaptor.capture());
+        parser.query(query, manager, observer);
+        Mockito.verify(manager).insert(captor.capture(), durationCaptor.capture());
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
@@ -137,8 +135,8 @@ class InsertQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
 
-        parser.query(query, documentCollection, observer);
-        Mockito.verify(documentCollection).insert(captor.capture(), durationCaptor.capture());
+        parser.query(query, manager, observer);
+        Mockito.verify(manager).insert(captor.capture(), durationCaptor.capture());
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
@@ -155,8 +153,8 @@ class InsertQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
 
-        parser.query(query, documentCollection, observer);
-        Mockito.verify(documentCollection).insert(captor.capture(), durationCaptor.capture());
+        parser.query(query, manager, observer);
+        Mockito.verify(manager).insert(captor.capture(), durationCaptor.capture());
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
@@ -172,8 +170,8 @@ class InsertQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
 
-        parser.query(query, documentCollection, observer);
-        Mockito.verify(documentCollection).insert(captor.capture(), durationCaptor.capture());
+        parser.query(query, manager, observer);
+        Mockito.verify(manager).insert(captor.capture(), durationCaptor.capture());
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
@@ -189,8 +187,8 @@ class InsertQueryParserTest {
 
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
 
-        parser.query(query, documentCollection, observer);
-        Mockito.verify(documentCollection).insert(captor.capture());
+        parser.query(query, manager, observer);
+        Mockito.verify(manager).insert(captor.capture());
         DocumentEntity entity = captor.getValue();
 
         assertEquals("Person", entity.getName());
@@ -203,8 +201,8 @@ class InsertQueryParserTest {
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
 
-        parser.query(query, documentCollection, observer);
-        Mockito.verify(documentCollection).insert(captor.capture(), durationCaptor.capture());
+        parser.query(query, manager, observer);
+        Mockito.verify(manager).insert(captor.capture(), durationCaptor.capture());
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
@@ -221,8 +219,8 @@ class InsertQueryParserTest {
 
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
 
-        parser.query(query, documentCollection, observer);
-        Mockito.verify(documentCollection).insert(captor.capture());
+        parser.query(query, manager, observer);
+        Mockito.verify(manager).insert(captor.capture());
         DocumentEntity entity = captor.getValue();
         List<String> siblings = entity.find("sibling").get().get(new TypeReference<List<String>>() {
         });
@@ -241,7 +239,7 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldReturnErrorWhenShouldUsePrepareStatement(String query) {
 
-        assertThrows(QueryException.class, () -> parser.query(query, documentCollection, observer));
+        assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
     }
 
 
@@ -249,7 +247,7 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
-        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
+        DocumentPreparedStatement prepare = parser.prepare(query, manager, observer);
         assertThrows(QueryException.class, prepare::getResultList);
     }
 
@@ -258,10 +256,10 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldExecutePrepareStatment(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
+        DocumentPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("name", "Diana");
         prepare.getResultList();
-        Mockito.verify(documentCollection).insert(captor.capture());
+        Mockito.verify(manager).insert(captor.capture());
         DocumentEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
@@ -272,7 +270,7 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldReturnErrorWhenShouldUsePrepareStatmentAsync(String query) {
 
-        assertThrows(QueryException.class, () -> parser.queryAsync(query, documentCollectionAsync, s->{}, observer));
+        assertThrows(QueryException.class, () -> parser.queryAsync(query, managerAsync, s->{}, observer));
     }
 
 
@@ -280,7 +278,7 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQueryAsync(String query) {
 
-        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
+        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
         assertThrows(QueryException.class, () -> prepare.getResultList(s ->{}));
     }
 
@@ -289,12 +287,12 @@ class InsertQueryParserTest {
     @ValueSource(strings = {"insert God (name = @name)"})
     public void shouldExecutePrepareStatmentAsync(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
+        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
         prepare.bind("name", "Diana");
         Consumer<List<DocumentEntity>> callBack = s -> {
         };
         prepare.getResultList(callBack);
-        Mockito.verify(documentCollectionAsync).insert(captor.capture(), Mockito.any(Consumer.class));
+        Mockito.verify(managerAsync).insert(captor.capture(), Mockito.any(Consumer.class));
         DocumentEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
