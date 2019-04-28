@@ -73,11 +73,14 @@ Inserting data for an entity is done using an INSERT statement:
 
 [source,sql]
 ----
-insert_statement ::=  INSERT entity_name (name = value, (`,` name = value) *) [ TTL ]
+insert_statement ::=  INSERT entity_name (name = value, (`,` name = value) *) || JSON [ TTL ]
 //sample
 insert God (name = "Diana", age = 10)
 insert God (name = "Diana", age = 10, power = {"sun", "god"})
 insert God (name = "Diana", age = 10, power = {"sun", "god"}) 1 day
+insert God {"name": "Diana", "age": 10, "power": ["hunt", "moon"]}
+insert God {"name": "Diana", "age": 10, "power": ["hunt", "moon"]} 1 day
+
 ----
 
 ====== Update
@@ -86,10 +89,11 @@ Updating an entity is done using an update statement:
 
 [source,sql]
 ----
-update_statement ::=  UPDATE entity_name (name = value, (`,` name = value) *)
+update_statement ::=  UPDATE entity_name (name = value, (`,` name = value) *) || JSON
  //sample
 update God (name = "Diana", age = 10)
 update God (name = "Diana", age = 10, power = {"hunt", "moon"})
+update God {"name": "Diana", "age": 10, "power": ["hunt", "moon"]}
 ----
 
 ====== Delete
