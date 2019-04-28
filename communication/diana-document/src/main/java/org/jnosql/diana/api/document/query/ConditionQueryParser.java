@@ -27,6 +27,9 @@ import org.jnosql.query.JSONValue;
 import java.util.List;
 
 
+/**
+ * A template class to Update and Insert query parser to extract the condition
+ */
 abstract class ConditionQueryParser {
 
     protected DocumentEntity getEntity(ConditionQuerySupplier query, String collection, Params params, DocumentObserverParser observer) {
