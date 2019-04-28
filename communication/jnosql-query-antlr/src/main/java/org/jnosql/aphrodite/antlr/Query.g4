@@ -1,14 +1,15 @@
 grammar Query;
 select: 'select' fields 'from' entity where? skip? limit? order? EOF;
 delete: 'delete' deleteFields? 'from' entity where? EOF;
-insert: 'insert' entity '(' changes ')' ttl? EOF;
-update: 'update' entity '(' changes ')' EOF;
+insert: 'insert' entity conditions ttl? EOF;
+update: 'update' entity conditions EOF;
 get: 'get' keys EOF;
 remove: 'remove' keys EOF;
 put: 'put' '{' key ',' value (',' ttl)?  '}' EOF;
 
 fields: star | name (',' name)*;
 deleteFields: name (',' name)*;
+conditions: '(' changes ')';
 star: '*';
 skip: 'skip' INT;
 limit: 'limit' INT;
