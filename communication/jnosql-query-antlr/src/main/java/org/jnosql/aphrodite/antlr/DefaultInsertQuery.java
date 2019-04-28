@@ -30,10 +30,13 @@ final class DefaultInsertQuery implements InsertQuery {
 
     private final List<Condition> conditions;
 
-    DefaultInsertQuery(String entity, Duration duration, List<Condition> conditions) {
+    private final JSONValue value;
+
+    DefaultInsertQuery(String entity, Duration duration, List<Condition> conditions, JSONValue value) {
         this.entity = entity;
         this.duration = duration;
         this.conditions = conditions;
+        this.value = value;
     }
 
     @Override
@@ -53,7 +56,7 @@ final class DefaultInsertQuery implements InsertQuery {
 
     @Override
     public Optional<JSONValue> getValue() {
-        return Optional.empty();
+        return Optional.ofNullable(value);
     }
 
     @Override
@@ -77,6 +80,9 @@ final class DefaultInsertQuery implements InsertQuery {
 
     @Override
     public String toString() {
-        return "update " + entity + " (" + conditions + ") " + getTtl().map(Duration::toString).orElse("");
+        if (conditions.isEmpty() && value != null) {
+            return "insert " + entity + ' ' + value + ' ' + getTtl().map(Duration::toString).orElse("");
+        }
+        return "insert " + entity + " (" + conditions + ") " + getTtl().map(Duration::toString).orElse("");
     }
 }
