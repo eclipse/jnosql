@@ -177,7 +177,7 @@ class InsertQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = @name)"})
-    public void shouldReturnErrorWhenShouldUsePrepareStatment(String query) {
+    public void shouldReturnErrorWhenShouldUsePrepareStatement(String query) {
 
         assertThrows(QueryException.class, () -> parser.query(query, manager, observer));
     }
