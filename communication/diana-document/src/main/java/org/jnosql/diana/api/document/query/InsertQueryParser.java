@@ -109,14 +109,14 @@ final class InsertQueryParser extends ConditionQueryParser {
     }
 
     private DocumentEntity getEntity(InsertQuery insertQuery, String collection, Params params, DocumentObserverParser observer) {
-        return getEntity(new InsertQueryConditioinSupplier(insertQuery), collection, params, observer);
+        return getEntity(new InsertQueryConditionSupplier(insertQuery), collection, params, observer);
     }
 
 
-    private class InsertQueryConditioinSupplier implements ConditionQuerySupplier {
+    private class InsertQueryConditionSupplier implements ConditionQuerySupplier {
         private final InsertQuery query;
 
-        private InsertQueryConditioinSupplier(InsertQuery query) {
+        private InsertQueryConditionSupplier(InsertQuery query) {
             this.query = query;
         }
 
