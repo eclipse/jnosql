@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.api.document.query;
 
+import org.jnosql.diana.api.TypeReference;
 import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
@@ -29,9 +30,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -75,6 +81,46 @@ class UpdateQueryParserTest {
     public void shouldReturnParserQuery8(String query) {
 
         assertThrows(QueryException.class, () -> parser.query(query, documentCollection, observer));
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"update Person {\"name\":\"Ada Lovelace\"}"})
+    public void shouldReturnParserQuery9(String query) {
+
+        ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
+
+        parser.query(query, documentCollection, observer);
+        Mockito.verify(documentCollection).update(captor.capture());
+        DocumentEntity entity = captor.getValue();
+
+        assertEquals("Person", entity.getName());
+        assertEquals(Document.of("name", "Ada Lovelace"), entity.find("name").get());
+    }
+
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"update Person {\"name\": \"Ada Lovelace\", \"age\": 12, \"sibling\":" +
+            " [\"Ana\" ,\"Maria\"]," +
+            " \"address\":{\"country\": \"United Kingdom\", \"city\": \"London\"}}"})
+    public void shouldReturnParserQuery10(String query) {
+
+        ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
+
+        parser.query(query, documentCollection, observer);
+        Mockito.verify(documentCollection).update(captor.capture());
+        DocumentEntity entity = captor.getValue();
+        List<String> siblings = entity.find("sibling").get().get(new TypeReference<List<String>>() {
+        });
+        List<Document> address = entity.find("address").get().get(new TypeReference<List<Document>>() {
+        });
+        assertEquals("Person", entity.getName());
+        assertEquals(Document.of("name", "Ada Lovelace"), entity.find("name").get());
+        assertEquals(Document.of("age", BigDecimal.valueOf(12)), entity.find("age").get());
+        assertThat(siblings, contains("Ana", "Maria"));
+        assertThat(address, containsInAnyOrder(
+                Document.of("country", "United Kingdom"),
+                Document.of("city", "London")));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
