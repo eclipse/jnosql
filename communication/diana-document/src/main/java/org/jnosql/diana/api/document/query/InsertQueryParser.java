@@ -17,6 +17,7 @@
 package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.Params;
+import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
@@ -27,6 +28,7 @@ import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.query.InsertQuery;
 import org.jnosql.query.InsertQuerySupplier;
 import org.jnosql.diana.api.QueryException;
+import org.jnosql.query.JSONValue;
 
 import java.time.Duration;
 import java.util.List;
@@ -110,6 +112,13 @@ final class InsertQueryParser {
     private DocumentEntity getEntity(InsertQuery insertQuery, String collection, Params params, DocumentObserverParser observer) {
         DocumentEntity entity = DocumentEntity.of(collection);
 
+        if (insertQuery.getConditions().isEmpty() && insertQuery.getValue().isPresent()) {
+            JSONValue jsonValue = insertQuery.getValue().orElseThrow(() -> new QueryException(""));
+            List<Document> documents = JsonObjects.getDocuments(jsonValue.get());
+            entity.addAll(documents);
+            return entity;
+        }
+
         insertQuery.getConditions()
                 .stream()
                 .map(c -> Conditions.getCondition(c, params, observer, collection))
@@ -117,7 +126,6 @@ final class InsertQueryParser {
                 .forEach(entity::add);
         return entity;
     }
-
 
 
 }
