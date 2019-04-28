@@ -18,6 +18,7 @@ package org.jnosql.diana.api.document.query;
 
 import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.QueryException;
+import org.jnosql.diana.api.document.Document;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.api.document.DocumentCondition;
@@ -25,6 +26,7 @@ import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
+import org.jnosql.query.JSONValue;
 import org.jnosql.query.UpdateQuery;
 import org.jnosql.query.UpdateQuerySupplier;
 
@@ -94,6 +96,12 @@ final class UpdateQueryParser {
         String collection = observer.fireEntity(updateQuery.getEntity());
 
         DocumentEntity entity = DocumentEntity.of(collection);
+        if (updateQuery.getConditions().isEmpty() && updateQuery.getValue().isPresent()) {
+            JSONValue jsonValue = updateQuery.getValue().orElseThrow(() -> new QueryException(""));
+            List<Document> documents = JsonObjects.getDocuments(jsonValue.get());
+            entity.addAll(documents);
+            return entity;
+        }
 
         updateQuery.getConditions()
                 .stream()
