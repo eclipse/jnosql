@@ -9,3 +9,7 @@ insert Person {"apollo": "brother", "zeus": "father"
 insert Person {"apollo": , "zeus" "father"}
 insert Person {"apollo" "brother", "zeus": "father"}
 insert Person "apollo", "brother", "zeus": "father"}
+insert Person (sibling = {"Ana" ,"Maria"}) {"Ana" ,"Maria"}
+insert Person (sibling = {"Ana" "Maria"}) {"Ana" ,"Maria"}
+insert Person (sibling = {"Ana" ,"Maria"}) {"Ana" ,"Maria"}
+insert Person (sibling = {"Ana" "Maria"}) {"Ana" ,"Maria"
