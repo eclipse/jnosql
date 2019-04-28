@@ -123,7 +123,7 @@ class DefaultDocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldExecutePrepareStatment(String query) {
+    public void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
@@ -140,7 +140,7 @@ class DefaultDocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = @name)"})
-    public void shouldExecutePrepareStatment1(String query) {
+    public void shouldExecutePrepareStatement1(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");
@@ -154,7 +154,7 @@ class DefaultDocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldExecutePrepareStatment2(String query) {
+    public void shouldExecutePrepareStatement2(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
@@ -172,7 +172,7 @@ class DefaultDocumentQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldExecutePrepareStatment3(String query) {
+    public void shouldExecutePrepareStatement3(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");

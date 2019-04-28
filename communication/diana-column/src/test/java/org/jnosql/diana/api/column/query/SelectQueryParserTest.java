@@ -504,7 +504,7 @@ public class SelectQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldExecutePrepareStatment(String query) {
+    public void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
@@ -542,7 +542,7 @@ public class SelectQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldExecutePrepareStatmentAsync(String query) {
+    public void shouldExecutePrepareStatementAsync(String query) {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
         ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);

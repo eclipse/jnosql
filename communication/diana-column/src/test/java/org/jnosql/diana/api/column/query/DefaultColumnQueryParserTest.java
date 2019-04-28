@@ -122,7 +122,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldExecutePrepareStatment(String query) {
+    public void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
@@ -139,7 +139,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (name = @name)"})
-    public void shouldExecutePrepareStatment1(String query) {
+    public void shouldExecutePrepareStatement1(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("name", "Diana");
@@ -153,7 +153,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldExecutePrepareStatment2(String query) {
+    public void shouldExecutePrepareStatement2(String query) {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
@@ -171,7 +171,7 @@ public class DefaultColumnQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldExecutePrepareStatment3(String query) {
+    public void shouldExecutePrepareStatement3(String query) {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("name", "Diana");

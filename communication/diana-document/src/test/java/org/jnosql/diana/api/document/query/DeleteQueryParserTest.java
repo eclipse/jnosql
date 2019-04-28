@@ -397,7 +397,7 @@ class DeleteQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldExecutePrepareStatment(String query) {
+    public void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
@@ -430,7 +430,7 @@ class DeleteQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldExecutePrepareStatmentAsync(String query) {
+    public void shouldExecutePrepareStatementAsync(String query) {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
 
         DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);

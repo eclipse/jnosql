@@ -133,7 +133,7 @@ class UpdateQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldExecutePrepareStatment(String query) {
+    public void shouldExecutePrepareStatement(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("name", "Diana");
@@ -147,7 +147,7 @@ class UpdateQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldReturnErrorWhenShouldUsePrepareStatmentAsync(String query) {
+    public void shouldReturnErrorWhenShouldUsePrepareStatementAsync(String query) {
 
         assertThrows(QueryException.class, () -> parser.queryAsync(query, managerAsync, s->{}, observer));
     }
@@ -164,7 +164,7 @@ class UpdateQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldExecutePrepareStatmentAsync(String query) {
+    public void shouldExecutePrepareStatementAsync(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
         prepare.bind("name", "Diana");
