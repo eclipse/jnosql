@@ -13,6 +13,7 @@ package org.jnosql.aphrodite.antlr;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.jnosql.query.Condition;
+import org.jnosql.query.JSONValue;
 import org.jnosql.query.Operator;
 import org.jnosql.query.UpdateQuery;
 import org.jnosql.query.UpdateQuerySupplier;
@@ -33,6 +34,8 @@ public final class AntlrUpdateQuerySupplier extends AbstractSupplier implements 
 
     private List<Condition> conditions = Collections.emptyList();
 
+    private JSONValue value;
+
     @Override
     Function<QueryParser, ParseTree> getParserTree() {
         return QueryParser::update;
@@ -48,6 +51,11 @@ public final class AntlrUpdateQuerySupplier extends AbstractSupplier implements 
         this.conditions = ctx.change().stream().map(this::getCondition).collect(toList());
     }
 
+    @Override
+    public void enterJson(QueryParser.JsonContext ctx) {
+        this.value = DefaultJSONValue.of(ctx);
+    }
+
     private Condition getCondition(QueryParser.ChangeContext changeContext) {
         String name = changeContext.name().getText();
         Value<?> value = ValueConverter.get(changeContext.value());
@@ -58,6 +66,6 @@ public final class AntlrUpdateQuerySupplier extends AbstractSupplier implements 
     @Override
     public UpdateQuery apply(String query) {
         runQuery(query);
-        return new DefaultUpdateQuery(entity, conditions);
+        return new DefaultUpdateQuery(entity, conditions, value);
     }
 }

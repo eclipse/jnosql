@@ -13,6 +13,7 @@ package org.jnosql.aphrodite.antlr;
 
 import org.jnosql.query.Condition;
 import org.jnosql.query.InsertQuery;
+import org.jnosql.query.JSONValue;
 
 import java.time.Duration;
 import java.util.List;
@@ -29,10 +30,13 @@ final class DefaultInsertQuery implements InsertQuery {
 
     private final List<Condition> conditions;
 
-    DefaultInsertQuery(String entity, Duration duration, List<Condition> conditions) {
+    private final JSONValue value;
+
+    DefaultInsertQuery(String entity, Duration duration, List<Condition> conditions, JSONValue value) {
         this.entity = entity;
         this.duration = duration;
         this.conditions = conditions;
+        this.value = value;
     }
 
     @Override
@@ -48,6 +52,11 @@ final class DefaultInsertQuery implements InsertQuery {
     @Override
     public List<Condition> getConditions() {
         return unmodifiableList(conditions);
+    }
+
+    @Override
+    public Optional<JSONValue> getValue() {
+        return Optional.ofNullable(value);
     }
 
     @Override
@@ -71,6 +80,10 @@ final class DefaultInsertQuery implements InsertQuery {
 
     @Override
     public String toString() {
-        return "update " + entity + " (" + conditions + ") " + getTtl().map(Duration::toString).orElse("");
+        if (conditions.isEmpty() && value != null) {
+            return "insert " + entity + ' ' + value + ' ' + getTtl().map(Duration::toString).orElse("");
+        } else {
+            return "insert " + entity + " (" + conditions + ") " + getTtl().map(Duration::toString).orElse("");
+        }
     }
 }

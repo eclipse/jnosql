@@ -85,7 +85,7 @@ class DefaultKeyValueQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"remove @id"})
-    public void shouldExecutePrepareStatment(String query) {
+    public void shouldExecutePrepareStatement(String query) {
 
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
@@ -103,7 +103,7 @@ class DefaultKeyValueQueryParserTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {\"Diana\", @value}"})
-    public void shouldExecutePrepareStatment1(String query) {
+    public void shouldExecutePrepareStatement1(String query) {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("value", "Hunt");
         prepare.getResultList();

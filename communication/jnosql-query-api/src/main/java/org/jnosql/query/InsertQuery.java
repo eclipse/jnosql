@@ -39,4 +39,14 @@ public interface InsertQuery extends Query {
      * @return the conditions
      */
     List<Condition> getConditions();
+
+
+    /**
+     * Returns the value to insert when the query uses JSON value instead of Conditions.
+     * In an insert, an operation is not able to use both: {@link InsertQuery#getConditions()} and
+     * {@link InsertQuery#getValue()}.
+     * Therefore, execution will use just one operation type.
+     * @return a {@link JSONValue} or {@link Optional#empty()} when it uses {@link InsertQuery#getConditions()}
+     */
+    Optional<JSONValue> getValue();
 }

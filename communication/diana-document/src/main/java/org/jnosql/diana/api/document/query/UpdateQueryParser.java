@@ -20,20 +20,22 @@ import org.jnosql.diana.api.Params;
 import org.jnosql.diana.api.QueryException;
 import org.jnosql.diana.api.document.DocumentCollectionManager;
 import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.api.document.DocumentCondition;
 import org.jnosql.diana.api.document.DocumentEntity;
 import org.jnosql.diana.api.document.DocumentObserverParser;
 import org.jnosql.diana.api.document.DocumentPreparedStatement;
 import org.jnosql.diana.api.document.DocumentPreparedStatementAsync;
+import org.jnosql.query.Condition;
+import org.jnosql.query.JSONValue;
 import org.jnosql.query.UpdateQuery;
 import org.jnosql.query.UpdateQuerySupplier;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import static java.util.Collections.singletonList;
 
-final class UpdateQueryParser {
+final class UpdateQueryParser extends ConditionQueryParser {
 
     private final UpdateQuerySupplier supplier;
 
@@ -92,15 +94,25 @@ final class UpdateQueryParser {
 
     private DocumentEntity getEntity(Params params, UpdateQuery updateQuery, DocumentObserverParser observer) {
         String collection = observer.fireEntity(updateQuery.getEntity());
+        return getEntity(new UpdasteQueryConditioinSupplier(updateQuery), collection, params, observer);
+    }
 
-        DocumentEntity entity = DocumentEntity.of(collection);
+    private class UpdasteQueryConditioinSupplier implements ConditionQuerySupplier {
+        private final UpdateQuery query;
 
-        updateQuery.getConditions()
-                .stream()
-                .map(c -> Conditions.getCondition(c, params, observer, collection))
-                .map(DocumentCondition::getDocument)
-                .forEach(entity::add);
-        return entity;
+        private UpdasteQueryConditioinSupplier(UpdateQuery query) {
+            this.query = query;
+        }
+
+        @Override
+        public List<Condition> getConditions() {
+            return query.getConditions();
+        }
+
+        @Override
+        public Optional<JSONValue> getValue() {
+            return query.getValue();
+        }
     }
 
 }

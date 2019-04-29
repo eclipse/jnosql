@@ -17,23 +17,25 @@
 package org.jnosql.diana.api.column.query;
 
 import org.jnosql.diana.api.Params;
-import org.jnosql.diana.api.column.ColumnCondition;
+import org.jnosql.diana.api.QueryException;
 import org.jnosql.diana.api.column.ColumnEntity;
 import org.jnosql.diana.api.column.ColumnFamilyManager;
 import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
 import org.jnosql.diana.api.column.ColumnObserverParser;
 import org.jnosql.diana.api.column.ColumnPreparedStatement;
 import org.jnosql.diana.api.column.ColumnPreparedStatementAsync;
-import org.jnosql.diana.api.QueryException;
+import org.jnosql.query.Condition;
+import org.jnosql.query.JSONValue;
 import org.jnosql.query.UpdateQuery;
 import org.jnosql.query.UpdateQuerySupplier;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import static java.util.Collections.singletonList;
 
-final class UpdateQueryParser {
+final class UpdateQueryParser extends ConditionQueryParser {
 
     private final UpdateQuerySupplier supplier;
 
@@ -94,14 +96,25 @@ final class UpdateQueryParser {
     private ColumnEntity getEntity(Params params, UpdateQuery updateQuery, ColumnObserverParser observer) {
         String columnFamily = observer.fireEntity(updateQuery.getEntity());
 
-        ColumnEntity entity = ColumnEntity.of(columnFamily);
+        return getEntity(new UpdateQueryConditionSupplier(updateQuery), columnFamily, params, observer);
+    }
 
-        updateQuery.getConditions()
-                .stream()
-                .map(c -> Conditions.getCondition(c, params, observer, columnFamily))
-                .map(ColumnCondition::getColumn)
-                .forEach(entity::add);
-        return entity;
+    private class UpdateQueryConditionSupplier implements ConditionQuerySupplier {
+        private final UpdateQuery query;
+
+        private UpdateQueryConditionSupplier(UpdateQuery query) {
+            this.query = query;
+        }
+
+        @Override
+        public List<Condition> getConditions() {
+            return query.getConditions();
+        }
+
+        @Override
+        public Optional<JSONValue> getValue() {
+            return query.getValue();
+        }
     }
 
 }

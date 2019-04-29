@@ -1,3 +1,9 @@
 update Person (name = "Ada Lovelace"
 update Person (birthday = convert("1988-03-21", java.time.LocalDate)
 update Person (birthday = convert("1988-03-21" java.time.LocalDate), age = 12)
+update Person {"apollo" "brother", "zeus": "father"}
+update Person "apollo", "brother", "zeus": "father"}
+update Person (sibling = {"Ana" ,"Maria"}) {"Ana" ,"Maria"}
+update Person (sibling = {"Ana" "Maria"}) {"Ana" ,"Maria"}
+update Person (sibling = {"Ana" ,"Maria"}) {"Ana" ,"Maria"}
+update Person (sibling = {"Ana" "Maria"}) {"Ana" ,"Maria"
