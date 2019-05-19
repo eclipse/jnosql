@@ -62,3 +62,7 @@ Base: An Acid Alternative:: https://queue.acm.org/detail.cfm?id=1394128
 Understanding the CAP Theorem:: https://dzone.com/articles/understanding-the-cap-theorem
 Wikipedia CAP theorem:: https://en.wikipedia.org/wiki/CAP_theorem
 List of NoSQL databases:: http://nosql-database.org/
+Data access object Wiki:: https://en.wikipedia.org/wiki/Data_access_object
+CAP Theorem and Distributed Database Management Systems:: https://towardsdatascience.com/cap-theorem-and-distributed-database-management-systems-5c2be977950e
+Oracle Java EE 9 NoSQL view:: https://javaee.github.io/javaee-spec/download/JavaEE9.pdf
+
