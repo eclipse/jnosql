@@ -25,43 +25,6 @@
     <artifactId>artemis-column</artifactId>
     <packaging>jar</packaging>
 
-    <name>${project.groupId}:${project.artifactId}</name>
-    <description>Eclipse JNoSQL Mapping, Artemis API, to column NoSQL databases</description>
-    <url>http://jnosql.org/</url>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-        <license>
-            <name>The Eclipse Public License v1.0</name>
-            <url>http://www.eclipse.org/legal/epl-v10.html</url>
-        </license>
-    </licenses>
-
-
-    <scm>
-        <connection>scm:git:git://github.com/eclipse/jnosql.git</connection>
-        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql.git</developerConnection>
-        <url>https://github.com/eclipse/jnosql-artemis</url>
-    </scm>
-
-    <developers>
-        <developer>
-            <name>Otavio Santana</name>
-            <email>otaviojava@apache.org</email>
-            <organization>SouJava</organization>
-            <organizationUrl>https://about.me/otaviojava</organizationUrl>
-        </developer>
-        <developer>
-            <name>JNoSQL Developers</name>
-            <email>jnosql-dev@eclipse.org</email>
-            <organization>Eclipse JNoSQL</organization>
-            <organizationUrl>https://dev.eclipse.org/mailman/listinfo/jnosql-dev</organizationUrl>
-        </developer>
-    </developers>
-
     <dependencies>
         <dependency>
             <groupId>org.jnosql.diana</groupId>
