@@ -21,51 +21,6 @@
     </parent>
 
     <artifactId>jnosql-query-api</artifactId>
-    <name>Eclipse JNoSQL Query API</name>
-    <description>A query project to Eclipse JNoSQL</description>
-    <url>http://jnosql.org/</url>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-        <license>
-            <name>The Eclipse Public License v1.0</name>
-            <url>http://www.eclipse.org/legal/epl-v10.html</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>Otavio Santana</name>
-            <email>otaviojava@apache.org</email>
-            <organization>SouJava</organization>
-            <organizationUrl>https://about.me/otaviojava</organizationUrl>
-        </developer>
-        <developer>
-            <name>JNoSQL Developers</name>
-            <email>jnosql-dev@eclipse.org</email>
-            <organization>Eclipse JNoSQL</organization>
-            <organizationUrl>https://dev.eclipse.org/mailman/listinfo/jnosql-dev</organizationUrl>
-        </developer>
-    </developers>
-
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
         <dependency>
