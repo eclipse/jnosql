@@ -40,13 +40,13 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.jnosql.artemis</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>artemis-core</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.jnosql.artemis</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>artemis-column</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
@@ -58,7 +58,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jnosql.artemis</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>artemis-key-value</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>

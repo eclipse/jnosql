@@ -32,12 +32,12 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jnosql.artemis</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>artemis-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jnosql.artemis</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>artemis-configuration</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
