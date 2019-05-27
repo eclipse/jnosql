@@ -56,7 +56,7 @@ class ConfigurableReaderYAML implements ConfigurableReader {
             configurables.add(getConfigurable(configuration));
         }
         cache.put(annotation.fileName(), configurables);
-        return Collections.emptyList();
+        return configurables;
     }
 
     private Configurable getConfigurable(Map<String, Object> configuration) {
