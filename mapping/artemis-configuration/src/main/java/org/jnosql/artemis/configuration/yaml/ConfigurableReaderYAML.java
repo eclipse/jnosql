@@ -18,21 +18,20 @@ import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.configuration.Configurable;
 import org.jnosql.artemis.configuration.ConfigurableReader;
 import org.jnosql.artemis.configuration.ConfigurationException;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
-import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
-import static java.util.Optional.ofNullable;
 
 @Named("yaml")
 @ApplicationScoped
@@ -48,14 +47,11 @@ class ConfigurableReaderYAML implements ConfigurableReader {
             LOGGER.info("Loading the configuration file from the cache file: " + annotation.fileName());
             return configurations;
         }
-        try {
-            final ConfigurablesYAML yaml = mapper.readValue(stream.get(), ConfigurablesYAML.class);
-            List<Configurable> configurables = new ArrayList<>(ofNullable(yaml.getConfigurations()).orElse(emptyList()));
-            cache.put(annotation.fileName(), configurables);
-            return configurables;
-        } catch (IOException exception) {
-            throw new ConfigurationException("An error when read the YAML file: " + annotation.fileName()
-                    , exception);
-        }
+        Yaml yaml = new Yaml();
+        Map<String, Object> config = yaml.load(stream.get());
+//            final ConfigurablesYAML yaml = mapper.readValue(stream.get(), ConfigurablesYAML.class);
+//            List<Configurable> configurables = new ArrayList<>(ofNullable(yaml.getConfigurations()).orElse(emptyList()));
+//            cache.put(annotation.fileName(), configurables);
+        return Collections.emptyList();
     }
 }
