@@ -17,16 +17,17 @@ package org.jnosql.artemis.configuration.yaml;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.configuration.Configurable;
 import org.jnosql.artemis.configuration.ConfigurableReader;
-import org.jnosql.artemis.configuration.ConfigurationException;
+import org.jnosql.artemis.configuration.DefaultConfigurable;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
@@ -49,9 +50,26 @@ class ConfigurableReaderYAML implements ConfigurableReader {
         }
         Yaml yaml = new Yaml();
         Map<String, Object> config = yaml.load(stream.get());
-//            final ConfigurablesYAML yaml = mapper.readValue(stream.get(), ConfigurablesYAML.class);
-//            List<Configurable> configurables = new ArrayList<>(ofNullable(yaml.getConfigurations()).orElse(emptyList()));
-//            cache.put(annotation.fileName(), configurables);
+        List<Map<String, Object>> yamlConfigurations = (List<Map<String, Object>>) config.get("configurations");
+        List<Configurable> configurables = new ArrayList<>();
+        for (Map<String, Object> configuration : yamlConfigurations) {
+            configurables.add(getConfigurable(configuration));
+        }
+        cache.put(annotation.fileName(), configurables);
         return Collections.emptyList();
+    }
+
+    private Configurable getConfigurable(Map<String, Object> configuration) {
+        DefaultConfigurable configurable = new DefaultConfigurable();
+        configurable.setDescription(getValue(configuration, "description"));
+        configurable.setName(getValue(configuration, "name"));
+        configurable.setProvider(getValue(configuration, "provider"));
+        configurable.setSettings((Map<String, String>) configuration.get("settings"));
+        return configurable;
+    }
+
+    private String getValue(Map<String, Object> configuration, String key) {
+        return Optional.ofNullable(configuration.get(key))
+                .map(Object::toString).orElse(null);
     }
 }
