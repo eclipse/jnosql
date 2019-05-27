@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.configuration.xml;
 
-import org.jnosql.artemis.configuration.ConfigurableImpl;
+import org.jnosql.artemis.configuration.DefaultConfigurable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -27,13 +27,13 @@ import java.util.List;
 class ConfigurablesXML {
 
     @XmlElement(name = "configuration")
-    private List<ConfigurableImpl> configurations;
+    private List<DefaultConfigurable> configurations;
 
-    public List<ConfigurableImpl> getConfigurations() {
+    public List<DefaultConfigurable> getConfigurations() {
         return configurations;
     }
 
-    public void setConfigurations(List<ConfigurableImpl> configurations) {
+    public void setConfigurations(List<DefaultConfigurable> configurations) {
         this.configurations = configurations;
     }
 }

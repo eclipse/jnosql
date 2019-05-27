@@ -14,18 +14,18 @@
  */
 package org.jnosql.artemis.configuration.yaml;
 
-import org.jnosql.artemis.configuration.ConfigurableImpl;
+import org.jnosql.artemis.configuration.DefaultConfigurable;
 
 import java.util.List;
 
 class ConfigurablesYAML {
-    private List<ConfigurableImpl> configurations;
+    private List<DefaultConfigurable> configurations;
 
-    public List<ConfigurableImpl> getConfigurations() {
+    public List<DefaultConfigurable> getConfigurations() {
         return configurations;
     }
 
-    public void setConfigurations(List<ConfigurableImpl> configurations) {
+    public void setConfigurations(List<DefaultConfigurable> configurations) {
         this.configurations = configurations;
     }
 }

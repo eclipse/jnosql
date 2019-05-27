@@ -16,7 +16,7 @@ package org.jnosql.artemis.configuration.json;
 
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.configuration.Configurable;
-import org.jnosql.artemis.configuration.ConfigurableImpl;
+import org.jnosql.artemis.configuration.DefaultConfigurable;
 import org.jnosql.artemis.configuration.ConfigurableReader;
 import org.jnosql.artemis.configuration.ConfigurationException;
 
@@ -46,7 +46,7 @@ class ConfigurableReaderJSON implements ConfigurableReader {
 
     private static final Jsonb JSONB = JsonbBuilder.create();
     private static final Logger LOGGER = Logger.getLogger(ConfigurableReaderJSON.class.getName());
-    private static final Type TYPE = new ArrayList<ConfigurableImpl>() {}.getClass().getGenericSuperclass();
+    private static final Type TYPE = new ArrayList<DefaultConfigurable>() {}.getClass().getGenericSuperclass();
     private final Map<String, List<Configurable>> cache = new ConcurrentHashMap<>();
 
 

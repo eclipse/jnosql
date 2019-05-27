@@ -14,8 +14,6 @@
  */
 package org.jnosql.artemis.configuration.yaml;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.configuration.Configurable;
 import org.jnosql.artemis.configuration.ConfigurableReader;
@@ -41,7 +39,6 @@ import static java.util.Optional.ofNullable;
 class ConfigurableReaderYAML implements ConfigurableReader {
     private static final Logger LOGGER = Logger.getLogger(ConfigurableReaderYAML.class.getName());
     private final Map<String, List<Configurable>> cache = new ConcurrentHashMap<>();
-    final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
     @Override
     public List<Configurable> read(Supplier<InputStream> stream, ConfigurationUnit annotation) {
