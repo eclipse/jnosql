@@ -17,6 +17,7 @@ package org.jnosql.artemis.configuration.yaml;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.configuration.Configurable;
 import org.jnosql.artemis.configuration.ConfigurableReader;
+import org.jnosql.artemis.configuration.ConfigurationException;
 import org.jnosql.artemis.configuration.DefaultConfigurable;
 import org.yaml.snakeyaml.Yaml;
 
@@ -42,21 +43,25 @@ class ConfigurableReaderYAML implements ConfigurableReader {
 
     @Override
     public List<Configurable> read(Supplier<InputStream> stream, ConfigurationUnit annotation) {
-        List<Configurable> configurations = cache.get(annotation.fileName());
-
-        if (nonNull(configurations)) {
+        List<Configurable> cached = cache.get(annotation.fileName());
+        if (nonNull(cached)) {
             LOGGER.info("Loading the configuration file from the cache file: " + annotation.fileName());
+            return cached;
+        }
+
+        try {
+            Yaml yaml = new Yaml();
+            Map<String, Object> config = yaml.load(stream.get());
+            List<Map<String, Object>> yamlConfigurations = (List<Map<String, Object>>) config.get("configurations");
+            List<Configurable> configurations = new ArrayList<>();
+            for (Map<String, Object> configuration : yamlConfigurations) {
+                configurations.add(getConfigurable(configuration));
+            }
+            cache.put(annotation.fileName(), configurations);
             return configurations;
+        } catch (Exception exp) {
+            throw new ConfigurationException("Error to load Yaml file configuration", exp);
         }
-        Yaml yaml = new Yaml();
-        Map<String, Object> config = yaml.load(stream.get());
-        List<Map<String, Object>> yamlConfigurations = (List<Map<String, Object>>) config.get("configurations");
-        List<Configurable> configurables = new ArrayList<>();
-        for (Map<String, Object> configuration : yamlConfigurations) {
-            configurables.add(getConfigurable(configuration));
-        }
-        cache.put(annotation.fileName(), configurables);
-        return configurables;
     }
 
     private Configurable getConfigurable(Map<String, Object> configuration) {
