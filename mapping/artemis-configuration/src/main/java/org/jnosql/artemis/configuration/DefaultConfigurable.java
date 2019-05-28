@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * The class that represents configuration in JSON
  */
-public class ConfigurableImpl implements Configurable {
+public class DefaultConfigurable implements Configurable {
 
     private String name;
 
@@ -72,10 +72,10 @@ public class ConfigurableImpl implements Configurable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ConfigurableImpl)) {
+        if (!(o instanceof DefaultConfigurable)) {
             return false;
         }
-        ConfigurableImpl that = (ConfigurableImpl) o;
+        DefaultConfigurable that = (DefaultConfigurable) o;
         return Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(provider, that.provider) &&

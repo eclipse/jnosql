@@ -14,51 +14,66 @@
  */
 package org.jnosql.artemis.configuration.yaml;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.configuration.Configurable;
 import org.jnosql.artemis.configuration.ConfigurableReader;
 import org.jnosql.artemis.configuration.ConfigurationException;
+import org.jnosql.artemis.configuration.DefaultConfigurable;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
-import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
-import static java.util.Optional.ofNullable;
 
 @Named("yaml")
 @ApplicationScoped
 class ConfigurableReaderYAML implements ConfigurableReader {
     private static final Logger LOGGER = Logger.getLogger(ConfigurableReaderYAML.class.getName());
     private final Map<String, List<Configurable>> cache = new ConcurrentHashMap<>();
-    final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
     @Override
     public List<Configurable> read(Supplier<InputStream> stream, ConfigurationUnit annotation) {
-        List<Configurable> configurations = cache.get(annotation.fileName());
-
-        if (nonNull(configurations)) {
+        List<Configurable> cached = cache.get(annotation.fileName());
+        if (nonNull(cached)) {
             LOGGER.info("Loading the configuration file from the cache file: " + annotation.fileName());
-            return configurations;
+            return cached;
         }
+
         try {
-            final ConfigurablesYAML yaml = mapper.readValue(stream.get(), ConfigurablesYAML.class);
-            List<Configurable> configurables = new ArrayList<>(ofNullable(yaml.getConfigurations()).orElse(emptyList()));
-            cache.put(annotation.fileName(), configurables);
-            return configurables;
-        } catch (IOException exception) {
-            throw new ConfigurationException("An error when read the YAML file: " + annotation.fileName()
-                    , exception);
+            Yaml yaml = new Yaml();
+            Map<String, Object> config = yaml.load(stream.get());
+            List<Map<String, Object>> yamlConfigurations = (List<Map<String, Object>>) config.get("configurations");
+            List<Configurable> configurations = new ArrayList<>();
+            for (Map<String, Object> configuration : yamlConfigurations) {
+                configurations.add(getConfigurable(configuration));
+            }
+            cache.put(annotation.fileName(), configurations);
+            return configurations;
+        } catch (Exception exp) {
+            throw new ConfigurationException("Error to load Yaml file configuration", exp);
         }
+    }
+
+    private Configurable getConfigurable(Map<String, Object> configuration) {
+        DefaultConfigurable configurable = new DefaultConfigurable();
+        configurable.setDescription(getValue(configuration, "description"));
+        configurable.setName(getValue(configuration, "name"));
+        configurable.setProvider(getValue(configuration, "provider"));
+        configurable.setSettings((Map<String, String>) configuration.get("settings"));
+        return configurable;
+    }
+
+    private String getValue(Map<String, Object> configuration, String key) {
+        return Optional.ofNullable(configuration.get(key))
+                .map(Object::toString).orElse(null);
     }
 }

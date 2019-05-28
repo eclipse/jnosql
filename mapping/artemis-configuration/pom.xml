@@ -29,7 +29,7 @@
 
 
     <properties>
-        <jackson.version>2.9.8</jackson.version>
+        <yaml.version>1.24</yaml.version>
     </properties>
 
     <dependencies>
@@ -41,15 +41,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${yaml.version}</version>
         </dependency>
     </dependencies>
 
