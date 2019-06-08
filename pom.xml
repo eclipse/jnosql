@@ -67,17 +67,23 @@
         <yasson.version>1.0.4</yasson.version>
         <mockito.verson>2.27.0</mockito.verson>
         <org.awaitility.version>3.1.6</org.awaitility.version>
-        <owb.version>2.0.3</owb.version>
         <testcontainers.version>1.11.1</testcontainers.version>
         <weld.se.core.version>3.1.0.Final</weld.se.core.version>
+        <owb.version>2.0.3</owb.version>
         <checkstyle.excludes>**/antlr/**</checkstyle.excludes>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>${hamcrest-all.version}</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <version>${yasson.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -93,19 +99,20 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.awaitility</groupId>
-            <artifactId>awaitility</artifactId>
-            <version>${org.awaitility.version}</version>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>${hamcrest-all.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
-                <version>${apache.rat.version}</version>
+                <version>0.12</version>
                 <configuration>
                     <includes>
                         <include>src/**/*.java</include>
@@ -145,6 +152,5 @@
     <modules>
         <module>diana</module>
         <module>artemis</module>
-        <module>specification</module>
     </modules>
 </project>

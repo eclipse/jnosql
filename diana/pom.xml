@@ -31,12 +31,6 @@
     <packaging>pom</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>org.eclipse</groupId>
-            <artifactId>yasson</artifactId>
-            <version>${yasson.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <modules>
