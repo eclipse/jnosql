@@ -16,13 +16,12 @@ package org.jnosql.artemis.configuration.json;
 
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.configuration.Configurable;
-import org.jnosql.artemis.configuration.DefaultConfigurable;
 import org.jnosql.artemis.configuration.ConfigurableReader;
 import org.jnosql.artemis.configuration.ConfigurationException;
+import org.jnosql.artemis.configuration.DefaultConfigurable;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import javax.json.JsonException;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import java.io.InputStream;
