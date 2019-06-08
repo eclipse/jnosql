@@ -103,7 +103,7 @@ public class DefaultSettingsTest {
         Settings settings = Settings.of(singletonMap("key", "12"));
 
         Integer value = settings.get("key", Integer.class).get();
-        assertEquals(12, value);
+        assertEquals(Integer.valueOf(12), value);
         assertFalse(settings.get("key2", Integer.class).isPresent());
     }
 

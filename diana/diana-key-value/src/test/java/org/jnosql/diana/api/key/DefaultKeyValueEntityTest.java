@@ -75,7 +75,7 @@ public class DefaultKeyValueEntityTest {
         Value value = Value.of("value");
         KeyValueEntity<String> entity = KeyValueEntity.of("10", value);
         assertNotNull(entity);
-        assertEquals(10L, entity.getKey(Long.class));
+        assertEquals(Long.valueOf(10L), entity.getKey(Long.class));
     }
 
 
