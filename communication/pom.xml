@@ -27,7 +27,7 @@
     </parent>
 
     <groupId>org.jnosql.diana</groupId>
-    <artifactId>diana-api</artifactId>
+    <artifactId>diana</artifactId>
     <packaging>pom</packaging>
 
     <dependencies>
@@ -35,12 +35,6 @@
             <groupId>org.eclipse</groupId>
             <artifactId>yasson</artifactId>
             <version>${yasson.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
-            <version>${javax.json.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

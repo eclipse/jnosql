@@ -20,12 +20,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>jakarta.nosql</groupId>
+        <artifactId>jakarta-nosql-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
     <groupId>org.jnosql</groupId>
     <artifactId>jnosql-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <description>The Eclipse JNoSQL is a framework to help developers create enterprise-grade applications using Java and NoSQL technologies.</description>
+    <description>The Eclipse JNoSQL is a framework to help developers create enterprise-grade applications using Java
+        and NoSQL technologies.
+    </description>
     <url>http://jnosql.org/</url>
 
     <licenses>
@@ -47,12 +55,6 @@
 
     <developers>
         <developer>
-            <name>Otavio Santana</name>
-            <email>otaviojava@apache.org</email>
-            <organization>SouJava</organization>
-            <organizationUrl>https://about.me/otaviojava</organizationUrl>
-        </developer>
-        <developer>
             <name>JNoSQL Developers</name>
             <email>jnosql-dev@eclipse.org</email>
             <organization>Eclipse JNoSQL</organization>
@@ -62,71 +64,16 @@
 
     <properties>
         <hamcrest-all.version>1.3</hamcrest-all.version>
-        <jacoco.maven.version>0.7.9</jacoco.maven.version>
-        <javax.annotation.version>1.3.2</javax.annotation.version>
-        <javax.enterprise.version>2.0.SP1</javax.enterprise.version>
-        <javax.json.bind.version>1.0</javax.json.bind.version>
-        <javax.json.version>1.1.4</javax.json.version>
-        <yasson.version>1.0.3</yasson.version>
-        <javax.validation.version>2.0.1.Final</javax.validation.version>
-        <json.b.version>1.0.2</json.b.version>
-        <junit.version>5.5.0-M1</junit.version>
-        <junit.platform.surefire>1.3.1</junit.platform.surefire>
-        <maven-javadoc-plugin.vesion>3.0.1</maven-javadoc-plugin.vesion>
-        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-        <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
-        <maven.compile.sourceLevel>1.8</maven.compile.sourceLevel>
-        <maven.compile.targetLevel>1.8</maven.compile.targetLevel>
-        <maven.compile.version>3.8.0</maven.compile.version>
-        <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
+        <yasson.version>1.0.4</yasson.version>
         <mockito.verson>2.27.0</mockito.verson>
         <org.awaitility.version>3.1.6</org.awaitility.version>
         <owb.version>2.0.3</owb.version>
-        <sonar.maven.version>3.3.0.603</sonar.maven.version>
         <testcontainers.version>1.11.1</testcontainers.version>
         <weld.se.core.version>3.1.0.Final</weld.se.core.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <checkstyle.excludes>**/antlr/**</checkstyle.excludes>
-        <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>javax.json</groupId>
-            <artifactId>javax.json-api</artifactId>
-            <version>${javax.json.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.json.bind</groupId>
-            <artifactId>javax.json.bind-api</artifactId>
-            <version>${javax.json.bind.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>${javax.annotation.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <version>${javax.enterprise.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
@@ -156,217 +103,9 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compile.version}</version>
-                <configuration>
-                    <target>${maven.compile.targetLevel}</target>
-                    <source>${maven.compile.sourceLevel}</source>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.vesion}</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${maven-source-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-           <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.maven.version}</version>
-                <executions>
-                    <execution>
-                        <id>pre-test</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <destFile>${sonar.jacoco.reportPath}</destFile>
-                            <append>true</append>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven.checkstyle.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>verify-style</id>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>${checkstyle.excludes}</excludes>
-                    <logViolationsToConsole>true</logViolationsToConsole>
-                    <consoleOutput>true</consoleOutput>
-                    <checkstyleRules>
-                        <module name="Checker">
-                            <module name="SuppressionCommentFilter"/>
-
-                            <!-- Checks for Size Violations.                    -->
-                            <!-- See http://checkstyle.sf.net/config_sizes.html -->
-                            <module name="FileLength">
-                                <property name="max" value="3500"/>
-                                <property name="fileExtensions" value="java"/>
-                            </module>
-
-                            <!-- Checks for whitespace                               -->
-                            <!-- See http://checkstyle.sf.net/config_whitespace.html -->
-                            <module name="FileTabCharacter"/>
-
-                            <!-- allow usage of CHECKSTYLE:OFF and CHECKSTYLE:ON -->
-                            <module name="SuppressionCommentFilter"/>
-
-                            <module name="TreeWalker">
-                                <!-- needed for the SuppressionCommentFilter -->
-                                <module name="FileContentsHolder"/>
-
-                                <!-- Checks for Naming Conventions.                  -->
-                                <!-- See http://checkstyle.sf.net/config_naming.html -->
-                                <module name="ConstantName">
-                                    <!-- 0=Allowed, 1=Disallowed  (see checkConstants.sh in pom source tree)
-                                      0 foo
-                                      0 fooBar
-                                      0 fooBarBaz
-                                      0 FOO
-                                      0 FOO_BAR
-                                      0 FOO_BAR_BAZ
-                                      0 _fooBar
-                                      0 f9
-                                      0 F9_C3
-                                      1 FooBar
-                                      1 foo_bar
-                                      1 FOO__BAR
-                                      1 _FOO
-                                      1 foo_
-                                      1 FOO_
-                                       -->
-                                    <property name="format" value="^(_?[a-z][a-zA-Z0-9]*|([A-Z](_?[A-Z0-9]+)*))$"/>
-                                </module>
-
-                                <module name="LocalVariableName"/>
-                                <module name="MethodName">
-                                    <property name="format" value="^_?[a-z][a-zA-Z0-9]*$"/>
-                                </module>
-                                <module name="PackageName"/>
-                                <module name="LocalFinalVariableName"/>
-                                <module name="ParameterName"/>
-                                <module name="StaticVariableName"/>
-                                <module name="TypeName">
-                                    <property name="format" value="^_?[A-Z][a-zA-Z0-9]*$"/>
-                                </module>
-
-                                <!-- Checks for imports                              -->
-                                <!-- See http://checkstyle.sf.net/config_import.html -->
-                                <module name="AvoidStarImport">
-                                    <property name="excludes"
-                                              value="java.io,java.net,java.util,javax.enterprise.inject.spi,javax.enterprise.context"/>
-                                </module>
-                                <module name="IllegalImport"/>
-                                <module name="RedundantImport"/>
-                                <module name="UnusedImports"/>
-
-
-                                <module name="LineLength">
-                                    <property name="max" value="180"/>
-                                    <property name="ignorePattern" value="@version|@see"/>
-                                </module>
-                                <module name="MethodLength">
-                                    <property name="max" value="250"/>
-                                </module>
-                                <module name="ParameterNumber">
-                                    <property name="max" value="15"/>
-                                </module>
-
-                                <!-- Checks for blocks. You know, those {}'s         -->
-                                <!-- See http://checkstyle.sf.net/config_blocks.html -->
-                                <module name="EmptyBlock">
-                                    <property name="option" value="text"/>
-                                </module>
-
-                                <module name="NeedBraces">
-                                    <property name="tokens"
-                                              value="LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE"/>
-                                </module>
-                                <module name="LeftCurly">
-                                    <property name="option" value="EOL"/>
-                                </module>
-                                <module name="RightCurly">
-                                    <property name="option" value="SAME"/>
-                                </module>
-
-                                <!-- Checks for common coding problems               -->
-                                <!-- See http://checkstyle.sf.net/config_coding.html -->
-                                <module name="EmptyStatement"/>
-                                <module name="EqualsHashCode"/>
-                                <module name="DefaultComesLast"/>
-                                <module name="MissingSwitchDefault"/>
-                                <module name="FallThrough"/>
-                                <module name="MultipleVariableDeclarations"/>
-
-                                <!-- Checks for class design                         -->
-                                <!-- See http://checkstyle.sf.net/config_design.html -->
-                                <module name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck">
-                                    <property name="severity" value="ignore"/>
-                                </module>
-
-                                <module name="HideUtilityClassConstructor"/>
-
-                                <module name="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck">
-                                    <property name="packageAllowed" value="false"/>
-                                    <property name="protectedAllowed" value="true"/>
-                                    <property name="publicMemberPattern" value="^serialVersionUID"/>
-                                    <property name="severity" value="warning"/>
-                                </module>
-
-                                <module name="UpperEll"/>
-
-                                <module name="AnnotationLocation">
-                                    <property name="allowSamelineMultipleAnnotations" value="false"/>
-                                    <property name="allowSamelineSingleParameterlessAnnotation" value="false"/>
-                                    <property name="allowSamelineParameterizedAnnotation" value="false"/>
-                                    <property name="tokens"
-                                              value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF, ANNOTATION_DEF"/>
-                                </module>
-                            </module>
-                        </module>
-                    </checkstyleRules>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
-                <version>0.12</version>
+                <version>${apache.rat.version}</version>
                 <configuration>
                     <includes>
                         <include>src/**/*.java</include>
@@ -401,69 +140,11 @@
                 </executions>
             </plugin>
         </plugins>
-       <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>${sonar.maven.version}</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.3</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <serverId>ossrh</serverId>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
-  <modules>
+    <modules>
         <module>communication</module>
         <module>mapping</module>
         <module>specification</module>
     </modules>
-
-
-
 </project>
