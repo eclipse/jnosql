@@ -62,7 +62,7 @@ class ConfigurableReaderJSON implements ConfigurableReader {
             configurations = JSONB.fromJson(stream.get(), TYPE);
             cache.put(annotation.fileName(), configurations);
             return configurations;
-        } catch (JsonException exception) {
+        } catch (Exception exception) {
             throw new ConfigurationException("An error when read the JSON file: " + annotation.fileName()
                     , exception);
         }
