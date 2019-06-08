@@ -143,8 +143,8 @@
     </build>
 
     <modules>
-        <module>communication</module>
-        <module>mapping</module>
+        <module>diana</module>
+        <module>artemis</module>
         <module>specification</module>
     </modules>
 </project>
