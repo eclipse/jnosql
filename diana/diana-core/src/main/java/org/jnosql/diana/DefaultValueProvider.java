@@ -25,6 +25,7 @@ import java.util.Objects;
  * The default implementation of {@link ValueProvider}
  */
 public class DefaultValueProvider implements ValueProvider {
+
     @Override
     public Value apply(Object value) {
         Objects.requireNonNull(value, "value is required");

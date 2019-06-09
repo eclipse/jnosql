@@ -17,9 +17,10 @@
 package org.jnosql.diana;
 
 import jakarta.nosql.Sort;
+import jakarta.nosql.Sort.SortProvider;
 import jakarta.nosql.SortType;
 
-public final class DefaultSortProvider implements Sort.SortProvider {
+public final class DefaultSortProvider implements SortProvider {
     @Override
     public Sort apply(String name, SortType sortType) {
         return DefaultSort.of(name, sortType);
