@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of {@link SettingsBuilder}
  */
-public class DefaultSettingsBuilder implements SettingsBuilder {
+final class DefaultSettingsBuilder implements SettingsBuilder {
 
     private final Map<String, Object> settings = new HashMap<>();
 
