@@ -16,8 +16,8 @@
  */
 
 /**
- * The {@link org.jnosql.diana.ValueReader} has the goal read a information from Value by Class informed
- * from {@link org.jnosql.diana.Value#get(java.lang.Class)}.
+ * The {@link jakarta.nosql.ValueReader} has the goal read a information from Value by Class informed
+ * from {@link jakarta.nosql.Value#get(java.lang.Class)}.
  * This package has all implementations supported by default in Diana Project
  */
 package org.jnosql.diana.reader;

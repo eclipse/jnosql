@@ -18,7 +18,7 @@
 package org.jnosql.diana.reader;
 
 
-import org.jnosql.diana.ValueReader;
+import jakarta.nosql.ValueReader;
 
 import java.time.LocalDate;
 import java.time.ZoneId;

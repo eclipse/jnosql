@@ -18,7 +18,7 @@
 package org.jnosql.diana.reader;
 
 
-import org.jnosql.diana.ValueReader;
+import jakarta.nosql.ValueReader;
 
 /**
  * Class to reads and converts to {@link Short}, first it verify if is Double if yes return itself then verifies if is

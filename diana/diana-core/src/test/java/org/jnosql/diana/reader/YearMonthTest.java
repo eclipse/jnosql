@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.YearMonth;
 
-import org.jnosql.diana.ValueReader;
+import jakarta.nosql.ValueReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

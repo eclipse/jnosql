@@ -16,7 +16,7 @@
  */
 package org.jnosql.diana.reader;
 
-import org.jnosql.diana.ValueReader;
+import jakarta.nosql.ValueReader;
 import org.jnosql.diana.TypeReferenceReader;
 import org.jnosql.diana.TypeSupplier;
 import org.jnosql.diana.ValueReaderDecorator;

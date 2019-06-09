@@ -30,6 +30,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>jakarta.nosql.communication</groupId>
+            <artifactId>communication-core</artifactId>
+            <version>${jakarta.nosql.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

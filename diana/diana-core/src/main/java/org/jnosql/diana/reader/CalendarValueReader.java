@@ -17,7 +17,7 @@
 
 package org.jnosql.diana.reader;
 
-import org.jnosql.diana.ValueReader;
+import jakarta.nosql.ValueReader;
 
 import java.util.Calendar;
 import java.util.Date;

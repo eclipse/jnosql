@@ -18,7 +18,7 @@
 package org.jnosql.diana.reader;
 
 
-import org.jnosql.diana.ValueReader;
+import jakarta.nosql.ValueReader;
 
 /**
  * Class reader for {@link Number}, this converter first verify if the object is a Number instance,

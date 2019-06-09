@@ -19,7 +19,7 @@ package org.jnosql.diana.reader;
 
 import java.time.YearMonth;
 
-import org.jnosql.diana.ValueReader;
+import jakarta.nosql.ValueReader;
 
 /**
  * Class to reads and converts to {@link YearMonth}, first it verify if is YearMonth if yes return itself

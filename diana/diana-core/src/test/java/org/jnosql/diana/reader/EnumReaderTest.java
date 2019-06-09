@@ -17,7 +17,7 @@
 
 package org.jnosql.diana.reader;
 
-import org.jnosql.diana.ValueReader;
+import jakarta.nosql.ValueReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

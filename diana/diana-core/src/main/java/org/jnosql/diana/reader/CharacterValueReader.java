@@ -18,7 +18,7 @@
 package org.jnosql.diana.reader;
 
 
-import org.jnosql.diana.ValueReader;
+import jakarta.nosql.ValueReader;
 
 import static java.lang.Character.MIN_VALUE;
 
