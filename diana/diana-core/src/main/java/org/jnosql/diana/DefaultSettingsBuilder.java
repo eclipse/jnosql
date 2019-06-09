@@ -48,7 +48,7 @@ public class DefaultSettingsBuilder implements SettingsBuilder {
 
     @Override
     public Settings build() {
-        return null;
+        return new DefaultSettings(settings);
     }
 
 
