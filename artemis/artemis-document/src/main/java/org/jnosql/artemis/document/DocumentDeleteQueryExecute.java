@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document;
 
 
-import org.jnosql.diana.api.document.DocumentDeleteQuery;
+import org.jnosql.diana.document.DocumentDeleteQuery;
 
 /**
  * When a document delete query is executed this event if fired

@@ -21,8 +21,8 @@ import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.reflection.FieldMapping;
 import org.jnosql.artemis.reflection.FieldType;
 import org.jnosql.artemis.reflection.FieldValue;
-import org.jnosql.diana.api.column.Column;
-import org.jnosql.diana.api.column.ColumnEntity;
+import org.jnosql.diana.column.Column;
+import org.jnosql.diana.column.ColumnEntity;
 
 import java.util.Collections;
 import java.util.List;

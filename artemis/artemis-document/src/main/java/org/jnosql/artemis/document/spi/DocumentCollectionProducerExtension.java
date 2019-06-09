@@ -24,8 +24,8 @@ import org.jnosql.artemis.document.query.RepositoryAsyncDocumentBean;
 import org.jnosql.artemis.document.query.RepositoryDocumentBean;
 import org.jnosql.artemis.util.ConfigurationUnitUtils;
 import org.jnosql.artemis.util.RepositoryUnit;
-import org.jnosql.diana.api.document.DocumentCollectionManager;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
+import org.jnosql.diana.document.DocumentCollectionManager;
+import org.jnosql.diana.document.DocumentCollectionManagerAsync;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;

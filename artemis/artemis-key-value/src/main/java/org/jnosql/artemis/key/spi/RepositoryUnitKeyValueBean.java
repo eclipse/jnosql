@@ -18,8 +18,8 @@ import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.key.KeyValueRepositoryProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;
-import org.jnosql.diana.api.key.BucketManager;
-import org.jnosql.diana.api.key.BucketManagerFactory;
+import org.jnosql.diana.key.BucketManager;
+import org.jnosql.diana.key.BucketManagerFactory;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;

@@ -19,7 +19,7 @@ import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
-import org.jnosql.diana.api.Value;
+import org.jnosql.diana.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -24,7 +24,7 @@ import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.diana.api.Value;
+import org.jnosql.diana.Value;
 
 import java.util.Collections;
 import java.util.Iterator;

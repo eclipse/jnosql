@@ -16,7 +16,7 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.FieldValue;
-import org.jnosql.diana.api.document.Document;
+import org.jnosql.diana.document.Document;
 
 import java.util.List;
 

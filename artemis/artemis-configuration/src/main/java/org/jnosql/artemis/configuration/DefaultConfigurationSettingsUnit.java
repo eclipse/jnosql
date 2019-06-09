@@ -15,7 +15,7 @@
 package org.jnosql.artemis.configuration;
 
 import org.jnosql.artemis.ConfigurationSettingsUnit;
-import org.jnosql.diana.api.Settings;
+import org.jnosql.diana.Settings;
 
 import java.util.Objects;
 import java.util.Optional;

@@ -18,7 +18,7 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.diana.api.Params;
+import org.jnosql.diana.Params;
 
 import java.lang.reflect.Method;
 import java.util.List;

@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.diana.api.JNoSQLException;
+import org.jnosql.diana.JNoSQLException;
 
 /**
  * Eclipse JNoSQL tries to optimize access at Getter, Setter,

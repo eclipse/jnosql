@@ -87,10 +87,10 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
     }
 
     static void setSort(Object[] args, GraphTraversal<Vertex, Vertex> traversal) {
-        List<org.jnosql.diana.api.Sort> sorts = DynamicReturn.findSorts(args);
+        List<org.jnosql.diana.Sort> sorts = DynamicReturn.findSorts(args);
         if (!sorts.isEmpty()) {
-            for (org.jnosql.diana.api.Sort sort : sorts) {
-                traversal.order().by(sort.getName(), sort.getType() == org.jnosql.diana.api.Sort.SortType.ASC ? asc : desc);
+            for (org.jnosql.diana.Sort sort : sorts) {
+                traversal.order().by(sort.getName(), sort.getType() == org.jnosql.diana.Sort.SortType.ASC ? asc : desc);
             }
         }
     }

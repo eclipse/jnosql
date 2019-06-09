@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.diana.api.JNoSQLException;
+import org.jnosql.diana.JNoSQLException;
 
 /**
  * An exception that provides information when executing Gremlin in the database.

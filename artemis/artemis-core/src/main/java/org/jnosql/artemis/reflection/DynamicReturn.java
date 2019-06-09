@@ -17,8 +17,8 @@ package org.jnosql.artemis.reflection;
 import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.Sorts;
-import org.jnosql.diana.api.NonUniqueResultException;
-import org.jnosql.diana.api.Sort;
+import org.jnosql.diana.NonUniqueResultException;
+import org.jnosql.diana.Sort;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

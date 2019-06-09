@@ -18,7 +18,7 @@ import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.document.DocumentQuery;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +26,8 @@ import java.util.function.Consumer;
 
 
 /**
- * The last step to the build of {@link org.jnosql.diana.api.document.DocumentQuery}.
- * It either can return a new {@link org.jnosql.diana.api.document.DocumentQuery} instance or execute a query with
+ * The last step to the build of {@link DocumentQuery}.
+ * It either can return a new {@link DocumentQuery} instance or execute a query with
  * {@link DocumentTemplate}
  * and {@link DocumentTemplateAsync}
  */

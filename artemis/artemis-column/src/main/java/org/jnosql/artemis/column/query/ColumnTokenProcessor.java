@@ -16,7 +16,7 @@ package org.jnosql.artemis.column.query;
 
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassMapping;
-import org.jnosql.diana.api.column.ColumnCondition;
+import org.jnosql.diana.column.ColumnCondition;
 
 interface ColumnTokenProcessor {
 

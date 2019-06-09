@@ -19,7 +19,7 @@ package org.jnosql.artemis.column.query;
 
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
+import org.jnosql.diana.column.ColumnDeleteQuery;
 
 import java.util.function.Consumer;
 

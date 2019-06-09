@@ -16,7 +16,7 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.document.DocumentCollectionManager;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;

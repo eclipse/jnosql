@@ -18,7 +18,7 @@ package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.column.ColumnQuery;
 
 import java.util.Objects;
 

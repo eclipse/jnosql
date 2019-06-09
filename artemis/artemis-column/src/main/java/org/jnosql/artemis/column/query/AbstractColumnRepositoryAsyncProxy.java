@@ -20,14 +20,14 @@ import org.jnosql.artemis.RepositoryAsync;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicAsyncQueryMethodReturn;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.column.ColumnDeleteQuery;
+import org.jnosql.diana.column.ColumnQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
-import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
+import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
 
 /**
  * Template method to {@link RepositoryAsync} proxy on column

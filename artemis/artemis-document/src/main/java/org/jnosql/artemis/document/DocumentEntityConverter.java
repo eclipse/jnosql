@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.document;
 
-import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.document.DocumentEntity;
 
 /**
  * This interface represents the converter between an entity and the {@link DocumentEntity}

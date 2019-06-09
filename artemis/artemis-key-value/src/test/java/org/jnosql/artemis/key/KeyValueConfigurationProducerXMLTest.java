@@ -16,8 +16,8 @@ package org.jnosql.artemis.key;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.diana.api.Settings;
-import org.jnosql.diana.api.key.BucketManagerFactory;
+import org.jnosql.diana.Settings;
+import org.jnosql.diana.key.BucketManagerFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

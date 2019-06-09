@@ -17,9 +17,9 @@ package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.EntityPostPersit;
 import org.jnosql.artemis.EntityPrePersist;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnEntity;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.column.ColumnDeleteQuery;
+import org.jnosql.diana.column.ColumnEntity;
+import org.jnosql.diana.column.ColumnQuery;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;

@@ -23,7 +23,7 @@ import org.jnosql.aphrodite.antlr.QueryLexer;
 import org.jnosql.aphrodite.antlr.QueryParser;
 import org.jnosql.aphrodite.provider.UpdateQueryArgumentProvider;
 import org.jnosql.aphrodite.provider.WrongUpdateQueryArgumentProvider;
-import org.jnosql.diana.api.QueryException;
+import org.jnosql.diana.QueryException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

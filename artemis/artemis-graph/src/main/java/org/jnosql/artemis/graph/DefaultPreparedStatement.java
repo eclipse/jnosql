@@ -16,7 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.jnosql.artemis.PreparedStatement;
-import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.NonUniqueResultException;
 
 import java.util.HashMap;
 import java.util.List;

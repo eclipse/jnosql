@@ -15,7 +15,7 @@
 package org.jnosql.artemis.key;
 
 
-import org.jnosql.diana.api.key.KeyValueEntity;
+import org.jnosql.diana.key.KeyValueEntity;
 
 /**
  * This interface represent the manager of events. When an entity be either saved or updated an event will be fired. This order gonna be:

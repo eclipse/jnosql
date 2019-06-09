@@ -15,9 +15,9 @@
 package org.jnosql.artemis.document;
 
 
-import org.jnosql.diana.api.document.DocumentDeleteQuery;
-import org.jnosql.diana.api.document.DocumentEntity;
-import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.document.DocumentDeleteQuery;
+import org.jnosql.diana.document.DocumentEntity;
+import org.jnosql.diana.document.DocumentQuery;
 
 /**
  * This interface represent the manager of events. When an entity be either saved or updated an event will be fired. This order gonna be:

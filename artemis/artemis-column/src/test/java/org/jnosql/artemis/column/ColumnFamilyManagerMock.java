@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.diana.api.Settings;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
-import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.api.column.ColumnFamilyManagerAsyncFactory;
-import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
-import org.jnosql.diana.api.column.UnaryColumnConfiguration;
+import org.jnosql.diana.Settings;
+import org.jnosql.diana.column.ColumnFamilyManager;
+import org.jnosql.diana.column.ColumnFamilyManagerAsync;
+import org.jnosql.diana.column.ColumnFamilyManagerAsyncFactory;
+import org.jnosql.diana.column.ColumnFamilyManagerFactory;
+import org.jnosql.diana.column.UnaryColumnConfiguration;
 import org.mockito.Mockito;
 
 public class ColumnFamilyManagerMock implements UnaryColumnConfiguration {

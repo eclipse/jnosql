@@ -16,7 +16,7 @@ package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.api.column.ColumnObserverParser;
+import org.jnosql.diana.column.ColumnObserverParser;
 
 import java.util.Optional;
 

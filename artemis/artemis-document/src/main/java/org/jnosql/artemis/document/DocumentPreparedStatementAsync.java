@@ -16,7 +16,7 @@ package org.jnosql.artemis.document;
 
 
 import org.jnosql.artemis.PreparedStatementAsync;
-import org.jnosql.diana.api.document.DocumentEntity;
+import org.jnosql.diana.document.DocumentEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,11 +27,11 @@ import static java.util.stream.Collectors.toList;
 
 final class DocumentPreparedStatementAsync implements PreparedStatementAsync {
 
-    private final org.jnosql.diana.api.document.DocumentPreparedStatementAsync preparedStatementAsync;
+    private final org.jnosql.diana.document.DocumentPreparedStatementAsync preparedStatementAsync;
     private final DocumentEntityConverter converter;
 
-    DocumentPreparedStatementAsync(org.jnosql.diana.api.document.DocumentPreparedStatementAsync preparedStatementAsync,
-                                 DocumentEntityConverter converter) {
+    DocumentPreparedStatementAsync(org.jnosql.diana.document.DocumentPreparedStatementAsync preparedStatementAsync,
+                                   DocumentEntityConverter converter) {
         this.preparedStatementAsync = preparedStatementAsync;
         this.converter = converter;
     }

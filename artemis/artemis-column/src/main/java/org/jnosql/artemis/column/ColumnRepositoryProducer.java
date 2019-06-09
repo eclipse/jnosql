@@ -15,7 +15,7 @@
 package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.Repository;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.column.ColumnFamilyManager;
 
 /**
  * The producer of {@link Repository}

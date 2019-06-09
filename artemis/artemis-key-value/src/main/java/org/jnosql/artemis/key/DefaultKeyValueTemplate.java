@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.key;
 
-import org.jnosql.diana.api.key.BucketManager;
+import org.jnosql.diana.key.BucketManager;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;

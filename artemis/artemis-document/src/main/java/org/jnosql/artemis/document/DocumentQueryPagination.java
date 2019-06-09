@@ -18,12 +18,12 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
-import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.document.DocumentQuery;
 
 import java.util.Objects;
 
 /**
- * A {@link org.jnosql.diana.api.document.DocumentQuery} that allows select based on pagination.
+ * A {@link DocumentQuery} that allows select based on pagination.
  */
 public interface DocumentQueryPagination extends DocumentQuery {
 

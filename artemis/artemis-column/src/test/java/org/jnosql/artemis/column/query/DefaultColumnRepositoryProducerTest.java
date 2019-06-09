@@ -18,7 +18,7 @@ import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.PersonRepository;
 import org.jnosql.artemis.column.ColumnRepositoryProducer;
 import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.column.ColumnFamilyManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;

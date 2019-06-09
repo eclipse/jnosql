@@ -17,11 +17,11 @@
 package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.Pagination;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.column.ColumnQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
+import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

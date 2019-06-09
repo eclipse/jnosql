@@ -21,8 +21,8 @@ import org.jnosql.artemis.document.DocumentQueryPagination;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.reflection.ClassMapping;
-import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.Sort;
+import org.jnosql.diana.document.DocumentQuery;
 
 import java.util.ArrayList;
 import java.util.List;

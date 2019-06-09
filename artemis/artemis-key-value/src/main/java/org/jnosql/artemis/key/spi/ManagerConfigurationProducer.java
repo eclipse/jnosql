@@ -17,8 +17,8 @@ package org.jnosql.artemis.key.spi;
 import org.jnosql.artemis.ConfigurationException;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.util.StringUtils;
-import org.jnosql.diana.api.key.BucketManager;
-import org.jnosql.diana.api.key.BucketManagerFactory;
+import org.jnosql.diana.key.BucketManager;
+import org.jnosql.diana.key.BucketManagerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

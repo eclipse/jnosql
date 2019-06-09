@@ -16,7 +16,7 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.api.document.DocumentObserverParser;
+import org.jnosql.diana.document.DocumentObserverParser;
 
 import java.util.Optional;
 

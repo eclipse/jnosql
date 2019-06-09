@@ -24,8 +24,8 @@ import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 import org.jnosql.artemis.reflection.DynamicReturn;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.column.ColumnDeleteQuery;
+import org.jnosql.diana.column.ColumnQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.select;
+import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
 
 /**
  * Template method to {@link Repository} proxy on column

@@ -15,13 +15,13 @@
 package org.jnosql.artemis.validation;
 
 
-import org.jnosql.diana.api.column.Column;
-import org.jnosql.diana.api.column.ColumnEntity;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
-import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.DocumentCollectionManager;
-import org.jnosql.diana.api.document.DocumentEntity;
-import org.jnosql.diana.api.key.BucketManager;
+import org.jnosql.diana.column.Column;
+import org.jnosql.diana.column.ColumnEntity;
+import org.jnosql.diana.column.ColumnFamilyManager;
+import org.jnosql.diana.document.Document;
+import org.jnosql.diana.document.DocumentCollectionManager;
+import org.jnosql.diana.document.DocumentEntity;
+import org.jnosql.diana.key.BucketManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

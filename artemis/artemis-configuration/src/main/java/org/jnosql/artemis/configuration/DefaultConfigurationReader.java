@@ -19,7 +19,7 @@ import org.jnosql.artemis.ConfigurationSettingsUnit;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.reflection.ConstructorException;
 import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.SettingsPriority;
+import org.jnosql.diana.SettingsPriority;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;

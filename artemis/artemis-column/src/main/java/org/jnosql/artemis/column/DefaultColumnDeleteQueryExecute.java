@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
+import org.jnosql.diana.column.ColumnDeleteQuery;
 
 import java.util.Objects;
 

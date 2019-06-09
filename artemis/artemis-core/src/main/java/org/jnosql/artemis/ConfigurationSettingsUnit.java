@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis;
 
-import org.jnosql.diana.api.Settings;
+import org.jnosql.diana.Settings;
 
 import java.util.Optional;
 

@@ -17,7 +17,7 @@ package org.jnosql.artemis.key;
 
 import org.jnosql.artemis.EntityPostPersit;
 import org.jnosql.artemis.EntityPrePersist;
-import org.jnosql.diana.api.key.KeyValueEntity;
+import org.jnosql.diana.key.KeyValueEntity;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;

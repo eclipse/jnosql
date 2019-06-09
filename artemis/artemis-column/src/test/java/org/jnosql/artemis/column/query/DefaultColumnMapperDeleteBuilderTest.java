@@ -21,8 +21,8 @@ import org.jnosql.artemis.model.Address;
 import org.jnosql.artemis.model.Money;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Worker;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.query.ColumnQueryBuilder;
+import org.jnosql.diana.column.ColumnDeleteQuery;
+import org.jnosql.diana.column.query.ColumnQueryBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.function.Consumer;
 
-import static org.jnosql.diana.api.column.query.ColumnQueryBuilder.delete;
+import static org.jnosql.diana.column.query.ColumnQueryBuilder.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 

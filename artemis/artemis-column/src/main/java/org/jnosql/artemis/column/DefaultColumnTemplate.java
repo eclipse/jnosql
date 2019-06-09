@@ -16,7 +16,7 @@ package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.column.ColumnFamilyManager;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;

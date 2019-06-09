@@ -17,8 +17,8 @@ package org.jnosql.artemis.document.query;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import org.jnosql.diana.api.document.Document;
-import org.jnosql.diana.api.document.DocumentCondition;
+import org.jnosql.diana.document.Document;
+import org.jnosql.diana.document.DocumentCondition;
 
 import java.util.List;
 import java.util.stream.StreamSupport;

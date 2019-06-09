@@ -22,7 +22,7 @@ import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.key.query.RepositoryKeyValueBean;
 import org.jnosql.artemis.util.RepositoryUnit;
 import org.jnosql.artemis.util.ConfigurationUnitUtils;
-import org.jnosql.diana.api.key.BucketManager;
+import org.jnosql.diana.key.BucketManager;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;

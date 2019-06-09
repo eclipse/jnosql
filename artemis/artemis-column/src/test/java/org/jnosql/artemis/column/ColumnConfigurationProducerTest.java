@@ -16,9 +16,9 @@ package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.diana.api.Settings;
-import org.jnosql.diana.api.column.ColumnFamilyManagerAsyncFactory;
-import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
+import org.jnosql.diana.Settings;
+import org.jnosql.diana.column.ColumnFamilyManagerAsyncFactory;
+import org.jnosql.diana.column.ColumnFamilyManagerFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

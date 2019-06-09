@@ -20,7 +20,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.NonUniqueResultException;
 
 import java.util.List;
 import java.util.Optional;

@@ -15,7 +15,7 @@
 package org.jnosql.artemis.key;
 
 import org.jnosql.artemis.PreparedStatement;
-import org.jnosql.diana.api.Value;
+import org.jnosql.diana.Value;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,11 +26,11 @@ import static java.util.stream.Collectors.toList;
 
 final class KeyValuePreparedStatement implements PreparedStatement {
 
-    private final org.jnosql.diana.api.key.KeyValuePreparedStatement preparedStatement;
+    private final org.jnosql.diana.key.KeyValuePreparedStatement preparedStatement;
 
     private final Class<?> entityClass;
 
-    KeyValuePreparedStatement(org.jnosql.diana.api.key.KeyValuePreparedStatement preparedStatement, Class<?> entityClass) {
+    KeyValuePreparedStatement(org.jnosql.diana.key.KeyValuePreparedStatement preparedStatement, Class<?> entityClass) {
         this.preparedStatement = preparedStatement;
         this.entityClass = entityClass;
     }

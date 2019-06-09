@@ -15,7 +15,7 @@
 package org.jnosql.artemis.column;
 
 
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
+import org.jnosql.diana.column.ColumnDeleteQuery;
 
 /**
  * When a column delete query is executed this event if fired

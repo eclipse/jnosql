@@ -15,14 +15,14 @@
 package org.jnosql.artemis.key;
 
 
-import org.jnosql.diana.api.key.KeyValueEntity;
+import org.jnosql.diana.key.KeyValueEntity;
 
 import java.util.Objects;
 
 public interface KeyValueEntityPrePersist {
 
     /**
-     * The {@link org.jnosql.diana.api.key.KeyValueEntity}  after be saved
+     * The {@link KeyValueEntity}  after be saved
      *
      * @return the {@link KeyValueEntity} instance
      */

@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis;
 
+import org.jnosql.diana.NonUniqueResultException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +48,7 @@ public interface PreparedStatement {
      *
      * @param <T> the type
      * @return the single result
-     * @throws org.jnosql.diana.api.NonUniqueResultException when the result has more than one entity
+     * @throws NonUniqueResultException when the result has more than one entity
      */
     <T> Optional<T> getSingleResult();
 }

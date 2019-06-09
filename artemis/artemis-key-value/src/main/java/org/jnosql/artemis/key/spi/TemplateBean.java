@@ -20,7 +20,7 @@ import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.key.KeyValueTemplateProducer;
 import org.jnosql.artemis.spi.AbstractBean;
-import org.jnosql.diana.api.key.BucketManager;
+import org.jnosql.diana.key.BucketManager;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;

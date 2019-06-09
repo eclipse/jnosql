@@ -17,6 +17,7 @@
 package org.jnosql.artemis.column.query;
 
 
+import org.jnosql.diana.column.ColumnCondition;
 
 /**
  * The Column Where whose define the condition in the query.
@@ -26,7 +27,7 @@ public interface ColumnMapperWhere  extends ColumnMapperQueryBuild {
 
     /**
      * Starts a new condition in the select using
-     * {@link org.jnosql.diana.api.column.ColumnCondition#and(org.jnosql.diana.api.column.ColumnCondition)}
+     * {@link ColumnCondition#and(ColumnCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link ColumnMapperNameCondition} with the condition appended
@@ -36,7 +37,7 @@ public interface ColumnMapperWhere  extends ColumnMapperQueryBuild {
 
     /**
      * Appends a new condition in the select using
-     * {@link org.jnosql.diana.api.column.ColumnCondition#or(org.jnosql.diana.api.column.ColumnCondition)}
+     * {@link ColumnCondition#or(ColumnCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link ColumnMapperNameCondition} with the condition appended

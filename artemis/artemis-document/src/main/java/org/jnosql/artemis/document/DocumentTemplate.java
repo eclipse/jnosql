@@ -17,9 +17,10 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.Page;
 import org.jnosql.artemis.PreparedStatement;
-import org.jnosql.diana.api.NonUniqueResultException;
-import org.jnosql.diana.api.document.DocumentDeleteQuery;
-import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.NonUniqueResultException;
+import org.jnosql.diana.document.DocumentCollectionManager;
+import org.jnosql.diana.document.DocumentDeleteQuery;
+import org.jnosql.diana.document.DocumentQuery;
 
 import java.time.Duration;
 import java.util.List;
@@ -32,7 +33,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * This interface that represents the common operation between an entity and DocumentCollectionEntity.
  *
- * @see org.jnosql.diana.api.document.DocumentCollectionManager
+ * @see DocumentCollectionManager
  */
 public interface DocumentTemplate {
 

@@ -18,12 +18,12 @@ import org.jnosql.artemis.ConfigurationReader;
 import org.jnosql.artemis.ConfigurationSettingsUnit;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.api.document.DocumentCollectionManager;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsyncFactory;
-import org.jnosql.diana.api.document.DocumentCollectionManagerFactory;
-import org.jnosql.diana.api.document.DocumentConfiguration;
-import org.jnosql.diana.api.document.DocumentConfigurationAsync;
+import org.jnosql.diana.document.DocumentCollectionManager;
+import org.jnosql.diana.document.DocumentCollectionManagerAsync;
+import org.jnosql.diana.document.DocumentCollectionManagerAsyncFactory;
+import org.jnosql.diana.document.DocumentCollectionManagerFactory;
+import org.jnosql.diana.document.DocumentConfiguration;
+import org.jnosql.diana.document.DocumentConfigurationAsync;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;

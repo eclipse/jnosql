@@ -16,7 +16,7 @@ package org.jnosql.artemis.graph.producer;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.graph.GraphProducer;
-import org.jnosql.diana.api.Settings;
+import org.jnosql.diana.Settings;
 
 public class GraphProducerB implements GraphProducer {
 

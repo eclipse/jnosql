@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.column.query;
 
-import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.column.ColumnCondition;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.Sort;
+import org.jnosql.diana.column.ColumnCondition;
+import org.jnosql.diana.column.ColumnQuery;
 
 import java.util.List;
 import java.util.Objects;

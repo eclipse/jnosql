@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.diana.api.column.ColumnEntity;
+import org.jnosql.diana.column.ColumnEntity;
 
 
 /**

@@ -14,15 +14,14 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.DynamicQueryException;
 import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.Sorts;
-import org.jnosql.diana.api.NonUniqueResultException;
-import org.jnosql.diana.api.Sort;
+import org.jnosql.diana.NonUniqueResultException;
+import org.jnosql.diana.Sort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

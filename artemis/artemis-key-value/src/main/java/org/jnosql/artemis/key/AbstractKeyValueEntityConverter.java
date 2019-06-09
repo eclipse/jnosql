@@ -20,8 +20,8 @@ import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.diana.api.Value;
-import org.jnosql.diana.api.key.KeyValueEntity;
+import org.jnosql.diana.Value;
+import org.jnosql.diana.key.KeyValueEntity;
 
 import java.util.Objects;
 

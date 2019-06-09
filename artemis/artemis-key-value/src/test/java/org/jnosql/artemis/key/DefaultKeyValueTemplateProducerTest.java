@@ -15,7 +15,7 @@
 package org.jnosql.artemis.key;
 
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.diana.api.key.BucketManager;
+import org.jnosql.diana.key.BucketManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;

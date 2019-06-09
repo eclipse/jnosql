@@ -16,9 +16,12 @@ package org.jnosql.artemis.column;
 
 
 import org.jnosql.artemis.PreparedStatementAsync;
-import org.jnosql.diana.api.NonUniqueResultException;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.ExecuteAsyncQueryException;
+import org.jnosql.diana.NonUniqueResultException;
+import org.jnosql.diana.column.ColumnDeleteQuery;
+import org.jnosql.diana.column.ColumnEntity;
+import org.jnosql.diana.column.ColumnQuery;
+import org.jnosql.diana.column.ColumnFamilyManagerAsync;
 
 import java.time.Duration;
 import java.util.List;
@@ -31,9 +34,9 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * This interface that represents the common operation between an entity
- * and {@link org.jnosql.diana.api.column.ColumnEntity} to do async operations
+ * and {@link ColumnEntity} to do async operations
  *
- * @see org.jnosql.diana.api.column.ColumnFamilyManagerAsync
+ * @see ColumnFamilyManagerAsync
  */
 public interface ColumnTemplateAsync {
 
@@ -42,7 +45,7 @@ public interface ColumnTemplateAsync {
      *
      * @param entity entity to be saved
      * @param <T>    the instance type
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when entity is null
      */
@@ -54,7 +57,7 @@ public interface ColumnTemplateAsync {
      * @param entity entity to be saved
      * @param ttl    the time to live
      * @param <T>    the instance type
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when either entity or ttl are null
      */
@@ -67,7 +70,7 @@ public interface ColumnTemplateAsync {
      *
      * @param entities entities to be saved
      * @param <T>      the instance type
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when entities is null
      */
@@ -84,7 +87,7 @@ public interface ColumnTemplateAsync {
      * @param entities entities to be saved
      * @param ttl      time to live
      * @param <T>      the instance type
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when either entities or ttl are null
      */
@@ -101,7 +104,7 @@ public interface ColumnTemplateAsync {
      * @param callback the callback, when the process is finished will call this instance returning
      *                 the saved entity within parameters
      * @param <T>      the instance type
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when either entity or callback are null
      */
@@ -116,7 +119,7 @@ public interface ColumnTemplateAsync {
      * @param callback the callback, when the process is finished will call this instance returning
      *                 the saved entity within parameters
      * @param <T>      the instance type
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when either entity or ttl or callback are null
      */
@@ -127,7 +130,7 @@ public interface ColumnTemplateAsync {
      *
      * @param entity entity to be updated
      * @param <T>    the instance type
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when entity is null
      */
@@ -140,7 +143,7 @@ public interface ColumnTemplateAsync {
      *
      * @param entities entities to be saved
      * @param <T>      the instance type
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when entities is null
      */
@@ -156,7 +159,7 @@ public interface ColumnTemplateAsync {
      * @param callback the callback, when the process is finished will call this instance returning
      *                 the updated entity within parametersa
      * @param <T>      the instance type
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when either entity or callback are null
      */
@@ -166,7 +169,7 @@ public interface ColumnTemplateAsync {
      * Deletes an entity asynchronously
      *
      * @param query query to delete an entity
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when query are null
      */
@@ -178,7 +181,7 @@ public interface ColumnTemplateAsync {
      * @param query    query to delete an entity
      * @param callback the callback, when the process is finished will call this instance returning
      *                 the null within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to delete asynchronous
      * @throws NullPointerException                            when either query or callback are null
      */
@@ -191,7 +194,7 @@ public interface ColumnTemplateAsync {
      * @param <T>      the instance type
      * @param callback the callback, when the process is finished will call this instance returning
      *                 the result of query within parameters
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when either query or callback are null
      */
@@ -293,7 +296,7 @@ public interface ColumnTemplateAsync {
      * @param query    the query
      * @param callback the callback
      * @param <T>      the type
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when either query or callback are null
      * @throws NonUniqueResultException                        when it returns more than one result

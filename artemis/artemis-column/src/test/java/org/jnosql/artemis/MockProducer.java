@@ -15,9 +15,10 @@
 package org.jnosql.artemis;
 
 
-import org.jnosql.diana.api.column.ColumnEntity;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
-import org.jnosql.diana.api.column.ColumnFamilyManagerAsync;
+import org.jnosql.diana.column.Column;
+import org.jnosql.diana.column.ColumnEntity;
+import org.jnosql.diana.column.ColumnFamilyManager;
+import org.jnosql.diana.column.ColumnFamilyManagerAsync;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
@@ -31,8 +32,8 @@ public class MockProducer {
     @Produces
     public ColumnFamilyManager getColumnFamilyManager() {
         ColumnEntity entity = ColumnEntity.of("Person");
-        entity.add(org.jnosql.diana.api.column.Column.of("name", "Default"));
-        entity.add(org.jnosql.diana.api.column.Column.of("age", 10));
+        entity.add(Column.of("name", "Default"));
+        entity.add(Column.of("age", 10));
         ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
         when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
         return manager;
@@ -43,8 +44,8 @@ public class MockProducer {
     @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
     public ColumnFamilyManager getColumnFamilyManagerMock() {
         ColumnEntity entity = ColumnEntity.of("Person");
-        entity.add(org.jnosql.diana.api.column.Column.of("name", "columnRepositoryMock"));
-        entity.add(org.jnosql.diana.api.column.Column.of("age", 10));
+        entity.add(Column.of("name", "columnRepositoryMock"));
+        entity.add(Column.of("age", 10));
         ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
         when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
         return manager;

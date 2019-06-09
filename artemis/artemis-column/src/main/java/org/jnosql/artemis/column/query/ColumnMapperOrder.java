@@ -17,21 +17,23 @@
 package org.jnosql.artemis.column.query;
 
 
+import org.jnosql.diana.Sort;
+
 /**
- * The definition to either {@link org.jnosql.diana.api.Sort.SortType}
+ * The definition to either {@link Sort.SortType}
  */
 public interface ColumnMapperOrder {
 
 
 
     /**
-     * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#ASC}
+     * Defines the order as {@link Sort.SortType#ASC}
      * @return the {@link ColumnMapperNameOrder} instance
      */
     ColumnMapperNameOrder asc();
 
     /**
-     * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#DESC}
+     * Defines the order as {@link Sort.SortType#DESC}
      * @return the {@link ColumnMapperNameOrder} instance
      */
     ColumnMapperNameOrder desc();

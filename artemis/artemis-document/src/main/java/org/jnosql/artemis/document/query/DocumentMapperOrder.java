@@ -17,19 +17,21 @@
 package org.jnosql.artemis.document.query;
 
 
+import org.jnosql.diana.Sort;
+
 /**
  * The Document Order whose define the sort in the query.
  */
 public interface DocumentMapperOrder {
 
     /**
-     * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#ASC}
+     * Defines the order as {@link Sort.SortType#ASC}
      * @return the {@link DocumentMapperNameOrder} instance
      */
     DocumentMapperNameOrder asc();
 
     /**
-     * Defines the order as {@link org.jnosql.diana.api.Sort.SortType#DESC}
+     * Defines the order as {@link Sort.SortType#DESC}
      * @return the {@link DocumentMapperNameOrder} instance
      */
     DocumentMapperNameOrder desc();

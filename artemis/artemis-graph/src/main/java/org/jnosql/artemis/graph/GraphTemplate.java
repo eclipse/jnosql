@@ -17,6 +17,7 @@ package org.jnosql.artemis.graph;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.jnosql.artemis.PreparedStatement;
+import org.jnosql.diana.NonUniqueResultException;
 
 import java.util.Collection;
 import java.util.List;
@@ -250,7 +251,7 @@ public interface GraphTemplate {
      * @param <T>     the entity type
      * @return the result as {@link List}
      * @throws NullPointerException                          when the query is null
-     * @throws org.jnosql.diana.api.NonUniqueResultException if returns more than one result
+     * @throws NonUniqueResultException if returns more than one result
      */
     <T> Optional<T> singleResult(String gremlin);
 

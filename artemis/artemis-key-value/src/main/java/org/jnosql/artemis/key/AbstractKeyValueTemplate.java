@@ -16,10 +16,10 @@ package org.jnosql.artemis.key;
 
 
 import org.jnosql.artemis.PreparedStatement;
-import org.jnosql.diana.api.NonUniqueResultException;
-import org.jnosql.diana.api.Value;
-import org.jnosql.diana.api.key.BucketManager;
-import org.jnosql.diana.api.key.KeyValueEntity;
+import org.jnosql.diana.NonUniqueResultException;
+import org.jnosql.diana.Value;
+import org.jnosql.diana.key.BucketManager;
+import org.jnosql.diana.key.KeyValueEntity;
 
 import java.time.Duration;
 import java.util.Collections;

@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.document.query;
 
-import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.document.DocumentCondition;
-import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.Sort;
+import org.jnosql.diana.document.DocumentCondition;
+import org.jnosql.diana.document.DocumentQuery;
 
 import java.util.Collections;
 import java.util.List;

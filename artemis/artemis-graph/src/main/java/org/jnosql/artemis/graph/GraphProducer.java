@@ -15,7 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.diana.api.Settings;
+import org.jnosql.diana.Settings;
 
 import java.util.function.Function;
 

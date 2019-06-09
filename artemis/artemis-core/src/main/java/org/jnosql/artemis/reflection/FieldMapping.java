@@ -16,7 +16,7 @@ package org.jnosql.artemis.reflection;
 
 
 import org.jnosql.artemis.AttributeConverter;
-import org.jnosql.diana.api.Value;
+import org.jnosql.diana.Value;
 
 import java.lang.reflect.Field;
 import java.util.Optional;

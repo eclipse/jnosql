@@ -28,7 +28,7 @@ import org.jnosql.artemis.PreparedStatement;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.NonUniqueResultException;
 
 import java.util.ArrayList;
 import java.util.Collection;

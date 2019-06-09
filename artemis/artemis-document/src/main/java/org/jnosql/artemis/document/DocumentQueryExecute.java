@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document;
 
 
-import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.document.DocumentQuery;
 
 /**
  * When a document query is executed this event if fired

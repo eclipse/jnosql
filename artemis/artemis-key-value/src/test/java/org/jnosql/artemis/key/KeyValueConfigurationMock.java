@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.key;
 
-import org.jnosql.diana.api.Settings;
-import org.jnosql.diana.api.key.BucketManager;
-import org.jnosql.diana.api.key.BucketManagerFactory;
-import org.jnosql.diana.api.key.KeyValueConfiguration;
+import org.jnosql.diana.Settings;
+import org.jnosql.diana.key.BucketManager;
+import org.jnosql.diana.key.BucketManagerFactory;
+import org.jnosql.diana.key.KeyValueConfiguration;
 import org.mockito.Mockito;
 
 import java.util.List;

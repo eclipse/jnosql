@@ -17,6 +17,8 @@
 package org.jnosql.artemis.document.query;
 
 
+import org.jnosql.diana.document.DocumentCondition;
+
 /**
  * The Document Where whose define the condition in the query.
  */
@@ -24,7 +26,7 @@ public interface DocumentMapperWhere extends DocumentMapperQueryBuild {
 
 
     /**
-     * Starts a new condition in the select using {@link org.jnosql.diana.api.document.DocumentCondition#and(org.jnosql.diana.api.document.DocumentCondition)}
+     * Starts a new condition in the select using {@link DocumentCondition#and(DocumentCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link DocumentMapperNameCondition} with the condition appended
@@ -33,7 +35,7 @@ public interface DocumentMapperWhere extends DocumentMapperQueryBuild {
     DocumentMapperNameCondition and(String name);
 
     /**
-     * Appends a new condition in the select using {@link org.jnosql.diana.api.document.DocumentCondition#or(org.jnosql.diana.api.document.DocumentCondition)}
+     * Appends a new condition in the select using {@link DocumentCondition#or(DocumentCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link DocumentMapperNameCondition} with the condition appended

@@ -15,9 +15,9 @@
 package org.jnosql.artemis.column;
 
 
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnEntity;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.column.ColumnDeleteQuery;
+import org.jnosql.diana.column.ColumnEntity;
+import org.jnosql.diana.column.ColumnQuery;
 
 /**
  * This interface represent the manager of events. When an entity be either saved or updated an event will be fired. This order gonna be:
@@ -55,7 +55,7 @@ public interface ColumnEventPersistManager {
     <T> void firePreEntity(T entity);
 
     /**
-     * Fire an event after convert the {@link org.jnosql.diana.api.column.ColumnEntity},
+     * Fire an event after convert the {@link ColumnEntity},
      * from database response, to Entity.
      *
      * @param entity the entity

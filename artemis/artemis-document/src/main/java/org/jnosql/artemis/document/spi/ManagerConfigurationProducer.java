@@ -17,10 +17,10 @@ package org.jnosql.artemis.document.spi;
 import org.jnosql.artemis.ConfigurationException;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.util.StringUtils;
-import org.jnosql.diana.api.document.DocumentCollectionManager;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsyncFactory;
-import org.jnosql.diana.api.document.DocumentCollectionManagerFactory;
+import org.jnosql.diana.document.DocumentCollectionManager;
+import org.jnosql.diana.document.DocumentCollectionManagerAsync;
+import org.jnosql.diana.document.DocumentCollectionManagerAsyncFactory;
+import org.jnosql.diana.document.DocumentCollectionManagerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

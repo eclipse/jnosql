@@ -20,7 +20,7 @@ import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateProducer;
 import org.jnosql.artemis.spi.AbstractBean;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
+import org.jnosql.diana.column.ColumnFamilyManager;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;

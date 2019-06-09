@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.document.DocumentCollectionManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

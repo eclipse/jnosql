@@ -17,8 +17,8 @@ package org.jnosql.artemis.column.query;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import org.jnosql.diana.api.column.Column;
-import org.jnosql.diana.api.column.ColumnCondition;
+import org.jnosql.diana.column.Column;
+import org.jnosql.diana.column.ColumnCondition;
 
 import java.util.List;
 import java.util.stream.StreamSupport;

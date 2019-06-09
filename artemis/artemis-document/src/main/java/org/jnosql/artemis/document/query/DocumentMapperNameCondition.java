@@ -17,13 +17,15 @@
 package org.jnosql.artemis.document.query;
 
 
+import org.jnosql.diana.Condition;
+
 /**
  * The base to name condition
  */
 public interface DocumentMapperNameCondition {
 
     /**
-     * Creates the equals condition {@link org.jnosql.diana.api.Condition#EQUALS}
+     * Creates the equals condition {@link Condition#EQUALS}
      *
      * @param value the value to the condition
      * @param <T>   the type
@@ -33,7 +35,7 @@ public interface DocumentMapperNameCondition {
     <T> DocumentMapperWhere eq(T value);
 
     /**
-     * Creates the like condition {@link org.jnosql.diana.api.Condition#LIKE}
+     * Creates the like condition {@link Condition#LIKE}
      *
      * @param value the value to the condition
      * @return the {@link DocumentMapperWhere}
@@ -42,7 +44,7 @@ public interface DocumentMapperNameCondition {
     DocumentMapperWhere like(String value);
 
     /**
-     * Creates the greater than condition {@link org.jnosql.diana.api.Condition#GREATER_THAN}
+     * Creates the greater than condition {@link Condition#GREATER_THAN}
      *
      * @param <T>   the type
      * @param value the value to the condition
@@ -52,7 +54,7 @@ public interface DocumentMapperNameCondition {
     <T> DocumentMapperWhere gt(T value);
 
     /**
-     * Creates the greater equals than condition {@link org.jnosql.diana.api.Condition#GREATER_EQUALS_THAN}
+     * Creates the greater equals than condition {@link Condition#GREATER_EQUALS_THAN}
      *
      * @param <T>   the type
      * @param value the value to the condition
@@ -62,7 +64,7 @@ public interface DocumentMapperNameCondition {
     <T> DocumentMapperWhere gte(T value);
 
     /**
-     * Creates the lesser than condition {@link org.jnosql.diana.api.Condition#LESSER_THAN}
+     * Creates the lesser than condition {@link Condition#LESSER_THAN}
      *
      * @param <T>   the type
      * @param value the value to the condition
@@ -72,7 +74,7 @@ public interface DocumentMapperNameCondition {
     <T> DocumentMapperWhere lt(T value);
 
     /**
-     * Creates the lesser equals than condition {@link org.jnosql.diana.api.Condition#LESSER_EQUALS_THAN}
+     * Creates the lesser equals than condition {@link Condition#LESSER_EQUALS_THAN}
      *
      * @param <T>   the type
      * @param value the value to the condition
@@ -82,7 +84,7 @@ public interface DocumentMapperNameCondition {
     <T> DocumentMapperWhere lte(T value);
 
     /**
-     * Creates the between condition {@link org.jnosql.diana.api.Condition#EQUALS}
+     * Creates the between condition {@link Condition#EQUALS}
      *
      * @param <T>    the type
      * @param valueA the values within a given range
@@ -93,7 +95,7 @@ public interface DocumentMapperNameCondition {
     <T> DocumentMapperWhere between(T valueA, T valueB);
 
     /**
-     * Creates in condition {@link org.jnosql.diana.api.Condition#IN}
+     * Creates in condition {@link Condition#IN}
      *
      * @param values the values
      * @param <T>    the type
@@ -103,7 +105,7 @@ public interface DocumentMapperNameCondition {
     <T> DocumentMapperWhere in(Iterable<T> values);
 
     /**
-     * Creates the equals condition {@link org.jnosql.diana.api.Condition#NOT}
+     * Creates the equals condition {@link Condition#NOT}
      *
      * @return {@link DocumentMapperNotCondition}
      */

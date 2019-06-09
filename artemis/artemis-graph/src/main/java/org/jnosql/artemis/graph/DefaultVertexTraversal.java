@@ -22,7 +22,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.Entity;
 import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
-import org.jnosql.diana.api.NonUniqueResultException;
+import org.jnosql.diana.NonUniqueResultException;
 
 import java.util.List;
 import java.util.Optional;

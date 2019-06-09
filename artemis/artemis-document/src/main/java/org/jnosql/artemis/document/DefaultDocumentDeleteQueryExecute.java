@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document;
 
 
-import org.jnosql.diana.api.document.DocumentDeleteQuery;
+import org.jnosql.diana.document.DocumentDeleteQuery;
 
 import java.util.Objects;
 

@@ -20,7 +20,7 @@ import org.jnosql.artemis.Page;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.column.ColumnQuery;
 
 import java.util.List;
 import java.util.Optional;

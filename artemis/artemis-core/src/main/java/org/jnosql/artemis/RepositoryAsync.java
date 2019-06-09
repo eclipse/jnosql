@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis;
 
+import org.jnosql.diana.ExecuteAsyncQueryException;
+
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -48,7 +50,7 @@ public interface RepositoryAsync<T, K> {
      *
      * @param <S>    the entity type
      * @param entity entity to be saved
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when entity are null
      */
@@ -60,7 +62,7 @@ public interface RepositoryAsync<T, K> {
      *
      * @param <S>      the entity type
      * @param entities entities to be saved
-     * @throws org.jnosql.diana.api.ExecuteAsyncQueryException when there is a async error
+     * @throws ExecuteAsyncQueryException when there is a async error
      * @throws UnsupportedOperationException                   when the database does not have support to insert asynchronous
      * @throws NullPointerException                            when entities is null
      */

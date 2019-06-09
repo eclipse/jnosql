@@ -16,7 +16,7 @@ package org.jnosql.artemis.document.query;
 
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassMapping;
-import org.jnosql.diana.api.document.DocumentCondition;
+import org.jnosql.diana.document.DocumentCondition;
 
 interface DocumentTokenProcessor {
 

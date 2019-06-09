@@ -17,9 +17,9 @@ package org.jnosql.artemis.column;
 import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.reflection.FieldMapping;
 import org.jnosql.artemis.reflection.GenericFieldMapping;
-import org.jnosql.diana.api.TypeReference;
-import org.jnosql.diana.api.Value;
-import org.jnosql.diana.api.column.Column;
+import org.jnosql.diana.TypeReference;
+import org.jnosql.diana.Value;
+import org.jnosql.diana.column.Column;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

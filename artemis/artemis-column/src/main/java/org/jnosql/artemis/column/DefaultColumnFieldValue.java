@@ -20,7 +20,7 @@ import org.jnosql.artemis.reflection.FieldMapping;
 import org.jnosql.artemis.reflection.FieldType;
 import org.jnosql.artemis.reflection.FieldValue;
 import org.jnosql.artemis.reflection.GenericFieldMapping;
-import org.jnosql.diana.api.column.Column;
+import org.jnosql.diana.column.Column;
 
 import java.util.ArrayList;
 import java.util.List;

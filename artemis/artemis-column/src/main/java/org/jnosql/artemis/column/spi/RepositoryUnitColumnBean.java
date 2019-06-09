@@ -18,8 +18,8 @@ import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.column.ColumnRepositoryProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;
-import org.jnosql.diana.api.column.ColumnFamilyManager;
-import org.jnosql.diana.api.column.ColumnFamilyManagerFactory;
+import org.jnosql.diana.column.ColumnFamilyManager;
+import org.jnosql.diana.column.ColumnFamilyManagerFactory;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;

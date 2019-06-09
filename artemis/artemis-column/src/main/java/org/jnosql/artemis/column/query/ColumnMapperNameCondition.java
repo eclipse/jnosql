@@ -17,6 +17,8 @@
 package org.jnosql.artemis.column.query;
 
 
+import org.jnosql.diana.Condition;
+
 /**
  * The base to name condition
  */
@@ -24,7 +26,7 @@ public interface ColumnMapperNameCondition {
 
 
     /**
-     * Creates the equals condition {@link org.jnosql.diana.api.Condition#EQUALS}
+     * Creates the equals condition {@link Condition#EQUALS}
      *
      * @param value the value to the condition
      * @param <T>   the type
@@ -34,7 +36,7 @@ public interface ColumnMapperNameCondition {
     <T> ColumnMapperWhere eq(T value);
 
     /**
-     * Creates the like condition {@link org.jnosql.diana.api.Condition#LIKE}
+     * Creates the like condition {@link Condition#LIKE}
      *
      * @param value the value to the condition
      * @return the {@link ColumnMapperWhere}
@@ -43,7 +45,7 @@ public interface ColumnMapperNameCondition {
     ColumnMapperWhere like(String value);
 
     /**
-     * Creates the greater than condition {@link org.jnosql.diana.api.Condition#GREATER_THAN}
+     * Creates the greater than condition {@link Condition#GREATER_THAN}
      *
      * @param <T>   the type
      * @param value the value to the condition
@@ -53,7 +55,7 @@ public interface ColumnMapperNameCondition {
     <T> ColumnMapperWhere gt(T value);
 
     /**
-     * Creates the greater equals than condition {@link org.jnosql.diana.api.Condition#GREATER_EQUALS_THAN}
+     * Creates the greater equals than condition {@link Condition#GREATER_EQUALS_THAN}
      *
      * @param <T>   the type
      * @param value the value to the condition
@@ -63,7 +65,7 @@ public interface ColumnMapperNameCondition {
     <T> ColumnMapperWhere gte(T value);
 
     /**
-     * Creates the lesser than condition {@link org.jnosql.diana.api.Condition#LESSER_THAN}
+     * Creates the lesser than condition {@link Condition#LESSER_THAN}
      *
      * @param <T>   the type
      * @param value the value to the condition
@@ -73,7 +75,7 @@ public interface ColumnMapperNameCondition {
     <T> ColumnMapperWhere lt(T value);
 
     /**
-     * Creates the lesser equals than condition {@link org.jnosql.diana.api.Condition#LESSER_EQUALS_THAN}
+     * Creates the lesser equals than condition {@link Condition#LESSER_EQUALS_THAN}
      *
      * @param <T>   the type
      * @param value the value to the condition
@@ -83,7 +85,7 @@ public interface ColumnMapperNameCondition {
     <T> ColumnMapperWhere lte(T value);
 
     /**
-     * Creates the between condition {@link org.jnosql.diana.api.Condition#EQUALS}
+     * Creates the between condition {@link Condition#EQUALS}
      *
      * @param <T>    the type
      * @param valueA the values within a given range
@@ -94,7 +96,7 @@ public interface ColumnMapperNameCondition {
     <T> ColumnMapperWhere between(T valueA, T valueB);
 
     /**
-     * Creates in condition {@link org.jnosql.diana.api.Condition#IN}
+     * Creates in condition {@link Condition#IN}
      *
      * @param values the values
      * @param <T>    the type
@@ -104,7 +106,7 @@ public interface ColumnMapperNameCondition {
     <T> ColumnMapperWhere in(Iterable<T> values);
 
     /**
-     * Creates the equals condition {@link org.jnosql.diana.api.Condition#NOT}
+     * Creates the equals condition {@link Condition#NOT}
      *
      * @return {@link ColumnMapperNotCondition}
      */

@@ -20,7 +20,7 @@ import org.jnosql.artemis.DatabaseType;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateProducer;
 import org.jnosql.artemis.spi.AbstractBean;
-import org.jnosql.diana.api.document.DocumentCollectionManager;
+import org.jnosql.diana.document.DocumentCollectionManager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;

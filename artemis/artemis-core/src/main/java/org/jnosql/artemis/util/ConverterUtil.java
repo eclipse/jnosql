@@ -18,7 +18,7 @@ import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.diana.api.Value;
+import org.jnosql.diana.Value;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

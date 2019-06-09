@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.diana.api.document.Document;
+import org.jnosql.diana.document.Document;
 
 import java.util.List;
 import java.util.Optional;

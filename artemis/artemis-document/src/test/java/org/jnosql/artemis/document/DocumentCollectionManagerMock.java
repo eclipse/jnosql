@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.document;
 
-import org.jnosql.diana.api.Settings;
-import org.jnosql.diana.api.document.DocumentCollectionManager;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsyncFactory;
-import org.jnosql.diana.api.document.DocumentCollectionManagerFactory;
-import org.jnosql.diana.api.document.UnaryDocumentConfiguration;
+import org.jnosql.diana.Settings;
+import org.jnosql.diana.document.DocumentCollectionManager;
+import org.jnosql.diana.document.DocumentCollectionManagerAsync;
+import org.jnosql.diana.document.DocumentCollectionManagerAsyncFactory;
+import org.jnosql.diana.document.DocumentCollectionManagerFactory;
+import org.jnosql.diana.document.UnaryDocumentConfiguration;
 import org.mockito.Mockito;
 
 public class DocumentCollectionManagerMock implements UnaryDocumentConfiguration {

@@ -16,9 +16,9 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.diana.api.Settings;
-import org.jnosql.diana.api.document.DocumentCollectionManagerAsyncFactory;
-import org.jnosql.diana.api.document.DocumentCollectionManagerFactory;
+import org.jnosql.diana.Settings;
+import org.jnosql.diana.document.DocumentCollectionManagerAsyncFactory;
+import org.jnosql.diana.document.DocumentCollectionManagerFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

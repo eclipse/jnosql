@@ -17,6 +17,8 @@
 package org.jnosql.artemis.column.query;
 
 
+import org.jnosql.diana.column.ColumnCondition;
+
 /**
  * The Column Where whose define the condition in the delete query.
  */
@@ -24,7 +26,7 @@ public interface ColumnMapperDeleteWhere extends ColumnMapperDeleteQueryBuild {
 
 
     /**
-     * Starts a new condition in the select using {@link org.jnosql.diana.api.column.ColumnCondition#and(org.jnosql.diana.api.column.ColumnCondition)}
+     * Starts a new condition in the select using {@link ColumnCondition#and(ColumnCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link ColumnMapperDeleteNameCondition} with the condition appended
@@ -33,7 +35,7 @@ public interface ColumnMapperDeleteWhere extends ColumnMapperDeleteQueryBuild {
     ColumnMapperDeleteNameCondition and(String name);
 
     /**
-     * Starts a new condition in the select using {@link org.jnosql.diana.api.column.ColumnCondition#or(org.jnosql.diana.api.column.ColumnCondition)}
+     * Starts a new condition in the select using {@link ColumnCondition#or(ColumnCondition)}
      *
      * @param name a condition to be added
      * @return the same {@link ColumnMapperDeleteNameCondition} with the condition appended

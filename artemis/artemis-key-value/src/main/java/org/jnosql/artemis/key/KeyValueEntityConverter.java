@@ -15,7 +15,7 @@
 package org.jnosql.artemis.key;
 
 
-import org.jnosql.diana.api.key.KeyValueEntity;
+import org.jnosql.diana.key.KeyValueEntity;
 
 /**
  * This interface represents the converter between an entity and the {@link KeyValueEntity}

@@ -18,7 +18,7 @@ import org.jnosql.artemis.Repository;
 import org.jnosql.artemis.key.KeyValueRepositoryProducer;
 import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.key.KeyValueTemplateProducer;
-import org.jnosql.diana.api.key.BucketManager;
+import org.jnosql.diana.key.BucketManager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

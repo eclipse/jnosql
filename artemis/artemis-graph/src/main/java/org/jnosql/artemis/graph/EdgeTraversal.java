@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.jnosql.diana.NonUniqueResultException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -72,7 +74,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
     /**
      * Concludes the traversal that returns a single {@link EdgeEntity} result
      * @return the EdgeEntity result otherwise {@link Optional#empty()}
-     * @throws org.jnosql.diana.api.NonUniqueResultException when there is more than one result
+     * @throws NonUniqueResultException when there is more than one result
      */
     Optional<EdgeEntity> getSingleResult();
 

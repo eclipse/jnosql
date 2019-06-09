@@ -18,7 +18,7 @@ import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.artemis.reflection.ClassMapping;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
+import org.jnosql.diana.column.ColumnDeleteQuery;
 
 import java.util.function.Consumer;
 

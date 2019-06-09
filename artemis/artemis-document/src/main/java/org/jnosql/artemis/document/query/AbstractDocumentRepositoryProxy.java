@@ -23,8 +23,8 @@ import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 import org.jnosql.artemis.reflection.DynamicReturn;
-import org.jnosql.diana.api.document.DocumentDeleteQuery;
-import org.jnosql.diana.api.document.DocumentQuery;
+import org.jnosql.diana.document.DocumentDeleteQuery;
+import org.jnosql.diana.document.DocumentQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.jnosql.diana.api.document.query.DocumentQueryBuilder.select;
+import static org.jnosql.diana.document.query.DocumentQueryBuilder.select;
 
 /**
  * The template method to {@link org.jnosql.artemis.Repository} to Document

@@ -17,9 +17,11 @@ package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.Page;
 import org.jnosql.artemis.PreparedStatement;
-import org.jnosql.diana.api.NonUniqueResultException;
-import org.jnosql.diana.api.column.ColumnDeleteQuery;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.NonUniqueResultException;
+import org.jnosql.diana.column.ColumnDeleteQuery;
+import org.jnosql.diana.column.ColumnEntity;
+import org.jnosql.diana.column.ColumnQuery;
+import org.jnosql.diana.column.ColumnFamilyManager;
 
 import java.time.Duration;
 import java.util.List;
@@ -30,9 +32,9 @@ import java.util.stream.StreamSupport;
 
 /**
  * This interface that represents the common operation between an entity
- * and {@link org.jnosql.diana.api.column.ColumnEntity}
+ * and {@link ColumnEntity}
  *
- * @see org.jnosql.diana.api.column.ColumnFamilyManager
+ * @see ColumnFamilyManager
  */
 public interface ColumnTemplate {
 

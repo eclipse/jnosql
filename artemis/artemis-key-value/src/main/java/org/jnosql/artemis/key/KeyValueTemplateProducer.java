@@ -15,7 +15,7 @@
 package org.jnosql.artemis.key;
 
 
-import org.jnosql.diana.api.key.BucketManager;
+import org.jnosql.diana.key.BucketManager;
 
 /**
  * The producer of {@link KeyValueTemplate}

@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis;
 
-import org.jnosql.diana.api.Sort;
+import org.jnosql.diana.Sort;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import java.util.List;
 public interface Sorts {
 
     /**
-     * Appends a {@link org.jnosql.diana.api.Sort} instance of {@link org.jnosql.diana.api.Sort.SortType#ASC}
+     * Appends a {@link Sort} instance of {@link Sort.SortType#ASC}
      * from the name
      *
      * @param name the name
@@ -35,7 +35,7 @@ public interface Sorts {
     Sorts asc(String name);
 
     /**
-     * Appends a {@link org.jnosql.diana.api.Sort} instance of {@link org.jnosql.diana.api.Sort.SortType#DESC}
+     * Appends a {@link Sort} instance of {@link Sort.SortType#DESC}
      * from the name
      *
      * @param name the name

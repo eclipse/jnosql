@@ -21,8 +21,8 @@ import org.jnosql.artemis.column.ColumnQueryPagination;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.artemis.reflection.ClassMapping;
-import org.jnosql.diana.api.Sort;
-import org.jnosql.diana.api.column.ColumnQuery;
+import org.jnosql.diana.Sort;
+import org.jnosql.diana.column.ColumnQuery;
 
 import java.util.ArrayList;
 import java.util.List;
