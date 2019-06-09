@@ -39,8 +39,6 @@ final class DefaultSort implements Sort {
         return new DefaultSort(name, type);
     }
 
-
-
     public String getName() {
         return name;
     }
