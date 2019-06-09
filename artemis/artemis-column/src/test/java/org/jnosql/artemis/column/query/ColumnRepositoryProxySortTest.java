@@ -43,8 +43,8 @@ import java.util.Optional;
 
 import static java.util.concurrent.ThreadLocalRandom.current;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.jnosql.diana.Condition.AND;
-import static org.jnosql.diana.Condition.EQUALS;
+import static  jakarta.nosql.Condition.AND;
+import static  jakarta.nosql.Condition.EQUALS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;

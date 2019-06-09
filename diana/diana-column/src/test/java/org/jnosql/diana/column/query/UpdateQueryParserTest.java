@@ -17,7 +17,7 @@
 package org.jnosql.diana.column.query;
 
 import org.jnosql.diana.QueryException;
-import org.jnosql.diana.TypeReference;
+import jakarta.nosql.TypeReference;
 import org.jnosql.diana.column.Column;
 import org.jnosql.diana.column.ColumnEntity;
 import org.jnosql.diana.column.ColumnFamilyManager;

@@ -17,7 +17,7 @@
 package org.jnosql.diana.document.query;
 
 import org.jnosql.diana.QueryException;
-import org.jnosql.diana.TypeReference;
+import jakarta.nosql.TypeReference;
 import org.jnosql.diana.document.Document;
 import org.jnosql.diana.document.DocumentCollectionManager;
 import org.jnosql.diana.document.DocumentCollectionManagerAsync;

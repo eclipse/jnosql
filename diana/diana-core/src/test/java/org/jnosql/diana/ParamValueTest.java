@@ -11,6 +11,9 @@
  */
 package org.jnosql.diana;
 
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.Value;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +29,7 @@ class ParamValueTest {
 
     @Test
     public void shouldAddParamter() {
-        Params params = new Params();
+        Params params = Params.newParams();
         Value name = params.add("name");
         assertNotNull(name);
         MatcherAssert.<List<String>>assertThat(params.getParametersNames(), containsInAnyOrder("name"));
@@ -34,7 +37,7 @@ class ParamValueTest {
 
     @Test
     public void shouldNotUseValueWhenIsInvalid() {
-        Params params = new Params();
+        Params params = Params.newParams();
         Value name = params.add("name");
         assertThrows(QueryException.class, name::get);
 
@@ -43,7 +46,7 @@ class ParamValueTest {
 
     @Test
     public void shouldSetParameter() {
-        Params params = new Params();
+        Params params = Params.newParams();
         Value name = params.add("name");
 
         params.bind("name", "Ada Lovelace");
@@ -53,14 +56,14 @@ class ParamValueTest {
 
     @Test
     public void shouldReturnsTrueWhenValueIsEmpty() {
-        Params params = new Params();
+        Params params = Params.newParams();
         Value name = params.add("name");
         assertTrue(name.isInstanceOf(Integer.class));
     }
 
     @Test
     public void shouldisInstanceOf() {
-        Params params = new Params();
+        Params params = Params.newParams();
         Value name = params.add("name");
         assertTrue(name.isInstanceOf(Integer.class));
 

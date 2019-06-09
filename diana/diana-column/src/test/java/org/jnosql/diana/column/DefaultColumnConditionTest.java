@@ -18,7 +18,7 @@ package org.jnosql.diana.column;
 
 import org.hamcrest.Matchers;
 import org.jnosql.diana.Condition;
-import org.jnosql.diana.TypeReference;
+import jakarta.nosql.TypeReference;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

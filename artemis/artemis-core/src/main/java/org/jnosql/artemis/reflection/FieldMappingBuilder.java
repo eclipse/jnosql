@@ -15,7 +15,7 @@
 package org.jnosql.artemis.reflection;
 
 import org.jnosql.artemis.AttributeConverter;
-import org.jnosql.diana.TypeSupplier;
+import jakarta.nosql.TypeSupplier;
 
 import java.lang.reflect.Field;
 

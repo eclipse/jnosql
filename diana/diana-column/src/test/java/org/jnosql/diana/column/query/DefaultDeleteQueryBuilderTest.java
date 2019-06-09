@@ -19,7 +19,7 @@ package org.jnosql.diana.column.query;
 
 import org.hamcrest.Matchers;
 import org.jnosql.diana.Condition;
-import org.jnosql.diana.TypeReference;
+import jakarta.nosql.TypeReference;
 import org.jnosql.diana.column.Column;
 import org.jnosql.diana.column.ColumnCondition;
 import org.jnosql.diana.column.ColumnDeleteQuery;

@@ -20,7 +20,7 @@ import org.hamcrest.Matchers;
 import org.jnosql.diana.Condition;
 import org.jnosql.diana.QueryException;
 import org.jnosql.diana.Sort;
-import org.jnosql.diana.TypeReference;
+import jakarta.nosql.TypeReference;
 import org.jnosql.diana.Value;
 import org.jnosql.diana.column.Column;
 import org.jnosql.diana.column.ColumnCondition;

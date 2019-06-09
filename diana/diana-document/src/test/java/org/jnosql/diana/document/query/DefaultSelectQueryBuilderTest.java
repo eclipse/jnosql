@@ -19,7 +19,7 @@ package org.jnosql.diana.document.query;
 import org.hamcrest.Matchers;
 import org.jnosql.diana.Condition;
 import org.jnosql.diana.Sort;
-import org.jnosql.diana.TypeReference;
+import jakarta.nosql.TypeReference;
 import org.jnosql.diana.document.Document;
 import org.jnosql.diana.document.DocumentCollectionManager;
 import org.jnosql.diana.document.DocumentCollectionManagerAsync;

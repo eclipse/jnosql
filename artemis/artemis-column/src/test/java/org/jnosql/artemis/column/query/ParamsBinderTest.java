@@ -22,7 +22,7 @@ import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.util.ParamsBinder;
 import org.jnosql.diana.Params;
-import org.jnosql.diana.TypeReference;
+import jakarta.nosql.TypeReference;
 import org.jnosql.diana.Value;
 import org.jnosql.diana.column.Column;
 import org.jnosql.diana.column.ColumnCondition;

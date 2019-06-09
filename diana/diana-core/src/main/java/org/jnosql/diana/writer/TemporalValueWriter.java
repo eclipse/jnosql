@@ -17,7 +17,7 @@
 
 package org.jnosql.diana.writer;
 
-import org.jnosql.diana.ValueWriter;
+import jakarta.nosql.ValueWriter;
 
 import java.time.temporal.Temporal;
 

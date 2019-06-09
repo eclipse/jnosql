@@ -17,7 +17,7 @@
 
 package org.jnosql.diana.column;
 
-import org.jnosql.diana.TypeSupplier;
+import jakarta.nosql.TypeSupplier;
 import org.jnosql.diana.Value;
 
 import java.util.Objects;

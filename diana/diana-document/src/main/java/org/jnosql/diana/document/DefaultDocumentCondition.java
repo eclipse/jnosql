@@ -19,7 +19,7 @@ package org.jnosql.diana.document;
 
 
 import org.jnosql.diana.Condition;
-import org.jnosql.diana.TypeReference;
+import jakarta.nosql.TypeReference;
 import org.jnosql.diana.Value;
 
 import java.util.ArrayList;

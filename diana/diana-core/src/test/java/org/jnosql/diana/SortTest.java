@@ -16,6 +16,8 @@
  */
 package org.jnosql.diana;
 
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +26,7 @@ class SortTest {
 
     @Test
     public void shouldReturnErrorWhenParameterIsRequired() {
-        Assertions.assertThrows(NullPointerException.class, ()-> Sort.of(null, Sort.SortType.ASC));
+        Assertions.assertThrows(NullPointerException.class, ()-> Sort.of(null, SortType.ASC));
         Assertions.assertThrows(NullPointerException.class, ()-> Sort.of("name", null));
         Assertions.assertThrows(NullPointerException.class, ()-> Sort.asc(null));
         Assertions.assertThrows(NullPointerException.class, ()-> Sort.desc(null));
@@ -32,26 +34,26 @@ class SortTest {
 
     @Test
     public void shouldCreateInstance() {
-        Sort asc = Sort.of("name", Sort.SortType.ASC);
-        Sort desc = Sort.of("name", Sort.SortType.DESC);
+        Sort asc = Sort.of("name", SortType.ASC);
+        Sort desc = Sort.of("name", SortType.DESC);
 
         Assertions.assertEquals("name", asc.getName());
         Assertions.assertEquals("name", desc.getName());
 
-        Assertions.assertEquals(Sort.SortType.ASC, asc.getType());
-        Assertions.assertEquals(Sort.SortType.DESC, desc.getType());
+        Assertions.assertEquals(SortType.ASC, asc.getType());
+        Assertions.assertEquals(SortType.DESC, desc.getType());
     }
 
     @Test
     public void shouldCreateInstanceFromAsc() {
         Sort sort = Sort.asc("name");
-        Assertions.assertEquals(Sort.of("name", Sort.SortType.ASC), sort);
+        Assertions.assertEquals(Sort.of("name", SortType.ASC), sort);
     }
 
     @Test
     public void shouldCreateInstanceFromDesc() {
         Sort sort = Sort.desc("name");
-        Assertions.assertEquals(Sort.of("name", Sort.SortType.DESC), sort);
+        Assertions.assertEquals(Sort.of("name", SortType.DESC), sort);
     }
 
 }

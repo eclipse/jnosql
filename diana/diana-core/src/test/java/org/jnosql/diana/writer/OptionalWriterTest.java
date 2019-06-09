@@ -17,7 +17,7 @@
 
 package org.jnosql.diana.writer;
 
-import org.jnosql.diana.ValueWriter;
+import jakarta.nosql.ValueWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

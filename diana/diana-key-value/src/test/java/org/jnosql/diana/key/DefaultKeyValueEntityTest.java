@@ -17,7 +17,7 @@
 package org.jnosql.diana.key;
 
 import org.hamcrest.Matchers;
-import org.jnosql.diana.TypeReference;
+import jakarta.nosql.TypeReference;
 import org.jnosql.diana.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

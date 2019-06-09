@@ -18,7 +18,7 @@ package org.jnosql.artemis.reflection;
 import org.jnosql.artemis.AttributeConverter;
 import org.jnosql.artemis.Embeddable;
 import org.jnosql.artemis.Entity;
-import org.jnosql.diana.TypeSupplier;
+import jakarta.nosql.TypeSupplier;
 import org.jnosql.diana.Value;
 
 import java.lang.reflect.Field;

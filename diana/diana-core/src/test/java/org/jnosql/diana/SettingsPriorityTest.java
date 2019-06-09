@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana;
 
+import jakarta.nosql.Settings;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

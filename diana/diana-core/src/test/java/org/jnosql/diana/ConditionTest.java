@@ -17,15 +17,16 @@
 package org.jnosql.diana;
 
 
+import jakarta.nosql.Condition;
 import org.junit.jupiter.api.Test;
 
-import static org.jnosql.diana.Condition.AND;
-import static org.jnosql.diana.Condition.EQUALS;
-import static org.jnosql.diana.Condition.GREATER_EQUALS_THAN;
-import static org.jnosql.diana.Condition.IN;
-import static org.jnosql.diana.Condition.LESSER_THAN;
-import static org.jnosql.diana.Condition.NOT;
-import static org.jnosql.diana.Condition.OR;
+import static jakarta.nosql.Condition.AND;
+import static jakarta.nosql.Condition.EQUALS;
+import static jakarta.nosql.Condition.GREATER_EQUALS_THAN;
+import static jakarta.nosql.Condition.IN;
+import static jakarta.nosql.Condition.LESSER_THAN;
+import static jakarta.nosql.Condition.NOT;
+import static jakarta.nosql.Condition.OR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -44,7 +45,7 @@ public class ConditionTest {
 
     @Test
     public void shouldParser() {
-        assertEquals(AND,Condition.parse("_AND"));
+        assertEquals(AND, Condition.parse("_AND"));
         assertEquals(EQUALS,Condition.parse("_EQUALS"));
         assertEquals(GREATER_EQUALS_THAN,Condition.parse("_GREATER_EQUALS_THAN"));
         assertEquals(IN,Condition.parse("_IN"));

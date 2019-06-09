@@ -18,6 +18,8 @@
 package org.jnosql.diana;
 
 
+import jakarta.nosql.Value;
+import jakarta.nosql.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +38,6 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@SuppressWarnings("unchecked")
 public class DefaultValueTest {
 
 

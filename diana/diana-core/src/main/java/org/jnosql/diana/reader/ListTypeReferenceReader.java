@@ -17,10 +17,10 @@
 package org.jnosql.diana.reader;
 
 
-import org.jnosql.diana.TypeReferenceReader;
-import org.jnosql.diana.TypeSupplier;
+import jakarta.nosql.TypeReferenceReader;
 import jakarta.nosql.ValueReader;
-import org.jnosql.diana.ValueReaderDecorator;
+import jakarta.nosql.ValueReaderDecorator;
+import jakarta.nosql.TypeSupplier;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -31,6 +31,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
+
 
 /**
  * The {@link TypeReferenceReader} to {@link java.util.List} and {@link java.lang.Iterable}
