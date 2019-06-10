@@ -11,18 +11,18 @@
  */
 package org.jnosql.diana.query.method;
 
+import jakarta.nosql.query.ArrayQueryValue;
+import jakarta.nosql.query.Condition;
+import jakarta.nosql.query.ConditionQueryValue;
+import jakarta.nosql.query.Operator;
+import jakarta.nosql.query.ParamQueryValue;
+import jakarta.nosql.query.Where;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.jnosql.diana.query.QueryErrorListener;
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionValue;
-import jakarta.nosql.query.Operator;
-import org.jnosql.query.ParamValue;
-import jakarta.nosql.query.Where;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,17 +32,17 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Function;
 
-import jakarta.nosql.query.Operator.AND;
-import jakarta.nosql.query.Operator.BETWEEN;
-import jakarta.nosql.query.Operator.EQUALS;
-import jakarta.nosql.query.Operator.GREATER_EQUALS_THAN;
-import jakarta.nosql.query.Operator.GREATER_THAN;
-import jakarta.nosql.query.Operator.IN;
-import jakarta.nosql.query.Operator.LESSER_EQUALS_THAN;
-import jakarta.nosql.query.Operator.LESSER_THAN;
-import jakarta.nosql.query.Operator.LIKE;
-import jakarta.nosql.query.Operator.NOT;
-import jakarta.nosql.query.Operator.OR;
+import static jakarta.nosql.query.Operator.AND;
+import static jakarta.nosql.query.Operator.BETWEEN;
+import static jakarta.nosql.query.Operator.EQUALS;
+import static jakarta.nosql.query.Operator.GREATER_EQUALS_THAN;
+import static jakarta.nosql.query.Operator.GREATER_THAN;
+import static jakarta.nosql.query.Operator.IN;
+import static jakarta.nosql.query.Operator.LESSER_EQUALS_THAN;
+import static jakarta.nosql.query.Operator.LESSER_THAN;
+import static jakarta.nosql.query.Operator.LIKE;
+import static jakarta.nosql.query.Operator.NOT;
+import static jakarta.nosql.query.Operator.OR;
 
 abstract class AbstractMethodQuerySupplier extends MethodBaseListener {
 
@@ -135,7 +135,7 @@ abstract class AbstractMethodQuerySupplier extends MethodBaseListener {
         boolean hasNot = Objects.nonNull(ctx.not());
         String variable = getVariable(ctx.variable());
         Operator operator = BETWEEN;
-        ArrayValue value = MethodArrayValue.of(variable);
+        ArrayQueryValue value = MethodArrayValue.of(variable);
         checkCondition(new MethodCondition(variable, operator, value), hasNot);
     }
 
@@ -150,7 +150,7 @@ abstract class AbstractMethodQuerySupplier extends MethodBaseListener {
     }
 
     private void appendCondition(boolean hasNot, String variable, Operator operator) {
-        ParamValue paramValue = new MethodParamValue(variable);
+        ParamQueryValue paramValue = new MethodParamValue(variable);
         checkCondition(new MethodCondition(variable, operator, paramValue), hasNot);
     }
 
@@ -186,7 +186,7 @@ abstract class AbstractMethodQuerySupplier extends MethodBaseListener {
 
     private Condition checkNotCondition(Condition condition, boolean hasNot) {
         if (hasNot) {
-            ConditionValue conditions = MethodConditionValue.of(Collections.singletonList(condition));
+            ConditionQueryValue conditions = MethodConditionValue.of(Collections.singletonList(condition));
             return new MethodCondition("_NOT", NOT, conditions);
         } else {
             return condition;
@@ -196,7 +196,7 @@ abstract class AbstractMethodQuerySupplier extends MethodBaseListener {
     private void appendCondition(Operator operator, Condition newCondition) {
 
         if (operator.equals(this.condition.getOperator())) {
-            ConditionValue conditionValue = ConditionValue.class.cast(this.condition.getValue());
+            ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.getValue());
             List<Condition> conditions = new ArrayList<>(conditionValue.get());
             conditions.add(newCondition);
             this.condition = new MethodCondition("_" + operator.name(), operator, MethodConditionValue.of(conditions));
@@ -204,11 +204,11 @@ abstract class AbstractMethodQuerySupplier extends MethodBaseListener {
             List<Condition> conditions = Arrays.asList(this.condition, newCondition);
             this.condition = new MethodCondition("_" + operator.name(), operator, MethodConditionValue.of(conditions));
         } else {
-            List<Condition> conditions = ConditionValue.class.cast(this.condition.getValue()).get();
+            List<Condition> conditions = ConditionQueryValue.class.cast(this.condition.getValue()).get();
             Condition lastCondition = conditions.get(conditions.size() - 1);
 
             if (isAppendable(lastCondition) && operator.equals(lastCondition.getOperator())) {
-                List<Condition> lastConditions = new ArrayList<>(ConditionValue.class.cast(lastCondition.getValue()).get());
+                List<Condition> lastConditions = new ArrayList<>(ConditionQueryValue.class.cast(lastCondition.getValue()).get());
                 lastConditions.add(newCondition);
 
                 Condition newAppendable = new MethodCondition("_" + operator.name(),

@@ -22,7 +22,7 @@ final class MethodCondition implements Condition {
 
     private final Operator operator;
 
-    private final Value<?> value;
+    private final QueryValue<?> value;
 
     MethodCondition(String name, Operator operator) {
         this.name = name;
@@ -30,7 +30,7 @@ final class MethodCondition implements Condition {
         this.value = new MethodParamValue(name);
     }
 
-    MethodCondition(String name, Operator operator, Value<?> value) {
+    MethodCondition(String name, Operator operator, QueryValue<?> value) {
         this.name = name;
         this.operator = operator;
         this.value = value;
@@ -47,7 +47,7 @@ final class MethodCondition implements Condition {
     }
 
     @Override
-    public Value<?> getValue() {
+    public QueryValue<?> getValue() {
         return value;
     }
 

@@ -12,14 +12,14 @@
 package org.jnosql.diana.query.method;
 
 import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionValue;
+import jakarta.nosql.query.ConditionQueryValue;
 
 import java.util.List;
 import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 
-final class MethodConditionValue implements ConditionValue{
+final class MethodConditionValue implements ConditionQueryValue {
 
     private final List<Condition> conditions;
 
@@ -54,7 +54,7 @@ final class MethodConditionValue implements ConditionValue{
         return conditions.toString();
     }
 
-    public static ConditionValue of(List<Condition> conditions) {
+    public static ConditionQueryValue of(List<Condition> conditions) {
         return new MethodConditionValue(conditions);
     }
 }

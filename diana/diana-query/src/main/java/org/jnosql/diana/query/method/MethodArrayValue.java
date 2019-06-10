@@ -16,16 +16,16 @@ import jakarta.nosql.query.QueryValue;
 
 import java.util.Arrays;
 
-final class MethodArrayValue implements ArrayValue {
+final class MethodArrayValue implements ArrayQueryValue {
 
-    private final Value<?>[] values;
+    private final QueryValue<?>[] values;
 
-    private MethodArrayValue(Value<?>[] values) {
+    private MethodArrayValue(QueryValue<?>[] values) {
         this.values = values;
     }
 
     @Override
-    public Value<?>[] get() {
+    public QueryValue<?>[] get() {
         return values;
     }
 
@@ -51,8 +51,8 @@ final class MethodArrayValue implements ArrayValue {
         return Arrays.toString(values);
     }
 
-    static ArrayValue of(String name) {
-        return new MethodArrayValue(new Value[] {new MethodParamValue(name),
+    static ArrayQueryValue of(String name) {
+        return new MethodArrayValue(new QueryValue[] {new MethodParamValue(name),
                 new MethodParamValue(name)});
     }
 }

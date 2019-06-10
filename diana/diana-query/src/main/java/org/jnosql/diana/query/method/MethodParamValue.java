@@ -11,11 +11,11 @@
  */
 package org.jnosql.diana.query.method;
 
-import org.jnosql.query.ParamValue;
+import jakarta.nosql.query.ParamQueryValue;
 
 import java.util.Objects;
 
-final class MethodParamValue implements ParamValue {
+final class MethodParamValue implements ParamQueryValue {
 
     private final String value;
 
