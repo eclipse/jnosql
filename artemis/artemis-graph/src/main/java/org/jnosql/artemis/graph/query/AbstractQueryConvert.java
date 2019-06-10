@@ -19,10 +19,10 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.reflection.ClassMapping;
-import org.jnosql.query.Condition;
-import org.jnosql.query.ConditionValue;
-import org.jnosql.query.Operator;
-import org.jnosql.query.Where;
+import jakarta.nosql.query.Condition;
+import jakarta.nosql.query.ConditionValue;
+import jakarta.nosql.query.Operator;
+import jakarta.nosql.query.Where;
 
 import java.util.Optional;
 import java.util.function.Supplier;
