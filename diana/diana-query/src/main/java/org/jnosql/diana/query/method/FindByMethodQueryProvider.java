@@ -47,8 +47,8 @@ final class FindByMethodQueryProvider extends AbstractMethodQueryProvider implem
 
     private Sort sort(MethodParser.OrderNameContext context) {
         String text = context.variable().getText();
-        String lowerCase = String.valueOf(text.charAt(0)).toLowerCase(Locale.US);
+        String name = String.valueOf(text.charAt(0)).toLowerCase(Locale.US);
         SortType type = context.desc() == null ? SortType.ASC : SortType.DESC;
-        return Sort.of(text, type);
+        return Sort.of(name.concat(text.substring(1)), type);
     }
 }
