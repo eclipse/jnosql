@@ -35,7 +35,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UpdateQuerySupplierTest {
+public class UpdateQueryProviderTest {
 
     private UpdateQueryProvider update = new AntlrUpdateQueryProvider();
 

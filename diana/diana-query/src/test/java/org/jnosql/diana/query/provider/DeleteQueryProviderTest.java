@@ -12,17 +12,17 @@
 package org.jnosql.diana.query.provider;
 
 import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
-import org.jnosql.diana.query.cache.CachedInsertQueryProvider;
+import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
+import org.jnosql.diana.query.cache.CachedDeleteQueryProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class InsertQuerySupplierTest {
+public class DeleteQueryProviderTest {
 
     @Test
     public void shouldGetSupplier() {
-        InsertQueryProvider provider = ServiceLoaderProvider.get(InsertQueryProvider.class);
+        DeleteQueryProvider provider = ServiceLoaderProvider.get(DeleteQueryProvider.class);
         Assertions.assertNotNull(provider);
-        Assertions.assertTrue(provider instanceof CachedInsertQueryProvider);
+        Assertions.assertTrue(provider instanceof CachedDeleteQueryProvider);
     }
 }

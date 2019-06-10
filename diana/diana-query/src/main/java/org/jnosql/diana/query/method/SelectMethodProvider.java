@@ -23,14 +23,14 @@ import java.util.function.BiFunction;
  * - The entity name
  * - The SelectQuery from both Method and entity name
  */
-public interface SelectMethodSupplier extends BiFunction<Method, String, SelectQuery> {
+public interface SelectMethodProvider extends BiFunction<Method, String, SelectQuery> {
 
     /**
-     * Returns a default implementation of {@link SelectMethodSupplier}
+     * Returns a default implementation of {@link SelectMethodProvider}
      *
-     * @return {@link SelectMethodSupplier}
+     * @return {@link SelectMethodProvider}
      */
-    static SelectMethodSupplier get() {
-        return DefaultSelectMethodSupplier.INSTANCE;
+    static SelectMethodProvider get() {
+        return DefaultSelectMethodProvider.INSTANCE;
     }
 }

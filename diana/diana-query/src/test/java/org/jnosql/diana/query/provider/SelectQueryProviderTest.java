@@ -12,17 +12,17 @@
 package org.jnosql.diana.query.provider;
 
 import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.query.PutQuery.PutQueryProvider;
-import org.jnosql.diana.query.cache.CachedPutQueryProvider;
+import jakarta.nosql.query.SelectQuery.SelectQueryProvider;
+import org.jnosql.diana.query.cache.CachedSelectQueryProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class PutQuerySupplierTest {
+public class SelectQueryProviderTest {
 
     @Test
     public void shouldGetSupplier() {
-        PutQueryProvider supplier = ServiceLoaderProvider.get(PutQueryProvider.class);
-        Assertions.assertNotNull(supplier);
-        Assertions.assertTrue(supplier instanceof CachedPutQueryProvider);
+        SelectQueryProvider provider = ServiceLoaderProvider.get(SelectQueryProvider.class);
+        Assertions.assertNotNull(provider);
+        Assertions.assertTrue(provider instanceof CachedSelectQueryProvider);
     }
 }

@@ -16,7 +16,7 @@ import jakarta.nosql.query.SelectQuery;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-enum DefaultSelectMethodSupplier implements SelectMethodSupplier {
+enum DefaultSelectMethodProvider implements SelectMethodProvider {
 
     INSTANCE;
 

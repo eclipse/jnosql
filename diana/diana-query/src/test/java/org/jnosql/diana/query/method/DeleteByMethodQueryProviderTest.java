@@ -30,14 +30,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DeleteByMethodQueryProviderTest {
 
-    private DeleteByMethodQueryProvider querySupplier = new DeleteByMethodQueryProvider();
+    private DeleteByMethodQueryProvider queryProvider = new DeleteByMethodQueryProvider();
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteBy"})
     public void shouldReturnParserQuery(String query) {
         String entity = "entity";
-        DeleteQuery deleteQuery = querySupplier.apply(query, entity);
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
         assertNotNull(deleteQuery);
         assertEquals(entity, deleteQuery.getEntity());
         assertTrue(deleteQuery.getFields().isEmpty());
@@ -227,7 +227,7 @@ class DeleteByMethodQueryProviderTest {
         Operator operator = Operator.BETWEEN;
         String variable = "age";
         String entity = "entity";
-        DeleteQuery deleteQuery = querySupplier.apply(query, entity);
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
         assertNotNull(deleteQuery);
         assertEquals(entity, deleteQuery.getEntity());
         assertTrue(deleteQuery.getFields().isEmpty());
@@ -249,7 +249,7 @@ class DeleteByMethodQueryProviderTest {
         Operator operator = Operator.BETWEEN;
         String variable = "age";
         String entity = "entity";
-        DeleteQuery deleteQuery = querySupplier.apply(query, entity);
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
         assertNotNull(deleteQuery);
         assertEquals(entity, deleteQuery.getEntity());
         assertTrue(deleteQuery.getFields().isEmpty());
@@ -271,7 +271,7 @@ class DeleteByMethodQueryProviderTest {
     private void checkAppendCondition(String query, Operator operator, Operator operator2, String variable,
                                       String variable2, Operator operatorAppender) {
         String entity = "entity";
-        DeleteQuery deleteQuery = querySupplier.apply(query, entity);
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
         assertNotNull(deleteQuery);
         assertEquals(entity, deleteQuery.getEntity());
         assertTrue(deleteQuery.getFields().isEmpty());
@@ -298,7 +298,7 @@ class DeleteByMethodQueryProviderTest {
 
     private void checkNotCondition(String query, Operator operator, String variable) {
         String entity = "entity";
-        DeleteQuery deleteQuery = querySupplier.apply(query, entity);
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
         assertNotNull(deleteQuery);
         assertEquals(entity, deleteQuery.getEntity());
         assertTrue(deleteQuery.getFields().isEmpty());
@@ -318,7 +318,7 @@ class DeleteByMethodQueryProviderTest {
     }
 
     private void checkEqualsQuery(String query, String entity) {
-        DeleteQuery deleteQuery = querySupplier.apply(query, entity);
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
         assertNotNull(deleteQuery);
         assertEquals(entity, deleteQuery.getEntity());
         assertTrue(deleteQuery.getFields().isEmpty());
@@ -334,7 +334,7 @@ class DeleteByMethodQueryProviderTest {
 
     private void checkCondition(String query, Operator operator, String variable) {
         String entity = "entity";
-        DeleteQuery deleteQuery = querySupplier.apply(query, entity);
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
         assertNotNull(deleteQuery);
         assertEquals(entity, deleteQuery.getEntity());
         assertTrue(deleteQuery.getFields().isEmpty());

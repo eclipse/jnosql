@@ -31,16 +31,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class FindByMethodQuerySupplierTest {
+class FindByMethodQueryProviderTest {
 
-    private FindByMethodQueryProvider querySupplier = new FindByMethodQueryProvider();
+    private FindByMethodQueryProvider queryProvider = new FindByMethodQueryProvider();
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findBy"})
     public void shouldReturnParserQuery(String query) {
         String entity = "entity";
-        SelectQuery selectQuery = querySupplier.apply(query, entity);
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.getEntity());
         assertTrue(selectQuery.getFields().isEmpty());
@@ -278,7 +278,7 @@ class FindByMethodQuerySupplierTest {
         Operator operator = Operator.BETWEEN;
         String variable = "age";
         String entity = "entity";
-        SelectQuery selectQuery = querySupplier.apply(query, entity);
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.getEntity());
         assertTrue(selectQuery.getFields().isEmpty());
@@ -303,7 +303,7 @@ class FindByMethodQuerySupplierTest {
         Operator operator = Operator.BETWEEN;
         String variable = "age";
         String entity = "entity";
-        SelectQuery selectQuery = querySupplier.apply(query, entity);
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.getEntity());
         assertTrue(selectQuery.getFields().isEmpty());
@@ -328,7 +328,7 @@ class FindByMethodQuerySupplierTest {
 
     private void checkOrderBy(String query, SortType type, SortType type2) {
         String entity = "entity";
-        SelectQuery selectQuery = querySupplier.apply(query, entity);
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.getEntity());
         List<Sort> sorts = selectQuery.getOrderBy();
@@ -345,7 +345,7 @@ class FindByMethodQuerySupplierTest {
 
     private void checkOrderBy(String query, SortType type) {
         String entity = "entity";
-        SelectQuery selectQuery = querySupplier.apply(query, entity);
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.getEntity());
         List<Sort> sorts = selectQuery.getOrderBy();
@@ -360,7 +360,7 @@ class FindByMethodQuerySupplierTest {
     private void checkAppendCondition(String query, Operator operator, Operator operator2, String variable,
                                       String variable2, Operator operatorAppender) {
         String entity = "entity";
-        SelectQuery selectQuery = querySupplier.apply(query, entity);
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.getEntity());
         assertTrue(selectQuery.getFields().isEmpty());
@@ -390,7 +390,7 @@ class FindByMethodQuerySupplierTest {
 
     private void checkNotCondition(String query, Operator operator, String variable) {
         String entity = "entity";
-        SelectQuery selectQuery = querySupplier.apply(query, entity);
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.getEntity());
         assertTrue(selectQuery.getFields().isEmpty());
@@ -413,7 +413,7 @@ class FindByMethodQuerySupplierTest {
     }
 
     private void checkEqualsQuery(String query, String entity) {
-        SelectQuery selectQuery = querySupplier.apply(query, entity);
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.getEntity());
         assertTrue(selectQuery.getFields().isEmpty());
@@ -432,7 +432,7 @@ class FindByMethodQuerySupplierTest {
 
     private void checkCondition(String query, Operator operator, String variable) {
         String entity = "entity";
-        SelectQuery selectQuery = querySupplier.apply(query, entity);
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.getEntity());
         assertTrue(selectQuery.getFields().isEmpty());
