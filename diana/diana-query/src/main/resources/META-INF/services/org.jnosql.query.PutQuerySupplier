@@ -1,1 +1,1 @@
-org.jnosql.aphrodite.antlr.cache.CachedPutQuerySupplier
+org.jnosql.diana.query.cache.CachedPutQueryProvider
