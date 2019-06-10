@@ -34,9 +34,8 @@
     </dependencies>
 
     <modules>
-        <module>jnosql-query-api</module>
-        <module>jnosql-query-antlr</module>
         <module>diana-core</module>
+        <module>diana-query</module>
         <module>diana-key-value</module>
         <module>diana-column</module>
         <module>diana-document</module>

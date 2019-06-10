@@ -35,9 +35,9 @@
             <version>${antlr4.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jnosql.diana</groupId>
-            <artifactId>jnosql-query-api</artifactId>
-            <version>${project.version}</version>
+            <groupId>jakarta.nosql.communication</groupId>
+            <artifactId>communication-query</artifactId>
+            <version>${jakarta.nosql.version}</version>
         </dependency>
     </dependencies>
 
