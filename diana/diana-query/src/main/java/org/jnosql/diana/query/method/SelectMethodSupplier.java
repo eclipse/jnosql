@@ -11,7 +11,7 @@
  */
 package org.jnosql.diana.query.method;
 
-import org.jnosql.query.SelectQuery;
+import jakarta.nosql.query.SelectQuery;
 
 import java.lang.reflect.Method;
 import java.util.function.BiFunction;
@@ -23,14 +23,14 @@ import java.util.function.BiFunction;
  * - The entity name
  * - The SelectQuery from both Method and entity name
  */
-public interface SelectMethodFactory extends BiFunction<Method, String, SelectQuery> {
+public interface SelectMethodSupplier extends BiFunction<Method, String, SelectQuery> {
 
     /**
-     * Returns a default implementation of {@link SelectMethodFactory}
+     * Returns a default implementation of {@link SelectMethodSupplier}
      *
-     * @return {@link SelectMethodFactory}
+     * @return {@link SelectMethodSupplier}
      */
-    static SelectMethodFactory get() {
-        return SelectMethodFactorySupplier.INSTANCE;
+    static SelectMethodSupplier get() {
+        return DefaultSelectMethodSupplier.INSTANCE;
     }
 }

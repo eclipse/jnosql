@@ -11,12 +11,12 @@
  */
 package org.jnosql.diana.query.method;
 
-import org.jnosql.query.SelectQuery;
+import jakarta.nosql.query.SelectQuery;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-enum SelectMethodFactorySupplier implements SelectMethodFactory {
+enum DefaultSelectMethodSupplier implements SelectMethodSupplier {
 
     INSTANCE;
 
@@ -24,7 +24,7 @@ enum SelectMethodFactorySupplier implements SelectMethodFactory {
     public SelectQuery apply(Method method, String entity) {
         Objects.requireNonNull(method, "method is required");
         Objects.requireNonNull(entity, "entity is required");
-        FindByMethodQuerySupplier supplier = new FindByMethodQuerySupplier();
+        FindByMethodQueryProvider supplier = new FindByMethodQueryProvider();
         return supplier.apply(method.getName(), entity);
     }
 }

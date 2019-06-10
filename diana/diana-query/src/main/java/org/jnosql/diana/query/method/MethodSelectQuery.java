@@ -11,8 +11,8 @@
  */
 package org.jnosql.diana.query.method;
 
-import org.jnosql.query.SelectQuery;
-import org.jnosql.query.Sort;
+import jakarta.nosql.Sort;
+import jakarta.nosql.query.SelectQuery;
 import jakarta.nosql.query.Where;
 
 import java.util.Collections;

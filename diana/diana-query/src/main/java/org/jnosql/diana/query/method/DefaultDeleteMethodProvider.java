@@ -11,19 +11,19 @@
  */
 package org.jnosql.diana.query.method;
 
-import org.jnosql.query.DeleteQuery;
+import jakarta.nosql.query.DeleteQuery;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-enum  DeleteMethodFactorySupplier implements DeleteMethodFactory {
+enum DefaultDeleteMethodProvider implements DeleteMethodProvider {
     INSTANCE;
 
     @Override
     public DeleteQuery apply(Method method, String entity) {
         Objects.requireNonNull(method, "method is required");
         Objects.requireNonNull(entity, "entity is required");
-        DeleteByMethodQuerySupplier supplier = new DeleteByMethodQuerySupplier();
+        DeleteByMethodQueryProvider supplier = new DeleteByMethodQueryProvider();
         return supplier.apply(method.getName(), entity);
     }
 }

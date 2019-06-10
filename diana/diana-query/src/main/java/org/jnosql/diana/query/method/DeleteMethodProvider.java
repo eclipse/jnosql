@@ -23,15 +23,15 @@ import java.util.function.BiFunction;
  * - The entity name
  * - The DeleteQuery from both Method and entity name
  */
-public interface DeleteMethodFactory extends BiFunction<Method, String, DeleteQuery> {
+public interface DeleteMethodProvider extends BiFunction<Method, String, DeleteQuery> {
 
     /**
-     * Returns a default implementation of {@link DeleteMethodFactory}
+     * Returns a default implementation of {@link DeleteMethodProvider}
      *
-     * @return {@link DeleteMethodFactory}
+     * @return {@link DeleteMethodProvider}
      */
-    static DeleteMethodFactory get() {
-        return DeleteMethodFactorySupplier.INSTANCE;
+    static DeleteMethodProvider get() {
+        return DefaultDeleteMethodProvider.INSTANCE;
     }
 
 }

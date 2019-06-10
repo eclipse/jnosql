@@ -11,7 +11,7 @@
  */
 package org.jnosql.diana.query.method;
 
-import org.jnosql.query.DeleteQuery;
+import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.Where;
 
 import java.util.Collections;

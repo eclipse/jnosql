@@ -20,7 +20,6 @@ import org.jnosql.diana.query.diana.query.method.MethodConditionValue;
 import org.jnosql.query.ParamValue;
 import org.jnosql.query.SelectQuery;
 import org.jnosql.query.Sort;
-import jakarta.nosql.query.QueryValue;
 import jakarta.nosql.query.Where;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -35,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FindByMethodQuerySupplierTest {
 
-    private FindByMethodQuerySupplier querySupplier = new FindByMethodQuerySupplier();
+    private FindByMethodQueryProvider querySupplier = new FindByMethodQueryProvider();
 
 
     @ParameterizedTest(name = "Should parser the query {0}")

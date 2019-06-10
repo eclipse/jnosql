@@ -11,26 +11,44 @@
  */
 package org.jnosql.diana.query.method;
 
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
+import jakarta.nosql.query.SelectQuery;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.jnosql.query.DeleteQuery;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-final class DeleteByMethodQuerySupplier extends AbstractMethodQuerySupplier implements BiFunction<String, String, DeleteQuery> {
+final class FindByMethodQueryProvider extends AbstractMethodQueryProvider implements BiFunction<String, String, SelectQuery> {
 
+    private List<Sort> sorts = new ArrayList<>();
 
     @Override
-    public DeleteQuery apply(String query, String entity) {
+    public SelectQuery apply(String query, String entity) {
         Objects.requireNonNull(query, " query is required");
         Objects.requireNonNull(entity, " entity is required");
         runQuery(MethodQuery.of(query).get());
-        return new MethodDeleteQuery(entity, where);
+        return new MethodSelectQuery(entity, sorts, where);
+    }
+
+    @Override
+    public void exitOrderName(MethodParser.OrderNameContext ctx) {
+        sorts.add(this.sort(ctx));
     }
 
     @Override
     Function<MethodParser, ParseTree> getParserTree() {
-        return MethodParser::deleteBy;
+        return MethodParser::findBy;
+    }
+
+    private Sort sort(MethodParser.OrderNameContext context) {
+        String text = context.variable().getText();
+        String lowerCase = String.valueOf(text.charAt(0)).toLowerCase(Locale.US);
+        SortType type = context.desc() == null ? SortType.ASC : SortType.DESC;
+        return Sort.of(text, type);
     }
 }

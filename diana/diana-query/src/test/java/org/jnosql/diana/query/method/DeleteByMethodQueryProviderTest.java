@@ -19,7 +19,6 @@ import org.jnosql.diana.query.diana.query.method.MethodConditionValue;
 import org.jnosql.query.DeleteQuery;
 import jakarta.nosql.query.Operator;
 import org.jnosql.query.ParamValue;
-import jakarta.nosql.query.QueryValue;
 import jakarta.nosql.query.Where;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -31,9 +30,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class DeleteByMethodQuerySupplierTest {
+class DeleteByMethodQueryProviderTest {
 
-    private DeleteByMethodQuerySupplier querySupplier = new DeleteByMethodQuerySupplier();
+    private DeleteByMethodQueryProvider querySupplier = new DeleteByMethodQueryProvider();
 
 
     @ParameterizedTest(name = "Should parser the query {0}")

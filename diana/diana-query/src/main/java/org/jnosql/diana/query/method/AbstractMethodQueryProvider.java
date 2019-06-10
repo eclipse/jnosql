@@ -44,7 +44,7 @@ import static jakarta.nosql.query.Operator.LIKE;
 import static jakarta.nosql.query.Operator.NOT;
 import static jakarta.nosql.query.Operator.OR;
 
-abstract class AbstractMethodQuerySupplier extends MethodBaseListener {
+abstract class AbstractMethodQueryProvider extends MethodBaseListener {
 
     protected Where where;
 
