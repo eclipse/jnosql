@@ -24,7 +24,7 @@ import org.jnosql.diana.document.DocumentEntity;
 import org.jnosql.diana.document.DocumentObserverParser;
 import org.jnosql.diana.document.DocumentPreparedStatement;
 import org.jnosql.diana.document.DocumentPreparedStatementAsync;
-import org.jnosql.query.Condition;
+import jakarta.nosql.query.Condition;
 import org.jnosql.query.InsertQuery;
 import org.jnosql.query.InsertQuerySupplier;
 import org.jnosql.query.JSONValue;

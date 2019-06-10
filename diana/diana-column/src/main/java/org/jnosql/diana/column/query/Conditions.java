@@ -22,9 +22,9 @@ import org.jnosql.diana.QueryException;
 import org.jnosql.diana.column.Column;
 import org.jnosql.diana.column.ColumnCondition;
 import org.jnosql.diana.column.ColumnObserverParser;
-import org.jnosql.query.Condition;
-import org.jnosql.query.ConditionValue;
-import org.jnosql.query.Where;
+import jakarta.nosql.query.Condition;
+import jakarta.nosql.query.ConditionValue;
+import jakarta.nosql.query.Where;
 
 final class Conditions {
 

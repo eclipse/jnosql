@@ -24,7 +24,7 @@ import org.jnosql.diana.column.ColumnFamilyManagerAsync;
 import org.jnosql.diana.column.ColumnObserverParser;
 import org.jnosql.diana.column.ColumnPreparedStatement;
 import org.jnosql.diana.column.ColumnPreparedStatementAsync;
-import org.jnosql.query.Condition;
+import jakarta.nosql.query.Condition;
 import org.jnosql.query.InsertQuery;
 import org.jnosql.query.InsertQuerySupplier;
 import org.jnosql.query.JSONValue;

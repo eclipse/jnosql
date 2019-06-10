@@ -21,9 +21,9 @@ import org.jnosql.diana.QueryException;
 import org.jnosql.diana.document.Document;
 import org.jnosql.diana.document.DocumentCondition;
 import org.jnosql.diana.document.DocumentObserverParser;
-import org.jnosql.query.Condition;
-import org.jnosql.query.ConditionValue;
-import org.jnosql.query.Where;
+import jakarta.nosql.query.Condition;
+import jakarta.nosql.query.ConditionValue;
+import jakarta.nosql.query.Where;
 
 import static org.jnosql.diana.document.DocumentCondition.and;
 import static org.jnosql.diana.document.DocumentCondition.between;

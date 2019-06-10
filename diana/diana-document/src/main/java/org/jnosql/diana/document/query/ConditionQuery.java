@@ -16,7 +16,7 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.query.Condition;
+import jakarta.nosql.query.Condition;
 import org.jnosql.query.JSONValue;
 
 import java.util.List;

@@ -17,13 +17,13 @@
 package org.jnosql.diana.key.query;
 
 import org.jnosql.diana.Params;
-import org.jnosql.query.ArrayValue;
+import jakarta.nosql.query.ArrayValue;
 import org.jnosql.query.Function;
 import org.jnosql.query.FunctionValue;
 import org.jnosql.query.JSONValue;
 import org.jnosql.query.ParamValue;
 import org.jnosql.diana.QueryException;
-import org.jnosql.query.Value;
+import jakarta.nosql.query.Value;
 import org.jnosql.query.ValueType;
 
 import java.util.Arrays;
