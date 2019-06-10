@@ -20,7 +20,7 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jnosql-query-antlr</artifactId>
+    <artifactId>diana-query</artifactId>
 
     <properties>
         <antlr4.visitor>false</antlr4.visitor>
