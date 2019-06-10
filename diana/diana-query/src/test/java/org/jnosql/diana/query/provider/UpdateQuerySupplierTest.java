@@ -11,8 +11,9 @@
  */
 package org.jnosql.diana.query.provider;
 
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
 import org.jnosql.diana.query.cache.CachedUpdateQueryProvider;
-import org.jnosql.query.UpdateQuerySupplier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +21,8 @@ public class UpdateQuerySupplierTest {
 
     @Test
     public void shouldGetSupplier() {
-        UpdateQuerySupplier supplier = UpdateQuerySupplier.getSupplier();
-        Assertions.assertNotNull(supplier);
-        Assertions.assertTrue(supplier instanceof CachedUpdateQueryProvider);
+        UpdateQueryProvider provider = ServiceLoaderProvider.get(UpdateQueryProvider.class);
+        Assertions.assertNotNull(provider);
+        Assertions.assertTrue(provider instanceof CachedUpdateQueryProvider);
     }
 }

@@ -150,8 +150,8 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     }
 
     private void appendCondition(boolean hasNot, String variable, Operator operator) {
-        ParamQueryValue paramValue = new MethodParamValue(variable);
-        checkCondition(new MethodCondition(variable, operator, paramValue), hasNot);
+        ParamQueryValue ParamQueryValue = new MethodParamQueryValue(variable);
+        checkCondition(new MethodCondition(variable, operator, ParamQueryValue), hasNot);
     }
 
 

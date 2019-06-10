@@ -16,11 +16,11 @@ import jakarta.nosql.query.ParamQueryValue;
 
 import java.util.Objects;
 
-final class DefaultParamValue implements ParamQueryValue {
+final class DefaultParamQueryValue implements ParamQueryValue {
 
     private final String value;
 
-    DefaultParamValue(String value) {
+    DefaultParamQueryValue(String value) {
         this.value = value;
     }
 
@@ -34,10 +34,10 @@ final class DefaultParamValue implements ParamQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultParamValue)) {
+        if (!(o instanceof DefaultParamQueryValue)) {
             return false;
         }
-        DefaultParamValue that = (DefaultParamValue) o;
+        DefaultParamQueryValue that = (DefaultParamQueryValue) o;
         return Objects.equals(value, that.value);
     }
 
@@ -52,7 +52,7 @@ final class DefaultParamValue implements ParamQueryValue {
     }
 
     public static ParamQueryValue of(QueryParser.ParameterContext parameter) {
-        return new DefaultParamValue(parameter.getText().substring(1));
+        return new DefaultParamQueryValue(parameter.getText().substring(1));
     }
 
 }

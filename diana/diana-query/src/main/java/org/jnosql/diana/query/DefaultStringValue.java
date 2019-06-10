@@ -16,11 +16,11 @@ import jakarta.nosql.query.StringQueryValue;
 
 import java.util.Objects;
 
-final class DefaultStringValue implements StringQueryValue {
+final class DefaultStringQueryValue implements StringQueryValue {
 
     private final String value;
 
-    DefaultStringValue(String value) {
+    DefaultStringQueryValue(String value) {
         this.value = value;
     }
 
@@ -34,10 +34,10 @@ final class DefaultStringValue implements StringQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultStringValue)) {
+        if (!(o instanceof DefaultStringQueryValue)) {
             return false;
         }
-        DefaultStringValue that = (DefaultStringValue) o;
+        DefaultStringQueryValue that = (DefaultStringQueryValue) o;
         return Objects.equals(value, that.value);
     }
 
@@ -53,7 +53,7 @@ final class DefaultStringValue implements StringQueryValue {
 
     public static StringQueryValue of(QueryParser.StringContext context) {
         String text = context.STRING().getText();
-        return new DefaultStringValue(text.substring(1, text.length() - 1));
+        return new DefaultStringQueryValue(text.substring(1, text.length() - 1));
     }
 
 

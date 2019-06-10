@@ -15,11 +15,11 @@ import jakarta.nosql.query.ParamQueryValue;
 
 import java.util.Objects;
 
-final class MethodParamValue implements ParamQueryValue {
+final class MethodParamQueryValue implements ParamQueryValue {
 
     private final String value;
 
-    MethodParamValue(String value) {
+    MethodParamQueryValue(String value) {
         this.value = value.concat("_")
                 .concat(Long.toString(System.nanoTime()));
     }
@@ -34,10 +34,10 @@ final class MethodParamValue implements ParamQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof MethodParamValue)) {
+        if (!(o instanceof MethodParamQueryValue)) {
             return false;
         }
-        MethodParamValue that = (MethodParamValue) o;
+        MethodParamQueryValue that = (MethodParamQueryValue) o;
         return Objects.equals(value, that.value);
     }
 

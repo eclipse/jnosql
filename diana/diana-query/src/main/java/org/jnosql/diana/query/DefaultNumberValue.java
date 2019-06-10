@@ -16,11 +16,11 @@ import jakarta.nosql.query.NumberQueryValue;
 
 import java.util.Objects;
 
-class DefaultNumberValue implements NumberQueryValue {
+class DefaultNumberQueryValue implements NumberQueryValue {
 
     private final Number number;
 
-    DefaultNumberValue(Number number) {
+    DefaultNumberQueryValue(Number number) {
         this.number = number;
     }
 
@@ -34,10 +34,10 @@ class DefaultNumberValue implements NumberQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultNumberValue)) {
+        if (!(o instanceof DefaultNumberQueryValue)) {
             return false;
         }
-        DefaultNumberValue that = (DefaultNumberValue) o;
+        DefaultNumberQueryValue that = (DefaultNumberQueryValue) o;
         return Objects.equals(number, that.number);
     }
 
@@ -54,9 +54,9 @@ class DefaultNumberValue implements NumberQueryValue {
     public static NumberQueryValue of(QueryParser.NumberContext context) {
         String value = context.getText();
         if (value.contains(".")) {
-            return new DefaultNumberValue(Double.valueOf(value));
+            return new DefaultNumberQueryValue(Double.valueOf(value));
         }
-        return new DefaultNumberValue(Long.valueOf(value));
+        return new DefaultNumberQueryValue(Long.valueOf(value));
     }
 
 

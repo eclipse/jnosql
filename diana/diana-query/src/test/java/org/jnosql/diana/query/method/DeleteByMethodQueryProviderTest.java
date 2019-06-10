@@ -12,13 +12,11 @@
 package org.jnosql.diana.query.method;
 
 import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionValue;
-import org.jnosql.diana.query.diana.query.method.DeleteByMethodQuerySupplier;
-import org.jnosql.diana.query.diana.query.method.MethodArrayValue;
-import org.jnosql.diana.query.diana.query.method.MethodConditionValue;
-import org.jnosql.query.DeleteQuery;
+import jakarta.nosql.query.ConditionQueryValue;
+import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.Operator;
-import org.jnosql.query.ParamValue;
+import jakarta.nosql.query.ParamQueryValue;
+import jakarta.nosql.query.QueryValue;
 import jakarta.nosql.query.Where;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -236,11 +234,11 @@ class DeleteByMethodQueryProviderTest {
         Optional<Where> where = deleteQuery.getWhere();
         assertTrue(where.isPresent());
         Condition condition = where.get().getCondition();
-        Value<?> value = condition.getValue();
+        QueryValue<?> value = condition.getValue();
         assertEquals(operator, condition.getOperator());
-        Value<?>[] values = MethodArrayValue.class.cast(value).get();
-        ParamValue param1 = (ParamValue) values[0];
-        ParamValue param2 = (ParamValue) values[1];
+        QueryValue<?>[] values = MethodArrayValue.class.cast(value).get();
+        ParamQueryValue param1 = (ParamQueryValue) values[0];
+        ParamQueryValue param2 = (ParamQueryValue) values[1];
         assertFalse(param1.get().equals(param2.get()));
     }
 
@@ -258,14 +256,14 @@ class DeleteByMethodQueryProviderTest {
         Optional<Where> where = deleteQuery.getWhere();
         assertTrue(where.isPresent());
         Condition condition = where.get().getCondition();
-        Value<?> value = condition.getValue();
+        QueryValue<?> value = condition.getValue();
         assertEquals(Operator.NOT, condition.getOperator());
         Condition notCondition =  MethodConditionValue.class.cast(value).get().get(0);
         assertEquals(Operator.BETWEEN, notCondition.getOperator());
 
-        Value<?>[] values = MethodArrayValue.class.cast(notCondition.getValue()).get();
-        ParamValue param1 = (ParamValue) values[0];
-        ParamValue param2 = (ParamValue) values[1];
+        QueryValue<?>[] values = MethodArrayValue.class.cast(notCondition.getValue()).get();
+        ParamQueryValue param1 = (ParamQueryValue) values[0];
+        ParamQueryValue param2 = (ParamQueryValue) values[1];
         assertFalse(param1.get().equals(param2.get()));
     }
 
@@ -280,21 +278,21 @@ class DeleteByMethodQueryProviderTest {
         Optional<Where> where = deleteQuery.getWhere();
         assertTrue(where.isPresent());
         Condition condition = where.get().getCondition();
-        Value<?> value = condition.getValue();
+        QueryValue<?> value = condition.getValue();
         assertEquals(operatorAppender, condition.getOperator());
-        assertTrue(value instanceof ConditionValue);
-        Condition condition1 = ConditionValue.class.cast(value).get().get(0);
-        Condition condition2 = ConditionValue.class.cast(value).get().get(1);
+        assertTrue(value instanceof ConditionQueryValue);
+        Condition condition1 = ConditionQueryValue.class.cast(value).get().get(0);
+        Condition condition2 = ConditionQueryValue.class.cast(value).get().get(1);
 
         assertEquals(operator, condition1.getOperator());
-        Value<?> param = condition1.getValue();
+        QueryValue<?> param = condition1.getValue();
         assertEquals(operator, condition1.getOperator());
-        assertTrue(ParamValue.class.cast(param).get().contains(variable));
+        assertTrue(ParamQueryValue.class.cast(param).get().contains(variable));
 
         assertEquals(operator2, condition2.getOperator());
-        Value<?> param2 = condition2.getValue();
+        QueryValue<?> param2 = condition2.getValue();
         assertEquals(condition2.getOperator(), operator2);
-        assertTrue(ParamValue.class.cast(param2).get().contains(variable2));
+        assertTrue(ParamQueryValue.class.cast(param2).get().contains(variable2));
     }
 
 
@@ -307,16 +305,16 @@ class DeleteByMethodQueryProviderTest {
         Optional<Where> where = deleteQuery.getWhere();
         assertTrue(where.isPresent());
         Condition condition = where.get().getCondition();
-        Value<?> value = condition.getValue();
+        QueryValue<?> value = condition.getValue();
         assertEquals(Operator.NOT, condition.getOperator());
 
 
         assertEquals("_NOT", condition.getName());
-        assertTrue(value instanceof ConditionValue);
-        Condition condition1 = ConditionValue.class.cast(value).get().get(0);
-        Value<?> param = condition1.getValue();
+        assertTrue(value instanceof ConditionQueryValue);
+        Condition condition1 = ConditionQueryValue.class.cast(value).get().get(0);
+        QueryValue<?> param = condition1.getValue();
         assertEquals(operator, condition1.getOperator());
-        assertTrue(ParamValue.class.cast(param).get().contains(variable));
+        assertTrue(ParamQueryValue.class.cast(param).get().contains(variable));
     }
 
     private void checkEqualsQuery(String query, String entity) {
@@ -327,11 +325,11 @@ class DeleteByMethodQueryProviderTest {
         Optional<Where> where = deleteQuery.getWhere();
         assertTrue(where.isPresent());
         Condition condition = where.get().getCondition();
-        Value<?> value = condition.getValue();
+        QueryValue<?> value = condition.getValue();
         assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
-        assertTrue(value instanceof ParamValue);
-        assertTrue(ParamValue.class.cast(value).get().contains("name"));
+        assertTrue(value instanceof ParamQueryValue);
+        assertTrue(ParamQueryValue.class.cast(value).get().contains("name"));
     }
 
     private void checkCondition(String query, Operator operator, String variable) {
@@ -343,8 +341,8 @@ class DeleteByMethodQueryProviderTest {
         Optional<Where> where = deleteQuery.getWhere();
         assertTrue(where.isPresent());
         Condition condition = where.get().getCondition();
-        Value<?> value = condition.getValue();
+        QueryValue<?> value = condition.getValue();
         assertEquals(operator, condition.getOperator());
-        assertTrue(ParamValue.class.cast(value).get().contains(variable));
+        assertTrue(ParamQueryValue.class.cast(value).get().contains(variable));
     }
 }

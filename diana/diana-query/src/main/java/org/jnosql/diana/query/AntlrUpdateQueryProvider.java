@@ -11,14 +11,13 @@
  */
 package org.jnosql.diana.query;
 
-import jakarta.nosql.query.JSONValue;
-import jakarta.nosql.query.UpdateQuery;
-import jakarta.nosql.query.UpdateQuery.UpdateQuerySupplier;
-import org.antlr.v4.runtime.tree.ParseTree;
 import jakarta.nosql.query.Condition;
+import jakarta.nosql.query.JSONQueryValue;
 import jakarta.nosql.query.Operator;
-
 import jakarta.nosql.query.QueryValue;
+import jakarta.nosql.query.UpdateQuery;
+import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,15 +26,15 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The {@link UpdateQuerySupplier} implementation that uses Antlr4
+ * The {@link UpdateQueryProvider} implementation that uses Antlr4
  */
-public final class AntlrUpdateQueryProvider extends AbstractSupplier implements UpdateQuerySupplier {
+public final class AntlrUpdateQueryProvider extends AbstractSupplier implements UpdateQueryProvider {
 
     private String entity;
 
     private List<Condition> conditions = Collections.emptyList();
 
-    private JSONValue value;
+    private JSONQueryValue value;
 
     @Override
     Function<QueryParser, ParseTree> getParserTree() {
@@ -54,12 +53,12 @@ public final class AntlrUpdateQueryProvider extends AbstractSupplier implements 
 
     @Override
     public void enterJson(QueryParser.JsonContext ctx) {
-        this.value = DefaultJSONValue.of(ctx);
+        this.value = DefaultJSONQueryValue.of(ctx);
     }
 
     private Condition getCondition(QueryParser.ChangeContext changeContext) {
         String name = changeContext.name().getText();
-        Value<?> value = ValueConverter.get(changeContext.value());
+        QueryValue<?> value = ValueConverter.get(changeContext.value());
         return new DefaultCondition(name, Operator.EQUALS, value);
     }
 

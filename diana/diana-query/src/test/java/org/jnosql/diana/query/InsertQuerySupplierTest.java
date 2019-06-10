@@ -12,15 +12,16 @@
 package org.jnosql.diana.query;
 
 import jakarta.nosql.query.Condition;
-import org.jnosql.query.Function;
-import org.jnosql.query.FunctionValue;
-import org.jnosql.query.InsertQuery;
-import org.jnosql.query.InsertQuerySupplier;
-import org.jnosql.query.JSONValue;
-import org.jnosql.query.NumberValue;
+import jakarta.nosql.query.Function;
+import jakarta.nosql.query.FunctionQueryValue;
+import jakarta.nosql.query.InsertQuery;
+import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
+import jakarta.nosql.query.JSONQueryValue;
+import jakarta.nosql.query.NumberQueryValue;
 import jakarta.nosql.query.Operator;
-import org.jnosql.query.ParamValue;
-import jakarta.nosql.query.StringValue;
+import jakarta.nosql.query.ParamQueryValue;
+import jakarta.nosql.query.QueryValue;
+import jakarta.nosql.query.StringQueryValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,12 +40,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InsertQuerySupplierTest {
 
-    private InsertQuerySupplier insertQuerySupplier = new AntlrInsertQueryProvider();
+    private InsertQueryProvider insertQueryProvider = new AntlrInsertQueryProvider();
 
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> insertQuerySupplier.apply(null));
+        Assertions.assertThrows(NullPointerException.class, () -> insertQueryProvider.apply(null));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -56,9 +57,9 @@ public class InsertQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("name", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof StringValue);
-        assertEquals("Diana", StringValue.class.cast(value).get());
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof StringQueryValue);
+        assertEquals("Diana", StringQueryValue.class.cast(value).get());
         assertFalse(insertQuery.getTtl().isPresent());
     }
 
@@ -71,9 +72,9 @@ public class InsertQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof NumberValue);
-        assertEquals(30L, NumberValue.class.cast(value).get());
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof NumberQueryValue);
+        assertEquals(30L, NumberQueryValue.class.cast(value).get());
         assertFalse(insertQuery.getTtl().isPresent());
     }
 
@@ -86,9 +87,9 @@ public class InsertQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("stamina", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof NumberValue);
-        assertEquals(32.23, NumberValue.class.cast(value).get());
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof NumberQueryValue);
+        assertEquals(32.23, NumberQueryValue.class.cast(value).get());
         assertFalse(insertQuery.getTtl().isPresent());
     }
 
@@ -101,9 +102,9 @@ public class InsertQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("siblings", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof JSONValue);
-        JsonObject jsonObject = JSONValue.class.cast(value).get();
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof JSONQueryValue);
+        JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("Apollo"));
         assertEquals("Father", jsonObject.getString("Zeus"));
         assertFalse(insertQuery.getTtl().isPresent());
@@ -118,9 +119,9 @@ public class InsertQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof ParamValue);
-        assertEquals("age", ParamValue.class.cast(value).get());
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof ParamQueryValue);
+        assertEquals("age", ParamQueryValue.class.cast(value).get());
         assertFalse(insertQuery.getTtl().isPresent());
     }
 
@@ -133,13 +134,13 @@ public class InsertQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("birthday", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof FunctionValue);
-        Function function = FunctionValue.class.cast(value).get();
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof FunctionQueryValue);
+        Function function = FunctionQueryValue.class.cast(value).get();
         assertEquals("convert", function.getName());
         Object[] params = function.getParams();
         assertEquals(2, params.length);
-        assertEquals("1988-01-01", StringValue.class.cast(params[0]).get());
+        assertEquals("1988-01-01", StringQueryValue.class.cast(params[0]).get());
         assertEquals(LocalDate.class, params[1]);
         assertFalse(insertQuery.getTtl().isPresent());
     }
@@ -153,16 +154,16 @@ public class InsertQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof NumberValue);
-        assertEquals(30L, NumberValue.class.cast(value).get());
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof NumberQueryValue);
+        assertEquals(30L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
         assertEquals("name", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         value = condition.getValue();
-        assertTrue(value instanceof StringValue);
-        assertEquals("Artemis", StringValue.class.cast(value).get());
+        assertTrue(value instanceof StringQueryValue);
+        assertEquals("Artemis", StringQueryValue.class.cast(value).get());
         assertFalse(insertQuery.getTtl().isPresent());
     }
 
@@ -220,12 +221,12 @@ public class InsertQuerySupplierTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"}"})
     public void shouldReturnParserQuery14(String query) {
-        InsertQuery insertQuery = insertQuerySupplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
         assertEquals("Person", insertQuery.getEntity());
         Assertions.assertTrue(insertQuery.getConditions().isEmpty());
         Assertions.assertTrue(insertQuery.getValue().isPresent());
-        JSONValue jsonValue = insertQuery.getValue().get();
-        JsonObject jsonObject = jsonValue.get();
+        JSONQueryValue JSONQueryValue = insertQuery.getValue().get();
+        JsonObject jsonObject = JSONQueryValue.get();
         assertEquals("Ada Lovelace", jsonObject.getString("name"));
     }
 
@@ -274,12 +275,12 @@ public class InsertQuerySupplierTest {
             " [\"Ana\" ,\"Maria\"]," +
             " \"address\":{\"country\": \"United Kingdom\", \"city\": \"London\"}}"})
     public void shouldReturnParserQuery21(String query) {
-        InsertQuery insertQuery = insertQuerySupplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
         assertEquals("Person", insertQuery.getEntity());
         Assertions.assertTrue(insertQuery.getConditions().isEmpty());
         Assertions.assertTrue(insertQuery.getValue().isPresent());
-        JSONValue jsonValue = insertQuery.getValue().get();
-        JsonObject jsonObject = jsonValue.get();
+        JSONQueryValue JSONQueryValue = insertQuery.getValue().get();
+        JsonObject jsonObject = JSONQueryValue.get();
         JsonArray sibling = jsonObject.getJsonArray("sibling");
         JsonObject address = jsonObject.getJsonObject("address");
 
@@ -292,12 +293,12 @@ public class InsertQuerySupplierTest {
 
 
     private void checkJSONInsertQuery(String query, Duration duration) {
-        InsertQuery insertQuery = insertQuerySupplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
         assertEquals("Person", insertQuery.getEntity());
         Assertions.assertTrue(insertQuery.getConditions().isEmpty());
         Assertions.assertTrue(insertQuery.getValue().isPresent());
-        JSONValue jsonValue = insertQuery.getValue().get();
-        JsonObject jsonObject = jsonValue.get();
+        JSONQueryValue JSONQueryValue = insertQuery.getValue().get();
+        JsonObject jsonObject = JSONQueryValue.get();
         assertEquals("Ada Lovelace", jsonObject.getString("name"));
         assertEquals(duration, insertQuery.getTtl().get());
     }
@@ -309,9 +310,9 @@ public class InsertQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("name", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof StringValue);
-        assertEquals("Diana", StringValue.class.cast(value).get());
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof StringQueryValue);
+        assertEquals("Diana", StringQueryValue.class.cast(value).get());
 
         Optional<Duration> ttl = insertQuery.getTtl();
         assertTrue(ttl.isPresent());
@@ -320,7 +321,7 @@ public class InsertQuerySupplierTest {
 
 
     private InsertQuery checkInsertFromStart(String query) {
-        InsertQuery insertQuery = insertQuerySupplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
         assertEquals("God", insertQuery.getEntity());
         return insertQuery;
     }

@@ -27,7 +27,7 @@ final class MethodCondition implements Condition {
     MethodCondition(String name, Operator operator) {
         this.name = name;
         this.operator = operator;
-        this.value = new MethodParamValue(name);
+        this.value = new MethodParamQueryValue(name);
     }
 
     MethodCondition(String name, Operator operator, QueryValue<?> value) {

@@ -11,21 +11,21 @@
  */
 package org.jnosql.diana.query.cache;
 
+import jakarta.nosql.query.RemoveQuery;
+import jakarta.nosql.query.RemoveQuery.RemoveQueryProvider;
 import org.jnosql.diana.query.AntlrRemoveQueryProvider;
-import org.jnosql.query.RemoveQuery;
-import org.jnosql.query.RemoveQuerySupplier;
 
 import java.util.Objects;
 
 /**
  * The {@link AntlrRemoveQueryProvider} cache wrapper.
  */
-public final class CachedRemoveQuerySupplier implements RemoveQuerySupplier {
+public final class CachedRemoveQueryProvider implements RemoveQueryProvider {
 
     private final CacheQuery<RemoveQuery> cached;
 
 
-    public CachedRemoveQuerySupplier() {
+    public CachedRemoveQueryProvider() {
         this.cached = CacheQuery.of(q -> new AntlrRemoveQueryProvider().apply(q));
     }
 

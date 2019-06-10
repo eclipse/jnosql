@@ -12,14 +12,14 @@
 
 package org.jnosql.diana.query;
 
+import jakarta.nosql.query.ArrayQueryValue;
+import jakarta.nosql.query.GetQuery;
+import jakarta.nosql.query.GetQuery.GetQueryProvider;
+import jakarta.nosql.query.NumberQueryValue;
+import jakarta.nosql.query.QueryValue;
+import jakarta.nosql.query.StringQueryValue;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import jakarta.nosql.query.ArrayQueryValue;
-import org.jnosql.query.GetQuery;
-import org.jnosql.query.GetQuerySupplier;
-import org.jnosql.query.NumberValue;
-import jakarta.nosql.query.StringValue;
-import jakarta.nosql.query.QueryValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,80 +34,81 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GetSupplierTest {
 
-    private GetQuerySupplier querySupplier = new AntlrGetQueryProvider();
+    private GetQueryProvider queryProvider = new AntlrGetQueryProvider();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> querySupplier.apply(null));
+        Assertions.assertThrows(NullPointerException.class, () -> queryProvider.apply(null));
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get \"Diana\""})
     public void shouldReturnParserQuery(String query) {
-        GetQuery getQuery = querySupplier.apply(query);
-        List<Value<?>> keys = getQuery.getKeys();
+        GetQuery getQuery = queryProvider.apply(query);
+        List<QueryValue<?>> keys = getQuery.getKeys();
         assertEquals(1, keys.size());
-        Value<?> key = keys.get(0);
-        assertTrue(key instanceof StringValue);
-        assertEquals("Diana", StringValue.class.cast(key).get());
+        QueryValue<?> key = keys.get(0);
+        assertTrue(key instanceof StringQueryValue);
+        assertEquals("Diana", StringQueryValue.class.cast(key).get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get 12"})
     public void shouldReturnParserQuery1(String query) {
-        GetQuery getQuery = querySupplier.apply(query);
-        List<Value<?>> keys = getQuery.getKeys();
+        GetQuery getQuery = queryProvider.apply(query);
+        List<QueryValue<?>> keys = getQuery.getKeys();
         assertEquals(1, keys.size());
-        Value<?> key = keys.get(0);
-        assertTrue(key instanceof NumberValue);
-        assertEquals(12L, NumberValue.class.cast(key).get());
+        QueryValue<?> key = keys.get(0);
+        assertTrue(key instanceof NumberQueryValue);
+        assertEquals(12L, NumberQueryValue.class.cast(key).get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get 12.12"})
     public void shouldReturnParserQuery2(String query) {
-        GetQuery getQuery = querySupplier.apply(query);
-        List<Value<?>> keys = getQuery.getKeys();
+        GetQuery getQuery = queryProvider.apply(query);
+        List<QueryValue<?>> keys = getQuery.getKeys();
         assertEquals(1, keys.size());
-        Value<?> key = keys.get(0);
-        assertTrue(key instanceof NumberValue);
-        assertEquals(12.12, NumberValue.class.cast(key).get());
+        QueryValue<?> key = keys.get(0);
+        assertTrue(key instanceof NumberQueryValue);
+        assertEquals(12.12, NumberQueryValue.class.cast(key).get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get -12"})
     public void shouldReturnParserQuery3(String query) {
-        GetQuery getQuery = querySupplier.apply(query);
-        List<Value<?>> keys = getQuery.getKeys();
+        GetQuery getQuery = queryProvider.apply(query);
+        List<QueryValue<?>> keys = getQuery.getKeys();
         assertEquals(1, keys.size());
-        Value<?> key = keys.get(0);
-        assertTrue(key instanceof NumberValue);
-        assertEquals(-12L, NumberValue.class.cast(key).get());
+        QueryValue<?> key = keys.get(0);
+        assertTrue(key instanceof NumberQueryValue);
+        assertEquals(-12L, NumberQueryValue.class.cast(key).get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get -12.12"})
     public void shouldReturnParserQuery4(String query) {
-        GetQuery getQuery = querySupplier.apply(query);
-        List<Value<?>> keys = getQuery.getKeys();
+        GetQuery getQuery = queryProvider.apply(query);
+        List<QueryValue<?>> keys = getQuery.getKeys();
         assertEquals(1, keys.size());
-        Value<?> key = keys.get(0);
-        assertTrue(key instanceof NumberValue);
-        assertEquals(-12.12, NumberValue.class.cast(key).get());
+        QueryValue<?> key = keys.get(0);
+        assertTrue(key instanceof NumberQueryValue);
+        assertEquals(-12.12, NumberQueryValue.class.cast(key).get());
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get {1,12}"})
     public void shouldReturnParserQuery5(String query) {
-        GetQuery getQuery = querySupplier.apply(query);
-        List<Value<?>> keys = getQuery.getKeys();
+        GetQuery getQuery = queryProvider.apply(query);
+        List<QueryValue<?>> keys = getQuery.getKeys();
         assertEquals(1, keys.size());
-        Value<?> key = keys.get(0);
-        assertTrue(key instanceof ArrayValue);
-        Value<?>[] values = ArrayValue.class.cast(key).get();
-        MatcherAssert.assertThat(Arrays.stream(values).map(Value::get).collect(Collectors.toList()), Matchers.contains(1L, 12L));
+        QueryValue<?> key = keys.get(0);
+        assertTrue(key instanceof ArrayQueryValue);
+        QueryValue<?>[] values = ArrayQueryValue.class.cast(key).get();
+        MatcherAssert.assertThat(Arrays.stream(values).map(QueryValue::get)
+                .collect(Collectors.toList()), Matchers.contains(1L, 12L));
     }
 
 

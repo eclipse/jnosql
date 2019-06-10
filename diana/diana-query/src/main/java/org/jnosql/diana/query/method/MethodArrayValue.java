@@ -52,7 +52,7 @@ final class MethodArrayValue implements ArrayQueryValue {
     }
 
     static ArrayQueryValue of(String name) {
-        return new MethodArrayValue(new QueryValue[] {new MethodParamValue(name),
-                new MethodParamValue(name)});
+        return new MethodArrayValue(new QueryValue[] {new MethodParamQueryValue(name),
+                new MethodParamQueryValue(name)});
     }
 }

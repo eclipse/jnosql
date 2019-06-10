@@ -28,7 +28,7 @@ import static java.util.stream.Collectors.toList;
  */
 public final class AntlrGetQueryProvider extends AbstractSupplier implements GetQueryProvider {
 
-    private List<Value<?>> keys = Collections.emptyList();
+    private List<QueryValue<?>> keys = Collections.emptyList();
 
     @Override
     public void exitKeys(QueryParser.KeysContext ctx) {

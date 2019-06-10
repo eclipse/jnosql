@@ -13,17 +13,19 @@
 package org.jnosql.diana.query;
 
 import jakarta.nosql.query.DeleteQuery;
+import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The {@link DeleteQuerySupplier} implementation that uses Antlr4
+ * The {@link DeleteQueryProvider} implementation that uses Antlr4
  */
-public final class AntlrDeleteQueryProvider extends AbstractWhereSupplier implements DeleteQuerySupplier {
+public final class AntlrDeleteQueryProvider extends AbstractWhereSupplier implements DeleteQueryProvider {
 
     private String entity;
 

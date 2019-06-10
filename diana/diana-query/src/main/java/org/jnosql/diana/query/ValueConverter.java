@@ -27,23 +27,23 @@ final class ValueConverter {
     static QueryValue<?> get(QueryParser.ValueContext context) {
 
         if (Objects.nonNull(context.number())) {
-            return DefaultNumberValue.of(context.number());
+            return DefaultNumberQueryValue.of(context.number());
         }
 
         if (Objects.nonNull(context.string())) {
-            return DefaultStringValue.of(context.string());
+            return DefaultStringQueryValue.of(context.string());
         }
 
         if (Objects.nonNull(context.json())) {
-            return DefaultJSONValue.of(context.json());
+            return DefaultJSONQueryValue.of(context.json());
         }
 
         if (Objects.nonNull(context.parameter())) {
-            return DefaultParamValue.of(context.parameter());
+            return DefaultParamQueryValue.of(context.parameter());
         }
 
         if (Objects.nonNull(context.function())) {
-            return DefaultFunctionValue.of(context.function());
+            return DefaultFunctionQueryValue.of(context.function());
         }
         if (Objects.nonNull(context.array())) {
             QueryValue<?>[] elements = context.array().element().stream()

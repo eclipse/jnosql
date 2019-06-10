@@ -11,8 +11,9 @@
  */
 package org.jnosql.diana.query.provider;
 
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
 import org.jnosql.diana.query.cache.CachedInsertQueryProvider;
-import org.jnosql.query.InsertQuerySupplier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +21,8 @@ public class InsertQuerySupplierTest {
 
     @Test
     public void shouldGetSupplier() {
-        InsertQuerySupplier supplier = InsertQuerySupplier.getSupplier();
-        Assertions.assertNotNull(supplier);
-        Assertions.assertTrue(supplier instanceof CachedInsertQueryProvider);
+        InsertQueryProvider provider = ServiceLoaderProvider.get(InsertQueryProvider.class);
+        Assertions.assertNotNull(provider);
+        Assertions.assertTrue(provider instanceof CachedInsertQueryProvider);
     }
 }

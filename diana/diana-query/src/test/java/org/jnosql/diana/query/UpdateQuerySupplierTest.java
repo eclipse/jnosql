@@ -12,16 +12,16 @@
 package org.jnosql.diana.query;
 
 import jakarta.nosql.query.Condition;
-import org.jnosql.query.Function;
-import org.jnosql.query.FunctionValue;
-import org.jnosql.query.InsertQuery;
-import org.jnosql.query.JSONValue;
-import org.jnosql.query.NumberValue;
+import jakarta.nosql.query.Function;
+import jakarta.nosql.query.FunctionQueryValue;
+import jakarta.nosql.query.JSONQueryValue;
+import jakarta.nosql.query.NumberQueryValue;
 import jakarta.nosql.query.Operator;
-import org.jnosql.query.ParamValue;
-import jakarta.nosql.query.StringValue;
-import org.jnosql.query.UpdateQuery;
-import org.jnosql.query.UpdateQuerySupplier;
+import jakarta.nosql.query.ParamQueryValue;
+import jakarta.nosql.query.QueryValue;
+import jakarta.nosql.query.StringQueryValue;
+import jakarta.nosql.query.UpdateQuery;
+import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UpdateQuerySupplierTest {
 
-    private UpdateQuerySupplier update = new AntlrUpdateQueryProvider();
+    private UpdateQueryProvider update = new AntlrUpdateQueryProvider();
 
 
     @Test
@@ -54,9 +54,9 @@ public class UpdateQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("name", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof StringValue);
-        assertEquals("Diana", StringValue.class.cast(value).get());
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof StringQueryValue);
+        assertEquals("Diana", StringQueryValue.class.cast(value).get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -68,9 +68,9 @@ public class UpdateQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof NumberValue);
-        assertEquals(30L, NumberValue.class.cast(value).get());
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof NumberQueryValue);
+        assertEquals(30L, NumberQueryValue.class.cast(value).get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -82,9 +82,9 @@ public class UpdateQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("stamina", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof NumberValue);
-        assertEquals(32.23, NumberValue.class.cast(value).get());
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof NumberQueryValue);
+        assertEquals(32.23, NumberQueryValue.class.cast(value).get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -96,9 +96,9 @@ public class UpdateQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("siblings", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof JSONValue);
-        JsonObject jsonObject = JSONValue.class.cast(value).get();
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof JSONQueryValue);
+        JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("Apollo"));
         assertEquals("Father", jsonObject.getString("Zeus"));
     }
@@ -112,9 +112,9 @@ public class UpdateQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof ParamValue);
-        assertEquals("age", ParamValue.class.cast(value).get());
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof ParamQueryValue);
+        assertEquals("age", ParamQueryValue.class.cast(value).get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -126,13 +126,13 @@ public class UpdateQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("birthday", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof FunctionValue);
-        Function function = FunctionValue.class.cast(value).get();
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof FunctionQueryValue);
+        Function function = FunctionQueryValue.class.cast(value).get();
         assertEquals("convert", function.getName());
         Object[] params = function.getParams();
         assertEquals(2, params.length);
-        assertEquals("1988-01-01", StringValue.class.cast(params[0]).get());
+        assertEquals("1988-01-01", StringQueryValue.class.cast(params[0]).get());
         assertEquals(LocalDate.class, params[1]);
     }
 
@@ -145,16 +145,16 @@ public class UpdateQuerySupplierTest {
         Condition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
-        Value<?> value = condition.getValue();
-        assertTrue(value instanceof NumberValue);
-        assertEquals(30L, NumberValue.class.cast(value).get());
+        QueryValue<?> value = condition.getValue();
+        assertTrue(value instanceof NumberQueryValue);
+        assertEquals(30L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
         assertEquals("name", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         value = condition.getValue();
-        assertTrue(value instanceof StringValue);
-        assertEquals("Artemis", StringValue.class.cast(value).get());
+        assertTrue(value instanceof StringQueryValue);
+        assertEquals("Artemis", StringQueryValue.class.cast(value).get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -164,8 +164,8 @@ public class UpdateQuerySupplierTest {
         assertEquals("Person", updateQuery.getEntity());
         Assertions.assertTrue(updateQuery.getConditions().isEmpty());
         Assertions.assertTrue(updateQuery.getValue().isPresent());
-        JSONValue jsonValue = updateQuery.getValue().get();
-        JsonObject jsonObject = jsonValue.get();
+        JSONQueryValue JSONQueryValue = updateQuery.getValue().get();
+        JsonObject jsonObject = JSONQueryValue.get();
         assertEquals("Ada Lovelace", jsonObject.getString("name"));
     }
 
@@ -179,8 +179,8 @@ public class UpdateQuerySupplierTest {
         assertEquals("Person", updateQuery.getEntity());
         Assertions.assertTrue(updateQuery.getConditions().isEmpty());
         Assertions.assertTrue(updateQuery.getValue().isPresent());
-        JSONValue jsonValue = updateQuery.getValue().get();
-        JsonObject jsonObject = jsonValue.get();
+        JSONQueryValue JSONQueryValue = updateQuery.getValue().get();
+        JsonObject jsonObject = JSONQueryValue.get();
         JsonArray sibling = jsonObject.getJsonArray("sibling");
         JsonObject address = jsonObject.getJsonObject("address");
 

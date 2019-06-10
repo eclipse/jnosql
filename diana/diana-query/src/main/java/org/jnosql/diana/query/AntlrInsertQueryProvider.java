@@ -14,7 +14,7 @@ package org.jnosql.diana.query;
 import jakarta.nosql.query.Condition;
 import jakarta.nosql.query.InsertQuery;
 import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
-import jakarta.nosql.query.JSONValue;
+import jakarta.nosql.query.JSONQueryValue;
 import jakarta.nosql.query.Operator;
 import jakarta.nosql.query.QueryValue;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -38,7 +38,7 @@ public final class AntlrInsertQueryProvider extends AbstractSupplier implements 
 
     private Duration duration;
 
-    private JSONValue value;
+    private JSONQueryValue value;
 
     @Override
     Function<QueryParser, ParseTree> getParserTree() {
@@ -57,12 +57,12 @@ public final class AntlrInsertQueryProvider extends AbstractSupplier implements 
 
     @Override
     public void enterJson(QueryParser.JsonContext ctx) {
-        this.value = DefaultJSONValue.of(ctx);
+        this.value = DefaultJSONQueryValue.of(ctx);
     }
 
     private Condition getCondition(QueryParser.ChangeContext changeContext) {
         String name = changeContext.name().getText();
-        Value<?> value = ValueConverter.get(changeContext.value());
+        QueryValue<?> value = ValueConverter.get(changeContext.value());
         return new DefaultCondition(name, Operator.EQUALS, value);
     }
 

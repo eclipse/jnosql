@@ -19,11 +19,11 @@ import jakarta.nosql.query.QueryValue;
 
 import java.util.Objects;
 
-final class DefaultFunctionValue implements FunctionQueryValue {
+final class DefaultFunctionQueryValue implements FunctionQueryValue {
 
     private final Function function;
 
-    private DefaultFunctionValue(Function function) {
+    private DefaultFunctionQueryValue(Function function) {
         this.function = function;
     }
 
@@ -37,10 +37,10 @@ final class DefaultFunctionValue implements FunctionQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultFunctionValue)) {
+        if (!(o instanceof DefaultFunctionQueryValue)) {
             return false;
         }
-        DefaultFunctionValue that = (DefaultFunctionValue) o;
+        DefaultFunctionQueryValue that = (DefaultFunctionQueryValue) o;
         return Objects.equals(function, that.function);
     }
 
@@ -68,7 +68,7 @@ final class DefaultFunctionValue implements FunctionQueryValue {
         try {
             Object[] params = new Object[]{value, Class.forName(text)};
             Function function1 = DefaultFunction.of("convert", params);
-            return new DefaultFunctionValue(function1);
+            return new DefaultFunctionQueryValue(function1);
         } catch (ClassNotFoundException e) {
             throw new QueryException("Class does not found the converter function argument: " + text, e);
         }

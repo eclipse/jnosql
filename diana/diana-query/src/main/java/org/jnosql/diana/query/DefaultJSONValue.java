@@ -20,11 +20,11 @@ import javax.json.JsonReader;
 import java.io.StringReader;
 import java.util.Objects;
 
-final class DefaultJSONValue implements JSONQueryValue {
+final class DefaultJSONQueryValue implements JSONQueryValue {
 
     private final JsonObject value;
 
-    private DefaultJSONValue(JsonObject value) {
+    private DefaultJSONQueryValue(JsonObject value) {
         this.value = value;
     }
 
@@ -38,10 +38,10 @@ final class DefaultJSONValue implements JSONQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultJSONValue)) {
+        if (!(o instanceof DefaultJSONQueryValue)) {
             return false;
         }
-        DefaultJSONValue that = (DefaultJSONValue) o;
+        DefaultJSONQueryValue that = (DefaultJSONQueryValue) o;
         return Objects.equals(value, that.value);
     }
 
@@ -57,7 +57,7 @@ final class DefaultJSONValue implements JSONQueryValue {
 
     public static JSONQueryValue of(QueryParser.JsonContext context) {
         JsonReader jsonReader = Json.createReader(new StringReader(context.getText()));
-        return new DefaultJSONValue(jsonReader.readObject());
+        return new DefaultJSONQueryValue(jsonReader.readObject());
     }
 
 

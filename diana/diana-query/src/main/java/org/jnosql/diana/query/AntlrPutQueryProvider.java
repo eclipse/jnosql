@@ -13,23 +13,22 @@ package org.jnosql.diana.query;
 
 
 import jakarta.nosql.query.PutQuery;
-import jakarta.nosql.query.PutQuery.PutQuerySupplier;
-import org.antlr.v4.runtime.tree.ParseTree;
-
+import jakarta.nosql.query.PutQuery.PutQueryProvider;
 import jakarta.nosql.query.QueryValue;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.time.Duration;
 import java.util.function.Function;
 
 /**
- * The {@link PutQuerySupplier} implementation that uses Antlr4
+ * The {@link PutQueryProvider} implementation that uses Antlr4
  */
-public final class AntlrPutQueryProvider extends AbstractSupplier implements PutQuerySupplier {
+public final class AntlrPutQueryProvider extends AbstractSupplier implements PutQueryProvider {
 
 
-    private Value<?> key;
+    private QueryValue<?> key;
 
-    private Value<?> value;
+    private QueryValue<?> value;
 
     private Duration ttl;
 
