@@ -28,13 +28,20 @@ public final class DefaultKeyValueEntityProvider implements KeyValueEntityProvid
     public KeyValueEntity apply(Object key, Object value) {
         Objects.requireNonNull(key, "key is required");
         Objects.requireNonNull(value, "value is required");
-        return new DefaultKeyValueEntity(get(key), get(value));
+        return new DefaultKeyValueEntity(getKey(key), getValue(value));
     }
 
-    private Object get(Object object) {
-        if (object instanceof Value) {
-            return Value.class.cast(object).get();
+    private Object getKey(Object key) {
+        if (key instanceof Value) {
+            return Value.class.cast(key).get();
         }
-        return object;
+        return key;
+    }
+
+    private Value getValue(Object value) {
+        if (value instanceof Value) {
+            return Value.class.cast(value);
+        }
+        return Value.of(value);
     }
 }

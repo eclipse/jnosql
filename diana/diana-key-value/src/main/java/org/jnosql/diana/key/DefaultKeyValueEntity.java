@@ -29,9 +29,9 @@ final class DefaultKeyValueEntity implements KeyValueEntity {
 
     private final Object key;
 
-    private final Object value;
+    private final Value value;
 
-    DefaultKeyValueEntity(Object key, Object value) {
+    DefaultKeyValueEntity(Object key, Value value) {
         this.key = key;
         this.value = value;
     }
@@ -42,7 +42,7 @@ final class DefaultKeyValueEntity implements KeyValueEntity {
 
     @Override
     public Object getValue() {
-        return value;
+        return value.get();
     }
 
     @Override
@@ -60,13 +60,13 @@ final class DefaultKeyValueEntity implements KeyValueEntity {
     @Override
     public <V> V getValue(TypeSupplier<V> typeSupplier) {
         Objects.requireNonNull(typeSupplier, "typeSupplier is required");
-        return Value.of(value).get(typeSupplier);
+        return value.get(typeSupplier);
     }
 
     @Override
     public <V> V getValue(Class<V> clazz) {
         Objects.requireNonNull(clazz, "clazz is required");
-        return Value.of(value).get(clazz);
+        return value.get(clazz);
     }
 
     @Override
