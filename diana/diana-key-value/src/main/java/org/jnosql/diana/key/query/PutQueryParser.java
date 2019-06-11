@@ -33,15 +33,15 @@ import java.util.Optional;
 
 final class PutQueryParser {
 
-    private final PutQueryProvider supplier;
+    private final PutQueryProvider provider;
 
     PutQueryParser() {
-        this.supplier = ServiceLoaderProvider.get(PutQueryProvider.class);
+        this.provider = ServiceLoaderProvider.get(PutQueryProvider.class);
     }
 
     List<Value> query(String query, BucketManager manager) {
 
-        PutQuery putQuery = supplier.apply(query);
+        PutQuery putQuery = provider.apply(query);
         Params params = Params.newParams();
         Value key = Values.getValue(putQuery.getKey(), params);
         Value value = Values.getValue(putQuery.getValue(), params);
@@ -61,7 +61,7 @@ final class PutQueryParser {
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
-        PutQuery putQuery = supplier.apply(query);
+        PutQuery putQuery = provider.apply(query);
         Params params = Params.newParams();
         Value key = Values.getValue(putQuery.getKey(), params);
         Value value = Values.getValue(putQuery.getValue(), params);
