@@ -48,7 +48,7 @@ final class DefaultColumnEntity implements ColumnEntity {
     private final String name;
 
     DefaultColumnEntity(String name) {
-        this.name = Objects.requireNonNull(name, "name is required");
+        this.name = name;
     }
 
     static DefaultColumnEntity of(String name, Column... columns) {
