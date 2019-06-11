@@ -17,8 +17,8 @@
 package org.jnosql.diana.column.query;
 
 
-import org.jnosql.diana.column.ColumnCondition;
-import org.jnosql.diana.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnCondition;
+import jakarta.nosql.column.ColumnDeleteQuery;
 
 import java.util.List;
 import java.util.Objects;

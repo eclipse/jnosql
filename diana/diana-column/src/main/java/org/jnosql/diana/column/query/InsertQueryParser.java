@@ -16,18 +16,19 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.column.ColumnObserverParser;
-import org.jnosql.diana.column.ColumnPreparedStatement;
-import org.jnosql.diana.column.ColumnPreparedStatementAsync;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnObserverParser;
+import jakarta.nosql.column.ColumnPreparedStatement;
+import jakarta.nosql.column.ColumnPreparedStatementAsync;
 import jakarta.nosql.query.Condition;
-import org.jnosql.query.InsertQuery;
-import org.jnosql.query.InsertQuerySupplier;
-import org.jnosql.query.JSONValue;
+import jakarta.nosql.query.InsertQuery;
+import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
+import jakarta.nosql.query.JSONQueryValue;
 
 import java.time.Duration;
 import java.util.List;
@@ -38,18 +39,18 @@ import static java.util.Collections.singletonList;
 
 final class InsertQueryParser extends ConditionQueryParser {
 
-    private final InsertQuerySupplier supplier;
+    private final InsertQueryProvider insertQueryProvider;
 
     InsertQueryParser() {
-        this.supplier = InsertQuerySupplier.getSupplier();
+        this.insertQueryProvider = ServiceLoaderProvider.get(InsertQueryProvider.class);
     }
 
     List<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
-        InsertQuery insertQuery = supplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
 
         String columnFamily = insertQuery.getEntity();
-        Params params = new Params();
+        Params params = Params.newParams();
 
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
 
@@ -68,11 +69,11 @@ final class InsertQueryParser extends ConditionQueryParser {
                     Consumer<List<ColumnEntity>> callBack,
                     ColumnObserverParser observer) {
 
-        InsertQuery insertQuery = supplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
 
         String columnFamily = observer.fireEntity(insertQuery.getEntity());
 
-        Params params = new Params();
+        Params params = Params.newParams();
 
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
 
@@ -89,10 +90,10 @@ final class InsertQueryParser extends ConditionQueryParser {
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager,
                                     ColumnObserverParser observer) {
-        InsertQuery insertQuery = supplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
 
         String columnFamily = observer.fireEntity(insertQuery.getEntity());
-        Params params = new Params();
+        Params params = Params.newParams();
 
         Optional<Duration> ttl = insertQuery.getTtl();
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
@@ -103,9 +104,9 @@ final class InsertQueryParser extends ConditionQueryParser {
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
-        Params params = new Params();
+        Params params = Params.newParams();
 
-        InsertQuery insertQuery = supplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
         String columnFamily = observer.fireEntity(insertQuery.getEntity());
         Optional<Duration> ttl = insertQuery.getTtl();
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
@@ -132,7 +133,7 @@ final class InsertQueryParser extends ConditionQueryParser {
         }
 
         @Override
-        public Optional<JSONValue> getValue() {
+        public Optional<JSONQueryValue> getValue() {
             return query.getValue();
         }
     }

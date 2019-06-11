@@ -16,19 +16,22 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.Sort;
-import org.jnosql.diana.column.ColumnCondition;
-import org.jnosql.diana.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.column.ColumnObserverParser;
-import org.jnosql.diana.column.ColumnPreparedStatement;
-import org.jnosql.diana.column.ColumnPreparedStatementAsync;
-import org.jnosql.diana.column.ColumnQuery;
-import org.jnosql.query.SelectQuery;
-import org.jnosql.query.SelectQuerySupplier;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.Sort;
+import jakarta.nosql.column.ColumnCondition;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnObserverParser;
+import jakarta.nosql.column.ColumnPreparedStatement;
+import jakarta.nosql.column.ColumnPreparedStatementAsync;
+import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.column.ColumnQueryParams;
+import jakarta.nosql.column.SelectQueryConverter;
+import jakarta.nosql.query.SelectQuery;
+import jakarta.nosql.query.SelectQuery.SelectQueryProvider;
 
 import java.util.List;
 import java.util.Objects;
@@ -39,11 +42,11 @@ import static java.util.stream.Collectors.toList;
 
 final class SelectQueryParser implements SelectQueryConverter {
 
-    private final SelectQuerySupplier selectQuerySupplier;
+    private final SelectQueryProvider selectQueryProvider;
     private final CacheQuery<ColumnQuery> cache;
 
     SelectQueryParser() {
-        this.selectQuerySupplier = SelectQuerySupplier.getSupplier();
+        this.selectQueryProvider = ServiceLoaderProvider.get(SelectQueryProvider.class);
         this.cache = new CacheQuery<>(this::getColumnQuery);
     }
 
@@ -62,9 +65,9 @@ final class SelectQueryParser implements SelectQueryConverter {
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
-        Params params = new Params();
+        Params params = Params.newParams();
 
-        SelectQuery selectQuery = selectQuerySupplier.apply(query);
+        SelectQuery selectQuery = selectQueryProvider.apply(query);
 
         ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
         return DefaultColumnPreparedStatement.select(columnQuery, params, query, manager);
@@ -76,16 +79,16 @@ final class SelectQueryParser implements SelectQueryConverter {
         Objects.requireNonNull(selectQuery, "selectQuery is required");
         Objects.requireNonNull(observer, "observer is required");
 
-        Params params = new Params();
+        Params params = Params.newParams();
         ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
         return new DefaultColumnQueryParams(columnQuery, params);
     }
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
-        Params params = new Params();
+        Params params = Params.newParams();
 
-        SelectQuery selectQuery = selectQuerySupplier.apply(query);
+        SelectQuery selectQuery = selectQueryProvider.apply(query);
 
         ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
         return DefaultColumnPreparedStatementAsync.select(columnQuery, params, query, manager);
@@ -93,7 +96,7 @@ final class SelectQueryParser implements SelectQueryConverter {
 
     private ColumnQuery getColumnQuery(String query, ColumnObserverParser observer) {
 
-        SelectQuery selectQuery = selectQuerySupplier.apply(query);
+        SelectQuery selectQuery = selectQueryProvider.apply(query);
         String columnFamily = observer.fireEntity(selectQuery.getEntity());
         long limit = selectQuery.getLimit();
         long skip = selectQuery.getSkip();
@@ -103,7 +106,7 @@ final class SelectQueryParser implements SelectQueryConverter {
         List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, columnFamily))
                 .collect(toList());
         ColumnCondition condition = null;
-        Params params = new Params();
+        Params params = Params.newParams();
         if (selectQuery.getWhere().isPresent()) {
             condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
         }
@@ -132,9 +135,8 @@ final class SelectQueryParser implements SelectQueryConverter {
         return new DefaultColumnQuery(limit, skip, columnFamily, columns, sorts, condition);
     }
 
-    private Sort toSort(org.jnosql.query.Sort sort, ColumnObserverParser observer, String entity) {
-        return Sort.of(observer.fireField(entity, sort.getName()),
-                sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? Sort.SortType.ASC : Sort.SortType.DESC);
+    private Sort toSort(Sort sort, ColumnObserverParser observer, String entity) {
+        return Sort.of(observer.fireField(entity, sort.getName()), sort.getType());
     }
 
 

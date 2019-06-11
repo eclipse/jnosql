@@ -17,9 +17,13 @@
 package org.jnosql.diana.column.query;
 
 
-import org.jnosql.diana.column.ColumnDeleteQuery;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnDeleteQuery.ColumnDelete;
+import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteFrom;
+import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteNotCondition;
+import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteWhere;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -51,7 +55,7 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete
 
 
     @Override
-    public ColumnDeleteNameCondition where(String name) {
+    public ColumnDeleteQuery.ColumnDeleteNameCondition where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
@@ -59,7 +63,7 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete
 
 
     @Override
-    public ColumnDeleteNameCondition and(String name) {
+    public ColumnDeleteQuery.ColumnDeleteNameCondition and(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = true;
@@ -67,7 +71,7 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete
     }
 
     @Override
-    public ColumnDeleteNameCondition or(String name) {
+    public ColumnDeleteQuery.ColumnDeleteNameCondition or(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = false;

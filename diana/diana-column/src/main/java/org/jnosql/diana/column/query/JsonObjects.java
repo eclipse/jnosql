@@ -16,7 +16,7 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.column.Column;
+import jakarta.nosql.column.Column;
 import org.jnosql.diana.column.Columns;
 
 import javax.json.JsonObject;

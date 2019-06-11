@@ -16,9 +16,9 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.Condition;
-import org.jnosql.diana.column.Column;
-import org.jnosql.diana.column.ColumnCondition;
+import jakarta.nosql.Condition;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnCondition;
 
 import java.util.Objects;
 

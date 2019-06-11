@@ -16,13 +16,13 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.QueryException;
+import jakarta.nosql.QueryException;
 import jakarta.nosql.TypeReference;
-import org.jnosql.diana.column.Column;
-import org.jnosql.diana.column.ColumnEntity;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnEntity;
 import org.jnosql.diana.column.ColumnFamilyManager;
 import org.jnosql.diana.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.column.ColumnObserverParser;
+import jakarta.nosql.column.ColumnObserverParser;
 import org.jnosql.diana.column.ColumnPreparedStatement;
 import org.jnosql.diana.column.ColumnPreparedStatementAsync;
 import org.junit.jupiter.params.ParameterizedTest;

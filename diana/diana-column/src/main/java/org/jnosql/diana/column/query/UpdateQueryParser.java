@@ -16,18 +16,19 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.column.ColumnObserverParser;
-import org.jnosql.diana.column.ColumnPreparedStatement;
-import org.jnosql.diana.column.ColumnPreparedStatementAsync;
 import jakarta.nosql.query.Condition;
-import org.jnosql.query.JSONValue;
-import org.jnosql.query.UpdateQuery;
-import org.jnosql.query.UpdateQuerySupplier;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnObserverParser;
+import jakarta.nosql.column.ColumnPreparedStatement;
+import jakarta.nosql.column.ColumnPreparedStatementAsync;
+import jakarta.nosql.query.JSONQueryValue;
+import jakarta.nosql.query.UpdateQuery;
+import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,17 +38,17 @@ import static java.util.Collections.singletonList;
 
 final class UpdateQueryParser extends ConditionQueryParser {
 
-    private final UpdateQuerySupplier supplier;
+    private final UpdateQueryProvider updateQueryProvider;
 
     UpdateQueryParser() {
-        this.supplier = UpdateQuerySupplier.getSupplier();
+        this.updateQueryProvider = ServiceLoaderProvider.get(UpdateQueryProvider.class);
     }
 
     List<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
-        UpdateQuery updateQuery = supplier.apply(query);
+        UpdateQuery updateQuery = updateQueryProvider.apply(query);
 
-        Params params = new Params();
+        Params params = Params.newParams();
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
 
@@ -60,9 +61,9 @@ final class UpdateQueryParser extends ConditionQueryParser {
     void queryAsync(String query, ColumnFamilyManagerAsync manager,
                     Consumer<List<ColumnEntity>> callBack, ColumnObserverParser observer) {
 
-        UpdateQuery updateQuery = supplier.apply(query);
+        UpdateQuery updateQuery = updateQueryProvider.apply(query);
 
-        Params params = new Params();
+        Params params = Params.newParams();
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
 
@@ -74,9 +75,9 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
-        Params params = new Params();
+        Params params = Params.newParams();
 
-        UpdateQuery updateQuery = supplier.apply(query);
+        UpdateQuery updateQuery = updateQueryProvider.apply(query);
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
 
@@ -85,8 +86,8 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
     ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
                                               ColumnObserverParser observer) {
-        Params params = new Params();
-        UpdateQuery updateQuery = supplier.apply(query);
+        Params params = Params.newParams();
+        UpdateQuery updateQuery = updateQueryProvider.apply(query);
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
 
@@ -106,13 +107,14 @@ final class UpdateQueryParser extends ConditionQueryParser {
             this.query = query;
         }
 
+
         @Override
         public List<Condition> getConditions() {
             return query.getConditions();
         }
 
         @Override
-        public Optional<JSONValue> getValue() {
+        public Optional<JSONQueryValue> getValue() {
             return query.getValue();
         }
     }

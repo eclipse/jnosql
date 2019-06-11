@@ -16,10 +16,10 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.column.ColumnEntity;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.column.ColumnEntity;
 import org.jnosql.diana.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.column.ColumnObserverParser;
+import jakarta.nosql.column.ColumnObserverParser;
 import org.jnosql.diana.column.ColumnPreparedStatementAsync;
 import org.jnosql.diana.column.ColumnQueryParserAsync;
 

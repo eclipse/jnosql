@@ -17,13 +17,13 @@
 package org.jnosql.diana.column.query;
 
 import org.jnosql.diana.Condition;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.column.Column;
-import org.jnosql.diana.column.ColumnCondition;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnCondition;
 import org.jnosql.diana.column.ColumnDeleteQuery;
-import org.jnosql.diana.column.ColumnEntity;
+import jakarta.nosql.column.ColumnEntity;
 import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnObserverParser;
+import jakarta.nosql.column.ColumnObserverParser;
 import org.jnosql.diana.column.ColumnPreparedStatement;
 import org.jnosql.diana.column.ColumnQuery;
 import org.jnosql.diana.column.ColumnQueryParser;

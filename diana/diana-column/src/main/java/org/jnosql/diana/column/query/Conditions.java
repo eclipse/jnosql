@@ -17,13 +17,13 @@
 package org.jnosql.diana.column.query;
 
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.column.Column;
-import org.jnosql.diana.column.ColumnCondition;
-import org.jnosql.diana.column.ColumnObserverParser;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnCondition;
+import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionValue;
+import jakarta.nosql.query.ConditionQueryValue;
 import jakarta.nosql.query.Where;
 
 final class Conditions {
@@ -65,16 +65,16 @@ final class Conditions {
                         Values.get(condition.getValue(),
                                 parameters)));
             case NOT:
-                return getCondition(ConditionValue.class.cast(condition.getValue()).get().get(0),
+                return getCondition(ConditionQueryValue.class.cast(condition.getValue()).get().get(0),
                         parameters, observer,
                         entity).negate();
             case OR:
-                return ColumnCondition.or(ConditionValue.class.cast(condition.getValue())
+                return ColumnCondition.or(ConditionQueryValue.class.cast(condition.getValue())
                         .get()
                         .stream().map(v -> getCondition(v, parameters, observer, entity))
                         .toArray(ColumnCondition[]::new));
             case AND:
-                return ColumnCondition.and(ConditionValue.class.cast(condition.getValue())
+                return ColumnCondition.and(ConditionQueryValue.class.cast(condition.getValue())
                         .get()
                         .stream().map(v -> getCondition(v, parameters, observer, entity))
                         .toArray(ColumnCondition[]::new));

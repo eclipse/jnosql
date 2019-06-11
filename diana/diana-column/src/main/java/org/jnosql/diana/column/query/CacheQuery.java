@@ -16,7 +16,7 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.column.ColumnObserverParser;
+import jakarta.nosql.column.ColumnObserverParser;
 
 import java.util.Map;
 import java.util.Objects;

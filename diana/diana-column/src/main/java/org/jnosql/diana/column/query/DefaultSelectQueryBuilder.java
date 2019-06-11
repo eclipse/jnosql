@@ -17,11 +17,22 @@
 package org.jnosql.diana.column.query;
 
 
-import org.jnosql.diana.Sort;
-import org.jnosql.diana.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.column.ColumnQuery;
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.column.ColumnQuery.ColumnFrom;
+import jakarta.nosql.column.ColumnQuery.ColumnLimit;
+import jakarta.nosql.column.ColumnQuery.ColumnNameCondition;
+import jakarta.nosql.column.ColumnQuery.ColumnNameOrder;
+import jakarta.nosql.column.ColumnQuery.ColumnNotCondition;
+import jakarta.nosql.column.ColumnQuery.ColumnOrder;
+import jakarta.nosql.column.ColumnQuery.ColumnQueryBuild;
+import jakarta.nosql.column.ColumnQuery.ColumnSelect;
+import jakarta.nosql.column.ColumnQuery.ColumnSkip;
+import jakarta.nosql.column.ColumnQuery.ColumnWhere;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +44,8 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of the Select in the column
  */
-class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect, ColumnFrom, ColumnLimit, ColumnSkip,
+class DefaultSelectQueryBuilder extends BaseQueryBuilder implements
+        ColumnSelect, ColumnFrom, ColumnLimit, ColumnSkip,
         ColumnOrder, ColumnNameCondition, ColumnNotCondition, ColumnNameOrder, ColumnWhere, ColumnQueryBuild {
 
 
@@ -163,13 +175,13 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements ColumnSelect
 
     @Override
     public ColumnNameOrder asc() {
-        this.sorts.add(Sort.of(name, Sort.SortType.ASC));
+        this.sorts.add(Sort.of(name, SortType.ASC));
         return this;
     }
 
     @Override
     public ColumnNameOrder desc() {
-        this.sorts.add(Sort.of(name, Sort.SortType.DESC));
+        this.sorts.add(Sort.of(name, SortType.DESC));
         return this;
     }
 

@@ -17,9 +17,9 @@
 package org.jnosql.diana.column.query;
 
 
-import org.jnosql.diana.Sort;
-import org.jnosql.diana.column.ColumnCondition;
-import org.jnosql.diana.column.ColumnQuery;
+import jakarta.nosql.Sort;
+import jakarta.nosql.column.ColumnCondition;
+import jakarta.nosql.column.ColumnQuery;
 
 import java.util.List;
 import java.util.Objects;

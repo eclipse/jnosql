@@ -16,12 +16,12 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnObserverParser;
-import org.jnosql.diana.column.ColumnPreparedStatement;
-import org.jnosql.diana.column.ColumnQueryParser;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnObserverParser;
+import jakarta.nosql.column.ColumnPreparedStatement;
+import jakarta.nosql.column.ColumnQueryParser;
 
 import java.util.List;
 import java.util.Objects;

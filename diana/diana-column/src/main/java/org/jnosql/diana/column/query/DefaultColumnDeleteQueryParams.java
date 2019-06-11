@@ -16,8 +16,9 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.column.ColumnDeleteQuery;
+import jakarta.nosql.Params;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnDeleteQueryParams;
 
 import java.util.Objects;
 

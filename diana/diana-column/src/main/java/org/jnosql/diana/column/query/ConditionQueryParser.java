@@ -16,13 +16,13 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.column.Column;
-import org.jnosql.diana.column.ColumnCondition;
-import org.jnosql.diana.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnObserverParser;
-import org.jnosql.query.JSONValue;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnCondition;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnObserverParser;
+import jakarta.nosql.query.JSONQueryValue;
 
 import java.util.List;
 
@@ -37,7 +37,8 @@ abstract class ConditionQueryParser {
         ColumnEntity entity = ColumnEntity.of(columnFamily);
 
         if (query.useJSONCondition()) {
-            JSONValue jsonValue = query.getValue().orElseThrow(() -> new QueryException("It is an invalid state of" +
+            JSONQueryValue jsonValue = query.getValue()
+                    .orElseThrow(() -> new QueryException("It is an invalid state of" +
                     " either Update or Insert."));
             List<Column> columns = JsonObjects.getColumns(jsonValue.get());
             entity.addAll(columns);
