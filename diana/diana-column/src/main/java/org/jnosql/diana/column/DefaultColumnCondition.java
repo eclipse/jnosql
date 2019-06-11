@@ -18,9 +18,11 @@
 package org.jnosql.diana.column;
 
 
-import org.jnosql.diana.Condition;
+import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnCondition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,7 @@ final class DefaultColumnCondition implements ColumnCondition {
         this.condition = condition;
     }
 
-    public static DefaultColumnCondition of(Column column, Condition condition) {
+    static DefaultColumnCondition of(Column column, Condition condition) {
         return new DefaultColumnCondition(requireNonNull(column, "Column is required"), condition);
     }
 

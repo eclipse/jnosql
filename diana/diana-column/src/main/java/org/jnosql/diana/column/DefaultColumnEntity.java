@@ -17,7 +17,9 @@
 
 package org.jnosql.diana.column;
 
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +38,9 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * The default {@link ColumnEntity} implementation
+ */
 final class DefaultColumnEntity implements ColumnEntity {
 
     private final Map<String, Column> columns = new HashMap<>();
@@ -192,7 +197,7 @@ final class DefaultColumnEntity implements ColumnEntity {
 
     @Override
     public String toString() {
-        return  "DefaultColumnEntity{" + "columns=" + toMap() +
+        return "DefaultColumnEntity{" + "columns=" + toMap() +
                 ", name='" + name + '\'' +
                 '}';
     }

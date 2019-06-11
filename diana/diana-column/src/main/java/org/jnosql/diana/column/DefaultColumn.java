@@ -14,7 +14,6 @@
  *   Otavio Santana
  *
  */
-
 package org.jnosql.diana.column;
 
 import jakarta.nosql.TypeSupplier;
@@ -33,8 +32,8 @@ final class DefaultColumn implements Column {
     private final Value value;
 
     DefaultColumn(String name, Value value) {
-        this.name = Objects.requireNonNull(name, "name is required");
-        this.value = Objects.requireNonNull(value, "value is required");
+        this.name = name;
+        this.value = value;
     }
 
 
