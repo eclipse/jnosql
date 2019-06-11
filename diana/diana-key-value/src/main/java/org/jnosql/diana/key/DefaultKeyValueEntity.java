@@ -14,7 +14,6 @@
  *   Otavio Santana
  *
  */
-
 package org.jnosql.diana.key;
 
 import jakarta.nosql.TypeSupplier;
@@ -33,8 +32,8 @@ final class DefaultKeyValueEntity implements KeyValueEntity {
     private final Object value;
 
     DefaultKeyValueEntity(Object key, Object value) {
-        this.key = Objects.requireNonNull(key, "key is required");
-        this.value = Objects.requireNonNull(value, "value is required");
+        this.key = key;
+        this.value = value;
     }
 
     public Object getKey() {
