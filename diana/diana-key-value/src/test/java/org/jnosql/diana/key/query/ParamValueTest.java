@@ -16,11 +16,11 @@
  */
 package org.jnosql.diana.key.query;
 
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.Value;
+import jakarta.nosql.key.KeyValueEntity;
 import org.hamcrest.MatcherAssert;
-import org.jnosql.diana.Params;
-import org.jnosql.diana.Value;
-import org.jnosql.diana.key.KeyValueEntity;
-import org.jnosql.diana.QueryException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -35,7 +35,7 @@ class ParamsTest {
 
     @Test
     public void shouldAddParamter() {
-        Params params = new Params();
+        Params params = Params.newParams();
         Value name = params.add("name");
         assertNotNull(name);
         MatcherAssert.<List<String>>assertThat(params.getParametersNames(), containsInAnyOrder("name"));
@@ -43,7 +43,7 @@ class ParamsTest {
 
     @Test
     public void shouldNotUseValueWhenIsInvalid() {
-        Params params = new Params();
+        Params params = Params.newParams();
         Value name = params.add("name");
         assertThrows(QueryException.class, name::get);
 
@@ -52,15 +52,15 @@ class ParamsTest {
 
     @Test
     public void shouldSetParameter() {
-        Params params = new Params();
+        Params params = Params.newParams();
         Value name = params.add("name");
-        KeyValueEntity<String> entity = KeyValueEntity.of("name", name);
+        KeyValueEntity entity = KeyValueEntity.of("name", name);
         params.bind("name", "Ada Lovelace");
 
-        assertEquals("Ada Lovelace", entity.get());
+        assertEquals("Ada Lovelace", entity.getValue());
 
         params.bind("name", "Diana");
-        assertEquals("Diana", entity.get());
+        assertEquals("Diana", entity.getValue());
     }
 
 }

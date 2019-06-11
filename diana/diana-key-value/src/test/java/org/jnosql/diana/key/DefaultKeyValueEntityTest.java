@@ -16,9 +16,10 @@
  */
 package org.jnosql.diana.key;
 
+import jakarta.nosql.Value;
+import jakarta.nosql.key.KeyValueEntity;
 import org.hamcrest.Matchers;
 import jakarta.nosql.TypeReference;
-import org.jnosql.diana.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -45,35 +46,35 @@ public class DefaultKeyValueEntityTest {
 
     @Test
     public void shouldCreateInstance() {
-        KeyValueEntity<String> entity = KeyValueEntity.of("key", "value");
+        KeyValueEntity entity = KeyValueEntity.of("key", "value");
         assertNotNull(entity);
         assertEquals("key", entity.getKey());
-        assertEquals("value", entity.get());
+        assertEquals("value", entity.getValue());
     }
 
     @Test
     public void shouldAliasOnValue() {
         String value = "10";
-        KeyValueEntity<String> entity = KeyValueEntity.of("key", value);
-        assertEquals(value, entity.get());
-        assertEquals(Integer.valueOf(10), entity.get(Integer.class));
-        assertThat(singletonList(10), Matchers.contains(entity.get(new TypeReference<List<Integer>>() {
+        KeyValueEntity entity = KeyValueEntity.of("key", value);
+        assertEquals(value, entity.getValue());
+        assertEquals(Integer.valueOf(10), entity.getValue(Integer.class));
+        assertThat(singletonList(10), Matchers.contains(entity.getValue(new TypeReference<List<Integer>>() {
         }).get(0)));
     }
 
     @Test
     public void shouldGetValue() {
         Value value = Value.of("value");
-        KeyValueEntity<String> entity = KeyValueEntity.of("key", value);
+        KeyValueEntity entity = KeyValueEntity.of("key", value);
         assertNotNull(entity);
-        assertEquals(value, entity.getValue());
+        assertEquals("value", entity.getValue());
     }
 
 
     @Test
     public void shouldGetKeyClass() {
         Value value = Value.of("value");
-        KeyValueEntity<String> entity = KeyValueEntity.of("10", value);
+        KeyValueEntity entity = KeyValueEntity.of("10", value);
         assertNotNull(entity);
         assertEquals(Long.valueOf(10L), entity.getKey(Long.class));
     }
@@ -82,7 +83,7 @@ public class DefaultKeyValueEntityTest {
     @Test
     public void shouldReturnErrorWhenGetKeyClassIsNull() {
         Value value = Value.of("value");
-        KeyValueEntity<String> entity = KeyValueEntity.of("10", value);
+        KeyValueEntity entity = KeyValueEntity.of("10", value);
         assertNotNull(entity);
         Assertions.assertThrows(NullPointerException.class, () -> entity.getKey((Class<Object>) null));
     }
@@ -91,17 +92,17 @@ public class DefaultKeyValueEntityTest {
     @Test
     public void shouldGetKeyValueSupplier() {
         String value = "10";
-        KeyValueEntity<String> entity = KeyValueEntity.of(value, value);
-        assertEquals(value, entity.get());
+        KeyValueEntity entity = KeyValueEntity.of(value, value);
+        assertEquals(value, entity.getValue());
         assertEquals(Integer.valueOf(10), entity.getKey(Integer.class));
-        assertThat(singletonList(10), Matchers.contains(entity.get(new TypeReference<List<Integer>>() {
+        assertThat(singletonList(10), Matchers.contains(entity.getValue(new TypeReference<List<Integer>>() {
         }).get(0)));
     }
 
     @Test
     public void shouldReturnErrorWhenGetKeySupplierIsNull() {
         Value value = Value.of("value");
-        KeyValueEntity<String> entity = KeyValueEntity.of("10", value);
+        KeyValueEntity entity = KeyValueEntity.of("10", value);
         assertNotNull(entity);
         Assertions.assertThrows(NullPointerException.class, () -> entity.getKey((TypeReference<Object>) null));
     }

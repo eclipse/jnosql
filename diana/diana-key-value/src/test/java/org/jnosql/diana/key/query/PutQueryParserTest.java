@@ -16,10 +16,10 @@
  */
 package org.jnosql.diana.key.query;
 
-import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.KeyValueEntity;
-import org.jnosql.diana.key.KeyValuePreparedStatement;
-import org.jnosql.diana.QueryException;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValuePreparedStatement;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -47,7 +47,7 @@ class PutQueryParserTest {
         KeyValueEntity entity = captor.getValue();
 
         assertEquals("Diana", entity.getKey());
-        assertEquals("Hunt", entity.get());
+        assertEquals("Hunt", entity.getValue());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -65,7 +65,7 @@ class PutQueryParserTest {
 
         assertEquals(Duration.ofHours(10), ttl);
         assertEquals("Diana", entity.getKey());
-        assertEquals("goddess of hunt", entity.get());
+        assertEquals("goddess of hunt", entity.getValue());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -94,6 +94,6 @@ class PutQueryParserTest {
         KeyValueEntity entity = captor.getValue();
 
         assertEquals("Diana", entity.getKey());
-        assertEquals("Hunt", entity.get());
+        assertEquals("Hunt", entity.getValue());
     }
 }

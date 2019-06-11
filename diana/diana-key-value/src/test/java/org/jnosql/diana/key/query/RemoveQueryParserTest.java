@@ -16,11 +16,11 @@
  */
 package org.jnosql.diana.key.query;
 
+import jakarta.nosql.QueryException;
+import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.key.KeyValuePreparedStatement;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.KeyValuePreparedStatement;
-import org.jnosql.diana.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -29,7 +29,8 @@ import org.mockito.Mockito;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RemoveQueryParserTest {
 
