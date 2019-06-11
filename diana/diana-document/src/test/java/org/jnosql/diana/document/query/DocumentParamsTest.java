@@ -19,7 +19,7 @@ package org.jnosql.diana.document.query;
 import org.hamcrest.MatcherAssert;
 import org.jnosql.diana.Params;
 import org.jnosql.diana.QueryException;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 import org.jnosql.diana.document.Document;
 import org.junit.jupiter.api.Test;
 

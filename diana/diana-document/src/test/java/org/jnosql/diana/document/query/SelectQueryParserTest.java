@@ -21,7 +21,7 @@ import org.jnosql.diana.Condition;
 import org.jnosql.diana.QueryException;
 import org.jnosql.diana.Sort;
 import jakarta.nosql.TypeReference;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 import org.jnosql.diana.document.Document;
 import org.jnosql.diana.document.DocumentCollectionManager;
 import org.jnosql.diana.document.DocumentCollectionManagerAsync;

@@ -17,7 +17,8 @@
 
 package org.jnosql.diana.document;
 
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
+import jakarta.nosql.document.Document;
 
 import java.util.List;
 import java.util.Map;

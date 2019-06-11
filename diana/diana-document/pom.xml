@@ -40,6 +40,11 @@
             <artifactId>jnosql-query-antlr</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.nosql.communication</groupId>
+            <artifactId>communication-document</artifactId>
+            <version>${jakarta.nosql.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

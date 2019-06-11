@@ -18,7 +18,7 @@
 package org.jnosql.diana.document;
 
 
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 
 import java.util.ArrayList;
 import java.util.Collection;

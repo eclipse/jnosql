@@ -18,9 +18,11 @@
 package org.jnosql.diana.document;
 
 
-import org.jnosql.diana.Condition;
+import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentCondition;
 
 import java.util.ArrayList;
 import java.util.List;

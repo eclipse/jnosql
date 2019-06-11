@@ -19,7 +19,7 @@ package org.jnosql.diana.document;
 
 
 import jakarta.nosql.TypeSupplier;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 
 import java.util.Objects;
 
