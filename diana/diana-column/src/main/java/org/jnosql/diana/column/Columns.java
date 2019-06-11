@@ -17,7 +17,9 @@
 
 package org.jnosql.diana.column;
 
-import org.jnosql.diana.Value;
+
+import jakarta.nosql.Value;
+import jakarta.nosql.column.Column;
 
 import java.util.List;
 import java.util.Map;

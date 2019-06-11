@@ -18,11 +18,14 @@
 package org.jnosql.diana.column;
 
 import jakarta.nosql.TypeSupplier;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
+import jakarta.nosql.column.Column;
 
 import java.util.Objects;
 
-
+/**
+ * The default implementation of {@link Column}
+ */
 final class DefaultColumn implements Column {
 
     private final String name;
@@ -80,7 +83,7 @@ final class DefaultColumn implements Column {
 
     @Override
     public String toString() {
-        return  "DefaultColumn{" + "name='" + name + '\'' +
+        return "DefaultColumn{" + "name='" + name + '\'' +
                 ", value=" + value +
                 '}';
     }
