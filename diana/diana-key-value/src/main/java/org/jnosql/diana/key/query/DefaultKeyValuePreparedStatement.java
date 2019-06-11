@@ -16,13 +16,15 @@
  */
 package org.jnosql.diana.key.query;
 
-import org.jnosql.diana.NonUniqueResultException;
-import org.jnosql.diana.Params;
-import org.jnosql.diana.Value;
-import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.KeyValueEntity;
-import org.jnosql.diana.key.KeyValuePreparedStatement;
-import org.jnosql.diana.QueryException;
+
+
+import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.Value;
+import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValuePreparedStatement;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -80,7 +82,8 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
     @Override
     public List<Value> getResultList() {
         if (!paramsLeft.isEmpty()) {
-            throw new QueryException("Check all the parameters before execute the query, params left: " + paramsLeft);
+            throw new QueryException("Check all the parameters before execute the query, params left: "
+                    + paramsLeft);
         }
         switch (type) {
             case GET:
@@ -92,7 +95,7 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
                 manager.remove(keys.stream().map(Value::get).collect(Collectors.toList()));
                 return Collections.emptyList();
             case PUT:
-                KeyValueEntity<Object> entity = KeyValueEntity.of(key.get(), value.get());
+                KeyValueEntity entity = KeyValueEntity.of(key.get(), value.get());
                 if (Objects.isNull(ttl)) {
                     manager.put(entity);
                 } else {

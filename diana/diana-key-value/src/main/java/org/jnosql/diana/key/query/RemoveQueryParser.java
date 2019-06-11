@@ -16,13 +16,14 @@
  */
 package org.jnosql.diana.key.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.Value;
-import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.KeyValuePreparedStatement;
-import org.jnosql.diana.QueryException;
-import org.jnosql.query.RemoveQuery;
-import org.jnosql.query.RemoveQuerySupplier;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.Value;
+import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.key.KeyValuePreparedStatement;
+import jakarta.nosql.query.RemoveQuery;
+import jakarta.nosql.query.RemoveQuery.RemoveQueryProvider;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,16 +32,16 @@ import static java.util.stream.Collectors.toList;
 
 final class RemoveQueryParser {
 
-    private final RemoveQuerySupplier supplier;
+    private final RemoveQueryProvider provider;
 
     RemoveQueryParser() {
-        this.supplier = RemoveQuerySupplier.getSupplier();
+        this.provider = ServiceLoaderProvider.get(RemoveQueryProvider.class);
     }
 
     List<Value> query(String query, BucketManager manager) {
 
-        RemoveQuery delQuery = supplier.apply(query);
-        Params params = new Params();
+        RemoveQuery delQuery = provider.apply(query);
+        Params params = Params.newParams();
         List<Value> values = delQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
@@ -52,8 +53,8 @@ final class RemoveQueryParser {
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
-        RemoveQuery delQuery = supplier.apply(query);
-        Params params = new Params();
+        RemoveQuery delQuery = provider.apply(query);
+        Params params = Params.newParams();
         List<Value> values = delQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         return DefaultKeyValuePreparedStatement.del(values, manager, params, query);
     }

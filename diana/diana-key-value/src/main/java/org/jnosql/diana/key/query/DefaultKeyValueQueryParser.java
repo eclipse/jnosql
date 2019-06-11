@@ -16,11 +16,11 @@
  */
 package org.jnosql.diana.key.query;
 
-import org.jnosql.diana.Value;
-import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.KeyValuePreparedStatement;
-import org.jnosql.diana.key.KeyValueQueryParser;
-import org.jnosql.diana.QueryException;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.Value;
+import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.key.KeyValuePreparedStatement;
+import jakarta.nosql.key.KeyValueQueryParser;
 
 import java.util.List;
 import java.util.Objects;

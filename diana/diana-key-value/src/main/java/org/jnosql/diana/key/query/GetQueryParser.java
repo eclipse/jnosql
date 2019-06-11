@@ -16,13 +16,15 @@
  */
 package org.jnosql.diana.key.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.Value;
-import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.KeyValuePreparedStatement;
-import org.jnosql.query.GetQuery;
-import org.jnosql.query.GetQuerySupplier;
-import org.jnosql.diana.QueryException;
+
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.Value;
+import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.key.KeyValuePreparedStatement;
+import jakarta.nosql.query.GetQuery;
+import jakarta.nosql.query.GetQuery.GetQueryProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +33,16 @@ import static java.util.stream.Collectors.toList;
 
 final class GetQueryParser {
 
-    private final GetQuerySupplier supplier;
+    private final GetQueryProvider provider;
 
     GetQueryParser() {
-        this.supplier = GetQuerySupplier.getSupplier();
+        this.provider = ServiceLoaderProvider.get(GetQueryProvider.class);
     }
 
     List<Value> query(String query, BucketManager manager) {
 
-        GetQuery getQuery = supplier.apply(query);
-        Params params = new Params();
+        GetQuery getQuery = provider.apply(query);
+        Params params = Params.newParams();
         List<Value> values = getQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
@@ -53,8 +55,8 @@ final class GetQueryParser {
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
-        GetQuery getQuery = supplier.apply(query);
-        Params params = new Params();
+        GetQuery getQuery = provider.apply(query);
+        Params params = Params.newParams();
         List<Value> values = getQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         return DefaultKeyValuePreparedStatement.get(values, manager, params, query);
     }

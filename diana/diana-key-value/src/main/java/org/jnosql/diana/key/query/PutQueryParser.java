@@ -16,14 +16,15 @@
  */
 package org.jnosql.diana.key.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.Value;
-import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.KeyValueEntity;
-import org.jnosql.diana.key.KeyValuePreparedStatement;
-import org.jnosql.query.PutQuery;
-import org.jnosql.query.PutQuerySupplier;
-import org.jnosql.diana.QueryException;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.Value;
+import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValuePreparedStatement;
+import jakarta.nosql.query.PutQuery;
+import jakarta.nosql.query.PutQuery.PutQueryProvider;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -32,16 +33,16 @@ import java.util.Optional;
 
 final class PutQueryParser {
 
-    private final PutQuerySupplier supplier;
+    private final PutQueryProvider supplier;
 
     PutQueryParser() {
-        this.supplier = PutQuerySupplier.getSupplier();
+        this.supplier = ServiceLoaderProvider.get(PutQueryProvider.class);
     }
 
     List<Value> query(String query, BucketManager manager) {
 
         PutQuery putQuery = supplier.apply(query);
-        Params params = new Params();
+        Params params = Params.newParams();
         Value key = Values.getValue(putQuery.getKey(), params);
         Value value = Values.getValue(putQuery.getValue(), params);
         Optional<Duration> ttl = putQuery.getTtl();
@@ -50,7 +51,7 @@ final class PutQueryParser {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
 
-        KeyValueEntity<Object> entity = KeyValueEntity.of(key.get(), value.get());
+        KeyValueEntity entity = KeyValueEntity.of(key.get(), value.get());
         if (ttl.isPresent()) {
             manager.put(entity, ttl.get());
         } else {
@@ -61,7 +62,7 @@ final class PutQueryParser {
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
         PutQuery putQuery = supplier.apply(query);
-        Params params = new Params();
+        Params params = Params.newParams();
         Value key = Values.getValue(putQuery.getKey(), params);
         Value value = Values.getValue(putQuery.getValue(), params);
         Optional<Duration> ttl = putQuery.getTtl();

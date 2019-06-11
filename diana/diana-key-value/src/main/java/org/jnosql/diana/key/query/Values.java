@@ -16,15 +16,17 @@
  */
 package org.jnosql.diana.key.query;
 
-import org.jnosql.diana.Params;
-import jakarta.nosql.query.ArrayValue;
-import org.jnosql.query.Function;
-import org.jnosql.query.FunctionValue;
-import org.jnosql.query.JSONValue;
-import org.jnosql.query.ParamValue;
-import org.jnosql.diana.QueryException;
-import jakarta.nosql.query.Value;
-import org.jnosql.query.ValueType;
+
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.Value;
+import jakarta.nosql.query.ArrayQueryValue;
+import jakarta.nosql.query.Function;
+import jakarta.nosql.query.FunctionQueryValue;
+import jakarta.nosql.query.JSONQueryValue;
+import jakarta.nosql.query.ParamQueryValue;
+import jakarta.nosql.query.QueryValue;
+import jakarta.nosql.query.ValueType;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -37,7 +39,7 @@ final class Values {
     }
 
 
-    private static Object get(Value<?> value, Params parameters) {
+    private static Object get(QueryValue<?> value, Params parameters) {
 
         ValueType type = value.getType();
         switch (type) {
@@ -45,13 +47,13 @@ final class Values {
             case STRING:
                 return value.get();
             case PARAMETER:
-                return parameters.add(ParamValue.class.cast(value).get());
+                return parameters.add(ParamQueryValue.class.cast(value).get());
             case ARRAY:
-                return Stream.of(ArrayValue.class.cast(value).get())
+                return Stream.of(ArrayQueryValue.class.cast(value).get())
                         .map(v -> get(v, parameters))
                         .collect(toList());
             case FUNCTION:
-                Function function = FunctionValue.class.cast(value).get();
+                Function function = FunctionQueryValue.class.cast(value).get();
                 String name = function.getName();
                 Object[] params = function.getParams();
                 if ("convert".equals(name)) {
@@ -61,7 +63,7 @@ final class Values {
                         Arrays.toString(params));
                 throw new QueryException(message);
             case JSON:
-                return JSONValue.class.cast(value).get().toString();
+                return JSONQueryValue.class.cast(value).get().toString();
             case CONDITION:
             default:
                 throw new QueryException("There is not suppor to the value: " + type);
@@ -70,16 +72,16 @@ final class Values {
     }
 
     private static Object executeConvert(Params parameters, Object[] params) {
-        Object value = get(Value.class.cast(params[0]), parameters);
-        return org.jnosql.diana.Value.of(value)
+        Object value = get(QueryValue.class.cast(params[0]), parameters);
+        return Value.of(value)
                 .get((Class<?>) params[1]);
     }
 
-    static org.jnosql.diana.Value getValue(Value<?> value, Params parameters) {
+    static Value getValue(QueryValue<?> value, Params parameters) {
         Object result = get(value, parameters);
-        if (result instanceof org.jnosql.diana.Value) {
-            return org.jnosql.diana.Value.class.cast(result);
+        if (result instanceof Value) {
+            return Value.class.cast(result);
         }
-        return org.jnosql.diana.Value.of(result);
+        return Value.of(result);
     }
 }
