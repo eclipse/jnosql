@@ -16,17 +16,17 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.Condition;
+import jakarta.nosql.Condition;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
-import org.jnosql.diana.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnObserverParser;
-import org.jnosql.diana.column.ColumnPreparedStatement;
-import org.jnosql.diana.column.ColumnQuery;
-import org.jnosql.diana.column.ColumnQueryParser;
+import jakarta.nosql.column.ColumnPreparedStatement;
+import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.column.ColumnQueryParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

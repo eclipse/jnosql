@@ -16,21 +16,22 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.hamcrest.Matchers;
-import org.jnosql.diana.Condition;
+import jakarta.nosql.Condition;
 import jakarta.nosql.QueryException;
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
 import jakarta.nosql.TypeReference;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnObserverParser;
-import org.jnosql.diana.column.ColumnPreparedStatement;
-import org.jnosql.diana.column.ColumnPreparedStatementAsync;
-import org.jnosql.diana.column.ColumnQuery;
+import jakarta.nosql.column.ColumnPreparedStatement;
+import jakarta.nosql.column.ColumnPreparedStatementAsync;
+import jakarta.nosql.column.ColumnQuery;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -43,7 +44,7 @@ import java.util.function.Consumer;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.jnosql.diana.column.ColumnCondition.eq;
+import static jakarta.nosql.column.ColumnCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -84,7 +85,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts(), Matchers.contains(Sort.of("name", Sort.SortType.ASC)));
+        assertThat(columnQuery.getSorts(), Matchers.contains(Sort.of("name", SortType.ASC)));
         assertEquals(0L, columnQuery.getLimit());
         assertEquals(0L, columnQuery.getSkip());
         assertEquals("God", columnQuery.getColumnFamily());
@@ -100,7 +101,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts(), contains(Sort.of("name", Sort.SortType.ASC)));
+        assertThat(columnQuery.getSorts(), contains(Sort.of("name", SortType.ASC)));
         assertEquals(0L, columnQuery.getLimit());
         assertEquals(0L, columnQuery.getSkip());
         assertEquals("God", columnQuery.getColumnFamily());
@@ -116,7 +117,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts(), contains(Sort.of("name", Sort.SortType.DESC)));
+        assertThat(columnQuery.getSorts(), contains(Sort.of("name", SortType.DESC)));
         assertEquals(0L, columnQuery.getLimit());
         assertEquals(0L, columnQuery.getSkip());
         assertEquals("God", columnQuery.getColumnFamily());
@@ -133,7 +134,8 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts(), contains(Sort.of("name", Sort.SortType.DESC), Sort.of("age", Sort.SortType.ASC)));
+        assertThat(columnQuery.getSorts(), contains(Sort.of("name", SortType.DESC), Sort.of("age",
+                SortType.ASC)));
         assertEquals(0L, columnQuery.getLimit());
         assertEquals(0L, columnQuery.getSkip());
         assertEquals("God", columnQuery.getColumnFamily());

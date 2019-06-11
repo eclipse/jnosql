@@ -16,16 +16,17 @@
  */
 package org.jnosql.diana.column.query;
 
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnQuery;
 import org.hamcrest.Matchers;
-import org.jnosql.diana.Condition;
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.column.ColumnQuery;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -35,11 +36,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import static jakarta.nosql.column.ColumnQuery.select;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.jnosql.diana.column.ColumnCondition.eq;
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
+import static jakarta.nosql.column.ColumnCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -83,7 +84,7 @@ public class DefaultSelectQueryBuilderTest {
         assertTrue(query.getColumns().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(columnFamily, query.getColumnFamily());
-        assertThat(query.getSorts(), Matchers.contains(Sort.of("name", Sort.SortType.ASC)));
+        assertThat(query.getSorts(), Matchers.contains(Sort.of("name", SortType.ASC)));
     }
 
     @Test
@@ -93,7 +94,7 @@ public class DefaultSelectQueryBuilderTest {
         assertTrue(query.getColumns().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(columnFamily, query.getColumnFamily());
-        assertThat(query.getSorts(), contains(Sort.of("name", Sort.SortType.DESC)));
+        assertThat(query.getSorts(), contains(Sort.of("name", SortType.DESC)));
     }
 
     @Test

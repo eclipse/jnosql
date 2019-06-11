@@ -17,6 +17,7 @@
 
 package org.jnosql.diana.column;
 
+import jakarta.nosql.column.Column;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 

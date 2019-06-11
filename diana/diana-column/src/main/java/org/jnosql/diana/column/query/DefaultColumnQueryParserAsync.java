@@ -18,10 +18,10 @@ package org.jnosql.diana.column.query;
 
 import jakarta.nosql.QueryException;
 import jakarta.nosql.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnObserverParser;
-import org.jnosql.diana.column.ColumnPreparedStatementAsync;
-import org.jnosql.diana.column.ColumnQueryParserAsync;
+import jakarta.nosql.column.ColumnPreparedStatementAsync;
+import jakarta.nosql.column.ColumnQueryParserAsync;
 
 import java.util.List;
 import java.util.function.Consumer;

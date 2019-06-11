@@ -17,14 +17,14 @@
 package org.jnosql.diana.column.query;
 
 
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnFamilyManager;
 import org.hamcrest.Matchers;
-import org.jnosql.diana.Condition;
+import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
-import org.jnosql.diana.column.ColumnDeleteQuery;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -32,10 +32,10 @@ import org.mockito.ArgumentCaptor;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static jakarta.nosql.column.ColumnDeleteQuery.delete;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.jnosql.diana.column.ColumnCondition.eq;
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.delete;
+import static jakarta.nosql.column.ColumnCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

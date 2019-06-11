@@ -18,7 +18,8 @@ package org.jnosql.diana.column;
 
 
 import jakarta.nosql.TypeReference;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
+import jakarta.nosql.column.Column;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

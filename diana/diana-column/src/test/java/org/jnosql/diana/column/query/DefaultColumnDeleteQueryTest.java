@@ -16,7 +16,7 @@
  */
 package org.jnosql.diana.column.query;
 
-import org.jnosql.diana.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnDeleteQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ public class DefaultColumnDeleteQueryTest {
 
     @BeforeEach
     public void setUp() {
-        query = ColumnQueryBuilder.delete().from("columnFamily").build();
+        query = ColumnDeleteQuery.delete().from("columnFamily").build();
     }
 
     @Test
