@@ -14,11 +14,12 @@
  */
 package org.jnosql.artemis.configuration;
 
-import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.ConfigurationReader;
-import org.jnosql.artemis.ConfigurationSettingsUnit;
+import jakarta.nosql.Settings;
+import jakarta.nosql.mapping.ConfigurationException;
+import jakarta.nosql.mapping.ConfigurationReader;
+import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.diana.Settings;
+import org.jnosql.artemis.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

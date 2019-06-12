@@ -39,11 +39,15 @@
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <version>${yaml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.nosql.mapping</groupId>
+            <artifactId>mapping-configuration</artifactId>
+            <version>${jakarta.nosql.version}</version>
         </dependency>
     </dependencies>
 

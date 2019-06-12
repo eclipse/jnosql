@@ -14,11 +14,14 @@
  */
 package org.jnosql.artemis.configuration;
 
-import org.jnosql.artemis.ConfigurationReader;
-import org.jnosql.artemis.ConfigurationSettingsUnit;
+import jakarta.nosql.mapping.ConfigurationException;
+import jakarta.nosql.mapping.ConfigurationReader;
+import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
+import jakarta.nosql.mapping.configuration.Configurable;
+import jakarta.nosql.mapping.configuration.ConfigurableReader;
+import jakarta.nosql.mapping.reflection.Reflections;
 import org.jnosql.artemis.reflection.ConstructorException;
-import org.jnosql.artemis.reflection.Reflections;
 import org.jnosql.diana.SettingsPriority;
 
 import javax.enterprise.context.ApplicationScoped;
