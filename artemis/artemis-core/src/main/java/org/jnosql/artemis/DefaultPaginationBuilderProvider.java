@@ -26,6 +26,11 @@ public final class DefaultPaginationBuilderProvider implements PaginationBuilder
 
     @Override
     public PaginationBuilder apply(Long page) {
-        return new DefaultPaginationBuilder(requireNonNull(page, "page is required"));
+
+        requireNonNull(page, "page is required");
+        if (page <= 0) {
+            throw new IllegalArgumentException("The page index cannot be less equals than zero.");
+        }
+        return new DefaultPaginationBuilder(page);
     }
 }
