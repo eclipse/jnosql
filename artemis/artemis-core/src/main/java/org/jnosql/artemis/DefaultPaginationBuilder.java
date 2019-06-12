@@ -17,25 +17,20 @@
 package org.jnosql.artemis;
 
 import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.Pagination.PaginationBuilder;
 
 /**
  * The builder of {@link Pagination}
  */
-public class PaginationBuilder {
+final class DefaultPaginationBuilder implements PaginationBuilder {
 
     private final long page;
 
-    PaginationBuilder(long page) {
+    DefaultPaginationBuilder(long page) {
         this.page = page;
     }
 
-    /**
-     * Defines the size of a pagination
-     *
-     * @param size the size of pagination
-     * @return a {@link Pagination} instance
-     * @throws IllegalArgumentException when size is either zero or negative
-     */
+    @Override
     public Pagination size(long size) {
         if (size < 1) {
             throw new IllegalArgumentException("A pagination size cannot be zero or negative");
