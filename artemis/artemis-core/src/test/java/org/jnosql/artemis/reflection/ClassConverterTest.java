@@ -14,6 +14,9 @@
  */
 package org.jnosql.artemis.reflection;
 
+import jakarta.nosql.mapping.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.FieldMapping;
+import jakarta.nosql.mapping.reflection.FieldType;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Actor;
 import org.jnosql.artemis.model.Animal;
@@ -32,7 +35,6 @@ import java.util.function.Predicate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.DEFAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -92,7 +94,7 @@ public class ClassConverterTest {
         assertTrue(fields.stream().anyMatch(hasKeyAnnotation));
         FieldMapping fieldMapping = fields.stream().filter(hasKeyAnnotation).findFirst().get();
         assertEquals("_id", fieldMapping.getName());
-        assertEquals(DEFAULT, fieldMapping.getType());
+        assertEquals(FieldType.DEFAULT, fieldMapping.getType());
 
     }
 

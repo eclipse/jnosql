@@ -14,9 +14,11 @@
  */
 package org.jnosql.artemis;
 
+import jakarta.nosql.mapping.AttributeConverter;
+
 import javax.inject.Inject;
 
-public class MyConverter implements AttributeConverter<String, String>{
+public class MyConverter implements AttributeConverter<String, String> {
 
     @Inject
     private RandomText text;

@@ -14,6 +14,9 @@
  */
 package org.jnosql.artemis.reflection;
 
+import jakarta.nosql.mapping.reflection.FieldWriter;
+import jakarta.nosql.mapping.reflection.FieldWriterFactory;
+import jakarta.nosql.mapping.reflection.Reflections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis;
 
+import jakarta.nosql.mapping.AttributeConverter;
+
 import javax.enterprise.inject.Vetoed;
 
 @Vetoed

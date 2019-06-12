@@ -14,20 +14,20 @@
  */
 package org.jnosql.artemis.util;
 
-import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Money;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Worker;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @ExtendWith(CDIExtension.class)

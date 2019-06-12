@@ -14,14 +14,13 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.hamcrest.Matchers;
+import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.Sort;
 import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Page;
-import org.jnosql.artemis.Pagination;
+import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
-import org.jnosql.artemis.Sorts;
-import org.jnosql.diana.NonUniqueResultException;
-import org.jnosql.diana.Sort;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -41,9 +40,9 @@ import java.util.SortedSet;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static jakarta.nosql.mapping.Sorts.sorts;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.jnosql.artemis.Sorts.sorts;
 import static org.jnosql.artemis.reflection.DynamicReturn.findSorts;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -373,7 +372,7 @@ class DynamicReturnTest {
         Sort name = Sort.asc("name");
         Sort age = Sort.desc("age");
         List<Sort> sorts = findSorts(new Object[]{"Otavio", 23, Pagination.page(2).size(2), name, age,
-                Sorts.sorts().desc("name").asc("age")});
+                sorts().desc("name").asc("age")});
 
         assertThat(sorts, Matchers.contains(name, age, Sort.desc("name"), Sort.asc("age")));
     }

@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
+import jakarta.nosql.mapping.reflection.Reflections;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Actor;
 import org.jnosql.artemis.model.Movie;

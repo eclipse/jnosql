@@ -25,7 +25,7 @@ import static jakarta.nosql.mapping.DatabaseType.COLUMN;
 import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
 import static jakarta.nosql.mapping.DatabaseType.GRAPH;
 import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
-import static org.jnosql.artemis.DatabaseType.SHARED;
+import static jakarta.nosql.mapping.DatabaseType.SHARED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;

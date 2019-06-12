@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
+import jakarta.nosql.mapping.reflection.FieldType;
 import org.jnosql.artemis.model.Actor;
 import org.jnosql.artemis.model.Address;
 import org.jnosql.artemis.model.Movie;
@@ -32,38 +33,38 @@ public class FieldTypeUtilTest {
     @Test
     public void shouldReturnList() throws NoSuchFieldException {
         Field field = Person.class.getDeclaredField("phones");
-        assertEquals(FieldTypeUtil.COLLECTION, FieldTypeUtil.of(field));
+        assertEquals(FieldType.COLLECTION, FieldTypeUtil.of(field));
     }
 
     @Test
     public void shouldReturnSet() throws NoSuchFieldException {
         Field field = Movie.class.getDeclaredField("actors");
-        assertEquals(FieldTypeUtil.COLLECTION, FieldTypeUtil.of(field));
+        assertEquals(FieldType.COLLECTION, FieldTypeUtil.of(field));
     }
 
     @Test
     public void shouldReturnMap() throws NoSuchFieldException {
         Field field = Actor.class.getDeclaredField("movieCharacter");
-        assertEquals(FieldTypeUtil.MAP, FieldTypeUtil.of(field));
+        assertEquals(FieldType.MAP, FieldTypeUtil.of(field));
     }
 
     @Test
     public void shouldReturnDefault() throws NoSuchFieldException {
         Field field = Person.class.getDeclaredField("name");
-        assertEquals(FieldTypeUtil.DEFAULT, FieldTypeUtil.of(field));
+        assertEquals(FieldType.DEFAULT, FieldTypeUtil.of(field));
     }
 
 
     @Test
     public void shouldReturnEmbedded() throws NoSuchFieldException{
         Field field = Worker.class.getDeclaredField("job");
-        assertEquals(FieldTypeUtil.EMBEDDED, FieldTypeUtil.of(field));
+        assertEquals(FieldType.EMBEDDED, FieldTypeUtil.of(field));
     }
 
     @Test
     public void shouldReturnSubEntity() throws NoSuchFieldException{
         Field field = Address.class.getDeclaredField("zipcode");
-        assertEquals(FieldTypeUtil.SUBENTITY, FieldTypeUtil.of(field));
+        assertEquals(FieldType.EMBEDDED_ENTITY, FieldTypeUtil.of(field));
     }
 
 }

@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.reflection;
 
+import jakarta.nosql.mapping.InstanceProducer;
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.InstanceProducer;
 import org.jnosql.artemis.model.Zipcode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -15,6 +15,8 @@
 package org.jnosql.artemis.reflection;
 
 
+import jakarta.nosql.mapping.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Embeddable;
@@ -26,10 +28,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.jnosql.artemis.reflection.FieldTypeUtil.COLLECTION;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.DEFAULT;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.MAP;
+import static jakarta.nosql.mapping.reflection.FieldType.COLLECTION;
+import static jakarta.nosql.mapping.reflection.FieldType.DEFAULT;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
+import static jakarta.nosql.mapping.reflection.FieldType.MAP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(CDIExtension.class)
@@ -87,7 +89,7 @@ public class FieldMappingTest {
 
         assertEquals("barClass", field.getFieldName());
         assertEquals("barClass", field.getName());
-        assertEquals(EMBEDDED, field.getType());
+        assertEquals(EMBEDDED_ENTITY, field.getType());
     }
 
     @Test

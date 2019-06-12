@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
+import jakarta.nosql.mapping.reflection.FieldWriter;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.Assertions;

@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
+import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Address;
 import org.jnosql.artemis.model.AppointmentBook;

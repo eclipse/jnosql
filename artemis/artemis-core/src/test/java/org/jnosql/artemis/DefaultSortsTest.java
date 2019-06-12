@@ -14,8 +14,9 @@
  */
 package org.jnosql.artemis;
 
+import jakarta.nosql.mapping.Sorts;
 import org.hamcrest.Matchers;
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Sort;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

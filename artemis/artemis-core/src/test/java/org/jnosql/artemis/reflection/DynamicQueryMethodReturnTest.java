@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.Param;
+import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.mapping.Param;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.Repository;
-import org.jnosql.diana.NonUniqueResultException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
