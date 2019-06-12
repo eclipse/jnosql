@@ -1,1 +1,1 @@
-org.jnosql.diana.document.query.DefaultDocumentDeleteSupplier
+org.jnosql.diana.document.query.DefaultDocumentDeleteProvider
