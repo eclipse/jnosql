@@ -15,7 +15,7 @@
 package org.jnosql.artemis.configuration;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.mapping.ConfigurationException;
+import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;

@@ -15,9 +15,9 @@
  */
 package org.jnosql.artemis.configuration;
 
-import jakarta.nosql.mapping.ConfigurationException;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationUnit;
+import jakarta.nosql.mapping.configuration.ConfigurationException;
 import org.jnosql.artemis.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
