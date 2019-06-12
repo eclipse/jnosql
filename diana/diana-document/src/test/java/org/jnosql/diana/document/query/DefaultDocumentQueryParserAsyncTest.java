@@ -17,13 +17,13 @@
 package org.jnosql.diana.document.query;
 
 import org.jnosql.diana.Condition;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.document.Document;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.document.Document;
 import org.jnosql.diana.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentCondition;
+import jakarta.nosql.document.DocumentCondition;
 import org.jnosql.diana.document.DocumentDeleteQuery;
 import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentObserverParser;
 import org.jnosql.diana.document.DocumentPreparedStatementAsync;
 import org.jnosql.diana.document.DocumentQuery;
 import org.jnosql.diana.document.DocumentQueryParserAsync;

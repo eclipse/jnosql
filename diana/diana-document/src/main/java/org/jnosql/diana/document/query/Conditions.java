@@ -16,25 +16,25 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.document.Document;
-import org.jnosql.diana.document.DocumentCondition;
-import org.jnosql.diana.document.DocumentObserverParser;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentCondition;
+import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionValue;
+import jakarta.nosql.query.ConditionQueryValue;
 import jakarta.nosql.query.Where;
 
-import static org.jnosql.diana.document.DocumentCondition.and;
-import static org.jnosql.diana.document.DocumentCondition.between;
-import static org.jnosql.diana.document.DocumentCondition.eq;
-import static org.jnosql.diana.document.DocumentCondition.gt;
-import static org.jnosql.diana.document.DocumentCondition.gte;
-import static org.jnosql.diana.document.DocumentCondition.in;
-import static org.jnosql.diana.document.DocumentCondition.like;
-import static org.jnosql.diana.document.DocumentCondition.lt;
-import static org.jnosql.diana.document.DocumentCondition.lte;
-import static org.jnosql.diana.document.DocumentCondition.or;
+import static jakarta.nosql.document.DocumentCondition.and;
+import static jakarta.nosql.document.DocumentCondition.between;
+import static jakarta.nosql.document.DocumentCondition.eq;
+import static jakarta.nosql.document.DocumentCondition.gt;
+import static jakarta.nosql.document.DocumentCondition.gte;
+import static jakarta.nosql.document.DocumentCondition.in;
+import static jakarta.nosql.document.DocumentCondition.like;
+import static jakarta.nosql.document.DocumentCondition.lt;
+import static jakarta.nosql.document.DocumentCondition.lte;
+import static jakarta.nosql.document.DocumentCondition.or;
 
 final class Conditions {
 
@@ -73,16 +73,16 @@ final class Conditions {
                 return between(Document.of(getName(condition, observer, entity),
                         Values.get(condition.getValue(), parameters)));
             case NOT:
-                return getCondition(ConditionValue.class.cast(condition.getValue()).get().get(0),
+                return getCondition(ConditionQueryValue.class.cast(condition.getValue()).get().get(0),
                         parameters, observer,
                         entity).negate();
             case OR:
-                return or(ConditionValue.class.cast(condition.getValue())
+                return or(ConditionQueryValue.class.cast(condition.getValue())
                         .get()
                         .stream().map(v -> getCondition(v, parameters, observer, entity))
                         .toArray(DocumentCondition[]::new));
             case AND:
-                return and(ConditionValue.class.cast(condition.getValue())
+                return and(ConditionQueryValue.class.cast(condition.getValue())
                         .get()
                         .stream().map(v -> getCondition(v, parameters, observer, entity))
                         .toArray(DocumentCondition[]::new));

@@ -16,7 +16,7 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentObserverParser;
 
 import java.util.Map;
 import java.util.Objects;

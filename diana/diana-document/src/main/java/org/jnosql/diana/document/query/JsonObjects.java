@@ -17,7 +17,7 @@
 package org.jnosql.diana.document.query;
 
 
-import org.jnosql.diana.document.Document;
+import jakarta.nosql.document.Document;
 import org.jnosql.diana.document.Documents;
 
 import javax.json.JsonObject;

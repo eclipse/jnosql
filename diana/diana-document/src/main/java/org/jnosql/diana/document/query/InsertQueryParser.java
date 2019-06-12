@@ -16,18 +16,19 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentObserverParser;
-import org.jnosql.diana.document.DocumentPreparedStatement;
-import org.jnosql.diana.document.DocumentPreparedStatementAsync;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentPreparedStatement;
+import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import jakarta.nosql.query.Condition;
-import org.jnosql.query.InsertQuery;
-import org.jnosql.query.InsertQuerySupplier;
-import org.jnosql.query.JSONValue;
+import jakarta.nosql.query.InsertQuery;
+import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
+import jakarta.nosql.query.JSONQueryValue;
 
 import java.time.Duration;
 import java.util.List;
@@ -38,18 +39,18 @@ import static java.util.Collections.singletonList;
 
 final class InsertQueryParser extends ConditionQueryParser {
 
-    private final InsertQuerySupplier supplier;
+    private final InsertQueryProvider insertQueryProvider;
 
     InsertQueryParser() {
-        this.supplier = InsertQuerySupplier.getSupplier();
+        this.insertQueryProvider = ServiceLoaderProvider.get(InsertQueryProvider.class);
     }
 
     List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
-        InsertQuery insertQuery = supplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
 
         String collection = insertQuery.getEntity();
-        Params params = new Params();
+        Params params = Params.newParams();
 
         DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
 
@@ -66,10 +67,10 @@ final class InsertQueryParser extends ConditionQueryParser {
 
     void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
                     Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer) {
-        InsertQuery insertQuery = supplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
 
         String collection = observer.fireEntity(insertQuery.getEntity());
-        Params params = new Params();
+        Params params = Params.newParams();
 
         DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
 
@@ -85,10 +86,10 @@ final class InsertQueryParser extends ConditionQueryParser {
     }
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
-        InsertQuery insertQuery = supplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
 
         String collection = observer.fireEntity(insertQuery.getEntity());
-        Params params = new Params();
+        Params params = Params.newParams();
 
         Optional<Duration> ttl = insertQuery.getTtl();
         DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
@@ -98,9 +99,9 @@ final class InsertQueryParser extends ConditionQueryParser {
     }
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager, DocumentObserverParser observer) {
-        Params params = new Params();
+        Params params = Params.newParams();
 
-        InsertQuery insertQuery = supplier.apply(query);
+        InsertQuery insertQuery = insertQueryProvider.apply(query);
         String collection = observer.fireEntity(insertQuery.getEntity());
         Optional<Duration> ttl = insertQuery.getTtl();
         DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
@@ -126,7 +127,7 @@ final class InsertQueryParser extends ConditionQueryParser {
         }
 
         @Override
-        public Optional<JSONValue> getValue() {
+        public Optional<JSONQueryValue> getValue() {
             return query.getValue();
         }
     }

@@ -17,9 +17,9 @@
 package org.jnosql.diana.document.query;
 
 
-import org.jnosql.diana.Sort;
-import org.jnosql.diana.document.DocumentCondition;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.Sort;
+import jakarta.nosql.document.DocumentCondition;
+import jakarta.nosql.document.DocumentQuery;
 
 import java.util.List;
 import java.util.Objects;

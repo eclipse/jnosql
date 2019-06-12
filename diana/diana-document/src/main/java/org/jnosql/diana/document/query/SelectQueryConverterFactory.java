@@ -16,8 +16,10 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.document.DocumentObserverParser;
-import org.jnosql.query.SelectQuery;
+import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentQueryParams;
+import jakarta.nosql.document.SelectQueryConverter;
+import jakarta.nosql.query.SelectQuery;
 
 enum SelectQueryConverterFactory implements SelectQueryConverter {
 

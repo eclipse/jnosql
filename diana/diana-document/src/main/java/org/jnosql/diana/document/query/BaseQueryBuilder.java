@@ -16,8 +16,8 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.document.Document;
-import org.jnosql.diana.document.DocumentCondition;
+import jakarta.nosql.document.DocumentCondition;
+import jakarta.nosql.document.Document;
 
 import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;

@@ -16,18 +16,19 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentObserverParser;
-import org.jnosql.diana.document.DocumentPreparedStatement;
-import org.jnosql.diana.document.DocumentPreparedStatementAsync;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentPreparedStatement;
+import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import jakarta.nosql.query.Condition;
-import org.jnosql.query.JSONValue;
-import org.jnosql.query.UpdateQuery;
-import org.jnosql.query.UpdateQuerySupplier;
+import jakarta.nosql.query.JSONQueryValue;
+import jakarta.nosql.query.UpdateQuery;
+import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,17 +38,17 @@ import static java.util.Collections.singletonList;
 
 final class UpdateQueryParser extends ConditionQueryParser {
 
-    private final UpdateQuerySupplier supplier;
+    private final UpdateQueryProvider supplier;
 
     UpdateQueryParser() {
-        this.supplier = UpdateQuerySupplier.getSupplier();
+        this.supplier = ServiceLoaderProvider.get(UpdateQueryProvider.class);
     }
 
     List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
-        Params params = new Params();
+        Params params = Params.newParams();
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
 
@@ -62,7 +63,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
-        Params params = new Params();
+        Params params = Params.newParams();
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
 
@@ -74,7 +75,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
-        Params params = new Params();
+        Params params = Params.newParams();
 
         UpdateQuery updateQuery = supplier.apply(query);
 
@@ -84,7 +85,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
     }
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager, DocumentObserverParser observer) {
-        Params params = new Params();
+        Params params = Params.newParams();
         UpdateQuery updateQuery = supplier.apply(query);
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
@@ -110,7 +111,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
         }
 
         @Override
-        public Optional<JSONValue> getValue() {
+        public Optional<JSONQueryValue> getValue() {
             return query.getValue();
         }
     }

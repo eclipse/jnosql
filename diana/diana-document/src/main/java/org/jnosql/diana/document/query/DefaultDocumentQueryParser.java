@@ -16,12 +16,12 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentObserverParser;
-import org.jnosql.diana.document.DocumentPreparedStatement;
-import org.jnosql.diana.document.DocumentQueryParser;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentPreparedStatement;
+import jakarta.nosql.document.DocumentQueryParser;
 
 import java.util.List;
 import java.util.Objects;

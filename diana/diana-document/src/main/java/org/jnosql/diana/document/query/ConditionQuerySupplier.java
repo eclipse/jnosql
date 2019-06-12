@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2019 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -16,17 +16,24 @@
  */
 package org.jnosql.diana.document.query;
 
-import jakarta.nosql.document.DocumentObserverParser;
-import org.jnosql.query.DeleteQuery;
+import jakarta.nosql.query.Condition;
+import jakarta.nosql.query.JSONQueryValue;
 
-enum DeleteQueryConverterFactory implements DeleteQueryConverter {
+import java.util.List;
+import java.util.Optional;
 
-    INSTANCE;
+/**
+ * A base supplier to {@link jakarta.nosql.query.InsertQuery} and
+ * {@link jakarta.nosql.query.UpdateQuery}
+ */
+interface ConditionQuerySupplier {
 
-    private final DeleteQueryParser parser = new DeleteQueryParser();
+    List<Condition> getConditions();
 
-    @Override
-    public DocumentDeleteQueryParams apply(DeleteQuery deleteQuery, DocumentObserverParser columnObserverParser) {
-        return parser.apply(deleteQuery, columnObserverParser);
+    Optional<JSONQueryValue> getValue();
+
+    default boolean useJSONCondition() {
+        return getConditions().isEmpty() && getValue().isPresent();
     }
+
 }

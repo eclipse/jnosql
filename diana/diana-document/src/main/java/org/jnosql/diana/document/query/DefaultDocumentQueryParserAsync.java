@@ -16,10 +16,10 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.QueryException;
+import jakarta.nosql.QueryException;
 import org.jnosql.diana.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentObserverParser;
 import org.jnosql.diana.document.DocumentPreparedStatementAsync;
 import org.jnosql.diana.document.DocumentQueryParserAsync;
 

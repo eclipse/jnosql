@@ -16,18 +16,21 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentCondition;
-import org.jnosql.diana.document.DocumentDeleteQuery;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentObserverParser;
-import org.jnosql.diana.document.DocumentPreparedStatement;
-import org.jnosql.diana.document.DocumentPreparedStatementAsync;
-import org.jnosql.query.DeleteQuery;
-import org.jnosql.query.DeleteQuerySupplier;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.document.DeleteQueryConverter;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentCondition;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentDeleteQueryParams;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentPreparedStatement;
+import jakarta.nosql.document.DocumentPreparedStatementAsync;
+import jakarta.nosql.query.DeleteQuery;
+import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,11 +40,11 @@ import java.util.stream.Collectors;
 
 final class DeleteQueryParser implements DeleteQueryConverter {
 
-    private final DeleteQuerySupplier selectQuerySupplier;
+    private final DeleteQueryProvider deleteQueryProvider;
     private final CacheQuery<DocumentDeleteQuery> cache;
 
     DeleteQueryParser() {
-        this.selectQuerySupplier = DeleteQuerySupplier.getSupplier();
+        this.deleteQueryProvider = ServiceLoaderProvider.get(DeleteQueryProvider.class);
         cache = new CacheQuery<>(this::getQuery);
     }
 
@@ -61,7 +64,7 @@ final class DeleteQueryParser implements DeleteQueryConverter {
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager,
                                       DocumentObserverParser observer) {
-        Params params = new Params();
+        Params params = Params.newParams();
         DocumentDeleteQuery documentQuery = getQuery(query, params, observer);
         return DefaultDocumentPreparedStatement.delete(documentQuery, params, query, collectionManager);
     }
@@ -69,7 +72,7 @@ final class DeleteQueryParser implements DeleteQueryConverter {
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager,
                                                 DocumentObserverParser observer) {
-        Params params = new Params();
+        Params params = Params.newParams();
         DocumentDeleteQuery documentQuery = getQuery(query, params, observer);
         return DefaultDocumentPreparedStatementAsync.delete(documentQuery, params, query, collectionManager);
 
@@ -79,13 +82,13 @@ final class DeleteQueryParser implements DeleteQueryConverter {
     public DocumentDeleteQueryParams apply(DeleteQuery deleteQuery, DocumentObserverParser observer) {
         Objects.requireNonNull(deleteQuery, "deleteQuery is required");
         Objects.requireNonNull(observer, "observer is required");
-        Params params = new Params();
+        Params params = Params.newParams();
         DocumentDeleteQuery query = getQuery(params, observer, deleteQuery);
         return new DefaultDocumentDeleteQueryParams(query, params);
     }
 
     private DocumentDeleteQuery getQuery(String query, Params params, DocumentObserverParser observer) {
-        DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
+        DeleteQuery deleteQuery = deleteQueryProvider.apply(query);
 
         return getQuery(params, observer, deleteQuery);
     }
@@ -106,14 +109,14 @@ final class DeleteQueryParser implements DeleteQueryConverter {
     }
 
     private DocumentDeleteQuery getQuery(String query, DocumentObserverParser observer) {
-        DeleteQuery deleteQuery = selectQuerySupplier.apply(query);
+        DeleteQuery deleteQuery = deleteQueryProvider.apply(query);
 
         String collection = observer.fireEntity(deleteQuery.getEntity());
         List<String> documents = deleteQuery.getFields().stream()
                 .map(f -> observer.fireField(collection, f))
                 .collect(Collectors.toList());
         DocumentCondition condition = null;
-        Params params = new Params();
+        Params params = Params.newParams();
 
         if (deleteQuery.getWhere().isPresent()) {
             condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();

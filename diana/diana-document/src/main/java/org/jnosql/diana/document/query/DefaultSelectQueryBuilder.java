@@ -17,11 +17,22 @@
 package org.jnosql.diana.document.query;
 
 
-import org.jnosql.diana.Sort;
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQuery.DocumentFrom;
+import jakarta.nosql.document.DocumentQuery.DocumentLimit;
+import jakarta.nosql.document.DocumentQuery.DocumentNameCondition;
+import jakarta.nosql.document.DocumentQuery.DocumentNameOrder;
+import jakarta.nosql.document.DocumentQuery.DocumentNotCondition;
+import jakarta.nosql.document.DocumentQuery.DocumentOrder;
+import jakarta.nosql.document.DocumentQuery.DocumentQueryBuild;
+import jakarta.nosql.document.DocumentQuery.DocumentSelect;
+import jakarta.nosql.document.DocumentQuery.DocumentSkip;
+import jakarta.nosql.document.DocumentQuery.DocumentWhere;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,13 +174,13 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
 
     @Override
     public DocumentNameOrder asc() {
-        this.sorts.add(Sort.of(name, Sort.SortType.ASC));
+        this.sorts.add(Sort.of(name, SortType.ASC));
         return this;
     }
 
     @Override
     public DocumentNameOrder desc() {
-        this.sorts.add(Sort.of(name, Sort.SortType.DESC));
+        this.sorts.add(Sort.of(name, SortType.DESC));
         return this;
     }
 

@@ -16,8 +16,9 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.Params;
+import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQueryParams;
 
 import java.util.Objects;
 

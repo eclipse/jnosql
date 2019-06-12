@@ -16,14 +16,14 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.QueryException;
+import jakarta.nosql.QueryException;
 import jakarta.nosql.TypeReference;
-import org.jnosql.diana.document.Document;
+import jakarta.nosql.document.Document;
 import org.jnosql.diana.document.DocumentCollectionManager;
 import org.jnosql.diana.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.document.DocumentEntity;
 import org.jnosql.diana.document.DocumentPreparedStatement;
-import org.jnosql.diana.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentObserverParser;
 import org.jnosql.diana.document.DocumentPreparedStatementAsync;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

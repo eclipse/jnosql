@@ -17,8 +17,8 @@
 package org.jnosql.diana.document.query;
 
 
-import org.jnosql.diana.document.DocumentCondition;
-import org.jnosql.diana.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentCondition;
+import jakarta.nosql.document.DocumentDeleteQuery;
 
 import java.util.List;
 import java.util.Objects;

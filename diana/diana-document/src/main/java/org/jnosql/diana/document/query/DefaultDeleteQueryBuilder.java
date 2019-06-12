@@ -16,9 +16,14 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentDeleteQuery.DocumentDelete;
+import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteFrom;
+import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteNameCondition;
+import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteNotCondition;
+import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteWhere;
 
 import java.util.List;
 import java.util.function.Consumer;

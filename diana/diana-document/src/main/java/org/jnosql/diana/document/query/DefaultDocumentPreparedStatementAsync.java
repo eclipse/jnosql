@@ -16,14 +16,14 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.NonUniqueResultException;
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentDeleteQuery;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentPreparedStatementAsync;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentPreparedStatementAsync;
+import jakarta.nosql.document.DocumentQuery;
 
 import java.time.Duration;
 import java.util.Collections;

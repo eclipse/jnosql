@@ -16,15 +16,15 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import jakarta.nosql.query.ArrayValue;
-import org.jnosql.query.Function;
-import org.jnosql.query.FunctionValue;
-import org.jnosql.query.JSONValue;
-import org.jnosql.query.ParamValue;
-import jakarta.nosql.query.Value;
-import org.jnosql.query.ValueType;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.query.ArrayQueryValue;
+import jakarta.nosql.query.Function;
+import jakarta.nosql.query.FunctionQueryValue;
+import jakarta.nosql.query.JSONQueryValue;
+import jakarta.nosql.query.ParamQueryValue;
+import jakarta.nosql.query.QueryValue;
+import jakarta.nosql.query.ValueType;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -36,7 +36,7 @@ final class Values {
     private Values() {
     }
 
-    static Object get(Value<?> value, Params parameters) {
+    static Object get(QueryValue<?> value, Params parameters) {
 
         ValueType type = value.getType();
         switch (type) {
@@ -44,24 +44,24 @@ final class Values {
             case STRING:
                 return value.get();
             case PARAMETER:
-                return parameters.add(ParamValue.class.cast(value).get());
+                return parameters.add(ParamQueryValue.class.cast(value).get());
             case ARRAY:
-                return Stream.of(ArrayValue.class.cast(value).get())
+                return Stream.of(ArrayQueryValue.class.cast(value).get())
                         .map(v -> get(v, parameters))
                         .collect(toList());
             case FUNCTION:
-                Function function = FunctionValue.class.cast(value).get();
+                Function function = FunctionQueryValue.class.cast(value).get();
                 String name = function.getName();
                 Object[] params = function.getParams();
                 if ("convert".equals(name)) {
-                    return org.jnosql.diana.Value.of(get(Value.class.cast(params[0]), parameters))
+                    return jakarta.nosql.Value.of(get(QueryValue.class.cast(params[0]), parameters))
                             .get((Class<?>) params[1]);
                 }
                 String message = String.format("There is not support to the fuction: %s with parameters %s", name,
                         Arrays.toString(params));
                 throw new QueryException(message);
             case JSON:
-                return JsonObjects.getDocuments(JSONValue.class.cast(value).get());
+                return JsonObjects.getDocuments(JSONQueryValue.class.cast(value).get());
             case CONDITION:
             default:
                 throw new QueryException("There is not suppor to the value: " + type);

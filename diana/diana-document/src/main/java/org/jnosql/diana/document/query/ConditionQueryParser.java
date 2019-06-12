@@ -16,13 +16,14 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.document.Document;
-import org.jnosql.diana.document.DocumentCondition;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentObserverParser;
-import org.jnosql.query.JSONValue;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentCondition;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.query.JSONQueryValue;
+import jakarta.nosql.document.DocumentCondition;
 
 import java.util.List;
 
@@ -32,11 +33,12 @@ import java.util.List;
  */
 abstract class ConditionQueryParser {
 
-    protected DocumentEntity getEntity(ConditionQuerySupplier query, String collection, Params params, DocumentObserverParser observer) {
+    protected DocumentEntity getEntity(ConditionQuerySupplier query, String collection, Params params,
+                                       DocumentObserverParser observer) {
         DocumentEntity entity = DocumentEntity.of(collection);
 
         if (query.useJSONCondition()) {
-            JSONValue jsonValue = query.getValue().orElseThrow(() -> new QueryException("It is an invalid state of" +
+            JSONQueryValue jsonValue = query.getValue().orElseThrow(() -> new QueryException("It is an invalid state of" +
                     " either Update or Insert."));
             List<Document> documents = JsonObjects.getDocuments(jsonValue.get());
             entity.addAll(documents);

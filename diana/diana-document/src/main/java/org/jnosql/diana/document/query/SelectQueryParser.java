@@ -16,19 +16,22 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.Params;
-import org.jnosql.diana.QueryException;
-import org.jnosql.diana.Sort;
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentCondition;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentObserverParser;
-import org.jnosql.diana.document.DocumentPreparedStatement;
-import org.jnosql.diana.document.DocumentPreparedStatementAsync;
-import org.jnosql.diana.document.DocumentQuery;
-import org.jnosql.query.SelectQuery;
-import org.jnosql.query.SelectQuerySupplier;
+import jakarta.nosql.Params;
+import jakarta.nosql.QueryException;
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.Sort;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentCondition;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentPreparedStatement;
+import jakarta.nosql.document.DocumentPreparedStatementAsync;
+import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQueryParams;
+import jakarta.nosql.document.SelectQueryConverter;
+import jakarta.nosql.query.SelectQuery;
+import jakarta.nosql.query.SelectQuery.SelectQueryProvider;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,13 +40,13 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
-final class SelectQueryParser  implements SelectQueryConverter{
+final class SelectQueryParser implements SelectQueryConverter {
 
-    private final SelectQuerySupplier selectQuerySupplier;
+    private final SelectQueryProvider selectQueryProvider;
     private final CacheQuery<DocumentQuery> cache;
 
     SelectQueryParser() {
-        this.selectQuerySupplier = SelectQuerySupplier.getSupplier();
+        this.selectQueryProvider = ServiceLoaderProvider.get(SelectQueryProvider.class);
         this.cache = new CacheQuery<>(this::getDocumentQuery);
     }
 
@@ -62,9 +65,9 @@ final class SelectQueryParser  implements SelectQueryConverter{
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
-        Params params = new Params();
+        Params params = Params.newParams();
 
-        SelectQuery selectQuery = selectQuerySupplier.apply(query);
+        SelectQuery selectQuery = selectQueryProvider.apply(query);
 
         DocumentQuery documentQuery = getDocumentQuery(params, selectQuery, observer);
         return DefaultDocumentPreparedStatement.select(documentQuery, params, query, collectionManager);
@@ -72,9 +75,9 @@ final class SelectQueryParser  implements SelectQueryConverter{
 
     DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager,
                                                 DocumentObserverParser observer) {
-        Params params = new Params();
+        Params params = Params.newParams();
 
-        SelectQuery selectQuery = selectQuerySupplier.apply(query);
+        SelectQuery selectQuery = selectQueryProvider.apply(query);
 
         DocumentQuery documentQuery = getDocumentQuery(params, selectQuery, observer);
         return DefaultDocumentPreparedStatementAsync.select(documentQuery, params, query, collectionManager);
@@ -84,14 +87,14 @@ final class SelectQueryParser  implements SelectQueryConverter{
     public DocumentQueryParams apply(SelectQuery selectQuery, DocumentObserverParser observer) {
         Objects.requireNonNull(selectQuery, "selectQuery is required");
         Objects.requireNonNull(observer, "observer is required");
-        Params params = new Params();
+        Params params = Params.newParams();
         DocumentQuery columnQuery = getDocumentQuery(params, selectQuery, observer);
         return new DefaultDocumentQueryParams(columnQuery, params);
     }
 
     private DocumentQuery getDocumentQuery(String query, DocumentObserverParser observer) {
 
-        SelectQuery selectQuery = selectQuerySupplier.apply(query);
+        SelectQuery selectQuery = selectQueryProvider.apply(query);
         String collection = observer.fireEntity(selectQuery.getEntity());
         long limit = selectQuery.getLimit();
         long skip = selectQuery.getSkip();
@@ -101,7 +104,7 @@ final class SelectQueryParser  implements SelectQueryConverter{
         List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, collection))
                 .collect(toList());
         DocumentCondition condition = null;
-        Params params = new Params();
+        Params params = Params.newParams();
         if (selectQuery.getWhere().isPresent()) {
             condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
         }
@@ -130,11 +133,9 @@ final class SelectQueryParser  implements SelectQueryConverter{
         return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
-    private Sort toSort(org.jnosql.query.Sort sort, DocumentObserverParser observer, String entity) {
-        return Sort.of(observer.fireField(entity, sort.getName()),
-                sort.getType().equals(org.jnosql.query.Sort.SortType.ASC) ? Sort.SortType.ASC : Sort.SortType.DESC);
+    private Sort toSort(Sort sort, DocumentObserverParser observer, String entity) {
+        return Sort.of(observer.fireField(entity, sort.getName()), sort.getType());
     }
-
 
 
 }
