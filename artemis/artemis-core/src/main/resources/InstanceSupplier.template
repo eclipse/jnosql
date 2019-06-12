@@ -1,6 +1,6 @@
 package {0};
 
-import org.jnosql.artemis.reflection.InstanceSupplier;
+import jakarta.nosql.mapping.reflection.InstanceSupplier;
 
 public class {1} implements InstanceSupplier '{'
     @Override

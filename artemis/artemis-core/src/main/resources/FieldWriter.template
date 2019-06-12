@@ -1,6 +1,6 @@
 package {0};
 
-import org.jnosql.artemis.reflection.FieldWriter;
+import jakarta.nosql.mapping.reflection.FieldWriter;
 
 public class {1} implements FieldWriter '{'
 
