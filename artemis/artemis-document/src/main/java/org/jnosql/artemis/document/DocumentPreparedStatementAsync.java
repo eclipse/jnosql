@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document;
 
 
-import org.jnosql.artemis.PreparedStatementAsync;
+import jakarta.nosql.mapping.PreparedStatementAsync;
 import org.jnosql.diana.document.DocumentEntity;
 
 import java.util.List;

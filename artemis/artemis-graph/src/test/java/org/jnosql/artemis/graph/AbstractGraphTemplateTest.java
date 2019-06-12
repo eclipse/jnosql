@@ -28,7 +28,7 @@ import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.graph.model.WrongEntity;
-import org.jnosql.diana.NonUniqueResultException;
+import static jakarta.nosql.NonUniqueResultException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

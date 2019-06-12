@@ -15,8 +15,8 @@
 package org.jnosql.artemis.graph;
 
 import jakarta.nosql.mapping.Page;
-import org.jnosql.artemis.Pagination;
-import org.jnosql.diana.NonUniqueResultException;
+import jakarta.nosql.mapping.Pagination;
+import static jakarta.nosql.NonUniqueResultException;
 
 import java.util.List;
 import java.util.Optional;

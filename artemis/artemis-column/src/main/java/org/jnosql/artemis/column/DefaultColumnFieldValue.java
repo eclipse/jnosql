@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.COLLECTION;
+import static jakarta.nosql.mapping.reflection.FieldType.COLLECTION;
 import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
 import static org.jnosql.artemis.reflection.FieldTypeUtil.SUBENTITY;
 

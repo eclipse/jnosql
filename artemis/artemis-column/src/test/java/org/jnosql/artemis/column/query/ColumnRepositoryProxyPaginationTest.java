@@ -17,7 +17,7 @@ package org.jnosql.artemis.column.query;
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.Pagination;
+import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.model.Person;

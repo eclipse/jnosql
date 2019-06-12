@@ -18,7 +18,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.mapping.Page;
-import org.jnosql.artemis.Pagination;
+import jakarta.nosql.mapping.Pagination;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
 import org.junit.jupiter.api.AfterEach;

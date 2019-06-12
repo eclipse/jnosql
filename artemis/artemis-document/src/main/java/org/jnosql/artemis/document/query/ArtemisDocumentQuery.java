@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.document.query;
 
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Sort;
 import org.jnosql.diana.document.DocumentCondition;
 import org.jnosql.diana.document.DocumentQuery;
 

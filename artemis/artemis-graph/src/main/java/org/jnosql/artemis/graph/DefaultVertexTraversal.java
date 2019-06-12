@@ -21,8 +21,8 @@ import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Page;
-import org.jnosql.artemis.Pagination;
-import org.jnosql.diana.NonUniqueResultException;
+import jakarta.nosql.mapping.Pagination;
+import static jakarta.nosql.NonUniqueResultException;
 
 import java.util.List;
 import java.util.Optional;

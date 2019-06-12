@@ -16,12 +16,12 @@ package org.jnosql.artemis.document.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
-import org.jnosql.artemis.Pagination;
+import jakarta.nosql.mapping.Pagination;
 import org.jnosql.artemis.document.DocumentQueryPagination;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Sort;
 import org.jnosql.diana.document.DocumentQuery;
 
 import java.util.ArrayList;

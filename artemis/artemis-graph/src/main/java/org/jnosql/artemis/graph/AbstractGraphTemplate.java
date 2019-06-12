@@ -28,7 +28,7 @@ import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
-import org.jnosql.diana.NonUniqueResultException;
+import static jakarta.nosql.NonUniqueResultException;
 
 import java.util.ArrayList;
 import java.util.Collection;

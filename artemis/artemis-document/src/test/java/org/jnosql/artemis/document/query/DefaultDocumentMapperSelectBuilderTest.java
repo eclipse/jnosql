@@ -16,7 +16,7 @@ package org.jnosql.artemis.document.query;
 
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Page;
-import org.jnosql.artemis.Pagination;
+import jakarta.nosql.mapping.Pagination;
 import org.jnosql.artemis.document.DocumentQueryPagination;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateAsync;

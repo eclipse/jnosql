@@ -16,7 +16,7 @@ package org.jnosql.artemis.column;
 
 import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.IdNotFoundException;
-import org.jnosql.artemis.PreparedStatementAsync;
+import jakarta.nosql.mapping.PreparedStatementAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;

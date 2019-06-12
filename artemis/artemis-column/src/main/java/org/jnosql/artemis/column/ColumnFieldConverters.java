@@ -30,7 +30,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static org.jnosql.artemis.reflection.FieldTypeUtil.COLLECTION;
+import static jakarta.nosql.mapping.reflection.FieldType.COLLECTION;
 import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
 import static org.jnosql.artemis.reflection.FieldTypeUtil.SUBENTITY;
 

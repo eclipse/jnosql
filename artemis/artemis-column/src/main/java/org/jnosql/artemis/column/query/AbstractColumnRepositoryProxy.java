@@ -17,7 +17,7 @@ package org.jnosql.artemis.column.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
-import org.jnosql.artemis.Pagination;
+import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.column.ColumnQueryPagination;
 import org.jnosql.artemis.column.ColumnTemplate;

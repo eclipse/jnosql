@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.artemis.PreparedStatementAsync;
+import jakarta.nosql.mapping.PreparedStatementAsync;
 import org.jnosql.diana.column.ColumnEntity;
 
 import java.util.List;

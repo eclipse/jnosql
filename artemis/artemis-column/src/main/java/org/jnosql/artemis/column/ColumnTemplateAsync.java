@@ -15,9 +15,9 @@
 package org.jnosql.artemis.column;
 
 
-import org.jnosql.artemis.PreparedStatementAsync;
+import jakarta.nosql.mapping.PreparedStatementAsync;
 import org.jnosql.diana.ExecuteAsyncQueryException;
-import org.jnosql.diana.NonUniqueResultException;
+import static jakarta.nosql.NonUniqueResultException;
 import org.jnosql.diana.column.ColumnDeleteQuery;
 import org.jnosql.diana.column.ColumnEntity;
 import org.jnosql.diana.column.ColumnQuery;

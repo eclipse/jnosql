@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.column.query;
 
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Sort;
 import org.jnosql.diana.column.ColumnCondition;
 import org.jnosql.diana.column.ColumnQuery;
 

@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.DynamicReturn;
 import org.jnosql.artemis.util.ParamsBinder;
 import jakarta.nosql.Params;
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Sort;
 import org.jnosql.diana.column.ColumnDeleteQuery;
 import org.jnosql.diana.column.ColumnObserverParser;
 import org.jnosql.diana.column.ColumnQuery;

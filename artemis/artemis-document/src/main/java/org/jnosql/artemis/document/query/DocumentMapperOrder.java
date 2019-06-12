@@ -17,7 +17,7 @@
 package org.jnosql.artemis.document.query;
 
 
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Sort;
 
 /**
  * The Document Order whose define the sort in the query.

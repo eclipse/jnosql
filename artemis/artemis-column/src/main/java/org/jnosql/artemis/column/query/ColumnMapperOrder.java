@@ -17,7 +17,7 @@
 package org.jnosql.artemis.column.query;
 
 
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Sort;
 
 /**
  * The definition to either {@link Sort.SortType}

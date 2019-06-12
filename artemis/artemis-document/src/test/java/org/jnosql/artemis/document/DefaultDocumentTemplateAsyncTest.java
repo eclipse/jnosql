@@ -16,11 +16,11 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.PreparedStatementAsync;
+import jakarta.nosql.mapping.PreparedStatementAsync;
 import org.jnosql.artemis.model.Movie;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.NonUniqueResultException;
+import static jakarta.nosql.NonUniqueResultException;
 import org.jnosql.diana.document.Document;
 import org.jnosql.diana.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.document.DocumentCondition;

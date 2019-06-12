@@ -23,7 +23,7 @@ import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import org.jnosql.diana.NonUniqueResultException;
+import static jakarta.nosql.NonUniqueResultException;
 import org.jnosql.diana.column.ColumnDeleteQuery;
 import org.jnosql.diana.column.ColumnEntity;
 import org.jnosql.diana.column.ColumnFamilyManager;
