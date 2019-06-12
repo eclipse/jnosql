@@ -20,6 +20,7 @@ package org.jnosql.diana.document;
 
 import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.Value;
+import jakarta.nosql.document.Document;
 
 import java.util.Objects;
 
@@ -34,8 +35,8 @@ final class DefaultDocument implements Document {
 
 
     DefaultDocument(String name, Value value) {
-        this.name = Objects.requireNonNull(name, "name is required");
-        this.value = Objects.requireNonNull(value, "value is required");
+        this.name = name;
+        this.value = value;
     }
 
     @Override
@@ -83,7 +84,7 @@ final class DefaultDocument implements Document {
 
     @Override
     public String toString() {
-        return  "Document{" + "name='" + name + '\'' +
+        return "Document{" + "name='" + name + '\'' +
                 ", value=" + value +
                 '}';
     }

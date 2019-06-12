@@ -51,7 +51,7 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
 
     DefaultDocumentEntity(String name) {
-        this.name = requireNonNull(name, "name name is required");
+        this.name = name;
     }
 
     @Override
