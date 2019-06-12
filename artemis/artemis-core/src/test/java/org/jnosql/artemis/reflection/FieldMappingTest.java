@@ -30,6 +30,7 @@ import java.util.Map;
 
 import static jakarta.nosql.mapping.reflection.FieldType.COLLECTION;
 import static jakarta.nosql.mapping.reflection.FieldType.DEFAULT;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
 import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
 import static jakarta.nosql.mapping.reflection.FieldType.MAP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -89,7 +90,7 @@ public class FieldMappingTest {
 
         assertEquals("barClass", field.getFieldName());
         assertEquals("barClass", field.getName());
-        assertEquals(EMBEDDED_ENTITY, field.getType());
+        assertEquals(EMBEDDED, field.getType());
     }
 
     @Test
