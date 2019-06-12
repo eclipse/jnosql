@@ -17,11 +17,11 @@
 package org.jnosql.diana.document.query;
 
 import jakarta.nosql.QueryException;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentEntity;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
-import org.jnosql.diana.document.DocumentPreparedStatementAsync;
-import org.jnosql.diana.document.DocumentQueryParserAsync;
+import jakarta.nosql.document.DocumentPreparedStatementAsync;
+import jakarta.nosql.document.DocumentQueryParserAsync;
 
 import java.util.List;
 import java.util.function.Consumer;

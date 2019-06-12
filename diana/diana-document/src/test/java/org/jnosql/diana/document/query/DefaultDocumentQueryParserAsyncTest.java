@@ -16,17 +16,17 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.Condition;
+import jakarta.nosql.Condition;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.document.Document;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentCondition;
-import org.jnosql.diana.document.DocumentDeleteQuery;
-import org.jnosql.diana.document.DocumentEntity;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
-import org.jnosql.diana.document.DocumentPreparedStatementAsync;
-import org.jnosql.diana.document.DocumentQuery;
-import org.jnosql.diana.document.DocumentQueryParserAsync;
+import jakarta.nosql.document.DocumentPreparedStatementAsync;
+import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQueryParserAsync;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

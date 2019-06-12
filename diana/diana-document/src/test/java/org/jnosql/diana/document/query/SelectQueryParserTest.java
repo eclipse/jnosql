@@ -16,21 +16,22 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.hamcrest.Matchers;
-import org.jnosql.diana.Condition;
+import jakarta.nosql.Condition;
 import jakarta.nosql.QueryException;
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentCondition;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentPreparedStatement;
-import org.jnosql.diana.document.DocumentPreparedStatementAsync;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentPreparedStatement;
+import jakarta.nosql.document.DocumentPreparedStatementAsync;
+import jakarta.nosql.document.DocumentQuery;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -40,10 +41,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static jakarta.nosql.document.DocumentCondition.eq;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static  jakarta.nosql.document.DocumentCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -84,7 +85,7 @@ public class SelectQueryParserTest {
         DocumentQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.getDocuments().isEmpty());
-        assertThat(documentQuery.getSorts(), Matchers.contains(Sort.of("name", Sort.SortType.ASC)));
+        assertThat(documentQuery.getSorts(), Matchers.contains(Sort.of("name", SortType.ASC)));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
@@ -102,7 +103,7 @@ public class SelectQueryParserTest {
         DocumentQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.getDocuments().isEmpty());
-        assertThat(documentQuery.getSorts(), contains(Sort.of("name", Sort.SortType.ASC)));
+        assertThat(documentQuery.getSorts(), contains(Sort.of("name", SortType.ASC)));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
@@ -118,7 +119,7 @@ public class SelectQueryParserTest {
         DocumentQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.getDocuments().isEmpty());
-        assertThat(documentQuery.getSorts(), contains(Sort.of("name", Sort.SortType.DESC)));
+        assertThat(documentQuery.getSorts(), contains(Sort.of("name", SortType.DESC)));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
@@ -135,7 +136,8 @@ public class SelectQueryParserTest {
         DocumentQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.getDocuments().isEmpty());
-        assertThat(documentQuery.getSorts(), contains(Sort.of("name", Sort.SortType.DESC), Sort.of("age", Sort.SortType.ASC)));
+        assertThat(documentQuery.getSorts(), contains(Sort.of("name", SortType.DESC),
+                Sort.of("age", SortType.ASC)));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());

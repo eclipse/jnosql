@@ -16,15 +16,15 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.Sort;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.Sort;
+import jakarta.nosql.document.DocumentQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static  jakarta.nosql.document.query.DocumentQueryBuilder.select;
+import static jakarta.nosql.document.DocumentQuery.select;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 

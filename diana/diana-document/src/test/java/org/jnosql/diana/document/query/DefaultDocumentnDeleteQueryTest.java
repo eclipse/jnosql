@@ -17,7 +17,7 @@
 package org.jnosql.diana.document.query;
 
 
-import org.jnosql.diana.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentDeleteQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ public class DefaultDocumentnDeleteQueryTest {
 
     @BeforeEach
     public void setUp() {
-        query = DocumentQueryBuilder.delete().from("columnFamily").build();
+        query = DocumentDeleteQuery.delete().from("columnFamily").build();
     }
 
     @Test

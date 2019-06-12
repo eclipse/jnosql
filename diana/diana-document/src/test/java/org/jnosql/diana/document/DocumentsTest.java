@@ -16,6 +16,7 @@
  */
 package org.jnosql.diana.document;
 
+import jakarta.nosql.document.Document;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

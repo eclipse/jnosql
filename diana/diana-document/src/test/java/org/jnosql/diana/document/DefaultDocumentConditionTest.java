@@ -17,8 +17,10 @@
 
 package org.jnosql.diana.document;
 
+import jakarta.nosql.Condition;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentCondition;
 import org.hamcrest.Matchers;
-import org.jnosql.diana.Condition;
 import jakarta.nosql.TypeReference;
 import org.junit.jupiter.api.Test;
 

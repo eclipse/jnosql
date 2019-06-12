@@ -16,16 +16,17 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.hamcrest.Matchers;
-import org.jnosql.diana.Condition;
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Condition;
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentCondition;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentQuery;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -34,11 +35,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import static jakarta.nosql.document.DocumentCondition.eq;
+import static jakarta.nosql.document.DocumentQuery.select;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static  jakarta.nosql.document.DocumentCondition.eq;
-import static  jakarta.nosql.document.query.DocumentQueryBuilder.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -84,7 +85,7 @@ public class DefaultSelectQueryBuilderTest {
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.getSorts(), Matchers.contains(Sort.of("name", Sort.SortType.ASC)));
+        assertThat(query.getSorts(), Matchers.contains(Sort.of("name", SortType.ASC)));
     }
 
     @Test
@@ -94,7 +95,7 @@ public class DefaultSelectQueryBuilderTest {
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.getSorts(), contains(Sort.of("name", Sort.SortType.DESC)));
+        assertThat(query.getSorts(), contains(Sort.of("name", SortType.DESC)));
     }
 
 
