@@ -23,7 +23,6 @@ import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.query.JSONQueryValue;
-import jakarta.nosql.document.DocumentCondition;
 
 import java.util.List;
 

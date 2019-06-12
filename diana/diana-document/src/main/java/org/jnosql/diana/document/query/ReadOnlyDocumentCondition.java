@@ -16,7 +16,7 @@
  */
 package org.jnosql.diana.document.query;
 
-import org.jnosql.diana.Condition;
+import jakarta.nosql.Condition;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCondition;
 
