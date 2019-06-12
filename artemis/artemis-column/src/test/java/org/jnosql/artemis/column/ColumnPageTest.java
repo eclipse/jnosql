@@ -15,7 +15,7 @@
 package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.artemis.model.Person;

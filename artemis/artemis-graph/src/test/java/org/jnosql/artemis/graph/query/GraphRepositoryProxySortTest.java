@@ -20,7 +20,7 @@ import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.Pagination;
 import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.Sorts;

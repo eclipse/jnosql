@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.document.query;
 
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.DatabaseQualifier;
-import org.jnosql.artemis.DatabaseType;
+import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.RepositoryAsync;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.reflection.ClassMappings;

@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.configuration.yaml;
 
-import org.jnosql.artemis.ConfigurationUnit;
+import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.artemis.configuration.Configurable;
 import org.jnosql.artemis.configuration.ConfigurableReader;
 import org.jnosql.artemis.configuration.ConfigurationException;

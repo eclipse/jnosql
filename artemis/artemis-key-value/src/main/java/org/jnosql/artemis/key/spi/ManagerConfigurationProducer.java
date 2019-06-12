@@ -15,7 +15,7 @@
 package org.jnosql.artemis.key.spi;
 
 import org.jnosql.artemis.ConfigurationException;
-import org.jnosql.artemis.ConfigurationUnit;
+import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.artemis.util.StringUtils;
 import org.jnosql.diana.key.BucketManager;
 import org.jnosql.diana.key.BucketManagerFactory;

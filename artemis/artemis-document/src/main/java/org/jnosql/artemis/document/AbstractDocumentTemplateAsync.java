@@ -15,12 +15,12 @@
 package org.jnosql.artemis.document;
 
 
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.IdNotFoundException;
 import org.jnosql.artemis.PreparedStatementAsync;
-import org.jnosql.artemis.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.artemis.reflection.FieldMapping;
+import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.util.ConverterUtil;
 import org.jnosql.diana.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.document.DocumentDeleteQuery;

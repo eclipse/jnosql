@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.key.spi;
 
-import org.jnosql.artemis.ConfigurationUnit;
+import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.key.KeyValueTemplateProducer;
 

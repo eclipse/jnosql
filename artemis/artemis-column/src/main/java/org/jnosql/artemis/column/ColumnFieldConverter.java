@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.artemis.reflection.FieldMapping;
+import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.diana.column.Column;
 
 import java.util.List;

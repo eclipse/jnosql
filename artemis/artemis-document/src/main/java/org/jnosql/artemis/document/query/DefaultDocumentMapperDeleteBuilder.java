@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.document.query;
 
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.artemis.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.diana.document.DocumentDeleteQuery;
 
 import java.util.function.Consumer;

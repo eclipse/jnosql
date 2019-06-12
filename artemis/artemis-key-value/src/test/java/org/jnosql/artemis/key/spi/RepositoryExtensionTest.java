@@ -15,7 +15,7 @@
 package org.jnosql.artemis.key.spi;
 
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.ConfigurationUnit;
+import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.artemis.UserRepository;
 import org.jnosql.artemis.model.User;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
-import static org.jnosql.artemis.DatabaseType.KEY_VALUE;
+import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(CDIExtension.class)

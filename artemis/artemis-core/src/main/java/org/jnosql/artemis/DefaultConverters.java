@@ -15,6 +15,10 @@
 package org.jnosql.artemis;
 
 
+import jakarta.nosql.mapping.AttributeConverter;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.InstanceProducer;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;

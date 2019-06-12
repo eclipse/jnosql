@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.column.ColumnFieldConverters.ColumnFieldConverterFactory;
-import org.jnosql.artemis.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.artemis.reflection.FieldMapping;
+import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.reflection.FieldTypeUtil;
 import org.jnosql.artemis.reflection.FieldValue;
 import org.jnosql.diana.column.Column;

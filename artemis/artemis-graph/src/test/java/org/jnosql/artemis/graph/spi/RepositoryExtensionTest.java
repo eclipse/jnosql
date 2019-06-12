@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.graph.spi;
 
-import org.jnosql.artemis.ConfigurationUnit;
+import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.artemis.graph.BookRepository;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
-import static org.jnosql.artemis.DatabaseType.GRAPH;
+import static jakarta.nosql.mapping.DatabaseType.GRAPH;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(CDIExtension.class)

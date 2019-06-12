@@ -14,17 +14,17 @@
  */
 package org.jnosql.artemis.util;
 
-import org.jnosql.artemis.ConfigurationUnit;
+import jakarta.nosql.mapping.ConfigurationUnit;
 import jakarta.nosql.mapping.Repository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.jnosql.artemis.DatabaseType.COLUMN;
-import static org.jnosql.artemis.DatabaseType.DOCUMENT;
-import static org.jnosql.artemis.DatabaseType.GRAPH;
-import static org.jnosql.artemis.DatabaseType.KEY_VALUE;
+import static jakarta.nosql.mapping.DatabaseType.COLUMN;
+import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
+import static jakarta.nosql.mapping.DatabaseType.GRAPH;
+import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
 import static org.jnosql.artemis.DatabaseType.SHARED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

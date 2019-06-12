@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.column.query;
 
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.column.ColumnRepositoryProducer;
 import org.jnosql.artemis.column.ColumnTemplate;

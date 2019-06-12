@@ -15,10 +15,10 @@
 package org.jnosql.artemis.column.query;
 
 
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.artemis.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 
 import java.lang.reflect.ParameterizedType;

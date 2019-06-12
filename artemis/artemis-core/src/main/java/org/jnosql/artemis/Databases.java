@@ -14,6 +14,9 @@
  */
 package org.jnosql.artemis;
 
+import jakarta.nosql.mapping.Database;
+import jakarta.nosql.mapping.DatabaseType;
+
 import javax.enterprise.inject.spi.ProcessProducer;
 import java.lang.annotation.Annotation;
 import java.util.Optional;

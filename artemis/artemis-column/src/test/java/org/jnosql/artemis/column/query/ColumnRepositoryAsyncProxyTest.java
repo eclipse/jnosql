@@ -15,7 +15,7 @@
 package org.jnosql.artemis.column.query;
 
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DynamicQueryException;
 import org.jnosql.artemis.Param;
 import org.jnosql.artemis.PreparedStatementAsync;

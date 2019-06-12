@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.util;
 
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.Params;
+import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DynamicQueryException;
-import org.jnosql.artemis.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.diana.Params;
+import jakarta.nosql.mapping.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.FieldMapping;
 
 import java.lang.reflect.Method;
 import java.util.List;

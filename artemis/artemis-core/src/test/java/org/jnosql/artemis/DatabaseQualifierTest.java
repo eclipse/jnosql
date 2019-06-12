@@ -17,10 +17,10 @@ package org.jnosql.artemis;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.jnosql.artemis.DatabaseType.COLUMN;
-import static org.jnosql.artemis.DatabaseType.DOCUMENT;
-import static org.jnosql.artemis.DatabaseType.GRAPH;
-import static org.jnosql.artemis.DatabaseType.KEY_VALUE;
+import static jakarta.nosql.mapping.DatabaseType.COLUMN;
+import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
+import static jakarta.nosql.mapping.DatabaseType.GRAPH;
+import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 

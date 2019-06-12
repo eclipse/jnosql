@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.configuration;
 
-import org.jnosql.artemis.ConfigurationUnit;
+import jakarta.nosql.mapping.ConfigurationUnit;
 
 import java.io.InputStream;
 import java.util.List;

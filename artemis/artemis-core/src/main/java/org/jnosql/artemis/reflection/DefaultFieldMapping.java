@@ -16,19 +16,22 @@ package org.jnosql.artemis.reflection;
 
 
 import jakarta.nosql.mapping.AttributeConverter;
+import jakarta.nosql.mapping.reflection.FieldReader;
+import jakarta.nosql.mapping.reflection.FieldType;
+import jakarta.nosql.mapping.reflection.FieldWriter;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
 
 /**
- * Class that represents {@link FieldMapping} a default field
+ * Class that represents {@link jakarta.nosql.mapping.reflection.FieldMapping} a default field
  */
 public class DefaultFieldMapping extends AbstractFieldMapping {
 
 
     private final boolean id;
 
-    DefaultFieldMapping(FieldTypeUtil type, Field field, String name,
+    DefaultFieldMapping(FieldType type, Field field, String name,
                         Class<? extends AttributeConverter> converter, boolean id,
                         FieldReader reader, FieldWriter writer) {
         super(type, field, name, converter, reader, writer);

@@ -17,12 +17,12 @@ package org.jnosql.artemis.document.query;
 
 import org.jnosql.aphrodite.antlr.method.SelectMethodFactory;
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.model.Person;
-import org.jnosql.artemis.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.util.ParamsBinder;
-import org.jnosql.diana.Params;
+import jakarta.nosql.Params;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import org.jnosql.diana.document.Document;

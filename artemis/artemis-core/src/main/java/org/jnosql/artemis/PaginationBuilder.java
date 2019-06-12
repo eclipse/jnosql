@@ -16,6 +16,8 @@
  */
 package org.jnosql.artemis;
 
+import jakarta.nosql.mapping.Pagination;
+
 /**
  * The builder of {@link Pagination}
  */

@@ -15,7 +15,7 @@
 package org.jnosql.artemis.key.query;
 
 import org.jnosql.artemis.DatabaseQualifier;
-import org.jnosql.artemis.DatabaseType;
+import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.spi.AbstractBean;

@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document;
 
 
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.diana.document.DocumentCollectionManager;
 

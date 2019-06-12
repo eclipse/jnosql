@@ -16,8 +16,8 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Property;
 import jakarta.nosql.mapping.AttributeConverter;
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.FieldMapping;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.reflection.FieldMapping;
 
 import java.util.List;
 import java.util.Objects;

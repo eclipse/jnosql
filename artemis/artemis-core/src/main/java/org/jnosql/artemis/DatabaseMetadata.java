@@ -14,10 +14,13 @@
  */
 package org.jnosql.artemis;
 
+import jakarta.nosql.mapping.Database;
+import jakarta.nosql.mapping.DatabaseType;
+
 import java.util.Objects;
 
 /**
- * This class is metadata to {@link Database}
+ * This class is metadata to {@link jakarta.nosql.mapping.Database}
  */
 public final class DatabaseMetadata {
 

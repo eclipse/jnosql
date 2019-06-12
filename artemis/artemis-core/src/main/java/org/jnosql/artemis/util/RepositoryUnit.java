@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.util;
 
-import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.artemis.DatabaseType;
+import jakarta.nosql.mapping.ConfigurationUnit;
+import jakarta.nosql.mapping.DatabaseType;
 
 import java.util.Objects;
 

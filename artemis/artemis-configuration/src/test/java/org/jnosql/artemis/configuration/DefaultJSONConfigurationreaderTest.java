@@ -17,7 +17,7 @@ package org.jnosql.artemis.configuration;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.ConfigurationReader;
 import org.jnosql.artemis.ConfigurationSettingsUnit;
-import org.jnosql.artemis.ConfigurationUnit;
+import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.diana.Settings;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

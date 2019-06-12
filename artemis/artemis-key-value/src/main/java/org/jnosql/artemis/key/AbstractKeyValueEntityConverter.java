@@ -15,11 +15,11 @@
 package org.jnosql.artemis.key;
 
 import jakarta.nosql.mapping.AttributeConverter;
-import org.jnosql.artemis.Converters;
+import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.IdNotFoundException;
-import org.jnosql.artemis.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.artemis.reflection.FieldMapping;
+import jakarta.nosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.Value;
 import org.jnosql.diana.key.KeyValueEntity;
 

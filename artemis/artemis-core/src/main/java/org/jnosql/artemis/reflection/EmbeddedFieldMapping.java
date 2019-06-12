@@ -15,6 +15,10 @@
 package org.jnosql.artemis.reflection;
 
 
+import jakarta.nosql.mapping.reflection.FieldReader;
+import jakarta.nosql.mapping.reflection.FieldType;
+import jakarta.nosql.mapping.reflection.FieldWriter;
+
 import java.lang.reflect.Field;
 import java.util.Objects;
 
@@ -22,7 +26,7 @@ public final class EmbeddedFieldMapping extends AbstractFieldMapping {
 
     private final String entityName;
 
-    public EmbeddedFieldMapping(FieldTypeUtil type, Field field, String name, String entityName,
+    public EmbeddedFieldMapping(FieldType type, Field field, String name, String entityName,
                                 FieldReader reader, FieldWriter writer) {
         super(type, field, name, null, reader, writer);
         this.entityName = entityName;

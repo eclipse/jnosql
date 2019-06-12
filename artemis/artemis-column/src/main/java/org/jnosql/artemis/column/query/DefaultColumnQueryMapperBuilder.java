@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.column.query;
 
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.ClassMapping;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 
 import javax.enterprise.context.ApplicationScoped;

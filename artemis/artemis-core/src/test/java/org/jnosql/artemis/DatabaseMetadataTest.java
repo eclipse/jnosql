@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis;
 
+import jakarta.nosql.mapping.Database;
+import jakarta.nosql.mapping.DatabaseType;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

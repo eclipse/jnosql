@@ -16,7 +16,7 @@ package org.jnosql.artemis.graph.spi;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.DatabaseQualifier;
-import org.jnosql.artemis.DatabaseType;
+import jakarta.nosql.mapping.DatabaseType;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.GraphTemplateProducer;
 import org.jnosql.artemis.spi.AbstractBean;

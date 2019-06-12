@@ -15,6 +15,8 @@
 package org.jnosql.artemis;
 
 
+import jakarta.nosql.mapping.EntityPostPersit;
+
 import java.util.Objects;
 
 /**

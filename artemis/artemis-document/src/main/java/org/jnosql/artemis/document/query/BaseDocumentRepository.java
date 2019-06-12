@@ -16,11 +16,11 @@ package org.jnosql.artemis.document.query;
 
 import org.jnosql.aphrodite.antlr.method.DeleteMethodFactory;
 import org.jnosql.aphrodite.antlr.method.SelectMethodFactory;
-import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.reflection.ClassMapping;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.DynamicReturn;
 import org.jnosql.artemis.util.ParamsBinder;
-import org.jnosql.diana.Params;
+import jakarta.nosql.Params;
 import org.jnosql.diana.Sort;
 import org.jnosql.diana.document.DocumentDeleteQuery;
 import org.jnosql.diana.document.DocumentObserverParser;

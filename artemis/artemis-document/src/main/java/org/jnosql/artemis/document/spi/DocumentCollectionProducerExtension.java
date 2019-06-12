@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document.spi;
 
 
-import org.jnosql.artemis.ConfigurationUnit;
+import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
 import jakarta.nosql.mapping.Repository;
@@ -43,7 +43,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import static org.jnosql.artemis.DatabaseType.DOCUMENT;
+import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
 
 /**
  * Extension to start up the DocumentTemplate, DocumentTemplateAsync, Repository and RepositoryAsync

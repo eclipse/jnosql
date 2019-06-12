@@ -15,7 +15,7 @@
 package org.jnosql.artemis.graph.spi;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.ConfigurationUnit;
+import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
 import jakarta.nosql.mapping.Repository;
@@ -39,7 +39,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import static org.jnosql.artemis.DatabaseType.GRAPH;
+import static jakarta.nosql.mapping.DatabaseType.GRAPH;
 
 /**
  * Extension to start up the GraphTemplate, Repository

@@ -16,7 +16,7 @@ package org.jnosql.artemis.column.spi;
 
 
 import org.jnosql.artemis.DatabaseQualifier;
-import org.jnosql.artemis.DatabaseType;
+import jakarta.nosql.mapping.DatabaseType;
 import org.jnosql.artemis.column.ColumnTemplateAsync;
 import org.jnosql.artemis.column.ColumnTemplateAsyncProducer;
 import org.jnosql.artemis.spi.AbstractBean;
