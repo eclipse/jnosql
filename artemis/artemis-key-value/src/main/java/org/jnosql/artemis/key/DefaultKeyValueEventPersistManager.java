@@ -15,9 +15,16 @@
 package org.jnosql.artemis.key;
 
 
-import org.jnosql.artemis.EntityPostPersit;
-import org.jnosql.artemis.EntityPrePersist;
-import org.jnosql.diana.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPrePersist;
+import jakarta.nosql.mapping.key.EntityKeyValuePostPersist;
+import jakarta.nosql.mapping.key.EntityKeyValuePrePersist;
+import jakarta.nosql.mapping.key.KeyValueEntityPostPersist;
+import jakarta.nosql.mapping.key.KeyValueEntityPrePersist;
+import jakarta.nosql.mapping.key.KeyValueEventPersistManager;
+import org.jnosql.artemis.DefaultEntityPostPersist;
+import org.jnosql.artemis.DefaultEntityPrePersist;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -44,32 +51,32 @@ class DefaultKeyValueEventPersistManager implements KeyValueEventPersistManager 
 
 
     @Override
-    public void firePreKeyValue(KeyValueEntity<?> entity) {
-        keyValueEntityPrePersistEvent.fire(KeyValueEntityPrePersist.of(entity));
+    public void firePreKeyValue(KeyValueEntity entity) {
+        keyValueEntityPrePersistEvent.fire(new DefaultKeyValueEntityPrePersist(entity));
     }
 
     @Override
-    public void firePostKeyValue(KeyValueEntity<?> entity) {
-        keyValueEntityPostPersistEvent.fire(KeyValueEntityPostPersist.of(entity));
+    public void firePostKeyValue(KeyValueEntity entity) {
+        keyValueEntityPostPersistEvent.fire(new DefaultKeyValueEntityPostPersist(entity));
     }
 
     @Override
     public <T> void firePreEntity(T entity) {
-        entityPrePersistEvent.fire(EntityPrePersist.of(entity));
+        entityPrePersistEvent.fire(new DefaultEntityPrePersist(entity));
     }
 
     @Override
     public <T> void firePostEntity(T entity) {
-        entityPostPersitEvent.fire(EntityPostPersit.of(entity));
+        entityPostPersitEvent.fire(new DefaultEntityPostPersist(entity));
     }
 
     @Override
     public <T> void firePreKeyValueEntity(T entity) {
-        entityKeyValuePrePersist.fire(EntityKeyValuePrePersist.of(entity));
+        entityKeyValuePrePersist.fire(new DefaultEntityKeyValuePrePersist(entity));
     }
 
     @Override
     public <T> void firePostKeyValueEntity(T entity) {
-        entityKeyValuePostPersist.fire(EntityKeyValuePostPersist.of(entity));
+        entityKeyValuePostPersist.fire(new DefaultEntityKeyValuePostPersist(entity));
     }
 }

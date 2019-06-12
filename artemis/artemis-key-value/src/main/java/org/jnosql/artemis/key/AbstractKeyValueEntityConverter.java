@@ -16,12 +16,13 @@ package org.jnosql.artemis.key;
 
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.IdNotFoundException;
+import jakarta.nosql.mapping.IdNotFoundException;
+import jakarta.nosql.mapping.key.KeyValueEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.Value;
-import org.jnosql.diana.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValueEntity;
 
 import java.util.Objects;
 
@@ -37,7 +38,7 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
     protected abstract Converters getConverters();
 
     @Override
-    public KeyValueEntity<?> toKeyValue(Object entityInstance) {
+    public KeyValueEntity toKeyValue(Object entityInstance) {
         requireNonNull(entityInstance, "Object is required");
         Class<?> clazz = entityInstance.getClass();
 
@@ -49,10 +50,9 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
     }
 
     @Override
-    public <T> T toEntity(Class<T> entityClass, KeyValueEntity<?> entity) {
+    public <T> T toEntity(Class<T> entityClass, KeyValueEntity entity) {
 
-        Value value = entity.getValue();
-        T bean = value.get(entityClass);
+        T bean = entity.getValue(entityClass);
         if (Objects.isNull(bean)) {
             return null;
         }

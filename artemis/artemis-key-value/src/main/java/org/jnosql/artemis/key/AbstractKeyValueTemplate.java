@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.PreparedStatement;
 import static jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Value;
 import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValueEntity;
 
 import java.time.Duration;
 import java.util.Collections;

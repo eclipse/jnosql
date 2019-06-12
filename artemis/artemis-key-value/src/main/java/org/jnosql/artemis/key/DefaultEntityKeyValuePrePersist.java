@@ -14,15 +14,17 @@
  */
 package org.jnosql.artemis.key;
 
+import jakarta.nosql.mapping.key.EntityKeyValuePrePersist;
+
 import java.util.Objects;
 
 
-public class DefaultEntityKeyValuePrePersist implements EntityKeyValuePrePersist{
+public class DefaultEntityKeyValuePrePersist implements EntityKeyValuePrePersist {
 
 
     private final Object value;
 
-    DefaultEntityKeyValuePrePersist(Object value) {
+    public DefaultEntityKeyValuePrePersist(Object value) {
         this.value = value;
     }
 

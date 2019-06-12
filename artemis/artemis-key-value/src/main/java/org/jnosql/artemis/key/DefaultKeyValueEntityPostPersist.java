@@ -14,20 +14,21 @@
  */
 package org.jnosql.artemis.key;
 
-import org.jnosql.diana.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.mapping.key.KeyValueEntityPostPersist;
 
 import java.util.Objects;
 
 class DefaultKeyValueEntityPostPersist implements KeyValueEntityPostPersist {
 
-    private final KeyValueEntity<?> entity;
+    private final KeyValueEntity entity;
 
-    DefaultKeyValueEntityPostPersist(KeyValueEntity<?> entity) {
+    DefaultKeyValueEntityPostPersist(KeyValueEntity entity) {
         this.entity = entity;
     }
 
     @Override
-    public KeyValueEntity<?> getEntity() {
+    public KeyValueEntity getEntity() {
         return entity;
     }
 

@@ -14,20 +14,21 @@
  */
 package org.jnosql.artemis.key;
 
-import org.jnosql.diana.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.mapping.key.KeyValueEntityPrePersist;
 
 import java.util.Objects;
 
 class DefaultKeyValueEntityPrePersist implements KeyValueEntityPrePersist {
 
-    private final KeyValueEntity<?> entity;
+    private final KeyValueEntity entity;
 
-    DefaultKeyValueEntityPrePersist(KeyValueEntity<?> entity) {
+    DefaultKeyValueEntityPrePersist(KeyValueEntity entity) {
         this.entity = entity;
     }
 
     @Override
-    public KeyValueEntity<?> getEntity() {
+    public KeyValueEntity getEntity() {
         return entity;
     }
 

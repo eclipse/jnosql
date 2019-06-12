@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.key;
 
-import org.jnosql.diana.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValueEntity;
 
 import java.util.Objects;
 import java.util.function.Function;

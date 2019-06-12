@@ -15,7 +15,8 @@
 package org.jnosql.artemis.key;
 
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.key.KeyValueEntityConverter;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 
 import javax.inject.Inject;
 

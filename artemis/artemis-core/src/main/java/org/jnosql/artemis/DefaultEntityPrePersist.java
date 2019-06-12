@@ -22,11 +22,11 @@ import java.util.Objects;
 /**
  * The default implementation to {@link EntityPrePersist}
  */
-class DefaultEntityPrePersist implements EntityPrePersist {
+public final class DefaultEntityPrePersist implements EntityPrePersist {
 
     private final Object value;
 
-    DefaultEntityPrePersist(Object value) {
+    public DefaultEntityPrePersist(Object value) {
         this.value = value;
     }
 

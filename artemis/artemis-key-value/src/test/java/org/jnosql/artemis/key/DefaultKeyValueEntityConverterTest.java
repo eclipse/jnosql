@@ -15,14 +15,14 @@
 package org.jnosql.artemis.key;
 
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.IdNotFoundException;
+import jakarta.nosql.mapping.IdNotFoundException;
 import org.jnosql.artemis.model.Car;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Plate;
 import org.jnosql.artemis.model.User;
 import org.jnosql.artemis.model.Worker;
 import jakarta.nosql.Value;
-import org.jnosql.diana.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValueEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -22,7 +22,7 @@ import org.jnosql.artemis.model.User;
 import static jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Value;
 import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValueEntity;
 import org.jnosql.diana.key.KeyValuePreparedStatement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -22,11 +22,11 @@ import java.util.Objects;
 /**
  * The default implementation to {@link EntityPostPersit}
  */
-class DefaultEntityPostPersist implements EntityPostPersit {
+public final class DefaultEntityPostPersist implements EntityPostPersit {
 
     private final Object value;
 
-    DefaultEntityPostPersist(Object value) {
+    public DefaultEntityPostPersist(Object value) {
         this.value = value;
     }
 
