@@ -26,11 +26,11 @@ import static java.util.stream.Collectors.toList;
 
 final class KeyValuePreparedStatement implements PreparedStatement {
 
-    private final org.jnosql.diana.key.KeyValuePreparedStatement preparedStatement;
+    private final jakarta.nosql.key.KeyValuePreparedStatement preparedStatement;
 
     private final Class<?> entityClass;
 
-    KeyValuePreparedStatement(org.jnosql.diana.key.KeyValuePreparedStatement preparedStatement, Class<?> entityClass) {
+    KeyValuePreparedStatement(jakarta.nosql.key.KeyValuePreparedStatement preparedStatement, Class<?> entityClass) {
         this.preparedStatement = preparedStatement;
         this.entityClass = entityClass;
     }

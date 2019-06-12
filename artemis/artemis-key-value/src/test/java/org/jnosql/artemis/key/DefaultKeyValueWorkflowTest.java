@@ -15,6 +15,8 @@
 package org.jnosql.artemis.key;
 
 import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.mapping.key.KeyValueEntityConverter;
+import jakarta.nosql.mapping.key.KeyValueEventPersistManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +44,7 @@ public class DefaultKeyValueWorkflowTest {
     private DefaultKeyValueWorkflow subject;
 
     @Mock
-    private KeyValueEntity<Object> keyValueEntity;
+    private KeyValueEntity keyValueEntity;
 
     @BeforeEach
     public void setUp() {
@@ -53,7 +55,7 @@ public class DefaultKeyValueWorkflowTest {
 
     @Test
     public void shouldFollowWorkflow() {
-        UnaryOperator<KeyValueEntity<?>> action = t -> t;
+        UnaryOperator<KeyValueEntity> action = t -> t;
         subject.flow("entity", action);
 
         verify(eventPersistManager).firePreKeyValue(any(KeyValueEntity.class));

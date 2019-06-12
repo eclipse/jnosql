@@ -15,10 +15,10 @@
 package org.jnosql.artemis.key.spi;
 
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.Database;
+import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import org.jnosql.artemis.UserRepository;
-import org.jnosql.artemis.key.KeyValueTemplate;
+import jakarta.nosql.mapping.key.KeyValueTemplate;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.User;
 import org.junit.jupiter.api.Test;

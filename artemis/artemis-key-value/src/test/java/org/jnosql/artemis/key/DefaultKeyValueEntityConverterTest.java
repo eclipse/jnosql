@@ -14,15 +14,16 @@
  */
 package org.jnosql.artemis.key;
 
-import org.jnosql.artemis.CDIExtension;
+import jakarta.nosql.Value;
+import jakarta.nosql.key.KeyValueEntity;
 import jakarta.nosql.mapping.IdNotFoundException;
+import jakarta.nosql.mapping.key.KeyValueEntityConverter;
+import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Car;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Plate;
 import org.jnosql.artemis.model.User;
 import org.jnosql.artemis.model.Worker;
-import jakarta.nosql.Value;
-import jakarta.nosql.key.KeyValueEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,14 +59,14 @@ public class DefaultKeyValueEntityConverterTest {
     @Test
     public void shouldConvertToKeyValue() {
         User user = new User("nickname", "name", 24);
-        KeyValueEntity<String> keyValueEntity = converter.toKeyValue(user);
+        KeyValueEntity keyValueEntity = converter.toKeyValue(user);
         assertEquals("nickname", keyValueEntity.getKey());
-        assertEquals(user, keyValueEntity.getValue().get());
+        assertEquals(user, keyValueEntity.getValue());
     }
 
     @Test
     public void shouldReturnNPEWhenKeyValueIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> converter.toEntity(User.class, (KeyValueEntity<?>) null));
+        Assertions.assertThrows(NullPointerException.class, () -> converter.toEntity(User.class, (KeyValueEntity) null));
     }
 
     @Test
@@ -126,10 +127,10 @@ public class DefaultKeyValueEntityConverterTest {
         Car car = new Car();
         car.setPlate(Plate.of("123-BRL"));
         car.setName("Ferrari");
-        KeyValueEntity<String> entity = converter.toKeyValue(car);
+        KeyValueEntity entity = converter.toKeyValue(car);
 
         Assertions.assertEquals("123-BRL", entity.getKey());
-        Assertions.assertEquals(car, entity.get());
+        Assertions.assertEquals(car, entity.getValue());
     }
 
     @Test
@@ -145,7 +146,7 @@ public class DefaultKeyValueEntityConverterTest {
     @Test
     public void shouldConvertToKeyWhenKeyTypeIsDifferent() {
         Person person = Person.builder().withId(123L).withName("Ada").build();
-        KeyValueEntity<Long> entity = converter.toKeyValue(person);
+        KeyValueEntity entity = converter.toKeyValue(person);
         Assertions.assertEquals(123L, entity.getKey());
     }
 

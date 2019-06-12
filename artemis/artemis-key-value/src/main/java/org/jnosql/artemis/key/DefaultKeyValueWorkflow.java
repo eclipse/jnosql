@@ -14,11 +14,14 @@
  */
 package org.jnosql.artemis.key;
 
+import jakarta.nosql.mapping.key.KeyValueEntityConverter;
+import jakarta.nosql.mapping.key.KeyValueEventPersistManager;
+
 import javax.inject.Inject;
 
 
 /**
- * Default implentation of {@link KeyValueWorkflow}
+ * Default implentation of {@link jakarta.nosql.mapping.key.KeyValueWorkflow}
  */
 class DefaultKeyValueWorkflow extends AbstractKeyValueWorkflow {
 

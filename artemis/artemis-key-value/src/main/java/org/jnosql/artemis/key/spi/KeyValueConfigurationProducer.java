@@ -14,13 +14,12 @@
  */
 package org.jnosql.artemis.key.spi;
 
-import org.jnosql.artemis.ConfigurationReader;
-import org.jnosql.artemis.ConfigurationSettingsUnit;
+import jakarta.nosql.key.BucketManagerFactory;
+import jakarta.nosql.key.KeyValueConfiguration;
+import jakarta.nosql.mapping.ConfigurationReader;
+import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.BucketManagerFactory;
-import org.jnosql.diana.key.KeyValueConfiguration;
+import jakarta.nosql.mapping.reflection.Reflections;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
@@ -43,11 +42,6 @@ class KeyValueConfigurationProducer {
     @Inject
     private Instance<ConfigurationReader> configurationReader;
 
-    @ConfigurationUnit
-    @Produces
-    public <T extends BucketManager> BucketManagerFactory<T> getGenerics(InjectionPoint injectionPoint) {
-        return getBucketManagerFactory(injectionPoint);
-    }
 
     @ConfigurationUnit
     @Produces
@@ -55,7 +49,7 @@ class KeyValueConfigurationProducer {
         return getBucketManagerFactory(injectionPoint);
     }
 
-    <T extends BucketManager> BucketManagerFactory<T> getBucketManagerFactory(ConfigurationUnit annotation) {
+    BucketManagerFactory getBucketManagerFactory(ConfigurationUnit annotation) {
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, KeyValueConfiguration.class);
         Class<KeyValueConfiguration> configurationClass = unit.<KeyValueConfiguration>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The KeyValueConfiguration provider is required in the configuration"));
@@ -65,7 +59,7 @@ class KeyValueConfigurationProducer {
         return configuration.get(unit.getSettings());
     }
 
-    private <T extends BucketManager> BucketManagerFactory<T> getBucketManagerFactory(InjectionPoint injectionPoint) {
+    private BucketManagerFactory getBucketManagerFactory(InjectionPoint injectionPoint) {
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
         return getBucketManagerFactory(annotation);
     }

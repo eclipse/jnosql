@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.key.spi;
 
-import org.jnosql.artemis.ConfigurationException;
+import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.artemis.util.StringUtils;
-import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.BucketManagerFactory;
+import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.key.BucketManagerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

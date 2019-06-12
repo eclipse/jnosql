@@ -16,8 +16,8 @@ package org.jnosql.artemis.key;
 
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.diana.Settings;
-import org.jnosql.diana.key.BucketManagerFactory;
+import jakarta.nosql.Settings;
+import jakarta.nosql.key.BucketManagerFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -31,7 +31,7 @@ public class KeyValueConfigurationProducerTest {
 
     @Inject
     @ConfigurationUnit(fileName = "key-value.json", name = "name")
-    private BucketManagerFactory<?> factoryA;
+    private BucketManagerFactory factoryA;
 
     @Inject
     @ConfigurationUnit(fileName = "key-value.json", name = "name-2")

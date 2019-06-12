@@ -14,7 +14,9 @@
  */
 package org.jnosql.artemis.key;
 
-import org.jnosql.diana.key.BucketManager;
+import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.mapping.key.KeyValueEntityConverter;
+import jakarta.nosql.mapping.key.KeyValueWorkflow;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;

@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.key.spi;
 
+import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.key.BucketManagerFactory;
 import jakarta.nosql.mapping.Repository;
-import org.jnosql.artemis.key.KeyValueRepositoryProducer;
+import jakarta.nosql.mapping.key.KeyValueRepositoryProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;
-import org.jnosql.diana.key.BucketManager;
-import org.jnosql.diana.key.BucketManagerFactory;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
@@ -58,7 +58,7 @@ final class RepositoryUnitKeyValueBean extends AbstractBean<Repository<?, ?>> {
         KeyValueRepositoryProducer producer = getInstance(KeyValueRepositoryProducer.class);
         KeyValueConfigurationProducer configurationProducer = getInstance(KeyValueConfigurationProducer.class);
         Class<R> repository  = (Class<R>) repositoryUnit.getRepository();
-        BucketManagerFactory<BucketManager> managerFactory = configurationProducer.getBucketManagerFactory(repositoryUnit.getUnit());
+        BucketManagerFactory managerFactory = configurationProducer.getBucketManagerFactory(repositoryUnit.getUnit());
         BucketManager bucketManager = managerFactory.getBucketManager(repositoryUnit.getDatabase());
         return producer.get(repository, bucketManager);
     }

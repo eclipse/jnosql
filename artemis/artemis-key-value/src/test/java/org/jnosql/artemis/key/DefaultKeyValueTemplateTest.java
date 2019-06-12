@@ -14,16 +14,19 @@
  */
 package org.jnosql.artemis.key;
 
+import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.Value;
+import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.key.KeyValuePreparedStatement;
+import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.key.KeyValueEntityConverter;
+import jakarta.nosql.mapping.key.KeyValueTemplate;
+import jakarta.nosql.mapping.key.KeyValueWorkflow;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.PreparedStatement;
 import org.jnosql.artemis.model.User;
-import static jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.Value;
-import org.jnosql.diana.key.BucketManager;
-import jakarta.nosql.key.KeyValueEntity;
-import org.jnosql.diana.key.KeyValuePreparedStatement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -85,7 +88,7 @@ public class DefaultKeyValueTemplateTest {
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
         assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue().get());
+        assertEquals(user, entity.getValue());
     }
 
 
@@ -103,7 +106,7 @@ public class DefaultKeyValueTemplateTest {
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
         assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue().get());
+        assertEquals(user, entity.getValue());
     }
 
     @Test
@@ -116,7 +119,7 @@ public class DefaultKeyValueTemplateTest {
         Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
         KeyValueEntity entity = captor.getValue();
         assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue().get());
+        assertEquals(user, entity.getValue());
     }
 
     @Test
@@ -129,7 +132,7 @@ public class DefaultKeyValueTemplateTest {
         Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
         KeyValueEntity entity = captor.getValue();
         assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue().get());
+        assertEquals(user, entity.getValue());
     }
 
 

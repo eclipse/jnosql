@@ -15,10 +15,10 @@
 package org.jnosql.artemis.key.query;
 
 import jakarta.nosql.mapping.Repository;
-import org.jnosql.artemis.key.KeyValueRepositoryProducer;
-import org.jnosql.artemis.key.KeyValueTemplate;
-import org.jnosql.artemis.key.KeyValueTemplateProducer;
-import org.jnosql.diana.key.BucketManager;
+import jakarta.nosql.mapping.key.KeyValueRepositoryProducer;
+import jakarta.nosql.mapping.key.KeyValueTemplate;
+import jakarta.nosql.mapping.key.KeyValueTemplateProducer;
+import jakarta.nosql.key.BucketManager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

@@ -15,6 +15,9 @@
 package org.jnosql.artemis.key;
 
 import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.mapping.key.KeyValueEntityConverter;
+import jakarta.nosql.mapping.key.KeyValueEventPersistManager;
+import jakarta.nosql.mapping.key.KeyValueWorkflow;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -29,7 +32,7 @@ public abstract class AbstractKeyValueWorkflow implements KeyValueWorkflow {
 
 
     @Override
-    public <T> T flow(T entity, UnaryOperator<KeyValueEntity<?>> action) {
+    public <T> T flow(T entity, UnaryOperator<KeyValueEntity> action) {
 
         Function<T, T> flow = getFlow(entity, action);
 
@@ -37,7 +40,7 @@ public abstract class AbstractKeyValueWorkflow implements KeyValueWorkflow {
 
     }
 
-    private <T> Function<T, T> getFlow(T entity, UnaryOperator<KeyValueEntity<?>> action) {
+    private <T> Function<T, T> getFlow(T entity, UnaryOperator<KeyValueEntity> action) {
         UnaryOperator<T> validation = t -> Objects.requireNonNull(t, "entity is required");
 
         UnaryOperator<T> firePreEntity = t -> {
@@ -50,19 +53,19 @@ public abstract class AbstractKeyValueWorkflow implements KeyValueWorkflow {
             return t;
         };
 
-        Function<T, KeyValueEntity<?>> convertKeyValue = t -> getConverter().toKeyValue(t);
+        Function<T, KeyValueEntity> convertKeyValue = t -> getConverter().toKeyValue(t);
 
-        UnaryOperator<KeyValueEntity<?>> firePreDocument = t -> {
+        UnaryOperator<KeyValueEntity> firePreDocument = t -> {
             getEventPersistManager().firePreKeyValue(t);
             return t;
         };
 
-        UnaryOperator<KeyValueEntity<?>> firePostDocument = t -> {
+        UnaryOperator<KeyValueEntity> firePostDocument = t -> {
             getEventPersistManager().firePostKeyValue(t);
             return t;
         };
 
-        Function<KeyValueEntity<?>, T> converterEntity = t -> getConverter().toEntity((Class<T>) entity.getClass(), t);
+        Function<KeyValueEntity, T> converterEntity = t -> getConverter().toEntity((Class<T>) entity.getClass(), t);
 
         UnaryOperator<T> firePostEntity = t -> {
             getEventPersistManager().firePostEntity(t);

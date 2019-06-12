@@ -15,10 +15,12 @@
 package org.jnosql.artemis;
 
 
+import jakarta.nosql.mapping.Database;
+import jakarta.nosql.mapping.DatabaseType;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.User;
 import jakarta.nosql.Value;
-import org.jnosql.diana.key.BucketManager;
+import jakarta.nosql.key.BucketManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

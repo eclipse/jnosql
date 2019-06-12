@@ -16,10 +16,13 @@ package org.jnosql.artemis.key;
 
 
 import jakarta.nosql.mapping.PreparedStatement;
-import static jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Value;
-import org.jnosql.diana.key.BucketManager;
+import jakarta.nosql.key.BucketManager;
 import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.mapping.key.KeyValueEntityConverter;
+import jakarta.nosql.mapping.key.KeyValueTemplate;
+import jakarta.nosql.mapping.key.KeyValueWorkflow;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -50,7 +53,7 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     public <T> T put(T entity) {
         requireNonNull(entity, "entity is required");
 
-        UnaryOperator<KeyValueEntity<?>> putAction = k -> {
+        UnaryOperator<KeyValueEntity> putAction = k -> {
             getManager().put(k);
             return k;
 
@@ -63,7 +66,7 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
         requireNonNull(entity, "entity is required");
         requireNonNull(ttl, "ttl class is required");
 
-        UnaryOperator<KeyValueEntity<?>> putAction = k -> {
+        UnaryOperator<KeyValueEntity> putAction = k -> {
             getManager().put(k, ttl);
             return k;
 
