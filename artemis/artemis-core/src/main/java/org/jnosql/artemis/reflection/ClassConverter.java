@@ -191,7 +191,7 @@ class ClassConverter {
         boolean id = reflections.isIdField(field);
         String columnName = id ? reflections.getIdName(field) : reflections.getColumnName(field);
 
-        FieldMappingBuilder builder = FieldMapping.builder().withName(columnName)
+        FieldMappingBuilder builder = new FieldMappingBuilder().withName(columnName)
                 .withField(field).withType(fieldType).withId(id)
                 .withReader(readerFactory.apply(field))
                 .withWriter(writerFactory.apply(field));
