@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
-public final class DefaultColumnDeleteSupplier implements ColumnDeleteProvider {
+public final class DefaultColumnDeleteProvider implements ColumnDeleteProvider {
 
     @Override
     public ColumnDelete apply(String[] columns) {
