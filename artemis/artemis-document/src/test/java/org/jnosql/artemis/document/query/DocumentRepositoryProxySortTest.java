@@ -18,7 +18,7 @@ import org.hamcrest.Matchers;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.Pagination;
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.Sorts;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.model.Person;

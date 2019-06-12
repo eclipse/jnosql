@@ -18,13 +18,13 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.AttributeConverter;
+import jakarta.nosql.mapping.AttributeConverter;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.EntityNotFoundException;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
-import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
 
 abstract class AbstractGraphConverter implements GraphConverter {
 

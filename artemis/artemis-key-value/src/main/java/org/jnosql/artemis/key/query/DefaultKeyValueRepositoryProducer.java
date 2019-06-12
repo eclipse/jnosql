@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.key.query;
 
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.key.KeyValueRepositoryProducer;
 import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.key.KeyValueTemplateProducer;

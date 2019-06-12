@@ -30,7 +30,7 @@ import org.jnosql.artemis.model.Vendor;
 import org.jnosql.artemis.model.Worker;
 import org.jnosql.artemis.model.Zipcode;
 import jakarta.nosql.TypeReference;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 import org.jnosql.diana.document.Document;
 import org.jnosql.diana.document.DocumentEntity;
 import org.junit.jupiter.api.Assertions;

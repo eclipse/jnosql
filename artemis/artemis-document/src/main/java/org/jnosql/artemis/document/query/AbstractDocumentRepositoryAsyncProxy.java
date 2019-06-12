@@ -15,8 +15,8 @@
 package org.jnosql.artemis.document.query;
 
 
-import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.RepositoryAsync;
+import jakarta.nosql.mapping.DynamicQueryException;
+import jakarta.nosql.mapping.RepositoryAsync;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicAsyncQueryMethodReturn;

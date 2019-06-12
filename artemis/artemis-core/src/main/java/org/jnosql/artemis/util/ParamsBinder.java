@@ -15,7 +15,7 @@
 package org.jnosql.artemis.util;
 
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.DynamicQueryException;
+import jakarta.nosql.mapping.DynamicQueryException;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.FieldMapping;
 import org.jnosql.diana.Params;

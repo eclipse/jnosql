@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.model;
 
-import org.jnosql.artemis.Convert;
-import org.jnosql.artemis.Entity;
-import org.jnosql.artemis.Id;
+import jakarta.nosql.mapping.Convert;
+import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.mapping.Id;
 
 @Entity
 public class Car {

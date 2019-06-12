@@ -15,8 +15,8 @@
 package org.jnosql.artemis.document;
 
 
-import org.jnosql.artemis.Page;
-import org.jnosql.artemis.PreparedStatement;
+import jakarta.nosql.mapping.Page;
+import jakarta.nosql.mapping.PreparedStatement;
 import org.jnosql.diana.NonUniqueResultException;
 import org.jnosql.diana.document.DocumentCollectionManager;
 import org.jnosql.diana.document.DocumentDeleteQuery;

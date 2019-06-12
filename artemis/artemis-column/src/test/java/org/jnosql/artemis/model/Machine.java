@@ -15,7 +15,7 @@
 package org.jnosql.artemis.model;
 
 
-import org.jnosql.artemis.Column;
+import jakarta.nosql.mapping.Column;
 
 public class Machine {
 

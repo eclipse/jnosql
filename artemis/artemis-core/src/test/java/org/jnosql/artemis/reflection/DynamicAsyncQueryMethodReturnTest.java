@@ -15,8 +15,8 @@
 package org.jnosql.artemis.reflection;
 
 import org.jnosql.artemis.PreparedStatementAsync;
-import org.jnosql.artemis.Query;
-import org.jnosql.artemis.RepositoryAsync;
+import jakarta.nosql.mapping.Query;
+import jakarta.nosql.mapping.RepositoryAsync;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

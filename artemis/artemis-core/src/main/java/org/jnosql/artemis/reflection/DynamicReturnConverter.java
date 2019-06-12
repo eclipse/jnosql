@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.PreparedStatement;
+import jakarta.nosql.mapping.PreparedStatement;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -79,7 +79,7 @@ enum DynamicReturnConverter {
     }
 
     /**
-     * Reads and execute JNoSQL query from the Method that has the {@link org.jnosql.artemis.Query} annotation
+     * Reads and execute JNoSQL query from the Method that has the {@link jakarta.nosql.mapping.Query} annotation
      *
      * @return the result from the query annotation
      */

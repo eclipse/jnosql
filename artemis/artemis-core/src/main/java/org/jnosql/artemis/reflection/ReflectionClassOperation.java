@@ -14,6 +14,12 @@
  */
 package org.jnosql.artemis.reflection;
 
+import jakarta.nosql.mapping.reflection.ClassOperation;
+import jakarta.nosql.mapping.reflection.FieldReaderFactory;
+import jakarta.nosql.mapping.reflection.FieldWriterFactory;
+import jakarta.nosql.mapping.reflection.InstanceSupplierFactory;
+import jakarta.nosql.mapping.reflection.Reflections;
+
 /**
  * An implementation of {@link ClassOperation} the supplier operations with Reflection
  */

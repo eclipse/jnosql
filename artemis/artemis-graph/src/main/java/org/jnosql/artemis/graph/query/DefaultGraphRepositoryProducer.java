@@ -16,7 +16,7 @@ package org.jnosql.artemis.graph.query;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphRepositoryProducer;
 import org.jnosql.artemis.graph.GraphTemplate;

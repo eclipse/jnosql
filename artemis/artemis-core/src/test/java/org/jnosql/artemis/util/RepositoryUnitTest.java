@@ -15,7 +15,7 @@
 package org.jnosql.artemis.util;
 
 import org.jnosql.artemis.ConfigurationUnit;
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

@@ -19,7 +19,7 @@ import org.jnosql.artemis.document.DocumentFieldConverters.DocumentFieldConverte
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.artemis.reflection.FieldType;
+import org.jnosql.artemis.reflection.FieldTypeUtil;
 import org.jnosql.artemis.reflection.FieldValue;
 import org.jnosql.diana.document.Document;
 import org.jnosql.diana.document.DocumentEntity;
@@ -33,8 +33,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
-import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
-import static org.jnosql.artemis.reflection.FieldType.SUBENTITY;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.SUBENTITY;
 
 /**
  * Template method to {@link DocumentEntityConverter}
@@ -100,7 +100,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         final List<String> names = documents.stream().map(Document::getName).sorted().collect(Collectors.toList());
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
-            FieldType type = fieldsGroupByName.get(k).getType();
+            FieldTypeUtil type = fieldsGroupByName.get(k).getType();
             return EMBEDDED.equals(type) || SUBENTITY.equals(type);
         };
 

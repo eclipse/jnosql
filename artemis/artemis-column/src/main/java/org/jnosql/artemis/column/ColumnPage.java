@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.artemis.Page;
+import jakarta.nosql.mapping.Page;
 import org.jnosql.artemis.Pagination;
 
 import java.util.Collection;

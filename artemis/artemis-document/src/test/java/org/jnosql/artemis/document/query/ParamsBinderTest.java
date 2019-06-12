@@ -24,7 +24,7 @@ import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.util.ParamsBinder;
 import org.jnosql.diana.Params;
 import jakarta.nosql.TypeReference;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 import org.jnosql.diana.document.Document;
 import org.jnosql.diana.document.DocumentCondition;
 import org.jnosql.diana.document.DocumentQuery;

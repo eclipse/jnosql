@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.graph.query;
 
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.FieldMapping;

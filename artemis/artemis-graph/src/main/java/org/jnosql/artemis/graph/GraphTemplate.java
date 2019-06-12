@@ -16,7 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
-import org.jnosql.artemis.PreparedStatement;
+import jakarta.nosql.mapping.PreparedStatement;
 import org.jnosql.diana.NonUniqueResultException;
 
 import java.util.Collection;

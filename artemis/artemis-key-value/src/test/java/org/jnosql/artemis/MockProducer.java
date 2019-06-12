@@ -17,7 +17,7 @@ package org.jnosql.artemis;
 
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.User;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 import org.jnosql.diana.key.BucketManager;
 import org.mockito.Mockito;
 

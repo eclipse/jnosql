@@ -14,6 +14,10 @@
  */
 package org.jnosql.artemis.reflection;
 
+import jakarta.nosql.mapping.reflection.FieldReader;
+import jakarta.nosql.mapping.reflection.FieldReaderFactory;
+import jakarta.nosql.mapping.reflection.Reflections;
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.Page;
+import jakarta.nosql.mapping.Page;
 import org.jnosql.artemis.Pagination;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

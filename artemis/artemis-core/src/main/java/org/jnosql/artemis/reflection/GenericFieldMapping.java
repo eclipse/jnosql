@@ -15,11 +15,14 @@
 package org.jnosql.artemis.reflection;
 
 
-import org.jnosql.artemis.AttributeConverter;
-import org.jnosql.artemis.Embeddable;
-import org.jnosql.artemis.Entity;
 import jakarta.nosql.TypeSupplier;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
+import jakarta.nosql.mapping.AttributeConverter;
+import jakarta.nosql.mapping.Embeddable;
+import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.mapping.reflection.FieldReader;
+import jakarta.nosql.mapping.reflection.FieldType;
+import jakarta.nosql.mapping.reflection.FieldWriter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

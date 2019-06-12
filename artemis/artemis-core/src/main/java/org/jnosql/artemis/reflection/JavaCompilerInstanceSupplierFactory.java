@@ -14,6 +14,10 @@
  */
 package org.jnosql.artemis.reflection;
 
+import jakarta.nosql.mapping.reflection.InstanceSupplier;
+import jakarta.nosql.mapping.reflection.InstanceSupplierFactory;
+import jakarta.nosql.mapping.reflection.Reflections;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.Optional;

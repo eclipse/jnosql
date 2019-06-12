@@ -32,7 +32,7 @@ import java.util.function.Predicate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.jnosql.artemis.reflection.FieldType.DEFAULT;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.DEFAULT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.Page;
+import jakarta.nosql.mapping.DynamicQueryException;
+import jakarta.nosql.mapping.Page;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;

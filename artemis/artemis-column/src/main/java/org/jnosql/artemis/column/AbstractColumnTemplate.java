@@ -17,8 +17,8 @@ package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.IdNotFoundException;
-import org.jnosql.artemis.Page;
-import org.jnosql.artemis.PreparedStatement;
+import jakarta.nosql.mapping.Page;
+import jakarta.nosql.mapping.PreparedStatement;
 import org.jnosql.artemis.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.reflection.FieldMapping;

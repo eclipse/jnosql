@@ -14,7 +14,16 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.Convert;
+import jakarta.nosql.mapping.Convert;
+import jakarta.nosql.mapping.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassOperation;
+import jakarta.nosql.mapping.reflection.FieldMapping;
+import jakarta.nosql.mapping.reflection.FieldReaderFactory;
+import jakarta.nosql.mapping.reflection.FieldType;
+import jakarta.nosql.mapping.reflection.FieldWriterFactory;
+import jakarta.nosql.mapping.reflection.InstanceSupplier;
+import jakarta.nosql.mapping.reflection.InstanceSupplierFactory;
+import jakarta.nosql.mapping.reflection.Reflections;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -110,7 +119,7 @@ class ClassConverter {
 
 
         switch (field.getType()) {
-            case SUBENTITY:
+            case EMBEDDED_ENTITY:
                 appendFields(nativeFieldGroupByJavaField, field, javaField, appendPreparePrefix(nativeField, field.getName()));
                 return;
             case EMBEDDED:
@@ -176,7 +185,7 @@ class ClassConverter {
 
 
     private FieldMapping to(Field field) {
-        FieldType fieldType = FieldType.of(field);
+        FieldType fieldType = FieldTypeUtil.of(field);
         reflections.makeAccessible(field);
         Convert convert = field.getAnnotation(Convert.class);
         boolean id = reflections.isIdField(field);

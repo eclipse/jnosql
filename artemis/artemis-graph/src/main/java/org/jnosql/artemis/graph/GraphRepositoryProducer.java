@@ -15,7 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 
 
 /**

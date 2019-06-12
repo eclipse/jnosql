@@ -18,7 +18,7 @@ package org.jnosql.artemis.key.spi;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.key.query.RepositoryKeyValueBean;
 import org.jnosql.artemis.util.RepositoryUnit;
 import org.jnosql.artemis.util.ConfigurationUnitUtils;

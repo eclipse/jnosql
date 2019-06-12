@@ -15,8 +15,8 @@
 package org.jnosql.artemis.reflection;
 
 
-import org.jnosql.artemis.Param;
-import org.jnosql.artemis.Query;
+import jakarta.nosql.mapping.Param;
+import jakarta.nosql.mapping.Query;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

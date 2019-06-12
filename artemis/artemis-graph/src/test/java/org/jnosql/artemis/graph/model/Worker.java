@@ -15,9 +15,9 @@
 package org.jnosql.artemis.graph.model;
 
 
-import org.jnosql.artemis.Column;
-import org.jnosql.artemis.Convert;
-import org.jnosql.artemis.Entity;
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Convert;
+import jakarta.nosql.mapping.Entity;
 
 @Entity
 public class Worker {

@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.model;
 
-import org.jnosql.artemis.Id;
+import jakarta.nosql.mapping.Id;
 
 import java.util.Objects;
 

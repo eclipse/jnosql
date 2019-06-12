@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.artemis.AttributeConverter;
+import jakarta.nosql.mapping.AttributeConverter;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.FieldMapping;
-import org.jnosql.artemis.reflection.FieldType;
+import org.jnosql.artemis.reflection.FieldTypeUtil;
 import org.jnosql.artemis.reflection.FieldValue;
 import org.jnosql.artemis.reflection.GenericFieldMapping;
 import org.jnosql.diana.column.Column;
@@ -27,9 +27,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
-import static org.jnosql.artemis.reflection.FieldType.COLLECTION;
-import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
-import static org.jnosql.artemis.reflection.FieldType.SUBENTITY;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.COLLECTION;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.SUBENTITY;
 
 final class DefaultColumnFieldValue implements ColumnFieldValue {
 
@@ -84,7 +84,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
         return COLLECTION.equals(getType()) && isEmbeddableElement();
     }
 
-    private FieldType getType() {
+    private FieldTypeUtil getType() {
         return getField().getType();
     }
 

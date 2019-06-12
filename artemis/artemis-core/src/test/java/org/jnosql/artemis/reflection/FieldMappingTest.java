@@ -16,8 +16,8 @@ package org.jnosql.artemis.reflection;
 
 
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.Column;
-import org.jnosql.artemis.Embeddable;
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Embeddable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -26,10 +26,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.jnosql.artemis.reflection.FieldType.COLLECTION;
-import static org.jnosql.artemis.reflection.FieldType.DEFAULT;
-import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
-import static org.jnosql.artemis.reflection.FieldType.MAP;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.COLLECTION;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.DEFAULT;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.MAP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(CDIExtension.class)

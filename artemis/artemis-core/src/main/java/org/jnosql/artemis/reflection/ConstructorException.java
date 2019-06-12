@@ -14,13 +14,13 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.ArtemisException;
+import jakarta.nosql.mapping.MappingException;
 
 
 /**
  * Get the exception when a class has a no arg constructor either public or default
  */
-public class ConstructorException extends ArtemisException {
+public class ConstructorException extends MappingException {
 
     public ConstructorException(Class clazz) {
         super("This class must have a no arg with either public and default visibility: " + clazz.getName());

@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.artemis.AttributeConverter;
+import jakarta.nosql.mapping.AttributeConverter;
 import org.jnosql.artemis.reflection.FieldMapping;
 import org.jnosql.artemis.reflection.GenericFieldMapping;
 import jakarta.nosql.TypeReference;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 import org.jnosql.diana.column.Column;
 
 import java.lang.reflect.Field;
@@ -30,9 +30,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static org.jnosql.artemis.reflection.FieldType.COLLECTION;
-import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
-import static org.jnosql.artemis.reflection.FieldType.SUBENTITY;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.COLLECTION;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.SUBENTITY;
 
 class ColumnFieldConverters {
 

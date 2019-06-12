@@ -15,9 +15,9 @@
 package org.jnosql.artemis.key;
 
 
-import org.jnosql.artemis.PreparedStatement;
+import jakarta.nosql.mapping.PreparedStatement;
 import org.jnosql.diana.NonUniqueResultException;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 import org.jnosql.diana.key.BucketManager;
 import org.jnosql.diana.key.KeyValueEntity;
 

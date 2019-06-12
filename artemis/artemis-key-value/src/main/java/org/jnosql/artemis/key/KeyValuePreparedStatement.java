@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.key;
 
-import org.jnosql.artemis.PreparedStatement;
-import org.jnosql.diana.Value;
+import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.Value;
 
 import java.util.Collections;
 import java.util.List;

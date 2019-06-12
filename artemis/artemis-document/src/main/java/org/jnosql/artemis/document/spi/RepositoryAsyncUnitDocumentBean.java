@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.document.spi;
 
-import org.jnosql.artemis.RepositoryAsync;
+import jakarta.nosql.mapping.RepositoryAsync;
 import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;

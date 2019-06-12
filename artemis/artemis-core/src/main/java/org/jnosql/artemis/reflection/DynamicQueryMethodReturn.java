@@ -15,7 +15,8 @@
 package org.jnosql.artemis.reflection;
 
 
-import org.jnosql.artemis.PreparedStatement;
+import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.reflection.MethodDynamicExecutable;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * This instance has the information to run the JNoSQL native query at {@link org.jnosql.artemis.Repository}
+ * This instance has the information to run the JNoSQL native query at {@link jakarta.nosql.mapping.Repository}
  */
 public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
 

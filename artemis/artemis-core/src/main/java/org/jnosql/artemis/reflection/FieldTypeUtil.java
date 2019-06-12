@@ -14,18 +14,19 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.Embeddable;
-import org.jnosql.artemis.Entity;
+import jakarta.nosql.mapping.Embeddable;
+import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.mapping.reflection.FieldType;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * enum that contains kinds of annotations to fields on java.
- */
-public enum FieldType {
-    SUBENTITY, EMBEDDED, MAP, COLLECTION, DEFAULT;
+
+public final class FieldTypeUtil {
+
+    private FieldTypeUtil() {
+    }
 
     /**
      * select you the kind of annotation on field and then define a enum type, follow the sequences:
@@ -40,19 +41,19 @@ public enum FieldType {
      */
     public static FieldType of(Field field) {
         if (Collection.class.isAssignableFrom(field.getType())) {
-            return COLLECTION;
+            return FieldType.COLLECTION;
         }
         if (Map.class.isAssignableFrom(field.getType())) {
-            return MAP;
+            return FieldType.MAP;
         }
         if (field.getType().isAnnotationPresent(Embeddable.class)) {
-            return EMBEDDED;
+            return FieldType.EMBEDDED;
         }
         if (field.getType().isAnnotationPresent(Entity.class)) {
-            return SUBENTITY;
+            return FieldType.EMBEDDED_ENTITY;
         }
 
-        return DEFAULT;
+        return FieldType.DEFAULT;
     }
 
 }

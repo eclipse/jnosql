@@ -15,7 +15,7 @@
 package org.jnosql.artemis.graph;
 
 
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.graph.model.Book;
 
 public interface BookRepository extends Repository<Book, String> {

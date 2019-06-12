@@ -14,7 +14,8 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.InstanceProducer;
+import jakarta.nosql.mapping.InstanceProducer;
+import jakarta.nosql.mapping.reflection.Reflections;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

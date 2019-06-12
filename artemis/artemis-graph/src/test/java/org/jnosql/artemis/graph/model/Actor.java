@@ -15,8 +15,8 @@
 package org.jnosql.artemis.graph.model;
 
 
-import org.jnosql.artemis.Column;
-import org.jnosql.artemis.Entity;
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Entity;
 
 import java.util.List;
 import java.util.Map;

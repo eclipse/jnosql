@@ -18,7 +18,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.ConfigurationUnit;
 import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.graph.query.RepositoryGraphBean;
 import org.jnosql.artemis.util.ConfigurationUnitUtils;
 import org.jnosql.artemis.util.RepositoryUnit;

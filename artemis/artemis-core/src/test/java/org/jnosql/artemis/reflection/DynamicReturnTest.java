@@ -15,10 +15,10 @@
 package org.jnosql.artemis.reflection;
 
 import org.hamcrest.Matchers;
-import org.jnosql.artemis.DynamicQueryException;
-import org.jnosql.artemis.Page;
+import jakarta.nosql.mapping.DynamicQueryException;
+import jakarta.nosql.mapping.Page;
 import org.jnosql.artemis.Pagination;
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.Sorts;
 import org.jnosql.diana.NonUniqueResultException;
 import org.jnosql.diana.Sort;

@@ -17,7 +17,7 @@ package org.jnosql.artemis.column.query;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.DatabaseType;
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.column.ColumnTemplate;
 import org.jnosql.artemis.reflection.ClassMappings;
 import org.jnosql.artemis.spi.AbstractBean;

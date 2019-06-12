@@ -14,7 +14,8 @@
  */
 package org.jnosql.artemis;
 
-import org.jnosql.diana.Sort;
+import jakarta.nosql.Sort;
+import jakarta.nosql.mapping.Sorts;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,6 +15,10 @@
 package org.jnosql.artemis.reflection;
 
 
+import jakarta.nosql.mapping.reflection.ClassInformationNotFoundException;
+import jakarta.nosql.mapping.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

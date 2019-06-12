@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.configuration;
 
+import jakarta.nosql.Settings;
 import org.jnosql.artemis.ConfigurationSettingsUnit;
-import org.jnosql.diana.Settings;
 
 import java.util.Objects;
 import java.util.Optional;

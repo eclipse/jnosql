@@ -19,8 +19,8 @@ import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.Entity;
-import org.jnosql.artemis.Page;
+import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.mapping.Page;
 import org.jnosql.artemis.Pagination;
 import org.jnosql.diana.NonUniqueResultException;
 

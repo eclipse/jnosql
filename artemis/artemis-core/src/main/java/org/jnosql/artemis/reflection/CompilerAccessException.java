@@ -14,13 +14,13 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.diana.JNoSQLException;
+import jakarta.nosql.mapping.MappingException;
 
 /**
  * Eclipse JNoSQL tries to optimize access at Getter, Setter,
  * and Constructors to write/read fields at Class. This Exception launch when there is an issue when trying to compile.
  */
-class CompilerAccessException extends JNoSQLException {
+class CompilerAccessException extends MappingException {
 
     /**
      * Constructs a new runtime exception with the specified detail message.

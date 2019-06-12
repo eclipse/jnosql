@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.model;
 
-import org.jnosql.artemis.AttributeConverter;
+import jakarta.nosql.mapping.AttributeConverter;
 
 public class PlateConverter implements AttributeConverter<Plate, String> {
 

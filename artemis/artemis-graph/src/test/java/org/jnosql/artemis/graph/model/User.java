@@ -15,7 +15,7 @@
 package org.jnosql.artemis.graph.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.jnosql.artemis.Id;
+import jakarta.nosql.mapping.Id;
 
 import java.util.Objects;
 

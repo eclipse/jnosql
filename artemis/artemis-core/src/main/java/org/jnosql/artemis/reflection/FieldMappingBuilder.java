@@ -14,14 +14,14 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.AttributeConverter;
+import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.TypeSupplier;
 
 import java.lang.reflect.Field;
 
 class FieldMappingBuilder {
 
-    private FieldType type;
+    private FieldTypeUtil type;
 
     private Field field;
 
@@ -40,7 +40,7 @@ class FieldMappingBuilder {
     private FieldWriter writer;
 
 
-    public FieldMappingBuilder withType(FieldType type) {
+    public FieldMappingBuilder withType(FieldTypeUtil type) {
         this.type = type;
         return this;
     }

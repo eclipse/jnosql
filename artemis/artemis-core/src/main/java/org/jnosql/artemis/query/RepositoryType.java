@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.query;
 
-import org.jnosql.artemis.Query;
-import org.jnosql.artemis.Repository;
-import org.jnosql.artemis.RepositoryAsync;
+import jakarta.nosql.mapping.Query;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.RepositoryAsync;
 
 import java.lang.reflect.Method;
 import java.util.Objects;

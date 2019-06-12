@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.Page;
+import jakarta.nosql.mapping.Page;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -16,7 +16,7 @@ package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Property;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 
 import java.util.Collections;
 import java.util.List;

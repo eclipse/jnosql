@@ -15,7 +15,7 @@
 package org.jnosql.artemis.key;
 
 
-import org.jnosql.artemis.PreparedStatement;
+import jakarta.nosql.mapping.PreparedStatement;
 
 import java.time.Duration;
 import java.util.List;

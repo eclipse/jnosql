@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.key;
 
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.diana.key.BucketManager;
 
 /**

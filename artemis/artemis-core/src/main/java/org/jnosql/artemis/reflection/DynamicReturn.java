@@ -14,11 +14,12 @@
  */
 package org.jnosql.artemis.reflection;
 
-import org.jnosql.artemis.Page;
-import org.jnosql.artemis.Pagination;
-import org.jnosql.artemis.Sorts;
-import org.jnosql.diana.NonUniqueResultException;
-import org.jnosql.diana.Sort;
+import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.Sort;
+import jakarta.nosql.mapping.Page;
+import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.Sorts;
+import jakarta.nosql.mapping.reflection.MethodDynamicExecutable;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

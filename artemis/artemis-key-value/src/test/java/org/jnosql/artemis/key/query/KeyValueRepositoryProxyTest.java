@@ -15,11 +15,11 @@
 package org.jnosql.artemis.key.query;
 
 import org.hamcrest.Matchers;
-import org.jnosql.artemis.DynamicQueryException;
+import jakarta.nosql.mapping.DynamicQueryException;
 import org.jnosql.artemis.Param;
-import org.jnosql.artemis.PreparedStatement;
-import org.jnosql.artemis.Query;
-import org.jnosql.artemis.Repository;
+import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.Query;
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.key.KeyValueTemplate;
 import org.jnosql.artemis.model.User;
 import org.junit.jupiter.api.Assertions;

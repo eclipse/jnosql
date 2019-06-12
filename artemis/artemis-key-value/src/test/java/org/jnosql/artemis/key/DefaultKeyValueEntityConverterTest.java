@@ -21,7 +21,7 @@ import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Plate;
 import org.jnosql.artemis.model.User;
 import org.jnosql.artemis.model.Worker;
-import org.jnosql.diana.Value;
+import jakarta.nosql.Value;
 import org.jnosql.diana.key.KeyValueEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

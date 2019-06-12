@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.reflection;
 
+import jakarta.nosql.mapping.reflection.FieldMapping;
+
 import java.util.Objects;
 
 final class NativeMapping {

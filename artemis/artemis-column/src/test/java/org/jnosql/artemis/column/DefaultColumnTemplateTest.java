@@ -17,7 +17,7 @@ package org.jnosql.artemis.column;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.IdNotFoundException;
-import org.jnosql.artemis.PreparedStatement;
+import jakarta.nosql.mapping.PreparedStatement;
 import org.jnosql.artemis.model.Job;
 import org.jnosql.artemis.model.Movie;
 import org.jnosql.artemis.model.Person;

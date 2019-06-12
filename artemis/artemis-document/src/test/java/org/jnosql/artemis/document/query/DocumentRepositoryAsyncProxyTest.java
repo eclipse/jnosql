@@ -16,11 +16,11 @@ package org.jnosql.artemis.document.query;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.Converters;
-import org.jnosql.artemis.DynamicQueryException;
+import jakarta.nosql.mapping.DynamicQueryException;
 import org.jnosql.artemis.Param;
 import org.jnosql.artemis.PreparedStatementAsync;
-import org.jnosql.artemis.Query;
-import org.jnosql.artemis.RepositoryAsync;
+import jakarta.nosql.mapping.Query;
+import jakarta.nosql.mapping.RepositoryAsync;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.reflection.ClassMappings;

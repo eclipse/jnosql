@@ -15,7 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Property;
-import org.jnosql.artemis.AttributeConverter;
+import jakarta.nosql.mapping.AttributeConverter;
 import org.jnosql.artemis.Converters;
 import org.jnosql.artemis.reflection.FieldMapping;
 
@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
-import static org.jnosql.artemis.reflection.FieldType.EMBEDDED;
+import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
 
 final class FieldGraph {
 

@@ -15,8 +15,9 @@
 package org.jnosql.artemis.reflection;
 
 
-import org.jnosql.artemis.Embeddable;
-import org.jnosql.artemis.Entity;
+import jakarta.nosql.mapping.Embeddable;
+import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.mapping.reflection.ClassMapping;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;

@@ -18,8 +18,8 @@ package org.jnosql.artemis.model;
 import java.util.Objects;
 import java.util.Set;
 
-import org.jnosql.artemis.Column;
-import org.jnosql.artemis.Entity;
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Entity;
 
 @Entity("movie")
 public class Movie {
