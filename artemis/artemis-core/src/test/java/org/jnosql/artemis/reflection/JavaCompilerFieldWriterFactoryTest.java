@@ -40,8 +40,8 @@ class JavaCompilerFieldWriterFactoryTest {
         foo.setBar("bar");
         FieldWriter writer = factory.apply(Foo.class.getDeclaredFields()[0]);
         Assertions.assertNotNull(writer);
-        writer.write(foo, "bar");
-        Assertions.assertEquals("bar", foo.getBar());
+        writer.write(foo, "update");
+        Assertions.assertEquals("update", foo.getBar());
     }
 
     @Test
