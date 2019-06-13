@@ -17,10 +17,10 @@ package org.jnosql.artemis.column.spi;
 
 import org.jnosql.artemis.DatabaseQualifier;
 import jakarta.nosql.mapping.DatabaseType;
-import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.artemis.column.ColumnTemplateProducer;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateProducer;
 import org.jnosql.artemis.spi.AbstractBean;
-import org.jnosql.diana.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManager;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;

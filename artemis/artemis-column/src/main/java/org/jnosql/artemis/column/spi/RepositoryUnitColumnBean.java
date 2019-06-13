@@ -18,8 +18,8 @@ import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.column.ColumnRepositoryProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerFactory;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;

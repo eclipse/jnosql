@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.reflection.FieldTypeUtil;
-import org.jnosql.artemis.reflection.FieldValue;
+import jakarta.nosql.mapping.reflection.FieldValue;
 import org.jnosql.artemis.reflection.GenericFieldMapping;
 import org.jnosql.diana.document.Document;
 
@@ -28,8 +28,8 @@ import java.util.Optional;
 
 import static java.util.Collections.singletonList;
 import static jakarta.nosql.mapping.reflection.FieldType.COLLECTION;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.SUBENTITY;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
 
 final class DefaultDocumentFieldValue implements DocumentFieldValue {
 

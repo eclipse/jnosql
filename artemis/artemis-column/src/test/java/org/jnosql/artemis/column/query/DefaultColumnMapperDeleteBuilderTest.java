@@ -15,13 +15,13 @@
 package org.jnosql.artemis.column.query;
 
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.artemis.column.ColumnTemplateAsync;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import org.jnosql.artemis.model.Address;
 import org.jnosql.artemis.model.Money;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Worker;
-import org.jnosql.diana.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnDeleteQuery;
 import org.jnosql.diana.column.query.ColumnQueryBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

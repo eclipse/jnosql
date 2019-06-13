@@ -15,7 +15,8 @@
 package org.jnosql.artemis.column;
 
 import jakarta.nosql.mapping.PreparedStatement;
-import org.jnosql.diana.column.ColumnEntity;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,12 +24,12 @@ import java.util.stream.Collectors;
 
 final class ColumnPreparedStatement implements PreparedStatement {
 
-    private final org.jnosql.diana.column.ColumnPreparedStatement preparedStatement;
+    private final jakarta.nosql.column.ColumnPreparedStatement preparedStatement;
 
 
     private final ColumnEntityConverter converter;
 
-    ColumnPreparedStatement(org.jnosql.diana.column.ColumnPreparedStatement preparedStatement,
+    ColumnPreparedStatement(jakarta.nosql.column.ColumnPreparedStatement preparedStatement,
                             ColumnEntityConverter converter) {
         this.preparedStatement = preparedStatement;
         this.converter = converter;

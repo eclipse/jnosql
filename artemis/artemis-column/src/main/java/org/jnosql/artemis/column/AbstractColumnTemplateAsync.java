@@ -14,20 +14,22 @@
  */
 package org.jnosql.artemis.column;
 
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnObserverParser;
+import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.column.ColumnQueryParserAsync;
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.IdNotFoundException;
+import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatementAsync;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import org.jnosql.diana.column.ColumnDeleteQuery;
-import org.jnosql.diana.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.column.ColumnObserverParser;
-import org.jnosql.diana.column.ColumnQuery;
-import org.jnosql.diana.column.ColumnQueryParserAsync;
-import org.jnosql.diana.column.query.ColumnQueryBuilder;
 
 import java.time.Duration;
 import java.util.List;
@@ -46,7 +48,7 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
 
     private static final Consumer EMPTY = t -> {
     };
-    private static final ColumnQueryParserAsync PARSER = ColumnQueryParserAsync.getParser();
+    private static final ColumnQueryParserAsync PARSER = ServiceLoaderProvider.get(ColumnQueryParserAsync.class);
 
     protected abstract ColumnEntityConverter getConverter();
 
@@ -147,7 +149,7 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
 
         Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
 
-        ColumnQuery query = ColumnQueryBuilder.select().from(classMapping.getName())
+        ColumnQuery query = ColumnQuery.select().from(classMapping.getName())
                 .where(idField.getName()).eq(value).build();
 
         singleResult(query, callback);
@@ -231,7 +233,7 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
         Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
-        return ColumnQueryBuilder.delete().from(classMapping.getName())
+        return ColumnDeleteQuery.delete().from(classMapping.getName())
                 .where(idField.getName()).eq(value).build();
     }
 }

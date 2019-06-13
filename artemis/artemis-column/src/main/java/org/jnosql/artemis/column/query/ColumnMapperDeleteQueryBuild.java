@@ -17,9 +17,9 @@
 package org.jnosql.artemis.column.query;
 
 
-import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.artemis.column.ColumnTemplateAsync;
-import org.jnosql.diana.column.ColumnDeleteQuery;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
+import jakarta.nosql.column.ColumnDeleteQuery;
 
 import java.util.function.Consumer;
 

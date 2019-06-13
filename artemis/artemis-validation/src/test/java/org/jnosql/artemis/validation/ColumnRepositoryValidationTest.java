@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.validation;
 
-import org.jnosql.artemis.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

@@ -15,7 +15,7 @@
 package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.model.Person;
-import org.jnosql.diana.column.ColumnEntity;
+import jakarta.nosql.column.ColumnEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -25,7 +25,7 @@ import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

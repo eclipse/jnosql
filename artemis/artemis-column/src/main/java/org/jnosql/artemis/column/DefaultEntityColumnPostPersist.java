@@ -15,6 +15,8 @@
 package org.jnosql.artemis.column;
 
 
+import jakarta.nosql.mapping.column.EntityColumnPostPersist;
+
 import java.util.Objects;
 
 class DefaultEntityColumnPostPersist implements EntityColumnPostPersist {

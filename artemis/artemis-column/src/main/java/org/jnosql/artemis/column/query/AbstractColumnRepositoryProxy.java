@@ -20,12 +20,12 @@ import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.column.ColumnQueryPagination;
-import org.jnosql.artemis.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 import org.jnosql.artemis.reflection.DynamicReturn;
-import org.jnosql.diana.column.ColumnDeleteQuery;
-import org.jnosql.diana.column.ColumnQuery;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

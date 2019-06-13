@@ -15,10 +15,10 @@
 package org.jnosql.artemis;
 
 
-import org.jnosql.diana.column.Column;
-import org.jnosql.diana.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

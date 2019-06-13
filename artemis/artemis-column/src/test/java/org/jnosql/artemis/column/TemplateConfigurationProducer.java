@@ -17,8 +17,8 @@ package org.jnosql.artemis.column;
 
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

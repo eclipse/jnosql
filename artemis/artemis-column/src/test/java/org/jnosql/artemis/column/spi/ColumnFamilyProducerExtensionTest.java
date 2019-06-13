@@ -15,10 +15,10 @@
 package org.jnosql.artemis.column.spi;
 
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.Database;
+import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
-import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.artemis.column.ColumnTemplateAsync;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document;
 
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.reflection.FieldValue;
+import jakarta.nosql.mapping.reflection.FieldValue;
 import org.jnosql.diana.document.Document;
 
 import java.util.List;

@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.graph.spi;
 
-import org.jnosql.artemis.Database;
+import jakarta.nosql.mapping.Database;
 import org.jnosql.artemis.graph.BookRepository;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.cdi.CDIExtension;

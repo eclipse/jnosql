@@ -17,10 +17,10 @@ package org.jnosql.artemis.column.query;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.RepositoryAsync;
 import org.jnosql.artemis.column.ColumnRepositoryAsyncProducer;
-import org.jnosql.artemis.column.ColumnTemplateAsync;
-import org.jnosql.artemis.column.ColumnTemplateAsyncProducer;
-import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
+import jakarta.nosql.mapping.column.ColumnTemplateAsyncProducer;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

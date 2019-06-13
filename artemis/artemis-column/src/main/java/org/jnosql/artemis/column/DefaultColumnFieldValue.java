@@ -16,11 +16,14 @@ package org.jnosql.artemis.column;
 
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.reflection.FieldMapping;
+import jakarta.nosql.mapping.reflection.FieldType;
+import org.jnosql.artemis.reflection.DefaultFieldValue;
 import org.jnosql.artemis.reflection.FieldTypeUtil;
-import org.jnosql.artemis.reflection.FieldValue;
+import jakarta.nosql.mapping.reflection.FieldValue;
 import org.jnosql.artemis.reflection.GenericFieldMapping;
-import org.jnosql.diana.column.Column;
+import jakarta.nosql.column.Column;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +31,8 @@ import java.util.Optional;
 
 import static java.util.Collections.singletonList;
 import static jakarta.nosql.mapping.reflection.FieldType.COLLECTION;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.SUBENTITY;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
 
 final class DefaultColumnFieldValue implements ColumnFieldValue {
 
@@ -58,7 +61,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
 
         if (EMBEDDED.equals(getType())) {
             return converter.toColumn(getValue()).getColumns();
-        } else if (SUBENTITY.equals(getType())) {
+        } else if (EMBEDDED_ENTITY.equals(getType())) {
             return singletonList(Column.of(getName(), converter.toColumn(getValue()).getColumns()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Column.of(getName(), getColumns(converter)));
@@ -84,7 +87,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
         return COLLECTION.equals(getType()) && isEmbeddableElement();
     }
 
-    private FieldTypeUtil getType() {
+    private FieldType getType() {
         return getField().getType();
     }
 
@@ -103,6 +106,6 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     }
 
     static ColumnFieldValue of(Object value, FieldMapping field) {
-        return new DefaultColumnFieldValue(FieldValue.of(value, field));
+        return new DefaultColumnFieldValue(new DefaultFieldValue(value, field));
     }
 }

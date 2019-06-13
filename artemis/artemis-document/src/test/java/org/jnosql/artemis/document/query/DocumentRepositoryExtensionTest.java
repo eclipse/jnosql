@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document.query;
 
 import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.Database;
+import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import org.jnosql.artemis.PersonRepository;
 import org.jnosql.artemis.PersonRepositoryAsync;

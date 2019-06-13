@@ -17,7 +17,7 @@ package org.jnosql.artemis.column.query;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import org.jnosql.diana.column.Column;
+import jakarta.nosql.column.Column;
 import org.jnosql.diana.column.ColumnCondition;
 
 import java.util.List;

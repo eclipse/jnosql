@@ -17,9 +17,9 @@ package org.jnosql.artemis.column.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.RepositoryAsync;
-import org.jnosql.artemis.column.ColumnTemplateAsync;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 
 import java.lang.reflect.ParameterizedType;
 

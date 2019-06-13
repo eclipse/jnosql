@@ -15,11 +15,11 @@
 package org.jnosql.artemis.graph.spi;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.ConfigurationReader;
-import org.jnosql.artemis.ConfigurationSettingsUnit;
+import jakarta.nosql.mapping.ConfigurationReader;
+import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.artemis.graph.GraphProducer;
-import org.jnosql.artemis.reflection.Reflections;
+import jakarta.nosql.mapping.reflection.Reflections;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;

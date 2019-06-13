@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.document;
 
-import org.jnosql.diana.Settings;
+import jakarta.nosql.Settings;
 import org.jnosql.diana.document.DocumentCollectionManager;
 import org.jnosql.diana.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.document.DocumentCollectionManagerAsyncFactory;

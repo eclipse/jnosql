@@ -15,15 +15,15 @@
 package org.jnosql.artemis.column.spi;
 
 
-import org.jnosql.artemis.ConfigurationException;
+import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.artemis.column.ColumnTemplateAsync;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import org.jnosql.artemis.util.StringUtils;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.column.ColumnFamilyManagerAsyncFactory;
-import org.jnosql.diana.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
+import jakarta.nosql.column.ColumnFamilyManagerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -46,7 +46,7 @@ class ManagerConfigurationProducer {
     @ConfigurationUnit
     @Produces
     public ColumnFamilyManager get(InjectionPoint injectionPoint) {
-        ColumnFamilyManagerFactory<?> managerFactory = configurationProducer.get(injectionPoint);
+        ColumnFamilyManagerFactory managerFactory = configurationProducer.get(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
@@ -58,7 +58,7 @@ class ManagerConfigurationProducer {
     @ConfigurationUnit
     @Produces
     public ColumnFamilyManagerAsync getAsync(InjectionPoint injectionPoint) {
-        ColumnFamilyManagerAsyncFactory<?> managerFactory = configurationProducer.getAsync(injectionPoint);
+        ColumnFamilyManagerAsyncFactory managerFactory = configurationProducer.getAsync(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
         String database = annotation.database();
         if(StringUtils.isBlank(database)){

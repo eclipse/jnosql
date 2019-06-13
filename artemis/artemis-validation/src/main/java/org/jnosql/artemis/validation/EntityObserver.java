@@ -15,7 +15,7 @@
 package org.jnosql.artemis.validation;
 
 
-import org.jnosql.artemis.EntityPrePersist;
+import jakarta.nosql.mapping.EntityPrePersist;
 
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;

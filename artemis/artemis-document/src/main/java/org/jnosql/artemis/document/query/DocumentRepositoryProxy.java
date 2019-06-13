@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.document.DocumentTemplate;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 
 import java.lang.reflect.ParameterizedType;
 

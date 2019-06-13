@@ -15,14 +15,16 @@
 package org.jnosql.artemis.column;
 
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.reflection.FieldType;
 import org.jnosql.artemis.column.ColumnFieldConverters.ColumnFieldConverterFactory;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.reflection.FieldTypeUtil;
-import org.jnosql.artemis.reflection.FieldValue;
-import org.jnosql.diana.column.Column;
-import org.jnosql.diana.column.ColumnEntity;
+import jakarta.nosql.mapping.reflection.FieldValue;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnEntity;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,8 +35,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.SUBENTITY;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
 
 /**
  * Template method to {@link ColumnEntityConverter}
@@ -110,8 +112,8 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         final List<String> names = columns.stream().map(Column::getName).sorted().collect(Collectors.toList());
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
-            FieldTypeUtil type = fieldsGroupByName.get(k).getType();
-            return EMBEDDED.equals(type) || SUBENTITY.equals(type);
+            FieldType type = fieldsGroupByName.get(k).getType();
+            return EMBEDDED.equals(type) || EMBEDDED_ENTITY.equals(type);
         };
         fieldsGroupByName.keySet().stream()
                 .filter(existField.or(isElementType))

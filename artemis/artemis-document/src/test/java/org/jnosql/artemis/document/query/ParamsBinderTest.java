@@ -20,7 +20,7 @@ import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.model.Person;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.jnosql.artemis.util.ParamsBinder;
 import jakarta.nosql.Params;
 import jakarta.nosql.TypeReference;

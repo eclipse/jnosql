@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 
 import java.lang.reflect.ParameterizedType;
 

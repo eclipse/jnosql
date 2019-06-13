@@ -16,7 +16,7 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.diana.Settings;
+import jakarta.nosql.Settings;
 import org.jnosql.diana.document.DocumentCollectionManagerAsyncFactory;
 import org.jnosql.diana.document.DocumentCollectionManagerFactory;
 import org.junit.jupiter.api.Test;

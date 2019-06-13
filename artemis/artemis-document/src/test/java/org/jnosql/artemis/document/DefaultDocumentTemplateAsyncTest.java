@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.PreparedStatementAsync;
 import org.jnosql.artemis.model.Movie;
 import org.jnosql.artemis.model.Person;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import static jakarta.nosql.NonUniqueResultException;
 import org.jnosql.diana.document.Document;
 import org.jnosql.diana.document.DocumentCollectionManagerAsync;

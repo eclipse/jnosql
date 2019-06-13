@@ -31,8 +31,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import static jakarta.nosql.mapping.reflection.FieldType.COLLECTION;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.SUBENTITY;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
 
 class DocumentFieldConverters {
 

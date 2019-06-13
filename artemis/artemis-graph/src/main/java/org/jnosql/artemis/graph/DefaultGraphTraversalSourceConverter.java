@@ -22,7 +22,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.EntityNotFoundException;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;

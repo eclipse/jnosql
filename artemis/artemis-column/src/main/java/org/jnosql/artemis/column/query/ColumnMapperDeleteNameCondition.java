@@ -17,7 +17,7 @@
 package org.jnosql.artemis.column.query;
 
 
-import org.jnosql.diana.Condition;
+import jakarta.nosql.Condition;
 
 /**
  * The base to delete name condition

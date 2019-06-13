@@ -20,7 +20,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.diana.Settings;
+import jakarta.nosql.Settings;
 
 import java.util.Iterator;
 import java.util.Optional;

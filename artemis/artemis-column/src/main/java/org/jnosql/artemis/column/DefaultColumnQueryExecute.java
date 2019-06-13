@@ -15,7 +15,7 @@
 package org.jnosql.artemis.column;
 
 
-import org.jnosql.diana.column.ColumnQuery;
+import jakarta.nosql.column.ColumnQuery;
 
 import java.util.Objects;
 

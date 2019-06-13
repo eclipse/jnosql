@@ -15,7 +15,7 @@
 package org.jnosql.artemis.column;
 
 
-import org.jnosql.diana.column.ColumnEntity;
+import jakarta.nosql.column.ColumnEntity;
 
 import java.util.Objects;
 

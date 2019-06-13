@@ -16,8 +16,8 @@ package org.jnosql.artemis.column;
 
 
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.reflection.ClassMappings;
-import org.jnosql.diana.column.ColumnFamilyManager;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import jakarta.nosql.column.ColumnFamilyManager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Vetoed;

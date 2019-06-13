@@ -22,7 +22,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.jnosql.artemis.EntityNotFoundException;
-import org.jnosql.artemis.IdNotFoundException;
+import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;

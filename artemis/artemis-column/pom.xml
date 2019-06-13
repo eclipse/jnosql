@@ -37,6 +37,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>jakarta.nosql.mapping</groupId>
+            <artifactId>mapping-column</artifactId>
+            <version>${jakarta.nosql.version}</version>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>artemis-configuration</artifactId>
             <version>${project.version}</version>

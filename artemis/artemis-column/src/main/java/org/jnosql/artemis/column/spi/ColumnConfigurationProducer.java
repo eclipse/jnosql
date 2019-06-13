@@ -14,16 +14,16 @@
  */
 package org.jnosql.artemis.column.spi;
 
-import org.jnosql.artemis.ConfigurationReader;
-import org.jnosql.artemis.ConfigurationSettingsUnit;
+import jakarta.nosql.mapping.ConfigurationReader;
+import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.artemis.reflection.Reflections;
-import org.jnosql.diana.column.ColumnConfiguration;
-import org.jnosql.diana.column.ColumnConfigurationAsync;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.column.ColumnFamilyManagerAsyncFactory;
-import org.jnosql.diana.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.mapping.reflection.Reflections;
+import jakarta.nosql.column.ColumnConfiguration;
+import jakarta.nosql.column.ColumnConfigurationAsync;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
+import jakarta.nosql.column.ColumnFamilyManagerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
@@ -47,11 +47,6 @@ class ColumnConfigurationProducer {
     private Instance<ConfigurationReader> configurationReader;
 
 
-    @ConfigurationUnit
-    @Produces
-    public <T extends ColumnFamilyManager> ColumnFamilyManagerFactory<T> getGenerics(InjectionPoint injectionPoint) {
-        return gettColumnFamilyManagerFactory(injectionPoint);
-    }
 
     @ConfigurationUnit
     @Produces
@@ -60,11 +55,6 @@ class ColumnConfigurationProducer {
     }
 
 
-    @ConfigurationUnit
-    @Produces
-    public <T extends ColumnFamilyManagerAsync> ColumnFamilyManagerAsyncFactory<T> getAsyncgenerics(InjectionPoint injectionPoint) {
-        return gettColumnFamilyManagerAsyncFactory(injectionPoint);
-    }
 
 
     @ConfigurationUnit
@@ -74,24 +64,24 @@ class ColumnConfigurationProducer {
     }
 
 
-    private <T extends ColumnFamilyManagerAsync> ColumnFamilyManagerAsyncFactory<T> gettColumnFamilyManagerAsyncFactory(InjectionPoint injectionPoint) {
+    private ColumnFamilyManagerAsyncFactory gettColumnFamilyManagerAsyncFactory(InjectionPoint injectionPoint) {
 
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
 
         return getFactoryAsync(annotation);
     }
 
-    <T extends ColumnFamilyManagerAsync> ColumnFamilyManagerAsyncFactory<T> getFactoryAsync(ConfigurationUnit annotation) {
+    ColumnFamilyManagerAsyncFactory getFactoryAsync(ConfigurationUnit annotation) {
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, ColumnConfigurationAsync.class);
         Class<ColumnConfigurationAsync> configurationClass = unit.<ColumnConfigurationAsync>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The ColumnConfiguration provider is required in the configuration"));
 
         ColumnConfigurationAsync columnConfiguration = reflections.newInstance(configurationClass);
 
-        return columnConfiguration.getAsync(unit.getSettings());
+        return columnConfiguration.get(unit.getSettings());
     }
 
-    <T extends ColumnFamilyManager> ColumnFamilyManagerFactory<T> getFactory(ConfigurationUnit annotation) {
+    ColumnFamilyManagerFactory getFactory(ConfigurationUnit annotation) {
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, ColumnConfiguration.class);
         Class<ColumnConfiguration> configurationClass = unit.<ColumnConfiguration>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The ColumnConfiguration provider is required in the configuration"));
@@ -101,10 +91,9 @@ class ColumnConfigurationProducer {
         return configuration.get(unit.getSettings());
     }
 
-    private <T extends ColumnFamilyManager> ColumnFamilyManagerFactory<T> gettColumnFamilyManagerFactory(InjectionPoint injectionPoint) {
+    private ColumnFamilyManagerFactory gettColumnFamilyManagerFactory(InjectionPoint injectionPoint) {
 
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
-
         return getFactory(annotation);
     }
 

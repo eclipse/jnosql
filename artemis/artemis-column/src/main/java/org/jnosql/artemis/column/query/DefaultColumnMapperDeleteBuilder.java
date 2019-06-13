@@ -15,10 +15,10 @@
 package org.jnosql.artemis.column.query;
 
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.artemis.column.ColumnTemplateAsync;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.diana.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnDeleteQuery;
 
 import java.util.function.Consumer;
 

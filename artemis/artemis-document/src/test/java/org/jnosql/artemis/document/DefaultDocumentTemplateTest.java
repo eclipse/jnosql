@@ -16,12 +16,12 @@ package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.IdNotFoundException;
+import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
 import org.jnosql.artemis.model.Job;
 import org.jnosql.artemis.model.Movie;
 import org.jnosql.artemis.model.Person;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import static jakarta.nosql.NonUniqueResultException;
 import org.jnosql.diana.document.Document;
 import org.jnosql.diana.document.DocumentCollectionManager;

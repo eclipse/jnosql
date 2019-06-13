@@ -15,22 +15,27 @@
 package org.jnosql.artemis.column;
 
 
+import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.IdNotFoundException;
+import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import jakarta.nosql.mapping.column.ColumnQueryPagination;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import static jakarta.nosql.NonUniqueResultException;
-import org.jnosql.diana.column.ColumnDeleteQuery;
-import org.jnosql.diana.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnObserverParser;
-import org.jnosql.diana.column.ColumnQuery;
-import org.jnosql.diana.column.ColumnQueryParser;
-import org.jnosql.diana.column.query.ColumnQueryBuilder;
+import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnObserverParser;
+import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.column.ColumnQueryParser;
 
 import java.time.Duration;
 import java.util.List;
@@ -48,7 +53,7 @@ import static java.util.stream.Collectors.toList;
 public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
 
-    private static final ColumnQueryParser PARSER = ColumnQueryParser.getParser();
+    private static final ColumnQueryParser PARSER = ServiceLoaderProvider.get(ColumnQueryParser.class);
 
     protected abstract ColumnEntityConverter getConverter();
 
@@ -128,7 +133,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
         Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
-        ColumnQuery query = ColumnQueryBuilder.select().from(classMapping.getName())
+        ColumnQuery query = ColumnQuery.select().from(classMapping.getName())
                 .where(idField.getName()).eq(value).build();
 
         return singleResult(query);
@@ -144,7 +149,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
         Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
 
-        ColumnDeleteQuery query = ColumnQueryBuilder.delete().from(classMapping.getName())
+        ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(classMapping.getName())
                 .where(idField.getName()).eq(value).build();
         getManager().delete(query);
     }

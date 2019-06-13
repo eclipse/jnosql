@@ -17,7 +17,7 @@ package org.jnosql.artemis.graph.cdi;
 import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.Database;
+import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import org.jnosql.artemis.graph.GraphTraversalSourceSupplier;
 import org.mockito.Mockito;

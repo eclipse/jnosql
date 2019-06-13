@@ -14,7 +14,10 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.diana.column.ColumnEntity;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import jakarta.nosql.mapping.column.ColumnWorkflow;
 
 import java.util.Objects;
 import java.util.function.Function;

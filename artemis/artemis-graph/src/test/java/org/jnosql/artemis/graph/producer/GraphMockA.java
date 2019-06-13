@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.graph.producer;
 
-import org.jnosql.diana.Settings;
+import jakarta.nosql.Settings;
 
 public class GraphMockA extends AbstractGraphMock {
 

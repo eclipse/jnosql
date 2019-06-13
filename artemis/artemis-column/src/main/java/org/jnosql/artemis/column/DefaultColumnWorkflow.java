@@ -15,6 +15,9 @@
 package org.jnosql.artemis.column;
 
 
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+
 import javax.inject.Inject;
 
 class DefaultColumnWorkflow extends AbstractColumnWorkflow{

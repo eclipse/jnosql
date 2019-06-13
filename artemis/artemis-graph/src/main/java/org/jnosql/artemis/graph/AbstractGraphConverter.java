@@ -22,7 +22,7 @@ import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.EntityNotFoundException;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.Value;
 
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
 
 abstract class AbstractGraphConverter implements GraphConverter {
 

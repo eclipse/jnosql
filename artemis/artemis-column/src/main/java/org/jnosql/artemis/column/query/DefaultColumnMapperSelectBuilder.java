@@ -18,11 +18,11 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import org.jnosql.artemis.column.ColumnQueryPagination;
-import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.artemis.column.ColumnTemplateAsync;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.Sort;
-import org.jnosql.diana.column.ColumnQuery;
+import jakarta.nosql.column.ColumnQuery;
 
 import java.util.ArrayList;
 import java.util.List;

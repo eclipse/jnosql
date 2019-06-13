@@ -16,10 +16,10 @@ package org.jnosql.artemis.document;
 
 
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.IdNotFoundException;
+import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatementAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.util.ConverterUtil;
 import org.jnosql.diana.document.DocumentCollectionManagerAsync;

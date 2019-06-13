@@ -24,8 +24,8 @@ import org.jnosql.artemis.column.query.RepositoryAsyncColumnBean;
 import org.jnosql.artemis.column.query.RepositoryColumnBean;
 import org.jnosql.artemis.util.ConfigurationUnitUtils;
 import org.jnosql.artemis.util.RepositoryUnit;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;

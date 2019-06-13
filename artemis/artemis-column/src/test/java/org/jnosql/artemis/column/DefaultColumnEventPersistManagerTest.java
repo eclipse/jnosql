@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.artemis.EntityPostPersit;
-import org.jnosql.artemis.EntityPrePersist;
-import org.jnosql.diana.column.ColumnDeleteQuery;
-import org.jnosql.diana.column.ColumnEntity;
-import org.jnosql.diana.column.ColumnQuery;
+import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPrePersist;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.ColumnQuery;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

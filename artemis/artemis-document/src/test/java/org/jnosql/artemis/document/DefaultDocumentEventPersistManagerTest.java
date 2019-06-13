@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.document;
 
-import org.jnosql.artemis.EntityPostPersit;
-import org.jnosql.artemis.EntityPrePersist;
+import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPrePersist;
 import org.jnosql.diana.document.DocumentDeleteQuery;
 import org.jnosql.diana.document.DocumentEntity;
 import org.jnosql.diana.document.DocumentQuery;

@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.column;
 
+import jakarta.nosql.column.Column;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.reflection.GenericFieldMapping;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
-import org.jnosql.diana.column.Column;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -31,8 +31,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import static jakarta.nosql.mapping.reflection.FieldType.COLLECTION;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.SUBENTITY;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
 
 class ColumnFieldConverters {
 
@@ -46,7 +46,7 @@ class ColumnFieldConverters {
         ColumnFieldConverter get(FieldMapping field) {
             if (EMBEDDED.equals(field.getType())) {
                 return embeddedFieldConverter;
-            } else if (SUBENTITY.equals(field.getType())) {
+            } else if (EMBEDDED_ENTITY.equals(field.getType())) {
                 return subEntityConverter;
             } else if (isCollectionEmbeddable(field)) {
                 return embeddableConverter;

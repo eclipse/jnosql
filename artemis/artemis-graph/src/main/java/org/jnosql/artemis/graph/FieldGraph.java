@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
-import static org.jnosql.artemis.reflection.FieldTypeUtil.EMBEDDED;
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
 
 final class FieldGraph {
 

@@ -20,14 +20,14 @@ import jakarta.nosql.mapping.reflection.FieldValue;
 
 import java.util.Objects;
 
-final class DefaultFieldValue implements FieldValue {
+public final class DefaultFieldValue implements FieldValue {
 
     private final Object value;
 
     private final FieldMapping field;
 
 
-    DefaultFieldValue(Object value, FieldMapping field) {
+    public DefaultFieldValue(Object value, FieldMapping field) {
         this.value = value;
         this.field = Objects.requireNonNull(field, "field is required");
     }

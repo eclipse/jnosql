@@ -15,8 +15,8 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.artemis.EntityPostPersit;
-import org.jnosql.artemis.EntityPrePersist;
+import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPrePersist;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

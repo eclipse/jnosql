@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.diana.Settings;
-import org.jnosql.diana.column.ColumnFamilyManager;
-import org.jnosql.diana.column.ColumnFamilyManagerAsync;
-import org.jnosql.diana.column.ColumnFamilyManagerAsyncFactory;
-import org.jnosql.diana.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.Settings;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
+import jakarta.nosql.column.ColumnFamilyManagerFactory;
 import org.jnosql.diana.column.UnaryColumnConfiguration;
 import org.mockito.Mockito;
 

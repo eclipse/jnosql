@@ -15,10 +15,10 @@
 package org.jnosql.artemis.column.spi;
 
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.artemis.column.ColumnTemplate;
-import org.jnosql.artemis.column.ColumnTemplateAsync;
-import org.jnosql.artemis.column.ColumnTemplateAsyncProducer;
-import org.jnosql.artemis.column.ColumnTemplateProducer;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
+import jakarta.nosql.mapping.column.ColumnTemplateAsyncProducer;
+import jakarta.nosql.mapping.column.ColumnTemplateProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

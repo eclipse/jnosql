@@ -16,7 +16,7 @@ package org.jnosql.artemis.column.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;

@@ -15,7 +15,8 @@
 package org.jnosql.artemis.column;
 
 import jakarta.nosql.mapping.PreparedStatementAsync;
-import org.jnosql.diana.column.ColumnEntity;
+import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,10 +27,10 @@ import static java.util.stream.Collectors.toList;
 
 final class ColumnPreparedStatementAsync implements PreparedStatementAsync {
 
-    private final org.jnosql.diana.column.ColumnPreparedStatementAsync preparedStatementAsync;
+    private final jakarta.nosql.column.ColumnPreparedStatementAsync preparedStatementAsync;
     private final ColumnEntityConverter converter;
 
-    ColumnPreparedStatementAsync(org.jnosql.diana.column.ColumnPreparedStatementAsync preparedStatementAsync,
+    ColumnPreparedStatementAsync(jakarta.nosql.column.ColumnPreparedStatementAsync preparedStatementAsync,
                                  ColumnEntityConverter converter) {
         this.preparedStatementAsync = preparedStatementAsync;
         this.converter = converter;
