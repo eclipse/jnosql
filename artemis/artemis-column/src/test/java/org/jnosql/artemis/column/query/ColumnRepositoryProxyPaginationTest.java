@@ -27,7 +27,7 @@ import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
-import org.jnosql.diana.column.ColumnCondition;
+import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

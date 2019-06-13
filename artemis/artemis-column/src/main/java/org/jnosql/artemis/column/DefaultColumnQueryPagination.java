@@ -18,7 +18,7 @@ package org.jnosql.artemis.column;
 
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.Sort;
-import org.jnosql.diana.column.ColumnCondition;
+import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnQuery;
 
 import java.util.List;

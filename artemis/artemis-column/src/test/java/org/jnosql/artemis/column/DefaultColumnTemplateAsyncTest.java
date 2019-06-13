@@ -22,7 +22,7 @@ import org.jnosql.artemis.model.Person;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import static jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.column.Column;
-import org.jnosql.diana.column.ColumnCondition;
+import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManagerAsync;
