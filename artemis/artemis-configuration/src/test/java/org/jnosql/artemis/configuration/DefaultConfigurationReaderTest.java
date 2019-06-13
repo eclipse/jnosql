@@ -35,7 +35,6 @@ public class DefaultConfigurationReaderTest {
     @Inject
     private ConfigurationReader configurationReader;
 
-
     @Test
     public void shouldReturnNPEWhenConfigurationIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {

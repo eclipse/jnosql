@@ -14,5 +14,5 @@
  */
 package org.jnosql.artemis.configuration;
 
-public class DefaultMockConfiguration implements MockConfiguration {
+public class DefaultMockConfiguration {
 }

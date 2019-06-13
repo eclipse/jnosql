@@ -30,6 +30,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,7 +45,7 @@ public class DefaultJSONConfigurationreaderTest {
         Assertions.assertThrows(ConfigurationException.class, () -> {
             ConfigurationUnit annotation = mock(ConfigurationUnit.class);
             when(annotation.fileName()).thenReturn("invalid.json");
-            configurationReader.read(annotation, MockConfiguration.class);
+            configurationReader.read(annotation);
         });
     }
 
@@ -65,7 +66,7 @@ public class DefaultJSONConfigurationreaderTest {
         assertEquals("name-2", unit.getName().get());
         assertEquals("that is the description", unit.getDescription().get());
         assertEquals(Settings.of(settings), unit.getSettings());
-        assertFalse(unit.getProvider().isPresent());
+        assertTrue(unit.getProvider().isPresent());
     }
 
     @Test
@@ -73,7 +74,7 @@ public class DefaultJSONConfigurationreaderTest {
         ConfigurationUnit annotation = mock(ConfigurationUnit.class);
         when(annotation.fileName()).thenReturn("jnosql.json");
         when(annotation.name()).thenReturn("name");
-        ConfigurationSettingsUnit unit = configurationReader.read(annotation, MockConfiguration.class);
+        ConfigurationSettingsUnit unit = configurationReader.read(annotation);
 
         Map<String, Object> settings = new HashMap<>();
         settings.put("key","value");
@@ -91,7 +92,7 @@ public class DefaultJSONConfigurationreaderTest {
         ConfigurationUnit annotation = mock(ConfigurationUnit.class);
         when(annotation.name()).thenReturn("name-2");
         when(annotation.fileName()).thenReturn("jnosql.json");
-        ConfigurationSettingsUnit unit = configurationReader.read(annotation, MockConfiguration.class);
+        ConfigurationSettingsUnit unit = configurationReader.read(annotation);
 
         Map<String, Object> settings = new HashMap<>();
         settings.put("key","value");

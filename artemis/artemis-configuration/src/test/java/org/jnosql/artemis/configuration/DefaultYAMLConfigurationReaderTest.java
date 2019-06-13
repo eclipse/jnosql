@@ -32,6 +32,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -45,7 +46,7 @@ public class DefaultYAMLConfigurationReaderTest {
         ConfigurationUnit annotation = mock(ConfigurationUnit.class);
         when(annotation.fileName()).thenReturn("jnosql.yaml");
         when(annotation.name()).thenReturn("name");
-        ConfigurationSettingsUnit unit = configurationReader.read(annotation, MockConfiguration.class);
+        ConfigurationSettingsUnit unit = configurationReader.read(annotation);
 
         Map<String, Object> settings = new HashMap<>();
         settings.put("key","value");
@@ -75,7 +76,7 @@ public class DefaultYAMLConfigurationReaderTest {
         assertEquals("name", unit.getName().get());
         assertEquals("that is the description", unit.getDescription().get());
         assertEquals(Settings.of(settings), unit.getSettings());
-        assertFalse(unit.getProvider().isPresent());
+        assertTrue(unit.getProvider().isPresent());
     }
 
     @Test
@@ -83,7 +84,7 @@ public class DefaultYAMLConfigurationReaderTest {
         Assertions.assertThrows(ConfigurationException.class, () -> {
             ConfigurationUnit annotation = mock(ConfigurationUnit.class);
             when(annotation.fileName()).thenReturn("invalid.yaml");
-            configurationReader.read(annotation, MockConfiguration.class);
+            configurationReader.read(annotation);
         });
     }
 }
