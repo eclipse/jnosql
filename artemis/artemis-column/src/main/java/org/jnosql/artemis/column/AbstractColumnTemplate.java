@@ -126,7 +126,6 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public void delete(ColumnDeleteQuery query) {
         requireNonNull(query, "query is required");
