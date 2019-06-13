@@ -37,15 +37,10 @@ public class DefaultConfigurationReaderTest {
 
 
     @Test
-    public void shouldReturnNPEWhenAnnotationIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> configurationReader.read(null, MockConfiguration.class));
-    }
-
-    @Test
     public void shouldReturnNPEWhenConfigurationIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             ConfigurationUnit annotation = mock(ConfigurationUnit.class);
-            configurationReader.read(annotation, null);
+            configurationReader.read( null);
         });
     }
 
@@ -54,7 +49,7 @@ public class DefaultConfigurationReaderTest {
         Assertions.assertThrows(ConfigurationException.class, () -> {
             ConfigurationUnit annotation = mock(ConfigurationUnit.class);
             when(annotation.fileName()).thenReturn("unknown.json");
-            configurationReader.read(annotation, MockConfiguration.class);
+            configurationReader.read(annotation);
         });
     }
 
@@ -63,7 +58,7 @@ public class DefaultConfigurationReaderTest {
         Assertions.assertThrows(ConfigurationException.class, () -> {
             ConfigurationUnit annotation = mock(ConfigurationUnit.class);
             when(annotation.fileName()).thenReturn("invalid.invalid");
-            configurationReader.read(annotation, MockConfiguration.class);
+            configurationReader.read(annotation);
         });
     }
 
@@ -72,7 +67,7 @@ public class DefaultConfigurationReaderTest {
         Assertions.assertThrows(ConfigurationException.class, () -> {
             ConfigurationUnit annotation = mock(ConfigurationUnit.class);
             when(annotation.fileName()).thenReturn("invalid");
-            configurationReader.read(annotation, MockConfiguration.class);
+            configurationReader.read(annotation);
         });
     }
 
@@ -83,7 +78,7 @@ public class DefaultConfigurationReaderTest {
             ConfigurationUnit annotation = mock(ConfigurationUnit.class);
             when(annotation.fileName()).thenReturn("jnosql.json");
             when(annotation.name()).thenReturn("unknown");
-            configurationReader.read(annotation, MockConfiguration.class);
+            configurationReader.read(annotation);
         });
     }
 
@@ -93,7 +88,7 @@ public class DefaultConfigurationReaderTest {
             ConfigurationUnit annotation = mock(ConfigurationUnit.class);
             when(annotation.fileName()).thenReturn("invalid-class.json");
             when(annotation.name()).thenReturn("name-1");
-            configurationReader.read(annotation, MockConfiguration.class);
+            configurationReader.read(annotation);
         });
     }
 
@@ -103,7 +98,7 @@ public class DefaultConfigurationReaderTest {
             ConfigurationUnit annotation = mock(ConfigurationUnit.class);
             when(annotation.fileName()).thenReturn("invalid-class.json");
             when(annotation.name()).thenReturn("name");
-            configurationReader.read(annotation, MockConfiguration.class);
+            configurationReader.read(annotation);
         });
     }
 
@@ -113,7 +108,7 @@ public class DefaultConfigurationReaderTest {
             ConfigurationUnit annotation = mock(ConfigurationUnit.class);
             when(annotation.fileName()).thenReturn("invalid-class.json");
             when(annotation.name()).thenReturn("name-2");
-            configurationReader.read(annotation, MockConfiguration.class);
+            configurationReader.read(annotation);
         });
     }
 
@@ -122,7 +117,7 @@ public class DefaultConfigurationReaderTest {
         Assertions.assertThrows(ConfigurationException.class, () -> {
             ConfigurationUnit annotation = mock(ConfigurationUnit.class);
             when(annotation.fileName()).thenReturn("jnosql.json");
-            configurationReader.read(annotation, MockConfiguration.class);
+            configurationReader.read(annotation);
         });
     }
 }

@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.configuration;
 
-import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
 import jakarta.nosql.mapping.configuration.Configurable;
 import jakarta.nosql.mapping.configuration.ConfigurableReader;
+import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.reflection.Reflections;
 import org.jnosql.artemis.reflection.ConstructorException;
 import org.jnosql.diana.SettingsPriority;
@@ -63,10 +63,9 @@ class DefaultConfigurationReader implements ConfigurationReader {
     private Instance<ConfigurableReader> readers;
 
     @Override
-    public <T> ConfigurationSettingsUnit read(ConfigurationUnit annotation, Class<T> configurationClass) {
+    public ConfigurationSettingsUnit read(ConfigurationUnit annotation) {
 
         requireNonNull(annotation, "annotation is required");
-        requireNonNull(configurationClass, "configurationClass is required");
 
 
         List<Configurable> configurations = getConfigurations(annotation);
@@ -75,7 +74,7 @@ class DefaultConfigurationReader implements ConfigurationReader {
         String name = configuration.getName();
         String description = configuration.getDescription();
 
-        Class<?> provider = getProvider(configurationClass, configuration);
+        Class<?> provider = getProvider(configuration);
 
         return new DefaultConfigurationSettingsUnit(name, description, provider,
                 SettingsPriority.get(toMap(configuration)));
@@ -85,19 +84,6 @@ class DefaultConfigurationReader implements ConfigurationReader {
         return new HashMap<>(Optional.ofNullable(configuration.getSettings()).orElse(Collections.emptyMap()));
     }
 
-    @Override
-    public <T> ConfigurationSettingsUnit read(ConfigurationUnit annotation) {
-
-        requireNonNull(annotation, "annotation is required");
-
-        List<Configurable> configurations = getConfigurations(annotation);
-        Configurable configuration = getConfiguration(annotation, configurations);
-
-        String name = configuration.getName();
-        String description = configuration.getDescription();
-        return new DefaultConfigurationSettingsUnit(name, description, null,
-                SettingsPriority.get(toMap(configuration)));
-    }
 
 
     private List<Configurable> getConfigurations(ConfigurationUnit annotation) {
@@ -121,16 +107,12 @@ class DefaultConfigurationReader implements ConfigurationReader {
         return fileName[1];
     }
 
-    private <T> Class<?> getProvider(Class<T> configurationClass, Configurable configuration) {
+    private <T> Class<?> getProvider(Configurable configuration) {
         if (isBlank(configuration.getProvider())) {
             return null;
         }
         try {
             Class<?> provider = Class.forName(configuration.getProvider());
-            if (!configurationClass.isAssignableFrom(provider)) {
-                throw new ConfigurationException(String.format("The class %s does not match with %s",
-                        provider.toString(), configurationClass));
-            }
             reflections.makeAccessible(provider);
             return provider;
         } catch (ClassNotFoundException | ConstructorException e) {
