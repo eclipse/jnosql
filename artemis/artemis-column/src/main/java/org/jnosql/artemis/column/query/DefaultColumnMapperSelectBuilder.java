@@ -42,7 +42,9 @@ import static java.util.Objects.requireNonNull;
 
 class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements ColumnMapperFrom,
         ColumnMapperLimit, ColumnMapperSkip,
-        ColumnMapperOrder, ColumnMapperNameCondition, ColumnMapperNotCondition, ColumnMapperNameOrder, ColumnMapperWhere {
+        ColumnMapperOrder, ColumnMapperNameCondition,
+        ColumnMapperNotCondition, ColumnMapperNameOrder,
+        ColumnMapperWhere {
 
     private final List<Sort> sorts = new ArrayList<>();
 

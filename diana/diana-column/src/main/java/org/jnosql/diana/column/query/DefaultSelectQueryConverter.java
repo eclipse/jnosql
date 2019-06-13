@@ -40,12 +40,12 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
-final class SelectQueryParser implements SelectQueryConverter {
+public final class SelectQueryParser implements SelectQueryConverter {
 
     private final SelectQueryProvider selectQueryProvider;
     private final CacheQuery<ColumnQuery> cache;
 
-    SelectQueryParser() {
+    public SelectQueryParser() {
         this.selectQueryProvider = ServiceLoaderProvider.get(SelectQueryProvider.class);
         this.cache = new CacheQuery<>(this::getColumnQuery);
     }
