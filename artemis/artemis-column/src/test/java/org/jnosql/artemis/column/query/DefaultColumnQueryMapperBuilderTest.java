@@ -14,6 +14,9 @@
  */
 package org.jnosql.artemis.column.query;
 
+import jakarta.nosql.mapping.column.ColumnQueryMapper;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteFrom;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperFrom;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.Test;
@@ -27,10 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(CDIExtension.class)
 public class DefaultColumnQueryMapperBuilderTest {
 
-
     @Inject
-    private ColumnQueryMapperBuilder mapperBuilder;
-
+    private ColumnQueryMapper mapperBuilder;
 
     @Test
     public void shouldReturnErrorWhenEntityClassIsNull() {

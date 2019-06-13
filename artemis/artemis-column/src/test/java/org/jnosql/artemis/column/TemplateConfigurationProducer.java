@@ -15,6 +15,8 @@
 package org.jnosql.artemis.column;
 
 
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.ConfigurationUnit;
 import jakarta.nosql.column.ColumnFamilyManager;
@@ -28,7 +30,6 @@ import javax.inject.Inject;
 @ExtendWith(CDIExtension.class)
 public class TemplateConfigurationProducer {
 
-
     @Inject
     @ConfigurationUnit(fileName = "column.json", name = "name", database = "database")
     private ColumnTemplate templateA;
@@ -36,8 +37,6 @@ public class TemplateConfigurationProducer {
     @Inject
     @ConfigurationUnit(fileName = "column.json", name = "name-2", database = "database")
     private ColumnTemplate templateB;
-
-
 
     @Inject
     @ConfigurationUnit(fileName = "column.json", name = "name", database = "database")
@@ -52,7 +51,6 @@ public class TemplateConfigurationProducer {
         Assertions.assertNotNull(templateA);
         ColumnFamilyManager manager = ((AbstractColumnTemplate) templateA).getManager();
         Assertions.assertNotNull(manager);
-
     }
 
     @Test

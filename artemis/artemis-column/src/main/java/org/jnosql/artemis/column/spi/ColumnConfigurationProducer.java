@@ -14,16 +14,14 @@
  */
 package org.jnosql.artemis.column.spi;
 
+import jakarta.nosql.column.ColumnConfiguration;
+import jakarta.nosql.column.ColumnConfigurationAsync;
+import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
+import jakarta.nosql.column.ColumnFamilyManagerFactory;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
 import jakarta.nosql.mapping.reflection.Reflections;
-import jakarta.nosql.column.ColumnConfiguration;
-import jakarta.nosql.column.ColumnConfigurationAsync;
-import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
-import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
-import jakarta.nosql.column.ColumnFamilyManagerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
@@ -53,9 +51,6 @@ class ColumnConfigurationProducer {
     public ColumnFamilyManagerFactory get(InjectionPoint injectionPoint) {
         return gettColumnFamilyManagerFactory(injectionPoint);
     }
-
-
-
 
     @ConfigurationUnit
     @Produces

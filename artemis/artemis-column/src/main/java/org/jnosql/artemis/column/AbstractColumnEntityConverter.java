@@ -14,17 +14,16 @@
  */
 package org.jnosql.artemis.column;
 
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.reflection.FieldType;
-import org.jnosql.artemis.column.ColumnFieldConverters.ColumnFieldConverterFactory;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
-import org.jnosql.artemis.reflection.FieldTypeUtil;
+import jakarta.nosql.mapping.reflection.FieldType;
 import jakarta.nosql.mapping.reflection.FieldValue;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnEntity;
+import org.jnosql.artemis.column.ColumnFieldConverters.ColumnFieldConverterFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,9 +33,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.requireNonNull;
 import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
 import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Template method to {@link ColumnEntityConverter}
@@ -44,7 +43,6 @@ import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
 public abstract class AbstractColumnEntityConverter implements ColumnEntityConverter {
 
     private final ColumnFieldConverterFactory converterFactory = new ColumnFieldConverterFactory();
-
 
     protected abstract ClassMappings getClassMappings();
 

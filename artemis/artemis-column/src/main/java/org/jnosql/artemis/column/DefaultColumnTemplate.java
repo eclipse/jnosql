@@ -14,39 +14,15 @@
  */
 package org.jnosql.artemis.column;
 
-import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import jakarta.nosql.mapping.column.ColumnQueryPagination;
-import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnWorkflow;
-import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.mapping.reflection.FieldMapping;
-import org.jnosql.artemis.util.ConverterUtil;
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.column.ColumnQueryParser;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import java.time.Duration;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
-
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 /**
  * The default implementation of {@link jakarta.nosql.mapping.column.ColumnTemplate}

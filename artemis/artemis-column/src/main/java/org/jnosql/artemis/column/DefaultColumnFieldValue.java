@@ -14,25 +14,24 @@
  */
 package org.jnosql.artemis.column;
 
+import jakarta.nosql.column.Column;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.mapping.reflection.FieldType;
-import org.jnosql.artemis.reflection.DefaultFieldValue;
-import org.jnosql.artemis.reflection.FieldTypeUtil;
 import jakarta.nosql.mapping.reflection.FieldValue;
+import org.jnosql.artemis.reflection.DefaultFieldValue;
 import org.jnosql.artemis.reflection.GenericFieldMapping;
-import jakarta.nosql.column.Column;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.singletonList;
 import static jakarta.nosql.mapping.reflection.FieldType.COLLECTION;
 import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
 import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
+import static java.util.Collections.singletonList;
 
 final class DefaultColumnFieldValue implements ColumnFieldValue {
 
