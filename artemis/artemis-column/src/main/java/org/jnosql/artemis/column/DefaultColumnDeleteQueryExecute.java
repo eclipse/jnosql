@@ -15,6 +15,7 @@
 package org.jnosql.artemis.column;
 
 import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.mapping.column.ColumnDeleteQueryExecute;
 
 import java.util.Objects;
 

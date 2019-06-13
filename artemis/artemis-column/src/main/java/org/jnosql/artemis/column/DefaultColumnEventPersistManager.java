@@ -20,6 +20,15 @@ import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.column.ColumnDeleteQueryExecute;
+import jakarta.nosql.mapping.column.ColumnEntityPostPersist;
+import jakarta.nosql.mapping.column.ColumnEntityPrePersist;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import jakarta.nosql.mapping.column.ColumnQueryExecute;
+import jakarta.nosql.mapping.column.EntityColumnPostPersist;
+import jakarta.nosql.mapping.column.EntityColumnPrePersist;
+import org.jnosql.artemis.DefaultEntityPostPersist;
+import org.jnosql.artemis.DefaultEntityPrePersist;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
@@ -57,41 +66,41 @@ class DefaultColumnEventPersistManager implements ColumnEventPersistManager {
 
     @Override
     public void firePreColumn(ColumnEntity entity) {
-        columnEntityPrePersistEvent.fire(ColumnEntityPrePersist.of(entity));
+        columnEntityPrePersistEvent.fire(new DefaultColumnEntityPrePersist(entity));
     }
 
     @Override
     public void firePostColumn(ColumnEntity entity) {
-        columnEntityPostPersistEvent.fire(ColumnEntityPostPersist.of(entity));
+        columnEntityPostPersistEvent.fire(new DefaultColumnEntityPostPersist(entity));
     }
 
     @Override
     public <T> void firePreEntity(T entity) {
-        entityPrePersistEvent.fire(EntityPrePersist.of(entity));
+        entityPrePersistEvent.fire(new DefaultEntityPrePersist(entity));
     }
 
     @Override
     public <T> void firePostEntity(T entity) {
-        entityPostPersitEvent.fire(EntityPostPersit.of(entity));
+        entityPostPersitEvent.fire(new DefaultEntityPostPersist(entity));
     }
 
     @Override
     public <T> void firePreColumnEntity(T entity) {
-        entityColumnPrePersist.fire(EntityColumnPrePersist.of(entity));
+        entityColumnPrePersist.fire(new DefaultEntityColumnPrePersist(entity));
     }
 
     @Override
     public <T> void firePostColumnEntity(T entity) {
-        entityColumnPostPersist.fire(EntityColumnPostPersist.of(entity));
+        entityColumnPostPersist.fire(new DefaultEntityColumnPostPersist(entity));
     }
 
     @Override
     public void firePreQuery(ColumnQuery query) {
-        columnQueryExecute.fire(ColumnQueryExecute.of(query));
+        columnQueryExecute.fire(new DefaultColumnQueryExecute(query));
     }
 
     @Override
     public void firePreDeleteQuery(ColumnDeleteQuery query) {
-        columnDeleteQueryExecute.fire(ColumnDeleteQueryExecute.of(query));
+        columnDeleteQueryExecute.fire(new DefaultColumnDeleteQueryExecute(query));
     }
 }

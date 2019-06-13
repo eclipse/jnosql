@@ -43,6 +43,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
@@ -101,6 +103,27 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     public <T> T update(T entity) {
         requireNonNull(entity, "entity is required");
         return getFlow().flow(entity, update);
+    }
+
+    @Override
+    public <T> Iterable<T> update(Iterable<T> entities) {
+        requireNonNull(entities, "entity is required");
+        return StreamSupport.stream(entities.spliterator(), false)
+                .map(this::update).collect(Collectors.toList());
+    }
+
+    @Override
+    public <T> Iterable<T> insert(Iterable<T> entities) {
+        requireNonNull(entities, "entities is required");
+        return StreamSupport.stream(entities.spliterator(), false)
+                .map(this::insert).collect(Collectors.toList());
+    }
+
+    @Override
+    public <T> Iterable<T> insert(Iterable<T> entities, Duration ttl) {
+        return StreamSupport.stream(entities.spliterator(), false)
+                .map(e -> insert(e, ttl))
+                .collect(Collectors.toList());
     }
 
 

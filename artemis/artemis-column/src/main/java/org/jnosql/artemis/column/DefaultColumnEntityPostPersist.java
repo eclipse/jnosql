@@ -16,6 +16,7 @@ package org.jnosql.artemis.column;
 
 
 import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.mapping.column.ColumnEntityPostPersist;
 
 import java.util.Objects;
 

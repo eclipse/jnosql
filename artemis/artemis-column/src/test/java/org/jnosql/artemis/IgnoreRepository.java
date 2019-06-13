@@ -15,5 +15,7 @@
 package org.jnosql.artemis;
 
 
+import jakarta.nosql.mapping.Repository;
+
 public interface IgnoreRepository<T, ID> extends Repository<T, ID> {
 }

@@ -14,10 +14,15 @@
  */
 package org.jnosql.artemis.column.query;
 
-import org.jnosql.aphrodite.antlr.method.DeleteMethodFactory;
-import org.jnosql.aphrodite.antlr.method.SelectMethodFactory;
+
+import jakarta.nosql.column.ColumnDeleteQueryParams;
+import jakarta.nosql.column.ColumnQueryParams;
+import jakarta.nosql.column.DeleteQueryConverter;
+import jakarta.nosql.column.SelectQueryConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMapping;
+import jakarta.nosql.query.DeleteQuery;
+import jakarta.nosql.query.SelectQuery;
 import org.jnosql.artemis.reflection.DynamicReturn;
 import org.jnosql.artemis.util.ParamsBinder;
 import jakarta.nosql.Params;
@@ -25,12 +30,7 @@ import jakarta.nosql.Sort;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnQuery;
-import org.jnosql.diana.column.query.ColumnDeleteQueryParams;
-import org.jnosql.diana.column.query.ColumnQueryParams;
-import org.jnosql.diana.column.query.DeleteQueryConverter;
-import org.jnosql.diana.column.query.SelectQueryConverter;
-import org.jnosql.query.DeleteQuery;
-import org.jnosql.query.SelectQuery;
+
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

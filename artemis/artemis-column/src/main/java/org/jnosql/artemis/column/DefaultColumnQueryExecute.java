@@ -16,6 +16,7 @@ package org.jnosql.artemis.column;
 
 
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.column.ColumnQueryExecute;
 
 import java.util.Objects;
 

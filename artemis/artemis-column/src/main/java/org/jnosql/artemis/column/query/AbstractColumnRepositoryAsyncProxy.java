@@ -27,7 +27,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
+import static jakarta.nosql.column.ColumnQuery.select;
+
 
 /**
  * Template method to {@link RepositoryAsync} proxy on column

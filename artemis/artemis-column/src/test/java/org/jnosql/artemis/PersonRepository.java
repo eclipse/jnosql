@@ -15,6 +15,7 @@
 package org.jnosql.artemis;
 
 
+import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.model.Person;
 
 public interface PersonRepository extends Repository<Person, Long> {
