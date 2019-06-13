@@ -26,10 +26,13 @@ import jakarta.nosql.column.ColumnQueryParser;
 import java.util.List;
 import java.util.Objects;
 
-public class DefaultColumnQueryParser implements ColumnQueryParser {
+/**
+ * The default implementation of {@link ColumnQueryParser}
+ */
+public final class DefaultColumnQueryParser implements ColumnQueryParser {
 
-    private final SelectQueryParser select = new SelectQueryParser();
-    private final DeleteQueryParser delete = new DeleteQueryParser();
+    private final DefaultSelectQueryConverter select = new DefaultSelectQueryConverter();
+    private final DefaultDeleteQueryConverter delete = new DefaultDeleteQueryConverter();
     private final InsertQueryParser insert = new InsertQueryParser();
     private final UpdateQueryParser update = new UpdateQueryParser();
 

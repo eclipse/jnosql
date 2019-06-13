@@ -17,7 +17,7 @@ package org.jnosql.artemis.graph;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import jakarta.nosql.mapping.PreparedStatement;
-import static jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.NonUniqueResultException;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,7 +38,7 @@ public interface GraphTemplate {
      * @param <T>    the instance type
      * @return the entity saved
      * @throws NullPointerException                   when document is null
-     * @throws org.jnosql.artemis.IdNotFoundException when entity has not {@link org.jnosql.artemis.Id}
+     * @throws jakarta.nosql.mapping.IdNotFoundException when entity has not {@link jakarta.nosql.mapping.Id}
      */
     <T> T insert(T entity);
 
@@ -49,7 +49,7 @@ public interface GraphTemplate {
      * @param <T>    the instance type
      * @return the entity saved
      * @throws IllegalStateException                   when document is null
-     * @throws org.jnosql.artemis.IdNotFoundException when an entity is null
+     * @throws jakarta.nosql.mapping.IdNotFoundException when an entity is null
      */
     <T> T update(T entity);
 
@@ -97,8 +97,8 @@ public interface GraphTemplate {
      * @param <O>    the outgoing type
      * @return the {@link EdgeEntity} of these two entities
      * @throws NullPointerException                       Either when any elements are null or the entity is null
-     * @throws org.jnosql.artemis.IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
-     * @throws org.jnosql.artemis.EntityNotFoundException when neither outgoing or incoming is found
+     * @throws jakarta.nosql.mapping.IdNotFoundException     when {@link jakarta.nosql.mapping.Id} annotation is missing in the entities
+     * @throws jakarta.nosql.mapping.EntityNotFoundException when neither outgoing or incoming is found
      */
     <O, I> EdgeEntity edge(O outgoing, String label, I incoming);
 
@@ -114,8 +114,8 @@ public interface GraphTemplate {
      * @param <O>    the outgoing type
      * @return the {@link EdgeEntity} of these two entities
      * @throws NullPointerException                       Either when any elements are null or the entity is null
-     * @throws org.jnosql.artemis.IdNotFoundException     when {@link org.jnosql.artemis.Id} annotation is missing in the entities
-     * @throws org.jnosql.artemis.EntityNotFoundException when neither outgoing or incoming is found
+     * @throws jakarta.nosql.mapping.IdNotFoundException     when {@link jakarta.nosql.mapping.Id} annotation is missing in the entities
+     * @throws jakarta.nosql.mapping.EntityNotFoundException when neither outgoing or incoming is found
      */
     default <O, I> EdgeEntity edge(O outgoing, Supplier<String> label, I incoming) {
         Objects.requireNonNull(label, "supplier is required");

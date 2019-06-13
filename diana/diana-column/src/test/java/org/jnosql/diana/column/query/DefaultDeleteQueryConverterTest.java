@@ -47,9 +47,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class DeleteQueryParserTest {
+class DefaultDeleteQueryConverterTest {
 
-    private DeleteQueryParser parser = new DeleteQueryParser();
+    private DefaultDeleteQueryConverter parser = new DefaultDeleteQueryConverter();
 
     private ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
     private ColumnFamilyManagerAsync managerAsync = Mockito.mock(ColumnFamilyManagerAsync.class);

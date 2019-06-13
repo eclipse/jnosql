@@ -39,12 +39,12 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
-final class DeleteQueryParser implements DeleteQueryConverter {
+final class DefaultDeleteQueryConverter implements DeleteQueryConverter {
 
     private final DeleteQueryProvider deleteQueryProvider;
     private final CacheQuery<ColumnDeleteQuery> cache;
 
-    DeleteQueryParser() {
+    DefaultDeleteQueryConverter() {
         this.deleteQueryProvider = ServiceLoaderProvider.get(DeleteQueryProvider.class);
         cache = new CacheQuery<>(this::getQuery);
     }

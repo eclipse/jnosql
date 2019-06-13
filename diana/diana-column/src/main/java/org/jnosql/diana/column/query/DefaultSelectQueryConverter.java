@@ -40,12 +40,15 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
-public final class SelectQueryParser implements SelectQueryConverter {
+/**
+ * The default implementation of {@link SelectQueryConverter}
+ */
+public final class DefaultSelectQueryConverter implements SelectQueryConverter {
 
     private final SelectQueryProvider selectQueryProvider;
     private final CacheQuery<ColumnQuery> cache;
 
-    public SelectQueryParser() {
+    public DefaultSelectQueryConverter() {
         this.selectQueryProvider = ServiceLoaderProvider.get(SelectQueryProvider.class);
         this.cache = new CacheQuery<>(this::getColumnQuery);
     }

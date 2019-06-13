@@ -14,12 +14,14 @@
  */
 package org.jnosql.artemis.graph.query;
 
+import jakarta.nosql.query.SelectQuery;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.aphrodite.antlr.method.SelectMethodFactory;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.DynamicReturn;
+import org.jnosql.diana.query.method.SelectMethodProvider;
 import org.jnosql.query.SelectQuery;
 import org.jnosql.query.Sort;
 
@@ -36,7 +38,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
     @Override
     public List<Vertex> apply(GraphQueryMethod graphQuery, Object[] params) {
 
-        SelectMethodFactory selectMethodFactory = SelectMethodFactory.get();
+        SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
         SelectQuery query = selectMethodFactory.apply(graphQuery.getMethod(), graphQuery.getEntityName());
         ClassMapping mapping = graphQuery.getMapping();
 

@@ -30,8 +30,8 @@ import static java.util.Objects.requireNonNull;
 
 public final class DefaultColumnQueryParserAsync implements ColumnQueryParserAsync {
 
-    private final SelectQueryParser select = new SelectQueryParser();
-    private final DeleteQueryParser delete = new DeleteQueryParser();
+    private final DefaultSelectQueryConverter select = new DefaultSelectQueryConverter();
+    private final DefaultDeleteQueryConverter delete = new DefaultDeleteQueryConverter();
     private final InsertQueryParser insert = new InsertQueryParser();
     private final UpdateQueryParser update = new UpdateQueryParser();
 
