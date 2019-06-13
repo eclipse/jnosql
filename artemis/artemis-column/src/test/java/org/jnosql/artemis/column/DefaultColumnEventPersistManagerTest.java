@@ -19,6 +19,12 @@ import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.column.ColumnDeleteQueryExecute;
+import jakarta.nosql.mapping.column.ColumnEntityPostPersist;
+import jakarta.nosql.mapping.column.ColumnEntityPrePersist;
+import jakarta.nosql.mapping.column.ColumnQueryExecute;
+import jakarta.nosql.mapping.column.EntityColumnPostPersist;
+import jakarta.nosql.mapping.column.EntityColumnPrePersist;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -28,8 +34,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.enterprise.event.Event;
 
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.delete;
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
+import static jakarta.nosql.column.ColumnDeleteQuery.delete;
+import static jakarta.nosql.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
@@ -134,7 +140,6 @@ public class DefaultColumnEventPersistManagerTest {
 
     @Test
     public void shouldFirePreQuery() {
-
 
         ColumnQuery query = select().from("person").build();
         subject.firePreQuery(query);

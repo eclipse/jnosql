@@ -14,6 +14,9 @@
  */
 package org.jnosql.artemis.column;
 
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
@@ -37,8 +40,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static jakarta.nosql.column.ColumnQuery.select;
 import static java.util.Collections.singletonList;
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;

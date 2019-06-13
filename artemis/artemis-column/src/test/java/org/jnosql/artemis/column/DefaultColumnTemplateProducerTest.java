@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.column;
 
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateProducer;
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.column.ColumnFamilyManager;
 import org.junit.jupiter.api.Assertions;

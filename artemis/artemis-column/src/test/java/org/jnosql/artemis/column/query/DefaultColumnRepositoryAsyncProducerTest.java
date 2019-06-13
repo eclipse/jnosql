@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.column.query;
 
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.mapping.column.ColumnRepositoryAsyncProducer;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.PersonRepositoryAsync;
-import org.jnosql.artemis.column.ColumnRepositoryAsyncProducer;
-import jakarta.nosql.mapping.column.ColumnTemplateAsync;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;

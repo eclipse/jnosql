@@ -14,8 +14,10 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.artemis.model.Person;
 import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

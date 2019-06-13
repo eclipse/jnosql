@@ -15,7 +15,13 @@
 package org.jnosql.artemis.column.query;
 
 
+import jakarta.nosql.Params;
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.Sort;
+import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnDeleteQueryParams;
+import jakarta.nosql.column.ColumnObserverParser;
+import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.column.ColumnQueryParams;
 import jakarta.nosql.column.DeleteQueryConverter;
 import jakarta.nosql.column.SelectQueryConverter;
@@ -25,12 +31,8 @@ import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.SelectQuery;
 import org.jnosql.artemis.reflection.DynamicReturn;
 import org.jnosql.artemis.util.ParamsBinder;
-import jakarta.nosql.Params;
-import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnQuery;
-
+import org.jnosql.diana.query.method.DeleteMethodProvider;
+import org.jnosql.diana.query.method.SelectMethodProvider;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -47,12 +49,14 @@ abstract class BaseColumnRepository {
 
     private ParamsBinder paramsBinder;
 
+    private static final SelectQueryConverter SELECT_CONVERTER = ServiceLoaderProvider.get(SelectQueryConverter.class);
+
+    private static final DeleteQueryConverter DELETE_CONVERTER = ServiceLoaderProvider.get(DeleteQueryConverter.class);
 
     protected ColumnQuery getQuery(Method method, Object[] args) {
-        SelectMethodFactory selectMethodFactory = SelectMethodFactory.get();
+        SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
         SelectQuery selectQuery = selectMethodFactory.apply(method, getClassMapping().getName());
-        SelectQueryConverter converter = SelectQueryConverter.get();
-        ColumnQueryParams queryParams = converter.apply(selectQuery, getParser());
+        ColumnQueryParams queryParams = SELECT_CONVERTER.apply(selectQuery, getParser());
         ColumnQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
         getParamsBinder().bind(params, args, method);
@@ -60,10 +64,9 @@ abstract class BaseColumnRepository {
     }
 
     protected ColumnDeleteQuery getDeleteQuery(Method method, Object[] args) {
-        DeleteMethodFactory deleteMethodFactory = DeleteMethodFactory.get();
+        DeleteMethodProvider deleteMethodFactory = DeleteMethodProvider.get();
         DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getClassMapping().getName());
-        DeleteQueryConverter converter = DeleteQueryConverter.get();
-        ColumnDeleteQueryParams queryParams = converter.apply(deleteQuery, getParser());
+        ColumnDeleteQueryParams queryParams = DELETE_CONVERTER.apply(deleteQuery, getParser());
         ColumnDeleteQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
         getParamsBinder().bind(params, args, method);

@@ -14,18 +14,19 @@
  */
 package org.jnosql.artemis.column.query;
 
-import org.jnosql.artemis.CDIExtension;
+import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
-import org.jnosql.artemis.column.ColumnQueryPagination;
+import jakarta.nosql.mapping.column.ColumnQueryMapper;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperFrom;
+import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
+import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Address;
 import org.jnosql.artemis.model.Money;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Worker;
-import jakarta.nosql.column.ColumnQuery;
-import org.jnosql.diana.column.query.ColumnQueryBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +39,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
+import static jakarta.nosql.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -46,14 +47,14 @@ import static org.mockito.ArgumentMatchers.eq;
 public class DefaultColumnMapperSelectBuilderTest {
 
     @Inject
-    private ColumnQueryMapperBuilder mapperBuilder;
+    private ColumnQueryMapper mapperBuilder;
 
 
     @Test
     public void shouldReturnSelectStarFrom() {
         ColumnMapperFrom columnFrom = mapperBuilder.selectFrom(Person.class);
         ColumnQuery query = columnFrom.build();
-        ColumnQuery queryExpected = ColumnQueryBuilder.select().from("Person").build();
+        ColumnQuery queryExpected = select().from("Person").build();
         assertEquals(queryExpected, query);
     }
 
@@ -220,7 +221,7 @@ public class DefaultColumnMapperSelectBuilderTest {
         mapperBuilder.selectFrom(Person.class).execute(template);
         Mockito.verify(template).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        ColumnQuery queryExpected = ColumnQueryBuilder.select().from("Person").build();
+        ColumnQuery queryExpected = select().from("Person").build();
         assertEquals(queryExpected, query);
     }
 
@@ -231,7 +232,7 @@ public class DefaultColumnMapperSelectBuilderTest {
         mapperBuilder.selectFrom(Person.class).executeSingle(template);
         Mockito.verify(template).singleResult(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        ColumnQuery queryExpected = ColumnQueryBuilder.select().from("Person").build();
+        ColumnQuery queryExpected = select().from("Person").build();
         assertEquals(queryExpected, query);
     }
 
@@ -243,7 +244,7 @@ public class DefaultColumnMapperSelectBuilderTest {
         mapperBuilder.selectFrom(Person.class).execute(template, consumer);
         Mockito.verify(template).select(queryCaptor.capture(), eq(consumer));
         ColumnQuery query = queryCaptor.getValue();
-        ColumnQuery queryExpected = ColumnQueryBuilder.select().from("Person").build();
+        ColumnQuery queryExpected = select().from("Person").build();
         assertEquals(queryExpected, query);
     }
 
@@ -255,7 +256,7 @@ public class DefaultColumnMapperSelectBuilderTest {
         mapperBuilder.selectFrom(Person.class).executeSingle(template, consumer);
         Mockito.verify(template).singleResult(queryCaptor.capture(), eq(consumer));
         ColumnQuery query = queryCaptor.getValue();
-        ColumnQuery queryExpected = ColumnQueryBuilder.select().from("Person").build();
+        ColumnQuery queryExpected = select().from("Person").build();
         assertEquals(queryExpected, query);
     }
 

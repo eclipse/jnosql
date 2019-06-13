@@ -14,13 +14,13 @@
  */
 package org.jnosql.artemis.column.query;
 
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.RepositoryAsync;
-import org.jnosql.artemis.column.ColumnRepositoryAsyncProducer;
+import jakarta.nosql.mapping.column.ColumnRepositoryAsyncProducer;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.column.ColumnTemplateAsyncProducer;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

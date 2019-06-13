@@ -38,7 +38,7 @@
         </dependency>
         <dependency>
             <groupId>org.jnosql.diana</groupId>
-            <artifactId>jnosql-query-antlr</artifactId>
+            <artifactId>diana-query</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

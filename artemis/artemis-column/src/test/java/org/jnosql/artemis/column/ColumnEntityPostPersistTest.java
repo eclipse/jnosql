@@ -15,6 +15,7 @@
 package org.jnosql.artemis.column;
 
 import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.mapping.column.ColumnEntityPostPersist;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -26,13 +27,13 @@ public class ColumnEntityPostPersistTest {
 
     @Test
     public void shouldReturnNPEWhenEntityIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> ColumnEntityPostPersist.of(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new DefaultColumnEntityPostPersist(null));
     }
 
     @Test
     public void shouldReturnInstance() {
         ColumnEntity entity = ColumnEntity.of("columnFamily");
-        ColumnEntityPostPersist postPersist = ColumnEntityPostPersist.of(entity);
+        ColumnEntityPostPersist postPersist = new DefaultColumnEntityPostPersist(entity);
         assertEquals(entity, postPersist.getEntity());
     }
 }

@@ -14,15 +14,24 @@
  */
 package org.jnosql.artemis.column.query;
 
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
+import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
-import org.jnosql.artemis.column.ColumnQueryPagination;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperFrom;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperLimit;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperNameCondition;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperNameOrder;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperNotCondition;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperOrder;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperSkip;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperWhere;
+import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,17 +40,15 @@ import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements ColumnMapperFrom, ColumnMapperLimit, ColumnMapperSkip,
+class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements ColumnMapperFrom,
+        ColumnMapperLimit, ColumnMapperSkip,
         ColumnMapperOrder, ColumnMapperNameCondition, ColumnMapperNotCondition, ColumnMapperNameOrder, ColumnMapperWhere {
 
-
     private final List<Sort> sorts = new ArrayList<>();
-
 
     DefaultColumnMapperSelectBuilder(ClassMapping mapping, Converters converters) {
         super(mapping, converters);
     }
-
 
     @Override
     public ColumnMapperNameCondition and(String name) {
@@ -147,13 +154,13 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
 
     @Override
     public ColumnMapperNameOrder asc() {
-        this.sorts.add(Sort.of(mapping.getColumnField(name), Sort.SortType.ASC));
+        this.sorts.add(Sort.of(mapping.getColumnField(name), SortType.ASC));
         return this;
     }
 
     @Override
     public ColumnMapperNameOrder desc() {
-        this.sorts.add(Sort.of(mapping.getColumnField(name), Sort.SortType.DESC));
+        this.sorts.add(Sort.of(mapping.getColumnField(name), SortType.DESC));
         return this;
     }
 

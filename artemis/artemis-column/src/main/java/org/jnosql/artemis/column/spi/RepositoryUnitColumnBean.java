@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.column.spi;
 
-import jakarta.nosql.mapping.Repository;
-import org.jnosql.artemis.column.ColumnRepositoryProducer;
-import org.jnosql.artemis.spi.AbstractBean;
-import org.jnosql.artemis.util.RepositoryUnit;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
+import org.jnosql.artemis.spi.AbstractBean;
+import org.jnosql.artemis.util.RepositoryUnit;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
@@ -58,7 +58,7 @@ class RepositoryUnitColumnBean  extends AbstractBean<Repository<?, ?>> {
         ColumnRepositoryProducer producer = getInstance(ColumnRepositoryProducer.class);
         ColumnConfigurationProducer configurationProducer = getInstance(ColumnConfigurationProducer.class);
         Class<R> repository  = (Class<R>) repositoryUnit.getRepository();
-        ColumnFamilyManagerFactory<ColumnFamilyManager> managerFactory = configurationProducer.getFactory(repositoryUnit.getUnit());
+        ColumnFamilyManagerFactory managerFactory = configurationProducer.getFactory(repositoryUnit.getUnit());
         ColumnFamilyManager manager = managerFactory.get(repositoryUnit.getDatabase());
         return producer.get(repository, manager);
     }

@@ -16,6 +16,11 @@ package org.jnosql.artemis.column;
 
 
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateProducer;
+import jakarta.nosql.mapping.column.ColumnWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.column.ColumnFamilyManager;
 

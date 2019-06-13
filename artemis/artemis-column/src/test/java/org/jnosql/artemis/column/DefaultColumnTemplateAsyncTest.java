@@ -14,20 +14,21 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.PreparedStatementAsync;
-import org.jnosql.artemis.model.Movie;
-import org.jnosql.artemis.model.Person;
-import jakarta.nosql.mapping.reflection.ClassMappings;
-import static jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnQuery;
-import org.jnosql.diana.column.query.ColumnQueryBuilder;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.PreparedStatementAsync;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.model.Movie;
+import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,12 +46,12 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static jakarta.nosql.column.ColumnDeleteQuery.delete;
+import static jakarta.nosql.column.ColumnQuery.select;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.awaitility.Awaitility.await;
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.delete;
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -258,7 +259,7 @@ public class DefaultColumnTemplateAsyncTest {
     public void shouldSelect() {
 
         ArgumentCaptor<Consumer<List<ColumnEntity>>> dianaCallbackCaptor = ArgumentCaptor.forClass(Consumer.class);
-        ColumnQuery query = ColumnQueryBuilder.select().from("Person").build();
+        ColumnQuery query = select().from("Person").build();
         AtomicBoolean condition = new AtomicBoolean(false);
         Consumer<List<Person>> callback = l -> condition.set(true);
         subject.select(query, callback);
@@ -273,7 +274,7 @@ public class DefaultColumnTemplateAsyncTest {
     public void shouldReturnSingleResult() {
 
         ArgumentCaptor<Consumer<List<ColumnEntity>>> dianaCallbackCaptor = ArgumentCaptor.forClass(Consumer.class);
-        ColumnQuery query = ColumnQueryBuilder.select().from("Person").build();
+        ColumnQuery query = select().from("Person").build();
         AtomicBoolean condition = new AtomicBoolean(false);
         AtomicReference<Person> atomicReference = new AtomicReference<>();
         Consumer<Optional<Person>> callback = p -> {
@@ -293,7 +294,7 @@ public class DefaultColumnTemplateAsyncTest {
     public void shouldReturnEmptySingleResult() {
 
         ArgumentCaptor<Consumer<List<ColumnEntity>>> dianaCallbackCaptor = ArgumentCaptor.forClass(Consumer.class);
-        ColumnQuery query = ColumnQueryBuilder.select().from("Person").build();
+        ColumnQuery query = select().from("Person").build();
         AtomicBoolean condition = new AtomicBoolean(false);
         AtomicReference<Person> atomicReference = new AtomicReference<>();
         Consumer<Optional<Person>> callback = p -> {
@@ -314,7 +315,7 @@ public class DefaultColumnTemplateAsyncTest {
 
         assertThrows(NonUniqueResultException.class, () -> {
             ArgumentCaptor<Consumer<List<ColumnEntity>>> dianaCallbackCaptor = ArgumentCaptor.forClass(Consumer.class);
-            ColumnQuery query = ColumnQueryBuilder.select().from("Person").build();
+            ColumnQuery query = select().from("Person").build();
             Consumer<Optional<Person>> callback = l -> {
             };
             subject.singleResult(query, callback);

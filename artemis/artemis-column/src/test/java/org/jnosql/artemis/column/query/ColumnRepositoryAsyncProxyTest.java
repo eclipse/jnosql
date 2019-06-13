@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.column.query;
 
+import jakarta.nosql.SortType;
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DynamicQueryException;
@@ -201,7 +202,7 @@ public class ColumnRepositoryAsyncProxyTest {
         assertEquals(Condition.EQUALS, condition.getCondition());
         assertEquals(Column.of("name", "name"), condition.getColumn());
         assertEquals(callback, consumerCaptor.getValue());
-        assertEquals(Sort.of("age", Sort.SortType.DESC), query.getSorts().get(0));
+        assertEquals(Sort.of("age", SortType.DESC), query.getSorts().get(0));
 
     }
 

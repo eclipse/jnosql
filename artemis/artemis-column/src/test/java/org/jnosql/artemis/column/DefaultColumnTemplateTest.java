@@ -14,22 +14,23 @@
  */
 package org.jnosql.artemis.column;
 
-import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.PreparedStatement;
-import org.jnosql.artemis.model.Job;
-import org.jnosql.artemis.model.Movie;
-import org.jnosql.artemis.model.Person;
-import jakarta.nosql.mapping.reflection.ClassMappings;
-import static jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnQuery;
-import org.jnosql.diana.column.query.ColumnQueryBuilder;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.IdNotFoundException;
+import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.model.Job;
+import org.jnosql.artemis.model.Movie;
+import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,9 +47,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static jakarta.nosql.column.ColumnDeleteQuery.delete;
+import static jakarta.nosql.column.ColumnQuery.select;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -255,7 +257,7 @@ public class DefaultColumnTemplateTest {
     @Test
     public void shouldDelete() {
 
-        ColumnDeleteQuery query = ColumnQueryBuilder.delete().from("delete").build();
+        ColumnDeleteQuery query = delete().from("delete").build();
         subject.delete(query);
         verify(managerMock).delete(query);
     }

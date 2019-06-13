@@ -15,6 +15,7 @@
 package org.jnosql.artemis.column.query;
 
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.column.ColumnQueryMapper;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 
@@ -25,7 +26,7 @@ import javax.inject.Inject;
 import static java.util.Objects.requireNonNull;
 
 @ApplicationScoped
-class DefaultColumnQueryMapperBuilder implements ColumnQueryMapperBuilder {
+class DefaultColumnQueryMapperBuilder implements ColumnQueryMapper {
 
     @Inject
     private Instance<ClassMappings> mappings;

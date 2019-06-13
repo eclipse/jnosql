@@ -18,10 +18,11 @@ package org.jnosql.artemis.column;
 
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
+import static jakarta.nosql.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

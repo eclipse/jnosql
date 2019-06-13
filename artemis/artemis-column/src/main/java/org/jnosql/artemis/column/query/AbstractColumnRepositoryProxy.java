@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
-import org.jnosql.artemis.column.ColumnQueryPagination;
+import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.select;
 
 /**
  * Template method to {@link Repository} proxy on column
@@ -62,7 +61,7 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
                 ColumnQuery query = getQuery(method, args);
                 return executeQuery(method, args, typeClass, query);
             case FIND_ALL:
-                ColumnQuery queryFindAll = select().from(getClassMapping().getName()).build();
+                ColumnQuery queryFindAll = ColumnQuery.select().from(getClassMapping().getName()).build();
                 return executeQuery(method, args, typeClass, getQuerySorts(args, queryFindAll));
             case DELETE_BY:
                 ColumnDeleteQuery deleteQuery = getDeleteQuery(method, args);

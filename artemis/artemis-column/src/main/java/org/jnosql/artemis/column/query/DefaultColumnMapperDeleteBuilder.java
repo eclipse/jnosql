@@ -14,11 +14,15 @@
  */
 package org.jnosql.artemis.column.query;
 
+import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteFrom;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteNameCondition;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteNotCondition;
+import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteWhere;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.column.ColumnDeleteQuery;
 
 import java.util.function.Consumer;
 

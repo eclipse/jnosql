@@ -19,33 +19,24 @@ import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
-import org.jnosql.diana.column.UnaryColumnConfiguration;
+import jakarta.nosql.column.UnaryColumnConfiguration;
 import org.mockito.Mockito;
 
-public class ColumnFamilyManagerMock implements UnaryColumnConfiguration {
+import java.util.Collections;
+
+public class ColumnFamilyManagerMock implements UnaryColumnConfiguration<ColumnFamilyManagerMock.MockFamilyManager> {
 
 
     @Override
-    public ColumnFamilyManagerFactory get() {
-        return null;
-    }
-
-    @Override
-    public ColumnFamilyManagerFactory get(Settings settings) throws NullPointerException {
+    public MockFamilyManager get() {
+        final Settings settings = Settings.of(Collections.emptyMap());
         return new MockFamilyManager(settings);
     }
 
     @Override
-    public ColumnFamilyManagerAsyncFactory getAsync() {
-        return null;
-    }
-
-    @Override
-    public ColumnFamilyManagerAsyncFactory getAsync(Settings settings) throws NullPointerException {
+    public MockFamilyManager get(Settings settings) {
         return new MockFamilyManager(settings);
     }
-
-
 
     public class MockFamilyManager implements ColumnFamilyManagerFactory, ColumnFamilyManagerAsyncFactory {
         private final Settings settings;

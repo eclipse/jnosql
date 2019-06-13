@@ -33,7 +33,7 @@ public class ColumnConfigurationProducerXMLTest {
 
     @Inject
     @ConfigurationUnit(fileName = "column.xml", name = "name")
-    private ColumnFamilyManagerFactory<?> factoryA;
+    private ColumnFamilyManagerFactory factoryA;
 
     @Inject
     @ConfigurationUnit(fileName = "column.xml", name = "name-2")
@@ -42,7 +42,7 @@ public class ColumnConfigurationProducerXMLTest {
 
     @Inject
     @ConfigurationUnit(fileName = "column.xml", name = "name")
-    private ColumnFamilyManagerAsyncFactory<?> factoryAsyncA;
+    private ColumnFamilyManagerAsyncFactory factoryAsyncA;
 
     @Inject
     @ConfigurationUnit(fileName = "column.xml", name = "name-2")

@@ -33,7 +33,7 @@ public class ColumnConfigurationProducerTest {
 
     @Inject
     @ConfigurationUnit(fileName = "column.json", name = "name")
-    private ColumnFamilyManagerFactory<?> factoryA;
+    private ColumnFamilyManagerFactory factoryA;
 
     @Inject
     @ConfigurationUnit(fileName = "column.json", name = "name-2")
@@ -42,7 +42,7 @@ public class ColumnConfigurationProducerTest {
 
     @Inject
     @ConfigurationUnit(fileName = "column.json", name = "name")
-    private ColumnFamilyManagerAsyncFactory<?> factoryAsyncA;
+    private ColumnFamilyManagerAsyncFactory factoryAsyncA;
 
     @Inject
     @ConfigurationUnit(fileName = "column.json", name = "name-2")

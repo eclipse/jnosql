@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.column.spi;
 
-import jakarta.nosql.mapping.RepositoryAsync;
-import org.jnosql.artemis.column.ColumnRepositoryAsyncProducer;
-import org.jnosql.artemis.spi.AbstractBean;
-import org.jnosql.artemis.util.RepositoryUnit;
 import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
+import jakarta.nosql.mapping.RepositoryAsync;
+import jakarta.nosql.mapping.column.ColumnRepositoryAsyncProducer;
+import org.jnosql.artemis.spi.AbstractBean;
+import org.jnosql.artemis.util.RepositoryUnit;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
@@ -58,7 +58,7 @@ class RepositoryAsyncUnitColumnBean extends AbstractBean<RepositoryAsync<?, ?>> 
         ColumnRepositoryAsyncProducer producer = getInstance(ColumnRepositoryAsyncProducer.class);
         ColumnConfigurationProducer configurationProducer = getInstance(ColumnConfigurationProducer.class);
         Class<R> repository  = (Class<R>) repositoryUnit.getRepository();
-        ColumnFamilyManagerAsyncFactory<ColumnFamilyManagerAsync> managerFactory = configurationProducer.getFactoryAsync(repositoryUnit.getUnit());
+        ColumnFamilyManagerAsyncFactory managerFactory = configurationProducer.getFactoryAsync(repositoryUnit.getUnit());
         ColumnFamilyManagerAsync manager = managerFactory.getAsync(repositoryUnit.getDatabase());
         return producer.get(repository, manager);
     }

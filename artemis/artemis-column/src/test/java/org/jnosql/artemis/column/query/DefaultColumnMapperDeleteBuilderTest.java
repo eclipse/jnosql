@@ -14,15 +14,15 @@
  */
 package org.jnosql.artemis.column.query;
 
-import org.jnosql.artemis.CDIExtension;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.mapping.column.ColumnQueryMapper;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
+import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Address;
 import org.jnosql.artemis.model.Money;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Worker;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import org.jnosql.diana.column.query.ColumnQueryBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.function.Consumer;
 
-import static org.jnosql.diana.column.query.ColumnQueryBuilder.delete;
+import static jakarta.nosql.column.ColumnDeleteQuery.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -40,14 +40,14 @@ import static org.mockito.ArgumentMatchers.eq;
 public class DefaultColumnMapperDeleteBuilderTest {
 
     @Inject
-    private ColumnQueryMapperBuilder mapperBuilder;
+    private ColumnQueryMapper mapperBuilder;
 
 
     @Test
     public void shouldReturnDeleteFrom() {
-        ColumnMapperDeleteFrom columnFrom = mapperBuilder.deleteFrom(Person.class);
+        ColumnQueryMapper.ColumnMapperDeleteFrom columnFrom = mapperBuilder.deleteFrom(Person.class);
         ColumnDeleteQuery query = columnFrom.build();
-        ColumnDeleteQuery queryExpected = ColumnQueryBuilder.delete().from("Person").build();
+        ColumnDeleteQuery queryExpected = delete().from("Person").build();
         assertEquals(queryExpected, query);
     }
 
@@ -179,7 +179,7 @@ public class DefaultColumnMapperDeleteBuilderTest {
         mapperBuilder.deleteFrom(Person.class).execute(template);
         Mockito.verify(template).delete(queryCaptor.capture());
         ColumnDeleteQuery query = queryCaptor.getValue();
-        ColumnDeleteQuery queryExpected = ColumnQueryBuilder.delete().from("Person").build();
+        ColumnDeleteQuery queryExpected = delete().from("Person").build();
         assertEquals(queryExpected, query);
     }
 
@@ -190,7 +190,7 @@ public class DefaultColumnMapperDeleteBuilderTest {
         mapperBuilder.deleteFrom(Person.class).execute(template);
         Mockito.verify(template).delete(queryCaptor.capture());
         ColumnDeleteQuery query = queryCaptor.getValue();
-        ColumnDeleteQuery queryExpected = ColumnQueryBuilder.delete().from("Person").build();
+        ColumnDeleteQuery queryExpected = delete().from("Person").build();
         assertEquals(queryExpected, query);
     }
 
@@ -202,7 +202,7 @@ public class DefaultColumnMapperDeleteBuilderTest {
         mapperBuilder.deleteFrom(Person.class).execute(template, consumer);
         Mockito.verify(template).delete(queryCaptor.capture(), eq(consumer));
         ColumnDeleteQuery query = queryCaptor.getValue();
-        ColumnDeleteQuery queryExpected = ColumnQueryBuilder.delete().from("Person").build();
+        ColumnDeleteQuery queryExpected = delete().from("Person").build();
         assertEquals(queryExpected, query);
     }
 
