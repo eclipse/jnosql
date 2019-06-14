@@ -17,8 +17,8 @@ package org.jnosql.artemis.document.spi;
 
 import org.jnosql.artemis.DatabaseQualifier;
 import jakarta.nosql.mapping.DatabaseType;
-import org.jnosql.artemis.document.DocumentTemplate;
-import org.jnosql.artemis.document.DocumentTemplateProducer;
+import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.mapping.document.DocumentTemplateProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 import jakarta.nosql.document.DocumentCollectionManager;
 

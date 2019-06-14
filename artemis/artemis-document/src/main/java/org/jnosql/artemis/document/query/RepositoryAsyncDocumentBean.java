@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.DatabaseQualifier;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.RepositoryAsync;
-import org.jnosql.artemis.document.DocumentTemplateAsync;
+import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.AnnotationLiteralUtil;

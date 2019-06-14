@@ -15,11 +15,11 @@
 package org.jnosql.artemis.document.spi;
 
 import jakarta.nosql.mapping.Repository;
-import org.jnosql.artemis.document.DocumentRepositoryProducer;
+import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;
 import jakarta.nosql.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentCollectionManagerFactory;
+import jakarta.nosql.document.DocumentCollectionManagerFactory;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
@@ -58,7 +58,7 @@ class RepositoryUnitDocumentBean extends AbstractBean<Repository<?, ?>> {
         DocumentRepositoryProducer producer = getInstance(DocumentRepositoryProducer.class);
         DocumentConfigurationProducer configurationProducer = getInstance(DocumentConfigurationProducer.class);
         Class<R> repository  = (Class<R>) repositoryUnit.getRepository();
-        DocumentCollectionManagerFactory<DocumentCollectionManager> managerFactory = configurationProducer.getFactory(repositoryUnit.getUnit());
+        DocumentCollectionManagerFactory managerFactory = configurationProducer.getFactory(repositoryUnit.getUnit());
         DocumentCollectionManager manager = managerFactory.get(repositoryUnit.getDatabase());
         return producer.get(repository, manager);
     }

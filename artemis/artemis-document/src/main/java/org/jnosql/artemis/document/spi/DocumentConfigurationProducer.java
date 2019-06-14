@@ -20,8 +20,8 @@ import jakarta.nosql.mapping.ConfigurationUnit;
 import jakarta.nosql.mapping.reflection.Reflections;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentCollectionManagerAsyncFactory;
-import org.jnosql.diana.document.DocumentCollectionManagerFactory;
+import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
+import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import org.jnosql.diana.document.DocumentConfiguration;
 import org.jnosql.diana.document.DocumentConfigurationAsync;
 

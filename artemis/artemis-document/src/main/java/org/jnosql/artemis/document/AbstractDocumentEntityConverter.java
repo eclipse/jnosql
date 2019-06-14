@@ -15,6 +15,8 @@
 package org.jnosql.artemis.document;
 
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.reflection.FieldType;
 import org.jnosql.artemis.document.DocumentFieldConverters.DocumentFieldConverterFactory;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
@@ -100,8 +102,8 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         final List<String> names = documents.stream().map(Document::getName).sorted().collect(Collectors.toList());
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
-            FieldTypeUtil type = fieldsGroupByName.get(k).getType();
-            return EMBEDDED.equals(type) || SUBENTITY.equals(type);
+            FieldType type = fieldsGroupByName.get(k).getType();
+            return EMBEDDED.equals(type) || EMBEDDED_ENTITY.equals(type);
         };
 
         fieldsGroupByName.keySet().stream()

@@ -17,8 +17,8 @@ package org.jnosql.artemis.document;
 import jakarta.nosql.Settings;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentCollectionManagerAsyncFactory;
-import org.jnosql.diana.document.DocumentCollectionManagerFactory;
+import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
+import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import org.jnosql.diana.document.UnaryDocumentConfiguration;
 import org.mockito.Mockito;
 

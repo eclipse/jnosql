@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.Param;
 import jakarta.nosql.mapping.PreparedStatementAsync;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.RepositoryAsync;
-import org.jnosql.artemis.document.DocumentTemplateAsync;
+import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import org.jnosql.artemis.model.Person;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.Condition;

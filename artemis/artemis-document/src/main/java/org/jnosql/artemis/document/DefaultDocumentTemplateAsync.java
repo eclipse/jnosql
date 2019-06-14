@@ -25,7 +25,7 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 /**
- * The default implementation of {@link DocumentTemplate}
+ * The default implementation of {@link jakarta.nosql.mapping.document.DocumentTemplate}
  */
 @SuppressWarnings("unchecked")
 class DefaultDocumentTemplateAsync extends AbstractDocumentTemplateAsync {

@@ -16,10 +16,11 @@
  */
 package org.jnosql.artemis.document;
 
-import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.Sort;
-import org.jnosql.diana.document.DocumentCondition;
+import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.document.DocumentQueryPagination;
 
 import java.util.List;
 import java.util.Objects;

@@ -14,19 +14,22 @@
  */
 package org.jnosql.artemis.document;
 
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import jakarta.nosql.mapping.document.DocumentWorkflow;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.time.Duration;
 
 /**
- * The default implementation of {@link DocumentTemplate}
+ * The default implementation of {@link jakarta.nosql.mapping.document.DocumentTemplate}
  */
 @SuppressWarnings("unchecked")
 class DefaultDocumentTemplate extends AbstractDocumentTemplate {
-
 
     private DocumentEntityConverter converter;
 
@@ -39,7 +42,6 @@ class DefaultDocumentTemplate extends AbstractDocumentTemplate {
     private ClassMappings classMappings;
 
     private Converters converters;
-
 
     @Inject
     DefaultDocumentTemplate(DocumentEntityConverter converter, Instance<DocumentCollectionManager> manager,
@@ -85,4 +87,5 @@ class DefaultDocumentTemplate extends AbstractDocumentTemplate {
     protected Converters getConverters() {
         return converters;
     }
+
 }

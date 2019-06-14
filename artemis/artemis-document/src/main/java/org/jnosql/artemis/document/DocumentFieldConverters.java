@@ -46,7 +46,7 @@ class DocumentFieldConverters {
         DocumentFieldConverter get(FieldMapping field) {
             if (EMBEDDED.equals(field.getType())) {
                 return embeddedFieldConverter;
-            } else if (SUBENTITY.equals(field.getType())) {
+            } else if (EMBEDDED_ENTITY.equals(field.getType())) {
                 return subEntityConverter;
             } else if (isCollectionEmbeddable(field)) {
                 return embeddableConverter;

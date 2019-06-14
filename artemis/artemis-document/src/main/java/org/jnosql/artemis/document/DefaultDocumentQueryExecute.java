@@ -16,6 +16,7 @@ package org.jnosql.artemis.document;
 
 
 import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.mapping.document.DocumentQueryExecute;
 
 import java.util.Objects;
 

@@ -20,6 +20,15 @@ import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.mapping.document.DocumentDeleteQueryExecute;
+import jakarta.nosql.mapping.document.DocumentEntityPostPersist;
+import jakarta.nosql.mapping.document.DocumentEntityPrePersist;
+import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import jakarta.nosql.mapping.document.DocumentQueryExecute;
+import jakarta.nosql.mapping.document.EntityDocumentPostPersist;
+import jakarta.nosql.mapping.document.EntityDocumentPrePersist;
+import org.jnosql.artemis.DefaultEntityPostPersist;
+import org.jnosql.artemis.DefaultEntityPrePersist;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
@@ -57,41 +66,41 @@ class DefaultDocumentEventPersistManager implements DocumentEventPersistManager 
 
     @Override
     public void firePreDocument(DocumentEntity entity) {
-        documentEntityPrePersistEvent.fire(DocumentEntityPrePersist.of(entity));
+        documentEntityPrePersistEvent.fire(new DefaultDocumentEntityPrePersist(entity));
     }
 
     @Override
     public void firePostDocument(DocumentEntity entity) {
-        documentEntityPostPersistEvent.fire(DocumentEntityPostPersist.of(entity));
+        documentEntityPostPersistEvent.fire(new DefaultDocumentEntityPostPersist(entity));
     }
 
     @Override
     public <T> void firePreEntity(T entity) {
-        entityPrePersistEvent.fire(EntityPrePersist.of(entity));
+        entityPrePersistEvent.fire(new DefaultEntityPrePersist(entity));
     }
 
     @Override
     public <T> void firePostEntity(T entity) {
-        entityPostPersitEvent.fire(EntityPostPersit.of(entity));
+        entityPostPersitEvent.fire(new DefaultEntityPostPersist(entity));
     }
 
     @Override
     public <T> void firePreDocumentEntity(T entity) {
-        entityDocumentPrePersist.fire(EntityDocumentPrePersist.of(entity));
+        entityDocumentPrePersist.fire(new DefaultEntityDocumentPrePersist(entity));
     }
 
     @Override
     public <T> void firePostDocumentEntity(T entity) {
-        entityDocumentPostPersist.fire(EntityDocumentPostPersist.of(entity));
+        entityDocumentPostPersist.fire(new DefaultEntityDocumentPostPersist(entity));
     }
 
     @Override
     public void firePreQuery(DocumentQuery query) {
-        documentQueryExecute.fire(DocumentQueryExecute.of(query));
+        documentQueryExecute.fire(new DefaultDocumentQueryExecute(query));
     }
 
     @Override
     public void firePreDeleteQuery(DocumentDeleteQuery query) {
-        documentDeleteQueryExecute.fire(DocumentDeleteQueryExecute.of(query));
+        documentDeleteQueryExecute.fire(new DefaultDocumentDeleteQueryExecute(query));
     }
 }

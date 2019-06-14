@@ -16,6 +16,7 @@ package org.jnosql.artemis.document;
 
 
 import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.mapping.document.DocumentDeleteQueryExecute;
 
 import java.util.Objects;
 

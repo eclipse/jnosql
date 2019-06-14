@@ -15,10 +15,10 @@
 package org.jnosql.artemis.document.spi;
 
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.artemis.document.DocumentTemplate;
-import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.artemis.document.DocumentTemplateAsyncProducer;
-import org.jnosql.artemis.document.DocumentTemplateProducer;
+import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.mapping.document.DocumentTemplateAsync;
+import jakarta.nosql.mapping.document.DocumentTemplateAsyncProducer;
+import jakarta.nosql.mapping.document.DocumentTemplateProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

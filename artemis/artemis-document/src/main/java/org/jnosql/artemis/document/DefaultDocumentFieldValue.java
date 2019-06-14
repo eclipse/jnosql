@@ -14,22 +14,24 @@
  */
 package org.jnosql.artemis.document;
 
+import jakarta.nosql.document.Document;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.FieldMapping;
-import org.jnosql.artemis.reflection.FieldTypeUtil;
+import jakarta.nosql.mapping.reflection.FieldType;
 import jakarta.nosql.mapping.reflection.FieldValue;
+import org.jnosql.artemis.reflection.DefaultFieldValue;
 import org.jnosql.artemis.reflection.GenericFieldMapping;
-import jakarta.nosql.document.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.singletonList;
 import static jakarta.nosql.mapping.reflection.FieldType.COLLECTION;
 import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
 import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
+import static java.util.Collections.singletonList;
 
 final class DefaultDocumentFieldValue implements DocumentFieldValue {
 
@@ -53,7 +55,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     public List<Document> toDocument(DocumentEntityConverter converter, Converters converters) {
         if (EMBEDDED.equals(getType())) {
             return converter.toDocument(getValue()).getDocuments();
-        }  else if (SUBENTITY.equals(getType())) {
+        }  else if (EMBEDDED_ENTITY.equals(getType())) {
             return singletonList(Document.of(getName(), converter.toDocument(getValue()).getDocuments()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Document.of(getName(), getDocuments(converter)));
@@ -83,7 +85,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
         return fieldValue.isNotEmpty();
     }
 
-    private FieldTypeUtil getType() {
+    private FieldType getType() {
         return getField().getType();
     }
 
@@ -96,7 +98,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     }
 
     static DocumentFieldValue of(Object value, FieldMapping field) {
-        return new DefaultDocumentFieldValue(FieldValue.of(value, field));
+        return new DefaultDocumentFieldValue(new DefaultFieldValue(value, field));
     }
 
 

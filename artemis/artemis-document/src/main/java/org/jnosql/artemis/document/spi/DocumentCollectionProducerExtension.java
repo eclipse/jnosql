@@ -47,7 +47,7 @@ import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
 
 /**
  * Extension to start up the DocumentTemplate, DocumentTemplateAsync, Repository and RepositoryAsync
- * from the {@link org.jnosql.artemis.Database} qualifier
+ * from the {@link jakarta.nosql.mapping.Database} qualifier
  */
 public class DocumentCollectionProducerExtension implements Extension {
 

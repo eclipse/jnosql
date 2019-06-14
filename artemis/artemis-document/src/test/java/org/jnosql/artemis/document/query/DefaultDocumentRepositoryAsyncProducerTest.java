@@ -16,8 +16,8 @@ package org.jnosql.artemis.document.query;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.PersonRepositoryAsync;
-import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
-import org.jnosql.artemis.document.DocumentTemplateAsync;
+import jakarta.nosql.mapping.document.DocumentRepositoryAsyncProducer;
+import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

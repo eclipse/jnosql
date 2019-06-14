@@ -16,6 +16,7 @@ package org.jnosql.artemis.document;
 
 
 import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.mapping.document.DocumentEntityPrePersist;
 
 import java.util.Objects;
 

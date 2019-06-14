@@ -82,7 +82,6 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return columnQueryParser;
     }
 
-
     @Override
     public <T> T insert(T entity) {
         Objects.requireNonNull(entity, "entity is required");
@@ -97,6 +96,15 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return getWorkflow().flow(entity, e -> getManager().insert(e, ttl));
     }
 
+    @Override
+    public <T> Iterable<T> insert(Iterable<T> entities) {
+        return null;
+    }
+
+    @Override
+    public <T> Iterable<T> insert(Iterable<T> entities, Duration ttl) {
+        return null;
+    }
 
     @Override
     public <T> T update(T entity) {
@@ -104,6 +112,10 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return getWorkflow().flow(entity, update);
     }
 
+    @Override
+    public <T> Iterable<T> update(Iterable<T> entities) {
+        return null;
+    }
 
     @Override
     public void delete(DocumentDeleteQuery query) {

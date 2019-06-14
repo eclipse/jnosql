@@ -14,13 +14,13 @@
  */
 package org.jnosql.artemis.document.spi;
 
-import jakarta.nosql.mapping.configuration.ConfigurationException;
-import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.artemis.util.StringUtils;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentCollectionManagerAsyncFactory;
-import org.jnosql.diana.document.DocumentCollectionManagerFactory;
+import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
+import jakarta.nosql.document.DocumentCollectionManagerFactory;
+import jakarta.nosql.mapping.ConfigurationUnit;
+import jakarta.nosql.mapping.configuration.ConfigurationException;
+import org.jnosql.artemis.util.StringUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -41,7 +41,7 @@ class ManagerConfigurationProducer {
     @ConfigurationUnit
     @Produces
     public DocumentCollectionManager get(InjectionPoint injectionPoint) {
-        DocumentCollectionManagerFactory<?> managerFactory = configurationProducer.get(injectionPoint);
+        DocumentCollectionManagerFactory managerFactory = configurationProducer.get(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
         String database = annotation.database();
         if(StringUtils.isBlank(database)){
@@ -53,7 +53,7 @@ class ManagerConfigurationProducer {
     @ConfigurationUnit
     @Produces
     public DocumentCollectionManagerAsync getAsync(InjectionPoint injectionPoint) {
-        DocumentCollectionManagerAsyncFactory<?> managerFactory = configurationProducer.getAsync(injectionPoint);
+        DocumentCollectionManagerAsyncFactory managerFactory = configurationProducer.getAsync(injectionPoint);
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
         String database = annotation.database();
         if(StringUtils.isBlank(database)){

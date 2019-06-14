@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.Sorts;
-import org.jnosql.artemis.document.DocumentTemplate;
+import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.jnosql.artemis.model.Person;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.Condition;

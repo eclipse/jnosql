@@ -16,6 +16,11 @@ package org.jnosql.artemis.document;
 
 
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.mapping.document.DocumentTemplateProducer;
+import jakarta.nosql.mapping.document.DocumentWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.document.DocumentCollectionManager;
 

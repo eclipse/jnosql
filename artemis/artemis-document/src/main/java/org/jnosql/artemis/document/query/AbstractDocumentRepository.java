@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document.query;
 
 import jakarta.nosql.mapping.Repository;
-import org.jnosql.artemis.document.DocumentTemplate;
+import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 
