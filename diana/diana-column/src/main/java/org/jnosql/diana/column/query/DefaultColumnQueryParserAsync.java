@@ -28,6 +28,9 @@ import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * The default implementation {@link ColumnQueryParserAsync}
+ */
 public final class DefaultColumnQueryParserAsync implements ColumnQueryParserAsync {
 
     private final DefaultSelectQueryConverter select = new DefaultSelectQueryConverter();
@@ -87,6 +90,7 @@ public final class DefaultColumnQueryParserAsync implements ColumnQueryParserAsy
             throw new QueryException(String.format("The query %s is invalid", query));
         }
     }
+
     private void validation(String query, ColumnFamilyManagerAsync manager,
                             Consumer<List<ColumnEntity>> callBack, ColumnObserverParser observer) {
 
