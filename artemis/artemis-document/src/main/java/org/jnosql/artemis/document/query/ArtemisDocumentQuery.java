@@ -16,7 +16,7 @@ package org.jnosql.artemis.document.query;
 
 import jakarta.nosql.Sort;
 import org.jnosql.diana.document.DocumentCondition;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQuery;
 
 import java.util.Collections;
 import java.util.List;

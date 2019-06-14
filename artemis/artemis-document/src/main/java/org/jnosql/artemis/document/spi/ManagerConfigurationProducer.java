@@ -17,8 +17,8 @@ package org.jnosql.artemis.document.spi;
 import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.artemis.util.StringUtils;
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import org.jnosql.diana.document.DocumentCollectionManagerAsyncFactory;
 import org.jnosql.diana.document.DocumentCollectionManagerFactory;
 

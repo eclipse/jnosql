@@ -15,22 +15,27 @@
 package org.jnosql.artemis.document;
 
 
+import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import jakarta.nosql.mapping.document.DocumentQueryPagination;
+import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.mapping.document.DocumentWorkflow;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import static jakarta.nosql.NonUniqueResultException;
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentDeleteQuery;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentObserverParser;
-import org.jnosql.diana.document.DocumentQuery;
-import org.jnosql.diana.document.DocumentQueryParser;
-import org.jnosql.diana.document.query.DocumentQueryBuilder;
+import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQueryParser;
 
 import java.time.Duration;
 import java.util.List;
@@ -49,7 +54,7 @@ import static java.util.stream.Collectors.toList;
 public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
 
-    private static final DocumentQueryParser PARSER = DocumentQueryParser.getParser();
+    private static final DocumentQueryParser PARSER = ServiceLoaderProvider.get(DocumentQueryParser.class);
 
     protected abstract DocumentEntityConverter getConverter();
 
@@ -127,7 +132,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
         Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
-        DocumentQuery query = DocumentQueryBuilder.select().from(classMapping.getName())
+        DocumentQuery query = DocumentQuery.select().from(classMapping.getName())
                 .where(idField.getName()).eq(value).build();
 
         return singleResult(query);
@@ -143,7 +148,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
         Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
-        DocumentDeleteQuery query = DocumentQueryBuilder.delete().from(classMapping.getName())
+        DocumentDeleteQuery query = DocumentDeleteQuery.delete().from(classMapping.getName())
                 .where(idField.getName()).eq(value).build();
 
         delete(query);

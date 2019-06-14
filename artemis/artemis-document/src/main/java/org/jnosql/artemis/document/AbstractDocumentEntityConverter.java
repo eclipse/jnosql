@@ -21,8 +21,8 @@ import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.reflection.FieldTypeUtil;
 import jakarta.nosql.mapping.reflection.FieldValue;
-import org.jnosql.diana.document.Document;
-import org.jnosql.diana.document.DocumentEntity;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 
 import java.util.Collections;
 import java.util.List;

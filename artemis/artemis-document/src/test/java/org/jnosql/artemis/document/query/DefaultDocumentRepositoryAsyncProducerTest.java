@@ -18,7 +18,7 @@ import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.PersonRepositoryAsync;
 import org.jnosql.artemis.document.DocumentRepositoryAsyncProducer;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;

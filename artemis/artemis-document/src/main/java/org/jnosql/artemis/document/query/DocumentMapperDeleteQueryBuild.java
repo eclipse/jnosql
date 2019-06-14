@@ -17,7 +17,7 @@ package org.jnosql.artemis.document.query;
 
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
-import org.jnosql.diana.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentDeleteQuery;
 
 import java.util.function.Consumer;
 

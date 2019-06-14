@@ -17,7 +17,7 @@
 package org.jnosql.artemis.document;
 
 import jakarta.nosql.mapping.Pagination;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -17,7 +17,7 @@ package org.jnosql.artemis.document;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.jnosql.diana.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Vetoed;

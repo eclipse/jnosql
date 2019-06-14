@@ -15,7 +15,8 @@
 package org.jnosql.artemis.document;
 
 import jakarta.nosql.mapping.PreparedStatement;
-import org.jnosql.diana.document.DocumentEntity;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,12 +24,12 @@ import java.util.stream.Collectors;
 
 final class DocumentPreparedStatement implements PreparedStatement {
 
-    private final org.jnosql.diana.document.DocumentPreparedStatement preparedStatement;
+    private final jakarta.nosql.document.DocumentPreparedStatement preparedStatement;
 
 
     private final DocumentEntityConverter converter;
 
-    DocumentPreparedStatement(org.jnosql.diana.document.DocumentPreparedStatement preparedStatement,
+    DocumentPreparedStatement(jakarta.nosql.document.DocumentPreparedStatement preparedStatement,
                               DocumentEntityConverter converter) {
         this.preparedStatement = preparedStatement;
         this.converter = converter;

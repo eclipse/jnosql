@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document.query;
 
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.diana.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentObserverParser;
 
 import java.util.Optional;
 

@@ -15,6 +15,7 @@
 package org.jnosql.artemis.document;
 
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 
 import javax.enterprise.context.ApplicationScoped;

@@ -20,7 +20,7 @@ import org.jnosql.artemis.document.DocumentRepositoryProducer;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateProducer;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.jnosql.diana.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

@@ -48,7 +48,6 @@ public class ColumnConfigurationProducerTest {
     @ConfigurationUnit(fileName = "column.json", name = "name-2")
     private ColumnFamilyManagerAsyncFactory factoryAsyncB;
 
-
     @Test
     public void shouldReadInjectColumnFamily() {
         factoryA.get("database");

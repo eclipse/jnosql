@@ -15,20 +15,22 @@
 package org.jnosql.artemis.document;
 
 
+import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatementAsync;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import org.jnosql.diana.document.DocumentCollectionManagerAsync;
-import org.jnosql.diana.document.DocumentDeleteQuery;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentObserverParser;
-import org.jnosql.diana.document.DocumentQuery;
-import org.jnosql.diana.document.DocumentQueryParserAsync;
-import org.jnosql.diana.document.query.DocumentQueryBuilder;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQueryParserAsync;
 
 import java.time.Duration;
 import java.util.List;
@@ -49,7 +51,7 @@ public abstract class AbstractDocumentTemplateAsync implements DocumentTemplateA
     private static final Consumer EMPTY = t -> {
     };
 
-    private static final DocumentQueryParserAsync PARSER = DocumentQueryParserAsync.getParser();
+    private static final DocumentQueryParserAsync PARSER = ServiceLoaderProvider.get(DocumentQueryParserAsync.class);
 
     protected abstract DocumentEntityConverter getConverter();
 
@@ -150,7 +152,7 @@ public abstract class AbstractDocumentTemplateAsync implements DocumentTemplateA
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
         Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
-        DocumentQuery query = DocumentQueryBuilder.select().from(classMapping.getName())
+        DocumentQuery query = DocumentQuery.select().from(classMapping.getName())
                 .where(idField.getName()).eq(value).build();
 
         singleResult(query, callBack);
@@ -231,7 +233,7 @@ public abstract class AbstractDocumentTemplateAsync implements DocumentTemplateA
 
         Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
 
-        return DocumentQueryBuilder.delete().from(classMapping.getName())
+        return DocumentDeleteQuery.delete().from(classMapping.getName())
                 .where(idField.getName()).eq(value).build();
     }
 }

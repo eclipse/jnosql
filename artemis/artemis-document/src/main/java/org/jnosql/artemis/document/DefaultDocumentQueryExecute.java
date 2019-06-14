@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document;
 
 
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQuery;
 
 import java.util.Objects;
 

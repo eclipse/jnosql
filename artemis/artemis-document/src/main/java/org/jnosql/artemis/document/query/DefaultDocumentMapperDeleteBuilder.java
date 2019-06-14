@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.Converters;
 import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.diana.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentDeleteQuery;
 
 import java.util.function.Consumer;
 

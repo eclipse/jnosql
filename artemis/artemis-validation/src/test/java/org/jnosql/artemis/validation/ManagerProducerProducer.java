@@ -18,9 +18,9 @@ package org.jnosql.artemis.validation;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import org.jnosql.diana.document.Document;
-import org.jnosql.diana.document.DocumentCollectionManager;
-import org.jnosql.diana.document.DocumentEntity;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.key.BucketManager;
 import org.mockito.Mockito;
 

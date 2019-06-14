@@ -21,7 +21,7 @@ import org.jnosql.artemis.model.Address;
 import org.jnosql.artemis.model.Money;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Worker;
-import org.jnosql.diana.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentDeleteQuery;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

@@ -28,7 +28,7 @@ class DefaultColumnEntityPrePersist implements ColumnEntityPrePersist {
     private final ColumnEntity entity;
 
     DefaultColumnEntityPrePersist(ColumnEntity entity) {
-        this.entity = entity;
+        this.entity = Objects.requireNonNull(entity, "entity is required");
     }
 
     @Override
@@ -55,7 +55,7 @@ class DefaultColumnEntityPrePersist implements ColumnEntityPrePersist {
 
     @Override
     public String toString() {
-        return  "DefaultColumnEntityPrePersist{" + "entity=" + entity +
+        return "DefaultColumnEntityPrePersist{" + "entity=" + entity +
                 '}';
     }
 }

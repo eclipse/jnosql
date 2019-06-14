@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.document.DocumentRepositoryProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;
-import org.jnosql.diana.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManager;
 import org.jnosql.diana.document.DocumentCollectionManagerFactory;
 
 import javax.enterprise.context.spi.CreationalContext;

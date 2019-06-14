@@ -19,7 +19,7 @@ package org.jnosql.artemis.document;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.Sort;
 import org.jnosql.diana.document.DocumentCondition;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQuery;
 
 import java.util.List;
 import java.util.Objects;

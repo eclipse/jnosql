@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.reflection.GenericFieldMapping;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
-import org.jnosql.diana.document.Document;
+import jakarta.nosql.document.Document;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

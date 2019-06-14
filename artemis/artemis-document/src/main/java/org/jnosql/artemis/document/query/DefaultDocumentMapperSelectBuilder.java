@@ -22,7 +22,7 @@ import org.jnosql.artemis.document.DocumentTemplate;
 import org.jnosql.artemis.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.Sort;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQuery;
 
 import java.util.ArrayList;
 import java.util.List;

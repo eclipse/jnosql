@@ -15,6 +15,8 @@
 package org.jnosql.artemis.document;
 
 
+import jakarta.nosql.mapping.document.EntityDocumentPostPersist;
+
 import java.util.Objects;
 
 class DefaultEntityDocumentPostPersist implements EntityDocumentPostPersist {

@@ -18,9 +18,11 @@ import jakarta.nosql.column.ColumnConfiguration;
 import jakarta.nosql.column.ColumnConfigurationAsync;
 import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.column.UnaryColumnConfiguration;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
+import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.reflection.Reflections;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -45,7 +47,6 @@ class ColumnConfigurationProducer {
     private Instance<ConfigurationReader> configurationReader;
 
 
-
     @ConfigurationUnit
     @Produces
     public ColumnFamilyManagerFactory get(InjectionPoint injectionPoint) {
@@ -67,23 +68,41 @@ class ColumnConfigurationProducer {
     }
 
     ColumnFamilyManagerAsyncFactory getFactoryAsync(ConfigurationUnit annotation) {
-        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, ColumnConfigurationAsync.class);
+        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation);
         Class<ColumnConfigurationAsync> configurationClass = unit.<ColumnConfigurationAsync>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The ColumnConfiguration provider is required in the configuration"));
 
-        ColumnConfigurationAsync columnConfiguration = reflections.newInstance(configurationClass);
+        if (ColumnConfigurationAsync.class.isAssignableFrom(configurationClass)) {
+            ColumnConfigurationAsync configuration = (ColumnConfigurationAsync) reflections.newInstance(configurationClass);
+            return configuration.get(unit.getSettings());
+        }
+        if (UnaryColumnConfiguration.class.isAssignableFrom(configurationClass)) {
+            UnaryColumnConfiguration<?> configuration = (UnaryColumnConfiguration) reflections.newInstance(configurationClass);
+            return configuration.get(unit.getSettings());
+        }
 
-        return columnConfiguration.get(unit.getSettings());
+        throw new ConfigurationException(String.format("The class %s does not match with either " +
+                        "ColumnConfigurationAsync or UnaryColumnConfiguration",
+                configurationClass));
     }
 
     ColumnFamilyManagerFactory getFactory(ConfigurationUnit annotation) {
-        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, ColumnConfiguration.class);
-        Class<ColumnConfiguration> configurationClass = unit.<ColumnConfiguration>getProvider()
+        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation);
+        Class<?> configurationClass = unit.getProvider()
                 .orElseThrow(() -> new IllegalStateException("The ColumnConfiguration provider is required in the configuration"));
 
-        ColumnConfiguration configuration = reflections.newInstance(configurationClass);
+        if (ColumnConfiguration.class.isAssignableFrom(configurationClass)) {
+            ColumnConfiguration configuration = (ColumnConfiguration) reflections.newInstance(configurationClass);
+            return configuration.get(unit.getSettings());
+        }
+        if (UnaryColumnConfiguration.class.isAssignableFrom(configurationClass)) {
+            UnaryColumnConfiguration configuration = (UnaryColumnConfiguration) reflections.newInstance(configurationClass);
+            return configuration.get(unit.getSettings());
+        }
 
-        return configuration.get(unit.getSettings());
+        throw new ConfigurationException(String.format("The class %s does not match with either " +
+                        "ColumnConfiguration or UnaryColumnConfiguration",
+                configurationClass));
     }
 
     private ColumnFamilyManagerFactory gettColumnFamilyManagerFactory(InjectionPoint injectionPoint) {

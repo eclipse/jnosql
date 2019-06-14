@@ -17,7 +17,7 @@ package org.jnosql.artemis.document.query;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import org.jnosql.diana.document.Document;
+import jakarta.nosql.document.Document;
 import org.jnosql.diana.document.DocumentCondition;
 
 import java.util.List;

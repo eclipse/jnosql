@@ -15,7 +15,7 @@
 package org.jnosql.artemis.document;
 
 import org.jnosql.artemis.model.Person;
-import org.jnosql.diana.document.DocumentEntity;
+import jakarta.nosql.document.DocumentEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

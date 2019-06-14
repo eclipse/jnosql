@@ -28,7 +28,7 @@ class DefaultColumnEntityPostPersist implements ColumnEntityPostPersist {
     private final ColumnEntity entity;
 
     DefaultColumnEntityPostPersist(ColumnEntity entity) {
-        this.entity = entity;
+        this.entity = Objects.requireNonNull(entity, "entity is required");
     }
 
     @Override

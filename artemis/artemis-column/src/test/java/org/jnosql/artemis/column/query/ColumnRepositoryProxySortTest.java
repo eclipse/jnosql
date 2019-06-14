@@ -65,7 +65,6 @@ public class ColumnRepositoryProxySortTest {
 
     private PersonRepository personRepository;
 
-
     @BeforeEach
     public void setUp() {
         this.template = Mockito.mock(ColumnTemplate.class);

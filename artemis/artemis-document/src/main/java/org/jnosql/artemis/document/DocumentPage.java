@@ -16,6 +16,8 @@ package org.jnosql.artemis.document;
 
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.document.DocumentQueryPagination;
+import jakarta.nosql.mapping.document.DocumentTemplate;
 
 import java.util.Collection;
 import java.util.List;

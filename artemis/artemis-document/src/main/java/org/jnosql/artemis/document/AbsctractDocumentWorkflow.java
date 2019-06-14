@@ -14,7 +14,10 @@
  */
 package org.jnosql.artemis.document;
 
-import org.jnosql.diana.document.DocumentEntity;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import jakarta.nosql.mapping.document.DocumentWorkflow;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -28,7 +31,7 @@ public abstract class AbsctractDocumentWorkflow implements DocumentWorkflow {
     protected abstract DocumentEventPersistManager getDocumentEventPersistManager();
 
 
-    protected abstract  DocumentEntityConverter getConverter();
+    protected abstract DocumentEntityConverter getConverter();
 
 
     @Override

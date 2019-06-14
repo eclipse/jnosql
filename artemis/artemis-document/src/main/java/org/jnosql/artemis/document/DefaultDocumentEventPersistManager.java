@@ -17,9 +17,9 @@ package org.jnosql.artemis.document;
 
 import jakarta.nosql.mapping.EntityPostPersit;
 import jakarta.nosql.mapping.EntityPrePersist;
-import org.jnosql.diana.document.DocumentDeleteQuery;
-import org.jnosql.diana.document.DocumentEntity;
-import org.jnosql.diana.document.DocumentQuery;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentQuery;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
