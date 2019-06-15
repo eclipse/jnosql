@@ -19,6 +19,7 @@ import jakarta.nosql.key.KeyValueConfiguration;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
+import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.reflection.Reflections;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -50,13 +51,17 @@ class KeyValueConfigurationProducer {
     }
 
     BucketManagerFactory getBucketManagerFactory(ConfigurationUnit annotation) {
-        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, KeyValueConfiguration.class);
+        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation);
         Class<KeyValueConfiguration> configurationClass = unit.<KeyValueConfiguration>getProvider()
                 .orElseThrow(() -> new IllegalStateException("The KeyValueConfiguration provider is required in the configuration"));
 
-        KeyValueConfiguration configuration = reflections.newInstance(configurationClass);
+        if (KeyValueConfiguration.class.isAssignableFrom(configurationClass)) {
+            KeyValueConfiguration configuration = reflections.newInstance(configurationClass);
+            return configuration.get(unit.getSettings());
+        }
 
-        return configuration.get(unit.getSettings());
+        throw new ConfigurationException(String.format("The class %s does not match with KeyValueConfiguration",
+                configurationClass));
     }
 
     private BucketManagerFactory getBucketManagerFactory(InjectionPoint injectionPoint) {
