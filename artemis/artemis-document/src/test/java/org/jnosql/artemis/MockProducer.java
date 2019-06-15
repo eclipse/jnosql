@@ -45,7 +45,6 @@ public class MockProducer {
         DocumentCollectionManager manager = mock(DocumentCollectionManager.class);
         when(manager.insert(Mockito.any(DocumentEntity.class))).thenReturn(entity);
         return manager;
-
     }
 
     @Produces
@@ -61,8 +60,6 @@ public class MockProducer {
 
     }
 
-
-
     @Produces
     @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
     public DocumentTemplate getDocumentRepository() {
@@ -75,12 +72,10 @@ public class MockProducer {
         return documentTemplate;
     }
 
-
     @Produces
     public DocumentCollectionManagerAsync getDocumentCollectionManagerAsync() {
         return Mockito.mock(DocumentCollectionManagerAsync.class);
     }
-
 
     @Produces
     @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
@@ -93,6 +88,5 @@ public class MockProducer {
     public DocumentTemplateAsync getDocumentRepositoryAsync() {
         return mock(DocumentTemplateAsync.class);
     }
-
 
 }
