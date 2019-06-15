@@ -20,7 +20,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.EntityNotFoundException;
+import jakarta.nosql.mapping.EntityNotFoundException;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 

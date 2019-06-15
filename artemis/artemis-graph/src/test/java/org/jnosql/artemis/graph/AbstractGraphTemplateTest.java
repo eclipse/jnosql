@@ -21,14 +21,14 @@ import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.jnosql.artemis.EntityNotFoundException;
+import jakarta.nosql.mapping.EntityNotFoundException;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.graph.model.WrongEntity;
-import static jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.NonUniqueResultException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

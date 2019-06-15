@@ -20,7 +20,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionValue;
+import jakarta.nosql.query.ConditionQueryValue;
 import jakarta.nosql.query.Operator;
 import jakarta.nosql.query.Where;
 
@@ -51,14 +51,14 @@ abstract class AbstractQueryConvert {
             case IN:
                 return __.has(nativeName, P.within(graphQuery.getInValue(name)));
             case NOT:
-                Condition notCondition = ((ConditionValue) condition.getValue()).get().get(0);
+                Condition notCondition = ((ConditionQueryValue) condition.getValue()).get().get(0);
                 return __.not(getPredicate(graphQuery, notCondition, mapping));
             case AND:
-                return ((ConditionValue) condition.getValue()).get().stream()
+                return ((ConditionQueryValue) condition.getValue()).get().stream()
                         .map(c -> getPredicate(graphQuery, c, mapping)).reduce(GraphTraversal::and)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the AND operator"));
             case OR:
-                return ((ConditionValue) condition.getValue()).get().stream()
+                return ((ConditionQueryValue) condition.getValue()).get().stream()
                         .map(c -> getPredicate(graphQuery, c, mapping)).reduce(GraphTraversal::or)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the OR operator"));
             default:

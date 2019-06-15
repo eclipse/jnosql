@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.jnosql.diana.JNoSQLException;
+import jakarta.nosql.mapping.MappingException;
 
 /**
  * An exception that provides information when executing Gremlin in the database.
  */
-public class GremlinQueryException extends JNoSQLException {
+public class GremlinQueryException extends MappingException {
 
     /**
      * A new instance with both the cause of the error and a message

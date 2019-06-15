@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.graph.query;
 
+import jakarta.nosql.query.DeleteQuery;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.aphrodite.antlr.method.DeleteMethodFactory;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.query.DeleteQuery;
+import org.jnosql.diana.query.method.DeleteMethodProvider;
 
 import java.util.List;
 import java.util.function.Function;
@@ -27,8 +27,8 @@ final class DeleteQueryConverter extends AbstractQueryConvert implements Functio
 
     @Override
     public List<Vertex> apply(GraphQueryMethod graphQuery) {
-        DeleteMethodFactory factory = DeleteMethodFactory.get();
-        DeleteQuery deleteQuery = factory.apply(graphQuery.getMethod(), graphQuery.getEntityName());
+        DeleteMethodProvider provider = DeleteMethodProvider.get();
+        DeleteQuery deleteQuery = provider.apply(graphQuery.getMethod(), graphQuery.getEntityName());
         ClassMapping mapping = graphQuery.getMapping();
         GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, deleteQuery::getWhere, mapping);
         traversal.hasLabel(mapping.getName());

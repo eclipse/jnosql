@@ -20,7 +20,7 @@ import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
-import static jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.NonUniqueResultException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

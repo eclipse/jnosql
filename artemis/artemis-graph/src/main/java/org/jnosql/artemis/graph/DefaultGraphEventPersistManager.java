@@ -17,6 +17,8 @@ package org.jnosql.artemis.graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.mapping.EntityPostPersit;
 import jakarta.nosql.mapping.EntityPrePersist;
+import org.jnosql.artemis.DefaultEntityPostPersist;
+import org.jnosql.artemis.DefaultEntityPrePersist;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
@@ -56,12 +58,12 @@ class DefaultGraphEventPersistManager implements GraphEventPersistManager {
 
     @Override
     public <T> void firePreEntity(T entity) {
-        entityPrePersistEvent.fire(EntityPrePersist.of(entity));
+        entityPrePersistEvent.fire(new DefaultEntityPrePersist(entity));
     }
 
     @Override
     public <T> void firePostEntity(T entity) {
-        entityPostPersitEvent.fire(EntityPostPersit.of(entity));
+        entityPostPersitEvent.fire(new DefaultEntityPostPersist(entity));
     }
 
     @Override

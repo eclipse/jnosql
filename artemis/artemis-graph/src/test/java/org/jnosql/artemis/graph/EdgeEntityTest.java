@@ -15,7 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.hamcrest.Matchers;
-import org.jnosql.artemis.EntityNotFoundException;
+import jakarta.nosql.mapping.EntityNotFoundException;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;

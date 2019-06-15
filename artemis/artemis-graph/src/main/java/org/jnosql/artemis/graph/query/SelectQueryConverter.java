@@ -14,16 +14,15 @@
  */
 package org.jnosql.artemis.graph.query;
 
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
 import jakarta.nosql.query.SelectQuery;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.jnosql.aphrodite.antlr.method.SelectMethodFactory;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.DynamicReturn;
 import org.jnosql.diana.query.method.SelectMethodProvider;
-import org.jnosql.query.SelectQuery;
-import org.jnosql.query.Sort;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -54,7 +53,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
 
     private Consumer<Sort> getSort(GraphTraversal<Vertex, Vertex> traversal, ClassMapping mapping) {
         return o -> {
-            if (Sort.SortType.ASC.equals(o.getType())) {
+            if (SortType.ASC.equals(o.getType())) {
                 traversal.order().by(mapping.getColumnField(o.getName()), asc);
             } else {
                 traversal.order().by(mapping.getColumnField(o.getName()), desc);
@@ -89,10 +88,10 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
     }
 
     static void setSort(Object[] args, GraphTraversal<Vertex, Vertex> traversal) {
-        List<org.jnosql.diana.Sort> sorts = DynamicReturn.findSorts(args);
+        List<Sort> sorts = DynamicReturn.findSorts(args);
         if (!sorts.isEmpty()) {
-            for (org.jnosql.diana.Sort sort : sorts) {
-                traversal.order().by(sort.getName(), sort.getType() == org.jnosql.diana.Sort.SortType.ASC ? asc : desc);
+            for (Sort sort : sorts) {
+                traversal.order().by(sort.getName(), sort.getType() == SortType.ASC ? asc : desc);
             }
         }
     }

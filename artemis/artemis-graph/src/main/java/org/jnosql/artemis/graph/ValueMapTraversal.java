@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
-import static jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.NonUniqueResultException;
 
 import java.util.List;
 import java.util.Map;

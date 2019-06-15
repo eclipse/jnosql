@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph.spi;
 
+import jakarta.nosql.mapping.configuration.ConfigurationException;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationSettingsUnit;
@@ -51,12 +52,16 @@ class GraphConfigurationProducer {
     }
 
     Graph getGraph(ConfigurationUnit annotation) {
-        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, GraphProducer.class);
-        Class<GraphProducer> configurationClass = unit.<GraphProducer>getProvider()
+        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation);
+        Class<?> configurationClass = unit.getProvider()
                 .orElseThrow(() -> new IllegalStateException("The GraphProducer provider is required in the configuration"));
 
-        GraphProducer factory = reflections.newInstance(configurationClass);
+        if (GraphProducer.class.isAssignableFrom(configurationClass)) {
+            GraphProducer factory = (GraphProducer) reflections.newInstance(configurationClass);
+            return factory.apply(unit.getSettings());
+        }
 
-        return factory.apply(unit.getSettings());
+        throw new ConfigurationException(String.format("The class %s does not match with GraphProducer",
+                configurationClass));
     }
 }
