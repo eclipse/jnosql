@@ -14,16 +14,18 @@
  */
 package org.jnosql.artemis.document.spi;
 
+import jakarta.nosql.document.DocumentConfiguration;
+import jakarta.nosql.document.DocumentConfigurationAsync;
+import jakarta.nosql.document.UnaryDocumentConfiguration;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
+import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.reflection.Reflections;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
 import jakarta.nosql.document.DocumentCollectionManagerFactory;
-import org.jnosql.diana.document.DocumentConfiguration;
-import org.jnosql.diana.document.DocumentConfigurationAsync;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
@@ -46,26 +48,11 @@ class DocumentConfigurationProducer {
     @Inject
     private Instance<ConfigurationReader> configurationReader;
 
-
-    @ConfigurationUnit
-    @Produces
-    public <T extends DocumentCollectionManager> DocumentCollectionManagerFactory<T> getGenerics(InjectionPoint injectionPoint) {
-        return getDocumentCollection(injectionPoint);
-    }
-
     @ConfigurationUnit
     @Produces
     public DocumentCollectionManagerFactory get(InjectionPoint injectionPoint) {
         return getDocumentCollection(injectionPoint);
     }
-
-
-    @ConfigurationUnit
-    @Produces
-    public <T extends DocumentCollectionManagerAsync> DocumentCollectionManagerAsyncFactory<T> getAsyncGenerics(InjectionPoint injectionPoint) {
-        return getDocumentCollectionAsync(injectionPoint);
-    }
-
 
     @ConfigurationUnit
     @Produces
@@ -73,38 +60,54 @@ class DocumentConfigurationProducer {
         return getDocumentCollectionAsync(injectionPoint);
     }
 
-
-    private <T extends DocumentCollectionManagerAsync> DocumentCollectionManagerAsyncFactory<T>
+    private DocumentCollectionManagerAsyncFactory
     getDocumentCollectionAsync(InjectionPoint injectionPoint) {
 
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
         return getFactoryAsync(annotation);
     }
 
-    <T extends DocumentCollectionManagerAsync> DocumentCollectionManagerAsyncFactory<T> getFactoryAsync(ConfigurationUnit annotation) {
-        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, DocumentConfigurationAsync.class);
-        Class<DocumentConfigurationAsync> configurationClass = unit.<DocumentConfigurationAsync>getProvider()
-                .orElseThrow(() -> new IllegalStateException("The DocumentConfiguration provider is required in the configuration"));
+     DocumentCollectionManagerAsyncFactory getFactoryAsync(ConfigurationUnit annotation) {
+        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation);
+        Class<?> configurationClass = unit.getProvider()
+                .orElseThrow(() -> new IllegalStateException("The DocumentConfigurationAsync provider is required in the configuration"));
 
-        DocumentConfigurationAsync documentConfiguration = reflections.newInstance(configurationClass);
-        return documentConfiguration.getAsync(unit.getSettings());
+         if (DocumentConfigurationAsync.class.isAssignableFrom(configurationClass)) {
+             DocumentConfigurationAsync configuration = (DocumentConfigurationAsync) reflections.newInstance(configurationClass);
+             return configuration.get(unit.getSettings());
+         }
+         if (UnaryDocumentConfiguration.class.isAssignableFrom(configurationClass)) {
+             UnaryDocumentConfiguration<?> configuration = (UnaryDocumentConfiguration) reflections.newInstance(configurationClass);
+             return configuration.get(unit.getSettings());
+         }
+
+         throw new ConfigurationException(String.format("The class %s does not match with either " +
+                         "DocumentConfigurationAsync or UnaryDocumentConfiguration",
+                 configurationClass));
     }
 
-    <T extends DocumentCollectionManager> DocumentCollectionManagerFactory<T> getFactory(ConfigurationUnit annotation) {
-        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation, DocumentConfiguration.class);
-        Class<DocumentConfiguration> configurationClass = unit.<DocumentConfiguration>getProvider()
+    DocumentCollectionManagerFactory getFactory(ConfigurationUnit annotation) {
+        ConfigurationSettingsUnit unit = configurationReader.get().read(annotation);
+        Class<?> configurationClass = unit.getProvider()
                 .orElseThrow(() -> new IllegalStateException("The DocumentConfiguration provider is required in the configuration"));
 
-        DocumentConfiguration configuration = reflections.newInstance(configurationClass);
+        if (DocumentConfiguration.class.isAssignableFrom(configurationClass)) {
+            DocumentConfiguration configuration = (DocumentConfiguration) reflections.newInstance(configurationClass);
+            return configuration.get(unit.getSettings());
+        }
+        if (UnaryDocumentConfiguration.class.isAssignableFrom(configurationClass)) {
+            UnaryDocumentConfiguration configuration = (UnaryDocumentConfiguration) reflections.newInstance(configurationClass);
+            return configuration.get(unit.getSettings());
+        }
 
-        return configuration.get(unit.getSettings());
+        throw new ConfigurationException(String.format("The class %s does not match with either " +
+                        "DocumentConfiguration or UnaryDocumentConfiguration",
+                configurationClass));
     }
 
-    private <T extends DocumentCollectionManager> DocumentCollectionManagerFactory<T> getDocumentCollection(InjectionPoint injectionPoint) {
+    private DocumentCollectionManagerFactory getDocumentCollection(InjectionPoint injectionPoint) {
 
         ConfigurationUnit annotation = getConfigurationUnit(injectionPoint);
         return getFactory(annotation);
     }
-
-
 }
