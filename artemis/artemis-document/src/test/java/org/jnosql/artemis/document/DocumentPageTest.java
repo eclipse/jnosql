@@ -68,7 +68,6 @@ class DocumentPageTest {
 
     private DocumentEventPersistManager columnEventPersistManager;
 
-
     @BeforeEach
     public void setUp() {
 

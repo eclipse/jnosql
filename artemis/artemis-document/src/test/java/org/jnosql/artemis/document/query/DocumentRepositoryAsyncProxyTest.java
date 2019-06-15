@@ -188,7 +188,6 @@ public class DocumentRepositoryAsyncProxyTest {
         assertEquals(callback, consumerCaptor.getValue());
     }
 
-
     @Test
     public void shouldFindByNameOrderByAgeDesc() {
         Consumer<List<Person>> callback = v -> {

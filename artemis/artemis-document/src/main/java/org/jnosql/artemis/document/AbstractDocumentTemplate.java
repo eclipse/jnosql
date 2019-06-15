@@ -43,6 +43,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
@@ -84,42 +86,50 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     @Override
     public <T> T insert(T entity) {
-        Objects.requireNonNull(entity, "entity is required");
+        requireNonNull(entity, "entity is required");
         return getWorkflow().flow(entity, insert);
     }
 
 
     @Override
     public <T> T insert(T entity, Duration ttl) {
-        Objects.requireNonNull(entity, "entity is required");
-        Objects.requireNonNull(ttl, "ttl is required");
+        requireNonNull(entity, "entity is required");
+        requireNonNull(ttl, "ttl is required");
         return getWorkflow().flow(entity, e -> getManager().insert(e, ttl));
     }
 
     @Override
     public <T> Iterable<T> insert(Iterable<T> entities) {
-        return null;
+        requireNonNull(entities, "entity is required");
+        return StreamSupport.stream(entities.spliterator(), false)
+                .map(this::insert).collect(Collectors.toList());
     }
 
     @Override
     public <T> Iterable<T> insert(Iterable<T> entities, Duration ttl) {
-        return null;
+        requireNonNull(entities, "entities is required");
+        requireNonNull(ttl, "ttl is required");
+        return StreamSupport.stream(entities.spliterator(), false)
+                .map(e -> insert(e, ttl))
+                .collect(Collectors.toList());
     }
 
     @Override
     public <T> T update(T entity) {
-        Objects.requireNonNull(entity, "entity is required");
+        requireNonNull(entity, "entity is required");
         return getWorkflow().flow(entity, update);
     }
 
     @Override
     public <T> Iterable<T> update(Iterable<T> entities) {
-        return null;
+        requireNonNull(entities, "entity is required");
+        return StreamSupport.stream(entities.spliterator(), false)
+                .map(this::update).collect(Collectors.toList());
     }
 
     @Override
     public void delete(DocumentDeleteQuery query) {
-        Objects.requireNonNull(query, "query is required");
+        requireNonNull(query, "query is required");
         getPersistManager().firePreDeleteQuery(query);
         getManager().delete(query);
     }
@@ -197,7 +207,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     }
 
     public <T> long count(Class<T> entityClass) {
-        Objects.requireNonNull(entityClass, "entityClass is required");
+        requireNonNull(entityClass, "entityClass is required");
         ClassMapping classMapping = getClassMappings().get(entityClass);
         return getManager().count(classMapping.getName());
     }

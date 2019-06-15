@@ -14,17 +14,16 @@
  */
 package org.jnosql.artemis.document;
 
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import jakarta.nosql.mapping.reflection.FieldType;
-import org.jnosql.artemis.document.DocumentFieldConverters.DocumentFieldConverterFactory;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
-import org.jnosql.artemis.reflection.FieldTypeUtil;
+import jakarta.nosql.mapping.reflection.FieldType;
 import jakarta.nosql.mapping.reflection.FieldValue;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
+import org.jnosql.artemis.document.DocumentFieldConverters.DocumentFieldConverterFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,9 +33,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.requireNonNull;
 import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
 import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Template method to {@link DocumentEntityConverter}

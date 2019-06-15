@@ -14,7 +14,7 @@
  */
 
 /**
- * This package has the implementation to dynamic query to both {@link org.jnosql.artemis.Repository}
+ * This package has the implementation to dynamic query to both {@link jakarta.nosql.mapping.Repository}
  * on Graph database.
  */
 package org.jnosql.artemis.graph.query;

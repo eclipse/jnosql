@@ -86,7 +86,6 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     @Override
     public <T> T insert(T entity) {
         requireNonNull(entity, "entity is required");
-
         return getFlow().flow(entity, insert);
     }
 
@@ -121,6 +120,8 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
     @Override
     public <T> Iterable<T> insert(Iterable<T> entities, Duration ttl) {
+        requireNonNull(entities, "entities is required");
+        requireNonNull(ttl, "ttl is required");
         return StreamSupport.stream(entities.spliterator(), false)
                 .map(e -> insert(e, ttl))
                 .collect(Collectors.toList());

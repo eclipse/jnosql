@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
 
 /**
- * Extension to start up {@link org.jnosql.artemis.key.KeyValueTemplate} and {@link org.jnosql.artemis.Repository}
+ * Extension to start up {@link org.jnosql.artemis.key.KeyValueTemplate} and {@link jakarta.nosql.mapping.Repository}
  * from the {@link javax.enterprise.inject.Default} and {@link org.jnosql.artemis.Database} qualifier
  */
 public class BucketManagerProducerExtension implements Extension {

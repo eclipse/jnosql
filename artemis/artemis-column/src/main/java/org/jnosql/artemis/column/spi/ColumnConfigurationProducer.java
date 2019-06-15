@@ -69,7 +69,7 @@ class ColumnConfigurationProducer {
 
     ColumnFamilyManagerAsyncFactory getFactoryAsync(ConfigurationUnit annotation) {
         ConfigurationSettingsUnit unit = configurationReader.get().read(annotation);
-        Class<ColumnConfigurationAsync> configurationClass = unit.<ColumnConfigurationAsync>getProvider()
+        Class<?> configurationClass = unit.getProvider()
                 .orElseThrow(() -> new IllegalStateException("The ColumnConfiguration provider is required in the configuration"));
 
         if (ColumnConfigurationAsync.class.isAssignableFrom(configurationClass)) {

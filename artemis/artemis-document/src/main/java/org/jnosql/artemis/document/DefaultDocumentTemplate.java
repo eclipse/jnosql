@@ -23,7 +23,6 @@ import jakarta.nosql.mapping.reflection.ClassMappings;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import java.time.Duration;
 
 /**
  * The default implementation of {@link jakarta.nosql.mapping.document.DocumentTemplate}

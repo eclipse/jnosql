@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.document.spi;
 
+import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
+import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import jakarta.nosql.document.DocumentConfiguration;
 import jakarta.nosql.document.DocumentConfigurationAsync;
 import jakarta.nosql.document.UnaryDocumentConfiguration;
@@ -22,10 +24,6 @@ import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
 import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.reflection.Reflections;
-import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
-import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
-import jakarta.nosql.document.DocumentCollectionManagerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;

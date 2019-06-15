@@ -38,12 +38,15 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-final class DeleteQueryParser implements DeleteQueryConverter {
+/**
+ * The default implementation of {@link DeleteQueryConverter}
+ */
+public final class DeleteQueryParser implements DeleteQueryConverter {
 
     private final DeleteQueryProvider deleteQueryProvider;
     private final CacheQuery<DocumentDeleteQuery> cache;
 
-    DeleteQueryParser() {
+    public DeleteQueryParser() {
         this.deleteQueryProvider = ServiceLoaderProvider.get(DeleteQueryProvider.class);
         cache = new CacheQuery<>(this::getQuery);
     }
