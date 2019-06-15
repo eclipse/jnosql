@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.document.query;
 
-import org.jnosql.diana.document.DocumentCondition;
+import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentDeleteQuery;
 
 import java.util.Collections;

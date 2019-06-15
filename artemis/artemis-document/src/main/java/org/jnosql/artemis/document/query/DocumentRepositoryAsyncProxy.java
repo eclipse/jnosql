@@ -24,7 +24,7 @@ import jakarta.nosql.mapping.reflection.ClassMappings;
 import java.lang.reflect.ParameterizedType;
 
 /**
- * Proxy handle to generate {@link org.jnosql.artemis.RepositoryAsync}
+ * Proxy handle to generate {@link jakarta.nosql.mapping.RepositoryAsync}
  *
  * @param <T> the type
  */

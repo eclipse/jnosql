@@ -33,7 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Artemis discoveryBean to CDI extension to register {@link org.jnosql.artemis.Repository}
+ * Artemis discoveryBean to CDI extension to register {@link jakarta.nosql.mapping.Repository}
  */
 public class RepositoryDocumentBean extends AbstractBean<Repository> {
 

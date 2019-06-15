@@ -14,23 +14,24 @@
  */
 package org.jnosql.artemis.document.query;
 
-import org.jnosql.aphrodite.antlr.method.DeleteMethodFactory;
-import org.jnosql.aphrodite.antlr.method.SelectMethodFactory;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.jnosql.artemis.reflection.DynamicReturn;
-import org.jnosql.artemis.util.ParamsBinder;
 import jakarta.nosql.Params;
+import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.Sort;
+import jakarta.nosql.document.DeleteQueryConverter;
 import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentDeleteQueryParams;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentQuery;
-import org.jnosql.diana.document.query.DeleteQueryConverter;
-import org.jnosql.diana.document.query.DocumentDeleteQueryParams;
-import org.jnosql.diana.document.query.DocumentQueryParams;
-import org.jnosql.diana.document.query.SelectQueryConverter;
-import org.jnosql.query.DeleteQuery;
-import org.jnosql.query.SelectQuery;
+import jakarta.nosql.document.DocumentQueryParams;
+import jakarta.nosql.document.SelectQueryConverter;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.reflection.ClassMapping;
+import jakarta.nosql.query.DeleteQuery;
+import jakarta.nosql.query.SelectQuery;
+import org.jnosql.artemis.reflection.DynamicReturn;
+import org.jnosql.artemis.util.ParamsBinder;
+import org.jnosql.diana.query.method.DeleteMethodProvider;
+import org.jnosql.diana.query.method.SelectMethodProvider;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -50,9 +51,9 @@ abstract class BaseDocumentRepository {
 
 
     protected DocumentQuery getQuery(Method method, Object[] args) {
-        SelectMethodFactory selectMethodFactory = SelectMethodFactory.get();
-        SelectQuery selectQuery = selectMethodFactory.apply(method, getClassMapping().getName());
-        SelectQueryConverter converter = SelectQueryConverter.get();
+        SelectMethodProvider methodProvider = SelectMethodProvider.get();
+        SelectQuery selectQuery = methodProvider.apply(method, getClassMapping().getName());
+        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class);
         DocumentQueryParams queryParams = converter.apply(selectQuery, getParser());
         DocumentQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
@@ -73,9 +74,9 @@ abstract class BaseDocumentRepository {
     }
 
     protected DocumentDeleteQuery getDeleteQuery(Method method, Object[] args) {
-        DeleteMethodFactory deleteMethodFactory = DeleteMethodFactory.get();
-        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getClassMapping().getName());
-        DeleteQueryConverter converter = DeleteQueryConverter.get();
+        DeleteMethodProvider methodProvider = DeleteMethodProvider.get();
+        DeleteQuery deleteQuery = methodProvider.apply(method, getClassMapping().getName());
+        DeleteQueryConverter converter = ServiceLoaderProvider.get(DeleteQueryConverter.class);
         DocumentDeleteQueryParams queryParams = converter.apply(deleteQuery, getParser());
         DocumentDeleteQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();

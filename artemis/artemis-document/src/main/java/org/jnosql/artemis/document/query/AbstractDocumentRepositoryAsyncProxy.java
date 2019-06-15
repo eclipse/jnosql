@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
 /**
- * The template method to {@link org.jnosql.artemis.RepositoryAsync} to Document
+ * The template method to {@link jakarta.nosql.mapping.RepositoryAsync} to Document
  *
  * @param <T> the class type
  */

@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.util.ConverterUtil;
 import jakarta.nosql.document.Document;
-import org.jnosql.diana.document.DocumentCondition;
+import jakarta.nosql.document.DocumentCondition;
 
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -29,7 +29,6 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
 abstract class AbstractMapperQuery {
-
 
     protected final String documentCollection;
 

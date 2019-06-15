@@ -14,11 +14,17 @@
  */
 package org.jnosql.artemis.document;
 
-import jakarta.nosql.mapping.EntityPostPersit;
-import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPrePersist;
+import jakarta.nosql.mapping.document.DocumentDeleteQueryExecute;
+import jakarta.nosql.mapping.document.DocumentEntityPostPersist;
+import jakarta.nosql.mapping.document.DocumentEntityPrePersist;
+import jakarta.nosql.mapping.document.DocumentQueryExecute;
+import jakarta.nosql.mapping.document.EntityDocumentPostPersist;
+import jakarta.nosql.mapping.document.EntityDocumentPrePersist;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -28,8 +34,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.enterprise.event.Event;
 
-import static org.jnosql.diana.document.query.DocumentQueryBuilder.delete;
-import static org.jnosql.diana.document.query.DocumentQueryBuilder.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
@@ -62,7 +66,6 @@ public class DefaultDocumentEventPersistManagerTest {
 
     @Mock
     private Event<DocumentDeleteQueryExecute> documentDeleteQueryExecute;
-
 
     @Test
     public void shouldFirePreDocument() {
@@ -135,7 +138,7 @@ public class DefaultDocumentEventPersistManagerTest {
     @Test
     public void shouldFirePreQuery() {
 
-        DocumentQuery query = select().from("collection").build();
+        DocumentQuery query = DocumentQuery.select().from("collection").build();
         subject.firePreQuery(query);
         ArgumentCaptor<DocumentQueryExecute> captor = ArgumentCaptor.forClass(DocumentQueryExecute.class);
         verify(documentQueryExecute).fire(captor.capture());
@@ -144,7 +147,7 @@ public class DefaultDocumentEventPersistManagerTest {
 
     @Test
     public void shouldFirePreDeleteQuery() {
-        DocumentDeleteQuery query = delete().from("collection").build();
+        DocumentDeleteQuery query = DocumentDeleteQuery.delete().from("collection").build();
         subject.firePreDeleteQuery(query);
         ArgumentCaptor<DocumentDeleteQueryExecute> captor = ArgumentCaptor.forClass(DocumentDeleteQueryExecute.class);
         verify(documentDeleteQueryExecute).fire(captor.capture());

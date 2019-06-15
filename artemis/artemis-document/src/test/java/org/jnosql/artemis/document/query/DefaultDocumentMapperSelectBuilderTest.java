@@ -14,17 +14,19 @@
  */
 package org.jnosql.artemis.document.query;
 
-import org.jnosql.artemis.CDIExtension;
+import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
-import org.jnosql.artemis.document.DocumentQueryPagination;
+import jakarta.nosql.mapping.document.DocumentQueryMapper;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperFrom;
+import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
+import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Address;
 import org.jnosql.artemis.model.Money;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Worker;
-import jakarta.nosql.document.DocumentQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +39,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static org.jnosql.diana.document.query.DocumentQueryBuilder.select;
+import static jakarta.nosql.document.DocumentQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -45,7 +47,7 @@ import static org.mockito.ArgumentMatchers.eq;
 public class DefaultDocumentMapperSelectBuilderTest {
 
     @Inject
-    private DocumentQueryMapperBuilder mapperBuilder;
+    private DocumentQueryMapper mapperBuilder;
 
 
     @Test
@@ -89,7 +91,6 @@ public class DefaultDocumentMapperSelectBuilderTest {
         DocumentQuery queryExpected = select().from("Worker").skip(10L).build();
         assertEquals(queryExpected, query);
     }
-
 
     @Test
     public void shouldSelectWhereNameEq() {

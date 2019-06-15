@@ -28,7 +28,7 @@ class DefaultDocumentEntityPostPersist implements DocumentEntityPostPersist {
     private final DocumentEntity entity;
 
     DefaultDocumentEntityPostPersist(DocumentEntity entity) {
-        this.entity = entity;
+        this.entity = Objects.requireNonNull(entity, "entity is required");
     }
 
     @Override

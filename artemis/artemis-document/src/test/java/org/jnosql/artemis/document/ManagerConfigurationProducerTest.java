@@ -35,7 +35,6 @@ public class ManagerConfigurationProducerTest {
     @ConfigurationUnit(fileName = "document.json", name = "name", database = "database")
     private DocumentCollectionManagerAsync managerAsync;
 
-
     @Test
     public void shouldTestManager() {
         Assertions.assertNotNull(manager);

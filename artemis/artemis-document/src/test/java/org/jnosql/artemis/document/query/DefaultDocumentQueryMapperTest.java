@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.document.query;
 
+import jakarta.nosql.mapping.document.DocumentQueryMapper;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteFrom;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.Test;
@@ -25,32 +27,32 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(CDIExtension.class)
-public class DefaultDocumentQueryMapperBuilderTest {
+public class DefaultDocumentQueryMapperTest {
 
 
     @Inject
-    private DocumentQueryMapperBuilder mapperBuilder;
+    private DocumentQueryMapper queryMapper;
 
 
     @Test
     public void shouldReturnErrorWhenEntityClassIsNull() {
-        assertThrows(NullPointerException.class, () -> mapperBuilder.selectFrom(null));
+        assertThrows(NullPointerException.class, () -> queryMapper.selectFrom(null));
     }
 
     @Test
     public void shouldReturnSelectFrom() {
-        DocumentMapperFrom documentFrom = mapperBuilder.selectFrom(Person.class);
+        DocumentQueryMapper.DocumentMapperFrom documentFrom = queryMapper.selectFrom(Person.class);
         assertNotNull(documentFrom);
     }
 
     @Test
     public void shouldReturnErrorWhenDeleteEntityClassIsNull() {
-        assertThrows(NullPointerException.class, () -> mapperBuilder.deleteFrom(null));
+        assertThrows(NullPointerException.class, () -> queryMapper.deleteFrom(null));
     }
 
     @Test
     public void shouldReturnDeleteFrom() {
-        DocumentMapperDeleteFrom deleteFrom = mapperBuilder.deleteFrom(Person.class);
+        DocumentMapperDeleteFrom deleteFrom = queryMapper.deleteFrom(Person.class);
         assertNotNull(deleteFrom);
     }
 }

@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.document;
 
-import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.ConfigurationUnit;
 import jakarta.nosql.Settings;
 import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
 import jakarta.nosql.document.DocumentCollectionManagerFactory;
+import jakarta.nosql.mapping.ConfigurationUnit;
+import org.jnosql.artemis.CDIExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -32,7 +32,7 @@ public class DocumentConfigurationProducerXMLTest {
 
     @Inject
     @ConfigurationUnit(fileName = "document.xml", name = "name")
-    private DocumentCollectionManagerFactory<?> factoryA;
+    private DocumentCollectionManagerFactory factoryA;
 
     @Inject
     @ConfigurationUnit(fileName = "document.xml", name = "name-2")
@@ -41,7 +41,7 @@ public class DocumentConfigurationProducerXMLTest {
 
     @Inject
     @ConfigurationUnit(fileName = "document.xml", name = "name")
-    private DocumentCollectionManagerAsyncFactory<?> factoryAsyncA;
+    private DocumentCollectionManagerAsyncFactory factoryAsyncA;
 
     @Inject
     @ConfigurationUnit(fileName = "document.xml", name = "name-2")

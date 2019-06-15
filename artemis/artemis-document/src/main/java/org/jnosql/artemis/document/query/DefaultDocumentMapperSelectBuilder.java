@@ -14,15 +14,24 @@
  */
 package org.jnosql.artemis.document.query;
 
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
+import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
-import org.jnosql.artemis.document.DocumentQueryPagination;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperFrom;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperLimit;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperNameCondition;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperNameOrder;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperNotCondition;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperOrder;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperSkip;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperWhere;
+import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.Sort;
-import jakarta.nosql.document.DocumentQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +95,6 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
         return this;
     }
 
-
     @Override
     public DocumentMapperNotCondition not() {
         this.negate = true;
@@ -106,13 +114,11 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
         return this;
     }
 
-
     @Override
     public <T> DocumentMapperWhere gt(T value) {
         gtImpl(value);
         return this;
     }
-
 
     @Override
     public <T> DocumentMapperWhere gte(T value) {
@@ -133,7 +139,6 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
         return this;
     }
 
-
     @Override
     public <T> DocumentMapperWhere between(T valueA, T valueB) {
         betweenImpl(valueA, valueB);
@@ -148,16 +153,15 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
 
     @Override
     public DocumentMapperNameOrder asc() {
-        this.sorts.add(Sort.of(mapping.getColumnField(name), Sort.SortType.ASC));
+        this.sorts.add(Sort.of(mapping.getColumnField(name), SortType.ASC));
         return this;
     }
 
     @Override
     public DocumentMapperNameOrder desc() {
-        this.sorts.add(Sort.of(mapping.getColumnField(name), Sort.SortType.DESC));
+        this.sorts.add(Sort.of(mapping.getColumnField(name), SortType.DESC));
         return this;
     }
-
 
     @Override
     public DocumentQuery build() {

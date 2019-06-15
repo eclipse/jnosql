@@ -15,22 +15,23 @@
 package org.jnosql.artemis.document.query;
 
 
-import org.jnosql.aphrodite.antlr.method.SelectMethodFactory;
-import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.model.Person;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.jnosql.artemis.util.ParamsBinder;
 import jakarta.nosql.Params;
+import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
-import org.jnosql.diana.document.DocumentCondition;
+import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentQuery;
-import org.jnosql.diana.document.query.DocumentQueryParams;
-import org.jnosql.diana.document.query.SelectQueryConverter;
-import org.jnosql.query.SelectQuery;
+import jakarta.nosql.document.DocumentQueryParams;
+import jakarta.nosql.document.SelectQueryConverter;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import jakarta.nosql.query.SelectQuery;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.model.Person;
+import org.jnosql.artemis.util.ParamsBinder;
+import org.jnosql.diana.query.method.SelectMethodProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -63,9 +64,9 @@ class ParamsBinderTest {
         RepositoryDocumentObserverParser parser = new RepositoryDocumentObserverParser(classMapping);
         paramsBinder = new ParamsBinder(classMapping, converters);
 
-        SelectMethodFactory selectMethodFactory = SelectMethodFactory.get();
+        SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
         SelectQuery selectQuery = selectMethodFactory.apply(method, classMapping.getName());
-        SelectQueryConverter converter = SelectQueryConverter.get();
+        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class);
         DocumentQueryParams columnQueryParams = converter.apply(selectQuery, parser);
         Params params = columnQueryParams.getParams();
         Object[] args = {10};
@@ -86,9 +87,9 @@ class ParamsBinderTest {
         RepositoryDocumentObserverParser parser = new RepositoryDocumentObserverParser(classMapping);
         paramsBinder = new ParamsBinder(classMapping, converters);
 
-        SelectMethodFactory selectMethodFactory = SelectMethodFactory.get();
+        SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
         SelectQuery selectQuery = selectMethodFactory.apply(method, classMapping.getName());
-        SelectQueryConverter converter = SelectQueryConverter.get();
+        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class);
         DocumentQueryParams queryParams = converter.apply(selectQuery, parser);
         Params params = queryParams.getParams();
         paramsBinder.bind(params, new Object[]{10L, "Ada"}, method);

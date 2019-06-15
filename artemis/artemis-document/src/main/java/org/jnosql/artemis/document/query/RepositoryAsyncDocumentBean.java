@@ -33,9 +33,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Artemis discoveryBean to CDI extension to register {@link org.jnosql.artemis.RepositoryAsync}
+ * Artemis discoveryBean to CDI extension to register {@link jakarta.nosql.mapping.RepositoryAsync}
  */
-public class RepositoryAsyncDocumentBean extends AbstractBean<RepositoryAsync>{
+public class RepositoryAsyncDocumentBean extends AbstractBean<RepositoryAsync> {
 
     private final Class type;
 

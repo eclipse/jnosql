@@ -29,11 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(CDIExtension.class)
 public class RepositoryExtensionTest {
 
-
     @Inject
     @ConfigurationUnit(database = "name", fileName = "document.json", name = "name")
     private UserRepository repository;
-
 
     @Inject
     @ConfigurationUnit(database = "name", fileName = "document.json", name = "name", repository = DOCUMENT)
@@ -48,29 +46,23 @@ public class RepositoryExtensionTest {
     @ConfigurationUnit(database = "name", fileName = "document.json", name = "name", repository = DOCUMENT)
     private PersonRepositoryAsync repositoryAsync2;
 
-
-
     @Test
     public void shouldUseUserRepository() {
         assertNotNull(repository);
-
     }
 
     @Test
     public void shouldUseUserRepository2() {
         assertNotNull(repository2);
-
     }
 
     @Test
     public void shouldUseUserRepositoryAsync() {
         assertNotNull(repositoryAsync);
-
     }
 
     @Test
     public void shouldUseUserRepositoryAsync2() {
         assertNotNull(repositoryAsync2);
-
     }
 }

@@ -28,7 +28,7 @@ class DefaultDocumentEntityPrePersist implements DocumentEntityPrePersist {
     private final DocumentEntity entity;
 
     DefaultDocumentEntityPrePersist(DocumentEntity entity) {
-        this.entity = entity;
+        this.entity = Objects.requireNonNull(entity, "entity is required");
     }
 
     @Override

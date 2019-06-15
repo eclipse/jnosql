@@ -19,7 +19,7 @@ import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
 import jakarta.nosql.document.DocumentCollectionManagerFactory;
-import org.jnosql.diana.document.UnaryDocumentConfiguration;
+import jakarta.nosql.document.UnaryDocumentConfiguration;
 import org.mockito.Mockito;
 
 public class DocumentCollectionManagerMock implements UnaryDocumentConfiguration {
@@ -31,16 +31,6 @@ public class DocumentCollectionManagerMock implements UnaryDocumentConfiguration
 
     @Override
     public DocumentCollectionManagerFactory get(Settings settings) throws NullPointerException {
-        return new DocumentMock(settings);
-    }
-
-    @Override
-    public DocumentCollectionManagerAsyncFactory getAsync() {
-        return null;
-    }
-
-    @Override
-    public DocumentCollectionManagerAsyncFactory getAsync(Settings settings) throws NullPointerException {
         return new DocumentMock(settings);
     }
 

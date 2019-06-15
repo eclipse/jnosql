@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.document;
 
+import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import org.jnosql.artemis.model.Person;
 import jakarta.nosql.document.DocumentEntity;
 import org.junit.jupiter.api.Assertions;

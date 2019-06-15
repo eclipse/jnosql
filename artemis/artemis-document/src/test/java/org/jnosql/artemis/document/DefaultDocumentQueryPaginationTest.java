@@ -16,12 +16,13 @@
  */
 package org.jnosql.artemis.document;
 
-import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.jnosql.diana.document.query.DocumentQueryBuilder.select;
+import static jakarta.nosql.document.DocumentQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

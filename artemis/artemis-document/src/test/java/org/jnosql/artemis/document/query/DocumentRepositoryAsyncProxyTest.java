@@ -14,7 +14,13 @@
  */
 package org.jnosql.artemis.document.query;
 
-import org.jnosql.artemis.CDIExtension;
+import jakarta.nosql.Condition;
+import jakarta.nosql.Sort;
+import jakarta.nosql.SortType;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentCondition;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Param;
@@ -22,14 +28,9 @@ import jakarta.nosql.mapping.PreparedStatementAsync;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.RepositoryAsync;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
-import org.jnosql.artemis.model.Person;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.Condition;
-import jakarta.nosql.Sort;
-import jakarta.nosql.document.Document;
-import org.jnosql.diana.document.DocumentCondition;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentQuery;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -204,7 +205,7 @@ public class DocumentRepositoryAsyncProxyTest {
         assertEquals(Condition.EQUALS, condition.getCondition());
         assertEquals(Document.of("name", "name"), condition.getDocument());
         assertEquals(callback, consumerCaptor.getValue());
-        assertEquals(Sort.of("age", Sort.SortType.DESC), query.getSorts().get(0));
+        assertEquals(Sort.of("age", SortType.DESC), query.getSorts().get(0));
 
     }
 

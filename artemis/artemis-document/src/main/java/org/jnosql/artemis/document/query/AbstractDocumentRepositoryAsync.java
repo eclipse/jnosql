@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 import static jakarta.nosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
 /**
- * The {@link org.jnosql.artemis.RepositoryAsync} template method
+ * The {@link jakarta.nosql.mapping.RepositoryAsync} template method
  */
 public abstract class AbstractDocumentRepositoryAsync<T, K> implements RepositoryAsync<T, K> {
 

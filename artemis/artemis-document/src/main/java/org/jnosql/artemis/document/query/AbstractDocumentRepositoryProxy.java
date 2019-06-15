@@ -18,7 +18,7 @@ package org.jnosql.artemis.document.query;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
-import org.jnosql.artemis.document.DocumentQueryPagination;
+import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
@@ -32,10 +32,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.jnosql.diana.document.query.DocumentQueryBuilder.select;
+import static jakarta.nosql.document.DocumentQuery.select;
+
 
 /**
- * The template method to {@link org.jnosql.artemis.Repository} to Document
+ * The template method to {@link jakarta.nosql.mapping.Repository} to Document
  *
  * @param <T> the class type
  */

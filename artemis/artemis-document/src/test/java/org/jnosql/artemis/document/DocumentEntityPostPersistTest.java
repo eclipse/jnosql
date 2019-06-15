@@ -15,6 +15,7 @@
 package org.jnosql.artemis.document;
 
 import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.mapping.document.DocumentEntityPostPersist;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,13 +26,13 @@ public class DocumentEntityPostPersistTest {
 
     @Test
     public void shouldReturnNPEWhenEntityIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> DocumentEntityPostPersist.of(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new DefaultDocumentEntityPostPersist(null));
     }
 
     @Test
     public void shouldReturnInstance() {
         DocumentEntity entity = DocumentEntity.of("collection");
-        DocumentEntityPostPersist postPersist = DocumentEntityPostPersist.of(entity);
+        DocumentEntityPostPersist postPersist = new DefaultDocumentEntityPostPersist(entity);
         assertEquals(entity, postPersist.getEntity());
     }
 }

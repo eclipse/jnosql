@@ -14,11 +14,15 @@
  */
 package org.jnosql.artemis.document.query;
 
+import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteFrom;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteNameCondition;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteNotCondition;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteWhere;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.document.DocumentDeleteQuery;
 
 import java.util.function.Consumer;
 

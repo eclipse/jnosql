@@ -26,7 +26,7 @@ import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.Condition;
 import jakarta.nosql.Sort;
 import jakarta.nosql.document.Document;
-import org.jnosql.diana.document.DocumentCondition;
+import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -32,7 +32,7 @@ public class DocumentConfigurationProducerTest {
 
     @Inject
     @ConfigurationUnit(fileName = "document.json", name = "name")
-    private DocumentCollectionManagerFactory<?> factoryA;
+    private DocumentCollectionManagerFactory factoryA;
 
     @Inject
     @ConfigurationUnit(fileName = "document.json", name = "name-2")
@@ -41,7 +41,7 @@ public class DocumentConfigurationProducerTest {
 
     @Inject
     @ConfigurationUnit(fileName = "document.json", name = "name")
-    private DocumentCollectionManagerAsyncFactory<?> factoryAsyncA;
+    private DocumentCollectionManagerAsyncFactory factoryAsyncA;
 
     @Inject
     @ConfigurationUnit(fileName = "document.json", name = "name-2")

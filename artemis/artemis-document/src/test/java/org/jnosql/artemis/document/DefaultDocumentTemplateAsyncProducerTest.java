@@ -14,6 +14,8 @@
  */
 package org.jnosql.artemis.document;
 
+import jakarta.nosql.mapping.document.DocumentTemplateAsync;
+import jakarta.nosql.mapping.document.DocumentTemplateAsyncProducer;
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import org.junit.jupiter.api.Assertions;

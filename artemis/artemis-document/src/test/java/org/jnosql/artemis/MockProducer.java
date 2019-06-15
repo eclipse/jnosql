@@ -15,6 +15,8 @@
 package org.jnosql.artemis;
 
 
+import jakarta.nosql.mapping.Database;
+import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import org.jnosql.artemis.model.Person;

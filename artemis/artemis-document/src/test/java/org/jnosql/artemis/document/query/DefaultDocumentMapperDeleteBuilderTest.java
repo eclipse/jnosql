@@ -14,14 +14,16 @@
  */
 package org.jnosql.artemis.document.query;
 
-import org.jnosql.artemis.CDIExtension;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.mapping.document.DocumentQueryMapper;
+import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteFrom;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
+import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Address;
 import org.jnosql.artemis.model.Money;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Worker;
-import jakarta.nosql.document.DocumentDeleteQuery;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -31,14 +33,14 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.function.Consumer;
 
-import static org.jnosql.diana.document.query.DocumentQueryBuilder.delete;
+import static jakarta.nosql.document.DocumentDeleteQuery.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(CDIExtension.class)
 public class DefaultDocumentMapperDeleteBuilderTest {
 
     @Inject
-    private DocumentQueryMapperBuilder mapperBuilder;
+    private DocumentQueryMapper mapperBuilder;
 
 
     @Test
