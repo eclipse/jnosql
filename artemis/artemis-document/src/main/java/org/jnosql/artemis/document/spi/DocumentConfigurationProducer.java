@@ -18,7 +18,6 @@ import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
 import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import jakarta.nosql.document.DocumentConfiguration;
 import jakarta.nosql.document.DocumentConfigurationAsync;
-import jakarta.nosql.document.UnaryDocumentConfiguration;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
@@ -74,13 +73,9 @@ class DocumentConfigurationProducer {
              DocumentConfigurationAsync configuration = (DocumentConfigurationAsync) reflections.newInstance(configurationClass);
              return configuration.get(unit.getSettings());
          }
-         if (UnaryDocumentConfiguration.class.isAssignableFrom(configurationClass)) {
-             UnaryDocumentConfiguration<?> configuration = (UnaryDocumentConfiguration) reflections.newInstance(configurationClass);
-             return configuration.get(unit.getSettings());
-         }
 
          throw new ConfigurationException(String.format("The class %s does not match with either " +
-                         "DocumentConfigurationAsync or UnaryDocumentConfiguration",
+                         "DocumentConfigurationAsync",
                  configurationClass));
     }
 
@@ -93,13 +88,9 @@ class DocumentConfigurationProducer {
             DocumentConfiguration configuration = (DocumentConfiguration) reflections.newInstance(configurationClass);
             return configuration.get(unit.getSettings());
         }
-        if (UnaryDocumentConfiguration.class.isAssignableFrom(configurationClass)) {
-            UnaryDocumentConfiguration configuration = (UnaryDocumentConfiguration) reflections.newInstance(configurationClass);
-            return configuration.get(unit.getSettings());
-        }
 
         throw new ConfigurationException(String.format("The class %s does not match with either " +
-                        "DocumentConfiguration or UnaryDocumentConfiguration",
+                        "DocumentConfiguration",
                 configurationClass));
     }
 
