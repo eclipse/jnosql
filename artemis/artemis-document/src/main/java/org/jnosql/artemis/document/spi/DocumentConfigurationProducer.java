@@ -74,7 +74,7 @@ class DocumentConfigurationProducer {
              return configuration.get(unit.getSettings());
          }
 
-         throw new ConfigurationException(String.format("The class %s does not match with either " +
+         throw new ConfigurationException(String.format("The class %s does not match with " +
                          "DocumentConfigurationAsync",
                  configurationClass));
     }
@@ -89,7 +89,7 @@ class DocumentConfigurationProducer {
             return configuration.get(unit.getSettings());
         }
 
-        throw new ConfigurationException(String.format("The class %s does not match with either " +
+        throw new ConfigurationException(String.format("The class %s does not match with " +
                         "DocumentConfiguration",
                 configurationClass));
     }

@@ -18,7 +18,6 @@ import jakarta.nosql.column.ColumnConfiguration;
 import jakarta.nosql.column.ColumnConfigurationAsync;
 import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
-import jakarta.nosql.column.UnaryColumnConfiguration;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
@@ -76,13 +75,9 @@ class ColumnConfigurationProducer {
             ColumnConfigurationAsync configuration = (ColumnConfigurationAsync) reflections.newInstance(configurationClass);
             return configuration.get(unit.getSettings());
         }
-        if (UnaryColumnConfiguration.class.isAssignableFrom(configurationClass)) {
-            UnaryColumnConfiguration<?> configuration = (UnaryColumnConfiguration) reflections.newInstance(configurationClass);
-            return configuration.get(unit.getSettings());
-        }
 
         throw new ConfigurationException(String.format("The class %s does not match with either " +
-                        "ColumnConfigurationAsync or UnaryColumnConfiguration",
+                        "ColumnConfigurationAsync",
                 configurationClass));
     }
 
@@ -95,13 +90,9 @@ class ColumnConfigurationProducer {
             ColumnConfiguration configuration = (ColumnConfiguration) reflections.newInstance(configurationClass);
             return configuration.get(unit.getSettings());
         }
-        if (UnaryColumnConfiguration.class.isAssignableFrom(configurationClass)) {
-            UnaryColumnConfiguration configuration = (UnaryColumnConfiguration) reflections.newInstance(configurationClass);
-            return configuration.get(unit.getSettings());
-        }
 
-        throw new ConfigurationException(String.format("The class %s does not match with either " +
-                        "ColumnConfiguration or UnaryColumnConfiguration",
+        throw new ConfigurationException(String.format("The class %s does not match with " +
+                        "ColumnConfiguration",
                 configurationClass));
     }
 

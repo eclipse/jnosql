@@ -15,16 +15,17 @@
 package org.jnosql.artemis.column;
 
 import jakarta.nosql.Settings;
+import jakarta.nosql.column.ColumnConfiguration;
+import jakarta.nosql.column.ColumnConfigurationAsync;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
-import jakarta.nosql.column.UnaryColumnConfiguration;
 import org.mockito.Mockito;
 
 import java.util.Collections;
 
-public class ColumnFamilyManagerMock implements UnaryColumnConfiguration<ColumnFamilyManagerMock.MockFamilyManager> {
+public class ColumnFamilyManagerMock implements ColumnConfiguration, ColumnConfigurationAsync {
 
 
     @Override
