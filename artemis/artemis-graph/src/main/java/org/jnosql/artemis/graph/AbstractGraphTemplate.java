@@ -77,7 +77,12 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> T insert(T entity) {
         requireNonNull(entity, "entity is required");
         checkId(entity);
-        UnaryOperator<Vertex> save = v -> v;
+        UnaryOperator<Vertex> save = v -> {
+            if (GraphTransactionUtil.isAutomatic()) {
+                getGraph().tx().commit();
+            }
+            return v;
+        };
 
         return getFlow().flow(entity, save);
     }
@@ -91,7 +96,13 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         }
         getVertex(entity).orElseThrow(() -> new EntityNotFoundException("Entity does not find in the update"));
 
-        UnaryOperator<Vertex> update = e -> getConverter().toVertex(entity);
+        UnaryOperator<Vertex> update = e -> {
+            final Vertex vertex = getConverter().toVertex(entity);
+            if (GraphTransactionUtil.isAutomatic()) {
+                getGraph().tx().commit();
+            }
+            return vertex;
+        };
         return getFlow().flow(entity, update);
     }
 
@@ -149,9 +160,17 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                 .out(label).has(id, inVertex.id()).inE(label).filter(predicate).tryNext();
 
         return edge.<EdgeEntity>map(edge1 -> new DefaultEdgeEntity<>(edge1, incoming, outgoing))
-                .orElseGet(() -> new DefaultEdgeEntity<>(outVertex.addEdge(label, inVertex), incoming, outgoing));
+                .orElseGet(() -> new DefaultEdgeEntity<>(getEdge(label, outVertex, inVertex), incoming, outgoing));
 
 
+    }
+
+    private Edge getEdge(String label, Vertex outVertex, Vertex inVertex) {
+        final Edge edge = outVertex.addEdge(label, inVertex);
+        if (GraphTransactionUtil.isAutomatic()) {
+            getGraph().tx().commit();
+        }
+        return edge;
     }
 
     @Override
