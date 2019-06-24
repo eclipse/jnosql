@@ -19,25 +19,19 @@ import org.jnosql.diana.SettingsPriority;
 /**
  * An utilitarian to {@link org.apache.tinkerpop.gremlin.structure.Transaction}
  */
-enum GraphTransactionUtil {
-    INSTANCE;
+final class GraphTransactionUtil {
 
-    private static final String TRANSACTION_KEY = "jakarta.nosql.transaction.automatic";
-
+    static final String TRANSACTION_KEY = "jakarta.nosql.transaction.automatic";
 
     /**
      * Check if the transaction is enable
      *
      * @return Check if the transaction is enable
      */
-    public boolean isAutomatic() {
-        return INSTANCE.isAutomaticImpl();
-    }
-
-    public boolean isAutomaticImpl() {
+    public static boolean isAutomatic() {
         return SettingsPriority.get(TRANSACTION_KEY)
                 .map(Object::toString)
                 .map(Boolean::valueOf)
-                .orElse(false);
+                .orElse(true);
     }
 }
