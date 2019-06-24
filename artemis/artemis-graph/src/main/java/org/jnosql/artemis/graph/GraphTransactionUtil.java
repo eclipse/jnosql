@@ -23,6 +23,9 @@ final class GraphTransactionUtil {
 
     static final String TRANSACTION_KEY = "jakarta.nosql.transaction.automatic";
 
+    private GraphTransactionUtil() {
+    }
+
     /**
      * Check if the transaction is enable
      *
