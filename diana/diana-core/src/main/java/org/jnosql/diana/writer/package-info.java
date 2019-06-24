@@ -17,6 +17,6 @@
 
 /**
  * This package contains all ValueWriter supported by API by default.
- *@see org.jnosql.diana.ValueWriter
+ *@see jakarta.nosql.ValueWriter
  */
 package org.jnosql.diana.writer;
