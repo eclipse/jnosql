@@ -20,6 +20,7 @@ import org.apache.tinkerpop.gremlin.structure.Transaction.Status;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.BookTemplate;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -41,6 +42,14 @@ public class BookTemplateTest {
 
     @Inject
     private Graph graph;
+
+    @BeforeAll
+    public static void before() {
+        System.setProperty(GraphTransactionUtil.TRANSACTION_KEY, Boolean.FALSE.toString());
+    }
+    public static void after() {
+        System.clearProperty(GraphTransactionUtil.TRANSACTION_KEY);
+    }
 
 
     @Test
@@ -85,3 +94,4 @@ public class BookTemplateTest {
        assertNull(status.get());
     }
 }
+
