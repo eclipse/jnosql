@@ -120,7 +120,7 @@ final class InsertQueryParser extends ConditionQueryParser {
     }
 
 
-    private class InsertQueryConditionSupplier implements ConditionQuerySupplier {
+    private static final class InsertQueryConditionSupplier implements ConditionQuerySupplier {
         private final InsertQuery query;
 
         private InsertQueryConditionSupplier(InsertQuery query) {

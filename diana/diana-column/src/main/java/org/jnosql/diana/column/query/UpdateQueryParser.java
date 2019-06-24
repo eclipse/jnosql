@@ -100,7 +100,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
         return getEntity(new UpdateQueryConditionSupplier(updateQuery), columnFamily, params, observer);
     }
 
-    private class UpdateQueryConditionSupplier implements ConditionQuerySupplier {
+    private static final class UpdateQueryConditionSupplier implements ConditionQuerySupplier {
         private final UpdateQuery query;
 
         private UpdateQueryConditionSupplier(UpdateQuery query) {
