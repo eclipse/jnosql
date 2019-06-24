@@ -15,7 +15,7 @@
  *
  */
 /**
- * This package has the DSL domain to create both {@link org.jnosql.diana.document.DocumentQuery}
- * and {@link org.jnosql.diana.document.DocumentDeleteQuery}
+ * This package has the DSL domain to create both {@link jakarta.nosql.document.DocumentQuery}
+ * and {@link jakarta.nosql.document.DocumentDeleteQuery}
  */
 package org.jnosql.diana.document.query;

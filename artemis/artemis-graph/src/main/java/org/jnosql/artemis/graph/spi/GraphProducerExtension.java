@@ -43,7 +43,7 @@ import static jakarta.nosql.mapping.DatabaseType.GRAPH;
 
 /**
  * Extension to start up the GraphTemplate, Repository
- * from the {@link org.jnosql.artemis.Database} qualifier
+ * from the {@link jakarta.nosql.mapping.Database} qualifier
  */
 public class GraphProducerExtension implements Extension {
 

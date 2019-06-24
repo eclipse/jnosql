@@ -54,7 +54,7 @@ public interface GraphConverter {
     <T> T toEntity(Class<T> entityClass, Vertex vertex);
 
     /**
-     *List the fields in the entity as property exclude fields annotated with {@link org.jnosql.artemis.Id}
+     *List the fields in the entity as property exclude fields annotated with {@link jakarta.nosql.mapping.Id}
      * @param entity the entity
      * @param <T> the entity type
      * @throws NullPointerException when entity is null

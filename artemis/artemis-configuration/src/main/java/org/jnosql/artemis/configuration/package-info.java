@@ -14,6 +14,6 @@
  */
 /**
  * This package has the classes to read configuration from file, json recommended, that is normally activated from
- * {@link org.jnosql.artemis.ConfigurationUnit} annotation.
+ * {@link jakarta.nosql.mapping.ConfigurationUnit} annotation.
  */
 package org.jnosql.artemis.configuration;

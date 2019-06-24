@@ -47,7 +47,7 @@ import static jakarta.nosql.mapping.DatabaseType.COLUMN;
 
 /**
  * Extension to start up the ColumnTemplate, ColumnTemplateAsync, Repository and RepositoryAsync
- * from the {@link org.jnosql.artemis.Database} qualifier
+ * from the {@link jakarta.nosql.mapping.Database} qualifier
  */
 public class ColumnFamilyProducerExtension implements Extension {
 
