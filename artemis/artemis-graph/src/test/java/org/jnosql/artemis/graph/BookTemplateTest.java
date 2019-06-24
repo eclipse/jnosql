@@ -43,15 +43,6 @@ public class BookTemplateTest {
     @Inject
     private Graph graph;
 
-    @BeforeAll
-    public static void before() {
-        System.setProperty(GraphTransactionUtil.TRANSACTION_KEY, Boolean.FALSE.toString());
-    }
-    public static void after() {
-        System.clearProperty(GraphTransactionUtil.TRANSACTION_KEY);
-    }
-
-
     @Test
     public void shouldSaveWithTransaction() {
         AtomicReference<Status> status = new AtomicReference<>();
