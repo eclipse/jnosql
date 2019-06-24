@@ -1,0 +1,38 @@
+#
+#
+#  Copyright (c) 2017 Otávio Santana and others
+#   All rights reserved. This program and the accompanying materials
+#   are made available under the terms of the Eclipse Public License v1.0
+#   and Apache License v2.0 which accompanies this distribution.
+#   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+#   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+#
+#   You may elect to redistribute this code under either of these licenses.
+#
+#   Contributors:
+#
+#   Otavio Santana
+
+org.jnosql.diana.reader.AtomicIntegerValueReader
+org.jnosql.diana.reader.AtomicLongValueReader
+org.jnosql.diana.reader.BigDecimalValueReader
+org.jnosql.diana.reader.BigIntegerValueReader
+org.jnosql.diana.reader.BooleanValueReader
+org.jnosql.diana.reader.ByteValueReader
+org.jnosql.diana.reader.CalendarValueReader
+org.jnosql.diana.reader.CharacterValueReader
+org.jnosql.diana.reader.DoubleValueReader
+org.jnosql.diana.reader.EnumValueReader
+org.jnosql.diana.reader.FloatValueReader
+org.jnosql.diana.reader.IntegerValueReader
+org.jnosql.diana.reader.LocalDateValueReader
+org.jnosql.diana.reader.LocalDateTimeValueReader
+org.jnosql.diana.reader.LongValueReader
+org.jnosql.diana.reader.NumberValueReader
+org.jnosql.diana.reader.OptionalValueReader
+org.jnosql.diana.reader.ShortValueReader
+org.jnosql.diana.reader.StringValueReader
+org.jnosql.diana.reader.YearMonthValueReader
+org.jnosql.diana.reader.YearValueReader
+org.jnosql.diana.reader.ZonedDateTimeValueReader
+org.jnosql.diana.reader.LocalTimeValueReader

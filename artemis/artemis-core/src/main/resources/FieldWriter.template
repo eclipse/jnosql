@@ -1,0 +1,12 @@
+package {0};
+
+import jakarta.nosql.mapping.reflection.FieldWriter;
+
+public class {1} implements FieldWriter '{'
+
+    @Override
+    public void write(Object bean, Object value) '{'
+        {2}.class.cast(bean).{3}(({4}) value);
+
+    '}'
+'}'

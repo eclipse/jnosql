@@ -1,0 +1,10 @@
+package {0};
+
+import jakarta.nosql.mapping.reflection.InstanceSupplier;
+
+public class {1} implements InstanceSupplier '{'
+    @Override
+    public Object get() '{'
+        return new {2}();
+    '}'
+}
