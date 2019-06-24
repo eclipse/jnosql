@@ -15,8 +15,6 @@
 package org.jnosql.artemis.graph;
 
 import org.jnosql.diana.SettingsPriority;
-import org.omg.CORBA.PRIVATE_MEMBER;
-
 
 /**
  * An utilitarian to {@link org.apache.tinkerpop.gremlin.structure.Transaction}
