@@ -53,7 +53,7 @@ public interface SettingsEncryption {
 
 
     /**
-     * Returns a {@link SettingsEncryption} instance reading the {@link Configurations#ENCRYPTION}
+     * Returns a {@link SettingsEncryption} instance reading the {@link jakarta.nosql.Configurations#ENCRYPTION}
      *
      * @return a {@link SettingsEncryption} instance
      */
@@ -62,7 +62,7 @@ public interface SettingsEncryption {
     }
 
     /**
-     * Returns a {@link SettingsEncryption} instance reading the {@link Configurations#ENCRYPTION}
+     * Returns a {@link SettingsEncryption} instance reading the {@link jakarta.nosql.Configurations#ENCRYPTION}
      *
      * @param settings the settings
      * @return a {@link SettingsEncryption} instance
