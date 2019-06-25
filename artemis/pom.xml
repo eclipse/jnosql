@@ -32,7 +32,6 @@
 
     <modules>
         <module>artemis-core</module>
-        <module>artemis-configuration</module>
         <module>artemis-graph</module>
         <module>artemis-document</module>
         <module>artemis-column</module>

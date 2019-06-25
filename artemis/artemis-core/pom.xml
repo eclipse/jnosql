@@ -27,6 +27,10 @@
     <artifactId>artemis-core</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <yaml.version>1.24</yaml.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.jnosql.diana</groupId>
@@ -43,7 +47,11 @@
             <artifactId>mapping-core</artifactId>
             <version>${jakarta.nosql.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${yaml.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
