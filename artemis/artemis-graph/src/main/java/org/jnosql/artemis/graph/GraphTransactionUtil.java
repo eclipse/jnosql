@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.jnosql.diana.SettingsPriority;
 
 /**
@@ -23,7 +24,31 @@ final class GraphTransactionUtil {
 
     static final String TRANSACTION_KEY = "jakarta.nosql.transaction.automatic";
 
+    private static final ThreadLocal<Transaction> THREAD_LOCAL = new ThreadLocal<>();
+
     private GraphTransactionUtil() {
+    }
+
+    /**
+     * Holds the current transaction to don't allow a {@link Transaction#commit()}
+     *
+     * @param transaction the {@link Transaction}
+     */
+    static void lock(Transaction transaction) {
+        THREAD_LOCAL.set(transaction);
+    }
+
+    /**
+     * Unlocks the {@link Transaction} of the current thread
+     */
+    static void unlock() {
+        THREAD_LOCAL.remove();
+    }
+
+    static void transaction(Transaction transaction) {
+        if (isAutomatic() && isNotHold()) {
+            transaction.commit();
+        }
     }
 
     /**
@@ -31,10 +56,14 @@ final class GraphTransactionUtil {
      *
      * @return Check if the transaction is enable
      */
-    public static boolean isAutomatic() {
+    static boolean isAutomatic() {
         return SettingsPriority.get(TRANSACTION_KEY)
                 .map(Object::toString)
                 .map(Boolean::valueOf)
                 .orElse(true);
+    }
+
+    private static boolean isNotHold() {
+        return THREAD_LOCAL.get() != null;
     }
 }
