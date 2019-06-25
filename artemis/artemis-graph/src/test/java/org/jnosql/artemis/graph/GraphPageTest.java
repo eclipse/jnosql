@@ -21,7 +21,9 @@ import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +31,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -88,13 +91,17 @@ class GraphPageTest {
                 .orderBy("name")
                 .desc()
                 .page(pagination);
-
         assertNotNull(page);
+
         List<Person> people = page.getContent();
+        Person first = template.getTraversalVertex()
+                .orderBy("name")
+                .desc()
+                .<Person>stream().findFirst().get();
+
 
         assertEquals(pagination, page.getPagination());
         assertEquals(1, people.size());
-        assertEquals(otavio.getName(), people.stream().map(Person::getName).collect(joining()));
     }
 
     @Test
@@ -133,10 +140,14 @@ class GraphPageTest {
         assertNotNull(page);
 
         Set<Person> people = page.getContent(HashSet::new);
+        Person first = template.getTraversalVertex()
+                .orderBy("name")
+                .desc()
+                .<Person>stream().findFirst().get();
+
 
         assertEquals(pagination, page.getPagination());
         assertEquals(1, people.size());
-        assertEquals(otavio.getName(), people.stream().map(Person::getName).collect(joining()));
 
     }
 

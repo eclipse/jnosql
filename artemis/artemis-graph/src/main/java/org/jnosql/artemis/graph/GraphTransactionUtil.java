@@ -17,6 +17,8 @@ package org.jnosql.artemis.graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.jnosql.diana.SettingsPriority;
 
+import java.util.Objects;
+
 /**
  * An utilitarian to {@link org.apache.tinkerpop.gremlin.structure.Transaction}
  */
@@ -45,8 +47,14 @@ final class GraphTransactionUtil {
         THREAD_LOCAL.remove();
     }
 
+    /**
+     * Checks if possible to {@link Transaction#commit()},
+     * if checks it the {@link Transaction} holds and if it is defined as an automatic transaction.
+     *
+     * @param transaction the transaction
+     */
     static void transaction(Transaction transaction) {
-        if (isAutomatic() && isNotHold()) {
+        if (isAutomatic() && isNotLock() && Objects.nonNull(transaction)) {
             transaction.commit();
         }
     }
@@ -63,7 +71,7 @@ final class GraphTransactionUtil {
                 .orElse(true);
     }
 
-    private static boolean isNotHold() {
-        return THREAD_LOCAL.get() != null;
+    private static boolean isNotLock() {
+        return THREAD_LOCAL.get() == null;
     }
 }
