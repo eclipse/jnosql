@@ -17,6 +17,7 @@
 package org.jnosql.diana;
 
 import jakarta.nosql.Settings;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -82,5 +83,13 @@ class SettingsPriorityTest {
         Settings settings = Settings.of(Collections.singletonMap(key, "value"));
         Optional<Object> value = SettingsPriority.get(key, settings);
         assertEquals("value", value.get());
+    }
+
+    @Test
+    public void shouldGetProperties(){
+        Map<String, String> env = System.getenv();
+        String key = env.keySet().stream().findFirst().get();
+        Optional<Object> value = SettingsPriority.get(key);
+        Assertions.assertEquals(env.get(key), value.get());
     }
 }

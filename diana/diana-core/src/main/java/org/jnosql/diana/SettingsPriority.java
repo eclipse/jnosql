@@ -82,6 +82,23 @@ public final class SettingsPriority {
         return settings.get(key);
     }
 
+    /**
+     * Finds a property from key using the priority
+     *
+     * @param key      the key
+     * @return a property or {@link Optional#empty()}
+     * @throws NullPointerException when there is null parameter
+     */
+    public static Optional<Object> get(String key) {
+        requireNonNull(key, "key is required");
+        String value = System.getProperty(key);
+        if (value != null) {
+            return Optional.of(value);
+        }
+        value = System.getenv().get(key);
+        return Optional.ofNullable(value);
+    }
+
     private static Settings getSettings(Map<String, Object> settings) {
         Map<String, Object> configurations = new HashMap<>(settings);
         configurations.putAll(System.getenv());

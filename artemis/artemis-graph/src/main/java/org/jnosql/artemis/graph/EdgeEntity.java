@@ -14,14 +14,11 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Property;
 import jakarta.nosql.Value;
+import org.apache.tinkerpop.gremlin.structure.Property;
 
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * It is a wrapper of {@link org.apache.tinkerpop.gremlin.structure.Edge} that links two Entity.
@@ -127,21 +124,4 @@ public interface EdgeEntity {
     void delete();
 
 
-    /**
-     * Creates a new {@link EdgeEntity} instance
-     *
-     * @param outgoing the outgoing
-     * @param edge     the Tinkerpop edge
-     * @param incoming the incoming object
-     * @param <O>    the outgoing type
-     * @param <I>     the incoming type
-     * @return an {@link EdgeEntity} instance
-     * @throws NullPointerException if any parameters is null
-     */
-    static <O, I> EdgeEntity of(O outgoing, Edge edge, I incoming) {
-        requireNonNull(outgoing, "outgoing is required");
-        requireNonNull(edge, "edge is required");
-        requireNonNull(incoming, "incoming is required");
-        return new DefaultEdgeEntity<>(edge, incoming, outgoing);
-    }
 }

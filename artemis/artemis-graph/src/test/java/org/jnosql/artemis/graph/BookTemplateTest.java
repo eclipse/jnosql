@@ -30,8 +30,8 @@ import static org.apache.tinkerpop.gremlin.structure.Transaction.Status.COMMIT;
 import static org.apache.tinkerpop.gremlin.structure.Transaction.Status.ROLLBACK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(CDIExtension.class)
 public class BookTemplateTest {
@@ -41,7 +41,6 @@ public class BookTemplateTest {
 
     @Inject
     private Graph graph;
-
 
     @Test
     public void shouldSaveWithTransaction() {
@@ -85,3 +84,4 @@ public class BookTemplateTest {
        assertNull(status.get());
     }
 }
+

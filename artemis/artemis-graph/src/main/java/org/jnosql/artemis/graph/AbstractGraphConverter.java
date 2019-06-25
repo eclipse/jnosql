@@ -134,7 +134,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         requireNonNull(edge, "vertex is required");
         Object out = toEntity(edge.outVertex());
         Object in = toEntity(edge.inVertex());
-        return EdgeEntity.of(out, edge, in);
+        return new DefaultEdgeEntity<>(edge, in, out);
     }
 
     @Override
