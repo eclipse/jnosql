@@ -38,6 +38,7 @@ class TransactionalInterceptor {
     @AroundInvoke
     public Object manageTransaction(InvocationContext context) throws Exception {
         Transaction transaction = graph.get().tx();
+        GraphTransactionUtil.lock(transaction);
         if (!transaction.isOpen()) {
             transaction.open();
         }
@@ -48,6 +49,8 @@ class TransactionalInterceptor {
         } catch (Exception exception) {
             transaction.rollback();
             throw exception;
+        }finally {
+            GraphTransactionUtil.unlock();
         }
 
     }
