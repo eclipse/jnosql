@@ -73,15 +73,16 @@ public class BookTemplateTest {
     }
 
     @Test
-    public void shouldUseNormalTransaction() {
+    public void shouldUseAutomaticNormalTransaction() {
         AtomicReference<Status> status = new AtomicReference<>();
 
         Book book = Book.builder().withName("The Book").build();
         Transaction transaction = graph.tx();
         transaction.addTransactionListener(status::set);
+        assertNull(status.get());
         template.normalInsertion(book);
         assertTrue(transaction.isOpen());
-       assertNull(status.get());
+        assertEquals(COMMIT, status.get());
     }
 }
 
