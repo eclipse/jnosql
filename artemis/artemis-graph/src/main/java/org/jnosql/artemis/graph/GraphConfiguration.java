@@ -22,5 +22,5 @@ import java.util.function.Function;
 /**
  * The Producer of {@link Graph} that given a {@link Settings} make an  {@link Graph} instance.
  */
-public interface GraphProducer extends Function<Settings, Graph> {
+public interface GraphConfiguration extends Function<Settings, Graph> {
 }

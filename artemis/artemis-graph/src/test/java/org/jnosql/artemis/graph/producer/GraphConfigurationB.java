@@ -15,14 +15,14 @@
 package org.jnosql.artemis.graph.producer;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.graph.GraphProducer;
+import org.jnosql.artemis.graph.GraphConfiguration;
 import jakarta.nosql.Settings;
 
-public class GraphProducerA implements GraphProducer {
+public class GraphConfigurationB implements GraphConfiguration {
 
 
     @Override
     public Graph apply(Settings settings) {
-        return new GraphMockA(settings);
+        return new GraphMockB(settings);
     }
 }
