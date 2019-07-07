@@ -20,7 +20,7 @@ import jakarta.nosql.Settings;
 import java.util.function.Function;
 
 /**
- * The Producer of {@link Graph} that given a {@link Settings} make an  {@link Graph} instance.
+ * The Configuration that creates an instance of {@link Graph} that given a {@link Settings} make an  {@link Graph} instance.
  */
 public interface GraphConfiguration extends Function<Settings, Graph> {
 }
