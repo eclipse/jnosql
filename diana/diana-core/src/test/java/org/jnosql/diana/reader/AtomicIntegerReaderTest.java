@@ -50,6 +50,4 @@ public class AtomicIntegerReaderTest {
         assertEquals(integer.get(), valueReader.read(AtomicInteger.class, 10.00).get());
         assertEquals(integer.get(), valueReader.read(AtomicInteger.class, "10").get());
     }
-
-
 }
