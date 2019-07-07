@@ -2,7 +2,7 @@
   {
     "description":"that is the description",
     "name":"graphA",
-    "provider":"org.jnosql.artemis.graph.producer.GraphProducerA",
+    "provider":"org.jnosql.artemis.graph.producer.GraphConfigurationA",
     "settings":{
       "key":"valueA",
       "key2":"value2A"
@@ -12,7 +12,7 @@
   {
     "description":"that is the description",
     "name":"graphB",
-    "provider":"org.jnosql.artemis.graph.producer.GraphProducerB",
+    "provider":"org.jnosql.artemis.graph.producer.GraphConfigurationB",
     "settings":{
       "key":"valueB",
       "key2":"value2B"
