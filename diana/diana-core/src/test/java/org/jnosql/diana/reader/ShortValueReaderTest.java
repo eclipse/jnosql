@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ShortReaderTest {
+class ShortValueReaderTest {
 
 
     private ValueReader valueReader;
