@@ -18,7 +18,6 @@ package org.jnosql.diana.reader;
 
 import jakarta.nosql.ValueReader;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
