@@ -17,46 +17,36 @@
 
 package org.jnosql.diana.reader;
 
+
 import jakarta.nosql.ValueReader;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.math.BigDecimal;
 
 /**
- * Class to reads and converts to {@link Calendar}, first it verify if is Calendar if yes return itself then verifies
- * if is {@link Long} and use {@link Calendar#setTimeInMillis(long)}} otherwise convert to {@link String}
+ * Class to reads and converts to {@link BigDecimal}, first it verify if is Double if yes return itself then verifies
+ * if is {@link Number} and use {@link Number#doubleValue()} otherwise convert to {@link String}
+ * and then {@link BigDecimal}
+ *
  */
 @SuppressWarnings("unchecked")
-public final class CalendarValueReader implements ValueReader {
+public final class BigDecimalReader implements ValueReader {
+
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {
-        return Calendar.class.equals(clazz);
+        return BigDecimal.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (Calendar.class.isInstance(value)) {
+        if (BigDecimal.class.isInstance(value)) {
             return (T) value;
         }
-
         if (Number.class.isInstance(value)) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis( ((Number) value).longValue());
-            return (T) calendar;
+            return (T) BigDecimal.valueOf(Number.class.cast(value).doubleValue());
+        } else {
+            return (T) BigDecimal.valueOf(Double.valueOf(value.toString()));
         }
-
-        if (Date.class.isInstance(value)) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime((Date)value);
-            return (T) calendar;
-        }
-
-        Date date = new Date(value.toString());
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        return (T) calendar;
     }
 }

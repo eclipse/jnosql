@@ -20,33 +20,27 @@ package org.jnosql.diana.reader;
 
 import jakarta.nosql.ValueReader;
 
-import java.math.BigDecimal;
+import java.util.Optional;
 
 /**
- * Class to reads and converts to {@link BigDecimal}, first it verify if is Double if yes return itself then verifies
- * if is {@link Number} and use {@link Number#doubleValue()} otherwise convert to {@link String}
- * and then {@link BigDecimal}
- *
+ * Class to reads and converts to {@link Optional}
  */
 @SuppressWarnings("unchecked")
-public final class BigDecimalValueReader implements ValueReader {
-
+public final class OptionalReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {
-        return BigDecimal.class.equals(clazz);
+        return Optional.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (BigDecimal.class.isInstance(value)) {
+        if (Optional.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) BigDecimal.valueOf(Number.class.cast(value).doubleValue());
-        } else {
-            return (T) BigDecimal.valueOf(Double.valueOf(value.toString()));
-        }
+        return (T) Optional.ofNullable(value);
     }
+
+
 }

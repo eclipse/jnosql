@@ -35,7 +35,7 @@ public class BigIntegerReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new BigIntegerValueReader();
+        valueReader = new BigIntegerReader();
     }
 
     @Test

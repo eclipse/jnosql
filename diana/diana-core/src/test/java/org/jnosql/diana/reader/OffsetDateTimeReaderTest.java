@@ -21,37 +21,44 @@ package org.jnosql.diana.reader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ZonedDateTimeReaderTest {
+public class OffsetDateTimeReaderTest {
 
-    private ZonedDateTimeReader dateReader;
+    private OffsetDateTimeReader dateReader;
 
     @BeforeEach
     public void init() {
-        dateReader = new ZonedDateTimeReader();
+        dateReader = new OffsetDateTimeReader();
     }
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(dateReader.isCompatible(ZonedDateTime.class));
+        assertFalse(dateReader.isCompatible(LocalTime.class));
+        assertTrue(dateReader.isCompatible(OffsetDateTime.class));
     }
 
     @Test
     public void shouldConvert() {
-        final ZonedDateTime now = ZonedDateTime.now();
+        final OffsetDateTime now = OffsetDateTime.now();
         final Date date = new Date();
         final Calendar calendar = Calendar.getInstance();
 
-        assertEquals(now, dateReader.read(ZonedDateTime.class, now));
-        assertEquals(date.toInstant().atZone(ZoneId.systemDefault()), dateReader.read(ZonedDateTime.class, date));
-        assertEquals(calendar.toInstant().atZone(ZoneId.systemDefault()), dateReader.read(ZonedDateTime.class, calendar));
-        assertEquals(date.toInstant().atZone(ZoneId.systemDefault()), dateReader.read(ZonedDateTime.class, date.getTime()));
+        assertEquals(now, dateReader.read(LocalTime.class, now));
+        assertEquals(date.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime(),
+                dateReader.read(OffsetTime.class, date));
+        assertEquals(calendar.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime(),
+                dateReader.read(OffsetTime.class, calendar));
+        assertEquals(date.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime(),
+                dateReader.read(OffsetTime.class, date.getTime()));
     }
 }

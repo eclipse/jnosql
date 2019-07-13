@@ -34,7 +34,7 @@ public class EnumReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new EnumValueReader();
+        valueReader = new EnumReader();
     }
 
     @Test

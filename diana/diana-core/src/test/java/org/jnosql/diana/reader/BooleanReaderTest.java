@@ -33,7 +33,7 @@ public class BooleanReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new BooleanValueReader();
+        valueReader = new BooleanReader();
     }
 
     @Test

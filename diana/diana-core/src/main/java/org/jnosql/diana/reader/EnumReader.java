@@ -29,7 +29,7 @@ import java.util.List;
  *
  */
 @SuppressWarnings("unchecked")
-public final class EnumValueReader implements ValueReader {
+public final class EnumReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {

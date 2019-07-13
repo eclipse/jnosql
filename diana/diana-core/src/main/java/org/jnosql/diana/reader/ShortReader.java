@@ -21,24 +21,27 @@ package org.jnosql.diana.reader;
 import jakarta.nosql.ValueReader;
 
 /**
- * Class to reads and converts to both {@link String} and {@link CharSequence}.
+ * Class to reads and converts to {@link Short}, first it verify if is Double if yes return itself then verifies if is
+ * {@link Number} and use {@link Number#shortValue()} otherwise convert to {@link String} and then {@link Short}
  */
 @SuppressWarnings("unchecked")
-public final class StringValueReader implements ValueReader {
+public final class ShortReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {
-        return CharSequence.class.equals(clazz) || String.class.equals(clazz);
+        return Short.class.equals(clazz) || short.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (CharSequence.class.equals(clazz) && CharSequence.class.isInstance(value)) {
+        if (Short.class.isInstance(value)) {
             return (T) value;
         }
-        return (T) value.toString();
+        if (Number.class.isInstance(value)) {
+            return (T) Short.valueOf(Number.class.cast(value).shortValue());
+        } else {
+            return (T) Short.valueOf(value.toString());
+        }
     }
-
-
 }

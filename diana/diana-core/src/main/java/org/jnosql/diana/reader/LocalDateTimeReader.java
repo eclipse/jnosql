@@ -29,7 +29,7 @@ import java.util.Date;
  *
  */
 @SuppressWarnings("unchecked")
-public class LocalDateTimeValueReader implements ValueReader {
+public class LocalDateTimeReader implements ValueReader {
 
     @Override
     public boolean isCompatible(Class clazz) {

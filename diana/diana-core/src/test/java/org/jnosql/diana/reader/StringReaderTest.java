@@ -34,7 +34,7 @@ public class StringReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new StringValueReader();
+        valueReader = new StringReader();
     }
 
     @Test

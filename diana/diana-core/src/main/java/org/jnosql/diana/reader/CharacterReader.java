@@ -17,28 +17,36 @@
 
 package org.jnosql.diana.reader;
 
+
 import jakarta.nosql.ValueReader;
 
-import java.time.Year;
+import static java.lang.Character.MIN_VALUE;
 
 /**
- * Class to reads and converts to {@link Year}, first it verify if is Year if yes return itself
- * otherwise convert to {@link String} and then {@link Year}
+ * Class reader for {@link Character}
  */
 @SuppressWarnings("unchecked")
-public final class YearValueReader implements ValueReader {
+public final class CharacterReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {
-        return Year.class.equals(clazz);
+        return Character.class.equals(clazz) || char.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-
-        if (Year.class.isInstance(value)) {
+        if (Character.class.isInstance(value)) {
             return (T) value;
         }
-        return (T) Year.parse(value.toString());
+        if (Number.class.isInstance(value)) {
+            return (T) Character.valueOf((char) Number.class.cast(value).intValue());
+        }
+
+        if (value.toString().isEmpty()) {
+            return (T) Character.valueOf(MIN_VALUE);
+        }
+        return (T) Character.valueOf(value.toString().charAt(0));
     }
+
+
 }

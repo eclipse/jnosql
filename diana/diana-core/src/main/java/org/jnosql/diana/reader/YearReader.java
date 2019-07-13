@@ -17,39 +17,28 @@
 
 package org.jnosql.diana.reader;
 
-
-
-
-
 import jakarta.nosql.ValueReader;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.time.Year;
 
 /**
- * Class to reads and converts to {@link AtomicInteger}, first it verify if is AtomicInteger if yes return itself then
- * verifies if is {@link Number} and use {@link Number#intValue()} ()} otherwise convert to {@link String}
- * and then {@link AtomicInteger}
+ * Class to reads and converts to {@link Year}, first it verify if is Year if yes return itself
+ * otherwise convert to {@link String} and then {@link Year}
  */
 @SuppressWarnings("unchecked")
-public final class AtomicIntegerValueReader implements ValueReader {
+public final class YearReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {
-        return AtomicInteger.class.equals(clazz);
+        return Year.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (AtomicInteger.class.isInstance(value)) {
+        if (Year.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) new AtomicInteger(Number.class.cast(value).intValue());
-        } else {
-            return (T) new AtomicInteger(Integer.valueOf(value.toString()));
-        }
+        return (T) Year.parse(value.toString());
     }
-
-
 }

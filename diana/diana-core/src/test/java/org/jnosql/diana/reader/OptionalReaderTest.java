@@ -34,7 +34,7 @@ public class OptionalReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new OptionalValueReader();
+        valueReader = new OptionalReader();
     }
 
     @Test

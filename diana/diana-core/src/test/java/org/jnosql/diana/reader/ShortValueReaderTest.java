@@ -31,7 +31,7 @@ class ShortValueReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new ShortValueReader();
+        valueReader = new ShortReader();
     }
 
     @Test

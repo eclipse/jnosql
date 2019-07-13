@@ -12,17 +12,15 @@
  *
  *   Otavio Santana
  */
-package org.jnosql.artemis.graph.producer;
+package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.jnosql.artemis.graph.GraphProducer;
 import jakarta.nosql.Settings;
 
-public class GraphProducerA implements GraphProducer {
+import java.util.function.Function;
 
-
-    @Override
-    public Graph apply(Settings settings) {
-        return new GraphMockA(settings);
-    }
+/**
+ * The Configuration that creates an instance of {@link Graph} that given a {@link Settings} make an  {@link Graph} instance.
+ */
+public interface GraphConfiguration extends Function<Settings, Graph> {
 }

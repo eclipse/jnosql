@@ -20,33 +20,30 @@ package org.jnosql.diana.reader;
 
 import jakarta.nosql.ValueReader;
 
-import static java.lang.Character.MIN_VALUE;
+import java.util.Date;
 
 /**
- * Class reader for {@link Character}
+ * Class to reads and converts Date type
  */
 @SuppressWarnings("unchecked")
-public final class CharacterValueReader implements ValueReader {
+public final class DateReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {
-        return Character.class.equals(clazz) || char.class.equals(clazz);
+        return Date.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-        if (Character.class.isInstance(value)) {
+
+        if (Date.class.isInstance(value)) {
             return (T) value;
         }
+
         if (Number.class.isInstance(value)) {
-            return (T) Character.valueOf((char) Number.class.cast(value).intValue());
+            return (T) new Date(((Number) value).longValue());
         }
 
-        if (value.toString().isEmpty()) {
-            return (T) Character.valueOf(MIN_VALUE);
-        }
-        return (T) Character.valueOf(value.toString().charAt(0));
+        return (T) new Date(value.toString());
     }
-
-
 }

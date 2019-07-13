@@ -33,7 +33,7 @@ public class ByteReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new ByteValueReader();
+        valueReader = new ByteReader();
     }
 
     @Test

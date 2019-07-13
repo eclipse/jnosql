@@ -17,42 +17,35 @@
 
 package org.jnosql.diana.reader;
 
+
 import jakarta.nosql.ValueReader;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Calendar;
-import java.util.Date;
+import java.math.BigInteger;
 
 /**
- * Class to read and convert to {@link ZonedDateTime} type
+ * Class to reads and converts to {@link BigInteger}, first it verify if is Double if yes return itself then verifies
+ * if is {@link Number} and use {@link Number#longValue()} otherwise convert to {@link String}
+ * and then {@link BigInteger}
+ *
  */
 @SuppressWarnings("unchecked")
-public class ZonedDateTimeValueReader implements ValueReader {
+public final class BigIntegerReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {
-        return ZonedDateTime.class.equals(clazz);
+        return BigInteger.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-        if (ZonedDateTime.class.isInstance(value)) {
+
+        if (BigInteger.class.isInstance(value)) {
             return (T) value;
         }
-
-        if (Calendar.class.isInstance(value)) {
-            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault());
-        }
-
-        if (Date.class.isInstance(value)) {
-            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault());
-        }
-
         if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault());
+            return (T) BigInteger.valueOf(Number.class.cast(value).longValue());
+        } else {
+            return (T) BigInteger.valueOf(Long.valueOf(value.toString()));
         }
-
-        return (T) ZonedDateTime.parse(value.toString());
     }
 }

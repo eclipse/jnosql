@@ -32,7 +32,7 @@ public class CalendarReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new CalendarValueReader();
+        valueReader = new CalendarReader();
     }
 
     @Test

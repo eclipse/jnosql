@@ -33,7 +33,7 @@ public class CharacterReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new CharacterValueReader();
+        valueReader = new CharacterReader();
     }
 
     @Test

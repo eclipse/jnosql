@@ -34,7 +34,7 @@ public class BigDecimalReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new BigDecimalValueReader();
+        valueReader = new BigDecimalReader();
     }
 
     @Test

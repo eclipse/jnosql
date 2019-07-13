@@ -33,7 +33,7 @@ public class LongReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new LongValueReader();
+        valueReader = new LongReader();
     }
 
     @Test
