@@ -27,7 +27,7 @@ import java.util.Date;
  * Class to reads and converts to {@link OffsetTime} type
  *
  */
-public class OffsetTimeValueReader implements ValueReader {
+public class OffsetTimeReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> typeClass) {

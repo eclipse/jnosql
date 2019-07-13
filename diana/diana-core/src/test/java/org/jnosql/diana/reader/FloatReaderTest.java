@@ -32,7 +32,7 @@ public class FloatReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new FloatValueReader();
+        valueReader = new FloatReader();
     }
 
     @Test

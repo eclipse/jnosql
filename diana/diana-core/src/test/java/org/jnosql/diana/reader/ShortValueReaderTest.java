@@ -24,14 +24,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ShortValueReaderTest {
+class ShortReaderTest {
 
 
     private ValueReader valueReader;
 
     @BeforeEach
     public void init() {
-        valueReader = new ShortValueReader();
+        valueReader = new ShortReader();
     }
 
     @Test

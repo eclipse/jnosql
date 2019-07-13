@@ -34,7 +34,7 @@ public class AtomicIntegerReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new AtomicIntegerValueReader();
+        valueReader = new AtomicIntegerReader();
     }
 
     @Test

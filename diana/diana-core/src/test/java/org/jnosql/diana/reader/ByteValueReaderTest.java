@@ -24,13 +24,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ByteValueReaderTest {
+class ByteReaderTest {
 
     private ValueReader valueReader;
 
     @BeforeEach
     public void init() {
-        valueReader = new ByteValueReader();
+        valueReader = new ByteReader();
     }
 
     @Test

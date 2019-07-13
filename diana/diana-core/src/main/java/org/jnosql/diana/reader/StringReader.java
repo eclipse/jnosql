@@ -21,24 +21,23 @@ package org.jnosql.diana.reader;
 import jakarta.nosql.ValueReader;
 
 /**
- * Class reader for {@link Number}, this converter first verify if the object is a Number instance,
- * if it will return itself, otherwise convert to String and then to {@link Double}
+ * Class to reads and converts to both {@link String} and {@link CharSequence}.
  */
 @SuppressWarnings("unchecked")
-public final class NumberValueReader implements ValueReader {
+public final class StringReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {
-        return Number.class.equals(clazz);
+        return CharSequence.class.equals(clazz) || String.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-        if (Number.class.isInstance(value)) {
+
+        if (CharSequence.class.equals(clazz) && CharSequence.class.isInstance(value)) {
             return (T) value;
-        } else {
-            return (T) Double.valueOf(value.toString());
         }
+        return (T) value.toString();
     }
 
 

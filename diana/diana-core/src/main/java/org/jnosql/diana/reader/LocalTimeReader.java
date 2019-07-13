@@ -17,31 +17,42 @@
 
 package org.jnosql.diana.reader;
 
-
 import jakarta.nosql.ValueReader;
 
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
- * Class to reads and converts to {@link Long}, first it verify if is Double if yes return itself then verifies if is
- * {@link Number} and use {@link Number#longValue()} otherwise convert to {@link String} and then {@link Long}
+ * Class to read and convert to {@link LocalTime} type
  */
 @SuppressWarnings("unchecked")
-public final class LongValueReader implements ValueReader {
+public class LocalTimeReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Long.class.equals(clazz) || long.class.equals(clazz);
+    public boolean isCompatible(Class clazz) {
+        return LocalTime.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-
-        if (Long.class.isInstance(value)) {
+        if (LocalTime.class.isInstance(value)) {
             return (T) value;
         }
-        if (Number.class.isInstance(value)) {
-            return (T) Long.valueOf(Number.class.cast(value).longValue());
-        } else {
-            return (T) Long.valueOf(value.toString());
+
+        if (Calendar.class.isInstance(value)) {
+            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
         }
+
+        if (Date.class.isInstance(value)) {
+            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        }
+
+        if (Number.class.isInstance(value)) {
+            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        }
+
+        return (T) LocalTime.parse(value.toString());
     }
 }

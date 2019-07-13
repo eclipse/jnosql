@@ -26,7 +26,7 @@ import jakarta.nosql.ValueReader;
  * otherwise convert to {@link String} and then {@link YearMonth}
  */
 @SuppressWarnings("unchecked")
-public final class YearMonthValueReader implements ValueReader {
+public final class YearMonthReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {

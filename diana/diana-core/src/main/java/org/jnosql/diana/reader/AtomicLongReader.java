@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * and then {@link AtomicLong}
  */
 @SuppressWarnings("unchecked")
-public final class AtomicLongValueReader implements ValueReader {
+public final class AtomicLongReader implements ValueReader {
 
 
 

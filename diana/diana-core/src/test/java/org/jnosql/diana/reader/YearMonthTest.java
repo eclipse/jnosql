@@ -33,7 +33,7 @@ public class YearMonthTest {
 
 	@BeforeEach
 	public void init() {
-		valueReader = new YearMonthValueReader();
+		valueReader = new YearMonthReader();
 	}
 
 	@Test

@@ -20,26 +20,25 @@ package org.jnosql.diana.reader;
 
 import jakarta.nosql.ValueReader;
 
-import java.util.Optional;
-
 /**
- * Class to reads and converts to {@link Optional}
+ * Class reader for {@link Number}, this converter first verify if the object is a Number instance,
+ * if it will return itself, otherwise convert to String and then to {@link Double}
  */
 @SuppressWarnings("unchecked")
-public final class OptionalValueReader implements ValueReader {
+public final class NumberReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {
-        return Optional.class.equals(clazz);
+        return Number.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-
-        if (Optional.class.isInstance(value)) {
+        if (Number.class.isInstance(value)) {
             return (T) value;
+        } else {
+            return (T) Double.valueOf(value.toString());
         }
-        return (T) Optional.ofNullable(value);
     }
 
 

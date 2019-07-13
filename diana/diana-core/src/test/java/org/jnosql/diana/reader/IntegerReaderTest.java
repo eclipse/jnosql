@@ -33,7 +33,7 @@ public class IntegerReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new IntegerValueReader();
+        valueReader = new IntegerReader();
     }
 
     @Test

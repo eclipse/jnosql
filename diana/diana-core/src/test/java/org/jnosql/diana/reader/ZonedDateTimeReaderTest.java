@@ -31,11 +31,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ZonedDateTimeReaderTest {
 
-    private ZonedDateTimeValueReader dateReader;
+    private ZonedDateTimeReader dateReader;
 
     @BeforeEach
     public void init() {
-        dateReader = new ZonedDateTimeValueReader();
+        dateReader = new ZonedDateTimeReader();
     }
 
     @Test

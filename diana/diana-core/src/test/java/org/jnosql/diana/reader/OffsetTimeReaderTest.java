@@ -33,11 +33,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OffsetTimeReaderTest {
 
-    private OffsetTimeValueReader dateReader;
+    private OffsetTimeReader dateReader;
 
     @BeforeEach
     public void init() {
-        dateReader = new OffsetTimeValueReader();
+        dateReader = new OffsetTimeReader();
     }
 
     @Test

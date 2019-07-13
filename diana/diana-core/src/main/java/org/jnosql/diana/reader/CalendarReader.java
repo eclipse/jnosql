@@ -19,40 +19,44 @@ package org.jnosql.diana.reader;
 
 import jakarta.nosql.ValueReader;
 
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Class to read and convert to {@link LocalTime} type
+ * Class to reads and converts to {@link Calendar}, first it verify if is Calendar if yes return itself then verifies
+ * if is {@link Long} and use {@link Calendar#setTimeInMillis(long)}} otherwise convert to {@link String}
  */
 @SuppressWarnings("unchecked")
-public class LocalTimeValueReader implements ValueReader {
+public final class CalendarReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
-        return LocalTime.class.equals(clazz);
+    public <T> boolean isCompatible(Class<T> clazz) {
+        return Calendar.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
-        if (LocalTime.class.isInstance(value)) {
+
+        if (Calendar.class.isInstance(value)) {
             return (T) value;
         }
 
-        if (Calendar.class.isInstance(value)) {
-            return (T) ((Calendar) value).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        if (Number.class.isInstance(value)) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis( ((Number) value).longValue());
+            return (T) calendar;
         }
 
         if (Date.class.isInstance(value)) {
-            return (T) ((Date) value).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime((Date)value);
+            return (T) calendar;
         }
 
-        if (Number.class.isInstance(value)) {
-            return (T) new Date(((Number) value).longValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-        }
+        Date date = new Date(value.toString());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
-        return (T) LocalTime.parse(value.toString());
+        return (T) calendar;
     }
 }

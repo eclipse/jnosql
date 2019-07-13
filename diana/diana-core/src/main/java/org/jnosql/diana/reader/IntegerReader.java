@@ -25,7 +25,7 @@ import jakarta.nosql.ValueReader;
  * {@link Number} and use {@link Number#intValue()} otherwise convert to {@link String} and then {@link Integer}
  */
 @SuppressWarnings("unchecked")
-public final class IntegerValueReader implements ValueReader {
+public final class IntegerReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {

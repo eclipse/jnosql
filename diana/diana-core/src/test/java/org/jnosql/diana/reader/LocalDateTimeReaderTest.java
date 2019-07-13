@@ -30,11 +30,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LocalDateTimeReaderTest {
 
-    private LocalDateTimeValueReader dateReader;
+    private LocalDateTimeReader dateReader;
 
     @BeforeEach
     public void init() {
-        dateReader = new LocalDateTimeValueReader();
+        dateReader = new LocalDateTimeReader();
     }
 
     @Test

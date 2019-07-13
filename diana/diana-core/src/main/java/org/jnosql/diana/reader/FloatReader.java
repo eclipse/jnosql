@@ -21,27 +21,27 @@ package org.jnosql.diana.reader;
 import jakarta.nosql.ValueReader;
 
 /**
- * Class to reads and converts to {@link Short}, first it verify if is Double if yes return itself then verifies if is
- * {@link Number} and use {@link Number#shortValue()} otherwise convert to {@link String} and then {@link Short}
+ * Class to reads and converts to {@link Float}, first it verify if is Double if yes return itself then verifies if is
+ * {@link Number} and use {@link Number#floatValue()} otherwise convert to {@link String} and then {@link Float}
  */
 @SuppressWarnings("unchecked")
-public final class ShortValueReader implements ValueReader {
+public final class FloatReader implements ValueReader {
 
     @Override
     public <T> boolean isCompatible(Class<T> clazz) {
-        return Short.class.equals(clazz) || short.class.equals(clazz);
+        return Float.class.equals(clazz) || float.class.equals(clazz);
     }
 
     @Override
     public <T> T read(Class<T> clazz, Object value) {
 
-        if (Short.class.isInstance(value)) {
+        if (Float.class.isInstance(value)) {
             return (T) value;
         }
         if (Number.class.isInstance(value)) {
-            return (T) Short.valueOf(Number.class.cast(value).shortValue());
+            return (T) Float.valueOf(Number.class.cast(value).floatValue());
         } else {
-            return (T) Short.valueOf(value.toString());
+            return (T) Float.valueOf(value.toString());
         }
     }
 }

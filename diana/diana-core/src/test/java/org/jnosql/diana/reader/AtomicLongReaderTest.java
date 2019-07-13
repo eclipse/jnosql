@@ -34,7 +34,7 @@ public class AtomicLongReaderTest {
 
     @BeforeEach
     public void init() {
-        valueReader = new AtomicLongValueReader();
+        valueReader = new AtomicLongReader();
     }
 
     @Test
