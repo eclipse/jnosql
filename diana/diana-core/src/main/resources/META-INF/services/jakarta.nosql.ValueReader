@@ -36,3 +36,5 @@ org.jnosql.diana.reader.YearMonthValueReader
 org.jnosql.diana.reader.YearValueReader
 org.jnosql.diana.reader.ZonedDateTimeValueReader
 org.jnosql.diana.reader.LocalTimeValueReader
+org.jnosql.diana.reader.OffsetDateTimeValueReader
+org.jnosql.diana.reader.OffsetTimeValueReader
