@@ -65,11 +65,11 @@
     <properties>
         <checkstyle.excludes>**/diana/query/**</checkstyle.excludes>
         <hamcrest-all.version>1.3</hamcrest-all.version>
-        <mockito.verson>2.27.0</mockito.verson>
-        <org.awaitility.version>3.1.6</org.awaitility.version>
+        <mockito.verson>3.0.0</mockito.verson>
+        <org.awaitility.version>4.0.0-rc1</org.awaitility.version>
         <owb.version>2.0.3</owb.version>
         <testcontainers.version>1.11.1</testcontainers.version>
-        <weld.se.core.version>3.1.0.Final</weld.se.core.version>
+        <weld.se.core.version>3.1.1.Final</weld.se.core.version>
         <yasson.version>1.0.4</yasson.version>
     </properties>
 
