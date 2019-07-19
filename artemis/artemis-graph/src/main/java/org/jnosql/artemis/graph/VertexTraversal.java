@@ -17,6 +17,8 @@ package org.jnosql.artemis.graph;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.NonUniqueResultException;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.step.filter.DedupGlobalStep;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,6 +72,14 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @throws NullPointerException when has any null element
      */
     EdgeTraversal bothE(String... edgeLabels);
+
+    /**
+     * Remove all duplicates in the traversal stream up to this point.
+     *
+     * @param labels if labels are provided, then the scoped object's labels determine de-duplication. No labels implies current object.
+     * @return the traversal with an appended {@link DedupGlobalStep}.
+     */
+    VertexTraversal dedup(final String... labels);
 
 
     /**
