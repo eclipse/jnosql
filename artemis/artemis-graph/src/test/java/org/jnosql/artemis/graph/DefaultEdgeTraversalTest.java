@@ -459,5 +459,29 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertEquals(1L, count);
     }
 
+    @Test
+    public void shouldDedup() {
+
+        graphTemplate.edge(otavio, "knows", paulo);
+        graphTemplate.edge(paulo, "knows", otavio);
+        graphTemplate.edge(otavio, "knows", poliana);
+        graphTemplate.edge(poliana, "knows", otavio);
+        graphTemplate.edge(poliana, "knows", paulo);
+        graphTemplate.edge(paulo, "knows", poliana);
+
+        List<EdgeEntity> edges = graphTemplate.getTraversalVertex()
+                .hasLabel(Person.class)
+                .inE("knows").getResultList();
+
+        assertEquals(6, edges.size());
+
+        edges = graphTemplate.getTraversalVertex()
+                .hasLabel(Person.class)
+                .inE("knows")
+                .dedup()
+                .getResultList();
+
+        assertEquals(6, edges.size());
+    }
 
 }

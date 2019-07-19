@@ -131,6 +131,11 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     }
 
     @Override
+    public VertexTraversal dedup(String... labels) {
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.dedup(labels)), converter);
+    }
+
+    @Override
     public VertexRepeatTraversal repeat() {
         return new DefaultVertexRepeatTraversal(supplier, flow, converter);
     }
