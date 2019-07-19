@@ -122,6 +122,11 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
         return new DefaultVertexTraversal(supplier, flow.andThen(GraphTraversal::bothV), converter);
     }
 
+    @Override
+    public EdgeTraversal dedup(String... labels) {
+        return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.dedup(labels)), converter);
+    }
+
 
     @Override
     public Optional<EdgeEntity> next() {
