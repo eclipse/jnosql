@@ -21,6 +21,7 @@ import org.jnosql.artemis.graph.model.Animal;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import jakarta.nosql.NonUniqueResultException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -467,5 +468,29 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
                 .hasLabel(Person.class)
                 .filter(Person::isAdult).count();
         assertEquals(3L, count);
+    }
+
+    @Test
+    public void shouldDedup() {
+
+        graphTemplate.edge(otavio, "knows", paulo);
+        graphTemplate.edge(paulo, "knows", otavio);
+        graphTemplate.edge(otavio, "knows", poliana);
+        graphTemplate.edge(poliana, "knows", otavio);
+        graphTemplate.edge(poliana, "knows", paulo);
+        graphTemplate.edge(paulo, "knows", poliana);
+
+        List<Person> people = graphTemplate.getTraversalVertex()
+                .hasLabel(Person.class)
+                .in("knows").getResultList();
+
+        assertEquals(6, people.size());
+
+        people = graphTemplate.getTraversalVertex()
+                .hasLabel(Person.class)
+                .in("knows").dedup()
+                .getResultList();
+
+        assertEquals(3, people.size());
     }
 }
