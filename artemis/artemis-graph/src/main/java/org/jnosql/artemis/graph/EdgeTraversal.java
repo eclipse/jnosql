@@ -15,6 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import jakarta.nosql.NonUniqueResultException;
+import org.apache.tinkerpop.gremlin.process.traversal.step.filter.DedupGlobalStep;
 
 import java.util.List;
 import java.util.Optional;
@@ -105,6 +106,14 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
      * @return {@link VertexTraversal}
      */
     VertexTraversal bothV();
+
+    /**
+     * Remove all duplicates in the traversal stream up to this point.
+     *
+     * @param labels if labels are provided, then the scoped object's labels determine de-duplication. No labels implies current object.
+     * @return the traversal with an appended {@link DedupGlobalStep}.
+     */
+    EdgeTraversal dedup(final String... labels);
 
     /**
      * Get all the result in the traversal as Stream
