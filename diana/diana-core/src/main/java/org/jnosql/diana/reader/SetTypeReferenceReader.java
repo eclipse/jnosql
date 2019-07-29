@@ -18,7 +18,7 @@ package org.jnosql.diana.reader;
 
 
 import jakarta.nosql.ValueReader;
-import jakarta.nosql.TypeReferenceReader;;
+import jakarta.nosql.TypeReferenceReader;
 import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.ValueReaderDecorator;
 
