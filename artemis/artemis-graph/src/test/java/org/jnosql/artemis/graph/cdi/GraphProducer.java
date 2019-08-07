@@ -14,20 +14,27 @@
  */
 package org.jnosql.artemis.graph.cdi;
 
+import jakarta.nosql.mapping.Database;
+import jakarta.nosql.mapping.DatabaseType;
 import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
 import org.jnosql.artemis.graph.GraphTraversalSourceSupplier;
 import org.mockito.Mockito;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.logging.Logger;
 
+import static java.lang.System.currentTimeMillis;
 import static java.util.Collections.singleton;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -35,8 +42,19 @@ import static org.mockito.Mockito.when;
 @ApplicationScoped
 public class GraphProducer {
 
+    private static final Logger LOGGER = Logger.getLogger(GraphProducer.class.getName());
 
-    private Graph graph = Neo4jGraph.open(new File("").getAbsolutePath() + "/target/jnosql-graph");
+    private Graph graph;
+
+    private String directory;
+
+    @PostConstruct
+    public void init() {
+        this.directory = new File("").getAbsolutePath() + "/target/jnosql-graph/" + currentTimeMillis() + "/";
+        LOGGER.info("Starting Graph database at directory: " + directory);
+        this.graph = Neo4jGraph.open(directory);
+        LOGGER.info("Graph database created");
+    }
 
     @Produces
     @ApplicationScoped
@@ -70,6 +88,17 @@ public class GraphProducer {
     }
 
     public void dispose(@Disposes Graph graph) throws Exception {
+        LOGGER.info("Graph database closing");
         graph.close();
+        final Path path = Paths.get(directory);
+        if (Files.exists(path)) {
+            LOGGER.info("Removing directory graph database: " + directory);
+            Files.walk(path)
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+            LOGGER.info("Graph directory exists?: " + Files.exists(path));
+        }
+        LOGGER.info("Graph Database closed");
     }
 }
