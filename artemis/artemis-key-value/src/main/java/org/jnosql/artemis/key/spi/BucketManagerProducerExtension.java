@@ -22,7 +22,7 @@ import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.key.query.RepositoryKeyValueBean;
 import org.jnosql.artemis.util.RepositoryUnit;
 import org.jnosql.artemis.util.ConfigurationUnitUtils;
-import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.kv.BucketManager;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
 
 /**
- * Extension to start up {@link jakarta.nosql.mapping.key.KeyValueTemplate} and {@link jakarta.nosql.mapping.Repository}
+ * Extension to start up {@link jakarta.nosql.mapping.kv.KeyValueTemplate} and {@link jakarta.nosql.mapping.Repository}
  * from the {@link javax.enterprise.inject.Default} and {@link jakarta.nosql.mapping.Database} qualifier
  */
 public class BucketManagerProducerExtension implements Extension {

@@ -16,11 +16,11 @@ package org.jnosql.artemis.key;
 
 import jakarta.nosql.mapping.EntityPostPersit;
 import jakarta.nosql.mapping.EntityPrePersist;
-import jakarta.nosql.key.KeyValueEntity;
-import jakarta.nosql.mapping.key.EntityKeyValuePostPersist;
-import jakarta.nosql.mapping.key.EntityKeyValuePrePersist;
-import jakarta.nosql.mapping.key.KeyValueEntityPostPersist;
-import jakarta.nosql.mapping.key.KeyValueEntityPrePersist;
+import jakarta.nosql.kv.KeyValueEntity;
+import jakarta.nosql.mapping.kv.EntityKeyValuePostPersist;
+import jakarta.nosql.mapping.kv.EntityKeyValuePrePersist;
+import jakarta.nosql.mapping.kv.KeyValueEntityPostPersist;
+import jakarta.nosql.mapping.kv.KeyValueEntityPrePersist;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

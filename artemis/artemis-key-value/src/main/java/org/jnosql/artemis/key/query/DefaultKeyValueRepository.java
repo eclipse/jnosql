@@ -14,7 +14,7 @@
  */
 package org.jnosql.artemis.key.query;
 
-import jakarta.nosql.mapping.key.KeyValueTemplate;
+import jakarta.nosql.mapping.kv.KeyValueTemplate;
 
 class DefaultKeyValueRepository<T>  extends AbstractKeyValueRepository<T> {
 

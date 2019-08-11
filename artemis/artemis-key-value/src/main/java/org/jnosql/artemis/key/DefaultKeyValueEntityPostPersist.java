@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.key;
 
-import jakarta.nosql.key.KeyValueEntity;
-import jakarta.nosql.mapping.key.KeyValueEntityPostPersist;
+import jakarta.nosql.kv.KeyValueEntity;
+import jakarta.nosql.mapping.kv.KeyValueEntityPostPersist;
 
 import java.util.Objects;
 

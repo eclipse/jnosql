@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.key.spi;
 
-import jakarta.nosql.key.BucketManagerFactory;
-import jakarta.nosql.key.KeyValueConfiguration;
+import jakarta.nosql.kv.BucketManagerFactory;
+import jakarta.nosql.kv.KeyValueConfiguration;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;

@@ -17,8 +17,8 @@ package org.jnosql.artemis.key.spi;
 import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.ConfigurationUnit;
 import org.jnosql.artemis.util.StringUtils;
-import jakarta.nosql.key.BucketManager;
-import jakarta.nosql.key.BucketManagerFactory;
+import jakarta.nosql.kv.BucketManager;
+import jakarta.nosql.kv.BucketManagerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

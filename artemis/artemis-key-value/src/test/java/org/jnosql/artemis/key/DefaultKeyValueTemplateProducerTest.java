@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.key;
 
-import jakarta.nosql.mapping.key.KeyValueTemplate;
-import jakarta.nosql.mapping.key.KeyValueTemplateProducer;
+import jakarta.nosql.mapping.kv.KeyValueTemplate;
+import jakarta.nosql.mapping.kv.KeyValueTemplateProducer;
 import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.kv.BucketManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;

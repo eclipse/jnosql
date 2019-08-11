@@ -17,10 +17,10 @@ package org.jnosql.artemis.key.spi;
 
 import org.jnosql.artemis.DatabaseQualifier;
 import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.key.KeyValueTemplate;
-import jakarta.nosql.mapping.key.KeyValueTemplateProducer;
+import jakarta.nosql.mapping.kv.KeyValueTemplate;
+import jakarta.nosql.mapping.kv.KeyValueTemplateProducer;
 import org.jnosql.artemis.spi.AbstractBean;
-import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.kv.BucketManager;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;

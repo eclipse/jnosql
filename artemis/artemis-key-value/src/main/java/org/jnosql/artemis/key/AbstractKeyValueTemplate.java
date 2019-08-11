@@ -18,11 +18,11 @@ package org.jnosql.artemis.key;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Value;
-import jakarta.nosql.key.BucketManager;
-import jakarta.nosql.key.KeyValueEntity;
-import jakarta.nosql.mapping.key.KeyValueEntityConverter;
-import jakarta.nosql.mapping.key.KeyValueTemplate;
-import jakarta.nosql.mapping.key.KeyValueWorkflow;
+import jakarta.nosql.kv.BucketManager;
+import jakarta.nosql.kv.KeyValueEntity;
+import jakarta.nosql.mapping.kv.KeyValueEntityConverter;
+import jakarta.nosql.mapping.kv.KeyValueTemplate;
+import jakarta.nosql.mapping.kv.KeyValueWorkflow;
 
 import java.time.Duration;
 import java.util.Collections;

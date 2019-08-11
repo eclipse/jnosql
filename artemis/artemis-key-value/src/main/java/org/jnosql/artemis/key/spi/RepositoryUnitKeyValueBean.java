@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.key.spi;
 
-import jakarta.nosql.key.BucketManager;
-import jakarta.nosql.key.BucketManagerFactory;
+import jakarta.nosql.kv.BucketManager;
+import jakarta.nosql.kv.BucketManagerFactory;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.key.KeyValueRepositoryProducer;
+import jakarta.nosql.mapping.kv.KeyValueRepositoryProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;
 

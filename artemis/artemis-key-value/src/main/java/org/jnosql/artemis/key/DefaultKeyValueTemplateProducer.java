@@ -15,11 +15,11 @@
 package org.jnosql.artemis.key;
 
 
-import jakarta.nosql.key.BucketManager;
-import jakarta.nosql.mapping.key.KeyValueEntityConverter;
-import jakarta.nosql.mapping.key.KeyValueTemplate;
-import jakarta.nosql.mapping.key.KeyValueTemplateProducer;
-import jakarta.nosql.mapping.key.KeyValueWorkflow;
+import jakarta.nosql.kv.BucketManager;
+import jakarta.nosql.mapping.kv.KeyValueEntityConverter;
+import jakarta.nosql.mapping.kv.KeyValueTemplate;
+import jakarta.nosql.mapping.kv.KeyValueTemplateProducer;
+import jakarta.nosql.mapping.kv.KeyValueWorkflow;
 
 import javax.enterprise.inject.Vetoed;
 import javax.inject.Inject;

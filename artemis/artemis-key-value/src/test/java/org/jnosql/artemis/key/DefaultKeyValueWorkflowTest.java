@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.key;
 
-import jakarta.nosql.key.KeyValueEntity;
-import jakarta.nosql.mapping.key.KeyValueEntityConverter;
-import jakarta.nosql.mapping.key.KeyValueEventPersistManager;
+import jakarta.nosql.kv.KeyValueEntity;
+import jakarta.nosql.mapping.kv.KeyValueEntityConverter;
+import jakarta.nosql.mapping.kv.KeyValueEventPersistManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

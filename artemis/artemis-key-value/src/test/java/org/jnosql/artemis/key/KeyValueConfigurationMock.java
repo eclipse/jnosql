@@ -15,9 +15,9 @@
 package org.jnosql.artemis.key;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.key.BucketManager;
-import jakarta.nosql.key.BucketManagerFactory;
-import jakarta.nosql.key.KeyValueConfiguration;
+import jakarta.nosql.kv.BucketManager;
+import jakarta.nosql.kv.BucketManagerFactory;
+import jakarta.nosql.kv.KeyValueConfiguration;
 import org.mockito.Mockito;
 
 import java.util.List;

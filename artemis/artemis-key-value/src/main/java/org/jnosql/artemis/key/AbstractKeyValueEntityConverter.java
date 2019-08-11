@@ -17,12 +17,12 @@ package org.jnosql.artemis.key;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.key.KeyValueEntityConverter;
+import jakarta.nosql.mapping.kv.KeyValueEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.Value;
-import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.kv.KeyValueEntity;
 
 import java.util.Objects;
 

@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.key;
 
-import jakarta.nosql.key.KeyValueEntity;
-import jakarta.nosql.mapping.key.KeyValueEntityConverter;
-import jakarta.nosql.mapping.key.KeyValueEventPersistManager;
-import jakarta.nosql.mapping.key.KeyValueWorkflow;
+import jakarta.nosql.kv.KeyValueEntity;
+import jakarta.nosql.mapping.kv.KeyValueEntityConverter;
+import jakarta.nosql.mapping.kv.KeyValueEventPersistManager;
+import jakarta.nosql.mapping.kv.KeyValueWorkflow;
 
 import java.util.Objects;
 import java.util.function.Function;

@@ -15,7 +15,7 @@
 package org.jnosql.artemis.key.query;
 
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.key.KeyValueTemplate;
+import jakarta.nosql.mapping.kv.KeyValueTemplate;
 
 import java.util.Optional;
 
