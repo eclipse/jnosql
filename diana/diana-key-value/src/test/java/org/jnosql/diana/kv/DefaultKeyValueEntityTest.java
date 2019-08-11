@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.key;
+package org.jnosql.diana.kv;
 
 import jakarta.nosql.Value;
 import jakarta.nosql.kv.KeyValueEntity;

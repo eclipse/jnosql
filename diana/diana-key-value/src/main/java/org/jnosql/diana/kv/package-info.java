@@ -29,4 +29,4 @@
  * Some databases support ordering of keys. There are various hardware implementations, and some users maintain
  * data in memory (RAM), while others employ solid-state drives or rotating disks.
  */
-package org.jnosql.diana.key;
+package org.jnosql.diana.kv;
