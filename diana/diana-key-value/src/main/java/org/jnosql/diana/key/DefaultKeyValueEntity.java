@@ -18,7 +18,7 @@ package org.jnosql.diana.key;
 
 import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.Value;
-import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.kv.KeyValueEntity;
 
 import java.util.Objects;
 

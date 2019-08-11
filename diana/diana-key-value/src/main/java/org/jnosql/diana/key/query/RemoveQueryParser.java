@@ -20,8 +20,8 @@ import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.Value;
-import jakarta.nosql.key.BucketManager;
-import jakarta.nosql.key.KeyValuePreparedStatement;
+import jakarta.nosql.kv.BucketManager;
+import jakarta.nosql.kv.KeyValuePreparedStatement;
 import jakarta.nosql.query.RemoveQuery;
 import jakarta.nosql.query.RemoveQuery.RemoveQueryProvider;
 

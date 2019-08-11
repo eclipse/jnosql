@@ -19,7 +19,7 @@ package org.jnosql.diana.key.query;
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.Value;
-import jakarta.nosql.key.KeyValueEntity;
+import jakarta.nosql.kv.KeyValueEntity;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 

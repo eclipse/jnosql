@@ -16,10 +16,10 @@
  */
 package org.jnosql.diana.key.query;
 
-import jakarta.nosql.key.BucketManager;
-import jakarta.nosql.key.KeyValueEntity;
-import jakarta.nosql.key.KeyValuePreparedStatement;
-import jakarta.nosql.key.KeyValueQueryParser;
+import jakarta.nosql.kv.BucketManager;
+import jakarta.nosql.kv.KeyValueEntity;
+import jakarta.nosql.kv.KeyValuePreparedStatement;
+import jakarta.nosql.kv.KeyValueQueryParser;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.params.ParameterizedTest;
