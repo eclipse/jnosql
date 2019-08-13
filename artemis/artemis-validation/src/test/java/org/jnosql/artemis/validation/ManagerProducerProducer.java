@@ -21,7 +21,7 @@ import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.key.BucketManager;
+import jakarta.nosql.keyvalue.BucketManager;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
