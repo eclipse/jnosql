@@ -14,8 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.kv.query;
-
+package org.jnosql.diana.keyvalue.query;
 
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
@@ -23,41 +22,40 @@ import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.Value;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import jakarta.nosql.query.GetQuery;
-import jakarta.nosql.query.GetQuery.GetQueryProvider;
+import jakarta.nosql.query.RemoveQuery;
+import jakarta.nosql.query.RemoveQuery.RemoveQueryProvider;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-final class GetQueryParser {
+final class RemoveQueryParser {
 
-    private final GetQueryProvider provider;
+    private final RemoveQueryProvider provider;
 
-    GetQueryParser() {
-        this.provider = ServiceLoaderProvider.get(GetQueryProvider.class);
+    RemoveQueryParser() {
+        this.provider = ServiceLoaderProvider.get(RemoveQueryProvider.class);
     }
 
     List<Value> query(String query, BucketManager manager) {
 
-        GetQuery getQuery = provider.apply(query);
+        RemoveQuery delQuery = provider.apply(query);
         Params params = Params.newParams();
-        List<Value> values = getQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
+        List<Value> values = delQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
 
         List<Object> keys = values.stream().map(Value::get).collect(toList());
-        List<Value> result = new ArrayList<>();
-        manager.get(keys).forEach(result::add);
-        return result;
+        manager.remove(keys);
+        return Collections.emptyList();
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
-        GetQuery getQuery = provider.apply(query);
+        RemoveQuery delQuery = provider.apply(query);
         Params params = Params.newParams();
-        List<Value> values = getQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
-        return DefaultKeyValuePreparedStatement.get(values, manager, params, query);
+        List<Value> values = delQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
+        return DefaultKeyValuePreparedStatement.del(values, manager, params, query);
     }
 }

@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.kv.query;
+package org.jnosql.diana.keyvalue.query;
 
 
 

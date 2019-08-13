@@ -14,48 +14,30 @@
  *   Otavio Santana
  *
  */
-package org.jnosql.diana.kv.query;
+package org.jnosql.diana.keyvalue.query;
 
+import jakarta.nosql.QueryException;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import jakarta.nosql.keyvalue.KeyValueQueryParser;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.util.List;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class DefaultKeyValueQueryParserTest {
+class PutQueryParserTest {
 
-    private KeyValueQueryParser parser = new DefaultKeyValueQueryParser();
+    private PutQueryParser parser = new PutQueryParser();
     private BucketManager manager = Mockito.mock(BucketManager.class);
-
-
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"get \"Diana\""})
-    public void shouldReturnParserQuery1(String query) {
-
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
-
-        parser.query(query, manager);
-
-        Mockito.verify(manager).get(captor.capture());
-        List<Object> value = captor.getValue();
-
-        assertEquals(1, value.size());
-        MatcherAssert.assertThat(value, Matchers.contains("Diana"));
-    }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {\"Diana\", \"Hunt\"}"})
-    public void shouldReturnParserQuery2(String query) {
+    public void shouldReturnParserQuery1(String query) {
 
         ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
 
@@ -69,41 +51,40 @@ class DefaultKeyValueQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove \"Diana\""})
-    public void shouldReturnParserQuery3(String query) {
+    @ValueSource(strings = {"put {\"Diana\", \"goddess of hunt\", 10 hour}"})
+    public void shouldReturnParserQuery2(String query) {
 
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
+        ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
 
         parser.query(query, manager);
 
-        Mockito.verify(manager).remove(captor.capture());
-        List<Object> value = captor.getValue();
+        Mockito.verify(manager).put(captor.capture(), durationCaptor.capture());
+        KeyValueEntity entity = captor.getValue();
+        Duration ttl = durationCaptor.getValue();
 
-        assertEquals(1, value.size());
-        MatcherAssert.assertThat(value, Matchers.contains("Diana"));
+        assertEquals(Duration.ofHours(10), ttl);
+        assertEquals("Diana", entity.getKey());
+        assertEquals("goddess of hunt", entity.getValue());
     }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove @id"})
-    public void shouldExecutePrepareStatement(String query) {
-
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
-        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        prepare.bind("id", 10);
-        prepare.getResultList();
-
-        Mockito.verify(manager).remove(captor.capture());
-        List<Object> value = captor.getValue();
-
-        assertEquals(1, value.size());
-
-        MatcherAssert.assertThat(value, Matchers.contains(10));
-    }
-
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {\"Diana\", @value}"})
-    public void shouldExecutePrepareStatement1(String query) {
+    public void shouldReturnErrorWhenUseParameterInQuery(String query) {
+        assertThrows(QueryException.class, () -> parser.query(query, manager));
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"put {\"Diana\", @value}"})
+    public void shouldReturnErrorWhenDontBindParameters(String query) {
+
+        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
+        assertThrows(QueryException.class, prepare::getResultList);
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"put {\"Diana\", @value}"})
+    public void shouldExecutePrepareStatement(String query) {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("value", "Hunt");
         prepare.getResultList();

@@ -1,1 +1,1 @@
-org.jnosql.diana.kv.query.DefaultKeyValueQueryParser
+org.jnosql.diana.keyvalue.query.DefaultKeyValueQueryParser
