@@ -16,7 +16,7 @@ package org.jnosql.artemis.kv.query;
 
 import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.kv.KeyValueTemplate;
+import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 

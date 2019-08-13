@@ -18,7 +18,7 @@ import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import org.jnosql.artemis.UserRepository;
-import jakarta.nosql.mapping.kv.KeyValueTemplate;
+import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.User;
 import org.junit.jupiter.api.Test;

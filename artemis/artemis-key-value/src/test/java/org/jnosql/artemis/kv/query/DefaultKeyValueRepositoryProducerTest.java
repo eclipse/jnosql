@@ -16,9 +16,9 @@ package org.jnosql.artemis.kv.query;
 
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.PersonRepository;
-import jakarta.nosql.mapping.kv.KeyValueRepositoryProducer;
-import jakarta.nosql.mapping.kv.KeyValueTemplate;
-import jakarta.nosql.kv.BucketManager;
+import jakarta.nosql.mapping.keyvalue.KeyValueRepositoryProducer;
+import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+import jakarta.nosql.keyvalue.BucketManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;

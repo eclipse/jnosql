@@ -17,8 +17,8 @@
 package org.jnosql.diana.kv.query;
 
 import jakarta.nosql.QueryException;
-import jakarta.nosql.kv.BucketManager;
-import jakarta.nosql.kv.KeyValuePreparedStatement;
+import jakarta.nosql.keyvalue.BucketManager;
+import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.params.ParameterizedTest;

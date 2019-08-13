@@ -15,9 +15,9 @@
 package org.jnosql.artemis.kv;
 
 import jakarta.nosql.Value;
-import jakarta.nosql.kv.KeyValueEntity;
+import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.kv.KeyValueEntityConverter;
+import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Car;
 import org.jnosql.artemis.model.Person;

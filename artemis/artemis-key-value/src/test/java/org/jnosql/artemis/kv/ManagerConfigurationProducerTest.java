@@ -16,7 +16,7 @@ package org.jnosql.artemis.kv;
 
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.ConfigurationUnit;
-import jakarta.nosql.kv.BucketManager;
+import jakarta.nosql.keyvalue.BucketManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

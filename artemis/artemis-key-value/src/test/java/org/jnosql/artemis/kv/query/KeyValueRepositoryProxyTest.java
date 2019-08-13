@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.Param;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.kv.KeyValueTemplate;
+import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import org.jnosql.artemis.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

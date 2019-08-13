@@ -15,8 +15,8 @@
 package org.jnosql.artemis.kv.spi;
 
 import jakarta.nosql.mapping.ConfigurationUnit;
-import jakarta.nosql.mapping.kv.KeyValueTemplate;
-import jakarta.nosql.mapping.kv.KeyValueTemplateProducer;
+import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

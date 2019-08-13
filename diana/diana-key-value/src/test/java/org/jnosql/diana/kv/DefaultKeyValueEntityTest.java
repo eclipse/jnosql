@@ -17,7 +17,7 @@
 package org.jnosql.diana.kv;
 
 import jakarta.nosql.Value;
-import jakarta.nosql.kv.KeyValueEntity;
+import jakarta.nosql.keyvalue.KeyValueEntity;
 import org.hamcrest.Matchers;
 import jakarta.nosql.TypeReference;
 import org.junit.jupiter.api.Assertions;

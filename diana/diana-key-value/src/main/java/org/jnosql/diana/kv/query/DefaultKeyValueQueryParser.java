@@ -18,9 +18,9 @@ package org.jnosql.diana.kv.query;
 
 import jakarta.nosql.QueryException;
 import jakarta.nosql.Value;
-import jakarta.nosql.kv.BucketManager;
-import jakarta.nosql.kv.KeyValuePreparedStatement;
-import jakarta.nosql.kv.KeyValueQueryParser;
+import jakarta.nosql.keyvalue.BucketManager;
+import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
+import jakarta.nosql.keyvalue.KeyValueQueryParser;
 
 import java.util.List;
 import java.util.Objects;

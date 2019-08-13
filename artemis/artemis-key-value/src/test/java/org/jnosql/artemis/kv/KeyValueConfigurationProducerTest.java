@@ -17,7 +17,7 @@ package org.jnosql.artemis.kv;
 import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.ConfigurationUnit;
 import jakarta.nosql.Settings;
-import jakarta.nosql.kv.BucketManagerFactory;
+import jakarta.nosql.keyvalue.BucketManagerFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

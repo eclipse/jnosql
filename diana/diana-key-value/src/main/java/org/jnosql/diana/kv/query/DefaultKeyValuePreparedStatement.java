@@ -22,9 +22,9 @@ import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.Value;
-import jakarta.nosql.kv.BucketManager;
-import jakarta.nosql.kv.KeyValueEntity;
-import jakarta.nosql.kv.KeyValuePreparedStatement;
+import jakarta.nosql.keyvalue.BucketManager;
+import jakarta.nosql.keyvalue.KeyValueEntity;
+import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
 
 import java.time.Duration;
 import java.util.ArrayList;
