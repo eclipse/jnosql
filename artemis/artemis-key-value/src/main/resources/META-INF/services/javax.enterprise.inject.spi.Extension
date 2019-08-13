@@ -12,4 +12,4 @@
 #
 #   Otavio Santana
 #
-org.jnosql.artemis.kv.spi.BucketManagerProducerExtension
+org.jnosql.artemis.keyvalue.spi.BucketManagerProducerExtension
