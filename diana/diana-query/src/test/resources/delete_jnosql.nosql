@@ -66,6 +66,9 @@ delete from Person where birthday <= '01-09-1988'
 delete from Person where birthday between '01-09-1988' and '01-09-1988'
 delete from Person where birthday between '01-09-1988' and '01-09-1988' and salary = 12
 delete from Person where birthday between '01-09-1988' and '01-09-1988' or salary = 12
+#combinations
+delete from Person where birthday between '01-09-1988' and "01-09-1988"
+delete from Person where birthday between "01-09-1988" and '01-09-1988' and salary = 12
 delete from Person where age between 13 and 'ada'
 delete from Person where name <= 'ada'
 delete from Person where name >= 'ada'
