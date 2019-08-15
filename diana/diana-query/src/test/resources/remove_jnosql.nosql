@@ -8,4 +8,4 @@ remove convert("2018-01-10", java.time.LocalTime)
 remove {1, 2, 3, "one", "two"}
 remove @diana, @apollo
 remove 1, @diana
-remove @diana 2
+remove @diana, 2
