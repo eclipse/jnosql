@@ -145,9 +145,9 @@ class RemoveQueryParserTest {
         Mockito.verify(manager).remove(captor.capture());
         List<Object> value = captor.getValue();
 
-        assertEquals(1, value.size());
+        assertEquals(2, value.size());
 
-        MatcherAssert.assertThat(value, Matchers.contains(10));
+        MatcherAssert.assertThat(value, Matchers.contains(10, 11));
     }
 
 }
