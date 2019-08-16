@@ -11,3 +11,11 @@ put {"Ada", "goddess of hunt", 10 minute}
 put {"Ada", "goddess of hunt", 10 second}
 put {"Ada", "goddess of hunt", 10 millisecond}
 put {"Ada", "goddess of hunt", 10 nanosecond}
+put {'diana', 'goddess of hunt', 10 day}
+put {'Ada', 'goddess of hunt', 10 hour}
+put {'Ada', 'goddess of hunt', 10 minute}
+put {'Ada', 'goddess of hunt', 10 second}
+put {'Ada', 'goddess of hunt', 10 millisecond}
+put {'Ada', 'goddess of hunt', 10 nanosecond}
+put {"diana", 'goddess of hunt', 10 day}
+put {'Ada', "goddess of hunt", 10 hour}
