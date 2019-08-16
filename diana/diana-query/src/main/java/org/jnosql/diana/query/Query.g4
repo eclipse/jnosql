@@ -51,7 +51,7 @@ pair_json:   STRING ':' value_json ;
 value_json: STRING | number | object_json |   array_json | 'true' | 'false'| 'null';
 array_json: '[' value_json (',' value_json)* ']'| '[' ']';
 parameter: PARAMETER;
-STRING :  '"' (ESC | ~["\\])* '"' | '\'' (ESC | ~["\\])* '\'' ;
+STRING :  '\'' ( ESC | ~('\\'|'\'') )* '\'' |'"' ( ESC | ~('\\'|'"') )* '"';
 INT: [0-9]+;
 NUMBER: INT [.]? INT?;
 ANY_NAME: [a-zA-Z_.] [a-zA-Z._0-9]*;

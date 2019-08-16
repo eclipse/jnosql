@@ -131,4 +131,23 @@ class RemoveQueryParserTest {
         MatcherAssert.assertThat(value, Matchers.contains(10));
     }
 
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"remove @id, @id2"})
+    public void shouldExecutePrepareStatement2(String query) {
+
+        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
+        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
+        prepare.bind("id", 10);
+        prepare.bind("id2", 11);
+        prepare.getResultList();
+
+        Mockito.verify(manager).remove(captor.capture());
+        List<Object> value = captor.getValue();
+
+        assertEquals(1, value.size());
+
+        MatcherAssert.assertThat(value, Matchers.contains(10));
+    }
+
 }
