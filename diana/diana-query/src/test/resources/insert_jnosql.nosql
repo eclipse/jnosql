@@ -6,6 +6,14 @@ insert Person (name = "Ada Lovelace") 10 second
 insert Person (name = "Ada Lovelace") 10 millisecond
 insert Person (name = "Ada Lovelace") 10 nanosecond
 insert Person (name = "Ada Lovelace", _id = "ada")
+insert Person (name = 'Ada Lovelace')
+insert Person (name = 'Ada Lovelace') 10 day
+insert Person (name = 'Ada Lovelace') 10 hour
+insert Person (name = 'Ada Lovelace') 10 minute
+insert Person (name = 'Ada Lovelace') 10 second
+insert Person (name = 'Ada Lovelace') 10 millisecond
+insert Person (name = "Ada Lovelace") 10 nanosecond
+insert Person (name = 'Ada Lovelace', _id = 'ada')
 insert Person (age = 12)
 insert Person (salary = 12.23, age = 12)
 insert Person (age = @age)
