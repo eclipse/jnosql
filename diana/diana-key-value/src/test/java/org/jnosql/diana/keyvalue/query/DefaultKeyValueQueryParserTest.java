@@ -30,6 +30,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -120,6 +121,24 @@ class DefaultKeyValueQueryParserTest {
 
         assertEquals("Diana", entity.getKey());
         assertEquals("Hunt", entity.getValue());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"put {\"Diana\", @value, 10 second}"})
+    public void shouldExecutePrepareStatement2(String query) {
+        KeyValuePreparedStatement prepare = parser.prepare(query, manager);
+        prepare.bind("value", "Hunt");
+        prepare.getResult();
+        ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
+        ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
+
+        Mockito.verify(manager).put(captor.capture(), durationCaptor.capture());
+        KeyValueEntity entity = captor.getValue();
+        final Duration duration = durationCaptor.getValue();
+
+        assertEquals("Diana", entity.getKey());
+        assertEquals("Hunt", entity.getValue());
+        assertEquals(Duration.ofSeconds(10L), duration);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
