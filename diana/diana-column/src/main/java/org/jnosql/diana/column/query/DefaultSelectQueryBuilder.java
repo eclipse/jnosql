@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -192,7 +193,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements
     }
 
     @Override
-    public List<ColumnEntity> execute(ColumnFamilyManager manager) {
+    public Stream<ColumnEntity> execute(ColumnFamilyManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.select(this.build());
     }
@@ -204,7 +205,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements
     }
 
     @Override
-    public void execute(ColumnFamilyManagerAsync manager, Consumer<List<ColumnEntity>> callback) {
+    public void execute(ColumnFamilyManagerAsync manager, Consumer<Stream<ColumnEntity>> callback) {
         requireNonNull(manager, "manager is required");
         requireNonNull(callback, "callback is required");
         manager.select(this.build(), callback);
@@ -216,6 +217,5 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements
         requireNonNull(callback, "callback is required");
         manager.singleResult(this.build(), callback);
     }
-
 
 }

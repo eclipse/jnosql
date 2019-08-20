@@ -34,8 +34,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-
-import static java.util.Collections.singletonList;
+import java.util.stream.Stream;
 
 final class InsertQueryParser extends ConditionQueryParser {
 
@@ -45,7 +44,7 @@ final class InsertQueryParser extends ConditionQueryParser {
         this.insertQueryProvider = ServiceLoaderProvider.get(InsertQueryProvider.class);
     }
 
-    List<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    Stream<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
         InsertQuery insertQuery = insertQueryProvider.apply(query);
 
@@ -59,14 +58,14 @@ final class InsertQueryParser extends ConditionQueryParser {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
         if (ttl.isPresent()) {
-            return singletonList(manager.insert(entity, ttl.get()));
+            return Stream.of(manager.insert(entity, ttl.get()));
         } else {
-            return singletonList(manager.insert(entity));
+            return Stream.of(manager.insert(entity));
         }
     }
 
     void queryAsync(String query, ColumnFamilyManagerAsync manager,
-                    Consumer<List<ColumnEntity>> callBack,
+                    Consumer<Stream<ColumnEntity>> callBack,
                     ColumnObserverParser observer) {
 
         InsertQuery insertQuery = insertQueryProvider.apply(query);
@@ -82,9 +81,9 @@ final class InsertQueryParser extends ConditionQueryParser {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
         if (ttl.isPresent()) {
-            manager.insert(entity, ttl.get(), c -> callBack.accept(singletonList(c)));
+            manager.insert(entity, ttl.get(), c -> callBack.accept(Stream.of(c)));
         } else {
-            manager.insert(entity, c -> callBack.accept(singletonList(c)));
+            manager.insert(entity, c -> callBack.accept(Stream.of(c)));
         }
     }
 

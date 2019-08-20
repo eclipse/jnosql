@@ -16,7 +16,6 @@
  */
 package org.jnosql.diana.column.query;
 
-import jakarta.nosql.query.Condition;
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.ServiceLoaderProvider;
@@ -26,6 +25,7 @@ import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.column.ColumnPreparedStatementAsync;
+import jakarta.nosql.query.Condition;
 import jakarta.nosql.query.JSONQueryValue;
 import jakarta.nosql.query.UpdateQuery;
 import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
@@ -33,8 +33,7 @@ import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-
-import static java.util.Collections.singletonList;
+import java.util.stream.Stream;
 
 final class UpdateQueryParser extends ConditionQueryParser {
 
@@ -44,7 +43,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
         this.updateQueryProvider = ServiceLoaderProvider.get(UpdateQueryProvider.class);
     }
 
-    List<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    Stream<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
         UpdateQuery updateQuery = updateQueryProvider.apply(query);
 
@@ -55,11 +54,11 @@ final class UpdateQueryParser extends ConditionQueryParser {
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        return singletonList(manager.update(entity));
+        return Stream.of(manager.update(entity));
     }
 
     void queryAsync(String query, ColumnFamilyManagerAsync manager,
-                    Consumer<List<ColumnEntity>> callBack, ColumnObserverParser observer) {
+                    Consumer<Stream<ColumnEntity>> callBack, ColumnObserverParser observer) {
 
         UpdateQuery updateQuery = updateQueryProvider.apply(query);
 
@@ -70,7 +69,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        manager.update(entity, c -> callBack.accept(singletonList(c)));
+        manager.update(entity, c -> callBack.accept(Stream.of(c)));
     }
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {

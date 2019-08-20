@@ -26,11 +26,12 @@ import jakarta.nosql.column.ColumnPreparedStatementAsync;
 import jakarta.nosql.column.ColumnQuery;
 
 import java.time.Duration;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 final class DefaultColumnPreparedStatementAsync implements ColumnPreparedStatementAsync {
 
@@ -83,7 +84,7 @@ final class DefaultColumnPreparedStatementAsync implements ColumnPreparedStateme
     }
 
     @Override
-    public void getResultList(Consumer<List<ColumnEntity>> callBack) {
+    public void getResult(Consumer<Stream<ColumnEntity>> callBack) {
         Objects.requireNonNull(callBack, "callBack is required");
 
         if (!paramsLeft.isEmpty()) {
@@ -94,16 +95,16 @@ final class DefaultColumnPreparedStatementAsync implements ColumnPreparedStateme
                 manager.select(columnQuery, callBack);
                 return;
             case DELETE:
-                manager.delete(columnDeleteQuery, c -> callBack.accept(Collections.emptyList()));
+                manager.delete(columnDeleteQuery, c -> callBack.accept(Stream.empty()));
                 return;
             case UPDATE:
-                manager.update(entity, c -> callBack.accept(Collections.singletonList(c)));
+                manager.update(entity, c -> callBack.accept(Stream.of(c)));
                 return;
             case INSERT:
                 if (Objects.isNull(duration)) {
-                    manager.insert(entity, c -> callBack.accept(Collections.singletonList(c)));
+                    manager.insert(entity, c -> callBack.accept(Stream.of(c)));
                 } else {
-                    manager.insert(entity, duration, c -> callBack.accept(Collections.singletonList(c)));
+                    manager.insert(entity, duration, c -> callBack.accept(Stream.of(c)));
                 }
                 return;
             default:
@@ -115,13 +116,15 @@ final class DefaultColumnPreparedStatementAsync implements ColumnPreparedStateme
     public void getSingleResult(Consumer<Optional<ColumnEntity>> callBack) {
         Objects.requireNonNull(callBack, "callBack is required");
 
-        getResultList(entities -> {
-            if (entities.isEmpty()) {
+        getResult(entities -> {
+            final Iterator<ColumnEntity> iterator = entities.iterator();
+            if (!iterator.hasNext()) {
                 callBack.accept(Optional.empty());
                 return;
             }
-            if (entities.size() == 1) {
-                callBack.accept(Optional.of(entities.get(0)));
+            final ColumnEntity entity = iterator.next();
+            if (!iterator.hasNext()) {
+                callBack.accept(Optional.of(entity));
                 return;
             }
             throw new NonUniqueResultException("The select returns more than one entity, select: " + query);

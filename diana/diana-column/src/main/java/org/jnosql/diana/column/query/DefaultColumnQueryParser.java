@@ -25,6 +25,7 @@ import jakarta.nosql.column.ColumnQueryParser;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * The default implementation of {@link ColumnQueryParser}
@@ -37,7 +38,7 @@ public final class DefaultColumnQueryParser implements ColumnQueryParser {
     private final UpdateQueryParser update = new UpdateQueryParser();
 
     @Override
-    public List<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    public Stream<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
         switch (command) {

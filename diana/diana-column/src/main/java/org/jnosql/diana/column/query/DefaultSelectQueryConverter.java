@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -53,13 +54,13 @@ public final class DefaultSelectQueryConverter implements SelectQueryConverter {
         this.cache = new CacheQuery<>(this::getColumnQuery);
     }
 
-    List<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    Stream<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
         ColumnQuery columnQuery = cache.get(query, observer);
         return manager.select(columnQuery);
     }
 
-    void queryAsync(String query, ColumnFamilyManagerAsync manager, Consumer<List<ColumnEntity>> callBack,
+    void queryAsync(String query, ColumnFamilyManagerAsync manager, Consumer<Stream<ColumnEntity>> callBack,
                     ColumnObserverParser observer) {
 
         ColumnQuery columnQuery = cache.get(query, observer);
