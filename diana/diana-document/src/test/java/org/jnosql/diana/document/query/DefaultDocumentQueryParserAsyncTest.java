@@ -36,6 +36,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -77,7 +78,7 @@ class DefaultDocumentQueryParserAsyncTest {
     @ValueSource(strings = {"select * from God"})
     public void shouldReturnParserQuery(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        Consumer<List<DocumentEntity>> callBack = s -> {
+        Consumer<Stream<DocumentEntity>> callBack = s -> {
         };
         parser.query(query, documentCollection, callBack, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).select(captor.capture(), Mockito.eq(callBack));
@@ -97,7 +98,7 @@ class DefaultDocumentQueryParserAsyncTest {
     @ValueSource(strings = {"delete from God"})
     public void shouldReturnParserQuery1(String query) {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-        Consumer<List<DocumentEntity>> callBack = s -> {
+        Consumer<Stream<DocumentEntity>> callBack = s -> {
         };
         parser.query(query, documentCollection, callBack, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).delete(captor.capture(), Mockito.any(Consumer.class));
@@ -112,7 +113,7 @@ class DefaultDocumentQueryParserAsyncTest {
     @ValueSource(strings = {"insert God (name = \"Diana\")"})
     public void shouldReturnParserQuery2(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        Consumer<List<DocumentEntity>> callBack = s -> {
+        Consumer<Stream<DocumentEntity>> callBack = s -> {
         };
         parser.query(query, documentCollection, callBack, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).insert(captor.capture(), Mockito.any(Consumer.class));
@@ -128,7 +129,7 @@ class DefaultDocumentQueryParserAsyncTest {
     @ValueSource(strings = {"update God (name = \"Diana\")"})
     public void shouldReturnParserQuery3(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        Consumer<List<DocumentEntity>> callBack = s -> {
+        Consumer<Stream<DocumentEntity>> callBack = s -> {
         };
         parser.query(query, documentCollection, callBack, DocumentObserverParser.EMPTY);
         Mockito.verify(documentCollection).update(captor.capture(), Mockito.any(Consumer.class));
@@ -147,7 +148,7 @@ class DefaultDocumentQueryParserAsyncTest {
 
         DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
-        prepare.getResultList(s -> {
+        prepare.getResult(s -> {
         });
         Mockito.verify(documentCollection).delete(captor.capture(), Mockito.any(Consumer.class));
         DocumentDeleteQuery documentQuery = captor.getValue();
@@ -164,7 +165,7 @@ class DefaultDocumentQueryParserAsyncTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");
-        prepare.getResultList(s -> {
+        prepare.getResult(s -> {
         });
         Mockito.verify(documentCollection).insert(captor.capture(), Mockito.any(Consumer.class));
         DocumentEntity entity = captor.getValue();
@@ -180,7 +181,7 @@ class DefaultDocumentQueryParserAsyncTest {
 
         DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
-        prepare.getResultList(s -> {
+        prepare.getResult(s -> {
         });
         Mockito.verify(documentCollection).select(captor.capture(), Mockito.any(Consumer.class));
         DocumentQuery documentQuery = captor.getValue();
@@ -191,14 +192,13 @@ class DefaultDocumentQueryParserAsyncTest {
         assertEquals(12, document.get());
     }
 
-
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
     public void shouldExecutePrepareStatement3(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatementAsync prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");
-        prepare.getResultList(s -> {
+        prepare.getResult(s -> {
         });
         Mockito.verify(documentCollection).update(captor.capture(), Mockito.any(Consumer.class));
         DocumentEntity entity = captor.getValue();
@@ -206,6 +206,4 @@ class DefaultDocumentQueryParserAsyncTest {
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
 
     }
-
-
 }

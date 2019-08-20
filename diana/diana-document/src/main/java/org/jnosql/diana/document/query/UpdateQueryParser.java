@@ -35,8 +35,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static java.util.Collections.singletonList;
-
 final class UpdateQueryParser extends ConditionQueryParser {
 
     private final UpdateQueryProvider supplier;
@@ -89,7 +87,6 @@ final class UpdateQueryParser extends ConditionQueryParser {
         UpdateQuery updateQuery = supplier.apply(query);
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
-
         return DefaultDocumentPreparedStatementAsync.update(entity, params, query, collectionManager);
     }
 

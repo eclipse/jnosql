@@ -23,7 +23,6 @@ import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
 import jakarta.nosql.document.DocumentQueryParser;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 

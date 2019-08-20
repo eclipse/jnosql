@@ -36,8 +36,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static java.util.Collections.singletonList;
-
 final class InsertQueryParser extends ConditionQueryParser {
 
     private final InsertQueryProvider insertQueryProvider;

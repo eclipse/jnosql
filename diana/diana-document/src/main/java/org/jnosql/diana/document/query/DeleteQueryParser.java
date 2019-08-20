@@ -32,7 +32,6 @@ import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
