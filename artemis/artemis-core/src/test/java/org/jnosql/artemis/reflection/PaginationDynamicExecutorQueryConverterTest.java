@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -226,7 +227,7 @@ class PaginationDynamicExecutorQueryConverterTest {
 
         Person ada = new Person("Ada");
 
-        Mockito.when(page.getContent()).thenReturn(Collections.singletonList(ada));
+        Mockito.when(page.getContent()).thenReturn(Stream.of(ada));
 
         dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
@@ -240,12 +241,11 @@ class PaginationDynamicExecutorQueryConverterTest {
                 .build();
 
         Page<Person> personPage = converter.toPage(dynamic);
-        List<Person> content = personPage.getContent();
+        List<Person> content = personPage.getContent().collect(toList());
 
         assertFalse(content.isEmpty());
         assertEquals(ada, content.get(0));
     }
-
 
     private static class Person implements Comparable<Person> {
 

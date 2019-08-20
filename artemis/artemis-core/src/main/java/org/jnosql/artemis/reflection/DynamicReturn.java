@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -49,7 +50,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      * @param method the method source
      * @return the function that does this conversion
      */
-    public static Function<Supplier<List<?>>, Supplier<Optional<?>>> toSingleResult(final Method method) {
+    public static Function<Supplier<Stream<?>>, Supplier<Optional<?>>> toSingleResult(final Method method) {
         return new SupplierConverter(method);
     }
 
@@ -103,7 +104,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     }
 
 
-    private static class SupplierConverter implements Function<Supplier<List<?>>, Supplier<Optional<?>>> {
+    private static class SupplierConverter implements Function<Supplier<Stream<?>>, Supplier<Optional<?>>> {
 
         private final Method method;
 
@@ -112,14 +113,16 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         @Override
-        public Supplier<Optional<?>> apply(Supplier<List<?>> l) {
+        public Supplier<Optional<?>> apply(Supplier<Stream<?>> l) {
             return () -> {
-                List<?> entities = l.get();
-                if (entities.isEmpty()) {
+                Stream<?> entities = l.get();
+                final Iterator<?> iterator = entities.iterator();
+                if (!iterator.hasNext()) {
                     return Optional.empty();
                 }
-                if (entities.size() == 1) {
-                    return Optional.ofNullable(entities.get(0));
+                final Object entity = iterator.next();
+                if (!iterator.hasNext()) {
+                    return Optional.ofNullable(entity);
                 }
                 throw new NonUniqueResultException("No unique result to the method: " + method);
             };

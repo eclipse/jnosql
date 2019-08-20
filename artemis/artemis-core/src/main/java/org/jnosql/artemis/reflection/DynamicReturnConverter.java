@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * The converter within the return method at Repository class.
@@ -86,7 +87,7 @@ enum DynamicReturnConverter {
     public Object convert(DynamicQueryMethodReturn dynamicQueryMethod) {
         Method method = dynamicQueryMethod.getMethod();
         Object[] args = dynamicQueryMethod.getArgs();
-        Function<String, List<?>> queryConverter = dynamicQueryMethod.getQueryConverter();
+        Function<String, Stream<?>> queryConverter = dynamicQueryMethod.getQueryConverter();
         Function<String, PreparedStatement> prepareConverter = dynamicQueryMethod.getPrepareConverter();
         Class<?> typeClass = dynamicQueryMethod.getTypeClass();
 
@@ -94,23 +95,22 @@ enum DynamicReturnConverter {
 
 
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
-        List<?> entities;
+        Stream<?> entities;
         if (params.isEmpty()) {
             entities = queryConverter.apply(value);
         } else {
             PreparedStatement prepare = prepareConverter.apply(value);
             params.forEach(prepare::bind);
-            entities = prepare.getResultList();
+            entities = prepare.getResult();
         }
 
-        Supplier<List<?>> listSupplier = () -> entities;
-
-        Supplier<Optional<?>> singleSupplier = DynamicReturn.toSingleResult(method).apply(listSupplier);
+        Supplier<Stream<?>> streamSupplier = () -> entities;
+        Supplier<Optional<?>> singleSupplier = DynamicReturn.toSingleResult(method).apply(streamSupplier);
 
         DynamicReturn dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
-                .withList(listSupplier)
+                .withList(streamSupplier)
                 .withSingleResult(singleSupplier)
                 .build();
 

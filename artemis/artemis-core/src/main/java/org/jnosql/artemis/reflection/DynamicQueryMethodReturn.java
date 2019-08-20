@@ -19,9 +19,9 @@ import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.reflection.MethodDynamicExecutable;
 
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * This instance has the information to run the JNoSQL native query at {@link jakarta.nosql.mapping.Repository}
@@ -32,10 +32,10 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
     private final Method method;
     private final Object[] args;
     private final Class<?> typeClass;
-    private final java.util.function.Function<String, List<?>> queryConverter;
+    private final java.util.function.Function<String, Stream<?>> queryConverter;
     private final Function<String, PreparedStatement> prepareConverter;
 
-    private DynamicQueryMethodReturn(Method method, Object[] args, Class<?> typeClass, Function<String, List<?>> queryConverter,
+    private DynamicQueryMethodReturn(Method method, Object[] args, Class<?> typeClass, Function<String, Stream<?>> queryConverter,
                                      Function<String, PreparedStatement> prepareConverter) {
         this.method = method;
         this.args = args;
@@ -56,7 +56,7 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
         return typeClass;
     }
 
-    Function<String, List<?>> getQueryConverter() {
+    Function<String, Stream<?>> getQueryConverter() {
         return queryConverter;
     }
 
@@ -81,7 +81,7 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
 
         private Class<?> typeClass;
 
-        private Function<String, List<?>> queryConverter;
+        private Function<String, Stream<?>> queryConverter;
 
         private Function<String, PreparedStatement> prepareConverter;
 
@@ -105,7 +105,7 @@ public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
             return this;
         }
 
-        public DynamicQueryMethodReturnBuilder withQueryConverter(Function<String, List<?>> queryConverter) {
+        public DynamicQueryMethodReturnBuilder withQueryConverter(Function<String, Stream<?>> queryConverter) {
             this.queryConverter = queryConverter;
             return this;
         }

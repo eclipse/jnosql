@@ -33,16 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DynamicAsyncQueryMethodReturnTest {
 
-
-
-
     @Test
     public void shouldRunWithoutCallback() throws NoSuchMethodException {
         Method method = getMethod(PersonRepository.class, "run");
         PreparedStatementAsync preparedStatementAsync = Mockito.mock(PreparedStatementAsync.class);
         AtomicReference<Object> reference = new AtomicReference<>();
         Consumer<List<Object>> listConsumer = reference::set;
-        BiConsumer<String, Consumer<List<Object>>> biconsumer = (q,l) -> reference.set(l);
+        BiConsumer<String, Consumer<Stream<Object>>> biconsumer = (q,l) -> reference.set(l);
 
         Function<String, PreparedStatementAsync> converter = s -> preparedStatementAsync;
 
@@ -64,7 +61,7 @@ class DynamicAsyncQueryMethodReturnTest {
         PreparedStatementAsync preparedStatementAsync = Mockito.mock(PreparedStatementAsync.class);
         AtomicReference<Object> reference = new AtomicReference<>();
         Consumer<List<Object>> listConsumer = reference::set;
-        BiConsumer<String, Consumer<List<Object>>> biconsumer = (q,l) -> reference.set(l);
+        BiConsumer<String, Consumer<Stream<Object>>> biconsumer = (q,l) -> reference.set(l);
 
         Function<String, PreparedStatementAsync> converter = s -> preparedStatementAsync;
 
@@ -80,15 +77,12 @@ class DynamicAsyncQueryMethodReturnTest {
         assertNotNull(reference);
     }
 
-
-
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
                 .filter(m -> m.getName().equals(methodName))
                 .findFirst().get();
 
     }
-
 
     private static class Person {
 
@@ -123,8 +117,6 @@ class DynamicAsyncQueryMethodReturnTest {
 
         @Query("query")
         List<Person> runCallBack(Consumer<Person> callback);
-
-
     }
 
 }
