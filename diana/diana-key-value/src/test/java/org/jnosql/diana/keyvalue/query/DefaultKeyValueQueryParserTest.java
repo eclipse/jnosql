@@ -91,7 +91,7 @@ class DefaultKeyValueQueryParserTest {
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
-        prepare.getResultList();
+        prepare.getResult();
 
         Mockito.verify(manager).remove(captor.capture());
         List<Object> value = captor.getValue();
@@ -107,7 +107,7 @@ class DefaultKeyValueQueryParserTest {
     public void shouldExecutePrepareStatement1(String query) {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("value", "Hunt");
-        prepare.getResultList();
+        prepare.getResult();
         ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
 
         Mockito.verify(manager).put(captor.capture());

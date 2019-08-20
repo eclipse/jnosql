@@ -121,7 +121,7 @@ class GetQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        assertThrows(QueryException.class, prepare::getResultList);
+        assertThrows(QueryException.class, prepare::getResult);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -131,7 +131,7 @@ class GetQueryParserTest {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
-        prepare.getResultList().collect(Collectors.toList());
+        prepare.getResult().collect(Collectors.toList());
 
         verify(manager).get(captor.capture());
         List<Object> value = captor.getAllValues();
@@ -149,7 +149,7 @@ class GetQueryParserTest {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         prepare.bind("id2", 11);
-        final Stream<Value> stream = prepare.getResultList();
+        final Stream<Value> stream = prepare.getResult();
         stream.collect(Collectors.toList());
         verify(manager, Mockito.times(2)).get(captor.capture());
         List<Object> value = captor.getAllValues();

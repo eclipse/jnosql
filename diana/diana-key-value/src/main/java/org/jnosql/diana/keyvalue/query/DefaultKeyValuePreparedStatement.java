@@ -79,7 +79,7 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
     }
 
     @Override
-    public Stream<Value> getResultList() {
+    public Stream<Value> getResult() {
         if (!paramsLeft.isEmpty()) {
             throw new QueryException("Check all the parameters before execute the query, params left: "
                     + paramsLeft);
@@ -108,7 +108,7 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
 
     @Override
     public Optional<Value> getSingleResult() {
-        Stream<Value> entities = getResultList();
+        Stream<Value> entities = getResult();
         final Iterator<Value> iterator = entities.iterator();
 
         if (!iterator.hasNext()) {
