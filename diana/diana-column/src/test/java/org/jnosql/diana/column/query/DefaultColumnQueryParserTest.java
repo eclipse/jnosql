@@ -182,7 +182,6 @@ public class DefaultColumnQueryParserTest {
         assertEquals(Column.of("name", "Diana"), entity.find("name").get());
     }
 
-
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
     public void shouldSingleResult(String query) {

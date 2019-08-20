@@ -17,6 +17,7 @@
 package org.jnosql.diana.column.query;
 
 import jakarta.nosql.Condition;
+import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
@@ -24,22 +25,23 @@ import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.column.ColumnPreparedStatementAsync;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.column.ColumnQueryParserAsync;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultColumnQueryParserAsyncTest {
@@ -52,8 +54,8 @@ class DefaultColumnQueryParserAsyncTest {
     public void shouldReturnNPEWhenThereIsNullParameter() {
         Consumer<Stream<ColumnEntity>> callBack = (c) -> {
         };
-        Assertions.assertThrows(NullPointerException.class, () -> parser.query(null, manager, callBack, ColumnObserverParser.EMPTY));
-        Assertions.assertThrows(NullPointerException.class, () -> parser.query("select * from God", null, callBack,
+        assertThrows(NullPointerException.class, () -> parser.query(null, manager, callBack, ColumnObserverParser.EMPTY));
+        assertThrows(NullPointerException.class, () -> parser.query("select * from God", null, callBack,
                 ColumnObserverParser.EMPTY));
     }
 
@@ -62,8 +64,8 @@ class DefaultColumnQueryParserAsyncTest {
 
         Consumer<Stream<ColumnEntity>> callBack = (c) -> {
         };
-        Assertions.assertThrows(QueryException.class, () -> parser.query("inva", manager, callBack, ColumnObserverParser.EMPTY));
-        Assertions.assertThrows(QueryException.class, () -> parser.query("invalid", manager, callBack, ColumnObserverParser.EMPTY));
+        assertThrows(QueryException.class, () -> parser.query("inva", manager, callBack, ColumnObserverParser.EMPTY));
+        assertThrows(QueryException.class, () -> parser.query("invalid", manager, callBack, ColumnObserverParser.EMPTY));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -204,7 +206,55 @@ class DefaultColumnQueryParserAsyncTest {
         ColumnEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
         assertEquals(Column.of("name", "Diana"), entity.find("name").get());
-
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where name = @name"})
+    public void shouldSingleResult(String query) {
+        AtomicReference<Optional<ColumnEntity>> reference = new AtomicReference<>();
+        Consumer<Optional<ColumnEntity>> callBack = reference::set;
+        ArgumentCaptor<Consumer<Stream<ColumnEntity>>> callBackCaptor = ArgumentCaptor.forClass(Consumer.class);
+
+        ColumnPreparedStatementAsync prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
+        prepare.bind("name", "Diana");
+        prepare.getSingleResult(callBack);
+        Mockito.verify(manager).select(Mockito.any(ColumnQuery.class), callBackCaptor.capture());
+        final Consumer<Stream<ColumnEntity>> consumer = callBackCaptor.getValue();
+        consumer.accept(Stream.of(Mockito.mock(ColumnEntity.class)));
+        final Optional<ColumnEntity> columnEntity = reference.get();
+        assertTrue(columnEntity.isPresent());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where name = @name"})
+    public void shouldReturnEmptySingleResult(String query) {
+        AtomicReference<Optional<ColumnEntity>> reference = new AtomicReference<>();
+        Consumer<Optional<ColumnEntity>> callBack = reference::set;
+        ArgumentCaptor<Consumer<Stream<ColumnEntity>>> callBackCaptor = ArgumentCaptor.forClass(Consumer.class);
+
+        ColumnPreparedStatementAsync prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
+        prepare.bind("name", "Diana");
+        prepare.getSingleResult(callBack);
+        Mockito.verify(manager).select(Mockito.any(ColumnQuery.class), callBackCaptor.capture());
+        final Consumer<Stream<ColumnEntity>> consumer = callBackCaptor.getValue();
+        consumer.accept(Stream.empty());
+        final Optional<ColumnEntity> columnEntity = reference.get();
+        assertFalse(columnEntity.isPresent());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where name = @name"})
+    public void shouldReturnErrorSingleResult(String query) {
+        AtomicReference<Optional<ColumnEntity>> reference = new AtomicReference<>();
+        Consumer<Optional<ColumnEntity>> callBack = reference::set;
+        ArgumentCaptor<Consumer<Stream<ColumnEntity>>> callBackCaptor = ArgumentCaptor.forClass(Consumer.class);
+
+        ColumnPreparedStatementAsync prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
+        prepare.bind("name", "Diana");
+        prepare.getSingleResult(callBack);
+        Mockito.verify(manager).select(Mockito.any(ColumnQuery.class), callBackCaptor.capture());
+        final Consumer<Stream<ColumnEntity>> consumer = callBackCaptor.getValue();
+       assertThrows(NonUniqueResultException.class, () ->
+               consumer.accept(Stream.of(Mockito.mock(ColumnEntity.class), Mockito.mock(ColumnEntity.class))));
+    }
 }
