@@ -23,8 +23,8 @@ import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import jakarta.nosql.document.DocumentQueryParserAsync;
 
-import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -37,7 +37,7 @@ public final class DefaultDocumentQueryParserAsync implements DocumentQueryParse
 
     @Override
     public void query(String query, DocumentCollectionManagerAsync collectionManager,
-                      Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer) {
+                      Consumer<Stream<DocumentEntity>> callBack, DocumentObserverParser observer) {
 
         validation(query, collectionManager, callBack, observer);
         String command = query.substring(0, 6);
@@ -92,7 +92,7 @@ public final class DefaultDocumentQueryParserAsync implements DocumentQueryParse
     }
 
     private void validation(String query, DocumentCollectionManagerAsync collectionManager,
-                            Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer) {
+                            Consumer<Stream<DocumentEntity>> callBack, DocumentObserverParser observer) {
 
         requireNonNull(query, "query is required");
         requireNonNull(collectionManager, "collectionManager is required");

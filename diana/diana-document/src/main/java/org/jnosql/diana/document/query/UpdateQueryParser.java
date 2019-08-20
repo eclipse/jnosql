@@ -33,6 +33,7 @@ import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
 
@@ -44,7 +45,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
         this.supplier = ServiceLoaderProvider.get(UpdateQueryProvider.class);
     }
 
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
+    Stream<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
@@ -55,11 +56,11 @@ final class UpdateQueryParser extends ConditionQueryParser {
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        return singletonList(collectionManager.update(entity));
+        return Stream.of(collectionManager.update(entity));
     }
 
     void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
-                    Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer) {
+                    Consumer<Stream<DocumentEntity>> callBack, DocumentObserverParser observer) {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
@@ -70,7 +71,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        collectionManager.update(entity, c -> callBack.accept(singletonList(c)));
+        collectionManager.update(entity, c -> callBack.accept(Stream.of((c))));
     }
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
@@ -80,7 +81,6 @@ final class UpdateQueryParser extends ConditionQueryParser {
         UpdateQuery updateQuery = supplier.apply(query);
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
-
         return DefaultDocumentPreparedStatement.update(entity, params, query, collectionManager);
     }
 

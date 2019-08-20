@@ -25,6 +25,7 @@ import jakarta.nosql.document.DocumentQueryParser;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public final class DefaultDocumentQueryParser implements DocumentQueryParser {
 
@@ -34,8 +35,8 @@ public final class DefaultDocumentQueryParser implements DocumentQueryParser {
     private final UpdateQueryParser update = new UpdateQueryParser();
 
     @Override
-    public List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager,
-                                      DocumentObserverParser observer) {
+    public Stream<DocumentEntity> query(String query, DocumentCollectionManager collectionManager,
+                                        DocumentObserverParser observer) {
         validation(query, collectionManager, observer);
         String command = query.substring(0, 6);
         switch (command) {

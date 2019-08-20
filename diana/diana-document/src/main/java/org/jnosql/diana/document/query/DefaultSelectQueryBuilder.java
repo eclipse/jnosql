@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -191,7 +192,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
     }
 
     @Override
-    public List<DocumentEntity> execute(DocumentCollectionManager manager) {
+    public Stream<DocumentEntity> execute(DocumentCollectionManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.select(this.build());
     }
@@ -203,7 +204,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
     }
 
     @Override
-    public void execute(DocumentCollectionManagerAsync manager, Consumer<List<DocumentEntity>> callback) {
+    public void execute(DocumentCollectionManagerAsync manager, Consumer<Stream<DocumentEntity>> callback) {
         requireNonNull(manager, "manager is required");
         requireNonNull(callback, "callback is required");
         manager.select(this.build(), callback);

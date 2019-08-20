@@ -37,6 +37,7 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentCondition.eq;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -382,7 +383,7 @@ class DeleteQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
-        assertThrows(QueryException.class, prepare::getResultList);
+        assertThrows(QueryException.class, prepare::getResult);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -392,7 +393,7 @@ class DeleteQueryParserTest {
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
         prepare.bind("age", 12);
-        prepare.getResultList();
+        prepare.getResult();
         Mockito.verify(documentCollection).delete(captor.capture());
         DocumentDeleteQuery documentQuery = captor.getValue();
         DocumentCondition documentCondition = documentQuery.getCondition().get();
@@ -415,7 +416,7 @@ class DeleteQueryParserTest {
     public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
 
         DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResultList(s ->{}));
+        assertThrows(QueryException.class, () -> prepare.getResult(s ->{}));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -425,9 +426,9 @@ class DeleteQueryParserTest {
 
         DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
         prepare.bind("age", 12);
-        Consumer<List<DocumentEntity>> callBack = s -> {
+        Consumer<Stream<DocumentEntity>> callBack = s -> {
         };
-        prepare.getResultList(callBack);
+        prepare.getResult(callBack);
         Mockito.verify(documentCollectionAsync).delete(captor.capture(), Mockito.any(Consumer.class));
         DocumentDeleteQuery documentQuery = captor.getValue();
         DocumentCondition documentCondition = documentQuery.getCondition().get();
@@ -442,7 +443,7 @@ class DeleteQueryParserTest {
     public void shouldReturnParserQueryAsync(String query) {
         ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
 
-        Consumer<List<DocumentEntity>> callBack = s -> {
+        Consumer<Stream<DocumentEntity>> callBack = s -> {
         };
         parser.queryAsync(query, documentCollectionAsync, callBack, observer);
         Mockito.verify(documentCollectionAsync).delete(captor.capture(), Mockito.any(Consumer.class));

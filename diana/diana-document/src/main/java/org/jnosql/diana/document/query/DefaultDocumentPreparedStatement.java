@@ -26,12 +26,11 @@ import jakarta.nosql.document.DocumentPreparedStatement;
 import jakarta.nosql.document.DocumentQuery;
 
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
+import java.util.stream.Stream;
 
 final class DefaultDocumentPreparedStatement implements DocumentPreparedStatement {
 
@@ -84,7 +83,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
     }
 
     @Override
-    public List<DocumentEntity> getResultList() {
+    public Stream<DocumentEntity> getResult() {
         if (!paramsLeft.isEmpty()) {
             throw new QueryException("Check all the parameters before execute the query, params left: " + paramsLeft);
         }
@@ -93,14 +92,14 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
                 return manager.select(documentQuery);
             case DELETE:
                 manager.delete(documentDeleteQuery);
-                return emptyList();
+                return Stream.empty();
             case UPDATE:
-                return singletonList(manager.update(entity));
+                return Stream.of(manager.update(entity));
             case INSERT:
                 if (Objects.isNull(duration)) {
-                    return singletonList(manager.insert(entity));
+                    return Stream.of(manager.insert(entity));
                 } else {
-                    return singletonList(manager.insert(entity, duration));
+                    return Stream.of(manager.insert(entity, duration));
                 }
             default:
                 throw new UnsupportedOperationException("there is not support to operation type: " + type);
@@ -110,14 +109,15 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
 
     @Override
     public Optional<DocumentEntity> getSingleResult() {
-        List<DocumentEntity> entities = getResultList();
-        if (entities.isEmpty()) {
+        Stream<DocumentEntity> entities = getResult();
+        final Iterator<DocumentEntity> iterator = entities.iterator();
+        if (!iterator.hasNext()) {
             return Optional.empty();
         }
-        if (entities.size() == 1) {
-            return Optional.of(entities.get(0));
+        final DocumentEntity entity = iterator.next();
+        if (!iterator.hasNext()) {
+            return Optional.of(entity);
         }
-
         throw new NonUniqueResultException("The select returns more than one entity, select: " + query);
     }
 

@@ -34,6 +34,7 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentCondition.eq;
 import static jakarta.nosql.document.DocumentQuery.select;
@@ -316,7 +317,7 @@ public class DefaultSelectQueryBuilderTest {
         DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         String collection = "collection";
-        List<DocumentEntity> entities = select().from(collection).execute(manager);
+        Stream<DocumentEntity> entities = select().from(collection).execute(manager);
         Mockito.verify(manager).select(queryCaptor.capture());
         checkQuery(queryCaptor, collection);
     }
@@ -336,7 +337,7 @@ public class DefaultSelectQueryBuilderTest {
         DocumentCollectionManagerAsync manager = Mockito.mock(DocumentCollectionManagerAsync.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         String collection = "collection";
-        Consumer<List<DocumentEntity>> callback = System.out::println;
+        Consumer<Stream<DocumentEntity>> callback = System.out::println;
         select().from(collection).execute(manager, callback);
         Mockito.verify(manager).select(queryCaptor.capture(), Mockito.eq(callback));
         checkQuery(queryCaptor, collection);

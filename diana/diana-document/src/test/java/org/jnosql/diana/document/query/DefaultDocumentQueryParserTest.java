@@ -128,7 +128,7 @@ class DefaultDocumentQueryParserTest {
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
-        prepare.getResultList();
+        prepare.getResult();
         Mockito.verify(documentCollection).delete(captor.capture());
         DocumentDeleteQuery documentQuery = captor.getValue();
         DocumentCondition documentCondition = documentQuery.getCondition().get();
@@ -144,7 +144,7 @@ class DefaultDocumentQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");
-        prepare.getResultList();
+        prepare.getResult();
         Mockito.verify(documentCollection).insert(captor.capture());
         DocumentEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
@@ -159,7 +159,7 @@ class DefaultDocumentQueryParserTest {
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
-        prepare.getResultList();
+        prepare.getResult();
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
         DocumentCondition documentCondition = documentQuery.getCondition().get();
@@ -169,14 +169,13 @@ class DefaultDocumentQueryParserTest {
         assertEquals(12, document.get());
     }
 
-
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
     public void shouldExecutePrepareStatement3(String query) {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, DocumentObserverParser.EMPTY);
         prepare.bind("name", "Diana");
-        prepare.getResultList();
+        prepare.getResult();
         Mockito.verify(documentCollection).update(captor.capture());
         DocumentEntity entity = captor.getValue();
         assertEquals("God", entity.getName());

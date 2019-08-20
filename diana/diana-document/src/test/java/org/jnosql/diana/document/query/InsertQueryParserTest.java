@@ -258,7 +258,7 @@ class InsertQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("name", "Diana");
-        prepare.getResultList();
+        prepare.getResul();
         Mockito.verify(manager).insert(captor.capture());
         DocumentEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
