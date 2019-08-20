@@ -37,11 +37,12 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
+import static jakarta.nosql.column.ColumnCondition.eq;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static jakarta.nosql.column.ColumnCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -382,7 +383,7 @@ class DefaultDeleteQueryConverterTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, prepare::getResultList);
+        assertThrows(QueryException.class, prepare::getResult);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -392,7 +393,7 @@ class DefaultDeleteQueryConverterTest {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("age", 12);
-        prepare.getResultList();
+        prepare.getResult();
         Mockito.verify(manager).delete(captor.capture());
         ColumnDeleteQuery columnQuery = captor.getValue();
         ColumnCondition columnCondition = columnQuery.getCondition().get();
@@ -415,7 +416,7 @@ class DefaultDeleteQueryConverterTest {
     public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
 
         ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResultList(s ->{}));
+        assertThrows(QueryException.class, () -> prepare.getResult(s ->{}));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -425,9 +426,9 @@ class DefaultDeleteQueryConverterTest {
 
         ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
         prepare.bind("age", 12);
-        Consumer<List<ColumnEntity>> callBack = s -> {
+        Consumer<Stream<ColumnEntity>> callBack = s -> {
         };
-        prepare.getResultList(callBack);
+        prepare.getResult(callBack);
         Mockito.verify(managerAsync).delete(captor.capture(), Mockito.any(Consumer.class));
         ColumnDeleteQuery columnQuery = captor.getValue();
         ColumnCondition columnCondition = columnQuery.getCondition().get();
@@ -442,7 +443,7 @@ class DefaultDeleteQueryConverterTest {
     public void shouldReturnParserQueryAsync(String query) {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
 
-        Consumer<List<ColumnEntity>> callBack = s -> {
+        Consumer<Stream<ColumnEntity>> callBack = s -> {
         };
         parser.queryAsync(query, managerAsync, callBack, observer);
         Mockito.verify(managerAsync).delete(captor.capture(), Mockito.any(Consumer.class));

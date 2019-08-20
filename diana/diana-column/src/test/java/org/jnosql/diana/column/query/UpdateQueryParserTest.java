@@ -33,6 +33,7 @@ import org.mockito.Mockito;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -125,7 +126,7 @@ class UpdateQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, prepare::getResultList);
+        assertThrows(QueryException.class, prepare::getResult);
     }
 
 
@@ -135,7 +136,7 @@ class UpdateQueryParserTest {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("name", "Diana");
-        prepare.getResultList();
+        prepare.getResult();
         Mockito.verify(manager).update(captor.capture());
         ColumnEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
@@ -156,7 +157,7 @@ class UpdateQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQueryAsync(String query) {
 
         ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResultList(s ->{}));
+        assertThrows(QueryException.class, () -> prepare.getResult(s ->{}));
     }
 
 
@@ -166,9 +167,9 @@ class UpdateQueryParserTest {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
         prepare.bind("name", "Diana");
-        Consumer<List<ColumnEntity>> callBack = s -> {
+        Consumer<Stream<ColumnEntity>> callBack = s -> {
         };
-        prepare.getResultList(callBack);
+        prepare.getResult(callBack);
         Mockito.verify(managerAsync).update(captor.capture(), Mockito.any(Consumer.class));
         ColumnEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
