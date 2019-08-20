@@ -32,12 +32,10 @@ public class DefaultColumnQueryTest {
 
     private ColumnQuery query;
 
-
     @BeforeEach
     public void setUp() {
         query = select().from("columnFamily").build();
     }
-
 
     @Test
     public void shouldNotRemoveColumns() {
@@ -47,7 +45,6 @@ public class DefaultColumnQueryTest {
             columns.clear();
         });
     }
-
 
     @Test
     public void shouldNotRemoveSort() {
