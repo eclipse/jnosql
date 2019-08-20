@@ -315,7 +315,6 @@ public class DefaultSelectQueryBuilderTest {
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String columnFamily = "columnFamily";
         Stream<ColumnEntity> entities = select().from(columnFamily).execute(manager);
-        Mockito.verify(manager, Mockito.never()).select(Mockito.any(ColumnQuery.class));
         entities.collect(Collectors.toList());
         Mockito.verify(manager).select(queryCaptor.capture());
         checkQuery(queryCaptor, columnFamily);
