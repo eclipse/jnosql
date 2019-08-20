@@ -27,9 +27,8 @@ import jakarta.nosql.query.PutQuery;
 import jakarta.nosql.query.PutQuery.PutQueryProvider;
 
 import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 final class PutQueryParser {
 
@@ -39,7 +38,7 @@ final class PutQueryParser {
         this.provider = ServiceLoaderProvider.get(PutQueryProvider.class);
     }
 
-    List<Value> query(String query, BucketManager manager) {
+    Stream<Value> query(String query, BucketManager manager) {
 
         PutQuery putQuery = provider.apply(query);
         Params params = Params.newParams();
@@ -57,7 +56,7 @@ final class PutQueryParser {
         } else {
             manager.put(entity);
         }
-        return Collections.emptyList();
+        return Stream.empty();
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {

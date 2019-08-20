@@ -24,6 +24,7 @@ import jakarta.nosql.keyvalue.KeyValueQueryParser;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class DefaultKeyValueQueryParser implements KeyValueQueryParser {
 
@@ -32,7 +33,7 @@ public class DefaultKeyValueQueryParser implements KeyValueQueryParser {
     private final RemoveQueryParser removeQueryParser = new RemoveQueryParser();
 
     @Override
-    public List<Value> query(String query, BucketManager manager) {
+    public Stream<Value> query(String query, BucketManager manager) {
         validation(query, manager);
         String command = query.substring(0, 3);
         switch (command) {
