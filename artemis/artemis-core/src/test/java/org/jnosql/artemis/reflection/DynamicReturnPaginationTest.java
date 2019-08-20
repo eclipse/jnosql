@@ -67,7 +67,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -96,7 +96,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -124,7 +124,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -151,7 +151,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -178,7 +178,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -206,7 +206,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -234,7 +234,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -261,7 +261,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -288,7 +288,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -316,7 +316,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -342,7 +342,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -369,7 +369,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -397,7 +397,7 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)
@@ -421,7 +421,7 @@ class DynamicReturnPaginationTest {
         Pagination pagination = getPagination();
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(stream)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
                 .withListPagination(listPagination)

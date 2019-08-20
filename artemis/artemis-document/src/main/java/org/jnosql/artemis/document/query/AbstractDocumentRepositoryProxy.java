@@ -86,7 +86,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
-                .withList(() -> getTemplate().select(query))
+                .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
                 .withPagination(DynamicReturn.findPagination(args))
                 .withListPagination(listPagination(query))

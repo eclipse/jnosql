@@ -109,7 +109,7 @@ enum DynamicReturnConverter {
         DynamicReturn dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
-                .withList(streamSupplier)
+                .withResult(streamSupplier)
                 .withSingleResult(singleSupplier)
                 .build();
 

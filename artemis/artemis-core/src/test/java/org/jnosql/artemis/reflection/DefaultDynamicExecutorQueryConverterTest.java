@@ -48,7 +48,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(() -> Optional.of(ada))
                 .withClassSource(Person.class)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Person person = converter.toInstance(dynamic);
@@ -61,7 +61,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Person person = converter.toInstance(dynamic);
@@ -75,7 +75,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(() -> Optional.of(ada))
                 .withClassSource(Person.class)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Optional<Person> person = converter.toOptional(dynamic);
@@ -90,7 +90,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
-                .withList(() -> Collections.singletonList(ada))
+                .withResult(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         List<Person> person = converter.toList(dynamic);
@@ -105,7 +105,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
-                .withList(() -> Collections.singletonList(ada))
+                .withResult(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Set<Person> person = converter.toSet(dynamic);
@@ -121,7 +121,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
-                .withList(() -> Collections.singletonList(ada))
+                .withResult(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         LinkedList<Person> person = converter.toLinkedList(dynamic);
@@ -136,7 +136,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
-                .withList(() -> Collections.singletonList(ada))
+                .withResult(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         TreeSet<Person> person = converter.toTreeSet(dynamic);
@@ -151,7 +151,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
-                .withList(() -> Collections.singletonList(ada))
+                .withResult(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Stream<Person> person = converter.toStream(dynamic);
@@ -166,7 +166,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
-                .withList(() -> Collections.singletonList(ada))
+                .withResult(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Object person = converter.toDefault(dynamic);
@@ -180,7 +180,7 @@ class DefaultDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
-                .withList(() -> Collections.singletonList(ada))
+                .withResult(() -> Collections.singletonList(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .build();
         Assertions.assertThrows(DynamicQueryException.class, () -> converter.toPage(dynamic));

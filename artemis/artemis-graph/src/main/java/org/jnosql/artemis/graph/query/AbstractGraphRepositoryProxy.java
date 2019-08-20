@@ -147,7 +147,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
-                .withList(querySupplier)
+                .withResult(querySupplier)
                 .withSingleResult(singleSupplier)
                 .withPagination(DynamicReturn.findPagination(args))
                 .withListPagination(p -> querySupplier.get())

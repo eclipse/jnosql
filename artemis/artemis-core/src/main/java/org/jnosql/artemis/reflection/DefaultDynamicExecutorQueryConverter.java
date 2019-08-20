@@ -45,32 +45,32 @@ final class DefaultDynamicExecutorQueryConverter implements DynamicExecutorQuery
 
     @Override
     public <T> List<T> toList(DynamicReturn<T> dynamic) {
-        return dynamic.list();
+        return dynamic.result();
     }
 
     @Override
     public <T> Set<T> toSet(DynamicReturn<T> dynamic) {
-        return new HashSet<>(dynamic.list());
+        return new HashSet<>(dynamic.result());
     }
 
     @Override
     public <T> LinkedList<T> toLinkedList(DynamicReturn<T> dynamic) {
-        return new LinkedList<>(dynamic.list());
+        return new LinkedList<>(dynamic.result());
     }
 
     @Override
     public <T> Stream<T> toStream(DynamicReturn<T> dynamic) {
-        return dynamic.list().stream();
+        return dynamic.result().stream();
     }
 
     @Override
     public <T> TreeSet<T> toTreeSet(DynamicReturn<T> dynamic) {
-        return new TreeSet<>(dynamic.list());
+        return new TreeSet<>(dynamic.result());
     }
 
     @Override
     public <T> Object toDefault(DynamicReturn<T> dynamic) {
-        return dynamic.list();
+        return dynamic.result();
     }
 
     @Override
