@@ -17,6 +17,7 @@
 package org.jnosql.diana.column.query;
 
 import jakarta.nosql.Condition;
+import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
@@ -27,36 +28,38 @@ import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.column.ColumnQueryParser;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class DefaultColumnQueryParserTest {
     
     private ColumnQueryParser parser = new DefaultColumnQueryParser();
 
 
-    private ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+    private ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
 
     @Test
     public void shouldReturnNPEWhenThereIsNullParameter() {
-
-        Assertions.assertThrows(NullPointerException.class, () -> parser.query(null, manager, ColumnObserverParser.EMPTY));
-        Assertions.assertThrows(NullPointerException.class, () -> parser.query("select * from God", null, ColumnObserverParser.EMPTY));
+        assertThrows(NullPointerException.class, () -> parser.query(null, manager, ColumnObserverParser.EMPTY));
+        assertThrows(NullPointerException.class, () -> parser.query("select * from God", null, ColumnObserverParser.EMPTY));
     }
 
     @Test
     public void shouldReturnErrorWhenHasInvalidQuery() {
-
-        Assertions.assertThrows(QueryException.class, () -> parser.query("inva", manager, ColumnObserverParser.EMPTY));
-        Assertions.assertThrows(QueryException.class, () -> parser.query("invalid", manager, ColumnObserverParser.EMPTY));
+        assertThrows(QueryException.class, () -> parser.query("inva", manager, ColumnObserverParser.EMPTY));
+        assertThrows(QueryException.class, () -> parser.query("invalid", manager, ColumnObserverParser.EMPTY));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -177,7 +180,62 @@ public class DefaultColumnQueryParserTest {
         ColumnEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
         assertEquals(Column.of("name", "Diana"), entity.find("name").get());
+    }
 
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where age = @age"})
+    public void shouldSingleResult(String query) {
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+
+        Mockito.when(manager.select(Mockito.any(ColumnQuery.class)))
+                .thenReturn(Stream.of(mock(ColumnEntity.class)));
+
+        ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
+        prepare.bind("age", 12);
+        final Optional<ColumnEntity> result = prepare.getSingleResult();
+        Mockito.verify(manager).select(captor.capture());
+        ColumnQuery columnQuery = captor.getValue();
+        ColumnCondition columnCondition = columnQuery.getCondition().get();
+        Column column = columnCondition.getColumn();
+        assertEquals(Condition.EQUALS, columnCondition.getCondition());
+        assertEquals("age", column.getName());
+        assertEquals(12, column.get());
+        assertTrue(result.isPresent());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where age = @age"})
+    public void shouldReturnEmptySingleResult(String query) {
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+
+        Mockito.when(manager.select(Mockito.any(ColumnQuery.class)))
+                .thenReturn(Stream.empty());
+
+        ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
+        prepare.bind("age", 12);
+        final Optional<ColumnEntity> result = prepare.getSingleResult();
+        Mockito.verify(manager).select(captor.capture());
+        ColumnQuery columnQuery = captor.getValue();
+        ColumnCondition columnCondition = columnQuery.getCondition().get();
+        Column column = columnCondition.getColumn();
+        assertEquals(Condition.EQUALS, columnCondition.getCondition());
+        assertEquals("age", column.getName());
+        assertEquals(12, column.get());
+        assertFalse(result.isPresent());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"select  * from God where age = @age"})
+    public void shouldReturnErrorSingleResult(String query) {
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+
+        Mockito.when(manager.select(Mockito.any(ColumnQuery.class)))
+                .thenReturn(Stream.of(mock(ColumnEntity.class), mock(ColumnEntity.class)));
+
+        ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
+        prepare.bind("age", 12);
+       assertThrows(NonUniqueResultException.class, () -> prepare.getSingleResult());
     }
 
 }
