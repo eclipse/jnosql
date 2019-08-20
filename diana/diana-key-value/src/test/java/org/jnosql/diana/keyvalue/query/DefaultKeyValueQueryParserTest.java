@@ -28,6 +28,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,12 +43,12 @@ class DefaultKeyValueQueryParserTest {
     @ValueSource(strings = {"get \"Diana\""})
     public void shouldReturnParserQuery1(String query) {
 
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
 
-        parser.query(query, manager);
+        parser.query(query, manager).collect(Collectors.toList());
 
         Mockito.verify(manager).get(captor.capture());
-        List<Object> value = captor.getValue();
+        List<Object> value = captor.getAllValues();
 
         assertEquals(1, value.size());
         MatcherAssert.assertThat(value, Matchers.contains("Diana"));
