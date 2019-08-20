@@ -17,12 +17,12 @@ package org.jnosql.artemis.reflection;
 import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Page;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -45,27 +45,27 @@ final class DefaultDynamicExecutorQueryConverter implements DynamicExecutorQuery
 
     @Override
     public <T> List<T> toList(DynamicReturn<T> dynamic) {
-        return dynamic.result();
+        return dynamic.result().collect(Collectors.toList());
     }
 
     @Override
     public <T> Set<T> toSet(DynamicReturn<T> dynamic) {
-        return new HashSet<>(dynamic.result());
+        return dynamic.result().collect(Collectors.toSet());
     }
 
     @Override
     public <T> LinkedList<T> toLinkedList(DynamicReturn<T> dynamic) {
-        return new LinkedList<>(dynamic.result());
+        return dynamic.result().collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
     public <T> Stream<T> toStream(DynamicReturn<T> dynamic) {
-        return dynamic.result().stream();
+        return dynamic.result();
     }
 
     @Override
     public <T> TreeSet<T> toTreeSet(DynamicReturn<T> dynamic) {
-        return new TreeSet<>(dynamic.result());
+        return dynamic.result().collect(Collectors.toCollection(TreeSet::new));
     }
 
     @Override
