@@ -22,7 +22,6 @@ import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
 import jakarta.nosql.keyvalue.KeyValueQueryParser;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
