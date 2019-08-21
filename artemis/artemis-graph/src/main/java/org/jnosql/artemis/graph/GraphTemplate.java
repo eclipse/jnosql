@@ -14,16 +14,17 @@
  */
 package org.jnosql.artemis.graph;
 
+import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.mapping.PreparedStatement;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.NonUniqueResultException;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * This interface that represents the common operation between an entity
@@ -242,7 +243,7 @@ public interface GraphTemplate {
      * @return the result as {@link List}
      * @throws NullPointerException when the gremlin is null
      */
-    <T> List<T> query(String gremlin);
+    <T> Stream<T> query(String gremlin);
 
     /**
      * Executes a Gremlin query then bring the result as a unique result

@@ -17,8 +17,6 @@ package org.jnosql.artemis.graph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class GraphTransactionUtilTest {
 
     @Test

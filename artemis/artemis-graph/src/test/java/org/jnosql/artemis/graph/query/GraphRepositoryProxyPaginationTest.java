@@ -14,18 +14,18 @@
  */
 package org.jnosql.artemis.graph.query;
 
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

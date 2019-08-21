@@ -14,13 +14,13 @@
  */
 package org.jnosql.artemis.graph.spi;
 
-import jakarta.nosql.mapping.configuration.ConfigurationException;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import jakarta.nosql.mapping.ConfigurationReader;
 import jakarta.nosql.mapping.ConfigurationSettingsUnit;
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.artemis.graph.GraphConfiguration;
+import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.reflection.Reflections;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.jnosql.artemis.graph.GraphConfiguration;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;

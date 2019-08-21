@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.graph.query;
 
+import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.query.DeleteQuery;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.diana.query.method.DeleteMethodProvider;
 
 import java.util.List;

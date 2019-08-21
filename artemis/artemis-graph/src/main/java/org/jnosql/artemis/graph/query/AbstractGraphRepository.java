@@ -15,9 +15,9 @@
 package org.jnosql.artemis.graph.query;
 
 import jakarta.nosql.mapping.Repository;
-import org.jnosql.artemis.graph.GraphTemplate;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.jnosql.artemis.graph.GraphTemplate;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -25,11 +25,11 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static jakarta.nosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
-import static jakarta.nosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
 abstract class AbstractGraphRepository<T, K> implements Repository<T, K> {
 

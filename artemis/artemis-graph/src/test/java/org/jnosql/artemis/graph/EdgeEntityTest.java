@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.hamcrest.Matchers;
+import jakarta.nosql.Value;
 import jakarta.nosql.mapping.EntityNotFoundException;
+import org.hamcrest.Matchers;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
-import jakarta.nosql.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

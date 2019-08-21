@@ -14,18 +14,18 @@
  */
 package org.jnosql.artemis.graph.query;
 
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,7 +38,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @ExtendWith(CDIExtension.class)
 class DeleteQueryConverterTest {

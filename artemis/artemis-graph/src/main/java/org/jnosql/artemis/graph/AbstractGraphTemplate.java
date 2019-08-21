@@ -16,6 +16,11 @@ package org.jnosql.artemis.graph;
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.mapping.EntityNotFoundException;
+import jakarta.nosql.mapping.IdNotFoundException;
+import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.reflection.ClassMapping;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
@@ -24,11 +29,6 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.mapping.reflection.FieldMapping;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -242,22 +242,23 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
 
     @Override
-    public <T> List<T> query(String gremlin) {
+    public <T> Stream<T> query(String gremlin) {
         requireNonNull(gremlin, "query is required");
         return getExecutor().executeGremlin(getTraversal(), gremlin);
     }
 
     @Override
     public <T> Optional<T> singleResult(String gremlin) {
-        List<T> entities = query(gremlin);
-        if (entities.isEmpty()) {
+        Stream<T> entities = query(gremlin);
+        final Iterator<T> iterator = entities.iterator();
+        if (!iterator.hasNext()) {
             return Optional.empty();
         }
-        if (entities.size() == 1) {
-            return Optional.ofNullable(entities.get(0));
+        final T entity = iterator.next();
+        if (!iterator.hasNext()) {
+            return Optional.ofNullable(entity);
         }
         throw new NonUniqueResultException("The gremlin query returns more than one result: " + gremlin);
-
     }
 
     @Override
@@ -274,7 +275,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return getGraph().vertices(id);
     }
 
-
     @Override
     public long count(String label) {
         Objects.requireNonNull(label, "label is required");
@@ -287,7 +287,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         Objects.requireNonNull(entityClass, "entity class is required");
         return count(getClassMappings().get(entityClass).getName());
     }
-
 
     private <K> Collection<EdgeEntity> getEdgesByIdImpl(K id, Direction direction, String... labels) {
 
@@ -313,7 +312,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         }
         return Optional.empty();
     }
-
 
     private <T> Collection<EdgeEntity> getEdgesImpl(T entity, Direction direction, String... labels) {
         requireNonNull(entity, "entity is required");
@@ -341,7 +339,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return isNull(field.read(entity));
 
     }
-
 
     private <T> void checkId(T entity) {
         ClassMapping classMapping = getClassMappings().get(entity.getClass());

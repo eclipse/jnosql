@@ -16,26 +16,27 @@ package org.jnosql.artemis.graph.query;
 
 import jakarta.nosql.Sort;
 import jakarta.nosql.SortType;
+import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.query.SelectQuery;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.DynamicReturn;
 import org.jnosql.diana.query.method.SelectMethodProvider;
 
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.Order.asc;
 import static org.apache.tinkerpop.gremlin.process.traversal.Order.desc;
 
-final class SelectQueryConverter extends AbstractQueryConvert implements BiFunction<GraphQueryMethod, Object[], List<Vertex>> {
+final class SelectQueryConverter extends AbstractQueryConvert implements BiFunction<GraphQueryMethod, Object[], Stream<Vertex>> {
 
 
     @Override
-    public List<Vertex> apply(GraphQueryMethod graphQuery, Object[] params) {
+    public Stream<Vertex> apply(GraphQueryMethod graphQuery, Object[] params) {
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
         SelectQuery query = selectMethodFactory.apply(graphQuery.getMethod(), graphQuery.getEntityName());
@@ -47,7 +48,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
         setSort(params, traversal);
         setPagination(params, traversal, query);
         traversal.hasLabel(mapping.getName());
-        return traversal.toList();
+        return traversal.toStream();
     }
 
 

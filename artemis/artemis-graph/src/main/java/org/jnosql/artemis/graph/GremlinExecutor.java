@@ -23,10 +23,10 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 final class GremlinExecutor {
 
@@ -39,11 +39,11 @@ final class GremlinExecutor {
         this.converter = converter;
     }
 
-    <T> List<T> executeGremlin(GraphTraversalSource traversalSource, String gremlin) {
+    <T> Stream<T> executeGremlin(GraphTraversalSource traversalSource, String gremlin) {
         return executeGremlin(traversalSource, gremlin, Collections.emptyMap());
     }
 
-    <T> List<T> executeGremlin(GraphTraversalSource traversalSource, String gremlin, Map<String, Object> params) {
+    <T> Stream<T> executeGremlin(GraphTraversalSource traversalSource, String gremlin, Map<String, Object> params) {
         try {
             Bindings bindings = ENGINE.createBindings();
             bindings.put("g", traversalSource);
@@ -51,24 +51,19 @@ final class GremlinExecutor {
 
             Object eval = ENGINE.eval(gremlin, bindings);
             if (eval instanceof GraphTraversal) {
-                return convertToList(((GraphTraversal) eval).toList());
+                return convertToStream(((GraphTraversal) eval).toStream());
             }
             if (eval instanceof Iterable) {
-                return convertToList((Iterable) eval);
+                return convertToStream(StreamSupport.stream(((Iterable) eval).spliterator(), false));
             }
-            return Collections.singletonList((T) eval);
+            return Stream.of((T) eval);
         } catch (ScriptException e) {
             throw new GremlinQueryException("There is an error when executed the gremlin query: " + gremlin, e);
         }
     }
 
-    private <T> List<T> convertToList(Iterable<?> iterable) {
-        List<T> entities = new ArrayList<>();
-
-        for (Object entity : iterable) {
-            entities.add((T) getElement(entity));
-        }
-        return entities;
+    private <T> Stream<T> convertToStream(Stream<?> stream) {
+        return stream.map(this::getElement).map(e -> (T) e);
     }
 
     private Object getElement(Object entity) {

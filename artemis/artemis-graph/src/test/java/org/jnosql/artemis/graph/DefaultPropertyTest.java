@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Property;
 import jakarta.nosql.Value;
+import org.apache.tinkerpop.gremlin.structure.Property;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.graph.producer;
 
+import jakarta.nosql.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.graph.GraphConfiguration;
-import jakarta.nosql.Settings;
 
 public class GraphConfigurationB implements GraphConfiguration {
 
