@@ -148,6 +148,8 @@ class DocumentRepositoryProxySortTest {
         assertThat(query.getSorts(), Matchers.contains(Sort.desc("name")));
         assertEquals(Document.of("age", 10), condition.getDocument());
 
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(Person.builder().build()));
         assertNotNull(personRepository.findByAge(10, Sort.asc("name")));
         when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
                 .empty());
