@@ -14,13 +14,12 @@
  */
 package org.jnosql.artemis.document;
 
-import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 final class DocumentPreparedStatement implements PreparedStatement {
 
@@ -42,9 +41,8 @@ final class DocumentPreparedStatement implements PreparedStatement {
     }
 
     @Override
-    public <T> List<T> getResultList() {
-        return preparedStatement.getResultList().stream().map(c -> (T) converter.toEntity(c))
-                .collect(Collectors.toList());
+    public <T> Stream<T> getResult() {
+        return preparedStatement.getResult().map(c -> (T) converter.toEntity(c));
     }
 
     @Override

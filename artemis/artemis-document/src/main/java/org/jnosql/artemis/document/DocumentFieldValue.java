@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.document;
 
+import jakarta.nosql.document.Document;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.reflection.FieldValue;
-import jakarta.nosql.document.Document;
 
 import java.util.List;
 

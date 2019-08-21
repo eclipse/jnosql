@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.document;
 
-import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.ConfigurationUnit;
+import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.PersonRepositoryAsync;
 import org.jnosql.artemis.UserRepository;
 import org.junit.jupiter.api.Test;

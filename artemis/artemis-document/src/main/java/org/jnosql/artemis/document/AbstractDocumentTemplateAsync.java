@@ -15,6 +15,7 @@
 package org.jnosql.artemis.document;
 
 
+import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentDeleteQuery;
@@ -137,6 +138,24 @@ public abstract class AbstractDocumentTemplateAsync implements DocumentTemplateA
         getManager().select(query, dianaCallBack);
     }
 
+    @Override
+    public <T> void singleResult(DocumentQuery query, Consumer<Optional<T>> callBack) {
+        requireNonNull(query, "query is required");
+        requireNonNull(callBack, "callBack is required");
+        select(query, entities -> {
+            final Iterator<T> iterator = (Iterator<T>) entities.iterator();
+            if (!iterator.hasNext()) {
+                callBack.accept(Optional.empty());
+                return;
+            }
+            final T entity = iterator.next();
+            if (!iterator.hasNext()) {
+                callBack.accept(Optional.of(entity));
+                return;
+            }
+            throw new NonUniqueResultException("No unique result found to the query: " + query);
+        });
+    }
 
     @Override
     public <T, K> void find(Class<T> entityClass, K id, Consumer<Optional<T>> callBack) {

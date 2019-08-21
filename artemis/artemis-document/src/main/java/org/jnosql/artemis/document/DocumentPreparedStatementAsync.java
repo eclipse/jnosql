@@ -15,16 +15,15 @@
 package org.jnosql.artemis.document;
 
 
-import jakarta.nosql.mapping.PreparedStatementAsync;
 import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.mapping.PreparedStatementAsync;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 final class DocumentPreparedStatementAsync implements PreparedStatementAsync {
 
@@ -44,14 +43,13 @@ final class DocumentPreparedStatementAsync implements PreparedStatementAsync {
     }
 
     @Override
-    public <T> void getResultList(Consumer<List<T>> callback) {
+    public <T> void getResult(Consumer<Stream<T>> callback) {
         requireNonNull(callback, "callback is required");
 
-        Consumer<List<DocumentEntity>> mapper = columnEntities -> callback
-                .accept(columnEntities.stream()
-                        .map(c -> (T) converter.toEntity(c))
-                .collect(toList()));
-        preparedStatementAsync.getResultList(mapper);
+        Consumer<Stream<DocumentEntity>> mapper = columnEntities -> callback
+                .accept(columnEntities
+                        .map(c -> (T) converter.toEntity(c)));
+        preparedStatementAsync.getResult(mapper);
     }
 
     @Override

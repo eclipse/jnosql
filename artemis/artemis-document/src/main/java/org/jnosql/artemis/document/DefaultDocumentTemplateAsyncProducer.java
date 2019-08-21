@@ -15,12 +15,12 @@
 package org.jnosql.artemis.document;
 
 
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.document.DocumentTemplateAsyncProducer;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Vetoed;

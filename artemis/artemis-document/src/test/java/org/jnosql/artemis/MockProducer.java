@@ -15,16 +15,16 @@
 package org.jnosql.artemis;
 
 
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.mapping.document.DocumentTemplateAsync;
-import org.jnosql.artemis.model.Person;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.mapping.Database;
+import jakarta.nosql.mapping.DatabaseType;
+import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.mapping.document.DocumentTemplateAsync;
+import org.jnosql.artemis.model.Person;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

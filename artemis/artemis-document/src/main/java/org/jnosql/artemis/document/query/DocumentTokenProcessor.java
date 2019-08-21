@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.document.query;
 
+import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.document.DocumentCondition;
 
 interface DocumentTokenProcessor {
 

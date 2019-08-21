@@ -15,11 +15,11 @@
 package org.jnosql.artemis.model;
 
 
-import java.util.Objects;
-import java.util.Set;
-
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Entity;
+
+import java.util.Objects;
+import java.util.Set;
 
 @Entity("movie")
 public class Movie {

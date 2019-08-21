@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.document;
 
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import org.jnosql.artemis.model.Person;
-import jakarta.nosql.document.DocumentEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
