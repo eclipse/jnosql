@@ -46,7 +46,7 @@ import static org.mockito.Mockito.when;
 class DynamicReturnPaginationTest {
 
     @Mock
-    private Function<Pagination, List<Person>> listPagination;
+    private Function<Pagination, Stream<Person>> streamPagination;
 
     @Mock
     private Function<Pagination, Optional<Person>> singlePagination;
@@ -70,7 +70,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page).build();
         Object execute = dynamicReturn.execute();
@@ -80,7 +80,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(optional.isPresent());
 
         Mockito.verify(singlePagination).apply(pagination);
-        Mockito.verify(listPagination, Mockito.never()).apply(pagination);
+        Mockito.verify(streamPagination, Mockito.never()).apply(pagination);
     }
 
 
@@ -99,7 +99,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page).build();
 
@@ -109,7 +109,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertTrue(optional.isPresent());
         Assertions.assertEquals(new Person("Ada"), optional.get());
         Mockito.verify(singlePagination).apply(pagination);
-        Mockito.verify(listPagination, Mockito.never()).apply(pagination);
+        Mockito.verify(streamPagination, Mockito.never()).apply(pagination);
     }
 
 
@@ -127,7 +127,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page).build();
 
@@ -136,7 +136,7 @@ class DynamicReturnPaginationTest {
         Person person = (Person) execute;
         Assertions.assertEquals(new Person("Ada"), person);
         Mockito.verify(singlePagination).apply(pagination);
-        Mockito.verify(listPagination, Mockito.never()).apply(pagination);
+        Mockito.verify(streamPagination, Mockito.never()).apply(pagination);
     }
 
     @Test
@@ -154,7 +154,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -163,9 +163,8 @@ class DynamicReturnPaginationTest {
         Assertions.assertNull(execute);
 
         Mockito.verify(singlePagination).apply(pagination);
-        Mockito.verify(listPagination, Mockito.never()).apply(pagination);
+        Mockito.verify(streamPagination, Mockito.never()).apply(pagination);
     }
-
 
     @Test
     public void shouldReturnList() throws NoSuchMethodException {
@@ -174,14 +173,14 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -192,7 +191,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertEquals(new Person("Ada"), persons.get(0));
 
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
@@ -202,14 +201,14 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -219,9 +218,8 @@ class DynamicReturnPaginationTest {
         Iterable<Person> persons = (List) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
-
 
     @Test
     public void shouldReturnCollection() throws NoSuchMethodException {
@@ -230,14 +228,14 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -247,7 +245,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
@@ -257,14 +255,14 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -274,7 +272,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
@@ -284,14 +282,14 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -301,7 +299,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
 
@@ -312,14 +310,14 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -328,7 +326,7 @@ class DynamicReturnPaginationTest {
         Stream<Person> persons = (Stream) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
@@ -338,14 +336,14 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -355,7 +353,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
@@ -365,14 +363,14 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -382,7 +380,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
 
@@ -393,14 +391,14 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -410,7 +408,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
@@ -424,14 +422,14 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withStreamPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
 
         dynamicReturn.execute();
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination, Mockito.never()).apply(pagination);
+        Mockito.verify(streamPagination, Mockito.never()).apply(pagination);
         Mockito.verify(page).apply(pagination);
     }
 

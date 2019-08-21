@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -43,32 +44,32 @@ final class PaginationDynamicExecutorQueryConverter implements DynamicExecutorQu
 
     @Override
     public <T> List<T> toList(DynamicReturn<T> dynamic) {
-        return dynamic.listPagination();
+        return dynamic.streamPagination().collect(Collectors.toList());
     }
 
     @Override
     public <T> Set<T> toSet(DynamicReturn<T> dynamic) {
-        return new HashSet<>(dynamic.listPagination());
+        return dynamic.streamPagination().collect(Collectors.toCollection(HashSet::new));
     }
 
     @Override
     public <T> LinkedList<T> toLinkedList(DynamicReturn<T> dynamic) {
-        return new LinkedList<>(dynamic.listPagination());
+        return dynamic.streamPagination().collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
     public <T> Stream<T> toStream(DynamicReturn<T> dynamic) {
-        return dynamic.listPagination().stream();
+        return dynamic.streamPagination();
     }
 
     @Override
     public <T> TreeSet<T> toTreeSet(DynamicReturn<T> dynamic) {
-        return new TreeSet<>(dynamic.listPagination());
+        return dynamic.streamPagination().collect(Collectors.toCollection(TreeSet::new));
     }
 
     @Override
     public <T> Object toDefault(DynamicReturn<T> dynamic) {
-        return dynamic.listPagination();
+        return dynamic.streamPagination();
     }
 
     @Override

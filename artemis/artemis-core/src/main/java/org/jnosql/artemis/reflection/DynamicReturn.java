@@ -139,7 +139,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     private final Function<Pagination, Optional<T>> singleResultPagination;
 
-    private final Function<Pagination, List<T>> listPagination;
+    private final Function<Pagination, Stream<T>> streamPagination;
 
     private final Function<Pagination, Page<T>> page;
 
@@ -147,7 +147,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
                           Supplier<Optional<T>> singleResult,
                           Supplier<Stream<T>> result, Pagination pagination,
                           Function<Pagination, Optional<T>> singleResultPagination,
-                          Function<Pagination, List<T>> listPagination,
+                          Function<Pagination, Stream<T>> streamPagination,
                           Function<Pagination, Page<T>> page) {
         this.classSource = classSource;
         this.methodSource = methodSource;
@@ -155,7 +155,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         this.result = result;
         this.pagination = pagination;
         this.singleResultPagination = singleResultPagination;
-        this.listPagination = listPagination;
+        this.streamPagination = streamPagination;
         this.page = page;
     }
 
@@ -212,8 +212,8 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     /**
      * @return a list result using pagination
      */
-    List<T> listPagination() {
-        return listPagination.apply(pagination);
+    Stream<T> streamPagination() {
+        return streamPagination.apply(pagination);
     }
 
     /**
@@ -257,7 +257,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
         private Function<Pagination, Optional<T>> singleResultPagination;
 
-        private Function<Pagination, List<T>> listPagination;
+        private Function<Pagination, Stream<T>> streamPagination;
 
         private Function<Pagination, Page<T>> page;
 
@@ -322,8 +322,8 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param listPagination the list pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withStreamPagination(Function<Pagination, List<T>> listPagination) {
-            this.listPagination = listPagination;
+        public DefaultDynamicReturnBuilder withStreamPagination(Function<Pagination, Stream<T>> listPagination) {
+            this.streamPagination = listPagination;
             return this;
         }
 
@@ -350,12 +350,12 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
             if (pagination != null) {
                 requireNonNull(singleResultPagination, "singleResultPagination is required when pagination is not null");
-                requireNonNull(listPagination, "listPagination is required when pagination is not null");
+                requireNonNull(streamPagination, "listPagination is required when pagination is not null");
                 requireNonNull(page, "page is required when pagination is not null");
             }
 
             return new DynamicReturn(classSource, methodSource, singleResult, result,
-                    pagination, singleResultPagination, listPagination, page);
+                    pagination, singleResultPagination, streamPagination, page);
         }
     }
 
