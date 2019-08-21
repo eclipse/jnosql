@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -312,7 +313,7 @@ public class GraphRepositoryProxyTest {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         personRepository.findByQuery();
         when(template.query("g.V().hasLabel('Person').toList()"))
-                .thenReturn(Collections.singletonList(Person.builder().build()));
+                .thenReturn(Stream.of(Person.builder().build()));
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 

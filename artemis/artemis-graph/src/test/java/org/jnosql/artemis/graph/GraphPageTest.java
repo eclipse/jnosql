@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
@@ -90,7 +91,7 @@ class GraphPageTest {
                 .page(pagination);
         assertNotNull(page);
 
-        List<Person> people = page.getContent();
+        List<Person> people = page.<Person>getContent().collect(Collectors.toList());
         Person first = template.getTraversalVertex()
                 .orderBy("name")
                 .desc()

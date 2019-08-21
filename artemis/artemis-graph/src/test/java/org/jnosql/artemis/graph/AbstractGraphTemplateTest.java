@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -287,7 +288,9 @@ public abstract class AbstractGraphTemplateTest {
         Person person = builder().withAge()
                 .withName("Otavio").build();
         getGraphTemplate().insert(person);
-        List<Person> people = getGraphTemplate().query("g.V().hasLabel('Person')");
+        List<Person> people = getGraphTemplate()
+                .<Person>query("g.V().hasLabel('Person')")
+                .collect(Collectors.toList());
         MatcherAssert.assertThat(people.stream().map(Person::getName).collect(toList()), Matchers.contains("Otavio"));
     }
 
@@ -319,7 +322,7 @@ public abstract class AbstractGraphTemplateTest {
         getGraphTemplate().insert(builder().withAge().withName("Otavio").build());
         PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(param)");
         prepare.bind("param", "Person");
-        List<Person> people = prepare.getResultList();
+        List<Person> people = prepare.<Person>getResult().collect(Collectors.toList());
         MatcherAssert.assertThat(people.stream().map(Person::getName).collect(toList()), Matchers.contains("Otavio"));
     }
 
