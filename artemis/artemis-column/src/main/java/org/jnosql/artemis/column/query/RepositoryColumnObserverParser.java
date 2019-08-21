@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.column.query;
 
-import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.column.ColumnObserverParser;
+import jakarta.nosql.mapping.reflection.ClassMapping;
 
 import java.util.Optional;
 

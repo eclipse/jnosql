@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.column.query;
 
+import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.column.ColumnCondition;
 
 interface ColumnTokenProcessor {
 

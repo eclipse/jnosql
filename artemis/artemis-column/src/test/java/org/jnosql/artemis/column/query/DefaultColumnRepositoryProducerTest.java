@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.column.query;
 
+import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
+import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.PersonRepository;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.column.ColumnFamilyManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;

@@ -39,7 +39,6 @@ import org.jnosql.artemis.util.ConverterUtil;
 
 import java.time.Duration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -49,7 +48,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 /**
  * The template method to {@link ColumnTemplate}

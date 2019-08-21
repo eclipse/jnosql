@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.column;
 
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.column.ColumnTemplateAsyncProducer;
 import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -15,17 +15,17 @@
 package org.jnosql.artemis.column.spi;
 
 
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.artemis.DatabaseMetadata;
-import org.jnosql.artemis.Databases;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.RepositoryAsync;
+import org.jnosql.artemis.DatabaseMetadata;
+import org.jnosql.artemis.Databases;
 import org.jnosql.artemis.column.query.RepositoryAsyncColumnBean;
 import org.jnosql.artemis.column.query.RepositoryColumnBean;
 import org.jnosql.artemis.util.ConfigurationUnitUtils;
 import org.jnosql.artemis.util.RepositoryUnit;
-import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;

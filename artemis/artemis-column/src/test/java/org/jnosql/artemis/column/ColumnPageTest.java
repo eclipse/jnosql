@@ -14,19 +14,19 @@
  */
 package org.jnosql.artemis.column;
 
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import jakarta.nosql.mapping.column.ColumnQueryPagination;
-import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
-import org.jnosql.artemis.model.Person;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.Page;
+import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import jakarta.nosql.mapping.column.ColumnQueryPagination;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +41,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static jakarta.nosql.column.ColumnQuery.select;
-import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;

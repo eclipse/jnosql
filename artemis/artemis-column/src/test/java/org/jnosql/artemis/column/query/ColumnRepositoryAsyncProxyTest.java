@@ -14,8 +14,13 @@
  */
 package org.jnosql.artemis.column.query;
 
+import jakarta.nosql.Condition;
+import jakarta.nosql.Sort;
 import jakarta.nosql.SortType;
-import org.jnosql.artemis.CDIExtension;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnCondition;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Param;
@@ -23,14 +28,9 @@ import jakarta.nosql.mapping.PreparedStatementAsync;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.RepositoryAsync;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
-import org.jnosql.artemis.model.Person;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.Condition;
-import jakarta.nosql.Sort;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnQuery;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

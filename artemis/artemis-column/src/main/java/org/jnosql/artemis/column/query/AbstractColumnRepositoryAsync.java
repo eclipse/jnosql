@@ -23,9 +23,9 @@ import jakarta.nosql.mapping.reflection.FieldMapping;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import static jakarta.nosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
-import static jakarta.nosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
 /**
  * The template method to {@link RepositoryAsync}

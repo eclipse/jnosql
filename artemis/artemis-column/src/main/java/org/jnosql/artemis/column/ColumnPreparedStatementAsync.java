@@ -14,17 +14,15 @@
  */
 package org.jnosql.artemis.column;
 
-import jakarta.nosql.mapping.PreparedStatementAsync;
 import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.mapping.PreparedStatementAsync;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 final class ColumnPreparedStatementAsync implements PreparedStatementAsync {
 

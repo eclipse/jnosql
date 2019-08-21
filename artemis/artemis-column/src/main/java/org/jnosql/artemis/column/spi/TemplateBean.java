@@ -15,12 +15,12 @@
 package org.jnosql.artemis.column.spi;
 
 
-import org.jnosql.artemis.DatabaseQualifier;
+import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateProducer;
+import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.spi.AbstractBean;
-import jakarta.nosql.column.ColumnFamilyManager;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;

@@ -15,6 +15,8 @@
 package org.jnosql.artemis.column.query;
 
 
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
@@ -24,8 +26,6 @@ import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 import org.jnosql.artemis.reflection.DynamicReturn;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
