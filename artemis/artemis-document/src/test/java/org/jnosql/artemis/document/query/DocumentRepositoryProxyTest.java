@@ -194,7 +194,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(Mockito.any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         List<Person> persons = personRepository.findByNameAndAge("name", 20);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -209,7 +209,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(Mockito.any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Set<Person> persons = personRepository.findByAgeAndName(20, "name");
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -224,7 +224,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(Mockito.any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Stream<Person> persons = personRepository.findByNameAndAgeOrderByName("name", 20);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -239,7 +239,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(Mockito.any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Queue<Person> persons = personRepository.findByNameAndAgeOrderByAge("name", 20);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -315,7 +315,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         List<Person> persons = personRepository.findAll();
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -348,7 +348,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByNameAndAgeGreaterThanEqual("Ada", 33);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -378,7 +378,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeGreaterThan(33);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -397,7 +397,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeLessThanEqual(33);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -416,7 +416,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeLessThan(33);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -436,7 +436,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeBetween(10, 15);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -459,7 +459,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByNameLike("Ada");
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
@@ -477,7 +477,7 @@ public class DocumentRepositoryProxyTest {
         vendor.setPrefixes(Collections.singleton("prefix"));
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(vendor));
+                .thenReturn(Stream.of(vendor));
 
         vendorRepository.findByPrefixes("prefix");
 
@@ -497,7 +497,7 @@ public class DocumentRepositoryProxyTest {
         vendor.setPrefixes(Collections.singleton("prefix"));
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(vendor));
+                .thenReturn(Stream.of(vendor));
 
         vendorRepository.findByPrefixesIn(singletonList("prefix"));
 
@@ -517,7 +517,7 @@ public class DocumentRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByAge("120");
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);

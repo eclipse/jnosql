@@ -31,6 +31,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentQuery.select;
 
@@ -107,7 +108,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
         };
     }
 
-    private Function<Pagination, List<T>> listPagination(DocumentQuery query) {
+    private Function<Pagination, Stream<T>> listPagination(DocumentQuery query) {
         return p -> {
             DocumentQuery queryPagination = DocumentQueryPagination.of(query, p);
             return getTemplate().select(queryPagination);

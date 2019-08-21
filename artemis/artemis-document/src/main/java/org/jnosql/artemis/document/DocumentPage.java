@@ -20,7 +20,6 @@ import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -35,12 +34,12 @@ final class DocumentPage<T> implements Page<T> {
 
     private final DocumentTemplate template;
 
-    private final List<T> entities;
+    private final Stream<T> entities;
 
     private final DocumentQueryPagination query;
 
 
-    DocumentPage(DocumentTemplate template, List<T> entities, DocumentQueryPagination query) {
+    DocumentPage(DocumentTemplate template, Stream<T> entities, DocumentQueryPagination query) {
         this.template = template;
         this.entities = entities;
         this.query = query;
@@ -57,7 +56,7 @@ final class DocumentPage<T> implements Page<T> {
     }
 
     @Override
-    public List<T> getContent() {
+    public Stream<T> getContent() {
         return entities;
     }
 
@@ -69,7 +68,7 @@ final class DocumentPage<T> implements Page<T> {
 
     @Override
     public Stream<T> get() {
-        return entities.stream();
+        return entities;
     }
 
     @Override

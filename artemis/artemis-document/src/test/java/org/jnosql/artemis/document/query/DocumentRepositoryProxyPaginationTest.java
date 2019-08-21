@@ -14,21 +14,21 @@
  */
 package org.jnosql.artemis.document.query;
 
-import org.hamcrest.Matchers;
-import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.jnosql.artemis.model.Person;
-import org.jnosql.artemis.model.Vendor;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.hamcrest.Matchers;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.model.Person;
+import org.jnosql.artemis.model.Vendor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,17 +47,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Collections.singletonList;
+import static jakarta.nosql.Condition.AND;
+import static jakarta.nosql.Condition.BETWEEN;
+import static jakarta.nosql.Condition.EQUALS;
+import static jakarta.nosql.Condition.GREATER_THAN;
+import static jakarta.nosql.Condition.IN;
+import static jakarta.nosql.Condition.LESSER_EQUALS_THAN;
+import static jakarta.nosql.Condition.LESSER_THAN;
+import static jakarta.nosql.Condition.LIKE;
 import static java.util.concurrent.ThreadLocalRandom.current;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static  jakarta.nosql.Condition.AND;
-import static  jakarta.nosql.Condition.BETWEEN;
-import static  jakarta.nosql.Condition.EQUALS;
-import static  jakarta.nosql.Condition.GREATER_THAN;
-import static  jakarta.nosql.Condition.IN;
-import static  jakarta.nosql.Condition.LESSER_EQUALS_THAN;
-import static  jakarta.nosql.Condition.LESSER_THAN;
-import static  jakarta.nosql.Condition.LIKE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -143,7 +142,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         List<Person> persons = personRepository.findByNameAndAge("name", 20, pagination);
@@ -164,7 +163,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         Set<Person> persons = personRepository.findByAgeAndName(20, "name", pagination);
@@ -184,7 +183,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
 
@@ -205,7 +204,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         Queue<Person> persons = personRepository.findByNameAndAgeOrderByAge("name", 20, pagination);
@@ -227,7 +226,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
 
@@ -248,7 +247,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByNameAndAgeGreaterThanEqual("Ada", 33, pagination);
@@ -280,7 +279,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByAgeGreaterThan(33, pagination);
@@ -302,7 +301,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByAgeLessThanEqual(33, pagination);
@@ -324,7 +323,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByAgeLessThan(33, pagination);
@@ -346,7 +345,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByAgeBetween(10,15, pagination);
@@ -371,7 +370,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByNameLike("Ada", pagination);
@@ -394,7 +393,7 @@ class DocumentRepositoryProxyPaginationTest {
         vendor.setPrefixes(Collections.singleton("prefix"));
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(vendor));
+                .thenReturn(Stream.of(vendor));
 
         Pagination pagination = getPagination();
         vendorRepository.findByPrefixes("prefix", pagination);
@@ -417,10 +416,10 @@ class DocumentRepositoryProxyPaginationTest {
         vendor.setPrefixes(Collections.singleton("prefix"));
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(vendor));
+                .thenReturn(Stream.of(vendor));
 
         Pagination pagination = getPagination();
-        vendorRepository.findByPrefixesIn(singletonList("prefix"), pagination);
+        vendorRepository.findByPrefixesIn(Collections.singletonList("prefix"), pagination);
 
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).singleResult(captor.capture());
@@ -440,7 +439,7 @@ class DocumentRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByAge("120", pagination);
@@ -454,8 +453,6 @@ class DocumentRepositoryProxyPaginationTest {
         assertEquals(pagination.getSkip(), query.getSkip());
         assertEquals(pagination.getLimit(), query.getLimit());
     }
-
-
 
     private Pagination getPagination() {
         return Pagination.page(current().nextLong(1, 10)).size(current().nextLong(1, 10));

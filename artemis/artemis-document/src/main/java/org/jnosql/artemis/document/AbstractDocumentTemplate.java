@@ -15,7 +15,14 @@
 package org.jnosql.artemis.document;
 
 
+import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQueryParser;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.Page;
@@ -29,25 +36,19 @@ import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.document.DocumentQueryParser;
 
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 /**
  * This class provides a skeletal implementation of the {@link DocumentTemplate} interface,
@@ -135,14 +136,23 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     }
 
     @Override
-    public <T> List<T> select(DocumentQuery query) {
+    public <T> Stream<T> select(DocumentQuery query) {
+        Objects.requireNonNull(query, "query is required");
         return executeQuery(query);
     }
 
     @Override
     public <T> Page<T> select(DocumentQueryPagination query) {
-        List<T> entities = executeQuery(query);
+        Objects.requireNonNull(query, "query is required");
+        Stream<T> entities = executeQuery(query);
         return new DocumentPage<>(this, entities, query);
+    }
+
+
+    @Override
+    public <T> Optional<T> singleResult(DocumentQuery query) {
+        Objects.requireNonNull(query, "query is required");
+        return Optional.empty();
     }
 
     @Override
@@ -177,20 +187,22 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     }
 
     @Override
-    public <T> List<T> query(String query) {
+    public <T> Stream<T> query(String query) {
         requireNonNull(query, "query is required");
-        return PARSER.query(query, getManager(), getObserver()).stream().map(c -> (T) getConverter().toEntity(c))
-                .collect(toList());
+        return PARSER.query(query, getManager(), getObserver()).map(c -> (T) getConverter().toEntity(c));
     }
 
     @Override
     public <T> Optional<T> singleResult(String query) {
-        List<T> entities = query(query);
-        if (entities.isEmpty()) {
+        requireNonNull(query, "query is required");
+        Stream<T> entities = query(query);
+        final Iterator<T> iterator = entities.iterator();
+        if (!iterator.hasNext()) {
             return Optional.empty();
         }
-        if (entities.size() == 1) {
-            return Optional.ofNullable(entities.get(0));
+        final T entity = iterator.next();
+        if (!iterator.hasNext()) {
+            return Optional.of(entity);
         }
         throw new NonUniqueResultException("No unique result found to the query: " + query);
     }
@@ -212,12 +224,12 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return getManager().count(classMapping.getName());
     }
 
-    private <T> List<T> executeQuery(DocumentQuery query) {
+    private <T> Stream<T> executeQuery(DocumentQuery query) {
         requireNonNull(query, "query is required");
         getPersistManager().firePreQuery(query);
-        List<DocumentEntity> entities = getManager().select(query);
+        Stream<DocumentEntity> entities = getManager().select(query);
         Function<DocumentEntity, T> function = e -> getConverter().toEntity(e);
-        return entities.stream().map(function).collect(toList());
+        return entities.map(function);
     }
 
 
