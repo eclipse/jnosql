@@ -14,15 +14,13 @@
  */
 package org.jnosql.artemis.keyvalue;
 
-import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.Value;
+import jakarta.nosql.mapping.PreparedStatement;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 final class KeyValuePreparedStatement implements PreparedStatement {
 
@@ -42,13 +40,10 @@ final class KeyValuePreparedStatement implements PreparedStatement {
     }
 
     @Override
-    public <T> List<T> getResultList() {
-        List<Value> values = preparedStatement.getResultList();
-        if (!values.isEmpty()) {
-            requireNonNull(entityClass, "entityClass is required when the command returns value");
-            return values.stream().map(v -> v.get((Class<T>) entityClass)).collect(toList());
-        }
-        return Collections.emptyList();
+    public <T> Stream<T> getResult() {
+        Stream<Value> values = preparedStatement.getResult();
+        requireNonNull(entityClass, "entityClass is required when the command returns value");
+        return values.map(v -> v.get((Class<T>) entityClass));
     }
 
     @Override
