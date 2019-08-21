@@ -82,7 +82,6 @@ public class ColumnRepositoryProxySortTest {
                 personHandler);
     }
 
-
     @Test
     public void shouldFindAll() {
 
@@ -133,7 +132,7 @@ public class ColumnRepositoryProxySortTest {
     public void shouldFindByAge() {
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(Stream.of((Person.builder().build())));
+                .thenReturn(Stream.of(Person.builder().build()));
 
         personRepository.findByAge(10, Sort.desc("name"));
 
@@ -148,6 +147,8 @@ public class ColumnRepositoryProxySortTest {
         assertThat(query.getSorts(), Matchers.contains(Sort.desc("name")));
         assertEquals(Column.of("age", 10), condition.getColumn());
 
+        when(template.select(any(ColumnQuery.class)))
+                .thenReturn(Stream.of(Person.builder().build()));
         assertNotNull(personRepository.findByAge(10, Sort.asc("name")));
         when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
                 .empty());
@@ -174,7 +175,6 @@ public class ColumnRepositoryProxySortTest {
         assertThat(query.getSorts(), Matchers.contains(Sort.desc("name")));
 
     }
-
 
     @Test
     public void shouldFindByNameOrderByName() {

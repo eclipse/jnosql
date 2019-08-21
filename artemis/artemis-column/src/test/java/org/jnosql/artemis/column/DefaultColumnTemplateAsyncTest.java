@@ -38,6 +38,7 @@ import org.mockito.Mockito;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -180,10 +181,11 @@ public class DefaultColumnTemplateAsyncTest {
     public void shouldUpdateIterable() {
         ColumnEntity entity = ColumnEntity.of("Person");
         entity.addAll(Stream.of(columns).collect(Collectors.toList()));
+        ArgumentCaptor<Iterable<ColumnEntity>> captors = ArgumentCaptor.forClass(Iterable.class);
 
         subject.update(singletonList(this.person));
-        verify(managerMock).update(captor.capture(), Mockito.any(Consumer.class));
-        ColumnEntity value = captor.getValue();
+        verify(managerMock).update(captors.capture());
+        ColumnEntity value = captors.getValue().iterator().next();
         assertEquals(entity.getName(), value.getName());
     }
 

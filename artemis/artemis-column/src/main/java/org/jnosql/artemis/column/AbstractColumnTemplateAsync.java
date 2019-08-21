@@ -40,6 +40,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
 
@@ -108,7 +109,9 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
     @Override
     public <T> void update(Iterable<T> entities) {
         requireNonNull(entities, "entities is required");
-        final List<ColumnEntity> columnEntities = Stream.of(entities).map(getConverter()::toColumn).collect(Collectors.toList());
+        final List<ColumnEntity> columnEntities = StreamSupport.stream(entities.spliterator(), false)
+                .map(getConverter()::toColumn)
+                .collect(Collectors.toList());
         getManager().update(columnEntities);
     }
 
@@ -152,10 +155,12 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
             final Iterator<T> iterator = (Iterator<T>) entities.iterator();
             if (!iterator.hasNext()) {
                 callback.accept(Optional.empty());
+                return;
             }
             final T entity = iterator.next();
             if (!iterator.hasNext()) {
                 callback.accept(Optional.of(entity));
+                return;
             }
             throw new NonUniqueResultException("No unique result found to the query: " + query);
         });
