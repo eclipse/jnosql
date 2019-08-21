@@ -72,7 +72,6 @@ public class ColumnRepositoryProxySortTest {
         ColumnRepositoryProxy personHandler = new ColumnRepositoryProxy(template,
                 classMappings, PersonRepository.class, converters);
 
-
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());

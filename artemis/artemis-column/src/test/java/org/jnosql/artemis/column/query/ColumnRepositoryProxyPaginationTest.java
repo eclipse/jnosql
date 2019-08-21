@@ -432,7 +432,6 @@ public class ColumnRepositoryProxyPaginationTest {
 
     }
 
-
     @Test
     public void shouldConvertFieldToTheType() {
         Person ada = Person.builder()
