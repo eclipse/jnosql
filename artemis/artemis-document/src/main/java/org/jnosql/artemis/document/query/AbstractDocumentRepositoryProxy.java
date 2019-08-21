@@ -89,7 +89,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
                 .withPagination(DynamicReturn.findPagination(args))
-                .withListPagination(listPagination(query))
+                .withStreamPagination(listPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
                 .build();

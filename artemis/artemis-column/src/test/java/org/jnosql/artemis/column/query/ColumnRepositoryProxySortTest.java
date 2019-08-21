@@ -40,6 +40,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.concurrent.ThreadLocalRandom.current;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -86,7 +87,7 @@ public class ColumnRepositoryProxySortTest {
     @Test
     public void shouldFindAll() {
 
-        when(template.select(any(ColumnQuery.class))).thenReturn(Collections.singletonList(Person.builder().build()));
+        when(template.select(any(ColumnQuery.class))).thenReturn(Stream.of(Person.builder().build()));
 
         Pagination pagination = getPagination();
         personRepository.findAll(pagination, Sorts.sorts().asc("name"));
@@ -133,7 +134,7 @@ public class ColumnRepositoryProxySortTest {
     public void shouldFindByAge() {
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(Collections.singletonList(Person.builder().build()));
+                .thenReturn(Stream.of((Person.builder().build())));
 
         personRepository.findByAge(10, Sort.desc("name"));
 
@@ -159,7 +160,7 @@ public class ColumnRepositoryProxySortTest {
     public void shouldFindByNameAndAge() {
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(Collections.singletonList(Person.builder().build()));
+                .thenReturn(Stream.of(Person.builder().build()));
 
         personRepository.findByNameAndAge("name", 10, Sorts.sorts().desc("name"));
 
@@ -180,7 +181,7 @@ public class ColumnRepositoryProxySortTest {
     public void shouldFindByNameOrderByName() {
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(Collections.singletonList(Person.builder().build()));
+                .thenReturn(Stream.of((Person.builder().build())));
 
         Pagination pagination = getPagination();
         personRepository.findByNameOrderByName("name", pagination, Sort.desc("age"));
@@ -202,7 +203,7 @@ public class ColumnRepositoryProxySortTest {
     public void shouldFindByNameOrderByName2() {
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(Collections.singletonList(Person.builder().build()));
+                .thenReturn(Stream.of((Person.builder().build())));
 
         Pagination pagination = getPagination();
         personRepository.findByNameOrderByName("name", pagination, Sorts.sorts().desc("age").asc("phone"));

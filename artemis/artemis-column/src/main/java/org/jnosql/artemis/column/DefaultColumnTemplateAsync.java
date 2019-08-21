@@ -15,6 +15,7 @@
 package org.jnosql.artemis.column;
 
 
+import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
@@ -22,6 +23,8 @@ import jakarta.nosql.column.ColumnFamilyManagerAsync;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * The default implementation of {@link jakarta.nosql.mapping.column.ColumnTemplateAsync}

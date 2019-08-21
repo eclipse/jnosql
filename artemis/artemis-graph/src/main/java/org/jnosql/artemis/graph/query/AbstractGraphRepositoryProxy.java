@@ -150,7 +150,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 .withResult(querySupplier)
                 .withSingleResult(singleSupplier)
                 .withPagination(DynamicReturn.findPagination(args))
-                .withListPagination(p -> querySupplier.get())
+                .withStreamPagination(p -> querySupplier.get())
                 .withSingleResultPagination(p -> singleSupplier.get())
                 .withPage(pageFunction)
                 .build();

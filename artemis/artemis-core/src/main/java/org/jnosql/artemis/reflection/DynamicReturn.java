@@ -322,7 +322,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param listPagination the list pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withListPagination(Function<Pagination, List<T>> listPagination) {
+        public DefaultDynamicReturnBuilder withStreamPagination(Function<Pagination, List<T>> listPagination) {
             this.listPagination = listPagination;
             return this;
         }

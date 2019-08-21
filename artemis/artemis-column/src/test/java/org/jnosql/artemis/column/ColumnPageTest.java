@@ -90,9 +90,7 @@ class ColumnPageTest {
                     Column.of("_id", (long) index)};
             ColumnEntity columnEntity = ColumnEntity.of("Person");
             columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
-
-            when(managerMock.select(query)).thenReturn(singletonList(columnEntity));
-
+            when(managerMock.select(query)).thenReturn(Stream.of(columnEntity));
             query = query.next();
         }
     }
@@ -130,7 +128,7 @@ class ColumnPageTest {
         Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
 
-        List<Person> people = page.getContent();
+        List<Person> people = page.getContent().collect(Collectors.toList());
         assertEquals(1, people.size());
         assertEquals(0L, people.get(0).getId());
     }
@@ -189,33 +187,33 @@ class ColumnPageTest {
         Pagination pagination = Pagination.page(1).size(1);
         ColumnQueryPagination queryPagination = ColumnQueryPagination.of(select().from("person").build(), pagination);
         ColumnQuery query = queryPagination;
-        List<Person> people = subject.select(query);
+        List<Person> people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(0L, people.stream().map(Person::getId).findFirst().orElse(-0L));
 
         queryPagination = queryPagination.next();
         query = queryPagination;
-        people = subject.select(query);
+        people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(1L, people.stream().map(Person::getId).findFirst().orElse(-0L));
 
 
         queryPagination = queryPagination.next();
         query = queryPagination;
-        people = subject.select(query);
+        people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(2L, people.stream().map(Person::getId).findFirst().orElse(-0L));
 
         queryPagination = queryPagination.next();
         query = queryPagination;
-        people = subject.select(query);
+        people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(3L, people.stream().map(Person::getId).findFirst().orElse(-0L));
 
         queryPagination = queryPagination.next();
         query = queryPagination;
-        people = subject.select(query);
+        people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(4L, people.stream().map(Person::getId).findFirst().orElse(-0L));
 
         queryPagination = queryPagination.next();
         query = queryPagination;
-        people = subject.select(query);
+        people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(5L, people.stream().map(Person::getId).findFirst().orElse(-0L));
     }
 

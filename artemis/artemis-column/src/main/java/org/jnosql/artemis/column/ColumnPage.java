@@ -35,12 +35,12 @@ final class ColumnPage<T> implements Page<T> {
 
     private final ColumnTemplate template;
 
-    private final List<T> entities;
+    private final Stream<T> entities;
 
     private final ColumnQueryPagination query;
 
 
-    ColumnPage(ColumnTemplate template, List<T> entities, ColumnQueryPagination query) {
+    ColumnPage(ColumnTemplate template, Stream<T> entities, ColumnQueryPagination query) {
         this.template = template;
         this.entities = entities;
         this.query = query;
@@ -57,7 +57,7 @@ final class ColumnPage<T> implements Page<T> {
     }
 
     @Override
-    public List<T> getContent() {
+    public Stream<T> getContent() {
         return entities;
     }
 
@@ -69,7 +69,7 @@ final class ColumnPage<T> implements Page<T> {
 
     @Override
     public Stream<T> get() {
-        return entities.stream();
+        return entities;
     }
 
     @Override

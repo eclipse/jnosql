@@ -29,9 +29,9 @@ import jakarta.nosql.column.ColumnQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 
 /**
@@ -90,7 +90,7 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
                 .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
                 .withPagination(DynamicReturn.findPagination(args))
-                .withListPagination(listPagination(query))
+                .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
                 .build();
@@ -108,7 +108,7 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
         };
     }
 
-    private Function<Pagination, List<T>> listPagination(ColumnQuery query) {
+    private Function<Pagination, Stream<T>> streamPagination(ColumnQuery query) {
         return p -> {
             ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
             return getTemplate().select(queryPagination);

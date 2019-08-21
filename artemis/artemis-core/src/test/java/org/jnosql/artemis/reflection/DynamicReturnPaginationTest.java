@@ -70,7 +70,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page).build();
         Object execute = dynamicReturn.execute();
@@ -99,7 +99,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page).build();
 
@@ -127,7 +127,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page).build();
 
@@ -154,7 +154,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -181,7 +181,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -209,7 +209,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -237,7 +237,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -264,7 +264,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -291,7 +291,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -319,7 +319,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -345,7 +345,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -372,7 +372,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -400,7 +400,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -424,7 +424,7 @@ class DynamicReturnPaginationTest {
                 .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(listPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();

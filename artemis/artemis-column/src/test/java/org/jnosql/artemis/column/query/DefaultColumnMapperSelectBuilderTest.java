@@ -35,9 +35,9 @@ import org.mockito.Mockito;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static jakarta.nosql.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -240,7 +240,7 @@ public class DefaultColumnMapperSelectBuilderTest {
     public void shouldExecuteAsyncQuery() {
         ColumnTemplateAsync template = Mockito.mock(ColumnTemplateAsync.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
-        Consumer<List<Person>> consumer = System.out::println;
+        Consumer<Stream<Person>> consumer = System.out::println;
         mapperBuilder.selectFrom(Person.class).execute(template, consumer);
         Mockito.verify(template).select(queryCaptor.capture(), eq(consumer));
         ColumnQuery query = queryCaptor.getValue();
