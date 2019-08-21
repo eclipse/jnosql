@@ -151,7 +151,16 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     @Override
     public <T> Optional<T> singleResult(DocumentQuery query) {
         Objects.requireNonNull(query, "query is required");
-        return Optional.empty();
+        final Stream<T> entities = select(query);
+        final Iterator<T> iterator = entities.iterator();
+        if(!iterator.hasNext()) {
+            return Optional.empty();
+        }
+        final T entity = iterator.next();
+        if(!iterator.hasNext()) {
+            return Optional.of(entity);
+        }
+        throw new NonUniqueResultException("No unique result found to the query: " + query);
     }
 
     @Override
