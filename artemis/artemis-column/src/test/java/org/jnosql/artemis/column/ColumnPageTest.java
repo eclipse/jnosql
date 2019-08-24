@@ -36,6 +36,7 @@ import org.mockito.Mockito;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -149,6 +150,18 @@ class ColumnPageTest {
 
         ArrayList<Person> people = page.getContent(ArrayList::new);
         assertEquals(1, people.size());
+    }
+
+    @Test
+    public void shouldRequestPageTwice() {
+        Pagination pagination = Pagination.page(1).size(1);
+        Page<Person> page = createPage(pagination);
+
+        List<Person> people = page.getContent().collect(Collectors.toList());
+        assertEquals(1, people.size());
+        assertEquals(0L, people.get(0).getId());
+        assertNotNull(page.getContent(ArrayList::new));
+        assertNotNull(page.getContent(HashSet::new));
     }
 
     @Test
