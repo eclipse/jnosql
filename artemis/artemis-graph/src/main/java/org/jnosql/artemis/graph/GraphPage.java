@@ -20,8 +20,10 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -42,6 +44,7 @@ public final class GraphPage<T> implements Page<T> {
 
     private final Stream<T> entities;
 
+    private List<T> entitiesCache;
 
     private GraphPage(Pagination pagination, GraphConverter converter, GraphTraversal<?, ?> graphTraversal, Stream<T> entities) {
         this.pagination = pagination;
@@ -63,18 +66,27 @@ public final class GraphPage<T> implements Page<T> {
 
     @Override
     public Stream<T> getContent() {
-        return entities;
+        return getEntities();
     }
 
     @Override
     public <C extends Collection<T>> C getContent(Supplier<C> collectionFactory) {
         requireNonNull(collectionFactory, "collectionFactory is required");
-        return entities.collect(toCollection(collectionFactory));
+        return getEntities().collect(toCollection(collectionFactory));
     }
 
     @Override
     public Stream<T> get() {
-        return entities;
+        return getEntities();
+    }
+
+    private Stream<T> getEntities() {
+        if (Objects.isNull(entitiesCache)) {
+            synchronized (this) {
+                this.entitiesCache = entities.collect(Collectors.toList());
+            }
+        }
+        return entitiesCache.stream();
     }
 
     @Override

@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -149,6 +150,20 @@ class GraphPageTest {
 
     }
 
+    @Test
+    public void shouldRequestPageTwice() {
+        Pagination pagination = Pagination.page(1).size(1);
+        Page<Person> page = template.getTraversalVertex()
+                .orderBy("name")
+                .desc()
+                .page(pagination);
+
+        List<Person> people = page.getContent().collect(Collectors.toList());
+        assertEquals(1, people.size());
+        assertEquals(0L, people.get(0).getId());
+        assertNotNull(page.getContent(ArrayList::new));
+        assertNotNull(page.getContent(HashSet::new));
+    }
     @Test
     public void shouldNext() {
         Pagination pagination = Pagination.page(1).size(1);
