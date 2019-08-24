@@ -37,6 +37,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.joining;
 import static org.jnosql.artemis.graph.model.Person.builder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -159,11 +160,11 @@ class GraphPageTest {
                 .page(pagination);
 
         List<Person> people = page.getContent().collect(Collectors.toList());
-        assertEquals(1, people.size());
-        assertEquals(0L, people.get(0).getId());
+        assertFalse(people.isEmpty());
         assertNotNull(page.getContent(ArrayList::new));
         assertNotNull(page.getContent(HashSet::new));
     }
+
     @Test
     public void shouldNext() {
         Pagination pagination = Pagination.page(1).size(1);
