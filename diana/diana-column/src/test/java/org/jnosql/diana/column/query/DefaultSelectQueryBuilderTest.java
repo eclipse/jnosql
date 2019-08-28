@@ -314,7 +314,7 @@ public class DefaultSelectQueryBuilderTest {
         ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String columnFamily = "columnFamily";
-        Stream<ColumnEntity> entities = select().from(columnFamily).execute(manager);
+        Stream<ColumnEntity> entities = select().from(columnFamily).getResult(manager);
         entities.collect(Collectors.toList());
         Mockito.verify(manager).select(queryCaptor.capture());
         checkQuery(queryCaptor, columnFamily);
@@ -325,7 +325,7 @@ public class DefaultSelectQueryBuilderTest {
         ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String columnFamily = "columnFamily";
-        Optional<ColumnEntity> entities = select().from(columnFamily).executeSingle(manager);
+        Optional<ColumnEntity> entities = select().from(columnFamily).getSingleResult(manager);
         Mockito.verify(manager).singleResult(queryCaptor.capture());
         checkQuery(queryCaptor, columnFamily);
     }
@@ -336,7 +336,7 @@ public class DefaultSelectQueryBuilderTest {
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String columnFamily = "columnFamily";
         Consumer<Stream<ColumnEntity>> callback = System.out::println;
-        select().from(columnFamily).execute(manager, callback);
+        select().from(columnFamily).getResult(manager, callback);
         Mockito.verify(manager).select(queryCaptor.capture(), Mockito.eq(callback));
         checkQuery(queryCaptor, columnFamily);
     }
@@ -347,7 +347,7 @@ public class DefaultSelectQueryBuilderTest {
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String columnFamily = "columnFamily";
         Consumer<Optional<ColumnEntity>> callback = System.out::println;
-        select().from(columnFamily).executeSingle(manager, callback);
+        select().from(columnFamily).getSingleResult(manager, callback);
         Mockito.verify(manager).singleResult(queryCaptor.capture(), Mockito.eq(callback));
         checkQuery(queryCaptor, columnFamily);
     }

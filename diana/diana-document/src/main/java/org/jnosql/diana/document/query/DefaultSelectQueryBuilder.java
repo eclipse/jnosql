@@ -192,26 +192,26 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
     }
 
     @Override
-    public Stream<DocumentEntity> execute(DocumentCollectionManager manager) {
+    public Stream<DocumentEntity> getResult(DocumentCollectionManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.select(this.build());
     }
 
     @Override
-    public Optional<DocumentEntity> executeSingle(DocumentCollectionManager manager) {
+    public Optional<DocumentEntity> getSingleResult(DocumentCollectionManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.singleResult(this.build());
     }
 
     @Override
-    public void execute(DocumentCollectionManagerAsync manager, Consumer<Stream<DocumentEntity>> callback) {
+    public void getResult(DocumentCollectionManagerAsync manager, Consumer<Stream<DocumentEntity>> callback) {
         requireNonNull(manager, "manager is required");
         requireNonNull(callback, "callback is required");
         manager.select(this.build(), callback);
     }
 
     @Override
-    public void executeSingle(DocumentCollectionManagerAsync manager, Consumer<Optional<DocumentEntity>> callback) {
+    public void getSingleResult(DocumentCollectionManagerAsync manager, Consumer<Optional<DocumentEntity>> callback) {
         requireNonNull(manager, "manager is required");
         requireNonNull(callback, "callback is required");
         manager.singleResult(this.build(), callback);

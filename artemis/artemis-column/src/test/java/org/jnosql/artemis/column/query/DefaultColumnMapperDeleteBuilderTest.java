@@ -176,7 +176,7 @@ public class DefaultColumnMapperDeleteBuilderTest {
     public void shouldExecuteDeleteFrom() {
         ColumnTemplate template = Mockito.mock(ColumnTemplate.class);
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        mapperBuilder.deleteFrom(Person.class).execute(template);
+        mapperBuilder.deleteFrom(Person.class).delete(template);
         Mockito.verify(template).delete(queryCaptor.capture());
         ColumnDeleteQuery query = queryCaptor.getValue();
         ColumnDeleteQuery queryExpected = delete().from("Person").build();
@@ -187,7 +187,7 @@ public class DefaultColumnMapperDeleteBuilderTest {
     public void shouldExecuteDeleteAsyncFrom() {
         ColumnTemplateAsync template = Mockito.mock(ColumnTemplateAsync.class);
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        mapperBuilder.deleteFrom(Person.class).execute(template);
+        mapperBuilder.deleteFrom(Person.class).delete(template);
         Mockito.verify(template).delete(queryCaptor.capture());
         ColumnDeleteQuery query = queryCaptor.getValue();
         ColumnDeleteQuery queryExpected = delete().from("Person").build();
@@ -199,7 +199,7 @@ public class DefaultColumnMapperDeleteBuilderTest {
         ColumnTemplateAsync template = Mockito.mock(ColumnTemplateAsync.class);
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         Consumer<Void> consumer = System.out::println;
-        mapperBuilder.deleteFrom(Person.class).execute(template, consumer);
+        mapperBuilder.deleteFrom(Person.class).delete(template, consumer);
         Mockito.verify(template).delete(queryCaptor.capture(), eq(consumer));
         ColumnDeleteQuery query = queryCaptor.getValue();
         ColumnDeleteQuery queryExpected = delete().from("Person").build();
