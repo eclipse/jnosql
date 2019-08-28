@@ -209,7 +209,7 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
     }
 
     @Override
-    public <T> void executeSingle(DocumentTemplateAsync template, Consumer<Optional<T>> callback) {
+    public <T> void getSingleResult(DocumentTemplateAsync template, Consumer<Optional<T>> callback) {
         Objects.requireNonNull(template, "template is required");
         Objects.requireNonNull(callback, "callback is required");
         template.singleResult(this.build(), callback);

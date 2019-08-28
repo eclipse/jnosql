@@ -123,19 +123,19 @@ class DefaultDocumentMapperDeleteBuilder extends AbstractMapperQuery implements 
     }
 
     @Override
-    public void execute(DocumentTemplate template) {
+    public void delete(DocumentTemplate template) {
         requireNonNull(template, "template is required");
         template.delete(this.build());
     }
 
     @Override
-    public void execute(DocumentTemplateAsync template) {
+    public void delete(DocumentTemplateAsync template) {
         requireNonNull(template, "template is required");
         template.delete(this.build());
     }
 
     @Override
-    public void execute(DocumentTemplateAsync template, Consumer<Void> callback) {
+    public void delete(DocumentTemplateAsync template, Consumer<Void> callback) {
         requireNonNull(template, "template is required");
         requireNonNull(callback, "callback is required");
         template.delete(this.build(), callback);

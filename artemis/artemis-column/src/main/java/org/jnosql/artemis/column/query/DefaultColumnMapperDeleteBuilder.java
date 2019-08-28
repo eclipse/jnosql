@@ -123,19 +123,19 @@ class DefaultColumnMapperDeleteBuilder extends AbstractMapperQuery implements Co
     }
 
     @Override
-    public void execute(ColumnTemplate template) {
+    public void delete(ColumnTemplate template) {
         requireNonNull(template, "template is required");
         template.delete(this.build());
     }
 
     @Override
-    public void execute(ColumnTemplateAsync template) {
+    public void delete(ColumnTemplateAsync template) {
         requireNonNull(template, "template is required");
         template.delete(this.build());
     }
 
     @Override
-    public void execute(ColumnTemplateAsync template, Consumer<Void> callback) {
+    public void delete(ColumnTemplateAsync template, Consumer<Void> callback) {
         requireNonNull(template, "template is required");
         requireNonNull(callback, "callback is required");
         template.delete(this.build(), callback);
