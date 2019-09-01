@@ -124,7 +124,6 @@ public interface GraphTemplate {
      */
     <T> void deleteEdge(Iterable<T> ids);
 
-
     /**
      * Find entities given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
      * {@link org.apache.tinkerpop.gremlin.structure.T#id}
@@ -275,14 +274,12 @@ public interface GraphTemplate {
      */
     EdgeTraversal getTraversalEdge(Object... edgeIds);
 
-
     /**
      * Gets the current transaction
      *
      * @return the current {@link Transaction}
      */
     Transaction getTransaction();
-
 
     /**
      * Executes a Gremlin gremlin then bring the result as a {@link List}
