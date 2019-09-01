@@ -256,7 +256,6 @@ public class EdgeEntityTest {
         assertEquals(0, edge.size());
     }
 
-
     @Test
     public void shouldFindProperty() {
         Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
