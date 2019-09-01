@@ -121,6 +121,24 @@ public class EdgeEntityTest {
     }
 
     @Test
+    public void shouldGetId() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity edge = graphTemplate.edge(person, "reads", book);
+
+        assertEquals("reads", edge.getLabel());
+        assertEquals(person, edge.getOutgoing());
+        assertEquals(book, edge.getIncoming());
+        assertTrue(edge.isEmpty());
+        assertNotNull(edge.getId());
+        final Long id = edge.getId(Long.class);
+        assertNotNull(id);
+
+        assertEquals(id, edge.getId(Integer.class).longValue());
+
+    }
+
+    @Test
     public void shouldCreateAnEdgeWithSupplier() {
         Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
         Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
