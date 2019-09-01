@@ -54,7 +54,6 @@ public interface GraphTemplate {
      */
     <T> T update(T entity);
 
-
     /**
      * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Vertex}
      *
@@ -72,7 +71,6 @@ public interface GraphTemplate {
      * @throws NullPointerException when either label and id are null
      */
     <T> void deleteEdge(T id);
-
 
     /**
      * Find an entity given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
@@ -107,7 +105,6 @@ public interface GraphTemplate {
      * @throws jakarta.nosql.mapping.IdNotFoundException when an entity is null
      */
     <T> Iterable<T> update(Iterable<T> entities);
-
 
     /**
      * Deletes {@link org.apache.tinkerpop.gremlin.structure.Vertex} instances
@@ -177,7 +174,6 @@ public interface GraphTemplate {
         return edge(outgoing, label.get(), incoming);
     }
 
-
     /**
      * returns the edges of from a vertex id
      *
@@ -212,7 +208,6 @@ public interface GraphTemplate {
      * @throws NullPointerException where there is any parameter null
      */
     <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction);
-
 
     /**
      * returns the edges of from an entity
