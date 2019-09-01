@@ -72,7 +72,7 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
     }
 
 
-    class DocumentRepository extends AbstractDocumentRepository implements Repository {
+    static class DocumentRepository extends AbstractDocumentRepository implements Repository {
 
         private final DocumentTemplate template;
 

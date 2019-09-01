@@ -35,7 +35,7 @@ public class DocumentCollectionManagerMock implements DocumentConfigurationAsync
         return new DocumentMock(settings);
     }
 
-    public class DocumentMock implements DocumentCollectionManagerFactory, DocumentCollectionManagerAsyncFactory {
+    public static class DocumentMock implements DocumentCollectionManagerFactory, DocumentCollectionManagerAsyncFactory {
 
         private final Settings settings;
 

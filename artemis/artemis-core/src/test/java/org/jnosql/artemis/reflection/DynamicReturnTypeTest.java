@@ -121,10 +121,10 @@ class DynamicReturnTypeTest {
         assertThrows(DynamicQueryException.class, () -> DynamicReturnType.of(Animal.class, NavigableSet.class));
     }
 
-    private class Animal{
+    private static class Animal{
 
     }
-    private class Person implements Comparable<Person> {
+    private static class Person implements Comparable<Person> {
         private String name;
 
         @Override

@@ -128,7 +128,7 @@ public class DefaultGraphEventPersistManagerTest {
 
 
 
-    class Jedi {
+    static class Jedi {
         private String name;
     }
 }

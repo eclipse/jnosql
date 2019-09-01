@@ -39,7 +39,7 @@ public class ColumnFamilyManagerMock implements ColumnConfiguration, ColumnConfi
         return new MockFamilyManager(settings);
     }
 
-    public class MockFamilyManager implements ColumnFamilyManagerFactory, ColumnFamilyManagerAsyncFactory {
+    public static class MockFamilyManager implements ColumnFamilyManagerFactory, ColumnFamilyManagerAsyncFactory {
         private final Settings settings;
 
         public MockFamilyManager(Settings settings) {

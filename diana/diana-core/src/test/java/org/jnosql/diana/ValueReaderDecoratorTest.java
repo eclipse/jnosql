@@ -61,7 +61,7 @@ public class ValueReaderDecoratorTest {
     }
 
 
-    class Bean {
+    static class Bean {
         private String name;
 
         Bean() {

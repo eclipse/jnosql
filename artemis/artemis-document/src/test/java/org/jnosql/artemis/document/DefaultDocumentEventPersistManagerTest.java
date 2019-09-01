@@ -155,7 +155,7 @@ public class DefaultDocumentEventPersistManagerTest {
     }
 
 
-    class Jedi {
+    static class Jedi {
         private String name;
     }
 

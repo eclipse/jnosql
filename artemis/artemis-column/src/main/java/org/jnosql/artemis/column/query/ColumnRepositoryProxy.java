@@ -73,7 +73,7 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
     }
 
 
-    class ColumnRepository extends AbstractColumnRepository implements Repository {
+    static class ColumnRepository extends AbstractColumnRepository implements Repository {
 
         private final ColumnTemplate template;
 

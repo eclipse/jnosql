@@ -159,7 +159,7 @@ public class DefaultColumnEventPersistManagerTest {
     }
 
 
-    class Jedi {
+    static class Jedi {
         private String name;
     }
 }

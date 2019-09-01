@@ -73,7 +73,7 @@ class DocumentRepositoryAsyncProxy<T> extends AbstractDocumentRepositoryAsyncPro
         return converters;
     }
 
-    class DocumentRepositoryAsync extends AbstractDocumentRepositoryAsync implements RepositoryAsync {
+    static class DocumentRepositoryAsync extends AbstractDocumentRepositoryAsync implements RepositoryAsync {
 
         private final DocumentTemplateAsync template;
 
