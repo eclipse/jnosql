@@ -35,7 +35,16 @@ public interface EdgeEntity {
      *
      * @return the id
      */
-    Value getId();
+    Object getId();
+
+    /**
+     * Returns an id from {@link jakarta.nosql.Value#get(Class)}
+     *
+     * @param type the class type
+     * @param <T>  the type
+     * @return an id converted
+     */
+    <T> T getId(Class<T> type);
 
     /**
      * Returns the label of the vertex
