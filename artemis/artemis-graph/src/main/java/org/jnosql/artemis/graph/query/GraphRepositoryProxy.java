@@ -94,7 +94,7 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
     }
 
 
-    class GraphRepository extends AbstractGraphRepository implements Repository {
+    static class GraphRepository extends AbstractGraphRepository implements Repository {
 
         private final GraphTemplate template;
 
