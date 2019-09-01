@@ -243,7 +243,6 @@ public interface GraphTemplate {
      */
     <T> Collection<EdgeEntity> getEdges(T entity, Direction direction);
 
-
     /**
      * Finds an {@link EdgeEntity} from the Edge Id
      *
