@@ -42,8 +42,14 @@ class DefaultEdgeEntity<O, I> implements EdgeEntity {
     }
 
     @Override
-    public Value getId() {
-        return Value.of(edge.id());
+    public Object getId() {
+        return edge.id();
+    }
+
+    @Override
+    public <T> T getId(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        return Value.of(edge.id()).get(type);
     }
 
     @Override
