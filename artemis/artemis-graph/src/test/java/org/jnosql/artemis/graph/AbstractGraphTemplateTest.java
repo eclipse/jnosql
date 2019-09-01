@@ -30,6 +30,7 @@ import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.graph.model.WrongEntity;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -274,6 +275,39 @@ public abstract class AbstractGraphTemplateTest {
         assertThat(edgesById2, containsInAnyOrder(likes));
         assertThat(edgesById4, containsInAnyOrder(reads));
 
+    }
+
+    @Test
+    public void shouldDeleteEdge() {
+        Person otavio = getGraphTemplate().insert(builder().withAge()
+                .withName("Otavio").build());
+        Animal dog = getGraphTemplate().insert(new Animal("Ada"));
+
+        EdgeEntity likes = getGraphTemplate().edge(otavio, "likes", dog);
+
+        final Optional<EdgeEntity> edge = getGraphTemplate().edge(likes.getId());
+        Assertions.assertTrue(edge.isPresent());
+
+        getGraphTemplate().deleteEdge(likes.getId());
+        assertFalse(getGraphTemplate().edge(likes.getId()).isPresent());
+    }
+
+    @Test
+    public void shouldDeleteEdges() {
+        Person otavio = getGraphTemplate().insert(builder().withAge()
+                .withName("Otavio").build());
+        Animal dog = getGraphTemplate().insert(new Animal("Ada"));
+        Book cleanCode = getGraphTemplate().insert(Book.builder().withName("Clean code").build());
+
+        EdgeEntity likes = getGraphTemplate().edge(otavio, "likes", dog);
+        EdgeEntity reads = getGraphTemplate().edge(otavio, "reads", cleanCode);
+
+        final Optional<EdgeEntity> edge = getGraphTemplate().edge(likes.getId());
+        Assertions.assertTrue(edge.isPresent());
+
+        getGraphTemplate().deleteEdge(Arrays.asList(likes.getId(), reads.getId()));
+        assertFalse(getGraphTemplate().edge(likes.getId()).isPresent());
+        assertFalse(getGraphTemplate().edge(reads.getId()).isPresent());
     }
 
     @Test

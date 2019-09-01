@@ -281,7 +281,7 @@ public class EdgeEntityTest {
         EdgeEntity newEdge = graphTemplate.edge(person, "reads", book);
         assertNotEquals(edge.getId(), newEdge.getId());
 
-        graphTemplate.deleteEdge(newEdge.getId().get());
+        graphTemplate.deleteEdge(newEdge.getId());
     }
 
     @Test
@@ -296,7 +296,7 @@ public class EdgeEntityTest {
 
         EdgeEntity edge = graphTemplate.edge(person, "reads", book);
 
-        graphTemplate.deleteEdge(edge.getId().get());
+        graphTemplate.deleteEdge(edge.getId());
 
         EdgeEntity newEdge = graphTemplate.edge(person, "reads", book);
         assertNotEquals(edge.getId(), newEdge.getId());
@@ -315,12 +315,12 @@ public class EdgeEntityTest {
         Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
         EdgeEntity edge = graphTemplate.edge(person, "reads", book);
 
-        Optional<EdgeEntity> newEdge = graphTemplate.edge(edge.getId().get());
+        Optional<EdgeEntity> newEdge = graphTemplate.edge(edge.getId());
 
         assertTrue(newEdge.isPresent());
         assertEquals(edge.getId(), newEdge.get().getId());
 
-        graphTemplate.deleteEdge(edge.getId().get());
+        graphTemplate.deleteEdge(edge.getId());
     }
 
     @Test

@@ -110,7 +110,7 @@ class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
     @Override
     public Edge toEdge(EdgeEntity edge) {
         requireNonNull(edge, "vertex is required");
-        Object id = edge.getId().get();
+        Object id = edge.getId();
         final Iterator<Edge> edges = getTraversalSource().E(id);
         if (edges.hasNext()) {
             return edges.next();

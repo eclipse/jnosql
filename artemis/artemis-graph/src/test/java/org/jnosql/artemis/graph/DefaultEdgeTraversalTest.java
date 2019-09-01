@@ -54,11 +54,11 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnEdgeId() {
-        Optional<EdgeEntity> edgeEntity = graphTemplate.getTraversalEdge(reads.getId().get())
+        Optional<EdgeEntity> edgeEntity = graphTemplate.getTraversalEdge(reads.getId())
                 .next();
 
         assertTrue(edgeEntity.isPresent());
-        assertEquals(reads.getId().get(), edgeEntity.get().getId().get());
+        assertEquals(reads.getId(), edgeEntity.get().getId());
     }
 
     @Test
@@ -187,7 +187,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .has("motivation", "hobby").next();
 
         assertTrue(edgeEntity.isPresent());
-        assertEquals(reads.getId().get(), edgeEntity.get().getId().get());
+        assertEquals(reads.getId(), edgeEntity.get().getId());
     }
 
     @Test
@@ -197,7 +197,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .has(() -> "motivation", "hobby").next();
 
         assertTrue(edgeEntity.isPresent());
-        assertEquals(reads.getId().get(), edgeEntity.get().getId().get());
+        assertEquals(reads.getId(), edgeEntity.get().getId());
     }
 
     @Test
@@ -208,7 +208,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .has("motivation", P.eq("hobby")).next();
 
         assertTrue(edgeEntity.isPresent());
-        assertEquals(reads.getId().get(), edgeEntity.get().getId().get());
+        assertEquals(reads.getId(), edgeEntity.get().getId());
     }
 
 
@@ -220,7 +220,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .has(() -> "motivation", P.eq("hobby")).next();
 
         assertTrue(edgeEntity.isPresent());
-        assertEquals(reads.getId().get(), edgeEntity.get().getId().get());
+        assertEquals(reads.getId(), edgeEntity.get().getId());
     }
 
 
@@ -444,7 +444,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldReturnSingleResult() {
         String name = "Poliana";
-        Optional<EdgeEntity> entity = graphTemplate.getTraversalEdge(reads.getId().get()).getSingleResult();
+        Optional<EdgeEntity> entity = graphTemplate.getTraversalEdge(reads.getId()).getSingleResult();
         assertEquals(reads, entity.get());
     }
 

@@ -140,7 +140,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     @Override
     public Edge toEdge(EdgeEntity edge) {
         requireNonNull(edge, "vertex is required");
-        Object id = edge.getId().get();
+        Object id = edge.getId();
         Iterator<Edge> edges = getGraph().edges(id);
         if (edges.hasNext()) {
             return edges.next();
