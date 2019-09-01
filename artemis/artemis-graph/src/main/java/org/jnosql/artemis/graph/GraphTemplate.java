@@ -125,18 +125,6 @@ public interface GraphTemplate {
     <T> void deleteEdge(Iterable<T> ids);
 
     /**
-     * Find entities given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
-     * {@link org.apache.tinkerpop.gremlin.structure.T#id}
-     *
-     * @param ids   the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
-     * @param <T>  the entity type
-     * @param <K> the id type
-     * @return the entity found otherwise {@link Optional#empty()}
-     * @throws NullPointerException when id is null
-     */
-    <T, K> Stream<T> find(Iterable<K> ids);
-
-    /**
      * Either find or create an Edge between this two entities.
      * {@link org.apache.tinkerpop.gremlin.structure.Edge}
      * <pre>entityOUT ---label---&#62; entityIN.</pre>
