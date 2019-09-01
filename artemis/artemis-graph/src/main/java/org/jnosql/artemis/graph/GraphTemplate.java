@@ -87,6 +87,60 @@ public interface GraphTemplate {
     <T, K> Optional<T> find(K id);
 
     /**
+     * Inserts entities
+     *
+     * @param entities entities to be saved
+     * @param <T>    the instance type
+     * @return the entity saved
+     * @throws NullPointerException                   when document is null
+     * @throws jakarta.nosql.mapping.IdNotFoundException when entity has not {@link jakarta.nosql.mapping.Id}
+     */
+    <T> Iterable<T> insert(Iterable<T> entities);
+
+    /**
+     * Updates entities
+     *
+     * @param entities entity to be updated
+     * @param <T>    the instance type
+     * @return the entity saved
+     * @throws IllegalStateException                   when document is null
+     * @throws jakarta.nosql.mapping.IdNotFoundException when an entity is null
+     */
+    <T> Iterable<T> update(Iterable<T> entities);
+
+
+    /**
+     * Deletes {@link org.apache.tinkerpop.gremlin.structure.Vertex} instances
+     *
+     * @param ids  the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the id type
+     * @throws NullPointerException when id is null
+     */
+    <T> void delete(Iterable<T> ids);
+
+    /**
+     * Deletes {@link org.apache.tinkerpop.gremlin.structure.Edge} instances
+     *
+     * @param ids  the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the id type
+     * @throws NullPointerException when either label and id are null
+     */
+    <T> void deleteEdge(Iterable<T> ids);
+
+
+    /**
+     * Find entities given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
+     * {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     *
+     * @param ids   the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T>  the entity type
+     * @param <K> the id type
+     * @return the entity found otherwise {@link Optional#empty()}
+     * @throws NullPointerException when id is null
+     */
+    <T, K> Stream<T> find(Iterable<K> ids);
+
+    /**
      * Either find or create an Edge between this two entities.
      * {@link org.apache.tinkerpop.gremlin.structure.Edge}
      * <pre>entityOUT ---label---&#62; entityIN.</pre>
