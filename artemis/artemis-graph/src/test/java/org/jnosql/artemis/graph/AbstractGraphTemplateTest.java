@@ -32,10 +32,13 @@ import org.jnosql.artemis.graph.model.WrongEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -59,7 +62,6 @@ public abstract class AbstractGraphTemplateTest {
         getGraph().traversal().E().toList().forEach(Edge::remove);
     }
 
-
     @Test
     public void shouldReturnErrorWhenThereIsNotId() {
         assertThrows(IdNotFoundException.class, () -> {
@@ -73,7 +75,6 @@ public abstract class AbstractGraphTemplateTest {
         assertThrows(NullPointerException.class, () -> getGraphTemplate().insert(null));
     }
 
-
     @Test
     public void shouldInsertAnEntity() {
         Person person = builder().withAge()
@@ -81,8 +82,24 @@ public abstract class AbstractGraphTemplateTest {
         Person updated = getGraphTemplate().insert(person);
 
         assertNotNull(updated.getId());
-
         getGraphTemplate().delete(updated.getId());
+    }
+
+    @Test
+    public void shouldInsertEntities() {
+        Person otavio = builder().withAge()
+                .withName("Otavio").build();
+
+        Person poliana = builder().withAge()
+                .withName("Poliana").build();
+
+        final Iterable<Person> people = getGraphTemplate()
+                .insert(Arrays.asList(otavio, poliana));
+
+        final boolean allHasId = StreamSupport.stream(people.spliterator(), false)
+                .map(Person::getId)
+                .allMatch(Objects::nonNull);
+        assertTrue(allHasId);
     }
 
     @Test
@@ -92,7 +109,6 @@ public abstract class AbstractGraphTemplateTest {
         Person updated = getGraphTemplate().insert(person);
         assertTrue(person == updated);
     }
-
 
     @Test
     public void shouldGetErrorWhenIdIsNullWhenUpdate() {
@@ -130,6 +146,29 @@ public abstract class AbstractGraphTemplateTest {
 
         getGraphTemplate().delete(update.getId());
     }
+
+    @Test
+    public void shouldUpdateEntities() {
+        Person otavio = builder().withAge()
+                .withName("Otavio").build();
+
+        Person poliana = builder().withAge()
+                .withName("Poliana").build();
+
+        final Iterable<Person> insertPeople = getGraphTemplate().insert(Arrays.asList(otavio, poliana));
+
+        final List<Person> newPeople = StreamSupport.stream(insertPeople.spliterator(), false)
+                .map(p -> builder().withAge().withId(p.getId()).withName(p.getName() + " updated").build())
+                .collect(toList());
+
+        final Iterable<Person> update = getGraphTemplate().update(newPeople);
+
+        final boolean allUpdated = StreamSupport.stream(update.spliterator(), false)
+                .map(Person::getName).allMatch(name -> name.contains(" updated"));
+
+        assertTrue(allUpdated);
+    }
+
 
     @Test
     public void shouldMergeOnUpdate() {
@@ -179,6 +218,21 @@ public abstract class AbstractGraphTemplateTest {
         assertTrue(getGraphTemplate().find(person.getId()).isPresent());
         getGraphTemplate().delete(person.getId());
         assertFalse(getGraphTemplate().find(person.getId()).isPresent());
+    }
+
+    @Test
+    public void shouldDeleteEntities() {
+
+        Person otavio = getGraphTemplate().insert(builder().withAge()
+                .withName("Otavio").build());
+
+        Person poliana = getGraphTemplate().insert(builder().withAge()
+                .withName("Poliana").build());
+
+        assertTrue(getGraphTemplate().find(otavio.getId()).isPresent());
+        getGraphTemplate().delete(Arrays.asList(otavio.getId(), poliana.getId()));
+        assertFalse(getGraphTemplate().find(otavio.getId()).isPresent());
+        assertFalse(getGraphTemplate().find(poliana.getId()).isPresent());
     }
 
     @Test
