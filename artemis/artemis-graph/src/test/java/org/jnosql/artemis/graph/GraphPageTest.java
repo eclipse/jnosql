@@ -14,30 +14,30 @@
  */
 package org.jnosql.artemis.graph;
 
+import jakarta.nosql.mapping.Page;
+import jakarta.nosql.mapping.Pagination;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 import static org.jnosql.artemis.graph.model.Person.builder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -93,7 +93,7 @@ class GraphPageTest {
                 .page(pagination);
         assertNotNull(page);
 
-        List<Person> people = page.getContent();
+        List<Person> people = page.<Person>getContent().collect(Collectors.toList());
         Person first = template.getTraversalVertex()
                 .orderBy("name")
                 .desc()
@@ -149,6 +149,20 @@ class GraphPageTest {
         assertEquals(pagination, page.getPagination());
         assertEquals(1, people.size());
 
+    }
+
+    @Test
+    public void shouldRequestPageTwice() {
+        Pagination pagination = Pagination.page(1).size(1);
+        Page<Person> page = template.getTraversalVertex()
+                .orderBy("name")
+                .desc()
+                .page(pagination);
+
+        List<Person> people = page.getContent().collect(Collectors.toList());
+        assertFalse(people.isEmpty());
+        assertNotNull(page.getContent(ArrayList::new));
+        assertNotNull(page.getContent(HashSet::new));
     }
 
     @Test

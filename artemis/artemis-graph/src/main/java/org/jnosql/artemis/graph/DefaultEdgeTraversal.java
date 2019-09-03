@@ -14,13 +14,13 @@
  */
 package org.jnosql.artemis.graph;
 
+import jakarta.nosql.NonUniqueResultException;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import jakarta.nosql.NonUniqueResultException;
 
 import java.util.List;
 import java.util.Optional;

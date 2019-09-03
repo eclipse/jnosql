@@ -15,11 +15,11 @@
 package org.jnosql.artemis.column.query;
 
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.DatabaseQualifier;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.RepositoryAsync;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.AnnotationLiteralUtil;
 

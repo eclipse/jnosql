@@ -26,8 +26,9 @@ import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
 import jakarta.nosql.query.GetQuery;
 import jakarta.nosql.query.GetQuery.GetQueryProvider;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -39,7 +40,7 @@ final class GetQueryParser {
         this.provider = ServiceLoaderProvider.get(GetQueryProvider.class);
     }
 
-    List<Value> query(String query, BucketManager manager) {
+    Stream<Value> query(String query, BucketManager manager) {
 
         GetQuery getQuery = provider.apply(query);
         Params params = Params.newParams();
@@ -48,10 +49,9 @@ final class GetQueryParser {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
 
-        List<Object> keys = values.stream().map(Value::get).collect(toList());
-        List<Value> result = new ArrayList<>();
-        manager.get(keys).forEach(result::add);
-        return result;
+        return values.stream().map(Value::get).map(manager::get)
+                .filter(Optional::isPresent)
+                .map(Optional::get);
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {

@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import jakarta.nosql.mapping.ConfigurationUnit;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.producer.GraphMockA;
 import org.jnosql.artemis.graph.producer.GraphMockB;

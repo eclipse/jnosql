@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.column;
 
+import jakarta.nosql.TypeReference;
+import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.reflection.GenericFieldMapping;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

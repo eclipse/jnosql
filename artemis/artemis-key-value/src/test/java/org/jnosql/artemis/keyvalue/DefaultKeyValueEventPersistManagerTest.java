@@ -125,7 +125,7 @@ public class DefaultKeyValueEventPersistManagerTest {
         assertEquals(actor, value.getValue());
     }
 
-    class Actor {
+    static class Actor {
         private String name;
     }
 

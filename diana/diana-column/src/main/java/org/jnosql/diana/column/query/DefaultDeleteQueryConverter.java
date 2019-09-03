@@ -32,10 +32,10 @@ import jakarta.nosql.column.DeleteQueryConverter;
 import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -52,18 +52,18 @@ public final class DefaultDeleteQueryConverter implements DeleteQueryConverter {
         cache = new CacheQuery<>(this::getQuery);
     }
 
-    List<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    Stream<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
         ColumnDeleteQuery columnDeleteQuery = cache.get(query, observer);
         manager.delete(columnDeleteQuery);
-        return Collections.emptyList();
+        return Stream.empty();
     }
 
     void queryAsync(String query, ColumnFamilyManagerAsync manager,
-                    Consumer<List<ColumnEntity>> callBack, ColumnObserverParser observer) {
+                    Consumer<Stream<ColumnEntity>> callBack, ColumnObserverParser observer) {
 
         ColumnDeleteQuery columnDeleteQuery = cache.get(query, observer);
-        manager.delete(columnDeleteQuery, v -> callBack.accept(Collections.emptyList()));
+        manager.delete(columnDeleteQuery, v -> callBack.accept(Stream.empty()));
     }
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager,

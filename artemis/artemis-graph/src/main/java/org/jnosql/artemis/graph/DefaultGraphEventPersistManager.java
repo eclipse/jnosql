@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.mapping.EntityPostPersit;
 import jakarta.nosql.mapping.EntityPrePersist;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.DefaultEntityPostPersist;
 import org.jnosql.artemis.DefaultEntityPrePersist;
 

@@ -14,6 +14,7 @@
  */
 package org.jnosql.artemis.column;
 
+import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
@@ -32,13 +33,16 @@ import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.util.ConverterUtil;
 
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 
 /**
@@ -103,6 +107,15 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
     }
 
     @Override
+    public <T> void update(Iterable<T> entities) {
+        requireNonNull(entities, "entities is required");
+        final List<ColumnEntity> columnEntities = StreamSupport.stream(entities.spliterator(), false)
+                .map(getConverter()::toColumn)
+                .collect(Collectors.toList());
+        getManager().update(columnEntities);
+    }
+
+    @Override
     public <T> void update(T entity, Consumer<T> callback) {
         requireNonNull(entity, "entity is required");
         requireNonNull(callback, "callBack is required");
@@ -124,16 +137,33 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
     }
 
     @Override
-    public <T> void select(ColumnQuery query, Consumer<List<T>> callback) {
+    public <T> void select(ColumnQuery query, Consumer<Stream<T>> callback) {
         requireNonNull(query, "query is required");
         requireNonNull(callback, "callBack is required");
 
-        Consumer<List<ColumnEntity>> dianaCallBack = d -> callback.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<ColumnEntity>> dianaCallBack = d -> callback.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         getManager().select(query, dianaCallBack);
+    }
+
+    @Override
+    public <T> void singleResult(ColumnQuery query, Consumer<Optional<T>> callback) {
+        requireNonNull(query, "query is required");
+        requireNonNull(callback, "callback is required");
+        select(query, entities -> {
+            final Iterator<T> iterator = (Iterator<T>) entities.iterator();
+            if (!iterator.hasNext()) {
+                callback.accept(Optional.empty());
+                return;
+            }
+            final T entity = iterator.next();
+            if (!iterator.hasNext()) {
+                callback.accept(Optional.of(entity));
+                return;
+            }
+            throw new NonUniqueResultException("No unique result found to the query: " + query);
+        });
     }
 
     @Override
@@ -179,13 +209,11 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
     }
 
     @Override
-    public <T> void query(String query, Consumer<List<T>> callback) {
+    public <T> void query(String query, Consumer<Stream<T>> callback) {
         requireNonNull(query, "query is required");
         requireNonNull(callback, "callback is required");
-        Consumer<List<ColumnEntity>> mapper = columnEntities ->
-                callback.accept(columnEntities
-                        .stream().map(c -> (T) getConverter().toEntity(c))
-                .collect(toList()));
+        Consumer<Stream<ColumnEntity>> mapper = columnEntities ->
+                callback.accept(columnEntities.map(c -> (T) getConverter().toEntity(c)));
         PARSER.query(query, getManager(), mapper, getObserver());
     }
 
@@ -193,13 +221,15 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
     public <T> void singleResult(String query, Consumer<Optional<T>> callback) {
         requireNonNull(query, "query is required");
         requireNonNull(callback, "callBack is required");
-        Consumer<List<ColumnEntity>> mapper = columnEntities -> {
-            List<T> entities = columnEntities.stream().map(c -> (T) getConverter().toEntity(c)).collect(toList());
-            if (entities.isEmpty()) {
+        Consumer<Stream<ColumnEntity>> mapper = columnEntities -> {
+            Stream<T> entities = columnEntities.map(c -> (T) getConverter().toEntity(c));
+            final Iterator<T> iterator = entities.iterator();
+            if (!iterator.hasNext()) {
                 callback.accept(Optional.empty());
             }
-            if (entities.size() == 1) {
-                callback.accept(Optional.ofNullable(getConverter().toEntity(columnEntities.get(0))));
+            final T entity = iterator.next();
+            if (!iterator.hasNext()) {
+                callback.accept(Optional.of(entity));
             }
             throw new UnsupportedOperationException("This query does not return a unique result: " + query);
         };
@@ -213,13 +243,13 @@ public abstract class AbstractColumnTemplateAsync implements ColumnTemplateAsync
     }
 
     @Override
-    public void count(String columnFamily, Consumer<Long> callback){
+    public void count(String columnFamily, Consumer<Long> callback) {
         getManager().count(columnFamily, callback);
     }
 
 
     @Override
-    public <T> void count(Class<T> entityClass, Consumer<Long> callback){
+    public <T> void count(Class<T> entityClass, Consumer<Long> callback) {
         requireNonNull(entityClass, "entity class is required");
         requireNonNull(callback, "callback is required");
         ClassMapping classMapping = getClassMappings().get(entityClass);

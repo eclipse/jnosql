@@ -14,18 +14,18 @@
  */
 package org.jnosql.artemis.graph.query;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.query.RepositoryType;
-import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 import org.jnosql.artemis.reflection.DynamicReturn;
 
@@ -35,8 +35,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Stream;
 
 /**
  * Template method to {@link Repository} proxy on Graph
@@ -98,43 +97,35 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
     private Object findAll(Method method, Class<?> typeClass, Object[] args) {
 
-        Supplier<List<?>> querySupplier = () -> {
+        Supplier<Stream<?>> querySupplier = () -> {
 
             GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V().hasLabel(getClassMapping().getName());
 
             SelectQueryConverter.setSort(args, traversal);
             SelectQueryConverter.setPagination(args, traversal);
-            return traversal.toList()
-                    .stream()
-                    .map(getConverter()::toEntity)
-                    .collect(toList());
+            return traversal.toStream()
+                    .map(getConverter()::toEntity);
         };
 
         return converter(method, typeClass, querySupplier, args);
     }
 
-
-
     private Object findBy(Method method, Object[] args, Class<?> typeClass) {
 
-        Supplier<List<?>> querySupplier = () -> {
+        Supplier<Stream<?>> querySupplier = () -> {
             GraphQueryMethod queryMethod = new GraphQueryMethod(getClassMapping(),
                     getGraph().traversal().V(),
                     getConverters(), method, args);
 
-
             return converter.apply(queryMethod, args)
-                    .stream()
-                    .map(getConverter()::toEntity)
-                    .collect(toList());
+                    .map(getConverter()::toEntity);
         };
 
         return converter(method, typeClass, querySupplier, args);
     }
 
-
     private Object converter(Method method, Class<?> typeClass,
-                             Supplier<List<?>> querySupplier,
+                             Supplier<Stream<?>> querySupplier,
                              Object[] args) {
 
         Supplier<Optional<?>> singleSupplier =
@@ -147,10 +138,10 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
-                .withList(querySupplier)
+                .withResult(querySupplier)
                 .withSingleResult(singleSupplier)
                 .withPagination(DynamicReturn.findPagination(args))
-                .withListPagination(p -> querySupplier.get())
+                .withStreamPagination(p -> querySupplier.get())
                 .withSingleResultPagination(p -> singleSupplier.get())
                 .withPage(pageFunction)
                 .build();

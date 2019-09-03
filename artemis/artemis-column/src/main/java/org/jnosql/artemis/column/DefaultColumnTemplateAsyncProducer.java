@@ -15,12 +15,12 @@
 package org.jnosql.artemis.column;
 
 
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.column.ColumnTemplateAsyncProducer;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Vetoed;

@@ -14,13 +14,13 @@
  */
 package org.jnosql.artemis.keyvalue.query;
 
-import org.hamcrest.Matchers;
 import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Param;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+import org.hamcrest.Matchers;
 import org.jnosql.artemis.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -123,7 +124,7 @@ public class KeyValueRepositoryProxyTest {
     @Test
     public void shouldFindByQuery() {
         User user = new User("12", "Ada", 10);
-        when(repository.query("get \"12\"", User.class)).thenReturn(Collections.singletonList(user));
+        when(repository.query("get \"12\"", User.class)).thenReturn(Stream.of(user));
 
         userRepository.findByQuery();
         verify(repository).query("get \"12\"", User.class);

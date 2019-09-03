@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -175,7 +176,7 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
     }
 
     @Override
-    public <T> List<T> execute(DocumentTemplate template) {
+    public <T> Stream<T> execute(DocumentTemplate template) {
         Objects.requireNonNull(template, "template is required");
         return template.select(this.build());
     }
@@ -187,7 +188,7 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
     }
 
     @Override
-    public <T> List<T> execute(DocumentTemplate template, Pagination pagination) {
+    public <T> Stream<T> execute(DocumentTemplate template, Pagination pagination) {
         requireNonNull(template, "template is required");
         requireNonNull(pagination, "pagination is required");
         return template.select(this.build(pagination));
@@ -201,7 +202,7 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
     }
 
     @Override
-    public <T> void execute(DocumentTemplateAsync template, Consumer<List<T>> callback) {
+    public <T> void execute(DocumentTemplateAsync template, Consumer<Stream<T>> callback) {
         Objects.requireNonNull(template, "template is required");
         Objects.requireNonNull(callback, "callback is required");
         template.select(this.build(), callback);

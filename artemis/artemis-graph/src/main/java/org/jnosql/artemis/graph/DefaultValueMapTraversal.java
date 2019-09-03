@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.graph;
 
+import jakarta.nosql.NonUniqueResultException;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import jakarta.nosql.NonUniqueResultException;
 
 import java.util.List;
 import java.util.Map;

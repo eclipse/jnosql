@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.graph.spi;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import jakarta.nosql.mapping.ConfigurationUnit;
+import jakarta.nosql.mapping.Repository;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jnosql.artemis.DatabaseMetadata;
 import org.jnosql.artemis.Databases;
-import jakarta.nosql.mapping.Repository;
 import org.jnosql.artemis.graph.query.RepositoryGraphBean;
 import org.jnosql.artemis.util.ConfigurationUnitUtils;
 import org.jnosql.artemis.util.RepositoryUnit;

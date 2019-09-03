@@ -16,8 +16,8 @@
  */
 package org.jnosql.artemis.column;
 
-import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

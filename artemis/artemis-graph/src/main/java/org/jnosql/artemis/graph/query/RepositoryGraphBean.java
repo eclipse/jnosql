@@ -14,14 +14,14 @@
  */
 package org.jnosql.artemis.graph.query;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import jakarta.nosql.mapping.Converters;
-import org.jnosql.artemis.DatabaseQualifier;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;

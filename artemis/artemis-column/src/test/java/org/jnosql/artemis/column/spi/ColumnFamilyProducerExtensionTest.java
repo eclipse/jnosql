@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.column.spi;
 
-import org.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
+import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

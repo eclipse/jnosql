@@ -42,15 +42,12 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static jakarta.nosql.column.ColumnDeleteQuery.delete;
 import static jakarta.nosql.column.ColumnQuery.select;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -74,7 +71,6 @@ public class DefaultColumnTemplateTest {
             Column.of("name", "Name"),
             Column.of("id", 19L),
     };
-
 
     @Inject
     private ColumnEntityConverter converter;
@@ -276,7 +272,7 @@ public class DefaultColumnTemplateTest {
 
         Mockito.when(managerMock
                 .select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(columnEntity));
+                .thenReturn(Stream.of(columnEntity));
 
         ColumnQuery query = select().from("person").build();
 
@@ -288,7 +284,7 @@ public class DefaultColumnTemplateTest {
     public void shouldReturnSingleResultIsEmpty() {
         Mockito.when(managerMock
                 .select(any(ColumnQuery.class)))
-                .thenReturn(emptyList());
+                .thenReturn(Stream.empty());
 
         ColumnQuery query = select().from("person").build();
 
@@ -304,7 +300,7 @@ public class DefaultColumnTemplateTest {
 
             Mockito.when(managerMock
                     .select(any(ColumnQuery.class)))
-                    .thenReturn(Arrays.asList(columnEntity, columnEntity));
+                    .thenReturn(Stream.of(columnEntity, columnEntity));
 
             ColumnQuery query = select().from("person").build();
 
@@ -357,7 +353,7 @@ public class DefaultColumnTemplateTest {
 
     @Test
     public void shouldExecuteQuery() {
-        List<Person> people = subject.query("select * from Person");
+        Stream<Person> people = subject.query("select * from Person");
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
@@ -366,7 +362,7 @@ public class DefaultColumnTemplateTest {
 
     @Test
     public void shouldConvertEntity() {
-        List<Movie> movies = subject.query("select * from Movie");
+        Stream<Movie> movies = subject.query("select * from Movie");
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
@@ -377,7 +373,7 @@ public class DefaultColumnTemplateTest {
     public void shouldPreparedStatement() {
         PreparedStatement preparedStatement = subject.prepare("select * from Person where name = @name");
         preparedStatement.bind("name", "Ada");
-        preparedStatement.getResultList();
+        preparedStatement.getResult();
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();

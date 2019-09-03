@@ -14,17 +14,17 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Property;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.apache.tinkerpop.gremlin.structure.Property;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static java.util.Collections.singletonList;
 import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
+import static java.util.Collections.singletonList;
 
 final class FieldGraph {
 

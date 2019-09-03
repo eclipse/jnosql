@@ -19,11 +19,11 @@ import jakarta.nosql.mapping.PreparedStatementAsync;
 import jakarta.nosql.mapping.reflection.MethodDynamicExecutable;
 
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * This instance has the information to run the JNoSQL native query at {@link jakarta.nosql.mapping.RepositoryAsync}
@@ -33,11 +33,11 @@ public final class DynamicAsyncQueryMethodReturn<T> implements MethodDynamicExec
 
     private final Method method;
     private final Object[] args;
-    private final BiConsumer<String, Consumer<List<T>>> asyncConsumer;
+    private final BiConsumer<String, Consumer<Stream<T>>> asyncConsumer;
     private final Function<String, PreparedStatementAsync> prepareConverter;
 
     private DynamicAsyncQueryMethodReturn(Method method, Object[] args, BiConsumer<String,
-            Consumer<List<T>>> asyncConsumer, Function<String,
+            Consumer<Stream<T>>> asyncConsumer, Function<String,
             PreparedStatementAsync> prepareConverter) {
         this.method = method;
         this.args = args;
@@ -58,19 +58,19 @@ public final class DynamicAsyncQueryMethodReturn<T> implements MethodDynamicExec
     public Object execute() {
         String value = RepositoryReflectionUtils.INSTANCE.getQuery(method);
         Map<String, Object> params = RepositoryReflectionUtils.INSTANCE.getParams(method, args);
-        Consumer<List<T>> consumer = getConsumer(args);
+        Consumer<Stream<T>> consumer = getConsumer(args);
         if (params.isEmpty()) {
             asyncConsumer.accept(value, consumer);
         } else {
             PreparedStatementAsync prepare = prepareConverter.apply(value);
             params.forEach(prepare::bind);
-            prepare.getResultList(consumer);
+            prepare.getResult(consumer);
         }
         return Void.class;
     }
 
-    private <T> Consumer<List<T>> getConsumer(Object[] args) {
-        Consumer<List<T>> consumer;
+    private <T> Consumer<Stream<T>> getConsumer(Object[] args) {
+        Consumer<Stream<T>> consumer;
         Object callBack = getCallback(args);
         if (callBack instanceof Consumer) {
             consumer = (Consumer) callBack;
@@ -104,7 +104,7 @@ public final class DynamicAsyncQueryMethodReturn<T> implements MethodDynamicExec
 
         private Object[] args;
 
-        private BiConsumer<String, Consumer<List<T>>> asyncConsumer;
+        private BiConsumer<String, Consumer<Stream<T>>> asyncConsumer;
 
         private Function<String, PreparedStatementAsync> prepareConverter;
 
@@ -123,7 +123,7 @@ public final class DynamicAsyncQueryMethodReturn<T> implements MethodDynamicExec
             return this;
         }
 
-        public DynamicAsyncQueryMethodReturnBuilder<T> withAsyncConsumer(BiConsumer<String, Consumer<List<T>>> asyncConsumer) {
+        public DynamicAsyncQueryMethodReturnBuilder<T> withAsyncConsumer(BiConsumer<String, Consumer<Stream<T>>> asyncConsumer) {
             this.asyncConsumer = asyncConsumer;
             return this;
         }

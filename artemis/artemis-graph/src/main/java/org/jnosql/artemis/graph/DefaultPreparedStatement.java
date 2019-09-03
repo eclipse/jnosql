@@ -14,14 +14,15 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.mapping.PreparedStatement;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -51,18 +52,20 @@ final class DefaultPreparedStatement implements PreparedStatement {
     }
 
     @Override
-    public <T> List<T> getResultList() {
+    public <T> Stream<T> getResult() {
         return executor.executeGremlin(traversalSource, gremlin, params);
     }
 
     @Override
     public <T> Optional<T> getSingleResult() {
-        List<T> entities = getResultList();
-        if (entities.isEmpty()) {
+        Stream<T> entities = getResult();
+        final Iterator<T> iterator = entities.iterator();
+        if (!iterator.hasNext()) {
             return Optional.empty();
         }
-        if (entities.size() == 1) {
-            return Optional.ofNullable(entities.get(0));
+        final T entity = iterator.next();
+        if (!iterator.hasNext()) {
+            return Optional.of(entity);
         }
         throw new NonUniqueResultException("There is more than one result found in the gremlin query: " + gremlin);
     }

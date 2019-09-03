@@ -14,19 +14,19 @@
  */
 package org.jnosql.artemis.column;
 
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import jakarta.nosql.mapping.column.ColumnQueryPagination;
-import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
-import org.jnosql.artemis.model.Person;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.Page;
+import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import jakarta.nosql.mapping.column.ColumnQueryPagination;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,12 +36,12 @@ import org.mockito.Mockito;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static jakarta.nosql.column.ColumnQuery.select;
-import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -90,9 +90,7 @@ class ColumnPageTest {
                     Column.of("_id", (long) index)};
             ColumnEntity columnEntity = ColumnEntity.of("Person");
             columnEntity.addAll(Stream.of(columns).collect(Collectors.toList()));
-
-            when(managerMock.select(query)).thenReturn(singletonList(columnEntity));
-
+            when(managerMock.select(query)).thenReturn(Stream.of(columnEntity));
             query = query.next();
         }
     }
@@ -130,7 +128,7 @@ class ColumnPageTest {
         Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = createPage(pagination);
 
-        List<Person> people = page.getContent();
+        List<Person> people = page.getContent().collect(Collectors.toList());
         assertEquals(1, people.size());
         assertEquals(0L, people.get(0).getId());
     }
@@ -152,6 +150,18 @@ class ColumnPageTest {
 
         ArrayList<Person> people = page.getContent(ArrayList::new);
         assertEquals(1, people.size());
+    }
+
+    @Test
+    public void shouldRequestPageTwice() {
+        Pagination pagination = Pagination.page(1).size(1);
+        Page<Person> page = createPage(pagination);
+
+        List<Person> people = page.getContent().collect(Collectors.toList());
+        assertEquals(1, people.size());
+        assertEquals(0L, people.get(0).getId());
+        assertNotNull(page.getContent(ArrayList::new));
+        assertNotNull(page.getContent(HashSet::new));
     }
 
     @Test
@@ -189,33 +199,33 @@ class ColumnPageTest {
         Pagination pagination = Pagination.page(1).size(1);
         ColumnQueryPagination queryPagination = ColumnQueryPagination.of(select().from("person").build(), pagination);
         ColumnQuery query = queryPagination;
-        List<Person> people = subject.select(query);
+        List<Person> people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(0L, people.stream().map(Person::getId).findFirst().orElse(-0L));
 
         queryPagination = queryPagination.next();
         query = queryPagination;
-        people = subject.select(query);
+        people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(1L, people.stream().map(Person::getId).findFirst().orElse(-0L));
 
 
         queryPagination = queryPagination.next();
         query = queryPagination;
-        people = subject.select(query);
+        people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(2L, people.stream().map(Person::getId).findFirst().orElse(-0L));
 
         queryPagination = queryPagination.next();
         query = queryPagination;
-        people = subject.select(query);
+        people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(3L, people.stream().map(Person::getId).findFirst().orElse(-0L));
 
         queryPagination = queryPagination.next();
         query = queryPagination;
-        people = subject.select(query);
+        people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(4L, people.stream().map(Person::getId).findFirst().orElse(-0L));
 
         queryPagination = queryPagination.next();
         query = queryPagination;
-        people = subject.select(query);
+        people = subject.<Person>select(query).collect(Collectors.toList());
         assertEquals(5L, people.stream().map(Person::getId).findFirst().orElse(-0L));
     }
 

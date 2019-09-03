@@ -71,7 +71,7 @@ class ColumnRepositoryAsyncProxy<T> extends AbstractColumnRepositoryAsyncProxy<T
     }
 
 
-    class ColumnRepositoryAsync extends AbstractColumnRepositoryAsync implements RepositoryAsync {
+    static class ColumnRepositoryAsync extends AbstractColumnRepositoryAsync implements RepositoryAsync {
 
 
         private final ColumnTemplateAsync template;

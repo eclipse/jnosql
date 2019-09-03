@@ -35,12 +35,13 @@ final class ColumnPage<T> implements Page<T> {
 
     private final ColumnTemplate template;
 
-    private final List<T> entities;
+    private final Stream<T> entities;
 
     private final ColumnQueryPagination query;
 
+    private List<T> entitiesCache;
 
-    ColumnPage(ColumnTemplate template, List<T> entities, ColumnQueryPagination query) {
+    ColumnPage(ColumnTemplate template, Stream<T> entities, ColumnQueryPagination query) {
         this.template = template;
         this.entities = entities;
         this.query = query;
@@ -57,19 +58,29 @@ final class ColumnPage<T> implements Page<T> {
     }
 
     @Override
-    public List<T> getContent() {
-        return entities;
+    public Stream<T> getContent() {
+        return getEntities();
     }
+
 
     @Override
     public <C extends Collection<T>> C getContent(Supplier<C> collectionFactory) {
         Objects.requireNonNull(collectionFactory, "collectionFactory is required");
-        return get().collect(Collectors.toCollection(collectionFactory));
+        return getEntities().collect(Collectors.toCollection(collectionFactory));
     }
 
     @Override
     public Stream<T> get() {
-        return entities.stream();
+        return getEntities();
+    }
+
+    private Stream<T> getEntities() {
+        if (Objects.isNull(entitiesCache)) {
+            synchronized (this) {
+                this.entitiesCache = entities.collect(Collectors.toList());
+            }
+        }
+        return entitiesCache.stream();
     }
 
     @Override

@@ -14,16 +14,17 @@
  */
 package org.jnosql.artemis.graph;
 
+import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.mapping.PreparedStatement;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.NonUniqueResultException;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * This interface that represents the common operation between an entity
@@ -53,7 +54,6 @@ public interface GraphTemplate {
      */
     <T> T update(T entity);
 
-
     /**
      * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Vertex}
      *
@@ -72,7 +72,6 @@ public interface GraphTemplate {
      */
     <T> void deleteEdge(T id);
 
-
     /**
      * Find an entity given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
      * {@link org.apache.tinkerpop.gremlin.structure.T#id}
@@ -84,6 +83,46 @@ public interface GraphTemplate {
      * @throws NullPointerException when id is null
      */
     <T, K> Optional<T> find(K id);
+
+    /**
+     * Inserts entities
+     *
+     * @param entities entities to be saved
+     * @param <T>    the instance type
+     * @return the entity saved
+     * @throws NullPointerException                   when document is null
+     * @throws jakarta.nosql.mapping.IdNotFoundException when entity has not {@link jakarta.nosql.mapping.Id}
+     */
+    <T> Iterable<T> insert(Iterable<T> entities);
+
+    /**
+     * Updates entities
+     *
+     * @param entities entity to be updated
+     * @param <T>    the instance type
+     * @return the entity saved
+     * @throws IllegalStateException                   when document is null
+     * @throws jakarta.nosql.mapping.IdNotFoundException when an entity is null
+     */
+    <T> Iterable<T> update(Iterable<T> entities);
+
+    /**
+     * Deletes {@link org.apache.tinkerpop.gremlin.structure.Vertex} instances
+     *
+     * @param ids  the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the id type
+     * @throws NullPointerException when id is null
+     */
+    <T> void delete(Iterable<T> ids);
+
+    /**
+     * Deletes {@link org.apache.tinkerpop.gremlin.structure.Edge} instances
+     *
+     * @param ids  the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the id type
+     * @throws NullPointerException when either label and id are null
+     */
+    <T> void deleteEdge(Iterable<T> ids);
 
     /**
      * Either find or create an Edge between this two entities.
@@ -122,7 +161,6 @@ public interface GraphTemplate {
         return edge(outgoing, label.get(), incoming);
     }
 
-
     /**
      * returns the edges of from a vertex id
      *
@@ -157,7 +195,6 @@ public interface GraphTemplate {
      * @throws NullPointerException where there is any parameter null
      */
     <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction);
-
 
     /**
      * returns the edges of from an entity
@@ -194,7 +231,6 @@ public interface GraphTemplate {
      */
     <T> Collection<EdgeEntity> getEdges(T entity, Direction direction);
 
-
     /**
      * Finds an {@link EdgeEntity} from the Edge Id
      *
@@ -225,14 +261,12 @@ public interface GraphTemplate {
      */
     EdgeTraversal getTraversalEdge(Object... edgeIds);
 
-
     /**
      * Gets the current transaction
      *
      * @return the current {@link Transaction}
      */
     Transaction getTransaction();
-
 
     /**
      * Executes a Gremlin gremlin then bring the result as a {@link List}
@@ -242,7 +276,7 @@ public interface GraphTemplate {
      * @return the result as {@link List}
      * @throws NullPointerException when the gremlin is null
      */
-    <T> List<T> query(String gremlin);
+    <T> Stream<T> query(String gremlin);
 
     /**
      * Executes a Gremlin query then bring the result as a unique result

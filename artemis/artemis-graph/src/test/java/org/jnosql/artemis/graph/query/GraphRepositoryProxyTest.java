@@ -14,21 +14,21 @@
  */
 package org.jnosql.artemis.graph.query;
 
-import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.T;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Param;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.T;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.graph.GraphConverter;
 import org.jnosql.artemis.graph.GraphTemplate;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Person;
 import org.jnosql.artemis.graph.model.Vendor;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -312,7 +313,7 @@ public class GraphRepositoryProxyTest {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         personRepository.findByQuery();
         when(template.query("g.V().hasLabel('Person').toList()"))
-                .thenReturn(Collections.singletonList(Person.builder().build()));
+                .thenReturn(Stream.of(Person.builder().build()));
 
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
 

@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.hamcrest.Matchers;
+import jakarta.nosql.Value;
 import jakarta.nosql.mapping.EntityNotFoundException;
+import org.hamcrest.Matchers;
 import org.jnosql.artemis.graph.cdi.CDIExtension;
 import org.jnosql.artemis.graph.model.Book;
 import org.jnosql.artemis.graph.model.Person;
-import jakarta.nosql.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -118,6 +118,24 @@ public class EdgeEntityTest {
         assertEquals(book, edge.getIncoming());
         assertTrue(edge.isEmpty());
         assertNotNull(edge.getId());
+    }
+
+    @Test
+    public void shouldGetId() {
+        Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
+        Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
+        EdgeEntity edge = graphTemplate.edge(person, "reads", book);
+
+        assertEquals("reads", edge.getLabel());
+        assertEquals(person, edge.getOutgoing());
+        assertEquals(book, edge.getIncoming());
+        assertTrue(edge.isEmpty());
+        assertNotNull(edge.getId());
+        final Long id = edge.getId(Long.class);
+        assertNotNull(id);
+
+        assertEquals(id, edge.getId(Integer.class).longValue());
+
     }
 
     @Test
@@ -256,7 +274,6 @@ public class EdgeEntityTest {
         assertEquals(0, edge.size());
     }
 
-
     @Test
     public void shouldFindProperty() {
         Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
@@ -281,7 +298,7 @@ public class EdgeEntityTest {
         EdgeEntity newEdge = graphTemplate.edge(person, "reads", book);
         assertNotEquals(edge.getId(), newEdge.getId());
 
-        graphTemplate.deleteEdge(newEdge.getId().get());
+        graphTemplate.deleteEdge(newEdge.getId());
     }
 
     @Test
@@ -296,7 +313,7 @@ public class EdgeEntityTest {
 
         EdgeEntity edge = graphTemplate.edge(person, "reads", book);
 
-        graphTemplate.deleteEdge(edge.getId().get());
+        graphTemplate.deleteEdge(edge.getId());
 
         EdgeEntity newEdge = graphTemplate.edge(person, "reads", book);
         assertNotEquals(edge.getId(), newEdge.getId());
@@ -315,12 +332,12 @@ public class EdgeEntityTest {
         Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
         EdgeEntity edge = graphTemplate.edge(person, "reads", book);
 
-        Optional<EdgeEntity> newEdge = graphTemplate.edge(edge.getId().get());
+        Optional<EdgeEntity> newEdge = graphTemplate.edge(edge.getId());
 
         assertTrue(newEdge.isPresent());
         assertEquals(edge.getId(), newEdge.get().getId());
 
-        graphTemplate.deleteEdge(edge.getId().get());
+        graphTemplate.deleteEdge(edge.getId());
     }
 
     @Test

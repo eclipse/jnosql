@@ -15,7 +15,14 @@
 package org.jnosql.artemis.document;
 
 
+import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentObserverParser;
+import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.document.DocumentQueryParserAsync;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatementAsync;
@@ -25,21 +32,15 @@ import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.document.DocumentQueryParserAsync;
 
 import java.time.Duration;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 /**
  * This class provides a skeletal implementation of the {@link DocumentTemplateAsync} interface,
@@ -127,18 +128,34 @@ public abstract class AbstractDocumentTemplateAsync implements DocumentTemplateA
     }
 
     @Override
-    public <T> void select(DocumentQuery query, Consumer<List<T>> callback) {
+    public <T> void select(DocumentQuery query, Consumer<Stream<T>> callback) {
         requireNonNull(query, "query is required");
         requireNonNull(callback, "callBack is required");
 
-        Consumer<List<DocumentEntity>> dianaCallBack = d -> callback.accept(
-                d.stream()
-                        .map(getConverter()::toEntity)
-                        .map(o -> (T) o)
-                        .collect(toList()));
+        Consumer<Stream<DocumentEntity>> dianaCallBack = d -> callback.accept(
+                d.map(getConverter()::toEntity)
+                        .map(o -> (T) o));
         getManager().select(query, dianaCallBack);
     }
 
+    @Override
+    public <T> void singleResult(DocumentQuery query, Consumer<Optional<T>> callBack) {
+        requireNonNull(query, "query is required");
+        requireNonNull(callBack, "callBack is required");
+        select(query, entities -> {
+            final Iterator<T> iterator = (Iterator<T>) entities.iterator();
+            if (!iterator.hasNext()) {
+                callBack.accept(Optional.empty());
+                return;
+            }
+            final T entity = iterator.next();
+            if (!iterator.hasNext()) {
+                callBack.accept(Optional.of(entity));
+                return;
+            }
+            throw new NonUniqueResultException("No unique result found to the query: " + query);
+        });
+    }
 
     @Override
     public <T, K> void find(Class<T> entityClass, K id, Consumer<Optional<T>> callBack) {
@@ -182,11 +199,11 @@ public abstract class AbstractDocumentTemplateAsync implements DocumentTemplateA
 
 
     @Override
-    public <T> void query(String query, Consumer<List<T>> callback) {
+    public <T> void query(String query, Consumer<Stream<T>> callback) {
         requireNonNull(query, "query is required");
         requireNonNull(callback, "callback is required");
-        Consumer<List<DocumentEntity>> mapper = columnEntities -> callback.accept(columnEntities.stream().map(c -> (T) getConverter().toEntity(c))
-                .collect(toList()));
+        Consumer<Stream<DocumentEntity>> mapper = columnEntities -> callback
+                .accept(columnEntities.map(c -> (T) getConverter().toEntity(c)));
         PARSER.query(query, getManager(), mapper, getObserver());
     }
 
@@ -194,13 +211,15 @@ public abstract class AbstractDocumentTemplateAsync implements DocumentTemplateA
     public <T> void singleResult(String query, Consumer<Optional<T>> callback) {
         requireNonNull(query, "query is required");
         requireNonNull(callback, "callBack is required");
-        Consumer<List<DocumentEntity>> mapper = columnEntities -> {
-            List<T> entities = columnEntities.stream().map(c -> (T) getConverter().toEntity(c)).collect(toList());
-            if (entities.isEmpty()) {
+        Consumer<Stream<DocumentEntity>> mapper = columnEntities -> {
+            Stream<T> entities = columnEntities.map(c -> (T) getConverter().toEntity(c));
+            final Iterator<T> iterator = entities.iterator();
+            if (!iterator.hasNext()) {
                 callback.accept(Optional.empty());
             }
-            if (entities.size() == 1) {
-                callback.accept(Optional.ofNullable(getConverter().toEntity(columnEntities.get(0))));
+            final T entity = iterator.next();
+            if (!iterator.hasNext()) {
+                callback.accept(Optional.of(entity));
             }
             throw new UnsupportedOperationException("This query does not return a unique result: " + query);
         };

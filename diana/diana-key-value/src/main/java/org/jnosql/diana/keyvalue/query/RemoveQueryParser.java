@@ -25,8 +25,8 @@ import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
 import jakarta.nosql.query.RemoveQuery;
 import jakarta.nosql.query.RemoveQuery.RemoveQueryProvider;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -38,7 +38,7 @@ final class RemoveQueryParser {
         this.provider = ServiceLoaderProvider.get(RemoveQueryProvider.class);
     }
 
-    List<Value> query(String query, BucketManager manager) {
+    Stream<Value> query(String query, BucketManager manager) {
 
         RemoveQuery delQuery = provider.apply(query);
         Params params = Params.newParams();
@@ -49,7 +49,7 @@ final class RemoveQueryParser {
 
         List<Object> keys = values.stream().map(Value::get).collect(toList());
         manager.remove(keys);
-        return Collections.emptyList();
+        return Stream.empty();
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {

@@ -15,17 +15,17 @@
 package org.jnosql.artemis.document.spi;
 
 
+import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.mapping.ConfigurationUnit;
-import org.jnosql.artemis.DatabaseMetadata;
-import org.jnosql.artemis.Databases;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.RepositoryAsync;
+import org.jnosql.artemis.DatabaseMetadata;
+import org.jnosql.artemis.Databases;
 import org.jnosql.artemis.document.query.RepositoryAsyncDocumentBean;
 import org.jnosql.artemis.document.query.RepositoryDocumentBean;
 import org.jnosql.artemis.util.ConfigurationUnitUtils;
 import org.jnosql.artemis.util.RepositoryUnit;
-import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;

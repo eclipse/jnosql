@@ -32,11 +32,11 @@ import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The default implementation of {@link DeleteQueryConverter}
@@ -51,18 +51,18 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
         cache = new CacheQuery<>(this::getQuery);
     }
 
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
+    Stream<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
         DocumentDeleteQuery documentQuery = cache.get(query, observer);
         collectionManager.delete(documentQuery);
-        return Collections.emptyList();
+        return Stream.empty();
     }
 
     void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
-                    Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer) {
+                    Consumer<Stream<DocumentEntity>> callBack, DocumentObserverParser observer) {
 
         DocumentDeleteQuery documentQuery = cache.get(query, observer);
-        collectionManager.delete(documentQuery, v -> callBack.accept(Collections.emptyList()));
+        collectionManager.delete(documentQuery, v -> callBack.accept(Stream.empty()));
     }
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager,

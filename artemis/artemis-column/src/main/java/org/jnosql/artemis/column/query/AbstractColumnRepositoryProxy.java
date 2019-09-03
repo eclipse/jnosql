@@ -15,6 +15,8 @@
 package org.jnosql.artemis.column.query;
 
 
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
@@ -24,14 +26,12 @@ import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 import org.jnosql.artemis.reflection.DynamicReturn;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 
 /**
@@ -87,10 +87,10 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
-                .withList(() -> getTemplate().select(query))
+                .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
                 .withPagination(DynamicReturn.findPagination(args))
-                .withListPagination(listPagination(query))
+                .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
                 .build();
@@ -108,7 +108,7 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
         };
     }
 
-    private Function<Pagination, List<T>> listPagination(ColumnQuery query) {
+    private Function<Pagination, Stream<T>> streamPagination(ColumnQuery query) {
         return p -> {
             ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
             return getTemplate().select(queryPagination);

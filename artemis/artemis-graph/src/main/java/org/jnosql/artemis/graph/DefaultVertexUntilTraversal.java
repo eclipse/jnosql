@@ -14,13 +14,13 @@
  */
 package org.jnosql.artemis.graph;
 
+import jakarta.nosql.mapping.Entity;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import jakarta.nosql.mapping.Entity;
 
 import java.util.Objects;
 import java.util.Optional;

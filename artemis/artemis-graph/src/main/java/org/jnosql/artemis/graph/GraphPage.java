@@ -14,10 +14,10 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Collection;
 import java.util.List;
@@ -42,10 +42,11 @@ public final class GraphPage<T> implements Page<T> {
 
     private final GraphTraversal<?, ?> graphTraversal;
 
-    private final List<T> entities;
+    private final Stream<T> entities;
 
+    private List<T> entitiesCache;
 
-    private GraphPage(Pagination pagination, GraphConverter converter, GraphTraversal<?, ?> graphTraversal, List<T> entities) {
+    private GraphPage(Pagination pagination, GraphConverter converter, GraphTraversal<?, ?> graphTraversal, Stream<T> entities) {
         this.pagination = pagination;
         this.converter = converter;
         this.graphTraversal = graphTraversal;
@@ -64,19 +65,28 @@ public final class GraphPage<T> implements Page<T> {
     }
 
     @Override
-    public List<T> getContent() {
-        return entities;
+    public Stream<T> getContent() {
+        return getEntities();
     }
 
     @Override
     public <C extends Collection<T>> C getContent(Supplier<C> collectionFactory) {
         requireNonNull(collectionFactory, "collectionFactory is required");
-        return entities.stream().collect(toCollection(collectionFactory));
+        return getEntities().collect(toCollection(collectionFactory));
     }
 
     @Override
     public Stream<T> get() {
-        return entities.stream();
+        return getEntities();
+    }
+
+    private Stream<T> getEntities() {
+        if (Objects.isNull(entitiesCache)) {
+            synchronized (this) {
+                this.entitiesCache = entities.collect(Collectors.toList());
+            }
+        }
+        return entitiesCache.stream();
     }
 
     @Override
@@ -128,11 +138,10 @@ public final class GraphPage<T> implements Page<T> {
                 toEntity(pagination, converter, graphTraversal));
     }
 
-    private static <T> List<T> toEntity(Pagination pagination, GraphConverter converter,
+    private static <T> Stream<T> toEntity(Pagination pagination, GraphConverter converter,
                                         GraphTraversal<?, ?> graphTraversal) {
-        return (List<T>) graphTraversal
+        return (Stream<T>) graphTraversal
                 .next((int) pagination.getLimit()).stream()
-                .map(v -> converter.toEntity((Vertex) v))
-                .collect(Collectors.toList());
+                .map(v -> converter.toEntity((Vertex) v));
     }
 }

@@ -15,11 +15,11 @@
 package org.jnosql.artemis.document;
 
 
-import jakarta.nosql.mapping.EntityPostPersit;
-import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.mapping.document.DocumentDeleteQueryExecute;
 import jakarta.nosql.mapping.document.DocumentEntityPostPersist;
 import jakarta.nosql.mapping.document.DocumentEntityPrePersist;

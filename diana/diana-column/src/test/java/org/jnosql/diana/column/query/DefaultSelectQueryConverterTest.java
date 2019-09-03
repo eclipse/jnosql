@@ -40,11 +40,12 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
+import static jakarta.nosql.column.ColumnCondition.eq;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static jakarta.nosql.column.ColumnCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -490,7 +491,7 @@ public class DefaultSelectQueryConverterTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, prepare::getResultList);
+        assertThrows(QueryException.class, prepare::getResult);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -500,7 +501,7 @@ public class DefaultSelectQueryConverterTest {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("age", 12);
-        prepare.getResultList();
+        prepare.getResult();
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
         ColumnCondition columnCondition = columnQuery.getCondition().get();
@@ -527,7 +528,7 @@ public class DefaultSelectQueryConverterTest {
     public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
 
         ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResultList(s -> {
+        assertThrows(QueryException.class, () -> prepare.getResult(s -> {
         }));
     }
 
@@ -538,9 +539,9 @@ public class DefaultSelectQueryConverterTest {
 
         ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
         prepare.bind("age", 12);
-        Consumer<List<ColumnEntity>> callBack = s -> {
+        Consumer<Stream<ColumnEntity>> callBack = s -> {
         };
-        prepare.getResultList(callBack);
+        prepare.getResult(callBack);
         Mockito.verify(managerAsync).select(captor.capture(), Mockito.eq(callBack));
         ColumnQuery columnQuery = captor.getValue();
         ColumnCondition columnCondition = columnQuery.getCondition().get();
@@ -554,7 +555,7 @@ public class DefaultSelectQueryConverterTest {
     @ValueSource(strings = {"select  * from God where name = \"Ada\" and age = 20"})
     public void shouldReturnParserQueryAsync(String query) {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        Consumer<List<ColumnEntity>> callBack = s -> {
+        Consumer<Stream<ColumnEntity>> callBack = s -> {
         };
         parser.queryAsync(query, managerAsync, callBack, observer);
         Mockito.verify(managerAsync).select(captor.capture(), Mockito.eq(callBack));

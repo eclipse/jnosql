@@ -15,6 +15,8 @@
 package org.jnosql.artemis.document.query;
 
 
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
@@ -23,14 +25,12 @@ import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicQueryMethodReturn;
 import org.jnosql.artemis.reflection.DynamicReturn;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentQuery.select;
 
@@ -86,10 +86,10 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
-                .withList(() -> getTemplate().select(query))
+                .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
                 .withPagination(DynamicReturn.findPagination(args))
-                .withListPagination(listPagination(query))
+                .withStreamPagination(listPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
                 .build();
@@ -107,7 +107,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
         };
     }
 
-    private Function<Pagination, List<T>> listPagination(DocumentQuery query) {
+    private Function<Pagination, Stream<T>> listPagination(DocumentQuery query) {
         return p -> {
             DocumentQuery queryPagination = DocumentQueryPagination.of(query, p);
             return getTemplate().select(queryPagination);

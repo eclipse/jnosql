@@ -14,20 +14,20 @@
  */
 package org.jnosql.artemis.column.query;
 
-import org.hamcrest.Matchers;
-import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.Sorts;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.jnosql.artemis.model.Person;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.Condition;
 import jakarta.nosql.Sort;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.Sorts;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.hamcrest.Matchers;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.model.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,14 +37,14 @@ import org.mockito.Mockito;
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
+import static jakarta.nosql.Condition.AND;
+import static jakarta.nosql.Condition.EQUALS;
 import static java.util.concurrent.ThreadLocalRandom.current;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static  jakarta.nosql.Condition.AND;
-import static  jakarta.nosql.Condition.EQUALS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -72,7 +72,6 @@ public class ColumnRepositoryProxySortTest {
         ColumnRepositoryProxy personHandler = new ColumnRepositoryProxy(template,
                 classMappings, PersonRepository.class, converters);
 
-
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
@@ -82,11 +81,10 @@ public class ColumnRepositoryProxySortTest {
                 personHandler);
     }
 
-
     @Test
     public void shouldFindAll() {
 
-        when(template.select(any(ColumnQuery.class))).thenReturn(Collections.singletonList(Person.builder().build()));
+        when(template.select(any(ColumnQuery.class))).thenReturn(Stream.of(Person.builder().build()));
 
         Pagination pagination = getPagination();
         personRepository.findAll(pagination, Sorts.sorts().asc("name"));
@@ -133,7 +131,7 @@ public class ColumnRepositoryProxySortTest {
     public void shouldFindByAge() {
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(Collections.singletonList(Person.builder().build()));
+                .thenReturn(Stream.of(Person.builder().build()));
 
         personRepository.findByAge(10, Sort.desc("name"));
 
@@ -148,6 +146,8 @@ public class ColumnRepositoryProxySortTest {
         assertThat(query.getSorts(), Matchers.contains(Sort.desc("name")));
         assertEquals(Column.of("age", 10), condition.getColumn());
 
+        when(template.select(any(ColumnQuery.class)))
+                .thenReturn(Stream.of(Person.builder().build()));
         assertNotNull(personRepository.findByAge(10, Sort.asc("name")));
         when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
                 .empty());
@@ -159,7 +159,7 @@ public class ColumnRepositoryProxySortTest {
     public void shouldFindByNameAndAge() {
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(Collections.singletonList(Person.builder().build()));
+                .thenReturn(Stream.of(Person.builder().build()));
 
         personRepository.findByNameAndAge("name", 10, Sorts.sorts().desc("name"));
 
@@ -175,12 +175,11 @@ public class ColumnRepositoryProxySortTest {
 
     }
 
-
     @Test
     public void shouldFindByNameOrderByName() {
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(Collections.singletonList(Person.builder().build()));
+                .thenReturn(Stream.of((Person.builder().build())));
 
         Pagination pagination = getPagination();
         personRepository.findByNameOrderByName("name", pagination, Sort.desc("age"));
@@ -202,7 +201,7 @@ public class ColumnRepositoryProxySortTest {
     public void shouldFindByNameOrderByName2() {
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(Collections.singletonList(Person.builder().build()));
+                .thenReturn(Stream.of((Person.builder().build())));
 
         Pagination pagination = getPagination();
         personRepository.findByNameOrderByName("name", pagination, Sorts.sorts().desc("age").asc("phone"));

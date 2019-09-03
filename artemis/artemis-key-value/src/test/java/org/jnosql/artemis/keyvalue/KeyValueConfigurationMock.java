@@ -39,7 +39,7 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
     }
 
 
-    public class BucketManagerFactoryMock implements BucketManagerFactory {
+    public static class BucketManagerFactoryMock implements BucketManagerFactory {
 
         private final Settings settings;
 

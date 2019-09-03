@@ -26,11 +26,12 @@ import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import jakarta.nosql.document.DocumentQuery;
 
 import java.time.Duration;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedStatementAsync {
 
@@ -83,7 +84,7 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
     }
 
     @Override
-    public void getResultList(Consumer<List<DocumentEntity>> callBack) {
+    public void getResult(Consumer<Stream<DocumentEntity>> callBack) {
         Objects.requireNonNull(callBack, "callBack is required");
 
         if (!paramsLeft.isEmpty()) {
@@ -94,16 +95,16 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
                 manager.select(documentQuery, callBack);
                 return;
             case DELETE:
-                manager.delete(documentDeleteQuery, c -> callBack.accept(Collections.emptyList()));
+                manager.delete(documentDeleteQuery, c -> callBack.accept(Stream.empty()));
                 return;
             case UPDATE:
-                manager.update(entity, c -> callBack.accept(Collections.singletonList(c)));
+                manager.update(entity, c -> callBack.accept(Stream.of(c)));
                 return;
             case INSERT:
                 if (Objects.isNull(duration)) {
-                    manager.insert(entity, c -> callBack.accept(Collections.singletonList(c)));
+                    manager.insert(entity, c -> callBack.accept(Stream.of(c)));
                 } else {
-                    manager.insert(entity, duration, c -> callBack.accept(Collections.singletonList(c)));
+                    manager.insert(entity, duration, c -> callBack.accept(Stream.of(c)));
                 }
                 return;
             default:
@@ -115,13 +116,16 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
     public void getSingleResult(Consumer<Optional<DocumentEntity>> callBack) {
         Objects.requireNonNull(callBack, "callBack is required");
 
-        getResultList(entities -> {
-            if (entities.isEmpty()) {
+        getResult(entities -> {
+            final Iterator<DocumentEntity> iterator = entities.iterator();
+
+            if (!iterator.hasNext()) {
                 callBack.accept(Optional.empty());
                 return;
             }
-            if (entities.size() == 1) {
-                callBack.accept(Optional.of(entities.get(0)));
+            final DocumentEntity entity = iterator.next();
+            if (!iterator.hasNext()) {
+                callBack.accept(Optional.of(entity));
                 return;
             }
             throw new NonUniqueResultException("The select returns more than one entity, select: " + query);
@@ -152,8 +156,8 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
 
     static DefaultDocumentPreparedStatementAsync delete(DocumentDeleteQuery documentDeleteQuery,
                                                         Params params,
-                                            String query,
-                                            DocumentCollectionManagerAsync manager) {
+                                                        String query,
+                                                        DocumentCollectionManagerAsync manager) {
 
         return new DefaultDocumentPreparedStatementAsync(null, null,
                 documentDeleteQuery, PreparedStatementType.DELETE, params, query,
@@ -163,9 +167,9 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
 
     static DefaultDocumentPreparedStatementAsync insert(DocumentEntity entity,
                                                         Params params,
-                                            String query,
-                                            Duration duration,
-                                            DocumentCollectionManagerAsync manager) {
+                                                        String query,
+                                                        Duration duration,
+                                                        DocumentCollectionManagerAsync manager) {
         return new DefaultDocumentPreparedStatementAsync(entity, null,
                 null, PreparedStatementType.INSERT, params, query,
                 params.getParametersNames(), duration, manager);
@@ -174,8 +178,8 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
 
     static DefaultDocumentPreparedStatementAsync update(DocumentEntity entity,
                                                         Params params,
-                                            String query,
-                                            DocumentCollectionManagerAsync manager) {
+                                                        String query,
+                                                        DocumentCollectionManagerAsync manager) {
         return new DefaultDocumentPreparedStatementAsync(entity, null,
                 null, PreparedStatementType.UPDATE, params, query,
                 params.getParametersNames(), null, manager);

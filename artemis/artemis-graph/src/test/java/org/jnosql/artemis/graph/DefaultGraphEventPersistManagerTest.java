@@ -14,9 +14,9 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.mapping.EntityPostPersit;
 import jakarta.nosql.mapping.EntityPrePersist;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -128,7 +128,7 @@ public class DefaultGraphEventPersistManagerTest {
 
 
 
-    class Jedi {
+    static class Jedi {
         private String name;
     }
 }

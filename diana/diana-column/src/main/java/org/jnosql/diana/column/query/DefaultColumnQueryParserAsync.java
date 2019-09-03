@@ -23,8 +23,8 @@ import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatementAsync;
 import jakarta.nosql.column.ColumnQueryParserAsync;
 
-import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -40,7 +40,7 @@ public final class DefaultColumnQueryParserAsync implements ColumnQueryParserAsy
 
     @Override
     public void query(String query, ColumnFamilyManagerAsync collectionManager,
-                      Consumer<List<ColumnEntity>> callBack, ColumnObserverParser observer) {
+                      Consumer<Stream<ColumnEntity>> callBack, ColumnObserverParser observer) {
 
         validation(query, collectionManager, callBack, observer);
         String command = query.substring(0, 6);
@@ -92,7 +92,7 @@ public final class DefaultColumnQueryParserAsync implements ColumnQueryParserAsy
     }
 
     private void validation(String query, ColumnFamilyManagerAsync manager,
-                            Consumer<List<ColumnEntity>> callBack, ColumnObserverParser observer) {
+                            Consumer<Stream<ColumnEntity>> callBack, ColumnObserverParser observer) {
 
         requireNonNull(query, "query is required");
         requireNonNull(manager, "manager is required");

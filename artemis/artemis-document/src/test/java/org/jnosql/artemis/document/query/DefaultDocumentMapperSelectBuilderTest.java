@@ -35,9 +35,9 @@ import org.mockito.Mockito;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -217,7 +217,7 @@ public class DefaultDocumentMapperSelectBuilderTest {
     public void shouldExecuteQuery() {
         DocumentTemplate template = Mockito.mock(DocumentTemplate.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        List<Person> people = mapperBuilder.selectFrom(Person.class).execute(template);
+        Stream<Person> people = mapperBuilder.selectFrom(Person.class).execute(template);
         Mockito.verify(template).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
         DocumentQuery queryExpected = select().from("Person").build();
@@ -239,7 +239,7 @@ public class DefaultDocumentMapperSelectBuilderTest {
     public void shouldExecuteAsyncQuery() {
         DocumentTemplateAsync template = Mockito.mock(DocumentTemplateAsync.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        Consumer<List<Person>> callback = System.out::println;
+        Consumer<Stream<Person>> callback = System.out::println;
         mapperBuilder.selectFrom(Person.class).execute(template, callback);
         Mockito.verify(template).select(queryCaptor.capture(), eq(callback));
         DocumentQuery query = queryCaptor.getValue();
@@ -258,7 +258,6 @@ public class DefaultDocumentMapperSelectBuilderTest {
         DocumentQuery queryExpected = select().from("Person").build();
         assertEquals(queryExpected, query);
     }
-
 
     @Test
     public void shouldCreateQueryWithPagination() {

@@ -15,13 +15,13 @@
 package org.jnosql.artemis.document.query;
 
 
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.RepositoryAsync;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicAsyncQueryMethodReturn;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

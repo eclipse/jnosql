@@ -26,12 +26,11 @@ import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.column.ColumnQuery;
 
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
+import java.util.stream.Stream;
 
 final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
 
@@ -84,7 +83,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
     }
 
     @Override
-    public List<ColumnEntity> getResultList() {
+    public Stream<ColumnEntity> getResult() {
         if (!paramsLeft.isEmpty()) {
             throw new QueryException("Check all the parameters before execute the query, params left: " + paramsLeft);
         }
@@ -93,14 +92,14 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
                 return manager.select(columnQuery);
             case DELETE:
                 manager.delete(columnDeleteQuery);
-                return emptyList();
+                return Stream.empty();
             case UPDATE:
-                return singletonList(manager.update(entity));
+                return Stream.of(manager.update(entity));
             case INSERT:
                 if (Objects.isNull(duration)) {
-                    return singletonList(manager.insert(entity));
+                    return Stream.of(manager.insert(entity));
                 } else {
-                    return singletonList(manager.insert(entity, duration));
+                    return Stream.of(manager.insert(entity, duration));
                 }
             default:
                 throw new UnsupportedOperationException("there is not support to operation type: " + type);
@@ -110,12 +109,15 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
 
     @Override
     public Optional<ColumnEntity> getSingleResult() {
-        List<ColumnEntity> entities = getResultList();
-        if (entities.isEmpty()) {
+        Stream<ColumnEntity> entities = getResult();
+        final Iterator<ColumnEntity> iterator = entities.iterator();
+
+        if (!iterator.hasNext()) {
             return Optional.empty();
         }
-        if (entities.size() == 1) {
-            return Optional.of(entities.get(0));
+        final ColumnEntity entity = iterator.next();
+        if (!iterator.hasNext()) {
+            return Optional.of(entity);
         }
 
         throw new NonUniqueResultException("The select returns more than one entity, select: " + query);

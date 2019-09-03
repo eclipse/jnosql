@@ -33,12 +33,12 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @ExtendWith(MockitoExtension.class)
 class PaginationDynamicExecutorQueryConverterTest {
-
 
     private DynamicReturn<Person> dynamic;
 
@@ -60,9 +60,9 @@ class PaginationDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withSingleResult(Optional::empty)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withSingleResultPagination(p -> Optional.of(ada))
-                .withListPagination(p -> Collections.emptyList())
+                .withStreamPagination(p -> Stream.empty())
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
@@ -77,9 +77,9 @@ class PaginationDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withSingleResult(Optional::empty)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withSingleResultPagination(p -> Optional.empty())
-                .withListPagination(p -> Collections.emptyList())
+                .withStreamPagination(p -> Stream.empty())
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
@@ -95,9 +95,9 @@ class PaginationDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withSingleResult(Optional::empty)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withSingleResultPagination(p -> Optional.of(ada))
-                .withListPagination(p -> Collections.emptyList())
+                .withStreamPagination(p -> Stream.empty())
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
@@ -114,9 +114,9 @@ class PaginationDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withSingleResult(Optional::empty)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withSingleResultPagination(p -> Optional.empty())
-                .withListPagination(p -> Collections.singletonList(ada))
+                .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
@@ -133,9 +133,9 @@ class PaginationDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withSingleResult(Optional::empty)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withSingleResultPagination(p -> Optional.empty())
-                .withListPagination(p -> Collections.singletonList(ada))
+                .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
@@ -146,16 +146,15 @@ class PaginationDynamicExecutorQueryConverterTest {
         assertEquals(ada, person.stream().findFirst().get());
     }
 
-
     @Test
     public void shouldReturnLinkedList() {
         Person ada = new Person("Ada");
         dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withSingleResult(Optional::empty)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withSingleResultPagination(p -> Optional.empty())
-                .withListPagination(p -> Collections.singletonList(ada))
+                .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
@@ -172,9 +171,9 @@ class PaginationDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withSingleResult(Optional::empty)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withSingleResultPagination(p -> Optional.empty())
-                .withListPagination(p -> Collections.singletonList(ada))
+                .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
@@ -191,9 +190,9 @@ class PaginationDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withSingleResult(Optional::empty)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withSingleResultPagination(p -> Optional.empty())
-                .withListPagination(p -> Collections.singletonList(ada))
+                .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
@@ -210,9 +209,9 @@ class PaginationDynamicExecutorQueryConverterTest {
         dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withSingleResult(Optional::empty)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withSingleResultPagination(p -> Optional.empty())
-                .withListPagination(p -> Collections.singletonList(ada))
+                .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
@@ -226,26 +225,25 @@ class PaginationDynamicExecutorQueryConverterTest {
 
         Person ada = new Person("Ada");
 
-        Mockito.when(page.getContent()).thenReturn(Collections.singletonList(ada));
+        Mockito.when(page.getContent()).thenReturn(Stream.of(ada));
 
         dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withSingleResult(Optional::empty)
-                .withList(Collections::emptyList)
+                .withResult(Collections::emptyList)
                 .withSingleResultPagination(p -> Optional.empty())
-                .withListPagination(p -> Collections.singletonList(ada))
+                .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
                 .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
 
         Page<Person> personPage = converter.toPage(dynamic);
-        List<Person> content = personPage.getContent();
+        List<Person> content = personPage.getContent().collect(toList());
 
         assertFalse(content.isEmpty());
         assertEquals(ada, content.get(0));
     }
-
 
     private static class Person implements Comparable<Person> {
 

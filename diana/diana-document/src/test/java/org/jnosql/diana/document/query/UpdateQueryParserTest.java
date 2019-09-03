@@ -33,6 +33,7 @@ import org.mockito.Mockito;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -127,7 +128,7 @@ class UpdateQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
         DocumentPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, prepare::getResultList);
+        assertThrows(QueryException.class, prepare::getResult);
     }
 
 
@@ -137,7 +138,7 @@ class UpdateQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("name", "Diana");
-        prepare.getResultList();
+        prepare.getResult();
         Mockito.verify(manager).update(captor.capture());
         DocumentEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
@@ -158,7 +159,7 @@ class UpdateQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQueryAsync(String query) {
 
         DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResultList(s ->{}));
+        assertThrows(QueryException.class, () -> prepare.getResult(s ->{}));
     }
 
 
@@ -168,9 +169,9 @@ class UpdateQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
         prepare.bind("name", "Diana");
-        Consumer<List<DocumentEntity>> callBack = s -> {
+        Consumer<Stream<DocumentEntity>> callBack = s -> {
         };
-        prepare.getResultList(callBack);
+        prepare.getResult(callBack);
         Mockito.verify(managerAsync).update(captor.capture(), Mockito.any(Consumer.class));
         DocumentEntity entity = captor.getValue();
         assertEquals("God", entity.getName());

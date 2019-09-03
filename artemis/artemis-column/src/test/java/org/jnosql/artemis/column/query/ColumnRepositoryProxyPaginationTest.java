@@ -14,21 +14,21 @@
  */
 package org.jnosql.artemis.column.query;
 
-import org.hamcrest.Matchers;
-import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.jnosql.artemis.model.Person;
-import org.jnosql.artemis.model.Vendor;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.hamcrest.Matchers;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.model.Person;
+import org.jnosql.artemis.model.Vendor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,17 +47,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static jakarta.nosql.Condition.AND;
+import static jakarta.nosql.Condition.BETWEEN;
+import static jakarta.nosql.Condition.EQUALS;
+import static jakarta.nosql.Condition.GREATER_THAN;
+import static jakarta.nosql.Condition.IN;
+import static jakarta.nosql.Condition.LESSER_EQUALS_THAN;
+import static jakarta.nosql.Condition.LESSER_THAN;
+import static jakarta.nosql.Condition.LIKE;
 import static java.util.Collections.singletonList;
 import static java.util.concurrent.ThreadLocalRandom.current;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static  jakarta.nosql.Condition.AND;
-import static  jakarta.nosql.Condition.BETWEEN;
-import static  jakarta.nosql.Condition.EQUALS;
-import static  jakarta.nosql.Condition.GREATER_THAN;
-import static  jakarta.nosql.Condition.IN;
-import static  jakarta.nosql.Condition.LESSER_EQUALS_THAN;
-import static  jakarta.nosql.Condition.LESSER_THAN;
-import static  jakarta.nosql.Condition.LIKE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -142,7 +142,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         List<Person> persons = personRepository.findByNameAndAge("name", 20, pagination);
@@ -163,7 +163,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         Set<Person> persons = personRepository.findByAgeAndName(20, "name", pagination);
@@ -183,7 +183,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
 
@@ -204,7 +204,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         Queue<Person> persons = personRepository.findByNameAndAgeOrderByAge("name", 20, pagination);
@@ -226,7 +226,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
 
@@ -247,7 +247,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByNameAndAgeGreaterThanEqual("Ada", 33, pagination);
@@ -279,7 +279,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByAgeGreaterThan(33, pagination);
@@ -301,7 +301,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByAgeLessThanEqual(33, pagination);
@@ -323,7 +323,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByAgeLessThan(33, pagination);
@@ -345,7 +345,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByAgeBetween(10,15, pagination);
@@ -370,7 +370,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByNameLike("Ada", pagination);
@@ -393,7 +393,7 @@ public class ColumnRepositoryProxyPaginationTest {
         vendor.setPrefixes(Collections.singleton("prefix"));
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(vendor));
+                .thenReturn(Stream.of(vendor));
 
         Pagination pagination = getPagination();
         vendorRepository.findByPrefixes("prefix", pagination);
@@ -416,7 +416,7 @@ public class ColumnRepositoryProxyPaginationTest {
         vendor.setPrefixes(Collections.singleton("prefix"));
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(vendor));
+                .thenReturn(Stream.of(vendor));
 
         Pagination pagination = getPagination();
         vendorRepository.findByPrefixesIn(singletonList("prefix"), pagination);
@@ -432,14 +432,13 @@ public class ColumnRepositoryProxyPaginationTest {
 
     }
 
-
     @Test
     public void shouldConvertFieldToTheType() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Pagination pagination = getPagination();
         personRepository.findByAge("120", pagination);
@@ -453,8 +452,6 @@ public class ColumnRepositoryProxyPaginationTest {
         assertEquals(pagination.getSkip(), query.getSkip());
         assertEquals(pagination.getLimit(), query.getLimit());
     }
-
-
 
     private Pagination getPagination() {
         return Pagination.page(current().nextLong(1, 10)).size(current().nextLong(1, 10));

@@ -111,7 +111,7 @@ class RemoveQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        assertThrows(QueryException.class, prepare::getResultList);
+        assertThrows(QueryException.class, prepare::getResult);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -121,7 +121,7 @@ class RemoveQueryParserTest {
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
-        prepare.getResultList();
+        prepare.getResult();
 
         Mockito.verify(manager).remove(captor.capture());
         List<Object> value = captor.getValue();
@@ -140,7 +140,7 @@ class RemoveQueryParserTest {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         prepare.bind("id2", 11);
-        prepare.getResultList();
+        prepare.getResult();
 
         Mockito.verify(manager).remove(captor.capture());
         List<Object> value = captor.getValue();

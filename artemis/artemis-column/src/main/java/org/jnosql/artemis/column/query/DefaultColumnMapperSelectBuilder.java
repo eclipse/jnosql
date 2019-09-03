@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -179,7 +180,7 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
     }
 
     @Override
-    public <T> List<T> execute(ColumnTemplate template) {
+    public <T> Stream<T> execute(ColumnTemplate template) {
         requireNonNull(template, "template is required");
         return template.select(this.build());
     }
@@ -191,7 +192,7 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
     }
 
     @Override
-    public <T> List<T> execute(ColumnTemplate template, Pagination pagination) {
+    public <T> Stream<T> execute(ColumnTemplate template, Pagination pagination) {
         requireNonNull(template, "template is required");
         requireNonNull(pagination, "pagination is required");
         return template.select(this.build(pagination));
@@ -205,7 +206,7 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
     }
 
     @Override
-    public <T> void execute(ColumnTemplateAsync template, Consumer<List<T>> callback) {
+    public <T> void execute(ColumnTemplateAsync template, Consumer<Stream<T>> callback) {
         requireNonNull(template, "template is required");
         requireNonNull(callback, "callback is required");
         template.select(this.build(), callback);

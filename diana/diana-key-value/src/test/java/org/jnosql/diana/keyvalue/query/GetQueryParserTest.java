@@ -17,6 +17,7 @@
 package org.jnosql.diana.keyvalue.query;
 
 import jakarta.nosql.QueryException;
+import jakarta.nosql.Value;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
 import org.hamcrest.MatcherAssert;
@@ -28,9 +29,12 @@ import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 
 class GetQueryParserTest {
 
@@ -42,12 +46,13 @@ class GetQueryParserTest {
     @ValueSource(strings = {"get \"Diana\""})
     public void shouldReturnParserQuery1(String query) {
 
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
 
-        parser.query(query, manager);
-
-        Mockito.verify(manager).get(captor.capture());
-        List<Object> value = captor.getValue();
+        final Stream<Value> stream = parser.query(query, manager);
+        verify(manager, Mockito.never()).get(Mockito.any(Object.class));
+        stream.collect(Collectors.toList());
+        verify(manager).get(captor.capture());
+        List<Object> value = captor.getAllValues();
 
         assertEquals(1, value.size());
         MatcherAssert.assertThat(value, Matchers.contains("Diana"));
@@ -57,12 +62,14 @@ class GetQueryParserTest {
     @ValueSource(strings = {"get 12"})
     public void shouldReturnParserQuery2(String query) {
 
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
 
-        parser.query(query, manager);
+        final Stream<Value> stream = parser.query(query, manager);
 
-        Mockito.verify(manager).get(captor.capture());
-        List<Object> value = captor.getValue();
+        verify(manager, Mockito.never()).get(Mockito.any(Object.class));
+        stream.collect(Collectors.toList());
+        verify(manager).get(captor.capture());
+        List<Object> value = captor.getAllValues();
 
         assertEquals(1, value.size());
         MatcherAssert.assertThat(value, Matchers.contains(12L));
@@ -72,12 +79,14 @@ class GetQueryParserTest {
     @ValueSource(strings = {"get {\"Ana\" : \"Sister\", \"Maria\" : \"Mother\"}"})
     public void shouldReturnParserQuery3(String query) {
 
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
 
-        parser.query(query, manager);
+        final Stream<Value> stream = parser.query(query, manager);
 
-        Mockito.verify(manager).get(captor.capture());
-        List<Object> value = captor.getValue();
+        verify(manager, Mockito.never()).get(Mockito.any(Object.class));
+        stream.collect(Collectors.toList());
+        verify(manager).get(captor.capture());
+        List<Object> value = captor.getAllValues();
 
         assertEquals(1, value.size());
         MatcherAssert.assertThat(value, Matchers.contains("{\"Ana\":\"Sister\",\"Maria\":\"Mother\"}"));
@@ -86,12 +95,14 @@ class GetQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get convert(\"2018-01-10\", java.time.LocalDate)"})
     public void shouldReturnParserQuery4(String query) {
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
 
-        parser.query(query, manager);
+        final Stream<Value> stream = parser.query(query, manager);
 
-        Mockito.verify(manager).get(captor.capture());
-        List<Object> value = captor.getValue();
+        verify(manager, Mockito.never()).get(Mockito.any(Object.class));
+        stream.collect(Collectors.toList());
+        verify(manager).get(captor.capture());
+        List<Object> value = captor.getAllValues();
 
         assertEquals(1, value.size());
 
@@ -110,20 +121,20 @@ class GetQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        assertThrows(QueryException.class, prepare::getResultList);
+        assertThrows(QueryException.class, prepare::getResult);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get @id"})
     public void shouldExecutePrepareStatement(String query) {
 
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
-        prepare.getResultList();
+        prepare.getResult().collect(Collectors.toList());
 
-        Mockito.verify(manager).get(captor.capture());
-        List<Object> value = captor.getValue();
+        verify(manager).get(captor.capture());
+        List<Object> value = captor.getAllValues();
 
         assertEquals(1, value.size());
 
@@ -134,14 +145,14 @@ class GetQueryParserTest {
     @ValueSource(strings = {"get @id, @id2"})
     public void shouldExecutePrepareStatement2(String query) {
 
-        ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         prepare.bind("id2", 11);
-        prepare.getResultList();
-
-        Mockito.verify(manager).get(captor.capture());
-        List<Object> value = captor.getValue();
+        final Stream<Value> stream = prepare.getResult();
+        stream.collect(Collectors.toList());
+        verify(manager, Mockito.times(2)).get(captor.capture());
+        List<Object> value = captor.getAllValues();
 
         assertEquals(2, value.size());
 

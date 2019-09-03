@@ -14,17 +14,6 @@
  */
 package org.jnosql.artemis.column.query;
 
-import org.hamcrest.Matchers;
-import org.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Param;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.Query;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.jnosql.artemis.model.Person;
-import org.jnosql.artemis.model.Vendor;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
@@ -32,6 +21,17 @@ import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.Param;
+import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.Query;
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.hamcrest.Matchers;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.model.Person;
+import org.jnosql.artemis.model.Vendor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,17 +50,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static jakarta.nosql.Condition.AND;
+import static jakarta.nosql.Condition.BETWEEN;
+import static jakarta.nosql.Condition.EQUALS;
+import static jakarta.nosql.Condition.GREATER_THAN;
+import static jakarta.nosql.Condition.IN;
+import static jakarta.nosql.Condition.LESSER_EQUALS_THAN;
+import static jakarta.nosql.Condition.LESSER_THAN;
+import static jakarta.nosql.Condition.LIKE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static  jakarta.nosql.Condition.AND;
-import static  jakarta.nosql.Condition.BETWEEN;
-import static  jakarta.nosql.Condition.EQUALS;
-import static  jakarta.nosql.Condition.GREATER_THAN;
-import static  jakarta.nosql.Condition.IN;
-import static  jakarta.nosql.Condition.LESSER_EQUALS_THAN;
-import static  jakarta.nosql.Condition.LESSER_THAN;
-import static  jakarta.nosql.Condition.LIKE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -190,7 +190,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         List<Person> persons = personRepository.findByNameAndAge("name", 20);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
@@ -205,7 +205,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Set<Person> persons = personRepository.findByAgeAndName(20, "name");
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
@@ -220,7 +220,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Stream<Person> persons = personRepository.findByNameAndAgeOrderByName("name", 20);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
@@ -235,7 +235,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         Queue<Person> persons = personRepository.findByNameAndAgeOrderByAge("name", 20);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
@@ -308,7 +308,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         List<Person> persons = personRepository.findAll();
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
@@ -341,7 +341,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByNameAndAgeGreaterThanEqual("Ada", 33);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
@@ -370,7 +370,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeGreaterThan(33);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
@@ -389,7 +389,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeLessThanEqual(33);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
@@ -408,7 +408,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeLessThan(33);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
@@ -427,7 +427,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByAgeBetween(10,15);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
@@ -449,7 +449,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByNameLike("Ada");
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
@@ -469,7 +469,7 @@ public class ColumnRepositoryProxyTest {
         vendor.setPrefixes(Collections.singleton("prefix"));
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(vendor));
+                .thenReturn(Stream.of(vendor));
 
         vendorRepository.findByPrefixes("prefix");
 
@@ -489,7 +489,7 @@ public class ColumnRepositoryProxyTest {
         vendor.setPrefixes(Collections.singleton("prefix"));
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(vendor));
+                .thenReturn(Stream.of(vendor));
 
         vendorRepository.findByPrefixesIn(singletonList("prefix"));
 
@@ -509,7 +509,7 @@ public class ColumnRepositoryProxyTest {
                 .withAge(20).withName("Ada").build();
 
         when(template.select(any(ColumnQuery.class)))
-                .thenReturn(singletonList(ada));
+                .thenReturn(Stream.of(ada));
 
         personRepository.findByAge("120");
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);

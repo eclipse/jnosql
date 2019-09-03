@@ -35,12 +35,13 @@ final class DocumentPage<T> implements Page<T> {
 
     private final DocumentTemplate template;
 
-    private final List<T> entities;
+    private final Stream<T> entities;
 
     private final DocumentQueryPagination query;
 
+    private List<T> entitiesCache;
 
-    DocumentPage(DocumentTemplate template, List<T> entities, DocumentQueryPagination query) {
+    DocumentPage(DocumentTemplate template, Stream<T> entities, DocumentQueryPagination query) {
         this.template = template;
         this.entities = entities;
         this.query = query;
@@ -57,19 +58,28 @@ final class DocumentPage<T> implements Page<T> {
     }
 
     @Override
-    public List<T> getContent() {
-        return entities;
+    public Stream<T> getContent() {
+        return getEntities();
     }
 
     @Override
     public <C extends Collection<T>> C getContent(Supplier<C> collectionFactory) {
         Objects.requireNonNull(collectionFactory, "collectionFactory is required");
-        return get().collect(Collectors.toCollection(collectionFactory));
+        return getEntities().collect(Collectors.toCollection(collectionFactory));
     }
 
     @Override
     public Stream<T> get() {
-        return entities.stream();
+        return getEntities();
+    }
+
+    private Stream<T> getEntities() {
+        if (Objects.isNull(entitiesCache)) {
+            synchronized (this) {
+                this.entitiesCache = entities.collect(Collectors.toList());
+            }
+        }
+        return entitiesCache.stream();
     }
 
     @Override

@@ -35,14 +35,15 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
@@ -189,37 +190,31 @@ public class DefaultKeyValueTemplateTest {
     }
 
     @Test
+    @MockitoSettings(strictness = Strictness.LENIENT)
     public void shouldReturnErrorWhenQueryIsNull() {
         assertThrows(NullPointerException.class, () -> subject.query(null));
-
-        assertThrows(NullPointerException.class, () -> {
-            when(manager.query("get id"))
-                    .thenReturn(singletonList(Value.of("value")));
-            subject.query("get id", null);
-        });
-
         assertThrows(NullPointerException.class, () -> subject.query(null, String.class));
     }
 
     @Test
     public void shouldExecuteClassNotClass() {
-        subject.query("remove id", null);
+        subject.query("remove id");
         Mockito.verify(manager).query("remove id");
     }
 
     @Test
     public void shouldExecuteQuery() {
         when(manager.query("get id"))
-                .thenReturn(singletonList(Value.of("12")));
+                .thenReturn(Stream.of(Value.of("12")));
 
-        List<Integer> ids = subject.query("get id", Integer.class);
+        List<Integer> ids = subject.query("get id", Integer.class).collect(toList());
         MatcherAssert.assertThat(ids, Matchers.contains(12));
     }
 
     @Test
     public void shouldReturnSingleResult() {
         when(manager.query("get id"))
-                .thenReturn(singletonList(Value.of("12")));
+                .thenReturn(Stream.of(Value.of("12")));
 
         Optional<Integer> id = subject.getSingleResult("get id", Integer.class);
         assertTrue(id.isPresent());
@@ -229,32 +224,28 @@ public class DefaultKeyValueTemplateTest {
     public void shouldReturnSingleResult2() {
 
         when(manager.query("get id2"))
-                .thenReturn(Collections.emptyList());
-
+                .thenReturn(Stream.empty());
 
         assertFalse(subject.getSingleResult("get id2", Integer.class).isPresent());
     }
 
-
     @Test
     public void shouldReturnSingleResult3() {
         when(manager.query("get id3"))
-                .thenReturn(Arrays.asList(Value.of("12"), Value.of("15")));
-
+                .thenReturn(Stream.of(Value.of("12"), Value.of("15")));
         assertThrows(NonUniqueResultException.class, () -> subject.getSingleResult("get id3", Integer.class));
     }
-
 
     @Test
     public void shouldExecutePrepare() {
         KeyValuePreparedStatement prepare = Mockito.mock(KeyValuePreparedStatement.class);
-        when(prepare.getResultList()).thenReturn(singletonList(Value.of("12")));
+        when(prepare.getResult()).thenReturn(Stream.of(Value.of("12")));
         when(prepare.getSingleResult()).thenReturn(Optional.of(Value.of("12")));
         when(manager.prepare("get @id")).thenReturn(prepare);
 
         PreparedStatement statement = subject.prepare("get @id", Integer.class);
         statement.bind("id", 12);
-        List<Integer> resultList = statement.getResultList();
+        List<Integer> resultList = statement.<Integer>getResult().collect(toList());
         MatcherAssert.assertThat(resultList, Matchers.contains(12));
         Optional<Object> singleResult = statement.getSingleResult();
         assertTrue(singleResult.isPresent());

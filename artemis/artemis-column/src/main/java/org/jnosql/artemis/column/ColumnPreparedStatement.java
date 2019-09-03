@@ -14,18 +14,16 @@
  */
 package org.jnosql.artemis.column;
 
-import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 final class ColumnPreparedStatement implements PreparedStatement {
 
     private final jakarta.nosql.column.ColumnPreparedStatement preparedStatement;
-
 
     private final ColumnEntityConverter converter;
 
@@ -42,9 +40,8 @@ final class ColumnPreparedStatement implements PreparedStatement {
     }
 
     @Override
-    public <T> List<T> getResultList() {
-        return preparedStatement.getResultList().stream().map(c -> (T) converter.toEntity(c))
-                .collect(Collectors.toList());
+    public <T> Stream<T> getResult() {
+        return preparedStatement.getResult().map(c -> (T) converter.toEntity(c));
     }
 
     @Override

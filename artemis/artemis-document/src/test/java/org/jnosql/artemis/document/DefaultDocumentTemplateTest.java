@@ -42,15 +42,12 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentDeleteQuery.delete;
 import static jakarta.nosql.document.DocumentQuery.select;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -281,7 +278,7 @@ public class DefaultDocumentTemplateTest {
 
         Mockito.when(managerMock
                 .select(any(DocumentQuery.class)))
-                .thenReturn(singletonList(documentEntity));
+                .thenReturn(Stream.of(documentEntity));
 
         DocumentQuery query = select().from("person").build();
 
@@ -293,7 +290,7 @@ public class DefaultDocumentTemplateTest {
     public void shouldReturnSingleResultIsEmpty() {
         Mockito.when(managerMock
                 .select(any(DocumentQuery.class)))
-                .thenReturn(emptyList());
+                .thenReturn(Stream.empty());
 
         DocumentQuery query = select().from("person").build();
 
@@ -309,7 +306,7 @@ public class DefaultDocumentTemplateTest {
 
             Mockito.when(managerMock
                     .select(any(DocumentQuery.class)))
-                    .thenReturn(Arrays.asList(documentEntity, documentEntity));
+                    .thenReturn(Stream.of(documentEntity, documentEntity));
 
             DocumentQuery query = select().from("person").build();
 
@@ -360,7 +357,7 @@ public class DefaultDocumentTemplateTest {
 
     @Test
     public void shouldExecuteQuery() {
-        List<Person> people = subject.query("select * from Person");
+        Stream<Person> people = subject.query("select * from Person");
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
@@ -369,7 +366,7 @@ public class DefaultDocumentTemplateTest {
 
     @Test
     public void shouldConvertEntity() {
-        List<Movie> movies = subject.query("select * from Movie");
+        Stream<Movie> movies = subject.query("select * from Movie");
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
@@ -380,7 +377,7 @@ public class DefaultDocumentTemplateTest {
     public void shouldPreparedStatement() {
         PreparedStatement preparedStatement = subject.prepare("select * from Person where name = @name");
         preparedStatement.bind("name", "Ada");
-        preparedStatement.getResultList();
+        preparedStatement.getResult();
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();

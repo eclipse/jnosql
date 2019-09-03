@@ -40,6 +40,7 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentCondition.eq;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -495,7 +496,7 @@ public class SelectQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
-        assertThrows(QueryException.class, prepare::getResultList);
+        assertThrows(QueryException.class, prepare::getResult);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -505,7 +506,7 @@ public class SelectQueryParserTest {
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
         prepare.bind("age", 12);
-        prepare.getResultList();
+        prepare.getResult();
         Mockito.verify(documentCollection).select(captor.capture());
         DocumentQuery documentQuery = captor.getValue();
         DocumentCondition documentCondition = documentQuery.getCondition().get();
@@ -532,7 +533,7 @@ public class SelectQueryParserTest {
     public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
 
         DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResultList(s -> {
+        assertThrows(QueryException.class, () -> prepare.getResult(s -> {
         }));
     }
 
@@ -543,9 +544,9 @@ public class SelectQueryParserTest {
 
         DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
         prepare.bind("age", 12);
-        Consumer<List<DocumentEntity>> callBack = s -> {
+        Consumer<Stream<DocumentEntity>> callBack = s -> {
         };
-        prepare.getResultList(callBack);
+        prepare.getResult(callBack);
         Mockito.verify(documentCollectionAsync).select(captor.capture(), Mockito.eq(callBack));
         DocumentQuery documentQuery = captor.getValue();
         DocumentCondition documentCondition = documentQuery.getCondition().get();
@@ -559,7 +560,7 @@ public class SelectQueryParserTest {
     @ValueSource(strings = {"select  * from God where name = \"Ada\" and age = 20"})
     public void shouldReturnParserQueryAsync(String query) {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        Consumer<List<DocumentEntity>> callBack = s -> {
+        Consumer<Stream<DocumentEntity>> callBack = s -> {
         };
         parser.queryAsync(query, documentCollectionAsync, callBack, observer);
         Mockito.verify(documentCollectionAsync).select(captor.capture(), Mockito.eq(callBack));

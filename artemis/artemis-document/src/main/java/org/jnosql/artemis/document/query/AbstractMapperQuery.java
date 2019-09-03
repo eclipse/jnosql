@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.document.query;
 
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import org.jnosql.artemis.util.ConverterUtil;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCondition;
 
 import java.util.List;
 import java.util.stream.StreamSupport;

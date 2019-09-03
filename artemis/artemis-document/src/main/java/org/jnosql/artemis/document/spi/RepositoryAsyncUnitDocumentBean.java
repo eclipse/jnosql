@@ -14,12 +14,12 @@
  */
 package org.jnosql.artemis.document.spi;
 
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
 import jakarta.nosql.mapping.RepositoryAsync;
 import jakarta.nosql.mapping.document.DocumentRepositoryAsyncProducer;
 import org.jnosql.artemis.spi.AbstractBean;
 import org.jnosql.artemis.util.RepositoryUnit;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
-import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;

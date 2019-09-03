@@ -14,17 +14,17 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.Property;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
+import jakarta.nosql.Value;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.EntityNotFoundException;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
-import jakarta.nosql.Value;
+import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Property;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -37,9 +37,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
-import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
 
 abstract class AbstractGraphConverter implements GraphConverter {
 
@@ -140,7 +140,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     @Override
     public Edge toEdge(EdgeEntity edge) {
         requireNonNull(edge, "vertex is required");
-        Object id = edge.getId().get();
+        Object id = edge.getId();
         Iterator<Edge> edges = getGraph().edges(id);
         if (edges.hasNext()) {
             return edges.next();

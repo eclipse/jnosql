@@ -17,7 +17,6 @@
 package org.jnosql.diana.keyvalue.query;
 
 
-
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
@@ -27,12 +26,12 @@ import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatement {
 
@@ -80,20 +79,20 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
     }
 
     @Override
-    public List<Value> getResultList() {
+    public Stream<Value> getResult() {
         if (!paramsLeft.isEmpty()) {
             throw new QueryException("Check all the parameters before execute the query, params left: "
                     + paramsLeft);
         }
         switch (type) {
             case GET:
-                Iterable<Value> values = manager.get(keys.stream().map(Value::get).collect(Collectors.toList()));
-                List<Value> target = new ArrayList<>();
-                values.forEach(target::add);
-                return target;
+                return keys.stream().map(Value::get)
+                        .map(manager::get)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get);
             case DEL:
                 manager.remove(keys.stream().map(Value::get).collect(Collectors.toList()));
-                return Collections.emptyList();
+                return Stream.empty();
             case PUT:
                 KeyValueEntity entity = KeyValueEntity.of(key.get(), value.get());
                 if (Objects.isNull(ttl)) {
@@ -101,7 +100,7 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
                 } else {
                     manager.put(entity, ttl);
                 }
-                return Collections.emptyList();
+                return Stream.empty();
             default:
                 throw new UnsupportedOperationException("there is not support to operation type: " + type);
         }
@@ -109,12 +108,15 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
 
     @Override
     public Optional<Value> getSingleResult() {
-        List<Value> entities = getResultList();
-        if (entities.isEmpty()) {
+        Stream<Value> entities = getResult();
+        final Iterator<Value> iterator = entities.iterator();
+
+        if (!iterator.hasNext()) {
             return Optional.empty();
         }
-        if (entities.size() == 1) {
-            return Optional.of(entities.get(0));
+        final Value value = iterator.next();
+        if (!iterator.hasNext()) {
+            return Optional.of(value);
         }
 
         throw new NonUniqueResultException("The select returns more than one entity, select: " + query);

@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -53,15 +54,14 @@ public final class SelectQueryParser implements SelectQueryConverter {
         this.cache = new CacheQuery<>(this::getDocumentQuery);
     }
 
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
+    Stream<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
         DocumentQuery documentQuery = cache.get(query, observer);
         return collectionManager.select(documentQuery);
     }
 
-    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<List<DocumentEntity>> callBack,
+    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<Stream<DocumentEntity>> callBack,
                     DocumentObserverParser observer) {
-
         DocumentQuery documentQuery = cache.get(query, observer);
         collectionManager.select(documentQuery, callBack);
     }

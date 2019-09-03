@@ -14,6 +14,10 @@
  */
 package org.jnosql.artemis.column;
 
+import jakarta.nosql.TypeReference;
+import jakarta.nosql.Value;
+import jakarta.nosql.column.Column;
+import jakarta.nosql.column.ColumnEntity;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Actor;
 import org.jnosql.artemis.model.Address;
@@ -29,10 +33,6 @@ import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.model.Vendor;
 import org.jnosql.artemis.model.Worker;
 import org.jnosql.artemis.model.Zipcode;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -15,12 +15,12 @@
 package org.jnosql.artemis.document.spi;
 
 
-import org.jnosql.artemis.DatabaseQualifier;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.document.DocumentTemplateAsyncProducer;
+import org.jnosql.artemis.DatabaseQualifier;
 import org.jnosql.artemis.spi.AbstractBean;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;

@@ -15,26 +15,25 @@
 package org.jnosql.artemis.keyvalue;
 
 
-import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Value;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValueEntity;
+import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 
 import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 /**
  * This class provides a skeletal implementation of the {@link KeyValueTemplate} interface,
@@ -109,24 +108,26 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     }
 
     @Override
-    public <T> List<T> query(String query, Class<T> entityClass) {
+    public <T> Stream<T> query(String query, Class<T> entityClass) {
         requireNonNull(query, "query is required");
-        List<Value> values = getManager().query(query);
-        if (!values.isEmpty()) {
-            requireNonNull(entityClass, "entityClass is required");
-            return values.stream().map(v -> v.get(entityClass)).collect(toList());
-        }
-        return Collections.emptyList();
+        requireNonNull(entityClass, "entityClass is required");
+        Stream<Value> values = getManager().query(query);
+            return values.map(v -> v.get(entityClass));
     }
 
     @Override
     public <T> Optional<T> getSingleResult(String query, Class<T> entityClass) {
-        List<T> result = query(query, entityClass);
-        if (result.isEmpty()) {
+        requireNonNull(query, "query is required");
+        requireNonNull(entityClass, "entityClass is required");
+
+        Stream<T> entities = query(query, entityClass);
+        final Iterator<T> iterator = entities.iterator();
+        if (!iterator.hasNext()) {
             return Optional.empty();
         }
-        if (result.size() == 1) {
-            return Optional.ofNullable(result.get(0));
+        final T entity = iterator.next();
+        if (!iterator.hasNext()) {
+            return Optional.of(entity);
         }
         throw new NonUniqueResultException("No Unique result found to the query: " + query);
     }

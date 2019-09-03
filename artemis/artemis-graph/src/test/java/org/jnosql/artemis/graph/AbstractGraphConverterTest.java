@@ -198,7 +198,7 @@ abstract class AbstractGraphConverterTest {
         assertNotNull(edgeEntity);
         assertEquals("watch", edgeEntity.getLabel());
         assertNotNull(edgeEntity.getId());
-        assertEquals(edge.id(), edgeEntity.getId().get());
+        assertEquals(edge.id(), edgeEntity.getId());
 
         assertEquals("Ada", ada.getName());
         assertEquals(22, ada.getAge());

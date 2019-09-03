@@ -34,8 +34,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-
-import static java.util.Collections.singletonList;
+import java.util.stream.Stream;
 
 final class InsertQueryParser extends ConditionQueryParser {
 
@@ -45,7 +44,7 @@ final class InsertQueryParser extends ConditionQueryParser {
         this.insertQueryProvider = ServiceLoaderProvider.get(InsertQueryProvider.class);
     }
 
-    List<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
+    Stream<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
         InsertQuery insertQuery = insertQueryProvider.apply(query);
 
@@ -59,14 +58,14 @@ final class InsertQueryParser extends ConditionQueryParser {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
         if (ttl.isPresent()) {
-            return singletonList(collectionManager.insert(entity, ttl.get()));
+            return Stream.of(collectionManager.insert(entity, ttl.get()));
         } else {
-            return singletonList(collectionManager.insert(entity));
+            return Stream.of(collectionManager.insert(entity));
         }
     }
 
     void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
-                    Consumer<List<DocumentEntity>> callBack, DocumentObserverParser observer) {
+                    Consumer<Stream<DocumentEntity>> callBack, DocumentObserverParser observer) {
         InsertQuery insertQuery = insertQueryProvider.apply(query);
 
         String collection = observer.fireEntity(insertQuery.getEntity());
@@ -79,9 +78,9 @@ final class InsertQueryParser extends ConditionQueryParser {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
         if (ttl.isPresent()) {
-            collectionManager.insert(entity, ttl.get(), c -> callBack.accept(singletonList(c)));
+            collectionManager.insert(entity, ttl.get(), c -> callBack.accept(Stream.of(c)));
         } else {
-            collectionManager.insert(entity, c -> callBack.accept(singletonList(c)));
+            collectionManager.insert(entity, c -> callBack.accept(Stream.of(c)));
         }
     }
 

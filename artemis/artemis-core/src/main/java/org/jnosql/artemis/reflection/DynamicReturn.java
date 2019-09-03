@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -42,14 +43,13 @@ import static java.util.Objects.requireNonNull;
  */
 public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
-
     /**
      * A wrapper function that convert a result as a list to a result as optional
      *
      * @param method the method source
      * @return the function that does this conversion
      */
-    public static Function<Supplier<List<?>>, Supplier<Optional<?>>> toSingleResult(final Method method) {
+    public static Function<Supplier<Stream<?>>, Supplier<Optional<?>>> toSingleResult(final Method method) {
         return new SupplierConverter(method);
     }
 
@@ -96,14 +96,12 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         return sorts;
     }
 
-
     @Override
     public Object execute() {
         return DynamicReturnConverter.INSTANCE.convert(this);
     }
 
-
-    private static class SupplierConverter implements Function<Supplier<List<?>>, Supplier<Optional<?>>> {
+    private static class SupplierConverter implements Function<Supplier<Stream<?>>, Supplier<Optional<?>>> {
 
         private final Method method;
 
@@ -112,14 +110,16 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         @Override
-        public Supplier<Optional<?>> apply(Supplier<List<?>> l) {
+        public Supplier<Optional<?>> apply(Supplier<Stream<?>> l) {
             return () -> {
-                List<?> entities = l.get();
-                if (entities.isEmpty()) {
+                Stream<?> entities = l.get();
+                final Iterator<?> iterator = entities.iterator();
+                if (!iterator.hasNext()) {
                     return Optional.empty();
                 }
-                if (entities.size() == 1) {
-                    return Optional.ofNullable(entities.get(0));
+                final Object entity = iterator.next();
+                if (!iterator.hasNext()) {
+                    return Optional.ofNullable(entity);
                 }
                 throw new NonUniqueResultException("No unique result to the method: " + method);
             };
@@ -133,29 +133,29 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     private final Supplier<Optional<T>> singleResult;
 
-    private final Supplier<List<T>> list;
+    private final Supplier<Stream<T>> result;
 
     private final Pagination pagination;
 
     private final Function<Pagination, Optional<T>> singleResultPagination;
 
-    private final Function<Pagination, List<T>> listPagination;
+    private final Function<Pagination, Stream<T>> streamPagination;
 
     private final Function<Pagination, Page<T>> page;
 
     private DynamicReturn(Class<T> classSource, Method methodSource,
                           Supplier<Optional<T>> singleResult,
-                          Supplier<List<T>> list, Pagination pagination,
+                          Supplier<Stream<T>> result, Pagination pagination,
                           Function<Pagination, Optional<T>> singleResultPagination,
-                          Function<Pagination, List<T>> listPagination,
+                          Function<Pagination, Stream<T>> streamPagination,
                           Function<Pagination, Page<T>> page) {
         this.classSource = classSource;
         this.methodSource = methodSource;
         this.singleResult = singleResult;
-        this.list = list;
+        this.result = result;
         this.pagination = pagination;
         this.singleResultPagination = singleResultPagination;
-        this.listPagination = listPagination;
+        this.streamPagination = streamPagination;
         this.page = page;
     }
 
@@ -191,8 +191,8 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      *
      * @return the result as {@link List}
      */
-    List<T> list() {
-        return list.get();
+    Stream<T> result() {
+        return result.get();
     }
 
     /**
@@ -212,8 +212,8 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     /**
      * @return a list result using pagination
      */
-    List<T> listPagination() {
-        return listPagination.apply(pagination);
+    Stream<T> streamPagination() {
+        return streamPagination.apply(pagination);
     }
 
     /**
@@ -251,13 +251,13 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
         private Supplier<Optional<T>> singleResult;
 
-        private Supplier<List<T>> list;
+        private Supplier<Stream<T>> result;
 
         private Pagination pagination;
 
         private Function<Pagination, Optional<T>> singleResultPagination;
 
-        private Function<Pagination, List<T>> listPagination;
+        private Function<Pagination, Stream<T>> streamPagination;
 
         private Function<Pagination, Page<T>> page;
 
@@ -292,11 +292,11 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         /**
-         * @param list the list
+         * @param result the list
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withList(Supplier<List<T>> list) {
-            this.list = list;
+        public DefaultDynamicReturnBuilder withResult(Supplier<Stream<T>> result) {
+            this.result = result;
             return this;
         }
 
@@ -322,8 +322,8 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param listPagination the list pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withListPagination(Function<Pagination, List<T>> listPagination) {
-            this.listPagination = listPagination;
+        public DefaultDynamicReturnBuilder withStreamPagination(Function<Pagination, Stream<T>> listPagination) {
+            this.streamPagination = listPagination;
             return this;
         }
 
@@ -346,16 +346,16 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
             requireNonNull(classSource, "the class Source is required");
             requireNonNull(methodSource, "the method Source is required");
             requireNonNull(singleResult, "the single result supplier is required");
-            requireNonNull(list, "the list result supplier is required");
+            requireNonNull(result, "the result supplier is required");
 
             if (pagination != null) {
                 requireNonNull(singleResultPagination, "singleResultPagination is required when pagination is not null");
-                requireNonNull(listPagination, "listPagination is required when pagination is not null");
+                requireNonNull(streamPagination, "listPagination is required when pagination is not null");
                 requireNonNull(page, "page is required when pagination is not null");
             }
 
-            return new DynamicReturn(classSource, methodSource, singleResult, list,
-                    pagination, singleResultPagination, listPagination, page);
+            return new DynamicReturn(classSource, methodSource, singleResult, result,
+                    pagination, singleResultPagination, streamPagination, page);
         }
     }
 

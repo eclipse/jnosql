@@ -15,11 +15,11 @@
 package org.jnosql.artemis.column;
 
 
-import jakarta.nosql.mapping.EntityPostPersit;
-import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.mapping.column.ColumnDeleteQueryExecute;
 import jakarta.nosql.mapping.column.ColumnEntityPostPersist;
 import jakarta.nosql.mapping.column.ColumnEntityPrePersist;

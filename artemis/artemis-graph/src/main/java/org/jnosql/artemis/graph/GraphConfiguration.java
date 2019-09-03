@@ -14,8 +14,8 @@
  */
 package org.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import jakarta.nosql.Settings;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 
 import java.util.function.Function;
 

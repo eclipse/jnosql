@@ -15,10 +15,10 @@
 package org.jnosql.artemis.column;
 
 
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;

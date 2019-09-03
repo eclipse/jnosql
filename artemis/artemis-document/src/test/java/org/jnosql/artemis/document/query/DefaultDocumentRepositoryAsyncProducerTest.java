@@ -14,11 +14,11 @@
  */
 package org.jnosql.artemis.document.query;
 
-import org.jnosql.artemis.CDIExtension;
-import org.jnosql.artemis.PersonRepositoryAsync;
+import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.mapping.document.DocumentRepositoryAsyncProducer;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
+import org.jnosql.artemis.CDIExtension;
+import org.jnosql.artemis.PersonRepositoryAsync;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;

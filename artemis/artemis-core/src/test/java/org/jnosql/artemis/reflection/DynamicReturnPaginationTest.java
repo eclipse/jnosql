@@ -46,7 +46,7 @@ import static org.mockito.Mockito.when;
 class DynamicReturnPaginationTest {
 
     @Mock
-    private Function<Pagination, List<Person>> listPagination;
+    private Function<Pagination, Stream<Person>> streamPagination;
 
     @Mock
     private Function<Pagination, Optional<Person>> singlePagination;
@@ -57,10 +57,9 @@ class DynamicReturnPaginationTest {
     @Test
     public void shouldReturnEmptyOptional() throws NoSuchMethodException {
 
-
         Method method = getMethod(PersonRepository.class, "getOptional");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
 
         Pagination pagination = getPagination();
 
@@ -68,10 +67,10 @@ class DynamicReturnPaginationTest {
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page).build();
         Object execute = dynamicReturn.execute();
@@ -81,7 +80,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(optional.isPresent());
 
         Mockito.verify(singlePagination).apply(pagination);
-        Mockito.verify(listPagination, Mockito.never()).apply(pagination);
+        Mockito.verify(streamPagination, Mockito.never()).apply(pagination);
     }
 
 
@@ -89,18 +88,18 @@ class DynamicReturnPaginationTest {
     public void shouldReturnOptional() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getOptional");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
 
         when(singlePagination.apply(pagination)).thenReturn(Optional.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page).build();
 
@@ -110,26 +109,25 @@ class DynamicReturnPaginationTest {
         Assertions.assertTrue(optional.isPresent());
         Assertions.assertEquals(new Person("Ada"), optional.get());
         Mockito.verify(singlePagination).apply(pagination);
-        Mockito.verify(listPagination, Mockito.never()).apply(pagination);
+        Mockito.verify(streamPagination, Mockito.never()).apply(pagination);
     }
 
 
     @Test
     public void shouldReturnAnInstance() throws NoSuchMethodException {
         Method method = getMethod(PersonRepository.class, "getInstance");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
 
         Pagination pagination = getPagination();
         when(singlePagination.apply(pagination)).thenReturn(Optional.of(new Person("Ada")));
 
-
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page).build();
 
@@ -138,27 +136,25 @@ class DynamicReturnPaginationTest {
         Person person = (Person) execute;
         Assertions.assertEquals(new Person("Ada"), person);
         Mockito.verify(singlePagination).apply(pagination);
-        Mockito.verify(listPagination, Mockito.never()).apply(pagination);
+        Mockito.verify(streamPagination, Mockito.never()).apply(pagination);
     }
-
 
     @Test
     public void shouldReturnNull() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getInstance");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
 
         Pagination pagination = getPagination();
         when(singlePagination.apply(pagination)).thenReturn(Optional.empty());
 
-
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -167,25 +163,24 @@ class DynamicReturnPaginationTest {
         Assertions.assertNull(execute);
 
         Mockito.verify(singlePagination).apply(pagination);
-        Mockito.verify(listPagination, Mockito.never()).apply(pagination);
+        Mockito.verify(streamPagination, Mockito.never()).apply(pagination);
     }
-
 
     @Test
     public void shouldReturnList() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getList");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -196,24 +191,24 @@ class DynamicReturnPaginationTest {
         Assertions.assertEquals(new Person("Ada"), persons.get(0));
 
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
     public void shouldReturnIterable() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getIterable");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -223,25 +218,24 @@ class DynamicReturnPaginationTest {
         Iterable<Person> persons = (List) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
-
 
     @Test
     public void shouldReturnCollection() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getCollection");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -251,24 +245,24 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
     public void shouldReturnSet() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getSet");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -278,24 +272,24 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
     public void shouldReturnQueue() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getQueue");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -305,7 +299,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
 
@@ -313,17 +307,17 @@ class DynamicReturnPaginationTest {
     public void shouldReturnStream() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getStream");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -332,24 +326,24 @@ class DynamicReturnPaginationTest {
         Stream<Person> persons = (Stream) execute;
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
     public void shouldReturnSortedSet() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getSortedSet");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -359,24 +353,24 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
     public void shouldReturnNavigableSet() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getNavigableSet");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -386,7 +380,7 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
 
@@ -394,17 +388,17 @@ class DynamicReturnPaginationTest {
     public void shouldReturnDeque() throws NoSuchMethodException {
 
         Method method = getMethod(PersonRepository.class, "getDeque");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
-        when(listPagination.apply(pagination)).thenReturn(Collections.singletonList(new Person("Ada")));
+        when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
@@ -414,33 +408,30 @@ class DynamicReturnPaginationTest {
         Assertions.assertFalse(persons.isEmpty());
         Assertions.assertEquals(new Person("Ada"), persons.iterator().next());
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination).apply(pagination);
+        Mockito.verify(streamPagination).apply(pagination);
     }
 
     @Test
     public void shouldReturnErrorWhenExecutePage() throws NoSuchMethodException {
         Method method = getMethod(PersonRepository.class, "getPage");
-        Supplier<List<?>> list = Collections::emptyList;
-        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(list);
+        Supplier<Stream<?>> stream = Stream::empty;
+        Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
         Pagination pagination = getPagination();
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
-                .withMethodSource(method).withList(list)
+                .withMethodSource(method).withResult(stream)
                 .withSingleResult(singleResult)
                 .withPagination(pagination)
-                .withListPagination(listPagination)
+                .withStreamPagination(streamPagination)
                 .withSingleResultPagination(singlePagination)
                 .withPage(page)
                 .build();
 
         dynamicReturn.execute();
         Mockito.verify(singlePagination, Mockito.never()).apply(pagination);
-        Mockito.verify(listPagination, Mockito.never()).apply(pagination);
+        Mockito.verify(streamPagination, Mockito.never()).apply(pagination);
         Mockito.verify(page).apply(pagination);
     }
-
-
-
 
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
@@ -448,7 +439,6 @@ class DynamicReturnPaginationTest {
                 .findFirst().get();
 
     }
-
 
     private static class Person implements Comparable<Person> {
 
@@ -508,7 +498,6 @@ class DynamicReturnPaginationTest {
 
         Page<Person> getPage();
     }
-
 
     private long getrandomLong() {
         return current().nextLong(1, 10);

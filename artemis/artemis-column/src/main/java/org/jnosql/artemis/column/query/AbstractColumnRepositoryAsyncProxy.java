@@ -15,13 +15,13 @@
 package org.jnosql.artemis.column.query;
 
 
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.RepositoryAsync;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import org.jnosql.artemis.query.RepositoryType;
 import org.jnosql.artemis.reflection.DynamicAsyncQueryMethodReturn;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnQuery;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
