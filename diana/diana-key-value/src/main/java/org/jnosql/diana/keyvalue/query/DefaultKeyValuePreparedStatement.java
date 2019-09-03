@@ -114,9 +114,9 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
         if (!iterator.hasNext()) {
             return Optional.empty();
         }
-        final Value value = iterator.next();
+        final Value next = iterator.next();
         if (!iterator.hasNext()) {
-            return Optional.of(value);
+            return Optional.of(next);
         }
 
         throw new NonUniqueResultException("The select returns more than one entity, select: " + query);

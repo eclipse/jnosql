@@ -62,8 +62,8 @@ public final class AntlrInsertQueryProvider extends AbstractSupplier implements 
 
     private Condition getCondition(QueryParser.ChangeContext changeContext) {
         String name = changeContext.name().getText();
-        QueryValue<?> value = ValueConverter.get(changeContext.value());
-        return new DefaultCondition(name, Operator.EQUALS, value);
+        QueryValue<?> queryValue = ValueConverter.get(changeContext.value());
+        return new DefaultCondition(name, Operator.EQUALS, queryValue);
     }
 
     @Override

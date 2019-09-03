@@ -115,9 +115,9 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
         if (!iterator.hasNext()) {
             return Optional.empty();
         }
-        final ColumnEntity entity = iterator.next();
+        final ColumnEntity next = iterator.next();
         if (!iterator.hasNext()) {
-            return Optional.of(entity);
+            return Optional.of(next);
         }
 
         throw new NonUniqueResultException("The select returns more than one entity, select: " + query);
