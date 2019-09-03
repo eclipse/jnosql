@@ -21,16 +21,15 @@ import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteProvider;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 public final class DefaultDocumentDeleteProvider implements DocumentDeleteProvider {
 
     @Override
     public DocumentDelete apply(String[] documents) {
-        if (Stream.of(documents).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("there is null document in the query");
-        }
+        Stream.of(documents).forEach(d -> requireNonNull(d, "there is null document in the query"));
         return new DefaultDeleteQueryBuilder(Arrays.asList(documents));
     }
 

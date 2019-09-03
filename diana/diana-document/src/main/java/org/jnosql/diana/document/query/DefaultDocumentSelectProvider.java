@@ -21,8 +21,9 @@ import jakarta.nosql.document.DocumentQuery.DocumentSelectProvider;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * The default implementation of {@link DocumentSelectProvider}
@@ -31,9 +32,7 @@ public final class DefaultDocumentSelectProvider implements DocumentSelectProvid
 
     @Override
     public DocumentSelect apply(String[] documents) {
-        if(Stream.of(documents).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("there is null document in the query");
-        }
+        Stream.of(documents).forEach(d -> requireNonNull(d, "there is null document in the query"));
         return new DefaultSelectQueryBuilder(Arrays.asList(documents));
     }
 

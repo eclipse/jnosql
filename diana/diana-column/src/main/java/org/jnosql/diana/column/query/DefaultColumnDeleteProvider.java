@@ -19,19 +19,17 @@ package org.jnosql.diana.column.query;
 import jakarta.nosql.column.ColumnDeleteQuery.ColumnDelete;
 import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteProvider;
 
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.Objects.requireNonNull;
 
 public final class DefaultColumnDeleteProvider implements ColumnDeleteProvider {
 
     @Override
     public ColumnDelete apply(String[] columns) {
-        if(Stream.of(columns).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("There is null column");
-        }
+        Stream.of(columns).forEach(d -> requireNonNull(d, "there is null column in the query"));
         return new DefaultDeleteQueryBuilder(asList(columns));
     }
 
