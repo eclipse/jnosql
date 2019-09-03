@@ -122,9 +122,9 @@ final class DefaultColumnPreparedStatementAsync implements ColumnPreparedStateme
                 callBack.accept(Optional.empty());
                 return;
             }
-            final ColumnEntity entity = iterator.next();
+            final ColumnEntity next = iterator.next();
             if (!iterator.hasNext()) {
-                callBack.accept(Optional.of(entity));
+                callBack.accept(Optional.of(next));
                 return;
             }
             throw new NonUniqueResultException("The select returns more than one entity, select: " + query);

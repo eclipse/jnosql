@@ -123,9 +123,9 @@ final class DefaultDocumentPreparedStatementAsync implements DocumentPreparedSta
                 callBack.accept(Optional.empty());
                 return;
             }
-            final DocumentEntity entity = iterator.next();
+            final DocumentEntity next = iterator.next();
             if (!iterator.hasNext()) {
-                callBack.accept(Optional.of(entity));
+                callBack.accept(Optional.of(next));
                 return;
             }
             throw new NonUniqueResultException("The select returns more than one entity, select: " + query);

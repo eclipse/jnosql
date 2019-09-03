@@ -20,17 +20,15 @@ import jakarta.nosql.column.ColumnQuery.ColumnSelect;
 import jakarta.nosql.column.ColumnQuery.ColumnSelectProvider;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
+import static java.util.Objects.requireNonNull;
 
 public final class DefaultColumnSelectProvider implements ColumnSelectProvider {
     @Override
     public ColumnSelect apply(String[] columns) {
-        if(Stream.of(columns).anyMatch(Objects::isNull)) {
-            throw new NullPointerException("There is null column in the query");
-        }
+        Stream.of(columns).forEach(d -> requireNonNull(d, "there is null column in the query"));
         return new DefaultSelectQueryBuilder(Arrays.asList(columns));
     }
 
