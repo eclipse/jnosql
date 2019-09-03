@@ -317,7 +317,7 @@ public class DefaultSelectQueryBuilderTest {
         DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         String collection = "collection";
-        Stream<DocumentEntity> entities = select().from(collection).execute(manager);
+        Stream<DocumentEntity> entities = select().from(collection).getResult(manager);
         Mockito.verify(manager).select(queryCaptor.capture());
         checkQuery(queryCaptor, collection);
     }
@@ -327,7 +327,7 @@ public class DefaultSelectQueryBuilderTest {
         DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         String collection = "collection";
-        Optional<DocumentEntity> entities = select().from(collection).executeSingle(manager);
+        Optional<DocumentEntity> entities = select().from(collection).getSingleResult(manager);
         Mockito.verify(manager).singleResult(queryCaptor.capture());
         checkQuery(queryCaptor, collection);
     }
@@ -338,7 +338,7 @@ public class DefaultSelectQueryBuilderTest {
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         String collection = "collection";
         Consumer<Stream<DocumentEntity>> callback = System.out::println;
-        select().from(collection).execute(manager, callback);
+        select().from(collection).getResult(manager, callback);
         Mockito.verify(manager).select(queryCaptor.capture(), Mockito.eq(callback));
         checkQuery(queryCaptor, collection);
     }
@@ -349,7 +349,7 @@ public class DefaultSelectQueryBuilderTest {
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         String collection = "collection";
         Consumer<Optional<DocumentEntity>> callback = System.out::println;
-        select().from(collection).executeSingle(manager, callback);
+        select().from(collection).getSingleResult(manager, callback);
         Mockito.verify(manager).singleResult(queryCaptor.capture(), Mockito.eq(callback));
         checkQuery(queryCaptor, collection);
     }

@@ -140,19 +140,19 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete
     }
 
     @Override
-    public void execute(ColumnFamilyManager manager) {
+    public void delete(ColumnFamilyManager manager) {
         requireNonNull(manager, "manager is required");
         manager.delete(this.build());
     }
 
     @Override
-    public void execute(ColumnFamilyManagerAsync manager) {
+    public void delete(ColumnFamilyManagerAsync manager) {
         requireNonNull(manager, "manager is required");
         manager.delete(this.build());
     }
 
     @Override
-    public void execute(ColumnFamilyManagerAsync manager, Consumer<Void> callback) {
+    public void delete(ColumnFamilyManagerAsync manager, Consumer<Void> callback) {
         requireNonNull(manager, "manager is required");
         requireNonNull(callback, "callback is required");
         manager.delete(this.build(), callback);

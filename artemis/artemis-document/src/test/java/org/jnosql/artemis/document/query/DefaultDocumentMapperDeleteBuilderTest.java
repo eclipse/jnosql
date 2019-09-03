@@ -177,7 +177,7 @@ public class DefaultDocumentMapperDeleteBuilderTest {
         DocumentTemplate template = Mockito.mock(DocumentTemplate.class);
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
 
-        mapperBuilder.deleteFrom(Person.class).execute(template);
+        mapperBuilder.deleteFrom(Person.class).delete(template);
         Mockito.verify(template).delete(queryCaptor.capture());
         DocumentDeleteQuery query = queryCaptor.getValue();
         DocumentDeleteQuery queryExpected = delete().from("Person").build();
@@ -190,7 +190,7 @@ public class DefaultDocumentMapperDeleteBuilderTest {
         DocumentTemplateAsync template = Mockito.mock(DocumentTemplateAsync.class);
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
 
-        mapperBuilder.deleteFrom(Person.class).execute(template);
+        mapperBuilder.deleteFrom(Person.class).delete(template);
         Mockito.verify(template).delete(queryCaptor.capture());
         DocumentDeleteQuery query = queryCaptor.getValue();
         DocumentDeleteQuery queryExpected = delete().from("Person").build();
@@ -203,7 +203,7 @@ public class DefaultDocumentMapperDeleteBuilderTest {
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
 
         Consumer<Void> callback = System.out::println;
-        mapperBuilder.deleteFrom(Person.class).execute(template, callback);
+        mapperBuilder.deleteFrom(Person.class).delete(template, callback);
         Mockito.verify(template).delete(queryCaptor.capture(), Mockito.eq(callback));
         DocumentDeleteQuery query = queryCaptor.getValue();
         DocumentDeleteQuery queryExpected = delete().from("Person").build();

@@ -176,40 +176,40 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
     }
 
     @Override
-    public <T> Stream<T> execute(DocumentTemplate template) {
+    public <T> Stream<T> getResult(DocumentTemplate template) {
         Objects.requireNonNull(template, "template is required");
         return template.select(this.build());
     }
 
     @Override
-    public <T> Optional<T> executeSingle(DocumentTemplate template) {
+    public <T> Optional<T> getSingleResult(DocumentTemplate template) {
         Objects.requireNonNull(template, "template is required");
         return template.singleResult(this.build());
     }
 
     @Override
-    public <T> Stream<T> execute(DocumentTemplate template, Pagination pagination) {
+    public <T> Stream<T> getResult(DocumentTemplate template, Pagination pagination) {
         requireNonNull(template, "template is required");
         requireNonNull(pagination, "pagination is required");
         return template.select(this.build(pagination));
     }
 
     @Override
-    public <T> Optional<T> executeSingle(DocumentTemplate template, Pagination pagination) {
+    public <T> Optional<T> getSingleResult(DocumentTemplate template, Pagination pagination) {
         requireNonNull(template, "template is required");
         requireNonNull(pagination, "pagination is required");
         return template.singleResult(this.build(pagination));
     }
 
     @Override
-    public <T> void execute(DocumentTemplateAsync template, Consumer<Stream<T>> callback) {
+    public <T> void getResult(DocumentTemplateAsync template, Consumer<Stream<T>> callback) {
         Objects.requireNonNull(template, "template is required");
         Objects.requireNonNull(callback, "callback is required");
         template.select(this.build(), callback);
     }
 
     @Override
-    public <T> void executeSingle(DocumentTemplateAsync template, Consumer<Optional<T>> callback) {
+    public <T> void getSingleResult(DocumentTemplateAsync template, Consumer<Optional<T>> callback) {
         Objects.requireNonNull(template, "template is required");
         Objects.requireNonNull(callback, "callback is required");
         template.singleResult(this.build(), callback);

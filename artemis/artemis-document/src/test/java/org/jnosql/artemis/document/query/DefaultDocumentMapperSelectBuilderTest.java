@@ -217,7 +217,7 @@ public class DefaultDocumentMapperSelectBuilderTest {
     public void shouldExecuteQuery() {
         DocumentTemplate template = Mockito.mock(DocumentTemplate.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        Stream<Person> people = mapperBuilder.selectFrom(Person.class).execute(template);
+        Stream<Person> people = mapperBuilder.selectFrom(Person.class).getResult(template);
         Mockito.verify(template).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
         DocumentQuery queryExpected = select().from("Person").build();
@@ -228,7 +228,7 @@ public class DefaultDocumentMapperSelectBuilderTest {
     public void shouldExecuteSingleQuery() {
         DocumentTemplate template = Mockito.mock(DocumentTemplate.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        Optional<Person> person = mapperBuilder.selectFrom(Person.class).executeSingle(template);
+        Optional<Person> person = mapperBuilder.selectFrom(Person.class).getSingleResult(template);
         Mockito.verify(template).singleResult(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
         DocumentQuery queryExpected = select().from("Person").build();
@@ -240,7 +240,7 @@ public class DefaultDocumentMapperSelectBuilderTest {
         DocumentTemplateAsync template = Mockito.mock(DocumentTemplateAsync.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         Consumer<Stream<Person>> callback = System.out::println;
-        mapperBuilder.selectFrom(Person.class).execute(template, callback);
+        mapperBuilder.selectFrom(Person.class).getResult(template, callback);
         Mockito.verify(template).select(queryCaptor.capture(), eq(callback));
         DocumentQuery query = queryCaptor.getValue();
         DocumentQuery queryExpected = select().from("Person").build();
@@ -252,7 +252,7 @@ public class DefaultDocumentMapperSelectBuilderTest {
         DocumentTemplateAsync template = Mockito.mock(DocumentTemplateAsync.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         Consumer<Optional<Person>> callback = System.out::println;
-         mapperBuilder.selectFrom(Person.class).executeSingle(template, callback);
+         mapperBuilder.selectFrom(Person.class).getSingleResult(template, callback);
         Mockito.verify(template).singleResult(queryCaptor.capture(), eq(callback));
         DocumentQuery query = queryCaptor.getValue();
         DocumentQuery queryExpected = select().from("Person").build();
@@ -273,7 +273,7 @@ public class DefaultDocumentMapperSelectBuilderTest {
         Pagination pagination = Pagination.page(2).size(2);
         DocumentTemplate template = Mockito.mock(DocumentTemplate.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        mapperBuilder.selectFrom(Person.class).execute(template, pagination);
+        mapperBuilder.selectFrom(Person.class).getResult(template, pagination);
         Mockito.verify(template).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
         assertEquals(pagination.getLimit(), query.getLimit());
@@ -285,7 +285,7 @@ public class DefaultDocumentMapperSelectBuilderTest {
         Pagination pagination = Pagination.page(2).size(2);
         DocumentTemplate template = Mockito.mock(DocumentTemplate.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        mapperBuilder.selectFrom(Person.class).executeSingle(template, pagination);
+        mapperBuilder.selectFrom(Person.class).getSingleResult(template, pagination);
         Mockito.verify(template).singleResult(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
         assertEquals(pagination.getLimit(), query.getLimit());

@@ -180,40 +180,40 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
     }
 
     @Override
-    public <T> Stream<T> execute(ColumnTemplate template) {
+    public <T> Stream<T> getResult(ColumnTemplate template) {
         requireNonNull(template, "template is required");
         return template.select(this.build());
     }
 
     @Override
-    public <T> Optional<T> executeSingle(ColumnTemplate template) {
+    public <T> Optional<T> getSingleResult(ColumnTemplate template) {
         requireNonNull(template, "template is required");
         return template.singleResult(this.build());
     }
 
     @Override
-    public <T> Stream<T> execute(ColumnTemplate template, Pagination pagination) {
+    public <T> Stream<T> getResult(ColumnTemplate template, Pagination pagination) {
         requireNonNull(template, "template is required");
         requireNonNull(pagination, "pagination is required");
         return template.select(this.build(pagination));
     }
 
     @Override
-    public <T> Optional<T> executeSingle(ColumnTemplate template, Pagination pagination) {
+    public <T> Optional<T> getSingleResult(ColumnTemplate template, Pagination pagination) {
         requireNonNull(template, "template is required");
         requireNonNull(pagination, "pagination is required");
         return template.singleResult(this.build(pagination));
     }
 
     @Override
-    public <T> void execute(ColumnTemplateAsync template, Consumer<Stream<T>> callback) {
+    public <T> void getResult(ColumnTemplateAsync template, Consumer<Stream<T>> callback) {
         requireNonNull(template, "template is required");
         requireNonNull(callback, "callback is required");
         template.select(this.build(), callback);
     }
 
     @Override
-    public <T> void executeSingle(ColumnTemplateAsync template, Consumer<Optional<T>> callback) {
+    public <T> void getSingleResult(ColumnTemplateAsync template, Consumer<Optional<T>> callback) {
         requireNonNull(template, "template is required");
         requireNonNull(callback, "callback is required");
         template.singleResult(this.build(), callback);

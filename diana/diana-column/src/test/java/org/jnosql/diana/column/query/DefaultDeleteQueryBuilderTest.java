@@ -262,7 +262,7 @@ public class DefaultDeleteQueryBuilderTest {
         String columnFamily = "columnFamily";
         ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        delete().from(columnFamily).execute(manager);
+        delete().from(columnFamily).delete(manager);
         verify(manager).delete(queryCaptor.capture());
 
         ColumnDeleteQuery query = queryCaptor.getValue();
@@ -276,7 +276,7 @@ public class DefaultDeleteQueryBuilderTest {
         String columnFamily = "columnFamily";
         ColumnFamilyManagerAsync manager = mock(ColumnFamilyManagerAsync.class);
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        delete().from(columnFamily).execute(manager);
+        delete().from(columnFamily).delete(manager);
         verify(manager).delete(queryCaptor.capture());
 
         ColumnDeleteQuery query = queryCaptor.getValue();
@@ -291,7 +291,7 @@ public class DefaultDeleteQueryBuilderTest {
         ColumnFamilyManagerAsync manager = mock(ColumnFamilyManagerAsync.class);
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         Consumer<Void> callback = (v) ->{};
-        delete().from(columnFamily).execute(manager, callback);
+        delete().from(columnFamily).delete(manager, callback);
         verify(manager).delete(queryCaptor.capture(), eq(callback));
 
         ColumnDeleteQuery query = queryCaptor.getValue();

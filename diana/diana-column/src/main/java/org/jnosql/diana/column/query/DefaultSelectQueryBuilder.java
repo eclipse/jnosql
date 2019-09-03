@@ -193,26 +193,26 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements
     }
 
     @Override
-    public Stream<ColumnEntity> execute(ColumnFamilyManager manager) {
+    public Stream<ColumnEntity> getResult(ColumnFamilyManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.select(this.build());
     }
 
     @Override
-    public Optional<ColumnEntity> executeSingle(ColumnFamilyManager manager) {
+    public Optional<ColumnEntity> getSingleResult(ColumnFamilyManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.singleResult(this.build());
     }
 
     @Override
-    public void execute(ColumnFamilyManagerAsync manager, Consumer<Stream<ColumnEntity>> callback) {
+    public void getResult(ColumnFamilyManagerAsync manager, Consumer<Stream<ColumnEntity>> callback) {
         requireNonNull(manager, "manager is required");
         requireNonNull(callback, "callback is required");
         manager.select(this.build(), callback);
     }
 
     @Override
-    public void executeSingle(ColumnFamilyManagerAsync manager, Consumer<Optional<ColumnEntity>> callback) {
+    public void getSingleResult(ColumnFamilyManagerAsync manager, Consumer<Optional<ColumnEntity>> callback) {
         requireNonNull(manager, "manager is required");
         requireNonNull(callback, "callback is required");
         manager.singleResult(this.build(), callback);

@@ -264,7 +264,7 @@ public class DefaultDeleteQueryBuilderTest {
         String collection = "collection";
         DocumentCollectionManager manager = mock(DocumentCollectionManager.class);
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-        delete().from(collection).execute(manager);
+        delete().from(collection).delete(manager);
         verify(manager).delete(queryCaptor.capture());
 
         DocumentDeleteQuery query = queryCaptor.getValue();
@@ -278,7 +278,7 @@ public class DefaultDeleteQueryBuilderTest {
         String collection = "collection";
         DocumentCollectionManagerAsync manager = mock(DocumentCollectionManagerAsync.class);
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-        delete().from(collection).execute(manager);
+        delete().from(collection).delete(manager);
         verify(manager).delete(queryCaptor.capture());
 
         DocumentDeleteQuery query = queryCaptor.getValue();
@@ -293,7 +293,7 @@ public class DefaultDeleteQueryBuilderTest {
         DocumentCollectionManagerAsync manager = mock(DocumentCollectionManagerAsync.class);
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
         Consumer<Void> callback = (v) ->{};
-        delete().from(collection).execute(manager, callback);
+        delete().from(collection).delete(manager, callback);
         verify(manager).delete(queryCaptor.capture(), ArgumentMatchers.eq(callback));
 
         DocumentDeleteQuery query = queryCaptor.getValue();

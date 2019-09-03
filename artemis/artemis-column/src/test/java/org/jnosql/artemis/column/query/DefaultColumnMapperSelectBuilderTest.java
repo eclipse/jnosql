@@ -218,7 +218,7 @@ public class DefaultColumnMapperSelectBuilderTest {
     public void shouldExecuteQuery() {
         ColumnTemplate template = Mockito.mock(ColumnTemplate.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
-        mapperBuilder.selectFrom(Person.class).execute(template);
+        mapperBuilder.selectFrom(Person.class).getResult(template);
         Mockito.verify(template).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
         ColumnQuery queryExpected = select().from("Person").build();
@@ -229,7 +229,7 @@ public class DefaultColumnMapperSelectBuilderTest {
     public void shouldExecuteSingleQuery() {
         ColumnTemplate template = Mockito.mock(ColumnTemplate.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
-        mapperBuilder.selectFrom(Person.class).executeSingle(template);
+        mapperBuilder.selectFrom(Person.class).getSingleResult(template);
         Mockito.verify(template).singleResult(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
         ColumnQuery queryExpected = select().from("Person").build();
@@ -241,7 +241,7 @@ public class DefaultColumnMapperSelectBuilderTest {
         ColumnTemplateAsync template = Mockito.mock(ColumnTemplateAsync.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         Consumer<Stream<Person>> consumer = System.out::println;
-        mapperBuilder.selectFrom(Person.class).execute(template, consumer);
+        mapperBuilder.selectFrom(Person.class).getResult(template, consumer);
         Mockito.verify(template).select(queryCaptor.capture(), eq(consumer));
         ColumnQuery query = queryCaptor.getValue();
         ColumnQuery queryExpected = select().from("Person").build();
@@ -253,7 +253,7 @@ public class DefaultColumnMapperSelectBuilderTest {
         ColumnTemplateAsync template = Mockito.mock(ColumnTemplateAsync.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         Consumer<Optional<Person>> consumer = System.out::println;
-        mapperBuilder.selectFrom(Person.class).executeSingle(template, consumer);
+        mapperBuilder.selectFrom(Person.class).getSingleResult(template, consumer);
         Mockito.verify(template).singleResult(queryCaptor.capture(), eq(consumer));
         ColumnQuery query = queryCaptor.getValue();
         ColumnQuery queryExpected = select().from("Person").build();
@@ -274,7 +274,7 @@ public class DefaultColumnMapperSelectBuilderTest {
         Pagination pagination = Pagination.page(2).size(2);
         ColumnTemplate template = Mockito.mock(ColumnTemplate.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
-        mapperBuilder.selectFrom(Person.class).execute(template, pagination);
+        mapperBuilder.selectFrom(Person.class).getResult(template, pagination);
         Mockito.verify(template).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
         assertEquals(pagination.getLimit(), query.getLimit());
@@ -286,7 +286,7 @@ public class DefaultColumnMapperSelectBuilderTest {
         Pagination pagination = Pagination.page(2).size(2);
         ColumnTemplate template = Mockito.mock(ColumnTemplate.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
-        mapperBuilder.selectFrom(Person.class).executeSingle(template, pagination);
+        mapperBuilder.selectFrom(Person.class).getSingleResult(template, pagination);
         Mockito.verify(template).singleResult(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
         assertEquals(pagination.getLimit(), query.getLimit());

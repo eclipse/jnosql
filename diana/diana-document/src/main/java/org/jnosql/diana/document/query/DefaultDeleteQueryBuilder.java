@@ -140,19 +140,19 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
     }
 
     @Override
-    public void execute(DocumentCollectionManager manager) {
+    public void delete(DocumentCollectionManager manager) {
         requireNonNull(manager, "manager is required");
         manager.delete(this.build());
     }
 
     @Override
-    public void execute(DocumentCollectionManagerAsync manager) {
+    public void delete(DocumentCollectionManagerAsync manager) {
         requireNonNull(manager, "manager is required");
         manager.delete(this.build());
     }
 
     @Override
-    public void execute(DocumentCollectionManagerAsync manager, Consumer<Void> callback) {
+    public void delete(DocumentCollectionManagerAsync manager, Consumer<Void> callback) {
         requireNonNull(manager, "manager is required");
         requireNonNull(callback, "callback is required");
         manager.delete(this.build(), callback);
