@@ -1,7 +1,7 @@
 configurations:
     - description: that is the description
       name: name
-      provider: org.jnosql.artemis.configuration.DefaultMockConfiguration
+      provider: org.eclipse.jnosql.artemis.configuration.DefaultMockConfiguration
       settings:
         - key
           value

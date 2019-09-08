@@ -2,7 +2,7 @@
   {
     "description":"that is the description",
     "name":"name",
-    "provider":"org.jnosql.artemis.column.ColumnFamilyManagerMock",
+    "provider":"org.eclipse.jnosql.artemis.column.ColumnFamilyManagerMock",
     "settings":{
       "key":"value",
       "key2":"value2"
@@ -12,7 +12,7 @@
   {
     "description":"that is the description",
     "name":"name-2",
-    "provider":"org.jnosql.artemis.column.ColumnFamilyManagerMock",
+    "provider":"org.eclipse.jnosql.artemis.column.ColumnFamilyManagerMock",
     "settings":{
       "key":"value",
       "key2":"value2",
