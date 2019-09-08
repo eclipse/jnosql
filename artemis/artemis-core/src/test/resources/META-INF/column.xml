@@ -17,7 +17,7 @@
     <configuration>
         <description>that is the description</description>
         <name>name</name>
-        <provider>org.jnosql.artemis.column.ColumnFamilyManagerMock</provider>
+        <provider>org.eclipse.jnosql.artemis.column.ColumnFamilyManagerMock</provider>
         <settings>
             <entry>
                 <key>key2</key>
@@ -32,7 +32,7 @@
     <configuration>
         <description>that is the description</description>
         <name>name-2</name>
-        <provider>org.jnosql.artemis.column.ColumnFamilyManagerMock</provider>
+        <provider>org.eclipse.jnosql.artemis.column.ColumnFamilyManagerMock</provider>
         <settings>
             <entry>
                 <key>key3</key>
