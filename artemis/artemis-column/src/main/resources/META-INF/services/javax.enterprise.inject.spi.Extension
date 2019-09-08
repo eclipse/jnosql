@@ -12,4 +12,4 @@
 #
 #   Otavio Santana
 #
-org.jnosql.artemis.column.spi.ColumnFamilyProducerExtension
+org.eclipse.jnosql.artemis.column.spi.ColumnFamilyProducerExtension
