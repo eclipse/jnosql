@@ -14,12 +14,12 @@
 #   Otavio Santana
 #
 
-org.jnosql.diana.reader.ListTypeReferenceReader
-org.jnosql.diana.reader.SetTypeReferenceReader
-org.jnosql.diana.reader.MapTypeReferenceReader
-org.jnosql.diana.reader.StreamTypeReferenceReader
-org.jnosql.diana.reader.OptionalTypeReferenceReader
-org.jnosql.diana.reader.QueueTypeReferenceReader
-org.jnosql.diana.reader.NavigableSetTypeReferenceReader
+org.eclipse.jnosql.diana.reader.ListTypeReferenceReader
+org.eclipse.jnosql.diana.reader.SetTypeReferenceReader
+org.eclipse.jnosql.diana.reader.MapTypeReferenceReader
+org.eclipse.jnosql.diana.reader.StreamTypeReferenceReader
+org.eclipse.jnosql.diana.reader.OptionalTypeReferenceReader
+org.eclipse.jnosql.diana.reader.QueueTypeReferenceReader
+org.eclipse.jnosql.diana.reader.NavigableSetTypeReferenceReader
 
 

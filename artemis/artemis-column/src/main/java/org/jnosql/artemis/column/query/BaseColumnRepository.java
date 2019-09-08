@@ -31,8 +31,8 @@ import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.SelectQuery;
 import org.jnosql.artemis.reflection.DynamicReturn;
 import org.jnosql.artemis.util.ParamsBinder;
-import org.jnosql.diana.query.method.DeleteMethodProvider;
-import org.jnosql.diana.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.diana.query.method.DeleteMethodProvider;
+import org.eclipse.jnosql.diana.query.method.SelectMethodProvider;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

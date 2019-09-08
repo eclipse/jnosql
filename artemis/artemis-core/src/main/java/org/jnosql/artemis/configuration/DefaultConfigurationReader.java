@@ -22,7 +22,7 @@ import jakarta.nosql.mapping.configuration.ConfigurableReader;
 import jakarta.nosql.mapping.configuration.ConfigurationException;
 import jakarta.nosql.mapping.reflection.Reflections;
 import org.jnosql.artemis.reflection.ConstructorException;
-import org.jnosql.diana.SettingsPriority;
+import org.eclipse.jnosql.diana.SettingsPriority;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;

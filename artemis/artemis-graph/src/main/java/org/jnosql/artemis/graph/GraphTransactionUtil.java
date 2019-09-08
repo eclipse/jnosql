@@ -15,7 +15,7 @@
 package org.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Transaction;
-import org.jnosql.diana.SettingsPriority;
+import org.eclipse.jnosql.diana.SettingsPriority;
 
 import java.util.Objects;
 

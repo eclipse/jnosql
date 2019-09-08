@@ -11,4 +11,4 @@
 #
 #   Otavio Santana
 #
-org.jnosql.diana.DefaultSettingsBuilderProvider
+org.eclipse.jnosql.diana.DefaultSettingsBuilderProvider

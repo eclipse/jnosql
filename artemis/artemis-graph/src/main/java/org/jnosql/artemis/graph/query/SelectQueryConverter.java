@@ -22,7 +22,7 @@ import jakarta.nosql.query.SelectQuery;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.jnosql.artemis.reflection.DynamicReturn;
-import org.jnosql.diana.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.diana.query.method.SelectMethodProvider;
 
 import java.util.List;
 import java.util.function.BiFunction;

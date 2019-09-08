@@ -30,7 +30,7 @@ import jakarta.nosql.query.SelectQuery;
 import org.jnosql.artemis.CDIExtension;
 import org.jnosql.artemis.model.Person;
 import org.jnosql.artemis.util.ParamsBinder;
-import org.jnosql.diana.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.diana.query.method.SelectMethodProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

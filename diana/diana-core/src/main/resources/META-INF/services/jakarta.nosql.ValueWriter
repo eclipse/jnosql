@@ -13,6 +13,6 @@
 #
 #   Otavio Santana
 
-org.jnosql.diana.writer.EnumValueWriter
-org.jnosql.diana.writer.OptionalValueWriter
-org.jnosql.diana.writer.TemporalValueWriter
+org.eclipse.jnosql.diana.writer.EnumValueWriter
+org.eclipse.jnosql.diana.writer.OptionalValueWriter
+org.eclipse.jnosql.diana.writer.TemporalValueWriter

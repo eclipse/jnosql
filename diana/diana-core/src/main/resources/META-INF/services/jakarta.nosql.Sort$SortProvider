@@ -10,4 +10,4 @@
 #   Contributors:
 #
 #   Otavio Santana
-org.jnosql.diana.DefaultSortProvider
+org.eclipse.jnosql.diana.DefaultSortProvider
