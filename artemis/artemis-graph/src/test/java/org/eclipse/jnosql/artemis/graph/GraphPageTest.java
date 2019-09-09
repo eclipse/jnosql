@@ -115,7 +115,7 @@ class GraphPageTest {
         Stream<Person> people = page.get();
 
         assertEquals(pagination, page.getPagination());
-        assertEquals(otavio.getName(), people.map(Person::getName).collect(joining()));
+        assertEquals(poliana.getName(), people.map(Person::getName).collect(joining()));
     }
 
     @Test
