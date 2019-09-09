@@ -89,7 +89,7 @@ public class KeyValueRepositoryProxyTest {
     public void shouldDeleve() {
         userRepository.deleteById("key");
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(repository).remove(captor.capture());
+        Mockito.verify(repository).delete(captor.capture());
         assertEquals("key", captor.getValue());
     }
 
@@ -97,7 +97,7 @@ public class KeyValueRepositoryProxyTest {
     public void shouldDeleteIterable() {
         userRepository.deleteById(Collections.singletonList("key"));
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        Mockito.verify(repository).remove(captor.capture());
+        Mockito.verify(repository).delete(captor.capture());
         assertEquals("key", captor.getValue().iterator().next());
     }
 

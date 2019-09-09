@@ -47,12 +47,12 @@ public abstract class AbstractKeyValueRepository<T> implements Repository {
 
     @Override
     public void deleteById(Object key) {
-        getTemplate().remove(key);
+        getTemplate().delete(key);
     }
 
     @Override
     public void deleteById(Iterable ids) {
-        getTemplate().remove(ids);
+        getTemplate().delete(ids);
     }
 
     @Override
