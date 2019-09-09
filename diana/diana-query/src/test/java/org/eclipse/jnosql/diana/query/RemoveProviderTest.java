@@ -15,7 +15,7 @@ package org.eclipse.jnosql.diana.query;
 import jakarta.nosql.query.ArrayQueryValue;
 import jakarta.nosql.query.NumberQueryValue;
 import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.RemoveQuery;
+import jakarta.nosql.query.DelQuery;
 import jakarta.nosql.query.StringQueryValue;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RemoveProviderTest {
 
-    private RemoveQuery.RemoveQueryProvider provider = new AntlrRemoveQueryProvider();
+    private DelQuery.DelQueryProvider provider = new AntlrDelQueryProvider();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {
@@ -42,10 +42,10 @@ class RemoveProviderTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove \"Diana\""})
+    @ValueSource(strings = {"del \"Diana\""})
     public void shouldReturnParserQuery(String query) {
-        RemoveQuery removeQuery = provider.apply(query);
-        List<QueryValue<?>> keys = removeQuery.getKeys();
+        DelQuery delQuery = provider.apply(query);
+        List<QueryValue<?>> keys = delQuery.getKeys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof StringQueryValue);
@@ -53,10 +53,10 @@ class RemoveProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove 12"})
+    @ValueSource(strings = {"del 12"})
     public void shouldReturnParserQuery1(String query) {
-        RemoveQuery removeQuery = provider.apply(query);
-        List<QueryValue<?>> keys = removeQuery.getKeys();
+        DelQuery delQuery = provider.apply(query);
+        List<QueryValue<?>> keys = delQuery.getKeys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -64,10 +64,10 @@ class RemoveProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove 12.12"})
+    @ValueSource(strings = {"del 12.12"})
     public void shouldReturnParserQuery2(String query) {
-        RemoveQuery removeQuery = provider.apply(query);
-        List<QueryValue<?>> keys = removeQuery.getKeys();
+        DelQuery delQuery = provider.apply(query);
+        List<QueryValue<?>> keys = delQuery.getKeys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -75,10 +75,10 @@ class RemoveProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove -12"})
+    @ValueSource(strings = {"del -12"})
     public void shouldReturnParserQuery3(String query) {
-        RemoveQuery removeQuery = provider.apply(query);
-        List<QueryValue<?>> keys = removeQuery.getKeys();
+        DelQuery delQuery = provider.apply(query);
+        List<QueryValue<?>> keys = delQuery.getKeys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -86,10 +86,10 @@ class RemoveProviderTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove -12.12"})
+    @ValueSource(strings = {"del -12.12"})
     public void shouldReturnParserQuery4(String query) {
-        RemoveQuery removeQuery = provider.apply(query);
-        List<QueryValue<?>> keys = removeQuery.getKeys();
+        DelQuery delQuery = provider.apply(query);
+        List<QueryValue<?>> keys = delQuery.getKeys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -98,10 +98,10 @@ class RemoveProviderTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove {1,12}"})
+    @ValueSource(strings = {"del {1,12}"})
     public void shouldReturnParserQuery5(String query) {
-        RemoveQuery removeQuery = provider.apply(query);
-        List<QueryValue<?>> keys = removeQuery.getKeys();
+        DelQuery delQuery = provider.apply(query);
+        List<QueryValue<?>> keys = delQuery.getKeys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof ArrayQueryValue);

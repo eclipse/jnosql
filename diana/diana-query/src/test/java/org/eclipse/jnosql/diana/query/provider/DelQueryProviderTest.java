@@ -9,14 +9,20 @@
  *  Contributors:
  *  Otavio Santana
  */
-
 package org.eclipse.jnosql.diana.query.provider;
 
-public class RemoveQueryArgumentProvider extends AbstractArgumentProvider {
+import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.query.DelQuery.DelQueryProvider;
+import org.eclipse.jnosql.diana.query.cache.CachedDelQueryProvider;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-    @Override
-    protected String getFile() {
-        return "/remove_jnosql.nosql";
+public class DelQueryProviderTest {
+
+    @Test
+    public void shouldGetSupplier() {
+        DelQueryProvider supplier = ServiceLoaderProvider.get(DelQueryProvider.class);
+        Assertions.assertNotNull(supplier);
+        Assertions.assertTrue(supplier instanceof CachedDelQueryProvider);
     }
-
 }

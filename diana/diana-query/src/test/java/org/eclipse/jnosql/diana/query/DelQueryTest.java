@@ -18,28 +18,28 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.eclipse.jnosql.diana.query.provider.RemoveQueryArgumentProvider;
-import org.eclipse.jnosql.diana.query.provider.WrongRemoveQueryArgumentProvider;
+import org.eclipse.jnosql.diana.query.provider.DelQueryArgumentProvider;
+import org.eclipse.jnosql.diana.query.provider.WrongDelQueryArgumentProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-public class RemoveQueryTest {
+public class DelQueryTest {
 
     @ParameterizedTest
-    @ArgumentsSource(RemoveQueryArgumentProvider.class)
+    @ArgumentsSource(DelQueryArgumentProvider.class)
     public void shouldExecuteQuery(String query) {
         testQuery(query);
     }
 
     @Test
     public void shouldIgnoreComments() {
-        testQuery("//ignore this line \n remove 12");
+        testQuery("//ignore this line \n del 12");
     }
 
     @ParameterizedTest
-    @ArgumentsSource(WrongRemoveQueryArgumentProvider.class)
+    @ArgumentsSource(WrongDelQueryArgumentProvider.class)
     public void shouldNotExecute(String query) {
         Assertions.assertThrows(QueryException.class, () -> testQuery(query));
     }
@@ -54,7 +54,7 @@ public class RemoveQueryTest {
         lexer.addErrorListener(QueryErrorListener.INSTANCE);
         parser.addErrorListener(QueryErrorListener.INSTANCE);
 
-        ParseTree tree = parser.remove();
+        ParseTree tree = parser.del();
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(new QueryBaseListener(), tree);
 

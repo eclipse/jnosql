@@ -32,22 +32,22 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class RemoveQueryParserTest {
+class DelQueryParserTest {
 
 
-    private RemoveQueryParser parser = new RemoveQueryParser();
+    private DelQueryParser parser = new DelQueryParser();
     private BucketManager manager = Mockito.mock(BucketManager.class);
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove \"Diana\""})
+    @ValueSource(strings = {"del \"Diana\""})
     public void shouldReturnParserQuery1(String query) {
 
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
 
         parser.query(query, manager);
 
-        Mockito.verify(manager).remove(captor.capture());
+        Mockito.verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());
@@ -55,14 +55,14 @@ class RemoveQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove 12"})
+    @ValueSource(strings = {"del 12"})
     public void shouldReturnParserQuery2(String query) {
 
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
 
         parser.query(query, manager);
 
-        Mockito.verify(manager).remove(captor.capture());
+        Mockito.verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());
@@ -70,14 +70,14 @@ class RemoveQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove {\"Ana\" : \"Sister\", \"Maria\" : \"Mother\"}"})
+    @ValueSource(strings = {"del {\"Ana\" : \"Sister\", \"Maria\" : \"Mother\"}"})
     public void shouldReturnParserQuery3(String query) {
 
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
 
         parser.query(query, manager);
 
-        Mockito.verify(manager).remove(captor.capture());
+        Mockito.verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());
@@ -85,13 +85,13 @@ class RemoveQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove convert(\"2018-01-10\", java.time.LocalDate)"})
+    @ValueSource(strings = {"del convert(\"2018-01-10\", java.time.LocalDate)"})
     public void shouldReturnParserQuery4(String query) {
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
 
         parser.query(query, manager);
 
-        Mockito.verify(manager).remove(captor.capture());
+        Mockito.verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());
@@ -107,7 +107,7 @@ class RemoveQueryParserTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove @id"})
+    @ValueSource(strings = {"del @id"})
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
@@ -115,7 +115,7 @@ class RemoveQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove @id"})
+    @ValueSource(strings = {"del @id"})
     public void shouldExecutePrepareStatement(String query) {
 
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
@@ -123,7 +123,7 @@ class RemoveQueryParserTest {
         prepare.bind("id", 10);
         prepare.getResult();
 
-        Mockito.verify(manager).remove(captor.capture());
+        Mockito.verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());
@@ -133,7 +133,7 @@ class RemoveQueryParserTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove @id, @id2"})
+    @ValueSource(strings = {"del @id, @id2"})
     public void shouldExecutePrepareStatement2(String query) {
 
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
@@ -142,7 +142,7 @@ class RemoveQueryParserTest {
         prepare.bind("id2", 11);
         prepare.getResult();
 
-        Mockito.verify(manager).remove(captor.capture());
+        Mockito.verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
 
         assertEquals(2, value.size());

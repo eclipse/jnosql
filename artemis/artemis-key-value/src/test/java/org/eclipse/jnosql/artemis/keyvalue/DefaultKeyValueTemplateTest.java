@@ -173,14 +173,14 @@ public class DefaultKeyValueTemplateTest {
 
     @Test
     public void shouldRemove() {
-        subject.remove(KEY);
-        Mockito.verify(manager).remove(KEY);
+        subject.delete(KEY);
+        Mockito.verify(manager).delete(KEY);
     }
 
     @Test
     public void shouldRemoveIterable() {
-        subject.remove(singletonList(KEY));
-        Mockito.verify(manager).remove(singletonList(KEY));
+        subject.delete(singletonList(KEY));
+        Mockito.verify(manager).delete(singletonList(KEY));
     }
 
     @Test

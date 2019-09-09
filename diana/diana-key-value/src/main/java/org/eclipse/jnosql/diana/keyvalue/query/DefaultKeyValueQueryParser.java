@@ -29,7 +29,7 @@ public class DefaultKeyValueQueryParser implements KeyValueQueryParser {
 
     private final PutQueryParser putQueryParser = new PutQueryParser();
     private final GetQueryParser getQueryParser = new GetQueryParser();
-    private final RemoveQueryParser removeQueryParser = new RemoveQueryParser();
+    private final DelQueryParser delQueryParser = new DelQueryParser();
 
     @Override
     public Stream<Value> query(String query, BucketManager manager) {
@@ -38,8 +38,8 @@ public class DefaultKeyValueQueryParser implements KeyValueQueryParser {
         switch (command) {
             case "get":
                 return getQueryParser.query(query, manager);
-            case "rem":
-                return removeQueryParser.query(query, manager);
+            case "del":
+                return delQueryParser.query(query, manager);
             case "put":
                 return putQueryParser.query(query, manager);
             default:
@@ -55,8 +55,8 @@ public class DefaultKeyValueQueryParser implements KeyValueQueryParser {
         switch (command) {
             case "get":
                 return getQueryParser.prepare(query, manager);
-            case "rem":
-                return removeQueryParser.prepare(query, manager);
+            case "del":
+                return delQueryParser.prepare(query, manager);
             case "put":
                 return putQueryParser.prepare(query, manager);
             default:
