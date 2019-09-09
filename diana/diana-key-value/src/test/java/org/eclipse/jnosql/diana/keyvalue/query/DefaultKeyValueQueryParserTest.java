@@ -77,7 +77,7 @@ class DefaultKeyValueQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove \"Diana\""})
+    @ValueSource(strings = {"del \"Diana\""})
     public void shouldReturnParserQuery3(String query) {
 
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
@@ -92,7 +92,7 @@ class DefaultKeyValueQueryParserTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"remove @id"})
+    @ValueSource(strings = {"del @id"})
     public void shouldExecutePrepareStatement(String query) {
 
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
