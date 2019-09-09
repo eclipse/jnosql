@@ -96,7 +96,7 @@ class GraphPageTest {
         Person first = template.getTraversalVertex()
                 .orderBy("name")
                 .desc()
-                .<Person>stream().findFirst().get();
+                .<Person>getResult().findFirst().get();
 
 
         assertEquals(pagination, page.getPagination());
@@ -115,7 +115,7 @@ class GraphPageTest {
         Stream<Person> people = page.get();
 
         assertEquals(pagination, page.getPagination());
-        assertEquals(otavio.getName(), people.map(Person::getName).collect(joining()));
+        assertEquals(poliana.getName(), people.map(Person::getName).collect(joining()));
     }
 
     @Test
@@ -142,7 +142,7 @@ class GraphPageTest {
         Person first = template.getTraversalVertex()
                 .orderBy("name")
                 .desc()
-                .<Person>stream().findFirst().get();
+                .<Person>getResult().findFirst().get();
 
 
         assertEquals(pagination, page.getPagination());
@@ -169,7 +169,7 @@ class GraphPageTest {
         Pagination pagination = Pagination.page(1).size(1);
         Page<Person> page = template.getTraversalVertex()
                 .orderBy("name")
-                .desc()
+                .asc()
                 .page(pagination);
 
         assertNotNull(page);
@@ -183,16 +183,45 @@ class GraphPageTest {
         page = page.next();
         people = page.get();
         assertEquals(pagination, page.getPagination());
-        assertEquals(poliana.getName(), people.map(Person::getName).collect(joining()));
+        assertEquals(paulo.getName(), people.map(Person::getName).collect(joining()));
 
         pagination = pagination.next();
         page = page.next();
         people = page.get();
 
         assertEquals(pagination, page.getPagination());
-        assertEquals(paulo.getName(), people.map(Person::getName).collect(joining()));
+        assertEquals(poliana.getName(), people.map(Person::getName).collect(joining()));
 
     }
 
+    @Test
+    public void shouldNext2() {
+        Pagination pagination = Pagination.page(1).size(1);
+        Page<Person> page = template.getTraversalVertex()
+                .orderBy("name")
+                .desc()
+                .page(pagination);
+
+        assertNotNull(page);
+        Stream<Person> people = page.get();
+
+        assertEquals(pagination, page.getPagination());
+        assertEquals(poliana.getName(), people.map(Person::getName).collect(joining()));
+
+        pagination = pagination.next();
+
+        page = page.next();
+        people = page.get();
+        assertEquals(pagination, page.getPagination());
+        assertEquals(paulo.getName(), people.map(Person::getName).collect(joining()));
+
+        pagination = pagination.next();
+        page = page.next();
+        people = page.get();
+
+        assertEquals(pagination, page.getPagination());
+        assertEquals(otavio.getName(), people.map(Person::getName).collect(joining()));
+
+    }
 
 }

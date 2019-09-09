@@ -24,12 +24,11 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
-import java.util.List;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -187,19 +186,22 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     }
 
     @Override
-    public <T> Stream<T> stream() {
+    public <T> Stream<T> getResult() {
         return flow.apply(supplier.get()).toList().stream()
                 .map(converter::toEntity);
     }
 
     @Override
     public <T> Optional<T> getSingleResult() {
-        List<T> result = getResultList();
+        final Stream<T> stream = getResult();
+        final Iterator<T> iterator = stream.iterator();
 
-        if (result.isEmpty()) {
+        if (!iterator.hasNext()) {
             return Optional.empty();
-        } else if (result.size() == 1) {
-            return Optional.of(result.get(0));
+        }
+        final T entity = iterator.next();
+        if (!iterator.hasNext()) {
+            return Optional.of(entity);
         }
         throw new NonUniqueResultException("The Vertex traversal query returns more than one result");
     }
@@ -207,15 +209,10 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     @Override
     public <T> Page<T> page(Pagination pagination) {
         requireNonNull(pagination, "pagination is required");
-        GraphTraversal<?, ?> graphTraversal = supplier.get();
+
+        GraphTraversal<?, ?> graphTraversal = flow.apply(supplier.get());
         graphTraversal.skip(pagination.getSkip());
         return GraphPage.of(pagination, converter, graphTraversal);
-    }
-
-    @Override
-    public <T> List<T> getResultList() {
-        Stream<T> stream = stream();
-        return stream.collect(Collectors.toList());
     }
 
     @Override

@@ -19,7 +19,6 @@ import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import org.apache.tinkerpop.gremlin.process.traversal.step.filter.DedupGlobalStep;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -162,7 +161,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @param <T> the entity type
      * @return the entity result as {@link Stream}
      */
-    <T> Stream<T> stream();
+    <T> Stream<T> getResult();
 
     /**
      * Concludes the traversal that returns a single result
@@ -182,14 +181,6 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @throws NullPointerException when pagination is null
      */
     <T> Page<T> page(Pagination pagination);
-
-    /**
-     * Concludes the traversal then returns the result as list.
-     *
-     * @param <T> the type
-     * @return the entities result
-     */
-    <T> List<T> getResultList();
 
     /**
      * Get the next n-number of results from the traversal.
