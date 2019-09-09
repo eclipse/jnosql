@@ -12,10 +12,10 @@
 
 package org.eclipse.jnosql.diana.query.provider;
 
-public class WrongRemoveQueryArgumentProvider extends AbstractArgumentProvider{
+public class WrongDelQueryArgumentProvider extends AbstractArgumentProvider{
 
     @Override
     protected String getFile() {
-        return "/remove_error.nosql";
+        return "/del_error.nosql";
     }
 }

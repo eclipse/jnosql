@@ -12,11 +12,11 @@
 
 package org.eclipse.jnosql.diana.query.provider;
 
-public class RemoveQueryArgumentProvider extends AbstractArgumentProvider {
+public class DelQueryArgumentProvider extends AbstractArgumentProvider {
 
     @Override
     protected String getFile() {
-        return "/remove_jnosql.nosql";
+        return "/del_jnosql.nosql";
     }
 
 }
