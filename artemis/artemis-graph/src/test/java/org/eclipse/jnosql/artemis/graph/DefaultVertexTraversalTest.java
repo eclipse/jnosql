@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -434,7 +435,9 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnResultAsList() {
-        List<Person> people = graphTemplate.getTraversalVertex().hasLabel("Person").getResultList();
+        List<Person> people = graphTemplate.getTraversalVertex().hasLabel("Person")
+                .<Person>stream()
+                .collect(Collectors.toList());
         assertEquals(3, people.size());
     }
 
@@ -482,14 +485,15 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
         List<Person> people = graphTemplate.getTraversalVertex()
                 .hasLabel(Person.class)
-                .in("knows").getResultList();
+                .in("knows").<Person>stream()
+                .collect(Collectors.toList());
 
         assertEquals(6, people.size());
 
         people = graphTemplate.getTraversalVertex()
                 .hasLabel(Person.class)
-                .in("knows").dedup()
-                .getResultList();
+                .in("knows").dedup().<Person>stream()
+                .collect(Collectors.toList());
 
         assertEquals(3, people.size());
     }
