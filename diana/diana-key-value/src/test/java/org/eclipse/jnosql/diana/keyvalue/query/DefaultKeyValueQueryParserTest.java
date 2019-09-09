@@ -84,7 +84,7 @@ class DefaultKeyValueQueryParserTest {
 
         parser.query(query, manager);
 
-        Mockito.verify(manager).remove(captor.capture());
+        Mockito.verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());
@@ -100,7 +100,7 @@ class DefaultKeyValueQueryParserTest {
         prepare.bind("id", 10);
         prepare.getResult();
 
-        Mockito.verify(manager).remove(captor.capture());
+        Mockito.verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());

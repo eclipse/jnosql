@@ -22,25 +22,25 @@ import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.Value;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import jakarta.nosql.query.RemoveQuery;
-import jakarta.nosql.query.RemoveQuery.RemoveQueryProvider;
+import jakarta.nosql.query.DelQuery;
+import jakarta.nosql.query.DelQuery.DelQueryProvider;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
-final class RemoveQueryParser {
+final class DelQueryParser {
 
-    private final RemoveQueryProvider provider;
+    private final DelQueryProvider provider;
 
-    RemoveQueryParser() {
-        this.provider = ServiceLoaderProvider.get(RemoveQueryProvider.class);
+    DelQueryParser() {
+        this.provider = ServiceLoaderProvider.get(DelQueryProvider.class);
     }
 
     Stream<Value> query(String query, BucketManager manager) {
 
-        RemoveQuery delQuery = provider.apply(query);
+        DelQuery delQuery = provider.apply(query);
         Params params = Params.newParams();
         List<Value> values = delQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         if (params.isNotEmpty()) {
@@ -48,12 +48,12 @@ final class RemoveQueryParser {
         }
 
         List<Object> keys = values.stream().map(Value::get).collect(toList());
-        manager.remove(keys);
+        manager.delete(keys);
         return Stream.empty();
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
-        RemoveQuery delQuery = provider.apply(query);
+        DelQuery delQuery = provider.apply(query);
         Params params = Params.newParams();
         List<Value> values = delQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         return DefaultKeyValuePreparedStatement.del(values, manager, params, query);

@@ -91,7 +91,7 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
                         .filter(Optional::isPresent)
                         .map(Optional::get);
             case DEL:
-                manager.remove(keys.stream().map(Value::get).collect(Collectors.toList()));
+                manager.delete(keys.stream().map(Value::get).collect(Collectors.toList()));
                 return Stream.empty();
             case PUT:
                 KeyValueEntity entity = KeyValueEntity.of(key.get(), value.get());
