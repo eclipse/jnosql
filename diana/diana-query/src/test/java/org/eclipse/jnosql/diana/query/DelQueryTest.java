@@ -35,7 +35,7 @@ public class DelQueryTest {
 
     @Test
     public void shouldIgnoreComments() {
-        testQuery("//ignore this line \n remove 12");
+        testQuery("//ignore this line \n del 12");
     }
 
     @ParameterizedTest
