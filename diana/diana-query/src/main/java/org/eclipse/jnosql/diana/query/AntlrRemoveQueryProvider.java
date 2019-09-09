@@ -13,8 +13,8 @@ package org.eclipse.jnosql.diana.query;
 
 
 import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.RemoveQuery;
-import jakarta.nosql.query.RemoveQuery.RemoveQueryProvider;
+import jakarta.nosql.query.DelQuery;
+import jakarta.nosql.query.DelQuery.DelQueryProvider;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.Collections;
@@ -24,9 +24,9 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The {@link RemoveQueryProvider} implementation that uses Antlr4
+ * The {@link DelQueryProvider} implementation that uses Antlr4
  */
-public final class AntlrRemoveQueryProvider extends AbstractSupplier implements RemoveQueryProvider {
+public final class AntlrRemoveQueryProvider extends AbstractSupplier implements DelQueryProvider {
 
     private List<QueryValue<?>> keys = Collections.emptyList();
 
@@ -37,11 +37,11 @@ public final class AntlrRemoveQueryProvider extends AbstractSupplier implements 
 
     @Override
     Function<QueryParser, ParseTree> getParserTree() {
-        return QueryParser::remove;
+        return QueryParser::del;
     }
 
     @Override
-    public RemoveQuery apply(String query) {
+    public DelQuery apply(String query) {
         runQuery(query);
         return new DefaultRemoveQuery(keys);
     }

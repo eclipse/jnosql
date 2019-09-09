@@ -11,7 +11,7 @@
  */
 package org.eclipse.jnosql.diana.query;
 
-import jakarta.nosql.query.RemoveQuery;
+import jakarta.nosql.query.DelQuery;
 import jakarta.nosql.query.QueryValue;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 
-final class DefaultRemoveQuery implements RemoveQuery {
+final class DefaultRemoveQuery implements DelQuery {
 
     private final List<QueryValue<?>> keys;
 

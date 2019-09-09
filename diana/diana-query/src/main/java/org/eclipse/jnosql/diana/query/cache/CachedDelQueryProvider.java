@@ -11,8 +11,8 @@
  */
 package org.eclipse.jnosql.diana.query.cache;
 
-import jakarta.nosql.query.RemoveQuery;
-import jakarta.nosql.query.RemoveQuery.RemoveQueryProvider;
+import jakarta.nosql.query.DelQuery;
+import jakarta.nosql.query.DelQuery.DelQueryProvider;
 import org.eclipse.jnosql.diana.query.AntlrRemoveQueryProvider;
 
 import java.util.Objects;
@@ -20,17 +20,17 @@ import java.util.Objects;
 /**
  * The {@link AntlrRemoveQueryProvider} cache wrapper.
  */
-public final class CachedRemoveQueryProvider implements RemoveQueryProvider {
+public final class CachedDelQueryProvider implements DelQueryProvider {
 
-    private final CacheQuery<RemoveQuery> cached;
+    private final CacheQuery<DelQuery> cached;
 
 
-    public CachedRemoveQueryProvider() {
+    public CachedDelQueryProvider() {
         this.cached = CacheQuery.of(q -> new AntlrRemoveQueryProvider().apply(q));
     }
 
     @Override
-    public RemoveQuery apply(String query) {
+    public DelQuery apply(String query) {
         Objects.requireNonNull(query, "query is required");
         return cached.get(query);
     }
