@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -427,7 +428,8 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnResultAsList() {
-        List<EdgeEntity> entities = graphTemplate.getTraversalEdge().getResultList();
+        List<EdgeEntity> entities = graphTemplate.getTraversalEdge().getResult()
+                .collect(Collectors.toList());
         assertEquals(3, entities.size());
     }
 
@@ -472,7 +474,8 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
         List<EdgeEntity> edges = graphTemplate.getTraversalVertex()
                 .hasLabel(Person.class)
-                .inE("knows").getResultList();
+                .inE("knows").getResult()
+                .collect(Collectors.toList());
 
         assertEquals(6, edges.size());
 
@@ -480,7 +483,8 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .hasLabel(Person.class)
                 .inE("knows")
                 .dedup()
-                .getResultList();
+                .getResult()
+                .collect(Collectors.toList());
 
         assertEquals(6, edges.size());
     }

@@ -22,6 +22,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -141,19 +142,22 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
 
     @Override
     public Optional<EdgeEntity> getSingleResult() {
-        List<EdgeEntity> result = getResultList();
+        Stream<EdgeEntity> result = getResult();
+        final Iterator<EdgeEntity> iterator = result.iterator();
 
-        if(result.isEmpty()) {
+        if (!iterator.hasNext()) {
             return Optional.empty();
-        }else if(result.size() == 1) {
-            return Optional.of(result.get(0));
+        }
+        final EdgeEntity entity = iterator.next();
+        if (!iterator.hasNext()) {
+            return Optional.of(entity);
         }
         throw new NonUniqueResultException("The Edge traversal query returns more than one result");
     }
 
     @Override
-    public List<EdgeEntity> getResultList() {
-        return stream().collect(toList());
+    public Stream<EdgeEntity> getResult() {
+        return stream();
     }
 
     @Override
@@ -181,7 +185,6 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     public long count() {
         return flow.apply(supplier.get()).count().tryNext().orElse(0L);
     }
-
 
 
 }
