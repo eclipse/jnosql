@@ -26,7 +26,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * The {@link DelQueryProvider} implementation that uses Antlr4
  */
-public final class AntlrRemoveQueryProvider extends AbstractSupplier implements DelQueryProvider {
+public final class AntlrDelQueryProvider extends AbstractSupplier implements DelQueryProvider {
 
     private List<QueryValue<?>> keys = Collections.emptyList();
 

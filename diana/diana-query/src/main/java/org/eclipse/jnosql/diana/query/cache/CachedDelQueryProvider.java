@@ -13,12 +13,12 @@ package org.eclipse.jnosql.diana.query.cache;
 
 import jakarta.nosql.query.DelQuery;
 import jakarta.nosql.query.DelQuery.DelQueryProvider;
-import org.eclipse.jnosql.diana.query.AntlrRemoveQueryProvider;
+import org.eclipse.jnosql.diana.query.AntlrDelQueryProvider;
 
 import java.util.Objects;
 
 /**
- * The {@link AntlrRemoveQueryProvider} cache wrapper.
+ * The {@link AntlrDelQueryProvider} cache wrapper.
  */
 public final class CachedDelQueryProvider implements DelQueryProvider {
 
@@ -26,7 +26,7 @@ public final class CachedDelQueryProvider implements DelQueryProvider {
 
 
     public CachedDelQueryProvider() {
-        this.cached = CacheQuery.of(q -> new AntlrRemoveQueryProvider().apply(q));
+        this.cached = CacheQuery.of(q -> new AntlrDelQueryProvider().apply(q));
     }
 
     @Override
