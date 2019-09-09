@@ -184,14 +184,6 @@ public interface VertexTraversal extends VertexConditionTraversal {
     <T> Page<T> page(Pagination pagination);
 
     /**
-     * Concludes the traversal then returns the result as list.
-     *
-     * @param <T> the type
-     * @return the entities result
-     */
-    <T> List<T> getResultList();
-
-    /**
      * Get the next n-number of results from the traversal.
      *
      * @param <T>   the entity type
