@@ -10,4 +10,4 @@
 #   Contributors:
 #
 #   Otavio Santana
-org.jnosql.diana.DefaultParamsProvider
+org.eclipse.jnosql.diana.DefaultParamsProvider

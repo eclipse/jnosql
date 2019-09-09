@@ -18,7 +18,7 @@
   {
     "name": "name-2",
     "description": "that is the description",
-    "provider": "org.jnosql.artemis.configuration.InvalidConfiguration",
+    "provider": "org.eclipse.jnosql.artemis.configuration.InvalidConfiguration",
     "settings": {
       "key": "value"
     }

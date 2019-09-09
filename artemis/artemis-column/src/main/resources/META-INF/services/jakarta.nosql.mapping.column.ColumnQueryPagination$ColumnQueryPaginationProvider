@@ -1,1 +1,1 @@
-org.jnosql.artemis.column.DefaultColumnQueryPaginationProvider
+org.eclipse.jnosql.artemis.column.DefaultColumnQueryPaginationProvider

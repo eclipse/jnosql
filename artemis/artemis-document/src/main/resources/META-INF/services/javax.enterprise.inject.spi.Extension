@@ -12,4 +12,4 @@
 #
 #   Otavio Santana
 #
-org.jnosql.artemis.document.spi.DocumentCollectionProducerExtension
+org.eclipse.jnosql.artemis.document.spi.DocumentCollectionProducerExtension

@@ -2,7 +2,7 @@
   {
     "description":"that is the description",
     "name":"name",
-    "provider":"org.jnosql.artemis.configuration.DefaultMockConfiguration",
+    "provider":"org.eclipse.jnosql.artemis.configuration.DefaultMockConfiguration",
     "settings":{
       "key":"value",
       "key2":"value2"
@@ -12,7 +12,7 @@
   {
     "description":"that is the description",
     "name":"name-2",
-    "provider":"org.jnosql.artemis.configuration.DefaultMockConfiguration",
+    "provider":"org.eclipse.jnosql.artemis.configuration.DefaultMockConfiguration",
     "settings":{
       "key":"value",
       "key2":"value2",

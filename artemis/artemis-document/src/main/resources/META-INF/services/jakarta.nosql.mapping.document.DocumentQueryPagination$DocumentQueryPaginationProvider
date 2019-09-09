@@ -1,1 +1,1 @@
-org.jnosql.artemis.document.DefaultDocumentQueryPaginationProvider
+org.eclipse.jnosql.artemis.document.DefaultDocumentQueryPaginationProvider

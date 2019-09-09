@@ -17,7 +17,7 @@
     <configuration>
         <description>that is the description</description>
         <name>name</name>
-        <provider>org.jnosql.artemis.configuration.DefaultMockConfiguration</provider>
+        <provider>org.eclipse.jnosql.artemis.configuration.DefaultMockConfiguration</provider>
         <settings>
             <entry>
                 <key>key2</key>

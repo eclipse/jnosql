@@ -13,4 +13,4 @@
 #   Otavio Santana
 #
 
-org.jnosql.artemis.reflection.ClassMappingExtension
+org.eclipse.jnosql.artemis.reflection.ClassMappingExtension
