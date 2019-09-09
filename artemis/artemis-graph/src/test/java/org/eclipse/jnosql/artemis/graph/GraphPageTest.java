@@ -28,6 +28,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -167,6 +168,10 @@ class GraphPageTest {
     @Test
     public void shouldNext() {
         Pagination pagination = Pagination.page(1).size(1);
+        final Stream<Person> stream = template.getTraversalVertex().stream();
+        final List<Person> result = stream.sorted(Comparator.comparing(Person::getName).reversed())
+                .collect(Collectors.toList());
+
         Page<Person> page = template.getTraversalVertex()
                 .orderBy("name")
                 .desc()
@@ -176,21 +181,21 @@ class GraphPageTest {
         Stream<Person> people = page.get();
 
         assertEquals(pagination, page.getPagination());
-        assertEquals(otavio.getName(), people.map(Person::getName).collect(joining()));
+        assertEquals(result.get(0).getName(), people.map(Person::getName).collect(joining()));
 
         pagination = pagination.next();
 
         page = page.next();
         people = page.get();
         assertEquals(pagination, page.getPagination());
-        assertEquals(poliana.getName(), people.map(Person::getName).collect(joining()));
+        assertEquals(result.get(1).getName(), people.map(Person::getName).collect(joining()));
 
         pagination = pagination.next();
         page = page.next();
         people = page.get();
 
         assertEquals(pagination, page.getPagination());
-        assertEquals(paulo.getName(), people.map(Person::getName).collect(joining()));
+        assertEquals(result.get(2).getName(), people.map(Person::getName).collect(joining()));
 
     }
 

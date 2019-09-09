@@ -165,6 +165,14 @@ public interface VertexTraversal extends VertexConditionTraversal {
     <T> Stream<T> stream();
 
     /**
+     * Get all the result in the traversal as Stream
+     * an alias to {@link VertexTraversal#stream()}
+     * @param <T> the entity type
+     * @return the entity result as {@link Stream}
+     */
+    <T> Stream<T> getResult();
+
+    /**
      * Concludes the traversal that returns a single result
      *
      * @param <T> the type

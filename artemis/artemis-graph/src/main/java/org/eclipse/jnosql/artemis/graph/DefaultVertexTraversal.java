@@ -193,6 +193,11 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     }
 
     @Override
+    public <T> Stream<T> getResult() {
+        return stream();
+    }
+
+    @Override
     public <T> Optional<T> getSingleResult() {
         final Stream<T> stream = stream();
         final Iterator<T> iterator = stream.iterator();
