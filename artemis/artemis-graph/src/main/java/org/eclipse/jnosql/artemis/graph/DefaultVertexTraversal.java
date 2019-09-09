@@ -209,7 +209,8 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     @Override
     public <T> Page<T> page(Pagination pagination) {
         requireNonNull(pagination, "pagination is required");
-        GraphTraversal<?, ?> graphTraversal = supplier.get();
+
+        GraphTraversal<?, ?> graphTraversal = flow.apply(supplier.get());
         graphTraversal.skip(pagination.getSkip());
         return GraphPage.of(pagination, converter, graphTraversal);
     }
