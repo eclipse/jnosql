@@ -1,0 +1,11 @@
+del "Ada Lovelace"
+del 'Ada Lovelace'
+del 12
+del 12.13
+del @key
+del {"Ana" : "Sister", "Maria" : "Mother"}
+del convert("2018-01-10", java.time.LocalTime)
+del {1, 2, 3, "one", "two"}
+del @diana, @apollo
+del 1, @diana
+del @diana, 2
