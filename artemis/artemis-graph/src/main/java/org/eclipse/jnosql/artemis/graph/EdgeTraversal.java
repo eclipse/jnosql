@@ -17,7 +17,6 @@ package org.eclipse.jnosql.artemis.graph;
 import jakarta.nosql.NonUniqueResultException;
 import org.apache.tinkerpop.gremlin.process.traversal.step.filter.DedupGlobalStep;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -83,7 +82,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
      * Concludes the traversal then returns the result as list.
      * @return the entities result
      */
-    List<EdgeEntity> getResultList();
+    Stream<EdgeEntity> getResult();
 
 
     /**

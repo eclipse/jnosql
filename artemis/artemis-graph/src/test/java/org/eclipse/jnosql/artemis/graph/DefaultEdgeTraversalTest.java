@@ -148,14 +148,14 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnOut() {
-        List<Person> people = graphTemplate.getTraversalVertex().outE(READS).outV().<Person>stream().collect(toList());
+        List<Person> people = graphTemplate.getTraversalVertex().outE(READS).outV().<Person>getResult().collect(toList());
         assertEquals(3, people.size());
         assertThat(people, containsInAnyOrder(poliana, otavio, paulo));
     }
 
     @Test
     public void shouldReturnIn() {
-        List<Book> books = graphTemplate.getTraversalVertex().outE(READS).inV().<Book>stream().collect(toList());
+        List<Book> books = graphTemplate.getTraversalVertex().outE(READS).inV().<Book>getResult().collect(toList());
         assertEquals(3, books.size());
         assertThat(books, containsInAnyOrder(shack, effectiveJava, license));
     }
@@ -163,7 +163,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnBoth() {
-        List<?> entities = graphTemplate.getTraversalVertex().outE(READS).bothV().stream().collect(toList());
+        List<?> entities = graphTemplate.getTraversalVertex().outE(READS).bothV().getResult().collect(toList());
         assertEquals(6, entities.size());
         assertThat(entities, containsInAnyOrder(shack, effectiveJava, license, paulo, otavio, poliana));
     }

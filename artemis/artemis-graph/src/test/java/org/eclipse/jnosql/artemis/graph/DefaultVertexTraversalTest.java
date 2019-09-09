@@ -56,7 +56,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldGetVertexFromId() {
-        List<Person> people = graphTemplate.getTraversalVertex(otavio.getId(), poliana.getId()).<Person>stream()
+        List<Person> people = graphTemplate.getTraversalVertex(otavio.getId(), poliana.getId()).<Person>getResult()
                 .collect(toList());
 
         assertThat(people, Matchers.containsInAnyOrder(otavio, poliana));
@@ -64,7 +64,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldDefineLimit() {
-        List<Person> people = graphTemplate.getTraversalVertex(otavio.getId(), poliana.getId(), paulo.getId()).limit(1).<Person>stream()
+        List<Person> people = graphTemplate.getTraversalVertex(otavio.getId(), poliana.getId(), paulo.getId()).limit(1).<Person>getResult()
                 .collect(toList());
 
         assertEquals(1, people.size());
@@ -136,7 +136,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldHavePredicate() {
         List<?> result = graphTemplate.getTraversalVertex().has("age", P.gt(26))
-                .stream()
+                .getResult()
                 .collect(toList());
         assertEquals(5, result.size());
     }
@@ -146,7 +146,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         assertThrows(NullPointerException.class, () -> {
             P<Integer> gt = null;
             graphTemplate.getTraversalVertex().has("age", gt)
-                    .stream()
+                    .getResult()
                     .collect(toList());
         });
     }
@@ -155,14 +155,14 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     public void shouldReturnErrorWhenHasKeyIsNull() {
         assertThrows(NullPointerException.class, () -> {
             graphTemplate.getTraversalVertex().has((String) null, P.gt(26))
-                    .stream()
+                    .getResult()
                     .collect(toList());
         });
     }
 
     @Test
     public void shouldHaveLabel() {
-        List<Book> books = graphTemplate.getTraversalVertex().hasLabel("Book").<Book>stream().collect(toList());
+        List<Book> books = graphTemplate.getTraversalVertex().hasLabel("Book").<Book>getResult().collect(toList());
         assertEquals(3, books.size());
         assertThat(books, Matchers.containsInAnyOrder(shack, license, effectiveJava));
     }
@@ -172,60 +172,60 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
         List<Book> books = graphTemplate.getTraversalVertex()
                 .hasLabel(P.eq("Book").or(P.eq("Person")))
-                .<Book>stream().collect(toList());
+                .<Book>getResult().collect(toList());
         assertEquals(6, books.size());
         assertThat(books, Matchers.containsInAnyOrder(shack, license, effectiveJava, otavio, poliana, paulo));
     }
 
     @Test
     public void shouldReturnErrorWhenHasLabelHasNull() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().hasLabel((String) null).<Book>stream().collect(toList()));
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().hasLabel((String) null).<Book>getResult().collect(toList()));
     }
 
     @Test
     public void shouldIn() {
-        List<Book> books = graphTemplate.getTraversalVertex().out(READS).<Book>stream().collect(toList());
+        List<Book> books = graphTemplate.getTraversalVertex().out(READS).<Book>getResult().collect(toList());
         assertEquals(3, books.size());
         assertThat(books, Matchers.containsInAnyOrder(shack, license, effectiveJava));
     }
 
     @Test
     public void shouldReturnErrorWhenInIsNull() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().out((String) null).<Book>stream().collect(toList()));
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().out((String) null).<Book>getResult().collect(toList()));
     }
 
     @Test
     public void shouldOut() {
-        List<Person> people = graphTemplate.getTraversalVertex().in(READS).<Person>stream().collect(toList());
+        List<Person> people = graphTemplate.getTraversalVertex().in(READS).<Person>getResult().collect(toList());
         assertEquals(3, people.size());
         assertThat(people, Matchers.containsInAnyOrder(otavio, poliana, paulo));
     }
 
     @Test
     public void shouldReturnErrorWhenOutIsNull() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().in((String) null).<Person>stream().collect(toList()));
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().in((String) null).<Person>getResult().collect(toList()));
     }
 
     @Test
     public void shouldBoth() {
-        List<?> entities = graphTemplate.getTraversalVertex().both(READS).<Person>stream().collect(toList());
+        List<?> entities = graphTemplate.getTraversalVertex().both(READS).<Person>getResult().collect(toList());
         assertEquals(6, entities.size());
     }
 
     @Test
     public void shouldReturnErrorWhenBothIsNull() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().both((String) null).<Person>stream().collect(toList()));
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().both((String) null).<Person>getResult().collect(toList()));
     }
 
     @Test
     public void shouldNot() {
-        List<?> result = graphTemplate.getTraversalVertex().hasNot("year").stream().collect(toList());
+        List<?> result = graphTemplate.getTraversalVertex().hasNot("year").getResult().collect(toList());
         assertEquals(6, result.size());
     }
 
     @Test
     public void shouldReturnErrorWhenHasNotIsNull() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().hasNot((String) null).stream().collect(toList()));
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().hasNot((String) null).getResult().collect(toList()));
     }
 
     @Test
@@ -389,7 +389,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
                 .hasLabel("Book")
                 .has(property)
                 .orderBy(property)
-                .asc().<Book>stream()
+                .asc().<Book>getResult()
                 .map(Book::getName)
                 .collect(toList());
 
@@ -404,7 +404,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
                 .hasLabel("Book")
                 .has(property)
                 .orderBy(property)
-                .desc().<Book>stream()
+                .desc().<Book>getResult()
                 .map(Book::getName)
                 .collect(toList());
 
@@ -428,15 +428,15 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnHasLabel() {
-        assertTrue(graphTemplate.getTraversalVertex().hasLabel("Person").stream().allMatch(Person.class::isInstance));
-        assertTrue(graphTemplate.getTraversalVertex().hasLabel(() -> "Book").stream().allMatch(Book.class::isInstance));
-        assertTrue(graphTemplate.getTraversalVertex().hasLabel(Animal.class).stream().allMatch(Animal.class::isInstance));
+        assertTrue(graphTemplate.getTraversalVertex().hasLabel("Person").getResult().allMatch(Person.class::isInstance));
+        assertTrue(graphTemplate.getTraversalVertex().hasLabel(() -> "Book").getResult().allMatch(Book.class::isInstance));
+        assertTrue(graphTemplate.getTraversalVertex().hasLabel(Animal.class).getResult().allMatch(Animal.class::isInstance));
     }
 
     @Test
     public void shouldReturnResultAsList() {
         List<Person> people = graphTemplate.getTraversalVertex().hasLabel("Person")
-                .<Person>stream()
+                .<Person>getResult()
                 .collect(Collectors.toList());
         assertEquals(3, people.size());
     }
@@ -485,14 +485,14 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
         List<Person> people = graphTemplate.getTraversalVertex()
                 .hasLabel(Person.class)
-                .in("knows").<Person>stream()
+                .in("knows").<Person>getResult()
                 .collect(Collectors.toList());
 
         assertEquals(6, people.size());
 
         people = graphTemplate.getTraversalVertex()
                 .hasLabel(Person.class)
-                .in("knows").dedup().<Person>stream()
+                .in("knows").dedup().<Person>getResult()
                 .collect(Collectors.toList());
 
         assertEquals(3, people.size());

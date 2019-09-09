@@ -97,7 +97,7 @@ class GraphPageTest {
         Person first = template.getTraversalVertex()
                 .orderBy("name")
                 .desc()
-                .<Person>stream().findFirst().get();
+                .<Person>getResult().findFirst().get();
 
 
         assertEquals(pagination, page.getPagination());
@@ -143,7 +143,7 @@ class GraphPageTest {
         Person first = template.getTraversalVertex()
                 .orderBy("name")
                 .desc()
-                .<Person>stream().findFirst().get();
+                .<Person>getResult().findFirst().get();
 
 
         assertEquals(pagination, page.getPagination());
@@ -168,7 +168,7 @@ class GraphPageTest {
     @Test
     public void shouldNext() {
         Pagination pagination = Pagination.page(1).size(1);
-        final Stream<Person> stream = template.getTraversalVertex().stream();
+        final Stream<Person> stream = template.getTraversalVertex().getResult();
         final List<Person> result = stream.sorted(Comparator.comparing(Person::getName).reversed())
                 .collect(Collectors.toList());
 

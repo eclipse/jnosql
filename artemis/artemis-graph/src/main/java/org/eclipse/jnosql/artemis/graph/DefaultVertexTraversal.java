@@ -25,7 +25,6 @@ import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -187,19 +186,14 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     }
 
     @Override
-    public <T> Stream<T> stream() {
+    public <T> Stream<T> getResult() {
         return flow.apply(supplier.get()).toList().stream()
                 .map(converter::toEntity);
     }
 
     @Override
-    public <T> Stream<T> getResult() {
-        return stream();
-    }
-
-    @Override
     public <T> Optional<T> getSingleResult() {
-        final Stream<T> stream = stream();
+        final Stream<T> stream = getResult();
         final Iterator<T> iterator = stream.iterator();
 
         if (!iterator.hasNext()) {
