@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.artemis.graph;
 
 import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
@@ -297,6 +298,19 @@ public interface GraphTemplate {
      * @throws NullPointerException when the query is null
      */
     PreparedStatement prepare(String gremlin);
+
+    /**
+     * Finds by Id.
+     *
+     * @param entityClass the entity class
+     * @param id          the id value
+     * @param <T>         the entity class type
+     * @param <K>        the id type
+     * @return the entity instance otherwise {@link Optional#empty()}
+     * @throws NullPointerException                   when either the entityClass or id are null
+     * @throws IdNotFoundException when the entityClass does not have the Id annotation
+     */
+    <T, K> Optional<T> find(Class<T> entityClass, K id);
 
     /**
      * Returns the number of vertices from label
