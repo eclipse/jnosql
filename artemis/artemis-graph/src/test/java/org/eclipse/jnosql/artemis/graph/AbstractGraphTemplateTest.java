@@ -452,4 +452,25 @@ public abstract class AbstractGraphTemplateTest {
         getGraphTemplate().insert(Person.builder().withAge().withName("Poliana").build());
         assertEquals(2L, getGraphTemplate().count(Person.class));
     }
+
+
+    @Test
+    public void shouldFindById() {
+        final Person otavio = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+
+        final Optional<Person> person = getGraphTemplate().find(Person.class, otavio.getId());
+        assertNotNull(person);
+        assertTrue(person.isPresent());
+        assertEquals(otavio.getName(), person.map(Person::getName).get());
+    }
+
+
+    @Test
+    public void shouldReturnEmptyWhenFindByIdNotFound() {
+
+        final Optional<Person> person = getGraphTemplate().find(Person.class, -2L);
+        assertNotNull(person);
+        assertFalse(person.isPresent());
+    }
 }
