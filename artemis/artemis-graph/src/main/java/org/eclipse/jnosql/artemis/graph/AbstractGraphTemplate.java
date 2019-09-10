@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.artemis.graph;
 
 import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.EntityNotFoundException;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
@@ -29,6 +30,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.artemis.util.ConverterUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,6 +66,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     protected abstract GraphConverter getConverter();
 
     protected abstract GraphWorkflow getFlow();
+
+    protected abstract Converters getConverters();
 
     private GremlinExecutor gremlinExecutor;
 
@@ -101,6 +105,20 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
             return vertex;
         };
         return getFlow().flow(entity, update);
+    }
+
+    @Override
+    public <T, K> Optional<T> find(Class<T> entityClass, K id) {
+        requireNonNull(entityClass, "entityClass is required");
+        requireNonNull(id, "id is required");
+        ClassMapping classMapping = getClassMappings().get(entityClass);
+        FieldMapping idField = classMapping.getId()
+                .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
+
+        Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
+
+        final Optional<Vertex> vertex = getTraversal().V(value).hasLabel(classMapping.getName()).tryNext();
+        return (Optional<T>) vertex.map(getConverter()::toVertex);
     }
 
     @Override

@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
+import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
@@ -34,14 +35,17 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
 
     private GraphWorkflow workflow;
 
+    private Converters converters;
 
     @Inject
     DefaultGraphTemplate(Instance<Graph> graph, ClassMappings classMappings, GraphConverter converter,
-                         GraphWorkflow workflow) {
+                         GraphWorkflow workflow,
+                         Converters converters) {
         this.graph = graph;
         this.classMappings = classMappings;
         this.converter = converter;
         this.workflow = workflow;
+        this.converters = converters;
     }
 
     DefaultGraphTemplate() {
@@ -65,6 +69,11 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     @Override
     protected GraphWorkflow getFlow() {
         return workflow;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
     }
 
 }

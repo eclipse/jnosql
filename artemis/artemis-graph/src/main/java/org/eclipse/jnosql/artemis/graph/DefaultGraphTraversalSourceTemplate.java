@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
+import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -39,15 +40,19 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
 
     private GraphWorkflow workflow;
 
+    private Converters converters;
+
     @Inject
     DefaultGraphTraversalSourceTemplate(Instance<GraphTraversalSourceSupplier> supplierInstance,
                                         ClassMappings classMappings,
                                         @GraphTraversalSourceOperation GraphConverter converter,
-                                        GraphWorkflow workflow) {
+                                        GraphWorkflow workflow,
+                                        Converters converters) {
         this.supplierInstance = supplierInstance;
         this.classMappings = classMappings;
         this.converter = converter;
         this.workflow = workflow;
+        this.converters = converters;
     }
 
     DefaultGraphTraversalSourceTemplate() {
@@ -80,6 +85,11 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
     @Override
     protected GraphWorkflow getFlow() {
         return workflow;
+    }
+
+    @Override
+    protected Converters getConverters() {
+        return converters;
     }
 
     @Override
