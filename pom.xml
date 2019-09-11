@@ -65,11 +65,11 @@
     <properties>
         <checkstyle.excludes>**/diana/query/**</checkstyle.excludes>
         <hamcrest-all.version>1.3</hamcrest-all.version>
-        <org.awaitility.version>4.0.0-rc1</org.awaitility.version>
+        <org.awaitility.version>4.0.1</org.awaitility.version>
         <owb.version>2.0.3</owb.version>
-        <testcontainers.version>1.11.1</testcontainers.version>
-        <weld.se.core.version>3.1.1.Final</weld.se.core.version>
-        <yasson.version>1.0.4</yasson.version>
+        <testcontainers.version>1.12.1</testcontainers.version>
+        <weld.se.core.version>3.1.2.Final</weld.se.core.version>
+        <yasson.version>1.0.5</yasson.version>
     </properties>
 
     <dependencies>
