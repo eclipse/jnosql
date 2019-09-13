@@ -56,6 +56,9 @@ final class GremlinExecutor {
             if (eval instanceof Iterable) {
                 return convertToStream(StreamSupport.stream(((Iterable) eval).spliterator(), false));
             }
+            if (eval instanceof Stream) {
+                return convertToStream(Stream.class.cast(eval));
+            }
             return Stream.of((T) eval);
         } catch (ScriptException e) {
             throw new GremlinQueryException("There is an error when executed the gremlin query: " + gremlin, e);

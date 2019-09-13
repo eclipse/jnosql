@@ -117,7 +117,6 @@ class GremlinExecutorTest {
 
     }
 
-
     @Test
     public void shouldExecuteQueryVertex4() {
         List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().in('loves').toSet()")
@@ -127,6 +126,14 @@ class GremlinExecutorTest {
 
     }
 
+    @Test
+    public void shouldExecuteQueryVertex5() {
+        List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().in('loves').toStream()")
+                .collect(toList());
+        List<String> names = people.stream().map(Person::getName).collect(toList());
+        assertThat(names, containsInAnyOrder("Bruce Banner"));
+
+    }
 
     @Test
     public void shouldExecuteQueryCount() {
