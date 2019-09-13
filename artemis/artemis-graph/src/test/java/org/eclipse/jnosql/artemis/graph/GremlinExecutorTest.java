@@ -117,6 +117,17 @@ class GremlinExecutorTest {
 
     }
 
+
+    @Test
+    public void shouldExecuteQueryVertex4() {
+        List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().in('loves').toSet()")
+                .collect(toList());
+        List<String> names = people.stream().map(Person::getName).collect(toList());
+        assertThat(names, containsInAnyOrder("Bruce Banner"));
+
+    }
+
+
     @Test
     public void shouldExecuteQueryCount() {
         List<Long> count = executor.<Long>executeGremlin(graph.traversal(), "g.V().count().toList()")
@@ -126,7 +137,7 @@ class GremlinExecutorTest {
     }
 
     @Test
-    public void shouldExecuteQueryCoun2() {
+    public void shouldExecuteQueryCount2() {
         List<Long> count = executor.<Long>executeGremlin(graph.traversal(), "g.V().count()")
                 .collect(toList());;
         assertFalse(count.isEmpty());
