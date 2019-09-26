@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2019 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -13,10 +13,20 @@
  *   Otavio Santana
  */
 
-/**
- * The artemis-validation is a subproject of Artemis that has the goals to validate the data using bean validation.
- * It uses the Bean validation API to do this validation before the event is persist:
- * So, it listens:
- * <p>EntityPrePersist</p>
- */
-package org.eclipse.jnosql.artemis.validation;
+package org.eclipse.jnosql.artemis.configuration;
+
+import jakarta.nosql.Settings;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
+import org.eclipse.microprofile.config.spi.Converter;
+
+public class SettingsConverter implements Converter<Settings> {
+
+    @Override
+    public Settings convert(String prefix) {
+        Config config = ConfigProvider.getConfig();
+
+
+        return null;
+    }
+}

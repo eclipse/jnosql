@@ -12,20 +12,14 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.validation;
 
-
-import jakarta.nosql.mapping.EntityPrePersist;
-
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
-
-class EntityObserver {
-
-    @Inject
-    private ArtemisValidator validator;
-
-    void validate(@Observes EntityPrePersist entity) {
-        validator.validate(entity.getValue());
-    }
-}
+/**
+ * Each configuration has four information:
+ * <ul>
+ * <li><b>name</b>: the name of the configuration, it works as an </li>
+ * <li><b>description</b>: a description of the configuration, it won’t be used</li>
+ * <li><b>provider</b>: the classpath of a configuration implementation.</li>
+ * <li><b>settings</b>: the entry list, as a Map, to be used when it creates the instances.</li>
+ * </ul>
+ */
+package org.eclipse.jnosql.artemis.configuration;
