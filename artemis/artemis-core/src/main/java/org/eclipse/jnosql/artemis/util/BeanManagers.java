@@ -26,7 +26,6 @@ import java.util.Objects;
  */
 public final class BeanManagers {
 
-
     /**
      * Get instance from the {@link BeanManager}
      *
@@ -69,7 +68,6 @@ public final class BeanManagers {
         return CDI.current().getBeanManager();
     }
 
-
     /**
      * Get instance from the {@link BeanManager} using the {@link BeanManagers#getBeanManager()}
      *
@@ -95,8 +93,6 @@ public final class BeanManagers {
 
         return getInstanceImpl(clazz, qualifier, getBeanManager());
     }
-
-
 
     private static <T> T getInstanceImpl(Class<T> clazz, BeanManager beanManager) {
         Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
