@@ -16,17 +16,42 @@
 package org.eclipse.jnosql.artemis.configuration;
 
 import jakarta.nosql.Settings;
+import org.eclipse.jnosql.artemis.util.StringUtils;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import java.util.Map;
+import java.util.Spliterator;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.StreamSupport.stream;
 
 public class SettingsConverter implements Converter<Settings> {
 
     @Override
     public Settings convert(String prefix) {
         Config config = ConfigProvider.getConfig();
+        final Spliterator<String> spliterator = config.getPropertyNames().spliterator();
 
+        final Map<String, Object> settings = stream(spliterator, false)
+                .filter(isSettings(prefix))
+                .collect(toMap(Function.identity(), s ->
+                        config.getValue(s, String.class)));
 
-        return null;
+        return Settings.of(settings);
+    }
+
+    private Predicate<String> isSettings(String prefix) {
+        return s -> s.startsWith(getSettingsPrefix(prefix));
+    }
+
+    private String getSettingsPrefix(String prefix) {
+        if (StringUtils.isBlank(prefix)) {
+            return "settings";
+        }
+        return prefix + '.' + "settings";
     }
 }
