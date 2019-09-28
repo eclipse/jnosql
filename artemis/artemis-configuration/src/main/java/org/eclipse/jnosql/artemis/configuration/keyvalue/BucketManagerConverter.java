@@ -19,6 +19,7 @@ import jakarta.nosql.Settings;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValueConfiguration;
 import jakarta.nosql.mapping.reflection.Reflections;
+import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
@@ -43,8 +44,6 @@ public class BucketManagerConverter implements Converter<BucketManager> {
             return configuration.get(settings);
 
         }
-
-
-        return null;
+        throw new ConfigurationException("The class " + bucketClass + " is not valid to jakarta.nosql.keyvalue.KeyValueConfiguration");
     }
 }

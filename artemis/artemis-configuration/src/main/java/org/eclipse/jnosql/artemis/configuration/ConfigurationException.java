@@ -31,4 +31,14 @@ public class ConfigurationException extends MappingException {
     public ConfigurationException(String message, Throwable cause) {
         super(message, cause);
     }
+
+
+    /**
+     * Constructs a new runtime exception with the specified detail message.
+     *
+     * @param message the message
+     */
+    public ConfigurationException(String message) {
+        super(message);
+    }
 }
