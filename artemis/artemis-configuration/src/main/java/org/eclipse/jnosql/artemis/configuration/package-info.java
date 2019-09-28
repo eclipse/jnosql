@@ -40,6 +40,7 @@
  * This project has support to:
  *
  * <ul>
+ *   <li>Settings</li>
  *   <li>BucketManager</li>
  *   <li>KeyValueTemplate</li>
  *   <li>DocumentCollectionManager</li>
