@@ -25,7 +25,8 @@ import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
 /**
- * Converter the {@link String} to {@link BucketManagerFactory} it will use the {@link SettingsConverter} and
+ * Converter the {@link String} to {@link BucketManagerFactory} it will
+ * use the {@link org.eclipse.jnosql.artemis.configuration.SettingsConverter} and
  * find by the provider that should be an implementation of {@link KeyValueConfiguration}
  */
 public class BucketManagerFactoryConverter implements Converter<BucketManagerFactory> {
