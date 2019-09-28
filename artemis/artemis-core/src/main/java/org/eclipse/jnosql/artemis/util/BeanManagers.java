@@ -105,4 +105,7 @@ public final class BeanManagers {
         CreationalContext ctx = beanManager.createCreationalContext(bean);
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
+
+    private BeanManagers() {
+    }
 }
