@@ -16,11 +16,12 @@
 package org.eclipse.jnosql.artemis.configuration;
 
 import jakarta.nosql.Settings;
+import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.jnosql.artemis.util.StringUtils;
 import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.spi.Converter;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.Map;
 import java.util.Spliterator;
 import java.util.function.Predicate;
@@ -28,13 +29,14 @@ import java.util.function.Predicate;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.StreamSupport.stream;
 
+@ApplicationScoped
 public class SettingsConverter implements Converter<Settings> {
 
 
     @Override
     public Settings convert(String value) {
 
-        Config config = ConfigProvider.getConfig();
+        Config config = BeanManagers.getInstance(Config.class);
         final Spliterator<String> spliterator = config.getPropertyNames().spliterator();
 
         final String settingsPrefix = getSettingsPrefix(value);

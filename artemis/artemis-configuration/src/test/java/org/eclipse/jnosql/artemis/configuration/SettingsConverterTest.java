@@ -17,7 +17,6 @@ package org.eclipse.jnosql.artemis.configuration;
 
 import jakarta.nosql.Settings;
 import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.ConfigProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +37,6 @@ class SettingsConverterTest {
     @Test
     public void shouldLoadEmptySettings() {
         System.setProperty("database", "prefix");
-        final Config config = ConfigProvider.getConfig();
         final Settings settings = config.getValue("database", Settings.class);
         Assertions.assertNotNull(settings);
         assertEquals(0, settings.size());
@@ -52,7 +50,6 @@ class SettingsConverterTest {
         System.setProperty(prefix, prefix);
         System.setProperty(prefix + ".settings.key", "value");
         System.setProperty(prefix + ".settings.key2", "value2");
-        final Config config = ConfigProvider.getConfig();
         final Settings settings = config.getValue(prefix, Settings.class);
         Assertions.assertNotNull(settings);
         assertEquals(2, settings.size());
