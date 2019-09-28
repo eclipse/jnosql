@@ -41,6 +41,7 @@
  *
  * <ul>
  *   <li>Settings</li>
+ *   <li>BucketManagerFactory</li>
  *   <li>BucketManager</li>
  *   <li>KeyValueTemplate</li>
  *   <li>DocumentCollectionManager</li>

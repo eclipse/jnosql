@@ -62,4 +62,20 @@ class BucketManagerConverterTest {
         System.clearProperty(prefix + ".provider");
     }
 
+
+    @Test
+    public void shouldReturnBucketManager() {
+        final String prefix = UUID.randomUUID().toString();
+        System.setProperty(prefix, prefix);
+        System.setProperty(prefix + ".settings.key", "value");
+        System.setProperty(prefix + ".settings.key2", "value2");
+        System.setProperty(prefix + ".provider", "java.lang.String");
+        Assertions.assertThrows(ConfigurationException.class, () -> config.getValue(prefix, BucketManager.class) );
+
+        System.clearProperty(prefix);
+        System.clearProperty(prefix + ".settings.key");
+        System.clearProperty(prefix + ".settings.key2");
+        System.clearProperty(prefix + ".provider");
+    }
+
 }
