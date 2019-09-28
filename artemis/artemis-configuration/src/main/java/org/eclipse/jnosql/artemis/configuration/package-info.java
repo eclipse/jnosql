@@ -36,11 +36,23 @@
  * prefix.settings.key=value
  * prefix.settings.key2=value2
  * </pre>
- *
+ * <p>
  * This project has support to:
  *
  * <ul>
- *   <li>Coffee</li>
+ *   <li>BucketManager</li>
+ *   <li>KeyValueTemplate</li>
+ *   <li>DocumentCollectionManager</li>
+ *   <li>DocumentCollectionManagerAsync</li>
+ *   <li>DocumentTemplate</li>
+ *   <li>DocumentTemplateAsync</li>
+ *   <li>ColumnFamilyManager</li>
+ *   <li>ColumnFamilyManagerAsync</li>
+ *   <li>ColumnTemplate</li>
+ *   <li>ColumnTemplateAsync</li>
+ *   <li>Graph</li>
+ *   <li>GraphTemplate</li>
+ *   <li>Repository</li>Coffee</li>
  * </ul>
  */
 package org.eclipse.jnosql.artemis.configuration;
