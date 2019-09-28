@@ -15,15 +15,11 @@
 
 package org.eclipse.jnosql.artemis.configuration;
 
-import jakarta.nosql.NoSQLException;
 import org.eclipse.microprofile.config.spi.Converter;
-
-import javax.enterprise.context.ApplicationScoped;
 
 /**
  * Converter the {@link String} to {@link Class} it gonna use {@link Class#forName(String)}
  */
-@ApplicationScoped
 public class ClassConverter implements Converter<Class<?>> {
 
     @Override

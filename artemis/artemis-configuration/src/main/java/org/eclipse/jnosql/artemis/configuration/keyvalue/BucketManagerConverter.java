@@ -17,14 +17,17 @@ package org.eclipse.jnosql.artemis.configuration.keyvalue;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.keyvalue.BucketManager;
+import jakarta.nosql.keyvalue.KeyValueConfiguration;
+import jakarta.nosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
-import javax.enterprise.context.ApplicationScoped;
-
-@ApplicationScoped
+/**
+ * Converter the {@link String} to {@link BucketManager} it will use the {@link SettingsConverter} and
+ * find by the provider that should be an implementation of {@link KeyValueConfiguration}
+ */
 public class BucketManagerConverter implements Converter<BucketManager> {
 
     @Override
@@ -34,7 +37,10 @@ public class BucketManagerConverter implements Converter<BucketManager> {
         final Settings settings = settingsConverter.convert(value);
         String provider = value + ".provider";
         final Class<?> bucketClass = config.getValue(provider, Class.class);
-        if(BucketManager.class.isAssignableFrom(bucketClass)) {
+        if (KeyValueConfiguration.class.isAssignableFrom(bucketClass)) {
+            final Reflections reflections = BeanManagers.getInstance(Reflections.class);
+            final KeyValueConfiguration configuration = (KeyValueConfiguration) reflections.newInstance(bucketClass);
+            return configuration.get(settings);
 
         }
 
