@@ -25,6 +25,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 @ExtendWith(CDIExtension.class)
 class SettingsConverterTest {
@@ -39,7 +41,7 @@ class SettingsConverterTest {
         final Config config = ConfigProvider.getConfig();
         final Settings settings = config.getValue("database", Settings.class);
         Assertions.assertNotNull(settings);
-        Assertions.assertEquals(0, settings.size());
+        assertEquals(0, settings.size());
         System.clearProperty("database");
     }
 
@@ -53,9 +55,9 @@ class SettingsConverterTest {
         final Config config = ConfigProvider.getConfig();
         final Settings settings = config.getValue(prefix, Settings.class);
         Assertions.assertNotNull(settings);
-        Assertions.assertEquals(2, settings.size());
-        Assertions.assertEquals(settings.get("key"), "value");
-        Assertions.assertEquals(settings.get("key2"), "value");
+        assertEquals(2, settings.size());
+        assertEquals(settings.get("key").get(), "value");
+        assertEquals(settings.get("key2").get(), "value2");
 
 
         System.clearProperty(prefix);
