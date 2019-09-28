@@ -15,12 +15,16 @@
 package org.eclipse.jnosql.artemis.configuration.keyvalue;
 
 import jakarta.nosql.Settings;
+import jakarta.nosql.Value;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.BucketManagerFactory;
 import jakarta.nosql.keyvalue.KeyValueConfiguration;
+import jakarta.nosql.keyvalue.KeyValueEntity;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 
@@ -28,18 +32,18 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
 
     @Override
     public BucketManagerFactory get() {
-        return  new BucketManagerFactoryMock(Settings.builder().build());
+        return new BucketManagerFactoryMock(Settings.builder().build());
     }
 
     @Override
     public BucketManagerFactory get(Settings settings) {
-        return  new BucketManagerFactoryMock(settings);
+        return new BucketManagerFactoryMock(settings);
     }
 
 
-    public static class BucketManagerFactoryMock implements BucketManagerFactory  {
+    public static class BucketManagerFactoryMock implements BucketManagerFactory {
 
-     private final Settings settings;
+        private final Settings settings;
 
         public BucketManagerFactoryMock(Settings settings) {
             this.settings = settings;
@@ -50,8 +54,8 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
         }
 
         @Override
-        public <T extends BucketManager> T getBucketManager(String bucketName) {
-            return null;
+        public BucketManagerMock getBucketManager(String bucketName) {
+            return new BucketManagerMock(bucketName);
         }
 
         @Override
@@ -72,6 +76,69 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
         @Override
         public <K, V> Map<K, V> getMap(String bucketName, Class<K> keyValue, Class<V> valueValue) {
             return null;
+        }
+
+        @Override
+        public void close() {
+
+        }
+    }
+
+    public static class BucketManagerMock implements BucketManager {
+
+        private final String bucketName;
+
+        public BucketManagerMock(String bucketName) {
+            this.bucketName = bucketName;
+        }
+
+        public String getBucketName() {
+            return bucketName;
+        }
+
+        @Override
+        public <K, V> void put(K key, V value) {
+
+        }
+
+        @Override
+        public void put(KeyValueEntity entity) {
+
+        }
+
+        @Override
+        public void put(KeyValueEntity entity, Duration ttl) {
+
+        }
+
+        @Override
+        public void put(Iterable<KeyValueEntity> entities) {
+
+        }
+
+        @Override
+        public void put(Iterable<KeyValueEntity> entities, Duration ttl) {
+
+        }
+
+        @Override
+        public <K> Optional<Value> get(K key) {
+            return Optional.empty();
+        }
+
+        @Override
+        public <K> Iterable<Value> get(Iterable<K> keys) {
+            return null;
+        }
+
+        @Override
+        public <K> void delete(K key) {
+
+        }
+
+        @Override
+        public <K> void delete(Iterable<K> keys) {
+
         }
 
         @Override

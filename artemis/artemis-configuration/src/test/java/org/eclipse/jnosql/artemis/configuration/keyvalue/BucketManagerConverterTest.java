@@ -17,6 +17,7 @@ package org.eclipse.jnosql.artemis.configuration.keyvalue;
 import jakarta.nosql.keyvalue.BucketManager;
 import org.eclipse.jnosql.artemis.configuration.CDIExtension;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
+import org.eclipse.jnosql.artemis.configuration.keyvalue.KeyValueConfigurationMock.BucketManagerMock;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -62,20 +63,37 @@ class BucketManagerConverterTest {
         System.clearProperty(prefix + ".provider");
     }
 
-
     @Test
-    public void shouldReturnBucketManager() {
+    public void shouldReturnErrorWhenTableIsMissing() {
         final String prefix = UUID.randomUUID().toString();
         System.setProperty(prefix, prefix);
         System.setProperty(prefix + ".settings.key", "value");
         System.setProperty(prefix + ".settings.key2", "value2");
-        System.setProperty(prefix + ".provider", "java.lang.String");
-        Assertions.assertThrows(ConfigurationException.class, () -> config.getValue(prefix, BucketManager.class) );
+        System.setProperty(prefix + ".provider", KeyValueConfigurationMock.class.getName());
+        Assertions.assertThrows(NoSuchElementException.class, () -> config.getValue(prefix, BucketManager.class) );
 
         System.clearProperty(prefix);
         System.clearProperty(prefix + ".settings.key");
         System.clearProperty(prefix + ".settings.key2");
         System.clearProperty(prefix + ".provider");
+    }
+
+    @Test
+    public void shouldReturnBucket() {
+        final String prefix = UUID.randomUUID().toString();
+        System.setProperty(prefix, prefix);
+        System.setProperty(prefix + ".settings.key", "value");
+        System.setProperty(prefix + ".settings.key2", "value2");
+        System.setProperty(prefix + ".provider", KeyValueConfigurationMock.class.getName());
+        System.setProperty(prefix + ".database", "bucket");
+        final BucketManager bucketManager = config.getValue(prefix, BucketManager.class);
+        final BucketManagerMock bucket = BucketManagerMock.class.cast(bucketManager);
+        Assertions.assertEquals("bucket", bucket.getBucketName());
+        System.clearProperty(prefix);
+        System.clearProperty(prefix + ".settings.key");
+        System.clearProperty(prefix + ".settings.key2");
+        System.clearProperty(prefix + ".provider");
+        System.clearProperty(prefix + ".database");
     }
 
 }
