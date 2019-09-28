@@ -45,6 +45,10 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
             this.settings = settings;
         }
 
+        public Settings getSettings() {
+            return settings;
+        }
+
         @Override
         public <T extends BucketManager> T getBucketManager(String bucketName) {
             return null;
