@@ -33,7 +33,10 @@ public class BucketManagerConverter implements Converter<BucketManager> {
         Config config = BeanManagers.getInstance(Config.class);
         final Settings settings = settingsConverter.convert(value);
         String provider = value + ".provider";
-        config.getValue(provider, String.class)
+        final Class<?> bucketClass = config.getValue(provider, Class.class);
+        if(BucketManager.class.isAssignableFrom(bucketClass)) {
+
+        }
 
 
         return null;

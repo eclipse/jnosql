@@ -15,23 +15,20 @@
 
 package org.eclipse.jnosql.artemis.configuration;
 
-import jakarta.nosql.NoSQLException;
-import org.eclipse.microprofile.config.spi.Converter;
-
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.nosql.mapping.MappingException;
 
 /**
- * Converter the {@link String} to {@link Class} it gonna use {@link Class#forName(String)}
+ * The root exception in the integration between Mapping and Eclipse MicroProfile Config.
  */
-@ApplicationScoped
-public class ClassConverter implements Converter<Class<?>> {
+public class ConfigurationException extends MappingException {
 
-    @Override
-    public Class<?> convert(String value) {
-        try {
-            return Class.forName(value);
-        } catch (ClassNotFoundException e) {
-            throw new ConfigurationException("An error to convert the value to Class the value: " + value, e);
-        }
+    /**
+     * Constructs a new runtime exception with the specified detail message and cause.
+     *
+     * @param message the message
+     * @param cause   the cause
+     */
+    public ConfigurationException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
