@@ -1,1 +1,2 @@
 org.eclipse.jnosql.artemis.configuration.SettingsConverter
+org.eclipse.jnosql.artemis.configuration.ClassConverter
