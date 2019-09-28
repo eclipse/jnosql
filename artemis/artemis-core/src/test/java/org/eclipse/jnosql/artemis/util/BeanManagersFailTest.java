@@ -14,15 +14,16 @@
  */
 package org.eclipse.jnosql.artemis.util;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BeanManagersFailTest {
 
 
     @Test
     public void should() {
-        Assertions.assertThrows(IllegalStateException.class, BeanManagers::getBeanManager);
+        assertThrows(IllegalStateException.class, BeanManagers::getBeanManager);
     }
 
 
