@@ -50,31 +50,26 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>artemis-column</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>artemis-document</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>artemis-key-value</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate.validator.version}</version>
+            <groupId>io.smallrye</groupId>
+            <artifactId>smallrye-config</artifactId>
+            <version>1.3.9</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>el-impl</artifactId>
-            <version>${el.impl.version}</version>
-            <scope>test</scope>
-        </dependency>
+
     </dependencies>
 </project>

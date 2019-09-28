@@ -31,8 +31,10 @@ import static java.util.stream.StreamSupport.stream;
 
 public class SettingsConverter implements Converter<Settings> {
 
+
     @Override
     public Settings convert(String prefix) {
+
         Config config = ConfigProvider.getConfig();
         final Spliterator<String> spliterator = config.getPropertyNames().spliterator();
 
