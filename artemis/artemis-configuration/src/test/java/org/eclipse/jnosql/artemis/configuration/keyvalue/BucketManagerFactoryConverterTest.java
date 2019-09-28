@@ -33,9 +33,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(CDIExtension.class)
 class BucketManagerFactoryConverterTest {
+
     @Inject
     private Config config;
-
 
     @Test
     public void shouldReturnErrorWhenThereIsNoProvider() {

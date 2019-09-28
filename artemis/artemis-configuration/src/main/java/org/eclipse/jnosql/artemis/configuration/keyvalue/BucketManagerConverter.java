@@ -16,8 +16,11 @@
 package org.eclipse.jnosql.artemis.configuration.keyvalue;
 
 import jakarta.nosql.keyvalue.BucketManager;
+import jakarta.nosql.keyvalue.BucketManagerFactory;
 import jakarta.nosql.keyvalue.KeyValueConfiguration;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
+import org.eclipse.jnosql.artemis.util.BeanManagers;
+import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
 /**
@@ -28,6 +31,11 @@ public class BucketManagerConverter implements Converter<BucketManager> {
 
     @Override
     public BucketManager convert(String value) {
-      return null;
+
+        Config config = BeanManagers.getInstance(Config.class);
+        final BucketManagerFactory managerFactory = config.getValue(value, BucketManagerFactory.class);
+        final String database = value + ".database";
+        final String bucket = config.getValue(database, String.class);
+        return managerFactory.getBucketManager(bucket);
     }
 }
