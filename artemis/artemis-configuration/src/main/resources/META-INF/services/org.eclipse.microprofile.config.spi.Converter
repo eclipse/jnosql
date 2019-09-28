@@ -1,3 +1,2 @@
 org.eclipse.jnosql.artemis.configuration.SettingsConverter
-org.eclipse.jnosql.artemis.configuration.ClassConverter
 org.eclipse.jnosql.artemis.configuration.keyvalue.BucketManagerConverter
