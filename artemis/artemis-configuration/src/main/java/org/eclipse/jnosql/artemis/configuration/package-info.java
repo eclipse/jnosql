@@ -54,7 +54,7 @@
  *   <li>ColumnTemplateAsync</li>
  *   <li>Graph</li>
  *   <li>GraphTemplate</li>
- *   <li>Repository</li>Coffee</li>
+ *   <li>Repository</li>
  * </ul>
  */
 package org.eclipse.jnosql.artemis.configuration;
