@@ -12,11 +12,11 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.configuration.keyvalue;
+package org.eclipse.jnosql.artemis.configuration.column;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.keyvalue.BucketManagerFactory;
-import jakarta.nosql.keyvalue.KeyValueConfiguration;
+import jakarta.nosql.column.ColumnConfiguration;
+import jakarta.nosql.column.ColumnFamilyManagerFactory;
 import jakarta.nosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
@@ -25,26 +25,24 @@ import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
 /**
- * Converter the {@link String} to {@link BucketManagerFactory} it will
- * use the {@link org.eclipse.jnosql.artemis.configuration.SettingsConverter} and
- * find by the provider that should be an implementation of {@link KeyValueConfiguration}
+ * Converter the {@link String} to {@link ColumnFamilyManagerFactory} it will use the {@link SettingsConverter} and
+ * find by the provider that should be an implementation of {@link ColumnConfiguration}
  */
-public class BucketManagerFactoryConverter implements Converter<BucketManagerFactory> {
+public class ColumnFamilyManagerFactoryAsyncConverter implements Converter<ColumnFamilyManagerFactory> {
 
     @Override
-    public BucketManagerFactory convert(String value) {
+    public ColumnFamilyManagerFactory convert(String value) {
         final SettingsConverter settingsConverter = BeanManagers.getInstance(SettingsConverter.class);
         Config config = BeanManagers.getInstance(Config.class);
         final Settings settings = settingsConverter.convert(value);
         String provider = value + ".provider";
-        final Class<?> configurationClass = config.getValue(provider, Class.class);
-        if (KeyValueConfiguration.class.isAssignableFrom(configurationClass)) {
+        final Class<?> bucketClass = config.getValue(provider, Class.class);
+        if (ColumnConfiguration.class.isAssignableFrom(bucketClass)) {
             final Reflections reflections = BeanManagers.getInstance(Reflections.class);
-            final KeyValueConfiguration configuration = (KeyValueConfiguration) reflections.newInstance(configurationClass);
+            final ColumnConfiguration configuration = (ColumnConfiguration) reflections.newInstance(bucketClass);
             return configuration.get(settings);
 
         }
-        throw new ConfigurationException("The class " + configurationClass + " is not valid to " + KeyValueConfiguration.class);
+        throw new ConfigurationException("The class " + bucketClass + " is not valid to " + ColumnConfiguration.class);
     }
 }
-
