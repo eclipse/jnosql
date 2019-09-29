@@ -33,7 +33,6 @@ class BucketManagerConverterTest {
     @Inject
     private Config config;
 
-
     @Test
     public void shouldReturnErrorWhenThereIsNoProvider() {
         final String prefix = UUID.randomUUID().toString();
@@ -46,7 +45,6 @@ class BucketManagerConverterTest {
         System.clearProperty(prefix + ".settings.key");
         System.clearProperty(prefix + ".settings.key2");
     }
-
 
     @Test
     public void shouldReturnErrorWhenThereIsInvalidProvider() {
