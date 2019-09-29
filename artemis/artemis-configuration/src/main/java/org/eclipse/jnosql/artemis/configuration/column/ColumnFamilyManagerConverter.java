@@ -12,29 +12,28 @@
  *
  *   Otavio Santana
  */
+package org.eclipse.jnosql.artemis.configuration.column;
 
-package org.eclipse.jnosql.artemis.configuration.keyvalue;
-
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.BucketManagerFactory;
-import jakarta.nosql.keyvalue.KeyValueConfiguration;
+import jakarta.nosql.column.ColumnConfiguration;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnFamilyManagerFactory;
+import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
 /**
- * Converter the {@link String} to {@link BucketManager} it will use the {@link org.eclipse.jnosql.artemis.configuration.SettingsConverter} and
- * find by the provider that should be an implementation of {@link KeyValueConfiguration}
+ * Converter the {@link String} to {@link ColumnFamilyManager} it will use the {@link SettingsConverter} and
+ * find by the provider that should be an implementation of {@link ColumnConfiguration}
  */
-public class BucketManagerConverter implements Converter<BucketManager> {
+public class ColumnFamilyManagerConverter implements Converter<ColumnFamilyManager> {
 
     @Override
-    public BucketManager convert(String value) {
-
+    public ColumnFamilyManager convert(String value) {
         Config config = BeanManagers.getInstance(Config.class);
-        final BucketManagerFactory managerFactory = config.getValue(value, BucketManagerFactory.class);
+        final ColumnFamilyManagerFactory managerFactory = config.getValue(value, ColumnFamilyManagerFactory.class);
         final String database = value + ".database";
         final String entity = config.getValue(database, String.class);
-        return managerFactory.getBucketManager(entity);
+        return managerFactory.get(entity);
     }
 }
