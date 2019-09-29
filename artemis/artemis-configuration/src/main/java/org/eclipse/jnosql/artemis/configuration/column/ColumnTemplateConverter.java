@@ -12,28 +12,27 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.configuration.keyvalue;
+package org.eclipse.jnosql.artemis.configuration.column;
 
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValueConfiguration;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
+import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateProducer;
+import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
 /**
- * Converter the {@link String} to {@link KeyValueTemplate} it will use the
- * {@link org.eclipse.jnosql.artemis.configuration.SettingsConverter} and
- * find by the provider that should be an implementation of {@link KeyValueConfiguration}
+ * Converter the {@link String} to {@link ColumnTemplate} it will use the {@link SettingsConverter} and
+ * find by the provider that should be an implementation of {@link jakarta.nosql.column.ColumnConfiguration}
  */
-public class KeyValueTemplateConverter implements Converter<KeyValueTemplate> {
+public class ColumnTemplateConverter implements Converter<ColumnTemplate> {
 
     @Override
-    public KeyValueTemplate convert(String value) {
+    public ColumnTemplate convert(String value) {
         Config config = BeanManagers.getInstance(Config.class);
-        final BucketManager manager = config.getValue(value, BucketManager.class);
-        KeyValueTemplateProducer producer = BeanManagers.getInstance(KeyValueTemplateProducer.class);
+        final ColumnFamilyManager manager = config.getValue(value, ColumnFamilyManager.class);
+        ColumnTemplateProducer producer = BeanManagers.getInstance(ColumnTemplateProducer.class);
 
         return producer.get(manager);
     }
