@@ -16,6 +16,8 @@ package org.eclipse.jnosql.artemis.configuration.column;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.column.ColumnConfiguration;
+import jakarta.nosql.column.ColumnConfigurationAsync;
+import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
 import jakarta.nosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
@@ -25,24 +27,24 @@ import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
 /**
- * Converter the {@link String} to {@link ColumnFamilyManagerFactory} it will use the {@link SettingsConverter} and
- * find by the provider that should be an implementation of {@link ColumnConfiguration}
+ * Converter the {@link String} to {@link ColumnFamilyManagerAsyncFactory} it will use the {@link SettingsConverter} and
+ * find by the provider that should be an implementation of {@link ColumnConfigurationAsync}
  */
-public class ColumnFamilyManagerFactoryAsyncConverter implements Converter<ColumnFamilyManagerFactory> {
+public class ColumnFamilyManagerAsyncFactoryConverter implements Converter<ColumnFamilyManagerAsyncFactory> {
 
     @Override
-    public ColumnFamilyManagerFactory convert(String value) {
+    public ColumnFamilyManagerAsyncFactory convert(String value) {
         final SettingsConverter settingsConverter = BeanManagers.getInstance(SettingsConverter.class);
         Config config = BeanManagers.getInstance(Config.class);
         final Settings settings = settingsConverter.convert(value);
         String provider = value + ".provider";
-        final Class<?> bucketClass = config.getValue(provider, Class.class);
-        if (ColumnConfiguration.class.isAssignableFrom(bucketClass)) {
+        final Class<?> configurationClass = config.getValue(provider, Class.class);
+        if (ColumnConfigurationAsync.class.isAssignableFrom(configurationClass)) {
             final Reflections reflections = BeanManagers.getInstance(Reflections.class);
-            final ColumnConfiguration configuration = (ColumnConfiguration) reflections.newInstance(bucketClass);
+            final ColumnConfigurationAsync configuration = (ColumnConfigurationAsync) reflections.newInstance(configurationClass);
             return configuration.get(settings);
 
         }
-        throw new ConfigurationException("The class " + bucketClass + " is not valid to " + ColumnConfiguration.class);
+        throw new ConfigurationException("The class " + configurationClass + " is not valid to " + ColumnConfigurationAsync.class);
     }
 }

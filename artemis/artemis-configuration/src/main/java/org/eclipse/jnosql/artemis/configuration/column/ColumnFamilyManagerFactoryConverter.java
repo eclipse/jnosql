@@ -14,14 +14,35 @@
  */
 package org.eclipse.jnosql.artemis.configuration.column;
 
-import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValueConfiguration;
+import jakarta.nosql.Settings;
+import jakarta.nosql.column.ColumnConfiguration;
+import jakarta.nosql.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.mapping.reflection.Reflections;
+import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
+import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
+import org.eclipse.jnosql.artemis.util.BeanManagers;
+import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
 /**
- * Converter the {@link String} to {@link BucketManager} it will use the {@link org.eclipse.jnosql.artemis.configuration.SettingsConverter} and
- * find by the provider that should be an implementation of {@link KeyValueConfiguration}
+ * Converter the {@link String} to {@link ColumnFamilyManagerFactory} it will use the {@link org.eclipse.jnosql.artemis.configuration.SettingsConverter} and
+ * find by the provider that should be an implementation of {@link ColumnConfiguration}
  */
-public class ColumnFamilyManagerConverter implements Converter<ColumnFamilyManager> {
+public class ColumnFamilyManagerFactoryConverter implements Converter<ColumnFamilyManagerFactory> {
+
+    @Override
+    public ColumnFamilyManagerFactory convert(String value) {
+        final SettingsConverter settingsConverter = BeanManagers.getInstance(SettingsConverter.class);
+        Config config = BeanManagers.getInstance(Config.class);
+        final Settings settings = settingsConverter.convert(value);
+        String provider = value + ".provider";
+        final Class<?> configurationClass = config.getValue(provider, Class.class);
+        if (ColumnConfiguration.class.isAssignableFrom(configurationClass)) {
+            final Reflections reflections = BeanManagers.getInstance(Reflections.class);
+            final ColumnConfiguration configuration = (ColumnConfiguration) reflections.newInstance(configurationClass);
+            return configuration.get(settings);
+
+        }
+        throw new ConfigurationException("The class " + configurationClass + " is not valid to " + ColumnConfiguration.class);
+    }
 }
