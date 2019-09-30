@@ -67,7 +67,7 @@ class BucketManagerFactoryConverterTest {
     }
 
     @Test
-    public void shouldReturnBucketManagerFactory() {
+    public void shouldReturnManagerFactory() {
         final String prefix = UUID.randomUUID().toString();
         System.setProperty(prefix, prefix);
         System.setProperty(prefix + ".settings.key", "value");
