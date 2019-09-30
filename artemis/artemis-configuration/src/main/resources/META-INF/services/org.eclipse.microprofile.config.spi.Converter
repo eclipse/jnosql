@@ -8,4 +8,3 @@ org.eclipse.jnosql.artemis.configuration.column.ColumnFamilyManagerAsyncFactoryC
 org.eclipse.jnosql.artemis.configuration.column.ColumnFamilyManagerFactoryConverter
 org.eclipse.jnosql.artemis.configuration.column.ColumnTemplateConverter
 org.eclipse.jnosql.artemis.configuration.column.ColumnTemplateAsyncConverter
-
