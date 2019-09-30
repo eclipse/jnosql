@@ -17,10 +17,17 @@ package org.eclipse.jnosql.artemis.configuration.column;
 import jakarta.nosql.Settings;
 import jakarta.nosql.column.ColumnConfiguration;
 import jakarta.nosql.column.ColumnConfigurationAsync;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.column.ColumnQuery;
+
+import java.time.Duration;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 class ColumnConfigurationAsyncMock implements ColumnConfigurationAsync {
 
@@ -48,8 +55,92 @@ class ColumnConfigurationAsyncMock implements ColumnConfigurationAsync {
         }
 
         @Override
-        public <T extends ColumnFamilyManagerAsync> T getAsync(String database) {
-            return null;
+        public ColumnFamilyManagerAsyncMock getAsync(String database) {
+            return new ColumnFamilyManagerAsyncMock(database);
+        }
+
+        @Override
+        public void close() {
+
+        }
+    }
+
+    public static class ColumnFamilyManagerAsyncMock implements ColumnFamilyManagerAsync {
+
+
+        private final String database;
+
+        public ColumnFamilyManagerAsyncMock(String database) {
+            this.database = database;
+        }
+
+        public String getDatabase() {
+            return database;
+        }
+
+        @Override
+        public void insert(ColumnEntity entity) {
+
+        }
+
+        @Override
+        public void insert(ColumnEntity entity, Duration ttl) {
+
+        }
+
+        @Override
+        public void insert(ColumnEntity entity, Consumer<ColumnEntity> callBack) {
+
+        }
+
+        @Override
+        public void insert(Iterable<ColumnEntity> entities) {
+
+        }
+
+        @Override
+        public void insert(Iterable<ColumnEntity> entities, Duration ttl) {
+
+        }
+
+        @Override
+        public void insert(ColumnEntity entity, Duration ttl, Consumer<ColumnEntity> callBack) {
+
+        }
+
+        @Override
+        public void update(ColumnEntity entity) {
+
+        }
+
+        @Override
+        public void update(Iterable<ColumnEntity> entities) {
+
+        }
+
+        @Override
+        public void update(ColumnEntity entity, Consumer<ColumnEntity> callBack) {
+
+        }
+
+        @Override
+        public void delete(ColumnDeleteQuery query) {
+
+        }
+
+        @Override
+        public void delete(ColumnDeleteQuery query, Consumer<Void> callBack) {
+
+        }
+
+        @Override
+        public void select(ColumnQuery query, Consumer<Stream<ColumnEntity>> callBack) {
+
+        }
+
+        @Override
+        public void count(String columnFamily, Consumer<Long> callback) {
+
         }
 
         @Override
