@@ -2,3 +2,10 @@ org.eclipse.jnosql.artemis.configuration.SettingsConverter
 org.eclipse.jnosql.artemis.configuration.keyvalue.BucketManagerConverter
 org.eclipse.jnosql.artemis.configuration.keyvalue.BucketManagerFactoryConverter
 org.eclipse.jnosql.artemis.configuration.keyvalue.KeyValueTemplateConverter
+org.eclipse.jnosql.artemis.configuration.column.ColumnFamilyManagerConverter
+org.eclipse.jnosql.artemis.configuration.column.ColumnFamilyManagerAsyncConverter
+org.eclipse.jnosql.artemis.configuration.column.ColumnFamilyManagerAsyncFactoryConverter
+org.eclipse.jnosql.artemis.configuration.column.ColumnFamilyManagerFactoryConverter
+org.eclipse.jnosql.artemis.configuration.column.ColumnTemplateConverter
+org.eclipse.jnosql.artemis.configuration.column.ColumnTemplateAsyncConverter
+
