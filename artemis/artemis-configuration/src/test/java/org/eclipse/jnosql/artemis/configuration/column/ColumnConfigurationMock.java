@@ -16,8 +16,14 @@ package org.eclipse.jnosql.artemis.configuration.column;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.column.ColumnConfiguration;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.column.ColumnQuery;
+
+import java.time.Duration;
+import java.util.stream.Stream;
 
 class ColumnConfigurationMock implements ColumnConfiguration {
 
@@ -45,8 +51,71 @@ class ColumnConfigurationMock implements ColumnConfiguration {
         }
 
         @Override
-        public <T extends ColumnFamilyManager> T get(String database) {
+        public ColumnFamilyManagerMock get(String database) {
+            return new ColumnFamilyManagerMock(database);
+        }
+
+        @Override
+        public void close() {
+
+        }
+    }
+
+    public static class ColumnFamilyManagerMock implements ColumnFamilyManager {
+
+        private final String database;
+
+        public ColumnFamilyManagerMock(String database) {
+            this.database = database;
+        }
+
+        public String getDatabase() {
+            return database;
+        }
+
+        @Override
+        public ColumnEntity insert(ColumnEntity entity) {
             return null;
+        }
+
+        @Override
+        public ColumnEntity update(ColumnEntity entity) {
+            return null;
+        }
+
+        @Override
+        public Iterable<ColumnEntity> update(Iterable<ColumnEntity> entities) {
+            return null;
+        }
+
+        @Override
+        public ColumnEntity insert(ColumnEntity entity, Duration ttl) {
+            return null;
+        }
+
+        @Override
+        public Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities) {
+            return null;
+        }
+
+        @Override
+        public Iterable<ColumnEntity> insert(Iterable<ColumnEntity> entities, Duration ttl) {
+            return null;
+        }
+
+        @Override
+        public void delete(ColumnDeleteQuery query) {
+
+        }
+
+        @Override
+        public Stream<ColumnEntity> select(ColumnQuery query) {
+            return null;
+        }
+
+        @Override
+        public long count(String columnFamily) {
+            return 0;
         }
 
         @Override
