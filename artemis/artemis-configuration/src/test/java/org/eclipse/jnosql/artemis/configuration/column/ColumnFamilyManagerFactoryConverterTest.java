@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.artemis.configuration.column;
 
 import jakarta.nosql.Settings;
+import jakarta.nosql.column.ColumnFamilyManagerFactory;
 import org.eclipse.jnosql.artemis.configuration.CDIExtension;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
 import org.eclipse.jnosql.artemis.configuration.column.ColumnConfigurationMock.ColumnFamilyManagerFactoryMock;
@@ -27,7 +28,8 @@ import javax.inject.Inject;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(CDIExtension.class)
 class ColumnFamilyManagerFactoryConverterTest {
@@ -41,13 +43,12 @@ class ColumnFamilyManagerFactoryConverterTest {
         System.setProperty(prefix, prefix);
         System.setProperty(prefix + ".settings.key", "value");
         System.setProperty(prefix + ".settings.key2", "value2");
-        Assertions.assertThrows(NoSuchElementException.class, () -> config.getValue(prefix, ColumnFamilyManagerFactoryConverter.class) );
+        Assertions.assertThrows(NoSuchElementException.class, () -> config.getValue(prefix, ColumnFamilyManagerFactory.class) );
 
         System.clearProperty(prefix);
         System.clearProperty(prefix + ".settings.key");
         System.clearProperty(prefix + ".settings.key2");
     }
-
 
     @Test
     public void shouldReturnErrorWhenThereIsInvalidProvider() {
@@ -56,7 +57,7 @@ class ColumnFamilyManagerFactoryConverterTest {
         System.setProperty(prefix + ".settings.key", "value");
         System.setProperty(prefix + ".settings.key2", "value2");
         System.setProperty(prefix + ".provider", "java.lang.String");
-        Assertions.assertThrows(ConfigurationException.class, () -> config.getValue(prefix, ColumnFamilyManagerFactoryConverter.class) );
+        Assertions.assertThrows(ConfigurationException.class, () -> config.getValue(prefix, ColumnFamilyManagerFactory.class) );
 
         System.clearProperty(prefix);
         System.clearProperty(prefix + ".settings.key");
@@ -71,7 +72,7 @@ class ColumnFamilyManagerFactoryConverterTest {
         System.setProperty(prefix + ".settings.key", "value");
         System.setProperty(prefix + ".settings.key2", "value2");
         System.setProperty(prefix + ".provider", ColumnConfigurationMock.class.getName());
-        final ColumnFamilyManagerFactoryConverter managerFactory = config.getValue(prefix, ColumnFamilyManagerFactoryConverter.class);
+        final ColumnFamilyManagerFactory managerFactory = config.getValue(prefix, ColumnFamilyManagerFactory.class);
 
         final ColumnFamilyManagerFactoryMock factoryMock = ColumnFamilyManagerFactoryMock.class.cast(managerFactory);
         final Settings settings = factoryMock.getSettings();
