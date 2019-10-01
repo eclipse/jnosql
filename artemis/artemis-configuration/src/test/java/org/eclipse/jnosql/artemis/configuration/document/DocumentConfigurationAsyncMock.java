@@ -12,6 +12,7 @@ import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 
 import java.time.Duration;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 class DocumentConfigurationAsyncMock implements DocumentConfigurationAsync {
@@ -40,8 +41,8 @@ class DocumentConfigurationAsyncMock implements DocumentConfigurationAsync {
 
 
         @Override
-        public <T extends DocumentCollectionManagerAsync> T getAsync(String database) {
-            return null;
+        public DocumentCollectionManagerMock getAsync(String database) {
+            return new DocumentCollectionManagerMock(database);
         }
 
         @Override
@@ -50,36 +51,61 @@ class DocumentConfigurationAsyncMock implements DocumentConfigurationAsync {
         }
     }
 
-    public static class DocumentCollectionManagerMock implements DocumentCollectionManager {
+    public static class DocumentCollectionManagerMock implements DocumentCollectionManagerAsync {
 
-        @Override
-        public DocumentEntity insert(DocumentEntity entity) {
-            return null;
+        private final String database;
+
+        public DocumentCollectionManagerMock(String database) {
+            this.database = database;
+        }
+
+        public String getDatabase() {
+            return database;
         }
 
         @Override
-        public DocumentEntity insert(DocumentEntity entity, Duration ttl) {
-            return null;
+        public void insert(DocumentEntity entity) {
+
         }
 
         @Override
-        public Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities) {
-            return null;
+        public void insert(DocumentEntity entity, Duration ttl) {
+
         }
 
         @Override
-        public Iterable<DocumentEntity> insert(Iterable<DocumentEntity> entities, Duration ttl) {
-            return null;
+        public void insert(Iterable<DocumentEntity> entities) {
+
         }
 
         @Override
-        public DocumentEntity update(DocumentEntity entity) {
-            return null;
+        public void insert(Iterable<DocumentEntity> entities, Duration ttl) {
+
         }
 
         @Override
-        public Iterable<DocumentEntity> update(Iterable<DocumentEntity> entities) {
-            return null;
+        public void insert(DocumentEntity entity, Consumer<DocumentEntity> callBack) {
+
+        }
+
+        @Override
+        public void insert(DocumentEntity entity, Duration ttl, Consumer<DocumentEntity> callBack) {
+
+        }
+
+        @Override
+        public void update(DocumentEntity entity) {
+
+        }
+
+        @Override
+        public void update(Iterable<DocumentEntity> entities) {
+
+        }
+
+        @Override
+        public void update(DocumentEntity entity, Consumer<DocumentEntity> callBack) {
+
         }
 
         @Override
@@ -88,13 +114,18 @@ class DocumentConfigurationAsyncMock implements DocumentConfigurationAsync {
         }
 
         @Override
-        public Stream<DocumentEntity> select(DocumentQuery query) {
-            return null;
+        public void delete(DocumentDeleteQuery query, Consumer<Void> callBack) {
+
         }
 
         @Override
-        public long count(String documentCollection) {
-            return 0;
+        public void select(DocumentQuery query, Consumer<Stream<DocumentEntity>> callBack) {
+
+        }
+
+        @Override
+        public void count(String documentCollection, Consumer<Long> callback) {
+
         }
 
         @Override
