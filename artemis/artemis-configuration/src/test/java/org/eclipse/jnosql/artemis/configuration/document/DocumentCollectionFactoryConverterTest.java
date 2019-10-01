@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.artemis.configuration.document;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.column.ColumnFamilyManagerFactory;
 import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import org.eclipse.jnosql.artemis.configuration.CDIExtension;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
@@ -73,7 +72,7 @@ public class DocumentCollectionFactoryConverterTest {
         System.setProperty(prefix + ".settings.key", "value");
         System.setProperty(prefix + ".settings.key2", "value2");
         System.setProperty(prefix + ".provider", DocumentConfigurationMock.class.getName());
-        final ColumnFamilyManagerFactory managerFactory = config.getValue(prefix, ColumnFamilyManagerFactory.class);
+        final DocumentCollectionManagerFactory managerFactory = config.getValue(prefix, DocumentCollectionManagerFactory.class);
 
         final DocumentCollectionManagerFactoryMock factoryMock = DocumentCollectionManagerFactoryMock.class.cast(managerFactory);
         final Settings settings = factoryMock.getSettings();
