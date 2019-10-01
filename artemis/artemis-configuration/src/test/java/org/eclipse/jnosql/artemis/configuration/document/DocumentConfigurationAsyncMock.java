@@ -41,8 +41,8 @@ class DocumentConfigurationAsyncMock implements DocumentConfigurationAsync {
 
 
         @Override
-        public DocumentCollectionManagerMock getAsync(String database) {
-            return new DocumentCollectionManagerMock(database);
+        public DocumentCollectionManagerAsyncMock getAsync(String database) {
+            return new DocumentCollectionManagerAsyncMock(database);
         }
 
         @Override
@@ -51,11 +51,11 @@ class DocumentConfigurationAsyncMock implements DocumentConfigurationAsync {
         }
     }
 
-    public static class DocumentCollectionManagerMock implements DocumentCollectionManagerAsync {
+    public static class DocumentCollectionManagerAsyncMock implements DocumentCollectionManagerAsync {
 
         private final String database;
 
-        public DocumentCollectionManagerMock(String database) {
+        public DocumentCollectionManagerAsyncMock(String database) {
             this.database = database;
         }
 

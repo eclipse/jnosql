@@ -17,6 +17,7 @@ package org.eclipse.jnosql.artemis.configuration.document;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import org.eclipse.jnosql.artemis.configuration.CDIExtension;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
+import org.eclipse.jnosql.artemis.configuration.document.DocumentConfigurationAsyncMock.DocumentCollectionManagerAsyncMock;
 import org.eclipse.jnosql.artemis.configuration.document.DocumentConfigurationMock.DocumentCollectionManagerMock;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
@@ -85,7 +86,7 @@ class DocumentCollectionManagerAsyncConverterTest {
         System.setProperty(prefix + ".provider", DocumentConfigurationAsyncMock.class.getName());
         System.setProperty(prefix + ".database", "database");
         final DocumentCollectionManagerAsync manager = config.getValue(prefix, DocumentCollectionManagerAsync.class);
-        final DocumentCollectionManagerMock managerMock = DocumentCollectionManagerMock.class.cast(manager);
+        final DocumentCollectionManagerAsyncMock managerMock = DocumentCollectionManagerAsyncMock.class.cast(manager);
         Assertions.assertEquals("database", managerMock.getDatabase());
         System.clearProperty(prefix);
         System.clearProperty(prefix + ".settings.key");
