@@ -12,12 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.configuration.column;
+package org.eclipse.jnosql.artemis.configuration.document;
 
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.document.DocumentCollectionManager;
 import org.eclipse.jnosql.artemis.configuration.CDIExtension;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
-import org.eclipse.jnosql.artemis.configuration.column.ColumnConfigurationMock.ColumnFamilyManagerMock;
+import org.eclipse.jnosql.artemis.configuration.document.DocumentConfigurationMock.DocumentCollectionManagerMock;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @ExtendWith(CDIExtension.class)
-class ColumnFamilyManagerConverterTest {
+class DocumentCollectionManagerConverterTest {
 
     @Inject
     private Config config;
@@ -39,7 +39,7 @@ class ColumnFamilyManagerConverterTest {
         System.setProperty(prefix, prefix);
         System.setProperty(prefix + ".settings.key", "value");
         System.setProperty(prefix + ".settings.key2", "value2");
-        Assertions.assertThrows(NoSuchElementException.class, () -> config.getValue(prefix, ColumnFamilyManager.class) );
+        Assertions.assertThrows(NoSuchElementException.class, () -> config.getValue(prefix, DocumentCollectionManager.class) );
 
         System.clearProperty(prefix);
         System.clearProperty(prefix + ".settings.key");
@@ -53,7 +53,7 @@ class ColumnFamilyManagerConverterTest {
         System.setProperty(prefix + ".settings.key", "value");
         System.setProperty(prefix + ".settings.key2", "value2");
         System.setProperty(prefix + ".provider", "java.lang.String");
-        Assertions.assertThrows(ConfigurationException.class, () -> config.getValue(prefix, ColumnFamilyManager.class) );
+        Assertions.assertThrows(ConfigurationException.class, () -> config.getValue(prefix, DocumentCollectionManager.class) );
 
         System.clearProperty(prefix);
         System.clearProperty(prefix + ".settings.key");
@@ -67,8 +67,8 @@ class ColumnFamilyManagerConverterTest {
         System.setProperty(prefix, prefix);
         System.setProperty(prefix + ".settings.key", "value");
         System.setProperty(prefix + ".settings.key2", "value2");
-        System.setProperty(prefix + ".provider", ColumnConfigurationMock.class.getName());
-        Assertions.assertThrows(NoSuchElementException.class, () -> config.getValue(prefix, ColumnFamilyManager.class) );
+        System.setProperty(prefix + ".provider", DocumentConfigurationMock.class.getName());
+        Assertions.assertThrows(NoSuchElementException.class, () -> config.getValue(prefix, DocumentCollectionManager.class) );
 
         System.clearProperty(prefix);
         System.clearProperty(prefix + ".settings.key");
@@ -82,10 +82,10 @@ class ColumnFamilyManagerConverterTest {
         System.setProperty(prefix, prefix);
         System.setProperty(prefix + ".settings.key", "value");
         System.setProperty(prefix + ".settings.key2", "value2");
-        System.setProperty(prefix + ".provider", ColumnConfigurationMock.class.getName());
+        System.setProperty(prefix + ".provider", DocumentConfigurationMock.class.getName());
         System.setProperty(prefix + ".database", "database");
-        final ColumnFamilyManager manager = config.getValue(prefix, ColumnFamilyManager.class);
-        final ColumnFamilyManagerMock managerMock = ColumnFamilyManagerMock.class.cast(manager);
+        final DocumentCollectionManager manager = config.getValue(prefix, DocumentCollectionManager.class);
+        final DocumentCollectionManagerMock managerMock = DocumentCollectionManagerMock.class.cast(manager);
         Assertions.assertEquals("database", managerMock.getDatabase());
         System.clearProperty(prefix);
         System.clearProperty(prefix + ".settings.key");
@@ -93,5 +93,4 @@ class ColumnFamilyManagerConverterTest {
         System.clearProperty(prefix + ".provider");
         System.clearProperty(prefix + ".database");
     }
-
 }

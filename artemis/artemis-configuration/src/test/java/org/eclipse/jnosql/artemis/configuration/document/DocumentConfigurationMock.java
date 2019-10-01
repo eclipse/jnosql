@@ -36,8 +36,8 @@ class DocumentConfigurationMock implements DocumentConfiguration {
         }
 
         @Override
-        public <T extends DocumentCollectionManager> T get(String database) {
-            return null;
+        public DocumentCollectionManagerMock  get(String database) {
+            return new DocumentCollectionManagerMock(database);
         }
 
         @Override
@@ -47,6 +47,16 @@ class DocumentConfigurationMock implements DocumentConfiguration {
     }
 
     public static class DocumentCollectionManagerMock implements DocumentCollectionManager {
+
+        private final String database;
+
+        public DocumentCollectionManagerMock(String database) {
+            this.database = database;
+        }
+
+        public String getDatabase() {
+            return database;
+        }
 
         @Override
         public DocumentEntity insert(DocumentEntity entity) {
