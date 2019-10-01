@@ -15,14 +15,11 @@
 package org.eclipse.jnosql.artemis.configuration.column;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.column.ColumnConfiguration;
 import jakarta.nosql.column.ColumnConfigurationAsync;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
-import jakarta.nosql.column.ColumnFamilyManagerFactory;
 import jakarta.nosql.column.ColumnQuery;
 
 import java.time.Duration;

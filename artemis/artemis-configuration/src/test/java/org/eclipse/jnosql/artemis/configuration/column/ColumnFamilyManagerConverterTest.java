@@ -15,10 +15,8 @@
 package org.eclipse.jnosql.artemis.configuration.column;
 
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.keyvalue.BucketManager;
 import org.eclipse.jnosql.artemis.configuration.CDIExtension;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
-import org.eclipse.jnosql.artemis.configuration.keyvalue.KeyValueConfigurationMock;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,8 +25,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import javax.inject.Inject;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(CDIExtension.class)
 class ColumnFamilyManagerConverterTest {
