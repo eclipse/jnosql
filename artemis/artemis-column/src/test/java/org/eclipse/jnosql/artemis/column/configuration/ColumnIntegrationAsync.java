@@ -24,7 +24,7 @@ import javax.inject.Inject;
 
 public class ColumnIntegrationAsync {
 
-    private static final String COLUMN = "documentasync";
+    private static final String COLUMN = "columnasync";
 
     @Inject
     @ConfigProperty(name = COLUMN)
