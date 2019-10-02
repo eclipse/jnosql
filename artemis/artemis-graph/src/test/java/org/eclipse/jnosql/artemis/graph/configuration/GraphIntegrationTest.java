@@ -27,7 +27,6 @@ public class GraphIntegrationTest {
     @Inject
     private GraphIntegration integration;
 
-
     @Test
     public void shouldCreateTemplate() {
         Assertions.assertNotNull(integration.getTemplate());
