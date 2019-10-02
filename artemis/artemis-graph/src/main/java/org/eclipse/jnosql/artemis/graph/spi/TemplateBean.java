@@ -16,13 +16,12 @@ package org.eclipse.jnosql.artemis.graph.spi;
 
 import jakarta.nosql.mapping.DatabaseType;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.artemis.graph.GraphTemplate;
 import org.eclipse.jnosql.artemis.DatabaseQualifier;
+import org.eclipse.jnosql.artemis.graph.GraphTemplate;
 import org.eclipse.jnosql.artemis.graph.GraphTemplateProducer;
 import org.eclipse.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -65,10 +64,7 @@ class TemplateBean extends AbstractBean<GraphTemplate> {
     }
 
     private Graph getGraph() {
-        Bean<Graph> bean = (Bean<Graph>) getBeanManager().getBeans(Graph.class,
-                DatabaseQualifier.ofGraph(provider) ).iterator().next();
-        CreationalContext<Graph> ctx = getBeanManager().createCreationalContext(bean);
-        return (Graph) getBeanManager().getReference(bean, Graph.class, ctx);
+        return getInstance(Graph.class, DatabaseQualifier.ofGraph(provider));
     }
 
     @Override
