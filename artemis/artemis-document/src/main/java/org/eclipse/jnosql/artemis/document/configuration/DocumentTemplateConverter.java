@@ -24,7 +24,7 @@ import org.eclipse.microprofile.config.spi.Converter;
 
 /**
  * Converter the {@link String} to {@link DocumentTemplate} it will use the {@link SettingsConverter} and
- * find by the provider that should be an implementation of {@link jakarta.nosql.column.ColumnConfiguration}
+ * find by the provider that should be an implementation of {@link jakarta.nosql.document.DocumentConfiguration}
  */
 public class DocumentTemplateConverter implements Converter<DocumentTemplate> {
 
