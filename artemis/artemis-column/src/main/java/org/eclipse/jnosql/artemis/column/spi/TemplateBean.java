@@ -66,10 +66,7 @@ class TemplateBean extends AbstractBean<ColumnTemplate> {
     }
 
     private ColumnFamilyManager getColumnFamilyManager() {
-        Bean<ColumnFamilyManager> bean = (Bean<ColumnFamilyManager>) getBeanManager().getBeans(ColumnFamilyManager.class,
-                DatabaseQualifier.ofColumn(provider) ).iterator().next();
-        CreationalContext<ColumnFamilyManager> ctx = getBeanManager().createCreationalContext(bean);
-        return (ColumnFamilyManager) getBeanManager().getReference(bean, ColumnFamilyManager.class, ctx);
+        return getInstance(ColumnFamilyManager.class, DatabaseQualifier.ofColumn(provider));
     }
 
     @Override
