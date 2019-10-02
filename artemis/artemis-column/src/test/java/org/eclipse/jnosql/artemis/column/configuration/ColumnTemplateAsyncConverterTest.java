@@ -31,7 +31,7 @@ class ColumnTemplateAsyncConverterTest {
     private Config config;
 
     @Test
-    public void shouldReturnKeyValueTemplate() {
+    public void shouldReturnTemplate() {
         final String prefix = UUID.randomUUID().toString();
         System.setProperty(prefix, prefix);
         System.setProperty(prefix + ".settings.key", "value");

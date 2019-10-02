@@ -12,10 +12,10 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.configuration;
+package org.eclipse.jnosql.artemis.graph.configuration;
 
-import jakarta.nosql.mapping.document.DocumentTemplateAsync;
-import org.eclipse.jnosql.artemis.CDIExtension;
+import org.eclipse.jnosql.artemis.graph.GraphTemplate;
+import org.eclipse.jnosql.artemis.graph.cdi.CDIExtension;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import java.util.UUID;
 
 @ExtendWith(CDIExtension.class)
-public class DocumentTemplateAsyncConverterTest {
+class GraphTemplateConverterTest {
 
     @Inject
     private Config config;
@@ -36,9 +36,9 @@ public class DocumentTemplateAsyncConverterTest {
         System.setProperty(prefix, prefix);
         System.setProperty(prefix + ".settings.key", "value");
         System.setProperty(prefix + ".settings.key2", "value2");
-        System.setProperty(prefix + ".provider", DocumentConfigurationAsyncMock.class.getName());
-        System.setProperty(prefix + ".database", "database");
-        final DocumentTemplateAsync template = config.getValue(prefix, DocumentTemplateAsync.class);
+        System.setProperty(prefix + ".provider", GraphConfigurationMock.class.getName());
+        System.setProperty(prefix + ".database", "bucket");
+        final GraphTemplate template = config.getValue(prefix, GraphTemplate.class);
         Assertions.assertNotNull(template);
         System.clearProperty(prefix);
         System.clearProperty(prefix + ".settings.key");
@@ -46,4 +46,5 @@ public class DocumentTemplateAsyncConverterTest {
         System.clearProperty(prefix + ".provider");
         System.clearProperty(prefix + ".database");
     }
+
 }
