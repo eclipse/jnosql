@@ -24,18 +24,18 @@ import javax.inject.Inject;
 
 public class DocumentIntegration {
 
-    private static final String KEY_VALUE = "document";
+    private static final String DOCUMENT = "document";
 
     @Inject
-    @ConfigProperty(name = KEY_VALUE)
+    @ConfigProperty(name = DOCUMENT)
     private DocumentTemplate template;
 
     @Inject
-    @ConfigProperty(name = KEY_VALUE)
+    @ConfigProperty(name = DOCUMENT)
     private DocumentCollectionManager manager;
 
     @Inject
-    @ConfigProperty(name = KEY_VALUE)
+    @ConfigProperty(name = DOCUMENT)
     private DocumentCollectionManagerFactory factory;
 
     public DocumentTemplate getTemplate() {
