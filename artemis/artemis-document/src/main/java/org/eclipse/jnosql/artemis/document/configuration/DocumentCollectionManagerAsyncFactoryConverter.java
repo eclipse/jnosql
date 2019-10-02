@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.artemis.document.configuration;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.column.ColumnConfiguration;
 import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
 import jakarta.nosql.document.DocumentConfigurationAsync;
 import jakarta.nosql.mapping.reflection.Reflections;
@@ -27,7 +26,7 @@ import org.eclipse.microprofile.config.spi.Converter;
 
 /**
  * Converter the {@link String} to {@link DocumentCollectionManagerAsyncFactory} it will use the {@link SettingsConverter} and
- * find by the provider that should be an implementation of {@link ColumnConfiguration}
+ * find by the provider that should be an implementation of {@link jakarta.nosql.document.DocumentConfiguration}
  */
 public class DocumentCollectionManagerAsyncFactoryConverter implements Converter<DocumentCollectionManagerAsyncFactory> {
 

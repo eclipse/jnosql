@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.artemis.document.configuration;
 
-import jakarta.nosql.column.ColumnConfiguration;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
@@ -24,7 +23,7 @@ import org.eclipse.microprofile.config.spi.Converter;
 
 /**
  * Converter the {@link String} to {@link DocumentCollectionManager} it will use the {@link SettingsConverter} and
- * find by the provider that should be an implementation of {@link ColumnConfiguration}
+ * find by the provider that should be an implementation of {@link jakarta.nosql.document.DocumentConfiguration}
  */
 public class DocumentCollectionManagerConverter implements Converter<DocumentCollectionManager> {
 
