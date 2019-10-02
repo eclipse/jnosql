@@ -94,3 +94,4 @@ Find out more information and get involved!
 * Twitter: https://twitter.com/jnosql
 * GitHub Repo: https://github.com/eclipse?q=Jnosql
 * Mailing List: https://accounts.eclipse.org/mailing-list/jnosql-dev
+* Circle CI Integration : https://ci.eclipse.org/jnosql/
