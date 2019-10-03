@@ -24,7 +24,7 @@ import org.eclipse.microprofile.config.spi.Converter;
 
 /**
  * Converter the {@link String} to {@link DocumentTemplateAsync} it will use the {@link SettingsConverter} and
- * find by the provider that should be an implementation of {@link jakarta.nosql.document.DocumentConfigurationAsync}
+ * find by the provider that should be an implementation of {@link jakarta.nosql.column.ColumnConfiguration}
  */
 public class DocumentTemplateAsyncConverter implements Converter<DocumentTemplateAsync> {
 

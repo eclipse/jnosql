@@ -42,6 +42,7 @@ public class DefaultDocumentnDeleteQueryTest {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<String> documents = query.getDocuments();
             assertTrue(documents.isEmpty());
+            documents.clear();
         });
     }
 }
