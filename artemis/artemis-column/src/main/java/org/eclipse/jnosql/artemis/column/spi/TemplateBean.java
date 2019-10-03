@@ -23,7 +23,6 @@ import org.eclipse.jnosql.artemis.DatabaseQualifier;
 import org.eclipse.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -66,10 +65,7 @@ class TemplateBean extends AbstractBean<ColumnTemplate> {
     }
 
     private ColumnFamilyManager getColumnFamilyManager() {
-        Bean<ColumnFamilyManager> bean = (Bean<ColumnFamilyManager>) getBeanManager().getBeans(ColumnFamilyManager.class,
-                DatabaseQualifier.ofColumn(provider) ).iterator().next();
-        CreationalContext<ColumnFamilyManager> ctx = getBeanManager().createCreationalContext(bean);
-        return (ColumnFamilyManager) getBeanManager().getReference(bean, ColumnFamilyManager.class, ctx);
+        return getInstance(ColumnFamilyManager.class, DatabaseQualifier.ofColumn(provider));
     }
 
     @Override

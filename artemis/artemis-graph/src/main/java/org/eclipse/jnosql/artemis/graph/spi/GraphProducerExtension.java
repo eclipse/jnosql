@@ -14,25 +14,19 @@
  */
 package org.eclipse.jnosql.artemis.graph.spi;
 
-import jakarta.nosql.mapping.ConfigurationUnit;
 import jakarta.nosql.mapping.Repository;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.artemis.graph.query.RepositoryGraphBean;
 import org.eclipse.jnosql.artemis.DatabaseMetadata;
 import org.eclipse.jnosql.artemis.Databases;
-import org.eclipse.jnosql.artemis.util.ConfigurationUnitUtils;
-import org.eclipse.jnosql.artemis.util.RepositoryUnit;
+import org.eclipse.jnosql.artemis.graph.query.RepositoryGraphBean;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.enterprise.inject.spi.ProcessInjectionPoint;
 import javax.enterprise.inject.spi.ProcessProducer;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -53,8 +47,6 @@ public class GraphProducerExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    private final Collection<RepositoryUnit> repositoryUnits = new HashSet<>();
-
     <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
         if (Repository.class.equals(javaClass)) {
@@ -72,24 +64,6 @@ public class GraphProducerExtension implements Extension {
         Databases.addDatabase(pp, GRAPH, databases);
     }
 
-    <T, R extends Repository<?, ?>> void observes(@Observes ProcessInjectionPoint<T, R> event) {
-
-        InjectionPoint injectionPoint = event.getInjectionPoint();
-
-        if (ConfigurationUnitUtils.hasConfigurationUnit(injectionPoint)) {
-
-            ConfigurationUnit configurationUnit = ConfigurationUnitUtils.getConfigurationUnit(injectionPoint);
-            Type type = injectionPoint.getType();
-            RepositoryUnit unitRepository = RepositoryUnit.of((Class<?>) type, configurationUnit);
-            if (unitRepository.isGraph()) {
-                LOGGER.info(String.format("Found Repository to configuration unit Graph to configuration name %s fileName %s database: %s repository: %s",
-                        configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
-                repositoryUnits.add(unitRepository);
-
-            }
-        }
-
-    }
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info(String.format("Starting to process on graphs: %d databases crud %d",
@@ -108,8 +82,5 @@ public class GraphProducerExtension implements Extension {
             databases.forEach(database -> afterBeanDiscovery
                     .addBean(new RepositoryGraphBean(type, beanManager, database.getProvider())));
         });
-
-        repositoryUnits.forEach(type -> afterBeanDiscovery.addBean(new RepositoryUnitGraphBean(beanManager, type)));
-
     }
 }

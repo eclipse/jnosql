@@ -15,25 +15,19 @@
 package org.eclipse.jnosql.artemis.keyvalue.spi;
 
 
-import jakarta.nosql.mapping.ConfigurationUnit;
+import jakarta.nosql.keyvalue.BucketManager;
+import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.artemis.DatabaseMetadata;
 import org.eclipse.jnosql.artemis.Databases;
 import org.eclipse.jnosql.artemis.keyvalue.query.RepositoryKeyValueBean;
-import org.eclipse.jnosql.artemis.util.ConfigurationUnitUtils;
-import org.eclipse.jnosql.artemis.util.RepositoryUnit;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.keyvalue.BucketManager;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.enterprise.inject.spi.ProcessInjectionPoint;
 import javax.enterprise.inject.spi.ProcessProducer;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -54,8 +48,6 @@ public class BucketManagerProducerExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    private final Collection<RepositoryUnit> repositoryUnits = new HashSet<>();
-
     <T, X extends BucketManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, KEY_VALUE, databases);
     }
@@ -74,24 +66,6 @@ public class BucketManagerProducerExtension implements Extension {
         }
     }
 
-    <T, R extends Repository<?, ?>> void observes(@Observes ProcessInjectionPoint<T, R> event) {
-
-        InjectionPoint injectionPoint = event.getInjectionPoint();
-
-        if (ConfigurationUnitUtils.hasConfigurationUnit(injectionPoint)) {
-
-            ConfigurationUnit configurationUnit = ConfigurationUnitUtils.getConfigurationUnit(injectionPoint);
-            Type type = injectionPoint.getType();
-            RepositoryUnit unitRepository = RepositoryUnit.of((Class<?>) type, configurationUnit);
-            if (unitRepository.isKey()) {
-                LOGGER.info(String.format("Found Repository to configuration unit key to configuration name %s fileName %s database: %s repository: %s",
-                        configurationUnit.name(), configurationUnit.fileName(), configurationUnit.database(), type.toString()));
-                repositoryUnits.add(unitRepository);
-
-            }
-        }
-
-    }
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info(String.format("Processing buckets: %d databases crud %d ",
@@ -111,8 +85,6 @@ public class BucketManagerProducerExtension implements Extension {
             databases.forEach(database -> afterBeanDiscovery
                     .addBean(new RepositoryKeyValueBean(type, beanManager, database.getProvider())));
         });
-
-        repositoryUnits.forEach(type -> afterBeanDiscovery.addBean(new RepositoryUnitKeyValueBean(beanManager, type)));
 
     }
 

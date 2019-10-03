@@ -15,15 +15,14 @@
 package org.eclipse.jnosql.artemis.keyvalue.spi;
 
 
-import org.eclipse.jnosql.artemis.DatabaseQualifier;
-import org.eclipse.jnosql.artemis.spi.AbstractBean;
+import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
-import jakarta.nosql.keyvalue.BucketManager;
+import org.eclipse.jnosql.artemis.DatabaseQualifier;
+import org.eclipse.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -65,13 +64,8 @@ class TemplateBean extends AbstractBean<KeyValueTemplate> {
     }
 
     private BucketManager getManager() {
-        Bean<BucketManager> bean = (Bean<BucketManager>) getBeanManager().getBeans(BucketManager.class,
-                DatabaseQualifier.ofKeyValue(provider) ).iterator().next();
-        CreationalContext<BucketManager> ctx = getBeanManager().createCreationalContext(bean);
-        return (BucketManager) getBeanManager().getReference(bean, BucketManager.class, ctx);
+        return getInstance(BucketManager.class, DatabaseQualifier.ofKeyValue(provider));
     }
-
-
 
     @Override
     public Set<Type> getTypes() {

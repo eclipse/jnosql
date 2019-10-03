@@ -24,7 +24,6 @@ import org.eclipse.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionPoint;
 import java.lang.annotation.Annotation;
@@ -77,10 +76,7 @@ class TemplateBean extends AbstractBean<DocumentTemplate> {
     }
 
     private DocumentCollectionManager getManager() {
-        Bean<DocumentCollectionManager> bean = (Bean<DocumentCollectionManager>) getBeanManager().getBeans(DocumentCollectionManager.class,
-                DatabaseQualifier.ofDocument(provider) ).iterator().next();
-        CreationalContext<DocumentCollectionManager> ctx = getBeanManager().createCreationalContext(bean);
-        return (DocumentCollectionManager) getBeanManager().getReference(bean, DocumentCollectionManager.class, ctx);
+        return getInstance(DocumentCollectionManager.class, DatabaseQualifier.ofDocument(provider));
     }
 
     @Override

@@ -36,14 +36,12 @@ import static java.util.Collections.unmodifiableMap;
 
 final class DefaultSettings  implements Settings {
 
-    private static final SettingsPropertyReader READER = SettingsPropertyReader.INSTANCE;
-
     private final Map<String, Object> configurations;
 
     DefaultSettings(Map<String, Object> configurations) {
         this.configurations = configurations.entrySet().stream()
                 .collect(Collectors.toMap(e -> e.getKey(),
-                        e -> getValue(e.getValue())));
+                        e -> e.getValue()));
     }
 
 
@@ -180,14 +178,6 @@ final class DefaultSettings  implements Settings {
     public String toString() {
         return "DefaultSettings{" + "configurations=" + configurations +
                 '}';
-    }
-
-
-    private Object getValue(Object value) {
-        if (value != null) {
-            return READER.apply(value, this);
-        }
-        return null;
     }
 
 }

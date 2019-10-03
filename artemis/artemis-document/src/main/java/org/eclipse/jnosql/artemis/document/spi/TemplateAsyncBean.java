@@ -23,7 +23,6 @@ import org.eclipse.jnosql.artemis.DatabaseQualifier;
 import org.eclipse.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -66,10 +65,7 @@ class TemplateAsyncBean extends AbstractBean<DocumentTemplateAsync> {
     }
 
     private DocumentCollectionManagerAsync getManager() {
-        Bean<DocumentCollectionManagerAsync> bean = (Bean<DocumentCollectionManagerAsync>) getBeanManager().getBeans(DocumentCollectionManagerAsync.class,
-                DatabaseQualifier.ofDocument(provider)).iterator().next();
-        CreationalContext<DocumentCollectionManagerAsync> ctx = getBeanManager().createCreationalContext(bean);
-        return (DocumentCollectionManagerAsync) getBeanManager().getReference(bean, DocumentCollectionManagerAsync.class, ctx);
+        return getInstance(DocumentCollectionManagerAsync.class,  DatabaseQualifier.ofDocument(provider));
     }
 
 
