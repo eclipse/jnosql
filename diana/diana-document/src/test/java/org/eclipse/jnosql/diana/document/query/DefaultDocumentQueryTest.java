@@ -45,7 +45,6 @@ public class DefaultDocumentQueryTest {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<String> columns = query.getDocuments();
             assertTrue(columns.isEmpty());
-            columns.clear();
         });
     }
 
@@ -55,7 +54,6 @@ public class DefaultDocumentQueryTest {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<Sort> sorts = query.getSorts();
             assertTrue(sorts.isEmpty());
-            sorts.clear();
         });
     }
 }

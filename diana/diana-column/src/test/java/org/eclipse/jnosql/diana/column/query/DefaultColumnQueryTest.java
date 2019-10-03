@@ -42,7 +42,6 @@ public class DefaultColumnQueryTest {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<String> columns = query.getColumns();
             assertTrue(columns.isEmpty());
-            columns.clear();
         });
     }
 
@@ -51,7 +50,6 @@ public class DefaultColumnQueryTest {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<Sort> sorts = query.getSorts();
             assertTrue(sorts.isEmpty());
-            sorts.clear();
         });
     }
 }

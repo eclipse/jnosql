@@ -41,7 +41,6 @@ public class DefaultColumnDeleteQueryTest {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             List<String> columns = query.getColumns();
             assertTrue(columns.isEmpty());
-            columns.clear();
         });
     }
 }
