@@ -61,8 +61,8 @@ public final class BeanManagers {
      * Get the CDI BeanManager for the current CDI context
      *
      * @return the BeanManager
-     * @see CDI#current()
-     * @see CDI#current()#getBeanManager()
+     * {@link CDI#current()}
+     * {@link CDI#current()#getBeanManager()}
      */
     public static BeanManager getBeanManager() {
         return CDI.current().getBeanManager();
@@ -71,8 +71,8 @@ public final class BeanManagers {
     /**
      * Get instance from the {@link BeanManager} using the {@link BeanManagers#getBeanManager()}
      *
-     * @param clazz       the clazz to inject from the BeanManager
-     * @param <T>         the instance type
+     * @param clazz the clazz to inject from the BeanManager
+     * @param <T>   the instance type
      * @return the instance from CDI context
      */
     public static <T> T getInstance(Class<T> clazz) {
@@ -83,9 +83,9 @@ public final class BeanManagers {
     /**
      * Get instance from the {@link BeanManager} using the {@link BeanManagers#getBeanManager()}
      *
-     * @param clazz       the clazz to inject from the BeanManager
-     * @param qualifier   the qualifier
-     * @param <T>         the instance type
+     * @param clazz     the clazz to inject from the BeanManager
+     * @param qualifier the qualifier
+     * @param <T>       the instance type
      * @return the instance from CDI context
      */
     public static <T> T getInstance(Class<T> clazz, Annotation qualifier) {
