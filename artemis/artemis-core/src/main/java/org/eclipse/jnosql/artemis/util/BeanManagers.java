@@ -61,8 +61,8 @@ public final class BeanManagers {
      * Get the CDI BeanManager for the current CDI context
      *
      * @return the BeanManager
-     * @see {@link CDI#current()}
-     * @see {@link CDI#current()#getBeanManager()}
+     * @see CDI#current()
+     * @see CDI#current()#getBeanManager()
      */
     public static BeanManager getBeanManager() {
         return CDI.current().getBeanManager();
