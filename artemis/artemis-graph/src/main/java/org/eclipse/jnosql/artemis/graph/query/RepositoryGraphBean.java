@@ -23,6 +23,7 @@ import org.eclipse.jnosql.artemis.graph.GraphTemplate;
 import org.eclipse.jnosql.artemis.DatabaseQualifier;
 import org.eclipse.jnosql.artemis.graph.GraphConverter;
 import org.eclipse.jnosql.artemis.spi.AbstractBean;
+import org.eclipse.jnosql.artemis.util.AnnotationLiteralUtil;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
@@ -62,6 +63,8 @@ public class RepositoryGraphBean extends AbstractBean<Repository>{
         if (provider.isEmpty()) {
             this.qualifiers = new HashSet<>();
             qualifiers.add(DatabaseQualifier.ofGraph());
+            qualifiers.add(AnnotationLiteralUtil.DEFAULT_ANNOTATION);
+            qualifiers.add(AnnotationLiteralUtil.ANY_ANNOTATION);
         } else {
             this.qualifiers = Collections.singleton(DatabaseQualifier.ofGraph(provider));
         }

@@ -61,6 +61,7 @@ public class RepositoryAsyncDocumentBean extends AbstractBean<RepositoryAsync> {
             this.qualifiers = new HashSet<>();
             qualifiers.add(DatabaseQualifier.ofDocument());
             qualifiers.add(AnnotationLiteralUtil.DEFAULT_ANNOTATION);
+            qualifiers.add(AnnotationLiteralUtil.ANY_ANNOTATION);
         } else {
             this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));
         }

@@ -59,6 +59,7 @@ public class RepositoryKeyValueBean extends AbstractBean<Repository> {
             this.qualifiers = new HashSet<>();
             qualifiers.add(DatabaseQualifier.ofKeyValue());
             qualifiers.add(AnnotationLiteralUtil.DEFAULT_ANNOTATION);
+            qualifiers.add(AnnotationLiteralUtil.ANY_ANNOTATION);
         } else {
             this.qualifiers = Collections.singleton(DatabaseQualifier.ofKeyValue(provider));
         }
