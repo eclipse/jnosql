@@ -61,6 +61,7 @@ public class RepositoryColumnBean extends AbstractBean<Repository> {
             this.qualifiers = new HashSet<>();
             qualifiers.add(DatabaseQualifier.ofColumn());
             qualifiers.add(AnnotationLiteralUtil.DEFAULT_ANNOTATION);
+            qualifiers.add(AnnotationLiteralUtil.ANY_ANNOTATION);
         } else {
             this.qualifiers = Collections.singleton(DatabaseQualifier.ofColumn(provider));
         }

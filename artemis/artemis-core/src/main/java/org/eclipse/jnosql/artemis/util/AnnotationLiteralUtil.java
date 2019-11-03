@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.artemis.util;
 
+import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Default;
 import javax.enterprise.util.AnnotationLiteral;
 
@@ -23,11 +24,16 @@ import javax.enterprise.util.AnnotationLiteral;
 public final class AnnotationLiteralUtil {
 
     /**
-     * Annotaion literal default
+     * Annotation literal {@link Default}
      */
     public static final AnnotationLiteral<Default> DEFAULT_ANNOTATION = new AnnotationLiteral<Default>() {
     };
 
+    /**
+     * Annotation literal {@link Any}
+     */
+    public static final AnnotationLiteral<Any> ANY_ANNOTATION = new AnnotationLiteral<Any>() {
+    };
     private AnnotationLiteralUtil() {
     }
 }
