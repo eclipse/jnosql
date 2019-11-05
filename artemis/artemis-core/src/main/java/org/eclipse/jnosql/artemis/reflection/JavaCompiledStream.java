@@ -15,12 +15,12 @@
 package org.eclipse.jnosql.artemis.reflection;
 
 
+import javax.tools.SimpleJavaFileObject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import javax.tools.SimpleJavaFileObject;
 
 final class JavaCompiledStream extends SimpleJavaFileObject {
 

@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.artemis.keyvalue.configuration;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.BucketManagerFactory;
 import jakarta.nosql.keyvalue.KeyValueConfiguration;
 import jakarta.nosql.mapping.reflection.Reflections;

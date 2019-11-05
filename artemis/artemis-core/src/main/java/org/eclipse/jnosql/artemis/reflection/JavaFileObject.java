@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.artemis.reflection;
 
 
-import java.net.URI;
 import javax.tools.SimpleJavaFileObject;
+import java.net.URI;
 
 final class JavaFileObject extends SimpleJavaFileObject {
 

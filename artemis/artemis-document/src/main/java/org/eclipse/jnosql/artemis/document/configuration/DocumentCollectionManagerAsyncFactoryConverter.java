@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.artemis.document.configuration;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
 import jakarta.nosql.document.DocumentConfigurationAsync;
 import jakarta.nosql.mapping.reflection.Reflections;

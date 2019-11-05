@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.artemis.keyvalue;
 
+import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.mapping.EntityPostPersit;
 import jakarta.nosql.mapping.EntityPrePersist;
-import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.mapping.keyvalue.EntityKeyValuePostPersist;
 import jakarta.nosql.mapping.keyvalue.EntityKeyValuePrePersist;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityPostPersist;

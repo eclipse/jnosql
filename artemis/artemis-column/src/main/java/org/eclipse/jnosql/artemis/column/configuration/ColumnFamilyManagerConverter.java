@@ -16,7 +16,6 @@ package org.eclipse.jnosql.artemis.column.configuration;
 
 import jakarta.nosql.column.ColumnConfiguration;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
 import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
