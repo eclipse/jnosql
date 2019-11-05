@@ -15,9 +15,11 @@
 package org.eclipse.jnosql.artemis.keyvalue.configuration;
 
 import jakarta.nosql.Settings;
+import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.BucketManagerFactory;
 import jakarta.nosql.keyvalue.KeyValueConfiguration;
 import jakarta.nosql.mapping.reflection.Reflections;
+import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
@@ -29,10 +31,11 @@ import org.eclipse.microprofile.config.spi.Converter;
  * use the {@link SettingsConverter} and
  * find by the provider that should be an implementation of {@link KeyValueConfiguration}
  */
-public class BucketManagerFactoryConverter implements Converter<BucketManagerFactory> {
+public class BucketManagerFactoryConverter extends AbstractConfiguration<BucketManagerFactory>
+        implements Converter<BucketManagerFactory> {
 
     @Override
-    public BucketManagerFactory convert(String value) {
+    public BucketManagerFactory success(String value) {
         final SettingsConverter settingsConverter = BeanManagers.getInstance(SettingsConverter.class);
         Config config = BeanManagers.getInstance(Config.class);
         final Settings settings = settingsConverter.convert(value);
