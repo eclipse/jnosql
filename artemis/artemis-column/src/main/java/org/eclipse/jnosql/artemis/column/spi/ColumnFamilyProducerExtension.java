@@ -55,8 +55,6 @@ public class ColumnFamilyProducerExtension implements Extension {
 
     private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
 
-
-
     <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
         if (Repository.class.equals(javaClass)) {
@@ -88,8 +86,6 @@ public class ColumnFamilyProducerExtension implements Extension {
     <T, X extends ColumnFamilyManagerAsync> void observesAsync(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, COLUMN, databasesAsync);
     }
-
-
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info(String.format("Starting to process on columns: %d databases crud %d and crudAsync %d",
