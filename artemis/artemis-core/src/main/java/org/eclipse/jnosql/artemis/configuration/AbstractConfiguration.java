@@ -22,6 +22,14 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 
+/**
+ * A template method of Converter where it checks if the BeanManager is up to return the real value; otherwise, it will return a Mock instance.
+ * There are several reasons to return the Mock instead of the real value when the CDI container isn't up:
+ * To enable a Mock instance to validation in Eclipse MicroProfile Configurations.
+ * To avoid waste of computer power to create an instance only for validation.
+ *
+ * @param <T> the converter type
+ */
 public abstract class AbstractConfiguration<T> implements Converter<T> {
 
     protected abstract T success(String value);
