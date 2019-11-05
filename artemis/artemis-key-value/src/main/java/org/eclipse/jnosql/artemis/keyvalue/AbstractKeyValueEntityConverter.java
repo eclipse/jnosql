@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.artemis.keyvalue;
 
+import jakarta.nosql.Value;
+import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
@@ -21,8 +23,6 @@ import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.mapping.reflection.FieldMapping;
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.KeyValueEntity;
 
 import java.util.Objects;
 

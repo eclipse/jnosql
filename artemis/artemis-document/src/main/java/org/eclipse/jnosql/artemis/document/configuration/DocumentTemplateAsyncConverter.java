@@ -17,6 +17,7 @@ package org.eclipse.jnosql.artemis.document.configuration;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.document.DocumentTemplateAsyncProducer;
+import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
@@ -26,10 +27,11 @@ import org.eclipse.microprofile.config.spi.Converter;
  * Converter the {@link String} to {@link DocumentTemplateAsync} it will use the {@link SettingsConverter} and
  * find by the provider that should be an implementation of {@link jakarta.nosql.document.DocumentConfigurationAsync}
  */
-public class DocumentTemplateAsyncConverter implements Converter<DocumentTemplateAsync> {
+public class DocumentTemplateAsyncConverter extends AbstractConfiguration<DocumentTemplateAsync>
+        implements Converter<DocumentTemplateAsync> {
 
     @Override
-    public DocumentTemplateAsync convert(String value) {
+    public DocumentTemplateAsync success(String value) {
         Config config = BeanManagers.getInstance(Config.class);
         final DocumentCollectionManagerAsync manager = config.getValue(value, DocumentCollectionManagerAsync.class);
         DocumentTemplateAsyncProducer producer = BeanManagers.getInstance(DocumentTemplateAsyncProducer.class);

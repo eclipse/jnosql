@@ -17,6 +17,7 @@ package org.eclipse.jnosql.artemis.column.configuration;
 import jakarta.nosql.column.ColumnConfiguration;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
+import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
@@ -26,10 +27,11 @@ import org.eclipse.microprofile.config.spi.Converter;
  * Converter the {@link String} to {@link ColumnFamilyManager} it will use the {@link SettingsConverter} and
  * find by the provider that should be an implementation of {@link ColumnConfiguration}
  */
-public class ColumnFamilyManagerConverter implements Converter<ColumnFamilyManager> {
+public class ColumnFamilyManagerConverter extends AbstractConfiguration<ColumnFamilyManager>
+        implements Converter<ColumnFamilyManager> {
 
     @Override
-    public ColumnFamilyManager convert(String value) {
+    public ColumnFamilyManager success(String value) {
         Config config = BeanManagers.getInstance(Config.class);
         final ColumnFamilyManagerFactory managerFactory = config.getValue(value, ColumnFamilyManagerFactory.class);
         final String database = value + ".database";

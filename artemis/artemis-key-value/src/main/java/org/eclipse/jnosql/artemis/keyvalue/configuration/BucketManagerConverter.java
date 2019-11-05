@@ -18,6 +18,7 @@ package org.eclipse.jnosql.artemis.keyvalue.configuration;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.BucketManagerFactory;
 import jakarta.nosql.keyvalue.KeyValueConfiguration;
+import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
@@ -26,10 +27,10 @@ import org.eclipse.microprofile.config.spi.Converter;
  * Converter the {@link String} to {@link BucketManager} it will use the {@link org.eclipse.jnosql.artemis.configuration.SettingsConverter} and
  * find by the provider that should be an implementation of {@link KeyValueConfiguration}
  */
-public class BucketManagerConverter implements Converter<BucketManager> {
+public class BucketManagerConverter extends AbstractConfiguration<BucketManager> implements Converter<BucketManager> {
 
     @Override
-    public BucketManager convert(String value) {
+    public BucketManager success(String value) {
 
         Config config = BeanManagers.getInstance(Config.class);
         final BucketManagerFactory managerFactory = config.getValue(value, BucketManagerFactory.class);

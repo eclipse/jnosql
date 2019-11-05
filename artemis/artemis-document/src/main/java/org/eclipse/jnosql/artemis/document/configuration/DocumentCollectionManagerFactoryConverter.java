@@ -18,6 +18,7 @@ import jakarta.nosql.Settings;
 import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import jakarta.nosql.document.DocumentConfiguration;
 import jakarta.nosql.mapping.reflection.Reflections;
+import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
@@ -28,10 +29,11 @@ import org.eclipse.microprofile.config.spi.Converter;
  * Converter the {@link String} to {@link DocumentCollectionManagerFactory} it will use the {@link SettingsConverter} and
  * find by the provider that should be an implementation of {@link DocumentConfiguration}
  */
-public class DocumentCollectionManagerFactoryConverter implements Converter<DocumentCollectionManagerFactory> {
+public class DocumentCollectionManagerFactoryConverter extends AbstractConfiguration<DocumentCollectionManagerFactory>
+        implements Converter<DocumentCollectionManagerFactory> {
 
     @Override
-    public DocumentCollectionManagerFactory convert(String value) {
+    public DocumentCollectionManagerFactory success(String value) {
         final SettingsConverter settingsConverter = BeanManagers.getInstance(SettingsConverter.class);
         Config config = BeanManagers.getInstance(Config.class);
         final Settings settings = settingsConverter.convert(value);

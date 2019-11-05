@@ -18,6 +18,7 @@ import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValueConfiguration;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
+import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
@@ -27,10 +28,11 @@ import org.eclipse.microprofile.config.spi.Converter;
  * {@link org.eclipse.jnosql.artemis.configuration.SettingsConverter} and
  * find by the provider that should be an implementation of {@link KeyValueConfiguration}
  */
-public class KeyValueTemplateConverter implements Converter<KeyValueTemplate> {
+public class KeyValueTemplateConverter extends AbstractConfiguration<KeyValueTemplate>
+        implements Converter<KeyValueTemplate> {
 
     @Override
-    public KeyValueTemplate convert(String value) {
+    public KeyValueTemplate success(String value) {
         Config config = BeanManagers.getInstance(Config.class);
         final BucketManager manager = config.getValue(value, BucketManager.class);
         KeyValueTemplateProducer producer = BeanManagers.getInstance(KeyValueTemplateProducer.class);

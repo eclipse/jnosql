@@ -15,11 +15,13 @@
 package org.eclipse.jnosql.artemis.util;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.InjectionException;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.CDI;
 import java.lang.annotation.Annotation;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Utilitarian class to {@link javax.enterprise.inject.spi.BeanManager}
@@ -88,20 +90,31 @@ public final class BeanManagers {
      */
     public static <T> T getInstance(Class<T> clazz, Annotation qualifier) {
         Objects.requireNonNull(clazz, "clazz is required");
-
         return getInstanceImpl(clazz, qualifier, getBeanManager());
     }
 
     private static <T> T getInstanceImpl(Class<T> clazz, BeanManager beanManager) {
-        Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
+        Set<Bean<?>> beans = beanManager.getBeans(clazz);
+        if (beans.isEmpty()) {
+          throw new InjectionException("Does not find the bean class: " + clazz + " into CDI container");
+        }
+        Bean<T> bean = (Bean<T>) beans.iterator().next();
         CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
         return (T) beanManager.getReference(bean, clazz, ctx);
     }
 
     private static <T> T getInstanceImpl(Class<T> clazz, Annotation qualifier, BeanManager beanManager) {
-        Bean bean = beanManager.getBeans(clazz, qualifier).iterator().next();
+        Set<Bean<?>> beans = beanManager.getBeans(clazz, qualifier);
+        checkInjection(clazz, beans);
+        Bean bean = beans.iterator().next();
         CreationalContext ctx = beanManager.createCreationalContext(bean);
         return (T) beanManager.getReference(bean, clazz, ctx);
+    }
+
+    private static <T> void checkInjection(Class<T> clazz, Set<Bean<?>> beans) {
+        if (beans.isEmpty()) {
+            throw new InjectionException("Does not find the bean class: " + clazz + " into CDI container");
+        }
     }
 
     private BeanManagers() {

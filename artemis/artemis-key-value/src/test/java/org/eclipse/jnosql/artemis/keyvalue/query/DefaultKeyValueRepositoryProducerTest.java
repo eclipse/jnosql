@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.artemis.keyvalue.query;
 
-import org.eclipse.jnosql.artemis.CDIExtension;
-import org.eclipse.jnosql.artemis.PersonRepository;
+import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueRepositoryProducer;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.keyvalue.BucketManager;
+import org.eclipse.jnosql.artemis.CDIExtension;
+import org.eclipse.jnosql.artemis.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;

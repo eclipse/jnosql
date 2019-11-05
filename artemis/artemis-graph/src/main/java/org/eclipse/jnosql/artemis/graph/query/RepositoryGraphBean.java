@@ -19,9 +19,9 @@ import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.artemis.graph.GraphTemplate;
 import org.eclipse.jnosql.artemis.DatabaseQualifier;
 import org.eclipse.jnosql.artemis.graph.GraphConverter;
+import org.eclipse.jnosql.artemis.graph.GraphTemplate;
 import org.eclipse.jnosql.artemis.spi.AbstractBean;
 import org.eclipse.jnosql.artemis.util.AnnotationLiteralUtil;
 

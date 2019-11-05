@@ -31,11 +31,10 @@ import static java.util.stream.StreamSupport.stream;
 /**
  * Converter the {@link String} to {@link Settings}
  */
-public class SettingsConverter implements Converter<Settings> {
-
+public class SettingsConverter extends AbstractConfiguration<Settings> implements Converter<Settings> {
 
     @Override
-    public Settings convert(String value) {
+    public Settings success(String value) {
 
         Config config = BeanManagers.getInstance(Config.class);
         final Spliterator<String> spliterator = config.getPropertyNames().spliterator();

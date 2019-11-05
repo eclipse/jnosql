@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.artemis.keyvalue.spi;
 
-import org.eclipse.jnosql.artemis.CDIExtension;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
-import org.eclipse.jnosql.artemis.UserRepository;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.artemis.CDIExtension;
+import org.eclipse.jnosql.artemis.UserRepository;
 import org.eclipse.jnosql.artemis.model.Person;
 import org.eclipse.jnosql.artemis.model.User;
 import org.junit.jupiter.api.Test;

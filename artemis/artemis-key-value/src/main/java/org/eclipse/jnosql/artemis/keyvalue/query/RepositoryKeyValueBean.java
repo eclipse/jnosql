@@ -14,12 +14,12 @@
  */
 package org.eclipse.jnosql.artemis.keyvalue.query;
 
-import org.eclipse.jnosql.artemis.DatabaseQualifier;
-import org.eclipse.jnosql.artemis.spi.AbstractBean;
-import org.eclipse.jnosql.artemis.util.AnnotationLiteralUtil;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.artemis.DatabaseQualifier;
+import org.eclipse.jnosql.artemis.spi.AbstractBean;
+import org.eclipse.jnosql.artemis.util.AnnotationLiteralUtil;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;

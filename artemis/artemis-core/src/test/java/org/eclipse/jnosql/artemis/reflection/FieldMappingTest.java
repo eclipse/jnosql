@@ -15,11 +15,11 @@
 package org.eclipse.jnosql.artemis.reflection;
 
 
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Embeddable;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.artemis.CDIExtension;
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.Embeddable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

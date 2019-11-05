@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.artemis.keyvalue.query;
 
+import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.keyvalue.KeyValueRepositoryProducer;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
-import jakarta.nosql.keyvalue.BucketManager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
