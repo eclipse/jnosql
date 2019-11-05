@@ -18,6 +18,7 @@ import jakarta.nosql.Settings;
 import jakarta.nosql.mapping.reflection.Reflections;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
+import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.graph.GraphConfiguration;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
@@ -27,10 +28,10 @@ import org.eclipse.microprofile.config.spi.Converter;
 /**
  * Converter the {@link String} to {@link Graph}
  */
-public class GraphConverter implements Converter<Graph> {
+public class GraphConverter extends AbstractConfiguration<Graph> implements Converter<Graph> {
 
     @Override
-    public Graph convert(String value) {
+    protected Graph success(String value) {
         final SettingsConverter settingsConverter = BeanManagers.getInstance(SettingsConverter.class);
         Config config = BeanManagers.getInstance(Config.class);
         final Settings settings = settingsConverter.convert(value);
@@ -40,7 +41,6 @@ public class GraphConverter implements Converter<Graph> {
             final Reflections reflections = BeanManagers.getInstance(Reflections.class);
             final GraphConfiguration configuration = (GraphConfiguration) reflections.newInstance(configurationClass);
             return configuration.apply(settings);
-
         }
         throw new ConfigurationException("The class " + configurationClass + " is not valid to " + GraphConfiguration.class);
     }
