@@ -21,6 +21,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A template method of Converter where it checks if the BeanManager is up to return the real value; otherwise, it will return a Mock instance.
@@ -31,6 +33,8 @@ import java.lang.reflect.Proxy;
  * @param <T> the converter type
  */
 public abstract class AbstractConfiguration<T> implements Converter<T> {
+
+    private static final Logger LOGGER = Logger.getLogger(AbstractConfiguration.class.getName());
 
     protected abstract T success(String value);
 
@@ -46,6 +50,7 @@ public abstract class AbstractConfiguration<T> implements Converter<T> {
         try {
             BeanManagers.getBeanManager();
         } catch (Exception ex) {
+            LOGGER.log(Level.FINEST, "CDI container is not up, using a dump instance", ex);
             return getMock(beanType);
         }
         return success(value);
