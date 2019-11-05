@@ -16,7 +16,9 @@ package org.eclipse.jnosql.artemis.column.configuration;
 
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.column.ColumnTemplateProducer;
+import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
@@ -26,10 +28,11 @@ import org.eclipse.microprofile.config.spi.Converter;
  * Converter the {@link String} to {@link ColumnTemplate} it will use the {@link SettingsConverter} and
  * find by the provider that should be an implementation of {@link jakarta.nosql.column.ColumnConfiguration}
  */
-public class ColumnTemplateConverter implements Converter<ColumnTemplate> {
+public class ColumnTemplateConverter extends AbstractConfiguration<ColumnTemplate>
+        implements Converter<ColumnTemplate> {
 
     @Override
-    public ColumnTemplate convert(String value) {
+    public ColumnTemplate success(String value) {
         Config config = BeanManagers.getInstance(Config.class);
         final ColumnFamilyManager manager = config.getValue(value, ColumnFamilyManager.class);
         ColumnTemplateProducer producer = BeanManagers.getInstance(ColumnTemplateProducer.class);

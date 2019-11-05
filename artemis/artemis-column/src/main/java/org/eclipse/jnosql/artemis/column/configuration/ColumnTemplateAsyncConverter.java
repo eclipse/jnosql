@@ -15,8 +15,10 @@
 package org.eclipse.jnosql.artemis.column.configuration;
 
 import jakarta.nosql.column.ColumnFamilyManagerAsync;
+import jakarta.nosql.column.ColumnFamilyManagerFactory;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.column.ColumnTemplateAsyncProducer;
+import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
@@ -26,10 +28,11 @@ import org.eclipse.microprofile.config.spi.Converter;
  * Converter the {@link String} to {@link ColumnTemplateAsync} it will use the {@link SettingsConverter} and
  * find by the provider that should be an implementation of {@link jakarta.nosql.column.ColumnConfigurationAsync}
  */
-public class ColumnTemplateAsyncConverter implements Converter<ColumnTemplateAsync> {
+public class ColumnTemplateAsyncConverter extends AbstractConfiguration<ColumnTemplateAsync>
+        implements Converter<ColumnTemplateAsync> {
 
     @Override
-    public ColumnTemplateAsync convert(String value) {
+    public ColumnTemplateAsync success(String value) {
         Config config = BeanManagers.getInstance(Config.class);
         final ColumnFamilyManagerAsync manager = config.getValue(value, ColumnFamilyManagerAsync.class);
         ColumnTemplateAsyncProducer producer = BeanManagers.getInstance(ColumnTemplateAsyncProducer.class);

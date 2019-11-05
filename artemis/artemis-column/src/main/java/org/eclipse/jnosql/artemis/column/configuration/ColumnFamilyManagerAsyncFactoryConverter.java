@@ -16,8 +16,10 @@ package org.eclipse.jnosql.artemis.column.configuration;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.column.ColumnConfigurationAsync;
+import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnFamilyManagerAsyncFactory;
 import jakarta.nosql.mapping.reflection.Reflections;
+import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
@@ -28,10 +30,11 @@ import org.eclipse.microprofile.config.spi.Converter;
  * Converter the {@link String} to {@link ColumnFamilyManagerAsyncFactory} it will use the {@link SettingsConverter} and
  * find by the provider that should be an implementation of {@link ColumnConfigurationAsync}
  */
-public class ColumnFamilyManagerAsyncFactoryConverter implements Converter<ColumnFamilyManagerAsyncFactory> {
+public class ColumnFamilyManagerAsyncFactoryConverter extends AbstractConfiguration<ColumnFamilyManagerAsyncFactory>
+        implements Converter<ColumnFamilyManagerAsyncFactory> {
 
     @Override
-    public ColumnFamilyManagerAsyncFactory convert(String value) {
+    public ColumnFamilyManagerAsyncFactory success(String value) {
         final SettingsConverter settingsConverter = BeanManagers.getInstance(SettingsConverter.class);
         Config config = BeanManagers.getInstance(Config.class);
         final Settings settings = settingsConverter.convert(value);
