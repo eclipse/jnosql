@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.eclipse.jnosql.diana</groupId>
         <artifactId>diana</artifactId>
-        <version>0.1.0.M1</version>
+        <version>0.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>diana-key-value</artifactId>
