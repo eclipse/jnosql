@@ -42,6 +42,7 @@ public class SettingsConverter extends AbstractConfiguration<Settings> implement
         final String settingsPrefix = getSettingsPrefix(value);
         final Map<String, Object> settings = stream(spliterator, false)
                 .filter(isSettings(settingsPrefix))
+                .distinct()
                 .collect(toMap(s -> s.replace(value + ".settings.", ""), s ->
                         config.getValue(s, String.class)));
 
