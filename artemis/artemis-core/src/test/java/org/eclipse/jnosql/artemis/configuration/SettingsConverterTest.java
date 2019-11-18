@@ -62,4 +62,24 @@ class SettingsConverterTest {
         System.clearProperty(prefix + ".settings.key");
         System.clearProperty(prefix + ".settings.key2");
     }
+
+    @Test
+    public void shouldReturnNotDuplicatedValue() {
+        final String prefix = "database";
+        System.setProperty(prefix, prefix);
+        System.setProperty("database.settings.jakarta.nosql.host", "updated");
+        System.setProperty(prefix + ".settings.key2", "value2");
+        System.setProperty(prefix + ".settings.key", "value");
+        final Settings settings = config.getValue(prefix, Settings.class);
+        Assertions.assertNotNull(settings);
+        assertEquals(3, settings.size());
+        assertEquals(settings.get("key").get(), "value");
+        assertEquals(settings.get("key2").get(), "value2");
+
+
+        System.clearProperty(prefix);
+        System.clearProperty(prefix + ".settings.key");
+        System.clearProperty(prefix + ".settings.key2");
+        System.clearProperty("database.settings.jakarta.nosql.host");
+    }
 }
