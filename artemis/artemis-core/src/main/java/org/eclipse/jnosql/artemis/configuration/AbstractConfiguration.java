@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.artemis.configuration;
 
 import org.eclipse.jnosql.artemis.util.BeanManagers;
+import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
 import java.lang.reflect.InvocationHandler;
@@ -49,6 +50,7 @@ public abstract class AbstractConfiguration<T> implements Converter<T> {
     public T convert(String value) {
         try {
             BeanManagers.getBeanManager();
+            BeanManagers.getInstance(Config.class);
         } catch (Exception ex) {
             LOGGER.log(Level.FINEST, "CDI container is not up, using a dump instance", ex);
             return getMock(beanType);
