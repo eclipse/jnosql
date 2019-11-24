@@ -23,7 +23,7 @@
     <parent>
         <groupId>jakarta.nosql</groupId>
         <artifactId>jakarta-nosql-parent</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>1.0.0-b1</version>
     </parent>
 
     <groupId>org.eclipse.jnosql</groupId>
