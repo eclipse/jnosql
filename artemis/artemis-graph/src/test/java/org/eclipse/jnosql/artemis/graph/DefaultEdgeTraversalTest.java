@@ -16,7 +16,10 @@ package org.eclipse.jnosql.artemis.graph;
 
 import jakarta.nosql.NonUniqueResultException;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.artemis.graph.cdi.CDIExtension;
 import org.eclipse.jnosql.artemis.graph.model.Animal;
 import org.eclipse.jnosql.artemis.graph.model.Book;
@@ -25,6 +28,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,13 +50,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(CDIExtension.class)
 public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
-
     @Test
     public void shouldReturnErrorWhenEdgeIdIsNull() {
         assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalEdge(null));
-
     }
-
 
     @Test
     public void shouldReturnEdgeId() {
@@ -88,8 +89,6 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
         assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().outE((String) null)
                 .stream()
                 .collect(toList()));
-
-
     }
 
     @Test
@@ -179,7 +178,6 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
         assertFalse(edgeEntity.isPresent());
     }
-
 
 
     @Test
@@ -374,7 +372,6 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
         assertTrue(result.isPresent());
 
-
         assertEquals(snake, result.get().getIncoming());
         assertEquals(lion, result.get().getOutgoing());
 
@@ -488,5 +485,4 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
         assertEquals(6, edges.size());
     }
-
 }
