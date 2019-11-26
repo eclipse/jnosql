@@ -513,9 +513,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         EntityTree tree = graphTemplate.getTraversalVertex()
                 .hasLabel(Animal.class)
                 .in("eats")
-                .tree().getResult()
-                .findFirst()
-                .get();
+                .tree();
 
         assertNotNull(tree);
     }

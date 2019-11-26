@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -167,31 +168,37 @@ public class DefaultTreeTraversalTest {
     }
 
     @Test
-    public void shouldCreateTree2() {
-        graph.traversal().V().toList().forEach(Vertex::remove);
-        graph.traversal().E().toList().forEach(Edge::remove);
-        Vertex lion = graph.addVertex(T.label, "animal", "name", "lion");
-        Vertex zebra = graph.addVertex(T.label, "animal", "name", "zebra");
-        Vertex giraffe = graph.addVertex(T.label, "animal", "name", "giraffe");
-        Vertex grass = graph.addVertex(T.label, "animal", "name", "grass");
+    public void shouldGetTreesAtDepth() {
+        EntityTree tree = graphTemplate.getTraversalVertex()
+                .hasLabel(Animal.class)
+                .out("eats")
+                .out("eats")
+                .tree();
 
-        lion.addEdge("eats", zebra);
-        lion.addEdge("eats", giraffe);
-        zebra.addEdge("eats", grass);
-        giraffe.addEdge("eats", grass);
+        assertEquals(1L, tree.getTreesAtDepth(1).count());
+        assertEquals(1L, tree.getTreesAtDepth(2).count());
+        assertEquals(2L, tree.getTreesAtDepth(3).count());
+    }
 
-        List<Tree> eats = graph.traversal().V().out("eats").out("eats").tree().toList();
-        Tree tree = eats.get(0);
-        List<Tree<?>> treesAtDepth = tree.getTreesAtDepth(1);
-        List<Tree<?>> leafTrees = tree.getLeafTrees();
-        System.out.println("sout");
+    @Test
+    public void shouldGetLeafsAtDepth() {
+        EntityTree tree = graphTemplate.getTraversalVertex()
+                .hasLabel(Animal.class)
+                .out("eats")
+                .out("eats")
+                .tree();
 
-        List<Tree> eats1 = graph.traversal().E().in("eats").tree().toList();
-        Tree tree1 = eats1.get(0);
-        List<Tree<?>> treesAtDepth1 = tree.getTreesAtDepth(1);
-        List<Object> objectsAtDepth1 = tree.getObjectsAtDepth(1);
-        System.out.println("sout");
+        List<Animal> animals = tree.<Animal>getLeafsAtDepth(1).collect(toList());
+        assertEquals(1, animals.size());
+        assertEquals(lion, animals.get(0));
 
+        List<Animal> animals2 = tree.<Animal>getLeafsAtDepth(2).collect(toList());
+        assertEquals(2, animals2.size());
+        assertArrayEquals(Stream.of(zebra, giraffe).toArray(Animal[]::new), animals2.toArray(new Animal[2]));
+
+        List<Animal> animals3 = tree.<Animal>getLeafsAtDepth(3).distinct().collect(toList());
+        assertEquals(1, animals3.size());
+        assertArrayEquals(Stream.of(grass).toArray(Animal[]::new), animals2.toArray(new Animal[1]));
     }
 }
 
