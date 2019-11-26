@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(CDIExtension.class)
-public class DefaultTreeTraversalTest {
+public class DefaultEntityTreeTest {
 
     @Inject
     protected GraphTemplate graphTemplate;

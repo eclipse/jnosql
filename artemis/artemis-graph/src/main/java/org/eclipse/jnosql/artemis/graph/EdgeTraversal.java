@@ -78,13 +78,6 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
     Optional<EdgeEntity> getSingleResult();
 
     /**
-     * Maps to {@link EntityTree}
-     * From any one element, the emanating paths from that element can be aggregated to form a tree.
-     * @return a {@link EntityTree} instance
-     */
-    EdgeTree tree();
-
-    /**
      * Concludes the traversal then returns the result as list.
      * @return the entities result
      */
