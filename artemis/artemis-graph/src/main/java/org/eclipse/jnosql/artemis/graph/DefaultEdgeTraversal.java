@@ -18,7 +18,6 @@ import jakarta.nosql.NonUniqueResultException;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
-import org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -152,12 +151,6 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
             return Optional.of(entity);
         }
         throw new NonUniqueResultException("The Edge traversal query returns more than one result");
-    }
-
-    @Override
-    public EdgeTree tree() {
-        Tree<Edge> tree = flow.andThen(GraphTraversal::tree).apply(supplier.get()).next();
-        return new DefaultEdgeTree(converter, tree);
     }
 
     @Override
