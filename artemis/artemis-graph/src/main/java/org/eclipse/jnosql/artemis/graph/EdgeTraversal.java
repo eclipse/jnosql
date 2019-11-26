@@ -27,7 +27,6 @@ import java.util.stream.Stream;
  */
 public interface EdgeTraversal extends EdgeConditionTraversal {
 
-
     /**
      * Does a filter predicate based
      * @param predicate a predicate to apply to each element to determine if it should be included
@@ -77,6 +76,13 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
      * @throws NonUniqueResultException when there is more than one result
      */
     Optional<EdgeEntity> getSingleResult();
+
+    /**
+     * Maps to {@link EntityTree}
+     * From any one element, the emanating paths from that element can be aggregated to form a tree.
+     * @return a {@link EntityTree} instance
+     */
+    EdgeTree tree();
 
     /**
      * Concludes the traversal then returns the result as list.

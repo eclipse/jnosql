@@ -145,7 +145,6 @@ public interface VertexTraversal extends VertexConditionTraversal {
      */
     VertexTraversal range(long start, long end);
 
-
     /**
      * Returns the next elements in the traversal.
      * If the traversal is empty, then an {@link Optional#empty()} is returned.
