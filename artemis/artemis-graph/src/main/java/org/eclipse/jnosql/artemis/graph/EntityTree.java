@@ -14,13 +14,17 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 public interface EntityTree {
 
-    <T> T getData();
+    <T> Stream<T> getLeaf();
 
-    List<EntityTree> getChildren();
+    Stream<EntityTree> getLeafTrees();
+
+    Stream<EntityTree> getTreesAtDepth(int depth);
+
+    <T> Stream<T> getLeafsAtDepth(int depth);
 
     boolean isLeaf();
 }
