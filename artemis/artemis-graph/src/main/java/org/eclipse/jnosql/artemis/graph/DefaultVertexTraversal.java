@@ -21,6 +21,7 @@ import jakarta.nosql.mapping.Pagination;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
@@ -171,8 +172,9 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     }
 
     @Override
-    public TreeTraversal tree() {
-        return new DefaultTreeTraversal(supplier, flow.andThen(GraphTraversal::tree), converter);
+    public EntityTree tree() {
+        Tree<Vertex> tree = flow.andThen(GraphTraversal::tree).apply(supplier.get()).next();
+        return new DefaultEntityTree(converter, tree);
     }
 
     @Override

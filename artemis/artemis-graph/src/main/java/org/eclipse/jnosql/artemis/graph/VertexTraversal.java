@@ -173,11 +173,11 @@ public interface VertexTraversal extends VertexConditionTraversal {
     <T> Optional<T> getSingleResult();
 
     /**
-     * Maps to {@link TreeTraversal}
+     * Maps to {@link EntityTree}
      * From any one element, the emanating paths from that element can be aggregated to form a tree.
-     * @return a {@link TreeTraversal} instance
+     * @return a {@link EntityTree} instance
      */
-    TreeTraversal tree();
+    EntityTree tree();
 
     /**
      * creates a {@link Page} instance
