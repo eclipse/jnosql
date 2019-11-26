@@ -48,12 +48,10 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
         super(supplier, flow, converter);
     }
 
-
     @Override
     public VertexTraversal has(String propertyKey, Object value) {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(value, "value is required");
-
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(propertyKey, value)), converter);
     }
 
@@ -172,6 +170,10 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(predicate)), converter);
     }
 
+    @Override
+    public TreeTraversal tree() {
+        return new DefaultTreeTraversal(supplier, flow.andThen(GraphTraversal::tree), converter);
+    }
 
     @Override
     public VertexTraversal hasNot(String propertyKey) {
@@ -187,7 +189,8 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     @Override
     public <T> Stream<T> getResult() {
-        return flow.apply(supplier.get()).toList().stream()
+        return flow.apply(supplier.get())
+                .toStream()
                 .map(converter::toEntity);
     }
 
@@ -226,7 +229,6 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     public ValueMapTraversal valueMap(String... propertyKeys) {
         return new DefaultValueMapTraversal(supplier, flow.andThen(g -> g.valueMap(false, propertyKeys)));
     }
-
 
     @Override
     public long count() {
