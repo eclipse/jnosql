@@ -42,7 +42,6 @@ final class DefaultTreeTraversal implements TreeTraversal {
         this.converter = converter;
     }
 
-
     @Override
     public Stream<EntityTree> getResult() {
         return flow.apply(supplier.get()).toStream()

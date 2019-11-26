@@ -186,7 +186,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
             throw new IllegalStateException("incoming Id field is required");
         }
 
-
         Vertex outVertex = getVertex(outgoing).orElseThrow(() -> new EntityNotFoundException("Outgoing entity does not found"));
         Vertex inVertex = getVertex(incoming).orElseThrow(() -> new EntityNotFoundException("Incoming entity does not found"));
 
@@ -201,8 +200,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
         return edge.<EdgeEntity>map(edge1 -> new DefaultEdgeEntity<>(edge1, incoming, outgoing))
                 .orElseGet(() -> new DefaultEdgeEntity<>(getEdge(label, outVertex, inVertex), incoming, outgoing));
-
-
     }
 
     private Edge getEdge(String label, Vertex outVertex, Vertex inVertex) {
@@ -225,7 +222,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return Optional.empty();
     }
 
-
     @Override
     public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction) {
         return getEdgesImpl(entity, direction);
@@ -236,14 +232,12 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return getEdgesImpl(entity, direction, labels);
     }
 
-
     @SafeVarargs
     @Override
     public final <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels) {
         checkLabelsSupplier(labels);
         return getEdgesImpl(entity, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
     }
-
 
     @Override
     public <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction, String... labels) {
@@ -261,7 +255,6 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         checkLabelsSupplier(labels);
         return getEdgesByIdImpl(id, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
     }
-
 
     @Override
     public VertexTraversal getTraversalVertex(Object... vertexIds) {
