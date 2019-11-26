@@ -14,11 +14,18 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
+import java.util.Map.Entry;
 import java.util.stream.Stream;
 
 public interface EntityTree {
 
     <T> Stream<T> getLeaf();
+
+    <T> Stream<T> getParents();
+
+    <K,V> Stream<Entry<K,V>> getParentsIds();
+
+    <T> EntityTree getParentId(T id);
 
     Stream<EntityTree> getLeafTrees();
 

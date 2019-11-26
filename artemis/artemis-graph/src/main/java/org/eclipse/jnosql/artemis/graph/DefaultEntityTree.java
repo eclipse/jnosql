@@ -17,6 +17,8 @@ package org.eclipse.jnosql.artemis.graph;
 import org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
+import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -28,7 +30,7 @@ final class DefaultEntityTree implements EntityTree {
 
     private final Tree<Vertex> tree;
 
-    public DefaultEntityTree(GraphConverter converter, Tree<Vertex> tree) {
+    DefaultEntityTree(GraphConverter converter, Tree<Vertex> tree) {
         this.converter = converter;
         this.tree = tree;
     }
@@ -38,6 +40,26 @@ final class DefaultEntityTree implements EntityTree {
         return tree.getLeafObjects()
                 .stream()
                 .map(converter::toEntity);
+    }
+
+    @Override
+    public <T> Stream<T> getParents() {
+        return tree.keySet()
+                .stream()
+                .map(converter::toEntity);
+    }
+
+    @Override
+    public <K, V> Stream<Entry<K, V>> getParentsIds() {
+        return tree.keySet().stream()
+                .map(v -> EntityTreeEntry.of(v, converter));
+    }
+
+    @Override
+    public <T> EntityTree getParentId(T id) {
+        Objects.requireNonNull(id, "id is required");
+
+        return null;
     }
 
     @Override
@@ -64,5 +86,65 @@ final class DefaultEntityTree implements EntityTree {
     @Override
     public boolean isLeaf() {
         return tree.isLeaf();
+    }
+
+
+    private static class EntityTreeEntry<K, V> implements Entry<K, V> {
+
+        private final K key;
+
+        private final V value;
+
+        private EntityTreeEntry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public K getKey() {
+            return key;
+        }
+
+        @Override
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public V setValue(V v) {
+            throw new UnsupportedOperationException("This entry is read-only");
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            EntityTreeEntry<?, ?> that = (EntityTreeEntry<?, ?>) o;
+            return Objects.equals(key, that.key) &&
+                    Objects.equals(value, that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value);
+        }
+
+        @Override
+        public String toString() {
+            return "EntityTreeEntry{" +
+                    "key=" + key +
+                    ", value=" + value +
+                    '}';
+        }
+
+        static <K, V> EntityTreeEntry<K, V> of(Vertex vertex, GraphConverter converter) {
+            K key = (K) vertex.id();
+            V value = converter.toEntity(vertex);
+            return new EntityTreeEntry<>(key, value);
+        }
     }
 }
