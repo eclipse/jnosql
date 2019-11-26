@@ -44,20 +44,20 @@ final class DefaultEntityTree implements EntityTree {
     }
 
     @Override
-    public <T> Stream<T> getParents() {
+    public <T> Stream<T> getRoots() {
         return tree.keySet()
                 .stream()
                 .map(converter::toEntity);
     }
 
     @Override
-    public <K, V> Stream<Entry<K, V>> getParentsIds() {
+    public <K, V> Stream<Entry<K, V>> getRootsIds() {
         return tree.keySet().stream()
                 .map(v -> EntityTreeEntry.of(v, converter));
     }
 
     @Override
-    public <T> Optional<EntityTree> getParentId(T id) {
+    public <T> Optional<EntityTree> getTreeFromRoot(T id) {
         Objects.requireNonNull(id, "id is required");
         return tree.keySet().stream()
                 .filter(v -> id.equals(v.id()))

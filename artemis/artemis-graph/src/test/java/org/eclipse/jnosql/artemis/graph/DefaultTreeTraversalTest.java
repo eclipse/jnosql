@@ -14,10 +14,8 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.artemis.graph.cdi.CDIExtension;
 import org.eclipse.jnosql.artemis.graph.model.Animal;
@@ -26,12 +24,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
@@ -79,13 +74,14 @@ public class DefaultTreeTraversalTest {
                 .tree();
 
         List<Animal> animals = tree.<Animal>getLeaf()
+                .sorted(Comparator.comparing(Animal::getName))
                 .collect(toList());
 
         assertNotNull(animals);
         assertFalse(animals.isEmpty());
         assertEquals(4, animals.size());
         assertArrayEquals(animals.toArray(new Animal[4]),
-                asList(lion, lion, zebra, giraffe).toArray(new Animal[4]));
+                asList(giraffe, lion, lion, zebra).toArray(new Animal[4]));
 
     }
 
@@ -105,7 +101,7 @@ public class DefaultTreeTraversalTest {
         assertEquals(2, trees.size());
 
         List<Animal> animals = trees.stream()
-                .<Animal>flatMap(EntityTree::getParents)
+                .<Animal>flatMap(EntityTree::getRoots)
                 .distinct().collect(toList());
 
         assertEquals(1, animals.size());
@@ -120,8 +116,8 @@ public class DefaultTreeTraversalTest {
                 .in("eats")
                 .tree();
 
-        List<Animal> animals = tree.<Animal>getParents().collect(toList());
-        List<Entry<Long, Animal>> parentsIds = tree.<Long, Animal>getParentsIds()
+        List<Animal> animals = tree.<Animal>getRoots().collect(toList());
+        List<Entry<Long, Animal>> parentsIds = tree.<Long, Animal>getRootsIds()
                 .collect(toList());
         assertEquals(animals.size(), parentsIds.size());
 
@@ -141,13 +137,13 @@ public class DefaultTreeTraversalTest {
                 .out("eats")
                 .tree();
 
-        Entry<Long, Animal> entry = tree.<Long, Animal>getParentsIds()
+        Entry<Long, Animal> entry = tree.<Long, Animal>getRootsIds()
                 .findFirst().get();
 
         assertEquals(lion, entry.getValue());
 
-        EntityTree subTree = tree.getParentId(entry.getKey()).get();
-        Animal[] animals = subTree.getParents().toArray(Animal[]::new);
+        EntityTree subTree = tree.getTreeFromRoot(entry.getKey()).get();
+        Animal[] animals = subTree.getRoots().toArray(Animal[]::new);
         assertArrayEquals(Stream.of(zebra, giraffe).toArray(Animal[]::new), animals);
         System.out.println(subTree);
         Animal animal = subTree.<Animal>getLeaf().distinct().findFirst().get();
@@ -162,7 +158,7 @@ public class DefaultTreeTraversalTest {
                 .tree();
 
         assertFalse(tree.isLeaf());
-        EntityTree subTree = tree.getParentId(lion.getId()).get();
+        EntityTree subTree = tree.getTreeFromRoot(lion.getId()).get();
 
         assertTrue(subTree.isLeaf());
     }
@@ -198,7 +194,7 @@ public class DefaultTreeTraversalTest {
 
         List<Animal> animals3 = tree.<Animal>getLeafsAtDepth(3).distinct().collect(toList());
         assertEquals(1, animals3.size());
-        assertArrayEquals(Stream.of(grass).toArray(Animal[]::new), animals2.toArray(new Animal[1]));
+        assertArrayEquals(Stream.of(grass).toArray(Animal[]::new), animals3.toArray(new Animal[1]));
     }
 }
 

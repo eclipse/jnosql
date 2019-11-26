@@ -18,21 +18,76 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * A wrapper of {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree} to manipulate entities classes.
+ */
 public interface EntityTree {
 
+    /**
+     * A wrapper {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#getLeafObjects}
+     *
+     * @param <T> the entity type
+     * @return the leaf {@link Stream} of this Tree
+     */
     <T> Stream<T> getLeaf();
 
-    <T> Stream<T> getParents();
+    /**
+     * A wrapper {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#keySet()}
+     *
+     * @param <T> the entity type
+     * @return the leaf {@link Stream} of this Tree
+     */
+    <T> Stream<T> getRoots();
 
-    <K,V> Stream<Entry<K,V>> getParentsIds();
+    /**
+     * An {@link Entry} where the key is the ID and the value is Entity
+     *
+     * @param <K> the key type
+     * @param <V> the entity type
+     * @return the {@link Stream} of {@link Entry} of the root of the tree
+     */
+    <K, V> Stream<Entry<K, V>> getRootsIds();
 
-    <T> Optional<EntityTree> getParentId(T id);
+    /**
+     * Returns tree from the root id
+     *
+     * @param id  the id
+     * @param <T> the id type
+     * @return the entity if it is a leaf it will return {@link Optional#isPresent()}
+     */
+    <T> Optional<EntityTree> getTreeFromRoot(T id);
 
+    /**
+     * Returns a {@link Stream} of {@link EntityTree} it is a wrapper of
+     * {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#getLeafTrees}
+     *
+     * @return a stream of {@link EntityTree}
+     */
     Stream<EntityTree> getLeafTrees();
 
+    /**
+     * Returns a {@link Stream} of {@link EntityTree} it is a wrapper of
+     * {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#getTreesAtDepth(int)}
+     *
+     * @param depth the depth
+     * @return a {@link Stream} of {@link EntityTree}
+     */
     Stream<EntityTree> getTreesAtDepth(int depth);
 
+    /**
+     * Returns a {@link Stream} of {@link EntityTree} it is a wrapper of
+     * {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#getObjectsAtDepth(int)}
+     *
+     * @param depth the depth
+     * @param <T>   the entity type
+     * @return a {@link Stream} of entities
+     */
     <T> Stream<T> getLeafsAtDepth(int depth);
 
+    /**
+     * It is a wrapper of {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#isLeaf()}
+     *
+     * @return true if is leaf or not
+     */
     boolean isLeaf();
 }
