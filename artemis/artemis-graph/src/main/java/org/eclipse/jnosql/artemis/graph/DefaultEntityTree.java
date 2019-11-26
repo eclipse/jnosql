@@ -14,39 +14,55 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+
+import java.util.stream.Stream;
 
 /**
  * The default implementation of {@link EntityTree}
  */
 final class DefaultEntityTree implements EntityTree {
 
-    private final Object data;
+    private final GraphConverter converter;
 
-    private final List<EntityTree> children = new ArrayList<>();
+    private final Tree<Vertex> tree;
 
-    DefaultEntityTree(Object data) {
-        this.data = data;
-    }
-
-    void add(EntityTree tree) {
-        this.children.add(tree);
+    public DefaultEntityTree(GraphConverter converter, Tree<Vertex> tree) {
+        this.converter = converter;
+        this.tree = tree;
     }
 
     @Override
-    public <T> T getData() {
-        return (T) data;
+    public <T> Stream<T> getLeaf() {
+        return tree.getLeafObjects()
+                .stream()
+                .map(converter::toEntity);
     }
 
     @Override
-    public List<EntityTree> getChildren() {
-        return Collections.unmodifiableList(children);
+    public Stream<EntityTree> getLeafTrees() {
+        return tree.getLeafTrees()
+                .stream()
+                .map(t -> new DefaultEntityTree(converter, t));
+    }
+
+    @Override
+    public Stream<EntityTree> getTreesAtDepth(int depth) {
+        return tree.getTreesAtDepth(depth)
+                .stream()
+                .map(t -> new DefaultEntityTree(converter, t));
+    }
+
+    @Override
+    public <T> Stream<T> getLeafsAtDepth(int depth) {
+        return tree.getObjectsAtDepth(depth)
+                .stream()
+                .map(converter::toEntity);
     }
 
     @Override
     public boolean isLeaf() {
-        return children.isEmpty();
+        return tree.isLeaf();
     }
 }
