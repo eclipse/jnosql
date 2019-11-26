@@ -27,6 +27,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
@@ -34,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(CDIExtension.class)
 public class DefaultTreeTraversalTest {
@@ -83,7 +89,87 @@ public class DefaultTreeTraversalTest {
     }
 
     @Test
+    public void shouldGetLeafTrees() {
+        EntityTree tree = graphTemplate.getTraversalVertex()
+                .hasLabel(Animal.class)
+                .in("eats")
+                .in("eats")
+                .tree();
+
+        List<EntityTree> trees = tree.getLeafTrees()
+                .collect(toList());
+
+        assertNotNull(trees);
+        assertFalse(trees.isEmpty());
+        assertEquals(2, trees.size());
+
+        List<Animal> animals = trees.stream()
+                .<Animal>flatMap(EntityTree::getParents)
+                .distinct().collect(toList());
+
+        assertEquals(1, animals.size());
+        assertEquals(lion, animals.get(0));
+    }
+
+    @Test
+    public void shouldGetParents() {
+        EntityTree tree = graphTemplate.getTraversalVertex()
+                .hasLabel(Animal.class)
+                .in("eats")
+                .in("eats")
+                .tree();
+
+        List<Animal> animals = tree.<Animal>getParents().collect(toList());
+        List<Entry<Long, Animal>> parentsIds = tree.<Long, Animal>getParentsIds()
+                .collect(toList());
+        assertEquals(animals.size(), parentsIds.size());
+
+        Animal animal = animals.get(0);
+        Entry<Long, Animal> entry = parentsIds.get(0);
+
+        assertEquals(animal, entry.getValue());
+        assertEquals(animal.getId(), entry.getKey());
+
+    }
+
+    @Test
+    public void shouldGetParentId() {
+        EntityTree tree = graphTemplate.getTraversalVertex()
+                .hasLabel(Animal.class)
+                .out("eats")
+                .out("eats")
+                .tree();
+
+        Entry<Long, Animal> entry = tree.<Long, Animal>getParentsIds()
+                .findFirst().get();
+
+        assertEquals(lion, entry.getValue());
+
+        EntityTree subTree = tree.getParentId(entry.getKey()).get();
+        Animal[] animals = subTree.getParents().toArray(Animal[]::new);
+        assertArrayEquals(Stream.of(zebra, giraffe).toArray(Animal[]::new), animals);
+        System.out.println(subTree);
+        Animal animal = subTree.<Animal>getLeaf().distinct().findFirst().get();
+        assertEquals(grass, animal);
+    }
+
+    @Test
+    public void shouldIsLeaf() {
+        EntityTree tree = graphTemplate.getTraversalVertex()
+                .hasLabel(Animal.class)
+                .out("eats")
+                .tree();
+
+        assertFalse(tree.isLeaf());
+        EntityTree subTree = tree.getParentId(lion.getId()).get();
+
+        assertTrue(subTree.isLeaf());
+    }
+
+    @Test
     public void shouldCreateTree2() {
+        graph.traversal().V().toList().forEach(Vertex::remove);
+        graph.traversal().E().toList().forEach(Edge::remove);
         Vertex lion = graph.addVertex(T.label, "animal", "name", "lion");
         Vertex zebra = graph.addVertex(T.label, "animal", "name", "zebra");
         Vertex giraffe = graph.addVertex(T.label, "animal", "name", "giraffe");
@@ -94,10 +180,10 @@ public class DefaultTreeTraversalTest {
         zebra.addEdge("eats", grass);
         giraffe.addEdge("eats", grass);
 
-        List<Tree> eats = graph.traversal().V().both("eats").tree().toList();
+        List<Tree> eats = graph.traversal().V().out("eats").out("eats").tree().toList();
         Tree tree = eats.get(0);
         List<Tree<?>> treesAtDepth = tree.getTreesAtDepth(1);
-        List<Object> objectsAtDepth = tree.getLeafObjects();
+        List<Tree<?>> leafTrees = tree.getLeafTrees();
         System.out.println("sout");
 
         List<Tree> eats1 = graph.traversal().E().in("eats").tree().toList();

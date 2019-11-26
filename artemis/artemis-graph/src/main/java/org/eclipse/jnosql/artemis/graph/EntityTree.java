@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.artemis.graph;
 
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface EntityTree {
@@ -25,7 +26,7 @@ public interface EntityTree {
 
     <K,V> Stream<Entry<K,V>> getParentsIds();
 
-    <T> EntityTree getParentId(T id);
+    <T> Optional<EntityTree> getParentId(T id);
 
     Stream<EntityTree> getLeafTrees();
 

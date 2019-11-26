@@ -19,6 +19,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -56,10 +57,13 @@ final class DefaultEntityTree implements EntityTree {
     }
 
     @Override
-    public <T> EntityTree getParentId(T id) {
+    public <T> Optional<EntityTree> getParentId(T id) {
         Objects.requireNonNull(id, "id is required");
-
-        return null;
+        return tree.keySet().stream()
+                .filter(v -> id.equals(v.id()))
+                .findFirst()
+                .map(v -> tree.get(v))
+                .map(t -> new DefaultEntityTree(converter, t));
     }
 
     @Override
