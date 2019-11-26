@@ -40,6 +40,14 @@ public interface TreeTraversal {
     Optional<EntityTree> getSingleResult();
 
     /**
+     * Returns the next elements in the traversal.
+     * If the traversal is empty, then an {@link Optional#empty()} is returned.
+     *
+     * @return the entity result otherwise {@link Optional#empty()}
+     */
+    Optional<EntityTree> next();
+
+    /**
      * Get the next n-number of results from the traversal.
      *
      * @param limit the limit to result
