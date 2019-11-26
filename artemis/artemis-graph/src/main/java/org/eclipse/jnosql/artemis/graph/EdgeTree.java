@@ -26,27 +26,24 @@ public interface EdgeTree {
     /**
      * A wrapper {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#getLeafObjects}
      *
-     * @param <T> the entity type
      * @return the leaf {@link Stream} of this Tree
      */
-    <T> Stream<T> getLeaf();
+    Stream<EdgeEntity> getLeaf();
 
     /**
      * A wrapper {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#keySet()}
      *
-     * @param <T> the entity type
      * @return the leaf {@link Stream} of this Tree
      */
-    <T> Stream<T> getRoots();
+    Stream<EdgeEntity> getRoots();
 
     /**
      * An {@link Entry} where the key is the ID and the value is Entity
      *
      * @param <K> the key type
-     * @param <V> the entity type
      * @return the {@link Stream} of {@link Entry} of the root of the tree
      */
-    <K, V> Stream<Entry<K, V>> getRootsIds();
+    <K> Stream<Entry<K, EdgeEntity>> getRootsIds();
 
     /**
      * Returns tree from the root id
@@ -79,10 +76,9 @@ public interface EdgeTree {
      * {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#getObjectsAtDepth(int)}
      *
      * @param depth the depth
-     * @param <T>   the entity type
      * @return a {@link Stream} of entities
      */
-    <T> Stream<T> getLeafsAtDepth(int depth);
+    Stream<EdgeEntity> getLeafsAtDepth(int depth);
 
     /**
      * It is a wrapper of {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#isLeaf()}
