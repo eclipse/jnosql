@@ -91,4 +91,5 @@ final class DefaultEdgeTree implements EdgeTree {
     public boolean isLeaf() {
         return tree.isLeaf();
     }
+
 }
