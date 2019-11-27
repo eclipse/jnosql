@@ -30,6 +30,7 @@ import java.util.Map.Entry;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -74,7 +75,7 @@ public class DefaultEntityTreeTest {
                 .tree();
 
         List<Animal> animals = tree.<Animal>getLeaf()
-                .sorted(Comparator.comparing(Animal::getName))
+                .sorted(comparing(Animal::getName))
                 .collect(toList());
 
         assertNotNull(animals);
@@ -143,8 +144,10 @@ public class DefaultEntityTreeTest {
         assertEquals(lion, entry.getValue());
 
         EntityTree subTree = tree.getTreeFromRoot(entry.getKey()).get();
-        Animal[] animals = subTree.getRoots().toArray(Animal[]::new);
-        assertArrayEquals(Stream.of(zebra, giraffe).toArray(Animal[]::new), animals);
+        Animal[] animals = subTree.<Animal>getRoots()
+                .sorted(comparing(Animal::getName))
+                .toArray(Animal[]::new);
+        assertArrayEquals(Stream.of(giraffe, zebra).toArray(Animal[]::new), animals);
         System.out.println(subTree);
         Animal animal = subTree.<Animal>getLeaf().distinct().findFirst().get();
         assertEquals(grass, animal);
