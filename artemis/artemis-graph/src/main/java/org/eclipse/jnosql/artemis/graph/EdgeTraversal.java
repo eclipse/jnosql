@@ -27,7 +27,6 @@ import java.util.stream.Stream;
  */
 public interface EdgeTraversal extends EdgeConditionTraversal {
 
-
     /**
      * Does a filter predicate based
      * @param predicate a predicate to apply to each element to determine if it should be included

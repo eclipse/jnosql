@@ -21,6 +21,7 @@ import jakarta.nosql.mapping.Pagination;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
@@ -48,12 +49,10 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
         super(supplier, flow, converter);
     }
 
-
     @Override
     public VertexTraversal has(String propertyKey, Object value) {
         requireNonNull(propertyKey, "propertyKey is required");
         requireNonNull(value, "value is required");
-
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.has(propertyKey, value)), converter);
     }
 
@@ -172,6 +171,11 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.hasLabel(predicate)), converter);
     }
 
+    @Override
+    public EntityTree tree() {
+        Tree<Vertex> tree = flow.andThen(GraphTraversal::tree).apply(supplier.get()).next();
+        return new DefaultEntityTree(converter, tree);
+    }
 
     @Override
     public VertexTraversal hasNot(String propertyKey) {
@@ -187,7 +191,8 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
 
     @Override
     public <T> Stream<T> getResult() {
-        return flow.apply(supplier.get()).toList().stream()
+        return flow.apply(supplier.get())
+                .toStream()
                 .map(converter::toEntity);
     }
 
@@ -226,7 +231,6 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     public ValueMapTraversal valueMap(String... propertyKeys) {
         return new DefaultValueMapTraversal(supplier, flow.andThen(g -> g.valueMap(false, propertyKeys)));
     }
-
 
     @Override
     public long count() {

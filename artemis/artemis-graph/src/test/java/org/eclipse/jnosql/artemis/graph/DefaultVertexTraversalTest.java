@@ -497,4 +497,25 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
         assertEquals(3, people.size());
     }
+
+    @Test
+    public void shouldCreateTree() {
+        Animal lion = graphTemplate.insert(new Animal("lion"));
+        Animal zebra = graphTemplate.insert(new Animal("zebra"));
+        Animal giraffe = graphTemplate.insert(new Animal("giraffe"));
+        Animal grass = graphTemplate.insert(new Animal("grass"));
+
+        graphTemplate.edge(lion, "eats", giraffe);
+        graphTemplate.edge(lion, "eats", zebra);
+        graphTemplate.edge(zebra, "eats", grass);
+        graphTemplate.edge(giraffe, "eats", grass);
+
+        EntityTree tree = graphTemplate.getTraversalVertex()
+                .hasLabel(Animal.class)
+                .in("eats")
+                .tree();
+
+        assertNotNull(tree);
+    }
+
 }

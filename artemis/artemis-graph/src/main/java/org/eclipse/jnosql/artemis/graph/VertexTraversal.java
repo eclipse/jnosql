@@ -145,7 +145,6 @@ public interface VertexTraversal extends VertexConditionTraversal {
      */
     VertexTraversal range(long start, long end);
 
-
     /**
      * Returns the next elements in the traversal.
      * If the traversal is empty, then an {@link Optional#empty()} is returned.
@@ -171,6 +170,13 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @throws NonUniqueResultException when there is more than one result
      */
     <T> Optional<T> getSingleResult();
+
+    /**
+     * Maps to {@link EntityTree}
+     * From any one element, the emanating paths from that element can be aggregated to form a tree.
+     * @return a {@link EntityTree} instance
+     */
+    EntityTree tree();
 
     /**
      * creates a {@link Page} instance
