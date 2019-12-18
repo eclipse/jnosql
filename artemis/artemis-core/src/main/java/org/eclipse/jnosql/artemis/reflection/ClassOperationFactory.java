@@ -27,22 +27,11 @@ enum ClassOperationFactory implements Supplier<ClassOperation> {
 
     INSTANCE;
 
-    private static final String DISABLE_COMPILER = "artemis.reclection.disableCompiler";
-
-    private static final String LOG_MESSAGE = "It will use the compiler optimizations to access the class instead" +
-            " of reflections. To disable it set artemis.reclection.disableCompiler as true.";
-
     private static final Logger LOGGER = Logger.getLogger(ClassOperationFactory.class.getName());
 
     private final Reflections reflections = new DefaultReflections();
 
     private final ClassOperation reflection = new ReflectionClassOperation(reflections);
-
-    private final JavaCompilerFacade compilerFacade = new JavaCompilerFacade(ClassOperationFactory
-            .class.getClassLoader());
-
-    private final ClassOperation compiler = new JavaCompilerClassOperation(reflection, reflections, compilerFacade);
-
 
     public Reflections getReflections() {
         return reflections;
@@ -63,12 +52,7 @@ enum ClassOperationFactory implements Supplier<ClassOperation> {
             return operation;
         } else {
             LOGGER.info("ClassOperation does not found, using the default implementation");
-            boolean isDisableCompiler = Boolean.valueOf(System.getProperty(DISABLE_COMPILER));
-            if (isDisableCompiler) {
-                LOGGER.fine(LOG_MESSAGE);
-                return reflection;
-            }
-            return compiler;
+            return reflection;
         }
 
 
