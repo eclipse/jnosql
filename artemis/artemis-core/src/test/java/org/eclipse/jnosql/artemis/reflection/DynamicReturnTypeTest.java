@@ -58,7 +58,6 @@ class DynamicReturnTypeTest {
         assertEquals(DynamicReturnType.ITERABLE, returnType);
     }
 
-
     @Test
     public void shouldReturnCollection() {
         DynamicReturnType returnType = DynamicReturnType.of(Person.class, Collection.class);
