@@ -75,6 +75,19 @@ final class DefaultKeyValueEntity implements KeyValueEntity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DefaultKeyValueEntity that = (DefaultKeyValueEntity) o;
+        return Objects.equals(key, that.key) &&
+                Objects.equals(value, that.value);
+    }
+
+    @Override
     public String toString() {
         return "DefaultKeyValueEntity{" +
                 "key=" + key +
