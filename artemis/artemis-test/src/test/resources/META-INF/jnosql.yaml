@@ -1,0 +1,14 @@
+configurations:
+    - description: that is the description
+      name: name
+      provider: org.eclipse.jnosql.artemis.configuration.DefaultMockConfiguration
+      settings:
+        key: value
+        key2: value2
+
+    - description: that is the description
+      name: name2
+      provider: org.eclipse.jnosql.artemis.configuration.DefaultMockConfiguration
+      settings:
+        key: value
+        key2: value2
