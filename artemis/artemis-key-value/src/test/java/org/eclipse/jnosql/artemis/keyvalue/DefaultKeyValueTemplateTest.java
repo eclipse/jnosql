@@ -23,8 +23,8 @@ import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.model.User;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 @ExtendWith(MockitoExtension.class)
 public class DefaultKeyValueTemplateTest {
 

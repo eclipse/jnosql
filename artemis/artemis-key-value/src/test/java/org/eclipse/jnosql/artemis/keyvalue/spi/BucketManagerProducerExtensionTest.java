@@ -17,18 +17,17 @@ package org.eclipse.jnosql.artemis.keyvalue.spi;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.UserRepository;
 import org.eclipse.jnosql.artemis.model.Person;
 import org.eclipse.jnosql.artemis.model.User;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class BucketManagerProducerExtensionTest {
 
     @Inject

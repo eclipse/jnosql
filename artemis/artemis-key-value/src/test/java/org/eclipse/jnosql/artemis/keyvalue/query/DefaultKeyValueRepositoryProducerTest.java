@@ -17,17 +17,16 @@ package org.eclipse.jnosql.artemis.keyvalue.query;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueRepositoryProducer;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.PersonRepository;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 class DefaultKeyValueRepositoryProducerTest {
 
     @Inject
