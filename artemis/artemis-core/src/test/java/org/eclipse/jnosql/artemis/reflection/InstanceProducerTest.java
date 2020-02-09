@@ -15,16 +15,15 @@
 package org.eclipse.jnosql.artemis.reflection;
 
 import jakarta.nosql.mapping.InstanceProducer;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.model.Zipcode;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class InstanceProducerTest {
 
     @Inject

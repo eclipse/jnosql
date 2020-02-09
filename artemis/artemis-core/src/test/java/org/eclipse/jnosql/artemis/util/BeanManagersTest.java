@@ -15,9 +15,8 @@
 package org.eclipse.jnosql.artemis.util;
 
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.eclipse.jnosql.artemis.CDIExtension;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.BeanManager;
@@ -25,7 +24,7 @@ import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 class BeanManagersTest {
 
     @Inject
