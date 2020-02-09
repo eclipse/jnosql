@@ -26,6 +26,7 @@ import javax.enterprise.inject.se.SeContainer;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionTarget;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 class CDIJUnitExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
@@ -57,14 +58,17 @@ class CDIJUnitExtension implements BeforeAllCallback, AfterAllCallback, BeforeEa
         if (container == null) {
             return;
         }
-        extensionContext.getTestInstance().ifPresent(instance ->
-        {
+        extensionContext.getTestInstance().ifPresent(inject());
+    }
+
+    private Consumer<Object> inject() {
+        return instance ->  {
             final BeanManager manager = container.getBeanManager();
             final AnnotatedType<?> annotatedType = manager.createAnnotatedType(instance.getClass());
             final InjectionTarget injectionTarget = manager.createInjectionTarget(annotatedType);
             context = manager.createCreationalContext(null);
             injectionTarget.inject(instance, context);
-        });
+        };
     }
 
     @Override
