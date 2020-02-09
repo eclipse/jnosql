@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis;
+package org.eclipse.jnosql.artemis.test;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
