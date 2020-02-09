@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target(TYPE)
 @Retention(RUNTIME)
-@ExtendWith(CdiExtension.class)
+@ExtendWith(CDIExtension.class)
 public @interface CDI {
     /**
      * @return classes to deploy.

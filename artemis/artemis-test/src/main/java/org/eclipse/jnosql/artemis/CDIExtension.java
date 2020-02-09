@@ -27,7 +27,7 @@ import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionTarget;
 
-class CdiExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
+class CDIExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
 
     private SeContainer container;
     private CreationalContext<Object> context;
@@ -75,6 +75,5 @@ class CdiExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCal
 
     private void doClose(final SeContainer container) {
         container.close();
-        ClosableCloser closer = new ClosableCloser();
     }
 }
