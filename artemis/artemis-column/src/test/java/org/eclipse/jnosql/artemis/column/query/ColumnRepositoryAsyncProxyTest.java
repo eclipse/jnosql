@@ -29,12 +29,11 @@ import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.RepositoryAsync;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.model.Person;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -53,7 +52,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class ColumnRepositoryAsyncProxyTest {
 
     private ColumnTemplateAsync template;

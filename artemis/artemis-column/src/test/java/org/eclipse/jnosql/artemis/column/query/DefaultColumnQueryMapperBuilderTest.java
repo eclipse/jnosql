@@ -17,17 +17,16 @@ package org.eclipse.jnosql.artemis.column.query;
 import jakarta.nosql.mapping.column.ColumnQueryMapper;
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteFrom;
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperFrom;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.model.Person;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DefaultColumnQueryMapperBuilderTest {
 
     @Inject

@@ -22,14 +22,13 @@ import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperFrom;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.model.Address;
 import org.eclipse.jnosql.artemis.model.Money;
 import org.eclipse.jnosql.artemis.model.Person;
 import org.eclipse.jnosql.artemis.model.Worker;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -43,7 +42,7 @@ import static jakarta.nosql.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DefaultColumnMapperSelectBuilderTest {
 
     @Inject

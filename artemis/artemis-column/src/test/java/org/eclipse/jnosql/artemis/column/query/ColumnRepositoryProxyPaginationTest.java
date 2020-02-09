@@ -25,13 +25,12 @@ import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.model.Person;
 import org.eclipse.jnosql.artemis.model.Vendor;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -67,7 +66,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class ColumnRepositoryProxyPaginationTest {
 
     private ColumnTemplate template;

@@ -27,12 +27,11 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.query.SelectQuery;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.model.Person;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.eclipse.jnosql.artemis.util.ParamsBinder;
 import org.eclipse.jnosql.diana.query.method.SelectMethodProvider;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.lang.reflect.Method;
@@ -42,7 +41,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 class ParamsBinderTest {
 
 

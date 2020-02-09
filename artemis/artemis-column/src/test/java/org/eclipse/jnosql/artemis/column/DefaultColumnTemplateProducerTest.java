@@ -17,17 +17,16 @@ package org.eclipse.jnosql.artemis.column;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateProducer;
-import org.eclipse.jnosql.artemis.CDIExtension;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DefaultColumnTemplateProducerTest {
 
     @Inject
