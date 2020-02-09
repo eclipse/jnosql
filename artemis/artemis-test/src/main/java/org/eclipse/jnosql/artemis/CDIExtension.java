@@ -1,79 +1,60 @@
-/*
- *  Copyright (c) 2020 Otávio Santana and others
- *   All rights reserved. This program and the accompanying materials
- *   are made available under the terms of the Eclipse Public License v1.0
- *   and Apache License v2.0 which accompanies this distribution.
- *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
- *
- *   You may elect to redistribute this code under either of these licenses.
- *
- *   Contributors:
- *
- *   Otavio Santana
- */
 package org.eclipse.jnosql.artemis;
 
-import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.platform.commons.util.AnnotationUtils;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.se.SeContainer;
-import javax.enterprise.inject.spi.AnnotatedType;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionTarget;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-class CDIExtension implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-    private SeContainer container;
-    private CreationalContext<Object> context;
 
-    @Override
-    public void beforeAll(final ExtensionContext extensionContext) {
-        final CDI config = AnnotationUtils.findAnnotation(extensionContext.getElement(), CDI.class).orElse(null);
-        if (config == null) {
-            return;
-        }
-        ContainerSupplier supplier = new ContainerSupplier(config);
-        container = supplier.get();
-    }
+/**
+ * The CDI extension to work with JUnit 5 Jupiter.
+ */
+@Target(TYPE)
+@Retention(RUNTIME)
+@ExtendWith(CDIJUnitExtension.class)
+public @interface CDIExtension {
+    /**
+     * @return classes to deploy.
+     */
+    Class<?>[] classes() default {};
 
-    @Override
-    public void afterAll(final ExtensionContext extensionContext) {
-        if (container != null) {
-            doClose(container);
-            container = null;
-        }
-    }
+    /**
+     * @return decorators to activate.
+     */
+    Class<?>[] decorators() default {};
 
-    @Override
-    public void beforeEach(final ExtensionContext extensionContext) {
-        if (container == null) {
-            return;
-        }
-        extensionContext.getTestInstance().ifPresent(instance ->
-        {
-            final BeanManager manager = container.getBeanManager();
-            final AnnotatedType<?> annotatedType = manager.createAnnotatedType(instance.getClass());
-            final InjectionTarget injectionTarget = manager.createInjectionTarget(annotatedType);
-            context = manager.createCreationalContext(null);
-            injectionTarget.inject(instance, context);
-        });
-    }
+    /**
+     * @return interceptors to activate.
+     */
+    Class<?>[] interceptors() default {};
 
-    @Override
-    public void afterEach(final ExtensionContext extensionContext) {
-        if (context != null) {
-            context.release();
-            context = null;
-        }
-    }
+    /**
+     * @return alternatives to activate.
+     */
+    Class<?>[] alternatives() default {};
 
-    private void doClose(final SeContainer container) {
-        container.close();
-    }
+    /**
+     * @return stereotypes to activate.
+     */
+    Class<? extends Annotation>[] alternativeStereotypes() default {};
+
+    /**
+     * @return packages to deploy.
+     */
+    Class<?>[] packages() default {};
+
+    /**
+     * @return packages to deploy recursively.
+     */
+    Class<?>[] recursivePackages() default {};
+
+    /**
+     * @return if the automatic scanning must be disabled.
+     */
+    boolean disableDiscovery() default false;
+
 }

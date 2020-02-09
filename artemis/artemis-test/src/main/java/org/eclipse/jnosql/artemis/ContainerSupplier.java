@@ -21,9 +21,9 @@ import java.util.stream.Stream;
 
 class ContainerSupplier implements Supplier<SeContainer> {
 
-    private final CDI config;
+    private final CDIExtension config;
 
-    ContainerSupplier(CDI config) {
+    ContainerSupplier(CDIExtension config) {
         this.config = config;
     }
 
