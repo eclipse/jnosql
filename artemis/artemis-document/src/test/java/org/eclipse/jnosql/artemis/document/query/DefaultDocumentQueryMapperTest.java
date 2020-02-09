@@ -16,17 +16,16 @@ package org.eclipse.jnosql.artemis.document.query;
 
 import jakarta.nosql.mapping.document.DocumentQueryMapper;
 import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteFrom;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.model.Person;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DefaultDocumentQueryMapperTest {
 
 

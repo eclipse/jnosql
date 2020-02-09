@@ -14,14 +14,13 @@
  */
 package org.eclipse.jnosql.artemis.configuration;
 
-import org.eclipse.jnosql.artemis.CDIExtension;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DocumentIntegrationTest {
 
     @Inject

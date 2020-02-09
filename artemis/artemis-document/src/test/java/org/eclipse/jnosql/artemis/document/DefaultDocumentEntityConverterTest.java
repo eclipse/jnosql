@@ -18,7 +18,6 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.model.Actor;
 import org.eclipse.jnosql.artemis.model.Address;
 import org.eclipse.jnosql.artemis.model.AppointmentBook;
@@ -33,10 +32,10 @@ import org.eclipse.jnosql.artemis.model.Person;
 import org.eclipse.jnosql.artemis.model.Vendor;
 import org.eclipse.jnosql.artemis.model.Worker;
 import org.eclipse.jnosql.artemis.model.Zipcode;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -59,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DefaultDocumentEntityConverterTest {
 
     @Inject
