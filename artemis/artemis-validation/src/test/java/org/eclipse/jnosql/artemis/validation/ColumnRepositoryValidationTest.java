@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.artemis.validation;
 
 import jakarta.nosql.mapping.column.ColumnTemplate;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
@@ -28,7 +28,7 @@ import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class ColumnRepositoryValidationTest {
 
     @Inject

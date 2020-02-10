@@ -26,14 +26,13 @@ import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.artemis.graph.GraphConverter;
 import org.eclipse.jnosql.artemis.graph.GraphTemplate;
-import org.eclipse.jnosql.artemis.graph.cdi.CDIExtension;
 import org.eclipse.jnosql.artemis.graph.model.Person;
 import org.eclipse.jnosql.artemis.graph.model.Vendor;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -57,7 +56,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class GraphRepositoryProxyTest {
 
 

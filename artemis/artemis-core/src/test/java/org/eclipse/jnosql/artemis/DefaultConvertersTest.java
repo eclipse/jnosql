@@ -16,13 +16,13 @@ package org.eclipse.jnosql.artemis;
 
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 class DefaultConvertersTest {
 
     @Inject

@@ -17,14 +17,12 @@ package org.eclipse.jnosql.artemis.graph;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.artemis.graph.cdi.CDIExtension;
 import org.eclipse.jnosql.artemis.graph.model.Animal;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
@@ -38,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DefaultEntityTreeTest {
 
     @Inject

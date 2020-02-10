@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--
   ~  Copyright (c) 2017 Otávio Santana and others
   ~   All rights reserved. This program and the accompanying materials
@@ -11,6 +10,12 @@
   ~
   ~   Contributors:
   ~
-  ~   Daniel Cunha <dcunha@tomitribe.com>
+  ~   Otavio Santana
   -->
-<configuration>
+
+<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+		http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
+       bean-discovery-mode="all">
+</beans>

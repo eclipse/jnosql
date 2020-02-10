@@ -17,9 +17,8 @@ package org.eclipse.jnosql.artemis.keyvalue;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
-import org.eclipse.jnosql.artemis.CDIExtension;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import javax.inject.Inject;
@@ -27,7 +26,7 @@ import javax.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DefaultKeyValueTemplateProducerTest {
 
 

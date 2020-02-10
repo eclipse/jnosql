@@ -16,12 +16,11 @@ package org.eclipse.jnosql.artemis.configuration;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.configuration.DocumentConfigurationAsyncMock.DocumentCollectionManagerAsyncFactoryMock;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.NoSuchElementException;
@@ -30,7 +29,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class DocumentCollectionFactoryAsyncConverterTest {
 
     @Inject

@@ -15,11 +15,10 @@
 package org.eclipse.jnosql.artemis.graph;
 
 import jakarta.nosql.NonUniqueResultException;
-import org.eclipse.jnosql.artemis.graph.cdi.CDIExtension;
 import org.eclipse.jnosql.artemis.graph.model.Person;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 class DefaultValueMapTraversalTest extends AbstractTraversalTest {
 
 

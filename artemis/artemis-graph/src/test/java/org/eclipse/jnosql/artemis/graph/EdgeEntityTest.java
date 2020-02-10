@@ -16,13 +16,12 @@ package org.eclipse.jnosql.artemis.graph;
 
 import jakarta.nosql.Value;
 import jakarta.nosql.mapping.EntityNotFoundException;
-import org.eclipse.jnosql.artemis.graph.cdi.CDIExtension;
 import org.eclipse.jnosql.artemis.graph.model.Book;
 import org.eclipse.jnosql.artemis.graph.model.Person;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -35,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class EdgeEntityTest {
 
 

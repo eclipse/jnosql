@@ -19,9 +19,8 @@ import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Embeddable;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.artemis.CDIExtension;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.Collections;
@@ -34,7 +33,7 @@ import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
 import static jakarta.nosql.mapping.reflection.FieldType.MAP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 public class FieldMappingTest {
 
 

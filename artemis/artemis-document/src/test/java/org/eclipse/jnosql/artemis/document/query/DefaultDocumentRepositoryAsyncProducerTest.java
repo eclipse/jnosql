@@ -17,17 +17,16 @@ package org.eclipse.jnosql.artemis.document.query;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.mapping.document.DocumentRepositoryAsyncProducer;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.PersonRepositoryAsync;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 class DefaultDocumentRepositoryAsyncProducerTest {
 
     @Inject

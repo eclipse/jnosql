@@ -15,16 +15,15 @@
 package org.eclipse.jnosql.artemis.graph.configuration;
 
 import org.eclipse.jnosql.artemis.graph.GraphTemplate;
-import org.eclipse.jnosql.artemis.graph.cdi.CDIExtension;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.UUID;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 class GraphTemplateConverterTest {
 
     @Inject

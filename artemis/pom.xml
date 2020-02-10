@@ -31,6 +31,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>artemis-test</module>
         <module>artemis-core</module>
         <module>artemis-graph</module>
         <module>artemis-document</module>

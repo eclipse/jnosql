@@ -16,13 +16,12 @@ package org.eclipse.jnosql.artemis.column.configuration;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
-import org.eclipse.jnosql.artemis.CDIExtension;
 import org.eclipse.jnosql.artemis.column.configuration.ColumnConfigurationMock.ColumnFamilyManagerFactoryMock;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.NoSuchElementException;
@@ -31,7 +30,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(CDIExtension.class)
+@CDIExtension
 class ColumnFamilyManagerFactoryConverterTest {
 
     @Inject
