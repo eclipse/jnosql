@@ -54,7 +54,7 @@ public class DefaultSettingsTest {
     }
 
     @Test
-    public void shouldCreatefromMap() {
+    public void shouldCreateFromMap() {
         Settings settings = Settings.of(singletonMap("key", "value"));
         assertFalse(settings.isEmpty());
         assertEquals(1, settings.size());

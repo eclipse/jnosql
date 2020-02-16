@@ -39,7 +39,7 @@ public final class SettingsPriority {
      *
      * @param settings the settings
      * @return a new {@link Settings} instance
-     * @throws NullPointerException when settins is null
+     * @throws NullPointerException when Settings is null
      */
     public static Settings get(Map<String, Object> settings) {
         requireNonNull(settings, "settings is required");
@@ -52,7 +52,7 @@ public final class SettingsPriority {
      *
      * @param settings the settings
      * @return a new {@link Settings} instance
-     * @throws NullPointerException when settins is null
+     * @throws NullPointerException when Settings is null
      */
     public static Settings get(Settings settings) {
         requireNonNull(settings, "settings is required");

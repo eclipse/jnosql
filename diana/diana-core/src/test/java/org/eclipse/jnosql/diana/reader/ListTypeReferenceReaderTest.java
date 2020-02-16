@@ -96,7 +96,7 @@ public class ListTypeReferenceReaderTest {
     }
 
     @Test
-    public void shouldConvertAndBeMutuable() {
+    public void shouldConvertAndBeMutable() {
         List<String> strings = referenceReader.convert(new TypeReference<List<String>>() {
         }, "123");
         strings.add("456");
@@ -104,7 +104,7 @@ public class ListTypeReferenceReaderTest {
     }
 
     @Test
-    public void shouldConvertAndBeMutuable2() {
+    public void shouldConvertAndBeMutable2() {
         List<String> strings = referenceReader.convert(new TypeReference<List<String>>() {
         }, Arrays.asList("123", "32"));
         strings.add("456");

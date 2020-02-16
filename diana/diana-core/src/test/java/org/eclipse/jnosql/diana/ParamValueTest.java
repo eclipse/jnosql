@@ -28,7 +28,7 @@ class ParamValueTest {
 
 
     @Test
-    public void shouldAddParamter() {
+    public void shouldAddParameter() {
         Params params = Params.newParams();
         Value name = params.add("name");
         assertNotNull(name);
@@ -62,7 +62,7 @@ class ParamValueTest {
     }
 
     @Test
-    public void shouldisInstanceOf() {
+    public void shouldInstanceOf() {
         Params params = Params.newParams();
         Value name = params.add("name");
         assertTrue(name.isInstanceOf(Integer.class));

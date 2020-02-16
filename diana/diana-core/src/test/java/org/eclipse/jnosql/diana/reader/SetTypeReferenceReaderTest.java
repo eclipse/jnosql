@@ -62,7 +62,7 @@ public class SetTypeReferenceReaderTest {
     }
 
     @Test
-    public void shouldConvertAndBeMutuable() {
+    public void shouldConvertAndBeMutable() {
         Set<String> strings = referenceReader.convert(new TypeReference<Set<String>>() {
         }, "123");
         strings.add("456");
@@ -70,7 +70,7 @@ public class SetTypeReferenceReaderTest {
     }
 
     @Test
-    public void shouldConvertAndBeMutuable2() {
+    public void shouldConvertAndBeMutable2() {
         Set<String> strings = referenceReader.convert(new TypeReference<Set<String>>() {
         }, Arrays.asList("123", "32"));
         strings.add("456");

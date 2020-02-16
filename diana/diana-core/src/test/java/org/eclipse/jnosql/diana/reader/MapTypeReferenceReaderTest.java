@@ -65,7 +65,7 @@ public class MapTypeReferenceReaderTest {
     }
 
     @Test
-    public void shouldSholdcreateMutuableMap() {
+    public void shouldCreateMutableMap() {
         Map<String, String> map = referenceReader.convert(new TypeReference<Map<String, String>>() {
         }, singletonMap(123, 123L));
 
@@ -76,7 +76,7 @@ public class MapTypeReferenceReaderTest {
 
 
     @Test
-    public void shouldSholdcreateMutuableMap2() {
+    public void shouldMutableMap2() {
         Map<Integer, Long> oldMap = new HashMap<>();
         oldMap.put(1, 234L);
         oldMap.put(2, 2345L);

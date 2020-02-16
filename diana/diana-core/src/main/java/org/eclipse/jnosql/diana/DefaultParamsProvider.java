@@ -20,7 +20,7 @@ import jakarta.nosql.Params;
 import jakarta.nosql.Params.ParamsProvider;
 
 /**
- * The default implemenation of {@link ParamsProvider}
+ * The default implementation of {@link ParamsProvider}
  */
 public class DefaultParamsProvider implements ParamsProvider {
 
