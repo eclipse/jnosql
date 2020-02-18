@@ -31,7 +31,7 @@ import org.eclipse.jnosql.artemis.model.Movie;
 import org.eclipse.jnosql.artemis.model.Person;
 import org.eclipse.jnosql.artemis.model.Vendor;
 import org.eclipse.jnosql.artemis.model.Worker;
-import org.eclipse.jnosql.artemis.model.Zipcode;
+import org.eclipse.jnosql.artemis.model.ZipCode;
 import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,7 +71,7 @@ public class DefaultDocumentEntityConverterTest {
             .withName()
             .withPhones(Arrays.asList("234", "2342"))
             .withMovieCharacter(Collections.singletonMap("JavaZone", "Jedi"))
-            .withMovierRating(Collections.singletonMap("JavaZone", 10))
+            .withMovieRating(Collections.singletonMap("JavaZone", 10))
             .build();
 
     @BeforeEach
@@ -340,7 +340,7 @@ public class DefaultDocumentEntityConverterTest {
 
     @Test
     public void shouldConvertSubEntity() {
-        Zipcode zipcode = new Zipcode();
+        ZipCode zipcode = new ZipCode();
         zipcode.setZip("12321");
         zipcode.setPlusFour("1234");
 
@@ -348,7 +348,7 @@ public class DefaultDocumentEntityConverterTest {
         address.setCity("Salvador");
         address.setState("Bahia");
         address.setStreet("Rua Engenheiro Jose Anasoh");
-        address.setZipcode(zipcode);
+        address.setZipCode(zipcode);
 
         DocumentEntity documentEntity = converter.toDocument(address);
         List<Document> documents = documentEntity.getDocuments();
@@ -379,8 +379,8 @@ public class DefaultDocumentEntityConverterTest {
         assertEquals("Rua Engenheiro Jose Anasoh", address.getStreet());
         assertEquals("Salvador", address.getCity());
         assertEquals("Bahia", address.getState());
-        assertEquals("12321", address.getZipcode().getZip());
-        assertEquals("1234",  address.getZipcode().getPlusFour());
+        assertEquals("12321", address.getZipCode().getZip());
+        assertEquals("1234",  address.getZipCode().getPlusFour());
 
     }
 

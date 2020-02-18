@@ -62,16 +62,16 @@ public class ClassConverterJavaFieldParserTest {
     @Test
     public void shouldReadFieldWhenFieldIsSubEntity() {
         ClassMapping classMapping = classConverter.create(Address.class);
-        String result = classMapping.getColumnField("zipcode.plusFour");
-        assertEquals("zipcode.plusFour", result);
+        String result = classMapping.getColumnField("zipCode.plusFour");
+        assertEquals("zipCode.plusFour", result);
     }
 
     @Test
     public void shouldReturnAllFieldWhenSelectTheSubEntityField() {
         ClassMapping classMapping = classConverter.create(Address.class);
-        String result = classMapping.getColumnField("zipcode");
+        String result = classMapping.getColumnField("zipCode");
         List<String> resultList = Stream.of(result.split(",")).sorted().collect(toList());
-        List<String> expected = Stream.of("zipcode.plusFour", "zipcode.zip").sorted().collect(toList());
+        List<String> expected = Stream.of("zipCode.plusFour", "zipCode.zip").sorted().collect(toList());
         assertEquals(expected, resultList);
     }
 

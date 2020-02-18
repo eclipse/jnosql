@@ -48,7 +48,7 @@ public class ColumnRepositoryExtensionTest {
     private PersonRepositoryAsync repositoryMockAsync;
 
     @Test
-    public void shouldIniciateAsync() {
+    public void shouldInitiateAsync() {
         assertNotNull(repositoryAsync);
     }
 
@@ -58,14 +58,14 @@ public class ColumnRepositoryExtensionTest {
     }
 
     @Test
-    public void shouldIniciate() {
+    public void shouldInitiate() {
         assertNotNull(repository);
         Person person = repository.save(Person.builder().build());
         assertEquals("Default", person.getName());
     }
 
     @Test
-    public void shouldUseInstantion(){
+    public void shouldUseInstantiation(){
         assertNotNull(repositoryMock);
         Person person = repositoryMock.save(Person.builder().build());
         assertEquals("columnRepositoryMock", person.getName());

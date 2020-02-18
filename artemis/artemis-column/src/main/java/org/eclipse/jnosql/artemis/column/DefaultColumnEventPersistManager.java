@@ -50,7 +50,7 @@ class DefaultColumnEventPersistManager implements ColumnEventPersistManager {
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Inject
-    private Event<EntityPostPersit> entityPostPersitEvent;
+    private Event<EntityPostPersit> entityPostPersistEvent;
 
     @Inject
     private Event<EntityColumnPrePersist> entityColumnPrePersist;
@@ -81,7 +81,7 @@ class DefaultColumnEventPersistManager implements ColumnEventPersistManager {
 
     @Override
     public <T> void firePostEntity(T entity) {
-        entityPostPersitEvent.fire(new DefaultEntityPostPersist(entity));
+        entityPostPersistEvent.fire(new DefaultEntityPostPersist(entity));
     }
 
     @Override

@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @CDIExtension
-class ColumnFamilyManagerAsynConverterTest {
+class ColumnFamilyManagerAsyncConverterTest {
 
 
     @Inject

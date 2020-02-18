@@ -85,7 +85,7 @@ public class ColumnEntityTest {
     }
 
     @Test
-    public void shouldReturnErroWhenFindCoumnIsNull() {
+    public void shouldReturnErrorWhenFindColumnIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Column column = Column.of("name", "name");
             ColumnEntity entity = ColumnEntity.of("entity", singletonList(column));
@@ -269,7 +269,7 @@ public class ColumnEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenAddColumnasObjectWhenHasNullObject() {
+    public void shouldReturnErrorWhenAddColumnsObjectWhenHasNullObject() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             ColumnEntity entity = new DefaultColumnEntity("columnFamily");
             entity.add("name", null);
@@ -277,7 +277,7 @@ public class ColumnEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenAddColumnasObjectWhenHasNullColumnName() {
+    public void shouldReturnErrorWhenAddColumnsObjectWhenHasNullColumnName() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             ColumnEntity entity = new DefaultColumnEntity("columnFamily");
             entity.add(null, 10);
@@ -285,7 +285,7 @@ public class ColumnEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenAddColumnasValueWhenHasNullColumnName() {
+    public void shouldReturnErrorWhenAddColumnsValueWhenHasNullColumnName() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             ColumnEntity entity = new DefaultColumnEntity("columnFamily");
             entity.add(null, Value.of(12));

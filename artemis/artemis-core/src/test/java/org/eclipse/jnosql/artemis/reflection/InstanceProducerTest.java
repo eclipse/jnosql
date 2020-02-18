@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.artemis.reflection;
 
 import jakarta.nosql.mapping.InstanceProducer;
-import org.eclipse.jnosql.artemis.model.Zipcode;
+import org.eclipse.jnosql.artemis.model.ZipCode;
 import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,9 +32,9 @@ public class InstanceProducerTest {
     @Test
     public void shouldCreateNewInstance() {
 
-        Zipcode zipcode = instanceProducer.create(Zipcode.class);
+        ZipCode zipcode = instanceProducer.create(ZipCode.class);
         Assertions.assertNotNull(zipcode);
-        Assertions.assertTrue(zipcode instanceof Zipcode);
+        Assertions.assertTrue(zipcode instanceof ZipCode);
     }
 
 }

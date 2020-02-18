@@ -37,7 +37,7 @@ public final class Databases {
      * This method read the class from ProcessProduce, check if the object is a valid object for the database type
      * add it for a list passed for CDI's lifecycle.
      *
-     * @param processProducer the {@link ProcessProducer} of CDI Exntesion
+     * @param processProducer the {@link ProcessProducer} of CDI Extension
      * @param type            type data which extension is scanning
      * @param databases       list of objects which will be used by Artemis CDI Extension
      * @see DatabaseType

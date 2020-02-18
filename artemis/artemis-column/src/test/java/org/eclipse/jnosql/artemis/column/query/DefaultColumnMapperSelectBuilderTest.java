@@ -184,7 +184,7 @@ public class DefaultColumnMapperSelectBuilderTest {
     }
 
     @Test
-    public void shouldUseAttibuteConverter() {
+    public void shouldUseAttributeConverter() {
         ColumnQuery query = mapperBuilder.selectFrom(Worker.class).where("salary")
                 .eq(new Money("USD", BigDecimal.TEN)).build();
         ColumnQuery queryExpected = select().from("Worker").where("money")
@@ -204,9 +204,9 @@ public class DefaultColumnMapperSelectBuilderTest {
 
     @Test
     public void shouldQueryBySubEntity() {
-        ColumnQuery query = mapperBuilder.selectFrom(Address.class).where("zipcode.zip").eq("01312321")
+        ColumnQuery query = mapperBuilder.selectFrom(Address.class).where("zipCode.zip").eq("01312321")
                 .build();
-        ColumnQuery queryExpected = select().from("Address").where("zipcode.zip").eq("01312321")
+        ColumnQuery queryExpected = select().from("Address").where("zipCode.zip").eq("01312321")
                 .build();
 
         assertEquals(queryExpected, query);

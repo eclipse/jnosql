@@ -31,7 +31,7 @@ import org.eclipse.jnosql.artemis.model.Movie;
 import org.eclipse.jnosql.artemis.model.Person;
 import org.eclipse.jnosql.artemis.model.Vendor;
 import org.eclipse.jnosql.artemis.model.Worker;
-import org.eclipse.jnosql.artemis.model.Zipcode;
+import org.eclipse.jnosql.artemis.model.ZipCode;
 import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,7 +72,7 @@ public class DefaultColumnEntityConverterTest {
             .withName()
             .withPhones(asList("234", "2342"))
             .withMovieCharacter(Collections.singletonMap("JavaZone", "Jedi"))
-            .withMovierRating(Collections.singletonMap("JavaZone", 10))
+            .withMovieRating(Collections.singletonMap("JavaZone", 10))
             .build();
 
     @BeforeEach
@@ -294,7 +294,7 @@ public class DefaultColumnEntityConverterTest {
 
 
     @Test
-    public void shouldConvertoListEmbeddable() {
+    public void shouldConverToListEmbeddable() {
         AppointmentBook appointmentBook = new AppointmentBook("ids");
         appointmentBook.add(Contact.builder().withType(ContactType.EMAIL).withName("Ada").withInformation("ada@lovelace.com").build());
         appointmentBook.add(Contact.builder().withType(ContactType.MOBILE).withName("Ada").withInformation("11 1231231 123").build());
@@ -338,7 +338,7 @@ public class DefaultColumnEntityConverterTest {
 
     @Test
     public void shouldConvertSubEntity() {
-        Zipcode zipcode = new Zipcode();
+        ZipCode zipcode = new ZipCode();
         zipcode.setZip("12321");
         zipcode.setPlusFour("1234");
 
@@ -346,13 +346,13 @@ public class DefaultColumnEntityConverterTest {
         address.setCity("Salvador");
         address.setState("Bahia");
         address.setStreet("Rua Engenheiro Jose Anasoh");
-        address.setZipcode(zipcode);
+        address.setZipCode(zipcode);
 
         ColumnEntity columnEntity = converter.toColumn(address);
         List<Column> columns = columnEntity.getColumns();
         assertEquals("Address", columnEntity.getName());
         assertEquals(4, columns.size());
-        List<Column> zip = columnEntity.find("zipcode").map(d -> d.get(new TypeReference<List<Column>>() {
+        List<Column> zip = columnEntity.find("zipCode").map(d -> d.get(new TypeReference<List<Column>>() {
         })).orElse(Collections.emptyList());
 
         assertEquals("Rua Engenheiro Jose Anasoh", getValue(columnEntity.find("street")));
@@ -378,8 +378,8 @@ public class DefaultColumnEntityConverterTest {
         assertEquals("Rua Engenheiro Jose Anasoh", address.getStreet());
         assertEquals("Salvador", address.getCity());
         assertEquals("Bahia", address.getState());
-        assertEquals("12321", address.getZipcode().getZip());
-        assertEquals("1234", address.getZipcode().getPlusFour());
+        assertEquals("12321", address.getZipCode().getZip());
+        assertEquals("1234", address.getZipCode().getPlusFour());
 
     }
 

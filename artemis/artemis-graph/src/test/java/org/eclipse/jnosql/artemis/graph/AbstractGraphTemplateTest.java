@@ -397,7 +397,7 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenHasMoneThanOneElement() {
+    public void shouldReturnErrorWhenHasNoneThanOneElement() {
 
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         getGraphTemplate().insert(Person.builder().withAge().withName("Poliana").build());

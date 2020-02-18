@@ -54,7 +54,7 @@ public class DefaultDocumentConditionTest {
     }
 
     @Test
-    public void shouldCreateNegationConditon() {
+    public void shouldCreateNegationCondition() {
         Document age = Document.of("age", 26);
         DocumentCondition condition = DefaultDocumentCondition.of(age, Condition.GREATER_THAN);
         DocumentCondition negate = condition.negate();
@@ -181,10 +181,10 @@ public class DefaultDocumentConditionTest {
     }
 
     @Test
-    public void shouldAfirmeDoubleNegate() {
+    public void shouldAffirmDoubleNegate() {
         DocumentCondition eq = DocumentCondition.eq(Document.of("name", "otavio"));
-        DocumentCondition afirmative = eq.negate().negate();
-        assertEquals(eq.getCondition(), afirmative.getCondition());
+        DocumentCondition affirm = eq.negate().negate();
+        assertEquals(eq.getCondition(), affirm.getCondition());
 
     }
 

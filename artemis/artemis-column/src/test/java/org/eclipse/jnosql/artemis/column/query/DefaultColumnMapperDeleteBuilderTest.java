@@ -143,7 +143,7 @@ public class DefaultColumnMapperDeleteBuilderTest {
     }
 
     @Test
-    public void shouldUseAttibuteConverter() {
+    public void shouldUseAttributeConverter() {
         ColumnDeleteQuery query = mapperBuilder.deleteFrom(Worker.class).where("salary")
                 .eq(new Money("USD", BigDecimal.TEN)).build();
         ColumnDeleteQuery queryExpected = delete().from("Worker").where("money")
@@ -163,9 +163,9 @@ public class DefaultColumnMapperDeleteBuilderTest {
 
     @Test
     public void shouldQueryBySubEntity() {
-        ColumnDeleteQuery query = mapperBuilder.deleteFrom(Address.class).where("zipcode.zip").eq("01312321")
+        ColumnDeleteQuery query = mapperBuilder.deleteFrom(Address.class).where("zipCode.zip").eq("01312321")
                 .build();
-        ColumnDeleteQuery queryExpected = delete().from("Address").where("zipcode.zip").eq("01312321")
+        ColumnDeleteQuery queryExpected = delete().from("Address").where("zipCode.zip").eq("01312321")
                 .build();
 
         assertEquals(queryExpected, query);

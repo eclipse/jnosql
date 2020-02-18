@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Entity;
 
 @Entity
-public class Zipcode {
+public class ZipCode {
 
     @Column
     private String zip;
