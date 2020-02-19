@@ -105,13 +105,13 @@ class ClassConverter {
     private Map<String, NativeMapping> getNativeFieldGroupByJavaField(List<FieldMapping> fields,
                                                                       String javaField, String nativeField) {
 
-        Map<String, NativeMapping> nativeFieldGrouopByJavaField = new HashMap<>();
+        Map<String, NativeMapping> nativeFieldGroupByJavaField = new HashMap<>();
 
         for (FieldMapping field : fields) {
-            appendValue(nativeFieldGrouopByJavaField, field, javaField, nativeField);
+            appendValue(nativeFieldGroupByJavaField, field, javaField, nativeField);
         }
 
-        return nativeFieldGrouopByJavaField;
+        return nativeFieldGroupByJavaField;
     }
 
     private void appendValue(Map<String, NativeMapping> nativeFieldGroupByJavaField, FieldMapping field,
@@ -205,7 +205,7 @@ class ClassConverter {
                 builder.withTypeSupplier(field::getGenericType);
                 return builder.buildGeneric();
             case EMBEDDED:
-                return builder.withEntityName(reflections.getEntityName(field.getType())).buildEmedded();
+                return builder.withEntityName(reflections.getEntityName(field.getType())).buildEmbedded();
             default:
                 return builder.buildDefault();
 

@@ -23,7 +23,7 @@ import javax.inject.Inject;
 /**
  * The default implementation of {@link jakarta.nosql.mapping.document.DocumentWorkflow}
  */
-class DefaultDocumentWorkflow extends AbsctractDocumentWorkflow {
+class DefaultDocumentWorkflow extends AbstractDocumentWorkflow {
 
     private DocumentEventPersistManager documentEventPersistManager;
 

@@ -26,7 +26,7 @@ import java.util.function.UnaryOperator;
 /**
  * The template method to {@link DocumentWorkflow}
  */
-public abstract class AbsctractDocumentWorkflow implements DocumentWorkflow {
+public abstract class AbstractDocumentWorkflow implements DocumentWorkflow {
 
     protected abstract DocumentEventPersistManager getDocumentEventPersistManager();
 

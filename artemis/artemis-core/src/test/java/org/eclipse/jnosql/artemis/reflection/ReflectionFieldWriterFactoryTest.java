@@ -57,7 +57,7 @@ class ReflectionFieldWriterFactoryTest {
     }
 
     @Test
-    public void shouldREturnFieldReader() {
+    public void shouldReturnFieldReader() {
         Person person = Person.builder().withId(10L).withAge(10).withName("Ada").withPhones(singletonList("234234324")).build();
         Field[] fields = Person.class.getDeclaredFields();
         Field id = Stream.of(fields).filter(f -> f.getName().equals("id")).findFirst().get();

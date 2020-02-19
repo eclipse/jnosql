@@ -86,7 +86,7 @@ public class KeyValueRepositoryProxyTest {
 
 
     @Test
-    public void shouldDeleve() {
+    public void shouldDelete() {
         userRepository.deleteById("key");
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
         Mockito.verify(repository).delete(captor.capture());
@@ -111,7 +111,7 @@ public class KeyValueRepositoryProxyTest {
     }
 
     @Test
-    public void shouldFindByIdterable() {
+    public void shouldFindByIdIterable() {
         User user = new User("ada", "Ada", 10);
         User user2 = new User("ada", "Ada", 10);
         List<String> keys = Arrays.asList("key", "key2");

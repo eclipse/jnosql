@@ -30,8 +30,8 @@ public final class DefaultColumnQueryPaginationProvider implements ColumnQueryPa
 
     @Override
     public ColumnQueryPagination apply(ColumnQuery columnQuery, Pagination pagination) {
-        Objects.requireNonNull(columnQuery, "columnQuery is requried");
-        Objects.requireNonNull(pagination, "pagination is requried");
+        Objects.requireNonNull(columnQuery, "columnQuery is required");
+        Objects.requireNonNull(pagination, "pagination is required");
         return new DefaultColumnQueryPagination(columnQuery, pagination);
     }
 }

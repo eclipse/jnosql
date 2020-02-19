@@ -143,7 +143,7 @@ public class DefaultDocumentMapperDeleteBuilderTest {
     }
 
     @Test
-    public void shouldUseAttibuteConverter() {
+    public void shouldUseAttributeConverter() {
         DocumentDeleteQuery query = mapperBuilder.deleteFrom(Worker.class).where("salary")
                 .eq(new Money("USD", BigDecimal.TEN)).build();
         DocumentDeleteQuery queryExpected = delete().from("Worker").where("money")
@@ -163,9 +163,9 @@ public class DefaultDocumentMapperDeleteBuilderTest {
 
     @Test
     public void shouldQueryBySubEntity() {
-        DocumentDeleteQuery query = mapperBuilder.deleteFrom(Address.class).where("zipcode.zip").eq("01312321")
+        DocumentDeleteQuery query = mapperBuilder.deleteFrom(Address.class).where("zipCode.zip").eq("01312321")
                 .build();
-        DocumentDeleteQuery queryExpected = delete().from("Address").where("zipcode.zip").eq("01312321")
+        DocumentDeleteQuery queryExpected = delete().from("Address").where("zipCode.zip").eq("01312321")
                 .build();
 
         assertEquals(queryExpected, query);

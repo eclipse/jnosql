@@ -10,7 +10,7 @@ select  * from Person order by asc
 select  * from Person order by asc age
 #skip and limit test
 select  * from Person skip
-select  name, age ,adress.age from Person order by name desc age desc skip 20
+select  name, age ,address.age from Person order by name desc age desc skip 20
 select  name, age ,adress.age from Person limit qwe  skip 12 order by name desc age desc
 select  name, age ,adress.age from Person skip -20 limit 5 order by name desc age desc
 select  name, age ,adress.age from Person limit order by name desc age desc

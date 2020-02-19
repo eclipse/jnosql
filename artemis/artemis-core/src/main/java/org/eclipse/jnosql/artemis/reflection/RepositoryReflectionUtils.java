@@ -32,7 +32,7 @@ public enum RepositoryReflectionUtils {
     INSTANCE;
 
     /**
-     * Convets values at arg at a {@link Map}
+     * Converts values at arg at a {@link Map}
      *
      * @param method the method that has the {@link Param} info
      * @param args   the arguments from the method

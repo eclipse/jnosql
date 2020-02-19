@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Entity;
 
 @Entity
-public class Zipcode {
+public class ZipCode {
 
     @Column
     private String zip;
@@ -46,7 +46,7 @@ public class Zipcode {
 
     @Override
     public String toString() {
-        return  "Zipcode{" + "zip='" + zip + '\'' +
+        return  "ZipCode{" + "zip='" + zip + '\'' +
                 ", plusFour='" + plusFour + '\'' +
                 '}';
     }

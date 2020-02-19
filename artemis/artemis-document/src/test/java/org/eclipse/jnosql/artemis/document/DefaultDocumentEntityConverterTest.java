@@ -31,7 +31,7 @@ import org.eclipse.jnosql.artemis.model.Movie;
 import org.eclipse.jnosql.artemis.model.Person;
 import org.eclipse.jnosql.artemis.model.Vendor;
 import org.eclipse.jnosql.artemis.model.Worker;
-import org.eclipse.jnosql.artemis.model.Zipcode;
+import org.eclipse.jnosql.artemis.model.ZipCode;
 import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,7 +71,7 @@ public class DefaultDocumentEntityConverterTest {
             .withName()
             .withPhones(Arrays.asList("234", "2342"))
             .withMovieCharacter(Collections.singletonMap("JavaZone", "Jedi"))
-            .withMovierRating(Collections.singletonMap("JavaZone", 10))
+            .withMovieRating(Collections.singletonMap("JavaZone", 10))
             .build();
 
     @BeforeEach
@@ -169,8 +169,8 @@ public class DefaultDocumentEntityConverterTest {
     @Test
     public void shouldConvertEntityFromDocumentEntity2() {
 
-        Movie movie = new Movie("Matriz", 2012, singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
@@ -200,7 +200,7 @@ public class DefaultDocumentEntityConverterTest {
     @Test
     public void shouldConvertToEmbeddedClassWhenHasSubDocument() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
@@ -218,7 +218,7 @@ public class DefaultDocumentEntityConverterTest {
     @Test
     public void shouldConvertToEmbeddedClassWhenHasSubDocument2() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
@@ -240,7 +240,7 @@ public class DefaultDocumentEntityConverterTest {
     @Test
     public void shouldConvertToEmbeddedClassWhenHasSubDocument3() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
@@ -296,7 +296,7 @@ public class DefaultDocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertoListEmbeddable() {
+    public void shouldConvertToListEmbeddable() {
         AppointmentBook appointmentBook = new AppointmentBook("ids");
         appointmentBook.add(Contact.builder().withType(ContactType.EMAIL).withName("Ada").withInformation("ada@lovelace.com").build());
         appointmentBook.add(Contact.builder().withType(ContactType.MOBILE).withName("Ada").withInformation("11 1231231 123").build());
@@ -340,7 +340,7 @@ public class DefaultDocumentEntityConverterTest {
 
     @Test
     public void shouldConvertSubEntity() {
-        Zipcode zipcode = new Zipcode();
+        ZipCode zipcode = new ZipCode();
         zipcode.setZip("12321");
         zipcode.setPlusFour("1234");
 
@@ -348,13 +348,13 @@ public class DefaultDocumentEntityConverterTest {
         address.setCity("Salvador");
         address.setState("Bahia");
         address.setStreet("Rua Engenheiro Jose Anasoh");
-        address.setZipcode(zipcode);
+        address.setZipCode(zipcode);
 
         DocumentEntity documentEntity = converter.toDocument(address);
         List<Document> documents = documentEntity.getDocuments();
         assertEquals("Address", documentEntity.getName());
         assertEquals(4, documents.size());
-        List<Document> zip = documentEntity.find("zipcode").map(d -> d.get(new TypeReference<List<Document>>() {
+        List<Document> zip = documentEntity.find("zipCode").map(d -> d.get(new TypeReference<List<Document>>() {
         })).orElse(Collections.emptyList());
         assertEquals("Rua Engenheiro Jose Anasoh", getValue(documentEntity.find("street")));
         assertEquals("Salvador", getValue(documentEntity.find("city")));
@@ -379,8 +379,8 @@ public class DefaultDocumentEntityConverterTest {
         assertEquals("Rua Engenheiro Jose Anasoh", address.getStreet());
         assertEquals("Salvador", address.getCity());
         assertEquals("Bahia", address.getState());
-        assertEquals("12321", address.getZipcode().getZip());
-        assertEquals("1234",  address.getZipcode().getPlusFour());
+        assertEquals("12321", address.getZipCode().getZip());
+        assertEquals("1234",  address.getZipCode().getPlusFour());
 
     }
 

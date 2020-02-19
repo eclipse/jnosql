@@ -163,12 +163,12 @@ public class ColumnRepositoryAsyncProxyTest {
 
 
     @Test
-    public void shoudReturnErrorOnFindByName() {
+    public void shouldReturnErrorOnFindByName() {
         Assertions.assertThrows(DynamicQueryException.class, () -> personRepository.findByName("name"));
     }
 
     @Test
-    public void shoudFindByName() {
+    public void shouldFindByName() {
         Consumer<List<Person>> callback = v -> {
         };
 
@@ -277,7 +277,7 @@ public class ColumnRepositoryAsyncProxyTest {
         void findByQuery();
 
         @Query("select * from Person where id = @id")
-        void findByQuery(@Param("id") String id, Consumer<List<Person>> calback);
+        void findByQuery(@Param("id") String id, Consumer<List<Person>> callback);
     }
 
 }

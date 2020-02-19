@@ -53,7 +53,7 @@ public class Director extends Person {
         return Objects.hash(movie);
     }
 
-    public static DirectorBuilder builderDiretor() {
+    public static DirectorBuilder builderDirector() {
         return new DirectorBuilder();
     }
 

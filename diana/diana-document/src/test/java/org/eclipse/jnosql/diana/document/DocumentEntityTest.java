@@ -84,7 +84,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnErroWhenFindDocumentIsNull() {
+    public void shouldReturnErrorWhenFindDocumentIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Document document = Document.of("name", "name");
             DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
@@ -259,7 +259,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenAddDocumentasObjectWhenHasNullObject() {
+    public void shouldReturnErrorWhenAddDocumentsObjectWhenHasNullObject() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
             entity.add("name", null);
@@ -267,7 +267,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenAddDocumentasObjectWhenHasNullDocumentName() {
+    public void shouldReturnErrorWhenAddDocumentsObjectWhenHasNullDocumentName() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
             entity.add(null, 10);
@@ -275,7 +275,7 @@ public class DocumentEntityTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenAddDocumentasValueWhenHasNullDocumentName() {
+    public void shouldReturnErrorWhenAddDocumentsValueWhenHasNullDocumentName() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
             entity.add(null, Value.of(12));

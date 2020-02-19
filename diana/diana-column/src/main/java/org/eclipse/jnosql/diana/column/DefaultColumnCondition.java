@@ -78,7 +78,7 @@ final class DefaultColumnCondition implements ColumnCondition {
 
     private static void checkInClause(Value value) {
         if (!value.isInstanceOf(Iterable.class)) {
-            throw new IllegalArgumentException("On Columncondition#in you must use an iterable" +
+            throw new IllegalArgumentException("On ColumnCondition#in you must use an iterable" +
                     " instead of class: " + value.getClass().getName());
         }
     }
@@ -88,12 +88,12 @@ final class DefaultColumnCondition implements ColumnCondition {
 
             long count = (int) StreamSupport.stream(Iterable.class.cast(value).spliterator(), false).count();
             if (count != 2) {
-                throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
+                throw new IllegalArgumentException("On ColumnCondition#between you must use an iterable" +
                         " with two elements");
             }
 
         } else {
-            throw new IllegalArgumentException("On Columncondition#between you must use an iterable" +
+            throw new IllegalArgumentException("On ColumnCondition#between you must use an iterable" +
                     " with two elements instead of class: " + value.getClass().getName());
         }
     }

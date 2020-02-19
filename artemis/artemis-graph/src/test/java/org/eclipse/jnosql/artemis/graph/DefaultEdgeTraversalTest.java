@@ -134,7 +134,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     }
 
     @Test
-    public void shouldReturErrorWhennBothEIsNull() {
+    public void shouldReturnErrorWhenBothEIsNull() {
         assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().bothE((String) null)
                 .stream()
                 .collect(toList()));

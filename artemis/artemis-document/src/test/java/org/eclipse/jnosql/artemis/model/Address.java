@@ -27,7 +27,7 @@ public class Address {
     @Column
     private String state;
     @Column
-    private Zipcode zipcode;
+    private ZipCode zipCode;
 
     public String getStreet() {
         return street;
@@ -53,12 +53,12 @@ public class Address {
         this.state = state;
     }
 
-    public Zipcode getZipcode() {
-        return zipcode;
+    public ZipCode getZipCode() {
+        return zipCode;
     }
 
-    public void setZipcode(Zipcode zipcode) {
-        this.zipcode = zipcode;
+    public void setZipCode(ZipCode zipCode) {
+        this.zipCode = zipCode;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Address {
         return  "Address{" + "street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
-                ", zipcode=" + zipcode +
+                ", zipCode=" + zipCode +
                 '}';
     }
 }

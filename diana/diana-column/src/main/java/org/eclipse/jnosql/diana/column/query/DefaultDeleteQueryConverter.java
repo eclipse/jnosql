@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The default implementaiton of {@link DeleteQueryConverter}
+ * The default implementation of {@link DeleteQueryConverter}
  */
 public final class DefaultDeleteQueryConverter implements DeleteQueryConverter {
 

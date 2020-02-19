@@ -24,7 +24,7 @@ public class ActorBuilder {
     private List<String> phones;
     private String ignore;
     private Map<String, String> movieCharacter;
-    private Map<String, Integer> movierRating;
+    private Map<String, Integer> movieRating;
 
     ActorBuilder() {
     }
@@ -59,12 +59,12 @@ public class ActorBuilder {
         return this;
     }
 
-    public ActorBuilder withMovierRating(Map<String, Integer> movierRating) {
-        this.movierRating = movierRating;
+    public ActorBuilder withMovieRating(Map<String, Integer> movieRating) {
+        this.movieRating = movieRating;
         return this;
     }
 
     public Actor build() {
-        return new Actor(id, name, age, phones, ignore, movieCharacter, movierRating);
+        return new Actor(id, name, age, phones, ignore, movieCharacter, movieRating);
     }
 }

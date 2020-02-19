@@ -61,7 +61,7 @@ public class GraphConfigurationProducerExtensionTest {
     }
 
     @Test
-    public void shoudlInjectRepository() {
+    public void shouldInjectRepository() {
         repositoryMock.save(Book.builder().withName("book").build());
         assertNotNull(repository.findById("10"));
     }

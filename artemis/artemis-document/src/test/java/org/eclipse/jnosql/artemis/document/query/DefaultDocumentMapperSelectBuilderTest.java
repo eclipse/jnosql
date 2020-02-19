@@ -183,7 +183,7 @@ public class DefaultDocumentMapperSelectBuilderTest {
     }
 
     @Test
-    public void shouldUseAttibuteConverter() {
+    public void shouldUseAttributeConverter() {
         DocumentQuery query = mapperBuilder.selectFrom(Worker.class).where("salary")
                 .eq(new Money("USD", BigDecimal.TEN)).build();
         DocumentQuery queryExpected = select().from("Worker").where("money")
@@ -203,9 +203,9 @@ public class DefaultDocumentMapperSelectBuilderTest {
 
     @Test
     public void shouldQueryBySubEntity() {
-        DocumentQuery query = mapperBuilder.selectFrom(Address.class).where("zipcode.zip").eq("01312321")
+        DocumentQuery query = mapperBuilder.selectFrom(Address.class).where("zipCode.zip").eq("01312321")
                 .build();
-        DocumentQuery queryExpected = select().from("Address").where("zipcode.zip").eq("01312321")
+        DocumentQuery queryExpected = select().from("Address").where("zipCode.zip").eq("01312321")
                 .build();
 
         assertEquals(queryExpected, query);

@@ -54,7 +54,7 @@ public class DefaultColumnConditionTest {
     }
 
     @Test
-    public void shouldCreateNegationConditon() {
+    public void shouldCreateNegationCondition() {
         Column age = Column.of("age", 26);
         ColumnCondition condition = DefaultColumnCondition.of(age, Condition.GREATER_THAN);
         ColumnCondition negate = condition.negate();
@@ -181,20 +181,20 @@ public class DefaultColumnConditionTest {
     }
 
     @Test
-    public void shouldAfirmeDoubleNegate() {
+    public void shouldAffirmDoubleNegate() {
         ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
-        ColumnCondition afirmative = eq.negate().negate();
-        assertEquals(eq.getCondition(), afirmative.getCondition());
+        ColumnCondition affirm = eq.negate().negate();
+        assertEquals(eq.getCondition(), affirm.getCondition());
 
     }
 
     @Test
-    public void shouldReturnErroWhenBetweenIsNull() {
+    public void shouldReturnErrorWhenBetweenIsNull() {
         assertThrows(NullPointerException.class, () -> ColumnCondition.between(null));
     }
 
     @Test
-    public void shouldReturnErroWhenBetweenIsNotIterable() {
+    public void shouldReturnErrorWhenBetweenIsNotIterable() {
         assertThrows(IllegalArgumentException.class, () -> {
             Column column = Column.of("age", 12);
             ColumnCondition.between(column);
