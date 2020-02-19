@@ -45,7 +45,7 @@ public class DefaultGraphEventPersistManagerTest {
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Mock
-    private Event<EntityPostPersit> entityPostPersitEvent;
+    private Event<EntityPostPersit> entityPostPersistEvent;
 
     @Mock
     private Event<EntityGraphPrePersist> entityGraphPrePersist;
@@ -98,7 +98,7 @@ public class DefaultGraphEventPersistManagerTest {
         jedi.name = "Luke";
         subject.firePostEntity(jedi);
         ArgumentCaptor<EntityPostPersit> captor = ArgumentCaptor.forClass(EntityPostPersit.class);
-        verify(entityPostPersitEvent).fire(captor.capture());
+        verify(entityPostPersistEvent).fire(captor.capture());
         EntityPostPersit value = captor.getValue();
         assertEquals(jedi, value.getValue());
     }

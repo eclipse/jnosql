@@ -169,8 +169,8 @@ public class DefaultDocumentEntityConverterTest {
     @Test
     public void shouldConvertEntityFromDocumentEntity2() {
 
-        Movie movie = new Movie("Matriz", 2012, singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
@@ -200,7 +200,7 @@ public class DefaultDocumentEntityConverterTest {
     @Test
     public void shouldConvertToEmbeddedClassWhenHasSubDocument() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
@@ -218,7 +218,7 @@ public class DefaultDocumentEntityConverterTest {
     @Test
     public void shouldConvertToEmbeddedClassWhenHasSubDocument2() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
@@ -240,7 +240,7 @@ public class DefaultDocumentEntityConverterTest {
     @Test
     public void shouldConvertToEmbeddedClassWhenHasSubDocument3() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(Arrays.asList("234", "2342")).withMovie(movie).build();
@@ -296,7 +296,7 @@ public class DefaultDocumentEntityConverterTest {
     }
 
     @Test
-    public void shouldConvertoListEmbeddable() {
+    public void shouldConvertToListEmbeddable() {
         AppointmentBook appointmentBook = new AppointmentBook("ids");
         appointmentBook.add(Contact.builder().withType(ContactType.EMAIL).withName("Ada").withInformation("ada@lovelace.com").build());
         appointmentBook.add(Contact.builder().withType(ContactType.MOBILE).withName("Ada").withInformation("11 1231231 123").build());
@@ -354,7 +354,7 @@ public class DefaultDocumentEntityConverterTest {
         List<Document> documents = documentEntity.getDocuments();
         assertEquals("Address", documentEntity.getName());
         assertEquals(4, documents.size());
-        List<Document> zip = documentEntity.find("zipcode").map(d -> d.get(new TypeReference<List<Document>>() {
+        List<Document> zip = documentEntity.find("zipCode").map(d -> d.get(new TypeReference<List<Document>>() {
         })).orElse(Collections.emptyList());
         assertEquals("Rua Engenheiro Jose Anasoh", getValue(documentEntity.find("street")));
         assertEquals("Salvador", getValue(documentEntity.find("city")));

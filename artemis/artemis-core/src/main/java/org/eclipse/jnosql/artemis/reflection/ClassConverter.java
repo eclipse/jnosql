@@ -205,7 +205,7 @@ class ClassConverter {
                 builder.withTypeSupplier(field::getGenericType);
                 return builder.buildGeneric();
             case EMBEDDED:
-                return builder.withEntityName(reflections.getEntityName(field.getType())).buildEmedded();
+                return builder.withEntityName(reflections.getEntityName(field.getType())).buildEmbedded();
             default:
                 return builder.buildDefault();
 

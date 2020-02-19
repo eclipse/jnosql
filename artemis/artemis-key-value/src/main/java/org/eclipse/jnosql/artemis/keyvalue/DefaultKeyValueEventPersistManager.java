@@ -41,7 +41,7 @@ class DefaultKeyValueEventPersistManager implements KeyValueEventPersistManager 
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Inject
-    private Event<EntityPostPersit> entityPostPersitEvent;
+    private Event<EntityPostPersit> entityPostPersistEvent;
 
     @Inject
     private Event<EntityKeyValuePrePersist> entityKeyValuePrePersist;
@@ -67,7 +67,7 @@ class DefaultKeyValueEventPersistManager implements KeyValueEventPersistManager 
 
     @Override
     public <T> void firePostEntity(T entity) {
-        entityPostPersitEvent.fire(new DefaultEntityPostPersist(entity));
+        entityPostPersistEvent.fire(new DefaultEntityPostPersist(entity));
     }
 
     @Override

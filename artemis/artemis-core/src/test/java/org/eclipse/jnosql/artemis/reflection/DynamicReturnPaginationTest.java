@@ -498,12 +498,12 @@ class DynamicReturnPaginationTest {
         Page<Person> getPage();
     }
 
-    private long getrandomLong() {
+    private long getRandomLong() {
         return current().nextLong(1, 10);
     }
 
     private Pagination getPagination() {
-        return Pagination.page(getrandomLong()).size(getrandomLong());
+        return Pagination.page(getRandomLong()).size(getRandomLong());
     }
 
 }

@@ -49,7 +49,7 @@ public class DocumentRepositoryExtensionTest {
     private PersonRepositoryAsync repositoryMockAsync;
 
     @Test
-    public void shouldIniciateAsync() {
+    public void shouldInitiateAsync() {
         assertNotNull(repositoryAsync);
     }
 

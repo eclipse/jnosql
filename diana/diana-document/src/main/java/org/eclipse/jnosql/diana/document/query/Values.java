@@ -57,14 +57,14 @@ final class Values {
                     return jakarta.nosql.Value.of(get(QueryValue.class.cast(params[0]), parameters))
                             .get((Class<?>) params[1]);
                 }
-                String message = String.format("There is not support to the fuction: %s with parameters %s", name,
+                String message = String.format("There is not support to the function: %s with parameters %s", name,
                         Arrays.toString(params));
                 throw new QueryException(message);
             case JSON:
                 return JsonObjects.getDocuments(JSONQueryValue.class.cast(value).get());
             case CONDITION:
             default:
-                throw new QueryException("There is not suppor to the value: " + type);
+                throw new QueryException("There is not support to the value: " + type);
 
         }
     }

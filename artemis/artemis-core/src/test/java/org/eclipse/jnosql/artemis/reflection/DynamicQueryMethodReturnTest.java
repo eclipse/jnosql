@@ -226,7 +226,7 @@ class DynamicQueryMethodReturnTest {
     }
 
     @Test
-    public void shouldReturnFromPrepareStatment() throws NoSuchMethodException {
+    public void shouldReturnFromPrepareStatement() throws NoSuchMethodException {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
         Mockito.when(preparedStatement.<Person>getResult())
                 .thenReturn(Stream.of(new Person("Ada")));

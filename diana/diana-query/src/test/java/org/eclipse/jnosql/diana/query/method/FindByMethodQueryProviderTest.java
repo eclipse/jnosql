@@ -134,7 +134,7 @@ class FindByMethodQueryProviderTest {
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAgeNotLessThanEqual"})
-    public void shouldReturnParserQuer11(String query) {
+    public void shouldReturnParserQuery11(String query) {
         Operator operator = Operator.LESSER_EQUALS_THAN;
         String variable = "age";
         checkNotCondition(query, operator, variable);

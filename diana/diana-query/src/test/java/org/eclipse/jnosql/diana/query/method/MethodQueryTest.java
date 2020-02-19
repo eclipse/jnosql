@@ -77,20 +77,20 @@ class MethodQueryTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"findByLastnameAndFirstname"})
+    @ValueSource(strings = {"findByLastNameAndFirstName"})
     public void shouldRunQuery6(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("findBy Lastname And Firstname", methodQuery.get());
+        assertEquals("findBy LastName And FirstName", methodQuery.get());
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"findByLastnameOrFirstname"})
+    @ValueSource(strings = {"findByLastNameOrFirstName"})
     public void shouldRunQuery7(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("findBy Lastname Or Firstname", methodQuery.get());
+        assertEquals("findBy LastName Or FirstName", methodQuery.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -134,35 +134,35 @@ class MethodQueryTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"findByFirstnameLike"})
+    @ValueSource(strings = {"findByFirstNameLike"})
     public void shouldRunQuery13(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("findBy Firstname Like", methodQuery.get());
+        assertEquals("findBy FirstName Like", methodQuery.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"findByFirstnameNotLike"})
+    @ValueSource(strings = {"findByFirstNameNotLike"})
     public void shouldRunQuery14(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("findBy Firstname Not  Like", methodQuery.get());
+        assertEquals("findBy FirstName Not  Like", methodQuery.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"findByFirstnameLikeOrderByNameAscAgeDesc"})
+    @ValueSource(strings = {"findByFirstNameLikeOrderByNameAscAgeDesc"})
     public void shouldRunQuery15(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("findBy Firstname Like  OrderBy Name Asc Age Desc", methodQuery.get());
+        assertEquals("findBy FirstName Like  OrderBy Name Asc Age Desc", methodQuery.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"findByFirstnameLikeOrderByNameAscAge"})
+    @ValueSource(strings = {"findByFirstNameLikeOrderByNameAscAge"})
     public void shouldRunQuery16(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("findBy Firstname Like  OrderBy Name Asc Age", methodQuery.get());
+        assertEquals("findBy FirstName Like  OrderBy Name Asc Age", methodQuery.get());
     }
 
 
@@ -193,20 +193,20 @@ class MethodQueryTest {
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"deleteByLastnameAndFirstname"})
+    @ValueSource(strings = {"deleteByLastNameAndFirstName"})
     public void shouldRunQuery20(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("deleteBy Lastname And Firstname", methodQuery.get());
+        assertEquals("deleteBy LastName And FirstName", methodQuery.get());
     }
 
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"deleteByLastnameOrFirstname"})
+    @ValueSource(strings = {"deleteByLastNameOrFirstName"})
     public void shouldRunQuery21(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("deleteBy Lastname Or Firstname", methodQuery.get());
+        assertEquals("deleteBy LastName Or FirstName", methodQuery.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -250,19 +250,19 @@ class MethodQueryTest {
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"deleteByFirstnameLike"})
+    @ValueSource(strings = {"deleteByFirstNameLike"})
     public void shouldRunQuery27(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("deleteBy Firstname Like", methodQuery.get());
+        assertEquals("deleteBy FirstName Like", methodQuery.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"deleteByFirstnameNotLike"})
+    @ValueSource(strings = {"deleteByFirstNameNotLike"})
     public void shouldRunQuery28(String query) {
         MethodQuery methodQuery = MethodQuery.of(query);
         assertNotNull(methodQuery);
-        assertEquals("deleteBy Firstname Not  Like", methodQuery.get());
+        assertEquals("deleteBy FirstName Not  Like", methodQuery.get());
     }
 
 }

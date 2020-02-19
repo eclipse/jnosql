@@ -46,7 +46,7 @@ public class ZipCode {
 
     @Override
     public String toString() {
-        return  "Zipcode{" + "zip='" + zip + '\'' +
+        return  "ZipCode{" + "zip='" + zip + '\'' +
                 ", plusFour='" + plusFour + '\'' +
                 '}';
     }

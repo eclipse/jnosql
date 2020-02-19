@@ -21,7 +21,7 @@ import javax.inject.Inject;
 
 
 /**
- * Default implentation of {@link jakarta.nosql.mapping.keyvalue.KeyValueWorkflow}
+ * Default implementation of {@link jakarta.nosql.mapping.keyvalue.KeyValueWorkflow}
  */
 class DefaultKeyValueWorkflow extends AbstractKeyValueWorkflow {
 

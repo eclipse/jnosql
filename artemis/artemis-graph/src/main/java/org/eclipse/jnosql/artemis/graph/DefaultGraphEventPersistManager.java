@@ -38,7 +38,7 @@ class DefaultGraphEventPersistManager implements GraphEventPersistManager {
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Inject
-    private Event<EntityPostPersit> entityPostPersitEvent;
+    private Event<EntityPostPersit> entityPostPersistEvent;
 
     @Inject
     private Event<EntityGraphPrePersist> entityGraphPrePersist;
@@ -63,7 +63,7 @@ class DefaultGraphEventPersistManager implements GraphEventPersistManager {
 
     @Override
     public <T> void firePostEntity(T entity) {
-        entityPostPersitEvent.fire(new DefaultEntityPostPersist(entity));
+        entityPostPersistEvent.fire(new DefaultEntityPostPersist(entity));
     }
 
     @Override

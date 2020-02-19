@@ -14,7 +14,7 @@
  */
 
 /**
- * This package contains all comuns API to artemis.
+ * This package contains all columns API to artemis.
  * Artemis is a flexible and extensible ORM to connect NoSQL databases. It brings an easy interface to
  * support key-value, column family, document oriented and graph databases using as base Diana in CDI based.
  * The API's focus is on simplicity and ease of use.

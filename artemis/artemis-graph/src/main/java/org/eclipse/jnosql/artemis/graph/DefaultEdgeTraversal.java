@@ -84,7 +84,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
 
     @Override
     public EdgeTraversal filter(Predicate<EdgeEntity> predicate) {
-        requireNonNull(predicate, "predicat is required");
+        requireNonNull(predicate, "predicate is required");
 
         Predicate<Traverser<Edge>> p = e -> predicate.test(converter.toEdgeEntity(e.get()));
         return new DefaultEdgeTraversal(supplier, flow.andThen(g -> g.filter(p)), converter);

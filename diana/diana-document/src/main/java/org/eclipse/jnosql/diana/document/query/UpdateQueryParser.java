@@ -92,13 +92,13 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
     private DocumentEntity getEntity(Params params, UpdateQuery updateQuery, DocumentObserverParser observer) {
         String collection = observer.fireEntity(updateQuery.getEntity());
-        return getEntity(new UpdasteQueryConditioinSupplier(updateQuery), collection, params, observer);
+        return getEntity(new UpdateQueryConditioinSupplier(updateQuery), collection, params, observer);
     }
 
-    private static final class UpdasteQueryConditioinSupplier implements ConditionQuerySupplier {
+    private static final class UpdateQueryConditioinSupplier implements ConditionQuerySupplier {
         private final UpdateQuery query;
 
-        private UpdasteQueryConditioinSupplier(UpdateQuery query) {
+        private UpdateQueryConditioinSupplier(UpdateQuery query) {
             this.query = query;
         }
 

@@ -2,9 +2,9 @@
 delete from Person
 delete name,age from Person
 delete _id,name,age from Person
-delete  name,age,adress.age from Person
+delete  name,age,address.age from Person
 delete name , age from Person
-delete name, age ,adress.age from Person
+delete name, age ,address.age from Person
 #test where int
 delete from Person where age = 10
 delete from Person where age >= 10

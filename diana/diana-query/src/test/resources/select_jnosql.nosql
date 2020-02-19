@@ -2,7 +2,7 @@
 select * from Person
 select name,age from Person
 select _id,name,age from Person
-select  name,age,adress.age from Person
+select  name,age,address.age from Person
 select name , age from Person
 select  name, age ,adress.age from Person
 #order by tests

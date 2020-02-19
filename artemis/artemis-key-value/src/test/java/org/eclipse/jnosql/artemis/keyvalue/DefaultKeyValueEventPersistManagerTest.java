@@ -50,7 +50,7 @@ public class DefaultKeyValueEventPersistManagerTest {
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Mock
-    private Event<EntityPostPersit> entityPostPersitEvent;
+    private Event<EntityPostPersit> entityPostPersistEvent;
 
     @Mock
     private Event<EntityKeyValuePrePersist> entityKeyValuePrePersist;
@@ -98,7 +98,7 @@ public class DefaultKeyValueEventPersistManagerTest {
         actor.name = "Luke";
         subject.firePostEntity(actor);
         ArgumentCaptor<EntityPostPersit> captor = ArgumentCaptor.forClass(EntityPostPersit.class);
-        verify(entityPostPersitEvent).fire(captor.capture());
+        verify(entityPostPersistEvent).fire(captor.capture());
         EntityPostPersit value = captor.getValue();
         assertEquals(actor, value.getValue());
     }

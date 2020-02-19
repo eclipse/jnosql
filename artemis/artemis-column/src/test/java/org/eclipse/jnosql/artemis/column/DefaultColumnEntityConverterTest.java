@@ -170,7 +170,7 @@ public class DefaultColumnEntityConverterTest {
     public void shouldConvertEntityToColumnEntity2() {
 
         Movie movie = new Movie("Matrix", 2012, Collections.singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
@@ -200,7 +200,7 @@ public class DefaultColumnEntityConverterTest {
     @Test
     public void shouldConvertToEmbeddedClassWhenHasSubColumn() {
         Movie movie = new Movie("Matrix", 2012, Collections.singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
@@ -217,7 +217,7 @@ public class DefaultColumnEntityConverterTest {
     @Test
     public void shouldConvertToEmbeddedClassWhenHasSubColumn2() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
@@ -238,7 +238,7 @@ public class DefaultColumnEntityConverterTest {
     @Test
     public void shouldConvertToEmbeddedClassWhenHasSubColumn3() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
-        Director director = Director.builderDiretor().withAge(12)
+        Director director = Director.builderDirector().withAge(12)
                 .withId(12)
                 .withName("Otavio")
                 .withPhones(asList("234", "2342")).withMovie(movie).build();
@@ -294,7 +294,7 @@ public class DefaultColumnEntityConverterTest {
 
 
     @Test
-    public void shouldConverToListEmbeddable() {
+    public void shouldConvertToListEmbeddable() {
         AppointmentBook appointmentBook = new AppointmentBook("ids");
         appointmentBook.add(Contact.builder().withType(ContactType.EMAIL).withName("Ada").withInformation("ada@lovelace.com").build());
         appointmentBook.add(Contact.builder().withType(ContactType.MOBILE).withName("Ada").withInformation("11 1231231 123").build());

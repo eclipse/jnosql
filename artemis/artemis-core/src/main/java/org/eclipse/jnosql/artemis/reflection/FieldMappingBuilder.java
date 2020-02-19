@@ -96,7 +96,7 @@ class FieldMappingBuilder {
         return new GenericFieldMapping(type, field, name, typeSupplier, converter, reader, writer);
     }
 
-    public EmbeddedFieldMapping buildEmedded() {
+    public EmbeddedFieldMapping buildEmbedded() {
         return new EmbeddedFieldMapping(type, field, name, entityName, reader, writer);
     }
 
