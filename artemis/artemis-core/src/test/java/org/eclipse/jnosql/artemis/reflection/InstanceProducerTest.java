@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.artemis.reflection;
 
 import jakarta.nosql.mapping.InstanceProducer;
-import org.eclipse.jnosql.artemis.model.ZipCode;
+import jakarta.nosql.tck.entities.ZipCode;
 import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

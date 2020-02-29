@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.reflection;
 import jakarta.nosql.mapping.reflection.FieldType;
 import jakarta.nosql.tck.entities.Actor;
 import jakarta.nosql.tck.entities.Address;
-import org.eclipse.jnosql.artemis.model.Movie;
+import jakarta.nosql.tck.entities.Movie;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;
 import org.junit.jupiter.api.Test;
