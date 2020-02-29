@@ -54,7 +54,7 @@
         </dependency>
 
         <dependency>
-            <groupId>jakarta.nosql.mapping</groupId>
+            <groupId>jakarta.nosql.tck.mapping</groupId>
             <artifactId>mapping-tck-core</artifactId>
             <version>${jakarta.nosql.version}</version>
             <scope>test</scope>
