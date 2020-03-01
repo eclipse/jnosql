@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.column;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import org.eclipse.jnosql.artemis.model.Person;
+import jakarta.nosql.tck.entities.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

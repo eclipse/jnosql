@@ -25,7 +25,7 @@ import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.Sorts;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.eclipse.jnosql.artemis.model.Person;
+import jakarta.nosql.tck.entities.Person;
 import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;

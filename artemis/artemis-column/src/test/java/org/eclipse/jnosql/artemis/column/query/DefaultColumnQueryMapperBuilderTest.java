@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.column.query;
 import jakarta.nosql.mapping.column.ColumnQueryMapper;
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteFrom;
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperFrom;
-import org.eclipse.jnosql.artemis.model.Person;
+import jakarta.nosql.tck.entities.Person;
 import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
