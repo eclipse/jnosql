@@ -308,7 +308,7 @@ public class DefaultDocumentEntityConverterTest {
         List<List<Document>> documents = (List<List<Document>>) contacts.get();
 
         assertEquals(3L, documents.stream().flatMap(Collection::stream)
-                .filter(c -> c.getName().equals("name"))
+                .filter(c -> c.getName().equals("contact_name"))
                 .count());
     }
 
@@ -318,13 +318,13 @@ public class DefaultDocumentEntityConverterTest {
         entity.add(Document.of("_id", "ids"));
         List<List<Document>> documents = new ArrayList<>();
 
-        documents.add(asList(Document.of("name", "Ada"), Document.of("type", ContactType.EMAIL),
+        documents.add(asList(Document.of("contact_name", "Ada"), Document.of("type", ContactType.EMAIL),
                 Document.of("information", "ada@lovelace.com")));
 
-        documents.add(asList(Document.of("name", "Ada"), Document.of("type", ContactType.MOBILE),
+        documents.add(asList(Document.of("contact_name", "Ada"), Document.of("type", ContactType.MOBILE),
                 Document.of("information", "11 1231231 123")));
 
-        documents.add(asList(Document.of("name", "Ada"), Document.of("type", ContactType.PHONE),
+        documents.add(asList(Document.of("contact_name", "Ada"), Document.of("type", ContactType.PHONE),
                 Document.of("information", "phone")));
 
         entity.add(Document.of("contacts", documents));
