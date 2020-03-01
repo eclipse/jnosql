@@ -24,7 +24,7 @@ import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
-import org.eclipse.jnosql.artemis.model.Person;
+import jakarta.nosql.tck.entities.Person;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;

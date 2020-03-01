@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.document;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
-import org.eclipse.jnosql.artemis.model.Person;
+import jakarta.nosql.tck.entities.Person;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

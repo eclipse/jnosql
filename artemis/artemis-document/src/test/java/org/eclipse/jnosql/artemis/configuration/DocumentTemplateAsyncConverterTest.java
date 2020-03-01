@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.artemis.configuration;
 
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
