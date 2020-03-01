@@ -16,8 +16,6 @@ package org.eclipse.jnosql.artemis.document.query;
 
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
-import org.eclipse.jnosql.artemis.PersonRepository;
-import org.eclipse.jnosql.artemis.PersonRepositoryAsync;
 import org.eclipse.jnosql.artemis.model.Person;
 import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
