@@ -14,12 +14,13 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
+
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Transaction.Status;
 import org.eclipse.jnosql.artemis.graph.model.Book;
 import org.eclipse.jnosql.artemis.graph.model.BookTemplate;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

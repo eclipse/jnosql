@@ -20,7 +20,7 @@ import org.apache.tinkerpop.gremlin.structure.T;
 import org.eclipse.jnosql.artemis.graph.model.Animal;
 import org.eclipse.jnosql.artemis.graph.model.Book;
 import org.eclipse.jnosql.artemis.graph.model.Person;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 

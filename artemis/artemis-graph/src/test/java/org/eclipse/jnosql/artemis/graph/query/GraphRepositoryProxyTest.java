@@ -28,7 +28,7 @@ import org.eclipse.jnosql.artemis.graph.GraphConverter;
 import org.eclipse.jnosql.artemis.graph.GraphTemplate;
 import org.eclipse.jnosql.artemis.graph.model.Person;
 import org.eclipse.jnosql.artemis.graph.model.Vendor;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
