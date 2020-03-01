@@ -30,8 +30,6 @@ import static org.mockito.Mockito.when;
 
 public class MockProducer {
 
-
-
     @Produces
     public BucketManager getBucketManager() {
         BucketManager bucketManager = Mockito.mock(BucketManager.class);
