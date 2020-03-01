@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;

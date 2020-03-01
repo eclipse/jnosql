@@ -19,7 +19,7 @@ import jakarta.nosql.tck.entities.Address;
 import jakarta.nosql.tck.entities.AppointmentBook;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
