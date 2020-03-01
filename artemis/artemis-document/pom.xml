@@ -38,12 +38,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jnosql.artemis</groupId>
-            <artifactId>artemis-test</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>jakarta.nosql.mapping</groupId>
             <artifactId>mapping-document</artifactId>
             <version>${jakarta.nosql.version}</version>
