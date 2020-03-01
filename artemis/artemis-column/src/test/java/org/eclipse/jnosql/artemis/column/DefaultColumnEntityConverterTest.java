@@ -306,7 +306,7 @@ public class DefaultColumnEntityConverterTest {
         List<List<Column>> columns = (List<List<Column>>) contacts.get();
 
         assertEquals(3L, columns.stream().flatMap(Collection::stream)
-                .filter(c -> c.getName().equals("name"))
+                .filter(c -> c.getName().equals("contact_name"))
                 .count());
     }
 
@@ -316,13 +316,13 @@ public class DefaultColumnEntityConverterTest {
         entity.add(Column.of("_id", "ids"));
         List<List<Column>> columns = new ArrayList<>();
 
-        columns.add(asList(Column.of("name", "Ada"), Column.of("type", ContactType.EMAIL),
+        columns.add(asList(Column.of("contact_name", "Ada"), Column.of("type", ContactType.EMAIL),
                 Column.of("information", "ada@lovelace.com")));
 
-        columns.add(asList(Column.of("name", "Ada"), Column.of("type", ContactType.MOBILE),
+        columns.add(asList(Column.of("contact_name", "Ada"), Column.of("type", ContactType.MOBILE),
                 Column.of("information", "11 1231231 123")));
 
-        columns.add(asList(Column.of("name", "Ada"), Column.of("type", ContactType.PHONE),
+        columns.add(asList(Column.of("contact_name", "Ada"), Column.of("type", ContactType.PHONE),
                 Column.of("information", "phone")));
 
         entity.add(Column.of("contacts", columns));
