@@ -18,7 +18,7 @@ import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.mapping.column.ColumnRepositoryAsyncProducer;
 import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.tck.entities.PersonRepositoryAsync;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

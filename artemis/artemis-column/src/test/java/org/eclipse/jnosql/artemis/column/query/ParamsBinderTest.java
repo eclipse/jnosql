@@ -28,7 +28,7 @@ import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.query.SelectQuery;
 import jakarta.nosql.tck.entities.Person;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.artemis.util.ParamsBinder;
 import org.eclipse.jnosql.diana.query.method.SelectMethodProvider;
 import org.junit.jupiter.api.Test;

@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.PersonRepository;
 import jakarta.nosql.tck.entities.PersonRepositoryAsync;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
