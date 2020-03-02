@@ -18,9 +18,9 @@ import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.mapping.reflection.FieldType;
 import jakarta.nosql.tck.entities.Actor;
-import jakarta.nosql.tck.entities.Animal;
 import jakarta.nosql.tck.entities.Director;
 import jakarta.nosql.tck.entities.Machine;
+import jakarta.nosql.tck.entities.NoConstructorEntity;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.User;
 import jakarta.nosql.tck.entities.Worker;
@@ -99,7 +99,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldReturnErrorWhenThereIsNotConstructor() {
-        Assertions.assertThrows(ConstructorException.class, () -> classConverter.create(Animal.class));
+        Assertions.assertThrows(ConstructorException.class, () -> classConverter.create(NoConstructorEntity.class));
     }
 
     @Test
