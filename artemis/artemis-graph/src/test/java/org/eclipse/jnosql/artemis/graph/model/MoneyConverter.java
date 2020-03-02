@@ -12,30 +12,21 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.graph;
+package org.eclipse.jnosql.artemis.graph.model;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
 
-import javax.inject.Inject;
+import jakarta.nosql.mapping.AttributeConverter;
 
-@CDIExtension
-class DefaultGraphTraversalSourceConverterTest extends AbstractGraphConverterTest {
+public class MoneyConverter implements AttributeConverter<Money, String> {
 
-    @Inject
-    @GraphTraversalSourceOperation
-    private GraphConverter converter;
-
-    @Inject
-    private Graph graph;
 
     @Override
-    protected Graph getGraph() {
-        return graph;
+    public String convertToDatabaseColumn(Money attribute) {
+        return attribute.toString();
     }
 
     @Override
-    protected GraphConverter getConverter() {
-        return converter;
+    public Money convertToEntityAttribute(String dbData) {
+        return Money.parse(dbData);
     }
 }

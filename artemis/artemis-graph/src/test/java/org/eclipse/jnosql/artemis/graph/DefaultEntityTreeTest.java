@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
-import jakarta.nosql.tck.entities.Animal;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.artemis.graph.model.Animal;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

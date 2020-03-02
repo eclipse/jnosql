@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
-import jakarta.nosql.tck.entities.Person;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.artemis.graph.model.Person;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

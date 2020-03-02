@@ -12,30 +12,31 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.graph;
+package org.eclipse.jnosql.artemis.graph.model;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import org.eclipse.jnosql.artemis.graph.GraphTemplate;
+import org.eclipse.jnosql.artemis.graph.Transactional;
 
 import javax.inject.Inject;
 
-@CDIExtension
-class DefaultGraphTraversalSourceConverterTest extends AbstractGraphConverterTest {
+public class BookTemplate {
 
     @Inject
-    @GraphTraversalSourceOperation
-    private GraphConverter converter;
+    private GraphTemplate graphTemplate;
 
-    @Inject
-    private Graph graph;
-
-    @Override
-    protected Graph getGraph() {
-        return graph;
+    @Transactional
+    public void insert(Book actor) {
+        graphTemplate.insert(actor);
     }
 
-    @Override
-    protected GraphConverter getConverter() {
-        return converter;
+    @Transactional
+    public void insertException(Book actor) {
+        graphTemplate.insert(actor);
+        throw new NullPointerException("should get a rollback");
     }
+
+    public void normalInsertion(Book actor) {
+        graphTemplate.insert(actor);
+    }
+
 }

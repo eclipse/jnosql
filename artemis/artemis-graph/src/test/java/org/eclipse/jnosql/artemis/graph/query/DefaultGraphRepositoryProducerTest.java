@@ -16,7 +16,7 @@ package org.eclipse.jnosql.artemis.graph.query;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.artemis.graph.GraphRepositoryProducer;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

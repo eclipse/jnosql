@@ -18,7 +18,7 @@ import jakarta.nosql.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
 import org.eclipse.jnosql.artemis.graph.configuration.GraphConfigurationMock.GraphMock;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.artemis.test.CDIExtension;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

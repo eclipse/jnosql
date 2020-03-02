@@ -14,28 +14,9 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
 
-import javax.inject.Inject;
+import jakarta.nosql.mapping.Repository;
+import org.eclipse.jnosql.artemis.graph.model.Book;
 
-@CDIExtension
-class DefaultGraphTraversalSourceConverterTest extends AbstractGraphConverterTest {
-
-    @Inject
-    @GraphTraversalSourceOperation
-    private GraphConverter converter;
-
-    @Inject
-    private Graph graph;
-
-    @Override
-    protected Graph getGraph() {
-        return graph;
-    }
-
-    @Override
-    protected GraphConverter getConverter() {
-        return converter;
-    }
+public interface BookRepository extends Repository<Book, String> {
 }
