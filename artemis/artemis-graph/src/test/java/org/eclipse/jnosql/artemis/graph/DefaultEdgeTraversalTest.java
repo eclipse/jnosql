@@ -15,12 +15,12 @@
 package org.eclipse.jnosql.artemis.graph;
 
 import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.tck.entities.Animal;
+import jakarta.nosql.tck.entities.Book;
+import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.T;
-import org.eclipse.jnosql.artemis.graph.model.Animal;
-import org.eclipse.jnosql.artemis.graph.model.Book;
-import org.eclipse.jnosql.artemis.graph.model.Person;
-import jakarta.nosql.tck.test.CDIExtension;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 

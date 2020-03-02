@@ -16,8 +16,8 @@ package org.eclipse.jnosql.artemis.graph;
 
 import jakarta.nosql.Value;
 import jakarta.nosql.mapping.EntityNotFoundException;
-import org.eclipse.jnosql.artemis.graph.model.Book;
-import org.eclipse.jnosql.artemis.graph.model.Person;
+import jakarta.nosql.tck.entities.Book;
+import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;

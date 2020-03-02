@@ -16,11 +16,11 @@ package org.eclipse.jnosql.artemis.graph;
 
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.artemis.graph.model.Person;
-import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

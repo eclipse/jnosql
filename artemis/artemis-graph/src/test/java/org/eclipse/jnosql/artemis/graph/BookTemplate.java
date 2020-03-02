@@ -14,9 +14,28 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
+import jakarta.nosql.tck.entities.Book;
 
-import jakarta.nosql.mapping.Repository;
-import org.eclipse.jnosql.artemis.graph.model.Book;
+import javax.inject.Inject;
 
-public interface BookRepository extends Repository<Book, String> {
+public class BookTemplate {
+
+    @Inject
+    private GraphTemplate graphTemplate;
+
+    @Transactional
+    public void insert(Book actor) {
+        graphTemplate.insert(actor);
+    }
+
+    @Transactional
+    public void insertException(Book actor) {
+        graphTemplate.insert(actor);
+        throw new NullPointerException("should get a rollback");
+    }
+
+    public void normalInsertion(Book actor) {
+        graphTemplate.insert(actor);
+    }
+
 }

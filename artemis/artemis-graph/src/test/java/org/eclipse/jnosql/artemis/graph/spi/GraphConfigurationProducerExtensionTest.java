@@ -15,10 +15,10 @@
 package org.eclipse.jnosql.artemis.graph.spi;
 
 import jakarta.nosql.mapping.Database;
-import org.eclipse.jnosql.artemis.graph.BookRepository;
+import jakarta.nosql.tck.entities.Book;
+import jakarta.nosql.tck.entities.BookRepository;
+import jakarta.nosql.tck.entities.Person;
 import org.eclipse.jnosql.artemis.graph.GraphTemplate;
-import org.eclipse.jnosql.artemis.graph.model.Book;
-import org.eclipse.jnosql.artemis.graph.model.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 

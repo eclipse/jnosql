@@ -14,16 +14,16 @@
  */
 package org.eclipse.jnosql.artemis.graph;
 
+import jakarta.nosql.tck.entities.Job;
+import jakarta.nosql.tck.entities.Money;
+import jakarta.nosql.tck.entities.Movie;
+import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.entities.Worker;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.artemis.graph.model.Job;
-import org.eclipse.jnosql.artemis.graph.model.Money;
-import org.eclipse.jnosql.artemis.graph.model.Movie;
-import org.eclipse.jnosql.artemis.graph.model.Person;
-import org.eclipse.jnosql.artemis.graph.model.Worker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
