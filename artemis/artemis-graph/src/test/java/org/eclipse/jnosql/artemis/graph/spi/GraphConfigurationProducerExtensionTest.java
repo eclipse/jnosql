@@ -19,7 +19,7 @@ import org.eclipse.jnosql.artemis.graph.BookRepository;
 import org.eclipse.jnosql.artemis.graph.GraphTemplate;
 import org.eclipse.jnosql.artemis.graph.model.Book;
 import org.eclipse.jnosql.artemis.graph.model.Person;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;

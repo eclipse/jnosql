@@ -27,7 +27,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.artemis.graph.GraphConverter;
 import org.eclipse.jnosql.artemis.graph.GraphTemplate;
 import org.eclipse.jnosql.artemis.graph.model.Person;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
