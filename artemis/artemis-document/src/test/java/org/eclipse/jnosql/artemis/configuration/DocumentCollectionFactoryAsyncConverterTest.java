@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.configuration;
 import jakarta.nosql.Settings;
 import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
 import org.eclipse.jnosql.artemis.configuration.DocumentConfigurationAsyncMock.DocumentCollectionManagerAsyncFactoryMock;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

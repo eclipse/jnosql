@@ -15,11 +15,11 @@
 package org.eclipse.jnosql.artemis.reflection;
 
 import jakarta.nosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.artemis.model.Address;
-import org.eclipse.jnosql.artemis.model.AppointmentBook;
-import org.eclipse.jnosql.artemis.model.Person;
-import org.eclipse.jnosql.artemis.model.Worker;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.entities.Address;
+import jakarta.nosql.tck.entities.AppointmentBook;
+import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.entities.Worker;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

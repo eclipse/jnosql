@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.artemis.util;
 
 import jakarta.nosql.mapping.reflection.ClassMappings;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
 import javax.enterprise.inject.Default;

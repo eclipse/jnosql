@@ -18,21 +18,21 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
-import org.eclipse.jnosql.artemis.model.Actor;
-import org.eclipse.jnosql.artemis.model.Address;
-import org.eclipse.jnosql.artemis.model.AppointmentBook;
-import org.eclipse.jnosql.artemis.model.Contact;
-import org.eclipse.jnosql.artemis.model.ContactType;
-import org.eclipse.jnosql.artemis.model.Director;
-import org.eclipse.jnosql.artemis.model.Download;
-import org.eclipse.jnosql.artemis.model.Job;
-import org.eclipse.jnosql.artemis.model.Money;
-import org.eclipse.jnosql.artemis.model.Movie;
-import org.eclipse.jnosql.artemis.model.Person;
-import org.eclipse.jnosql.artemis.model.Vendor;
-import org.eclipse.jnosql.artemis.model.Worker;
-import org.eclipse.jnosql.artemis.model.ZipCode;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.entities.Actor;
+import jakarta.nosql.tck.entities.Address;
+import jakarta.nosql.tck.entities.AppointmentBook;
+import jakarta.nosql.tck.entities.Contact;
+import jakarta.nosql.tck.entities.ContactType;
+import jakarta.nosql.tck.entities.Director;
+import jakarta.nosql.tck.entities.Download;
+import jakarta.nosql.tck.entities.Job;
+import jakarta.nosql.tck.entities.Money;
+import jakarta.nosql.tck.entities.Movie;
+import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.entities.Vendor;
+import jakarta.nosql.tck.entities.Worker;
+import jakarta.nosql.tck.entities.ZipCode;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -308,7 +308,7 @@ public class DefaultDocumentEntityConverterTest {
         List<List<Document>> documents = (List<List<Document>>) contacts.get();
 
         assertEquals(3L, documents.stream().flatMap(Collection::stream)
-                .filter(c -> c.getName().equals("name"))
+                .filter(c -> c.getName().equals("contact_name"))
                 .count());
     }
 
@@ -318,13 +318,13 @@ public class DefaultDocumentEntityConverterTest {
         entity.add(Document.of("_id", "ids"));
         List<List<Document>> documents = new ArrayList<>();
 
-        documents.add(asList(Document.of("name", "Ada"), Document.of("type", ContactType.EMAIL),
+        documents.add(asList(Document.of("contact_name", "Ada"), Document.of("type", ContactType.EMAIL),
                 Document.of("information", "ada@lovelace.com")));
 
-        documents.add(asList(Document.of("name", "Ada"), Document.of("type", ContactType.MOBILE),
+        documents.add(asList(Document.of("contact_name", "Ada"), Document.of("type", ContactType.MOBILE),
                 Document.of("information", "11 1231231 123")));
 
-        documents.add(asList(Document.of("name", "Ada"), Document.of("type", ContactType.PHONE),
+        documents.add(asList(Document.of("contact_name", "Ada"), Document.of("type", ContactType.PHONE),
                 Document.of("information", "phone")));
 
         entity.add(Document.of("contacts", documents));

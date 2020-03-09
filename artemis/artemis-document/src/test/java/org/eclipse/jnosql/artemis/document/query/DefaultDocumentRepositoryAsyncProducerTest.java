@@ -17,8 +17,8 @@ package org.eclipse.jnosql.artemis.document.query;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.mapping.document.DocumentRepositoryAsyncProducer;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
-import org.eclipse.jnosql.artemis.PersonRepositoryAsync;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.entities.PersonRepositoryAsync;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

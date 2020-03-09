@@ -18,21 +18,21 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
-import org.eclipse.jnosql.artemis.model.Actor;
-import org.eclipse.jnosql.artemis.model.Address;
-import org.eclipse.jnosql.artemis.model.AppointmentBook;
-import org.eclipse.jnosql.artemis.model.Contact;
-import org.eclipse.jnosql.artemis.model.ContactType;
-import org.eclipse.jnosql.artemis.model.Director;
-import org.eclipse.jnosql.artemis.model.Download;
-import org.eclipse.jnosql.artemis.model.Job;
-import org.eclipse.jnosql.artemis.model.Money;
-import org.eclipse.jnosql.artemis.model.Movie;
-import org.eclipse.jnosql.artemis.model.Person;
-import org.eclipse.jnosql.artemis.model.Vendor;
-import org.eclipse.jnosql.artemis.model.Worker;
-import org.eclipse.jnosql.artemis.model.ZipCode;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.entities.Actor;
+import jakarta.nosql.tck.entities.Address;
+import jakarta.nosql.tck.entities.AppointmentBook;
+import jakarta.nosql.tck.entities.Contact;
+import jakarta.nosql.tck.entities.ContactType;
+import jakarta.nosql.tck.entities.Director;
+import jakarta.nosql.tck.entities.Download;
+import jakarta.nosql.tck.entities.Job;
+import jakarta.nosql.tck.entities.Money;
+import jakarta.nosql.tck.entities.Movie;
+import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.entities.Vendor;
+import jakarta.nosql.tck.entities.Worker;
+import jakarta.nosql.tck.entities.ZipCode;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -306,7 +306,7 @@ public class DefaultColumnEntityConverterTest {
         List<List<Column>> columns = (List<List<Column>>) contacts.get();
 
         assertEquals(3L, columns.stream().flatMap(Collection::stream)
-                .filter(c -> c.getName().equals("name"))
+                .filter(c -> c.getName().equals("contact_name"))
                 .count());
     }
 
@@ -316,13 +316,13 @@ public class DefaultColumnEntityConverterTest {
         entity.add(Column.of("_id", "ids"));
         List<List<Column>> columns = new ArrayList<>();
 
-        columns.add(asList(Column.of("name", "Ada"), Column.of("type", ContactType.EMAIL),
+        columns.add(asList(Column.of("contact_name", "Ada"), Column.of("type", ContactType.EMAIL),
                 Column.of("information", "ada@lovelace.com")));
 
-        columns.add(asList(Column.of("name", "Ada"), Column.of("type", ContactType.MOBILE),
+        columns.add(asList(Column.of("contact_name", "Ada"), Column.of("type", ContactType.MOBILE),
                 Column.of("information", "11 1231231 123")));
 
-        columns.add(asList(Column.of("name", "Ada"), Column.of("type", ContactType.PHONE),
+        columns.add(asList(Column.of("contact_name", "Ada"), Column.of("type", ContactType.PHONE),
                 Column.of("information", "phone")));
 
         entity.add(Column.of("contacts", columns));

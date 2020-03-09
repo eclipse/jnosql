@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.configuration;
 import jakarta.nosql.Settings;
 import jakarta.nosql.keyvalue.BucketManagerFactory;
 import org.eclipse.jnosql.artemis.configuration.KeyValueConfigurationMock.BucketManagerFactoryMock;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

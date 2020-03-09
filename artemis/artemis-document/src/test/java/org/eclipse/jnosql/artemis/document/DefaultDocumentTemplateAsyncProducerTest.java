@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.document;
 import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.document.DocumentTemplateAsyncProducer;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

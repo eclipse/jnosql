@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.artemis.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 
 import javax.inject.Inject;
 

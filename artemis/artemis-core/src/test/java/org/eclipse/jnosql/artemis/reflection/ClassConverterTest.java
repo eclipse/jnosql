@@ -17,14 +17,14 @@ package org.eclipse.jnosql.artemis.reflection;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import jakarta.nosql.mapping.reflection.FieldType;
-import org.eclipse.jnosql.artemis.model.Actor;
-import org.eclipse.jnosql.artemis.model.Animal;
-import org.eclipse.jnosql.artemis.model.Director;
-import org.eclipse.jnosql.artemis.model.Machine;
-import org.eclipse.jnosql.artemis.model.Person;
-import org.eclipse.jnosql.artemis.model.User;
-import org.eclipse.jnosql.artemis.model.Worker;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.entities.Actor;
+import jakarta.nosql.tck.entities.Director;
+import jakarta.nosql.tck.entities.Machine;
+import jakarta.nosql.tck.entities.NoConstructorEntity;
+import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.entities.User;
+import jakarta.nosql.tck.entities.Worker;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -99,7 +99,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldReturnErrorWhenThereIsNotConstructor() {
-        Assertions.assertThrows(ConstructorException.class, () -> classConverter.create(Animal.class));
+        Assertions.assertThrows(ConstructorException.class, () -> classConverter.create(NoConstructorEntity.class));
     }
 
     @Test

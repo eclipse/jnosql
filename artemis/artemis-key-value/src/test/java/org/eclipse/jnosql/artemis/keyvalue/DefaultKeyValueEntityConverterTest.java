@@ -18,12 +18,12 @@ import jakarta.nosql.Value;
 import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
-import org.eclipse.jnosql.artemis.model.Car;
-import org.eclipse.jnosql.artemis.model.Person;
-import org.eclipse.jnosql.artemis.model.Plate;
-import org.eclipse.jnosql.artemis.model.User;
-import org.eclipse.jnosql.artemis.model.Worker;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.entities.Car;
+import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.entities.Plate;
+import jakarta.nosql.tck.entities.User;
+import jakarta.nosql.tck.entities.Worker;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

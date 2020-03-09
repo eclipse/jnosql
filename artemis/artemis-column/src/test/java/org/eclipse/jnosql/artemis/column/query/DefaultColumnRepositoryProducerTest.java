@@ -17,8 +17,8 @@ package org.eclipse.jnosql.artemis.column.query;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.eclipse.jnosql.artemis.PersonRepository;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.entities.PersonRepository;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

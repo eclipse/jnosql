@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.column.configuration;
 import jakarta.nosql.column.ColumnFamilyManager;
 import org.eclipse.jnosql.artemis.column.configuration.ColumnConfigurationMock.ColumnFamilyManagerMock;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

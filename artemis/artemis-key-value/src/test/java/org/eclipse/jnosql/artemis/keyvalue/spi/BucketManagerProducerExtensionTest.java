@@ -17,10 +17,10 @@ package org.eclipse.jnosql.artemis.keyvalue.spi;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import org.eclipse.jnosql.artemis.UserRepository;
-import org.eclipse.jnosql.artemis.model.Person;
-import org.eclipse.jnosql.artemis.model.User;
-import org.eclipse.jnosql.artemis.test.CDIExtension;
+import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.entities.User;
+import jakarta.nosql.tck.entities.UserRepository;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
