@@ -21,13 +21,14 @@ package org.eclipse.jnosql.diana.document;
 import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
+import org.eclipse.jnosql.diana.Entry;
 
 import java.util.Objects;
 
 /**
  * A default implementation {@link Document}
  */
-final class DefaultDocument implements Document {
+final class DefaultDocument implements Document, Entry {
 
     private final String name;
 

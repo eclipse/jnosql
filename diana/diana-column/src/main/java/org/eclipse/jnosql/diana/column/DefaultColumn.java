@@ -19,13 +19,14 @@ package org.eclipse.jnosql.diana.column;
 import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
+import org.eclipse.jnosql.diana.Entry;
 
 import java.util.Objects;
 
 /**
  * The default implementation of {@link Column}
  */
-final class DefaultColumn implements Column {
+final class DefaultColumn implements Column, Entry {
 
     private final String name;
 
