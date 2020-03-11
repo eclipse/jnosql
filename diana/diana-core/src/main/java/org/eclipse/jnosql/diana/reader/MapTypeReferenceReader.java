@@ -21,11 +21,18 @@ import jakarta.nosql.ValueReader;
 import jakarta.nosql.TypeReferenceReader;
 import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.ValueReaderDecorator;
+import org.eclipse.jnosql.diana.Entry;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +42,7 @@ import java.util.stream.Collectors;
 public class MapTypeReferenceReader implements TypeReferenceReader {
 
     private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
+    private static final Predicate<Type> IS_CLASS = c -> c instanceof Class;
 
     @Override
     public <T> boolean isCompatible(TypeSupplier<T> typeReference) {
@@ -54,7 +62,8 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
         Type type = typeReference.get();
         ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
         Class<?> keyType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
-        Class<?> valueType = (Class<?>) parameterizedType.getActualTypeArguments()[1];
+        Class<?> valueType = (Class<?>) Optional.of(parameterizedType.getActualTypeArguments()[1])
+                .filter(IS_CLASS).orElse(Object.class);
         return (T) getMap(keyType, valueType, value);
 
     }
@@ -62,11 +71,46 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
     private <K, V> Map<K, V> getMap(Class<K> keyClass, Class<V> valueClass, Object value) {
 
         if (Map.class.isInstance(value)) {
-            Map mapValue = Map.class.cast(value);
-            return (Map<K, V>) mapValue.keySet().stream()
-                    .collect(Collectors.toMap(mapKeyElement(keyClass), mapValueElement(valueClass, mapValue)));
+            return convertToMap(keyClass, valueClass, value);
+        }
+        if (Iterable.class.isInstance(value)) {
+            List<Object> collection = new ArrayList<>();
+            Iterable.class.cast(value).forEach(collection::add);
+            if (collection.isEmpty()) {
+                return Collections.emptyMap();
+            }
+            if (collection.size() == 1) {
+                Object object = collection.get(0);
+                if (object instanceof Map) {
+                    return convertToMap(keyClass, valueClass, object);
+                }
+                if (object instanceof Entry) {
+                    Map<String, Object> map = new HashMap<>();
+                    convertEntryToMap(object, map);
+                    return convertToMap(keyClass, valueClass, map);
+                }
+            }
         }
         throw new UnsupportedOperationException("There is not supported convert" + value + " a not Map type.");
+    }
+
+    private void convertEntryToMap(Object value, Map<String, Object> map) {
+        Entry entry = Entry.class.cast(value);
+        Object entryValue = entry.getValue().get();
+        if (entryValue instanceof Entry) {
+            Map<String, Object> subMap = new HashMap<>();
+            Entry subEntry = Entry.class.cast(entryValue);
+            convertEntryToMap(subEntry, subMap);
+            map.put(entry.getName(), subMap);
+        } else {
+            map.put(entry.getName(), entryValue);
+        }
+    }
+
+    private <K, V> Map<K, V> convertToMap(Class<K> keyClass, Class<V> valueClass, Object value) {
+        Map mapValue = Map.class.cast(value);
+        return (Map<K, V>) mapValue.keySet().stream()
+                .collect(Collectors.toMap(mapKeyElement(keyClass), mapValueElement(valueClass, mapValue)));
     }
 
     private <K> Function mapKeyElement(Class<K> keyClass) {

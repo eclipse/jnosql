@@ -18,10 +18,13 @@ package org.eclipse.jnosql.diana.reader;
 
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.TypeReferenceReader;
+import jakarta.nosql.Value;
+import org.eclipse.jnosql.diana.Entry;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,10 +60,9 @@ public class MapTypeReferenceReaderTest {
         assertFalse(referenceReader.isCompatible(new TypeReference<Map<Integer, List<String>>>(){}));
     }
 
-
     @Test
     public void shouldConvert() {
-        assertEquals(singletonMap("123", "123"), referenceReader.convert(new TypeReference<Map<String, String>>(){}, singletonMap(123, 123L)));
+        assertEquals(new HashMap<>(singletonMap("123", "123")), referenceReader.convert(new TypeReference<Map<String, String>>(){}, singletonMap(123, 123L)));
         assertEquals(singletonMap(123L, 123), referenceReader.convert(new TypeReference<Map<Long, Integer>>(){}, singletonMap("123", "123")));
     }
 
@@ -68,9 +70,7 @@ public class MapTypeReferenceReaderTest {
     public void shouldCreateMutableMap() {
         Map<String, String> map = referenceReader.convert(new TypeReference<Map<String, String>>() {
         }, singletonMap(123, 123L));
-
         map.put("23", "123");
-
         assertEquals(2, map.size());
     }
 
@@ -86,5 +86,50 @@ public class MapTypeReferenceReaderTest {
         map.put("23", "123");
 
         assertEquals(3, map.size());
+    }
+
+    @Test
+    public void shouldConvertEntryToMap() {
+        Entry entry = new EntryTest("key", Value.of("value"));
+        Map<String, String> map = referenceReader.convert(new TypeReference<Map<String, String>>() {
+        }, Collections.singletonList(entry));
+
+        assertEquals(1, map.size());
+        assertEquals("value", map.get("key"));
+    }
+
+    @Test
+    public void shouldConvertSubEntryToMap() {
+        Entry subEntry = new EntryTest("key", Value.of("value"));
+        Entry entry = new EntryTest("key", Value.of(subEntry));
+
+        Map<String, Map<String, String>> map = referenceReader.convert(new TypeReference<Map<String, Map<String, String>>>() {
+        }, Collections.singletonList(entry));
+        assertEquals(1, map.size());
+        Map<String, String> subMap = map.get("key");
+        assertEquals("value", subMap.get("key"));
+    }
+
+
+    public static class EntryTest implements Entry {
+
+        private final String name;
+
+        private final Value value;
+
+        public EntryTest(String name, Value value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public Value getValue() {
+            return value;
+        }
     }
 }
