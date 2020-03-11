@@ -18,10 +18,13 @@ package org.eclipse.jnosql.diana.reader;
 
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.TypeReferenceReader;
+import jakarta.nosql.Value;
+import org.eclipse.jnosql.diana.Entry;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,5 +89,38 @@ public class MapTypeReferenceReaderTest {
         map.put("23", "123");
 
         assertEquals(3, map.size());
+    }
+
+    @Test
+    public void shouldConvertEntryToMap() {
+        Entry entry = new EntryTest("key", Value.of("value"));
+        Map<String, String> map = referenceReader.convert(new TypeReference<Map<String, String>>() {
+        }, Collections.singletonList(entry));
+
+        assertEquals(1, map.size());
+        assertEquals("value", map.get("key"));
+    }
+
+
+    public static class EntryTest implements Entry {
+
+        private final String name;
+
+        private final Value value;
+
+        public EntryTest(String name, Value value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public Value getValue() {
+            return value;
+        }
     }
 }
