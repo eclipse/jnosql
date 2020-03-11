@@ -19,7 +19,6 @@ package org.eclipse.jnosql.diana.reader;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.TypeReferenceReader;
 import jakarta.nosql.Value;
-import org.eclipse.jnosql.diana.Entry;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
