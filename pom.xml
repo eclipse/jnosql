@@ -69,7 +69,7 @@
         <owb.version>2.0.3</owb.version>
         <testcontainers.version>1.12.4</testcontainers.version>
         <weld.se.core.version>3.1.4.Final</weld.se.core.version>
-        <yasson.version>1.0.5</yasson.version>
+        <yasson.version>1.0.6</yasson.version>
     </properties>
 
     <dependencies>
