@@ -65,7 +65,7 @@
     <properties>
         <checkstyle.excludes>**/diana/query/**</checkstyle.excludes>
         <hamcrest-all.version>1.3</hamcrest-all.version>
-        <org.awaitility.version>4.0.1</org.awaitility.version>
+        <org.awaitility.version>4.0.2</org.awaitility.version>
         <owb.version>2.0.3</owb.version>
         <testcontainers.version>1.12.4</testcontainers.version>
         <weld.se.core.version>3.1.4.Final</weld.se.core.version>
