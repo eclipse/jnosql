@@ -26,10 +26,8 @@ import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnPreparedStatementAsync;
 import jakarta.nosql.column.ColumnQuery;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -56,7 +54,6 @@ public class DefaultSelectQueryConverterTest {
     private DefaultSelectQueryConverter parser = new DefaultSelectQueryConverter();
 
     private ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
-    private ColumnFamilyManagerAsync managerAsync = Mockito.mock(ColumnFamilyManagerAsync.class);
     private final ColumnObserverParser observer = new ColumnObserverParser() {
     };
 
@@ -510,68 +507,6 @@ public class DefaultSelectQueryConverterTest {
         assertEquals("age", column.getName());
         assertEquals(12, column.get());
     }
-
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldReturnErrorWhenIsQueryWithParamAsync(String query) {
-
-        assertThrows(QueryException.class, () -> parser.queryAsync(query, managerAsync, s -> {
-        }, observer));
-
-
-    }
-
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
-
-        ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResult(s -> {
-        }));
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldExecutePrepareStatementAsync(String query) {
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-
-        ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        prepare.bind("age", 12);
-        Consumer<Stream<ColumnEntity>> callBack = s -> {
-        };
-        prepare.getResult(callBack);
-        Mockito.verify(managerAsync).select(captor.capture(), Mockito.eq(callBack));
-        ColumnQuery columnQuery = captor.getValue();
-        ColumnCondition columnCondition = columnQuery.getCondition().get();
-        Column column = columnCondition.getColumn();
-        assertEquals(Condition.EQUALS, columnCondition.getCondition());
-        assertEquals("age", column.getName());
-        assertEquals(12, column.get());
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"select  * from God where name = \"Ada\" and age = 20"})
-    public void shouldReturnParserQueryAsync(String query) {
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        Consumer<Stream<ColumnEntity>> callBack = s -> {
-        };
-        parser.queryAsync(query, managerAsync, callBack, observer);
-        Mockito.verify(managerAsync).select(captor.capture(), Mockito.eq(callBack));
-        ColumnQuery columnQuery = captor.getValue();
-
-        checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.AND, condition.getCondition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
-        });
-        assertThat(conditions, contains(eq(Column.of("name", "Ada")),
-                eq(Column.of("age", 20L))));
-    }
-
 
     private void checkBaseQuery(ColumnQuery columnQuery, long limit, long skip) {
         assertTrue(columnQuery.getColumns().isEmpty());

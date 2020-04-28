@@ -23,10 +23,8 @@ import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteFrom;
 import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteNotCondition;
 import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteWhere;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -133,7 +131,6 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete
         return this;
     }
 
-
     @Override
     public ColumnDeleteQuery build() {
         return new DefaultColumnDeleteQuery(columnFamily, condition, columns);
@@ -145,17 +142,4 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete
         manager.delete(this.build());
     }
 
-    @Override
-    public void delete(ColumnFamilyManagerAsync manager) {
-        requireNonNull(manager, "manager is required");
-        manager.delete(this.build());
-    }
-
-    @Override
-    public void delete(ColumnFamilyManagerAsync manager, Consumer<Void> callback) {
-        requireNonNull(manager, "manager is required");
-        requireNonNull(callback, "callback is required");
-        manager.delete(this.build(), callback);
-    }
 }
-

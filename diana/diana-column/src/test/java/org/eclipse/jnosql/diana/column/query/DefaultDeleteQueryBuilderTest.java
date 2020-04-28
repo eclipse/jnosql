@@ -24,7 +24,6 @@ import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -264,35 +263,6 @@ public class DefaultDeleteQueryBuilderTest {
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         delete().from(columnFamily).delete(manager);
         verify(manager).delete(queryCaptor.capture());
-
-        ColumnDeleteQuery query = queryCaptor.getValue();
-        assertTrue(query.getColumns().isEmpty());
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getColumnFamily());
-    }
-
-    @Test
-    public void shouldExecuteAsyncDelete() {
-        String columnFamily = "columnFamily";
-        ColumnFamilyManagerAsync manager = mock(ColumnFamilyManagerAsync.class);
-        ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        delete().from(columnFamily).delete(manager);
-        verify(manager).delete(queryCaptor.capture());
-
-        ColumnDeleteQuery query = queryCaptor.getValue();
-        assertTrue(query.getColumns().isEmpty());
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(columnFamily, query.getColumnFamily());
-    }
-
-    @Test
-    public void shouldExecuteAsync2Delete() {
-        String columnFamily = "columnFamily";
-        ColumnFamilyManagerAsync manager = mock(ColumnFamilyManagerAsync.class);
-        ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        Consumer<Void> callback = (v) ->{};
-        delete().from(columnFamily).delete(manager, callback);
-        verify(manager).delete(queryCaptor.capture(), eq(callback));
 
         ColumnDeleteQuery query = queryCaptor.getValue();
         assertTrue(query.getColumns().isEmpty());

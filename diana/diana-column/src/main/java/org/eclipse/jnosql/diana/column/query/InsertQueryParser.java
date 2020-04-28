@@ -21,10 +21,8 @@ import jakarta.nosql.QueryException;
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnPreparedStatementAsync;
 import jakarta.nosql.query.Condition;
 import jakarta.nosql.query.InsertQuery;
 import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
@@ -33,7 +31,6 @@ import jakarta.nosql.query.JSONQueryValue;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 final class InsertQueryParser extends ConditionQueryParser {
@@ -64,28 +61,6 @@ final class InsertQueryParser extends ConditionQueryParser {
         }
     }
 
-    void queryAsync(String query, ColumnFamilyManagerAsync manager,
-                    Consumer<Stream<ColumnEntity>> callBack,
-                    ColumnObserverParser observer) {
-
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
-
-        String columnFamily = observer.fireEntity(insertQuery.getEntity());
-
-        Params params = Params.newParams();
-
-        ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
-
-        Optional<Duration> ttl = insertQuery.getTtl();
-        if (params.isNotEmpty()) {
-            throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
-        }
-        if (ttl.isPresent()) {
-            manager.insert(entity, ttl.get(), c -> callBack.accept(Stream.of(c)));
-        } else {
-            manager.insert(entity, c -> callBack.accept(Stream.of(c)));
-        }
-    }
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager,
                                     ColumnObserverParser observer) {
@@ -99,18 +74,6 @@ final class InsertQueryParser extends ConditionQueryParser {
 
         return DefaultColumnPreparedStatement.insert(entity, params, query, ttl.orElse(null), manager);
 
-    }
-
-    ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
-                                              ColumnObserverParser observer) {
-        Params params = Params.newParams();
-
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
-        String columnFamily = observer.fireEntity(insertQuery.getEntity());
-        Optional<Duration> ttl = insertQuery.getTtl();
-        ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
-
-        return DefaultColumnPreparedStatementAsync.insert(entity, params, query, ttl.orElse(null), manager);
     }
 
     private ColumnEntity getEntity(InsertQuery insertQuery, String columnFamily, Params params,

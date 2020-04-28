@@ -21,10 +21,8 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnPreparedStatementAsync;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -46,7 +44,6 @@ class UpdateQueryParserTest {
     private UpdateQueryParser parser = new UpdateQueryParser();
 
     private ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
-    private ColumnFamilyManagerAsync managerAsync = Mockito.mock(ColumnFamilyManagerAsync.class);
     private final ColumnObserverParser observer = new ColumnObserverParser() {
     };
 
@@ -129,7 +126,6 @@ class UpdateQueryParserTest {
         assertThrows(QueryException.class, prepare::getResult);
     }
 
-
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"update God (name = @name)"})
     public void shouldExecutePrepareStatement(String query) {
@@ -138,39 +134,6 @@ class UpdateQueryParserTest {
         prepare.bind("name", "Diana");
         prepare.getResult();
         Mockito.verify(manager).update(captor.capture());
-        ColumnEntity entity = captor.getValue();
-        assertEquals("God", entity.getName());
-        assertEquals(Column.of("name", "Diana"), entity.find("name").get());
-
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldReturnErrorWhenShouldUsePrepareStatementAsync(String query) {
-
-        assertThrows(QueryException.class, () -> parser.queryAsync(query, managerAsync, s->{}, observer));
-    }
-
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQueryAsync(String query) {
-
-        ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResult(s ->{}));
-    }
-
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldExecutePrepareStatementAsync(String query) {
-        ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
-        ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        prepare.bind("name", "Diana");
-        Consumer<Stream<ColumnEntity>> callBack = s -> {
-        };
-        prepare.getResult(callBack);
-        Mockito.verify(managerAsync).update(captor.capture(), Mockito.any(Consumer.class));
         ColumnEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
         assertEquals(Column.of("name", "Diana"), entity.find("name").get());

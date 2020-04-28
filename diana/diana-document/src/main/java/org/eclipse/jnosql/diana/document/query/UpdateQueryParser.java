@@ -20,11 +20,9 @@ import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import jakarta.nosql.query.Condition;
 import jakarta.nosql.query.JSONQueryValue;
 import jakarta.nosql.query.UpdateQuery;
@@ -32,7 +30,6 @@ import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 final class UpdateQueryParser extends ConditionQueryParser {
@@ -57,20 +54,6 @@ final class UpdateQueryParser extends ConditionQueryParser {
         return Stream.of(collectionManager.update(entity));
     }
 
-    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
-                    Consumer<Stream<DocumentEntity>> callBack, DocumentObserverParser observer) {
-
-        UpdateQuery updateQuery = supplier.apply(query);
-
-        Params params = Params.newParams();
-
-        DocumentEntity entity = getEntity(params, updateQuery, observer);
-
-        if (params.isNotEmpty()) {
-            throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
-        }
-        collectionManager.update(entity, c -> callBack.accept(Stream.of((c))));
-    }
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
@@ -80,14 +63,6 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
         return DefaultDocumentPreparedStatement.update(entity, params, query, collectionManager);
-    }
-
-    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager, DocumentObserverParser observer) {
-        Params params = Params.newParams();
-        UpdateQuery updateQuery = supplier.apply(query);
-
-        DocumentEntity entity = getEntity(params, updateQuery, observer);
-        return DefaultDocumentPreparedStatementAsync.update(entity, params, query, collectionManager);
     }
 
     private DocumentEntity getEntity(Params params, UpdateQuery updateQuery, DocumentObserverParser observer) {

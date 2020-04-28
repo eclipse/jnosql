@@ -20,7 +20,6 @@ package org.eclipse.jnosql.diana.document.query;
 import jakarta.nosql.Sort;
 import jakarta.nosql.SortType;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.document.DocumentQuery.DocumentFrom;
@@ -37,7 +36,6 @@ import jakarta.nosql.document.DocumentQuery.DocumentWhere;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -202,20 +200,5 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
         requireNonNull(manager, "manager is required");
         return manager.singleResult(this.build());
     }
-
-    @Override
-    public void getResult(DocumentCollectionManagerAsync manager, Consumer<Stream<DocumentEntity>> callback) {
-        requireNonNull(manager, "manager is required");
-        requireNonNull(callback, "callback is required");
-        manager.select(this.build(), callback);
-    }
-
-    @Override
-    public void getSingleResult(DocumentCollectionManagerAsync manager, Consumer<Optional<DocumentEntity>> callback) {
-        requireNonNull(manager, "manager is required");
-        requireNonNull(callback, "callback is required");
-        manager.singleResult(this.build(), callback);
-    }
-
 
 }

@@ -24,12 +24,9 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import jakarta.nosql.document.DocumentQuery;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,8 +36,6 @@ import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentCondition.eq;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -56,7 +51,6 @@ public class SelectQueryParserTest {
     private SelectQueryParser parser = new SelectQueryParser();
 
     private DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
-    private DocumentCollectionManagerAsync documentCollectionAsync = Mockito.mock(DocumentCollectionManagerAsync.class);
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };
 
@@ -515,68 +509,6 @@ public class SelectQueryParserTest {
         assertEquals("age", document.getName());
         assertEquals(12, document.get());
     }
-
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldReturnErrorWhenIsQueryWithParamAsync(String query) {
-
-        assertThrows(QueryException.class, () -> parser.queryAsync(query, documentCollectionAsync, s -> {
-        }, observer));
-
-
-    }
-
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
-
-        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResult(s -> {
-        }));
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"select  * from God where age = @age"})
-    public void shouldExecutePrepareStatementAsync(String query) {
-        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-
-        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
-        prepare.bind("age", 12);
-        Consumer<Stream<DocumentEntity>> callBack = s -> {
-        };
-        prepare.getResult(callBack);
-        Mockito.verify(documentCollectionAsync).select(captor.capture(), Mockito.eq(callBack));
-        DocumentQuery documentQuery = captor.getValue();
-        DocumentCondition documentCondition = documentQuery.getCondition().get();
-        Document document = documentCondition.getDocument();
-        assertEquals(Condition.EQUALS, documentCondition.getCondition());
-        assertEquals("age", document.getName());
-        assertEquals(12, document.get());
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"select  * from God where name = \"Ada\" and age = 20"})
-    public void shouldReturnParserQueryAsync(String query) {
-        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        Consumer<Stream<DocumentEntity>> callBack = s -> {
-        };
-        parser.queryAsync(query, documentCollectionAsync, callBack, observer);
-        Mockito.verify(documentCollectionAsync).select(captor.capture(), Mockito.eq(callBack));
-        DocumentQuery documentQuery = captor.getValue();
-
-        checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
-        Document document = condition.getDocument();
-        assertEquals(Condition.AND, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
-        });
-        assertThat(conditions, contains(eq(Document.of("name", "Ada")),
-                eq(Document.of("age", 20L))));
-    }
-
 
     private void checkBaseQuery(DocumentQuery documentQuery, long limit, long skip) {
         assertTrue(documentQuery.getDocuments().isEmpty());

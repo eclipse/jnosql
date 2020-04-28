@@ -22,7 +22,6 @@ import jakarta.nosql.SortType;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
@@ -33,7 +32,6 @@ import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentCondition.eq;
@@ -329,28 +327,6 @@ public class DefaultSelectQueryBuilderTest {
         String collection = "collection";
         Optional<DocumentEntity> entities = select().from(collection).getSingleResult(manager);
         Mockito.verify(manager).singleResult(queryCaptor.capture());
-        checkQuery(queryCaptor, collection);
-    }
-
-    @Test
-    public void shouldExecuteManagerAsync() {
-        DocumentCollectionManagerAsync manager = Mockito.mock(DocumentCollectionManagerAsync.class);
-        ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        String collection = "collection";
-        Consumer<Stream<DocumentEntity>> callback = System.out::println;
-        select().from(collection).getResult(manager, callback);
-        Mockito.verify(manager).select(queryCaptor.capture(), Mockito.eq(callback));
-        checkQuery(queryCaptor, collection);
-    }
-
-    @Test
-    public void shouldExecuteSingleResultManagerAsync() {
-        DocumentCollectionManagerAsync manager = Mockito.mock(DocumentCollectionManagerAsync.class);
-        ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        String collection = "collection";
-        Consumer<Optional<DocumentEntity>> callback = System.out::println;
-        select().from(collection).getSingleResult(manager, callback);
-        Mockito.verify(manager).singleResult(queryCaptor.capture(), Mockito.eq(callback));
         checkQuery(queryCaptor, collection);
     }
 

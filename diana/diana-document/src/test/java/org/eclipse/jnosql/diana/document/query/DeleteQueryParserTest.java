@@ -22,13 +22,10 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -36,8 +33,6 @@ import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentCondition.eq;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -53,7 +48,6 @@ class DeleteQueryParserTest {
     private DeleteQueryParser parser = new DeleteQueryParser();
 
     private DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
-    private DocumentCollectionManagerAsync documentCollectionAsync = Mockito.mock(DocumentCollectionManagerAsync.class);
 
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };
@@ -403,62 +397,8 @@ class DeleteQueryParserTest {
         assertEquals(12, document.get());
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldReturnErrorWhenIsQueryWithParamAsync(String query) {
 
-        assertThrows(QueryException.class, () -> parser.queryAsync(query, documentCollectionAsync, s->{}, observer));
 
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
-
-        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResult(s ->{}));
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldExecutePrepareStatementAsync(String query) {
-        ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-
-        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, documentCollectionAsync, observer);
-        prepare.bind("age", 12);
-        Consumer<Stream<DocumentEntity>> callBack = s -> {
-        };
-        prepare.getResult(callBack);
-        Mockito.verify(documentCollectionAsync).delete(captor.capture(), Mockito.any(Consumer.class));
-        DocumentDeleteQuery documentQuery = captor.getValue();
-        DocumentCondition documentCondition = documentQuery.getCondition().get();
-        Document document = documentCondition.getDocument();
-        assertEquals(Condition.EQUALS, documentCondition.getCondition());
-        assertEquals("age", document.getName());
-        assertEquals(12, document.get());
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where name = \"Ada\" or age = 20"})
-    public void shouldReturnParserQueryAsync(String query) {
-        ArgumentCaptor<DocumentDeleteQuery> captor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-
-        Consumer<Stream<DocumentEntity>> callBack = s -> {
-        };
-        parser.queryAsync(query, documentCollectionAsync, callBack, observer);
-        Mockito.verify(documentCollectionAsync).delete(captor.capture(), Mockito.any(Consumer.class));
-        DocumentDeleteQuery documentQuery = captor.getValue();
-
-        checkBaseQuery(documentQuery);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
-        Document document = condition.getDocument();
-        assertEquals(Condition.OR, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
-        });
-        assertThat(conditions, contains(eq(Document.of("name", "Ada")),
-                eq(Document.of("age", 20L))));
-    }
     private void checkBaseQuery(DocumentDeleteQuery documentQuery) {
         assertTrue(documentQuery.getDocuments().isEmpty());
         assertEquals("God", documentQuery.getDocumentCollection());

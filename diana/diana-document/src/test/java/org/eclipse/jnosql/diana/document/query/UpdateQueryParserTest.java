@@ -20,11 +20,9 @@ import jakarta.nosql.QueryException;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -32,8 +30,6 @@ import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -46,7 +42,6 @@ class UpdateQueryParserTest {
     private UpdateQueryParser parser = new UpdateQueryParser();
 
     private DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
-    private DocumentCollectionManagerAsync managerAsync = Mockito.mock(DocumentCollectionManagerAsync.class);
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };
 
@@ -140,39 +135,6 @@ class UpdateQueryParserTest {
         prepare.bind("name", "Diana");
         prepare.getResult();
         Mockito.verify(manager).update(captor.capture());
-        DocumentEntity entity = captor.getValue();
-        assertEquals("God", entity.getName());
-        assertEquals(Document.of("name", "Diana"), entity.find("name").get());
-
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldReturnErrorWhenShouldUsePrepareStatementAsync(String query) {
-
-        assertThrows(QueryException.class, () -> parser.queryAsync(query, managerAsync, s->{}, observer));
-    }
-
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQueryAsync(String query) {
-
-        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResult(s ->{}));
-    }
-
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"update God (name = @name)"})
-    public void shouldExecutePrepareStatementAsync(String query) {
-        ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        DocumentPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        prepare.bind("name", "Diana");
-        Consumer<Stream<DocumentEntity>> callBack = s -> {
-        };
-        prepare.getResult(callBack);
-        Mockito.verify(managerAsync).update(captor.capture(), Mockito.any(Consumer.class));
         DocumentEntity entity = captor.getValue();
         assertEquals("God", entity.getName());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());

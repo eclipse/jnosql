@@ -21,17 +21,14 @@ import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import static jakarta.nosql.document.DocumentCondition.eq;
 import static jakarta.nosql.document.DocumentDeleteQuery.delete;
@@ -266,35 +263,6 @@ public class DefaultDeleteQueryBuilderTest {
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
         delete().from(collection).delete(manager);
         verify(manager).delete(queryCaptor.capture());
-
-        DocumentDeleteQuery query = queryCaptor.getValue();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(collection, query.getDocumentCollection());
-    }
-
-    @Test
-    public void shouldExecuteAsyncDelete() {
-        String collection = "collection";
-        DocumentCollectionManagerAsync manager = mock(DocumentCollectionManagerAsync.class);
-        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-        delete().from(collection).delete(manager);
-        verify(manager).delete(queryCaptor.capture());
-
-        DocumentDeleteQuery query = queryCaptor.getValue();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(collection, query.getDocumentCollection());
-    }
-
-    @Test
-    public void shouldExecuteAsync2Delete() {
-        String collection = "collection";
-        DocumentCollectionManagerAsync manager = mock(DocumentCollectionManagerAsync.class);
-        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-        Consumer<Void> callback = (v) ->{};
-        delete().from(collection).delete(manager, callback);
-        verify(manager).delete(queryCaptor.capture(), ArgumentMatchers.eq(callback));
 
         DocumentDeleteQuery query = queryCaptor.getValue();
         assertTrue(query.getDocuments().isEmpty());

@@ -21,12 +21,10 @@ import jakarta.nosql.QueryException;
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.Sort;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.document.DocumentQueryParams;
 import jakarta.nosql.document.SelectQueryConverter;
@@ -35,7 +33,6 @@ import jakarta.nosql.query.SelectQuery.SelectQueryProvider;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,11 +57,6 @@ public final class SelectQueryParser implements SelectQueryConverter {
         return collectionManager.select(documentQuery);
     }
 
-    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager, Consumer<Stream<DocumentEntity>> callBack,
-                    DocumentObserverParser observer) {
-        DocumentQuery documentQuery = cache.get(query, observer);
-        collectionManager.select(documentQuery, callBack);
-    }
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
 
@@ -76,15 +68,6 @@ public final class SelectQueryParser implements SelectQueryConverter {
         return DefaultDocumentPreparedStatement.select(documentQuery, params, query, collectionManager);
     }
 
-    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager,
-                                                DocumentObserverParser observer) {
-        Params params = Params.newParams();
-
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
-
-        DocumentQuery documentQuery = getDocumentQuery(params, selectQuery, observer);
-        return DefaultDocumentPreparedStatementAsync.select(documentQuery, params, query, collectionManager);
-    }
 
     @Override
     public DocumentQueryParams apply(SelectQuery selectQuery, DocumentObserverParser observer) {

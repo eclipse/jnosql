@@ -21,10 +21,8 @@ import jakarta.nosql.QueryException;
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnPreparedStatementAsync;
 import jakarta.nosql.query.Condition;
 import jakarta.nosql.query.JSONQueryValue;
 import jakarta.nosql.query.UpdateQuery;
@@ -32,7 +30,6 @@ import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 final class UpdateQueryParser extends ConditionQueryParser {
@@ -57,20 +54,6 @@ final class UpdateQueryParser extends ConditionQueryParser {
         return Stream.of(manager.update(entity));
     }
 
-    void queryAsync(String query, ColumnFamilyManagerAsync manager,
-                    Consumer<Stream<ColumnEntity>> callBack, ColumnObserverParser observer) {
-
-        UpdateQuery updateQuery = updateQueryProvider.apply(query);
-
-        Params params = Params.newParams();
-
-        ColumnEntity entity = getEntity(params, updateQuery, observer);
-
-        if (params.isNotEmpty()) {
-            throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
-        }
-        manager.update(entity, c -> callBack.accept(Stream.of(c)));
-    }
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
@@ -83,15 +66,6 @@ final class UpdateQueryParser extends ConditionQueryParser {
         return DefaultColumnPreparedStatement.update(entity, params, query, manager);
     }
 
-    ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
-                                              ColumnObserverParser observer) {
-        Params params = Params.newParams();
-        UpdateQuery updateQuery = updateQueryProvider.apply(query);
-
-        ColumnEntity entity = getEntity(params, updateQuery, observer);
-
-        return DefaultColumnPreparedStatementAsync.update(entity, params, query, manager);
-    }
 
     private ColumnEntity getEntity(Params params, UpdateQuery updateQuery, ColumnObserverParser observer) {
         String columnFamily = observer.fireEntity(updateQuery.getEntity());
