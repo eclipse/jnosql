@@ -30,14 +30,12 @@ import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperSkip;
 import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperWhere;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -199,20 +197,6 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
         requireNonNull(template, "template is required");
         requireNonNull(pagination, "pagination is required");
         return template.singleResult(this.build(pagination));
-    }
-
-    @Override
-    public <T> void getResult(DocumentTemplateAsync template, Consumer<Stream<T>> callback) {
-        Objects.requireNonNull(template, "template is required");
-        Objects.requireNonNull(callback, "callback is required");
-        template.select(this.build(), callback);
-    }
-
-    @Override
-    public <T> void getSingleResult(DocumentTemplateAsync template, Consumer<Optional<T>> callback) {
-        Objects.requireNonNull(template, "template is required");
-        Objects.requireNonNull(callback, "callback is required");
-        template.singleResult(this.build(), callback);
     }
 
     @Override

@@ -17,13 +17,11 @@ package org.eclipse.jnosql.artemis;
 
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.tck.entities.Person;
 import org.mockito.Mockito;
 
@@ -71,22 +69,4 @@ public class MockProducer {
         when(documentTemplate.find(eq(Person.class), Mockito.any())).thenReturn(Optional.empty());
         return documentTemplate;
     }
-
-    @Produces
-    public DocumentCollectionManagerAsync getDocumentCollectionManagerAsync() {
-        return Mockito.mock(DocumentCollectionManagerAsync.class);
-    }
-
-    @Produces
-    @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
-    public DocumentCollectionManagerAsync getDocumentCollectionManagerAsyncMock() {
-        return Mockito.mock(DocumentCollectionManagerAsync.class);
-    }
-
-    @Produces
-    @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
-    public DocumentTemplateAsync getDocumentRepositoryAsync() {
-        return mock(DocumentTemplateAsync.class);
-    }
-
 }
