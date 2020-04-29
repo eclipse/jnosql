@@ -16,8 +16,6 @@ package org.eclipse.jnosql.artemis.reflection.repository;
 
 import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Page;
-import org.eclipse.jnosql.artemis.reflection.repository.DynamicExecutorQueryConverter;
-import org.eclipse.jnosql.artemis.reflection.repository.DynamicReturn;
 
 import java.util.LinkedList;
 import java.util.List;
