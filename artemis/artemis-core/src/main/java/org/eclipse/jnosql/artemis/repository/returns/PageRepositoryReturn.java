@@ -18,8 +18,6 @@ import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Page;
 import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
-import java.util.stream.Stream;
-
 public class PageRepositoryReturn extends AbstractRepositoryReturn {
 
     public PageRepositoryReturn() {

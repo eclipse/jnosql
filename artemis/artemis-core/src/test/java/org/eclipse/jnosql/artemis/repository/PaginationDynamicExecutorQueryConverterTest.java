@@ -16,9 +16,6 @@ package org.eclipse.jnosql.artemis.repository;
 
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
-import org.eclipse.jnosql.artemis.repository.DynamicExecutorQueryConverter;
-import org.eclipse.jnosql.artemis.repository.DynamicReturn;
-import org.eclipse.jnosql.artemis.repository.PaginationDynamicExecutorQueryConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

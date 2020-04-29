@@ -16,7 +16,6 @@ package org.eclipse.jnosql.artemis.repository.returns;
 
 import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
