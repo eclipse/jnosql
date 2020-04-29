@@ -12,11 +12,11 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.reflection.repository;
+package org.eclipse.jnosql.artemis.repository;
 
+import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Page;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -25,55 +25,56 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * An implementation of {@link DynamicExecutorQueryConverter} that uses pagination at it.
- */
-final class PaginationDynamicExecutorQueryConverter implements DynamicExecutorQueryConverter {
 
+/**
+ * The default implementation to {@link DynamicExecutorQueryConverter}.
+ * This implementation won't work with pagination
+ */
+final class DefaultDynamicExecutorQueryConverter implements DynamicExecutorQueryConverter {
 
     @Override
     public <T> T toInstance(DynamicReturn<T> dynamic) {
-        Optional<T> optional = dynamic.singleResultPagination();
+        Optional<T> optional = dynamic.singleResult();
         return optional.orElse(null);
     }
 
     @Override
     public <T> Optional<T> toOptional(DynamicReturn<T> dynamic) {
-        return dynamic.singleResultPagination();
+        return dynamic.singleResult();
     }
 
     @Override
     public <T> List<T> toList(DynamicReturn<T> dynamic) {
-        return dynamic.streamPagination().collect(Collectors.toList());
+        return dynamic.result().collect(Collectors.toList());
     }
 
     @Override
     public <T> Set<T> toSet(DynamicReturn<T> dynamic) {
-        return dynamic.streamPagination().collect(Collectors.toCollection(HashSet::new));
+        return dynamic.result().collect(Collectors.toSet());
     }
 
     @Override
     public <T> LinkedList<T> toLinkedList(DynamicReturn<T> dynamic) {
-        return dynamic.streamPagination().collect(Collectors.toCollection(LinkedList::new));
+        return dynamic.result().collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
     public <T> Stream<T> toStream(DynamicReturn<T> dynamic) {
-        return dynamic.streamPagination();
+        return dynamic.result();
     }
 
     @Override
     public <T> TreeSet<T> toTreeSet(DynamicReturn<T> dynamic) {
-        return dynamic.streamPagination().collect(Collectors.toCollection(TreeSet::new));
+        return dynamic.result().collect(Collectors.toCollection(TreeSet::new));
     }
 
     @Override
     public <T> Object toDefault(DynamicReturn<T> dynamic) {
-        return dynamic.streamPagination();
+        return dynamic.result();
     }
 
     @Override
     public <T> Page<T> toPage(DynamicReturn<T> dynamic) {
-        return dynamic.getPage();
+        throw new DynamicQueryException("There is not pagination at the method: " + dynamic.getMethod());
     }
 }

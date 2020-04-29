@@ -12,12 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.reflection.repository;
+package org.eclipse.jnosql.artemis.repository;
 
 import jakarta.nosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.artemis.reflection.repository.DefaultDynamicExecutorQueryConverter;
-import org.eclipse.jnosql.artemis.reflection.repository.DynamicExecutorQueryConverter;
-import org.eclipse.jnosql.artemis.reflection.repository.DynamicReturn;
+import org.eclipse.jnosql.artemis.repository.DefaultDynamicExecutorQueryConverter;
+import org.eclipse.jnosql.artemis.repository.DynamicExecutorQueryConverter;
+import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
