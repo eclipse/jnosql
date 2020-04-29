@@ -15,27 +15,19 @@
 package org.eclipse.jnosql.artemis.repository.returns;
 
 import jakarta.nosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.artemis.repository.RepositoryReturn;
+import jakarta.nosql.mapping.Page;
+import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
-abstract class AbstractRepositoryReturn implements RepositoryReturn {
+import java.util.stream.Stream;
 
-    private final Class<?> typeClass;
+public class PageRepositoryReturn extends AbstractRepositoryReturn {
 
-    protected AbstractRepositoryReturn(Class<?> typeClass) {
-        this.typeClass = typeClass;
+    public PageRepositoryReturn() {
+        super(Page.class);
     }
 
     @Override
-    public void validate(Class<?> typeClass) throws DynamicQueryException {
-    }
-
-    @Override
-    public boolean isCompatible(Class<?> entityClass, Class<?> returnType) {
-        return typeClass.equals(returnType);
-    }
-
-    @Override
-    public boolean isPageable() {
-        return false;
+    public <T> Object convert(DynamicReturn<T> dynamicReturn) {
+        throw new DynamicQueryException("There is not pagination at the method: " + dynamicReturn.getMethod());
     }
 }

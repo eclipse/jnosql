@@ -14,28 +14,29 @@
  */
 package org.eclipse.jnosql.artemis.repository.returns;
 
-import jakarta.nosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.artemis.repository.RepositoryReturn;
+import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
-abstract class AbstractRepositoryReturn implements RepositoryReturn {
+import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.stream.Collectors;
 
-    private final Class<?> typeClass;
+public class QueueRepositoryReturn extends AbstractRepositoryReturn {
 
-    protected AbstractRepositoryReturn(Class<?> typeClass) {
-        this.typeClass = typeClass;
-    }
-
-    @Override
-    public void validate(Class<?> typeClass) throws DynamicQueryException {
+    public QueueRepositoryReturn() {
+        super(Deque.class);
     }
 
     @Override
     public boolean isCompatible(Class<?> entityClass, Class<?> returnType) {
-        return typeClass.equals(returnType);
+        return Deque.class.equals(returnType)
+                || Queue.class.equals(returnType);
     }
 
     @Override
-    public boolean isPageable() {
-        return false;
+    public <T> Object convert(DynamicReturn<T> dynamicReturn) {
+        return dynamicReturn.result().collect(Collectors.toCollection(LinkedList::new));
     }
 }

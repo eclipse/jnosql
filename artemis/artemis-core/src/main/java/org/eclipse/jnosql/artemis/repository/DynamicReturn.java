@@ -173,7 +173,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      *
      * @return The method source at the Repository
      */
-    Method getMethod() {
+    public Method getMethod() {
         return methodSource;
     }
 
@@ -182,7 +182,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      *
      * @return the result as single result
      */
-    Optional<T> singleResult() {
+    public Optional<T> singleResult() {
         return singleResult.get();
     }
 
@@ -191,7 +191,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      *
      * @return the result as {@link List}
      */
-    Stream<T> result() {
+    public Stream<T> result() {
         return result.get();
     }
 
