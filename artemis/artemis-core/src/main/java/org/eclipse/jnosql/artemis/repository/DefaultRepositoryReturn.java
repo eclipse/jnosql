@@ -24,11 +24,6 @@ class DefaultRepositoryReturn implements RepositoryReturn {
     }
 
     @Override
-    public void validate(Class<?> typeClass) throws DynamicQueryException {
-
-    }
-
-    @Override
     public <T> Object convert(DynamicReturn<T> dynamicReturn) {
         return dynamicReturn.result();
     }

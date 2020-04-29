@@ -26,10 +26,6 @@ abstract class AbstractRepositoryReturn implements RepositoryReturn {
     }
 
     @Override
-    public void validate(Class<?> typeClass) throws DynamicQueryException {
-    }
-
-    @Override
     public boolean isCompatible(Class<?> entityClass, Class<?> returnType) {
         return typeClass.equals(returnType);
     }

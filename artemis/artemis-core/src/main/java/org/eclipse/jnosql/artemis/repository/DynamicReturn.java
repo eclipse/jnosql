@@ -164,7 +164,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      *
      * @return The repository class type source.
      */
-    Class<T> typeClass() {
+    public Class<T> typeClass() {
         return classSource;
     }
 

@@ -20,8 +20,6 @@ public interface RepositoryReturn {
 
     boolean isCompatible(Class<?> entityClass, Class<?> returnType);
 
-    void validate(Class<?> typeClass) throws DynamicQueryException;
-
     <T> Object convert(DynamicReturn<T> dynamicReturn);
 
     <T> Object convertPageable(DynamicReturn<T> dynamicReturn);

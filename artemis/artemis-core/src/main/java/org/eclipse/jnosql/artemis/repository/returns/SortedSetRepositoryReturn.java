@@ -17,6 +17,7 @@ package org.eclipse.jnosql.artemis.repository.returns;
 import jakarta.nosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
+import java.lang.reflect.Method;
 import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -36,16 +37,19 @@ public class SortedSetRepositoryReturn extends AbstractRepositoryReturn {
 
     @Override
     public <T> Object convert(DynamicReturn<T> dynamicReturn) {
+        validate(dynamicReturn);
         return dynamicReturn.result().collect(Collectors.toCollection(TreeSet::new));
     }
 
     @Override
     public <T> Object convertPageable(DynamicReturn<T> dynamicReturn) {
+        validate(dynamicReturn);
         return dynamicReturn.streamPagination().collect(Collectors.toCollection(TreeSet::new));
     }
 
-    @Override
-    public void validate(Class<?> typeClass) throws DynamicQueryException {
+    public void validate(DynamicReturn<?> dynamicReturn) throws DynamicQueryException {
+
+        Class<?> typeClass = dynamicReturn.typeClass();
         if (!Comparable.class.isAssignableFrom(typeClass)) {
             throw new DynamicQueryException(String.format("To use either NavigableSet or SortedSet the entity %s" +
                     " must implement Comparable.", typeClass));

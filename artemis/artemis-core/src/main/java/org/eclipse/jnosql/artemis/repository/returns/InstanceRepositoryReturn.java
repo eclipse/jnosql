@@ -28,11 +28,6 @@ public class InstanceRepositoryReturn implements RepositoryReturn {
     }
 
     @Override
-    public void validate(Class<?> typeClass) throws DynamicQueryException {
-
-    }
-
-    @Override
     public <T> Object convert(DynamicReturn<T> dynamic) {
         Optional<T> optional = dynamic.singleResult();
         return optional.orElse(null);
