@@ -17,9 +17,9 @@ package org.eclipse.jnosql.artemis.repository.returns;
 import jakarta.nosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
-import java.util.LinkedList;
 import java.util.NavigableSet;
 import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class SortedSetRepositoryReturn extends AbstractRepositoryReturn {
@@ -36,12 +36,12 @@ public class SortedSetRepositoryReturn extends AbstractRepositoryReturn {
 
     @Override
     public <T> Object convert(DynamicReturn<T> dynamicReturn) {
-        return dynamicReturn.result().collect(Collectors.toCollection(LinkedList::new));
+        return dynamicReturn.result().collect(Collectors.toCollection(TreeSet::new));
     }
 
     @Override
     public <T> Object convertPageable(DynamicReturn<T> dynamicReturn) {
-        return dynamicReturn.streamPagination().collect(Collectors.toCollection(LinkedList::new));
+        return dynamicReturn.streamPagination().collect(Collectors.toCollection(TreeSet::new));
     }
 
     @Override
