@@ -205,21 +205,21 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     /**
      * @return returns a single result with pagination
      */
-    Optional<T> singleResultPagination() {
+    public Optional<T> singleResultPagination() {
         return singleResultPagination.apply(pagination);
     }
 
     /**
      * @return a list result using pagination
      */
-    Stream<T> streamPagination() {
+    public Stream<T> streamPagination() {
         return streamPagination.apply(pagination);
     }
 
     /**
      * @return the page
      */
-    Page<T> getPage() {
+    public Page<T> getPage() {
         return page.apply(pagination);
     }
 
