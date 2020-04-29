@@ -39,7 +39,9 @@ public class InstanceRepositoryReturn implements RepositoryReturn {
     }
 
     @Override
-    public boolean isPageable() {
-        return false;
+    public <T> Object convertPageable(DynamicReturn<T> dynamic) {
+        Optional<T> optional = dynamic.singleResultPagination();
+        return optional.orElse(null);
     }
+
 }

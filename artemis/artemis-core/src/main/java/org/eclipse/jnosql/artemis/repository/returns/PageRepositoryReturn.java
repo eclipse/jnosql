@@ -30,4 +30,9 @@ public class PageRepositoryReturn extends AbstractRepositoryReturn {
     public <T> Object convert(DynamicReturn<T> dynamicReturn) {
         throw new DynamicQueryException("There is not pagination at the method: " + dynamicReturn.getMethod());
     }
+
+    @Override
+    public <T> Object convertPageable(DynamicReturn<T> dynamicReturn) {
+        return dynamicReturn.getPage();
+    }
 }

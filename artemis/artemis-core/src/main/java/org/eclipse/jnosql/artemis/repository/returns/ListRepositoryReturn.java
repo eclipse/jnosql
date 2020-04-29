@@ -37,4 +37,9 @@ public class ListRepositoryReturn extends AbstractRepositoryReturn {
     public <T> Object convert(DynamicReturn<T> dynamicReturn) {
         return dynamicReturn.result().collect(Collectors.toList());
     }
+
+    @Override
+    public <T> Object convertPageable(DynamicReturn<T> dynamicReturn) {
+        return dynamicReturn.streamPagination().collect(Collectors.toList());
+    }
 }

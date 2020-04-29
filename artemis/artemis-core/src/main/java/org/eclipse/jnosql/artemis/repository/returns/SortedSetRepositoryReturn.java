@@ -43,6 +43,11 @@ public class SortedSetRepositoryReturn extends AbstractRepositoryReturn {
     }
 
     @Override
+    public <T> Object convertPageable(DynamicReturn<T> dynamicReturn) {
+        return dynamicReturn.streamPagination().collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
     public void validate(Class<?> typeClass) throws DynamicQueryException {
         if (!Comparable.class.isAssignableFrom(typeClass)) {
             throw new DynamicQueryException(String.format("To use either NavigableSet or SortedSet the entity %s" +

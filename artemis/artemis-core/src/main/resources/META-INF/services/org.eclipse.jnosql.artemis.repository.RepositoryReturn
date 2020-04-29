@@ -20,11 +20,3 @@ org.eclipse.jnosql.artemis.repository.returns.QueueRepositoryReturn
 org.eclipse.jnosql.artemis.repository.returns.SetRepositoryReturn
 org.eclipse.jnosql.artemis.repository.returns.SortedSetRepositoryReturn
 org.eclipse.jnosql.artemis.repository.returns.StreamRepositoryReturn
-org.eclipse.jnosql.artemis.repository.returns.page.PageInstanceRepositoryReturn
-org.eclipse.jnosql.artemis.repository.returns.page.PageListRepositoryReturn
-org.eclipse.jnosql.artemis.repository.returns.page.PageOptionalRepositoryReturn
-org.eclipse.jnosql.artemis.repository.returns.page.PageQueueRepositoryReturn
-org.eclipse.jnosql.artemis.repository.returns.page.PageRepositoryReturn
-org.eclipse.jnosql.artemis.repository.returns.page.PageSetRepositoryReturn
-org.eclipse.jnosql.artemis.repository.returns.page.PageSortedSetRepositoryReturn
-org.eclipse.jnosql.artemis.repository.returns.page.PageStreamRepositoryReturn

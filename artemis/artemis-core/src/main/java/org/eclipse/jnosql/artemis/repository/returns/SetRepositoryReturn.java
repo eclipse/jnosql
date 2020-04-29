@@ -31,5 +31,10 @@ public class SetRepositoryReturn extends AbstractRepositoryReturn {
         return dynamicReturn.result().collect(Collectors.toSet());
     }
 
+    @Override
+    public <T> Object convertPageable(DynamicReturn<T> dynamicReturn) {
+        return dynamicReturn.streamPagination().collect(Collectors.toSet());
+    }
+
 
 }

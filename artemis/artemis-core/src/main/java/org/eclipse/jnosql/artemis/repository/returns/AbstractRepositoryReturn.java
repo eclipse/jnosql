@@ -34,8 +34,4 @@ abstract class AbstractRepositoryReturn implements RepositoryReturn {
         return typeClass.equals(returnType);
     }
 
-    @Override
-    public boolean isPageable() {
-        return false;
-    }
 }

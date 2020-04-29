@@ -28,4 +28,9 @@ public class OptionalRepositoryReturn extends AbstractRepositoryReturn {
     public <T> Object convert(DynamicReturn<T> dynamicReturn) {
         return dynamicReturn.singleResult();
     }
+
+    @Override
+    public <T> Object convertPageable(DynamicReturn<T> dynamicReturn) {
+        return dynamicReturn.singleResultPagination();
+    }
 }

@@ -24,5 +24,6 @@ public interface RepositoryReturn {
 
     <T> Object convert(DynamicReturn<T> dynamicReturn);
 
-    boolean isPageable();
+    <T> Object convertPageable(DynamicReturn<T> dynamicReturn);
+
 }

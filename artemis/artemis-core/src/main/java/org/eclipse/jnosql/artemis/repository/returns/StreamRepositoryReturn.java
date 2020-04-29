@@ -28,4 +28,9 @@ public class StreamRepositoryReturn extends AbstractRepositoryReturn {
     public <T> Object convert(DynamicReturn<T> dynamicReturn) {
         return dynamicReturn.result();
     }
+
+    @Override
+    public <T> Object convertPageable(DynamicReturn<T> dynamicReturn) {
+        return dynamicReturn.streamPagination();
+    }
 }

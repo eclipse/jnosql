@@ -39,4 +39,9 @@ public class QueueRepositoryReturn extends AbstractRepositoryReturn {
     public <T> Object convert(DynamicReturn<T> dynamicReturn) {
         return dynamicReturn.result().collect(Collectors.toCollection(LinkedList::new));
     }
+
+    @Override
+    public <T> Object convertPageable(DynamicReturn<T> dynamicReturn) {
+        return dynamicReturn.streamPagination().collect(Collectors.toCollection(LinkedList::new));
+    }
 }
