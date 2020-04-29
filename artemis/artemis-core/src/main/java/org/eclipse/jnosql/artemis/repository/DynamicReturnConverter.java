@@ -57,9 +57,9 @@ enum DynamicReturnConverter {
                 .findFirst().orElse(defaultReturn);
 
         if (dynamic.hasPagination()) {
-            return repositoryReturn.convert(dynamic);
-        } else {
             return repositoryReturn.convertPageable(dynamic);
+        } else {
+            return repositoryReturn.convert(dynamic);
         }
     }
 
