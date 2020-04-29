@@ -17,7 +17,6 @@ package org.eclipse.jnosql.artemis.repository.returns;
 import jakarta.nosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
-import java.lang.reflect.Method;
 import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;

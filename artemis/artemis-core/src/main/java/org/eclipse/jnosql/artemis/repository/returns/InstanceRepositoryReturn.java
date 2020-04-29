@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.artemis.repository.returns;
 
-import jakarta.nosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 import org.eclipse.jnosql.artemis.repository.RepositoryReturn;
 

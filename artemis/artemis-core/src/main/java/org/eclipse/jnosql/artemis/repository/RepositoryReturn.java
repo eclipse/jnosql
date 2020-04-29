@@ -14,8 +14,6 @@
  */
 package org.eclipse.jnosql.artemis.repository;
 
-import jakarta.nosql.mapping.DynamicQueryException;
-
 public interface RepositoryReturn {
 
     boolean isCompatible(Class<?> entityClass, Class<?> returnType);
