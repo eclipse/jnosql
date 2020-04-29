@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.artemis.query.RepositoryType;
-import org.eclipse.jnosql.artemis.reflection.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.artemis.repository.DynamicQueryMethodReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
