@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.reflection;
+package org.eclipse.jnosql.artemis.reflection.repository;
 
 
 import jakarta.nosql.mapping.PreparedStatement;

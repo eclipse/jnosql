@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.reflection;
+package org.eclipse.jnosql.artemis.reflection.repository;
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Sort;
@@ -110,9 +110,9 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         @Override
-        public Supplier<Optional<?>> apply(Supplier<Stream<?>> l) {
+        public Supplier<Optional<?>> apply(Supplier<Stream<?>> supplier) {
             return () -> {
-                Stream<?> entities = l.get();
+                Stream<?> entities = supplier.get();
                 final Iterator<?> iterator = entities.iterator();
                 if (!iterator.hasNext()) {
                     return Optional.empty();

@@ -12,9 +12,11 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.reflection;
+package org.eclipse.jnosql.artemis.reflection.repository;
 
 import jakarta.nosql.mapping.Page;
+import org.eclipse.jnosql.artemis.reflection.repository.DynamicExecutorQueryConverter;
+import org.eclipse.jnosql.artemis.reflection.repository.DynamicReturn;
 
 import java.util.HashSet;
 import java.util.LinkedList;
