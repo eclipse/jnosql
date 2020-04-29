@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.artemis.repository.returns;
 
+import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import org.eclipse.jnosql.artemis.repository.DynamicReturn;
@@ -90,7 +91,7 @@ class SortedSetRepositoryReturnTest {
     public void shouldReturnErrorOnTreeSetPage() {
         Animal animal = new Animal();
         DynamicReturn<Animal> dynamic = DynamicReturn.builder()
-                .withClassSource(Person.class)
+                .withClassSource(Animal.class)
                 .withSingleResult(Optional::empty)
                 .withResult(Collections::emptyList)
                 .withSingleResultPagination(p -> Optional.empty())
@@ -99,15 +100,29 @@ class SortedSetRepositoryReturnTest {
                 .withPagination(Pagination.page(2).size(2))
                 .withPage(p -> page)
                 .build();
-        TreeSet<Person> person = (TreeSet<Person>) repositoryReturn.convertPageable(dynamic);
-        Assertions.assertNotNull(person);
-        assertFalse(person.isEmpty());
-        assertEquals(animal, person.stream().findFirst().get());
+        Assertions.assertThrows(DynamicQueryException.class, () -> repositoryReturn.convertPageable(dynamic));
+    }
+
+    @Test
+    public void shouldReturnErrorOnTreeSet() {
+        Animal animal = new Animal();
+        DynamicReturn<Animal> dynamic = DynamicReturn.builder()
+                .withClassSource(Animal.class)
+                .withSingleResult(Optional::empty)
+                .withResult(Collections::emptyList)
+                .withSingleResultPagination(p -> Optional.empty())
+                .withStreamPagination(p -> Stream.of(animal))
+                .withMethodSource(Person.class.getDeclaredMethods()[0])
+                .withPagination(Pagination.page(2).size(2))
+                .withPage(p -> page)
+                .build();
+        Assertions.assertThrows(DynamicQueryException.class, () -> repositoryReturn.convert(dynamic));
     }
 
     private static class Animal {
 
     }
+
     private static class Person implements Comparable<Person> {
 
         private String name;
