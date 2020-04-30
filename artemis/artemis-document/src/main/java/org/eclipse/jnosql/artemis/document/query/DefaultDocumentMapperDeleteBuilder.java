@@ -21,10 +21,7 @@ import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteNa
 import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteNotCondition;
 import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteWhere;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-
-import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -109,7 +106,6 @@ class DefaultDocumentMapperDeleteBuilder extends AbstractMapperQuery implements 
         return this;
     }
 
-
     @Override
     public <T> DocumentMapperDeleteWhere in(Iterable<T> values) {
         inImpl(values);
@@ -127,19 +123,5 @@ class DefaultDocumentMapperDeleteBuilder extends AbstractMapperQuery implements 
         requireNonNull(template, "template is required");
         template.delete(this.build());
     }
-
-    @Override
-    public void delete(DocumentTemplateAsync template) {
-        requireNonNull(template, "template is required");
-        template.delete(this.build());
-    }
-
-    @Override
-    public void delete(DocumentTemplateAsync template, Consumer<Void> callback) {
-        requireNonNull(template, "template is required");
-        requireNonNull(callback, "callback is required");
-        template.delete(this.build(), callback);
-    }
-
 
 }

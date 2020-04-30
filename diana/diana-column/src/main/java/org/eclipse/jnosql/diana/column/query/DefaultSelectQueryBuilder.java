@@ -21,7 +21,6 @@ import jakarta.nosql.Sort;
 import jakarta.nosql.SortType;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.column.ColumnQuery.ColumnFrom;
 import jakarta.nosql.column.ColumnQuery.ColumnLimit;
@@ -37,7 +36,6 @@ import jakarta.nosql.column.ColumnQuery.ColumnWhere;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -202,20 +200,6 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements
     public Optional<ColumnEntity> getSingleResult(ColumnFamilyManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.singleResult(this.build());
-    }
-
-    @Override
-    public void getResult(ColumnFamilyManagerAsync manager, Consumer<Stream<ColumnEntity>> callback) {
-        requireNonNull(manager, "manager is required");
-        requireNonNull(callback, "callback is required");
-        manager.select(this.build(), callback);
-    }
-
-    @Override
-    public void getSingleResult(ColumnFamilyManagerAsync manager, Consumer<Optional<ColumnEntity>> callback) {
-        requireNonNull(manager, "manager is required");
-        requireNonNull(callback, "callback is required");
-        manager.singleResult(this.build(), callback);
     }
 
 }

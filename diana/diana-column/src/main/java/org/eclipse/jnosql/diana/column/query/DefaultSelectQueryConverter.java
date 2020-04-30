@@ -23,10 +23,8 @@ import jakarta.nosql.Sort;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnPreparedStatementAsync;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.column.ColumnQueryParams;
 import jakarta.nosql.column.SelectQueryConverter;
@@ -35,7 +33,6 @@ import jakarta.nosql.query.SelectQuery.SelectQueryProvider;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,12 +57,6 @@ public final class DefaultSelectQueryConverter implements SelectQueryConverter {
         return manager.select(columnQuery);
     }
 
-    void queryAsync(String query, ColumnFamilyManagerAsync manager, Consumer<Stream<ColumnEntity>> callBack,
-                    ColumnObserverParser observer) {
-
-        ColumnQuery columnQuery = cache.get(query, observer);
-        manager.select(columnQuery, callBack);
-    }
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
 
@@ -88,15 +79,6 @@ public final class DefaultSelectQueryConverter implements SelectQueryConverter {
         return new DefaultColumnQueryParams(columnQuery, params);
     }
 
-    ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
-                                              ColumnObserverParser observer) {
-        Params params = Params.newParams();
-
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
-
-        ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
-        return DefaultColumnPreparedStatementAsync.select(columnQuery, params, query, manager);
-    }
 
     private ColumnQuery getColumnQuery(String query, ColumnObserverParser observer) {
 

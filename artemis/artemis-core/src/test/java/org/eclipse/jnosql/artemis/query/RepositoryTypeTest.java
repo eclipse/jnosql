@@ -16,7 +16,6 @@ package org.eclipse.jnosql.artemis.query;
 
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.RepositoryAsync;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -38,22 +37,7 @@ class RepositoryTypeTest {
 
 
     @Test
-    public void shouldReturnDefaultASync() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(RepositoryAsync.class, "save")));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(RepositoryAsync.class, "deleteById")));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(RepositoryAsync.class, "findById")));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(RepositoryAsync.class, "existsById")));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(RepositoryAsync.class, "count")));
-    }
-
-    @Test
     public void shouldReturnObjectMethod() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.OBJECT_METHOD, RepositoryType.of(getMethod(Object.class, "equals")));
-        Assertions.assertEquals(RepositoryType.OBJECT_METHOD, RepositoryType.of(getMethod(Object.class, "hashCode")));
-    }
-
-    @Test
-    public void shouldReturnObjectMethodAsync() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.OBJECT_METHOD, RepositoryType.of(getMethod(Object.class, "equals")));
         Assertions.assertEquals(RepositoryType.OBJECT_METHOD, RepositoryType.of(getMethod(Object.class, "hashCode")));
     }
@@ -84,33 +68,6 @@ class RepositoryTypeTest {
         Assertions.assertEquals(RepositoryType.UNKNOWN, RepositoryType.of(getMethod(SyncRepository.class, "nope")));
     }
 
-    @Test
-    public void shouldReturnFindByAsync() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.FIND_BY, RepositoryType.of(getMethod(AsyncSyncRepository.class, "findByName")));
-    }
-
-    @Test
-    public void shouldReturnDeleteByAsync() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.DELETE_BY, RepositoryType.of(getMethod(AsyncSyncRepository.class, "deleteByName")));
-    }
-
-    @Test
-    public void shouldReturnFindAllByAsync() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.FIND_ALL, RepositoryType.of(getMethod(AsyncSyncRepository.class, "findAll")));
-    }
-
-    @Test
-    public void shouldReturnJNoSQLQueryAsync() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.JNOSQL_QUERY, RepositoryType.of(getMethod(AsyncSyncRepository.class, "query")));
-    }
-
-    @Test
-    public void shouldReturnUnknownAsync() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.UNKNOWN, RepositoryType.of(getMethod(AsyncSyncRepository.class, "nope")));
-    }
-
-
-
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
                 .filter(m -> m.getName().equals(methodName))
@@ -132,17 +89,4 @@ class RepositoryTypeTest {
         void nope();
     }
 
-    interface AsyncSyncRepository extends RepositoryAsync {
-
-        String findByName(String name);
-
-        String deleteByName(String name);
-
-        List<String> findAll();
-
-        @Query("query")
-        String query(String query);
-
-        void nope();
-    }
 }

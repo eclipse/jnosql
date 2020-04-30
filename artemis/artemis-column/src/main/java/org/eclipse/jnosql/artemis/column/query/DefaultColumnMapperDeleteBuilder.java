@@ -21,10 +21,7 @@ import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteNameCond
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteNotCondition;
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteWhere;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.mapping.reflection.ClassMapping;
-
-import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -126,19 +123,6 @@ class DefaultColumnMapperDeleteBuilder extends AbstractMapperQuery implements Co
     public void delete(ColumnTemplate template) {
         requireNonNull(template, "template is required");
         template.delete(this.build());
-    }
-
-    @Override
-    public void delete(ColumnTemplateAsync template) {
-        requireNonNull(template, "template is required");
-        template.delete(this.build());
-    }
-
-    @Override
-    public void delete(ColumnTemplateAsync template, Consumer<Void> callback) {
-        requireNonNull(template, "template is required");
-        requireNonNull(callback, "callback is required");
-        template.delete(this.build(), callback);
     }
 
 }

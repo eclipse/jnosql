@@ -16,14 +16,11 @@ package org.eclipse.jnosql.artemis.document;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
-import jakarta.nosql.document.DocumentCollectionManagerAsyncFactory;
 import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import jakarta.nosql.document.DocumentConfiguration;
-import jakarta.nosql.document.DocumentConfigurationAsync;
 import org.mockito.Mockito;
 
-public class DocumentCollectionManagerMock implements DocumentConfigurationAsync, DocumentConfiguration {
+public class DocumentCollectionManagerMock implements DocumentConfiguration {
 
     @Override
     public DocumentMock get() {
@@ -35,7 +32,7 @@ public class DocumentCollectionManagerMock implements DocumentConfigurationAsync
         return new DocumentMock(settings);
     }
 
-    public static class DocumentMock implements DocumentCollectionManagerFactory, DocumentCollectionManagerAsyncFactory {
+    public static class DocumentMock implements DocumentCollectionManagerFactory {
 
         private final Settings settings;
 
@@ -45,11 +42,6 @@ public class DocumentCollectionManagerMock implements DocumentConfigurationAsync
 
         public Settings getSettings() {
             return settings;
-        }
-
-        @Override
-        public DocumentCollectionManagerAsync getAsync(String database) {
-            return Mockito.mock(DocumentCollectionManagerAsync.class);
         }
 
         @Override

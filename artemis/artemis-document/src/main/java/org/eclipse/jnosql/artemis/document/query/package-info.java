@@ -14,7 +14,6 @@
  */
 
 /**
- * This package has the implementation to dynamic query to both {@link jakarta.nosql.mapping.Repository}
- * and {@link jakarta.nosql.mapping.RepositoryAsync} on document database.
+ * This package has the implementation to dynamic query to {@link jakarta.nosql.mapping.Repository} on document database.
  */
 package org.eclipse.jnosql.artemis.document.query;

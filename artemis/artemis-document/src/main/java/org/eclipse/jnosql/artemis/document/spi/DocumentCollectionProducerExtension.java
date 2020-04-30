@@ -16,12 +16,9 @@ package org.eclipse.jnosql.artemis.document.spi;
 
 
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.RepositoryAsync;
 import org.eclipse.jnosql.artemis.DatabaseMetadata;
 import org.eclipse.jnosql.artemis.Databases;
-import org.eclipse.jnosql.artemis.document.query.RepositoryAsyncDocumentBean;
 import org.eclipse.jnosql.artemis.document.query.RepositoryDocumentBean;
 
 import javax.enterprise.event.Observes;
@@ -40,7 +37,7 @@ import java.util.logging.Logger;
 import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
 
 /**
- * Extension to start up the DocumentTemplate, DocumentTemplateAsync, Repository and RepositoryAsync
+ * Extension to start up the DocumentTemplate and Repository
  * from the {@link jakarta.nosql.mapping.Database} qualifier
  */
 public class DocumentCollectionProducerExtension implements Extension {
@@ -49,12 +46,7 @@ public class DocumentCollectionProducerExtension implements Extension {
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
-    private final Set<DatabaseMetadata> databasesAsync = new HashSet<>();
-
     private final Collection<Class<?>> crudTypes = new HashSet<>();
-
-    private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
-
 
     <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
@@ -70,42 +62,21 @@ public class DocumentCollectionProducerExtension implements Extension {
         }
     }
 
-    <T extends RepositoryAsync> void observesAsync(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-
-        if (RepositoryAsync.class.equals(javaClass)) {
-            return;
-        }
-
-        if (Arrays.asList(javaClass.getInterfaces()).contains(RepositoryAsync.class)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            LOGGER.info("Adding a new RepositoryAsync as discovered on document: " + javaClass);
-            crudAsyncTypes.add(javaClass);
-        }
-    }
 
     <T, X extends DocumentCollectionManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, DOCUMENT, databases);
     }
 
-    <T, X extends DocumentCollectionManagerAsync> void observesAsync(@Observes final ProcessProducer<T, X> pp) {
-        Databases.addDatabase(pp, DOCUMENT, databasesAsync);
-    }
-
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
-        LOGGER.info(String.format("Starting to process on documents: %d databases crud %d and crudAsync %d",
-                databases.size(), crudTypes.size(), crudAsyncTypes.size()));
+        LOGGER.info(String.format("Starting to process on documents: %d databases crud %d ",
+                databases.size(), crudTypes.size()));
 
         databases.forEach(type -> {
             final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 
-        databasesAsync.forEach(type -> {
-            final TemplateAsyncBean bean = new TemplateAsyncBean(beanManager, type.getProvider());
-            afterBeanDiscovery.addBean(bean);
-        });
 
         crudTypes.forEach(type -> {
             if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
@@ -113,17 +84,6 @@ public class DocumentCollectionProducerExtension implements Extension {
             }
             databases.forEach(database -> {
                 final RepositoryDocumentBean bean = new RepositoryDocumentBean(type, beanManager, database.getProvider());
-                afterBeanDiscovery.addBean(bean);
-            });
-        });
-
-        crudAsyncTypes.forEach(type -> {
-            if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
-                afterBeanDiscovery.addBean(new RepositoryAsyncDocumentBean(type, beanManager, ""));
-            }
-            databasesAsync.forEach(database -> {
-                final RepositoryAsyncDocumentBean bean = new RepositoryAsyncDocumentBean(type, beanManager,
-                        database.getProvider());
                 afterBeanDiscovery.addBean(bean);
             });
         });

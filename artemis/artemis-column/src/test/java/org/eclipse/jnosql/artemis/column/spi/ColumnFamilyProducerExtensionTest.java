@@ -17,7 +17,6 @@ package org.eclipse.jnosql.artemis.column.spi;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
@@ -37,13 +36,6 @@ public class ColumnFamilyProducerExtensionTest {
     @Inject
     private ColumnTemplate manager;
 
-    @Inject
-    @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
-    private ColumnTemplateAsync managerMockAsync;
-
-    @Inject
-    private ColumnTemplateAsync managerAsync;
-
     @Test
     public void shouldInstance() {
         assertNotNull(manager);
@@ -57,11 +49,5 @@ public class ColumnFamilyProducerExtensionTest {
 
         assertEquals("Default", person.getName());
         assertEquals("columnRepositoryMock", personMock.getName());
-    }
-
-    @Test
-    public void shouldSaveAsync() {
-        managerAsync.insert(Person.builder().build());
-        managerMockAsync.insert(Person.builder().build());
     }
 }

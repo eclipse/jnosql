@@ -16,7 +16,6 @@ package org.eclipse.jnosql.artemis.query;
 
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.RepositoryAsync;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -29,9 +28,7 @@ public enum RepositoryType {
 
     DEFAULT, FIND_BY, DELETE_BY, UNKNOWN, OBJECT_METHOD, JNOSQL_QUERY, FIND_ALL;
 
-    private static final Predicate<Class<?>> IS_REPOSITORY_METHOD =
-            Predicate.<Class<?>>isEqual(Repository.class)
-                    .or(Predicate.isEqual(RepositoryAsync.class));
+    private static final Predicate<Class<?>> IS_REPOSITORY_METHOD =  Predicate.<Class<?>>isEqual(Repository.class);
 
 
     /**

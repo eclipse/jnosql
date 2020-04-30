@@ -18,7 +18,6 @@ package org.eclipse.jnosql.artemis;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import org.mockito.Mockito;
@@ -53,17 +52,5 @@ public class MockProducer {
         return manager;
 
     }
-    @Produces
-    public ColumnFamilyManagerAsync getColumnFamilyManagerAsync() {
-        return Mockito.mock(ColumnFamilyManagerAsync.class);
-    }
-
-
-    @Produces
-    @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
-    public ColumnFamilyManagerAsync getColumnFamilyManagerAsyncMock() {
-        return Mockito.mock(ColumnFamilyManagerAsync.class);
-    }
-
 
 }

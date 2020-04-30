@@ -20,11 +20,9 @@ import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.document.DocumentPreparedStatementAsync;
 import jakarta.nosql.query.Condition;
 import jakarta.nosql.query.InsertQuery;
 import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
@@ -33,7 +31,6 @@ import jakarta.nosql.query.JSONQueryValue;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 final class InsertQueryParser extends ConditionQueryParser {
@@ -64,25 +61,6 @@ final class InsertQueryParser extends ConditionQueryParser {
         }
     }
 
-    void queryAsync(String query, DocumentCollectionManagerAsync collectionManager,
-                    Consumer<Stream<DocumentEntity>> callBack, DocumentObserverParser observer) {
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
-
-        String collection = observer.fireEntity(insertQuery.getEntity());
-        Params params = Params.newParams();
-
-        DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
-
-        Optional<Duration> ttl = insertQuery.getTtl();
-        if (params.isNotEmpty()) {
-            throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
-        }
-        if (ttl.isPresent()) {
-            collectionManager.insert(entity, ttl.get(), c -> callBack.accept(Stream.of(c)));
-        } else {
-            collectionManager.insert(entity, c -> callBack.accept(Stream.of(c)));
-        }
-    }
 
     DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
         InsertQuery insertQuery = insertQueryProvider.apply(query);
@@ -95,17 +73,6 @@ final class InsertQueryParser extends ConditionQueryParser {
 
         return DefaultDocumentPreparedStatement.insert(entity, params, query, ttl.orElse(null), collectionManager);
 
-    }
-
-    DocumentPreparedStatementAsync prepareAsync(String query, DocumentCollectionManagerAsync collectionManager, DocumentObserverParser observer) {
-        Params params = Params.newParams();
-
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
-        String collection = observer.fireEntity(insertQuery.getEntity());
-        Optional<Duration> ttl = insertQuery.getTtl();
-        DocumentEntity entity = getEntity(insertQuery, collection, params, observer);
-
-        return DefaultDocumentPreparedStatementAsync.insert(entity, params, query, ttl.orElse(null), collectionManager);
     }
 
     private DocumentEntity getEntity(InsertQuery insertQuery, String collection, Params params, DocumentObserverParser observer) {

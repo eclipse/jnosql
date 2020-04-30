@@ -18,7 +18,6 @@ import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.PersonRepository;
-import jakarta.nosql.tck.entities.PersonRepositoryAsync;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
@@ -38,24 +37,6 @@ public class ColumnRepositoryExtensionTest {
     @Inject
     @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
     private PersonRepository repositoryMock;
-
-    @Inject
-    @Database(value = DatabaseType.COLUMN)
-    private PersonRepositoryAsync repositoryAsync;
-
-    @Inject
-    @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
-    private PersonRepositoryAsync repositoryMockAsync;
-
-    @Test
-    public void shouldInitiateAsync() {
-        assertNotNull(repositoryAsync);
-    }
-
-    @Test
-    public void shouldGetQualifierAsync() {
-        assertNotNull(repositoryMockAsync);
-    }
 
     @Test
     public void shouldInitiate() {

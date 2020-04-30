@@ -16,11 +16,11 @@
  */
 package org.eclipse.jnosql.diana.document.query;
 
-import org.hamcrest.MatcherAssert;
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

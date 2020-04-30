@@ -18,7 +18,6 @@ import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.mapping.document.DocumentQueryMapper;
 import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteFrom;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.mapping.document.DocumentTemplateAsync;
 import jakarta.nosql.tck.entities.Address;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.Person;
@@ -30,7 +29,6 @@ import org.mockito.Mockito;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.function.Consumer;
 
 import static jakarta.nosql.document.DocumentDeleteQuery.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -178,32 +176,6 @@ public class DefaultDocumentMapperDeleteBuilderTest {
 
         mapperBuilder.deleteFrom(Person.class).delete(template);
         Mockito.verify(template).delete(queryCaptor.capture());
-        DocumentDeleteQuery query = queryCaptor.getValue();
-        DocumentDeleteQuery queryExpected = delete().from("Person").build();
-        assertEquals(queryExpected, query);
-    }
-
-
-    @Test
-    public void shouldExecuteAsyncDelete() {
-        DocumentTemplateAsync template = Mockito.mock(DocumentTemplateAsync.class);
-        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-
-        mapperBuilder.deleteFrom(Person.class).delete(template);
-        Mockito.verify(template).delete(queryCaptor.capture());
-        DocumentDeleteQuery query = queryCaptor.getValue();
-        DocumentDeleteQuery queryExpected = delete().from("Person").build();
-        assertEquals(queryExpected, query);
-    }
-
-    @Test
-    public void shouldExecuteAsyncDeleteCallback() {
-        DocumentTemplateAsync template = Mockito.mock(DocumentTemplateAsync.class);
-        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
-
-        Consumer<Void> callback = System.out::println;
-        mapperBuilder.deleteFrom(Person.class).delete(template, callback);
-        Mockito.verify(template).delete(queryCaptor.capture(), Mockito.eq(callback));
         DocumentDeleteQuery query = queryCaptor.getValue();
         DocumentDeleteQuery queryExpected = delete().from("Person").build();
         assertEquals(queryExpected, query);

@@ -24,7 +24,6 @@ import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnQuery;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -327,28 +326,6 @@ public class DefaultSelectQueryBuilderTest {
         String columnFamily = "columnFamily";
         Optional<ColumnEntity> entities = select().from(columnFamily).getSingleResult(manager);
         Mockito.verify(manager).singleResult(queryCaptor.capture());
-        checkQuery(queryCaptor, columnFamily);
-    }
-
-    @Test
-    public void shouldExecuteManagerAsync() {
-        ColumnFamilyManagerAsync manager = Mockito.mock(ColumnFamilyManagerAsync.class);
-        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
-        String columnFamily = "columnFamily";
-        Consumer<Stream<ColumnEntity>> callback = System.out::println;
-        select().from(columnFamily).getResult(manager, callback);
-        Mockito.verify(manager).select(queryCaptor.capture(), Mockito.eq(callback));
-        checkQuery(queryCaptor, columnFamily);
-    }
-
-    @Test
-    public void shouldExecuteSingleResultManagerAsync() {
-        ColumnFamilyManagerAsync manager = Mockito.mock(ColumnFamilyManagerAsync.class);
-        ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
-        String columnFamily = "columnFamily";
-        Consumer<Optional<ColumnEntity>> callback = System.out::println;
-        select().from(columnFamily).getSingleResult(manager, callback);
-        Mockito.verify(manager).singleResult(queryCaptor.capture(), Mockito.eq(callback));
         checkQuery(queryCaptor, columnFamily);
     }
 

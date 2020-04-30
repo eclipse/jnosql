@@ -14,7 +14,7 @@
  */
 
 /**
- * This package has the implementation to dynamic query to both {@link jakarta.nosql.mapping.Repository}
- * and {@link jakarta.nosql.mapping.RepositoryAsync} on Column database.
+ * This package has the implementation to dynamic query to {@link jakarta.nosql.mapping.Repository}
+ *  on Column database.
  */
 package org.eclipse.jnosql.artemis.column.query;

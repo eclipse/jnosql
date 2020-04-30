@@ -25,10 +25,8 @@ import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnPreparedStatementAsync;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -53,7 +51,6 @@ class DefaultDeleteQueryConverterTest {
     private DefaultDeleteQueryConverter parser = new DefaultDeleteQueryConverter();
 
     private ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
-    private ColumnFamilyManagerAsync managerAsync = Mockito.mock(ColumnFamilyManagerAsync.class);
 
     private final ColumnObserverParser observer = new ColumnObserverParser() {
     };
@@ -403,62 +400,6 @@ class DefaultDeleteQueryConverterTest {
         assertEquals(12, column.get());
     }
 
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldReturnErrorWhenIsQueryWithParamAsync(String query) {
-
-        assertThrows(QueryException.class, () -> parser.queryAsync(query, managerAsync, s->{}, observer));
-
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldReturnErrorWhenDontBindParametersAsync(String query) {
-
-        ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        assertThrows(QueryException.class, () -> prepare.getResult(s ->{}));
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete from God where age = @age"})
-    public void shouldExecutePrepareStatementAsync(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-
-        ColumnPreparedStatementAsync prepare = parser.prepareAsync(query, managerAsync, observer);
-        prepare.bind("age", 12);
-        Consumer<Stream<ColumnEntity>> callBack = s -> {
-        };
-        prepare.getResult(callBack);
-        Mockito.verify(managerAsync).delete(captor.capture(), Mockito.any(Consumer.class));
-        ColumnDeleteQuery columnQuery = captor.getValue();
-        ColumnCondition columnCondition = columnQuery.getCondition().get();
-        Column column = columnCondition.getColumn();
-        assertEquals(Condition.EQUALS, columnCondition.getCondition());
-        assertEquals("age", column.getName());
-        assertEquals(12, column.get());
-    }
-
-    @ParameterizedTest(name = "Should parser the query {0}")
-    @ValueSource(strings = {"delete  from God where name = \"Ada\" or age = 20"})
-    public void shouldReturnParserQueryAsync(String query) {
-        ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-
-        Consumer<Stream<ColumnEntity>> callBack = s -> {
-        };
-        parser.queryAsync(query, managerAsync, callBack, observer);
-        Mockito.verify(managerAsync).delete(captor.capture(), Mockito.any(Consumer.class));
-        ColumnDeleteQuery columnQuery = captor.getValue();
-
-        checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.OR, condition.getCondition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
-        });
-        assertThat(conditions, contains(eq(Column.of("name", "Ada")),
-                eq(Column.of("age", 20L))));
-    }
     private void checkBaseQuery(ColumnDeleteQuery columnQuery) {
         assertTrue(columnQuery.getColumns().isEmpty());
         assertEquals("God", columnQuery.getColumnFamily());

@@ -16,12 +16,9 @@ package org.eclipse.jnosql.artemis.column.spi;
 
 
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.RepositoryAsync;
 import org.eclipse.jnosql.artemis.DatabaseMetadata;
 import org.eclipse.jnosql.artemis.Databases;
-import org.eclipse.jnosql.artemis.column.query.RepositoryAsyncColumnBean;
 import org.eclipse.jnosql.artemis.column.query.RepositoryColumnBean;
 
 import javax.enterprise.event.Observes;
@@ -40,7 +37,7 @@ import java.util.logging.Logger;
 import static jakarta.nosql.mapping.DatabaseType.COLUMN;
 
 /**
- * Extension to start up the ColumnTemplate, ColumnTemplateAsync, Repository and RepositoryAsync
+ * Extension to start up the ColumnTemplate and Repository
  * from the {@link jakarta.nosql.mapping.Database} qualifier
  */
 public class ColumnFamilyProducerExtension implements Extension {
@@ -49,11 +46,7 @@ public class ColumnFamilyProducerExtension implements Extension {
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
-    private final Set<DatabaseMetadata> databasesAsync = new HashSet<>();
-
     private final Collection<Class<?>> crudTypes = new HashSet<>();
-
-    private final Collection<Class<?>> crudAsyncTypes = new HashSet<>();
 
     <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
@@ -67,36 +60,17 @@ public class ColumnFamilyProducerExtension implements Extension {
         }
     }
 
-    <T extends RepositoryAsync> void observesAsync(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-        if (RepositoryAsync.class.equals(javaClass)) {
-            return;
-        }
-        if (Arrays.asList(javaClass.getInterfaces()).contains(RepositoryAsync.class)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            LOGGER.info("Adding a new RepositoryAsync as discovered on Column: " + javaClass);
-            crudAsyncTypes.add(javaClass);
-        }
-    }
 
     <T, X extends ColumnFamilyManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, COLUMN, databases);
     }
 
-    <T, X extends ColumnFamilyManagerAsync> void observesAsync(@Observes final ProcessProducer<T, X> pp) {
-        Databases.addDatabase(pp, COLUMN, databasesAsync);
-    }
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
-        LOGGER.info(String.format("Starting to process on columns: %d databases crud %d and crudAsync %d",
-                databases.size(), crudTypes.size(), crudAsyncTypes.size()));
+        LOGGER.info(String.format("Starting to process on columns: %d databases crud %d",
+                databases.size(), crudTypes.size()));
         databases.forEach(type -> {
             final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
-            afterBeanDiscovery.addBean(bean);
-        });
-
-        databasesAsync.forEach(type -> {
-            final TemplateAsyncBean bean = new TemplateAsyncBean(beanManager, type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 
@@ -106,15 +80,6 @@ public class ColumnFamilyProducerExtension implements Extension {
             }
             databases.forEach(database -> afterBeanDiscovery
                     .addBean(new RepositoryColumnBean(type, beanManager, database.getProvider())));
-        });
-
-        crudAsyncTypes.forEach(type -> {
-            if (!databases.contains(DatabaseMetadata.DEFAULT_COLUMN)) {
-                afterBeanDiscovery.addBean(new RepositoryAsyncColumnBean(type, beanManager, ""));
-            }
-
-            databasesAsync.forEach(database -> afterBeanDiscovery
-                    .addBean(new RepositoryAsyncColumnBean(type, beanManager, database.getProvider())));
         });
 
     }

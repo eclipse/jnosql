@@ -17,7 +17,6 @@
 package org.eclipse.jnosql.diana.document.query;
 
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerAsync;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentDeleteQuery.DocumentDelete;
 import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteFrom;
@@ -26,7 +25,6 @@ import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteNotCondition;
 import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteWhere;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 
@@ -145,16 +143,5 @@ class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDele
         manager.delete(this.build());
     }
 
-    @Override
-    public void delete(DocumentCollectionManagerAsync manager) {
-        requireNonNull(manager, "manager is required");
-        manager.delete(this.build());
-    }
 
-    @Override
-    public void delete(DocumentCollectionManagerAsync manager, Consumer<Void> callback) {
-        requireNonNull(manager, "manager is required");
-        requireNonNull(callback, "callback is required");
-        manager.delete(this.build(), callback);
-    }
 }

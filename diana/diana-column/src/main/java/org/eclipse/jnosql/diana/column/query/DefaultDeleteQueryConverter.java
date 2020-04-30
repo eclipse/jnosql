@@ -24,16 +24,13 @@ import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnDeleteQueryParams;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerAsync;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnPreparedStatementAsync;
 import jakarta.nosql.column.DeleteQueryConverter;
 import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
 
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,12 +56,6 @@ public final class DefaultDeleteQueryConverter implements DeleteQueryConverter {
         return Stream.empty();
     }
 
-    void queryAsync(String query, ColumnFamilyManagerAsync manager,
-                    Consumer<Stream<ColumnEntity>> callBack, ColumnObserverParser observer) {
-
-        ColumnDeleteQuery columnDeleteQuery = cache.get(query, observer);
-        manager.delete(columnDeleteQuery, v -> callBack.accept(Stream.empty()));
-    }
 
     ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager,
                                     ColumnObserverParser observer) {
@@ -74,13 +65,6 @@ public final class DefaultDeleteQueryConverter implements DeleteQueryConverter {
     }
 
 
-    ColumnPreparedStatementAsync prepareAsync(String query, ColumnFamilyManagerAsync manager,
-                                              ColumnObserverParser observer) {
-        Params params = Params.newParams();
-        ColumnDeleteQuery columnDeleteQuery = getQuery(query, params, observer);
-        return DefaultColumnPreparedStatementAsync.delete(columnDeleteQuery, params, query, manager);
-
-    }
 
     @Override
     public ColumnDeleteQueryParams apply(DeleteQuery deleteQuery,

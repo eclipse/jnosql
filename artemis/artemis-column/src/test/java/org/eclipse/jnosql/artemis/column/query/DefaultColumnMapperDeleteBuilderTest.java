@@ -17,7 +17,6 @@ package org.eclipse.jnosql.artemis.column.query;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.mapping.column.ColumnQueryMapper;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.column.ColumnTemplateAsync;
 import jakarta.nosql.tck.entities.Address;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.Person;
@@ -181,29 +180,5 @@ public class DefaultColumnMapperDeleteBuilderTest {
         ColumnDeleteQuery queryExpected = delete().from("Person").build();
         assertEquals(queryExpected, query);
     }
-
-    @Test
-    public void shouldExecuteDeleteAsyncFrom() {
-        ColumnTemplateAsync template = Mockito.mock(ColumnTemplateAsync.class);
-        ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        mapperBuilder.deleteFrom(Person.class).delete(template);
-        Mockito.verify(template).delete(queryCaptor.capture());
-        ColumnDeleteQuery query = queryCaptor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").build();
-        assertEquals(queryExpected, query);
-    }
-
-    @Test
-    public void shouldExecuteDeleteAsyncCallbackFrom() {
-        ColumnTemplateAsync template = Mockito.mock(ColumnTemplateAsync.class);
-        ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        Consumer<Void> consumer = System.out::println;
-        mapperBuilder.deleteFrom(Person.class).delete(template, consumer);
-        Mockito.verify(template).delete(queryCaptor.capture(), eq(consumer));
-        ColumnDeleteQuery query = queryCaptor.getValue();
-        ColumnDeleteQuery queryExpected = delete().from("Person").build();
-        assertEquals(queryExpected, query);
-    }
-
 
 }
