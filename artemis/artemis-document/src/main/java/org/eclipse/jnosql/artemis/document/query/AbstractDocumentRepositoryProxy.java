@@ -23,8 +23,8 @@ import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.artemis.query.RepositoryType;
-import org.eclipse.jnosql.artemis.reflection.DynamicQueryMethodReturn;
-import org.eclipse.jnosql.artemis.reflection.DynamicReturn;
+import org.eclipse.jnosql.artemis.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

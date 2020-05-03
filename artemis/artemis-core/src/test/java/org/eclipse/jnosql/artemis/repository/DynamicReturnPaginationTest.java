@@ -12,11 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.reflection;
+package org.eclipse.jnosql.artemis.repository;
 
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
+import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -12,9 +12,11 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.reflection;
+package org.eclipse.jnosql.artemis.repository;
 
+import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.mapping.PreparedStatement;
+import org.eclipse.jnosql.artemis.reflection.RepositoryReflectionUtils;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -30,10 +32,7 @@ enum DynamicReturnConverter {
 
     INSTANCE;
 
-
-    private final DynamicExecutorQueryConverter defaultConverter = new DefaultDynamicExecutorQueryConverter();
-
-    private final DynamicExecutorQueryConverter paginationConverter = new PaginationDynamicExecutorQueryConverter();
+    private final RepositoryReturn defaultReturn = new DefaultRepositoryReturn();
 
     /**
      * Converts the entity from the Method return type.
@@ -49,32 +48,18 @@ enum DynamicReturnConverter {
         Class<?> returnType = method.getReturnType();
 
         DynamicReturnType type = DynamicReturnType.of(typeClass, returnType);
-        DynamicExecutorQueryConverter converter = getConverter(dynamic);
 
-        switch (type) {
-            case INSTANCE:
-                return converter.toInstance(dynamic);
-            case OPTIONAL:
-                return converter.toOptional(dynamic);
-            case LIST:
-            case ITERABLE:
-            case COLLECTION:
-                return converter.toList(dynamic);
-            case SET:
-                return converter.toSet(dynamic);
-            case QUEUE:
-            case DEQUE:
-                return converter.toLinkedList(dynamic);
-            case NAVIGABLE_SET:
-            case SORTED_SET:
-                return converter.toTreeSet(dynamic);
-            case STREAM:
-                return converter.toStream(dynamic);
-            case PAGE:
-                return converter.toPage(dynamic);
-            default:
-                return converter.toDefault(dynamic);
+        RepositoryReturn repositoryReturn = ServiceLoaderProvider
+                .getSupplierStream(RepositoryReturn.class)
+                .filter(RepositoryReturn.class::isInstance)
+                .map(RepositoryReturn.class::cast)
+                .filter(r -> r.isCompatible(typeClass, returnType))
+                .findFirst().orElse(defaultReturn);
 
+        if (dynamic.hasPagination()) {
+            return repositoryReturn.convertPageable(dynamic);
+        } else {
+            return repositoryReturn.convert(dynamic);
         }
     }
 
@@ -116,12 +101,4 @@ enum DynamicReturnConverter {
         return convert(dynamicReturn);
     }
 
-
-    private DynamicExecutorQueryConverter getConverter(DynamicReturn<?> dynamic) {
-        if (dynamic.hasPagination()) {
-            return paginationConverter;
-        } else {
-            return defaultConverter;
-        }
-    }
 }

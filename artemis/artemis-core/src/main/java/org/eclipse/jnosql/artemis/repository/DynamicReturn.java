@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.reflection;
+package org.eclipse.jnosql.artemis.repository;
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Sort;
@@ -110,9 +110,9 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         @Override
-        public Supplier<Optional<?>> apply(Supplier<Stream<?>> l) {
+        public Supplier<Optional<?>> apply(Supplier<Stream<?>> supplier) {
             return () -> {
-                Stream<?> entities = l.get();
+                Stream<?> entities = supplier.get();
                 final Iterator<?> iterator = entities.iterator();
                 if (!iterator.hasNext()) {
                     return Optional.empty();
@@ -164,7 +164,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      *
      * @return The repository class type source.
      */
-    Class<T> typeClass() {
+    public Class<T> typeClass() {
         return classSource;
     }
 
@@ -173,7 +173,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      *
      * @return The method source at the Repository
      */
-    Method getMethod() {
+    public Method getMethod() {
         return methodSource;
     }
 
@@ -182,7 +182,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      *
      * @return the result as single result
      */
-    Optional<T> singleResult() {
+    public Optional<T> singleResult() {
         return singleResult.get();
     }
 
@@ -191,7 +191,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      *
      * @return the result as {@link List}
      */
-    Stream<T> result() {
+    public Stream<T> result() {
         return result.get();
     }
 
@@ -205,21 +205,21 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     /**
      * @return returns a single result with pagination
      */
-    Optional<T> singleResultPagination() {
+    public Optional<T> singleResultPagination() {
         return singleResultPagination.apply(pagination);
     }
 
     /**
      * @return a list result using pagination
      */
-    Stream<T> streamPagination() {
+    public Stream<T> streamPagination() {
         return streamPagination.apply(pagination);
     }
 
     /**
      * @return the page
      */
-    Page<T> getPage() {
+    public Page<T> getPage() {
         return page.apply(pagination);
     }
 

@@ -26,8 +26,8 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.artemis.graph.GraphConverter;
 import org.eclipse.jnosql.artemis.graph.GraphTemplate;
 import org.eclipse.jnosql.artemis.query.RepositoryType;
-import org.eclipse.jnosql.artemis.reflection.DynamicQueryMethodReturn;
-import org.eclipse.jnosql.artemis.reflection.DynamicReturn;
+import org.eclipse.jnosql.artemis.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

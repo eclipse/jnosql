@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.query.SelectQuery;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.artemis.reflection.DynamicReturn;
+import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 import org.eclipse.jnosql.diana.query.method.SelectMethodProvider;
 
 import java.util.List;
