@@ -17,20 +17,12 @@ package org.eclipse.jnosql.artemis.document.query;
 
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.document.DocumentQueryPagination;
-import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.artemis.query.RepositoryType;
 import org.eclipse.jnosql.artemis.repository.DynamicQueryMethodReturn;
-import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentQuery.select;
 
@@ -42,10 +34,7 @@ import static jakarta.nosql.document.DocumentQuery.select;
  */
 public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRepository implements InvocationHandler {
 
-
     protected abstract Repository getRepository();
-
-    protected abstract DocumentTemplate getTemplate();
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
@@ -79,38 +68,5 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
             default:
                 return Void.class;
         }
-    }
-
-
-    private Object executeQuery(Method method, Object[] args, Class<?> typeClass, DocumentQuery query) {
-        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(typeClass)
-                .withMethodSource(method)
-                .withResult(() -> getTemplate().select(query))
-                .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findPagination(args))
-                .withStreamPagination(listPagination(query))
-                .withSingleResultPagination(getSingleResult(query))
-                .withPage(getPage(query))
-                .build();
-        return dynamicReturn.execute();
-    }
-
-    private Function<Pagination, Page<T>> getPage(DocumentQuery query) {
-        return p -> getTemplate().select(DocumentQueryPagination.of(query, p));
-    }
-
-    private Function<Pagination, Optional<T>> getSingleResult(DocumentQuery query) {
-        return p -> {
-            DocumentQuery queryPagination = DocumentQueryPagination.of(query, p);
-            return getTemplate().singleResult(queryPagination);
-        };
-    }
-
-    private Function<Pagination, Stream<T>> listPagination(DocumentQuery query) {
-        return p -> {
-            DocumentQuery queryPagination = DocumentQueryPagination.of(query, p);
-            return getTemplate().select(queryPagination);
-        };
     }
 }
