@@ -14,8 +14,6 @@ package org.eclipse.jnosql.artemis.reactive;
 
 import org.reactivestreams.Publisher;
 
-import java.util.Optional;
-
 /**
  * An extension of {@link jakarta.nosql.mapping.Repository} that will work with Reactive Stream
  * @param <T>  the bean type

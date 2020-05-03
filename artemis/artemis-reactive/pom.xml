@@ -41,6 +41,12 @@
        <version>1.0.1</version>
        <scope>provided</scope>
      </dependency>
+    <dependency>
+       <groupId>io.smallrye.reactive</groupId>
+       <artifactId>smallrye-reactive-streams-operators</artifactId>
+       <version>1.0.12</version>
+       <scope>test</scope>
+      </dependency>
     </dependencies>
 
 
