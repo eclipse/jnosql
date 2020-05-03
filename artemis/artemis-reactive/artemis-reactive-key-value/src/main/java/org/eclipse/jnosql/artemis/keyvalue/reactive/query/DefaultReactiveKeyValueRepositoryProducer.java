@@ -18,6 +18,7 @@ import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
+import java.util.Objects;
 
 @ApplicationScoped
 public class DefaultReactiveKeyValueRepositoryProducer implements ReactiveKeyValueRepositoryProducer{
@@ -27,6 +28,8 @@ public class DefaultReactiveKeyValueRepositoryProducer implements ReactiveKeyVal
 
     @Override
     public <T, K, R extends ReactiveRepository<T, K>> R get(Class<R> repositoryClass, KeyValueTemplate template) {
+        Objects.requireNonNull(template, "template is required");
+        Objects.requireNonNull(repositoryClass, "repositoryClass is required");
         ReactiveKeyValueRepositoryProxy<?> handler = new ReactiveKeyValueRepositoryProxy<>(
                 template,producer.get(template),  repositoryClass);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
