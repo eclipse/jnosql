@@ -22,6 +22,9 @@ import java.util.Optional;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 
+/**
+ * The template method of {@link ReactiveKeyValueTemplate}
+ */
 public abstract class AbstractReactiveKeyValueTemplate implements ReactiveKeyValueTemplate {
 
     protected abstract KeyValueTemplate getTemplate();
