@@ -27,9 +27,8 @@ public class DefaultReactiveKeyValueRepositoryProducer implements ReactiveKeyVal
 
     @Override
     public <T, K, R extends ReactiveRepository<T, K>> R get(Class<R> repositoryClass, KeyValueTemplate template) {
-        DefaultReactiveKeyValueRepository repository = new DefaultReactiveKeyValueRepository(repositoryClass, producer.get(template));
-        ReactiveKeyValueRepositoryProxy<?> handler = new ReactiveKeyValueRepositoryProxy<>(repository,
-                template, repositoryClass);
+        ReactiveKeyValueRepositoryProxy<?> handler = new ReactiveKeyValueRepositoryProxy<>(
+                template,producer.get(template),  repositoryClass);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);

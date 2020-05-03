@@ -12,7 +12,10 @@
 package org.eclipse.jnosql.artemis.keyvalue.reactive.query;
 
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueTemplate;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
+
+import java.lang.reflect.ParameterizedType;
 
 class ReactiveKeyValueRepositoryProxy <T> extends AbstractReactiveKeyValueRepositoryProxy<T> {
 
@@ -20,11 +23,13 @@ class ReactiveKeyValueRepositoryProxy <T> extends AbstractReactiveKeyValueReposi
     private final KeyValueTemplate template;
     private final Class<T> entityClass;
 
-    ReactiveKeyValueRepositoryProxy(DefaultReactiveKeyValueRepository repository,
-                                    KeyValueTemplate template, Class<T> entityClass) {
-        this.repository = repository;
+    ReactiveKeyValueRepositoryProxy(KeyValueTemplate template, ReactiveKeyValueTemplate reactiveKeyValueTemplate,
+                                    Class<T> repositoryType) {
+        Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
+                .getActualTypeArguments()[0];
+        this.repository = new DefaultReactiveKeyValueRepository(typeClass, reactiveKeyValueTemplate);
         this.template = template;
-        this.entityClass = entityClass;
+        this.entityClass = typeClass;
     }
 
     @Override
