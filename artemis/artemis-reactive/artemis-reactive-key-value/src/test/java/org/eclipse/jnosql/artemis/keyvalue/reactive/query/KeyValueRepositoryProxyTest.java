@@ -22,15 +22,12 @@ import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.tck.entities.User;
 import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueTemplate;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.reactivestreams.Publisher;
@@ -42,7 +39,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
@@ -143,8 +139,6 @@ public class KeyValueRepositoryProxyTest {
 
     @Test
     public void shouldFindByQueryWithParameter() {
-        User user = new User("12", "Ada", 10);
-        List<String> keys = Arrays.asList("key", "key2");
         PreparedStatement prepare = Mockito.mock(PreparedStatement.class);
         when(template.prepare("get @id", User.class)).thenReturn(prepare);
 
