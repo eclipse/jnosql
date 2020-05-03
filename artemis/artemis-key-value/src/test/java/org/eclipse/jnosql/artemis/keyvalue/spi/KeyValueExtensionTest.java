@@ -28,7 +28,7 @@ import javax.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
-public class BucketManagerProducerExtensionTest {
+public class KeyValueExtensionTest {
 
     @Inject
     private KeyValueTemplate template;

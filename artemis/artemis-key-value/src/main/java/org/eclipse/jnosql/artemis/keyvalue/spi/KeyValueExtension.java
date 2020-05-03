@@ -40,9 +40,9 @@ import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
  * Extension to start up {@link jakarta.nosql.mapping.keyvalue.KeyValueTemplate} and {@link jakarta.nosql.mapping.Repository}
  * from the {@link javax.enterprise.inject.Default} and {@link jakarta.nosql.mapping.Database} qualifier
  */
-public class BucketManagerProducerExtension implements Extension {
+public class KeyValueExtension implements Extension {
 
-    private static final Logger LOGGER = Logger.getLogger(BucketManagerProducerExtension.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(KeyValueExtension.class.getName());
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 

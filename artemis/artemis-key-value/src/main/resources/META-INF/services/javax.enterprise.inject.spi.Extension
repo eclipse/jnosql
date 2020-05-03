@@ -12,4 +12,4 @@
 #
 #   Otavio Santana
 #
-org.eclipse.jnosql.artemis.keyvalue.spi.BucketManagerProducerExtension
+org.eclipse.jnosql.artemis.keyvalue.spi.KeyValueExtension
