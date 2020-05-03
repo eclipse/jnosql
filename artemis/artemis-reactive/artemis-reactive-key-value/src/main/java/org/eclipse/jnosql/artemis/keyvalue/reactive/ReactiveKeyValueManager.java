@@ -9,7 +9,7 @@
  *  Contributors:
  *  Otavio Santana
  */
-package org.eclipse.jnosql.keyvalue;
+package org.eclipse.jnosql.artemis.keyvalue.reactive;
 
 import org.reactivestreams.Publisher;
 

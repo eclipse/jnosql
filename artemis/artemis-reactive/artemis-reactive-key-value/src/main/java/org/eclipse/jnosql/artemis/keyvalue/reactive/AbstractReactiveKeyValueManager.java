@@ -9,65 +9,51 @@
  *  Contributors:
  *  Otavio Santana
  */
-package org.eclipse.jnosql.keyvalue;
+package org.eclipse.jnosql.artemis.keyvalue.reactive;
 
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
 import org.reactivestreams.Publisher;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 
-@ApplicationScoped
-class DefaultReactiveKeyValueManager implements ReactiveKeyValueManager {
+public abstract class AbstractReactiveKeyValueManager implements ReactiveKeyValueManager {
 
-
-    private Instance<KeyValueTemplate> template;
-
-    @Inject
-    DefaultReactiveKeyValueManager(Instance<KeyValueTemplate> template) {
-        this.template = template;
-    }
-
-    DefaultReactiveKeyValueManager() {
-    }
-
+    protected abstract KeyValueTemplate getTemplate();
+    
     @Override
     public <T> Publisher<T> put(T entity) {
-        Iterable<T> iterable = () -> singleton(template.get().put(entity)).iterator();
+        Iterable<T> iterable = () -> singleton(getTemplate().put(entity)).iterator();
         return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
     @Override
     public <T> Publisher<T> put(T entity, Duration ttl) {
-        Iterable<T> iterable = () -> singleton(template.get().put(entity, ttl)).iterator();
+        Iterable<T> iterable = () -> singleton(getTemplate().put(entity, ttl)).iterator();
         return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
     @Override
     public <T> Publisher<T> put(Iterable<T> entities) {
-        final Iterable<T> iterable = () -> template.get().put(entities).iterator();
+        final Iterable<T> iterable = () -> getTemplate().put(entities).iterator();
         return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
     @Override
     public <T> Publisher<T> put(Iterable<T> entities, Duration ttl) {
-        final Iterable<T> iterable = () -> template.get().put(entities, ttl).iterator();
+        final Iterable<T> iterable = () -> getTemplate().put(entities, ttl).iterator();
         return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
     @Override
     public <K, T> Publisher<T> get(K key, Class<T> entityClass) {
         final Iterable<T> iterable = () -> {
-            final Optional<T> optional = template.get().get(key, entityClass);
+            final Optional<T> optional = getTemplate().get(key, entityClass);
             return optional.map(Collections::singleton).orElse(emptySet()).iterator();
         };
         return ReactiveStreams.fromIterable(iterable).buildRs();
@@ -75,20 +61,20 @@ class DefaultReactiveKeyValueManager implements ReactiveKeyValueManager {
 
     @Override
     public <K, T> Publisher<T> get(Iterable<K> keys, Class<T> entityClass) {
-        final Iterable<T> iterable = () -> template.get().get(keys, entityClass).iterator();
+        final Iterable<T> iterable = () -> getTemplate().get(keys, entityClass).iterator();
         return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
     @Override
     public <T> Publisher<T> query(String query, Class<T> entityClass) {
-        final Iterable<T> iterable = () ->template.get().query(query, entityClass).iterator();
+        final Iterable<T> iterable = () ->getTemplate().query(query, entityClass).iterator();
         return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
     @Override
     public <T> Publisher<T> getSingleResult(String query, Class<T> entityClass) {
         final Iterable<T> iterable = () -> {
-            final Optional<T> optional = template.get().getSingleResult(query, entityClass);
+            final Optional<T> optional = getTemplate().getSingleResult(query, entityClass);
             return optional.map(Collections::singleton).orElse(emptySet()).iterator();
         };
         return ReactiveStreams.fromIterable(iterable).buildRs();
@@ -97,7 +83,7 @@ class DefaultReactiveKeyValueManager implements ReactiveKeyValueManager {
     @Override
     public Publisher<Void> query(String query) {
         final Iterable<Void> iterable = () -> {
-            template.get().query(query);
+            getTemplate().query(query);
             return Collections.<Void>emptyList().iterator();
         };
         return ReactiveStreams.fromIterable(iterable).buildRs();
@@ -107,7 +93,7 @@ class DefaultReactiveKeyValueManager implements ReactiveKeyValueManager {
     @Override
     public <K> Publisher<Void> delete(K key) {
         final Iterable<Void> iterable = () -> {
-            template.get().delete(key);
+            getTemplate().delete(key);
             return Collections.<Void>emptyList().iterator();
         };
         return ReactiveStreams.fromIterable(iterable).buildRs();
@@ -116,10 +102,11 @@ class DefaultReactiveKeyValueManager implements ReactiveKeyValueManager {
     @Override
     public <K> Publisher<Void> delete(Iterable<K> keys) {
         final Iterable<Void> iterable = () -> {
-            template.get().delete(keys);
+            getTemplate().delete(keys);
             return Collections.<Void>emptyList().iterator();
         };
 
         return ReactiveStreams.fromIterable(iterable).buildRs();
     }
+    
 }
