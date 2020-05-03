@@ -30,14 +30,6 @@ class KeyValueRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
     private final KeyValueTemplate template;
     private final Class<T> entityClass;
 
-    private static final List<Method> METHODS;
-
-    static {
-        METHODS = new ArrayList<>();
-        METHODS.addAll(Arrays.asList(Object.class.getMethods()));
-        METHODS.addAll(Arrays.asList(Repository.class.getMethods()));
-    }
-
     KeyValueRepositoryProxy(Class<?> repositoryType, KeyValueTemplate template) {
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
