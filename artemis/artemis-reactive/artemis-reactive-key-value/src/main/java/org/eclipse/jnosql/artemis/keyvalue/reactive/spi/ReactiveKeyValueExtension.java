@@ -18,7 +18,6 @@ package org.eclipse.jnosql.artemis.keyvalue.reactive.spi;
 import jakarta.nosql.keyvalue.BucketManager;
 import org.eclipse.jnosql.artemis.DatabaseMetadata;
 import org.eclipse.jnosql.artemis.Databases;
-import org.eclipse.jnosql.artemis.keyvalue.query.RepositoryKeyValueBean;
 import org.eclipse.jnosql.artemis.keyvalue.reactive.query.ReactiveRepositoryKeyValueBean;
 import org.eclipse.jnosql.artemis.keyvalue.spi.BucketManagerProducerExtension;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
@@ -42,7 +41,7 @@ import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
  * Extension to start up {@link jakarta.nosql.mapping.keyvalue.KeyValueTemplate} and {@link ReactiveRepository}
  * from the {@link javax.enterprise.inject.Default} and {@link jakarta.nosql.mapping.Database} qualifier
  */
-public class ReactiveExtension implements Extension {
+public class ReactiveKeyValueExtension implements Extension {
 
     private static final Logger LOGGER = Logger.getLogger(BucketManagerProducerExtension.class.getName());
 

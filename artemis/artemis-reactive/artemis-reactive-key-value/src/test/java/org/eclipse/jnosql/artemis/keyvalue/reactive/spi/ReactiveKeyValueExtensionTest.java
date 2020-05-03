@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2020 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,15 +12,14 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.keyvalue.spi;
+package org.eclipse.jnosql.artemis.keyvalue.reactive.spi;
 
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.User;
-import jakarta.nosql.tck.entities.UserRepository;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueTemplate;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -28,14 +27,14 @@ import javax.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
-public class BucketManagerProducerExtensionTest {
+public class ReactiveKeyValueExtensionTest {
 
     @Inject
-    private KeyValueTemplate repository;
+    private ReactiveKeyValueTemplate template;
 
     @Inject
     @Database(value = DatabaseType.KEY_VALUE, provider = "keyvalueMock")
-    private KeyValueTemplate repositoryMock;
+    private ReactiveKeyValueTemplate templateMock;
 
     @Inject
     private UserRepository userRepository;
@@ -50,24 +49,17 @@ public class BucketManagerProducerExtensionTest {
 
     @Test
     public void shouldUseMock() {
-        Person person = repository.get(10L, Person.class).get();
-
-        Person personMock = repositoryMock.get(10L, Person.class).get();
-
-        assertEquals("Default", person.getName());
-        assertEquals("keyvalueMock", personMock.getName());
-
+        Assertions.assertNotNull(template);
+        Assertions.assertNotNull(templateMock);
     }
 
 
     @Test
     public void shouldUseRepository() {
-        User user = userRepository.findById("user").get();
-        User userDefault = userRepositoryDefault.findById("user").get();
-        User userMock = userRepositoryMock.findById("user").get();
-        assertEquals("Default", user.getName());
-        assertEquals("Default", userDefault.getName());
-        assertEquals("keyvalueMock", userMock.getName());
+        Assertions.assertNotNull(userRepository);
+        Assertions.assertNotNull(userRepositoryDefault);
+        Assertions.assertNotNull(userRepositoryMock);
+
     }
 
 }
