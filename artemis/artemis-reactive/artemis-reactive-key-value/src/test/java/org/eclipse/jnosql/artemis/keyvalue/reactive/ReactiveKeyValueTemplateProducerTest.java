@@ -31,7 +31,7 @@ class ReactiveKeyValueTemplateProducerTest {
         final ReactiveKeyValueTemplate reactiveTemplate = producer.get(template);
         Assertions.assertNotNull(reactiveTemplate);
     }
-    
+
     @Test
     public void shouldReturnNPEWhenTemplateIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> producer.get(null));
