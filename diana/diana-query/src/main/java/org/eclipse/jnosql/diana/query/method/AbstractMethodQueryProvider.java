@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static jakarta.nosql.query.Operator.AND;
 import static jakarta.nosql.query.Operator.BETWEEN;
@@ -43,9 +44,11 @@ import static jakarta.nosql.query.Operator.LESSER_THAN;
 import static jakarta.nosql.query.Operator.LIKE;
 import static jakarta.nosql.query.Operator.NOT;
 import static jakarta.nosql.query.Operator.OR;
+import static java.util.stream.Collectors.joining;
 
 abstract class AbstractMethodQueryProvider extends MethodBaseListener {
 
+    private static final String SUB_ENTITY_FLAG = "_";
     protected Where where;
 
     protected Condition condition;
@@ -170,7 +173,18 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     }
 
     private String getVariable(MethodParser.VariableContext ctx) {
-        String text = ctx.getText();
+        return getFormatField(ctx.getText());
+    }
+
+    protected String getFormatField(String text) {
+        if (text.contains(SUB_ENTITY_FLAG)) {
+            return Stream.of(text.split(SUB_ENTITY_FLAG)).map(this::formatField).collect(joining("."));
+        } else {
+            return formatField(text);
+        }
+    }
+
+    private String formatField(String text) {
         String lowerCase = String.valueOf(text.charAt(0)).toLowerCase(Locale.US);
         return lowerCase.concat(text.substring(1));
     }
@@ -199,10 +213,10 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
             ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.getValue());
             List<Condition> conditions = new ArrayList<>(conditionValue.get());
             conditions.add(newCondition);
-            this.condition = new MethodCondition("_" + operator.name(), operator, MethodConditionValue.of(conditions));
+            this.condition = new MethodCondition(SUB_ENTITY_FLAG + operator.name(), operator, MethodConditionValue.of(conditions));
         } else if (isNotAppendable()) {
             List<Condition> conditions = Arrays.asList(this.condition, newCondition);
-            this.condition = new MethodCondition("_" + operator.name(), operator, MethodConditionValue.of(conditions));
+            this.condition = new MethodCondition(SUB_ENTITY_FLAG + operator.name(), operator, MethodConditionValue.of(conditions));
         } else {
             List<Condition> conditions = ConditionQueryValue.class.cast(this.condition.getValue()).get();
             Condition lastCondition = conditions.get(conditions.size() - 1);
@@ -211,7 +225,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
                 List<Condition> lastConditions = new ArrayList<>(ConditionQueryValue.class.cast(lastCondition.getValue()).get());
                 lastConditions.add(newCondition);
 
-                Condition newAppendable = new MethodCondition("_" + operator.name(),
+                Condition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
                         operator, MethodConditionValue.of(lastConditions));
 
                 List<Condition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
@@ -219,7 +233,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
                 this.condition = new MethodCondition(this.condition.getName(), this.condition.getOperator(),
                         MethodConditionValue.of(newConditions));
             } else {
-                Condition newAppendable = new MethodCondition("_" + operator.name(),
+                Condition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
                         operator, MethodConditionValue.of(Collections.singletonList(newCondition)));
 
                 List<Condition> newConditions = new ArrayList<>(conditions);
