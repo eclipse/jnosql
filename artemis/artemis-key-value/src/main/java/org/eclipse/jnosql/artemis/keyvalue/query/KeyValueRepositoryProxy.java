@@ -18,11 +18,7 @@ package org.eclipse.jnosql.artemis.keyvalue.query;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 class KeyValueRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
 
