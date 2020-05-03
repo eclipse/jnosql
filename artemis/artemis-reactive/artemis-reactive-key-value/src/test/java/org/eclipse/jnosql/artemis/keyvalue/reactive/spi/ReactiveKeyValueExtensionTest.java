@@ -16,15 +16,12 @@ package org.eclipse.jnosql.artemis.keyvalue.reactive.spi;
 
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.tck.entities.User;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueTemplate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
 public class ReactiveKeyValueExtensionTest {
@@ -52,7 +49,6 @@ public class ReactiveKeyValueExtensionTest {
         Assertions.assertNotNull(template);
         Assertions.assertNotNull(templateMock);
     }
-
 
     @Test
     public void shouldUseRepository() {

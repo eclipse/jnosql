@@ -62,11 +62,10 @@ public class ReactiveKeyValueExtension implements Extension {
 
         if (Arrays.asList(javaClass.getInterfaces()).contains(ReactiveRepository.class)
                 && Modifier.isInterface(javaClass.getModifiers())) {
-            LOGGER.info("Adding a new KeyValueRepository as discovered on key-value: " + javaClass);
+            LOGGER.info("Adding a new ReactiveRepository as discovered on key-value: " + javaClass);
             crudTypes.add(repo.getAnnotatedType().getJavaClass());
         }
     }
-
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info(String.format("Processing reactive buckets: %d databases crud %d ",
