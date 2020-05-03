@@ -43,7 +43,7 @@ import static java.util.Collections.singleton;
 import static org.junit.jupiter.api.Assertions.*;
 
 @MockitoSettings(strictness = Strictness.WARN)
-class DefaultReactiveKeyValueManagerTest {
+class DefaultReactiveKeyValueTemplateTest {
 
     @Mock
     private KeyValueTemplate template;
@@ -51,12 +51,12 @@ class DefaultReactiveKeyValueManagerTest {
     @Mock
     private Instance<KeyValueTemplate> instance;
 
-    private ReactiveKeyValueManager manager;
+    private ReactiveKeyValueTemplate manager;
 
     @BeforeEach
     public void setUp() {
         Mockito.when(instance.get()).thenReturn(template);
-        this.manager = new DefaultReactiveKeyValueManager(instance);
+        this.manager = new DefaultReactiveKeyValueTemplate(instance);
     }
 
     @Test

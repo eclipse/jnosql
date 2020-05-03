@@ -19,7 +19,7 @@ import java.util.Optional;
 /**
  * The {@link jakarta.nosql.mapping.keyvalue.KeyValueTemplate} wrapper to the reactive API.
  */
-public interface ReactiveKeyValueManager {
+public interface ReactiveKeyValueTemplate {
 
     /**
      * Saves the entity

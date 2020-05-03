@@ -22,7 +22,7 @@ import java.util.Optional;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 
-public abstract class AbstractReactiveKeyValueManager implements ReactiveKeyValueManager {
+public abstract class AbstractReactiveKeyValueTemplate implements ReactiveKeyValueTemplate {
 
     protected abstract KeyValueTemplate getTemplate();
     

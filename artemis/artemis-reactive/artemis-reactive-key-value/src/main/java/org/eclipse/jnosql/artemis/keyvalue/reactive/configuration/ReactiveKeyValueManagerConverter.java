@@ -13,17 +13,17 @@ package org.eclipse.jnosql.artemis.keyvalue.reactive.configuration;
 
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
-import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueManager;
+import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueTemplate;
 import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueTemplateProducer;
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
-public class ReactiveKeyValueManagerConverter extends AbstractConfiguration<ReactiveKeyValueManager>
-        implements Converter<ReactiveKeyValueManager> {
+public class ReactiveKeyValueManagerConverter extends AbstractConfiguration<ReactiveKeyValueTemplate>
+        implements Converter<ReactiveKeyValueTemplate> {
 
     @Override
-    protected ReactiveKeyValueManager success(String value) {
+    protected ReactiveKeyValueTemplate success(String value) {
         Config config = BeanManagers.getInstance(Config.class);
         final KeyValueTemplate template = config.getValue(value, KeyValueTemplate.class);
         ReactiveKeyValueTemplateProducer producer = BeanManagers.getInstance(ReactiveKeyValueTemplateProducer.class);

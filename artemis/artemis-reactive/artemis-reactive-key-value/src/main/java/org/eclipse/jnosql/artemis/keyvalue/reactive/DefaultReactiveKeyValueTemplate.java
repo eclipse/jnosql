@@ -16,17 +16,17 @@ import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-class DefaultReactiveKeyValueManager extends AbstractReactiveKeyValueManager{
+class DefaultReactiveKeyValueTemplate extends AbstractReactiveKeyValueTemplate {
 
 
     private Instance<KeyValueTemplate> template;
 
     @Inject
-    DefaultReactiveKeyValueManager(Instance<KeyValueTemplate> template) {
+    DefaultReactiveKeyValueTemplate(Instance<KeyValueTemplate> template) {
         this.template = template;
     }
 
-    DefaultReactiveKeyValueManager() {
+    DefaultReactiveKeyValueTemplate() {
     }
 
     @Override

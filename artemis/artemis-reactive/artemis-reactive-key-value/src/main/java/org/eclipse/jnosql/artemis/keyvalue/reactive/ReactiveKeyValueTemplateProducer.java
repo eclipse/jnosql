@@ -14,7 +14,7 @@ package org.eclipse.jnosql.artemis.keyvalue.reactive;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 
 /**
- * The producer of {@link ReactiveKeyValueManager}
+ * The producer of {@link ReactiveKeyValueTemplate}
  */
 public interface ReactiveKeyValueTemplateProducer {
 
@@ -26,5 +26,5 @@ public interface ReactiveKeyValueTemplateProducer {
      * @return a new instance
      * @throws NullPointerException when template is null
      */
-    <T extends ReactiveKeyValueManager> T get(KeyValueTemplate template);
+    <T extends ReactiveKeyValueTemplate> T get(KeyValueTemplate template);
 }
