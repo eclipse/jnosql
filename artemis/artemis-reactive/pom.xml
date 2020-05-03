@@ -39,6 +39,7 @@
        <groupId>org.eclipse.microprofile.reactive-streams-operators</groupId>
        <artifactId>microprofile-reactive-streams-operators-api</artifactId>
        <version>1.0.1</version>
+       <scope>provided</scope>
      </dependency>
     </dependencies>
 
