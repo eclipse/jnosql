@@ -15,7 +15,6 @@ import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueTemplate;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 import org.eclipse.microprofile.reactive.streams.operators.CompletionSubscriber;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
-import org.eclipse.microprofile.reactive.streams.operators.SubscriberBuilder;
 import org.reactivestreams.Publisher;
 
 import java.util.Collections;
