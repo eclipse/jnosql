@@ -21,9 +21,9 @@ import javax.inject.Inject;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 
 @ApplicationScoped
@@ -60,50 +60,66 @@ class DefaultReactiveKeyValueManager implements ReactiveKeyValueManager {
 
     @Override
     public <T> Publisher<T> put(Iterable<T> entities, Duration ttl) {
-        return ReactiveStreams.fromIterable(template.get().put(entities, ttl)).buildRs();
+        final Iterable<T> iterable = () -> template.get().put(entities, ttl).iterator();
+        return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
     @Override
     public <K, T> Publisher<T> get(K key, Class<T> entityClass) {
-        final Optional<T> optional = template.get().get(key, entityClass);
-        final Iterable<T> iterable = optional.map(Collections::singleton).orElse(Collections.emptySet());
+        final Iterable<T> iterable = () -> {
+            final Optional<T> optional = template.get().get(key, entityClass);
+            return optional.map(Collections::singleton).orElse(emptySet()).iterator();
+        };
+        return ReactiveStreams.fromIterable(iterable).buildRs();
+    }
+
+    @Override
+    public <K, T> Publisher<T> get(Iterable<K> keys, Class<T> entityClass) {
+        final Iterable<T> iterable = () -> template.get().get(keys, entityClass).iterator();
         return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
     @Override
     public <T> Publisher<T> query(String query, Class<T> entityClass) {
-        final Stream<T> stream = template.get().query(query, entityClass);
-        return ReactiveStreams.fromIterable(() -> stream.iterator()).buildRs();
+        final Iterable<T> iterable = () ->template.get().query(query, entityClass).iterator();
+        return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
     @Override
     public <T> Publisher<T> getSingleResult(String query, Class<T> entityClass) {
-        final Optional<T> optional = template.get().getSingleResult(query, entityClass);
-        final Iterable<T> iterable = optional.map(Collections::singleton).orElse(Collections.emptySet());
+        final Iterable<T> iterable = () -> {
+            final Optional<T> optional = template.get().getSingleResult(query, entityClass);
+            return optional.map(Collections::singleton).orElse(emptySet()).iterator();
+        };
         return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
     @Override
     public Publisher<Void> query(String query) {
-        template.get().query(query);
-        return ReactiveStreams.fromIterable(Collections.<Void>emptyList()).buildRs();
+        final Iterable<Void> iterable = () -> {
+            template.get().query(query);
+            return Collections.<Void>emptyList().iterator();
+        };
+        return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
+
     @Override
-    public <K, T> Publisher<T> get(Iterable<K> keys, Class<T> entityClass) {
-        final Iterable<T> iterable = template.get().get(keys, entityClass);
+    public <K> Publisher<Void> delete(K key) {
+        final Iterable<Void> iterable = () -> {
+            template.get().delete(key);
+            return Collections.<Void>emptyList().iterator();
+        };
         return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 
     @Override
-    public <K> Publisher<Void> delete(K key) {
-        template.get().delete(key);
-        return ReactiveStreams.fromIterable(Collections.<Void>emptyList()).buildRs();
-    }
-
-    @Override
     public <K> Publisher<Void> delete(Iterable<K> keys) {
-        template.get().delete(keys);
-        return ReactiveStreams.fromIterable(Collections.<Void>emptyList()).buildRs();
+        final Iterable<Void> iterable = () -> {
+            template.get().delete(keys);
+            return Collections.<Void>emptyList().iterator();
+        };
+
+        return ReactiveStreams.fromIterable(iterable).buildRs();
     }
 }
