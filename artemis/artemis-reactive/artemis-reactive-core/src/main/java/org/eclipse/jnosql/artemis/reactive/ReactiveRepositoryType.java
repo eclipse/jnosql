@@ -27,6 +27,9 @@ public class ReactiveRepositoryType {
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(ReactiveRepository.class);
 
+    private ReactiveRepositoryType() {
+    }
+
     /**
      * Returns a operation type from the {@link Method}
      *
