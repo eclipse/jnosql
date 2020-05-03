@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2020 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -15,11 +15,11 @@
 package org.eclipse.jnosql.artemis.keyvalue.reactive.spi;
 
 
-import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
 import org.eclipse.jnosql.artemis.DatabaseQualifier;
+import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueTemplate;
+import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueTemplateProducer;
 import org.eclipse.jnosql.artemis.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
@@ -29,7 +29,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class TemplateBean extends AbstractBean<KeyValueTemplate> {
+class ReactiveTemplateBean extends AbstractBean<ReactiveKeyValueTemplate> {
 
     private final Set<Type> types;
 
@@ -43,7 +43,7 @@ class TemplateBean extends AbstractBean<KeyValueTemplate> {
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public TemplateBean(BeanManager beanManager, String provider) {
+    public ReactiveTemplateBean(BeanManager beanManager, String provider) {
         super(beanManager);
         this.types = Collections.singleton(KeyValueTemplate.class);
         this.provider = provider;
@@ -56,15 +56,15 @@ class TemplateBean extends AbstractBean<KeyValueTemplate> {
     }
 
     @Override
-    public KeyValueTemplate create(CreationalContext<KeyValueTemplate> creationalContext) {
+    public ReactiveKeyValueTemplate create(CreationalContext<ReactiveKeyValueTemplate> creationalContext) {
 
-        KeyValueTemplateProducer producer = getInstance(KeyValueTemplateProducer.class);
-        BucketManager manager = getManager();
-        return producer.get(manager);
+        ReactiveKeyValueTemplateProducer producer = getInstance(ReactiveKeyValueTemplateProducer.class);
+        KeyValueTemplate template = getManager();
+        return producer.get(template);
     }
 
-    private BucketManager getManager() {
-        return getInstance(BucketManager.class, DatabaseQualifier.ofKeyValue(provider));
+    private KeyValueTemplate getManager() {
+        return getInstance(KeyValueTemplate.class, DatabaseQualifier.ofKeyValue(provider));
     }
 
     @Override
@@ -80,7 +80,7 @@ class TemplateBean extends AbstractBean<KeyValueTemplate> {
 
     @Override
     public String getId() {
-        return KeyValueTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
+        return ReactiveKeyValueTemplate.class.getName() + DatabaseType.KEY_VALUE + "-" + provider;
     }
 
 }
