@@ -33,9 +33,8 @@ class ReactiveDocumentRepositoryProxy<T> extends AbstractReactiveDocumentReposit
     ReactiveDocumentRepositoryProxy(ReactiveDocumentTemplate reactiveTemplate,
                                     DocumentTemplate template,
                                     Converters converters,
-                                    ClassMapping classMapping,
-                                    Class<T> repositoryType,
-                                    ClassMappings classMappings) {
+                                    ClassMappings classMappings,
+                                    Class<T> repositoryType) {
 
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];

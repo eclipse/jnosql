@@ -11,8 +11,7 @@
  */
 package org.eclipse.jnosql.artemis.document.reactive.query;
 
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
+import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.artemis.document.reactive.ReactiveDocumentTemplate;
@@ -29,21 +28,20 @@ class DefaultReactiveDocumentRepositoryProducer implements ReactiveDocumentRepos
     private ReactiveDocumentTemplateProducer producerReactive;
 
     @Inject
-    private DocumentRepositoryProducer producer;
-
-    @Inject
     private ClassMappings classMappings;
 
+    @Inject
+    private Converters converters;
+
     @Override
-    public <T, K, R extends ReactiveRepository<T, K>> R get(Class<R> repositoryClass,Class<T> type, DocumentTemplate template) {
+    public <T, K, R extends ReactiveRepository<T, K>> R get(Class<R> repositoryClass, DocumentTemplate template) {
         
         Objects.requireNonNull(template, "template is required");
         Objects.requireNonNull(repositoryClass, "repositoryClass is required");
 
         final ReactiveDocumentTemplate reactiveTemplate = producerReactive.get(template);
-        producer.get(type, template);
         ReactiveDocumentRepositoryProxy<R> handler = new ReactiveDocumentRepositoryProxy<>(reactiveTemplate,
-                template, repository, repositoryClass, classMappings);
+                template, converters, classMappings, repositoryClass);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);
