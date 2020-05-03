@@ -13,11 +13,9 @@ package org.eclipse.jnosql.artemis.keyvalue.reactive;
 
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-@ApplicationScoped
 class DefaultReactiveKeyValueTemplate extends AbstractReactiveKeyValueTemplate {
 
     private Instance<KeyValueTemplate> template;
