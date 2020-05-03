@@ -31,11 +31,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BucketManagerProducerExtensionTest {
 
     @Inject
-    private KeyValueTemplate template;
+    private KeyValueTemplate repository;
 
     @Inject
     @Database(value = DatabaseType.KEY_VALUE, provider = "keyvalueMock")
-    private KeyValueTemplate templateMock;
+    private KeyValueTemplate repositoryMock;
 
     @Inject
     private UserRepository userRepository;
@@ -50,9 +50,9 @@ public class BucketManagerProducerExtensionTest {
 
     @Test
     public void shouldUseMock() {
-        Person person = template.get(10L, Person.class).get();
+        Person person = repository.get(10L, Person.class).get();
 
-        Person personMock = templateMock.get(10L, Person.class).get();
+        Person personMock = repositoryMock.get(10L, Person.class).get();
 
         assertEquals("Default", person.getName());
         assertEquals("keyvalueMock", personMock.getName());
