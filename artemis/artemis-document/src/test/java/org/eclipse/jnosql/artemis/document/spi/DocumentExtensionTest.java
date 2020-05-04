@@ -16,6 +16,7 @@ package org.eclipse.jnosql.artemis.document.spi;
 
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
+import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.PersonRepository;
 import jakarta.nosql.tck.test.CDIExtension;
@@ -39,6 +40,13 @@ public class DocumentExtensionTest {
     @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
     private PersonRepository repositoryMock;
 
+    @Inject
+    @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
+    private DocumentTemplate templateMock;
+
+    @Inject
+    private DocumentTemplate template;
+
 
     @Test
     public void shouldInitiate() {
@@ -52,5 +60,11 @@ public class DocumentExtensionTest {
         assertNotNull(repositoryMock);
         Person person = repositoryMock.save(Person.builder().build());
         assertEquals("documentRepositoryMock", person.getName());
+    }
+
+    @Test
+    public void shouldInjectTemplate() {
+        assertNotNull(templateMock);
+        assertNotNull(template);
     }
 }
