@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.document.query;
+package org.eclipse.jnosql.artemis.document.spi;
 
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @CDIExtension
-public class DocumentRepositoryExtensionTest {
+public class DocumentExtensionTest {
 
 
     @Inject
