@@ -40,9 +40,9 @@ import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
  * Extension to start up the DocumentTemplate and Repository
  * from the {@link jakarta.nosql.mapping.Database} qualifier
  */
-public class DocumentProducer implements Extension {
+public class DocumentExtension implements Extension {
 
-    private static final Logger LOGGER = Logger.getLogger(DocumentProducer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DocumentExtension.class.getName());
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
