@@ -73,14 +73,14 @@ public class RepositoryDocumentBean extends AbstractBean<Repository> {
     }
 
     @Override
-    public Repository create(CreationalContext<Repository> creationalContext) {
+    public Repository create(CreationalContext<Repository> context) {
         ClassMappings classMappings = getInstance(ClassMappings.class);
-        DocumentTemplate repository = provider.isEmpty() ? getInstance(DocumentTemplate.class) :
+        DocumentTemplate template = provider.isEmpty() ? getInstance(DocumentTemplate.class) :
                 getInstance(DocumentTemplate.class, DatabaseQualifier.ofDocument(provider));
 
         Converters converters = getInstance(Converters.class);
 
-        DocumentRepositoryProxy handler = new DocumentRepositoryProxy(repository,
+        DocumentRepositoryProxy handler = new DocumentRepositoryProxy(template,
                 classMappings, type, converters);
         return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
