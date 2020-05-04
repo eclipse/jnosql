@@ -57,7 +57,7 @@ public abstract class AbstractReactiveDocumentRepositoryProxy<T> extends BaseDoc
                     getTemplate().delete(documentDeleteQuery);
                     return Collections.<Void>emptyList().iterator();
                 };
-                return ReactiveStreams.fromIterable(iterable);
+                return ReactiveStreams.fromIterable(iterable).buildRs();
             case OBJECT_METHOD:
                 return method.invoke(this, args);
             case JNOSQL_QUERY:
