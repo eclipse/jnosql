@@ -12,23 +12,21 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.document.query;
+package org.eclipse.jnosql.artemis.document.reactive.spi;
 
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.PersonRepository;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.artemis.document.reactive.ReactiveDocumentTemplate;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @CDIExtension
-public class DocumentExtensionTest {
+public class ReactiveDocumentExtensionTest {
 
 
     @Inject
@@ -39,18 +37,22 @@ public class DocumentExtensionTest {
     @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
     private PersonRepository repositoryMock;
 
+    @Inject
+    private ReactiveDocumentTemplate template;
+
+    @Inject
+    @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
+    private ReactiveDocumentTemplate templateMock;
 
     @Test
-    public void shouldInitiate() {
+    public void shouldInjectRepository() {
         assertNotNull(repository);
-        Person person = repository.save(Person.builder().build());
-        assertEquals("Default", person.getName());
+        assertNotNull(repositoryMock);
     }
 
     @Test
-    public void shouldUseMock(){
-        assertNotNull(repositoryMock);
-        Person person = repositoryMock.save(Person.builder().build());
-        assertEquals("documentRepositoryMock", person.getName());
+    public void shouldTemplateRepository(){
+        assertNotNull(template);
+        assertNotNull(templateMock);
     }
 }
