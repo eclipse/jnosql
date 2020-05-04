@@ -18,6 +18,7 @@ import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Param;
+import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.reflection.ClassMappings;
@@ -29,6 +30,7 @@ import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 import org.eclipse.microprofile.reactive.streams.operators.CompletionSubscriber;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
 import org.eclipse.microprofile.reactive.streams.operators.SubscriberBuilder;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +52,7 @@ import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -231,29 +234,29 @@ public class DocumentReactiveRepositoryProxyTest {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
-//        assertTrue(personRepository.existsById(10L));
-//        Mockito.verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
-//
-//        when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
-//                .thenReturn(Optional.empty());
-//        assertFalse(personRepository.existsById(10L));
-
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        final Publisher<Boolean> publisher = personRepository.existsById(10L);
+        final CompletionSubscriber<Boolean, Optional<Boolean>> subscriber = ReactiveStreams.<Boolean>builder().findFirst().build();
+        publisher.subscribe(subscriber);
+        final CompletionStage<Optional<Boolean>> completion = subscriber.getCompletion();
+        completion.thenApply(o -> o.orElse(false)).thenAccept(atomicBoolean::set);
+        assertTrue(atomicBoolean.get());
+        Mockito.verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
     }
 
     @Test
-    public void shouldFindAll() {
-        Person ada = Person.builder()
-                .withAge(20).withName("Ada").build();
+    public void shouldNotContainsById() {
+        when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
+                .thenReturn(Optional.empty());
 
-        when(template.select(any(DocumentQuery.class)))
-                .thenReturn(Stream.of(ada));
-
-        List<Person> persons = personRepository.findAll();
-        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        verify(template).select(captor.capture());
-        DocumentQuery query = captor.getValue();
-        assertFalse(query.getCondition().isPresent());
-        assertEquals("Person", query.getDocumentCollection());
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        final Publisher<Boolean> publisher = personRepository.existsById(10L);
+        final CompletionSubscriber<Boolean, Optional<Boolean>> subscriber = ReactiveStreams.<Boolean>builder().findFirst().build();
+        publisher.subscribe(subscriber);
+        final CompletionStage<Optional<Boolean>> completion = subscriber.getCompletion();
+        completion.thenApply(o -> o.orElse(true)).thenAccept(atomicBoolean::set);
+        assertFalse(atomicBoolean.get());
+        Mockito.verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
 
     }
 
@@ -274,13 +277,73 @@ public class DocumentReactiveRepositoryProxyTest {
     }
 
 
+    @Test
+    public void shouldFindAll() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        List<Person> persons = personRepository.findAll();
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        assertFalse(query.getCondition().isPresent());
+        assertEquals("Person", query.getDocumentCollection());
+
+    }
+
+    @Test
+    public void shouldFindByNameANDAge() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(Mockito.any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        Publisher<Person> publisher = personRepository.findByNameAndAge("name", 20);
+        final CompletionSubscriber<Person, List<Person>> subscriber = ReactiveStreams.<Person>builder().toList().build();
+        publisher.subscribe(subscriber);
+        AtomicReference<List<Person>> reference = new AtomicReference<>();
+        final CompletionStage<List<Person>> completion = subscriber.getCompletion();
+        completion.thenAccept(reference::set);
+        final List<Person> people = reference.get();
+        Assertions.assertNotNull(people);
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        assertThat(people, Matchers.contains(ada));
+
+    }
+
+    @Test
+    public void shouldExecuteJNoSQLQuery() {
+        personRepository.findByQuery();
+        verify(template).query("select * from Person");
+    }
+
+    @Test
+    public void shouldExecuteJNoSQLPrepare() {
+        PreparedStatement statement = Mockito.mock(PreparedStatement.class);
+        when(template.prepare(Mockito.anyString())).thenReturn(statement);
+        final Publisher<Person> publisher = personRepository.findByQuery("Ada");
+        final CompletionSubscriber<Person, List<Person>> subscriber = ReactiveStreams.<Person>builder().toList().build();
+        publisher.subscribe(subscriber);
+        final CompletionStage<List<Person>> completion = subscriber.getCompletion();
+        AtomicReference<List<Person>> reference = new AtomicReference<>();
+        completion.thenAccept(reference::set);
+        final List<Person> people = reference.get();
+        assertNotNull(people);
+        verify(statement).bind("id", "Ada");
+    }
+
     interface PersonRepository extends ReactiveRepository<Person, Long> {
 
         List<Person> findAll();
 
         Publisher<Void> deleteByName(String name);
 
-        List<Person> findByNameAndAge(String name, Integer age);
+        Publisher<Person> findByNameAndAge(String name, Integer age);
 
         @Query("select * from Person")
         Optional<Person> findByQuery();
