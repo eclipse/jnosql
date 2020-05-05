@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-abstract class BaseColumnRepository {
+public abstract class BaseColumnRepository {
 
     protected abstract Converters getConverters();
 
