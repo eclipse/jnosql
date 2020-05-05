@@ -16,7 +16,6 @@ package org.eclipse.jnosql.artemis.document.reactive.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.artemis.DatabaseQualifier;
@@ -36,7 +35,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Artemis discoveryBean to CDI extension to register {@link Repository}
+ * Artemis discoveryBean to CDI extension to register {@link ReactiveRepository}
  */
 public class ReactiveRepositoryDocumentBean extends AbstractBean<ReactiveRepository> {
 
