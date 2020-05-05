@@ -57,7 +57,7 @@ class TemplateBean extends AbstractBean<ColumnTemplate> {
 
 
     @Override
-    public ColumnTemplate create(CreationalContext<ColumnTemplate> creationalContext) {
+    public ColumnTemplate create(CreationalContext<ColumnTemplate> context) {
 
         ColumnTemplateProducer producer = getInstance(ColumnTemplateProducer.class);
         ColumnFamilyManager columnFamilyManager = getColumnFamilyManager();
