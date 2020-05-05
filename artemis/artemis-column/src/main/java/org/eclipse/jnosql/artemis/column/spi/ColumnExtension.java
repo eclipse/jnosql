@@ -40,9 +40,9 @@ import static jakarta.nosql.mapping.DatabaseType.COLUMN;
  * Extension to start up the ColumnTemplate and Repository
  * from the {@link jakarta.nosql.mapping.Database} qualifier
  */
-public class ColumnFamilyProducerExtension implements Extension {
+public class ColumnExtension implements Extension {
 
-    private static final Logger LOGGER = Logger.getLogger(ColumnFamilyProducerExtension.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ColumnExtension.class.getName());
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
