@@ -67,4 +67,10 @@ public class DocumentExtensionTest {
         assertNotNull(templateMock);
         assertNotNull(template);
     }
+
+    @Test
+    public void shouldInjectRepository() {
+        assertNotNull(repository);
+        assertNotNull(repositoryMock);
+    }
 }
