@@ -26,6 +26,10 @@ import jakarta.nosql.column.ColumnQueryParams;
 import jakarta.nosql.column.DeleteQueryConverter;
 import jakarta.nosql.column.SelectQueryConverter;
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.Page;
+import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.mapping.column.ColumnQueryPagination;
+import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.SelectQuery;
@@ -38,12 +42,17 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
-public abstract class BaseColumnRepository {
+public abstract class BaseColumnRepository<T> {
 
     protected abstract Converters getConverters();
 
     protected abstract ClassMapping getClassMapping();
+
+    protected abstract ColumnTemplate getTemplate();
 
     private ColumnObserverParser parser;
 
@@ -100,4 +109,35 @@ public abstract class BaseColumnRepository {
         return paramsBinder;
     }
 
+    protected Object executeQuery(Method method, Object[] args, Class<?> typeClass, ColumnQuery query) {
+        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
+                .withClassSource(typeClass)
+                .withMethodSource(method)
+                .withResult(() -> getTemplate().select(query))
+                .withSingleResult(() -> getTemplate().singleResult(query))
+                .withPagination(DynamicReturn.findPagination(args))
+                .withStreamPagination(streamPagination(query))
+                .withSingleResultPagination(getSingleResult(query))
+                .withPage(getPage(query))
+                .build();
+        return dynamicReturn.execute();
+    }
+
+    protected Function<Pagination, Page<T>> getPage(ColumnQuery query) {
+        return p -> getTemplate().select(ColumnQueryPagination.of(query, p));
+    }
+
+    protected Function<Pagination, Optional<T>> getSingleResult(ColumnQuery query) {
+        return p -> {
+            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
+            return getTemplate().singleResult(queryPagination);
+        };
+    }
+
+    protected Function<Pagination, Stream<T>> streamPagination(ColumnQuery query) {
+        return p -> {
+            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
+            return getTemplate().select(queryPagination);
+        };
+    }
 }

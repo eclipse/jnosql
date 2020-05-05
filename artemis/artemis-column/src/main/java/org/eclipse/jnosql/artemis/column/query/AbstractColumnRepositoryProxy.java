@@ -44,8 +44,6 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
 
     protected abstract Repository getRepository();
 
-    protected abstract ColumnTemplate getTemplate();
-
     protected abstract Converters getConverters();
 
 
@@ -83,36 +81,5 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
         }
     }
 
-    private Object executeQuery(Method method, Object[] args, Class<?> typeClass, ColumnQuery query) {
-        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(typeClass)
-                .withMethodSource(method)
-                .withResult(() -> getTemplate().select(query))
-                .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findPagination(args))
-                .withStreamPagination(streamPagination(query))
-                .withSingleResultPagination(getSingleResult(query))
-                .withPage(getPage(query))
-                .build();
-        return dynamicReturn.execute();
-    }
-
-    private Function<Pagination, Page<T>> getPage(ColumnQuery query) {
-        return p -> getTemplate().select(ColumnQueryPagination.of(query, p));
-    }
-
-    private Function<Pagination, Optional<T>> getSingleResult(ColumnQuery query) {
-        return p -> {
-            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
-            return getTemplate().singleResult(queryPagination);
-        };
-    }
-
-    private Function<Pagination, Stream<T>> streamPagination(ColumnQuery query) {
-        return p -> {
-            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
-            return getTemplate().select(queryPagination);
-        };
-    }
 
 }
