@@ -17,7 +17,6 @@ package org.eclipse.jnosql.artemis.document.reactive.spi;
 
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateProducer;
 import org.eclipse.jnosql.artemis.DatabaseQualifier;
 import org.eclipse.jnosql.artemis.document.reactive.ReactiveDocumentTemplate;
@@ -55,7 +54,7 @@ class ReactiveTemplateBean extends AbstractBean<ReactiveDocumentTemplate> {
 
     @Override
     public Class<?> getBeanClass() {
-        return DocumentTemplate.class;
+        return ReactiveDocumentTemplate.class;
     }
 
     @Override
@@ -69,7 +68,7 @@ class ReactiveTemplateBean extends AbstractBean<ReactiveDocumentTemplate> {
     }
 
     @Override
-    public ReactiveDocumentTemplate create(CreationalContext<ReactiveDocumentTemplate> creationalContext) {
+    public ReactiveDocumentTemplate create(CreationalContext<ReactiveDocumentTemplate> context) {
 
         DocumentTemplateProducer producer = getInstance(DocumentTemplateProducer.class);
         DocumentCollectionManager manager = getManager();
@@ -81,7 +80,7 @@ class ReactiveTemplateBean extends AbstractBean<ReactiveDocumentTemplate> {
     }
 
     @Override
-    public void destroy(ReactiveDocumentTemplate instance, CreationalContext<ReactiveDocumentTemplate> creationalContext) {
+    public void destroy(ReactiveDocumentTemplate instance, CreationalContext<ReactiveDocumentTemplate> context) {
 
     }
 
@@ -117,7 +116,7 @@ class ReactiveTemplateBean extends AbstractBean<ReactiveDocumentTemplate> {
 
     @Override
     public String getId() {
-        return ReactiveDocumentTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
+        return ReactiveDocumentTemplate.class.getName() + DatabaseType.DOCUMENT + "-" + provider;
     }
 
 }
