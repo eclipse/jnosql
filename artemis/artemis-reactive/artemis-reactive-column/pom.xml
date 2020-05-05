@@ -23,13 +23,13 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-     <artifactId>artemis-reactive-document</artifactId>
+     <artifactId>artemis-reactive-column</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
        <dependency>
             <groupId>org.eclipse.jnosql.artemis</groupId>
-            <artifactId>artemis-document</artifactId>
+            <artifactId>artemis-column</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -39,9 +39,10 @@
         </dependency>
         <dependency>
             <groupId>jakarta.nosql.tck.mapping</groupId>
-            <artifactId>mapping-tck-document</artifactId>
+            <artifactId>mapping-tck-column</artifactId>
             <version>${jakarta.nosql.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>

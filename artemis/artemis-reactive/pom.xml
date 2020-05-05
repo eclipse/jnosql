@@ -33,6 +33,7 @@
     <modules>
         <module>artemis-reactive-core</module>
         <module>artemis-reactive-key-value</module>
+        <module>artemis-reactive-column</module>
         <module>artemis-reactive-document</module>
     </modules>
 
