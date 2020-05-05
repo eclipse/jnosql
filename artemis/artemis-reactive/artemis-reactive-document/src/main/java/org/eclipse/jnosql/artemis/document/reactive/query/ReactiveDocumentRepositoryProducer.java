@@ -17,7 +17,6 @@ import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 
 /**
  * The producer of {@link ReactiveRepository}
- *
  */
 public interface ReactiveDocumentRepositoryProducer {
     /**
