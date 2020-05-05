@@ -18,20 +18,12 @@ package org.eclipse.jnosql.artemis.column.query;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.column.ColumnQueryPagination;
-import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.artemis.query.RepositoryType;
 import org.eclipse.jnosql.artemis.repository.DynamicQueryMethodReturn;
-import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 
 /**
@@ -45,7 +37,6 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
     protected abstract Repository getRepository();
 
     protected abstract Converters getConverters();
-
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
