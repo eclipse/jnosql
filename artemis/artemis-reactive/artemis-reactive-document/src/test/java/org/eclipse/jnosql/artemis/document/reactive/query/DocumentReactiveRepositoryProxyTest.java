@@ -29,7 +29,6 @@ import org.eclipse.jnosql.artemis.document.reactive.ReactiveDocumentTemplateProd
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 import org.eclipse.microprofile.reactive.streams.operators.CompletionSubscriber;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
-import org.eclipse.microprofile.reactive.streams.operators.SubscriberBuilder;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +41,6 @@ import javax.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
