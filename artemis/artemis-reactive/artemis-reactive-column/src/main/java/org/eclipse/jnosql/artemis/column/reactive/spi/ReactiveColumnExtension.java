@@ -34,7 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
+import static jakarta.nosql.mapping.DatabaseType.COLUMN;
 
 /**
  * Extension to start up the ColumnFamily and Repository
@@ -64,7 +64,7 @@ public class ReactiveColumnExtension implements Extension {
 
 
     <T, X extends ColumnFamilyManager> void observes(@Observes final ProcessProducer<T, X> pp) {
-        Databases.addDatabase(pp, DOCUMENT, databases);
+        Databases.addDatabase(pp, COLUMN, databases);
     }
 
 
