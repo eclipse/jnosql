@@ -18,6 +18,7 @@ import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.entities.PersonRepository;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
@@ -27,27 +28,47 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @CDIExtension
-public class ColumnFamilyProducerExtensionTest {
+public class ColumnExtensionTest {
 
     @Inject
     @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
-    private ColumnTemplate managerMock;
+    private ColumnTemplate templateMock;
 
     @Inject
-    private ColumnTemplate manager;
+    private ColumnTemplate template;
+
+    @Inject
+    @Database(value = DatabaseType.COLUMN)
+    private PersonRepository repository;
+
+    @Inject
+    @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
+    private PersonRepository repositoryMock;
 
     @Test
     public void shouldInstance() {
-        assertNotNull(manager);
-        assertNotNull(managerMock);
+        assertNotNull(template);
+        assertNotNull(templateMock);
     }
 
     @Test
     public void shouldSave() {
-        Person person = manager.insert(Person.builder().build());
-        Person personMock = managerMock.insert(Person.builder().build());
+        Person person = template.insert(Person.builder().build());
+        Person personMock = templateMock.insert(Person.builder().build());
 
         assertEquals("Default", person.getName());
         assertEquals("columnRepositoryMock", personMock.getName());
+    }
+
+    @Test
+    public void shouldInjectRepository() {
+        assertNotNull(repository);
+        assertNotNull(repositoryMock);
+    }
+
+    @Test
+    public void shouldInjectTemplate() {
+        assertNotNull(templateMock);
+        assertNotNull(template);
     }
 }
