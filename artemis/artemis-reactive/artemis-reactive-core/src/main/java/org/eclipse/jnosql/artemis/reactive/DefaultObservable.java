@@ -67,6 +67,7 @@ final class DefaultObservable<T> implements Observable<T> {
     public <R, A> CompletionStage<R> collect(Collector<? super T, A, R> collector) {
         Objects.requireNonNull(collector, "collector is required");
         final CompletionSubscriber<T, R> subscriber = ReactiveStreams.<T>builder().collect(collector).build();
+        publisher.subscribe(subscriber);
         return subscriber.getCompletion();
     }
 
