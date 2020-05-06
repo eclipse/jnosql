@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -163,5 +164,43 @@ class ObservableTest {
                 new Animal("Tiger")));
     }
 
+    @Test
+    public void shouldBlockSingleResultDuration() {
+        Publisher<Animal> publisher = ReactiveStreams
+                .fromIterable(Arrays.asList(new Animal("Lion"))).buildRs();
+        final Observable<Animal> observable = Observable.of(publisher);
+        final Optional<Animal> singleResult = observable.blockSingleResult(Duration.ofSeconds(10));
+        Assertions.assertTrue(singleResult.isPresent());
+    }
+
+    @Test
+    public void shouldBlockFirsttDuration() {
+        Publisher<Animal> publisher = ReactiveStreams
+                .fromIterable(Arrays.asList(new Animal("Lion"), new Animal("Tiger"))).buildRs();
+        final Observable<Animal> observable = Observable.of(publisher);
+        final Optional<Animal> singleResult = observable.blockFirst((Duration.ofSeconds(10)));
+        Assertions.assertEquals(new Animal("Lion"), singleResult.get());
+    }
+
+    @Test
+    public void shouldBlockListDuration() {
+        final List<Animal> animals = Arrays.asList(new Animal("Lion"), new Animal("Tiger"));
+        Publisher<Animal> publisher = ReactiveStreams
+                .fromIterable(animals).buildRs();
+        final Observable<Animal> observable = Observable.of(publisher);
+        final List<Animal> result = observable.blockList((Duration.ofSeconds(10)));
+        Assertions.assertEquals(animals, result);
+    }
+
+    @Test
+    public void shouldBlockCollectDuration() {
+        final List<Animal> animals = Arrays.asList(new Animal("Lion"), new Animal("Tiger"));
+        Publisher<Animal> publisher = ReactiveStreams
+                .fromIterable(animals).buildRs();
+        final Observable<Animal> observable = Observable.of(publisher);
+        final Set<Animal> result = observable.blockCollect(Collectors.toSet(), Duration.ofSeconds(10));
+        assertThat(result, containsInAnyOrder(new Animal("Lion"),
+                new Animal("Tiger")));
+    }
 
 }
