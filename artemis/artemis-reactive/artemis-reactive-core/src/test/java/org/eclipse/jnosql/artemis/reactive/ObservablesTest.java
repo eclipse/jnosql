@@ -12,10 +12,13 @@
 package org.eclipse.jnosql.artemis.reactive;
 
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class ObservablesTest {
 
@@ -24,5 +27,8 @@ class ObservablesTest {
     public void shouldReturnInstance() {
         Publisher<Animal> predicate = ReactiveStreams
                 .fromIterable(Arrays.asList(new Animal("Lion"))).buildRs();
+        Assertions.assertNotNull(predicate);
     }
+
+
 }

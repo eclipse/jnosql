@@ -12,6 +12,15 @@
 package org.eclipse.jnosql.artemis.reactive;
 
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletionStage;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 import static java.util.Objects.requireNonNull;
 
@@ -22,6 +31,105 @@ import static java.util.Objects.requireNonNull;
  */
 public interface Observables<T> {
 
+
+    /**
+     * Get the {@link Publisher}
+     *
+     * @return the {@link Publisher}
+     */
+    Publisher<T> getPublisher();
+
+    /**
+     * Creates a {@link Subscriber} and return a single result
+     *
+     * @return the {@link CompletionStage} with the single result
+     * @throws jakarta.nosql.NonUniqueResultException when there is more than one result
+     */
+    CompletionStage<Optional<T>> getSingleResult();
+
+    /**
+     * Creates a {@link Subscriber} and return the first result
+     *
+     * @return the {@link CompletionStage} with the single result
+     */
+    CompletionStage<Optional<T>> getFirst();
+
+    /**
+     * Creates a {@link Subscriber} and return the result as list
+     *
+     * @return the {@link CompletionStage} with the list
+     */
+    CompletionStage<List<T>> getList();
+
+    /**
+     * Creates a {@link Subscriber} and return the result as {@link Collector}
+     *
+     * @param collector the collect
+     * @param <R>       the type of the result
+     * @param <A>       the intermediate accumulation type of the Collector
+     * @return the result of the reduction as @{@link CompletionStage}
+     * @throws NullPointerException when collector is null
+     */
+    <R, A> CompletionStage<R> collect(Collector<? super T, A, R> collector);
+
+    /**
+     * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its completes.
+     * @return the {@link Optional} of a single result
+     * @throws jakarta.nosql.NonUniqueResultException
+     */
+    Optional<T> blockSingleResult();
+
+    /**
+     * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its first value or completes.
+     * @return the {@link Optional} of the first result
+     */
+    Optional<T> blockFirst();
+
+    /**
+     * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its list of values
+     * @return the {@link List} of a single result
+     */
+    List<T> blockList();
+
+    /**
+     * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its values as {@link Collector}
+     * @return the {@link Collector} of a single result
+     * @throws NullPointerException
+     */
+    <R, A> R blockCollect(Collector<? super T, A, R> collector);
+
+
+    /**
+     * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its completes.
+     * @param duration the maximum time period to wait for before raising an Exception
+     * @return the {@link Optional} of a single result
+     * @throws jakarta.nosql.NonUniqueResultException
+     */
+    Optional<T> blockSingleResult(Duration duration);
+
+    /**
+     * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its first value or completes.
+     * @param duration the maximum time period to wait for before raising an Exception
+     * @return the {@link Optional} of the first result
+     * @throws jakarta.nosql.NonUniqueResultException
+     */
+    Optional<T> blockFirst(Duration duration);
+
+    /**
+     * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its list of values
+     * @param duration the maximum time period to wait for before raising an Exception
+     * @return the {@link List} of a single result
+     * @throws jakarta.nosql.NonUniqueResultException
+     */
+    List<T> blockList(Duration duration);
+
+    /**
+     * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its values as {@link Collector}
+     * @param duration the maximum time period to wait for before raising an Exception
+     * @return the {@link Collector} of a single result
+     * @throws jakarta.nosql.NonUniqueResultException
+     */
+    <R, A> R blockCollect(Collector<? super T, A, R> collector, Duration duration);
 
     /**
      * Creates a {@link Observables} instance
