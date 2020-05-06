@@ -35,7 +35,6 @@ public class PredicatesTest {
     @Test
     public void shouldReturnEmpty() throws ExecutionException, InterruptedException {
         Publisher<String> predicate = ReactiveStreams.fromIterable(Collections.<String>emptyList()).buildRs();
-        ReactiveStreams.builder().collect()
         final CompletionSubscriber<String, List<String>> subscriber = ReactiveStreams.<String>builder().limit(2).toList().build();
         predicate.subscribe(subscriber);
         final CompletionStage<List<String>> completion = subscriber.getCompletion();
