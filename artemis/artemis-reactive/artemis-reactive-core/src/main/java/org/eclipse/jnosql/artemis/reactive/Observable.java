@@ -18,8 +18,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import static java.util.Objects.requireNonNull;
@@ -29,7 +27,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @param <T> the Entity
  */
-public interface Observables<T> {
+public interface Observable<T> {
 
 
     /**
@@ -132,15 +130,15 @@ public interface Observables<T> {
     <R, A> R blockCollect(Collector<? super T, A, R> collector, Duration duration);
 
     /**
-     * Creates a {@link Observables} instance
+     * Creates a {@link Observable} instance
      *
      * @param publisher the publisher
      * @param <T>       the entity type
-     * @return a instance of {@link Observables}
+     * @return a instance of {@link Observable}
      * @throws NullPointerException when publisher is null
      */
-    static <T> Observables<T> of(Publisher<T> publisher) {
-        return new DefaultObservables<>(requireNonNull(publisher, "publisher"));
+    static <T> Observable<T> of(Publisher<T> publisher) {
+        return new DefaultObservable<>(requireNonNull(publisher, "publisher"));
     }
 
 }

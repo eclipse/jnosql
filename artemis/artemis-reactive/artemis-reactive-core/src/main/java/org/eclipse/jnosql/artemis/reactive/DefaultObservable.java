@@ -14,11 +14,11 @@ package org.eclipse.jnosql.artemis.reactive;
 
 import org.reactivestreams.Publisher;
 
-final class DefaultObservables<T> implements Observables<T> {
+final class DefaultObservable<T> implements Observable<T> {
 
     private final Publisher<T> publisher;
 
-    DefaultObservables(Publisher<T> publisher) {
+    DefaultObservable(Publisher<T> publisher) {
         this.publisher = publisher;
     }
 }
