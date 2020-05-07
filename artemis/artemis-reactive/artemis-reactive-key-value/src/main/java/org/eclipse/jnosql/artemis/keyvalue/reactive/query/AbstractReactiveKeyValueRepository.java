@@ -12,10 +12,9 @@
 package org.eclipse.jnosql.artemis.keyvalue.reactive.query;
 
 import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueTemplate;
+import org.eclipse.jnosql.artemis.reactive.Observable;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
-import org.eclipse.microprofile.reactive.streams.operators.CompletionSubscriber;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
-import org.reactivestreams.Publisher;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -33,51 +32,49 @@ public abstract class AbstractReactiveKeyValueRepository<T, K> implements Reacti
     protected abstract ReactiveKeyValueTemplate getTemplate();
 
     @Override
-    public <S extends T> Publisher<S> save(S entity) {
+    public <S extends T> Observable<S> save(S entity) {
         return getTemplate().put(entity);
     }
 
     @Override
-    public <S extends T> Publisher<S> save(Iterable<S> entities) {
+    public <S extends T> Observable<S> save(Iterable<S> entities) {
         return getTemplate().put(entities);
     }
 
     @Override
-    public Publisher<Void> deleteById(K id) {
+    public Observable<Void> deleteById(K id) {
         return getTemplate().delete(id);
     }
 
     @Override
-    public Publisher<Void> deleteById(Iterable<K> ids) {
+    public Observable<Void> deleteById(Iterable<K> ids) {
         return getTemplate().delete(ids);
     }
 
     @Override
-    public Publisher<T> findById(K id) {
+    public Observable<T> findById(K id) {
         return getTemplate().get(id, typeClass);
     }
 
     @Override
-    public Publisher<T> findById(Iterable<K> ids) {
+    public Observable<T> findById(Iterable<K> ids) {
         return getTemplate().get(ids, typeClass);
     }
 
     @Override
-    public Publisher<Boolean> existsById(K id) {
-        final Publisher<T> publisher = getTemplate().get(id, typeClass);
-        final CompletionSubscriber<Object, Optional<Object>> first = ReactiveStreams.builder().<T>findFirst().build();
-        publisher.subscribe(first);
-        final CompletionStage<Optional<Object>> completion = first.getCompletion();
+    public Observable<Boolean> existsById(K id) {
+        final Observable<T> observable = getTemplate().get(id, typeClass);
+        final CompletionStage<Optional<T>> completion = observable.getFirst();
         Iterable<Boolean> iterable = () -> {
             AtomicBoolean atomicBoolean = new AtomicBoolean();
             completion.thenAccept(o -> atomicBoolean.set(o.isPresent()));
             return Collections.singleton(atomicBoolean.get()).iterator();
         };
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
     @Override
-    public Publisher<Long> count() {
+    public Observable<Long> count() {
         throw new UnsupportedOperationException("The key-value type does not support count method");
     }
 }

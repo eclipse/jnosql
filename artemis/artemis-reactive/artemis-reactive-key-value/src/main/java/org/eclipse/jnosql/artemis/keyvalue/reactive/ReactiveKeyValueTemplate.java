@@ -11,7 +11,7 @@
  */
 package org.eclipse.jnosql.artemis.keyvalue.reactive;
 
-import org.reactivestreams.Publisher;
+import org.eclipse.jnosql.artemis.reactive.Observable;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -29,7 +29,7 @@ public interface ReactiveKeyValueTemplate {
      * @return the entity
      * @throws NullPointerException when entity is null
      */
-    <T> Publisher<T> put(T entity);
+    <T> Observable<T> put(T entity);
 
     /**
      * Saves the entity with time to live
@@ -41,7 +41,7 @@ public interface ReactiveKeyValueTemplate {
      * @throws NullPointerException          when entity is null
      * @throws UnsupportedOperationException when expired time is not supported
      */
-    <T> Publisher<T> put(T entity, Duration ttl);
+    <T> Observable<T> put(T entity, Duration ttl);
 
     /**
      * Saves the {@link Iterable} of entities
@@ -51,7 +51,7 @@ public interface ReactiveKeyValueTemplate {
      * @return the entities
      * @throws NullPointerException when the iterable is null
      */
-    <T> Publisher<T> put(Iterable<T> entities);
+    <T> Observable<T> put(Iterable<T> entities);
 
     /**
      * Saves the {@link Iterable} of entities with a defined time to live
@@ -63,7 +63,7 @@ public interface ReactiveKeyValueTemplate {
      * @throws NullPointerException          when the iterable is null
      * @throws UnsupportedOperationException when expired time is not supported
      */
-    <T> Publisher<T> put(Iterable<T> entities, Duration ttl);
+    <T> Observable<T> put(Iterable<T> entities, Duration ttl);
 
     /**
      * Finds the Value from a key
@@ -75,7 +75,7 @@ public interface ReactiveKeyValueTemplate {
      * @return the {@link Optional} when is not found will return a {@link Optional#empty()}
      * @throws NullPointerException when the key is null
      */
-    <K, T> Publisher<T> get(K key, Class<T> entityClass);
+    <K, T> Observable<T> get(K key, Class<T> entityClass);
 
     /**
      * Executes query in the database
@@ -86,7 +86,7 @@ public interface ReactiveKeyValueTemplate {
      * @return the result list, if either <b>put</b> or <b>remove</b> it will return empty
      * @throws NullPointerException when query is null, if the query is <b>get</b> the entity class is required
      */
-    <T> Publisher<T> query(String query, Class<T> entityClass);
+    <T> Observable<T> query(String query, Class<T> entityClass);
 
     /**
      * Executes query in the database then returns as single result
@@ -97,7 +97,7 @@ public interface ReactiveKeyValueTemplate {
      * @return the result {@link Optional}, if either <b>put</b> or <b>remove</b> it will return {@link Optional#empty()}
      * @throws NullPointerException when query is null, if the query is <b>get</b> the entity class is required
      */
-    <T> Publisher<T> getSingleResult(String query, Class<T> entityClass);
+    <T> Observable<T> getSingleResult(String query, Class<T> entityClass);
 
     /**
      * Executes query in the database and don't return result, e.g.: when the query is either <b>remove</b> or
@@ -106,7 +106,7 @@ public interface ReactiveKeyValueTemplate {
      * @param query the query
      * @throws NullPointerException when query is null
      */
-    Publisher<Void> query(String query);
+    Observable<Void> query(String query);
 
 
     /**
@@ -119,7 +119,7 @@ public interface ReactiveKeyValueTemplate {
      * @return the list of result
      * @throws NullPointerException when either the keys or the entities values are null
      */
-    <K, T> Publisher<T> get(Iterable<K> keys, Class<T> entityClass);
+    <K, T> Observable<T> get(Iterable<K> keys, Class<T> entityClass);
 
     /**
      * Removes an entity from key
@@ -128,7 +128,7 @@ public interface ReactiveKeyValueTemplate {
      * @param <K> the key type
      * @throws NullPointerException when the key is null
      */
-    <K> Publisher<Void> delete(K key);
+    <K> Observable<Void> delete(K key);
 
     /**
      * Removes entities from keys
@@ -137,6 +137,6 @@ public interface ReactiveKeyValueTemplate {
      * @param <K>  the key type
      * @throws NullPointerException when the key is null
      */
-    <K> Publisher<Void> delete(Iterable<K> keys);
+    <K> Observable<Void> delete(Iterable<K> keys);
 
 }

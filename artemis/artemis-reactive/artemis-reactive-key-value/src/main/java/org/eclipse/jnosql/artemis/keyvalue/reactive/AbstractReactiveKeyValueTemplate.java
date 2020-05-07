@@ -12,8 +12,8 @@
 package org.eclipse.jnosql.artemis.keyvalue.reactive;
 
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.artemis.reactive.Observable;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
-import org.reactivestreams.Publisher;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -30,86 +30,86 @@ public abstract class AbstractReactiveKeyValueTemplate implements ReactiveKeyVal
     protected abstract KeyValueTemplate getTemplate();
     
     @Override
-    public <T> Publisher<T> put(T entity) {
+    public <T> Observable<T> put(T entity) {
         Iterable<T> iterable = () -> singleton(getTemplate().put(entity)).iterator();
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
     @Override
-    public <T> Publisher<T> put(T entity, Duration ttl) {
+    public <T> Observable<T> put(T entity, Duration ttl) {
         Iterable<T> iterable = () -> singleton(getTemplate().put(entity, ttl)).iterator();
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
     @Override
-    public <T> Publisher<T> put(Iterable<T> entities) {
+    public <T> Observable<T> put(Iterable<T> entities) {
         final Iterable<T> iterable = () -> getTemplate().put(entities).iterator();
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
     @Override
-    public <T> Publisher<T> put(Iterable<T> entities, Duration ttl) {
+    public <T> Observable<T> put(Iterable<T> entities, Duration ttl) {
         final Iterable<T> iterable = () -> getTemplate().put(entities, ttl).iterator();
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
     @Override
-    public <K, T> Publisher<T> get(K key, Class<T> entityClass) {
+    public <K, T> Observable<T> get(K key, Class<T> entityClass) {
         final Iterable<T> iterable = () -> {
             final Optional<T> optional = getTemplate().get(key, entityClass);
             return optional.map(Collections::singleton).orElse(emptySet()).iterator();
         };
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
     @Override
-    public <K, T> Publisher<T> get(Iterable<K> keys, Class<T> entityClass) {
+    public <K, T> Observable<T> get(Iterable<K> keys, Class<T> entityClass) {
         final Iterable<T> iterable = () -> getTemplate().get(keys, entityClass).iterator();
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
     @Override
-    public <T> Publisher<T> query(String query, Class<T> entityClass) {
+    public <T> Observable<T> query(String query, Class<T> entityClass) {
         final Iterable<T> iterable = () ->getTemplate().query(query, entityClass).iterator();
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
     @Override
-    public <T> Publisher<T> getSingleResult(String query, Class<T> entityClass) {
+    public <T> Observable<T> getSingleResult(String query, Class<T> entityClass) {
         final Iterable<T> iterable = () -> {
             final Optional<T> optional = getTemplate().getSingleResult(query, entityClass);
             return optional.map(Collections::singleton).orElse(emptySet()).iterator();
         };
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
     @Override
-    public Publisher<Void> query(String query) {
+    public Observable<Void> query(String query) {
         final Iterable<Void> iterable = () -> {
             getTemplate().query(query);
             return Collections.<Void>emptyList().iterator();
         };
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
 
     @Override
-    public <K> Publisher<Void> delete(K key) {
+    public <K> Observable<Void> delete(K key) {
         final Iterable<Void> iterable = () -> {
             getTemplate().delete(key);
             return Collections.<Void>emptyList().iterator();
         };
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
     @Override
-    public <K> Publisher<Void> delete(Iterable<K> keys) {
+    public <K> Observable<Void> delete(Iterable<K> keys) {
         final Iterable<Void> iterable = () -> {
             getTemplate().delete(keys);
             return Collections.<Void>emptyList().iterator();
         };
 
-        return ReactiveStreams.fromIterable(iterable).buildRs();
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
     
 }
