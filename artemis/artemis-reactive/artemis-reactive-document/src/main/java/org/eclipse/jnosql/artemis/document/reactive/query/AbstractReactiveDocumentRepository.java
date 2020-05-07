@@ -18,6 +18,8 @@ import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.artemis.document.reactive.ReactiveDocumentTemplate;
+import org.eclipse.jnosql.artemis.reactive.Observable;
+import org.eclipse.jnosql.artemis.reactive.ReactiveException;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 import org.eclipse.microprofile.reactive.streams.operators.CompletionSubscriber;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
@@ -27,7 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutionException;
 
 import static jakarta.nosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 import static java.util.Objects.nonNull;
@@ -39,17 +43,14 @@ public abstract class AbstractReactiveDocumentRepository<T, K> implements Reacti
     protected abstract ReactiveDocumentTemplate getTemplate();
 
     protected abstract ClassMapping getClassMapping();
-
     @Override
-    public <S extends T> Publisher<S> save(S entity) {
+    public <S extends T> Observable<S> save(S entity) {
         Objects.requireNonNull(entity, "entity is required");
         Object id = getIdField().read(entity);
 
         if (nonNull(id)) {
-            final Publisher<Boolean> publisher = existsById((K) id);
-            final CompletionSubscriber<Boolean, Optional<Boolean>> subscriber = ReactiveStreams.<Boolean>builder().findFirst().build();
-            publisher.subscribe(subscriber);
-            final CompletionStage<Boolean> stage = subscriber.getCompletion().thenApply(o -> o.orElse(false));
+            final Observable<Boolean> publisher = existsById((K) id);
+            final CompletionStage<Boolean> stage = publisher.getFirst().thenApply(o -> o.orElse(false));
 
             final CompletionStage<S> operation = stage.thenApplyAsync(exist -> {
                 if (exist) {
@@ -58,23 +59,20 @@ public abstract class AbstractReactiveDocumentRepository<T, K> implements Reacti
                     return getTemplate().insert(entity);
                 }
             }).thenCompose(this::loadPublisher);
-            return ReactiveStreams.fromCompletionStage(operation).buildRs();
+            return Observable.of(ReactiveStreams.fromCompletionStage(operation).buildRs());
         } else {
             return getTemplate().insert(entity);
         }
     }
 
     @Override
-    public <S extends T> Publisher<S> save(Iterable<S> entities) {
+    public <S extends T> Observable<S> save(Iterable<S> entities) {
         Objects.requireNonNull(entities, "entities is required");
 
         List<CompletionStage<S>> stages = new ArrayList<>();
         for (S entity : entities) {
-            final Publisher<S> publisher = save(entity);
-            final CompletionSubscriber<S, Optional<S>> subscriber = ReactiveStreams.<S>builder()
-                    .findFirst().build();
-            publisher.subscribe(subscriber);
-            final CompletionStage<S> stage = subscriber.getCompletion().thenApply(v -> v.orElse(null));
+            final Observable<S> publisher = save(entity);
+            final CompletionStage<S> stage = publisher.getFirst().thenApply(v -> v.orElse(null));
             stages.add(stage);
         }
 
@@ -82,24 +80,21 @@ public abstract class AbstractReactiveDocumentRepository<T, K> implements Reacti
                 .map(ReactiveStreams::fromCompletionStage)
                 .reduce(ReactiveStreams::concat)
                 .orElse(ReactiveStreams.empty()).buildRs();
-        return publisher;
+        return Observable.of(publisher);
     }
 
     @Override
-    public Publisher<Void> deleteById(K id) {
+    public Observable<Void> deleteById(K id) {
         return getTemplate().delete(getEntityClass(), id);
     }
 
     @Override
-    public Publisher<Void> deleteById(Iterable<K> ids) {
+    public Observable<Void> deleteById(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         List<CompletionStage<Void>> stages = new ArrayList<>();
         for (K id : ids) {
-            final Publisher<Void> publisher = deleteById(id);
-            final CompletionSubscriber<Void, Optional<Void>> subscriber = ReactiveStreams.<Void>builder()
-                    .findFirst().build();
-            publisher.subscribe(subscriber);
-            final CompletionStage<Void> stage = subscriber.getCompletion().thenApply(v -> v.orElse(null));
+            final Observable<Void> publisher = deleteById(id);
+            final CompletionStage<Void> stage = publisher.getFirst().thenApply(v -> v.orElse(null));
             stages.add(stage);
         }
 
@@ -107,47 +102,60 @@ public abstract class AbstractReactiveDocumentRepository<T, K> implements Reacti
                 .map(ReactiveStreams::fromCompletionStage)
                 .reduce(ReactiveStreams::concat)
                 .orElse(ReactiveStreams.empty()).buildRs();
-        return publisher;
+        return Observable.of(publisher);
     }
 
     @Override
-    public Publisher<T> findById(K id) {
+    public Observable<T> findById(K id) {
         requireNonNull(id, "id is required");
         return getTemplate().find(getEntityClass(), id);
     }
 
     @Override
-    public Publisher<T> findById(Iterable<K> ids) {
+    public Observable<T> findById(Iterable<K> ids) {
         requireNonNull(ids, "id is required");
 
-        List<CompletionStage<T>> stages = new ArrayList<>();
+        List<CompletionStage<Optional<T>>> stages = new ArrayList<>();
         for (K id : ids) {
-            final Publisher<T> publisher = findById(id);
-            final CompletionSubscriber<T, Optional<T>> subscriber = ReactiveStreams.<T>builder().findFirst().build();
-            publisher.subscribe(subscriber);
-            final CompletionStage<T> completion = subscriber.getCompletion().thenApply(Optional::get);
-            stages.add(completion);
+            final Observable<T> publisher = findById(id);
+            final CompletionStage<Optional<T>> subscriber = publisher.getFirst();
+            stages.add(subscriber);
         }
 
-        final Publisher<T> publisher = stages.stream().map(ReactiveStreams::fromCompletionStage)
+        final Publisher<Optional<T>> publisher = stages.stream()
+                .map(ReactiveStreams::fromCompletionStage)
                 .reduce(ReactiveStreams::concat)
                 .orElse(ReactiveStreams.empty()).buildRs();
-        return publisher;
-    }
 
-    @Override
-    public Publisher<Boolean> existsById(K id) {
-        requireNonNull(id, "is is required");
-        final Publisher<T> publisher = findById(id);
-        final CompletionSubscriber<T, Optional<T>> subscriber = ReactiveStreams.<T>builder().findFirst().build();
+        final CompletionSubscriber<Optional<T>, List<T>> subscriber = ReactiveStreams.<Optional<T>>builder()
+                .filter(Optional::isPresent)
+                .map(Optional::get).toList().build();
+
         publisher.subscribe(subscriber);
-        final CompletionStage<Optional<T>> completion = subscriber.getCompletion();
-        final CompletionStage<Boolean> exist = completion.thenApply(o -> o.isPresent());
-        return ReactiveStreams.fromCompletionStage(exist).buildRs();
+
+        Iterable<T> iterable = () -> {
+            final CompletionStage<List<T>> completion = subscriber.getCompletion();
+            final CompletableFuture<List<T>> future = completion.toCompletableFuture();
+            try {
+                return future.get().iterator();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new ReactiveException("There is a error to load the findById", e);
+            }
+        };
+        return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
 
     @Override
-    public Publisher<Long> count() {
+    public Observable<Boolean> existsById(K id) {
+        requireNonNull(id, "is is required");
+        final Observable<T> publisher = findById(id);
+        final CompletionStage<Optional<T>> completion = publisher.getFirst();
+        final CompletionStage<Boolean> exist = completion.thenApply(o -> o.isPresent());
+        return Observable.of(ReactiveStreams.fromCompletionStage(exist).buildRs());
+    }
+
+    @Override
+    public Observable<Long> count() {
         return getTemplate().count(getEntityClass());
     }
 
@@ -159,11 +167,8 @@ public abstract class AbstractReactiveDocumentRepository<T, K> implements Reacti
         return (Class<T>) getClassMapping().getClassInstance();
     }
 
-    private <S extends T> CompletionStage<S> loadPublisher(Publisher<S> publisher) {
-        final CompletionSubscriber<S, Optional<S>> first = ReactiveStreams.<S>builder().findFirst().build();
-        publisher.subscribe(first);
-        final CompletionStage<Optional<S>> completion = first.getCompletion();
-        return completion.thenApply(o -> o.orElseThrow(()-> new MappingException("An Error to load the Reactive Save")));
+    private <S extends T> CompletionStage<S> loadPublisher(Observable<S> publisher) {
+        final CompletionStage<Optional<S>> completion = publisher.getFirst();
+        return completion.thenApply(o -> o.orElseThrow(() -> new MappingException("An Error to load the Reactive Save")));
     }
-
 }

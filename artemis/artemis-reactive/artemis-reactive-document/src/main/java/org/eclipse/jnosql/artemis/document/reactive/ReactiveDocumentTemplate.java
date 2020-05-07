@@ -16,7 +16,7 @@ import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.reactivestreams.Publisher;
+import org.eclipse.jnosql.artemis.reactive.Observable;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -32,7 +32,7 @@ public interface ReactiveDocumentTemplate {
      * @return the entity saved
      * @throws NullPointerException when document is null
      */
-    <T> Publisher<T> insert(T entity);
+    <T> Observable<T> insert(T entity);
 
     /**
      * Saves entity with time to live
@@ -43,7 +43,7 @@ public interface ReactiveDocumentTemplate {
      * @return the entity saved
      * @throws NullPointerException when either entity or ttl are null
      */
-    <T> Publisher<T> insert(T entity, Duration ttl);
+    <T> Observable<T> insert(T entity, Duration ttl);
 
     /**
      * Saves entity, by default it's just run for each saving using
@@ -55,7 +55,7 @@ public interface ReactiveDocumentTemplate {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    <T> Publisher<T> insert(Iterable<T> entities);
+    <T> Observable<T> insert(Iterable<T> entities);
 
     /**
      * Saves documents collection entity with time to live, by default it's just run for each saving using
@@ -68,7 +68,7 @@ public interface ReactiveDocumentTemplate {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    <T> Publisher<T> insert(Iterable<T> entities, Duration ttl);
+    <T> Observable<T> insert(Iterable<T> entities, Duration ttl);
 
     /**
      * Updates a entity
@@ -78,7 +78,7 @@ public interface ReactiveDocumentTemplate {
      * @return the entity updated
      * @throws NullPointerException when entity is null
      */
-    <T> Publisher<T> update(T entity);
+    <T> Observable<T> update(T entity);
 
     /**
      * Updates entity, by default it's just run for each saving using
@@ -90,7 +90,7 @@ public interface ReactiveDocumentTemplate {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    <T> Publisher<T> update(Iterable<T> entities);
+    <T> Observable<T> update(Iterable<T> entities);
 
     /**
      * Deletes an entity
@@ -98,7 +98,7 @@ public interface ReactiveDocumentTemplate {
      * @param query query to delete an entity
      * @throws NullPointerException query is null
      */
-    Publisher<Void> delete(DocumentDeleteQuery query);
+    Observable<Void> delete(DocumentDeleteQuery query);
 
     /**
      * Finds entities from query
@@ -108,7 +108,7 @@ public interface ReactiveDocumentTemplate {
      * @return entities found by query
      * @throws NullPointerException when query is null
      */
-    <T> Publisher<T> select(DocumentQuery query);
+    <T> Observable<T> select(DocumentQuery query);
 
 
     /**
@@ -119,7 +119,7 @@ public interface ReactiveDocumentTemplate {
      * @return the result as {@link Stream}
      * @throws NullPointerException when the query is null
      */
-    <T> Publisher<T> query(String query);
+    <T> Observable<T> query(String query);
 
     /**
      * Executes a query then bring the result as a unique result
@@ -130,7 +130,7 @@ public interface ReactiveDocumentTemplate {
      * @throws NullPointerException     when the query is null
      * @throws NonUniqueResultException if returns more than one result
      */
-    <T> Publisher<T> singleResult(String query);
+    <T> Observable<T> singleResult(String query);
 
     /**
      * Finds by Id.
@@ -143,7 +143,7 @@ public interface ReactiveDocumentTemplate {
      * @throws NullPointerException when either the entityClass or id are null
      * @throws IdNotFoundException  when the entityClass does not have the Id annotation
      */
-    <T, K> Publisher<T> find(Class<T> entityClass, K id);
+    <T, K> Observable<T> find(Class<T> entityClass, K id);
 
     /**
      * Deletes by Id.
@@ -155,7 +155,7 @@ public interface ReactiveDocumentTemplate {
      * @throws NullPointerException when either the entityClass or id are null
      * @throws IdNotFoundException  when the entityClass does not have the Id annotation
      */
-    <T, K> Publisher<Void> delete(Class<T> entityClass, K id);
+    <T, K> Observable<Void> delete(Class<T> entityClass, K id);
 
     /**
      * Returns the number of elements from document collection
@@ -165,7 +165,7 @@ public interface ReactiveDocumentTemplate {
      * @throws NullPointerException          when document collection is null
      * @throws UnsupportedOperationException when the database dot not have support
      */
-    Publisher<Long> count(String documentCollection);
+    Observable<Long> count(String documentCollection);
 
     /**
      * Returns the number of elements from document collection
@@ -176,7 +176,7 @@ public interface ReactiveDocumentTemplate {
      * @throws NullPointerException          when document collection is null
      * @throws UnsupportedOperationException when the database dot not have support
      */
-    <T> Publisher<Long> count(Class<T> entityType);
+    <T> Observable<Long> count(Class<T> entityType);
 
     /**
      * Returns a single entity from query
@@ -187,5 +187,5 @@ public interface ReactiveDocumentTemplate {
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException     when query is null
      */
-    <T> Publisher<T> singleResult(DocumentQuery query);
+    <T> Observable<T> singleResult(DocumentQuery query);
 }
