@@ -12,8 +12,6 @@
 package org.eclipse.jnosql.artemis.reactive;
 
 
-import org.reactivestreams.Publisher;
-
 /**
  * An extension of {@link jakarta.nosql.mapping.Repository} that will work with Reactive Stream
  * @param <T>  the bean type
@@ -29,7 +27,7 @@ public interface ReactiveRepository<T, K> {
      * @return the entity saved
      * @throws NullPointerException when document is null
      */
-    <S extends T> Publisher<S> save(S entity);
+    <S extends T> Observable<S> save(S entity);
 
     /**
      * Saves entity
@@ -40,7 +38,7 @@ public interface ReactiveRepository<T, K> {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    <S extends T> Publisher<S> save(Iterable<S> entities);
+    <S extends T> Observable<S> save(Iterable<S> entities);
 
     /**
      * Deletes the entity with the given id.
@@ -48,7 +46,7 @@ public interface ReactiveRepository<T, K> {
      * @param id the id
      * @throws NullPointerException when id is null
      */
-    Publisher<Void> deleteById(K id);
+    Observable<Void> deleteById(K id);
 
     /**
      * Deletes the entity with the given ids.
@@ -56,7 +54,7 @@ public interface ReactiveRepository<T, K> {
      * @param ids the ids
      * @throws NullPointerException when either ids or same element is null
      */
-    Publisher<Void> deleteById(Iterable<K> ids);
+    Observable<Void> deleteById(Iterable<K> ids);
 
     /**
      * Finds an entity given the id
@@ -65,7 +63,7 @@ public interface ReactiveRepository<T, K> {
      * @return the entity given the K
      * @throws NullPointerException when id is null
      */
-    Publisher<T> findById(K id);
+    Observable<T> findById(K id);
 
     /**
      * Finds the entities given ids
@@ -74,7 +72,7 @@ public interface ReactiveRepository<T, K> {
      * @return the entities from ids
      * @throws NullPointerException when the id is null
      */
-    Publisher<T> findById(Iterable<K> ids);
+    Observable<T> findById(Iterable<K> ids);
 
     /**
      * Returns whether an entity with the given id exists.
@@ -83,12 +81,12 @@ public interface ReactiveRepository<T, K> {
      * @return if the entity does exist or not
      * @throws NullPointerException when id is null
      */
-    Publisher<Boolean> existsById(K id);
+    Observable<Boolean> existsById(K id);
 
     /**
      * Returns the number of entities available.
      *
      * @return the number of entities
      */
-    Publisher<Long> count();
+    Observable<Long> count();
 }
