@@ -11,6 +11,7 @@
  */
 package org.eclipse.jnosql.artemis.reactive;
 
+import org.eclipse.microprofile.reactive.streams.operators.CompletionSubscriber;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
@@ -71,7 +72,24 @@ public interface Observable<T> {
     <R, A> CompletionStage<R> collect(Collector<? super T, A, R> collector);
 
     /**
+     * Request {@link Publisher} to start streaming data.
+     *
+     * @param subscriber the subscriber
+     */
+    void subscribe(Subscriber<? super T> subscriber);
+
+    /**
+     * Request {@link Publisher} to start streaming data and returns its {@link CompletionStage}
+     *
+     * @param subscriber the subscriber
+     * @param <E>        the return type
+     * @return the {@link CompletionStage}
+     */
+    <E> CompletionStage<E> subscribe(CompletionSubscriber<? extends T, E> subscriber);
+
+    /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its completes.
+     *
      * @return the {@link Optional} of a single result
      * @throws jakarta.nosql.NonUniqueResultException
      */
@@ -79,26 +97,38 @@ public interface Observable<T> {
 
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its first value or completes.
+     *
      * @return the {@link Optional} of the first result
      */
     Optional<T> blockFirst();
 
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its list of values
+     *
      * @return the {@link List} of a single result
      */
     List<T> blockList();
 
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its values as {@link Collector}
+     *
      * @return the {@link Collector} of a single result
      * @throws NullPointerException
      */
     <R, A> R blockCollect(Collector<? super T, A, R> collector);
 
+    /**
+     * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its values
+     *
+     * @param subscriber the subscriber
+     * @param <E>        the return type
+     * @return the result
+     */
+    <E> E blockSubscribe(CompletionSubscriber<? extends T, E> subscriber);
 
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its completes.
+     *
      * @param duration the maximum time period to wait for before raising an Exception
      * @return the {@link Optional} of a single result
      * @throws jakarta.nosql.NonUniqueResultException
@@ -107,6 +137,7 @@ public interface Observable<T> {
 
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its first value or completes.
+     *
      * @param duration the maximum time period to wait for before raising an Exception
      * @return the {@link Optional} of the first result
      * @throws jakarta.nosql.NonUniqueResultException
@@ -115,6 +146,7 @@ public interface Observable<T> {
 
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its list of values
+     *
      * @param duration the maximum time period to wait for before raising an Exception
      * @return the {@link List} of a single result
      * @throws jakarta.nosql.NonUniqueResultException
@@ -123,11 +155,23 @@ public interface Observable<T> {
 
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its values as {@link Collector}
+     *
      * @param duration the maximum time period to wait for before raising an Exception
      * @return the {@link Collector} of a single result
      * @throws jakarta.nosql.NonUniqueResultException
      */
     <R, A> R blockCollect(Collector<? super T, A, R> collector, Duration duration);
+
+
+    /**
+     * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its values
+     *
+     * @param subscriber the subscriber
+     * @param duration   the maximum time period to wait for before raising an Exception
+     * @param <E>        the return type
+     * @return the result
+     */
+    <E> E blockSubscribe(CompletionSubscriber<? extends T, E> subscriber, Duration duration);
 
     /**
      * Creates a {@link Observable} instance

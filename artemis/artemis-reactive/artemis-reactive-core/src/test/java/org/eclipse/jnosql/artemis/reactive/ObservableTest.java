@@ -113,6 +113,20 @@ class ObservableTest {
     }
 
     @Test
+    public void shouldSubscribe() {
+        final List<Animal> animals = Arrays.asList(new Animal("Lion"), new Animal("Tiger"));
+        Publisher<Animal> publisher = ReactiveStreams
+                .fromIterable(animals).buildRs();
+        final Observable<Animal> observable = Observable.of(publisher);
+        final CompletionStage<Set<Animal>> result = observable.collect(Collectors.toSet());
+        AtomicReference<Set<Animal>> reference = new AtomicReference();
+        result.thenAccept(reference::set);
+        assertThat(reference.get(), containsInAnyOrder(new Animal("Lion"),
+                new Animal("Tiger")));
+    }
+
+
+    @Test
     public void shouldReturnCollect() {
         final List<Animal> animals = Arrays.asList(new Animal("Lion"), new Animal("Tiger"));
         Publisher<Animal> publisher = ReactiveStreams
@@ -124,6 +138,7 @@ class ObservableTest {
         assertThat(reference.get(), containsInAnyOrder(new Animal("Lion"),
                 new Animal("Tiger")));
     }
+
 
     @Test
     public void shouldBlockSingleResult() {
@@ -174,7 +189,7 @@ class ObservableTest {
     }
 
     @Test
-    public void shouldBlockFirsttDuration() {
+    public void shouldBlockFirstDuration() {
         Publisher<Animal> publisher = ReactiveStreams
                 .fromIterable(Arrays.asList(new Animal("Lion"), new Animal("Tiger"))).buildRs();
         final Observable<Animal> observable = Observable.of(publisher);
