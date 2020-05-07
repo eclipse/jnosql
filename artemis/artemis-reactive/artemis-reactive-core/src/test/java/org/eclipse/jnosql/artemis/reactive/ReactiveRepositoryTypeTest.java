@@ -72,8 +72,10 @@ class ReactiveRepositoryTypeTest {
 
     interface MockReactiveRepository extends ReactiveRepository<Object, Object> {
         Publisher<Object> findAll();
+        Observable<Object> findById(Object id);
         @Query("annotation")
         Publisher<Object> query(Object id);
+        Observable<Void> deleteById(Object id);
     }
     interface MockRepository extends Repository<Object, Object> {}
 }
