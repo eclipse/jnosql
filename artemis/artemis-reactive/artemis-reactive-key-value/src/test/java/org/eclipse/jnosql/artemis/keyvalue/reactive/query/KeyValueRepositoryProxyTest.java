@@ -21,6 +21,7 @@ import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.tck.entities.User;
 import org.eclipse.jnosql.artemis.keyvalue.reactive.ReactiveKeyValueTemplate;
+import org.eclipse.jnosql.artemis.reactive.Observable;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -112,7 +113,7 @@ public class KeyValueRepositoryProxyTest {
         when(template.get("key", User.class)).thenReturn(
                 Optional.of(user));
 
-        final Publisher<User> key = userRepository.findById("key");
+        final Observable<User> key = userRepository.findById("key");
         Mockito.verify(reactiveTemplate).get("key", User.class);
     }
 

@@ -13,6 +13,7 @@ package org.eclipse.jnosql.artemis.keyvalue.reactive;
 
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.tck.entities.Person;
+import org.eclipse.jnosql.artemis.reactive.Observable;
 import org.eclipse.microprofile.reactive.streams.operators.CompletionSubscriber;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
 import org.hamcrest.MatcherAssert;
@@ -24,10 +25,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.reactivestreams.Publisher;
 
 import javax.enterprise.inject.Instance;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.Collections.singleton;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @MockitoSettings(strictness = Strictness.WARN)
 class DefaultReactiveKeyValueTemplateTest {
@@ -68,12 +67,10 @@ class DefaultReactiveKeyValueTemplateTest {
                 .withAge(30)
                 .withName("Ada").build();
         Mockito.when(template.put(ada)).thenReturn(ada);
-        final Publisher<Person> publisher = manager.put(ada);
-        CompletionSubscriber<Person, Optional<Person>> subscriber = ReactiveStreams.<Person>builder().findFirst().build();
+        final Observable<Person> observable = manager.put(ada);
         Mockito.verify(template, Mockito.never()).put(ada);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<Optional<Person>> completion = subscriber.getCompletion();
+        CompletionStage<Optional<Person>> completion = observable.getFirst();
         completion.thenAccept(o -> reference.set(o.get()));
         Mockito.verify(template).put(ada);
         assertEquals(ada, reference.get());
@@ -89,12 +86,12 @@ class DefaultReactiveKeyValueTemplateTest {
                 .withName("Ada").build();
         List<Person> adas = Arrays.asList(ada, ada);
         Mockito.when(template.put(adas)).thenReturn(adas);
-        final Publisher<Person> publisher = manager.put(adas);
+        final Observable<Person> observable = manager.put(adas);
         CompletionSubscriber<Person, Void> subscriber = ReactiveStreams.<Person>builder()
                 .forEach(people::add).build();
         Mockito.verify(template, Mockito.never()).put(adas);
 
-        publisher.subscribe(subscriber);
+        observable.subscribe(subscriber);
         MatcherAssert.assertThat(people, Matchers.containsInAnyOrder(ada, ada));
         Mockito.verify(template).put(adas);
     }
@@ -109,7 +106,7 @@ class DefaultReactiveKeyValueTemplateTest {
                 .withName("Ada").build();
         Duration duration = Duration.ofSeconds(1L);
         Mockito.when(template.put(ada, duration)).thenReturn(ada);
-        final Publisher<Person> publisher = manager.put(ada, duration);
+        final Observable<Person> publisher = manager.put(ada, duration);
         CompletionSubscriber<Person, Optional<Person>> subscriber = ReactiveStreams.<Person>builder().findFirst().build();
         Mockito.verify(template, Mockito.never()).put(ada, duration);
 
@@ -131,7 +128,7 @@ class DefaultReactiveKeyValueTemplateTest {
                 .withName("Ada").build();
         List<Person> adas = Arrays.asList(ada, ada);
         Mockito.when(template.put(adas, duration)).thenReturn(adas);
-        final Publisher<Person> publisher = manager.put(adas, duration);
+        final Observable<Person> publisher = manager.put(adas, duration);
         CompletionSubscriber<Person, Void> subscriber = ReactiveStreams.<Person>builder()
                 .forEach(people::add).build();
         Mockito.verify(template, Mockito.never()).put(adas, duration);
@@ -149,7 +146,7 @@ class DefaultReactiveKeyValueTemplateTest {
                 .withAge(30)
                 .withName("Ada").build();
         Mockito.when(template.get(1L, Person.class)).thenReturn(Optional.of(ada));
-        final Publisher<Person> publisher = manager.get(1L, Person.class);
+        final Observable<Person> publisher = manager.get(1L, Person.class);
         CompletionSubscriber<Person, Optional<Person>> subscriber = ReactiveStreams.<Person>builder().findFirst().build();
         Mockito.verify(template, Mockito.never()).get(ada, Person.class);
 
@@ -169,7 +166,7 @@ class DefaultReactiveKeyValueTemplateTest {
                 .withName("Ada").build();
         Mockito.when(template.get(singleton(1L), Person.class)).thenReturn(singleton(ada));
         final Set<Long> ids = singleton(1L);
-        final Publisher<Person> publisher = manager.get(ids, Person.class);
+        final Observable<Person> publisher = manager.get(ids, Person.class);
         CompletionSubscriber<Person, Void> subscriber = ReactiveStreams.<Person>builder()
                 .forEach(people::add).build();
         Mockito.verify(template, Mockito.never()).get(ids, Person.class);
@@ -188,7 +185,7 @@ class DefaultReactiveKeyValueTemplateTest {
                 .withName("Ada").build();
         Mockito.when(template.query("get 1", Person.class))
                 .thenReturn(singleton(ada).stream());
-        final Publisher<Person> publisher = manager.query("get 1", Person.class);
+        final Observable<Person> publisher = manager.query("get 1", Person.class);
         CompletionSubscriber<Person, Void> subscriber = ReactiveStreams.<Person>builder()
                 .forEach(people::add).build();
         Mockito.verify(template, Mockito.never()).query("get 1", Person.class);
@@ -208,7 +205,7 @@ class DefaultReactiveKeyValueTemplateTest {
                 .withName("Ada").build();
         Mockito.when(template.getSingleResult("get 1", Person.class))
                 .thenReturn(Optional.of(ada));
-        final Publisher<Person> publisher = manager.getSingleResult("get 1", Person.class);
+        final Observable<Person> publisher = manager.getSingleResult("get 1", Person.class);
         CompletionSubscriber<Person, Void> subscriber = ReactiveStreams.<Person>builder()
                 .forEach(people::add).build();
         Mockito.verify(template, Mockito.never()).getSingleResult("get 1", Person.class);
@@ -221,7 +218,7 @@ class DefaultReactiveKeyValueTemplateTest {
     @Test
     public void shouldQueryVoid() {
         AtomicBoolean atomic = new AtomicBoolean(false);
-        final Publisher<Void> publisher = manager.query("get 1");
+        final Observable<Void> publisher = manager.query("get 1");
         Mockito.verify(template, Mockito.never()).query("get 1");
         CompletionSubscriber<Void, Optional<Void>> subscriber = ReactiveStreams.<Void>builder()
                 .findFirst().build();
@@ -235,7 +232,7 @@ class DefaultReactiveKeyValueTemplateTest {
     @Test
     public void shouldDelete() {
         AtomicBoolean atomic = new AtomicBoolean(false);
-        final Publisher<Void> publisher = manager.delete(1L);
+        final Observable<Void> publisher = manager.delete(1L);
         Mockito.verify(template, Mockito.never()).delete(1L);
         CompletionSubscriber<Void, Optional<Void>> subscriber = ReactiveStreams.<Void>builder()
                 .findFirst().build();
@@ -250,7 +247,7 @@ class DefaultReactiveKeyValueTemplateTest {
     public void shouldDeleteIterable() {
         AtomicBoolean atomic = new AtomicBoolean(false);
         List<Long> ids = Collections.singletonList(1L);
-        final Publisher<Void> publisher = manager.delete(ids);
+        final Observable<Void> publisher = manager.delete(ids);
         Mockito.verify(template, Mockito.never()).delete(ids);
         CompletionSubscriber<Void, Optional<Void>> subscriber = ReactiveStreams.<Void>builder()
                 .findFirst().build();
