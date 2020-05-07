@@ -26,6 +26,7 @@ import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.artemis.document.reactive.ReactiveDocumentTemplate;
 import org.eclipse.jnosql.artemis.document.reactive.ReactiveDocumentTemplateProducer;
+import org.eclipse.jnosql.artemis.reactive.Observable;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 import org.eclipse.microprofile.reactive.streams.operators.CompletionSubscriber;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
@@ -104,12 +105,10 @@ public class DocumentReactiveRepositoryProxyTest {
                 .withId(10L)
                 .withPhones(singletonList("123123"))
                 .build();
-        final Publisher<Person> save = personRepository.save(person);
+        final Observable<Person> save = personRepository.save(person);
         assertNotNull(save);
-        final CompletionSubscriber<Person, Optional<Person>> subscriber = ReactiveStreams.<Person>builder().findFirst().build();
-        save.subscribe(subscriber);
         AtomicReference<Person> atomicReference = new AtomicReference<>();
-        final CompletionStage<Optional<Person>> completion = subscriber.getCompletion();
+        final CompletionStage<Optional<Person>> completion = save.getFirst();
         completion.thenApply(Optional::get).thenAccept(atomicReference::set);
         verify(template).insert(captor.capture());
         Person value = captor.getValue();
@@ -128,12 +127,9 @@ public class DocumentReactiveRepositoryProxyTest {
                 .withId(10L)
                 .withPhones(singletonList("123123"))
                 .build();
-        final Publisher<Person> publisher = personRepository.save(person);
-        assertNotNull(publisher);
-        final CompletionSubscriber<Person, Optional<Person>> subscriber = ReactiveStreams.<Person>builder()
-                .findFirst().build();
-        publisher.subscribe(subscriber);
-        final CompletionStage<Optional<Person>> completion = subscriber.getCompletion();
+        final Observable<Person> observable = personRepository.save(person);
+        assertNotNull(observable);
+        final CompletionStage<Optional<Person>> completion = observable.getFirst();
         AtomicBoolean atomicBoolean = new AtomicBoolean();
         completion.thenAccept(o -> atomicBoolean.set(true));
         verify(template).update(captor.capture());
@@ -182,10 +178,8 @@ public class DocumentReactiveRepositoryProxyTest {
 
     @Test
     public void shouldFindById() {
-        final Publisher<Person> publisher = personRepository.findById(10L);
-        final CompletionSubscriber<Person, Optional<Person>> subscriber = ReactiveStreams.<Person>builder().findFirst().build();
-        publisher.subscribe(subscriber);
-        final CompletionStage<Optional<Person>> completion = subscriber.getCompletion();
+        final Observable<Person> observable = personRepository.findById(10L);
+        final CompletionStage<Optional<Person>> completion = observable.getFirst();
         AtomicReference<Person> reference = new AtomicReference<>();
         completion.thenApply(Optional::get).thenAccept(reference::set);
         Assertions.assertNotNull(reference);
@@ -205,10 +199,8 @@ public class DocumentReactiveRepositoryProxyTest {
 
     @Test
     public void shouldDeleteById() {
-        final Publisher<Void> publisher = personRepository.deleteById(10L);
-        final CompletionSubscriber<Void, Optional<Void>> subscriber = ReactiveStreams.<Void>builder().findFirst().build();
-        publisher.subscribe(subscriber);
-        final CompletionStage<Optional<Void>> completion = subscriber.getCompletion();
+        final Observable<Void> observable = personRepository.deleteById(10L);
+        final CompletionStage<Optional<Void>> completion = observable.getFirst();
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
         completion.thenAccept(o -> atomicBoolean.set(true));
 
@@ -233,10 +225,8 @@ public class DocumentReactiveRepositoryProxyTest {
                 .thenReturn(Optional.of(Person.builder().build()));
 
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
-        final Publisher<Boolean> publisher = personRepository.existsById(10L);
-        final CompletionSubscriber<Boolean, Optional<Boolean>> subscriber = ReactiveStreams.<Boolean>builder().findFirst().build();
-        publisher.subscribe(subscriber);
-        final CompletionStage<Optional<Boolean>> completion = subscriber.getCompletion();
+        final Observable<Boolean> observable = personRepository.existsById(10L);
+        final CompletionStage<Optional<Boolean>> completion = observable.getFirst();
         completion.thenApply(o -> o.orElse(false)).thenAccept(atomicBoolean::set);
         assertTrue(atomicBoolean.get());
         Mockito.verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
@@ -248,10 +238,8 @@ public class DocumentReactiveRepositoryProxyTest {
                 .thenReturn(Optional.empty());
 
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
-        final Publisher<Boolean> publisher = personRepository.existsById(10L);
-        final CompletionSubscriber<Boolean, Optional<Boolean>> subscriber = ReactiveStreams.<Boolean>builder().findFirst().build();
-        publisher.subscribe(subscriber);
-        final CompletionStage<Optional<Boolean>> completion = subscriber.getCompletion();
+        final Observable<Boolean> observable = personRepository.existsById(10L);
+        final CompletionStage<Optional<Boolean>> completion = observable.getFirst();
         completion.thenApply(o -> o.orElse(true)).thenAccept(atomicBoolean::set);
         assertFalse(atomicBoolean.get());
         Mockito.verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));

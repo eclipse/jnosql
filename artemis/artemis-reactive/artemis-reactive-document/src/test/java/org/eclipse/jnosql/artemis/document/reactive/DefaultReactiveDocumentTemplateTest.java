@@ -15,8 +15,7 @@ import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.tck.entities.Person;
-import org.eclipse.microprofile.reactive.streams.operators.CompletionSubscriber;
-import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
+import org.eclipse.jnosql.artemis.reactive.Observable;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,10 +24,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.reactivestreams.Publisher;
 
 import javax.enterprise.inject.Instance;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,7 +36,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @MockitoSettings(strictness = Strictness.WARN)
 class DefaultReactiveDocumentTemplateTest {
@@ -66,12 +63,10 @@ class DefaultReactiveDocumentTemplateTest {
                 .withAge(30)
                 .withName("Ada").build();
         Mockito.when(template.insert(ada)).thenReturn(ada);
-        final Publisher<Person> publisher = manager.insert(ada);
-        CompletionSubscriber<Person, Optional<Person>> subscriber = ReactiveStreams.<Person>builder().findFirst().build();
+        final Observable<Person> observable = manager.insert(ada);
         Mockito.verify(template, Mockito.never()).insert(ada);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<Optional<Person>> completion = subscriber.getCompletion();
+        CompletionStage<Optional<Person>> completion = observable.getFirst();
         completion.thenAccept(o -> reference.set(o.get()));
         Mockito.verify(template).insert(ada);
         assertEquals(ada, reference.get());
@@ -87,12 +82,10 @@ class DefaultReactiveDocumentTemplateTest {
                 .withAge(30)
                 .withName("Ada").build();
         Mockito.when(template.insert(ada, duration)).thenReturn(ada);
-        final Publisher<Person> publisher = manager.insert(ada, duration);
-        CompletionSubscriber<Person, Optional<Person>> subscriber = ReactiveStreams.<Person>builder().findFirst().build();
+        final Observable<Person> observable = manager.insert(ada, duration);
         Mockito.verify(template, Mockito.never()).insert(ada, duration);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<Optional<Person>> completion = subscriber.getCompletion();
+        CompletionStage<Optional<Person>> completion = observable.getFirst();
         completion.thenAccept(o -> reference.set(o.get()));
         Mockito.verify(template).insert(ada, duration);
         assertEquals(ada, reference.get());
@@ -107,12 +100,10 @@ class DefaultReactiveDocumentTemplateTest {
                 .withName("Ada").build();
         Collection<Person> adas = Arrays.asList(ada, ada);
         Mockito.when(template.insert(adas)).thenReturn(adas);
-        final Publisher<Person> publisher = manager.insert(adas);
-        CompletionSubscriber<Person, List<Person>> subscriber = ReactiveStreams.<Person>builder().toList().build();
+        final Observable<Person> observable = manager.insert(adas);
         Mockito.verify(template, Mockito.never()).insert(adas);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<List<Person>> completion = subscriber.getCompletion();
+        CompletionStage<List<Person>> completion = observable.getList();
         completion.thenAccept(o -> reference.set(o));
         Mockito.verify(template).insert(adas);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada, ada));
@@ -129,12 +120,10 @@ class DefaultReactiveDocumentTemplateTest {
                 .withName("Ada").build();
         Collection<Person> adas = Arrays.asList(ada, ada);
         Mockito.when(template.insert(adas, duration)).thenReturn(adas);
-        final Publisher<Person> publisher = manager.insert(adas, duration);
-        CompletionSubscriber<Person, List<Person>> subscriber = ReactiveStreams.<Person>builder().toList().build();
+        final Observable<Person> observable = manager.insert(adas, duration);
         Mockito.verify(template, Mockito.never()).insert(adas, duration);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<List<Person>> completion = subscriber.getCompletion();
+        CompletionStage<List<Person>> completion = observable.getList();
         completion.thenAccept(o -> reference.set(o));
         Mockito.verify(template).insert(adas, duration);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada, ada));
@@ -149,12 +138,10 @@ class DefaultReactiveDocumentTemplateTest {
                 .withAge(30)
                 .withName("Ada").build();
         Mockito.when(template.update(ada)).thenReturn(ada);
-        final Publisher<Person> publisher = manager.update(ada);
-        CompletionSubscriber<Person, Optional<Person>> subscriber = ReactiveStreams.<Person>builder().findFirst().build();
+        final Observable<Person> observable = manager.update(ada);
         Mockito.verify(template, Mockito.never()).update(ada);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<Optional<Person>> completion = subscriber.getCompletion();
+        CompletionStage<Optional<Person>> completion = observable.getFirst();
         completion.thenAccept(o -> reference.set(o.get()));
         Mockito.verify(template).update(ada);
         assertEquals(ada, reference.get());
@@ -170,12 +157,10 @@ class DefaultReactiveDocumentTemplateTest {
                 .withName("Ada").build();
         Collection<Person> adas = Arrays.asList(ada, ada);
         Mockito.when(template.update(adas)).thenReturn(adas);
-        final Publisher<Person> publisher = manager.update(adas);
-        CompletionSubscriber<Person, List<Person>> subscriber = ReactiveStreams.<Person>builder().toList().build();
+        final Observable<Person> observable = manager.update(adas);
         Mockito.verify(template, Mockito.never()).update(adas);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<List<Person>> completion = subscriber.getCompletion();
+        CompletionStage<List<Person>> completion = observable.getList();
         completion.thenAccept(o -> reference.set(o));
         Mockito.verify(template).update(adas);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada, ada));
@@ -191,12 +176,10 @@ class DefaultReactiveDocumentTemplateTest {
                 .withAge(30)
                 .withName("Ada").build();
         Mockito.when(template.query(query)).thenReturn(Stream.of(ada));
-        final Publisher<Person> publisher = manager.query(query);
-        CompletionSubscriber<Person, List<Person>> subscriber = ReactiveStreams.<Person>builder().toList().build();
+        final Observable<Person> observable = manager.query(query);
         Mockito.verify(template, Mockito.never()).query(query);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<List<Person>> completion = subscriber.getCompletion();
+        CompletionStage<List<Person>> completion = observable.getList();
         completion.thenAccept(o -> reference.set(o));
         Mockito.verify(template).query(query);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada));
@@ -212,12 +195,10 @@ class DefaultReactiveDocumentTemplateTest {
                 .withAge(30)
                 .withName("Ada").build();
         Mockito.when(template.singleResult(query)).thenReturn(Optional.of(ada));
-        final Publisher<Person> publisher = manager.singleResult(query);
-        CompletionSubscriber<Person, List<Person>> subscriber = ReactiveStreams.<Person>builder().toList().build();
+        final Observable<Person> observable = manager.singleResult(query);
         Mockito.verify(template, Mockito.never()).singleResult(query);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<List<Person>> completion = subscriber.getCompletion();
+        CompletionStage<List<Person>> completion = observable.getList();
         completion.thenAccept(o -> reference.set(o));
         Mockito.verify(template).singleResult(query);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada));
@@ -231,12 +212,10 @@ class DefaultReactiveDocumentTemplateTest {
                 .withAge(30)
                 .withName("Ada").build();
         Mockito.when(template.find(Person.class, 1L)).thenReturn(Optional.of(ada));
-        final Publisher<Person> publisher = manager.find(Person.class, 1L);
-        CompletionSubscriber<Person, List<Person>> subscriber = ReactiveStreams.<Person>builder().toList().build();
+        final Observable<Person> observable = manager.find(Person.class, 1L);
         Mockito.verify(template, Mockito.never()).find(Person.class, 1L);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<List<Person>> completion = subscriber.getCompletion();
+        CompletionStage<List<Person>> completion = observable.getList();
         completion.thenAccept(o -> reference.set(o));
         Mockito.verify(template).find(Person.class, 1L);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada));
@@ -251,12 +230,10 @@ class DefaultReactiveDocumentTemplateTest {
                 .withAge(30)
                 .withName("Ada").build();
         Mockito.when(template.select(query)).thenReturn(Stream.of(ada));
-        final Publisher<Person> publisher = manager.select(query);
-        CompletionSubscriber<Person, List<Person>> subscriber = ReactiveStreams.<Person>builder().toList().build();
+        final Observable<Person> observable = manager.select(query);
         Mockito.verify(template, Mockito.never()).select(query);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<List<Person>> completion = subscriber.getCompletion();
+        CompletionStage<List<Person>> completion = observable.getList();
         completion.thenAccept(o -> reference.set(o));
         Mockito.verify(template).select(query);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada));
@@ -271,12 +248,10 @@ class DefaultReactiveDocumentTemplateTest {
                 .withAge(30)
                 .withName("Ada").build();
         Mockito.when(template.singleResult(query)).thenReturn(Optional.of(ada));
-        final Publisher<Person> publisher = manager.singleResult(query);
-        CompletionSubscriber<Person, List<Person>> subscriber = ReactiveStreams.<Person>builder().toList().build();
+        final Observable<Person> observable = manager.singleResult(query);
         Mockito.verify(template, Mockito.never()).singleResult(query);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<List<Person>> completion = subscriber.getCompletion();
+        CompletionStage<List<Person>> completion = observable.getList();
         completion.thenAccept(o -> reference.set(o));
         Mockito.verify(template).singleResult(query);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada));
@@ -287,12 +262,10 @@ class DefaultReactiveDocumentTemplateTest {
         String entity = "entity";
         AtomicLong atomicLong = new AtomicLong();
         Mockito.when(template.count(entity)).thenReturn(1L);
-        final Publisher<Long> publisher = manager.count(entity);
-        CompletionSubscriber<Long, Optional<Long>> subscriber = ReactiveStreams.<Long>builder().findFirst().build();
+        final Observable<Long> observable = manager.count(entity);
         Mockito.verify(template, Mockito.never()).count(entity);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<Optional<Long>> completion = subscriber.getCompletion();
+        CompletionStage<Optional<Long>> completion = observable.getFirst();
         completion.thenAccept(o -> atomicLong.set(o.get()));
         Mockito.verify(template).count(entity);
         assertEquals(1L, atomicLong.get());
@@ -303,12 +276,10 @@ class DefaultReactiveDocumentTemplateTest {
         Class<?> entity = Person.class;
         AtomicLong atomicLong = new AtomicLong();
         Mockito.when(template.count(entity)).thenReturn(1L);
-        final Publisher<Long> publisher = manager.count(entity);
-        CompletionSubscriber<Long, Optional<Long>> subscriber = ReactiveStreams.<Long>builder().findFirst().build();
+        final Observable<Long> observable = manager.count(entity);
         Mockito.verify(template, Mockito.never()).count(entity);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<Optional<Long>> completion = subscriber.getCompletion();
+        CompletionStage<Optional<Long>> completion = observable.getFirst();
         completion.thenAccept(o -> atomicLong.set(o.get()));
         Mockito.verify(template).count(entity);
         assertEquals(1L, atomicLong.get());
@@ -319,12 +290,10 @@ class DefaultReactiveDocumentTemplateTest {
     public void shouldDelete() {
         AtomicLong atomicLong = new AtomicLong();
         DocumentDeleteQuery query = Mockito.mock(DocumentDeleteQuery.class);
-        final Publisher<Void> publisher = manager.delete(query);
-        CompletionSubscriber<Void, Optional<Void>> subscriber = ReactiveStreams.<Void>builder().findFirst().build();
+        final Observable<Void> observable = manager.delete(query);
         Mockito.verify(template, Mockito.never()).delete(query);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<Optional<Void>> completion = subscriber.getCompletion();
+        CompletionStage<Optional<Void>> completion = observable.getFirst();
         completion.thenAccept(o -> atomicLong.incrementAndGet());
         Mockito.verify(template).delete(query);
         assertEquals(1L, atomicLong.get());
@@ -336,12 +305,10 @@ class DefaultReactiveDocumentTemplateTest {
         AtomicLong atomicLong = new AtomicLong();
         Mockito.when(template.count(entity)).thenReturn(1L);
         DocumentDeleteQuery query = Mockito.mock(DocumentDeleteQuery.class);
-        final Publisher<Void> publisher = manager.delete(Person.class, 1L);
-        CompletionSubscriber<Void, Optional<Void>> subscriber = ReactiveStreams.<Void>builder().findFirst().build();
+        final Observable<Void> observable = manager.delete(Person.class, 1L);
         Mockito.verify(template, Mockito.never()).delete(Person.class, 1L);
 
-        publisher.subscribe(subscriber);
-        CompletionStage<Optional<Void>> completion = subscriber.getCompletion();
+        CompletionStage<Optional<Void>> completion = observable.getFirst();
         completion.thenAccept(o -> atomicLong.incrementAndGet());
         Mockito.verify(template).delete(Person.class, 1L);
         assertEquals(1L, atomicLong.get());
