@@ -15,6 +15,7 @@ package org.eclipse.jnosql.artemis.reactive;
 import org.eclipse.microprofile.reactive.streams.operators.CompletionSubscriber;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
 
 import java.time.Duration;
 import java.util.List;
@@ -72,6 +73,20 @@ final class DefaultObservable<T> implements Observable<T> {
     }
 
     @Override
+    public void subscribe(Subscriber<? super T> subscriber) {
+        Objects.requireNonNull(subscriber, "subscriber is required");
+        publisher.subscribe(subscriber);
+    }
+
+    @Override
+    public <E> CompletionStage<E> subscribe(CompletionSubscriber<T, E> subscriber) {
+        Objects.requireNonNull(subscriber, "subscriber is required");
+        publisher.subscribe(subscriber);
+        final CompletionStage<E> completion = subscriber.getCompletion();
+        return completion;
+    }
+
+    @Override
     public Optional<T> blockSingleResult() {
         final CompletionStage<Optional<T>> singleResult = getSingleResult();
         return block(singleResult, null);
@@ -91,6 +106,11 @@ final class DefaultObservable<T> implements Observable<T> {
     @Override
     public <R, A> R blockCollect(Collector<? super T, A, R> collector) {
         return getCollector(collector, null);
+    }
+
+    @Override
+    public <E> E blockSubscribe(CompletionSubscriber<T, E> subscriber) {
+        return getSubscriber(subscriber, null);
     }
 
     @Override
@@ -118,6 +138,20 @@ final class DefaultObservable<T> implements Observable<T> {
     public <R, A> R blockCollect(Collector<? super T, A, R> collector, Duration duration) {
         Objects.requireNonNull(duration, "duration is required");
         return getCollector(collector, duration);
+    }
+
+    @Override
+    public <E> E blockSubscribe(CompletionSubscriber<T, E> subscriber, Duration duration) {
+        Objects.requireNonNull(duration, "duration is required");
+        return getSubscriber(subscriber, duration);
+
+    }
+
+    private <E> E getSubscriber(CompletionSubscriber<T, E> subscriber, Duration duration) {
+        Objects.requireNonNull(subscriber, "subscriber is required");
+        final CompletionStage<E> subscribe = subscribe(subscriber);
+        final CompletableFuture<E> future = subscribe.toCompletableFuture();
+        return execute(future, duration);
     }
 
     private <R, A> R getCollector(Collector<? super T, A, R> collector, Duration duration) {

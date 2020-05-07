@@ -85,7 +85,7 @@ public interface Observable<T> {
      * @param <E>        the return type
      * @return the {@link CompletionStage}
      */
-    <E> CompletionStage<E> subscribe(CompletionSubscriber<? extends T, E> subscriber);
+    <E> CompletionStage<E> subscribe(CompletionSubscriber<T, E> subscriber);
 
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its completes.
@@ -124,7 +124,7 @@ public interface Observable<T> {
      * @param <E>        the return type
      * @return the result
      */
-    <E> E blockSubscribe(CompletionSubscriber<? extends T, E> subscriber);
+    <E> E blockSubscribe(CompletionSubscriber<T, E> subscriber);
 
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its completes.
@@ -171,7 +171,7 @@ public interface Observable<T> {
      * @param <E>        the return type
      * @return the result
      */
-    <E> E blockSubscribe(CompletionSubscriber<? extends T, E> subscriber, Duration duration);
+    <E> E blockSubscribe(CompletionSubscriber<T, E> subscriber, Duration duration);
 
     /**
      * Creates a {@link Observable} instance
