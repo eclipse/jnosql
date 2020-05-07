@@ -16,7 +16,6 @@ import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.artemis.reactive.Observable;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
-import org.reactivestreams.Publisher;
 
 import java.time.Duration;
 import java.util.Collections;
