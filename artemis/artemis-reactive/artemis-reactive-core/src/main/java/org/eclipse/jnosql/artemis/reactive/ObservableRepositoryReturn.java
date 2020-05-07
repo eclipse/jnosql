@@ -14,7 +14,6 @@ package org.eclipse.jnosql.artemis.reactive;
 import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 import org.eclipse.jnosql.artemis.repository.RepositoryReturn;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
-import org.reactivestreams.Publisher;
 
 import java.util.stream.Stream;
 
