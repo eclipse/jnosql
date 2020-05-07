@@ -16,7 +16,7 @@ import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.reactivestreams.Publisher;
+import org.eclipse.jnosql.artemis.reactive.Observable;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -33,7 +33,7 @@ public interface ReactiveColumnTemplate {
      * @return the entity saved
      * @throws NullPointerException when entity is null
      */
-    <T> Publisher<T> insert(T entity);
+    <T> Observable<T> insert(T entity);
 
 
     /**
@@ -44,7 +44,7 @@ public interface ReactiveColumnTemplate {
      * @param <T>    the instance type
      * @return the entity saved
      */
-    <T> Publisher<T> insert(T entity, Duration ttl);
+    <T> Observable<T> insert(T entity, Duration ttl);
 
 
     /**
@@ -57,7 +57,7 @@ public interface ReactiveColumnTemplate {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    <T> Publisher<T> insert(Iterable<T> entities);
+    <T> Observable<T> insert(Iterable<T> entities);
 
     /**
      * Inserts entities collection entity with time to live, by default it's just run for each saving using
@@ -70,7 +70,7 @@ public interface ReactiveColumnTemplate {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    <T> Publisher<T> insert(Iterable<T> entities, Duration ttl);
+    <T> Observable<T> insert(Iterable<T> entities, Duration ttl);
 
 
     /**
@@ -81,7 +81,7 @@ public interface ReactiveColumnTemplate {
      * @return the entity updated
      * @throws NullPointerException when entity is null
      */
-    <T> Publisher<T> update(T entity);
+    <T> Observable<T> update(T entity);
 
 
     /**
@@ -94,7 +94,7 @@ public interface ReactiveColumnTemplate {
      * @return the entity saved
      * @throws NullPointerException when entities is null
      */
-    <T> Publisher<T> update(Iterable<T> entities);
+    <T> Observable<T> update(Iterable<T> entities);
 
     /**
      * Deletes an entity
@@ -102,7 +102,7 @@ public interface ReactiveColumnTemplate {
      * @param query query to delete an entity
      * @throws NullPointerException when query is null
      */
-    Publisher<Void> delete(ColumnDeleteQuery query);
+    Observable<Void> delete(ColumnDeleteQuery query);
 
 
     /**
@@ -113,7 +113,7 @@ public interface ReactiveColumnTemplate {
      * @return entities found by query
      * @throws NullPointerException when query is null
      */
-    <T> Publisher<T> select(ColumnQuery query);
+    <T> Observable<T> select(ColumnQuery query);
 
     /**
      * Executes a query then bring the result as a {@link Stream}
@@ -123,7 +123,7 @@ public interface ReactiveColumnTemplate {
      * @return the result as {@link Stream}
      * @throws NullPointerException when the query is null
      */
-    <T> Publisher<T> query(String query);
+    <T> Observable<T> query(String query);
 
     /**
      * Executes a query then bring the result as a unique result
@@ -134,7 +134,7 @@ public interface ReactiveColumnTemplate {
      * @throws NullPointerException     when the query is null
      * @throws jakarta.nosql.NonUniqueResultException if returns more than one result
      */
-    <T> Publisher<T> singleResult(String query);
+    <T> Observable<T> singleResult(String query);
 
 
     /**
@@ -148,7 +148,7 @@ public interface ReactiveColumnTemplate {
      * @throws NullPointerException                   when either the entityClass or id are null
      * @throws IdNotFoundException when the entityClass does not have the Id annotation
      */
-    <T, K> Publisher<T> find(Class<T> entityClass, K id);
+    <T, K> Observable<T> find(Class<T> entityClass, K id);
 
     /**
      * Deletes by Id.
@@ -160,7 +160,7 @@ public interface ReactiveColumnTemplate {
      * @throws NullPointerException                   when either the entityClass or id are null
      * @throws IdNotFoundException when the entityClass does not have the Id annotation
      */
-    <T, K> Publisher<Void> delete(Class<T> entityClass, K id);
+    <T, K> Observable<Void> delete(Class<T> entityClass, K id);
 
     /**
      * Returns the number of elements from column family
@@ -170,7 +170,7 @@ public interface ReactiveColumnTemplate {
      * @throws NullPointerException          when column family is null
      * @throws UnsupportedOperationException when the database dot not have support
      */
-    Publisher<Long> count(String columnFamily);
+    Observable<Long> count(String columnFamily);
 
     /**
      * Returns the number of elements from column family
@@ -181,7 +181,7 @@ public interface ReactiveColumnTemplate {
      * @throws NullPointerException          when column family is null
      * @throws UnsupportedOperationException when the database dot not have support
      */
-    <T> Publisher<Long> count(Class<T> entityClass);
+    <T> Observable<Long> count(Class<T> entityClass);
 
     /**
      * Returns a single entity from query
@@ -192,5 +192,5 @@ public interface ReactiveColumnTemplate {
      * @throws NonUniqueResultException when the result has more than 1 entity
      * @throws NullPointerException     when query is null
      */
-    <T> Publisher<T> singleResult(ColumnQuery query);
+    <T> Observable<T> singleResult(ColumnQuery query);
 }
