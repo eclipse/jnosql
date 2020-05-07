@@ -166,9 +166,9 @@ public interface Observable<T> {
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its values
      *
-     * @param subscriber the subscriber
      * @param duration   the maximum time period to wait for before raising an Exception
      * @param <E>        the return type
+     * @param subscriber the subscriber
      * @return the result
      */
     <E> E blockSubscribe(CompletionSubscriber<T, E> subscriber, Duration duration);

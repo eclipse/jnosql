@@ -144,7 +144,6 @@ final class DefaultObservable<T> implements Observable<T> {
     public <E> E blockSubscribe(CompletionSubscriber<T, E> subscriber, Duration duration) {
         Objects.requireNonNull(duration, "duration is required");
         return getSubscriber(subscriber, duration);
-
     }
 
     private <E> E getSubscriber(CompletionSubscriber<T, E> subscriber, Duration duration) {

@@ -11,12 +11,15 @@
  */
 package org.eclipse.jnosql.artemis.reactive;
 
+import org.eclipse.microprofile.reactive.streams.operators.CompletionSubscriber;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -27,6 +30,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -112,19 +116,6 @@ class ObservableTest {
         Assertions.assertEquals(animals, reference.get());
     }
 
-    @Test
-    public void shouldSubscribe() {
-        final List<Animal> animals = Arrays.asList(new Animal("Lion"), new Animal("Tiger"));
-        Publisher<Animal> publisher = ReactiveStreams
-                .fromIterable(animals).buildRs();
-        final Observable<Animal> observable = Observable.of(publisher);
-        final CompletionStage<Set<Animal>> result = observable.collect(Collectors.toSet());
-        AtomicReference<Set<Animal>> reference = new AtomicReference();
-        result.thenAccept(reference::set);
-        assertThat(reference.get(), containsInAnyOrder(new Animal("Lion"),
-                new Animal("Tiger")));
-    }
-
 
     @Test
     public void shouldReturnCollect() {
@@ -139,6 +130,29 @@ class ObservableTest {
                 new Animal("Tiger")));
     }
 
+    @Test
+    public void shouldCompletionSubscriber() {
+        final List<Animal> animals = Arrays.asList(new Animal("Lion"), new Animal("Tiger"));
+        Publisher<Animal> publisher = ReactiveStreams
+                .fromIterable(animals).buildRs();
+        final Observable<Animal> observable = Observable.of(publisher);
+        final CompletionSubscriber<Animal, List<String>> subscriber = ReactiveStreams.<Animal>builder()
+                .map(Animal::getName).toList().build();
+        final CompletionStage<List<String>> result = observable.subscribe(subscriber);
+        AtomicReference<List<String>> reference = new AtomicReference();
+        result.thenAccept(reference::set);
+        assertThat(reference.get(), containsInAnyOrder("Lion", "Tiger"));
+    }
+
+    @Test
+    public void shouldSubscribe() {
+        Publisher<Animal> publisher = Mockito.mock(Publisher.class);
+        final Observable<Animal> observable = Observable.of(publisher);
+        final Subscriber<Animal> subscriber = ReactiveStreams.<Animal>builder()
+                .map(Animal::getName).toList().build();
+        observable.subscribe(subscriber);
+
+    }
 
     @Test
     public void shouldBlockSingleResult() {
@@ -179,6 +193,20 @@ class ObservableTest {
                 new Animal("Tiger")));
     }
 
+
+    @Test
+    public void shouldBlockCompletionSubscriber() {
+        final List<Animal> animals = Arrays.asList(new Animal("Lion"), new Animal("Tiger"));
+        Publisher<Animal> publisher = ReactiveStreams
+                .fromIterable(animals).buildRs();
+        final Observable<Animal> observable = Observable.of(publisher);
+        final CompletionSubscriber<Animal, List<String>> subscriber = ReactiveStreams.<Animal>builder()
+                .map(Animal::getName).toList().build();
+        final List<String> result = observable.blockSubscribe(subscriber);
+        assertThat(result, containsInAnyOrder("Lion", "Tiger"));
+    }
+
+
     @Test
     public void shouldBlockSingleResultDuration() {
         Publisher<Animal> publisher = ReactiveStreams
@@ -217,5 +245,18 @@ class ObservableTest {
         assertThat(result, containsInAnyOrder(new Animal("Lion"),
                 new Animal("Tiger")));
     }
+
+    @Test
+    public void shouldBlockCompletionSubscriberDuration() {
+        final List<Animal> animals = Arrays.asList(new Animal("Lion"), new Animal("Tiger"));
+        Publisher<Animal> publisher = ReactiveStreams
+                .fromIterable(animals).buildRs();
+        final Observable<Animal> observable = Observable.of(publisher);
+        final CompletionSubscriber<Animal, List<String>> subscriber = ReactiveStreams.<Animal>builder()
+                .map(Animal::getName).toList().build();
+        final List<String> result = observable.blockSubscribe(subscriber, Duration.ofMinutes(1L));
+        assertThat(result, containsInAnyOrder("Lion", "Tiger"));
+    }
+
 
 }
