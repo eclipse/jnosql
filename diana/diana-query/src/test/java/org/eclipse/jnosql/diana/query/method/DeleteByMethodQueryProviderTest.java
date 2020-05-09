@@ -18,6 +18,7 @@ import jakarta.nosql.query.Operator;
 import jakarta.nosql.query.ParamQueryValue;
 import jakarta.nosql.query.QueryValue;
 import jakarta.nosql.query.Where;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -218,14 +219,11 @@ class DeleteByMethodQueryProviderTest {
         checkAppendCondition(query, operator, operator2, variable, variable2, operatorAppender);
     }
 
-
-
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"deleteByAgeBetween"})
     public void shouldReturnParserQuery27(String query) {
 
         Operator operator = Operator.BETWEEN;
-        String variable = "age";
         String entity = "entity";
         DeleteQuery deleteQuery = queryProvider.apply(query, entity);
         assertNotNull(deleteQuery);
@@ -246,8 +244,6 @@ class DeleteByMethodQueryProviderTest {
     @ValueSource(strings = {"deleteByAgeNotBetween"})
     public void shouldReturnParserQuery28(String query) {
 
-        Operator operator = Operator.BETWEEN;
-        String variable = "age";
         String entity = "entity";
         DeleteQuery deleteQuery = queryProvider.apply(query, entity);
         assertNotNull(deleteQuery);
@@ -267,6 +263,57 @@ class DeleteByMethodQueryProviderTest {
         assertFalse(param1.get().equals(param2.get()));
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"deleteBySalary_Currency"})
+    public void shouldRunQuery29(String query) {
+        String entity = "entity";
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
+        assertNotNull(deleteQuery);
+        assertEquals(entity, deleteQuery.getEntity());
+        assertTrue(deleteQuery.getFields().isEmpty());
+        Optional<Where> where = deleteQuery.getWhere();
+        assertTrue(where.isPresent());
+        Condition condition = where.get().getCondition();
+        Assertions.assertEquals("salary.currency", condition.getName());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"deleteBySalary_CurrencyAndCredential_Role"})
+    public void shouldRunQuery30(String query) {
+        String entity = "entity";
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
+        assertNotNull(deleteQuery);
+        assertEquals(entity, deleteQuery.getEntity());
+        assertTrue(deleteQuery.getFields().isEmpty());
+        Optional<Where> where = deleteQuery.getWhere();
+        assertTrue(where.isPresent());
+        Condition condition = where.get().getCondition();
+        Assertions.assertEquals(Operator.AND, condition.getOperator());
+        final QueryValue<?> value = condition.getValue();
+        Condition condition1 = ConditionQueryValue.class.cast(value).get().get(0);
+        Condition condition2 = ConditionQueryValue.class.cast(value).get().get(1);
+        assertEquals("salary.currency", condition1.getName());
+        assertEquals("credential.role", condition2.getName());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"deleteBySalary_CurrencyAndName"})
+    public void shouldRunQuery31(String query) {
+        String entity = "entity";
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
+        assertNotNull(deleteQuery);
+        assertEquals(entity, deleteQuery.getEntity());
+        assertTrue(deleteQuery.getFields().isEmpty());
+        Optional<Where> where = deleteQuery.getWhere();
+        assertTrue(where.isPresent());
+        Condition condition = where.get().getCondition();
+        Assertions.assertEquals(Operator.AND, condition.getOperator());
+        final QueryValue<?> value = condition.getValue();
+        Condition condition1 = ConditionQueryValue.class.cast(value).get().get(0);
+        Condition condition2 = ConditionQueryValue.class.cast(value).get().get(1);
+        assertEquals("salary.currency", condition1.getName());
+        assertEquals("name", condition2.getName());
+    }
 
     private void checkAppendCondition(String query, Operator operator, Operator operator2, String variable,
                                       String variable2, Operator operatorAppender) {

@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.artemis.column.query;
 
 import jakarta.nosql.Condition;
+import jakarta.nosql.Sort;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
@@ -31,6 +32,7 @@ import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,7 @@ import org.mockito.Mockito;
 
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -535,12 +538,78 @@ public class ColumnRepositoryProxyTest {
         verify(statement).bind("id", "Ada");
     }
 
+    @Test
+    public void shouldFindBySalary_Currency() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(ColumnQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findBySalary_Currency("USD");
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.getCondition().get();
+        final Column column = condition.getColumn();
+        assertEquals("Person", query.getColumnFamily());
+        assertEquals("salary.currency", column.getName());
+
+    }
+
+    @Test
+    public void shouldFindBySalary_CurrencyAndSalary_Value() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+        when(template.select(any(ColumnQuery.class)))
+                .thenReturn(Stream.of(ada));
+        personRepository.findBySalary_CurrencyAndSalary_Value("USD", BigDecimal.TEN);
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.getCondition().get();
+        final Column column = condition.getColumn();
+        final List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        });
+        final List<String> names = conditions.stream().map(ColumnCondition::getColumn)
+                .map(Column::getName).collect(Collectors.toList());
+        assertEquals("Person", query.getColumnFamily());
+        MatcherAssert.assertThat(names, Matchers.containsInAnyOrder("salary.currency", "salary.value"));
+
+    }
+
+    @Test
+    public void shouldFindBySalary_CurrencyOrderByCurrency_Name() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(ColumnQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findBySalary_CurrencyOrderByCurrency_Name("USD");
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.getCondition().get();
+        final Sort sort = query.getSorts().get(0);
+        final Column document = condition.getColumn();
+        assertEquals("Person", query.getColumnFamily());
+        assertEquals("salary.currency", document.getName());
+        assertEquals("currency.name", sort.getName());
+
+    }
+
     interface PersonRepository extends Repository<Person, Long> {
+
+        List<Person> findBySalary_Currency(String currency);
+
+        List<Person> findBySalary_CurrencyAndSalary_Value(String currency, BigDecimal value);
+
+        List<Person> findBySalary_CurrencyOrderByCurrency_Name(String currency);
 
         List<Person> findAll();
 
         Person findByName(String name);
-
 
         void deleteByName(String name);
 

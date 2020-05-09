@@ -20,6 +20,7 @@ import jakarta.nosql.query.ParamQueryValue;
 import jakarta.nosql.query.QueryValue;
 import jakarta.nosql.query.SelectQuery;
 import jakarta.nosql.query.Where;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -276,7 +277,6 @@ class FindByMethodQueryProviderTest {
     public void shouldReturnParserQuery27(String query) {
 
         Operator operator = Operator.BETWEEN;
-        String variable = "age";
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -300,8 +300,6 @@ class FindByMethodQueryProviderTest {
     @ValueSource(strings = {"findByAgeNotBetween"})
     public void shouldReturnParserQuery28(String query) {
 
-        Operator operator = Operator.BETWEEN;
-        String variable = "age";
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -324,6 +322,91 @@ class FindByMethodQueryProviderTest {
         assertFalse(param1.get().equals(param2.get()));
     }
 
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findBySalary_Currency"})
+    public void shouldRunQuery29(String query) {
+        String entity = "entity";
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
+        assertNotNull(selectQuery);
+        assertEquals(entity, selectQuery.getEntity());
+        assertTrue(selectQuery.getFields().isEmpty());
+        assertTrue(selectQuery.getOrderBy().isEmpty());
+        assertEquals(0, selectQuery.getLimit());
+        assertEquals(0, selectQuery.getSkip());
+        Optional<Where> where = selectQuery.getWhere();
+        assertTrue(where.isPresent());
+        assertTrue(where.isPresent());
+        Condition condition = where.get().getCondition();
+        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
+        assertEquals("salary.currency", condition.getName());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findBySalary_CurrencyAndCredential_Role"})
+    public void shouldRunQuery30(String query) {
+        String entity = "entity";
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
+        assertNotNull(selectQuery);
+        assertEquals(entity, selectQuery.getEntity());
+        assertTrue(selectQuery.getFields().isEmpty());
+        assertTrue(selectQuery.getOrderBy().isEmpty());
+        assertEquals(0, selectQuery.getLimit());
+        assertEquals(0, selectQuery.getSkip());
+        Optional<Where> where = selectQuery.getWhere();
+        assertTrue(where.isPresent());
+        Condition condition = where.get().getCondition();
+        Assertions.assertEquals(Operator.AND, condition.getOperator());
+        final QueryValue<?> value = condition.getValue();
+        Condition condition1 = ConditionQueryValue.class.cast(value).get().get(0);
+        Condition condition2 = ConditionQueryValue.class.cast(value).get().get(1);
+        assertEquals("salary.currency", condition1.getName());
+        assertEquals("credential.role", condition2.getName());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findBySalary_CurrencyAndName"})
+    public void shouldRunQuery31(String query) {
+        String entity = "entity";
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
+        assertNotNull(selectQuery);
+        assertEquals(entity, selectQuery.getEntity());
+        assertTrue(selectQuery.getFields().isEmpty());
+        assertTrue(selectQuery.getOrderBy().isEmpty());
+        assertEquals(0, selectQuery.getLimit());
+        assertEquals(0, selectQuery.getSkip());
+        Optional<Where> where = selectQuery.getWhere();
+        assertTrue(where.isPresent());
+        Condition condition = where.get().getCondition();
+        Assertions.assertEquals(Operator.AND, condition.getOperator());
+        final QueryValue<?> value = condition.getValue();
+        Condition condition1 = ConditionQueryValue.class.cast(value).get().get(0);
+        Condition condition2 = ConditionQueryValue.class.cast(value).get().get(1);
+        assertEquals("salary.currency", condition1.getName());
+        assertEquals("name", condition2.getName());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findBySalary_CurrencyOrderBySalary_Value"})
+    public void shouldRunQuery32(String query) {
+        String entity = "entity";
+        SelectQuery selectQuery = queryProvider.apply(query, entity);
+        assertNotNull(selectQuery);
+        assertEquals(entity, selectQuery.getEntity());
+        assertTrue(selectQuery.getFields().isEmpty());
+        assertFalse(selectQuery.getOrderBy().isEmpty());
+        assertEquals(0, selectQuery.getLimit());
+        assertEquals(0, selectQuery.getSkip());
+        Optional<Where> where = selectQuery.getWhere();
+        assertTrue(where.isPresent());
+        assertTrue(where.isPresent());
+        Condition condition = where.get().getCondition();
+        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
+        assertEquals("salary.currency", condition.getName());
+
+        final Sort sort = selectQuery.getOrderBy().get(0);
+        Assertions.assertEquals("salary.value", sort.getName());
+    }
 
 
     private void checkOrderBy(String query, SortType type, SortType type2) {

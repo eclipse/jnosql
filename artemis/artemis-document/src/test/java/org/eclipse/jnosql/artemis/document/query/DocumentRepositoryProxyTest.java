@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.artemis.document.query;
 
 import jakarta.nosql.Condition;
+import jakarta.nosql.Sort;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
@@ -31,6 +32,7 @@ import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,7 @@ import org.mockito.Mockito;
 
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -542,12 +545,78 @@ public class DocumentRepositoryProxyTest {
         verify(statement).bind("id", "Ada");
     }
 
+    @Test
+    public void shouldFindBySalary_Currency() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findBySalary_Currency("USD");
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.getCondition().get();
+        final Document document = condition.getDocument();
+        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("salary.currency", document.getName());
+
+    }
+
+    @Test
+    public void shouldFindBySalary_CurrencyAndSalary_Value() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+        personRepository.findBySalary_CurrencyAndSalary_Value("USD", BigDecimal.TEN);
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.getCondition().get();
+        final Document document = condition.getDocument();
+        final List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        });
+        final List<String> names = conditions.stream().map(DocumentCondition::getDocument)
+                .map(Document::getName).collect(Collectors.toList());
+        assertEquals("Person", query.getDocumentCollection());
+        MatcherAssert.assertThat(names, Matchers.containsInAnyOrder("salary.currency", "salary.value"));
+
+    }
+
+    @Test
+    public void shouldFindBySalary_CurrencyOrderByCurrency_Name() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findBySalary_CurrencyOrderByCurrency_Name("USD");
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.getCondition().get();
+        final Sort sort = query.getSorts().get(0);
+        final Document document = condition.getDocument();
+        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("salary.currency", document.getName());
+        assertEquals("currency.name", sort.getName());
+
+    }
+
     interface PersonRepository extends Repository<Person, Long> {
+
+        List<Person> findBySalary_Currency(String currency);
+
+        List<Person> findBySalary_CurrencyAndSalary_Value(String currency, BigDecimal value);
+
+        List<Person> findBySalary_CurrencyOrderByCurrency_Name(String currency);
 
         List<Person> findAll();
 
         Person findByName(String name);
-
 
         List<Person> findByAge(String age);
 

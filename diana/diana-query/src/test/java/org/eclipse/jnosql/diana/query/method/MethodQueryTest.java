@@ -265,4 +265,53 @@ class MethodQueryTest {
         assertEquals("deleteBy FirstName Not  Like", methodQuery.get());
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"deleteBySalary_Currency"})
+    public void shouldRunQuery29(String query) {
+        MethodQuery methodQuery = MethodQuery.of(query);
+        assertNotNull(methodQuery);
+        assertEquals("deleteBy Salary_Currency", methodQuery.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"deleteBySalary_CurrencyAndCredential_Role"})
+    public void shouldRunQuery30(String query) {
+        MethodQuery methodQuery = MethodQuery.of(query);
+        assertNotNull(methodQuery);
+        assertEquals("deleteBy Salary_Currency And Credential_Role", methodQuery.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"deleteBySalary_CurrencyAndName"})
+    public void shouldRunQuery31(String query) {
+        MethodQuery methodQuery = MethodQuery.of(query);
+        assertNotNull(methodQuery);
+        assertEquals("deleteBy Salary_Currency And Name", methodQuery.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findBySalary_Currency"})
+    public void shouldRunQuery32(String query) {
+        MethodQuery methodQuery = MethodQuery.of(query);
+        assertNotNull(methodQuery);
+        assertEquals("findBy Salary_Currency", methodQuery.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findBySalary_CurrencyAndCredential_Role"})
+    public void shouldRunQuery33(String query) {
+        MethodQuery methodQuery = MethodQuery.of(query);
+        assertNotNull(methodQuery);
+        assertEquals("findBy Salary_Currency And Credential_Role", methodQuery.get());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findBySalary_CurrencyAndName"})
+    public void shouldRunQuery34(String query) {
+        MethodQuery methodQuery = MethodQuery.of(query);
+        assertNotNull(methodQuery);
+        assertEquals("findBy Salary_Currency And Name", methodQuery.get());
+    }
+
+
 }
