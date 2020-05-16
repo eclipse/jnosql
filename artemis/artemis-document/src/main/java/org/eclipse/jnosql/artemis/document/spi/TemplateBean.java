@@ -116,7 +116,7 @@ class TemplateBean extends AbstractBean<DocumentTemplate> {
 
     @Override
     public String getId() {
-        return DocumentTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
+        return DocumentTemplate.class.getName() + DatabaseType.DOCUMENT + "-" + provider;
     }
 
 }

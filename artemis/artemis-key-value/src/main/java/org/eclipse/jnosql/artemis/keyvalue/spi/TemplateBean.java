@@ -80,7 +80,7 @@ class TemplateBean extends AbstractBean<KeyValueTemplate> {
 
     @Override
     public String getId() {
-        return KeyValueTemplate.class.getName() + DatabaseType.COLUMN + "-" + provider;
+        return KeyValueTemplate.class.getName() + DatabaseType.KEY_VALUE + "-" + provider;
     }
 
 }

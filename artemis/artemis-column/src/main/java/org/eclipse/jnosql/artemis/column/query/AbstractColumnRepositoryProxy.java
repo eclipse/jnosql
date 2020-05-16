@@ -18,20 +18,12 @@ package org.eclipse.jnosql.artemis.column.query;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.column.ColumnQueryPagination;
-import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.artemis.query.RepositoryType;
 import org.eclipse.jnosql.artemis.repository.DynamicQueryMethodReturn;
-import org.eclipse.jnosql.artemis.repository.DynamicReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 
 /**
@@ -44,10 +36,7 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
 
     protected abstract Repository getRepository();
 
-    protected abstract ColumnTemplate getTemplate();
-
     protected abstract Converters getConverters();
-
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
@@ -83,36 +72,5 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
         }
     }
 
-    private Object executeQuery(Method method, Object[] args, Class<?> typeClass, ColumnQuery query) {
-        DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
-                .withClassSource(typeClass)
-                .withMethodSource(method)
-                .withResult(() -> getTemplate().select(query))
-                .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findPagination(args))
-                .withStreamPagination(streamPagination(query))
-                .withSingleResultPagination(getSingleResult(query))
-                .withPage(getPage(query))
-                .build();
-        return dynamicReturn.execute();
-    }
-
-    private Function<Pagination, Page<T>> getPage(ColumnQuery query) {
-        return p -> getTemplate().select(ColumnQueryPagination.of(query, p));
-    }
-
-    private Function<Pagination, Optional<T>> getSingleResult(ColumnQuery query) {
-        return p -> {
-            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
-            return getTemplate().singleResult(queryPagination);
-        };
-    }
-
-    private Function<Pagination, Stream<T>> streamPagination(ColumnQuery query) {
-        return p -> {
-            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
-            return getTemplate().select(queryPagination);
-        };
-    }
 
 }

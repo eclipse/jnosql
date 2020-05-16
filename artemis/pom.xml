@@ -38,6 +38,7 @@
         <module>artemis-column</module>
         <module>artemis-key-value</module>
         <module>artemis-validation</module>
+        <module>artemis-reactive</module>
     </modules>
 
     <dependencies>

@@ -21,15 +21,11 @@ import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.tck.entities.Person;
 import org.mockito.Mockito;
 
 import javax.enterprise.inject.Produces;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -56,17 +52,5 @@ public class MockProducer {
         when(manager.singleResult(Mockito.any(DocumentQuery.class))).thenReturn(Optional.empty());
         return manager;
 
-    }
-
-    @Produces
-    @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
-    public DocumentTemplate getDocumentRepository() {
-        DocumentTemplate documentTemplate = mock(DocumentTemplate.class);
-        when(documentTemplate.insert(Mockito.any(Person.class))).thenReturn(Person.builder()
-                .withName("documentRepositoryMock").build());
-
-        when(documentTemplate.singleResult(any(DocumentQuery.class))).thenReturn(Optional.empty());
-        when(documentTemplate.find(eq(Person.class), Mockito.any())).thenReturn(Optional.empty());
-        return documentTemplate;
     }
 }

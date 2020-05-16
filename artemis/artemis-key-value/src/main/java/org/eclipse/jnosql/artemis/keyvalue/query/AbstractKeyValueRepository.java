@@ -70,6 +70,7 @@ public abstract class AbstractKeyValueRepository<T> implements Repository {
         return getTemplate().get(key, typeClass).isPresent();
     }
 
+    @Override
     public long count() {
         throw new UnsupportedOperationException("The key-value type does not support count method");
     }

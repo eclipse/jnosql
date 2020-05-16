@@ -18,25 +18,13 @@ package org.eclipse.jnosql.artemis.keyvalue.query;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 class KeyValueRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
 
     private final DefaultKeyValueRepository repository;
     private final KeyValueTemplate template;
     private final Class<T> entityClass;
-
-    private static final List<Method> METHODS;
-
-    static {
-        METHODS = new ArrayList<>();
-        METHODS.addAll(Arrays.asList(Object.class.getMethods()));
-        METHODS.addAll(Arrays.asList(Repository.class.getMethods()));
-    }
 
     KeyValueRepositoryProxy(Class<?> repositoryType, KeyValueTemplate template) {
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
