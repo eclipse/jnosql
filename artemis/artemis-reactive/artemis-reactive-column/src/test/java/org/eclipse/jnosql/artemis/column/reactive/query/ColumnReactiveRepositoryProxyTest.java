@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -118,7 +119,7 @@ public class ColumnReactiveRepositoryProxyTest {
 
 
     @Test
-    public void shouldSaveUsingUpdateWhenDataExists() {
+    public void shouldSaveUsingUpdateWhenDataExists() throws ExecutionException, InterruptedException {
         when(template.find(Mockito.eq(Person.class), Mockito.eq(10L)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
@@ -130,12 +131,11 @@ public class ColumnReactiveRepositoryProxyTest {
         final Observable<Person> observable = personRepository.save(person);
         assertNotNull(observable);
         final CompletionStage<Optional<Person>> completion = observable.getFirst();
-        AtomicBoolean atomicBoolean = new AtomicBoolean();
-        completion.thenAccept(o -> atomicBoolean.set(true));
+        final Optional<Person> optionalPerson = completion.toCompletableFuture().get();
         verify(template).update(captor.capture());
         Person value = captor.getValue();
         assertEquals(person, value);
-        assertNotNull(atomicBoolean.get());
+        assertNotNull(optionalPerson.isPresent());
     }
 
 
