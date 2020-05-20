@@ -97,7 +97,7 @@ public class ColumnReactiveRepositoryProxyTest {
     }
 
     @Test
-    public void shouldSaveUsingInsertWhenDataDoesNotExist() {
+    public void shouldSaveUsingInsertWhenDataDoesNotExist() throws ExecutionException, InterruptedException {
         when(template.find(Mockito.eq(Person.class), Mockito.eq(10L)))
                 .thenReturn(Optional.empty());
 
@@ -108,13 +108,12 @@ public class ColumnReactiveRepositoryProxyTest {
                 .build();
         final Observable<Person> save = personRepository.save(person);
         assertNotNull(save);
-        AtomicReference<Person> atomicReference = new AtomicReference<>();
         final CompletionStage<Optional<Person>> completion = save.getFirst();
-        completion.thenApply(Optional::get).thenAccept(atomicReference::set);
+        final Optional<Person> optionalPerson = completion.toCompletableFuture().get();
         verify(template).insert(captor.capture());
         Person value = captor.getValue();
         assertEquals(person, value);
-        assertNotNull(atomicReference.get());
+        assertNotNull(optionalPerson);
     }
 
 
