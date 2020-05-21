@@ -104,6 +104,7 @@ public interface ReactiveKeyValueTemplate {
      * <b>put</b>
      *
      * @param query the query
+     * @return the {@link Observable} with the result
      * @throws NullPointerException when query is null
      */
     Observable<Void> query(String query);
@@ -126,6 +127,7 @@ public interface ReactiveKeyValueTemplate {
      *
      * @param key the key bo be used
      * @param <K> the key type
+     * @return the {@link Observable} with the result
      * @throws NullPointerException when the key is null
      */
     <K> Observable<Void> delete(K key);
@@ -135,6 +137,7 @@ public interface ReactiveKeyValueTemplate {
      *
      * @param keys the keys to be used
      * @param <K>  the key type
+     * @return the {@link Observable} with the result
      * @throws NullPointerException when the key is null
      */
     <K> Observable<Void> delete(Iterable<K> keys);
