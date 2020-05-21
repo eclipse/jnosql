@@ -47,7 +47,6 @@ enum DynamicReturnConverter {
         Class<?> typeClass = dynamic.typeClass();
         Class<?> returnType = method.getReturnType();
 
-        DynamicReturnType.of(typeClass, returnType);
         RepositoryReturn repositoryReturn = ServiceLoaderProvider
                 .getSupplierStream(RepositoryReturn.class)
                 .filter(RepositoryReturn.class::isInstance)
