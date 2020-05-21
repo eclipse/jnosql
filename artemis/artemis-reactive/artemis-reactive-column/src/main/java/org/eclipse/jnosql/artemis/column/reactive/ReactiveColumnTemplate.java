@@ -100,6 +100,7 @@ public interface ReactiveColumnTemplate {
      * Deletes an entity
      *
      * @param query query to delete an entity
+     * @return the {@link Observable} with the result
      * @throws NullPointerException when query is null
      */
     Observable<Void> delete(ColumnDeleteQuery query);
@@ -131,7 +132,7 @@ public interface ReactiveColumnTemplate {
      * @param query the query
      * @param <T>   the entity type
      * @return the result as {@link Optional}
-     * @throws NullPointerException     when the query is null
+     * @throws NullPointerException                   when the query is null
      * @throws jakarta.nosql.NonUniqueResultException if returns more than one result
      */
     <T> Observable<T> singleResult(String query);
@@ -143,10 +144,10 @@ public interface ReactiveColumnTemplate {
      * @param entityClass the entity class
      * @param id          the id value
      * @param <T>         the entity class type
-     * @param <K>        the id type
+     * @param <K>         the id type
      * @return the entity instance otherwise {@link Optional#empty()}
-     * @throws NullPointerException                   when either the entityClass or id are null
-     * @throws IdNotFoundException when the entityClass does not have the Id annotation
+     * @throws NullPointerException when either the entityClass or id are null
+     * @throws IdNotFoundException  when the entityClass does not have the Id annotation
      */
     <T, K> Observable<T> find(Class<T> entityClass, K id);
 
@@ -156,9 +157,10 @@ public interface ReactiveColumnTemplate {
      * @param entityClass the entity class
      * @param id          the id value
      * @param <T>         the entity class type
-     * @param <K>        the id type
-     * @throws NullPointerException                   when either the entityClass or id are null
-     * @throws IdNotFoundException when the entityClass does not have the Id annotation
+     * @param <K>         the id type
+     * @return the {@link Observable} with the result
+     * @throws NullPointerException when either the entityClass or id are null
+     * @throws IdNotFoundException  when the entityClass does not have the Id annotation
      */
     <T, K> Observable<Void> delete(Class<T> entityClass, K id);
 
