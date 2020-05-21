@@ -91,7 +91,7 @@ public interface Observable<T> {
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its completes.
      *
      * @return the {@link Optional} of a single result
-     * @throws jakarta.nosql.NonUniqueResultException
+     * @throws jakarta.nosql.NonUniqueResultException when there is more than one entity
      */
     Optional<T> blockSingleResult();
 
@@ -112,8 +112,10 @@ public interface Observable<T> {
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its values as {@link Collector}
      *
+     * @param <R> the type of the result
+     * @param <A> the intermediate accumulation type of the Collector
      * @return the {@link Collector} of a single result
-     * @throws NullPointerException
+     * @throws NullPointerException when the collector is null
      */
     <R, A> R blockCollect(Collector<? super T, A, R> collector);
 
@@ -131,7 +133,7 @@ public interface Observable<T> {
      *
      * @param duration the maximum time period to wait for before raising an Exception
      * @return the {@link Optional} of a single result
-     * @throws jakarta.nosql.NonUniqueResultException
+     * @throws jakarta.nosql.NonUniqueResultException when there is more than one entity
      */
     Optional<T> blockSingleResult(Duration duration);
 
@@ -140,7 +142,7 @@ public interface Observable<T> {
      *
      * @param duration the maximum time period to wait for before raising an Exception
      * @return the {@link Optional} of the first result
-     * @throws jakarta.nosql.NonUniqueResultException
+     * @throws jakarta.nosql.NonUniqueResultException when there is more than one entity
      */
     Optional<T> blockFirst(Duration duration);
 
@@ -156,6 +158,8 @@ public interface Observable<T> {
     /**
      * Subscribe to this {@link Publisher} and block indefinitely until the upstream signals its values as {@link Collector}
      *
+     * @param <R>      the type of the result
+     * @param <A>      the intermediate accumulation type of the Collector
      * @param duration the maximum time period to wait for before raising an Exception
      * @return the {@link Collector} of a single result
      * @throws jakarta.nosql.NonUniqueResultException
