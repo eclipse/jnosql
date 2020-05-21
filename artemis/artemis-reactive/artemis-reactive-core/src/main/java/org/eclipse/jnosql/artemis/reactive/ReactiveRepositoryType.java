@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 /**
  * It is a wrapper of {@link RepositoryType}
  */
-public class ReactiveRepositoryType {
+public final class ReactiveRepositoryType {
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(ReactiveRepository.class);
 
