@@ -14,7 +14,8 @@ package org.eclipse.jnosql.artemis.reactive;
 
 /**
  * An extension of {@link jakarta.nosql.mapping.Repository} that will work with Reactive Stream
- * @param <T>  the bean type
+ *
+ * @param <T> the bean type
  * @param <K> the K type
  */
 public interface ReactiveRepository<T, K> {
@@ -44,6 +45,7 @@ public interface ReactiveRepository<T, K> {
      * Deletes the entity with the given id.
      *
      * @param id the id
+     * @return the {@link Observable} with the result
      * @throws NullPointerException when id is null
      */
     Observable<Void> deleteById(K id);
@@ -52,6 +54,7 @@ public interface ReactiveRepository<T, K> {
      * Deletes the entity with the given ids.
      *
      * @param ids the ids
+     * @return the {@link Observable} with the result
      * @throws NullPointerException when either ids or same element is null
      */
     Observable<Void> deleteById(Iterable<K> ids);
