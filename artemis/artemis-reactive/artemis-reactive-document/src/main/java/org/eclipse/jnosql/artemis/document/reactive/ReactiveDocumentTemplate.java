@@ -96,6 +96,7 @@ public interface ReactiveDocumentTemplate {
      * Deletes an entity
      *
      * @param query query to delete an entity
+     * @return the {@link Observable} with the result
      * @throws NullPointerException query is null
      */
     Observable<Void> delete(DocumentDeleteQuery query);
@@ -152,6 +153,7 @@ public interface ReactiveDocumentTemplate {
      * @param id          the id value
      * @param <T>         the entity class type
      * @param <K>         the id type
+     * @return the {@link Observable} with the result
      * @throws NullPointerException when either the entityClass or id are null
      * @throws IdNotFoundException  when the entityClass does not have the Id annotation
      */
