@@ -44,6 +44,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -139,7 +140,7 @@ public class ColumnReactiveRepositoryProxyTest {
 
 
     @Test
-    public void shouldSaveIterable() {
+    public void shouldSaveIterable() throws ExecutionException, InterruptedException {
 
         when(template.singleResult(Mockito.any(ColumnQuery.class))).thenReturn(Optional.empty());
 
@@ -149,7 +150,10 @@ public class ColumnReactiveRepositoryProxyTest {
                 .withId(10L)
                 .withPhones(singletonList("123123"))
                 .build();
-        personRepository.save(singletonList(person));
+        final Observable<Person> observable = personRepository.save(singletonList(person));
+        final CompletableFuture<List<Person>> future = observable.getList().toCompletableFuture();
+        final List<Person> people = future.get();
+        assertNotNull(people);
         verify(template).insert(captor.capture());
         verify(template).insert(captor.capture());
         Person personCapture = captor.getValue();
@@ -181,7 +185,7 @@ public class ColumnReactiveRepositoryProxyTest {
         final CompletionStage<Optional<Person>> completion = observable.getFirst();
         AtomicReference<Person> reference = new AtomicReference<>();
         completion.thenApply(Optional::get).thenAccept(reference::set);
-        Assertions.assertNotNull(reference);
+        assertNotNull(reference);
         verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
     }
 
@@ -294,7 +298,7 @@ public class ColumnReactiveRepositoryProxyTest {
         final CompletionStage<List<Person>> completion = subscriber.getCompletion();
         completion.thenAccept(reference::set);
         final List<Person> people = reference.get();
-        Assertions.assertNotNull(people);
+        assertNotNull(people);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         assertThat(people, Matchers.contains(ada));

@@ -44,6 +44,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -138,7 +139,7 @@ public class DocumentReactiveRepositoryProxyTest {
 
 
     @Test
-    public void shouldSaveIterable() {
+    public void shouldSaveIterable() throws ExecutionException, InterruptedException {
 
         when(template.singleResult(Mockito.any(DocumentQuery.class))).thenReturn(Optional.empty());
 
@@ -148,7 +149,10 @@ public class DocumentReactiveRepositoryProxyTest {
                 .withId(10L)
                 .withPhones(singletonList("123123"))
                 .build();
-        personRepository.save(singletonList(person));
+        final Observable<Person> observable = personRepository.save(singletonList(person));
+        final CompletableFuture<List<Person>> future = observable.getList().toCompletableFuture();
+        final List<Person> people = future.get();
+        assertNotNull(people);
         verify(template).insert(captor.capture());
         verify(template).insert(captor.capture());
         Person personCapture = captor.getValue();
