@@ -408,7 +408,7 @@ public class DefaultDocumentEntityConverterTest {
 
         Download download = converter.toEntity(entity);
         Assertions.assertEquals(1L, download.getId());
-        Assertions.assertEquals(contents, download.getContents());
+        Assertions.assertArrayEquals(contents, download.getContents());
     }
 
     @Test
@@ -423,7 +423,8 @@ public class DefaultDocumentEntityConverterTest {
 
 
         Assertions.assertEquals(1L, entity.find("_id").get().get());
-        Assertions.assertEquals(contents, entity.find("contents").get().get());
+        final byte[] bytes = entity.find("contents").get().get(byte[].class);
+        Assertions.assertArrayEquals(contents, bytes);
     }
 
     private Object getValue(Optional<Document> document) {
