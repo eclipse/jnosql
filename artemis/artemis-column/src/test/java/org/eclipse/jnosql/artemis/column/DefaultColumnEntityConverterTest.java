@@ -406,7 +406,7 @@ public class DefaultColumnEntityConverterTest {
 
         Download download = converter.toEntity(entity);
         Assertions.assertEquals(1L, download.getId());
-        Assertions.assertEquals(contents, download.getContents());
+        Assertions.assertArrayEquals(contents, download.getContents());
     }
 
     @Test
@@ -419,9 +419,9 @@ public class DefaultColumnEntityConverterTest {
 
         ColumnEntity entity = converter.toColumn(download);
 
-
         Assertions.assertEquals(1L, entity.find("_id").get().get());
-        Assertions.assertEquals(contents, entity.find("contents").get().get());
+        final byte[] bytes = entity.find("contents").map(v -> v.get(byte[].class)).orElse(new byte[0]);
+        Assertions.assertArrayEquals(contents, bytes);
     }
 
     private Object getValue(Optional<Column> column) {
