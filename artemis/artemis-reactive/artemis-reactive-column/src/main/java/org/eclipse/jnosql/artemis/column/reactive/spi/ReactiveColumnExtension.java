@@ -18,7 +18,7 @@ package org.eclipse.jnosql.artemis.column.reactive.spi;
 import jakarta.nosql.column.ColumnFamilyManager;
 import org.eclipse.jnosql.artemis.DatabaseMetadata;
 import org.eclipse.jnosql.artemis.Databases;
-import org.eclipse.jnosql.artemis.column.query.RepositoryColumnBean;
+import org.eclipse.jnosql.artemis.column.reactive.query.ReactiveRepositoryColumnBean;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 
 import javax.enterprise.event.Observes;
@@ -80,10 +80,10 @@ public class ReactiveColumnExtension implements Extension {
 
         crudTypes.forEach(type -> {
             if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
-                afterBeanDiscovery.addBean(new RepositoryColumnBean(type, beanManager, ""));
+                afterBeanDiscovery.addBean(new ReactiveRepositoryColumnBean(type, beanManager, ""));
             }
             databases.forEach(database -> {
-                final RepositoryColumnBean bean = new RepositoryColumnBean(type, beanManager, database.getProvider());
+                final ReactiveRepositoryColumnBean bean = new ReactiveRepositoryColumnBean(type, beanManager, database.getProvider());
                 afterBeanDiscovery.addBean(bean);
             });
         });
