@@ -18,7 +18,7 @@ package org.eclipse.jnosql.artemis.document.reactive.spi;
 import jakarta.nosql.document.DocumentCollectionManager;
 import org.eclipse.jnosql.artemis.DatabaseMetadata;
 import org.eclipse.jnosql.artemis.Databases;
-import org.eclipse.jnosql.artemis.document.query.RepositoryDocumentBean;
+import org.eclipse.jnosql.artemis.document.reactive.query.ReactiveRepositoryDocumentBean;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 
 import javax.enterprise.event.Observes;
@@ -77,13 +77,12 @@ public class ReactiveDocumentExtension implements Extension {
             afterBeanDiscovery.addBean(bean);
         });
 
-
         crudTypes.forEach(type -> {
             if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
-                afterBeanDiscovery.addBean(new RepositoryDocumentBean(type, beanManager, ""));
+                afterBeanDiscovery.addBean(new ReactiveRepositoryDocumentBean(type, beanManager, ""));
             }
             databases.forEach(database -> {
-                final RepositoryDocumentBean bean = new RepositoryDocumentBean(type, beanManager, database.getProvider());
+                final ReactiveRepositoryDocumentBean bean = new ReactiveRepositoryDocumentBean(type, beanManager, database.getProvider());
                 afterBeanDiscovery.addBean(bean);
             });
         });
