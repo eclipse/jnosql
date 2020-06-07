@@ -21,7 +21,7 @@
     <parent>
          <groupId>org.eclipse.jnosql.artemis.reactive</groupId>
          <artifactId>artemis-reactive-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0-b2</version>
     </parent>
 
     <artifactId>artemis-reactive-core</artifactId>
