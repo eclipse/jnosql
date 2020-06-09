@@ -43,7 +43,7 @@ public final class Databases {
      * @see DatabaseType
      */
     public static void addDatabase(final ProcessProducer processProducer, final DatabaseType type, final Set<DatabaseMetadata> databases) {
-        LOGGER.info(String.format("Found the type %s to databases %s", type, databases));
+
         Set<Annotation> annotations = processProducer.getAnnotatedMember().getAnnotations();
         Optional<Database> databaseOptional = annotations.stream().filter(a -> a instanceof Database)
                 .map(Database.class::cast).findFirst();
@@ -52,7 +52,9 @@ public final class Databases {
                 String simpleName = processProducer.getAnnotatedMember().getDeclaringType().getJavaClass().getSimpleName();
                 throw new IllegalStateException(String.format("The %s is producing a wrong manager for %s type", simpleName, type));
             }
-            databases.add(DatabaseMetadata.of(database));
+            final DatabaseMetadata metadata = DatabaseMetadata.of(database);
+            LOGGER.info(String.format("Found the type %s to metadata %s", type, metadata));
+            databases.add(metadata);
         });
     }
 }
