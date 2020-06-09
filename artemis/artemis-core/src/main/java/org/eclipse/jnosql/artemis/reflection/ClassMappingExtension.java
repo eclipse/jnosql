@@ -24,6 +24,7 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
+import javax.enterprise.inject.spi.WithAnnotations;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -53,7 +54,7 @@ public class ClassMappingExtension implements Extension {
      * @param target the target
      * @param <T>    the type
      */
-    public <T> void initializePropertyLoading(@Observes final ProcessAnnotatedType<T> target) {
+    public <T> void loadEntity(@Observes @WithAnnotations({Entity.class, Embeddable.class}) final ProcessAnnotatedType<T> target) {
 
         AnnotatedType<T> annotatedType = target.getAnnotatedType();
         if (annotatedType.isAnnotationPresent(Entity.class)) {
@@ -94,7 +95,7 @@ public class ClassMappingExtension implements Extension {
 
     @Override
     public String toString() {
-        return  "ClassMappingExtension{" + "classConverter=" + classConverter +
+        return "ClassMappingExtension{" + "classConverter=" + classConverter +
                 ", mappings-size=" + mappings.size() +
                 ", classes=" + classes +
                 '}';

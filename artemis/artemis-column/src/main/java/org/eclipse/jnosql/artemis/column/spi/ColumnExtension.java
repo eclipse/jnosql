@@ -55,7 +55,6 @@ public class ColumnExtension implements Extension {
         }
         if (Arrays.asList(javaClass.getInterfaces()).contains(Repository.class)
                 && Modifier.isInterface(javaClass.getModifiers())) {
-            LOGGER.info("Adding a new Repository as discovered on Column: " + javaClass);
             crudTypes.add(javaClass);
         }
     }
@@ -67,8 +66,11 @@ public class ColumnExtension implements Extension {
 
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
-        LOGGER.info(String.format("Starting to process on columns: %d databases crud %d",
+
+        LOGGER.info(String.format("Processing Column extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
+        LOGGER.info("Processing repositories as a Column implementation: " + crudTypes.toString());
+
         databases.forEach(type -> {
             final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
             afterBeanDiscovery.addBean(bean);

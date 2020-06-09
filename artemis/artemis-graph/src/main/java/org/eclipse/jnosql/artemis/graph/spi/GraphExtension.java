@@ -39,9 +39,9 @@ import static jakarta.nosql.mapping.DatabaseType.GRAPH;
  * Extension to start up the GraphTemplate, Repository
  * from the {@link jakarta.nosql.mapping.Database} qualifier
  */
-public class GraphProducerExtension implements Extension {
+public class GraphExtension implements Extension {
 
-    private static final Logger LOGGER = Logger.getLogger(GraphProducerExtension.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GraphExtension.class.getName());
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
@@ -54,7 +54,6 @@ public class GraphProducerExtension implements Extension {
         }
         if (Arrays.asList(javaClass.getInterfaces()).contains(Repository.class)
                 && Modifier.isInterface(javaClass.getModifiers())) {
-            LOGGER.info("Adding a new Repository as discovered on Graph: " + javaClass);
             crudTypes.add(javaClass);
         }
     }
@@ -64,10 +63,10 @@ public class GraphProducerExtension implements Extension {
         Databases.addDatabase(pp, GRAPH, databases);
     }
 
-
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
-        LOGGER.info(String.format("Starting to process on graphs: %d databases crud %d",
+        LOGGER.info(String.format("Processing graph extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
+        LOGGER.info("Processing repositories as a Graph implementation: " + crudTypes.toString());
 
         databases.forEach(type -> {
             final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());

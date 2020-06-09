@@ -54,10 +54,8 @@ public class ReactiveDocumentExtension implements Extension {
             return;
         }
 
-
         if (Arrays.asList(javaClass.getInterfaces()).contains(ReactiveRepository.class)
                 && Modifier.isInterface(javaClass.getModifiers())) {
-            LOGGER.info("Adding a new ReactiveRepository as discovered on document: " + javaClass);
             crudTypes.add(javaClass);
         }
     }
@@ -69,8 +67,9 @@ public class ReactiveDocumentExtension implements Extension {
 
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
-        LOGGER.info(String.format("Starting to process on reactive documents: %d databases crud %d ",
+        LOGGER.info(String.format("Processing Reactive Document extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
+        LOGGER.info("Processing repositories as a Reactive Document implementation: " + crudTypes.toString());
 
         databases.forEach(type -> {
             final ReactiveTemplateBean bean = new ReactiveTemplateBean(beanManager, type.getProvider());
