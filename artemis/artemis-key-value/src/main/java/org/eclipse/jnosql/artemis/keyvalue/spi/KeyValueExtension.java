@@ -61,15 +61,15 @@ public class KeyValueExtension implements Extension {
 
         if (Arrays.asList(javaClass.getInterfaces()).contains(Repository.class)
                 && Modifier.isInterface(javaClass.getModifiers())) {
-            LOGGER.info("Adding a new KeyValueRepository as discovered on key-value: " + javaClass);
             crudTypes.add(repo.getAnnotatedType().getJavaClass());
         }
     }
 
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
-        LOGGER.info(String.format("Processing buckets: %d databases crud %d ",
+        LOGGER.info(String.format("Processing Key-Value extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
+        LOGGER.info("Processing repositories as a Key-Value implementation: " + crudTypes.toString());
 
         databases.forEach(type -> {
             final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());

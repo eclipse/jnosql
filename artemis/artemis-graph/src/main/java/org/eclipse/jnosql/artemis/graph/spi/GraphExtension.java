@@ -54,7 +54,6 @@ public class GraphExtension implements Extension {
         }
         if (Arrays.asList(javaClass.getInterfaces()).contains(Repository.class)
                 && Modifier.isInterface(javaClass.getModifiers())) {
-            LOGGER.info("Adding a new Repository as discovered on Graph: " + javaClass);
             crudTypes.add(javaClass);
         }
     }
@@ -64,11 +63,10 @@ public class GraphExtension implements Extension {
         Databases.addDatabase(pp, GRAPH, databases);
     }
 
-
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
-        LOGGER.info(String.format("Processing on graph extension: %d databases crud %d",
+        LOGGER.info(String.format("Processing graph extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
-        LOGGER.info("Processing as a repository as a Graph implementation: " + crudTypes.toString());
+        LOGGER.info("Processing repositories as a Graph implementation: " + crudTypes.toString());
 
         databases.forEach(type -> {
             final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());

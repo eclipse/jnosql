@@ -57,7 +57,6 @@ public class DocumentExtension implements Extension {
 
         if (Arrays.asList(javaClass.getInterfaces()).contains(Repository.class)
                 && Modifier.isInterface(javaClass.getModifiers())) {
-            LOGGER.info("Adding a new Repository as discovered on document: " + javaClass);
             crudTypes.add(javaClass);
         }
     }
@@ -69,8 +68,9 @@ public class DocumentExtension implements Extension {
 
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
-        LOGGER.info(String.format("Starting to process on documents: %d databases crud %d ",
+        LOGGER.info(String.format("Processing Document extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
+        LOGGER.info("Processing repositories as a Document implementation: " + crudTypes.toString());
 
         databases.forEach(type -> {
             final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
