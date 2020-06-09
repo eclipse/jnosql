@@ -66,8 +66,9 @@ public class GraphProducerExtension implements Extension {
 
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
-        LOGGER.info(String.format("Starting to process on graphs: %d databases crud %d",
+        LOGGER.info(String.format("Processing on graph extension: %d databases crud %d",
                 databases.size(), crudTypes.size()));
+        LOGGER.info("Processing as a repository as a Graph implementation: " + crudTypes.toString());
 
         databases.forEach(type -> {
             final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
