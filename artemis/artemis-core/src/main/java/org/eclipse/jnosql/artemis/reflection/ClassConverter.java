@@ -98,7 +98,7 @@ class ClassConverter {
                 .build();
 
         long end = System.currentTimeMillis() - start;
-        LOGGER.info(String.format("Scanned %s loaded with time %d ms", entityClass.getName(), end));
+        LOGGER.info(String.format("Scanned the entity %s loaded with time %d ms", entityClass.getName(), end));
         return mapping;
     }
 
