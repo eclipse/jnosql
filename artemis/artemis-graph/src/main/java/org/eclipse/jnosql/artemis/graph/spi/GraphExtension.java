@@ -39,9 +39,9 @@ import static jakarta.nosql.mapping.DatabaseType.GRAPH;
  * Extension to start up the GraphTemplate, Repository
  * from the {@link jakarta.nosql.mapping.Database} qualifier
  */
-public class GraphProducerExtension implements Extension {
+public class GraphExtension implements Extension {
 
-    private static final Logger LOGGER = Logger.getLogger(GraphProducerExtension.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GraphExtension.class.getName());
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
