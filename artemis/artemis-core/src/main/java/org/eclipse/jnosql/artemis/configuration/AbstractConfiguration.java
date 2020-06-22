@@ -68,7 +68,7 @@ public abstract class AbstractConfiguration<T> implements Converter<T> {
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) {
             throw new UnsupportedOperationException("The Eclipse MicroProfile Config does not start the " +
-                    "CDI container on the " + Converter.class.getName() + " implementations, " +
+                    "CDI container to the " + Converter.class.getName() + " implementations, " +
                     "check it with your provider");
         }
     }
