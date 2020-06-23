@@ -67,7 +67,9 @@ public abstract class AbstractConfiguration<T> implements Converter<T> {
     private static class MockInvocationHandler implements InvocationHandler {
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) {
-            throw new UnsupportedOperationException("This mock is for validation proposal.");
+            throw new UnsupportedOperationException("The Eclipse MicroProfile Config does not start the " +
+                    "CDI container to the " + Converter.class.getName() + " implementations, " +
+                    "check it with your provider");
         }
     }
 }
