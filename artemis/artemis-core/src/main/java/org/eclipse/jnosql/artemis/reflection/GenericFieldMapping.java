@@ -104,7 +104,7 @@ public class GenericFieldMapping extends AbstractFieldMapping {
                 .getActualTypeArguments()[0];
     }
 
-    public Collection getCollectionInstance() {
+    public Collection<?> getCollectionInstance() {
         Class<?> type = getNativeField().getType();
         if (Deque.class.equals(type) || Queue.class.equals(type)) {
             return new LinkedList<>();
