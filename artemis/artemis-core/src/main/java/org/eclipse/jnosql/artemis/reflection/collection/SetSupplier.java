@@ -17,9 +17,12 @@ package org.eclipse.jnosql.artemis.reflection.collection;
 import org.eclipse.jnosql.artemis.reflection.CollectionSupplier;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
+
+/**
+ * An implementation of {@link CollectionSupplier} to {@link HashSet}
+ */
 public class SetSupplier implements CollectionSupplier<HashSet<?>> {
 
     @Override
