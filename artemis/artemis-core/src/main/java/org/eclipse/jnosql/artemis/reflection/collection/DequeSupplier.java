@@ -16,7 +16,6 @@ package org.eclipse.jnosql.artemis.reflection.collection;
 
 import org.eclipse.jnosql.artemis.reflection.CollectionSupplier;
 
-import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
