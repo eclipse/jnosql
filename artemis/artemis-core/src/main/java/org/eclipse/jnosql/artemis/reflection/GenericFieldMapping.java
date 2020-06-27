@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.artemis.reflection;
 
 
+import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.Value;
 import jakarta.nosql.mapping.AttributeConverter;
@@ -26,18 +27,8 @@ import jakarta.nosql.mapping.reflection.FieldWriter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.NavigableSet;
 import java.util.Objects;
-import java.util.Queue;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class GenericFieldMapping extends AbstractFieldMapping {
 
@@ -104,18 +95,14 @@ public class GenericFieldMapping extends AbstractFieldMapping {
                 .getActualTypeArguments()[0];
     }
 
-    public Collection getCollectionInstance() {
+    public Collection<?> getCollectionInstance() {
         Class<?> type = getNativeField().getType();
-        if (Deque.class.equals(type) || Queue.class.equals(type)) {
-            return new LinkedList<>();
-        } else if (List.class.equals(type) || Iterable.class.equals(type) || Collection.class.equals(type)) {
-            return new ArrayList<>();
-        } else if (NavigableSet.class.equals(type) || SortedSet.class.equals(type)) {
-            return new TreeSet<>();
-        } else if (Set.class.equals(type)) {
-            return new HashSet<>();
-        }
-        throw new UnsupportedOperationException("This collection is not supported yet: " + type);
+        final CollectionSupplier supplier = ServiceLoaderProvider.getSupplierStream(CollectionSupplier.class)
+                .map(CollectionSupplier.class::cast)
+                .filter(c -> c.test(type))
+                .findFirst()
+                .orElseThrow(() -> new UnsupportedOperationException("This collection is not supported yet: " + type));
+        return (Collection<?>) supplier.get();
     }
 
     @Override
