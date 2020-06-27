@@ -20,9 +20,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 class SetSupplierTest {
 
@@ -43,7 +43,7 @@ class SetSupplierTest {
     public void shouldGet() {
         final Collection<?> collection = this.supplier.get();
         Assertions.assertNotNull(collection);
-        Assertions.assertTrue(collection instanceof TreeSet);
+        Assertions.assertTrue(collection instanceof HashSet);
     }
 
 }
