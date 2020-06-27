@@ -24,5 +24,5 @@ import java.util.function.Supplier;
  *
  * @param <T> the collection instance
  */
-public interface CollectionSupplier<T extends Collection> extends Supplier<Collection<T>>, Predicate<Class<?>> {
+public interface CollectionSupplier<T extends Collection<?>> extends Supplier<T>, Predicate<Class<?>> {
 }
