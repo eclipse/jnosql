@@ -14,5 +14,15 @@
  */
 package org.eclipse.jnosql.artemis.reflection;
 
-public interface CollectionSupplier {
+import java.util.Collection;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+/**
+ * A collection supplier to create an {@link Collection} instance at {@link GenericFieldMapping#getCollectionInstance}
+ * by SPI
+ *
+ * @param <T> the collection instance
+ */
+public interface CollectionSupplier<T> extends Supplier<Collection<T>>, Predicate<Class<?>> {
 }
