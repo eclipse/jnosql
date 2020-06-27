@@ -14,5 +14,25 @@
  */
 package org.eclipse.jnosql.artemis.reflection.collection;
 
-public class TreeSetSupplier {
+import org.eclipse.jnosql.artemis.reflection.CollectionSupplier;
+
+import java.util.NavigableSet;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+/**
+ * An implementation of {@link CollectionSupplier} to {@link TreeSet}
+ */
+public class TreeSetSupplier implements CollectionSupplier<TreeSet<?>> {
+
+    @Override
+    public boolean test(Class<?> type) {
+        return NavigableSet.class.equals(type)
+                || SortedSet.class.equals(type);
+    }
+
+    @Override
+    public TreeSet<?> get() {
+        return new TreeSet<>();
+    }
 }
