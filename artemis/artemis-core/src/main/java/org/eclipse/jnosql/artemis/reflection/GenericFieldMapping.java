@@ -27,18 +27,8 @@ import jakarta.nosql.mapping.reflection.FieldWriter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.NavigableSet;
 import java.util.Objects;
-import java.util.Queue;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class GenericFieldMapping extends AbstractFieldMapping {
 
