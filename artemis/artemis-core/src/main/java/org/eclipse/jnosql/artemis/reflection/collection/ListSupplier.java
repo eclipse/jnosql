@@ -14,5 +14,26 @@
  */
 package org.eclipse.jnosql.artemis.reflection.collection;
 
-public class ListSupplier {
+import org.eclipse.jnosql.artemis.reflection.CollectionSupplier;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * An implementation of {@link CollectionSupplier} to {@link ArrayList}
+ */
+public class ListSupplier implements CollectionSupplier<ArrayList<?>> {
+    @Override
+    public boolean test(Class<?> type) {
+        return List.class.equals(type) ||
+                Iterable.class.equals(type)
+                || Collection.class.equals(type);
+    }
+
+    @Override
+    public ArrayList<?> get() {
+        return new ArrayList<>();
+    }
 }
