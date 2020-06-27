@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.artemis.reflection;
 
 
+import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.Value;
 import jakarta.nosql.mapping.AttributeConverter;
@@ -106,16 +107,12 @@ public class GenericFieldMapping extends AbstractFieldMapping {
 
     public Collection<?> getCollectionInstance() {
         Class<?> type = getNativeField().getType();
-        if (Deque.class.equals(type) || Queue.class.equals(type)) {
-            return new LinkedList<>();
-        } else if (List.class.equals(type) || Iterable.class.equals(type) || Collection.class.equals(type)) {
-            return new ArrayList<>();
-        } else if (NavigableSet.class.equals(type) || SortedSet.class.equals(type)) {
-            return new TreeSet<>();
-        } else if (Set.class.equals(type)) {
-            return new HashSet<>();
-        }
-        throw new UnsupportedOperationException("This collection is not supported yet: " + type);
+        final CollectionSupplier supplier = ServiceLoaderProvider.getSupplierStream(CollectionSupplier.class)
+                .map(CollectionSupplier.class::cast)
+                .filter(c -> c.test(type))
+                .findFirst()
+                .orElseThrow(() -> new UnsupportedOperationException("This collection is not supported yet: " + type));
+        return (Collection<?>) supplier.get();
     }
 
     @Override
