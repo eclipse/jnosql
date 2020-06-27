@@ -21,6 +21,9 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * An implementation of {@link CollectionSupplier} to {@link LinkedList}
+ */
 public class DequeSupplier implements CollectionSupplier<LinkedList<?>> {
 
     @Override
