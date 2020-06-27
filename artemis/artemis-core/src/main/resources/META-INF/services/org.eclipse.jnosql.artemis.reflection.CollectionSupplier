@@ -1,0 +1,4 @@
+org.eclipse.jnosql.artemis.reflection.collection.DequeSupplier
+org.eclipse.jnosql.artemis.reflection.collection.ListSupplier
+org.eclipse.jnosql.artemis.reflection.collection.SetSupplier
+org.eclipse.jnosql.artemis.reflection.collection.TreeSetSupplier
