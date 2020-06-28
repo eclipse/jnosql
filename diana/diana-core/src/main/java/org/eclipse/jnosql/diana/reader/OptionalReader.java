@@ -25,12 +25,11 @@ import java.util.Optional;
 /**
  * Class to reads and converts to {@link Optional}
  */
-@SuppressWarnings("unchecked")
 public final class OptionalReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Optional.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return Optional.class.equals(type);
     }
 
     @Override

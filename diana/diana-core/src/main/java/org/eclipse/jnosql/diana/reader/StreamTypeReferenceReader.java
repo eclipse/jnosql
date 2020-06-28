@@ -31,13 +31,12 @@ import static java.util.stream.StreamSupport.stream;
 /**
  * The {@link TypeReferenceReader} to {@link java.util.stream.Stream}
  */
-@SuppressWarnings("unchecked")
 public class StreamTypeReferenceReader implements TypeReferenceReader {
 
     private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
 
     @Override
-    public <T> boolean isCompatible(TypeSupplier<T> typeReference) {
+    public boolean test(TypeSupplier<?> typeReference) {
         Type type = typeReference.get();
         if (ParameterizedType.class.isInstance(type)) {
             ParameterizedType parameterizedType = ParameterizedType.class.cast(type);

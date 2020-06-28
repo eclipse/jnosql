@@ -30,13 +30,12 @@ import java.util.Date;
 public class OffsetDateTimeReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> typeClass) {
-        return OffsetDateTime.class.equals(typeClass);
+    public boolean test(Class<?> type) {
+        return OffsetDateTime.class.equals(type);
     }
 
     @Override
     public <T> T read(Class<T> typeClass, Object value) {
-
         return (T) getOffSetDateTime(value);
     }
 

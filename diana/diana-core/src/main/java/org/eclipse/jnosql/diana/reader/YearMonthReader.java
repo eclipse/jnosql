@@ -25,12 +25,11 @@ import jakarta.nosql.ValueReader;
  * Class to reads and converts to {@link YearMonth}, first it verify if is YearMonth if yes return itself
  * otherwise convert to {@link String} and then {@link YearMonth}
  */
-@SuppressWarnings("unchecked")
 public final class YearMonthReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return YearMonth.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return YearMonth.class.equals(type);
     }
 
     @Override

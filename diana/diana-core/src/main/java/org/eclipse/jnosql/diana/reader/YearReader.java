@@ -25,12 +25,11 @@ import java.time.Year;
  * Class to reads and converts to {@link Year}, first it verify if is Year if yes return itself
  * otherwise convert to {@link String} and then {@link Year}
  */
-@SuppressWarnings("unchecked")
 public final class YearReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Year.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return Year.class.equals(type);
     }
 
     @Override

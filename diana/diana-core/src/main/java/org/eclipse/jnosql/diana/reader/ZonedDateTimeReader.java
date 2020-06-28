@@ -31,8 +31,8 @@ import java.util.Date;
 public class ZonedDateTimeReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return ZonedDateTime.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return ZonedDateTime.class.equals(type);
     }
 
     @Override
