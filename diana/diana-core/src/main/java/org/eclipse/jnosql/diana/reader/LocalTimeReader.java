@@ -31,8 +31,8 @@ import java.util.Date;
 public class LocalTimeReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
-        return LocalTime.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return LocalTime.class.equals(type);
     }
 
     @Override

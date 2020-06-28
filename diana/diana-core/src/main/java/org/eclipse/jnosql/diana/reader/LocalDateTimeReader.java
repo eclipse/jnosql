@@ -28,12 +28,11 @@ import java.util.Date;
  * Class to reads and converts to {@link LocalDateTime} type
  *
  */
-@SuppressWarnings("unchecked")
 public class LocalDateTimeReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
-        return LocalDateTime.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return LocalDateTime.class.equals(type);
     }
 
     @Override

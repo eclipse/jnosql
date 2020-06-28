@@ -45,7 +45,7 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
     private static final Predicate<Type> IS_CLASS = c -> c instanceof Class;
 
     @Override
-    public <T> boolean isCompatible(TypeSupplier<T> typeReference) {
+    public boolean test(TypeSupplier<?> typeReference) {
         Type type = typeReference.get();
         if (ParameterizedType.class.isInstance(type)) {
             ParameterizedType parameterizedType = ParameterizedType.class.cast(type);
@@ -115,7 +115,7 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
 
     private <K> Function mapKeyElement(Class<K> keyClass) {
         return (keyElement) -> {
-            if (SERVICE_PROVIDER.isCompatible(keyClass)) {
+            if (SERVICE_PROVIDER.test(keyClass)) {
                 return SERVICE_PROVIDER.read(keyClass, keyElement);
             }
             return keyElement;
@@ -125,7 +125,7 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
     private <V> Function mapValueElement(Class<V> valueClass, Map mapValue) {
         return (keyElement) -> {
             Object valueElement = mapValue.get(keyElement);
-            if (SERVICE_PROVIDER.isCompatible(valueClass)) {
+            if (SERVICE_PROVIDER.test(valueClass)) {
                 return SERVICE_PROVIDER.read(valueClass, valueElement);
             }
             return valueElement;
