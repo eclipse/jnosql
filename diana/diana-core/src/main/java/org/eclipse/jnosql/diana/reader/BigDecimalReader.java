@@ -28,13 +28,11 @@ import java.math.BigDecimal;
  * and then {@link BigDecimal}
  *
  */
-@SuppressWarnings("unchecked")
 public final class BigDecimalReader implements ValueReader {
 
-
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return BigDecimal.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return BigDecimal.class.equals(type);
     }
 
     @Override

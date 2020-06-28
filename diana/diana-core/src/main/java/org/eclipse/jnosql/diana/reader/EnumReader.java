@@ -28,12 +28,11 @@ import java.util.List;
  * Class to reads and converts to {@link Enum}
  *
  */
-@SuppressWarnings("unchecked")
 public final class EnumReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Enum.class.isAssignableFrom(clazz);
+    public boolean test(Class<?> type) {
+        return Enum.class.isAssignableFrom(type);
     }
 
     @Override

@@ -24,12 +24,11 @@ import jakarta.nosql.ValueReader;
  * Class to reads and converts to {@link Float}, first it verify if is Double if yes return itself then verifies if is
  * {@link Number} and use {@link Number#floatValue()} otherwise convert to {@link String} and then {@link Float}
  */
-@SuppressWarnings("unchecked")
 public final class FloatReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Float.class.equals(clazz) || float.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return Float.class.equals(type) || float.class.equals(type);
     }
 
     @Override

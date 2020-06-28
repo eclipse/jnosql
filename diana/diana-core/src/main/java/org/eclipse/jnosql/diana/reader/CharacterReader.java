@@ -25,12 +25,11 @@ import static java.lang.Character.MIN_VALUE;
 /**
  * Class reader for {@link Character}
  */
-@SuppressWarnings("unchecked")
 public final class CharacterReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Character.class.equals(clazz) || char.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return Character.class.equals(type) || char.class.equals(type);
     }
 
     @Override

@@ -18,9 +18,6 @@
 package org.eclipse.jnosql.diana.reader;
 
 
-
-
-
 import jakarta.nosql.ValueReader;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,12 +27,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * verifies if is {@link Number} and use {@link Number#intValue()} ()} otherwise convert to {@link String}
  * and then {@link AtomicInteger}
  */
-@SuppressWarnings("unchecked")
 public final class AtomicIntegerReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return AtomicInteger.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return AtomicInteger.class.equals(type);
     }
 
     @Override
@@ -50,6 +46,4 @@ public final class AtomicIntegerReader implements ValueReader {
             return (T) new AtomicInteger(Integer.valueOf(value.toString()));
         }
     }
-
-
 }

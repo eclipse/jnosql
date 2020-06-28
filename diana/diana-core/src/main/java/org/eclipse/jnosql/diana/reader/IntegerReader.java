@@ -28,8 +28,8 @@ import jakarta.nosql.ValueReader;
 public final class IntegerReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Integer.class.equals(clazz) || int.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return Integer.class.equals(type) || int.class.equals(type);
     }
 
     @Override

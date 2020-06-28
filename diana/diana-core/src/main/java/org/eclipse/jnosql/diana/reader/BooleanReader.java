@@ -25,12 +25,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Class to reads and converts to both {@link Boolean} and {@link AtomicBoolean}
  */
-@SuppressWarnings("unchecked")
 public final class BooleanReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Boolean.class.equals(clazz) || AtomicBoolean.class.equals(clazz) || boolean.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return Boolean.class.equals(type) ||
+                AtomicBoolean.class.equals(type) ||
+                boolean.class.equals(type);
     }
 
     @Override
@@ -55,9 +56,7 @@ public final class BooleanReader implements ValueReader {
         if (isAtomicBoolean) {
             return (T) new AtomicBoolean(bool);
         }
-
         return (T) bool;
     }
-
 
 }

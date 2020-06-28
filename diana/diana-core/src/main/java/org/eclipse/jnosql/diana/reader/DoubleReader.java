@@ -24,12 +24,11 @@ import jakarta.nosql.ValueReader;
  * Class to reads and converts to {@link Double}, first it verify if is Double if yes return itself then verifies if is
  * {@link Number} and use {@link Number#doubleValue()} otherwise convert to {@link String} and then {@link Double}
  */
-@SuppressWarnings("unchecked")
 public final class DoubleReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Double.class.equals(clazz) || double.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return Double.class.equals(type) || double.class.equals(type);
     }
 
     @Override

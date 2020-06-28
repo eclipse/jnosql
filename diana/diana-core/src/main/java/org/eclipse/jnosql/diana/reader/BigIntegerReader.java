@@ -28,12 +28,11 @@ import java.math.BigInteger;
  * and then {@link BigInteger}
  *
  */
-@SuppressWarnings("unchecked")
 public final class BigIntegerReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return BigInteger.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return BigInteger.class.equals(type);
     }
 
     @Override

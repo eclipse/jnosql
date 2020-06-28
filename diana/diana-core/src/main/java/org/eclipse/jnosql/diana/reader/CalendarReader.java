@@ -26,12 +26,11 @@ import java.util.Date;
  * Class to reads and converts to {@link Calendar}, first it verify if is Calendar if yes return itself then verifies
  * if is {@link Long} and use {@link Calendar#setTimeInMillis(long)}} otherwise convert to {@link String}
  */
-@SuppressWarnings("unchecked")
 public final class CalendarReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Calendar.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return Calendar.class.equals(type);
     }
 
     @Override

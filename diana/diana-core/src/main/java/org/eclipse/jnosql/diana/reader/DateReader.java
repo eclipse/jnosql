@@ -25,12 +25,11 @@ import java.util.Date;
 /**
  * Class to reads and converts Date type
  */
-@SuppressWarnings("unchecked")
 public final class DateReader implements ValueReader {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Date.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return Date.class.equals(type);
     }
 
     @Override
