@@ -25,8 +25,8 @@ import jakarta.nosql.ValueWriter;
 public class EnumValueWriter implements ValueWriter<Enum<?>, String> {
 
     @Override
-    public <T> boolean isCompatible(Class<T> clazz) {
-        return Enum.class.isAssignableFrom(clazz);
+    public boolean test(Class<?> type) {
+        return Enum.class.isAssignableFrom(type);
     }
 
     @Override

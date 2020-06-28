@@ -25,10 +25,12 @@ import java.util.ServiceLoader;
 
 /**
  * Decorators of all {@link ValueWriter} supported by Diana
+ *
+ * @param <T> current type
+ * @param <S> the converted type
  * @see ValueWriter
  */
-@SuppressWarnings("unchecked")
-public final class ValueWriterDecorator implements ValueWriter {
+public final class ValueWriterDecorator<T, S> implements ValueWriter<T, S> {
 
     private static final ValueWriter INSTANCE = new ValueWriterDecorator();
 
@@ -46,15 +48,15 @@ public final class ValueWriterDecorator implements ValueWriter {
     }
 
     @Override
-    public boolean isCompatible(Class clazz) {
-        return writers.stream().anyMatch(writerField -> writerField.isCompatible(clazz));
+    public boolean test(Class<?> type) {
+        return writers.stream().anyMatch(writerField -> writerField.test(type));
     }
 
     @Override
     public Object write(Object object) {
         Class clazz = object.getClass();
-        ValueWriter valueWriter = writers.stream().filter(r -> r.isCompatible(clazz)).findFirst().orElseThrow(
-            () -> new UnsupportedOperationException("The type " + clazz + " is not supported yet"));
+        ValueWriter valueWriter = writers.stream().filter(r -> r.test(clazz)).findFirst().orElseThrow(
+                () -> new UnsupportedOperationException("The type " + clazz + " is not supported yet"));
         return valueWriter.write(object);
     }
 
@@ -63,4 +65,5 @@ public final class ValueWriterDecorator implements ValueWriter {
         return "ValueWriterDecorator{" + "writers=" + writers +
                 '}';
     }
+
 }
