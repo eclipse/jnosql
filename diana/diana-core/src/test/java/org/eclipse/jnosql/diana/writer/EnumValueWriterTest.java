@@ -40,14 +40,14 @@ public class EnumValueWriterTest {
 
     @Test
     public void shouldVerifyCompatibility() {
-        assertTrue(valueWriter.isCompatible(Month.class));
-        assertTrue(valueWriter.isCompatible(DayOfWeek.class));
+        assertTrue(valueWriter.test(Month.class));
+        assertTrue(valueWriter.test(DayOfWeek.class));
     }
 
     @Test
     public void shouldNotVerifyCompatibility() {
-        assertFalse(valueWriter.isCompatible(Integer.class));
-        assertFalse(valueWriter.isCompatible(List.class));
+        assertFalse(valueWriter.test(Integer.class));
+        assertFalse(valueWriter.test(List.class));
     }
 
     @Test

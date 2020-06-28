@@ -39,9 +39,9 @@ public class ValueWriterDecoratorTest {
 
     @Test
     public void shouldVerifyCompatibility() {
-        assertTrue(valueWriter.isCompatible(Optional.class));
-        assertTrue(valueWriter.isCompatible(Temporal.class));
-        assertFalse(valueWriter.isCompatible(Boolean.class));
+        assertTrue(valueWriter.test(Optional.class));
+        assertTrue(valueWriter.test(Temporal.class));
+        assertFalse(valueWriter.test(Boolean.class));
     }
 
     @SuppressWarnings("unchecked")

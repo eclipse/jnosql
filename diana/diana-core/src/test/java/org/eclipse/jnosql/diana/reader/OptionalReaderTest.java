@@ -39,8 +39,8 @@ public class OptionalReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(valueReader.isCompatible(Optional.class));
-        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
+        assertTrue(valueReader.test(Optional.class));
+        assertFalse(valueReader.test(AtomicBoolean.class));
     }
 
     @SuppressWarnings("unchecked")

@@ -52,12 +52,12 @@ public class ValueReaderDecoratorTest {
 
     @Test
     public void shouldReturnIfIsCompatible() {
-        assertTrue(serviceLoader.isCompatible(Integer.class));
+        assertTrue(serviceLoader.test(Integer.class));
     }
 
     @Test
     public void shouldReturnIfIsNotCompatible() {
-        assertFalse(serviceLoader.isCompatible(Bean.class));
+        assertFalse(serviceLoader.test(Bean.class));
     }
 
 

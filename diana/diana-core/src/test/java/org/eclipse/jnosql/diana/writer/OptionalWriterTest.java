@@ -40,8 +40,8 @@ public class OptionalWriterTest {
 
     @Test
     public void shouldVerifyCompatibility() {
-        assertTrue(valueWriter.isCompatible(Optional.class));
-        assertFalse(valueWriter.isCompatible(Boolean.class));
+        assertTrue(valueWriter.test(Optional.class));
+        assertFalse(valueWriter.test(Boolean.class));
     }
 
     @Test

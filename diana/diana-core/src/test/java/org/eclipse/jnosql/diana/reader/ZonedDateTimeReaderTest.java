@@ -40,7 +40,7 @@ public class ZonedDateTimeReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(dateReader.isCompatible(ZonedDateTime.class));
+        assertTrue(dateReader.test(ZonedDateTime.class));
     }
 
     @Test

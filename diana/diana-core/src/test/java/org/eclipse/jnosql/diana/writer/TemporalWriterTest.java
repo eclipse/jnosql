@@ -45,14 +45,14 @@ public class TemporalWriterTest {
 
     @Test
     public void shouldVerifyCompatibility() {
-        assertTrue(valueWriter.isCompatible(Temporal.class));
-        assertTrue(valueWriter.isCompatible(LocalDate.class));
-        assertTrue(valueWriter.isCompatible(LocalDateTime.class));
-        assertTrue(valueWriter.isCompatible(LocalTime.class));
-        assertTrue(valueWriter.isCompatible(Year.class));
-        assertTrue(valueWriter.isCompatible(YearMonth.class));
-        assertTrue(valueWriter.isCompatible(ZonedDateTime.class));
-        assertFalse(valueWriter.isCompatible(Boolean.class));
+        assertTrue(valueWriter.test(Temporal.class));
+        assertTrue(valueWriter.test(LocalDate.class));
+        assertTrue(valueWriter.test(LocalDateTime.class));
+        assertTrue(valueWriter.test(LocalTime.class));
+        assertTrue(valueWriter.test(Year.class));
+        assertTrue(valueWriter.test(YearMonth.class));
+        assertTrue(valueWriter.test(ZonedDateTime.class));
+        assertFalse(valueWriter.test(Boolean.class));
 
     }
 

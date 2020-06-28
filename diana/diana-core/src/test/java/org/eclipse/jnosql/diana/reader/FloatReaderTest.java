@@ -37,9 +37,9 @@ public class FloatReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(valueReader.isCompatible(Float.class));
-        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
-        assertFalse(valueReader.isCompatible(Boolean.class));
+        assertTrue(valueReader.test(Float.class));
+        assertFalse(valueReader.test(AtomicBoolean.class));
+        assertFalse(valueReader.test(Boolean.class));
     }
 
     @Test

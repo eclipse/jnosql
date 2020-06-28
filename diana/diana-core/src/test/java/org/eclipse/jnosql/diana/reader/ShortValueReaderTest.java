@@ -36,9 +36,9 @@ class ShortValueReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(valueReader.isCompatible(Short.class));
-        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
-        assertFalse(valueReader.isCompatible(Boolean.class));
+        assertTrue(valueReader.test(Short.class));
+        assertFalse(valueReader.test(AtomicBoolean.class));
+        assertFalse(valueReader.test(Boolean.class));
     }
 
     @Test

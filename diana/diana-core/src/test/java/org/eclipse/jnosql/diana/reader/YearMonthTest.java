@@ -38,9 +38,9 @@ public class YearMonthTest {
 
 	@Test
 	public void shouldValidateCompatibility() {
-		assertTrue(valueReader.isCompatible(YearMonth.class));
-		assertFalse(valueReader.isCompatible(String.class));
-		assertFalse(valueReader.isCompatible(Long.class));
+		assertTrue(valueReader.test(YearMonth.class));
+		assertFalse(valueReader.test(String.class));
+		assertFalse(valueReader.test(Long.class));
 	}
 
 	@Test

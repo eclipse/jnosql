@@ -38,8 +38,8 @@ public class CharacterReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(valueReader.isCompatible(Character.class));
-        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
+        assertTrue(valueReader.test(Character.class));
+        assertFalse(valueReader.test(AtomicBoolean.class));
     }
 
     @Test

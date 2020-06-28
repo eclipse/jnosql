@@ -40,9 +40,9 @@ public class BigIntegerReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(valueReader.isCompatible(BigInteger.class));
-        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
-        assertFalse(valueReader.isCompatible(Boolean.class));
+        assertTrue(valueReader.test(BigInteger.class));
+        assertFalse(valueReader.test(AtomicBoolean.class));
+        assertFalse(valueReader.test(Boolean.class));
     }
 
     @Test

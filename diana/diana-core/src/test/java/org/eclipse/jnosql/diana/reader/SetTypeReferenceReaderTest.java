@@ -39,19 +39,19 @@ public class SetTypeReferenceReaderTest {
     @Test
     public void shouldBeCompatible() {
 
-        assertTrue(referenceReader.isCompatible(new TypeReference<Set<String>>(){}));
-        assertTrue(referenceReader.isCompatible(new TypeReference<Set<Long>>(){}));
+        assertTrue(referenceReader.test(new TypeReference<Set<String>>(){}));
+        assertTrue(referenceReader.test(new TypeReference<Set<Long>>(){}));
 
     }
 
 
     @Test
     public void shouldNotBeCompatible() {
-        assertFalse(referenceReader.isCompatible(new TypeReference<String>(){}));
-        assertFalse(referenceReader.isCompatible(new TypeReference<List<String>>(){}));
-        assertFalse(referenceReader.isCompatible(new TypeReference<List<List<String>>>(){}));
-        assertFalse(referenceReader.isCompatible(new TypeReference<Queue<String>>(){}));
-        assertFalse(referenceReader.isCompatible(new TypeReference<Map<Integer, String>>(){}));
+        assertFalse(referenceReader.test(new TypeReference<String>(){}));
+        assertFalse(referenceReader.test(new TypeReference<List<String>>(){}));
+        assertFalse(referenceReader.test(new TypeReference<List<List<String>>>(){}));
+        assertFalse(referenceReader.test(new TypeReference<Queue<String>>(){}));
+        assertFalse(referenceReader.test(new TypeReference<Map<Integer, String>>(){}));
     }
 
 

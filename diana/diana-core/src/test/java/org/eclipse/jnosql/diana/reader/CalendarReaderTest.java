@@ -37,9 +37,9 @@ public class CalendarReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(valueReader.isCompatible(Calendar.class));
-        assertFalse(valueReader.isCompatible(String.class));
-        assertFalse(valueReader.isCompatible(Long.class));
+        assertTrue(valueReader.test(Calendar.class));
+        assertFalse(valueReader.test(String.class));
+        assertFalse(valueReader.test(Long.class));
     }
 
     @Test

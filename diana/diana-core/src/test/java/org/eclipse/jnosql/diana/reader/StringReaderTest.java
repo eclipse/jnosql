@@ -39,9 +39,9 @@ public class StringReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(valueReader.isCompatible(String.class));
-        assertTrue(valueReader.isCompatible(CharSequence.class));
-        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
+        assertTrue(valueReader.test(String.class));
+        assertTrue(valueReader.test(CharSequence.class));
+        assertFalse(valueReader.test(AtomicBoolean.class));
     }
 
     @Test

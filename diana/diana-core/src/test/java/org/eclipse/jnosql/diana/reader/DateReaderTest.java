@@ -37,7 +37,7 @@ public class DateReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(dateReader.isCompatible(Date.class));
+        assertTrue(dateReader.test(Date.class));
     }
 
     @Test

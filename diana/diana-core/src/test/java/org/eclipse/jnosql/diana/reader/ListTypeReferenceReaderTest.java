@@ -44,35 +44,35 @@ public class ListTypeReferenceReaderTest {
     public void shouldBeCompatible() {
 
 
-        assertTrue(referenceReader.isCompatible(new TypeReference<List<String>>() {
+        assertTrue(referenceReader.test(new TypeReference<List<String>>() {
         }));
-        assertTrue(referenceReader.isCompatible(new TypeReference<List<Long>>() {
+        assertTrue(referenceReader.test(new TypeReference<List<Long>>() {
         }));
 
-        assertTrue(referenceReader.isCompatible(new TypeReference<Collection<String>>() {
+        assertTrue(referenceReader.test(new TypeReference<Collection<String>>() {
         }));
-        assertTrue(referenceReader.isCompatible(new TypeReference<Collection<Long>>() {
+        assertTrue(referenceReader.test(new TypeReference<Collection<Long>>() {
         }));
-        assertTrue(referenceReader.isCompatible(new TypeReference<Iterable<String>>() {
+        assertTrue(referenceReader.test(new TypeReference<Iterable<String>>() {
         }));
-        assertTrue(referenceReader.isCompatible(new TypeReference<Iterable<Long>>() {
+        assertTrue(referenceReader.test(new TypeReference<Iterable<Long>>() {
         }));
     }
 
 
     @Test
     public void shouldNotBeCompatible() {
-        assertFalse(referenceReader.isCompatible(new TypeReference<ArrayList<BigDecimal>>() {
+        assertFalse(referenceReader.test(new TypeReference<ArrayList<BigDecimal>>() {
         }));
-        assertFalse(referenceReader.isCompatible(new TypeReference<String>() {
+        assertFalse(referenceReader.test(new TypeReference<String>() {
         }));
-        assertFalse(referenceReader.isCompatible(new TypeReference<Set<String>>() {
+        assertFalse(referenceReader.test(new TypeReference<Set<String>>() {
         }));
-        assertFalse(referenceReader.isCompatible(new TypeReference<List<List<String>>>() {
+        assertFalse(referenceReader.test(new TypeReference<List<List<String>>>() {
         }));
-        assertFalse(referenceReader.isCompatible(new TypeReference<Queue<String>>() {
+        assertFalse(referenceReader.test(new TypeReference<Queue<String>>() {
         }));
-        assertFalse(referenceReader.isCompatible(new TypeReference<Map<Integer, String>>() {
+        assertFalse(referenceReader.test(new TypeReference<Map<Integer, String>>() {
         }));
     }
 

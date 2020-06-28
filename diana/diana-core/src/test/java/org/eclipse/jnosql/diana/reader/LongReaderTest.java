@@ -38,9 +38,9 @@ public class LongReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(valueReader.isCompatible(Long.class));
-        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
-        assertFalse(valueReader.isCompatible(Boolean.class));
+        assertTrue(valueReader.test(Long.class));
+        assertFalse(valueReader.test(AtomicBoolean.class));
+        assertFalse(valueReader.test(Boolean.class));
     }
 
     @Test

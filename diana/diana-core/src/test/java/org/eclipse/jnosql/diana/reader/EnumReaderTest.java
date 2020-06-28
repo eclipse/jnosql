@@ -39,9 +39,9 @@ public class EnumReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(valueReader.isCompatible(Enum.class));
-        assertTrue(valueReader.isCompatible(ExampleNumber.class));
-        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
+        assertTrue(valueReader.test(Enum.class));
+        assertTrue(valueReader.test(ExampleNumber.class));
+        assertFalse(valueReader.test(AtomicBoolean.class));
     }
 
     @Test

@@ -39,7 +39,7 @@ public class LocalDateTimeReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(dateReader.isCompatible(LocalDateTime.class));
+        assertTrue(dateReader.test(LocalDateTime.class));
     }
 
     @Test

@@ -40,7 +40,7 @@ public class LocalDateReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(dateReader.isCompatible(LocalDate.class));
+        assertTrue(dateReader.test(LocalDate.class));
     }
 
     @Test

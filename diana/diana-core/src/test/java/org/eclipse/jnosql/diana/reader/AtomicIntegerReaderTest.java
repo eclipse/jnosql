@@ -39,8 +39,8 @@ public class AtomicIntegerReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertTrue(valueReader.isCompatible(AtomicInteger.class));
-        assertFalse(valueReader.isCompatible(AtomicBoolean.class));
+        assertTrue(valueReader.test(AtomicInteger.class));
+        assertFalse(valueReader.test(AtomicBoolean.class));
     }
 
     @Test

@@ -43,8 +43,8 @@ public class OffsetDateTimeReaderTest {
 
     @Test
     public void shouldValidateCompatibility() {
-        assertFalse(dateReader.isCompatible(LocalTime.class));
-        assertTrue(dateReader.isCompatible(OffsetDateTime.class));
+        assertFalse(dateReader.test(LocalTime.class));
+        assertTrue(dateReader.test(OffsetDateTime.class));
     }
 
     @Test

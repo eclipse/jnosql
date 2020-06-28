@@ -41,14 +41,14 @@ class QueueTypeReferenceReaderTest {
     @Test
     public void shouldBeCompatible() {
 
-        assertTrue(referenceReader.isCompatible(new TypeReference<Queue<String>>() {
+        assertTrue(referenceReader.test(new TypeReference<Queue<String>>() {
         }));
-        assertTrue(referenceReader.isCompatible(new TypeReference<Queue<Long>>() {
+        assertTrue(referenceReader.test(new TypeReference<Queue<Long>>() {
         }));
 
-        assertTrue(referenceReader.isCompatible(new TypeReference<Deque<String>>() {
+        assertTrue(referenceReader.test(new TypeReference<Deque<String>>() {
         }));
-        assertTrue(referenceReader.isCompatible(new TypeReference<Deque<Long>>() {
+        assertTrue(referenceReader.test(new TypeReference<Deque<Long>>() {
         }));
 
     }
@@ -56,15 +56,15 @@ class QueueTypeReferenceReaderTest {
 
     @Test
     public void shouldNotBeCompatible() {
-        assertFalse(referenceReader.isCompatible(new TypeReference<ArrayList<BigDecimal>>() {
+        assertFalse(referenceReader.test(new TypeReference<ArrayList<BigDecimal>>() {
         }));
-        assertFalse(referenceReader.isCompatible(new TypeReference<String>() {
+        assertFalse(referenceReader.test(new TypeReference<String>() {
         }));
-        assertFalse(referenceReader.isCompatible(new TypeReference<Set<String>>() {
+        assertFalse(referenceReader.test(new TypeReference<Set<String>>() {
         }));
-        assertFalse(referenceReader.isCompatible(new TypeReference<List<List<String>>>() {
+        assertFalse(referenceReader.test(new TypeReference<List<List<String>>>() {
         }));
-        assertFalse(referenceReader.isCompatible(new TypeReference<Map<Integer, String>>() {
+        assertFalse(referenceReader.test(new TypeReference<Map<Integer, String>>() {
         }));
     }
 
