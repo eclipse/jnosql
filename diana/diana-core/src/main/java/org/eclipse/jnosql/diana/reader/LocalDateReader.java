@@ -33,8 +33,8 @@ import java.util.Date;
 public final class LocalDateReader implements ValueReader {
 
     @Override
-    public boolean isCompatible(Class clazz) {
-        return LocalDate.class.equals(clazz);
+    public boolean test(Class<?> type) {
+        return LocalDate.class.equals(type);
     }
 
     @Override
