@@ -53,7 +53,7 @@ final class DefaultValue  implements Value {
 
     @Override
     public <T> T get(TypeSupplier<T> typeReference) {
-        if (REFERENCE_READER.isCompatible(Objects.requireNonNull(typeReference, "typeReference is required"))) {
+        if (REFERENCE_READER.test(Objects.requireNonNull(typeReference, "typeReference is required"))) {
             return REFERENCE_READER.convert(typeReference, value);
         }
         throw new UnsupportedOperationException("The type " + typeReference + " is not supported");
