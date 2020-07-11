@@ -15,12 +15,12 @@
 package org.eclipse.jnosql.artemis.util;
 
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;

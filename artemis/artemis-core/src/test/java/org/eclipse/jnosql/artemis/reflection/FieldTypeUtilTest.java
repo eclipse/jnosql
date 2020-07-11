@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.artemis.reflection;
 
-import jakarta.nosql.mapping.reflection.FieldType;
 import jakarta.nosql.tck.entities.Actor;
 import jakarta.nosql.tck.entities.Address;
 import jakarta.nosql.tck.entities.Movie;
@@ -28,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class FieldTypeUtilTest {
-
 
     @Test
     public void shouldReturnList() throws NoSuchFieldException {
