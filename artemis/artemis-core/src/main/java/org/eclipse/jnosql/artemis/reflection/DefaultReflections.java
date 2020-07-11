@@ -18,7 +18,6 @@ import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Id;
 import jakarta.nosql.mapping.MappedSuperclass;
-import jakarta.nosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.artemis.util.StringUtils;
 
 import javax.enterprise.context.ApplicationScoped;
