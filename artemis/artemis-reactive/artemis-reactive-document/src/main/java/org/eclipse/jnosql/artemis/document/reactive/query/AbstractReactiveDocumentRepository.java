@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.artemis.document.reactive.query;
 
 import jakarta.nosql.mapping.MappingException;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
 import org.eclipse.jnosql.artemis.document.reactive.ReactiveDocumentTemplate;
 import org.eclipse.jnosql.artemis.reactive.Observable;
 import org.eclipse.jnosql.artemis.reactive.ReactiveException;

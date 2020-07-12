@@ -30,7 +30,7 @@ import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
 import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.SelectQuery;
 import org.eclipse.jnosql.artemis.repository.DynamicReturn;

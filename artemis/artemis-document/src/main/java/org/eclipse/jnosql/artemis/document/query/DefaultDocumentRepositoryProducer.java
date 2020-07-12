@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateProducer;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

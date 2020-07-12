@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.artemis.document.reactive.query;
 
-import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
 import org.eclipse.jnosql.artemis.document.reactive.ReactiveDocumentTemplate;
 
 class DefaultReactiveDocumentRepository<T, K> extends AbstractReactiveDocumentRepository<T, K> {

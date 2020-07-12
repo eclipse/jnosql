@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.artemis.graph.query;
 
-import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
 import jakarta.nosql.query.Condition;
 import jakarta.nosql.query.ConditionQueryValue;
 import jakarta.nosql.query.Operator;

@@ -18,7 +18,7 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.mapping.AttributeConverter;
-import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
 import org.eclipse.jnosql.artemis.reflection.GenericFieldMapping;
 
 import java.lang.reflect.Field;

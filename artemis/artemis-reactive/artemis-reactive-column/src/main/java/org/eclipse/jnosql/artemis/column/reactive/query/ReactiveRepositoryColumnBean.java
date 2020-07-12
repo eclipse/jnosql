@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.column.reactive.query;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 import org.eclipse.jnosql.artemis.DatabaseQualifier;
 import org.eclipse.jnosql.artemis.column.reactive.ReactiveColumnTemplate;
 import org.eclipse.jnosql.artemis.column.reactive.ReactiveColumnTemplateProducer;

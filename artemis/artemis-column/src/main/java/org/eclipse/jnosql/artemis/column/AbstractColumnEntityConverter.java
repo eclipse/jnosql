@@ -18,9 +18,9 @@ import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
 import jakarta.nosql.mapping.reflection.FieldType;
 import jakarta.nosql.mapping.reflection.FieldValue;
 

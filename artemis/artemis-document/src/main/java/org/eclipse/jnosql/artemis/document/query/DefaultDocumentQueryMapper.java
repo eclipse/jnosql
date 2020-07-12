@@ -16,8 +16,8 @@ package org.eclipse.jnosql.artemis.document.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentQueryMapper;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;

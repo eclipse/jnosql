@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.Param;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.artemis.column.reactive.ReactiveColumnTemplate;

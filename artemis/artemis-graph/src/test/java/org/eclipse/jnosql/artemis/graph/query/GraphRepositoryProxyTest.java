@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.Param;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.artemis.graph.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DynamicQueryException;
-import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.artemis.util.ConverterUtil;

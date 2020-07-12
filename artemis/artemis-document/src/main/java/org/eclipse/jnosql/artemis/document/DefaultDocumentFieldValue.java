@@ -18,7 +18,7 @@ import jakarta.nosql.document.Document;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
 import jakarta.nosql.mapping.reflection.FieldType;
 import jakarta.nosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.artemis.reflection.DefaultFieldValue;

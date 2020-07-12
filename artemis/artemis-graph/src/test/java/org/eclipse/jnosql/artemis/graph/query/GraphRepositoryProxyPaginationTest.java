@@ -17,7 +17,7 @@ package org.eclipse.jnosql.artemis.graph.query;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;

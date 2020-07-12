@@ -22,7 +22,7 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateProducer;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Vetoed;

@@ -24,7 +24,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.test.CDIExtension;

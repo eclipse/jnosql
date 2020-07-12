@@ -16,7 +16,7 @@ package org.eclipse.jnosql.artemis.column.query;
 
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
 
 interface ColumnTokenProcessor {
 

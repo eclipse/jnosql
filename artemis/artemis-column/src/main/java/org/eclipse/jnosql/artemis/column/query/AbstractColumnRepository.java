@@ -16,8 +16,8 @@ package org.eclipse.jnosql.artemis.column.query;
 
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
 
 import java.util.Objects;
 import java.util.Optional;

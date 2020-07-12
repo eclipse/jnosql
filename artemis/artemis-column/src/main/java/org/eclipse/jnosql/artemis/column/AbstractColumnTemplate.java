@@ -32,9 +32,9 @@ import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnWorkflow;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
 import org.eclipse.jnosql.artemis.util.ConverterUtil;
 
 import java.time.Duration;
