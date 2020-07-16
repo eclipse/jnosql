@@ -17,8 +17,8 @@ package org.eclipse.jnosql.artemis.util;
 import jakarta.nosql.Value;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -106,7 +106,6 @@ public final class ConverterUtil {
     private static Predicate<AttributeConverter> isNative(Object value) {
         return a -> getGenericInterface(a).getActualTypeArguments()[1].equals(value.getClass());
     }
-
 
     private static ParameterizedType getGenericInterface(AttributeConverter a) {
         for (Type genericInterface : a.getClass().getGenericInterfaces()) {

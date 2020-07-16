@@ -30,7 +30,7 @@ import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperSkip;
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperWhere;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
 
 import java.util.ArrayList;
 import java.util.List;

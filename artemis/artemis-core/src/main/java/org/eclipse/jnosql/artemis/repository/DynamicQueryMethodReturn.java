@@ -16,7 +16,7 @@ package org.eclipse.jnosql.artemis.repository;
 
 
 import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.reflection.MethodDynamicExecutable;
+import org.eclipse.jnosql.artemis.reflection.MethodDynamicExecutable;
 
 import java.lang.reflect.Method;
 import java.util.Objects;

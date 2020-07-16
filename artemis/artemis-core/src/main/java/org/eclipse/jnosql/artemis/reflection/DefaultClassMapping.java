@@ -15,10 +15,6 @@
 package org.eclipse.jnosql.artemis.reflection;
 
 
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.FieldMapping;
-import jakarta.nosql.mapping.reflection.InstanceSupplier;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;

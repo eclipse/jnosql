@@ -15,12 +15,13 @@
 package org.eclipse.jnosql.artemis.graph.configuration;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.mapping.reflection.Reflections;
+import org.eclipse.jnosql.artemis.reflection.Reflections;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.artemis.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.artemis.configuration.ConfigurationException;
 import org.eclipse.jnosql.artemis.configuration.SettingsConverter;
 import org.eclipse.jnosql.artemis.graph.GraphConfiguration;
+
 import org.eclipse.jnosql.artemis.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;

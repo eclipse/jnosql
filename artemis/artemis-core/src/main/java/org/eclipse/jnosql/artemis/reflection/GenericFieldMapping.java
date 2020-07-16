@@ -21,9 +21,6 @@ import jakarta.nosql.Value;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Embeddable;
 import jakarta.nosql.mapping.Entity;
-import jakarta.nosql.mapping.reflection.FieldReader;
-import jakarta.nosql.mapping.reflection.FieldType;
-import jakarta.nosql.mapping.reflection.FieldWriter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

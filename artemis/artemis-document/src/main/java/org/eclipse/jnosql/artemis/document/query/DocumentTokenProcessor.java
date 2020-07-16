@@ -16,7 +16,7 @@ package org.eclipse.jnosql.artemis.document.query;
 
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
 
 interface DocumentTokenProcessor {
 

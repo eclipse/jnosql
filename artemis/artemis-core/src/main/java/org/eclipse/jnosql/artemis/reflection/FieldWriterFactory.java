@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2018 Otávio Santana and others
+ *  Copyright (c) 2020 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,16 +14,11 @@
  */
 package org.eclipse.jnosql.artemis.reflection;
 
+import java.lang.reflect.Field;
+import java.util.function.Function;
 
-import java.text.MessageFormat;
-
-enum StringFormatter {
-
-    INSTANCE;
-
-
-    public String format(String template, Object... params) {
-        return MessageFormat.format(template, params);
-    }
-
+/**
+ * A factory of {@link FieldWriter}
+ */
+public interface FieldWriterFactory extends Function<Field, FieldWriter> {
 }

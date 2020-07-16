@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.artemis.column.reactive.query;
 
-import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
 import org.eclipse.jnosql.artemis.column.reactive.ReactiveColumnTemplate;
 
 public class DefaultReactiveColumnRepository<T, K> extends AbstractReactiveColumnRepository<T, K> {

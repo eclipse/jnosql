@@ -16,7 +16,6 @@ package org.eclipse.jnosql.artemis.reflection;
 
 import jakarta.nosql.mapping.Embeddable;
 import jakarta.nosql.mapping.Entity;
-import jakarta.nosql.mapping.reflection.FieldType;
 
 import java.lang.reflect.Field;
 import java.util.Collection;

@@ -14,8 +14,6 @@
  */
 package org.eclipse.jnosql.artemis.reflection;
 
-import jakarta.nosql.mapping.reflection.ClassOperation;
-import jakarta.nosql.mapping.reflection.Reflections;
 
 import java.util.Optional;
 import java.util.ServiceLoader;

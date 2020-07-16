@@ -17,8 +17,8 @@ package org.eclipse.jnosql.artemis.util;
 import jakarta.nosql.Params;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DynamicQueryException;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -30,11 +30,9 @@ import java.util.Optional;
  */
 public class ParamsBinder {
 
-
     private final ClassMapping mapping;
 
     private final Converters converters;
-
 
     /**
      * Creates a ParamsBinder instance

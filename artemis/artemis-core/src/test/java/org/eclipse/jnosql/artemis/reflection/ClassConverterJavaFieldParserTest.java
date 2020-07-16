@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.artemis.reflection;
 
-import jakarta.nosql.mapping.reflection.ClassMapping;
 import jakarta.nosql.tck.entities.Address;
 import jakarta.nosql.tck.entities.AppointmentBook;
 import jakarta.nosql.tck.entities.Person;

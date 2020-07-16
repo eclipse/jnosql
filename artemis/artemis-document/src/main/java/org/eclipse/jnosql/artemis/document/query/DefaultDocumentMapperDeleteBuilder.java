@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteNa
 import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteNotCondition;
 import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteWhere;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
 
 import static java.util.Objects.requireNonNull;
 

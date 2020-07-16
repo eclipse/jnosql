@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.artemis.graph;
 
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.reflection.ClassMappings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.util.TypeLiteral;

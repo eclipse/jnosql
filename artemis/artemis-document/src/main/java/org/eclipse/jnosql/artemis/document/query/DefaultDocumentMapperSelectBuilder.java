@@ -30,7 +30,7 @@ import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperSkip;
 import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperWhere;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
 
 import java.util.ArrayList;
 import java.util.List;

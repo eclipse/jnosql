@@ -14,10 +14,6 @@
  */
 package org.eclipse.jnosql.artemis.reflection;
 
-
-import jakarta.nosql.mapping.reflection.FieldMapping;
-import jakarta.nosql.mapping.reflection.FieldValue;
-
 import java.util.Objects;
 
 public final class DefaultFieldValue implements FieldValue {

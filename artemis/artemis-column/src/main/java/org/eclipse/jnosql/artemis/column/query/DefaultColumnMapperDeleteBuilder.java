@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteNameCond
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteNotCondition;
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteWhere;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
 
 import static java.util.Objects.requireNonNull;
 

@@ -15,15 +15,6 @@
 package org.eclipse.jnosql.artemis.reflection;
 
 import jakarta.nosql.mapping.Convert;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.ClassOperation;
-import jakarta.nosql.mapping.reflection.FieldMapping;
-import jakarta.nosql.mapping.reflection.FieldReaderFactory;
-import jakarta.nosql.mapping.reflection.FieldType;
-import jakarta.nosql.mapping.reflection.FieldWriterFactory;
-import jakarta.nosql.mapping.reflection.InstanceSupplier;
-import jakarta.nosql.mapping.reflection.InstanceSupplierFactory;
-import jakarta.nosql.mapping.reflection.Reflections;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

@@ -19,7 +19,7 @@ import jakarta.nosql.Sort;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Sorts;
-import jakarta.nosql.mapping.reflection.MethodDynamicExecutable;
+import org.eclipse.jnosql.artemis.reflection.MethodDynamicExecutable;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

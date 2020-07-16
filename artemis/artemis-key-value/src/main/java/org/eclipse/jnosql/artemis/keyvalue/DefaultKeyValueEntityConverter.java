@@ -16,7 +16,7 @@ package org.eclipse.jnosql.artemis.keyvalue;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 
 import javax.inject.Inject;
 

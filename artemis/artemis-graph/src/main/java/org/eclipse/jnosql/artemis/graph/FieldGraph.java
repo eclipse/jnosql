@@ -16,15 +16,15 @@ package org.eclipse.jnosql.artemis.graph;
 
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.reflection.FieldMapping;
 import org.apache.tinkerpop.gremlin.structure.Property;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
 import static java.util.Collections.singletonList;
+import static org.eclipse.jnosql.artemis.reflection.FieldType.EMBEDDED;
 
 final class FieldGraph {
 

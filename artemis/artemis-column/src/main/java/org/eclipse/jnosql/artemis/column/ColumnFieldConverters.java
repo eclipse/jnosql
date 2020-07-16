@@ -18,7 +18,7 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.mapping.AttributeConverter;
-import jakarta.nosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
 import org.eclipse.jnosql.artemis.reflection.GenericFieldMapping;
 
 import java.lang.reflect.Field;
@@ -30,9 +30,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static jakarta.nosql.mapping.reflection.FieldType.COLLECTION;
-import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
-import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
+import static org.eclipse.jnosql.artemis.reflection.FieldType.COLLECTION;
+import static org.eclipse.jnosql.artemis.reflection.FieldType.EMBEDDED;
+import static org.eclipse.jnosql.artemis.reflection.FieldType.EMBEDDED_ENTITY;
 
 class ColumnFieldConverters {
 

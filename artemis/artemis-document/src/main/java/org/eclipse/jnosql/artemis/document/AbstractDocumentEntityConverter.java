@@ -18,11 +18,11 @@ import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.ClassMappings;
-import jakarta.nosql.mapping.reflection.FieldMapping;
-import jakarta.nosql.mapping.reflection.FieldType;
-import jakarta.nosql.mapping.reflection.FieldValue;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.FieldMapping;
+import org.eclipse.jnosql.artemis.reflection.FieldType;
+import org.eclipse.jnosql.artemis.reflection.FieldValue;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,8 +32,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED;
-import static jakarta.nosql.mapping.reflection.FieldType.EMBEDDED_ENTITY;
+import static org.eclipse.jnosql.artemis.reflection.FieldType.EMBEDDED;
+import static org.eclipse.jnosql.artemis.reflection.FieldType.EMBEDDED_ENTITY;
 import static java.util.Objects.requireNonNull;
 
 /**

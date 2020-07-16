@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.artemis.document;
 
 import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.mapping.reflection.ClassMapping;
-import jakarta.nosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 
 import java.util.Optional;
 
