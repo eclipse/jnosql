@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 
 /**
- * Class that represents {@link jakarta.nosql.mapping.reflection.FieldMapping} a default field
+ * Class that represents {@link FieldMapping} a default field
  */
 public class DefaultFieldMapping extends AbstractFieldMapping {
 
