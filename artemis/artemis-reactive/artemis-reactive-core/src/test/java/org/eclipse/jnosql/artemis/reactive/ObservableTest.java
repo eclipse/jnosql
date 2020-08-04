@@ -43,14 +43,14 @@ class ObservableTest {
     @Test
     public void shouldReturnInstance() {
         Publisher<Animal> publisher = ReactiveStreams
-                .fromIterable(Arrays.asList(new Animal("Lion"))).buildRs();
+                .fromIterable(Collections.singletonList(new Animal("Lion"))).buildRs();
         assertNotNull(Observable.of(publisher));
     }
 
     @Test
     public void shouldReturnPredicate() {
         Publisher<Animal> publisher = ReactiveStreams
-                .fromIterable(Arrays.asList(new Animal("Lion"))).buildRs();
+                .fromIterable(Collections.singletonList(new Animal("Lion"))).buildRs();
         final Observable<Animal> observable = Observable.of(publisher);
         assertNotNull(observable);
         assertNotNull(observable.getPublisher());
@@ -60,7 +60,7 @@ class ObservableTest {
     @Test
     public void shouldReturnSingleResult() {
         Publisher<Animal> publisher = ReactiveStreams
-                .fromIterable(Arrays.asList(new Animal("Lion"))).buildRs();
+                .fromIterable(Collections.singletonList(new Animal("Lion"))).buildRs();
         final Observable<Animal> observable = Observable.of(publisher);
         final CompletionStage<Optional<Animal>> singleResult = observable.getSingleResult();
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
@@ -153,7 +153,7 @@ class ObservableTest {
     @Test
     public void shouldBlockSingleResult() {
         Publisher<Animal> publisher = ReactiveStreams
-                .fromIterable(Arrays.asList(new Animal("Lion"))).buildRs();
+                .fromIterable(Collections.singletonList(new Animal("Lion"))).buildRs();
         final Observable<Animal> observable = Observable.of(publisher);
         final Optional<Animal> singleResult = observable.blockSingleResult();
         Assertions.assertTrue(singleResult.isPresent());
@@ -206,7 +206,7 @@ class ObservableTest {
     @Test
     public void shouldBlockSingleResultDuration() {
         Publisher<Animal> publisher = ReactiveStreams
-                .fromIterable(Arrays.asList(new Animal("Lion"))).buildRs();
+                .fromIterable(Collections.singletonList(new Animal("Lion"))).buildRs();
         final Observable<Animal> observable = Observable.of(publisher);
         final Optional<Animal> singleResult = observable.blockSingleResult(Duration.ofSeconds(10));
         Assertions.assertTrue(singleResult.isPresent());
