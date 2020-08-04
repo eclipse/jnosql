@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
  */
 final class DefaultSorts implements Sorts {
 
-    private List<Sort> sorts = new ArrayList<>();
+    private final List<Sort> sorts = new ArrayList<>();
 
     @Override
     public Sorts asc(String name) {
