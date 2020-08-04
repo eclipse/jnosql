@@ -39,7 +39,7 @@ public abstract class AbstractConfiguration<T> implements Converter<T> {
 
     protected abstract T success(String value);
 
-    private Class<T> beanType;
+    private final Class<T> beanType;
 
     {
         ParameterizedType parameterizedType = (ParameterizedType) this.getClass().getGenericSuperclass();
