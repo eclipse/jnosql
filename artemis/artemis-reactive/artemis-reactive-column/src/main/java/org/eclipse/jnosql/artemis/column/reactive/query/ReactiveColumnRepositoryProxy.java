@@ -41,7 +41,7 @@ class ReactiveColumnRepositoryProxy<T> extends AbstractReactiveColumnRepositoryP
         Class<T> typeClass = (Class<T>) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
         this.classMapping = classMappings.get(typeClass);
-        this.repository = new DefaultReactiveColumnRepository(reactiveTemplate, classMapping);
+        this.repository = new DefaultReactiveColumnRepository<>(reactiveTemplate, classMapping);
         this.entityClass = typeClass;
         this.converters = converters;
         this.template = template;

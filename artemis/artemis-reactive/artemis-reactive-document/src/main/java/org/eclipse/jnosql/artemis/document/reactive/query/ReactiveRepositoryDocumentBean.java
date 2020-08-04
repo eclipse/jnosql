@@ -37,9 +37,9 @@ import java.util.Set;
 /**
  * Artemis discoveryBean to CDI extension to register {@link ReactiveRepository}
  */
-public class ReactiveRepositoryDocumentBean extends AbstractBean<ReactiveRepository> {
+public class ReactiveRepositoryDocumentBean extends AbstractBean<ReactiveRepository<?,?>> {
 
-    private final Class type;
+    private final Class<?> type;
 
     private final Set<Type> types;
 
@@ -54,7 +54,7 @@ public class ReactiveRepositoryDocumentBean extends AbstractBean<ReactiveReposit
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public ReactiveRepositoryDocumentBean(Class type, BeanManager beanManager, String provider) {
+    public ReactiveRepositoryDocumentBean(Class<?> type, BeanManager beanManager, String provider) {
         super(beanManager);
         this.type = type;
         this.types = Collections.singleton(type);
@@ -75,7 +75,7 @@ public class ReactiveRepositoryDocumentBean extends AbstractBean<ReactiveReposit
     }
 
     @Override
-    public ReactiveRepository create(CreationalContext<ReactiveRepository> context) {
+    public ReactiveRepository<?,?> create(CreationalContext<ReactiveRepository<?,?>> context) {
         ClassMappings classMappings = getInstance(ClassMappings.class);
         DocumentTemplate template = provider.isEmpty() ? getInstance(DocumentTemplate.class) :
                 getInstance(DocumentTemplate.class, DatabaseQualifier.ofDocument(provider));
@@ -84,9 +84,9 @@ public class ReactiveRepositoryDocumentBean extends AbstractBean<ReactiveReposit
         final ReactiveDocumentTemplate reactiveDocumentTemplate = reactiveProducer.get(template);
         Converters converters = getInstance(Converters.class);
 
-        ReactiveDocumentRepositoryProxy<?> handler = new ReactiveDocumentRepositoryProxy(reactiveDocumentTemplate, template,
+        ReactiveDocumentRepositoryProxy<?> handler = new ReactiveDocumentRepositoryProxy<>(reactiveDocumentTemplate, template,
                 converters, classMappings, type);
-        return (ReactiveRepository) Proxy.newProxyInstance(type.getClassLoader(),
+        return (ReactiveRepository<?,?>) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }

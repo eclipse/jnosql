@@ -34,9 +34,9 @@ import java.util.Set;
 /**
  * Artemis discoveryBean to CDI extension to register {@link KeyValueTemplate}
  */
-public class ReactiveRepositoryKeyValueBean extends AbstractBean<ReactiveRepository> {
+public class ReactiveRepositoryKeyValueBean extends AbstractBean<ReactiveRepository<?,?>> {
 
-    private final Class type;
+    private final Class<?> type;
 
     private final Set<Type> types;
 
@@ -51,7 +51,7 @@ public class ReactiveRepositoryKeyValueBean extends AbstractBean<ReactiveReposit
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public ReactiveRepositoryKeyValueBean(Class type, BeanManager beanManager, String provider) {
+    public ReactiveRepositoryKeyValueBean(Class<?> type, BeanManager beanManager, String provider) {
         super(beanManager);
         this.type = type;
         this.types = Collections.singleton(type);
@@ -74,14 +74,14 @@ public class ReactiveRepositoryKeyValueBean extends AbstractBean<ReactiveReposit
 
 
     @Override
-    public ReactiveRepository create(CreationalContext<ReactiveRepository> creationalContext) {
+    public ReactiveRepository<?,?> create(CreationalContext<ReactiveRepository<?,?>> creationalContext) {
         KeyValueTemplate template = provider.isEmpty() ? getInstance(KeyValueTemplate.class) :
                 getInstance(KeyValueTemplate.class, DatabaseQualifier.ofKeyValue(provider));
 
         ReactiveKeyValueTemplate reactiveTemplate = provider.isEmpty() ? getInstance(ReactiveKeyValueTemplate.class) :
                 getInstance(ReactiveKeyValueTemplate.class, DatabaseQualifier.ofKeyValue(provider));
-        ReactiveKeyValueRepositoryProxy handler = new ReactiveKeyValueRepositoryProxy(template, reactiveTemplate, type);
-        return (ReactiveRepository) Proxy.newProxyInstance(type.getClassLoader(),
+        ReactiveKeyValueRepositoryProxy handler = new ReactiveKeyValueRepositoryProxy<>(template, reactiveTemplate, type);
+        return (ReactiveRepository<?,?>) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }

@@ -34,9 +34,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ReactiveRepositoryColumnBean extends AbstractBean<ReactiveRepository> {
+public class ReactiveRepositoryColumnBean extends AbstractBean<ReactiveRepository<?,?>> {
 
-    private final Class type;
+    private final Class<?> type;
 
     private final Set<Type> types;
 
@@ -51,7 +51,7 @@ public class ReactiveRepositoryColumnBean extends AbstractBean<ReactiveRepositor
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public ReactiveRepositoryColumnBean(Class type, BeanManager beanManager, String provider) {
+    public ReactiveRepositoryColumnBean(Class<?> type, BeanManager beanManager, String provider) {
         super(beanManager);
         this.type = type;
         this.types = Collections.singleton(type);
@@ -72,7 +72,7 @@ public class ReactiveRepositoryColumnBean extends AbstractBean<ReactiveRepositor
     }
 
     @Override
-    public ReactiveRepository create(CreationalContext<ReactiveRepository> context) {
+    public ReactiveRepository<?,?> create(CreationalContext<ReactiveRepository<?,?>> context) {
         ClassMappings classMappings = getInstance(ClassMappings.class);
         ColumnTemplate template = provider.isEmpty() ? getInstance(ColumnTemplate.class) :
                 getInstance(ColumnTemplate.class, DatabaseQualifier.ofDocument(provider));
@@ -81,9 +81,9 @@ public class ReactiveRepositoryColumnBean extends AbstractBean<ReactiveRepositor
         final ReactiveColumnTemplate reactiveTemplate = reactiveProducer.get(template);
         Converters converters = getInstance(Converters.class);
 
-        ReactiveColumnRepositoryProxy<?> handler = new ReactiveColumnRepositoryProxy(reactiveTemplate, template,
+        ReactiveColumnRepositoryProxy<?> handler = new ReactiveColumnRepositoryProxy<>(reactiveTemplate, template,
                 converters, classMappings, type);
-        return (ReactiveRepository) Proxy.newProxyInstance(type.getClassLoader(),
+        return (ReactiveRepository<?,?>) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }
