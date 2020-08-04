@@ -30,12 +30,12 @@ public class ObservableRepositoryReturn implements RepositoryReturn {
     @Override
     public <T> Object convert(DynamicReturn<T> dynamicReturn) {
         final Stream<T> result = dynamicReturn.result();
-        return Observable.of(ReactiveStreams.fromIterable(() -> result.iterator()).buildRs());
+        return Observable.of(ReactiveStreams.fromIterable(result::iterator).buildRs());
     }
 
     @Override
     public <T> Object convertPageable(DynamicReturn<T> dynamicReturn) {
         final Stream<T> result = dynamicReturn.streamPagination();
-        return Observable.of(ReactiveStreams.fromIterable(() -> result.iterator()).buildRs());
+        return Observable.of(ReactiveStreams.fromIterable(result::iterator).buildRs());
     }
 }

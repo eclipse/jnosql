@@ -150,7 +150,7 @@ public abstract class AbstractReactiveColumnRepository<T, K> implements Reactive
         requireNonNull(id, "is is required");
         final Observable<T> publisher = findById(id);
         final CompletionStage<Optional<T>> completion = publisher.getFirst();
-        final CompletionStage<Boolean> exist = completion.thenApply(o -> o.isPresent());
+        final CompletionStage<Boolean> exist = completion.thenApply(Optional::isPresent);
         return Observable.of(ReactiveStreams.fromCompletionStage(exist).buildRs());
     }
 

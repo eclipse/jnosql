@@ -31,12 +31,12 @@ public class PublisherRepositoryReturn implements RepositoryReturn {
     @Override
     public <T> Object convert(DynamicReturn<T> dynamicReturn) {
         final Stream<T> result = dynamicReturn.result();
-        return ReactiveStreams.fromIterable(() -> result.iterator()).buildRs();
+        return ReactiveStreams.fromIterable(result::iterator).buildRs();
     }
 
     @Override
     public <T> Object convertPageable(DynamicReturn<T> dynamicReturn) {
         final Stream<T> result = dynamicReturn.streamPagination();
-        return ReactiveStreams.fromIterable(() -> result.iterator()).buildRs();
+        return ReactiveStreams.fromIterable(result::iterator).buildRs();
     }
 }

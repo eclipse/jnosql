@@ -112,7 +112,7 @@ class DefaultReactiveColumnTemplateTest {
 
         publisher.subscribe(subscriber);
         CompletionStage<List<Person>> completion = subscriber.getCompletion();
-        completion.thenAccept(o -> reference.set(o));
+        completion.thenAccept(reference::set);
         Mockito.verify(template).insert(adas);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada, ada));
 
@@ -134,7 +134,7 @@ class DefaultReactiveColumnTemplateTest {
 
         publisher.subscribe(subscriber);
         CompletionStage<List<Person>> completion = subscriber.getCompletion();
-        completion.thenAccept(o -> reference.set(o));
+        completion.thenAccept(reference::set);
         Mockito.verify(template).insert(adas, duration);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada, ada));
     }
@@ -170,7 +170,7 @@ class DefaultReactiveColumnTemplateTest {
         Mockito.verify(template, Mockito.never()).update(adas);
 
         CompletionStage<List<Person>> completion = observable.getList();
-        completion.thenAccept(o -> reference.set(o));
+        completion.thenAccept(reference::set);
         Mockito.verify(template).update(adas);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada, ada));
 
@@ -189,7 +189,7 @@ class DefaultReactiveColumnTemplateTest {
         Mockito.verify(template, Mockito.never()).query(query);
 
         CompletionStage<List<Person>> completion = observable.getList();
-        completion.thenAccept(o -> reference.set(o));
+        completion.thenAccept(reference::set);
         Mockito.verify(template).query(query);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada));
     }
@@ -208,7 +208,7 @@ class DefaultReactiveColumnTemplateTest {
         Mockito.verify(template, Mockito.never()).singleResult(query);
 
         CompletionStage<List<Person>> completion = publisher.getList();
-        completion.thenAccept(o -> reference.set(o));
+        completion.thenAccept(reference::set);
         Mockito.verify(template).singleResult(query);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada));
     }
@@ -225,7 +225,7 @@ class DefaultReactiveColumnTemplateTest {
         Mockito.verify(template, Mockito.never()).find(Person.class, 1L);
 
         CompletionStage<List<Person>> completion = observable.getList();
-        completion.thenAccept(o -> reference.set(o));
+        completion.thenAccept(reference::set);
         Mockito.verify(template).find(Person.class, 1L);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada));
     }
@@ -243,7 +243,7 @@ class DefaultReactiveColumnTemplateTest {
         Mockito.verify(template, Mockito.never()).select(query);
 
         CompletionStage<List<Person>> completion = observable.getList();
-        completion.thenAccept(o -> reference.set(o));
+        completion.thenAccept(reference::set);
         Mockito.verify(template).select(query);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada));
     }
@@ -261,7 +261,7 @@ class DefaultReactiveColumnTemplateTest {
         Mockito.verify(template, Mockito.never()).singleResult(query);
 
         CompletionStage<List<Person>> completion = observable.getList();
-        completion.thenAccept(o -> reference.set(o));
+        completion.thenAccept(reference::set);
         Mockito.verify(template).singleResult(query);
         MatcherAssert.assertThat(reference.get(), Matchers.containsInAnyOrder(ada));
     }

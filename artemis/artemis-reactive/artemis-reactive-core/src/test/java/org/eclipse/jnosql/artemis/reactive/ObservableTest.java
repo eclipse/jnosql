@@ -86,7 +86,7 @@ class ObservableTest {
         final Observable<Animal> observable = Observable.of(publisher);
         final CompletionStage<Optional<Animal>> singleResult = observable.getSingleResult();
         final CompletableFuture<Optional<Animal>> future = singleResult.toCompletableFuture();
-        Assertions.assertThrows(ExecutionException.class, () -> future.get());
+        Assertions.assertThrows(ExecutionException.class, future::get);
     }
 
     @Test
