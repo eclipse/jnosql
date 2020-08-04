@@ -24,7 +24,7 @@ class ReactiveDocumentRepositoryProxy<T> extends AbstractReactiveDocumentReposit
 
 
     private final ClassMapping classMapping;
-    private final ReactiveRepository repository;
+    private final ReactiveRepository<?, ?> repository;
     private final Class<T> entityClass;
     private final Converters converters;
     private final DocumentTemplate template;
@@ -35,10 +35,10 @@ class ReactiveDocumentRepositoryProxy<T> extends AbstractReactiveDocumentReposit
                                     ClassMappings classMappings,
                                     Class<T> repositoryType) {
 
-        Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
+        Class<T> typeClass = (Class<T>) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
         this.classMapping = classMappings.get(typeClass);
-        this.repository = new DefaultReactiveDocumentRepository(reactiveTemplate, classMapping);
+        this.repository = new DefaultReactiveDocumentRepository<>(reactiveTemplate, classMapping);
         this.entityClass = typeClass;
         this.converters = converters;
         this.template = template;
@@ -46,7 +46,7 @@ class ReactiveDocumentRepositoryProxy<T> extends AbstractReactiveDocumentReposit
 
 
     @Override
-    protected ReactiveRepository getRepository() {
+    protected ReactiveRepository<?, ?> getRepository() {
         return repository;
     }
 

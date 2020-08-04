@@ -30,9 +30,9 @@ import java.util.Collections;
 
 import static jakarta.nosql.document.DocumentQuery.select;
 
-public abstract class AbstractReactiveDocumentRepositoryProxy<T> extends BaseDocumentRepository implements InvocationHandler {
+public abstract class AbstractReactiveDocumentRepositoryProxy<T> extends BaseDocumentRepository<T> implements InvocationHandler {
 
-    protected abstract ReactiveRepository getRepository();
+    protected abstract ReactiveRepository<?,?> getRepository();
 
     protected abstract DocumentTemplate getTemplate();
 
