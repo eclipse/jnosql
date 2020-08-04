@@ -82,8 +82,7 @@ final class DefaultObservable<T> implements Observable<T> {
     public <E> CompletionStage<E> subscribe(CompletionSubscriber<T, E> subscriber) {
         Objects.requireNonNull(subscriber, "subscriber is required");
         publisher.subscribe(subscriber);
-        final CompletionStage<E> completion = subscriber.getCompletion();
-        return completion;
+        return subscriber.getCompletion();
     }
 
     @Override
