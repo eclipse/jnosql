@@ -52,7 +52,7 @@ public class ReactiveKeyValueExtension implements Extension {
         Databases.addDatabase(pp, KEY_VALUE, databases);
     }
 
-    <T extends ReactiveRepository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends ReactiveRepository<?, ?>> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
 
         if (ReactiveRepository.class.equals(javaClass)) {

@@ -17,17 +17,17 @@ import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 
 import java.lang.reflect.ParameterizedType;
 
-class ReactiveKeyValueRepositoryProxy <T> extends AbstractReactiveKeyValueRepositoryProxy<T> {
+class ReactiveKeyValueRepositoryProxy<T> extends AbstractReactiveKeyValueRepositoryProxy<T> {
 
-    private final DefaultReactiveKeyValueRepository repository;
+    private final DefaultReactiveKeyValueRepository<?, ?> repository;
     private final KeyValueTemplate template;
     private final Class<T> entityClass;
 
     ReactiveKeyValueRepositoryProxy(KeyValueTemplate template, ReactiveKeyValueTemplate reactiveKeyValueTemplate,
                                     Class<T> repositoryType) {
-        Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
+        Class<T> typeClass = (Class<T>) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
-        this.repository = new DefaultReactiveKeyValueRepository(typeClass, reactiveKeyValueTemplate);
+        this.repository = new DefaultReactiveKeyValueRepository<>(typeClass, reactiveKeyValueTemplate);
         this.template = template;
         this.entityClass = typeClass;
     }
@@ -38,7 +38,7 @@ class ReactiveKeyValueRepositoryProxy <T> extends AbstractReactiveKeyValueReposi
     }
 
     @Override
-    protected ReactiveRepository getReactiveRepository() {
+    protected ReactiveRepository<?, ?> getReactiveRepository() {
         return repository;
     }
 

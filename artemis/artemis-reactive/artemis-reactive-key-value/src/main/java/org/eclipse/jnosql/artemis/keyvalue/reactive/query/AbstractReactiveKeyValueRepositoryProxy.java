@@ -28,7 +28,7 @@ public abstract class AbstractReactiveKeyValueRepositoryProxy<T> implements Invo
 
     protected abstract KeyValueTemplate getTemplate();
 
-    protected abstract ReactiveRepository getReactiveRepository();
+    protected abstract ReactiveRepository<?, ?> getReactiveRepository();
 
     protected abstract Class<T> getEntityClass();
 
