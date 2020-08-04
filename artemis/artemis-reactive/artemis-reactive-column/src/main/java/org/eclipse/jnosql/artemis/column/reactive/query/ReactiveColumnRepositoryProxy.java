@@ -23,11 +23,11 @@ import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
 
 import java.lang.reflect.ParameterizedType;
 
-class ReactiveColumnRepositoryProxy <T> extends AbstractReactiveColumnRepositoryProxy<T> {
+class ReactiveColumnRepositoryProxy<T> extends AbstractReactiveColumnRepositoryProxy<T> {
 
 
     private final ClassMapping classMapping;
-    private final ReactiveRepository repository;
+    private final ReactiveRepository<?, ?> repository;
     private final Class<T> entityClass;
     private final Converters converters;
     private final ColumnTemplate template;
@@ -38,7 +38,7 @@ class ReactiveColumnRepositoryProxy <T> extends AbstractReactiveColumnRepository
                                   ClassMappings classMappings,
                                   Class<T> repositoryType) {
 
-        Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
+        Class<T> typeClass = (Class<T>) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
         this.classMapping = classMappings.get(typeClass);
         this.repository = new DefaultReactiveColumnRepository(reactiveTemplate, classMapping);
@@ -49,7 +49,7 @@ class ReactiveColumnRepositoryProxy <T> extends AbstractReactiveColumnRepository
 
 
     @Override
-    protected ReactiveRepository getRepository() {
+    protected ReactiveRepository<?, ?> getRepository() {
         return repository;
     }
 

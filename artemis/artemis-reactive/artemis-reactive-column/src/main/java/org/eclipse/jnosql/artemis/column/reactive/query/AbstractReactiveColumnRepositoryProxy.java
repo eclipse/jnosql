@@ -30,10 +30,10 @@ import java.util.Collections;
 
 import static jakarta.nosql.column.ColumnQuery.select;
 
-public abstract class AbstractReactiveColumnRepositoryProxy<T> extends BaseColumnRepository implements InvocationHandler {
+public abstract class AbstractReactiveColumnRepositoryProxy<T> extends BaseColumnRepository<T> implements InvocationHandler {
 
 
-    protected abstract ReactiveRepository getRepository();
+    protected abstract ReactiveRepository<?, ?> getRepository();
 
     protected abstract ColumnTemplate getTemplate();
 

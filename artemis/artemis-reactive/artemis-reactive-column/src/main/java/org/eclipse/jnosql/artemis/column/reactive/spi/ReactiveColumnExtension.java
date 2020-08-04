@@ -48,7 +48,7 @@ public class ReactiveColumnExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    <T extends ReactiveRepository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends ReactiveRepository<?, ?>> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
         if (ReactiveRepository.class.equals(javaClass)) {
             return;
