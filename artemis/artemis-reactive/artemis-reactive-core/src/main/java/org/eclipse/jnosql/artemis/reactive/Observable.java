@@ -151,7 +151,6 @@ public interface Observable<T> {
      *
      * @param duration the maximum time period to wait for before raising an Exception
      * @return the {@link List} of a single result
-     * @throws jakarta.nosql.NonUniqueResultException
      */
     List<T> blockList(Duration duration);
 
@@ -162,7 +161,6 @@ public interface Observable<T> {
      * @param <A>      the intermediate accumulation type of the Collector
      * @param duration the maximum time period to wait for before raising an Exception
      * @return the {@link Collector} of a single result
-     * @throws jakarta.nosql.NonUniqueResultException
      */
     <R, A> R blockCollect(Collector<? super T, A, R> collector, Duration duration);
 
