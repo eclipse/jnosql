@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 @ExtendWith(MockitoExtension.class)
 class DefaultRepositoryReturnTest {
 
-    private RepositoryReturn repositoryReturn = new DefaultRepositoryReturn();
+    private final RepositoryReturn repositoryReturn = new DefaultRepositoryReturn();
 
     @Mock
     private Page<Person> page;

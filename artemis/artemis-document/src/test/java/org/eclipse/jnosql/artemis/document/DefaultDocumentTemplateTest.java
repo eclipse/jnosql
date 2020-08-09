@@ -60,14 +60,14 @@ import static org.mockito.Mockito.when;
 @CDIExtension
 public class DefaultDocumentTemplateTest {
 
-    private Person person = Person.builder().
+    private final Person person = Person.builder().
             withAge().
             withPhones(Arrays.asList("234", "432")).
             withName("Name")
             .withId(19)
             .withIgnore().build();
 
-    private Document[] documents = new Document[]{
+    private final Document[] documents = new Document[]{
             Document.of("age", 10),
             Document.of("phones", Arrays.asList("234", "432")),
             Document.of("name", "Name"),

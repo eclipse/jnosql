@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 class InstanceRepositoryReturnTest {
 
-    private RepositoryReturn repositoryReturn = new InstanceRepositoryReturn();
+    private final RepositoryReturn repositoryReturn = new InstanceRepositoryReturn();
 
     @Mock
     private Page<Person> page;

@@ -67,7 +67,7 @@ public class DefaultColumnEntityConverterTest {
 
     private Column[] columns;
 
-    private Actor actor = Actor.actorBuilder().withAge()
+    private final Actor actor = Actor.actorBuilder().withAge()
             .withId()
             .withName()
             .withPhones(asList("234", "2342"))

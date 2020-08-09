@@ -66,7 +66,7 @@ public class DefaultDocumentEntityConverterTest {
 
     private Document[] documents;
 
-    private Actor actor = Actor.actorBuilder().withAge()
+    private final Actor actor = Actor.actorBuilder().withAge()
             .withId()
             .withName()
             .withPhones(Arrays.asList("234", "2342"))

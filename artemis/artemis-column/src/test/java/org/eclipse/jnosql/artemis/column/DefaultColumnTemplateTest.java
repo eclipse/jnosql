@@ -58,14 +58,14 @@ import static org.mockito.Mockito.verify;
 @CDIExtension
 public class DefaultColumnTemplateTest {
 
-    private Person person = Person.builder().
+    private final Person person = Person.builder().
             withAge().
             withPhones(Arrays.asList("234", "432")).
             withName("Name")
             .withId(19)
             .withIgnore().build();
 
-    private Column[] columns = new Column[]{
+    private final Column[] columns = new Column[]{
             Column.of("age", 10),
             Column.of("phones", Arrays.asList("234", "432")),
             Column.of("name", "Name"),
