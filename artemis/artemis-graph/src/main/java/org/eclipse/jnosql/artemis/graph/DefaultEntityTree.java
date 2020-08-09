@@ -62,7 +62,7 @@ final class DefaultEntityTree implements EntityTree {
         return tree.keySet().stream()
                 .filter(v -> id.equals(v.id()))
                 .findFirst()
-                .map(v -> tree.get(v))
+                .map(tree::get)
                 .map(t -> new DefaultEntityTree(converter, t));
     }
 

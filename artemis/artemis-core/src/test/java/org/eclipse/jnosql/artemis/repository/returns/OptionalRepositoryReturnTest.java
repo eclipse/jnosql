@@ -67,7 +67,7 @@ class OptionalRepositoryReturnTest {
 
         Person ada = new Person("Ada");
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
-                .withSingleResult(() -> Optional.empty())
+                .withSingleResult(Optional::empty)
                 .withClassSource(Person.class)
                 .withResult(Collections::emptyList)
                 .withMethodSource(Person.class.getDeclaredMethods()[0])

@@ -86,6 +86,6 @@ class DefaultValueMapTraversal implements ValueMapTraversal {
         return map -> map
                 .entrySet()
                 .stream()
-                .collect(Collectors.toMap(k -> k.getKey().toString(), v -> v.getValue()));
+                .collect(Collectors.toMap(k -> k.getKey().toString(), Map.Entry::getValue));
     }
 }
