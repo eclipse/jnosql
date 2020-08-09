@@ -152,11 +152,9 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenHasKeyIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            graphTemplate.getTraversalVertex().has((String) null, P.gt(26))
-                    .getResult()
-                    .collect(toList());
-        });
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().has((String) null, P.gt(26))
+                .getResult()
+                .collect(toList()));
     }
 
     @Test
