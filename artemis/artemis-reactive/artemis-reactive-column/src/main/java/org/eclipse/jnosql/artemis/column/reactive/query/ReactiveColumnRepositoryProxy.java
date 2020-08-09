@@ -16,10 +16,10 @@ package org.eclipse.jnosql.artemis.column.reactive.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.eclipse.jnosql.artemis.reflection.ClassMapping;
-import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 import org.eclipse.jnosql.artemis.column.reactive.ReactiveColumnTemplate;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -28,7 +28,6 @@ class ReactiveColumnRepositoryProxy<T> extends AbstractReactiveColumnRepositoryP
 
     private final ClassMapping classMapping;
     private final ReactiveRepository<?, ?> repository;
-    private final Class<T> entityClass;
     private final Converters converters;
     private final ColumnTemplate template;
 
@@ -42,7 +41,6 @@ class ReactiveColumnRepositoryProxy<T> extends AbstractReactiveColumnRepositoryP
                 .getActualTypeArguments()[0];
         this.classMapping = classMappings.get(typeClass);
         this.repository = new DefaultReactiveColumnRepository<>(reactiveTemplate, classMapping);
-        this.entityClass = typeClass;
         this.converters = converters;
         this.template = template;
     }

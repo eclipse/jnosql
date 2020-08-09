@@ -13,10 +13,10 @@ package org.eclipse.jnosql.artemis.document.reactive.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.artemis.reflection.ClassMapping;
-import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 import org.eclipse.jnosql.artemis.document.reactive.ReactiveDocumentTemplate;
 import org.eclipse.jnosql.artemis.reactive.ReactiveRepository;
+import org.eclipse.jnosql.artemis.reflection.ClassMapping;
+import org.eclipse.jnosql.artemis.reflection.ClassMappings;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -25,7 +25,6 @@ class ReactiveDocumentRepositoryProxy<T> extends AbstractReactiveDocumentReposit
 
     private final ClassMapping classMapping;
     private final ReactiveRepository<?, ?> repository;
-    private final Class<T> entityClass;
     private final Converters converters;
     private final DocumentTemplate template;
 
@@ -39,7 +38,6 @@ class ReactiveDocumentRepositoryProxy<T> extends AbstractReactiveDocumentReposit
                 .getActualTypeArguments()[0];
         this.classMapping = classMappings.get(typeClass);
         this.repository = new DefaultReactiveDocumentRepository<>(reactiveTemplate, classMapping);
-        this.entityClass = typeClass;
         this.converters = converters;
         this.template = template;
     }
