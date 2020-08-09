@@ -76,7 +76,7 @@ class GremlinExecutorTest {
     public void shouldExecuteQueryEdges2() {
 
         List<EdgeEntity> edges = executor.<EdgeEntity> executeGremlin(graph.traversal(), "g.E().toList()")
-                .collect(toList());;
+                .collect(toList());
         assertFalse(edges.isEmpty());
         EdgeEntity edgeEntity = edges.get(0);
         Person person = edgeEntity.getIncoming();
@@ -145,7 +145,7 @@ class GremlinExecutorTest {
     @Test
     public void shouldExecuteQueryCount2() {
         List<Long> count = executor.<Long>executeGremlin(graph.traversal(), "g.V().count()")
-                .collect(toList());;
+                .collect(toList());
         assertFalse(count.isEmpty());
         assertThat(count, containsInAnyOrder(2L));
     }
