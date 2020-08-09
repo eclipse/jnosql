@@ -49,6 +49,7 @@ import static jakarta.nosql.column.ColumnDeleteQuery.delete;
 import static jakarta.nosql.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -137,7 +138,7 @@ public class DefaultColumnTemplateTest {
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
         verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
         verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
-       assertTrue(person == result);
+        assertSame(person, result);
        assertEquals(10, person.getAge());
 
     }
@@ -202,7 +203,7 @@ public class DefaultColumnTemplateTest {
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
         verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
         verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
-        assertTrue(person == result);
+        assertSame(person, result);
         assertEquals(10, person.getAge());
 
     }

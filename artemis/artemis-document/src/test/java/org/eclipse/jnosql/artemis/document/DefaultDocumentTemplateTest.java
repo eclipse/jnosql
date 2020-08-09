@@ -49,6 +49,7 @@ import static jakarta.nosql.document.DocumentDeleteQuery.delete;
 import static jakarta.nosql.document.DocumentQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -140,7 +141,7 @@ public class DefaultDocumentTemplateTest {
         verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
         verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
         DocumentEntity value = captor.getValue();
-        assertTrue(person == result);
+        assertSame(person, result);
         assertEquals(10, person.getAge());
     }
 
@@ -206,7 +207,7 @@ public class DefaultDocumentTemplateTest {
         verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
         verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
         DocumentEntity value = captor.getValue();
-        assertTrue(person == result);
+        assertSame(person, result);
         assertEquals(10, person.getAge());
     }
 

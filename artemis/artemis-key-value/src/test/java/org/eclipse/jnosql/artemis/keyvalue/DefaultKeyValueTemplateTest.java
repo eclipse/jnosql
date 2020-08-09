@@ -50,6 +50,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -97,7 +98,7 @@ public class DefaultKeyValueTemplateTest {
     public void shouldMergeOnPut() {
         User user = new User(KEY, "otavio", 27);
         User result = subject.put(user);
-        assertTrue(user == result);
+        assertSame(user, result);
     }
 
     @Test

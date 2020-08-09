@@ -47,6 +47,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -107,7 +108,7 @@ public abstract class AbstractGraphTemplateTest {
         Person person = Person.builder().withAge()
                 .withName("Otavio").build();
         Person updated = getGraphTemplate().insert(person);
-        assertTrue(person == updated);
+        assertSame(person, updated);
     }
 
     @Test
@@ -182,7 +183,7 @@ public abstract class AbstractGraphTemplateTest {
 
         Person update = getGraphTemplate().update(newPerson);
 
-        assertTrue(update == newPerson);
+        assertSame(update, newPerson);
     }
 
     @Test
