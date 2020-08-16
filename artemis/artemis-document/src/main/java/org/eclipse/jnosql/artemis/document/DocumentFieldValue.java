@@ -26,5 +26,13 @@ import java.util.List;
  */
 public interface DocumentFieldValue extends FieldValue {
 
-    List<Document> toDocument(DocumentEntityConverter converter, Converters converters);
+    /**
+     * Converts an entity to a {@link List} of documents
+     * @param converter the converter
+     * @param converters the converters
+     * @param <X> the type of the entity attribute
+     * @param <Y> the type of the database column
+     * @return a {@link List} of documents from the field
+     */
+    <X, Y> List<Document> toDocument(DocumentEntityConverter converter, Converters converters);
 }

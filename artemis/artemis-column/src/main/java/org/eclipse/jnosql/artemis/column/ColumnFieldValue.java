@@ -27,6 +27,15 @@ import java.util.List;
  */
 public interface ColumnFieldValue extends FieldValue {
 
-    List<Column> toColumn(ColumnEntityConverter converter, Converters converters);
+
+    /**
+     * Converts an entity to a {@link List} of columns
+     * @param converter the converter
+     * @param converters the converters
+     * @param <X> the type of the entity attribute
+     * @param <Y> the type of the database column
+     * @return a {@link List} of columns from the field
+     */
+    <X, Y> List<Column> toColumn(ColumnEntityConverter converter, Converters converters);
 
 }

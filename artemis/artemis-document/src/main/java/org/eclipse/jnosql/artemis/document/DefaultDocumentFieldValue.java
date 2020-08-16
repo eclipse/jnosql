@@ -52,7 +52,8 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     }
 
 
-    public List<Document> toDocument(DocumentEntityConverter converter, Converters converters) {
+    @Override
+    public <X, Y> List<Document> toDocument(DocumentEntityConverter converter, Converters converters) {
         if (EMBEDDED.equals(getType())) {
             return converter.toDocument(getValue()).getDocuments();
         }  else if (EMBEDDED_ENTITY.equals(getType())) {
@@ -60,10 +61,10 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
         } else if (isEmbeddableCollection()) {
             return singletonList(Document.of(getName(), getDocuments(converter)));
         }
-        Optional<Class<? extends AttributeConverter>> optionalConverter = getField().getConverter();
+        Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = getField().getConverter();
         if (optionalConverter.isPresent()) {
-            AttributeConverter attributeConverter = converters.get(optionalConverter.get());
-            return singletonList(Document.of(getName(), attributeConverter.convertToDatabaseColumn(getValue())));
+            AttributeConverter<X, Y> attributeConverter = converters.get(optionalConverter.get());
+            return singletonList(Document.of(getName(), attributeConverter.convertToDatabaseColumn((X) getValue())));
         }
         return singletonList(Document.of(getName(), getValue()));
     }

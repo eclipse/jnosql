@@ -40,7 +40,7 @@ class DefaultConverters implements Converters {
     private InstanceProducer instanceProducer;
 
     @Override
-    public AttributeConverter get(Class<? extends AttributeConverter> converterClass) {
+    public <X, Y> AttributeConverter<X, Y> get(Class<? extends AttributeConverter<X, Y>> converterClass) {
         Objects.requireNonNull(converterClass, "The converterClass is required");
         return getInstance(converterClass);
     }

@@ -208,12 +208,12 @@ abstract class AbstractGraphConverter implements GraphConverter {
         };
     }
 
-    private <T> void setSingleField(T instance, Optional<Property> element, FieldMapping field) {
+    private <T, X, Y> void setSingleField(T instance, Optional<Property> element, FieldMapping field) {
         Object value = element.get().value();
-        Optional<Class<? extends AttributeConverter>> converter = field.getConverter();
+        Optional<Class<? extends AttributeConverter<X, Y>>> converter = field.getConverter();
         if (converter.isPresent()) {
-            AttributeConverter attributeConverter = getConverters().get(converter.get());
-            Object attributeConverted = attributeConverter.convertToEntityAttribute(value);
+            AttributeConverter<X, Y> attributeConverter = getConverters().get(converter.get());
+            Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) value);
             field.write(instance, field.getValue(Value.of(attributeConverted)));
         } else {
             field.write(instance, field.getValue(Value.of(value)));

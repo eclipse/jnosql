@@ -95,11 +95,12 @@ public interface FieldMapping {
 
     /**
      * Returns the converter class
-     *
+     * @param <X> the type of the entity attribute
+     * @param <Y> the type of the database column
      * @param <T> the Converter
      * @return the converter if present
      */
-    <T extends AttributeConverter> Optional<Class<? extends AttributeConverter>> getConverter();
+    <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> getConverter();
 
 
 }

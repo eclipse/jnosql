@@ -36,14 +36,14 @@ abstract class AbstractFieldMapping implements FieldMapping {
 
     protected final String fieldName;
 
-    protected final Class<? extends AttributeConverter> converter;
+    protected final Class<? extends AttributeConverter<?, ?>> converter;
 
     protected final FieldReader reader;
 
     protected final FieldWriter writer;
 
     AbstractFieldMapping(FieldType type, Field field, String name,
-                         Class<? extends AttributeConverter> converter, FieldReader reader, FieldWriter writer) {
+                         Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
         this.type = type;
         this.field = field;
         this.name = name;
@@ -86,10 +86,9 @@ abstract class AbstractFieldMapping implements FieldMapping {
     }
 
     @Override
-    public <T extends AttributeConverter> Optional<Class<? extends AttributeConverter>> getConverter() {
-        return Optional.ofNullable(converter);
+    public <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> getConverter() {
+        return Optional.ofNullable((Class<? extends AttributeConverter<X, Y>>) converter);
     }
-
 
     @Override
     public String toString() {
