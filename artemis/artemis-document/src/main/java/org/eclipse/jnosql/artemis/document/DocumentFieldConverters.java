@@ -63,7 +63,7 @@ class DocumentFieldConverters {
     private static class SubEntityConverter implements DocumentFieldConverter {
 
         @Override
-        public <T> void convert(T instance, List<Document> documents, Optional<Document> document,
+        public <X, Y, T> void convert(T instance, List<Document> documents, Optional<Document> document,
                                 FieldMapping field, AbstractDocumentEntityConverter converter) {
 
             if (document.isPresent()) {
@@ -94,7 +94,7 @@ class DocumentFieldConverters {
 
 
         @Override
-        public <T> void convert(T instance, List<Document> documents, Optional<Document> document,
+        public <X, Y, T> void convert(T instance, List<Document> documents, Optional<Document> document,
                                 FieldMapping field, AbstractDocumentEntityConverter converter) {
 
             Field nativeField = field.getNativeField();
@@ -107,14 +107,14 @@ class DocumentFieldConverters {
     private static class DefaultConverter implements DocumentFieldConverter {
 
         @Override
-        public <T> void convert(T instance, List<Document> documents, Optional<Document> document,
+        public <X, Y, T> void convert(T instance, List<Document> documents, Optional<Document> document,
                                 FieldMapping field, AbstractDocumentEntityConverter converter) {
             Value value = document.get().getValue();
 
-            Optional<Class<? extends AttributeConverter>> optionalConverter = field.getConverter();
+            Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.getConverter();
             if (optionalConverter.isPresent()) {
-                AttributeConverter attributeConverter = converter.getConverters().get(optionalConverter.get());
-                Object attributeConverted = attributeConverter.convertToEntityAttribute(value.get());
+                AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(optionalConverter.get());
+                Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) value.get());
                 field.write(instance, field.getValue(Value.of(attributeConverted)));
             } else {
                 field.write(instance, field.getValue(value));
@@ -125,7 +125,7 @@ class DocumentFieldConverters {
     private static class CollectionEmbeddableConverter implements DocumentFieldConverter {
 
         @Override
-        public <T> void convert(T instance, List<Document> documents, Optional<Document> document,
+        public <X, Y, T> void convert(T instance, List<Document> documents, Optional<Document> document,
                                 FieldMapping field, AbstractDocumentEntityConverter converter) {
             document.ifPresent(convertDocument(instance, field, converter));
         }
