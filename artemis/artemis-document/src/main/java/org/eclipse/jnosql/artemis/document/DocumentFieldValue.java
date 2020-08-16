@@ -26,5 +26,5 @@ import java.util.List;
  */
 public interface DocumentFieldValue extends FieldValue {
 
-    List<Document> toDocument(DocumentEntityConverter converter, Converters converters);
+    <X, Y> List<Document> toDocument(DocumentEntityConverter converter, Converters converters);
 }
