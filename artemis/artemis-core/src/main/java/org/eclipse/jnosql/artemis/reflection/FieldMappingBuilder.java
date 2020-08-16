@@ -31,7 +31,7 @@ class FieldMappingBuilder {
 
     private TypeSupplier<?> typeSupplier;
 
-    private Class<? extends AttributeConverter> converter;
+    private Class<? extends AttributeConverter<?, ?>> converter;
 
     private boolean id;
 
@@ -65,7 +65,7 @@ class FieldMappingBuilder {
         return this;
     }
 
-    public FieldMappingBuilder withConverter(Class<? extends AttributeConverter> converter) {
+    public FieldMappingBuilder withConverter(Class<? extends AttributeConverter<?, ?>> converter) {
         this.converter = converter;
         return this;
     }
