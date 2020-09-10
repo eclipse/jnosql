@@ -95,7 +95,7 @@ class ObservableTest {
                 .fromIterable(Arrays.asList(new Animal("Lion"), new Animal("Tiger"))).buildRs();
         final Observable<Animal> observable = Observable.of(publisher);
         final CompletionStage<Optional<Animal>> singleResult = observable.getFirst();
-        AtomicReference<Animal> reference = new AtomicReference();
+        AtomicReference<Animal> reference = new AtomicReference<>();
         singleResult.thenApply(Optional::get).thenAccept(reference::set);
         Assertions.assertEquals(new Animal("Lion"), reference.get());
     }
@@ -107,7 +107,7 @@ class ObservableTest {
                 .fromIterable(animals).buildRs();
         final Observable<Animal> observable = Observable.of(publisher);
         final CompletionStage<List<Animal>> result = observable.getList();
-        AtomicReference<List<Animal>> reference = new AtomicReference();
+        AtomicReference<List<Animal>> reference = new AtomicReference<>();
         result.thenAccept(reference::set);
         Assertions.assertEquals(animals, reference.get());
     }
@@ -120,7 +120,7 @@ class ObservableTest {
                 .fromIterable(animals).buildRs();
         final Observable<Animal> observable = Observable.of(publisher);
         final CompletionStage<Set<Animal>> result = observable.collect(Collectors.toSet());
-        AtomicReference<Set<Animal>> reference = new AtomicReference();
+        AtomicReference<Set<Animal>> reference = new AtomicReference<>();
         result.thenAccept(reference::set);
         assertThat(reference.get(), containsInAnyOrder(new Animal("Lion"),
                 new Animal("Tiger")));
@@ -135,7 +135,7 @@ class ObservableTest {
         final CompletionSubscriber<Animal, List<String>> subscriber = ReactiveStreams.<Animal>builder()
                 .map(Animal::getName).toList().build();
         final CompletionStage<List<String>> result = observable.subscribe(subscriber);
-        AtomicReference<List<String>> reference = new AtomicReference();
+        AtomicReference<List<String>> reference = new AtomicReference<>();
         result.thenAccept(reference::set);
         assertThat(reference.get(), containsInAnyOrder("Lion", "Tiger"));
     }
