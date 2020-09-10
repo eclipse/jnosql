@@ -253,6 +253,4 @@ class ObservableTest {
         final List<String> result = observable.blockSubscribe(subscriber, Duration.ofMinutes(1L));
         assertThat(result, containsInAnyOrder("Lion", "Tiger"));
     }
-
-
 }
