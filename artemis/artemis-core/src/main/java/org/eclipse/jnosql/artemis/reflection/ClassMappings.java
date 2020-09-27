@@ -28,7 +28,7 @@ public interface ClassMappings {
      *
      * @param classEntity the class of entity
      * @return the {@link ClassMapping}
-     * @throws NullPointerException whend class entity is null
+     * @throws NullPointerException when class entity is null
      */
     ClassMapping get(Class classEntity);
 
