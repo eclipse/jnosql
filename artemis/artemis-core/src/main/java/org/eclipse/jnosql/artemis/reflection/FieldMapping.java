@@ -62,7 +62,7 @@ public interface FieldMapping {
     void write(Object bean, Object value);
 
     /**
-     * Returns the name of the field that can be eiher the field name
+     * Returns the name of the field that can be either the field name
      * or {@link Column#value()}
      *
      * @return the name
