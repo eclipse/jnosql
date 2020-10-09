@@ -41,11 +41,24 @@ final class DefaultColumnCondition implements ColumnCondition {
 
     private final Condition condition;
 
+    private final boolean readOnly;
+
     private DefaultColumnCondition(Column column, Condition condition) {
         this.column = column;
         this.condition = condition;
+        this.readOnly = false;
     }
 
+    private DefaultColumnCondition(Column column, Condition condition, boolean readOnly) {
+        this.column = column;
+        this.condition = condition;
+        this.readOnly = readOnly;
+    }
+
+    static DefaultColumnCondition readOnly(ColumnCondition condition) {
+        requireNonNull(condition, "condition is required");
+        return new DefaultColumnCondition(condition.getColumn(), condition.getCondition(), true);
+    }
     static DefaultColumnCondition of(Column column, Condition condition) {
         return new DefaultColumnCondition(requireNonNull(column, "Column is required"), condition);
     }
@@ -108,6 +121,7 @@ final class DefaultColumnCondition implements ColumnCondition {
 
     @Override
     public ColumnCondition and(ColumnCondition condition) {
+        validateReadOnly();
         requireNonNull(condition, "Conditions is required");
         if (Condition.AND.equals(this.condition)) {
             Column newColumn = getConditions(condition, Condition.AND);
@@ -118,6 +132,7 @@ final class DefaultColumnCondition implements ColumnCondition {
 
     @Override
     public ColumnCondition negate() {
+        validateReadOnly();
         if (Condition.NOT.equals(this.condition)) {
             return this.column.get(ColumnCondition.class);
         } else {
@@ -129,6 +144,7 @@ final class DefaultColumnCondition implements ColumnCondition {
 
     @Override
     public ColumnCondition or(ColumnCondition condition) {
+        validateReadOnly();
         requireNonNull(condition, "Condition is required");
         if (Condition.OR.equals(this.condition)) {
             Column newColumn = getConditions(condition, Condition.OR);
@@ -142,6 +158,12 @@ final class DefaultColumnCondition implements ColumnCondition {
         }));
         conditions.add(columnCondition);
         return Column.of(condition.getNameField(), conditions);
+    }
+
+    private void validateReadOnly() {
+        if (readOnly) {
+            throw new IllegalStateException("You cannot change the status after building the query");
+        }
     }
 
     @Override
