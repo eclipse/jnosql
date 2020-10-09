@@ -19,6 +19,7 @@ package org.eclipse.jnosql.diana.document.query;
 
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentDeleteQuery;
+import org.eclipse.jnosql.diana.document.DefaultDocumentCondition;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +41,7 @@ class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
 
     DefaultDocumentDeleteQuery(String documentCollection, DocumentCondition condition, List<String> documents) {
         this.documentCollection = documentCollection;
-        this.condition = ofNullable(condition).map(ReadOnlyDocumentCondition::new).orElse(null);
+        this.condition = ofNullable(condition).map(DefaultDocumentCondition::readOnly).orElse(null);
         this.documents = documents;
     }
 

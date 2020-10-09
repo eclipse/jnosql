@@ -20,6 +20,7 @@ package org.eclipse.jnosql.diana.document.query;
 import jakarta.nosql.Sort;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentQuery;
+import org.eclipse.jnosql.diana.document.DefaultDocumentCondition;
 
 import java.util.List;
 import java.util.Objects;
@@ -48,7 +49,7 @@ class DefaultDocumentQuery implements DocumentQuery {
         this.maxResult = maxResult;
         this.firstResult = firstResult;
         this.documentCollection = documentCollection;
-        this.condition = ofNullable(condition).map(ReadOnlyDocumentCondition::new).orElse(null);
+        this.condition = ofNullable(condition).map(DefaultDocumentCondition::readOnly).orElse(null);
         this.sorts = sorts;
         this.documents = documents;
     }
