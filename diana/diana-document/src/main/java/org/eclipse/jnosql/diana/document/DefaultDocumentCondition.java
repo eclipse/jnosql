@@ -35,15 +35,29 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of {@link DocumentCondition}
  */
-final class DefaultDocumentCondition implements DocumentCondition {
+public final class DefaultDocumentCondition implements DocumentCondition {
 
     private final Document document;
 
     private final Condition condition;
 
+    private final boolean readOnly;
+
     private DefaultDocumentCondition(Document document, Condition condition) {
         this.document = document;
         this.condition = condition;
+        this.readOnly = false;
+    }
+
+    private DefaultDocumentCondition(Document document, Condition condition, boolean readOnly) {
+        this.document = document;
+        this.condition = condition;
+        this.readOnly = readOnly;
+    }
+
+    public static DefaultDocumentCondition readOnly(DocumentCondition condition) {
+        requireNonNull(condition, "condition is required");
+        return new DefaultDocumentCondition(condition.getDocument(), condition.getCondition(), true);
     }
 
     public static DefaultDocumentCondition of(Document document, Condition condition) {
@@ -109,6 +123,7 @@ final class DefaultDocumentCondition implements DocumentCondition {
 
     @Override
     public DocumentCondition and(DocumentCondition condition) {
+        validateReadOnly();
         requireNonNull(condition, "Conditions is required");
         if (Condition.AND.equals(this.condition)) {
             Document column = getConditions(condition, Condition.AND);
@@ -119,6 +134,7 @@ final class DefaultDocumentCondition implements DocumentCondition {
 
     @Override
     public DocumentCondition negate() {
+        validateReadOnly();
         if (Condition.NOT.equals(this.condition)) {
             return this.document.get(DocumentCondition.class);
         } else {
@@ -129,6 +145,7 @@ final class DefaultDocumentCondition implements DocumentCondition {
 
     @Override
     public DocumentCondition or(DocumentCondition condition) {
+        validateReadOnly();
         requireNonNull(condition, "Condition is required");
         if (Condition.OR.equals(this.condition)) {
             Document newDocument = getConditions(condition, Condition.OR);
@@ -136,6 +153,13 @@ final class DefaultDocumentCondition implements DocumentCondition {
         }
         return DefaultDocumentCondition.or(this, condition);
     }
+
+    private void validateReadOnly() {
+        if (readOnly) {
+            throw new IllegalStateException("You cannot change the status after building the query");
+        }
+    }
+
 
     private Document getConditions(DocumentCondition columnCondition, Condition condition) {
         List<DocumentCondition> conditions = new ArrayList<>(document.get(new TypeReference<List<DocumentCondition>>() {
