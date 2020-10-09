@@ -19,6 +19,8 @@ package org.eclipse.jnosql.diana.column.query;
 
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.diana.column.DefaultColumnCondition;
+import org.eclipse.jnosql.diana.column.DefaultColumnConditionProvider;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +42,7 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
 
     DefaultColumnDeleteQuery(String columnFamily, ColumnCondition condition, List<String> columns) {
         this.columnFamily = columnFamily;
-        this.condition = ofNullable(condition).map(ReadOnlyColumnCondition::new).orElse(null);
+        this.condition = ofNullable(condition).map(DefaultColumnCondition::readOnly).orElse(null);
         this.columns = columns;
     }
 

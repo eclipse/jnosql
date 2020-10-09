@@ -20,6 +20,7 @@ package org.eclipse.jnosql.diana.column.query;
 import jakarta.nosql.Sort;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnQuery;
+import org.eclipse.jnosql.diana.column.DefaultColumnCondition;
 
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +53,7 @@ class DefaultColumnQuery implements ColumnQuery {
         this.columnFamily = columnFamily;
         this.columns = columns;
         this.sorts = sorts;
-        this.condition = ofNullable(condition).map(ReadOnlyColumnCondition::new).orElse(null);
+        this.condition = ofNullable(condition).map(DefaultColumnCondition::readOnly).orElse(null);
     }
 
     @Override
