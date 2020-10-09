@@ -49,7 +49,7 @@ public final class FieldTypeUtil {
             return FieldType.EMBEDDED;
         }
         if (field.getType().isAnnotationPresent(Entity.class)) {
-            return FieldType.EMBEDDED_ENTITY;
+            return FieldType.SUB_ENTITY;
         }
 
         return FieldType.DEFAULT;

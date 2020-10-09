@@ -62,7 +62,7 @@ public class FieldTypeUtilTest {
     @Test
     public void shouldReturnSubEntity() throws NoSuchFieldException{
         Field field = Address.class.getDeclaredField("zipCode");
-        assertEquals(FieldType.EMBEDDED_ENTITY, FieldTypeUtil.of(field));
+        assertEquals(FieldType.SUB_ENTITY, FieldTypeUtil.of(field));
     }
 
 }
