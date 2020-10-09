@@ -20,7 +20,6 @@ package org.eclipse.jnosql.diana.column.query;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.diana.column.DefaultColumnCondition;
-import org.eclipse.jnosql.diana.column.DefaultColumnConditionProvider;
 
 import java.util.List;
 import java.util.Objects;
