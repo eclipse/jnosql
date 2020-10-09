@@ -35,7 +35,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of {@link ColumnCondition}
  */
-final class DefaultColumnCondition implements ColumnCondition {
+final public class DefaultColumnCondition implements ColumnCondition {
 
     private final Column column;
 
@@ -55,7 +55,7 @@ final class DefaultColumnCondition implements ColumnCondition {
         this.readOnly = readOnly;
     }
 
-    static DefaultColumnCondition readOnly(ColumnCondition condition) {
+    public static DefaultColumnCondition readOnly(ColumnCondition condition) {
         requireNonNull(condition, "condition is required");
         return new DefaultColumnCondition(condition.getColumn(), condition.getCondition(), true);
     }
