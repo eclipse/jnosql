@@ -32,7 +32,7 @@ import java.util.function.Consumer;
 
 import static org.eclipse.jnosql.artemis.reflection.FieldType.COLLECTION;
 import static org.eclipse.jnosql.artemis.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.artemis.reflection.FieldType.EMBEDDED_ENTITY;
+import static org.eclipse.jnosql.artemis.reflection.FieldType.SUB_ENTITY;
 
 class DocumentFieldConverters {
 
@@ -46,7 +46,7 @@ class DocumentFieldConverters {
         DocumentFieldConverter get(FieldMapping field) {
             if (EMBEDDED.equals(field.getType())) {
                 return embeddedFieldConverter;
-            } else if (EMBEDDED_ENTITY.equals(field.getType())) {
+            } else if (SUB_ENTITY.equals(field.getType())) {
                 return subEntityConverter;
             } else if (isCollectionEmbeddable(field)) {
                 return embeddableConverter;

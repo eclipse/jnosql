@@ -30,7 +30,7 @@ import java.util.Optional;
 
 import static org.eclipse.jnosql.artemis.reflection.FieldType.COLLECTION;
 import static org.eclipse.jnosql.artemis.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.artemis.reflection.FieldType.EMBEDDED_ENTITY;
+import static org.eclipse.jnosql.artemis.reflection.FieldType.SUB_ENTITY;
 import static java.util.Collections.singletonList;
 
 final class DefaultDocumentFieldValue implements DocumentFieldValue {
@@ -56,7 +56,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     public <X, Y> List<Document> toDocument(DocumentEntityConverter converter, Converters converters) {
         if (EMBEDDED.equals(getType())) {
             return converter.toDocument(getValue()).getDocuments();
-        }  else if (EMBEDDED_ENTITY.equals(getType())) {
+        }  else if (SUB_ENTITY.equals(getType())) {
             return singletonList(Document.of(getName(), converter.toDocument(getValue()).getDocuments()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Document.of(getName(), getDocuments(converter)));
