@@ -20,21 +20,21 @@
 
 
     <parent>
-         <groupId>org.eclipse.jnosql.artemis</groupId>
-         <artifactId>artemis-parent</artifactId>
+         <groupId>org.eclipse.jnosql.mapping</groupId>
+         <artifactId>mapping-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
 
-    <groupId>org.eclipse.jnosql.artemis.reactive</groupId>
-    <artifactId>artemis-reactive-parent</artifactId>
+    <groupId>org.eclipse.jnosql.mapping.reactive</groupId>
+    <artifactId>mapping-reactive-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>artemis-reactive-core</module>
-        <module>artemis-reactive-key-value</module>
-        <module>artemis-reactive-column</module>
-        <module>artemis-reactive-document</module>
+        <module>mapping-reactive-core</module>
+        <module>mapping-reactive-key-value</module>
+        <module>mapping-reactive-column</module>
+        <module>mapping-reactive-document</module>
     </modules>
 
     <dependencies>
