@@ -32,13 +32,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jnosql.diana</groupId>
-            <artifactId>diana-core</artifactId>
+            <groupId>org.eclipse.jnosql.communication</groupId>
+            <artifactId>communication-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jnosql.diana</groupId>
-            <artifactId>diana-query</artifactId>
+            <groupId>org.eclipse.jnosql.communication</groupId>
+            <artifactId>communication-query</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

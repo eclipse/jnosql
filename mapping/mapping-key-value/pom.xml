@@ -28,8 +28,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jnosql.diana</groupId>
-            <artifactId>diana-key-value</artifactId>
+            <groupId>org.eclipse.jnosql.communication</groupId>
+            <artifactId>communication-key-value</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

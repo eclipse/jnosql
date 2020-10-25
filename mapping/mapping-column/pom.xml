@@ -27,8 +27,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jnosql.diana</groupId>
-            <artifactId>diana-column</artifactId>
+            <groupId>org.eclipse.jnosql.communication</groupId>
+            <artifactId>communication-column</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
