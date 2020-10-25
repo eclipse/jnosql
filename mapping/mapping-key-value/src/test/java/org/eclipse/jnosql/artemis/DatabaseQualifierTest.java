@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.artemis;
 
+import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

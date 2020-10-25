@@ -16,6 +16,7 @@ package org.eclipse.jnosql.artemis.query;
 
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.Repository;
+import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

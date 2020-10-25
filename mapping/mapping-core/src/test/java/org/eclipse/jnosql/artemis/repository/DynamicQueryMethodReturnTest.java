@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.Param;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.Repository;
-import org.eclipse.jnosql.artemis.repository.DynamicQueryMethodReturn;
+import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

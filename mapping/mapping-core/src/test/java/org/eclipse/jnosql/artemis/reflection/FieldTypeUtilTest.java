@@ -19,6 +19,8 @@ import jakarta.nosql.tck.entities.Address;
 import jakarta.nosql.tck.entities.Movie;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;
+import org.eclipse.jnosql.mapping.reflection.FieldType;
+import org.eclipse.jnosql.mapping.reflection.FieldTypeUtil;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;

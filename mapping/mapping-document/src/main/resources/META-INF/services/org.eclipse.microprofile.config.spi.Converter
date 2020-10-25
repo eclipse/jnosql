@@ -1,3 +1,3 @@
-org.eclipse.jnosql.artemis.document.configuration.DocumentCollectionManagerConverter
-org.eclipse.jnosql.artemis.document.configuration.DocumentCollectionManagerFactoryConverter
-org.eclipse.jnosql.artemis.document.configuration.DocumentTemplateConverter
+org.eclipse.jnosql.mapping.document.configuration.DocumentCollectionManagerConverter
+org.eclipse.jnosql.mapping.document.configuration.DocumentCollectionManagerFactoryConverter
+org.eclipse.jnosql.mapping.document.configuration.DocumentTemplateConverter

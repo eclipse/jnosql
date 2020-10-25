@@ -19,8 +19,9 @@ import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.eclipse.jnosql.artemis.reflection.ClassMapping;
-import org.eclipse.jnosql.artemis.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.util.ConverterUtil;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;

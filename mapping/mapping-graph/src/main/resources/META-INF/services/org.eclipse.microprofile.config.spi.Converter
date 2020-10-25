@@ -1,2 +1,2 @@
-org.eclipse.jnosql.artemis.graph.configuration.GraphConverter
-org.eclipse.jnosql.artemis.graph.configuration.GraphTemplateConverter
+org.eclipse.jnosql.mapping.graph.configuration.GraphConverter
+org.eclipse.jnosql.mapping.graph.configuration.GraphTemplateConverter

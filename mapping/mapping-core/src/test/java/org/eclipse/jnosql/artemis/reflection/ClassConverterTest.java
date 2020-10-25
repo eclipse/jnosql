@@ -22,6 +22,11 @@ import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.User;
 import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.reflection.ClassConverter;
+import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.ConstructorException;
+import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.FieldType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

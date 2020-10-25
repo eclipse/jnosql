@@ -18,6 +18,7 @@ import jakarta.nosql.tck.entities.Actor;
 import jakarta.nosql.tck.entities.Movie;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;

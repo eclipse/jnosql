@@ -16,6 +16,8 @@ package org.eclipse.jnosql.artemis.reflection;
 
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.reflection.InstanceSupplier;
+import org.eclipse.jnosql.mapping.reflection.ReflectionInstanceSupplierFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

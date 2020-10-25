@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.artemis;
 
+import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.junit.jupiter.api.Test;
 
 import static jakarta.nosql.mapping.DatabaseType.COLUMN;

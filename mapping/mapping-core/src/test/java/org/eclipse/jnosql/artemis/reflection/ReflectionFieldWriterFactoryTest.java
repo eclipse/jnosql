@@ -16,6 +16,8 @@ package org.eclipse.jnosql.artemis.reflection;
 
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.reflection.FieldWriter;
+import org.eclipse.jnosql.mapping.reflection.ReflectionFieldWriterFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

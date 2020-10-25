@@ -14,7 +14,8 @@
  */
 package org.eclipse.jnosql.artemis.reflection.collection;
 
-import org.eclipse.jnosql.artemis.reflection.CollectionSupplier;
+import org.eclipse.jnosql.mapping.reflection.CollectionSupplier;
+import org.eclipse.jnosql.mapping.reflection.collection.DequeSupplier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
