@@ -18,33 +18,33 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.eclipse.jnosql.artemis</groupId>
-        <artifactId>artemis-parent</artifactId>
+        <groupId>org.eclipse.jnosql.mapping</groupId>
+        <artifactId>mapping-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>artemis-key-value</artifactId>
+    <artifactId>mapping-document</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jnosql.diana</groupId>
-            <artifactId>diana-key-value</artifactId>
+            <artifactId>diana-document</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>artemis-core</artifactId>
+            <artifactId>mapping-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.nosql.mapping</groupId>
-            <artifactId>mapping-key-value</artifactId>
+            <artifactId>mapping-document</artifactId>
             <version>${jakarta.nosql.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.nosql.tck.mapping</groupId>
-            <artifactId>mapping-tck-key-value</artifactId>
+            <artifactId>mapping-tck-document</artifactId>
             <version>${jakarta.nosql.version}</version>
             <scope>test</scope>
         </dependency>
@@ -58,7 +58,7 @@
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
                     <dependenciesToScan>
-                        <dependency>jakarta.nosql.tck.mapping:mapping-tck-key-value</dependency>
+                        <dependency>jakarta.nosql.tck.mapping:mapping-tck-document</dependency>
                     </dependenciesToScan>
                 </configuration>
             </plugin>

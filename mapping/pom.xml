@@ -26,19 +26,19 @@
     </parent>
 
 
-    <groupId>org.eclipse.jnosql.artemis</groupId>
-    <artifactId>artemis-parent</artifactId>
+    <groupId>org.eclipse.jnosql.mapping</groupId>
+    <artifactId>mapping-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>artemis-test</module>
-        <module>artemis-core</module>
-        <module>artemis-graph</module>
-        <module>artemis-document</module>
-        <module>artemis-column</module>
-        <module>artemis-key-value</module>
-        <module>artemis-validation</module>
-        <module>artemis-reactive</module>
+        <module>mapping-test</module>
+        <module>mapping-core</module>
+        <module>mapping-graph</module>
+        <module>mapping-document</module>
+        <module>mapping-column</module>
+        <module>mapping-key-value</module>
+        <module>mapping-validation</module>
+        <module>mapping-reactive</module>
     </modules>
 
     <dependencies>

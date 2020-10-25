@@ -16,34 +16,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+
     <parent>
-        <groupId>org.eclipse.jnosql.artemis</groupId>
-        <artifactId>artemis-parent</artifactId>
+        <groupId>org.eclipse.jnosql.mapping</groupId>
+        <artifactId>mapping-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    
-    <artifactId>artemis-column</artifactId>
+
+    <artifactId>mapping-core</artifactId>
     <packaging>jar</packaging>
+
+    <properties>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jnosql.diana</groupId>
-            <artifactId>diana-column</artifactId>
+            <artifactId>diana-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>artemis-core</artifactId>
+            <groupId>org.eclipse.jnosql.diana</groupId>
+            <artifactId>diana-query</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.nosql.mapping</groupId>
-            <artifactId>mapping-column</artifactId>
+            <artifactId>mapping-core</artifactId>
             <version>${jakarta.nosql.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.nosql.tck.mapping</groupId>
-            <artifactId>mapping-tck-column</artifactId>
+            <artifactId>mapping-tck-core</artifactId>
             <version>${jakarta.nosql.version}</version>
             <scope>test</scope>
         </dependency>
@@ -58,7 +63,7 @@
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
                     <dependenciesToScan>
-                        <dependency>jakarta.nosql.tck.mapping:mapping-tck-column</dependency>
+                        <dependency>jakarta.nosql.tck.mapping:mapping-tck-core</dependency>
                     </dependenciesToScan>
                 </configuration>
             </plugin>

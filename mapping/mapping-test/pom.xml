@@ -19,12 +19,12 @@
 
 
     <parent>
-        <groupId>org.eclipse.jnosql.artemis</groupId>
-        <artifactId>artemis-parent</artifactId>
+        <groupId>org.eclipse.jnosql.mapping</groupId>
+        <artifactId>mapping-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>artemis-test</artifactId>
+    <artifactId>mapping-test</artifactId>
     <packaging>jar</packaging>
 
     <properties>
