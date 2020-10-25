@@ -1,0 +1,103 @@
+#select fields tests
+delete from Person
+delete name,age from Person
+delete _id,name,age from Person
+delete  name,age,address.age from Person
+delete name , age from Person
+delete name, age ,address.age from Person
+#test where int
+delete from Person where age = 10
+delete from Person where age >= 10
+delete from Person where age > 10
+delete from Person where age < 10
+delete from Person where age <= 40
+delete from Person where age between 10 and 30
+delete from Person where age between 10 and 30 and salary = 12
+delete from Person where age between 10 and 30 or salary = 12
+#test where double
+delete from Person where age = 10.0
+delete from Person where age >= 10.56
+delete from Person where age > 10.123
+delete from Person where age < 10.123
+delete from Person where age <= 40.123
+delete from Person where age between -10.13 and 30
+delete from Person where age between 10.12 and 30 and salary = 12
+delete from Person where age between -10 and 30 or salary = 12
+#test where not
+delete from Person where not age = 10
+delete from Person where not age >= 10
+delete from Person where not age > 10
+delete from Person where not age < 10
+delete from Person where not age <= 40
+delete from Person where not age between 10 and 30
+delete from Person where not age between 10 and 30 and salary = 12
+delete from Person where not age between 10 and 30 or salary = 12
+delete from Person where age in (1,2,3,4)
+delete from Person where age in (1)
+delete from Person where age not in (1,2,3,4)
+delete from Person where age not in (1)
+#test string
+delete from Person where not name = "Ada"
+delete from Person where name = "Ada"
+delete from Person where name in ("Ada")
+delete from Person where name in ("Ada", "Lovelace")
+delete from Person where name not in ("Ada")
+delete from Person where name not in ("Ada", "Lovelace")
+delete from Person where birthday = "01-09-1988"
+delete from Person where birthday >= "01-09-1988"
+delete from Person where birthday > "01-09-1988"
+delete from Person where birthday < "01-09-1988"
+delete from Person where birthday <= "01-09-1988"
+delete from Person where birthday between "01-09-1988" and "01-09-1988"
+delete from Person where birthday between "01-09-1988" and "01-09-1988" and salary = 12
+delete from Person where birthday between "01-09-1988" and "01-09-1988" or salary = 12
+#single quote
+delete from Person where not name = 'Ada'
+delete from Person where name = 'Ada'
+delete from Person where name in ('Ada')
+delete from Person where name in ('Ada', 'Lovelace')
+delete from Person where name not in ('Ada')
+delete from Person where name not in ('Ada', 'Lovelace')
+delete from Person where birthday = '01-09-1988'
+delete from Person where birthday >= '01-09-1988'
+delete from Person where birthday > '01-09-1988'
+delete from Person where birthday < '01-09-1988'
+delete from Person where birthday <= '01-09-1988'
+delete from Person where birthday between '01-09-1988' and '01-10-1988'
+delete from Person where birthday between '01-09-1988' and '01-10-1988' and salary = 12
+delete from Person where birthday between '01-09-1988' and '01-10-1988' or salary = 12
+#combinations
+delete from Person where birthday between '01-09-1988' and "01-09-1988"
+delete from Person where birthday between "01-09-1988" and '01-09-1988' and salary = 12
+delete from Person where age between 13 and 'ada'
+delete from Person where name <= 'ada'
+delete from Person where name >= 'ada'
+delete from Person where name > 'ada'
+delete from Person where name < 'ada'
+delete from Person where name <= 'ada'
+delete from Person where name <= 'ada'
+#test array
+delete from Person where not phones = {"11-15351"}
+delete from Person where phones = {"11-15351", "11-15351"}
+delete from Person where phones in ({"11-15351", "11-15351"}, "Ada")
+delete from Person where power = {"sun", "hunt"}
+delete from Person where birthday > "01-09-1988" and power = {"sun", "hunt"}
+delete from Person where birthday > "01-09-1988" or power = {"sun", "hunt"}
+#test convert
+delete from Person where not age = convert(10,java.lang.Integer)
+delete from Person where not age >= convert(10,java.lang.Integer.java)
+delete from Person where not birthday > convert("03-27-1922",java.time.Localdate)
+delete from Person where not year < convert(2023,java.time.Year)
+delete from Person where not age <= convert(10.23,java.math.Integer)
+delete from Person where not age between 10 and convert(10,java.lang.Float)
+delete from Person where not age between 10 and 30 and salary = convert(10,java.lang.Integer)
+#paramter
+delete from Person where not age = @age
+delete from Person where not age >= @age
+delete from Person where not birthday > @birthday
+delete from Person where not year < @year
+delete from Person where not age <= @age
+delete from Person where not age between @age1 and @age
+delete from Person where not age between @age1 and 10 and salary = convert(10,java.lang.Integer)
+#json
+delete from Person where siblings = {"apollo": "brother", "zeus": "father"}

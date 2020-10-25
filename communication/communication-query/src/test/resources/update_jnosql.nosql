@@ -1,0 +1,13 @@
+update Person (name = "Ada Lovelace")
+update Person (name = "Ada Lovelace", _id = "ada")
+update Person (name = 'Ada Lovelace')
+update Person (name = 'Ada Lovelace', _id = 'ada')
+update Person (age = 12)
+update Person (salary = 12.23, age = 12)
+update Person (age = @age)
+update Person (birthday = convert("1988-03-21", java.time.LocalDate))
+update Person (birthday = convert("1988-03-21", java.time.LocalDate), age = 12)
+update Person (sibling = {"Ana" : "Sister", "Maria" : "Mother"})
+update Person (sibling = {"Ana" ,"Maria"})
+update Person {"name":"Ada Lovelace"}
+update Person {"name": "Ada Lovelace", "age": 12, "sibling": ["Ana" ,"Maria"], "address":{"country": "United Kingdom", "city": "London"}}

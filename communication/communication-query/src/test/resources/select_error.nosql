@@ -1,0 +1,48 @@
+#field test
+* from Person
+select *, name from Person
+select name, *
+select name,
+select name from *
+#order by test
+select  * from Person order by
+select  * from Person order by asc
+select  * from Person order by asc age
+#skip and limit test
+select  * from Person skip
+select  name, age ,address.age from Person order by name desc age desc skip 20
+select  name, age ,adress.age from Person limit qwe  skip 12 order by name desc age desc
+select  name, age ,adress.age from Person skip -20 limit 5 order by name desc age desc
+select  name, age ,adress.age from Person limit order by name desc age desc
+#conditions
+select  * from Person where age =
+select  * from Person where age >=
+select  * from Person where age >
+select  * from Person where age <
+select  * from Person where age <= 'ada"
+select  * from Person where age >= 'ada
+select  * from Person where age > "ada'
+select  * from Person where age < "ada
+select  * from Person where age <= "ada
+select  * from Person where age between 13 and
+select  * from Person where age between 13 and 'ada
+select  * from Person where age between  and 10
+select  * from Person where age between 10.12 and 30 and salary =
+select  * from Person where age between -10 and 30 or salary =
+select  * from Person where age between and 30 and salary = 12
+select  * from Person where age between and 30 or salary = 12
+#test string
+select  * from Person where not name = "
+select  * from Person where name = "Ada
+select  * from Person where name = Ada"
+select  * from Person where name in ("Ada)
+select  * from Person where birthday = 01-09-1988
+#test array
+select  * from Person where not phones = "11-15351"}
+select  * from Person where phones = "11-15351", "11-15351"
+select  * from Person where phones = "11-15351" "11-15351"
+select  * from Person where phones in ({"11-15351" "11-15351"})
+#json
+select  * from Person where siblings = {"apollo": "brother", "zeus": "father"
+select  * from Person where siblings = {"apollo": , "zeus" "father"}
+select  * from Person where siblings = {"apollo" "brother", "zeus": "father"}
