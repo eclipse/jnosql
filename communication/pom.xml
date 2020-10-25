@@ -26,18 +26,18 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.eclipse.jnosql.diana</groupId>
-    <artifactId>diana</artifactId>
+    <groupId>org.eclipse.jnosql.communication</groupId>
+    <artifactId>communication</artifactId>
     <packaging>pom</packaging>
 
     <dependencies>
     </dependencies>
 
     <modules>
-        <module>diana-core</module>
-        <module>diana-query</module>
-        <module>diana-key-value</module>
-        <module>diana-column</module>
-        <module>diana-document</module>
+        <module>communication-core</module>
+        <module>communication-query</module>
+        <module>communication-key-value</module>
+        <module>communication-column</module>
+        <module>communication-document</module>
     </modules>
 </project>
