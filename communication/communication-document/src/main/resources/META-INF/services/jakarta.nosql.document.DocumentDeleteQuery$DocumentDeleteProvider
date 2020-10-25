@@ -1,1 +1,1 @@
-org.eclipse.jnosql.diana.document.query.DefaultDocumentDeleteProvider
+org.eclipse.jnosql.communication.document.query.DefaultDocumentDeleteProvider

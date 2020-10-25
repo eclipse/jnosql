@@ -10,4 +10,4 @@
 #   Contributors:
 #
 #   Otavio Santana
-org.eclipse.jnosql.diana.DefaultValueProvider
+org.eclipse.jnosql.communication.DefaultValueProvider
