@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis;
+package org.eclipse.jnosql.mapping.column;
 
 
 import jakarta.nosql.column.Column;

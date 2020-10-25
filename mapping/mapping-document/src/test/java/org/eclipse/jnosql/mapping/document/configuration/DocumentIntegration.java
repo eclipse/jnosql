@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.configuration;
+package org.eclipse.jnosql.mapping.document.configuration;
 
 
 import jakarta.nosql.document.DocumentCollectionManager;

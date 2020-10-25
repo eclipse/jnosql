@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis;
+package org.eclipse.jnosql.mapping;
 
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.junit.jupiter.api.Assertions;

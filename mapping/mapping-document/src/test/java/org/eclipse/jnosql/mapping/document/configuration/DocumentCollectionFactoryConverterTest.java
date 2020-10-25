@@ -12,12 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.artemis.configuration;
+package org.eclipse.jnosql.mapping.document.configuration;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.eclipse.jnosql.artemis.configuration.DocumentConfigurationMock.DocumentCollectionManagerFactoryMock;
+import org.eclipse.jnosql.mapping.document.configuration.DocumentConfigurationMock.DocumentCollectionManagerFactoryMock;
 import org.eclipse.jnosql.mapping.configuration.ConfigurationException;
 import org.eclipse.microprofile.config.Config;
 import org.junit.jupiter.api.Assertions;
