@@ -31,7 +31,7 @@ import jakarta.nosql.query.SelectQuery;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
-import org.eclipse.jnosql.diana.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;

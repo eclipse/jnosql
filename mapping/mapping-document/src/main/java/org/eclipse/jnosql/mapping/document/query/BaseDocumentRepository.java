@@ -34,8 +34,8 @@ import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.SelectQuery;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
-import org.eclipse.jnosql.diana.query.method.DeleteMethodProvider;
-import org.eclipse.jnosql.diana.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.communication.query.method.DeleteMethodProvider;
+import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

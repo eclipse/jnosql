@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Transaction;
-import org.eclipse.jnosql.diana.SettingsPriority;
+import org.eclipse.jnosql.communication.SettingsPriority;
 
 import java.util.Objects;
 
