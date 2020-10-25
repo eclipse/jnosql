@@ -130,8 +130,8 @@
     </build>
 
     <modules>
-        <module>diana</module>
-        <module>artemis</module>
+        <module>communication</module>
+        <module>mapping</module>
     </modules>
 
     <repositories>
