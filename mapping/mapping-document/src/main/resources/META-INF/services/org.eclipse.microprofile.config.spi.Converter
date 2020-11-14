@@ -1,0 +1,3 @@
+org.eclipse.jnosql.mapping.document.configuration.DocumentCollectionManagerConverter
+org.eclipse.jnosql.mapping.document.configuration.DocumentCollectionManagerFactoryConverter
+org.eclipse.jnosql.mapping.document.configuration.DocumentTemplateConverter

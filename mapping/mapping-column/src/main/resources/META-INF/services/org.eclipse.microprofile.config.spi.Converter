@@ -1,0 +1,3 @@
+org.eclipse.jnosql.mapping.column.configuration.ColumnFamilyManagerConverter
+org.eclipse.jnosql.mapping.column.configuration.ColumnFamilyManagerFactoryConverter
+org.eclipse.jnosql.mapping.column.configuration.ColumnTemplateConverter

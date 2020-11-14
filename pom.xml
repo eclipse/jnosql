@@ -63,7 +63,7 @@
     </developers>
 
     <properties>
-        <checkstyle.excludes>**/diana/query/**</checkstyle.excludes>
+        <checkstyle.excludes>**/communication/query/**</checkstyle.excludes>
         <hamcrest-all.version>1.3</hamcrest-all.version>
         <owb.version>2.0.3</owb.version>
         <testcontainers.version>1.14.2</testcontainers.version>
@@ -130,8 +130,8 @@
     </build>
 
     <modules>
-        <module>diana</module>
-        <module>artemis</module>
+        <module>communication</module>
+        <module>mapping</module>
     </modules>
 
     <repositories>
