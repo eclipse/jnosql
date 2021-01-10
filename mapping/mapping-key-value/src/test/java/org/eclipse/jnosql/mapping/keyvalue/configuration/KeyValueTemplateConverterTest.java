@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.document.configuration;
+package org.eclipse.jnosql.mapping.keyvalue.configuration;
 
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.tck.test.CDIExtension;
