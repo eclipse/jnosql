@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-final class FindByMethodQueryProvider extends AbstractMethodQueryProvider implements BiFunction<String, String, SelectQuery> {
+public final class FindByMethodQueryProvider extends AbstractMethodQueryProvider implements BiFunction<String, String, SelectQuery> {
 
     private List<Sort> sorts = new ArrayList<>();
 
