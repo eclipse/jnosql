@@ -24,7 +24,7 @@ import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 
-class ArtemisColumnQuery implements ColumnQuery {
+class MappingColumnQuery implements ColumnQuery {
 
     private final List<Sort> sorts;
     private final long limit;
@@ -32,7 +32,7 @@ class ArtemisColumnQuery implements ColumnQuery {
     private final ColumnCondition condition;
     private final String columnFamily;
 
-    ArtemisColumnQuery(List<Sort> sorts, long limit, long skip, ColumnCondition condition, String columnFamily) {
+    MappingColumnQuery(List<Sort> sorts, long limit, long skip, ColumnCondition condition, String columnFamily) {
         this.sorts = sorts;
         this.limit = limit;
         this.skip = skip;

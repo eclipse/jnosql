@@ -116,7 +116,7 @@ class DefaultColumnMapperDeleteBuilder extends AbstractMapperQuery implements Co
 
     @Override
     public ColumnDeleteQuery build() {
-        return new ArtemisColumnDeleteQuery(columnFamily, condition);
+        return new MappingColumnDeleteQuery(columnFamily, condition);
     }
 
     @Override

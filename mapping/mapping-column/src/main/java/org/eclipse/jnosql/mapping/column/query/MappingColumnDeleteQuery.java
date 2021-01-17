@@ -22,13 +22,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-class ArtemisColumnDeleteQuery implements ColumnDeleteQuery {
+class MappingColumnDeleteQuery implements ColumnDeleteQuery {
 
     private final String columnFamily;
 
     private final ColumnCondition condition;
 
-    ArtemisColumnDeleteQuery(String columnFamily, ColumnCondition condition) {
+    MappingColumnDeleteQuery(String columnFamily, ColumnCondition condition) {
         this.columnFamily = columnFamily;
         this.condition = condition;
     }

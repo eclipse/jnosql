@@ -168,7 +168,7 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
 
     @Override
     public ColumnQuery build() {
-        return new ArtemisColumnQuery(sorts, limit, start, condition, columnFamily);
+        return new MappingColumnQuery(sorts, limit, start, condition, columnFamily);
     }
 
     @Override

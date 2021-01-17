@@ -88,7 +88,7 @@ public abstract class BaseColumnRepository<T> {
             List<Sort> newOrders = new ArrayList<>();
             newOrders.addAll(query.getSorts());
             newOrders.addAll(sorts);
-            return new ArtemisColumnQuery(newOrders, query.getLimit(), query.getSkip(),
+            return new MappingColumnQuery(newOrders, query.getLimit(), query.getSkip(),
                     query.getCondition().orElse(null), query.getColumnFamily());
         }
         return query;
