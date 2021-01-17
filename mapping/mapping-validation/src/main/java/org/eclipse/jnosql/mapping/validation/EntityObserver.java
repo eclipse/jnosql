@@ -23,7 +23,7 @@ import javax.inject.Inject;
 class EntityObserver {
 
     @Inject
-    private ArtemisValidator validator;
+    private MappingValidator validator;
 
     void validate(@Observes EntityPrePersist entity) {
         validator.validate(entity.getValue());

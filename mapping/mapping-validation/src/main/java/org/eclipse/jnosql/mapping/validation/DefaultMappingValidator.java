@@ -25,7 +25,7 @@ import javax.validation.ValidatorFactory;
 import java.util.HashSet;
 import java.util.Set;
 
-class DefaultArtemisValidator implements ArtemisValidator {
+class DefaultMappingValidator implements MappingValidator {
 
     @Inject
     private Instance<ValidatorFactory> validatorFactories;

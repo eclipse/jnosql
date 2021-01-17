@@ -18,7 +18,7 @@ package org.eclipse.jnosql.mapping.validation;
 /**
  * Validates bean instances. Implementations of this interface must be thread-safe.
  */
-public interface ArtemisValidator {
+public interface MappingValidator {
 
 
     /**
