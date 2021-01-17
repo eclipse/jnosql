@@ -14,23 +14,38 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
+import jakarta.nosql.Sort;
 import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentQuery;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-class ArtemisDocumentDeleteQuery implements DocumentDeleteQuery {
-
+class MappingDocumentQuery implements DocumentQuery {
+    private final List<Sort> sorts;
+    private final long limit;
+    private final long skip;
+    private final DocumentCondition condition;
     private final String documentCollection;
 
-    private final DocumentCondition condition;
-
-    ArtemisDocumentDeleteQuery(String documentCollection, DocumentCondition condition) {
-        this.documentCollection = documentCollection;
+    MappingDocumentQuery(List<Sort> sorts, long limit, long skip, DocumentCondition condition, String documentCollection) {
+        this.sorts = sorts;
+        this.limit = limit;
+        this.skip = skip;
         this.condition = condition;
+        this.documentCollection = documentCollection;
+    }
+
+    @Override
+    public long getLimit() {
+        return limit;
+    }
+
+    @Override
+    public long getSkip() {
+        return skip;
     }
 
     @Override
@@ -44,6 +59,11 @@ class ArtemisDocumentDeleteQuery implements DocumentDeleteQuery {
     }
 
     @Override
+    public List<Sort> getSorts() {
+        return sorts;
+    }
+
+    @Override
     public List<String> getDocuments() {
         return Collections.emptyList();
     }
@@ -53,24 +73,31 @@ class ArtemisDocumentDeleteQuery implements DocumentDeleteQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DocumentDeleteQuery)) {
+        if (!(o instanceof DocumentQuery)) {
             return false;
         }
-        DocumentDeleteQuery that = (DocumentDeleteQuery) o;
-        return Objects.equals(documentCollection, that.getDocumentCollection()) &&
-                Objects.equals(condition, that.getCondition().orElse(null)) && Objects.equals(Collections.emptyList(), that.getDocuments());
+        DocumentQuery that = (DocumentQuery) o;
+        return limit == that.getLimit() &&
+                skip == that.getSkip() &&
+                Objects.equals(sorts, that.getSorts()) &&
+                Objects.equals(condition, that.getCondition().orElse(null)) &&
+                Objects.equals(documentCollection, that.getDocumentCollection());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(documentCollection, condition, Collections.emptyList());
+        return Objects.hash(limit, skip, documentCollection, condition, sorts, Collections.emptyList());
     }
 
     @Override
     public String toString() {
-        return  "ArtemisDocumentDeleteQuery{" + "documentCollection='" + documentCollection + '\'' +
+        return "ArtemisDocumentQuery{" + "limit=" + limit +
+                ", skip=" + skip +
+                ", documentCollection='" + documentCollection + '\'' +
                 ", condition=" + condition +
+                ", sorts=" + sorts +
                 ", documents=" + Collections.emptyList() +
                 '}';
     }
 }
+

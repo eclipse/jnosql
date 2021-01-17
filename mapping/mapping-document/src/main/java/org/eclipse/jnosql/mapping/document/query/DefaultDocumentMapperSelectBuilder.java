@@ -164,7 +164,7 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
 
     @Override
     public DocumentQuery build() {
-        return new ArtemisDocumentQuery(sorts, limit, start, condition, documentCollection);
+        return new MappingDocumentQuery(sorts, limit, start, condition, documentCollection);
     }
 
     @Override

@@ -115,7 +115,7 @@ class DefaultDocumentMapperDeleteBuilder extends AbstractMapperQuery implements 
 
     @Override
     public DocumentDeleteQuery build() {
-        return new ArtemisDocumentDeleteQuery(documentCollection, condition);
+        return new MappingDocumentDeleteQuery(documentCollection, condition);
     }
 
     @Override

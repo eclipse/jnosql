@@ -75,7 +75,7 @@ public abstract class BaseDocumentRepository<T> {
             List<Sort> newOrders = new ArrayList<>();
             newOrders.addAll(query.getSorts());
             newOrders.addAll(sorts);
-            return new ArtemisDocumentQuery(newOrders, query.getLimit(), query.getSkip(),
+            return new MappingDocumentQuery(newOrders, query.getLimit(), query.getSkip(),
                     query.getCondition().orElse(null), query.getDocumentCollection());
         }
         return query;
