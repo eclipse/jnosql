@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SelectQueryProviderTest {
 
-    private SelectQueryProvider selectQueryProvider = new AntlrSelectQueryProvider();
+    private final SelectQueryProvider selectQueryProvider = new AntlrSelectQueryProvider();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {

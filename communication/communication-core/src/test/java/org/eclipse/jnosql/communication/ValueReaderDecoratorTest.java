@@ -28,8 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValueReaderDecoratorTest {
 
-    private ValueReaderDecorator serviceLoader = ValueReaderDecorator.getInstance();
-
+    private final ValueReaderDecorator serviceLoader = ValueReaderDecorator.getInstance();
 
     @Test
     public void shouldConvert() {

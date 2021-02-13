@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StreamTypeReferenceReaderTest {
 
-    private TypeReferenceReader referenceReader = new StreamTypeReferenceReader();
+    private final TypeReferenceReader referenceReader = new StreamTypeReferenceReader();
 
     @Test
     public void shouldBeCompatible() {

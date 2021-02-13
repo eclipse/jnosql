@@ -37,8 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UpdateQueryProviderTest {
 
-    private UpdateQueryProvider update = new AntlrUpdateQueryProvider();
-
+    private final UpdateQueryProvider update = new AntlrUpdateQueryProvider();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {

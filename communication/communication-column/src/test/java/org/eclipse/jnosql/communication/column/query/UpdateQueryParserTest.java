@@ -39,9 +39,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UpdateQueryParserTest {
 
-    private UpdateQueryParser parser = new UpdateQueryParser();
+    private final UpdateQueryParser parser = new UpdateQueryParser();
 
-    private ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+    private final ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+
     private final ColumnObserverParser observer = new ColumnObserverParser() {
     };
 
