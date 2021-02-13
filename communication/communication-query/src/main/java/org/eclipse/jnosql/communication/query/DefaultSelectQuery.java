@@ -28,9 +28,9 @@ final class DefaultSelectQuery implements SelectQuery {
 
     private final List<Sort> sorts;
 
-    private long skip;
+    private final long skip;
 
-    private long limit;
+    private final long limit;
 
     private final Where where;
 
