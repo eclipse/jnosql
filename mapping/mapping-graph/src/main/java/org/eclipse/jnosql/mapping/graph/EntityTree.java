@@ -58,24 +58,24 @@ public interface EntityTree {
     <T> Optional<EntityTree> getTreeFromRoot(T id);
 
     /**
-     * Returns a {@link Stream} of {@link EntityTree} it is a wrapper of
+     * Returns a {@link Stream} of  it is a wrapper of
      * {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#getLeafTrees}
      *
-     * @return a stream of {@link EntityTree}
+     * @return a stream of
      */
     Stream<EntityTree> getLeafTrees();
 
     /**
-     * Returns a {@link Stream} of {@link EntityTree} it is a wrapper of
+     * Returns a {@link Stream} of  it is a wrapper of
      * {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#getTreesAtDepth(int)}
      *
      * @param depth the depth
-     * @return a {@link Stream} of {@link EntityTree}
+     * @return a {@link Stream} of
      */
     Stream<EntityTree> getTreesAtDepth(int depth);
 
     /**
-     * Returns a {@link Stream} of {@link EntityTree} it is a wrapper of
+     * Returns a {@link Stream} of  it is a wrapper of
      * {@link org.apache.tinkerpop.gremlin.process.traversal.step.util.Tree#getObjectsAtDepth(int)}
      *
      * @param depth the depth

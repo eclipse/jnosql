@@ -31,10 +31,10 @@ public interface GraphEntityPostPersist {
     Vertex getVertex();
 
     /**
-     * Creates the {@link GraphEntityPostPersist} instance
+     * Creates the  instance
      *
      * @param vertex the vertex
-     * @return {@link GraphEntityPostPersist} instance
+     * @return  instance
      * @throws NullPointerException when the vertex is null
      */
     static GraphEntityPostPersist of(Vertex vertex) {

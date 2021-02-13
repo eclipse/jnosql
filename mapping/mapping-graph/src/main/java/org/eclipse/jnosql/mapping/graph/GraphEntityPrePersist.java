@@ -32,10 +32,10 @@ public interface GraphEntityPrePersist {
     Vertex getVertex();
 
     /**
-     * Creates the {@link GraphEntityPrePersist} instance
+     * Creates the  instance
      *
      * @param entity the entity
-     * @return {@link GraphEntityPrePersist} instance
+     * @return  instance
      * @throws NullPointerException when the entity is null
      */
     static GraphEntityPrePersist of(Vertex entity) {

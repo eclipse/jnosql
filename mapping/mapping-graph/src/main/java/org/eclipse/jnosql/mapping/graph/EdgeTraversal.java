@@ -30,7 +30,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
     /**
      * Does a filter predicate based
      * @param predicate a predicate to apply to each element to determine if it should be included
-     * @return a {@link EdgeTraversal} with the Vertex predicate
+     * @return a  with the Vertex predicate
      * @throws NullPointerException when predicate is null
      */
      EdgeTraversal filter(Predicate<EdgeEntity> predicate);
@@ -40,7 +40,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
      * {@code n} objects are allowed as defined by the {@code limit} argument.
      *
      * @param limit the number at which to end the next
-     * @return a {@link EdgeTraversal} with the limit
+     * @return a  with the limit
      */
     EdgeTraversal limit(long limit);
 
@@ -49,7 +49,7 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
      *
      * @param start the start inclusive
      * @param end   the end exclusive
-     * @return a {@link EdgeTraversal} with the range set
+     * @return a  with the range set
      */
     EdgeTraversal range(long start, long end);
 

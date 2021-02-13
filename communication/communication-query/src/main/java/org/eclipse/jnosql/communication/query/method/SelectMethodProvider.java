@@ -26,9 +26,9 @@ import java.util.function.BiFunction;
 public interface SelectMethodProvider extends BiFunction<Method, String, SelectQuery> {
 
     /**
-     * Returns a default implementation of {@link SelectMethodProvider}
+     * Returns a default implementation of
      *
-     * @return {@link SelectMethodProvider}
+     * @return
      */
     static SelectMethodProvider get() {
         return DefaultSelectMethodProvider.INSTANCE;

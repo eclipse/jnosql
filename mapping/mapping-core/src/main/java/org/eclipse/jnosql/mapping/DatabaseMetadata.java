@@ -70,10 +70,10 @@ public final class DatabaseMetadata {
 
 
     /**
-     * creates a {@link DatabaseMetadata} instance
+     * creates a  instance
      *
      * @param database the database annotation
-     * @return a {@link DatabaseMetadata} instance
+     * @return a  instance
      * @throws NullPointerException when database is null
      */
     public static DatabaseMetadata of(Database database) {

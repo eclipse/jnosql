@@ -132,7 +132,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * {@code n} objects are allowed as defined by the {@code limit} argument.
      *
      * @param limit the number at which to end the next
-     * @return a {@link VertexTraversal} with the limit
+     * @return a  with the limit
      */
     VertexTraversal limit(long limit);
 
@@ -141,7 +141,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      *
      * @param start the start inclusive
      * @param end   the end exclusive
-     * @return a {@link VertexTraversal} with the range set
+     * @return a  with the range set
      */
     VertexTraversal range(long start, long end);
 

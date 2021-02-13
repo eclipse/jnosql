@@ -176,11 +176,11 @@ public interface Observable<T> {
     <E> E blockSubscribe(CompletionSubscriber<T, E> subscriber, Duration duration);
 
     /**
-     * Creates a {@link Observable} instance
+     * Creates a  instance
      *
      * @param publisher the publisher
      * @param <T>       the entity type
-     * @return a instance of {@link Observable}
+     * @return a instance of
      * @throws NullPointerException when publisher is null
      */
     static <T> Observable<T> of(Publisher<T> publisher) {

@@ -26,9 +26,9 @@ import java.util.function.BiFunction;
 public interface DeleteMethodProvider extends BiFunction<Method, String, DeleteQuery> {
 
     /**
-     * Returns a default implementation of {@link DeleteMethodProvider}
+     * Returns a default implementation of
      *
-     * @return {@link DeleteMethodProvider}
+     * @return
      */
     static DeleteMethodProvider get() {
         return DefaultDeleteMethodProvider.INSTANCE;

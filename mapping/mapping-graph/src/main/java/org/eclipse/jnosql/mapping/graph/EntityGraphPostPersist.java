@@ -30,10 +30,10 @@ public interface EntityGraphPostPersist {
     Object getValue();
 
     /**
-     * Created the default implementation of {@link EntityGraphPostPersist}
+     * Created the default implementation of
      *
      * @param value the value
-     * @return the new instance of {@link EntityGraphPostPersist}
+     * @return the new instance of
      * @throws NullPointerException when value is null
      */
     static EntityGraphPostPersist of(Object value) {
