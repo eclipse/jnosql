@@ -38,8 +38,9 @@ import static org.mockito.Mockito.verify;
 
 class GetQueryParserTest {
 
-    private GetQueryParser parser = new GetQueryParser();
-    private BucketManager manager = Mockito.mock(BucketManager.class);
+    private final GetQueryParser parser = new GetQueryParser();
+
+    private final BucketManager manager = Mockito.mock(BucketManager.class);
 
 
     @ParameterizedTest(name = "Should parser the query {0}")

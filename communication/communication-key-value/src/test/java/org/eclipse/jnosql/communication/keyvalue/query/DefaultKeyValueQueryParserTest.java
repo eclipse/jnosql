@@ -41,8 +41,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultKeyValueQueryParserTest {
 
-    private KeyValueQueryParser parser = new DefaultKeyValueQueryParser();
-    private BucketManager manager = Mockito.mock(BucketManager.class);
+    private final KeyValueQueryParser parser = new DefaultKeyValueQueryParser();
+
+    private final BucketManager manager = Mockito.mock(BucketManager.class);
 
 
 

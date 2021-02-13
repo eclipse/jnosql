@@ -45,10 +45,10 @@ import static org.mockito.Mockito.mock;
 
 public class DefaultColumnQueryParserTest {
     
-    private ColumnQueryParser parser = new DefaultColumnQueryParser();
+    private final ColumnQueryParser parser = new DefaultColumnQueryParser();
 
 
-    private ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
+    private final ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
 
     @Test
     public void shouldReturnNPEWhenThereIsNullParameter() {

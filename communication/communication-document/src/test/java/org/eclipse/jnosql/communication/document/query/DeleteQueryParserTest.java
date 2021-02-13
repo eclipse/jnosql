@@ -45,9 +45,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DeleteQueryParserTest {
 
-    private DeleteQueryParser parser = new DeleteQueryParser();
+    private final DeleteQueryParser parser = new DeleteQueryParser();
 
-    private DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
+    private final DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
 
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };

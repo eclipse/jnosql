@@ -48,9 +48,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultSelectQueryConverterTest {
 
-    private DefaultSelectQueryConverter parser = new DefaultSelectQueryConverter();
+    private final DefaultSelectQueryConverter parser = new DefaultSelectQueryConverter();
 
-    private ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+    private final ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+
     private final ColumnObserverParser observer = new ColumnObserverParser() {
     };
 

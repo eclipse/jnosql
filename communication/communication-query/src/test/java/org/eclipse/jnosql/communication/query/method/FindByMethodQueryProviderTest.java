@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FindByMethodQueryProviderTest {
 
-    private FindByMethodQueryProvider queryProvider = new FindByMethodQueryProvider();
+    private final FindByMethodQueryProvider queryProvider = new FindByMethodQueryProvider();
 
 
     @ParameterizedTest(name = "Should parser the query {0}")

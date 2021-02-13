@@ -35,9 +35,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class DelQueryParserTest {
 
 
-    private DelQueryParser parser = new DelQueryParser();
-    private BucketManager manager = Mockito.mock(BucketManager.class);
+    private final DelQueryParser parser = new DelQueryParser();
 
+    private final BucketManager manager = Mockito.mock(BucketManager.class);
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"del \"Diana\""})

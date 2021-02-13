@@ -46,9 +46,9 @@ import static org.mockito.Mockito.mock;
 
 class DefaultDocumentQueryParserTest {
 
-    private DocumentQueryParser parser = new DefaultDocumentQueryParser();
+    private final DocumentQueryParser parser = new DefaultDocumentQueryParser();
 
-    private DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
+    private final DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
 
     @Test
     public void shouldReturnNPEWhenThereIsNullParameter() {

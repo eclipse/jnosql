@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DeleteByMethodQueryProviderTest {
 
-    private DeleteByMethodQueryProvider queryProvider = new DeleteByMethodQueryProvider();
+    private final DeleteByMethodQueryProvider queryProvider = new DeleteByMethodQueryProvider();
 
 
     @ParameterizedTest(name = "Should parser the query {0}")

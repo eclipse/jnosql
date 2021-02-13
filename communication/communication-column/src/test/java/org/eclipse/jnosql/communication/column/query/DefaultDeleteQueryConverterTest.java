@@ -45,9 +45,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultDeleteQueryConverterTest {
 
-    private DefaultDeleteQueryConverter parser = new DefaultDeleteQueryConverter();
+    private final DefaultDeleteQueryConverter parser = new DefaultDeleteQueryConverter();
 
-    private ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+    private final ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
 
     private final ColumnObserverParser observer = new ColumnObserverParser() {
     };
