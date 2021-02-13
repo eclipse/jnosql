@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -293,7 +294,7 @@ class FindByMethodQueryProviderTest {
         QueryValue<?>[] values = MethodArrayValue.class.cast(value).get();
         ParamQueryValue param1 = (ParamQueryValue) values[0];
         ParamQueryValue param2 = (ParamQueryValue) values[1];
-        assertFalse(param1.get().equals(param2.get()));
+        assertNotEquals(param2.get(), param1.get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -319,7 +320,7 @@ class FindByMethodQueryProviderTest {
         QueryValue<?>[] values = MethodArrayValue.class.cast(notCondition.getValue()).get();
         ParamQueryValue param1 = (ParamQueryValue) values[0];
         ParamQueryValue param2 = (ParamQueryValue) values[1];
-        assertFalse(param1.get().equals(param2.get()));
+        assertNotEquals(param2.get(), param1.get());
     }
 
 
