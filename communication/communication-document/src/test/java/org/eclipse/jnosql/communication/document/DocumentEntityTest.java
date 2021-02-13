@@ -35,6 +35,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -67,7 +68,7 @@ public class DocumentEntityTest {
     public void shouldDoCopy() {
         DocumentEntity entity = DocumentEntity.of("entity", singletonList(Document.of("name", "name")));
         DocumentEntity copy = entity.copy();
-        assertFalse(entity == copy);
+        assertNotSame(entity, copy);
         assertEquals(entity, copy);
 
     }

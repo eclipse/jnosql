@@ -36,6 +36,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -68,7 +69,7 @@ public class ColumnEntityTest {
     public void shouldDoCopy() {
         ColumnEntity entity = ColumnEntity.of("entity", singletonList(Column.of("name", "name")));
         ColumnEntity copy = entity.copy();
-        assertFalse(entity == copy);
+        assertNotSame(entity, copy);
         assertEquals(entity, copy);
 
     }
