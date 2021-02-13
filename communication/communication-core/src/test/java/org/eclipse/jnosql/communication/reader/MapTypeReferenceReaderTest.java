@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MapTypeReferenceReaderTest {
 
-    private TypeReferenceReader referenceReader = new MapTypeReferenceReader();
+    private final TypeReferenceReader referenceReader = new MapTypeReferenceReader();
 
 
     @Test

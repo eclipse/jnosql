@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ListTypeReferenceReaderTest {
 
-    private TypeReferenceReader referenceReader = new ListTypeReferenceReader();
+    private final TypeReferenceReader referenceReader = new ListTypeReferenceReader();
 
     @Test
     public void shouldBeCompatible() {

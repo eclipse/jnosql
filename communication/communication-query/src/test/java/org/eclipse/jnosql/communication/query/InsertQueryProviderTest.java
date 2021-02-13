@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InsertQueryProviderTest {
 
-    private InsertQueryProvider insertQueryProvider = new AntlrInsertQueryProvider();
+    private final InsertQueryProvider insertQueryProvider = new AntlrInsertQueryProvider();
 
 
     @Test

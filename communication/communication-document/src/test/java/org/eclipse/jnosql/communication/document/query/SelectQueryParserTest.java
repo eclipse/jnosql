@@ -48,9 +48,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SelectQueryParserTest {
 
-    private SelectQueryParser parser = new SelectQueryParser();
+    private final SelectQueryParser parser = new SelectQueryParser();
 
-    private DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
+    private final DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
+
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };
 

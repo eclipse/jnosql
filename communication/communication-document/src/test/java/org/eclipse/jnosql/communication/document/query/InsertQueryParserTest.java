@@ -40,9 +40,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class InsertQueryParserTest {
 
-    private InsertQueryParser parser = new InsertQueryParser();
+    private final InsertQueryParser parser = new InsertQueryParser();
 
-    private DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
+    private final DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
+
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };
 

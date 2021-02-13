@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OptionalTypeReferenceReaderTest {
 
-    private TypeReferenceReader referenceReader = new OptionalTypeReferenceReader();
+    private final TypeReferenceReader referenceReader = new OptionalTypeReferenceReader();
 
     @Test
     public void shouldBeCompatible() {

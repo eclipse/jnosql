@@ -36,7 +36,8 @@ import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NavigableSetTypeReferenceReaderTest {
-    private TypeReferenceReader referenceReader = new NavigableSetTypeReferenceReader();
+
+    private final TypeReferenceReader referenceReader = new NavigableSetTypeReferenceReader();
 
     @Test
     public void shouldBeCompatible() {

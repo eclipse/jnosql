@@ -32,8 +32,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PutQueryParserTest {
 
-    private PutQueryParser parser = new PutQueryParser();
-    private BucketManager manager = Mockito.mock(BucketManager.class);
+    private final PutQueryParser parser = new PutQueryParser();
+
+    private final BucketManager manager = Mockito.mock(BucketManager.class);
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"put {\"Diana\", \"Hunt\"}"})

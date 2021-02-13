@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QueueTypeReferenceReaderTest {
 
-    private TypeReferenceReader referenceReader = new QueueTypeReferenceReader();
+    private final TypeReferenceReader referenceReader = new QueueTypeReferenceReader();
 
     @Test
     public void shouldBeCompatible() {
