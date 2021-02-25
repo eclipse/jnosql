@@ -424,6 +424,37 @@ public class DefaultColumnEntityConverterTest {
         Assertions.assertArrayEquals(contents, bytes);
     }
 
+    @Test
+    public void shouldCreateUserScope() {
+        ColumnEntity entity = ColumnEntity.of("UserScope");
+        entity.add("_id", "userName");
+        entity.add("scope", "scope");
+        entity.add("properties", Collections.singletonList(Column.of("halo", "weld")));
+
+        UserScope user = converter.toEntity(entity);
+        Assertions.assertNotNull(user);
+        Assertions.assertEquals("userName",user.getUserName());
+        Assertions.assertEquals("scope",user.getScope());
+        Assertions.assertEquals(Collections.singletonMap("halo", "weld"),user.getProperties());
+
+    }
+
+    @Test
+    public void shouldCreateUserScope2() {
+        ColumnEntity entity = ColumnEntity.of("UserScope");
+        entity.add("_id", "userName");
+        entity.add("scope", "scope");
+        entity.add("properties", Column.of("halo", "weld"));
+
+        UserScope user = converter.toEntity(entity);
+        Assertions.assertNotNull(user);
+        Assertions.assertEquals("userName",user.getUserName());
+        Assertions.assertEquals("scope",user.getScope());
+        Assertions.assertEquals(Collections.singletonMap("halo", "weld"),user.getProperties());
+
+    }
+
+
     private Object getValue(Optional<Column> column) {
         return column.map(Column::getValue).map(Value::get).orElse(null);
     }
