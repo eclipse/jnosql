@@ -50,16 +50,6 @@ public class DocumentsTest {
     }
 
     @Test
-    public void shouldCreateMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("name", "Ada");
-        map.put("properties", Collections.singletonMap("key", "value"));
-        List<Document> documents = Documents.of(map);
-        assertFalse(documents.isEmpty());
-        assertThat(documents, contains(Collections.singletonList(Document.of("properties", "Ada"))));
-    }
-
-    @Test
     public void shouldCreateRecursiveMap() {
         List<List<Map<String, String>>> list = new ArrayList<>();
         Map<String, String> map = singletonMap("mobile", "55 1234-4567");
