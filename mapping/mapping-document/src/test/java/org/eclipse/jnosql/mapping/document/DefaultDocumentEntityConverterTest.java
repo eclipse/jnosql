@@ -457,6 +457,7 @@ public class DefaultDocumentEntityConverterTest {
         Assertions.assertEquals(Collections.singletonMap("halo", "weld"),user.getProperties());
 
     }
+
     private Object getValue(Optional<Document> document) {
         return document.map(Document::getValue).map(Value::get).orElse(null);
     }
