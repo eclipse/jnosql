@@ -20,6 +20,8 @@ import jakarta.nosql.document.Document;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +47,16 @@ public class DocumentsTest {
         List<Document> documents = Documents.of(map);
         assertFalse(documents.isEmpty());
         assertThat(documents, contains(Document.of("name", "Ada")));
+    }
+
+    @Test
+    public void shouldCreateMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "Ada");
+        map.put("properties", Collections.singletonMap("key", "value"));
+        List<Document> documents = Documents.of(map);
+        assertFalse(documents.isEmpty());
+        assertThat(documents, contains(Collections.singletonList(Document.of("properties", "Ada"))));
     }
 
     @Test
