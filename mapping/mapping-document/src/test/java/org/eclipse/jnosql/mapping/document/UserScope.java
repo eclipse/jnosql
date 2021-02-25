@@ -33,6 +33,15 @@ public class UserScope {
     @Column("properties")
     private Map<String, Object> properties = new HashMap<>();
 
+    public String getUserName() {
+        return userName;
+    }
 
+    public String getScope() {
+        return scope;
+    }
 
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
 }
