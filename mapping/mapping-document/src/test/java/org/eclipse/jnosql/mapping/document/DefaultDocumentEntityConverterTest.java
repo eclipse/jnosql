@@ -442,6 +442,21 @@ public class DefaultDocumentEntityConverterTest {
         Assertions.assertEquals(Collections.singletonMap("halo", "weld"),user.getProperties());
 
     }
+
+    @Test
+    public void shouldCreateUserScope2() {
+        DocumentEntity entity = DocumentEntity.of("UserScope");
+        entity.add("_id", "userName");
+        entity.add("scope", "scope");
+        entity.add("properties", Document.of("halo", "weld"));
+
+        UserScope user = converter.toEntity(entity);
+        Assertions.assertNotNull(user);
+        Assertions.assertEquals("userName",user.getUserName());
+        Assertions.assertEquals("scope",user.getScope());
+        Assertions.assertEquals(Collections.singletonMap("halo", "weld"),user.getProperties());
+
+    }
     private Object getValue(Optional<Document> document) {
         return document.map(Document::getValue).map(Value::get).orElse(null);
     }
