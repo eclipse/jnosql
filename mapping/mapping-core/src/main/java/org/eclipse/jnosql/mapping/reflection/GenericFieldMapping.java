@@ -25,6 +25,7 @@ import jakarta.nosql.mapping.Entity;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 public class GenericFieldMapping extends AbstractFieldMapping {
@@ -39,7 +40,11 @@ public class GenericFieldMapping extends AbstractFieldMapping {
 
     @Override
     public Object getValue(Value value) {
-        return value.get(typeSupplier);
+        if(value.get() instanceof Iterable) {
+            return value.get(typeSupplier);
+        } else {
+            return Value.of(Collections.singletonList(value.get())).get(typeSupplier);
+        }
     }
 
     @Override
