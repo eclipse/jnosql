@@ -18,6 +18,7 @@
 package org.eclipse.jnosql.communication.document;
 
 
+import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
@@ -107,6 +108,23 @@ final class DefaultDocumentEntity implements DocumentEntity {
         return ofNullable(document);
     }
 
+    @Override
+    public <T> Optional<T> find(String documentName, Class<T> type) {
+        Objects.requireNonNull(documentName, "documentName is required");
+        Objects.requireNonNull(type, "type is required");
+        return ofNullable(documents.get(documentName))
+                .map(Document::getValue)
+                .map(v -> v.get(type));
+    }
+
+    @Override
+    public <T> Optional<T> find(String documentName, TypeSupplier<T> type) {
+        Objects.requireNonNull(documentName, "documentName is required");
+        Objects.requireNonNull(type, "type is required");
+        return ofNullable(documents.get(documentName))
+                .map(Document::getValue)
+                .map(v -> v.get(type));
+    }
     @Override
     public int size() {
         return documents.size();
