@@ -94,6 +94,16 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     }
 
     @Override
+    public <T> T insert(T entity) {
+        return put(entity);
+    }
+
+    @Override
+    public <T> T insert(T entity, Duration ttl) {
+        return put(entity, ttl);
+    }
+
+    @Override
     public <K, T> Optional<T> get(K key, Class<T> entityClass) {
         requireNonNull(key, "key is required");
         requireNonNull(entityClass, "entity class is required");

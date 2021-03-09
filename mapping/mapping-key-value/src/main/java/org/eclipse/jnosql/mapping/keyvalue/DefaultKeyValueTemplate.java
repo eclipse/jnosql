@@ -57,17 +57,6 @@ class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {
     }
 
     @Override
-    public <T> T insert(T entity) {
-        return put(entity);
-    }
-
-    @Override
-    public <T> T insert(T entity, Duration ttl) {
-        return put(entity, ttl);
-    }
-
-
-    @Override
     public <T, K> Optional<T> find(Class<T> entityClass, K id) {
         return Optional.empty();
     }
