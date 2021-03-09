@@ -17,6 +17,7 @@
 
 package org.eclipse.jnosql.communication.column;
 
+import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
@@ -135,6 +136,24 @@ final class DefaultColumnEntity implements ColumnEntity {
         requireNonNull(columnName, "columnName is required");
         Column column = columns.get(columnName);
         return ofNullable(column);
+    }
+
+    @Override
+    public <T> Optional<T> find(String columnName, Class<T> type) {
+        Objects.requireNonNull(columnName, "columnName is required");
+        Objects.requireNonNull(type, "type is required");
+        return ofNullable(columns.get(columnName))
+                .map(Column::getValue)
+                .map(v -> v.get(type));
+    }
+
+    @Override
+    public <T> Optional<T> find(String columnName, TypeSupplier<T> type) {
+        Objects.requireNonNull(columnName, "columnName is required");
+        Objects.requireNonNull(type, "type is required");
+        return ofNullable(columns.get(columnName))
+                .map(Column::getValue)
+                .map(v -> v.get(type));
     }
 
     @Override
