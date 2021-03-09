@@ -174,4 +174,13 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
         return new KeyValuePreparedStatement(getManager().prepare(query), entityClass);
     }
 
+    @Override
+    public <T, K> Optional<T> find(Class<T> entityClass, K id) {
+        return this.get(id, entityClass);
+    }
+
+    @Override
+    public <T, K> void delete(Class<T> entityClass, K id) {
+        this.delete(id);
+    }
 }

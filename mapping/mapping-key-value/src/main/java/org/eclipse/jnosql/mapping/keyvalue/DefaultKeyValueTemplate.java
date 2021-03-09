@@ -56,13 +56,4 @@ class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {
         return flow;
     }
 
-    @Override
-    public <T, K> Optional<T> find(Class<T> entityClass, K id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public <T, K> void delete(Class<T> entityClass, K id) {
-
-    }
 }
