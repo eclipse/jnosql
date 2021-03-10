@@ -138,6 +138,11 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
+    public <T, K> void delete(Class<T> entityClass, K id) {
+
+    }
+
+    @Override
     public <T> void deleteEdge(T idEdge) {
         requireNonNull(idEdge, "idEdge is required");
         getTraversal().E(idEdge).toStream().forEach(Edge::remove);
