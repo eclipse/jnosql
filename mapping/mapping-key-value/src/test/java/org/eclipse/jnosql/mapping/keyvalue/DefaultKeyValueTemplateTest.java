@@ -215,6 +215,16 @@ public class DefaultKeyValueTemplateTest {
     }
 
     @Test
+    public void shouldFindById() {
+        User user = new User(KEY, "otavio", 27);
+        when(manager.get(KEY)).thenReturn(Optional.of(Value.of(user)));
+        Optional<User> userOptional = subject.find(User.class, KEY);
+
+        assertTrue(userOptional.isPresent());
+        assertEquals(user, userOptional.get());
+    }
+
+    @Test
     public void shouldGetIterable() {
         User user = new User(KEY, "otavio", 27);
 
@@ -240,6 +250,12 @@ public class DefaultKeyValueTemplateTest {
     @Test
     public void shouldRemove() {
         subject.delete(KEY);
+        Mockito.verify(manager).delete(KEY);
+    }
+
+    @Test
+    public void shouldRemoveById() {
+        subject.delete(User.class, KEY);
         Mockito.verify(manager).delete(KEY);
     }
 
