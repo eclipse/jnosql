@@ -32,6 +32,7 @@ import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -88,6 +89,15 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         };
 
         return getFlow().flow(entity, save);
+    }
+    @Override
+    public <T> T insert(T entity, Duration ttl) {
+     throw new UnsupportedOperationException("GraphTemplate does not support insert with TTL");
+    }
+
+    @Override
+    public <T> Iterable<T> insert(Iterable<T> entities, Duration ttl) {
+        throw new UnsupportedOperationException("GraphTemplate does not support insert with TTL");
     }
 
     @Override
