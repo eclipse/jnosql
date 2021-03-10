@@ -20,8 +20,6 @@ import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import java.time.Duration;
-import java.util.Optional;
 
 class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {
 
