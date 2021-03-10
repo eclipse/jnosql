@@ -240,6 +240,31 @@ public abstract class AbstractGraphTemplateTest {
     }
 
     @Test
+    public void shouldDeleteAnEntityFromTemplate() {
+
+        Person person = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+
+        assertTrue(getGraphTemplate().find(person.getId()).isPresent());
+        getGraphTemplate().delete(Person.class, person.getId());
+        assertFalse(getGraphTemplate().find(person.getId()).isPresent());
+    }
+
+    @Test
+    public void shouldNotDeleteAnEntityFromTemplate() {
+
+        Person person = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+
+        assertTrue(getGraphTemplate().find(person.getId()).isPresent());
+        getGraphTemplate().delete(Book.class, person.getId());
+        assertTrue(getGraphTemplate().find(person.getId()).isPresent());
+        getGraphTemplate().delete(Person.class, person.getId());
+        assertFalse(getGraphTemplate().find(person.getId()).isPresent());
+    }
+
+
+    @Test
     public void shouldDeleteEntities() {
 
         Person otavio = getGraphTemplate().insert(Person.builder().withAge()
