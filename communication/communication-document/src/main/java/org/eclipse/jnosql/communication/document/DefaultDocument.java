@@ -32,10 +32,9 @@ final class DefaultDocument implements Document, Entry {
 
     private final String name;
 
-    private final Object value;
+    private final Value value;
 
-
-    DefaultDocument(String name, Object value) {
+    DefaultDocument(String name, Value value) {
         this.name = name;
         this.value = value;
     }
@@ -47,22 +46,22 @@ final class DefaultDocument implements Document, Entry {
 
     @Override
     public Value getValue() {
-        return Value.of(value);
+        return value;
     }
 
     @Override
     public <T> T get(Class<T> clazz) {
-        return Value.of(value).get(clazz);
+        return value.get(clazz);
     }
 
     @Override
     public <T> T get(TypeSupplier<T> typeSupplier) {
-        return Value.of(value).get(typeSupplier);
+        return value.get(typeSupplier);
     }
 
     @Override
     public Object get() {
-        return value;
+        return value.get();
     }
 
     @Override

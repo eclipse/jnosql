@@ -34,11 +34,11 @@ public final class DefaultDocumentProvider implements DocumentProvider {
         return new DefaultDocument(name, getValue(value));
     }
 
-    private Object getValue(Object value) {
+    private Value getValue(Object value) {
         if (value instanceof Value) {
-            return Value.class.cast(value).get();
+            return Value.class.cast(value);
         } else {
-            return value;
+            return Value.of(value);
         }
     }
 }
