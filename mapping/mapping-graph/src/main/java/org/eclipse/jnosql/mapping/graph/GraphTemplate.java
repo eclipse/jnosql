@@ -29,8 +29,12 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * This interface that represents the common operation between an entity
- * and {@link org.apache.tinkerpop.gremlin.structure.Vertex}
+ * GraphTemplate is a helper class that increases productivity when performing common Graph operations.
+ * Includes integrated object mapping between documents and POJOs {@link org.apache.tinkerpop.gremlin.structure.Vertex}
+ * and {@link org.apache.tinkerpop.gremlin.structure.Edge}.
+ * It represents the common operation between an entity and {@link org.apache.tinkerpop.gremlin.structure.Graph}
+ *
+ * @see org.apache.tinkerpop.gremlin.structure.Graph
  */
 public interface GraphTemplate extends Template {
 
