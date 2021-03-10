@@ -46,7 +46,7 @@ import static java.util.stream.Collectors.toList;
  */
 final class DefaultDocumentEntity implements DocumentEntity {
 
-    private final Map<String, Document> documents = new HashMap<>();
+    private final Map<String, Object> documents = new HashMap<>();
 
     private final String name;
 
@@ -70,29 +70,28 @@ final class DefaultDocumentEntity implements DocumentEntity {
     public List<Document> getDocuments() {
         return documents.entrySet()
                 .stream()
-                .map(Map.Entry::getValue)
+                .map(e -> Document.of(e.getKey(), e.getValue()))
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
     @Override
     public void add(Document document) {
         requireNonNull(document, "Document is required");
-        documents.put(document.getName(), document);
+        this.documents.put(document.getName(), document.get());
     }
 
     @Override
     public void add(String documentName, Object value) {
         requireNonNull(documentName, "documentName is required");
         requireNonNull(value, "value is required");
-        this.add(Document.of(documentName, value));
+        this.documents.put(documentName, value);
     }
 
     @Override
     public void add(String documentName, Value value) {
         requireNonNull(documentName, "documentName is required");
         requireNonNull(value, "value is required");
-        remove(documentName);
-        this.add(Document.of(documentName, value));
+        this.documents.put(documentName, value.get());
     }
 
     @Override
@@ -104,8 +103,9 @@ final class DefaultDocumentEntity implements DocumentEntity {
     @Override
     public Optional<Document> find(String documentName) {
         requireNonNull(documentName, "documentName is required");
-        Document document = documents.get(documentName);
-        return ofNullable(document);
+        Object value = documents.get(documentName);
+        return ofNullable(value)
+                .map(v -> Document.of(documentName, value));
     }
 
     @Override
@@ -113,7 +113,7 @@ final class DefaultDocumentEntity implements DocumentEntity {
         Objects.requireNonNull(documentName, "documentName is required");
         Objects.requireNonNull(type, "type is required");
         return ofNullable(documents.get(documentName))
-                .map(Document::getValue)
+                .map(Value::of)
                 .map(v -> v.get(type));
     }
 
@@ -122,7 +122,7 @@ final class DefaultDocumentEntity implements DocumentEntity {
         Objects.requireNonNull(documentName, "documentName is required");
         Objects.requireNonNull(type, "type is required");
         return ofNullable(documents.get(documentName))
-                .map(Document::getValue)
+                .map(Value::of)
                 .map(v -> v.get(type));
     }
     @Override
@@ -154,8 +154,9 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public Collection<Value> getValues() {
-        return documents.values().stream()
-                .map(Document::getValue)
+        return documents.values()
+                .stream()
+                .map(Value::of)
                 .collect(toList());
     }
 
@@ -168,9 +169,9 @@ final class DefaultDocumentEntity implements DocumentEntity {
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        for (Map.Entry<String, Document> entry : documents.entrySet()) {
-            Document value = entry.getValue();
-            map.put(value.getName(), convert(value.get()));
+        for (Map.Entry<String, Object> entry : documents.entrySet()) {
+            Object value = entry.getValue();
+            map.put(entry.getKey(), convert(value));
         }
         return Collections.unmodifiableMap(map);
     }

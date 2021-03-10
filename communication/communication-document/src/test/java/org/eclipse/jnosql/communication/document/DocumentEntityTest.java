@@ -257,7 +257,6 @@ public class DocumentEntityTest {
         Assertions.assertTrue(names.isEmpty());
     }
 
-
     @Test
     public void shouldRemoveByName() {
         DocumentEntity entity = new DefaultDocumentEntity("name");
