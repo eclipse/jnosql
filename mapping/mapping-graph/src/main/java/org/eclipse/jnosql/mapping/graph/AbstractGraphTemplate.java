@@ -90,9 +90,10 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
         return getFlow().flow(entity, save);
     }
+
     @Override
     public <T> T insert(T entity, Duration ttl) {
-     throw new UnsupportedOperationException("GraphTemplate does not support insert with TTL");
+        throw new UnsupportedOperationException("GraphTemplate does not support insert with TTL");
     }
 
     @Override
@@ -139,7 +140,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     @Override
     public <T, K> void delete(Class<T> entityClass, K id) {
-
+        requireNonNull(entityClass, "entityClass is required");
+        requireNonNull(id, "id is required");
+        ClassMapping mapping = getClassMappings().get(entityClass);
+        getTraversal()
+                .V(id)
+                .hasLabel(mapping.getName())
+                .toStream()
+                .forEach(Vertex::remove);
     }
 
     @Override
