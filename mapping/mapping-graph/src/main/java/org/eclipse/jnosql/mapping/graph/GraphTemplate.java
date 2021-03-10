@@ -283,19 +283,6 @@ public interface GraphTemplate extends Template {
     PreparedStatement prepare(String gremlin);
 
     /**
-     * Finds by Id.
-     *
-     * @param entityClass the entity class
-     * @param id          the id value
-     * @param <T>         the entity class type
-     * @param <K>         the id type
-     * @return the entity instance otherwise {@link Optional#empty()}
-     * @throws NullPointerException when either the entityClass or id are null
-     * @throws IdNotFoundException  when the entityClass does not have the Id annotation
-     */
-    <T, K> Optional<T> find(Class<T> entityClass, K id);
-
-    /**
      * Returns the number of vertices from label
      *
      * @param label the label
