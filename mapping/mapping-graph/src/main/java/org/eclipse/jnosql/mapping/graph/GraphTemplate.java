@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.Template;
 import org.apache.tinkerpop.gremlin.structure.Direction;
