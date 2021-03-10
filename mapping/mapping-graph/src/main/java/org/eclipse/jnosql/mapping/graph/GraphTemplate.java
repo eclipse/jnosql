@@ -69,17 +69,6 @@ public interface GraphTemplate extends Template {
     <T, K> Optional<T> find(K id);
 
     /**
-     * Inserts entities
-     *
-     * @param entities entities to be saved
-     * @param <T>      the instance type
-     * @return the entity saved
-     * @throws NullPointerException                      when document is null
-     * @throws jakarta.nosql.mapping.IdNotFoundException when entity has not {@link jakarta.nosql.mapping.Id}
-     */
-    <T> Iterable<T> insert(Iterable<T> entities);
-
-    /**
      * Updates entities
      *
      * @param entities entity to be updated
