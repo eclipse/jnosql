@@ -33,8 +33,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -84,6 +86,22 @@ public abstract class AbstractGraphTemplateTest {
 
         assertNotNull(updated.getId());
         getGraphTemplate().delete(updated.getId());
+    }
+
+    @Test
+    public void shouldReturnErrorWhenInsertWithTTL() {
+        Person person = Person.builder().withAge()
+                .withName("Otavio").build();
+        Assertions.assertThrows(UnsupportedOperationException.class,
+                () -> getGraphTemplate().insert(person, Duration.ZERO));
+    }
+
+    @Test
+    public void shouldReturnErrorWhenInsertIterableWithTTL() {
+        Person person = Person.builder().withAge()
+                .withName("Otavio").build();
+        Assertions.assertThrows(UnsupportedOperationException.class,
+                () -> getGraphTemplate().insert(Collections.singleton(person), Duration.ZERO));
     }
 
     @Test
@@ -220,6 +238,31 @@ public abstract class AbstractGraphTemplateTest {
         getGraphTemplate().delete(person.getId());
         assertFalse(getGraphTemplate().find(person.getId()).isPresent());
     }
+
+    @Test
+    public void shouldDeleteAnEntityFromTemplate() {
+
+        Person person = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+
+        assertTrue(getGraphTemplate().find(person.getId()).isPresent());
+        getGraphTemplate().delete(Person.class, person.getId());
+        assertFalse(getGraphTemplate().find(person.getId()).isPresent());
+    }
+
+    @Test
+    public void shouldNotDeleteAnEntityFromTemplate() {
+
+        Person person = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+
+        assertTrue(getGraphTemplate().find(person.getId()).isPresent());
+        getGraphTemplate().delete(Book.class, person.getId());
+        assertTrue(getGraphTemplate().find(person.getId()).isPresent());
+        getGraphTemplate().delete(Person.class, person.getId());
+        assertFalse(getGraphTemplate().find(person.getId()).isPresent());
+    }
+
 
     @Test
     public void shouldDeleteEntities() {

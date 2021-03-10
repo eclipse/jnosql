@@ -137,6 +137,71 @@ public class DefaultKeyValueTemplateTest {
         assertEquals(user, entity.getValue());
     }
 
+    @Test
+    public void shouldInsert() {
+        User user = new User(KEY, "otavio", 27);
+        subject.insert(user);
+        Mockito.verify(manager).put(captor.capture());
+        KeyValueEntity entity = captor.getValue();
+        assertEquals(KEY, entity.getKey());
+        assertEquals(user, entity.getValue());
+    }
+
+    @Test
+    public void shouldInsertIterable() {
+        User user = new User(KEY, "otavio", 27);
+        subject.insert(singletonList(user));
+        Mockito.verify(manager).put(captor.capture());
+        KeyValueEntity entity = captor.getValue();
+        assertEquals(KEY, entity.getKey());
+        assertEquals(user, entity.getValue());
+    }
+
+    @Test
+    public void shouldInsertTTL() {
+
+        Duration duration = Duration.ofSeconds(2L);
+        User user = new User(KEY, "otavio", 27);
+        subject.insert(user, duration);
+
+        Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
+        KeyValueEntity entity = captor.getValue();
+        assertEquals(KEY, entity.getKey());
+        assertEquals(user, entity.getValue());
+    }
+
+    @Test
+    public void shouldInsertTTLIterable() {
+
+        Duration duration = Duration.ofSeconds(2L);
+        User user = new User(KEY, "otavio", 27);
+        subject.insert(singletonList(user), duration);
+
+        Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
+        KeyValueEntity entity = captor.getValue();
+        assertEquals(KEY, entity.getKey());
+        assertEquals(user, entity.getValue());
+    }
+
+    @Test
+    public void shouldUpdate() {
+        User user = new User(KEY, "otavio", 27);
+        subject.update(user);
+        Mockito.verify(manager).put(captor.capture());
+        KeyValueEntity entity = captor.getValue();
+        assertEquals(KEY, entity.getKey());
+        assertEquals(user, entity.getValue());
+    }
+
+    @Test
+    public void shouldUpdateIterable() {
+        User user = new User(KEY, "otavio", 27);
+        subject.update(singletonList(user));
+        Mockito.verify(manager).put(captor.capture());
+        KeyValueEntity entity = captor.getValue();
+        assertEquals(KEY, entity.getKey());
+        assertEquals(user, entity.getValue());
+    }
 
     @Test
     public void shouldGet() {
@@ -144,6 +209,16 @@ public class DefaultKeyValueTemplateTest {
 
         when(manager.get(KEY)).thenReturn(Optional.of(Value.of(user)));
         Optional<User> userOptional = subject.get(KEY, User.class);
+
+        assertTrue(userOptional.isPresent());
+        assertEquals(user, userOptional.get());
+    }
+
+    @Test
+    public void shouldFindById() {
+        User user = new User(KEY, "otavio", 27);
+        when(manager.get(KEY)).thenReturn(Optional.of(Value.of(user)));
+        Optional<User> userOptional = subject.find(User.class, KEY);
 
         assertTrue(userOptional.isPresent());
         assertEquals(user, userOptional.get());
@@ -175,6 +250,12 @@ public class DefaultKeyValueTemplateTest {
     @Test
     public void shouldRemove() {
         subject.delete(KEY);
+        Mockito.verify(manager).delete(KEY);
+    }
+
+    @Test
+    public void shouldRemoveById() {
+        subject.delete(User.class, KEY);
         Mockito.verify(manager).delete(KEY);
     }
 

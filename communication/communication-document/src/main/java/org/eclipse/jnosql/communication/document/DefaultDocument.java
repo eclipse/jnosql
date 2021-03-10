@@ -34,7 +34,6 @@ final class DefaultDocument implements Document, Entry {
 
     private final Value value;
 
-
     DefaultDocument(String name, Value value) {
         this.name = name;
         this.value = value;

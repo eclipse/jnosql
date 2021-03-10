@@ -53,4 +53,5 @@ class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {
     protected KeyValueWorkflow getFlow() {
         return flow;
     }
+
 }

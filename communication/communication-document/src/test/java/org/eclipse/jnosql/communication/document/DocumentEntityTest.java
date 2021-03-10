@@ -17,13 +17,17 @@
 
 package org.eclipse.jnosql.communication.document;
 
+import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -211,6 +215,46 @@ public class DocumentEntityTest {
         DocumentEntity entity = new DefaultDocumentEntity("name");
         Optional<Document> document = entity.find("name");
         assertFalse(document.isPresent());
+    }
+
+    @Test
+    public void shouldFindValue() {
+        Document document = Document.of("name", "name");
+        DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
+        Optional<String> name = entity.find("name", String.class);
+        Assertions.assertNotNull(name);
+        Assertions.assertTrue(name.isPresent());
+        Assertions.assertEquals("name", name.orElse(""));
+    }
+
+    @Test
+    public void shouldNotFindValue() {
+        Document document = Document.of("name", "name");
+        DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
+        Optional<String> name = entity.find("not_found", String.class);
+        Assertions.assertNotNull(name);
+        Assertions.assertFalse(name.isPresent());
+    }
+
+    @Test
+    public void shouldFindTypeSupplier() {
+        Document document = Document.of("name", "name");
+        DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
+        List<String> names = entity.find("name", new TypeReference<List<String>>() {})
+                .orElse(Collections.emptyList());
+        Assertions.assertNotNull(names);
+        Assertions.assertFalse(names.isEmpty());
+        MatcherAssert.assertThat(names, Matchers.contains("name"));
+    }
+
+    @Test
+    public void shouldNotFindTypeSupplier() {
+        Document document = Document.of("name", "name");
+        DocumentEntity entity = DocumentEntity.of("entity", singletonList(document));
+        List<String> names = entity.find("not_find", new TypeReference<List<String>>() {})
+                .orElse(Collections.emptyList());
+        Assertions.assertNotNull(names);
+        Assertions.assertTrue(names.isEmpty());
     }
 
     @Test

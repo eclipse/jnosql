@@ -15,9 +15,8 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.nosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-
+import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -26,7 +25,6 @@ import javax.inject.Inject;
  * The default {@link GraphTemplate}
  */
 class DefaultGraphTemplate extends AbstractGraphTemplate {
-
 
     private Instance<Graph> graph;
 
@@ -76,5 +74,4 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     protected Converters getConverters() {
         return converters;
     }
-
 }

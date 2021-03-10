@@ -17,14 +17,18 @@
 
 package org.eclipse.jnosql.communication.column;
 
+import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -92,6 +96,46 @@ public class ColumnEntityTest {
             ColumnEntity entity = ColumnEntity.of("entity", singletonList(column));
             entity.find(null);
         });
+    }
+
+    @Test
+    public void shouldFindValue() {
+        Column column = Column.of("name", "name");
+        ColumnEntity entity = ColumnEntity.of("entity", singletonList(column));
+        Optional<String> name = entity.find("name", String.class);
+        Assertions.assertNotNull(name);
+        Assertions.assertTrue(name.isPresent());
+        Assertions.assertEquals("name", name.orElse(""));
+    }
+
+    @Test
+    public void shouldNotFindValue() {
+        Column column = Column.of("name", "name");
+        ColumnEntity entity = ColumnEntity.of("entity", singletonList(column));
+        Optional<String> name = entity.find("not_found", String.class);
+        Assertions.assertNotNull(name);
+        Assertions.assertFalse(name.isPresent());
+    }
+
+    @Test
+    public void shouldFindTypeSupplier() {
+        Column column = Column.of("name", "name");
+        ColumnEntity entity = ColumnEntity.of("entity", singletonList(column));
+        List<String> names = entity.find("name", new TypeReference<List<String>>() {})
+                .orElse(Collections.emptyList());
+        Assertions.assertNotNull(names);
+        Assertions.assertFalse(names.isEmpty());
+        MatcherAssert.assertThat(names, Matchers.contains("name"));
+    }
+
+    @Test
+    public void shouldNotFindTypeSupplier() {
+        Column column = Column.of("name", "name");
+        ColumnEntity entity = ColumnEntity.of("entity", singletonList(column));
+        List<String> names = entity.find("not_find", new TypeReference<List<String>>() {})
+                .orElse(Collections.emptyList());
+        Assertions.assertNotNull(names);
+        Assertions.assertTrue(names.isEmpty());
     }
 
     @Test

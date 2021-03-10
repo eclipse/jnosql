@@ -74,6 +74,36 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     }
 
     @Override
+    public <T> Iterable<T> insert(Iterable<T> entities) {
+        return put(entities);
+    }
+
+    @Override
+    public <T> Iterable<T> insert(Iterable<T> entities, Duration ttl) {
+        return put(entities, ttl);
+    }
+
+    @Override
+    public <T> T update(T entity) {
+        return put(entity);
+    }
+
+    @Override
+    public <T> Iterable<T> update(Iterable<T> entities) {
+        return put(entities);
+    }
+
+    @Override
+    public <T> T insert(T entity) {
+        return put(entity);
+    }
+
+    @Override
+    public <T> T insert(T entity, Duration ttl) {
+        return put(entity, ttl);
+    }
+
+    @Override
     public <K, T> Optional<T> get(K key, Class<T> entityClass) {
         requireNonNull(key, "key is required");
         requireNonNull(entityClass, "entity class is required");
@@ -112,7 +142,7 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
         requireNonNull(query, "query is required");
         requireNonNull(entityClass, "entityClass is required");
         Stream<Value> values = getManager().query(query);
-            return values.map(v -> v.get(entityClass));
+        return values.map(v -> v.get(entityClass));
     }
 
     @Override
@@ -144,4 +174,13 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
         return new KeyValuePreparedStatement(getManager().prepare(query), entityClass);
     }
 
+    @Override
+    public <T, K> Optional<T> find(Class<T> entityClass, K id) {
+        return this.get(id, entityClass);
+    }
+
+    @Override
+    public <T, K> void delete(Class<T> entityClass, K id) {
+        this.delete(id);
+    }
 }

@@ -18,6 +18,7 @@
 package org.eclipse.jnosql.communication.document;
 
 
+import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
@@ -45,10 +46,9 @@ import static java.util.stream.Collectors.toList;
  */
 final class DefaultDocumentEntity implements DocumentEntity {
 
-    private final Map<String, Document> documents = new HashMap<>();
+    private final Map<String, Value> documents = new HashMap<>();
 
     private final String name;
-
 
     DefaultDocumentEntity(String name) {
         this.name = name;
@@ -69,29 +69,28 @@ final class DefaultDocumentEntity implements DocumentEntity {
     public List<Document> getDocuments() {
         return documents.entrySet()
                 .stream()
-                .map(Map.Entry::getValue)
+                .map(e -> Document.of(e.getKey(), e.getValue()))
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
     @Override
     public void add(Document document) {
         requireNonNull(document, "Document is required");
-        documents.put(document.getName(), document);
+        this.documents.put(document.getName(), document.getValue());
     }
 
     @Override
     public void add(String documentName, Object value) {
         requireNonNull(documentName, "documentName is required");
         requireNonNull(value, "value is required");
-        this.add(Document.of(documentName, value));
+        this.documents.put(documentName, Value.of(value));
     }
 
     @Override
     public void add(String documentName, Value value) {
         requireNonNull(documentName, "documentName is required");
         requireNonNull(value, "value is required");
-        remove(documentName);
-        this.add(Document.of(documentName, value));
+        this.documents.put(documentName, value);
     }
 
     @Override
@@ -103,8 +102,25 @@ final class DefaultDocumentEntity implements DocumentEntity {
     @Override
     public Optional<Document> find(String documentName) {
         requireNonNull(documentName, "documentName is required");
-        Document document = documents.get(documentName);
-        return ofNullable(document);
+        Value value = documents.get(documentName);
+        return ofNullable(value)
+                .map(v -> Document.of(documentName, v));
+    }
+
+    @Override
+    public <T> Optional<T> find(String documentName, Class<T> type) {
+        Objects.requireNonNull(documentName, "documentName is required");
+        Objects.requireNonNull(type, "type is required");
+        return ofNullable(documents.get(documentName))
+                .map(v -> v.get(type));
+    }
+
+    @Override
+    public <T> Optional<T> find(String documentName, TypeSupplier<T> type) {
+        Objects.requireNonNull(documentName, "documentName is required");
+        Objects.requireNonNull(type, "type is required");
+        return ofNullable(documents.get(documentName))
+                .map(v -> v.get(type));
     }
 
     @Override
@@ -136,8 +152,8 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public Collection<Value> getValues() {
-        return documents.values().stream()
-                .map(Document::getValue)
+        return documents.values()
+                .stream()
                 .collect(toList());
     }
 
@@ -150,9 +166,9 @@ final class DefaultDocumentEntity implements DocumentEntity {
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        for (Map.Entry<String, Document> entry : documents.entrySet()) {
-            Document value = entry.getValue();
-            map.put(value.getName(), convert(value.get()));
+        for (Map.Entry<String, Value> entry : documents.entrySet()) {
+            Value value = entry.getValue();
+            map.put(entry.getKey(), convert(value.get()));
         }
         return Collections.unmodifiableMap(map);
     }
@@ -168,7 +184,6 @@ final class DefaultDocumentEntity implements DocumentEntity {
         }
         return value;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -191,7 +206,7 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public String toString() {
-        return  "DefaultDocumentEntity{" + "documents=" + toMap() +
+        return "DefaultDocumentEntity{" + "documents=" + documents +
                 ", name='" + name + '\'' +
                 '}';
     }

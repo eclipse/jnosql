@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.Template;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 
@@ -28,32 +28,14 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * This interface that represents the common operation between an entity
- * and {@link org.apache.tinkerpop.gremlin.structure.Vertex}
+ * GraphTemplate is a helper class that increases productivity when performing common Graph operations.
+ * Includes integrated object mapping between documents and POJOs {@link org.apache.tinkerpop.gremlin.structure.Vertex}
+ * and {@link org.apache.tinkerpop.gremlin.structure.Edge}.
+ * It represents the common operation between an entity and {@link org.apache.tinkerpop.gremlin.structure.Graph}
+ *
+ * @see org.apache.tinkerpop.gremlin.structure.Graph
  */
-public interface GraphTemplate {
-
-    /**
-     * Inserts entity
-     *
-     * @param entity entity to be saved
-     * @param <T>    the instance type
-     * @return the entity saved
-     * @throws NullPointerException                   when document is null
-     * @throws jakarta.nosql.mapping.IdNotFoundException when entity has not {@link jakarta.nosql.mapping.Id}
-     */
-    <T> T insert(T entity);
-
-    /**
-     * Updates entity
-     *
-     * @param entity entity to be updated
-     * @param <T>    the instance type
-     * @return the entity saved
-     * @throws IllegalStateException                   when document is null
-     * @throws jakarta.nosql.mapping.IdNotFoundException when an entity is null
-     */
-    <T> T update(T entity);
+public interface GraphTemplate extends Template {
 
     /**
      * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Vertex}
@@ -77,8 +59,8 @@ public interface GraphTemplate {
      * Find an entity given {@link org.apache.tinkerpop.gremlin.structure.T#label} and
      * {@link org.apache.tinkerpop.gremlin.structure.T#id}
      *
-     * @param id   the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
-     * @param <T>  the entity type
+     * @param id  the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param <T> the entity type
      * @param <K> the id type
      * @return the entity found otherwise {@link Optional#empty()}
      * @throws NullPointerException when id is null
@@ -86,23 +68,12 @@ public interface GraphTemplate {
     <T, K> Optional<T> find(K id);
 
     /**
-     * Inserts entities
-     *
-     * @param entities entities to be saved
-     * @param <T>    the instance type
-     * @return the entity saved
-     * @throws NullPointerException                   when document is null
-     * @throws jakarta.nosql.mapping.IdNotFoundException when entity has not {@link jakarta.nosql.mapping.Id}
-     */
-    <T> Iterable<T> insert(Iterable<T> entities);
-
-    /**
      * Updates entities
      *
      * @param entities entity to be updated
-     * @param <T>    the instance type
+     * @param <T>      the instance type
      * @return the entity saved
-     * @throws IllegalStateException                   when document is null
+     * @throws IllegalStateException                     when document is null
      * @throws jakarta.nosql.mapping.IdNotFoundException when an entity is null
      */
     <T> Iterable<T> update(Iterable<T> entities);
@@ -110,7 +81,7 @@ public interface GraphTemplate {
     /**
      * Deletes {@link org.apache.tinkerpop.gremlin.structure.Vertex} instances
      *
-     * @param ids  the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param ids the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
      * @param <T> the id type
      * @throws NullPointerException when id is null
      */
@@ -119,7 +90,7 @@ public interface GraphTemplate {
     /**
      * Deletes {@link org.apache.tinkerpop.gremlin.structure.Edge} instances
      *
-     * @param ids  the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
+     * @param ids the ids to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
      * @param <T> the id type
      * @throws NullPointerException when either label and id are null
      */
@@ -133,10 +104,10 @@ public interface GraphTemplate {
      * @param incoming the incoming entity
      * @param label    the Edge label
      * @param outgoing the outgoing entity
-     * @param <I>     the incoming type
-     * @param <O>    the outgoing type
+     * @param <I>      the incoming type
+     * @param <O>      the outgoing type
      * @return the {@link EdgeEntity} of these two entities
-     * @throws NullPointerException                       Either when any elements are null or the entity is null
+     * @throws NullPointerException                          Either when any elements are null or the entity is null
      * @throws jakarta.nosql.mapping.IdNotFoundException     when {@link jakarta.nosql.mapping.Id} annotation is missing in the entities
      * @throws jakarta.nosql.mapping.EntityNotFoundException when neither outgoing or incoming is found
      */
@@ -150,10 +121,10 @@ public interface GraphTemplate {
      * @param incoming the incoming entity
      * @param label    the Edge label
      * @param outgoing the outgoing entity
-     * @param <I>     the incoming type
-     * @param <O>    the outgoing type
+     * @param <I>      the incoming type
+     * @param <O>      the outgoing type
      * @return the {@link EdgeEntity} of these two entities
-     * @throws NullPointerException                       Either when any elements are null or the entity is null
+     * @throws NullPointerException                          Either when any elements are null or the entity is null
      * @throws jakarta.nosql.mapping.IdNotFoundException     when {@link jakarta.nosql.mapping.Id} annotation is missing in the entities
      * @throws jakarta.nosql.mapping.EntityNotFoundException when neither outgoing or incoming is found
      */
@@ -168,7 +139,7 @@ public interface GraphTemplate {
      * @param id        the id
      * @param direction the direction
      * @param labels    the edge labels
-     * @param <K>      the K type
+     * @param <K>       the K type
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
@@ -180,7 +151,7 @@ public interface GraphTemplate {
      * @param id        the id
      * @param direction the direction
      * @param labels    the edge labels
-     * @param <K>      the K type
+     * @param <K>       the K type
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
@@ -191,7 +162,7 @@ public interface GraphTemplate {
      *
      * @param id        the id
      * @param direction the direction
-     * @param <K>      the K type
+     * @param <K>       the K type
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
@@ -285,7 +256,7 @@ public interface GraphTemplate {
      * @param gremlin the gremlin query
      * @param <T>     the entity type
      * @return the result as {@link List}
-     * @throws NullPointerException                          when the query is null
+     * @throws NullPointerException     when the query is null
      * @throws NonUniqueResultException if returns more than one result
      */
     <T> Optional<T> singleResult(String gremlin);
@@ -298,19 +269,6 @@ public interface GraphTemplate {
      * @throws NullPointerException when the query is null
      */
     PreparedStatement prepare(String gremlin);
-
-    /**
-     * Finds by Id.
-     *
-     * @param entityClass the entity class
-     * @param id          the id value
-     * @param <T>         the entity class type
-     * @param <K>        the id type
-     * @return the entity instance otherwise {@link Optional#empty()}
-     * @throws NullPointerException                   when either the entityClass or id are null
-     * @throws IdNotFoundException when the entityClass does not have the Id annotation
-     */
-    <T, K> Optional<T> find(Class<T> entityClass, K id);
 
     /**
      * Returns the number of vertices from label
