@@ -34,28 +34,6 @@ import java.util.stream.Stream;
 public interface GraphTemplate {
 
     /**
-     * Inserts entity
-     *
-     * @param entity entity to be saved
-     * @param <T>    the instance type
-     * @return the entity saved
-     * @throws NullPointerException                   when document is null
-     * @throws jakarta.nosql.mapping.IdNotFoundException when entity has not {@link jakarta.nosql.mapping.Id}
-     */
-    <T> T insert(T entity);
-
-    /**
-     * Updates entity
-     *
-     * @param entity entity to be updated
-     * @param <T>    the instance type
-     * @return the entity saved
-     * @throws IllegalStateException                   when document is null
-     * @throws jakarta.nosql.mapping.IdNotFoundException when an entity is null
-     */
-    <T> T update(T entity);
-
-    /**
      * Deletes a {@link org.apache.tinkerpop.gremlin.structure.Vertex}
      *
      * @param id  the id to be used in the query {@link org.apache.tinkerpop.gremlin.structure.T#id}
