@@ -46,7 +46,7 @@ import static java.util.stream.Collectors.toList;
  */
 final class DefaultDocumentEntity implements DocumentEntity {
 
-    private final Map<String, Value> documents = new HashMap<>();
+    private final Map<String, Document> documents = new HashMap<>();
 
     private final String name;
 
@@ -67,30 +67,30 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public List<Document> getDocuments() {
-        return documents.entrySet()
+        return documents.values()
                 .stream()
-                .map(e -> Document.of(e.getKey(), e.getValue()))
-                .collect(collectingAndThen(toList(), Collections::unmodifiableList));
+                .collect(collectingAndThen(toList(),
+                        Collections::unmodifiableList));
     }
 
     @Override
     public void add(Document document) {
         requireNonNull(document, "Document is required");
-        this.documents.put(document.getName(), document.getValue());
+        this.documents.put(document.getName(), document);
     }
 
     @Override
     public void add(String documentName, Object value) {
         requireNonNull(documentName, "documentName is required");
         requireNonNull(value, "value is required");
-        this.documents.put(documentName, Value.of(value));
+        this.documents.put(documentName, Document.of(documentName, Value.of(value)));
     }
 
     @Override
     public void add(String documentName, Value value) {
         requireNonNull(documentName, "documentName is required");
         requireNonNull(value, "value is required");
-        this.documents.put(documentName, value);
+        this.documents.put(documentName, Document.of(documentName, value));
     }
 
     @Override
@@ -102,9 +102,8 @@ final class DefaultDocumentEntity implements DocumentEntity {
     @Override
     public Optional<Document> find(String documentName) {
         requireNonNull(documentName, "documentName is required");
-        Value value = documents.get(documentName);
-        return ofNullable(value)
-                .map(v -> Document.of(documentName, v));
+        Document document = documents.get(documentName);
+        return ofNullable(document);
     }
 
     @Override
@@ -112,15 +111,14 @@ final class DefaultDocumentEntity implements DocumentEntity {
         Objects.requireNonNull(documentName, "documentName is required");
         Objects.requireNonNull(type, "type is required");
         return ofNullable(documents.get(documentName))
-                .map(v -> v.get(type));
+                .map(d -> d.get(type));
     }
 
     @Override
     public <T> Optional<T> find(String documentName, TypeSupplier<T> type) {
         Objects.requireNonNull(documentName, "documentName is required");
         Objects.requireNonNull(type, "type is required");
-        return ofNullable(documents.get(documentName))
-                .map(v -> v.get(type));
+        return ofNullable(documents.get(documentName)).map(d -> d.get(type));
     }
 
     @Override
@@ -152,9 +150,11 @@ final class DefaultDocumentEntity implements DocumentEntity {
 
     @Override
     public Collection<Value> getValues() {
-        return documents.values()
+        return documents
+                .values()
                 .stream()
-                .collect(toList());
+                .map(Document::getValue)
+                .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
     @Override
@@ -166,9 +166,9 @@ final class DefaultDocumentEntity implements DocumentEntity {
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        for (Map.Entry<String, Value> entry : documents.entrySet()) {
-            Value value = entry.getValue();
-            map.put(entry.getKey(), convert(value.get()));
+        for (Map.Entry<String, Document> entry : documents.entrySet()) {
+            Document document = entry.getValue();
+            map.put(entry.getKey(), convert(document.get()));
         }
         return Collections.unmodifiableMap(map);
     }
