@@ -28,7 +28,7 @@ public interface SelectMethodProvider extends BiFunction<Method, String, SelectQ
     /**
      * Returns a default implementation of
      *
-     * @return
+     * @return a {@link SelectMethodProvider} instance from SPI
      */
     static SelectMethodProvider get() {
         return DefaultSelectMethodProvider.INSTANCE;

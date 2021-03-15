@@ -28,7 +28,7 @@ public interface DeleteMethodProvider extends BiFunction<Method, String, DeleteQ
     /**
      * Returns a default implementation of
      *
-     * @return
+     * @return a {@link} DeleteMethodProvider from SPI.
      */
     static DeleteMethodProvider get() {
         return DefaultDeleteMethodProvider.INSTANCE;
