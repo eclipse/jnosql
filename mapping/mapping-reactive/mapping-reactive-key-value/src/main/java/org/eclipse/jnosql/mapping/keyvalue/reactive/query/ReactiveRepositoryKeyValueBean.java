@@ -80,7 +80,7 @@ public class ReactiveRepositoryKeyValueBean extends AbstractBean<ReactiveReposit
 
         ReactiveKeyValueTemplate reactiveTemplate = provider.isEmpty() ? getInstance(ReactiveKeyValueTemplate.class) :
                 getInstance(ReactiveKeyValueTemplate.class, DatabaseQualifier.ofKeyValue(provider));
-        ReactiveKeyValueRepositoryProxy handler = new ReactiveKeyValueRepositoryProxy<>(template, reactiveTemplate, type);
+        ReactiveKeyValueRepositoryProxy<?> handler = new ReactiveKeyValueRepositoryProxy<>(template, reactiveTemplate, type);
         return (ReactiveRepository<?,?>) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
