@@ -31,7 +31,7 @@ import java.util.stream.Stream;
  */
 public final class DefaultColumnQueryParser implements ColumnQueryParser {
 
-    private final DefaultSelectQueryConverter select = new DefaultSelectQueryConverter();
+    private final SelectQueryParser select = new SelectQueryParser();
     private final DefaultDeleteQueryConverter delete = new DefaultDeleteQueryConverter();
     private final InsertQueryParser insert = new InsertQueryParser();
     private final UpdateQueryParser update = new UpdateQueryParser();
