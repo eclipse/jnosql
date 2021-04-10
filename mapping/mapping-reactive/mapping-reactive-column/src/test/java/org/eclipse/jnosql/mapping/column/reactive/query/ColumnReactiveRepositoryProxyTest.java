@@ -86,7 +86,7 @@ public class ColumnReactiveRepositoryProxyTest {
 
         final ReactiveColumnTemplate reactiveTemplate = reactiveProducer.get(template);
 
-        ReactiveColumnRepositoryProxy personHandler = new ReactiveColumnRepositoryProxy(reactiveTemplate,
+        ReactiveColumnRepositoryProxy<?> personHandler = new ReactiveColumnRepositoryProxy<>(reactiveTemplate,
                 template, converters, classMappings, PersonRepository.class);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
