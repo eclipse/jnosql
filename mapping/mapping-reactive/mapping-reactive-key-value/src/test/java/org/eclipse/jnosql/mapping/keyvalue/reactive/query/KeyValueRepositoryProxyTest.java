@@ -58,7 +58,8 @@ public class KeyValueRepositoryProxyTest {
 
     @BeforeEach
     public void setUp() {
-        ReactiveKeyValueRepositoryProxy handler = new ReactiveKeyValueRepositoryProxy(template, reactiveTemplate, UserRepository.class);
+        ReactiveKeyValueRepositoryProxy<?> handler = new ReactiveKeyValueRepositoryProxy<>(template, reactiveTemplate,
+                UserRepository.class);
         userRepository = (UserRepository) Proxy.newProxyInstance(UserRepository.class.getClassLoader(),
                 new Class[]{UserRepository.class},
                 handler);
@@ -77,7 +78,7 @@ public class KeyValueRepositoryProxyTest {
 
     @Test
     public void shouldSaveIterable() {
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
+        ArgumentCaptor<Iterable<?>> captor = ArgumentCaptor.forClass(Iterable.class);
 
         User user = new User("ada", "Ada", 10);
         userRepository.save(Collections.singleton(user));
@@ -101,7 +102,7 @@ public class KeyValueRepositoryProxyTest {
     public void shouldDeleteIterable() {
         final List<String> ids = Collections.singletonList("key");
         userRepository.deleteById(ids);
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
+        ArgumentCaptor<Iterable<?>> captor = ArgumentCaptor.forClass(Iterable.class);
         Mockito.verify(template, Mockito.never()).delete(ids);
         Mockito.verify(reactiveTemplate).delete(captor.capture());
         assertEquals("key", captor.getValue().iterator().next());
