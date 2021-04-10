@@ -1,1 +1,1 @@
-org.eclipse.jnosql.communication.column.query.DefaultDeleteQueryConverter
+org.eclipse.jnosql.communication.column.query.DeleteQueryParser
