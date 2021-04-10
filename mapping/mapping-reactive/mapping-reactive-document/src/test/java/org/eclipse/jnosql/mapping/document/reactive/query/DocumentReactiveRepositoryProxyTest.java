@@ -86,7 +86,7 @@ public class DocumentReactiveRepositoryProxyTest {
 
         final ReactiveDocumentTemplate reactiveTemplate = reactiveProducer.get(template);
 
-        ReactiveDocumentRepositoryProxy personHandler = new ReactiveDocumentRepositoryProxy(reactiveTemplate,
+        ReactiveDocumentRepositoryProxy<?> personHandler = new ReactiveDocumentRepositoryProxy<>(reactiveTemplate,
                 template, converters, classMappings, PersonRepository.class);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
