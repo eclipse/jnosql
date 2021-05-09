@@ -70,7 +70,7 @@ public class ReactiveColumnExtension implements Extension {
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info(String.format("Processing Reactive Column extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
-        LOGGER.info("Processing repositories as a Reactive Column implementation: " + crudTypes.toString());
+        LOGGER.info("Processing repositories as a Reactive Column implementation: " + crudTypes);
 
         databases.forEach(type -> {
             final ReactiveTemplateBean bean = new ReactiveTemplateBean(beanManager, type.getProvider());

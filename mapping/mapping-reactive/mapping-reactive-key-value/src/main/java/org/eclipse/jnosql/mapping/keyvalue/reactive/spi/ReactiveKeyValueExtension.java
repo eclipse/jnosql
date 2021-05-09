@@ -68,7 +68,7 @@ public class ReactiveKeyValueExtension implements Extension {
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info(String.format("Processing reactive Key-Value extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
-        LOGGER.info("Processing repositories as a reactive Key-Value implementation: " + crudTypes.toString());
+        LOGGER.info("Processing repositories as a reactive Key-Value implementation: " + crudTypes);
         databases.forEach(type -> {
             final ReactiveTemplateBean bean = new ReactiveTemplateBean(beanManager, type.getProvider());
             afterBeanDiscovery.addBean(bean);

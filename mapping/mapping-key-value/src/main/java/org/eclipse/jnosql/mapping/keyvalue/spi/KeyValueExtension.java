@@ -69,7 +69,7 @@ public class KeyValueExtension implements Extension {
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info(String.format("Processing Key-Value extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
-        LOGGER.info("Processing repositories as a Key-Value implementation: " + crudTypes.toString());
+        LOGGER.info("Processing repositories as a Key-Value implementation: " + crudTypes);
 
         databases.forEach(type -> {
             final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());

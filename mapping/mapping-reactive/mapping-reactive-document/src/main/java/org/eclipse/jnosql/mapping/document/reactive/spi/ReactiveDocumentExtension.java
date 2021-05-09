@@ -69,7 +69,7 @@ public class ReactiveDocumentExtension implements Extension {
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
         LOGGER.info(String.format("Processing Reactive Document extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
-        LOGGER.info("Processing repositories as a Reactive Document implementation: " + crudTypes.toString());
+        LOGGER.info("Processing repositories as a Reactive Document implementation: " + crudTypes);
 
         databases.forEach(type -> {
             final ReactiveTemplateBean bean = new ReactiveTemplateBean(beanManager, type.getProvider());

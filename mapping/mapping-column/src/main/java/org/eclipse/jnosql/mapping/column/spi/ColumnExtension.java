@@ -69,7 +69,7 @@ public class ColumnExtension implements Extension {
 
         LOGGER.info(String.format("Processing Column extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
-        LOGGER.info("Processing repositories as a Column implementation: " + crudTypes.toString());
+        LOGGER.info("Processing repositories as a Column implementation: " + crudTypes);
 
         databases.forEach(type -> {
             final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
