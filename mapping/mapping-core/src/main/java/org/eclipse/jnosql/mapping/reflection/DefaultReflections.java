@@ -64,9 +64,9 @@ public class DefaultReflections implements Reflections {
     }
 
     @Override
-    public <T> T newInstance(Constructor constructor) {
+    public <T> T newInstance(Constructor<T> constructor) {
         try {
-            return (T) constructor.newInstance();
+            return constructor.newInstance();
         } catch (Exception exception) {
             Logger.getLogger(Reflections.class.getName()).log(Level.SEVERE, null, exception);
             return null;
@@ -77,7 +77,7 @@ public class DefaultReflections implements Reflections {
     @Override
     public <T> T newInstance(Class<T> clazz) {
         try {
-            Constructor constructor = makeAccessible(clazz);
+            Constructor<T> constructor = makeAccessible(clazz);
             return newInstance(constructor);
         } catch (Exception exception) {
             Logger.getLogger(Reflections.class.getName()).log(Level.SEVERE, null, exception);
@@ -121,8 +121,8 @@ public class DefaultReflections implements Reflections {
     }
 
     @Override
-    public Constructor makeAccessible(Class clazz) {
-        List<Constructor> constructors = Stream.
+    public <T> Constructor<T> makeAccessible(Class<T> clazz) {
+        List<Constructor<?>> constructors = Stream.
                 of(clazz.getDeclaredConstructors())
                 .filter(c -> c.getParameterCount() == 0)
                 .collect(toList());
@@ -130,14 +130,17 @@ public class DefaultReflections implements Reflections {
         if (constructors.isEmpty()) {
             throw new ConstructorException(clazz);
         }
-        Optional<Constructor> publicConstructor = constructors.stream().filter(c -> Modifier.isPublic(c.getModifiers())).findFirst();
+        Optional<Constructor<?>> publicConstructor = constructors
+                .stream()
+                .filter(c -> Modifier.isPublic(c.getModifiers()))
+                .findFirst();
         if (publicConstructor.isPresent()) {
-            return publicConstructor.get();
+            return (Constructor<T>) publicConstructor.get();
         }
 
-        Constructor constructor = constructors.get(0);
+        Constructor<?> constructor = constructors.get(0);
         constructor.setAccessible(true);
-        return constructor;
+        return (Constructor<T>) constructor;
     }
 
     @Override
