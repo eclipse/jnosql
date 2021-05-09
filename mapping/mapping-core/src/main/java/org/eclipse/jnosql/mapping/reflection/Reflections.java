@@ -54,7 +54,7 @@ public interface Reflections {
      * @param <T>         the instance type
      * @return the new instance that class
      */
-    <T> T newInstance(Constructor constructor);
+    <T> T newInstance(Constructor<T> constructor);
 
 
     /**
@@ -109,10 +109,11 @@ public interface Reflections {
      * conflicts with a JVM SecurityManager (if active).
      *
      * @param clazz the class constructor acessible
+     * @param <T> the entity type
      * @return the constructor class
      * @throws ConstructorException when the constructor has public and default
      */
-    Constructor makeAccessible(Class clazz);
+    <T> Constructor<T> makeAccessible(Class<T> clazz);
 
     /**
      * Returns the name of the entity. So it tries to read the {@link Entity} otherwise
