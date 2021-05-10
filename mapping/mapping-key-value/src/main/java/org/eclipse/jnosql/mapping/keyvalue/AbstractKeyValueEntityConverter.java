@@ -51,7 +51,8 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
 
     @Override
     public <T> T toEntity(Class<T> entityClass, KeyValueEntity entity) {
-
+        requireNonNull(entityClass, "entityClass is required");
+        requireNonNull(entity, "entity is required");
         T bean = entity.getValue(entityClass);
         if (Objects.isNull(bean)) {
             return null;
