@@ -39,7 +39,7 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
 
     @Override
     public KeyValueEntity toKeyValue(Object entity) {
-        requireNonNull(entity, "Object is required");
+        requireNonNull(entity, "entity is required");
         Class<?> clazz = entity.getClass();
 
         FieldMapping key = getId(clazz);
