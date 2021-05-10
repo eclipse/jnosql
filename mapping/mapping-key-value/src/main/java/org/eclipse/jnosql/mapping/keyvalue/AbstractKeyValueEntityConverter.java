@@ -38,15 +38,15 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
     protected abstract Converters getConverters();
 
     @Override
-    public KeyValueEntity toKeyValue(Object entityInstance) {
-        requireNonNull(entityInstance, "Object is required");
-        Class<?> clazz = entityInstance.getClass();
+    public KeyValueEntity toKeyValue(Object entity) {
+        requireNonNull(entity, "Object is required");
+        Class<?> clazz = entity.getClass();
 
         FieldMapping key = getId(clazz);
-        Object value = key.read(entityInstance);
+        Object value = key.read(entity);
 
         requireNonNull(value, String.format("The key field %s is required", key.getName()));
-        return KeyValueEntity.of(getKey(value, clazz, false), entityInstance);
+        return KeyValueEntity.of(getKey(value, clazz, false), entity);
     }
 
     @Override
