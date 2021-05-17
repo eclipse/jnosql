@@ -201,15 +201,15 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
             FieldMapping field = fieldsGroupByName.get(k);
             if (EMBEDDED.equals(field.getType())) {
-                setEmbeddedField(instance, elements, field);
+                embeddedField(instance, elements, field);
             } else {
-                setSingleField(instance, element, field);
+                element.ifPresent(e -> singleField(instance, e, field));
             }
         };
     }
 
-    private <T, X, Y> void setSingleField(T instance, Optional<Property> element, FieldMapping field) {
-        Object value = element.get().value();
+    private <T, X, Y> void singleField(T instance, Property element, FieldMapping field) {
+        Object value = element.value();
         Optional<Class<? extends AttributeConverter<X, Y>>> converter = field.getConverter();
         if (converter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = getConverters().get(converter.get());
@@ -220,8 +220,8 @@ abstract class AbstractGraphConverter implements GraphConverter {
         }
     }
 
-    private <T> void setEmbeddedField(T instance, List<Property> elements,
-                                      FieldMapping field) {
+    private <T> void embeddedField(T instance, List<Property> elements,
+                                   FieldMapping field) {
         field.write(instance, toEntity(field.getNativeField().getType(), elements));
     }
 
