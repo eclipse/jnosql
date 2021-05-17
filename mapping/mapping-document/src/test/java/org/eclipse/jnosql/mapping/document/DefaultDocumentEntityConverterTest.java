@@ -29,7 +29,6 @@ import jakarta.nosql.tck.entities.Job;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.Movie;
 import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.User;
 import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.entities.ZipCode;
