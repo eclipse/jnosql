@@ -33,7 +33,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
+import org.eclipse.jnosql.mapping.column.ColumnFieldConverters.ColumnFieldConverterFactory;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
 import static java.util.Objects.requireNonNull;
@@ -45,7 +45,7 @@ import static java.util.Objects.requireNonNull;
  */
 public abstract class AbstractColumnEntityConverter implements ColumnEntityConverter {
 
-    private final ColumnFieldConverters.ColumnFieldConverterFactory converterFactory = new ColumnFieldConverters.ColumnFieldConverterFactory();
+    private final ColumnFieldConverterFactory converterFactory = new ColumnFieldConverterFactory();
 
     protected abstract ClassMappings getClassMappings();
 
