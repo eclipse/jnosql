@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
 
 import static org.eclipse.jnosql.mapping.reflection.FieldType.COLLECTION;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
