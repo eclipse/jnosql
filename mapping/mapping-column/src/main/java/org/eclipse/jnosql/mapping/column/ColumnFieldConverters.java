@@ -142,7 +142,6 @@ class ColumnFieldConverters {
                 }
                 field.write(instance, collection);
             }
-            ;
         }
     }
 }
