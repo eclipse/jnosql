@@ -31,10 +31,11 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import org.eclipse.jnosql.mapping.document.DocumentFieldConverters.DocumentFieldConverterFactory;
 
+import static java.util.Objects.requireNonNull;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
-import static java.util.Objects.requireNonNull;
 
 /**
  * Template method to {@link DocumentEntityConverter}
@@ -45,7 +46,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
 
     protected abstract Converters getConverters();
 
-    private final DocumentFieldConverters.DocumentFieldConverterFactory converterFactory = new DocumentFieldConverters.DocumentFieldConverterFactory();
+    private final DocumentFieldConverterFactory converterFactory = new DocumentFieldConverterFactory();
 
 
     @Override
