@@ -31,6 +31,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
 import org.eclipse.jnosql.mapping.document.DocumentFieldConverters.DocumentFieldConverterFactory;
 
 import static java.util.Objects.requireNonNull;
@@ -115,10 +116,9 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     protected <T> Consumer<String> feedObject(T instance, List<Document> documents, Map<String, FieldMapping> fieldsGroupByName) {
         return k -> {
             Optional<Document> document = documents.stream().filter(c -> c.getName().equals(k)).findFirst();
-
             FieldMapping field = fieldsGroupByName.get(k);
             DocumentFieldConverter fieldConverter = converterFactory.get(field);
-            fieldConverter.convert(instance, documents, document, field, this);
+            fieldConverter.convert(instance, documents, document.orElse(null), field, this);
         };
     }
 
