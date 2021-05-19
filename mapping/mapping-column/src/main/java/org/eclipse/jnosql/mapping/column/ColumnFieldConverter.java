@@ -19,7 +19,6 @@ import jakarta.nosql.column.Column;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 interface ColumnFieldConverter {
     <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMapping field,
