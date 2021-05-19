@@ -22,6 +22,6 @@ import java.util.Optional;
 
 interface DocumentFieldConverter {
 
-    <X, Y, T> void convert(T instance, List<Document> documents, Optional<Document> document, FieldMapping field,
+    <X, Y, T> void convert(T instance, List<Document> documents, Document document, FieldMapping field,
                      AbstractDocumentEntityConverter converter);
 }
