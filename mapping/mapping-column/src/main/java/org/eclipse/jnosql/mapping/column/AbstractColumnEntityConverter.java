@@ -98,7 +98,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
             Optional<Column> column = columns.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
             ColumnFieldConverter fieldConverter = converterFactory.get(field);
-            fieldConverter.convert(instance, columns, column, field, this);
+            fieldConverter.convert(instance, columns, column.orElse(null), field, this);
         };
     }
 
