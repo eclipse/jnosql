@@ -67,10 +67,14 @@ class DocumentFieldConverters {
                                       FieldMapping field, AbstractDocumentEntityConverter converter) {
 
             if (Objects.nonNull(document)) {
-                converterSubDocument(instance, document, field, converter);
+                convertEmbedded(instance, document, field, converter);
             } else {
                 field.write(instance, converter.toEntity(field.getNativeField().getType(), documents));
             }
+        }
+
+        private <T> void convertEmbedded(T instance, Document document, FieldMapping field, AbstractDocumentEntityConverter converter) {
+            converterSubDocument(instance, document, field, converter);
         }
 
         private <T> void converterSubDocument(T instance, Document sudDocument, FieldMapping field,
