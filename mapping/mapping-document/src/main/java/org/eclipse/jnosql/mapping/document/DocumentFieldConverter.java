@@ -18,7 +18,6 @@ import jakarta.nosql.document.Document;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 interface DocumentFieldConverter {
 
