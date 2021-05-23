@@ -56,7 +56,7 @@ public abstract class AbstractReactiveColumnRepositoryProxy<T> extends BaseColum
                 ColumnDeleteQuery columnDeleteQuery = getDeleteQuery(method, args);
                 Iterable<Void> iterable = () -> {
                     getTemplate().delete(columnDeleteQuery);
-                    return Collections.<Void>emptyList().iterator();
+                    return Collections.emptyIterator();
                 };
                 return ReactiveStreams.fromIterable(iterable).buildRs();
             case OBJECT_METHOD:

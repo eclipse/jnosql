@@ -87,7 +87,7 @@ public abstract class AbstractReactiveKeyValueTemplate implements ReactiveKeyVal
     public Observable<Void> query(String query) {
         final Iterable<Void> iterable = () -> {
             getTemplate().query(query);
-            return Collections.<Void>emptyList().iterator();
+            return Collections.emptyIterator();
         };
         return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
@@ -97,7 +97,7 @@ public abstract class AbstractReactiveKeyValueTemplate implements ReactiveKeyVal
     public <K> Observable<Void> delete(K key) {
         final Iterable<Void> iterable = () -> {
             getTemplate().delete(key);
-            return Collections.<Void>emptyList().iterator();
+            return Collections.emptyIterator();
         };
         return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
@@ -106,7 +106,7 @@ public abstract class AbstractReactiveKeyValueTemplate implements ReactiveKeyVal
     public <K> Observable<Void> delete(Iterable<K> keys) {
         final Iterable<Void> iterable = () -> {
             getTemplate().delete(keys);
-            return Collections.<Void>emptyList().iterator();
+            return Collections.emptyIterator();
         };
 
         return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());

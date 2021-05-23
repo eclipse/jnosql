@@ -55,7 +55,7 @@ public abstract class AbstractReactiveDocumentRepositoryProxy<T> extends BaseDoc
                 DocumentDeleteQuery documentDeleteQuery = getDeleteQuery(method, args);
                 Iterable<Void> iterable = () -> {
                     getTemplate().delete(documentDeleteQuery);
-                    return Collections.<Void>emptyList().iterator();
+                    return Collections.emptyIterator();
                 };
                 return ReactiveStreams.fromIterable(iterable).buildRs();
             case OBJECT_METHOD:

@@ -67,7 +67,7 @@ public abstract class AbstractReactiveDocumentTemplate implements ReactiveDocume
     public Observable<Void> delete(DocumentDeleteQuery query) {
         Iterable<Void> iterable = () -> {
             getTemplate().delete(query);
-            return Collections.<Void>emptyList().iterator();
+            return Collections.emptyIterator();
         };
         return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
@@ -107,7 +107,7 @@ public abstract class AbstractReactiveDocumentTemplate implements ReactiveDocume
     public <T, K> Observable<Void> delete(Class<T> entityClass, K id) {
         Iterable<Void> iterable = () -> {
             getTemplate().delete(entityClass, id);
-            return Collections.<Void>emptyList().iterator();
+            return Collections.emptyIterator();
         };
         return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());
     }
