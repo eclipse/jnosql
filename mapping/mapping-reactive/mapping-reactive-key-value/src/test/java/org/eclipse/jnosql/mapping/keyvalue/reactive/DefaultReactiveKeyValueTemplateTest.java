@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 import static java.util.Collections.singleton;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -184,7 +185,7 @@ class DefaultReactiveKeyValueTemplateTest {
                 .withAge(30)
                 .withName("Ada").build();
         Mockito.when(template.query("get 1", Person.class))
-                .thenReturn(singleton(ada).stream());
+                .thenReturn(Stream.of(ada));
         final Observable<Person> publisher = manager.query("get 1", Person.class);
         CompletionSubscriber<Person, Void> subscriber = ReactiveStreams.<Person>builder()
                 .forEach(people::add).build();
