@@ -85,7 +85,7 @@ public abstract class AbstractReactiveColumnTemplate implements ReactiveColumnTe
     @Override
     public <T> Observable<T> singleResult(String query) {
         Iterable<T> iterable = () -> {
-            final Optional<T> result = getTemplate().<T>singleResult(query);
+            final Optional<T> result = getTemplate().singleResult(query);
             return result.map(Collections::singleton).orElse(Collections.emptySet()).iterator();
         };
         return Observable.of(ReactiveStreams.fromIterable(iterable).buildRs());

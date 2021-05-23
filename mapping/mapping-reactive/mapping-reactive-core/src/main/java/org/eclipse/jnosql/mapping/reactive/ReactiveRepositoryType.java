@@ -25,7 +25,7 @@ import java.util.function.Predicate;
  */
 public final class ReactiveRepositoryType {
 
-    private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(ReactiveRepository.class);
+    private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.isEqual(ReactiveRepository.class);
 
     private ReactiveRepositoryType() {
     }
