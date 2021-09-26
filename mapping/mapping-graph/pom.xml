@@ -27,7 +27,7 @@
 
 
     <properties>
-        <tinkerpop.version>3.4.11</tinkerpop.version>
+        <tinkerpop.version>3.4.12</tinkerpop.version>
         <neo4j.connector.version>0.9-3.4.0</neo4j.connector.version>
     </properties>
     <dependencies>
