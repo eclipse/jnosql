@@ -28,8 +28,8 @@
 
 
     <properties>
-        <hibernate.validator.version>5.4.0.Final</hibernate.validator.version>
-        <el.impl.version>2.2.1-b05</el.impl.version>
+        <hibernate.validator.version>7.0.1.Final</hibernate.validator.version>
+        <el.impl.version>4.0.1</el.impl.version>
     </properties>
 
     <dependencies>
@@ -70,8 +70,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>el-impl</artifactId>
+            <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.el</artifactId>
             <version>${el.impl.version}</version>
             <scope>test</scope>
         </dependency>

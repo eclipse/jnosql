@@ -21,7 +21,7 @@ import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplateProducer
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reactive.ReactiveRepository;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.util.Objects;
 

@@ -23,7 +23,7 @@ import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.User;
 import org.mockito.Mockito;
 
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.inject.Produces;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;

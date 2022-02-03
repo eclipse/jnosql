@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 
 import static jakarta.nosql.column.ColumnQuery.select;

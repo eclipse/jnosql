@@ -20,7 +20,7 @@ import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class DocumentIntegration {
 

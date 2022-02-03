@@ -18,8 +18,8 @@ import jakarta.nosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 
 /**
  * The default {@link GraphTemplate}

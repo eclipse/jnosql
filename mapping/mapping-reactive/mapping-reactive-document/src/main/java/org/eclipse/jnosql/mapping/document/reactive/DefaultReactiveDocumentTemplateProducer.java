@@ -13,7 +13,7 @@ package org.eclipse.jnosql.mapping.document.reactive;
 
 import jakarta.nosql.mapping.document.DocumentTemplate;
 
-import javax.enterprise.inject.Vetoed;
+import jakarta.enterprise.inject.Vetoed;
 import java.util.Objects;
 
 class DefaultReactiveDocumentTemplateProducer implements ReactiveDocumentTemplateProducer{

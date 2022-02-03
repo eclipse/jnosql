@@ -21,7 +21,7 @@ import org.eclipse.jnosql.mapping.keyvalue.reactive.ReactiveKeyValueTemplate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @CDIExtension
 public class ReactiveKeyValueExtensionTest {

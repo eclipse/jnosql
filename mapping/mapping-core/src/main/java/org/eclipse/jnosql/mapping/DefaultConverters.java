@@ -19,11 +19,11 @@ import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.InstanceProducer;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.spi.CreationalContext;
+import jakarta.enterprise.inject.spi.Bean;
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.inject.Inject;
 import java.util.Iterator;
 import java.util.Objects;
 

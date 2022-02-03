@@ -18,7 +18,7 @@ import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplateProducer;
 import org.eclipse.jnosql.mapping.reactive.ReactiveRepository;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.util.Objects;
 

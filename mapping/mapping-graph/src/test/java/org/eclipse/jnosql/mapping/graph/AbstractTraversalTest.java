@@ -24,7 +24,7 @@ import org.eclipse.jnosql.mapping.graph.model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public abstract class AbstractTraversalTest {
 

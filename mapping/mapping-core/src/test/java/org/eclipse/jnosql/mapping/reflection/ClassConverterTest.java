@@ -25,7 +25,7 @@ import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.List;
 import java.util.function.Predicate;
 

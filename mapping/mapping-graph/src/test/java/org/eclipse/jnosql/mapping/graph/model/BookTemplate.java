@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph.model;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.Transactional;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class BookTemplate {
 

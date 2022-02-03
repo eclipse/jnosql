@@ -28,7 +28,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.reactivestreams.Publisher;
 
-import javax.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Instance;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;

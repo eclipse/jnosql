@@ -18,7 +18,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class GraphIntegration {
     private static final String GRAPH = "graph";

@@ -19,9 +19,9 @@ import jakarta.nosql.mapping.column.ColumnQueryMapper;
 import org.eclipse.jnosql.mapping.reflection.ClassMapping;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 
 import static java.util.Objects.requireNonNull;
 

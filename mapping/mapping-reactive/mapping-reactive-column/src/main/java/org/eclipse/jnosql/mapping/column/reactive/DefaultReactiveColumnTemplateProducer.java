@@ -13,7 +13,7 @@ package org.eclipse.jnosql.mapping.column.reactive;
 
 import jakarta.nosql.mapping.column.ColumnTemplate;
 
-import javax.enterprise.inject.Vetoed;
+import jakarta.enterprise.inject.Vetoed;
 import java.util.Objects;
 
 public class DefaultReactiveColumnTemplateProducer  implements ReactiveColumnTemplateProducer{

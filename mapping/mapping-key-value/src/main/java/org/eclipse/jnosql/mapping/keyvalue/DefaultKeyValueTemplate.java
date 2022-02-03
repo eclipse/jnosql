@@ -18,8 +18,8 @@ import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 
 class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {
 

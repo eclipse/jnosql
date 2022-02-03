@@ -20,9 +20,9 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.DefaultEntityPostPersist;
 import org.eclipse.jnosql.mapping.DefaultEntityPrePersist;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 class DefaultGraphEventPersistManager implements GraphEventPersistManager {

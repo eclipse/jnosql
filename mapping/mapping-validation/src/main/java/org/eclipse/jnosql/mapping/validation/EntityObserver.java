@@ -17,8 +17,8 @@ package org.eclipse.jnosql.mapping.validation;
 
 import jakarta.nosql.mapping.EntityPrePersist;
 
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
 
 class EntityObserver {
 

@@ -20,7 +20,7 @@ import jakarta.nosql.column.ColumnFamilyManagerFactory;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class ColumnIntegration {
 

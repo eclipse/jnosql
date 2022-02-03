@@ -25,8 +25,8 @@ import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
 
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.context.spi.CreationalContext;
+import jakarta.enterprise.inject.spi.BeanManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;

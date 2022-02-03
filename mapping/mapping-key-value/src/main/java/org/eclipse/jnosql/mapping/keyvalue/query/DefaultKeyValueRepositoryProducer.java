@@ -20,8 +20,8 @@ import jakarta.nosql.mapping.keyvalue.KeyValueRepositoryProducer;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.util.Objects;
 

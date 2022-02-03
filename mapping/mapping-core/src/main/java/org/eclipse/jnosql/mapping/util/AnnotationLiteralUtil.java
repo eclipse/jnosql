@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.util;
 
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Default;
-import javax.enterprise.util.AnnotationLiteral;
+import jakarta.enterprise.inject.Any;
+import jakarta.enterprise.inject.Default;
+import jakarta.enterprise.util.AnnotationLiteral;
 
 /**
  * Utilitarian class to Annotation Literal

@@ -18,9 +18,9 @@ import jakarta.nosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
-import javax.enterprise.inject.Instance;
-import javax.enterprise.util.TypeLiteral;
-import javax.inject.Inject;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.util.TypeLiteral;
+import jakarta.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.Iterator;

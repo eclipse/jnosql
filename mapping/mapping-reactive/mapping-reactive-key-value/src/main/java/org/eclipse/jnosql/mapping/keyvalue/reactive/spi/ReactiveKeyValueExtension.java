@@ -21,12 +21,12 @@ import org.eclipse.jnosql.mapping.Databases;
 import org.eclipse.jnosql.mapping.keyvalue.reactive.query.ReactiveRepositoryKeyValueBean;
 import org.eclipse.jnosql.mapping.reactive.ReactiveRepository;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.enterprise.inject.spi.ProcessProducer;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.inject.spi.Extension;
+import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
+import jakarta.enterprise.inject.spi.ProcessProducer;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,7 +38,7 @@ import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
 
 /**
  * Extension to start up {@link jakarta.nosql.mapping.keyvalue.KeyValueTemplate} and {@link ReactiveRepository}
- * from the {@link javax.enterprise.inject.Default} and {@link jakarta.nosql.mapping.Database} qualifier
+ * from the {@link jakarta.enterprise.inject.Default} and {@link jakarta.nosql.mapping.Database} qualifier
  */
 public class ReactiveKeyValueExtension implements Extension {
 

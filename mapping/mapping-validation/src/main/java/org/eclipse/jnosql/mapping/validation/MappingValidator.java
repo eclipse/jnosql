@@ -27,7 +27,7 @@ public interface MappingValidator {
      * @param bean the be to be validated
      * @param <T>  the type
      * @throws NullPointerException       when bean is null
-     * @throws javax.validation.ConstraintViolationException when {@link javax.validation.Validator#validate(Object, Class[])}
+     * @throws jakarta.validation.ConstraintViolationException when {@link jakarta.validation.Validator#validate(Object, Class[])}
      *                                    returns a non empty collection
      */
     <T> void validate(T bean);

@@ -15,8 +15,8 @@ import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.keyvalue.reactive.ReactiveKeyValueTemplateProducer;
 import org.eclipse.jnosql.mapping.reactive.ReactiveRepository;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.util.Objects;
 

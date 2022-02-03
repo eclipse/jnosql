@@ -24,7 +24,7 @@ import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.keyvalue.BucketManager;
 import org.mockito.Mockito;
 
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.inject.Produces;
 import java.math.BigDecimal;
 
 import static java.util.Collections.singletonList;

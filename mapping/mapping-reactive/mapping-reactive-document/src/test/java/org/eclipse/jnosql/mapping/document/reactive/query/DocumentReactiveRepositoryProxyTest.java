@@ -38,7 +38,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.reactivestreams.Publisher;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.util.Arrays;

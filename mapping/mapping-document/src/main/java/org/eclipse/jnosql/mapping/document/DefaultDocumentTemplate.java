@@ -21,8 +21,8 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 
 /**
  * The default implementation of {@link jakarta.nosql.mapping.document.DocumentTemplate}

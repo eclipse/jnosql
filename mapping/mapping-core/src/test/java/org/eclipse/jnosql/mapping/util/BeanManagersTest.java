@@ -18,9 +18,9 @@ import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.junit.jupiter.api.Test;
 
-import javax.enterprise.inject.Default;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
+import jakarta.enterprise.inject.Default;
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

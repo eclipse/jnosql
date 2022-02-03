@@ -24,9 +24,9 @@ import jakarta.nosql.mapping.document.DocumentTemplateProducer;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Vetoed;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Vetoed;
+import jakarta.inject.Inject;
 import java.util.Objects;
 
 /**

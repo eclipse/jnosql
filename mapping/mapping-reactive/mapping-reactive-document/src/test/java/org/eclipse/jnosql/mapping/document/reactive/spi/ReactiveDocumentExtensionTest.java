@@ -20,7 +20,7 @@ import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplate;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

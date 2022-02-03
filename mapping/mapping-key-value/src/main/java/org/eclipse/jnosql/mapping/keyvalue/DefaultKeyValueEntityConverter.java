@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * The default implementation of {@link KeyValueEntityConverter}

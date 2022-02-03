@@ -22,7 +22,7 @@ import org.eclipse.jnosql.mapping.graph.model.BookTemplate;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.apache.tinkerpop.gremlin.structure.Transaction.Status.COMMIT;

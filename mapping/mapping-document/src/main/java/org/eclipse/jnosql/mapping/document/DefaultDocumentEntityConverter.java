@@ -18,8 +18,8 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 /**
  * The default implementation of {@link DocumentEntityConverter}

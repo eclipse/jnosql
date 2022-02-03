@@ -13,7 +13,7 @@ package org.eclipse.jnosql.mapping.keyvalue.reactive;
 
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 
-import javax.enterprise.inject.Vetoed;
+import jakarta.enterprise.inject.Vetoed;
 import java.util.Objects;
 
 class DefaultReactiveKeyValueTemplateProducer implements ReactiveKeyValueTemplateProducer {

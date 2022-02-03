@@ -22,7 +22,7 @@ import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import org.mockito.Mockito;
 
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.inject.Produces;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

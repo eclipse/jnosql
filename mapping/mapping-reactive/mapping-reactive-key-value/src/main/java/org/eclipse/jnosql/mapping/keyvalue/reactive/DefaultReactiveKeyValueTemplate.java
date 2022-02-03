@@ -13,8 +13,8 @@ package org.eclipse.jnosql.mapping.keyvalue.reactive;
 
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 
 class DefaultReactiveKeyValueTemplate extends AbstractReactiveKeyValueTemplate {
 

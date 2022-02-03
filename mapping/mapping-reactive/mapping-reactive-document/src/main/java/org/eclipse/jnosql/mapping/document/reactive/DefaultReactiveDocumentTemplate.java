@@ -13,8 +13,8 @@ package org.eclipse.jnosql.mapping.document.reactive;
 
 import jakarta.nosql.mapping.document.DocumentTemplate;
 
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 
 class DefaultReactiveDocumentTemplate extends AbstractReactiveDocumentTemplate {
 

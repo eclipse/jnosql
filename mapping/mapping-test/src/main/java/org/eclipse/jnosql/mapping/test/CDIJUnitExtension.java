@@ -21,11 +21,11 @@ import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.commons.util.AnnotationUtils;
 
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.se.SeContainer;
-import javax.enterprise.inject.spi.AnnotatedType;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionTarget;
+import jakarta.enterprise.context.spi.CreationalContext;
+import jakarta.enterprise.inject.se.SeContainer;
+import jakarta.enterprise.inject.spi.AnnotatedType;
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.inject.spi.InjectionTarget;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 

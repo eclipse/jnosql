@@ -26,7 +26,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import javax.enterprise.inject.Instance;
+import jakarta.enterprise.inject.Instance;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
