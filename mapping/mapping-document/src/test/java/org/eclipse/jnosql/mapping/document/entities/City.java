@@ -14,5 +14,49 @@
  */
 package org.eclipse.jnosql.mapping.document.entities;
 
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Entity;
+
+import java.util.Objects;
+
+@Entity
 public class City {
+
+    @Column
+    private String id;
+
+    @Column
+    private String name;
+
+    @Deprecated
+    public City() {
+    }
+
+
+    private City(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    public static City of(String id, String name) {
+        Objects.requireNonNull(id, "id is required");
+        Objects.requireNonNull(name, "name is required");
+        return new City(id, name);
+    }
 }
