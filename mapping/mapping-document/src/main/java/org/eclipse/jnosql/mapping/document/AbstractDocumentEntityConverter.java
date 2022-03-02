@@ -141,7 +141,6 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         }
     }
 
-
     private DocumentFieldValue to(FieldMapping field, Object entityInstance) {
         Object value = field.read(entityInstance);
         return DefaultDocumentFieldValue.of(value, field);
