@@ -100,28 +100,13 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
             FieldMapping field = fieldsGroupByName.get(k);
             ColumnFieldConverter fieldConverter = converterFactory.get(field);
             if (SUB_ENTITY.equals(field.getType())) {
-                feedSubEntity(instance, column, field, fieldConverter);
+                fieldConverter.convert(instance, null, column.orElse(null), field, this);
             } else {
                 fieldConverter.convert(instance, columns, column.orElse(null), field, this);
             }
         };
     }
 
-    private <T> void feedSubEntity(T instance, Optional<Column> column, FieldMapping field,
-                                   ColumnFieldConverter fieldConverter) {
-        if (column.isPresent()) {
-            Object value = column.get().get();
-            List<Column> documents;
-            if (value instanceof Map) {
-                documents = Columns.of((Map<String, ?>) value);
-            } else {
-                documents = (List<Column>) value;
-            }
-            fieldConverter.convert(instance, null, column.orElse(null), field, this);
-        } else {
-            return;
-        }
-    }
 
     protected <T> T toEntity(Class<T> entityClass, List<Column> columns) {
         ClassMapping mapping = getClassMappings().get(entityClass);
