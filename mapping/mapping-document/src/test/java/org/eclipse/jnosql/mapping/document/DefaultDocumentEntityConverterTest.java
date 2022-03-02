@@ -297,6 +297,19 @@ public class DefaultDocumentEntityConverterTest {
     }
 
     @Test
+    public void shouldConvertEmbeddableLazily() {
+        DocumentEntity entity = DocumentEntity.of("Worker");
+        entity.add("name", "Otavio");
+        entity.add("money", "BRL 10");
+
+        Worker worker = converter.toEntity(entity);
+        assertEquals("Otavio", worker.getName());
+        assertEquals(new Money("BRL", BigDecimal.TEN), worker.getSalary());
+        Assertions.assertNull(worker.getJob());
+
+    }
+
+    @Test
     public void shouldConvertToListEmbeddable() {
         AppointmentBook appointmentBook = new AppointmentBook("ids");
         appointmentBook.add(Contact.builder().withType(ContactType.EMAIL)
