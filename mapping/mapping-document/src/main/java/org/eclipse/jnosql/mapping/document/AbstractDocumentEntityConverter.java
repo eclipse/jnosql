@@ -119,33 +119,18 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
             FieldMapping field = fieldsGroupByName.get(k);
             DocumentFieldConverter fieldConverter = converterFactory.get(field);
             if (SUB_ENTITY.equals(field.getType())) {
-                feedSubEntity(instance, document, field, fieldConverter);
+                if (document.isPresent()) {
+                    fieldConverter.convert(instance, null, document.orElse(null), field, this);
+                }
             } else {
                 fieldConverter.convert(instance, documents, document.orElse(null), field, this);
             }
         };
     }
 
-    private <T> void feedSubEntity(T instance, Optional<Document> document, FieldMapping field,
-                                   DocumentFieldConverter fieldConverter) {
-        if (document.isPresent()) {
-            Object value = document.get().get();
-            List<Document> documents;
-            if (value instanceof Map) {
-                documents = Documents.of((Map<String, ?>) value);
-            } else {
-                documents = (List<Document>) value;
-            }
-            fieldConverter.convert(instance, null, document.orElse(null), field, this);
-        } else {
-            return;
-        }
-    }
-
     private DocumentFieldValue to(FieldMapping field, Object entityInstance) {
         Object value = field.read(entityInstance);
         return DefaultDocumentFieldValue.of(value, field);
     }
-
 
 }
