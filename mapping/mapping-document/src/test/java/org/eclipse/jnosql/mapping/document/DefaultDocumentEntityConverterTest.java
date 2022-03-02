@@ -33,8 +33,10 @@ import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.entities.ZipCode;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.document.entities.Citizen;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -380,7 +382,7 @@ public class DefaultDocumentEntityConverterTest {
         assertEquals("Salvador", address.getCity());
         assertEquals("Bahia", address.getState());
         assertEquals("12321", address.getZipCode().getZip());
-        assertEquals("1234",  address.getZipCode().getPlusFour());
+        assertEquals("1234", address.getZipCode().getPlusFour());
 
     }
 
@@ -436,9 +438,9 @@ public class DefaultDocumentEntityConverterTest {
 
         UserScope user = converter.toEntity(entity);
         Assertions.assertNotNull(user);
-        Assertions.assertEquals("userName",user.getUserName());
-        Assertions.assertEquals("scope",user.getScope());
-        Assertions.assertEquals(Collections.singletonMap("halo", "weld"),user.getProperties());
+        Assertions.assertEquals("userName", user.getUserName());
+        Assertions.assertEquals("scope", user.getScope());
+        Assertions.assertEquals(Collections.singletonMap("halo", "weld"), user.getProperties());
 
     }
 
@@ -451,14 +453,25 @@ public class DefaultDocumentEntityConverterTest {
 
         UserScope user = converter.toEntity(entity);
         Assertions.assertNotNull(user);
-        Assertions.assertEquals("userName",user.getUserName());
-        Assertions.assertEquals("scope",user.getScope());
-        Assertions.assertEquals(Collections.singletonMap("halo", "weld"),user.getProperties());
+        Assertions.assertEquals("userName", user.getUserName());
+        Assertions.assertEquals("scope", user.getScope());
+        Assertions.assertEquals(Collections.singletonMap("halo", "weld"), user.getProperties());
 
     }
 
     private Object getValue(Optional<Document> document) {
         return document.map(Document::getValue).map(Value::get).orElse(null);
+    }
+
+    @Test
+    public void shouldCreateLazilyEntity() {
+        DocumentEntity entity = DocumentEntity.of("Citizen");
+        entity.add("id", "10");
+        entity.add("name", "Salvador");
+
+        Citizen citizen = converter.toEntity(entity);
+        Assertions.assertNotNull(citizen);
+        Assertions.assertNull(citizen.getCity());
     }
 
 }
