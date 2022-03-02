@@ -123,7 +123,6 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
             if (SUB_ENTITY.equals(field.getType())) {
                 feedSubEntity(instance, document, field, fieldConverter);
             } else {
-
                 fieldConverter.convert(instance, documents, document.orElse(null), field, this);
             }
         };

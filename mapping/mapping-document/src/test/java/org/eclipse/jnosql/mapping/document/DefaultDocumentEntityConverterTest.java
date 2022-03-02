@@ -216,7 +216,6 @@ public class DefaultDocumentEntityConverterTest {
         assertEquals(director.getId(), director1.getId());
     }
 
-
     @Test
     public void shouldConvertToEmbeddedClassWhenHasSubDocument2() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
@@ -227,9 +226,9 @@ public class DefaultDocumentEntityConverterTest {
 
         DocumentEntity entity = converter.toDocument(director);
         entity.remove("movie");
-        entity.add(Document.of("title", "Matrix"));
-        entity.add(Document.of("year", 2012));
-        entity.add(Document.of("actors", singleton("Actor")));
+        entity.add(Document.of("movie", Arrays.asList(Document.of("title", "Matrix"),
+                Document.of("year", 2012), Document.of("actors", singleton("Actor")))));
+
         Director director1 = converter.toEntity(entity);
 
         assertEquals(movie, director1.getMovie());
