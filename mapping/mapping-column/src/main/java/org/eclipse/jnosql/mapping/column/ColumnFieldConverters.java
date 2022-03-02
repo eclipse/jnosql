@@ -68,13 +68,14 @@ class ColumnFieldConverters {
                                       AbstractColumnEntityConverter converter) {
 
             if (Objects.nonNull(subColumn)) {
-                convertEmbedded(instance, subColumn, field, converter);
+                converterSubDocument(instance, subColumn, field, converter);
             } else {
                 field.write(instance, converter.toEntity(field.getNativeField().getType(), columns));
             }
         }
 
-        private <T> void convertEmbedded(T instance, Column subColumn, FieldMapping field, AbstractColumnEntityConverter converter) {
+        private <T> void converterSubDocument(T instance, Column subColumn, FieldMapping field,
+                                              AbstractColumnEntityConverter converter) {
             Object value = subColumn.get();
             if (value instanceof Map) {
                 Map map = (Map) value;
