@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
+import jakarta.nosql.column.Columns;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.ClassMapping;
@@ -98,8 +99,28 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
             Optional<Column> column = columns.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
             ColumnFieldConverter fieldConverter = converterFactory.get(field);
-            fieldConverter.convert(instance, columns, column.orElse(null), field, this);
+            if (SUB_ENTITY.equals(field.getType())) {
+                feedSubEntity(instance, column, field, fieldConverter);
+            } else {
+                fieldConverter.convert(instance, columns, column.orElse(null), field, this);
+            }
         };
+    }
+
+    private <T> void feedSubEntity(T instance, Optional<Column> column, FieldMapping field,
+                                   ColumnFieldConverter fieldConverter) {
+        if (column.isPresent()) {
+            Object value = column.get().get();
+            List<Column> documents;
+            if (value instanceof Map) {
+                documents = Columns.of((Map<String, ?>) value);
+            } else {
+                documents = (List<Column>) value;
+            }
+            fieldConverter.convert(instance, null, column.orElse(null), field, this);
+        } else {
+            return;
+        }
     }
 
     protected <T> T toEntity(Class<T> entityClass, List<Column> columns) {
