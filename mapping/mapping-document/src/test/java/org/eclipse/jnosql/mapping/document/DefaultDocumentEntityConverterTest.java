@@ -373,8 +373,9 @@ public class DefaultDocumentEntityConverterTest {
         entity.add(Document.of("street", "Rua Engenheiro Jose Anasoh"));
         entity.add(Document.of("city", "Salvador"));
         entity.add(Document.of("state", "Bahia"));
-        entity.add(Document.of("zip", "12321"));
-        entity.add(Document.of("plusFour", "1234"));
+        entity.add(Document.of("zipCode", Arrays.asList(
+                Document.of("zip", "12321"),
+                Document.of("plusFour", "1234"))));
 
         Address address = converter.toEntity(entity);
 
