@@ -299,9 +299,12 @@ public class DefaultDocumentEntityConverterTest {
     @Test
     public void shouldConvertToListEmbeddable() {
         AppointmentBook appointmentBook = new AppointmentBook("ids");
-        appointmentBook.add(Contact.builder().withType(ContactType.EMAIL).withName("Ada").withInformation("ada@lovelace.com").build());
-        appointmentBook.add(Contact.builder().withType(ContactType.MOBILE).withName("Ada").withInformation("11 1231231 123").build());
-        appointmentBook.add(Contact.builder().withType(ContactType.PHONE).withName("Ada").withInformation("12 123 1231 123123").build());
+        appointmentBook.add(Contact.builder().withType(ContactType.EMAIL)
+                .withName("Ada").withInformation("ada@lovelace.com").build());
+        appointmentBook.add(Contact.builder().withType(ContactType.MOBILE)
+                .withName("Ada").withInformation("11 1231231 123").build());
+        appointmentBook.add(Contact.builder().withType(ContactType.PHONE)
+                .withName("Ada").withInformation("12 123 1231 123123").build());
 
         DocumentEntity entity = converter.toDocument(appointmentBook);
         Document contacts = entity.find("contacts").get();
