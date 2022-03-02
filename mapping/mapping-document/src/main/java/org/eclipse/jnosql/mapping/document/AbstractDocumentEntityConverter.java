@@ -14,12 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.Documents;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.mapping.document.DocumentFieldConverters.DocumentFieldConverterFactory;
 import org.eclipse.jnosql.mapping.reflection.ClassMapping;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
@@ -33,8 +33,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import org.eclipse.jnosql.mapping.document.DocumentFieldConverters.DocumentFieldConverterFactory;
 
 import static java.util.Objects.requireNonNull;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
