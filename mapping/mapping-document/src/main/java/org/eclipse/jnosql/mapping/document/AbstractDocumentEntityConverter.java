@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
+import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
@@ -118,8 +119,23 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
             Optional<Document> document = documents.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
             DocumentFieldConverter fieldConverter = converterFactory.get(field);
-            fieldConverter.convert(instance, documents, document.orElse(null), field, this);
+            if (SUB_ENTITY.equals(field.getType())) {
+                feedSubEntity(instance, document, field, fieldConverter);
+            } else {
+
+                fieldConverter.convert(instance, documents, document.orElse(null), field, this);
+            }
         };
+    }
+
+    private <T> void feedSubEntity(T instance, Optional<Document> document, FieldMapping field, DocumentFieldConverter fieldConverter) {
+        if (document.isPresent()) {
+            List<Document> documents = document.get().get(new TypeReference<List<Document>>() {
+            });
+            fieldConverter.convert(instance, documents, document.orElse(null), field, this);
+        } else {
+            return;
+        }
     }
 
 
