@@ -126,7 +126,8 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         };
     }
 
-    private <T> void feedSubEntity(T instance, Optional<Document> document, FieldMapping field, DocumentFieldConverter fieldConverter) {
+    private <T> void feedSubEntity(T instance, Optional<Document> document, FieldMapping field,
+                                   DocumentFieldConverter fieldConverter) {
         if (document.isPresent()) {
             Object value = document.get().get();
             List<Document> documents;
