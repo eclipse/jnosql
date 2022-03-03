@@ -118,9 +118,8 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
             FieldMapping field = fieldsGroupByName.get(k);
             DocumentFieldConverter fieldConverter = converterFactory.get(field);
             if (SUB_ENTITY.equals(field.getType())) {
-                if (document.isPresent()) {
-                    fieldConverter.convert(instance, null, document.orElse(null), field, this);
-                }
+                document.ifPresent(d ->   fieldConverter.convert(instance,
+                        null, d, field, this));
             } else {
                 fieldConverter.convert(instance, documents, document.orElse(null), field, this);
             }
