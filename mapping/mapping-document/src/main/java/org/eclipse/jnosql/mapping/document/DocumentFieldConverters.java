@@ -18,6 +18,7 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.mapping.AttributeConverter;
+import org.eclipse.jnosql.mapping.reflection.ClassMapping;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
 
@@ -67,14 +68,10 @@ class DocumentFieldConverters {
                                       FieldMapping field, AbstractDocumentEntityConverter converter) {
 
             if (Objects.nonNull(document)) {
-                convertEmbedded(instance, document, field, converter);
+                converterSubDocument(instance, document, field, converter);
             } else {
                 field.write(instance, converter.toEntity(field.getNativeField().getType(), documents));
             }
-        }
-
-        private <T> void convertEmbedded(T instance, Document document, FieldMapping field, AbstractDocumentEntityConverter converter) {
-            converterSubDocument(instance, document, field, converter);
         }
 
         private <T> void converterSubDocument(T instance, Document sudDocument, FieldMapping field,
@@ -106,7 +103,14 @@ class DocumentFieldConverters {
 
             Field nativeField = field.getNativeField();
             Object subEntity = converter.toEntity(nativeField.getType(), documents);
-            field.write(instance, subEntity);
+            ClassMapping mapping = converter.getClassMappings().get(subEntity.getClass());
+            boolean areAllFieldsNull = mapping.getFields()
+                    .stream()
+                    .map(f -> f.read(subEntity))
+                    .allMatch(Objects::isNull);
+            if (!areAllFieldsNull) {
+                field.write(instance, subEntity);
+            }
 
         }
     }

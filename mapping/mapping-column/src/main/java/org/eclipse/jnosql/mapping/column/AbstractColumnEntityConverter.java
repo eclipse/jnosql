@@ -18,13 +18,12 @@ import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import org.eclipse.jnosql.mapping.column.ColumnFieldConverters.ColumnFieldConverterFactory;
 import org.eclipse.jnosql.mapping.reflection.ClassMapping;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.FieldType;
-
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
-
 
 import java.util.Collections;
 import java.util.List;
@@ -33,10 +32,10 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import org.eclipse.jnosql.mapping.column.ColumnFieldConverters.ColumnFieldConverterFactory;
+
+import static java.util.Objects.requireNonNull;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
-import static java.util.Objects.requireNonNull;
 
 
 
@@ -98,9 +97,16 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
             Optional<Column> column = columns.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
             ColumnFieldConverter fieldConverter = converterFactory.get(field);
-            fieldConverter.convert(instance, columns, column.orElse(null), field, this);
+            if (SUB_ENTITY.equals(field.getType())) {
+                if (column.isPresent()) {
+                    fieldConverter.convert(instance, null, column.orElse(null), field, this);
+                }
+            } else {
+                fieldConverter.convert(instance, columns, column.orElse(null), field, this);
+            }
         };
     }
+
 
     protected <T> T toEntity(Class<T> entityClass, List<Column> columns) {
         ClassMapping mapping = getClassMappings().get(entityClass);
