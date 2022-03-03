@@ -14,7 +14,7 @@
  */
 
 /**
- *This package contains all objects to use a Document Collection. This API gonna focus in domain, in other words,
+ *This package contains all objects to use a Document Collection. This API has focus in domain, in other words,
  * ubiquitous language.
  *  A document-oriented database, or document store,
  * is a computer program designed for storing, retrieving, and managing document-oriented information,
@@ -36,7 +36,7 @@
  * Document databases store all information for a given object in a single instance in the database, and every stored
  * object can be different from every other.
  * This makes mapping objects into the database a simple task, normally eliminating anything similar to an
- * object-relational mapping. This makes document stores attractive
+ * object-relational mapping. These makes document stores attractive
  * for programming web applications, which are subject to continual change in place, and where speed of deployment
  * is an important issue.
  */

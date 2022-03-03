@@ -23,4 +23,9 @@ import java.util.List;
 interface ColumnFieldConverter {
     <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMapping field,
                      AbstractColumnEntityConverter converter);
+
+    default <X, Y, T> void convert(T instance, Column column, FieldMapping field,
+                           AbstractColumnEntityConverter converter) {
+        convert(instance, null, column, field, converter);
+    }
 }

@@ -98,9 +98,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
             FieldMapping field = fieldsGroupByName.get(k);
             ColumnFieldConverter fieldConverter = converterFactory.get(field);
             if (SUB_ENTITY.equals(field.getType())) {
-                if (column.isPresent()) {
-                    fieldConverter.convert(instance, null, column.orElse(null), field, this);
-                }
+                column.ifPresent(c -> fieldConverter.convert(instance,  c, field, this));
             } else {
                 fieldConverter.convert(instance, columns, column.orElse(null), field, this);
             }
