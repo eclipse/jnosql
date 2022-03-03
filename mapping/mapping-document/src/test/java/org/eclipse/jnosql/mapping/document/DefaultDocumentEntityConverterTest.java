@@ -57,6 +57,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -305,7 +306,7 @@ public class DefaultDocumentEntityConverterTest {
         Worker worker = converter.toEntity(entity);
         assertEquals("Otavio", worker.getName());
         assertEquals(new Money("BRL", BigDecimal.TEN), worker.getSalary());
-        Assertions.assertNull(worker.getJob());
+        assertNull(worker.getJob());
 
     }
 
@@ -402,6 +403,26 @@ public class DefaultDocumentEntityConverterTest {
 
     }
 
+    @Test
+    public void shouldReturnNullWhenThereIsNotSubEntity() {
+
+        DocumentEntity entity = DocumentEntity.of("Address");
+
+        entity.add(Document.of("street", "Rua Engenheiro Jose Anasoh"));
+        entity.add(Document.of("city", "Salvador"));
+        entity.add(Document.of("state", "Bahia"));
+        entity.add(Document.of("zip", "12321"));
+        entity.add(Document.of("plusFour", "1234"));
+
+        Address address = converter.toEntity(entity);
+
+        assertEquals("Rua Engenheiro Jose Anasoh", address.getStreet());
+        assertEquals("Salvador", address.getCity());
+        assertEquals("Bahia", address.getState());
+        assertNull(address.getZipCode());
+
+    }
+
 
     @Test
     public void shouldConvertAndDoNotUseUnmodifiableCollection() {
@@ -487,7 +508,8 @@ public class DefaultDocumentEntityConverterTest {
 
         Citizen citizen = converter.toEntity(entity);
         Assertions.assertNotNull(citizen);
-        Assertions.assertNull(citizen.getCity());
+        assertNull(citizen.getCity());
     }
+
 
 }
