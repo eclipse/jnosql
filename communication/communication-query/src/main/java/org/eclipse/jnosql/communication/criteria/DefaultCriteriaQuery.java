@@ -17,6 +17,7 @@ package org.eclipse.jnosql.communication.criteria;
 import jakarta.nosql.criteria.CriteriaFunction;
 import jakarta.nosql.criteria.CriteriaQuery;
 import jakarta.nosql.criteria.Expression;
+import jakarta.nosql.criteria.ExpressionQuery;
 import jakarta.nosql.criteria.FunctionQuery;
 import jakarta.nosql.criteria.Root;
 import jakarta.nosql.criteria.SelectQuery;
@@ -37,13 +38,18 @@ public class DefaultCriteriaQuery<T extends Object> extends AbstractGenericType<
     }    
 
     @Override
+    public SelectQuery<T> select() {
+        return new DefaultSelectQuery<>(this.getType());
+    }
+    
+    @Override
     public FunctionQuery<T> select(CriteriaFunction<T, ?, ?>... functions) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return new DefaultFunctionQuery<>(this.getType(), functions);
     }
 
     @Override
-    public SelectQuery<T> select(Expression<T, ?>... expressions) {
-        return new DefaultSelectQuery<>(this.getType(), expressions);
+    public ExpressionQuery<T> select(Expression<T, ?>... expressions) {
+        return new DefaultExpressionQuery<>(this.getType(), expressions);
     }
     
 }

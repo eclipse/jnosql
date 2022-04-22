@@ -14,29 +14,24 @@
  */
 package org.eclipse.jnosql.communication.criteria;
 
-import jakarta.nosql.criteria.Expression;
 import jakarta.nosql.criteria.Order;
 import jakarta.nosql.criteria.SelectQuery;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
-public class DefaultSelectQuery<T extends Object> extends AbstractRestrictedQuery<T, DefaultSelectQueryResult<T>, DefaultSelectQuery<T>> implements SelectQuery<T> {
-    
-    private final Collection<Expression<T, ?>> expressions;
+public class DefaultSelectQuery<
+        T extends Object,
+        R extends DefaultSelectQueryResult<T>,
+        Q extends DefaultSelectQuery<T, R, Q>
+    > extends AbstractRestrictedQuery<T, DefaultSelectQueryResult<T>, Q> implements SelectQuery<T> {
+
     private List<Order<T>> sortings;
     private Integer maxResults;
     private Integer firstResult;
 
-    public DefaultSelectQuery(Class<T> type, Expression<T, ?>... expressions) {
+    public DefaultSelectQuery(Class<T> type) {
         super(type);
-        this.expressions = Arrays.asList(expressions);
     }
 
-    public Collection<Expression<T, ?>> getExpressions() {
-        return expressions;
-    }
-    
     @Override
     public SelectQuery<T> orderBy(List<Order<T>> sortings) {
         this.sortings = sortings;
@@ -66,5 +61,5 @@ public class DefaultSelectQuery<T extends Object> extends AbstractRestrictedQuer
     public Integer getFirstResult() {
         return firstResult;
     }
-    
+
 }
