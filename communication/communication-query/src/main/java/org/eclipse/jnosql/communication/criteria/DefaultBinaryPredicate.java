@@ -14,22 +14,32 @@
  */
 package org.eclipse.jnosql.communication.criteria;
 
+import jakarta.nosql.criteria.BinaryPredicate;
 import jakarta.nosql.criteria.Expression;
 
-public abstract class AbstractBinaryPredicate<X extends Object, T extends Object, LHS extends Expression<X, T>, RHS> extends AbstractPredicate<X> {
+public class DefaultBinaryPredicate<X extends Object, LHS, RHS> extends AbstractPredicate<X> implements BinaryPredicate<X, LHS, RHS> {
 
-    private final LHS left;
+    private final Operator operator;
+    private final Expression<X, LHS> left;
     private final RHS right;
     
-    public AbstractBinaryPredicate(LHS left, RHS right) {
+    public DefaultBinaryPredicate(Operator operator, Expression<X, LHS> left, RHS right) {
+        this.operator = operator;
         this.left = left;
         this.right = right;
     }
 
-    public LHS getLeft() {
+    @Override
+    public Operator getOperator() {
+        return this.operator;
+    }
+
+    @Override
+    public Expression<X, LHS> getLeft() {
         return left;
     }
 
+    @Override
     public RHS getRight() {
         return right;
     }

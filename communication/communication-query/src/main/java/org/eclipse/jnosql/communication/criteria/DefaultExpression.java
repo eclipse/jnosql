@@ -14,25 +14,25 @@
  */
 package org.eclipse.jnosql.communication.criteria;
 
+import jakarta.nosql.criteria.BinaryPredicate;
 import jakarta.nosql.criteria.Expression;
-import jakarta.nosql.criteria.Predicate;
 import java.util.Collection;
 
 public class DefaultExpression<X extends Object, T extends Object> implements Expression<X, T> {
 
     @Override
-    public Predicate<X> equal(Expression<X, T> expression) {
-        return new ExpressionEqualityPredicate<>(this, expression);
+    public BinaryPredicate<X, T, Expression<X, T>> equal(Expression<X, T> expression) {
+        return new DefaultBinaryPredicate(BinaryPredicate.Operator.EQUAL, this, expression);
     }
 
     @Override
-    public Predicate<X> equal(T value) {
-        return new ValueEqualityPredicate<>(this, value);
+    public BinaryPredicate<X, T, T> equal(T value) {
+        return new DefaultBinaryPredicate(BinaryPredicate.Operator.EQUAL, this, value);
     }
 
     @Override
-    public Predicate<X> in(Collection<T> values) {
-        return new IncludedPredicate<>(this, values);
-    }  
+    public BinaryPredicate<X, T, Collection<T>> in(Collection<T> values) {
+        return new DefaultBinaryPredicate(BinaryPredicate.Operator.IN, this, values);
+    }
     
 }
