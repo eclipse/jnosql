@@ -17,6 +17,9 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.nosql.criteria.CriteriaQuery;
+import jakarta.nosql.criteria.CriteriaQueryResult;
+import jakarta.nosql.criteria.ExecutableQuery;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
@@ -48,6 +51,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
+import org.eclipse.jnosql.communication.criteria.DefaultCriteriaQuery;
 
 /**
  * This class provides a skeletal implementation of the {@link DocumentTemplate} interface,
@@ -240,5 +244,15 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return entities.map(function);
     }
 
+    @Override
+    public <T extends Object> CriteriaQuery<T> createQuery(Class<T> type) {
+        return new DefaultCriteriaQuery<>(type);
+    }
+    
+    @Override
+    public <T extends Object, R extends CriteriaQueryResult<T>> R query(ExecutableQuery<T, R> criteriaQuery) {
+        return null;
+    }
+    
 
 }
