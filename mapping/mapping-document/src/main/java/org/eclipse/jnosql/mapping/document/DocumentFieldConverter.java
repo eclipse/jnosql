@@ -22,5 +22,11 @@ import java.util.List;
 interface DocumentFieldConverter {
 
     <X, Y, T> void convert(T instance, List<Document> documents, Document document, FieldMapping field,
-                     AbstractDocumentEntityConverter converter);
+                           AbstractDocumentEntityConverter converter);
+
+    default <X, Y, T> void convert(T instance, Document document, FieldMapping field,
+                                   AbstractDocumentEntityConverter converter) {
+        convert(instance, null, document, field, converter);
+    }
+
 }

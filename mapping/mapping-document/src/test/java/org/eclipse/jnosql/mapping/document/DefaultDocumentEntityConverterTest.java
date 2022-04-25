@@ -33,8 +33,10 @@ import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.entities.ZipCode;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.document.entities.Citizen;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
@@ -55,6 +57,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -214,7 +217,6 @@ public class DefaultDocumentEntityConverterTest {
         assertEquals(director.getId(), director1.getId());
     }
 
-
     @Test
     public void shouldConvertToEmbeddedClassWhenHasSubDocument2() {
         Movie movie = new Movie("Matrix", 2012, singleton("Actor"));
@@ -225,9 +227,9 @@ public class DefaultDocumentEntityConverterTest {
 
         DocumentEntity entity = converter.toDocument(director);
         entity.remove("movie");
-        entity.add(Document.of("title", "Matrix"));
-        entity.add(Document.of("year", 2012));
-        entity.add(Document.of("actors", singleton("Actor")));
+        entity.add(Document.of("movie", Arrays.asList(Document.of("title", "Matrix"),
+                Document.of("year", 2012), Document.of("actors", singleton("Actor")))));
+
         Director director1 = converter.toEntity(entity);
 
         assertEquals(movie, director1.getMovie());
@@ -296,11 +298,27 @@ public class DefaultDocumentEntityConverterTest {
     }
 
     @Test
+    public void shouldConvertEmbeddableLazily() {
+        DocumentEntity entity = DocumentEntity.of("Worker");
+        entity.add("name", "Otavio");
+        entity.add("money", "BRL 10");
+
+        Worker worker = converter.toEntity(entity);
+        assertEquals("Otavio", worker.getName());
+        assertEquals(new Money("BRL", BigDecimal.TEN), worker.getSalary());
+        assertNull(worker.getJob());
+
+    }
+
+    @Test
     public void shouldConvertToListEmbeddable() {
         AppointmentBook appointmentBook = new AppointmentBook("ids");
-        appointmentBook.add(Contact.builder().withType(ContactType.EMAIL).withName("Ada").withInformation("ada@lovelace.com").build());
-        appointmentBook.add(Contact.builder().withType(ContactType.MOBILE).withName("Ada").withInformation("11 1231231 123").build());
-        appointmentBook.add(Contact.builder().withType(ContactType.PHONE).withName("Ada").withInformation("12 123 1231 123123").build());
+        appointmentBook.add(Contact.builder().withType(ContactType.EMAIL)
+                .withName("Ada").withInformation("ada@lovelace.com").build());
+        appointmentBook.add(Contact.builder().withType(ContactType.MOBILE)
+                .withName("Ada").withInformation("11 1231231 123").build());
+        appointmentBook.add(Contact.builder().withType(ContactType.PHONE)
+                .withName("Ada").withInformation("12 123 1231 123123").build());
 
         DocumentEntity entity = converter.toDocument(appointmentBook);
         Document contacts = entity.find("contacts").get();
@@ -371,6 +389,28 @@ public class DefaultDocumentEntityConverterTest {
         entity.add(Document.of("street", "Rua Engenheiro Jose Anasoh"));
         entity.add(Document.of("city", "Salvador"));
         entity.add(Document.of("state", "Bahia"));
+        entity.add(Document.of("zipCode", Arrays.asList(
+                Document.of("zip", "12321"),
+                Document.of("plusFour", "1234"))));
+
+        Address address = converter.toEntity(entity);
+
+        assertEquals("Rua Engenheiro Jose Anasoh", address.getStreet());
+        assertEquals("Salvador", address.getCity());
+        assertEquals("Bahia", address.getState());
+        assertEquals("12321", address.getZipCode().getZip());
+        assertEquals("1234", address.getZipCode().getPlusFour());
+
+    }
+
+    @Test
+    public void shouldReturnNullWhenThereIsNotSubEntity() {
+
+        DocumentEntity entity = DocumentEntity.of("Address");
+
+        entity.add(Document.of("street", "Rua Engenheiro Jose Anasoh"));
+        entity.add(Document.of("city", "Salvador"));
+        entity.add(Document.of("state", "Bahia"));
         entity.add(Document.of("zip", "12321"));
         entity.add(Document.of("plusFour", "1234"));
 
@@ -379,8 +419,7 @@ public class DefaultDocumentEntityConverterTest {
         assertEquals("Rua Engenheiro Jose Anasoh", address.getStreet());
         assertEquals("Salvador", address.getCity());
         assertEquals("Bahia", address.getState());
-        assertEquals("12321", address.getZipCode().getZip());
-        assertEquals("1234",  address.getZipCode().getPlusFour());
+        assertNull(address.getZipCode());
 
     }
 
@@ -436,9 +475,9 @@ public class DefaultDocumentEntityConverterTest {
 
         UserScope user = converter.toEntity(entity);
         Assertions.assertNotNull(user);
-        Assertions.assertEquals("userName",user.getUserName());
-        Assertions.assertEquals("scope",user.getScope());
-        Assertions.assertEquals(Collections.singletonMap("halo", "weld"),user.getProperties());
+        Assertions.assertEquals("userName", user.getUserName());
+        Assertions.assertEquals("scope", user.getScope());
+        Assertions.assertEquals(Collections.singletonMap("halo", "weld"), user.getProperties());
 
     }
 
@@ -451,14 +490,26 @@ public class DefaultDocumentEntityConverterTest {
 
         UserScope user = converter.toEntity(entity);
         Assertions.assertNotNull(user);
-        Assertions.assertEquals("userName",user.getUserName());
-        Assertions.assertEquals("scope",user.getScope());
-        Assertions.assertEquals(Collections.singletonMap("halo", "weld"),user.getProperties());
+        Assertions.assertEquals("userName", user.getUserName());
+        Assertions.assertEquals("scope", user.getScope());
+        Assertions.assertEquals(Collections.singletonMap("halo", "weld"), user.getProperties());
 
     }
 
     private Object getValue(Optional<Document> document) {
         return document.map(Document::getValue).map(Value::get).orElse(null);
     }
+
+    @Test
+    public void shouldCreateLazilyEntity() {
+        DocumentEntity entity = DocumentEntity.of("Citizen");
+        entity.add("id", "10");
+        entity.add("name", "Salvador");
+
+        Citizen citizen = converter.toEntity(entity);
+        Assertions.assertNotNull(citizen);
+        assertNull(citizen.getCity());
+    }
+
 
 }

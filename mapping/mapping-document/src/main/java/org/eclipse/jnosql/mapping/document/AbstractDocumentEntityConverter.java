@@ -18,6 +18,7 @@ import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.mapping.document.DocumentFieldConverters.DocumentFieldConverterFactory;
 import org.eclipse.jnosql.mapping.reflection.ClassMapping;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
@@ -31,8 +32,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import org.eclipse.jnosql.mapping.document.DocumentFieldConverters.DocumentFieldConverterFactory;
 
 import static java.util.Objects.requireNonNull;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
@@ -118,15 +117,18 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
             Optional<Document> document = documents.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
             DocumentFieldConverter fieldConverter = converterFactory.get(field);
-            fieldConverter.convert(instance, documents, document.orElse(null), field, this);
+            if (SUB_ENTITY.equals(field.getType())) {
+                document.ifPresent(d ->   fieldConverter.convert(instance,
+                        null, d, field, this));
+            } else {
+                fieldConverter.convert(instance, documents, document.orElse(null), field, this);
+            }
         };
     }
-
 
     private DocumentFieldValue to(FieldMapping field, Object entityInstance) {
         Object value = field.read(entityInstance);
         return DefaultDocumentFieldValue.of(value, field);
     }
-
 
 }

@@ -33,6 +33,7 @@ import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.entities.ZipCode;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.column.entities.Citizen;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -224,9 +226,8 @@ public class DefaultColumnEntityConverterTest {
 
         ColumnEntity entity = converter.toColumn(director);
         entity.remove("movie");
-        entity.add(Column.of("title", "Matrix"));
-        entity.add(Column.of("year", 2012));
-        entity.add(Column.of("actors", singleton("Actor")));
+        entity.add(Column.of("movie", Arrays.asList(Column.of("title", "Matrix"),
+                Column.of("year", 2012), Column.of("actors", singleton("Actor")))));
         Director director1 = converter.toEntity(entity);
 
         assertEquals(movie, director1.getMovie());
@@ -292,13 +293,29 @@ public class DefaultColumnEntityConverterTest {
         assertEquals(job.getDescription(), worker1.getJob().getDescription());
     }
 
+    @Test
+    public void shouldConvertEmbeddableLazily() {
+        ColumnEntity entity = ColumnEntity.of("Worker");
+        entity.add("name", "Otavio");
+        entity.add("money", "BRL 10");
+
+        Worker worker = converter.toEntity(entity);
+        assertEquals("Otavio", worker.getName());
+        assertEquals(new Money("BRL", BigDecimal.TEN), worker.getSalary());
+        Assertions.assertNull(worker.getJob());
+
+    }
+
 
     @Test
     public void shouldConvertToListEmbeddable() {
         AppointmentBook appointmentBook = new AppointmentBook("ids");
-        appointmentBook.add(Contact.builder().withType(ContactType.EMAIL).withName("Ada").withInformation("ada@lovelace.com").build());
-        appointmentBook.add(Contact.builder().withType(ContactType.MOBILE).withName("Ada").withInformation("11 1231231 123").build());
-        appointmentBook.add(Contact.builder().withType(ContactType.PHONE).withName("Ada").withInformation("12 123 1231 123123").build());
+        appointmentBook.add(Contact.builder().withType(ContactType.EMAIL)
+                .withName("Ada").withInformation("ada@lovelace.com").build());
+        appointmentBook.add(Contact.builder().withType(ContactType.MOBILE)
+                .withName("Ada").withInformation("11 1231231 123").build());
+        appointmentBook.add(Contact.builder().withType(ContactType.PHONE)
+                .withName("Ada").withInformation("12 123 1231 123123").build());
 
         ColumnEntity entity = converter.toColumn(appointmentBook);
         Column contacts = entity.find("contacts").get();
@@ -370,9 +387,9 @@ public class DefaultColumnEntityConverterTest {
         entity.add(Column.of("street", "Rua Engenheiro Jose Anasoh"));
         entity.add(Column.of("city", "Salvador"));
         entity.add(Column.of("state", "Bahia"));
-        entity.add(Column.of("zip", "12321"));
-        entity.add(Column.of("plusFour", "1234"));
-
+        entity.add(Column.of("zipCode", Arrays.asList(
+                Column.of("zip", "12321"),
+                Column.of("plusFour", "1234"))));
         Address address = converter.toEntity(entity);
 
         assertEquals("Rua Engenheiro Jose Anasoh", address.getStreet());
@@ -381,6 +398,24 @@ public class DefaultColumnEntityConverterTest {
         assertEquals("12321", address.getZipCode().getZip());
         assertEquals("1234", address.getZipCode().getPlusFour());
 
+    }
+
+    @Test
+    public void shouldReturnNullWhenThereIsNotSubEntity() {
+        ColumnEntity entity = ColumnEntity.of("Address");
+
+        entity.add(Column.of("street", "Rua Engenheiro Jose Anasoh"));
+        entity.add(Column.of("city", "Salvador"));
+        entity.add(Column.of("state", "Bahia"));
+        entity.add(Column.of("zip", "12321"));
+        entity.add(Column.of("plusFour", "1234"));
+
+        Address address = converter.toEntity(entity);
+
+        assertEquals("Rua Engenheiro Jose Anasoh", address.getStreet());
+        assertEquals("Salvador", address.getCity());
+        assertEquals("Bahia", address.getState());
+        assertNull(address.getZipCode());
     }
 
     @Test
@@ -454,6 +489,16 @@ public class DefaultColumnEntityConverterTest {
 
     }
 
+    @Test
+    public void shouldCreateLazilyEntity() {
+        ColumnEntity entity = ColumnEntity.of("Citizen");
+        entity.add("id", "10");
+        entity.add("name", "Salvador");
+
+        Citizen citizen = converter.toEntity(entity);
+        Assertions.assertNotNull(citizen);
+        Assertions.assertNull(citizen.getCity());
+    }
 
     private Object getValue(Optional<Column> column) {
         return column.map(Column::getValue).map(Value::get).orElse(null);
