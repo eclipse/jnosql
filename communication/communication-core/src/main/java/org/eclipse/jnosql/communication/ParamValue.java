@@ -72,7 +72,7 @@ final class ParamValue implements Value {
 
     private void validValue() {
         if (Objects.isNull(value)) {
-            throw new QueryException(String.format("The parameter %s is not defined", name));
+            throw new QueryException(String.format("The value of parameter %s cannot be null", name));
         }
     }
 
