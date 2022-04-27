@@ -16,7 +16,7 @@ package org.eclipse.jnosql.metamodel;
 
 import jakarta.nosql.metamodel.NumberAttribute;
 
-public class DefaultNumberAttribute<X extends Object, T extends Number & Comparable> extends DefaultComparableAttribute<X, T> implements NumberAttribute<X, T> {
+public class DefaultNumberAttribute<X, T extends Number & Comparable> extends DefaultComparableAttribute<X, T> implements NumberAttribute<X, T> {
 
     public DefaultNumberAttribute(Class<X> type, Class<T> attributeType, String name) {
         super(type, attributeType, name);

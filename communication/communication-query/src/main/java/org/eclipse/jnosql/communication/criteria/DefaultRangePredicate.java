@@ -17,14 +17,14 @@ package org.eclipse.jnosql.communication.criteria;
 import jakarta.nosql.criteria.Expression;
 import jakarta.nosql.criteria.RangePredicate;
 
-public class DefaultRangePredicate<X extends Object, LHS, RHS> extends AbstractPredicate<X> implements RangePredicate<X, LHS, RHS> {
+public class DefaultRangePredicate<X, LHS, RHS> extends AbstractPredicate<X> implements RangePredicate<X, LHS, RHS> {
 
     private final Operator operator;
-    private final Expression<X, LHS> left;
+    private final Expression<X, ?, LHS> left;
     private final RHS from;
     private final RHS to;
     
-    public DefaultRangePredicate(Operator operator, Expression<X, LHS> left, RHS from, RHS to) {
+    public DefaultRangePredicate(Operator operator, Expression<X, ?, LHS> left, RHS from, RHS to) {
         this.operator = operator;
         this.left = left;
         this.from = from;
@@ -37,7 +37,7 @@ public class DefaultRangePredicate<X extends Object, LHS, RHS> extends AbstractP
     }
 
     @Override
-    public Expression<X, LHS> getLeft() {
+    public Expression<X, ?, LHS> getLeft() {
         return this.left;
     }
 

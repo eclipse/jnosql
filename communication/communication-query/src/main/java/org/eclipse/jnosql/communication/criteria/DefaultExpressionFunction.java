@@ -14,19 +14,27 @@
  */
 package org.eclipse.jnosql.communication.criteria;
 
-import jakarta.nosql.criteria.CriteriaFunction;
-import jakarta.nosql.criteria.NumberExpression;
+import jakarta.nosql.criteria.Expression;
+import jakarta.nosql.criteria.ExpressionFunction;
 
-public class DefaultSumFunction<T extends Object, N extends Number & Comparable> implements CriteriaFunction<T, N, N> {
+public class DefaultExpressionFunction<X, Y, T, R> implements ExpressionFunction<X, Y, T, R> {
     
-    private final NumberExpression<T, N> expression;
+    private final Expression<X, Y, T> expression;
+    private final Function function;
 
-    public DefaultSumFunction(NumberExpression<T, N> expression) {
+    public DefaultExpressionFunction(Expression<X, Y, T> expression, Function function) {
         this.expression = expression;
+        this.function = function;
     }
 
-    public NumberExpression<T, N> getExpression() {
+    @Override
+    public Expression<X, Y, T> getExpression() {
         return expression;
     }
+    
+    @Override
+    public Function getFunction() {
+        return function;
+    }  
     
 }

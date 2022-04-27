@@ -18,7 +18,7 @@ import jakarta.nosql.criteria.ConjunctionPredicate;
 import jakarta.nosql.criteria.Predicate;
 import java.util.Collection;
 
-public class DefaultConjunctionPredicate<X extends Object> extends AbstractCompositionPredicate<X> implements ConjunctionPredicate<X> {
+public class DefaultConjunctionPredicate<X> extends AbstractCompositionPredicate<X> implements ConjunctionPredicate<X> {
 
     public DefaultConjunctionPredicate(Collection<Predicate<X>> predicates) {
         super(predicates);

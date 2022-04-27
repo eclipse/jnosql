@@ -14,14 +14,20 @@
  */
 package org.eclipse.jnosql.communication.criteria;
 
-import jakarta.nosql.criteria.CriteriaFunction;
+import jakarta.nosql.criteria.ExpressionFunction;
 import jakarta.nosql.criteria.NumberExpression;
+import jakarta.nosql.criteria.Path;
+import jakarta.nosql.metamodel.NumberAttribute;
 
-public class DefaultNumberExpression<T extends Object, N extends Number & Comparable> extends DefaultComparableExpression<T, N> implements NumberExpression<T, N> {
+public class DefaultNumberExpression<X, Y, N extends Number & Comparable> extends DefaultComparableExpression<X, Y, N> implements NumberExpression<X, Y, N> {
 
+    public DefaultNumberExpression(Path<X, Y> path, NumberAttribute attribute) {
+        super(path, attribute);
+    }
+    
     @Override
-    public CriteriaFunction<T, N, N> sum() {
-        return new DefaultSumFunction<>(this);
+    public ExpressionFunction<X, Y, N, N> sum() {
+        return new DefaultExpressionFunction<>(this, ExpressionFunction.Function.SUM);
     }
     
 }

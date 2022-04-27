@@ -5,7 +5,7 @@
  *   and Apache License v2.0 which accompanies this distribution.
  *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
  *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
- *g
+ *
  *   You may elect to redistribute this code under either of these licenses.
  *
  *   Contributors:
@@ -14,8 +14,27 @@
  */
 package org.eclipse.jnosql.communication.criteria;
 
-import jakarta.nosql.criteria.CriteriaFunction;
+import jakarta.nosql.criteria.Path;
+import jakarta.nosql.criteria.PathFunction;
 
-public class DefaultCountFunction<X extends Object> implements CriteriaFunction<X, X, Number> {
+public class DefaultPathFunction<X, Y, T, R> implements PathFunction<X, Y, T, R> {
+    
+    private final Path<X, Y> path;
+    private final Function function;
+
+    public DefaultPathFunction(Path<X, Y> path, Function function) {
+        this.path = path;
+        this.function = function;
+    }
+
+    @Override
+    public Path<X, Y> getPath() {
+        return path;
+    }
+    
+    @Override
+    public Function getFunction() {
+        return function;
+    }
     
 }

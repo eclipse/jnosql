@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public abstract class AbstractRestrictedQuery<
-        T extends Object,
+        T,
         R extends DefaultRestrictedQueryResult<T>,
         Q extends AbstractRestrictedQuery<T, R, Q>
     > extends DefaultCriteriaQuery<T> {

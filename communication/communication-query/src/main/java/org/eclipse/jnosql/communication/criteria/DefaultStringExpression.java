@@ -14,14 +14,20 @@
  */
 package org.eclipse.jnosql.communication.criteria;
 
-import jakarta.nosql.criteria.Predicate;
+import jakarta.nosql.criteria.BinaryPredicate;
+import jakarta.nosql.criteria.Path;
 import jakarta.nosql.criteria.StringExpression;
+import jakarta.nosql.metamodel.StringAttribute;
 
-public class DefaultStringExpression<X extends Object> extends DefaultExpression<X, String> implements StringExpression<X> {
+public class DefaultStringExpression<X, Y> extends DefaultExpression<X, Y, String> implements StringExpression<X, Y> {
 
+    public DefaultStringExpression(Path<X, Y> path, StringAttribute attribute) {
+        super(path, attribute);
+    }    
+    
     @Override
-    public Predicate<X> like(String pattern) {
-        return new DefaultLikePredicate<>(pattern);
+    public BinaryPredicate<X, String, String> like(String pattern) {
+        return new DefaultBinaryPredicate(BinaryPredicate.Operator.LIKE, this, pattern);
     }
     
 }

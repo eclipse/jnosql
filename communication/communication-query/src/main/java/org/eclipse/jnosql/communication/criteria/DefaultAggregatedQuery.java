@@ -20,16 +20,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import org.eclipse.jnosql.AbstractGenericType;
 
-public class DefaultAggregatedQuery<T extends Object> extends AbstractGenericType<T> implements AggregatedQuery<T> {
+public class DefaultAggregatedQuery<T> extends AbstractGenericType<T> implements AggregatedQuery<T> {
 
-    private final Collection<Expression<T, ?>> groupings;
+    private final Collection<Expression<T, ?, ?>> groupings;
 
-    public DefaultAggregatedQuery(Class<T> type, Expression<T, ?>... groupings) {
+    public DefaultAggregatedQuery(Class<T> type, Expression<T, ?, ?>... groupings) {
         super(type);
         this.groupings = Arrays.asList(groupings);
     }
 
-    public Collection<Expression<T, ?>> getGroupings() {
+    public Collection<Expression<T, ?, ?>> getGroupings() {
         return groupings;
     }
 

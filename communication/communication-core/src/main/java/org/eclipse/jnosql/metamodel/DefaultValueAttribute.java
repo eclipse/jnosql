@@ -16,7 +16,7 @@ package org.eclipse.jnosql.metamodel;
 
 import jakarta.nosql.metamodel.ValueAttribute;
 
-public class DefaultValueAttribute<X extends Object, T extends Object> extends DefaultSingularAttribute<X, T> implements ValueAttribute<X, T>{
+public class DefaultValueAttribute<X, T> extends DefaultSingularAttribute<X, T> implements ValueAttribute<X, T>{
 
     public DefaultValueAttribute(Class<X> type, Class<T> attributeType, String name) {
         super(type, attributeType, name);

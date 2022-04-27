@@ -14,18 +14,24 @@
  */
 package org.eclipse.jnosql.communication.criteria;
 
-import jakarta.nosql.criteria.CriteriaFunction;
+import jakarta.nosql.criteria.Path;
+import jakarta.nosql.criteria.PathFunction;
 import jakarta.nosql.criteria.Root;
 
-public class DefaultRoot<X extends Object> extends DefaultPath<X, X> implements Root<X> {
+public class DefaultRoot<X> extends DefaultPath<X, X> implements Root<X> {
 
     public DefaultRoot(Class<X> type) {
         super(type);
     }
 
     @Override
-    public CriteriaFunction<X, X, Number> count() {
-        return new DefaultCountFunction<>();
+    public Path<X, ?> getParent() {
+        return this;
+    }
+    
+    @Override
+    public PathFunction<X, X, X, Number> count() {
+        return new DefaultPathFunction<>(this, PathFunction.Function.COUNT);
     }
     
 }

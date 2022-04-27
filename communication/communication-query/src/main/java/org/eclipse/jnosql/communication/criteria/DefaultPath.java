@@ -24,37 +24,58 @@ import jakarta.nosql.metamodel.ValueAttribute;
 import org.eclipse.jnosql.AbstractGenericType;
 import jakarta.nosql.criteria.ComparableExpression;
 import jakarta.nosql.criteria.NumberExpression;
+import jakarta.nosql.metamodel.Attribute;
 import jakarta.nosql.metamodel.NumberAttribute;
 
-public class DefaultPath<X extends Object, Y extends Object> extends AbstractGenericType<X> implements Path<X, Y> {
+public class DefaultPath<X, Y> extends AbstractGenericType<X> implements Path<X, Y> {
 
+    private Path<X, ?> parent;
+
+    private Attribute<?, Y> attribute;
+    
     public DefaultPath(Class<X> type) {
         super(type);
     }
 
-    @Override
-    public <Z> Path<X, Z> get(EntityAttribute<? super Y, Z> attribute) {
-        return new DefaultPath<>(this.getType());
+    public DefaultPath(Class<X> type, Path<X, ?> parent, Attribute<?, Y> attribute) {
+        super(type);
+        this.parent = parent;
+        this.attribute = attribute;
     }
 
     @Override
-    public <Z> Expression<X, Z> get(ValueAttribute<? super Y, Z> attribute) {
-        return new DefaultExpression<>();
+    public Path<X, ?> getParent() {
+        return this.parent;
     }
 
     @Override
-    public StringExpression<X> get(StringAttribute<? extends Y> attribute) {
-        return new DefaultStringExpression<>();
+    public Attribute<?, Y> getAttribute() {
+        return this.attribute;
     }
 
     @Override
-    public <Z extends Comparable> ComparableExpression<X, Z> get(ComparableAttribute<? super Y, Z> attribute) {
-        return new DefaultComparableExpression<>();
+    public <Z> Path<X, Z> get(EntityAttribute<Y, Z> attribute) {
+        return new DefaultPath<>(this.getType(), this, attribute);
     }
 
     @Override
-    public <Z extends Number & Comparable> NumberExpression<X, Z> get(NumberAttribute<? super Y, Z> attribute) {
-        return new DefaultNumberExpression<>();
+    public <Z> Expression<X, Y, Z> get(ValueAttribute<Y, Z> attribute) {
+        return new DefaultExpression<>(this, attribute);
+    }
+
+    @Override
+    public StringExpression<X, Y> get(StringAttribute<Y> attribute) {
+        return new DefaultStringExpression<>(this, attribute);
+    }
+
+    @Override
+    public <Z extends Comparable> ComparableExpression<X, Y, Z> get(ComparableAttribute<Y, Z> attribute) {
+        return new DefaultComparableExpression<>(this, attribute);
+    }
+
+    @Override
+    public <Z extends java.lang.Number & java.lang.Comparable> NumberExpression<X, Y, Z> get(NumberAttribute<Y, Z> attribute) {
+        return new DefaultNumberExpression<>(this, attribute);
     }
     
 }

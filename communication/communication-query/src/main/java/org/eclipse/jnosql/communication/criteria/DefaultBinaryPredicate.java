@@ -17,13 +17,13 @@ package org.eclipse.jnosql.communication.criteria;
 import jakarta.nosql.criteria.BinaryPredicate;
 import jakarta.nosql.criteria.Expression;
 
-public class DefaultBinaryPredicate<X extends Object, LHS, RHS> extends AbstractPredicate<X> implements BinaryPredicate<X, LHS, RHS> {
+public class DefaultBinaryPredicate<X, LHS, RHS> extends AbstractPredicate<X> implements BinaryPredicate<X, LHS, RHS> {
 
     private final Operator operator;
-    private final Expression<X, LHS> left;
+    private final Expression<X, ?, LHS> left;
     private final RHS right;
     
-    public DefaultBinaryPredicate(Operator operator, Expression<X, LHS> left, RHS right) {
+    public DefaultBinaryPredicate(Operator operator, Expression<X, ?, LHS> left, RHS right) {
         this.operator = operator;
         this.left = left;
         this.right = right;
@@ -35,7 +35,7 @@ public class DefaultBinaryPredicate<X extends Object, LHS, RHS> extends Abstract
     }
 
     @Override
-    public Expression<X, LHS> getLeft() {
+    public Expression<X, ?, LHS> getLeft() {
         return left;
     }
 

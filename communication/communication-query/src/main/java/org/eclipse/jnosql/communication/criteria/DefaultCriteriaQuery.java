@@ -23,7 +23,7 @@ import jakarta.nosql.criteria.Root;
 import jakarta.nosql.criteria.SelectQuery;
 import org.eclipse.jnosql.AbstractGenericType;
 
-public class DefaultCriteriaQuery<T extends Object> extends AbstractGenericType<T> implements CriteriaQuery<T> {
+public class DefaultCriteriaQuery<T> extends AbstractGenericType<T> implements CriteriaQuery<T> {
     
     private final Root<T> from;
     
@@ -43,12 +43,12 @@ public class DefaultCriteriaQuery<T extends Object> extends AbstractGenericType<
     }
     
     @Override
-    public FunctionQuery<T> select(CriteriaFunction<T, ?, ?>... functions) {
+    public FunctionQuery<T> select(CriteriaFunction<T, ?, ?, ?>... functions) {
         return new DefaultFunctionQuery<>(this.getType(), functions);
     }
 
     @Override
-    public ExpressionQuery<T> select(Expression<T, ?>... expressions) {
+    public ExpressionQuery<T> select(Expression<T, ?, ?>... expressions) {
         return new DefaultExpressionQuery<>(this.getType(), expressions);
     }
     

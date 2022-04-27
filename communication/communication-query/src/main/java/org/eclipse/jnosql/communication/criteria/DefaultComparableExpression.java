@@ -18,77 +18,83 @@ import jakarta.nosql.criteria.BinaryPredicate;
 import jakarta.nosql.criteria.ComparableExpression;
 import jakarta.nosql.criteria.Expression;
 import jakarta.nosql.criteria.Order;
+import jakarta.nosql.criteria.Path;
 import jakarta.nosql.criteria.RangePredicate;
+import jakarta.nosql.metamodel.ComparableAttribute;
 
-public class DefaultComparableExpression<X extends Object, T extends Comparable> extends DefaultExpression<X, T> implements ComparableExpression<X, T> {
+public class DefaultComparableExpression<X, Y, T extends Comparable> extends DefaultExpression<X, Y, T> implements ComparableExpression<X, Y, T> {
 
+    public DefaultComparableExpression(Path<X, Y> path, ComparableAttribute<Y, T> attribute) {
+        super(path, attribute);
+    }
+    
     @Override
-    public <Y extends Comparable<? super Y>> BinaryPredicate<X, Y, Expression<X, Y>> greaterThan(Expression<X, ? extends Y> expression) {
+    public BinaryPredicate<X, T, Expression<X, ?, T>> greaterThan(Expression<X, ?, T> expression) {
         return new DefaultBinaryPredicate(BinaryPredicate.Operator.GREATER_THAN, this, expression);
     }
 
     @Override
-    public <Y extends Comparable<? super Y>> BinaryPredicate<X, Y, Y> greaterThan(Y y) {
+    public BinaryPredicate<X, T, T> greaterThan(T y) {
         return new DefaultBinaryPredicate(BinaryPredicate.Operator.GREATER_THAN, this, y);
     }
 
     @Override
-    public <Y extends Comparable<? super Y>> BinaryPredicate<X, Y, Expression<X, Y>> greaterThanOrEqualTo(Expression<X, ? extends Y> expression) {
+    public BinaryPredicate<X, T, Expression<X, ?, T>> greaterThanOrEqualTo(Expression<X, ?, T> expression) {
         return new DefaultBinaryPredicate(BinaryPredicate.Operator.GREATER_THAN_OR_EQUAL, this, expression);
     }
 
     @Override
-    public <Y extends Comparable<? super Y>> BinaryPredicate<X, Y, Y> greaterThanOrEqualTo(Y y) {
+    public BinaryPredicate<X, T, T> greaterThanOrEqualTo(T y) {
         return new DefaultBinaryPredicate(BinaryPredicate.Operator.GREATER_THAN_OR_EQUAL, this, y);
     }
 
     @Override
-    public <Y extends Comparable<? super Y>> BinaryPredicate<X, Y, Expression<X, Y>> lessThan(Expression<X, ? extends Y> expression) {
+    public BinaryPredicate<X, T, Expression<X, ?, T>> lessThan(Expression<X, ?, T> expression) {
         return new DefaultBinaryPredicate(BinaryPredicate.Operator.LESS_THAN, this, expression);
     }
 
     @Override
-    public <Y extends Comparable<? super Y>> BinaryPredicate<X, Y, Y> lessThan(Y y) {
+    public BinaryPredicate<X, T, T> lessThan(T y) {
         return new DefaultBinaryPredicate(BinaryPredicate.Operator.LESS_THAN, this, y);
     }
 
     @Override
-    public <Y extends Comparable<? super Y>> BinaryPredicate<X, Y, Expression<X, Y>> lessThanOrEqualTo(Expression<X, ? extends Y> expression) {
+    public BinaryPredicate<X, T, Expression<X, ?, T>> lessThanOrEqualTo(Expression<X, ?, T> expression) {
         return new DefaultBinaryPredicate(BinaryPredicate.Operator.LESS_THAN_OR_EQUAL, this, expression);
     }
 
     @Override
-    public <Y extends Comparable<? super Y>> BinaryPredicate<X, Y, Y> lessThanOrEqualTo(Y y) {
+    public BinaryPredicate<X, T, T> lessThanOrEqualTo(T y) {
         return new DefaultBinaryPredicate(BinaryPredicate.Operator.LESS_THAN_OR_EQUAL, this, y);
     }
 
     @Override
-    public <Y extends Comparable<? super Y>> RangePredicate<X, Y, Expression<X, Y>> exclusiveBetween(Expression<X, ? extends Y> from, Expression<X, ? extends Y> to) {
+    public RangePredicate<X, T, Expression<X, ?, T>> exclusiveBetween(Expression<X, ?, T> from, Expression<X, ?, T> to) {
         return new DefaultRangePredicate(RangePredicate.Operator.EXCLUSIVE_BETWEEN, this, from, to);
     }
 
     @Override
-    public <Y extends Comparable<? super Y>> RangePredicate<X, Y, Y> exclusiveBetween(Y from, Y to) {
+    public RangePredicate<X, T, T> exclusiveBetween(T from, T to) {
         return new DefaultRangePredicate(RangePredicate.Operator.EXCLUSIVE_BETWEEN, this, from, to);
     }
 
     @Override
-    public <Y extends Comparable<? super Y>> RangePredicate<X, Y, Expression<X, Y>> inclusiveBetween(Expression<X, ? extends Y> from, Expression<X, ? extends Y> to) {
+    public RangePredicate<X, T, Expression<X, ?, T>> inclusiveBetween(Expression<X, ?, T> from, Expression<X, ? , T> to) {
         return new DefaultRangePredicate(RangePredicate.Operator.INCLUSIVE_BETWEEN, this, from, to);
     }
 
     @Override
-    public <Y extends Comparable<? super Y>> RangePredicate<X, Y, Y> inclusiveBetween(Y from, Y to) {
+    public RangePredicate<X, T, T> inclusiveBetween(T from, T to) {
         return new DefaultRangePredicate(RangePredicate.Operator.INCLUSIVE_BETWEEN, this, from, to);
     }
 
     @Override
-    public <T> Order<T> asc() {
+    public Order<X, T> asc() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public <T> Order<T> desc() {
+    public Order<X, T> desc() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

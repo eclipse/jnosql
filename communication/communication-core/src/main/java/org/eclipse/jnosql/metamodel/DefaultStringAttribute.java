@@ -16,7 +16,7 @@ package org.eclipse.jnosql.metamodel;
 
 import jakarta.nosql.metamodel.StringAttribute;
 
-public class DefaultStringAttribute<X extends Object> extends DefaultValueAttribute<X, String> implements StringAttribute<X>{
+public class DefaultStringAttribute<X> extends DefaultValueAttribute<X, String> implements StringAttribute<X>{
 
     public DefaultStringAttribute(Class<X> type, String name) {
         super(type, String.class, name);

@@ -16,6 +16,6 @@ package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.RestrictedQueryResult;
 
-public class DefaultRestrictedQueryResult<T extends Object> extends DefaultCriteriaQueryResult<T> implements RestrictedQueryResult<T> {
+public class DefaultRestrictedQueryResult<T> extends DefaultCriteriaQueryResult<T> implements RestrictedQueryResult<T> {
     
 }

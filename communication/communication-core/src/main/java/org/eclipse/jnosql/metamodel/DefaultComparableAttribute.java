@@ -16,7 +16,7 @@ package org.eclipse.jnosql.metamodel;
 
 import jakarta.nosql.metamodel.ComparableAttribute;
 
-public class DefaultComparableAttribute<X extends Object, Y extends Comparable> extends DefaultValueAttribute<X, Y> implements ComparableAttribute<X, Y> {
+public class DefaultComparableAttribute<X, Y extends Comparable> extends DefaultValueAttribute<X, Y> implements ComparableAttribute<X, Y> {
 
     public DefaultComparableAttribute(Class<X> type, Class<Y> attributeType, String name) {
         super(type, attributeType, name);

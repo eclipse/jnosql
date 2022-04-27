@@ -16,6 +16,6 @@ package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.FunctionQueryResult;
 
-public class DefaultExpressionQueryResult<T extends Object> extends DefaultSelectQueryResult<T> implements FunctionQueryResult<T> {
+public class DefaultExpressionQueryResult<T> extends DefaultSelectQueryResult<T> implements FunctionQueryResult<T> {
     
 }

@@ -16,6 +16,6 @@ package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.SelectQueryResult;
 
-public class DefaultSelectQueryResult<T extends Object> extends DefaultRestrictedQueryResult<T> implements SelectQueryResult<T> {
+public class DefaultSelectQueryResult<T> extends DefaultRestrictedQueryResult<T> implements SelectQueryResult<T> {
     
 }

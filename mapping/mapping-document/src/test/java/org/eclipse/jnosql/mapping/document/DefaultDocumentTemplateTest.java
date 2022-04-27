@@ -17,9 +17,11 @@ package org.eclipse.jnosql.mapping.document;
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.criteria.CriteriaFunction;
 import jakarta.nosql.criteria.CriteriaQuery;
+import jakarta.nosql.criteria.ExecutableQuery;
 import jakarta.nosql.criteria.FunctionQuery;
 import jakarta.nosql.criteria.FunctionQueryResult;
 import jakarta.nosql.criteria.Root;
+import jakarta.nosql.criteria.SelectQuery;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCondition;
@@ -405,9 +407,9 @@ public class DefaultDocumentTemplateTest {
     public void shouldCountFromCriteria() {
         CriteriaQuery<Person> createQuery = subject.createQuery(Person.class);
         Root<Person> from = createQuery.from();
-        CriteriaFunction<Person, Person, Number> count = from.count();
+        CriteriaFunction<Person, Person, Person, Number> count = from.count();
         FunctionQuery<Person> select = createQuery.select(count);
-        FunctionQueryResult<Person> query = subject.query(select);
+        FunctionQueryResult<Person> query = subject.executeQuery(select);
     }
 
 

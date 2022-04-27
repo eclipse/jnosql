@@ -16,6 +16,6 @@ package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.FunctionQueryResult;
 
-public class DefaultFunctionQueryResult<T extends Object> extends DefaultRestrictedQueryResult<T> implements FunctionQueryResult<T> {
+public class DefaultFunctionQueryResult<T> extends DefaultRestrictedQueryResult<T> implements FunctionQueryResult<T> {
     
 }

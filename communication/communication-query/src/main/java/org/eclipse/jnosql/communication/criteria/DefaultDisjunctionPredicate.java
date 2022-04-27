@@ -18,7 +18,7 @@ import jakarta.nosql.criteria.DisjunctionPredicate;
 import jakarta.nosql.criteria.Predicate;
 import java.util.Collection;
 
-public class DefaultDisjunctionPredicate<X extends Object> extends AbstractCompositionPredicate<X> implements DisjunctionPredicate<X> {
+public class DefaultDisjunctionPredicate<X> extends AbstractCompositionPredicate<X> implements DisjunctionPredicate<X> {
 
     public DefaultDisjunctionPredicate(Collection<Predicate<X>> predicates) {
         super(predicates);

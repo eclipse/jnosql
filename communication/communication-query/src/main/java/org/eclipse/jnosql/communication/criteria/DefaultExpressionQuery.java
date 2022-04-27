@@ -19,17 +19,18 @@ import jakarta.nosql.criteria.ExpressionQuery;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class DefaultExpressionQuery<T extends Object>
+public class DefaultExpressionQuery<T>
         extends DefaultSelectQuery<T, DefaultExpressionQueryResult<T>, DefaultExpressionQuery<T>> implements ExpressionQuery<T> {
 
-    private final Collection<Expression<T, ?>> expressions;
+    private final Collection<Expression<T, ?, ?>> expressions;
 
-    public DefaultExpressionQuery(Class<T> type, Expression<T, ?>... expressions) {
+    public DefaultExpressionQuery(Class<T> type, Expression<T, ?, ?>... expressions) {
         super(type);
         this.expressions = Arrays.asList(expressions);
     }
 
-    public Collection<Expression<T, ?>> getExpressions() {
+    @Override
+    public Collection<Expression<T, ?, ?>> getExpressions() {
         return expressions;
     }
     

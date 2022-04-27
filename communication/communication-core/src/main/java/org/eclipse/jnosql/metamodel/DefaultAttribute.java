@@ -17,7 +17,7 @@ package org.eclipse.jnosql.metamodel;
 import jakarta.nosql.metamodel.Attribute;
 import org.eclipse.jnosql.AbstractGenericType;
 
-public abstract class DefaultAttribute<X extends Object, Y extends Object> extends AbstractGenericType<X> implements Attribute<X, Y> {
+public abstract class DefaultAttribute<X, Y> extends AbstractGenericType<X> implements Attribute<X, Y> {
 
     private final Class<Y> attributeType;
     private final String name;
@@ -33,6 +33,7 @@ public abstract class DefaultAttribute<X extends Object, Y extends Object> exten
         return this.name;
     }
 
+    @Override
     public Class<Y> getAttributeType() {
         return attributeType;
     }

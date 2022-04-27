@@ -17,7 +17,7 @@ package org.eclipse.jnosql.communication.criteria;
 import jakarta.nosql.criteria.NegationPredicate;
 import jakarta.nosql.criteria.Predicate;
 
-public class DefaultNegationPredicate<X extends Object> extends AbstractPredicate<X> implements NegationPredicate<X> {
+public class DefaultNegationPredicate<X> extends AbstractPredicate<X> implements NegationPredicate<X> {
 
     private final Predicate<X> predicate;
 

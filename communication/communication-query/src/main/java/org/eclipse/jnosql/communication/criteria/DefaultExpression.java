@@ -16,12 +16,32 @@ package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.BinaryPredicate;
 import jakarta.nosql.criteria.Expression;
+import jakarta.nosql.criteria.Path;
+import jakarta.nosql.metamodel.Attribute;
 import java.util.Collection;
 
-public class DefaultExpression<X extends Object, T extends Object> implements Expression<X, T> {
+public class DefaultExpression<X, Y, T> implements Expression<X, Y, T> {
+    
+    private final Path<X, Y> path;
+    private final Attribute<Y, T> attribute;
+
+    public DefaultExpression(Path<X, Y> path, Attribute<Y, T> attribute) {
+        this.path = path;
+        this.attribute = attribute;
+    }
+    
+    @Override
+    public Path<X, Y> getPath() {
+        return path;
+    }
 
     @Override
-    public BinaryPredicate<X, T, Expression<X, T>> equal(Expression<X, T> expression) {
+    public Attribute<Y, T> getAttribute() {
+        return attribute;
+    }
+
+    @Override
+    public BinaryPredicate<X, T, Expression<X, Y, T>> equal(Expression<X, Y, T> expression) {
         return new DefaultBinaryPredicate(BinaryPredicate.Operator.EQUAL, this, expression);
     }
 

@@ -16,6 +16,6 @@ package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.CriteriaQueryResult;
 
-public class DefaultCriteriaQueryResult<T extends Object> implements CriteriaQueryResult<T> {
+public class DefaultCriteriaQueryResult<T> implements CriteriaQueryResult<T> {
     
 }

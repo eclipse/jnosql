@@ -20,7 +20,7 @@ import jakarta.nosql.criteria.NegationPredicate;
 import jakarta.nosql.criteria.Predicate;
 import java.util.Arrays;
 
-public abstract class AbstractPredicate<T extends Object> implements Predicate<T>{
+public abstract class AbstractPredicate<T> implements Predicate<T>{
     
     @Override
     public NegationPredicate<T> not() {

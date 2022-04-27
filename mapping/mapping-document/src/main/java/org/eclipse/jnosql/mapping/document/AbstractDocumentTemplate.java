@@ -250,7 +250,9 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     }
     
     @Override
-    public <T extends Object, R extends CriteriaQueryResult<T>> R query(ExecutableQuery<T, R> criteriaQuery) {
+    public <T extends Object, R extends CriteriaQueryResult<T>> R executeQuery(ExecutableQuery<T, R> criteriaQuery) {
+        requireNonNull(criteriaQuery, "query is required");
+        getManager().executeQuery(criteriaQuery);
         return null;
     }
     

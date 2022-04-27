@@ -19,31 +19,31 @@ import jakarta.nosql.criteria.SelectQuery;
 import java.util.List;
 
 public class DefaultSelectQuery<
-        T extends Object,
-        R extends DefaultSelectQueryResult<T>,
-        Q extends DefaultSelectQuery<T, R, Q>
-    > extends AbstractRestrictedQuery<T, DefaultSelectQueryResult<T>, Q> implements SelectQuery<T> {
+        X,
+        R extends DefaultSelectQueryResult<X>,
+        Q extends DefaultSelectQuery<X, R, Q>
+    > extends AbstractRestrictedQuery<X, DefaultSelectQueryResult<X>, Q> implements SelectQuery<X> {
 
-    private List<Order<T>> sortings;
+    private List<Order<X, ?>> sortings;
     private Integer maxResults;
     private Integer firstResult;
 
-    public DefaultSelectQuery(Class<T> type) {
+    public DefaultSelectQuery(Class<X> type) {
         super(type);
     }
 
     @Override
-    public SelectQuery<T> orderBy(List<Order<T>> sortings) {
+    public SelectQuery<X> orderBy(List<Order<X, ?>> sortings) {
         this.sortings = sortings;
         return this;
     }
 
-    public List<Order<T>> getSortings() {
+    public List<Order<X, ?>> getSortings() {
         return sortings;
     }
 
     @Override
-    public SelectQuery<T> setMaxResults(int maxResults) {
+    public SelectQuery<X> setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -53,7 +53,7 @@ public class DefaultSelectQuery<
     }
 
     @Override
-    public SelectQuery<T> setFirstResult(int firstResult) {
+    public SelectQuery<X> setFirstResult(int firstResult) {
         this.firstResult = firstResult;
         return this;
     }

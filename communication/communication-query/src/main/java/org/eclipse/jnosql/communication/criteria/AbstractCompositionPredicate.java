@@ -18,7 +18,7 @@ import jakarta.nosql.criteria.CompositionPredicate;
 import jakarta.nosql.criteria.Predicate;
 import java.util.Collection;
 
-public abstract class AbstractCompositionPredicate<X extends Object> extends AbstractPredicate<X> implements CompositionPredicate<X> {
+public abstract class AbstractCompositionPredicate<X> extends AbstractPredicate<X> implements CompositionPredicate<X> {
 
     private final Collection<Predicate<X>> predicates;
 

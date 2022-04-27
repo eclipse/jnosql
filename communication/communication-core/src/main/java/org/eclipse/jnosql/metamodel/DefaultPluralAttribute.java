@@ -16,7 +16,7 @@ package org.eclipse.jnosql.metamodel;
 
 import jakarta.nosql.metamodel.PluralAttribute;
 
-public class DefaultPluralAttribute<X extends Object, T extends Object> extends DefaultAttribute<X, T> implements PluralAttribute<X, T> {
+public class DefaultPluralAttribute<X, T> extends DefaultAttribute<X, T> implements PluralAttribute<X, T> {
 
     public DefaultPluralAttribute(Class<X> type, Class<T> attributeType, String name) {
         super(type, attributeType, name);
