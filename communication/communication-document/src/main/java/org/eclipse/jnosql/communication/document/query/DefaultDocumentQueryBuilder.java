@@ -128,4 +128,38 @@ class DefaultDocumentQueryBuilder implements DocumentQuery.DocumentQueryBuilder 
         Objects.requireNonNull(manager, "manager is required");
         return manager.singleResult(build());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DefaultDocumentQueryBuilder that = (DefaultDocumentQueryBuilder) o;
+        return skip == that.skip
+                && limit == that.limit
+                && Objects.equals(documents, that.documents)
+                && Objects.equals(sorts, that.sorts)
+                && Objects.equals(documentCollection, that.documentCollection)
+                && Objects.equals(condition, that.condition);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(documents, sorts, documentCollection, condition, skip, limit);
+    }
+
+    @Override
+    public String toString() {
+        return "DefaultDocumentQueryBuilder{" +
+                "documents=" + documents +
+                ", sorts=" + sorts +
+                ", documentCollection='" + documentCollection + '\'' +
+                ", condition=" + condition +
+                ", skip=" + skip +
+                ", limit=" + limit +
+                '}';
+    }
 }
