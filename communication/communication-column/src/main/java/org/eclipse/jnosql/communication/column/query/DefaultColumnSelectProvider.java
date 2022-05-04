@@ -29,11 +29,11 @@ public final class DefaultColumnSelectProvider implements ColumnSelectProvider {
     @Override
     public ColumnSelect apply(String[] columns) {
         Stream.of(columns).forEach(d -> requireNonNull(d, "there is null column in the query"));
-        return new DefaultSelectQueryBuilder(Arrays.asList(columns));
+        return new DefaultFluentColumnQueryBuilder(Arrays.asList(columns));
     }
 
     @Override
     public ColumnSelect get() {
-        return new DefaultSelectQueryBuilder(emptyList());
+        return new DefaultFluentColumnQueryBuilder(emptyList());
     }
 }
