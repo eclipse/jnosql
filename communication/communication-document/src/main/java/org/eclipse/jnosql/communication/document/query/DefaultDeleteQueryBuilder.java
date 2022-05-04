@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2022 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -16,132 +16,116 @@
  */
 package org.eclipse.jnosql.communication.document.query;
 
+import jakarta.nosql.Sort;
 import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDelete;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteFrom;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteNameCondition;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteNotCondition;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteWhere;
+import jakarta.nosql.document.DocumentCondition;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentQuery;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-/**
- * The default implementation to Delete query
- */
-class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements DocumentDelete, DocumentDeleteFrom,
-        DocumentDeleteWhere, DocumentDeleteNotCondition {
+class DefaultDeleteQueryBuilder implements DocumentQuery.DocumentQueryBuilder {
+
+    private List<String> documents = new ArrayList<>();
+
+    private List<Sort> sorts = new ArrayList<>();
 
     private String documentCollection;
 
+    private DocumentCondition condition;
 
-    private final List<String> documents;
+    private long skip;
+
+    private long limit;
 
 
-    DefaultDeleteQueryBuilder(List<String> documents) {
-        this.documents = documents;
+    @Override
+    public DocumentQuery.DocumentQueryBuilder select(String document) {
+        Objects.requireNonNull(document, "document is required");
+        this.documents.add(document);
+        return this;
     }
 
     @Override
-    public DocumentDeleteFrom from(String documentCollection) {
-        requireNonNull(documentCollection, "documentCollection is required");
+    public DocumentQuery.DocumentQueryBuilder select(String... documents) {
+        Consumer<String> validNull = d -> requireNonNull(d, "there is null document in the query");
+        Consumer<String> consume = this.documents::add;
+        Stream.of(documents).forEach(validNull.andThen(consume));
+        return this;
+    }
+
+    @Override
+    public DocumentQuery.DocumentQueryBuilder sort(Sort sort) {
+        Objects.requireNonNull(sort, "sort is required");
+        this.sorts.add(sort);
+        return this;
+    }
+
+    @Override
+    public DocumentQuery.DocumentQueryBuilder sort(Sort... sorts) {
+        Consumer<Sort> validNull = d -> requireNonNull(d, "there is null document in the query");
+        Consumer<Sort> consume = this.sorts::add;
+        Stream.of(sorts).forEach(validNull.andThen(consume));
+        return this;
+    }
+
+    @Override
+    public DocumentQuery.DocumentQueryBuilder from(String documentCollection) {
+        Objects.requireNonNull(documentCollection, "documentCollection is required");
         this.documentCollection = documentCollection;
         return this;
     }
 
-
     @Override
-    public DocumentDeleteNameCondition where(String name) {
-        requireNonNull(name, "name is required");
-        this.name = name;
-        return this;
-    }
-
-
-    @Override
-    public DocumentDeleteNameCondition and(String name) {
-        requireNonNull(name, "name is required");
-        this.name = name;
-        this.and = true;
+    public DocumentQuery.DocumentQueryBuilder where(DocumentCondition condition) {
+        Objects.requireNonNull(condition, "condition is required");
+        this.condition = condition;
         return this;
     }
 
     @Override
-    public DocumentDeleteNameCondition or(String name) {
-        requireNonNull(name, "name is required");
-        this.name = name;
-        this.and = false;
-        return this;
-    }
-
-
-    @Override
-    public DocumentDeleteNotCondition not() {
-        this.negate = true;
+    public DocumentQuery.DocumentQueryBuilder skip(long skip) {
+        if (skip < 0) {
+            throw new IllegalArgumentException("The skip should not be negative, skip: " + skip);
+        }
+        this.skip = skip;
         return this;
     }
 
     @Override
-    public <T> DocumentDeleteWhere eq(T value) {
-        eqImpl(value);
+    public DocumentQuery.DocumentQueryBuilder limit(long limit) {
+        if (limit < 0) {
+            throw new IllegalArgumentException("The limit should not be negative, limit: " + limit);
+        }
+        this.limit = limit;
         return this;
     }
 
     @Override
-    public DocumentDeleteWhere like(String value) {
-        likeImpl(value);
-        return this;
+    public DocumentQuery build() {
+        if (Objects.isNull(documentCollection)) {
+            throw new IllegalArgumentException("The document collection is mandatory to build");
+        }
+        return new DefaultDocumentQuery(limit, skip, documentCollection,
+                documents, sorts, condition);
     }
 
     @Override
-    public <T> DocumentDeleteWhere gt(T value) {
-        gtImpl(value);
-        return this;
+    public Stream<DocumentEntity> getResult(DocumentCollectionManager manager) {
+        Objects.requireNonNull(manager, "manager is required");
+        return manager.select(build());
     }
 
     @Override
-    public <T> DocumentDeleteWhere gte(T value) {
-        gteImpl(value);
-        return this;
+    public Optional<DocumentEntity> getSingleResult(DocumentCollectionManager manager) {
+        Objects.requireNonNull(manager, "manager is required");
+        return manager.singleResult(build());
     }
-
-    @Override
-    public <T> DocumentDeleteWhere lt(T value) {
-        ltImpl(value);
-        return this;
-    }
-
-    @Override
-    public <T> DocumentDeleteWhere lte(T value) {
-        lteImpl(value);
-        return this;
-    }
-
-    @Override
-    public <T> DocumentDeleteWhere between(T valueA, T valueB) {
-        betweenImpl(valueA, valueB);
-        return this;
-    }
-
-    @Override
-    public <T> DocumentDeleteWhere in(Iterable<T> values) {
-        inImpl(values);
-        return this;
-    }
-
-
-    @Override
-    public DocumentDeleteQuery build() {
-        return new DefaultDocumentDeleteQuery(documentCollection, condition, documents);
-    }
-
-    @Override
-    public void delete(DocumentCollectionManager manager) {
-        requireNonNull(manager, "manager is required");
-        manager.delete(this.build());
-    }
-
-
 }

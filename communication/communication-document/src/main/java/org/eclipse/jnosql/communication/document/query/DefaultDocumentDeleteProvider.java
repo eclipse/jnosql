@@ -30,11 +30,11 @@ public final class DefaultDocumentDeleteProvider implements DocumentDeleteProvid
     @Override
     public DocumentDelete apply(String[] documents) {
         Stream.of(documents).forEach(d -> requireNonNull(d, "there is null document in the query"));
-        return new DefaultDeleteQueryBuilder(Arrays.asList(documents));
+        return new DefaultFluentDeleteQueryBuilder(Arrays.asList(documents));
     }
 
     @Override
     public DocumentDelete get() {
-        return new DefaultDeleteQueryBuilder(Collections.emptyList());
+        return new DefaultFluentDeleteQueryBuilder(Collections.emptyList());
     }
 }

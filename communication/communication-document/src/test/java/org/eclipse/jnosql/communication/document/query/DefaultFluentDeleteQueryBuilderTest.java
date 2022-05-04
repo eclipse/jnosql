@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2022 Otávio Santana and others
+ *  Copyright (c) 2017 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -16,136 +16,66 @@
  */
 package org.eclipse.jnosql.communication.document.query;
 
+
 import jakarta.nosql.Condition;
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentQuery;
+import jakarta.nosql.document.DocumentDeleteQuery;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentCondition.eq;
-import static jakarta.nosql.document.DocumentQuery.builder;
+import static jakarta.nosql.document.DocumentDeleteQuery.delete;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-class DefaultBuilderSelectQueryBuilderTest {
+public class DefaultFluentDeleteQueryBuilderTest {
+
     @Test
     public void shouldReturnErrorWhenHasNullElementInSelect() {
-        assertThrows(NullPointerException.class, () -> builder("document", "document'", null));
+        Assertions.assertThrows(NullPointerException.class,() -> delete("document", "document", null));
     }
 
     @Test
-    public void shouldBuilder() {
+    public void shouldDelete() {
         String documentCollection = "documentCollection";
-        DocumentQuery query = builder().from(documentCollection).build();
+        DocumentDeleteQuery query = delete().from(documentCollection).build();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
     }
 
     @Test
-    public void shouldSelectDocument() {
+    public void shouldDeleteDocuments() {
         String documentCollection = "documentCollection";
-        DocumentQuery query = builder("document", "document2").from(documentCollection).build();
+        DocumentDeleteQuery query = delete("document", "document2").from(documentCollection).build();
         assertThat(query.getDocuments(), containsInAnyOrder("document", "document2"));
         assertFalse(query.getCondition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
     }
 
+
     @Test
     public void shouldReturnErrorWhenFromIsNull() {
-        assertThrows(NullPointerException.class, () -> builder().from(null));
-    }
-
-
-    @Test
-    public void shouldSelectOrderAsc() {
-        String documentCollection = "documentCollection";
-        DocumentQuery query = builder().from(documentCollection).sort(Sort.asc("name")).build();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.getSorts(), Matchers.contains(Sort.of("name", SortType.ASC)));
-    }
-
-    @Test
-    public void shouldSelectOrderDesc() {
-        String documentCollection = "documentCollection";
-        DocumentQuery query = builder().from(documentCollection).sort(Sort.desc("name")).build();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.getSorts(), contains(Sort.of("name", SortType.DESC)));
-    }
-
-
-    @Test
-    public void shouldReturnErrorSelectWhenOrderIsNull() {
-        assertThrows(NullPointerException.class,() -> {
-            String documentCollection = "documentCollection";
-            builder().from(documentCollection).sort((Sort) null);
-        });
-    }
-
-    @Test
-    public void shouldSelectLimit() {
-        String documentCollection = "documentCollection";
-        DocumentQuery query = builder().from(documentCollection).limit(10).build();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(10L, query.getLimit());
-    }
-
-    @Test
-    public void shouldReturnErrorWhenLimitIsNegative() {
-        String documentCollection = "documentCollection";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            builder().from(documentCollection).limit(-1);
-        });
-    }
-
-    @Test
-    public void shouldSelectSkip() {
-        String documentCollection = "documentCollection";
-        DocumentQuery query = builder().from(documentCollection).skip(10).build();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(10L, query.getSkip());
-    }
-
-    @Test
-    public void shouldReturnErrorWhenSkipIsNegative() {
-        String documentCollection = "documentCollection";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            builder().from(documentCollection).skip(-1);
-        });
+        Assertions.assertThrows(NullPointerException.class,() -> delete().from(null));
     }
 
     @Test
     public void shouldSelectWhereNameEq() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
-
-        DocumentQuery query = builder().from(documentCollection)
-                .where(DocumentCondition.eq("name", name))
-                .build();
+        DocumentDeleteQuery query = delete().from(documentCollection).where("name").eq(name).build();
         DocumentCondition condition = query.getCondition().get();
 
         Document document = condition.getDocument();
@@ -162,9 +92,7 @@ class DefaultBuilderSelectQueryBuilderTest {
     public void shouldSelectWhereNameLike() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
-        DocumentQuery query = builder().from(documentCollection)
-                .where(DocumentCondition.like("name", name))
-                .build();
+        DocumentDeleteQuery query = delete().from(documentCollection).where("name").like(name).build();
         DocumentCondition condition = query.getCondition().get();
 
         Document document = condition.getDocument();
@@ -180,10 +108,7 @@ class DefaultBuilderSelectQueryBuilderTest {
     public void shouldSelectWhereNameGt() {
         String documentCollection = "documentCollection";
         Number value = 10;
-
-        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.gt("name", 10))
-                .build();
-
+        DocumentDeleteQuery query = delete().from(documentCollection).where("name").gt(value).build();
         DocumentCondition condition = query.getCondition().get();
 
         Document document = condition.getDocument();
@@ -199,8 +124,7 @@ class DefaultBuilderSelectQueryBuilderTest {
     public void shouldSelectWhereNameGte() {
         String documentCollection = "documentCollection";
         Number value = 10;
-        DocumentCondition gteName = DocumentCondition.gte("name", value);
-        DocumentQuery query = builder().from(documentCollection).where(gteName).build();
+        DocumentDeleteQuery query = delete().from(documentCollection).where("name").gte(value).build();
         DocumentCondition condition = query.getCondition().get();
 
         Document document = condition.getDocument();
@@ -216,9 +140,7 @@ class DefaultBuilderSelectQueryBuilderTest {
     public void shouldSelectWhereNameLt() {
         String documentCollection = "documentCollection";
         Number value = 10;
-
-        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.lt("name", value))
-                .build();
+        DocumentDeleteQuery query = delete().from(documentCollection).where("name").lt(value).build();
         DocumentCondition condition = query.getCondition().get();
 
         Document document = condition.getDocument();
@@ -234,8 +156,7 @@ class DefaultBuilderSelectQueryBuilderTest {
     public void shouldSelectWhereNameLte() {
         String documentCollection = "documentCollection";
         Number value = 10;
-        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.lte("name", value))
-                .build();
+        DocumentDeleteQuery query = delete().from(documentCollection).where("name").lte(value).build();
         DocumentCondition condition = query.getCondition().get();
 
         Document document = condition.getDocument();
@@ -252,10 +173,7 @@ class DefaultBuilderSelectQueryBuilderTest {
         String documentCollection = "documentCollection";
         Number valueA = 10;
         Number valueB = 20;
-
-        DocumentQuery query = builder().from(documentCollection)
-                .where(DocumentCondition.between("name", Arrays.asList(valueA, valueB)))
-                .build();
+        DocumentDeleteQuery query = delete().from(documentCollection).where("name").between(valueA, valueB).build();
         DocumentCondition condition = query.getCondition().get();
 
         Document document = condition.getDocument();
@@ -264,17 +182,14 @@ class DefaultBuilderSelectQueryBuilderTest {
         assertEquals(documentCollection, query.getDocumentCollection());
         assertEquals(Condition.BETWEEN, condition.getCondition());
         assertEquals("name", document.getName());
-        assertThat(document.get(new TypeReference<List<Number>>() {
-        }), Matchers.contains(10, 20));
+        assertThat(document.get(new TypeReference<List<Number>>() {}), Matchers.contains(10, 20));
     }
 
     @Test
     public void shouldSelectWhereNameNot() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
-
-        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.eq("name", name).negate())
-                .build();
+        DocumentDeleteQuery query = delete().from(documentCollection).where("name").not().eq(name).build();
         DocumentCondition condition = query.getCondition().get();
 
         Document column = condition.getDocument();
@@ -292,11 +207,8 @@ class DefaultBuilderSelectQueryBuilderTest {
     public void shouldSelectWhereNameAnd() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
-        DocumentCondition nameEqualsAda = DocumentCondition.eq("name", name);
-        DocumentCondition ageOlderTen = DocumentCondition.gt("age", 10);
-        DocumentQuery query = builder().from(documentCollection)
-                .where(DocumentCondition.and(nameEqualsAda, ageOlderTen))
-                .build();
+        DocumentDeleteQuery query = delete().from(documentCollection).where("name").eq(name).and("age")
+                .gt(10).build();
         DocumentCondition condition = query.getCondition().get();
 
         Document document = condition.getDocument();
@@ -311,10 +223,8 @@ class DefaultBuilderSelectQueryBuilderTest {
     public void shouldSelectWhereNameOr() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
-        DocumentCondition nameEqualsAda = DocumentCondition.eq("name", name);
-        DocumentCondition ageOlderTen = DocumentCondition.gt("age", 10);
-        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.or(nameEqualsAda, ageOlderTen))
-                .build();
+        DocumentDeleteQuery query = delete().from(documentCollection).where("name").eq(name)
+                .or("age").gt(10).build();
         DocumentCondition condition = query.getCondition().get();
 
         Document document = condition.getDocument();
@@ -326,12 +236,12 @@ class DefaultBuilderSelectQueryBuilderTest {
     }
 
 
+
     @Test
-    public void shouldSelectNegate() {
+    public void shouldDeleteNegate() {
         String columnFamily = "columnFamily";
-        DocumentCondition nameNotEqualsLucas = DocumentCondition.eq("name", "Lucas").negate();
-        DocumentQuery query = builder().from(columnFamily)
-                .where(nameNotEqualsLucas).build();
+        DocumentDeleteQuery query = delete().from(columnFamily).where("city").not().eq("Assis")
+                .and("name").not().eq("Lucas").build();
 
         DocumentCondition condition = query.getCondition().orElseThrow(RuntimeException::new);
         assertEquals(columnFamily, query.getDocumentCollection());
@@ -339,34 +249,22 @@ class DefaultBuilderSelectQueryBuilderTest {
         List<DocumentCondition> conditions = column.get(new TypeReference<List<DocumentCondition>>() {
         });
 
-        assertEquals(Condition.NOT, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(eq(Document.of("name", "Lucas"))));
+        assertEquals(Condition.AND, condition.getCondition());
+        assertThat(conditions, containsInAnyOrder(eq(Document.of("city", "Assis")).negate(),
+                eq(Document.of("name", "Lucas")).negate()));
 
-    }
 
-
-    @Test
-    public void shouldExecuteManager() {
-        DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
-        ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
-        String collection = "collection";
-        Stream<DocumentEntity> entities = builder().from(collection).getResult(manager);
-        Mockito.verify(manager).select(queryCaptor.capture());
-        checkQuery(queryCaptor, collection);
     }
 
     @Test
-    public void shouldExecuteSingleResultManager() {
-        DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
-        ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
+    public void shouldExecuteDelete() {
         String collection = "collection";
-        Optional<DocumentEntity> entities = builder().from(collection).getSingleResult(manager);
-        Mockito.verify(manager).singleResult(queryCaptor.capture());
-        checkQuery(queryCaptor, collection);
-    }
+        DocumentCollectionManager manager = mock(DocumentCollectionManager.class);
+        ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
+        delete().from(collection).delete(manager);
+        verify(manager).delete(queryCaptor.capture());
 
-    private void checkQuery(ArgumentCaptor<DocumentQuery> queryCaptor, String collection) {
-        DocumentQuery query = queryCaptor.getValue();
+        DocumentDeleteQuery query = queryCaptor.getValue();
         assertTrue(query.getDocuments().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(collection, query.getDocumentCollection());
