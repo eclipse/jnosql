@@ -97,12 +97,18 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements
 
     @Override
     public ColumnSkip skip(long skip) {
+        if (skip < 0) {
+            throw new IllegalArgumentException("The skip should not be negative, skip: " + skip);
+        }
         this.skip = skip;
         return this;
     }
 
     @Override
     public ColumnLimit limit(long limit) {
+        if (limit < 0) {
+            throw new IllegalArgumentException("The limit should not be negative, limit: " + limit);
+        }
         this.limit = limit;
         return this;
     }

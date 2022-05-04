@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static jakarta.nosql.column.ColumnCondition.eq;
+import static jakarta.nosql.column.ColumnQuery.builder;
 import static jakarta.nosql.column.ColumnQuery.select;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -117,6 +118,14 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
+    public void shouldReturnErrorWhenLimitIsNegative() {
+        String columnFamily = "columnFamily";
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            builder().from(columnFamily).limit(-1);
+        });
+    }
+
+    @Test
     public void shouldSelectSkip() {
         String columnFamily = "columnFamily";
         ColumnQuery query = select().from(columnFamily).skip(10).build();
@@ -124,6 +133,14 @@ public class DefaultSelectQueryBuilderTest {
         assertFalse(query.getCondition().isPresent());
         assertEquals(columnFamily, query.getColumnFamily());
         assertEquals(10L, query.getSkip());
+    }
+
+    @Test
+    public void shouldReturnErrorWhenSkipIsNegative() {
+        String columnFamily = "columnFamily";
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            builder().from(columnFamily).skip(-1);
+        });
     }
 
     @Test
