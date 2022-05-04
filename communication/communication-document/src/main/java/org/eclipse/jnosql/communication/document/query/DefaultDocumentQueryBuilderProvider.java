@@ -33,7 +33,7 @@ public final class DefaultDocumentQueryBuilderProvider implements DocumentQueryB
         Stream.of(documents).forEach(d -> requireNonNull(d, "there is null document in the query"));
         DefaultBuilderSelectQueryBuilder builder = new DefaultBuilderSelectQueryBuilder();
         Stream.of(documents).forEach(builder::select);
-        return new DefaultBuilderSelectQueryBuilder();
+        return builder;
     }
 
     @Override
