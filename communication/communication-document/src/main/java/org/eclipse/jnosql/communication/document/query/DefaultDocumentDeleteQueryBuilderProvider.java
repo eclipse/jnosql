@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2019 Otávio Santana and others
+ *  Copyright (c) 2022 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -16,28 +16,28 @@
  */
 package org.eclipse.jnosql.communication.document.query;
 
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDelete;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteProvider;
+import jakarta.nosql.document.DocumentDeleteQuery;
+import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteQueryBuilderProvider;
+import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteQueryBuilder;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
 /**
- * The default implementation of {@link DocumentDeleteProvider}
+ * the default implementation of {@link DocumentDeleteQueryBuilderProvider}
  */
-public final class DefaultDocumentDeleteProvider implements DocumentDeleteProvider {
-
+public final class DefaultDocumentDeleteQueryBuilderProvider implements DocumentDeleteQueryBuilderProvider {
     @Override
-    public DocumentDelete apply(String[] documents) {
+    public DocumentDeleteQuery.DocumentDeleteQueryBuilder apply(String[] documents) {
         Stream.of(documents).forEach(d -> requireNonNull(d, "there is null document in the query"));
-        return new DefaultFluentDeleteQueryBuilder(Arrays.asList(documents));
+        DocumentDeleteQueryBuilder builder = new DefaultDeleteQueryBuilder();
+        Stream.of(documents).forEach(builder::delete);
+        return builder;
     }
 
     @Override
-    public DocumentDelete get() {
-        return new DefaultFluentDeleteQueryBuilder(Collections.emptyList());
+    public DocumentDeleteQuery.DocumentDeleteQueryBuilder get() {
+        return new DefaultDeleteQueryBuilder();
     }
 }
