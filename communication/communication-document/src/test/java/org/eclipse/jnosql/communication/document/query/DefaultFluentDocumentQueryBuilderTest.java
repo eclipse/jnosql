@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class DefaultSelectQueryBuilderTest {
+public class DefaultFluentDocumentQueryBuilderTest {
 
 
     @Test

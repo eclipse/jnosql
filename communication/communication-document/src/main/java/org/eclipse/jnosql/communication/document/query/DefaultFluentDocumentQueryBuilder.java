@@ -43,7 +43,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of the Select in the document
  */
-class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSelect, DocumentFrom, DocumentLimit,
+class DefaultFluentDocumentQueryBuilder extends BaseQueryBuilder implements DocumentSelect, DocumentFrom, DocumentLimit,
         DocumentSkip, DocumentOrder, DocumentNotCondition, DocumentNameOrder, DocumentWhere, DocumentQueryBuild {
 
 
@@ -58,7 +58,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements DocumentSele
     private final List<String> documents;
 
 
-    DefaultSelectQueryBuilder(List<String> documents) {
+    DefaultFluentDocumentQueryBuilder(List<String> documents) {
         this.documents = documents;
     }
 
