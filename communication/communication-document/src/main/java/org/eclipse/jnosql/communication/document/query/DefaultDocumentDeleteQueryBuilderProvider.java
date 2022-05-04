@@ -16,9 +16,8 @@
  */
 package org.eclipse.jnosql.communication.document.query;
 
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteQueryBuilderProvider;
 import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteQueryBuilder;
+import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteQueryBuilderProvider;
 
 import java.util.stream.Stream;
 
@@ -29,7 +28,7 @@ import static java.util.Objects.requireNonNull;
  */
 public final class DefaultDocumentDeleteQueryBuilderProvider implements DocumentDeleteQueryBuilderProvider {
     @Override
-    public DocumentDeleteQuery.DocumentDeleteQueryBuilder apply(String[] documents) {
+    public DocumentDeleteQueryBuilder apply(String[] documents) {
         Stream.of(documents).forEach(d -> requireNonNull(d, "there is null document in the query"));
         DocumentDeleteQueryBuilder builder = new DefaultDeleteQueryBuilder();
         Stream.of(documents).forEach(builder::delete);
@@ -37,7 +36,7 @@ public final class DefaultDocumentDeleteQueryBuilderProvider implements Document
     }
 
     @Override
-    public DocumentDeleteQuery.DocumentDeleteQueryBuilder get() {
+    public DocumentDeleteQueryBuilder get() {
         return new DefaultDeleteQueryBuilder();
     }
 }
