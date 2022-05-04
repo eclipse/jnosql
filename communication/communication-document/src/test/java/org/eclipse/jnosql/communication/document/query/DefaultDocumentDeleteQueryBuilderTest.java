@@ -43,7 +43,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
 
-class DefaultDeleteQueryBuilderTest {
+class DefaultDocumentDeleteQueryBuilderTest {
     @Test
     public void shouldReturnErrorWhenHasNullElementInSelect() {
         assertThrows(NullPointerException.class, () -> builder("document", "document'", null));

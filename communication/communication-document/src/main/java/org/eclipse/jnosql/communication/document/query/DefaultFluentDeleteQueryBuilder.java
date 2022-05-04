@@ -36,7 +36,6 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Docume
 
     private String documentCollection;
 
-
     private final List<String> documents;
 
 
