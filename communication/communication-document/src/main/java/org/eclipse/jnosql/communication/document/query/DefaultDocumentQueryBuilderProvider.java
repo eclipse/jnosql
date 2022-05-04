@@ -19,8 +19,6 @@ package org.eclipse.jnosql.communication.document.query;
 import jakarta.nosql.document.DocumentQuery.DocumentQueryBuilder;
 import jakarta.nosql.document.DocumentQuery.DocumentQueryBuilderProvider;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
