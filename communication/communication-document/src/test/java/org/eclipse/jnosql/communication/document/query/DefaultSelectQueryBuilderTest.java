@@ -26,6 +26,7 @@ import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -117,6 +118,14 @@ public class DefaultSelectQueryBuilderTest {
     }
 
     @Test
+    public void shouldReturnErrorWhenLimitIsNegative() {
+        String documentCollection = "documentCollection";
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            select().from(documentCollection).limit(-1);
+        });
+    }
+
+    @Test
     public void shouldSelectSkip() {
         String documentCollection = "documentCollection";
         DocumentQuery query = select().from(documentCollection).skip(10).build();
@@ -124,6 +133,14 @@ public class DefaultSelectQueryBuilderTest {
         assertFalse(query.getCondition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
         assertEquals(10L, query.getSkip());
+    }
+
+    @Test
+    public void shouldReturnErrorWhenSkipIsNegative() {
+        String documentCollection = "documentCollection";
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            select().from(documentCollection).skip(-1);
+        });
     }
 
     @Test
