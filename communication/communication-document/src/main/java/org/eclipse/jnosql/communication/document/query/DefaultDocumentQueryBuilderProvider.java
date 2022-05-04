@@ -31,13 +31,13 @@ public final class DefaultDocumentQueryBuilderProvider implements DocumentQueryB
     @Override
     public DocumentQueryBuilder apply(String[] documents) {
         Stream.of(documents).forEach(d -> requireNonNull(d, "there is null document in the query"));
-        DefaultDocumentDeleteQueryBuilder builder = new DefaultDocumentDeleteQueryBuilder();
+        DefaultDocumentQueryBuilder builder = new DefaultDocumentQueryBuilder();
         Stream.of(documents).forEach(builder::select);
         return builder;
     }
 
     @Override
     public DocumentQueryBuilder get() {
-        return new DefaultDocumentDeleteQueryBuilder();
+        return new DefaultDocumentQueryBuilder();
     }
 }

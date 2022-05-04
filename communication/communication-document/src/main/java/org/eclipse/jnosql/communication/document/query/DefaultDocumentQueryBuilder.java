@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultDocumentDeleteQueryBuilder implements DocumentQuery.DocumentQueryBuilder {
+class DefaultDocumentQueryBuilder implements DocumentQuery.DocumentQueryBuilder {
 
     private List<String> documents = new ArrayList<>();
 
