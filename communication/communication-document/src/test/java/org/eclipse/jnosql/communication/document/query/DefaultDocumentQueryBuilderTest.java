@@ -328,13 +328,13 @@ class DefaultDocumentQueryBuilderTest {
 
     @Test
     public void shouldSelectNegate() {
-        String columnFamily = "columnFamily";
+        String collection = "collection";
         DocumentCondition nameNotEqualsLucas = DocumentCondition.eq("name", "Lucas").negate();
-        DocumentQuery query = builder().from(columnFamily)
+        DocumentQuery query = builder().from(collection)
                 .where(nameNotEqualsLucas).build();
 
         DocumentCondition condition = query.getCondition().orElseThrow(RuntimeException::new);
-        assertEquals(columnFamily, query.getDocumentCollection());
+        assertEquals(collection, query.getDocumentCollection());
         Document column = condition.getDocument();
         List<DocumentCondition> conditions = column.get(new TypeReference<List<DocumentCondition>>() {
         });
