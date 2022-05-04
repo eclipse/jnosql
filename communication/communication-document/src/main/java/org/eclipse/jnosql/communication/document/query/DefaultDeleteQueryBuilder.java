@@ -103,4 +103,14 @@ class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
     public int hashCode() {
         return Objects.hash(documents, sorts, documentCollection, condition);
     }
+
+    @Override
+    public String toString() {
+        return "DefaultDeleteQueryBuilder{" +
+                "documents=" + documents +
+                ", sorts=" + sorts +
+                ", documentCollection='" + documentCollection + '\'' +
+                ", condition=" + condition +
+                '}';
+    }
 }
