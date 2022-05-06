@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2019 Otávio Santana and others
+ *  Copyright (c) 2022 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -16,24 +16,28 @@
  */
 package org.eclipse.jnosql.communication.column.query;
 
-import jakarta.nosql.column.ColumnQuery.ColumnSelect;
-import jakarta.nosql.column.ColumnQuery.ColumnSelectProvider;
+import jakarta.nosql.column.ColumnQuery.ColumnQueryBuilder;
+import jakarta.nosql.column.ColumnQuery.ColumnQueryBuilderProvider;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
 
-public final class DefaultColumnSelectProvider implements ColumnSelectProvider {
+/**
+ * The default implementation of {@link ColumnQueryBuilderProvider}
+ */
+public final class DefaultColumnQueryBuilderProvider implements ColumnQueryBuilderProvider {
+
     @Override
-    public ColumnSelect apply(String[] columns) {
+    public ColumnQueryBuilder apply(String[] columns) {
         Stream.of(columns).forEach(d -> requireNonNull(d, "there is null column in the query"));
-        return new DefaultFluentColumnQueryBuilder(Arrays.asList(columns));
+        ColumnQueryBuilder builder = new DefaultColumnQueryBuilder();
+        Stream.of(columns).forEach(builder::select);
+        return builder;
     }
 
     @Override
-    public ColumnSelect get() {
-        return new DefaultFluentColumnQueryBuilder(emptyList());
+    public ColumnQueryBuilder get() {
+        return new DefaultColumnQueryBuilder();
     }
 }

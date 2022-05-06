@@ -19,18 +19,19 @@ package org.eclipse.jnosql.communication.document.query;
 import jakarta.nosql.Sort;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteQueryBuilder;
+import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentQuery;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
+class DefaultDocumentQueryBuilder implements DocumentQuery.DocumentQueryBuilder {
 
     private List<String> documents = new ArrayList<>();
 
@@ -40,16 +41,20 @@ class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
 
     private DocumentCondition condition;
 
+    private long skip;
+
+    private long limit;
+
 
     @Override
-    public DocumentDeleteQueryBuilder delete(String document) {
+    public DocumentQuery.DocumentQueryBuilder select(String document) {
         Objects.requireNonNull(document, "document is required");
         this.documents.add(document);
         return this;
     }
 
     @Override
-    public DocumentDeleteQueryBuilder delete(String... documents) {
+    public DocumentQuery.DocumentQueryBuilder select(String... documents) {
         Consumer<String> validNull = d -> requireNonNull(d, "there is null document in the query");
         Consumer<String> consume = this.documents::add;
         Stream.of(documents).forEach(validNull.andThen(consume));
@@ -57,31 +62,71 @@ class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
     }
 
     @Override
-    public DocumentDeleteQueryBuilder from(String documentCollection) {
+    public DocumentQuery.DocumentQueryBuilder sort(Sort sort) {
+        Objects.requireNonNull(sort, "sort is required");
+        this.sorts.add(sort);
+        return this;
+    }
+
+    @Override
+    public DocumentQuery.DocumentQueryBuilder sort(Sort... sorts) {
+        Consumer<Sort> validNull = d -> requireNonNull(d, "there is null document in the query");
+        Consumer<Sort> consume = this.sorts::add;
+        Stream.of(sorts).forEach(validNull.andThen(consume));
+        return this;
+    }
+
+    @Override
+    public DocumentQuery.DocumentQueryBuilder from(String documentCollection) {
         Objects.requireNonNull(documentCollection, "documentCollection is required");
         this.documentCollection = documentCollection;
         return this;
     }
 
     @Override
-    public DocumentDeleteQueryBuilder where(DocumentCondition condition) {
+    public DocumentQuery.DocumentQueryBuilder where(DocumentCondition condition) {
         Objects.requireNonNull(condition, "condition is required");
         this.condition = condition;
         return this;
     }
 
     @Override
-    public DocumentDeleteQuery build() {
-        if (Objects.isNull(documentCollection)) {
-            throw new IllegalArgumentException("The document collection is mandatory to build");
+    public DocumentQuery.DocumentQueryBuilder skip(long skip) {
+        if (skip < 0) {
+            throw new IllegalArgumentException("The skip should not be negative, skip: " + skip);
         }
-        return new DefaultDocumentDeleteQuery(documentCollection, condition, documents);
+        this.skip = skip;
+        return this;
     }
 
     @Override
-    public void delete(DocumentCollectionManager manager) {
+    public DocumentQuery.DocumentQueryBuilder limit(long limit) {
+        if (limit < 0) {
+            throw new IllegalArgumentException("The limit should not be negative, limit: " + limit);
+        }
+        this.limit = limit;
+        return this;
+    }
+
+    @Override
+    public DocumentQuery build() {
+        if (Objects.isNull(documentCollection)) {
+            throw new IllegalArgumentException("The document collection is mandatory to build");
+        }
+        return new DefaultDocumentQuery(limit, skip, documentCollection,
+                documents, sorts, condition);
+    }
+
+    @Override
+    public Stream<DocumentEntity> getResult(DocumentCollectionManager manager) {
         Objects.requireNonNull(manager, "manager is required");
-        manager.delete(build());
+        return manager.select(build());
+    }
+
+    @Override
+    public Optional<DocumentEntity> getSingleResult(DocumentCollectionManager manager) {
+        Objects.requireNonNull(manager, "manager is required");
+        return manager.singleResult(build());
     }
 
     @Override
@@ -92,8 +137,10 @@ class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultDeleteQueryBuilder that = (DefaultDeleteQueryBuilder) o;
-        return Objects.equals(documents, that.documents)
+        DefaultDocumentQueryBuilder that = (DefaultDocumentQueryBuilder) o;
+        return skip == that.skip
+                && limit == that.limit
+                && Objects.equals(documents, that.documents)
                 && Objects.equals(sorts, that.sorts)
                 && Objects.equals(documentCollection, that.documentCollection)
                 && Objects.equals(condition, that.condition);
@@ -101,16 +148,18 @@ class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
 
     @Override
     public int hashCode() {
-        return Objects.hash(documents, sorts, documentCollection, condition);
+        return Objects.hash(documents, sorts, documentCollection, condition, skip, limit);
     }
 
     @Override
     public String toString() {
-        return "DefaultDeleteQueryBuilder{" +
+        return "DefaultDocumentQueryBuilder{" +
                 "documents=" + documents +
                 ", sorts=" + sorts +
                 ", documentCollection='" + documentCollection + '\'' +
                 ", condition=" + condition +
+                ", skip=" + skip +
+                ", limit=" + limit +
                 '}';
     }
 }
