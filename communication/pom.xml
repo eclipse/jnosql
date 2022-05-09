@@ -39,5 +39,6 @@
         <module>communication-key-value</module>
         <module>communication-column</module>
         <module>communication-document</module>
+        <module>communication-metamodel-generator</module>
     </modules>
 </project>

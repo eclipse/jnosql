@@ -15,6 +15,14 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.criteria.CriteriaFunction;
+import jakarta.nosql.criteria.CriteriaQuery;
+import jakarta.nosql.criteria.ExecutableQuery;
+import jakarta.nosql.criteria.FunctionQuery;
+import jakarta.nosql.criteria.FunctionQueryResult;
+import jakarta.nosql.criteria.Root;
+import jakarta.nosql.criteria.SelectQuery;
+import jakarta.nosql.criteria.SelectQueryResult;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCondition;
@@ -47,6 +55,8 @@ import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentDeleteQuery.delete;
 import static jakarta.nosql.document.DocumentQuery.select;
+import org.eclipse.jnosql.mapping.document.entities.Citizen;
+import org.eclipse.jnosql.mapping.document.entities.Citizen_;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -55,7 +65,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 
 @CDIExtension
 public class DefaultDocumentTemplateTest {
@@ -68,12 +77,10 @@ public class DefaultDocumentTemplateTest {
             .withIgnore().build();
 
     private final Document[] documents = new Document[]{
-            Document.of("age", 10),
-            Document.of("phones", Arrays.asList("234", "432")),
-            Document.of("name", "Name"),
-            Document.of("id", 19L),
-    };
-
+        Document.of("age", 10),
+        Document.of("phones", Arrays.asList("234", "432")),
+        Document.of("name", "Name"),
+        Document.of("id", 19L),};
 
     @Inject
     private DocumentEntityConverter converter;
@@ -145,7 +152,6 @@ public class DefaultDocumentTemplateTest {
         assertEquals(10, person.getAge());
     }
 
-
     @Test
     public void shouldSaveTTL() {
 
@@ -168,7 +174,6 @@ public class DefaultDocumentTemplateTest {
         assertEquals("Person", value.getName());
         assertEquals(4, value.getDocuments().size());
     }
-
 
     @Test
     public void shouldUpdate() {
@@ -211,9 +216,6 @@ public class DefaultDocumentTemplateTest {
         assertEquals(10, person.getAge());
     }
 
-
-
-
     @Test
     public void shouldInsertEntitiesTTL() {
         DocumentEntity documentEntity = DocumentEntity.of("Person");
@@ -254,7 +256,6 @@ public class DefaultDocumentTemplateTest {
         verify(managerMock, times(2)).update(any(DocumentEntity.class));
     }
 
-
     @Test
     public void shouldDelete() {
 
@@ -269,7 +270,6 @@ public class DefaultDocumentTemplateTest {
         subject.select(query);
         verify(managerMock).select(query);
     }
-
 
     @Test
     public void shouldReturnSingleResult() {
@@ -396,5 +396,29 @@ public class DefaultDocumentTemplateTest {
         verify(managerMock).count("Person");
     }
 
+    @Test
+    public void shouldCountFromCriteria() {
+        DocumentEntity document = DocumentEntity.of("Citizen");
+        document.addAll(Stream.of(documents).collect(Collectors.toList()));
+
+        when(managerMock
+                .insert(any(DocumentEntity.class)))
+                .thenReturn(document);
+        
+        Citizen citizen = Citizen.of("0", "Alessandro");
+        subject.insert(citizen);
+
+        CriteriaQuery<Citizen> createQuery = subject.createQuery(Citizen.class);
+        Root<Citizen> from = createQuery.from();
+        assertEquals(
+                1,
+                subject.executeQuery(
+                        createQuery.select().where(
+                                from.get(Citizen_.name).equal("Alessandro")
+                        )
+                ).getStream().count()
+        );
+
+    }
 
 }

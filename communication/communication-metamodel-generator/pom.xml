@@ -1,0 +1,45 @@
+<!--
+~  Copyright (c) 2022 Otávio Santana and others
+~  All rights reserved. This program and the accompanying materials
+~  are made available under the terms of the Eclipse Public License v1.0
+~  and Apache License v2.0 which accompanies this distribution.
+~  The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+~  and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+~  You may elect to redistribute this code under either of these licenses.
+~  Contributors:
+~  Alessandro Moscatelli
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.eclipse.jnosql.communication</groupId>
+        <artifactId>communication</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>communication-metamodel-generator</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.jnosql.mapping</groupId>
+            <artifactId>mapping-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>1.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.codemodel</groupId>
+            <artifactId>codemodel</artifactId>
+            <version>2.6</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    <name>communication-metamodel-generator</name>
+</project>

@@ -33,6 +33,12 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.jnosql.communication</groupId>
+            <artifactId>communication-metamodel-generator</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>mapping-core</artifactId>
             <version>${project.version}</version>
