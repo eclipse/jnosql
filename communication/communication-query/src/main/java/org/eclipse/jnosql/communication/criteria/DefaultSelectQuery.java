@@ -16,30 +16,33 @@ package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.Order;
 import jakarta.nosql.criteria.SelectQuery;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class DefaultSelectQuery<
         X,
-        R extends DefaultSelectQueryResult<X>,
-        Q extends DefaultSelectQuery<X, R, Q>
+        Q extends DefaultSelectQuery<X, Q>
     > extends AbstractRestrictedQuery<X, DefaultSelectQueryResult<X>, Q> implements SelectQuery<X> {
 
     private List<Order<X, ?>> sortings;
     private Integer maxResults;
     private Integer firstResult;
+    private DefaultSelectQueryResult<X> result;
 
     public DefaultSelectQuery(Class<X> type) {
         super(type);
     }
 
     @Override
-    public SelectQuery<X> orderBy(List<Order<X, ?>> sortings) {
-        this.sortings = sortings;
+    public SelectQuery<X> orderBy(Order<X, ?>... sortings) {
+        this.sortings = Arrays.asList(sortings);
         return this;
     }
 
-    public List<Order<X, ?>> getSortings() {
-        return sortings;
+    @Override
+    public List<Order<X, ?>> getOrderBy() {
+        return this.sortings;
     }
 
     @Override
@@ -48,7 +51,8 @@ public class DefaultSelectQuery<
         return this;
     }
 
-    public Integer getMaxResults() {
+    @Override
+    public int getMaxResults() {
         return maxResults;
     }
 
@@ -58,8 +62,20 @@ public class DefaultSelectQuery<
         return this;
     }
 
-    public Integer getFirstResult() {
+    @Override
+    public int getFirstResult() {
         return firstResult;
+    }
+
+    @Override
+    public SelectQuery<X> feed(Stream<X> results) {
+        this.result = new DefaultSelectQueryResult(results);
+        return this;
+    }
+
+    @Override
+    public DefaultSelectQueryResult<X> getResult() {
+        return this.result;
     }
 
 }

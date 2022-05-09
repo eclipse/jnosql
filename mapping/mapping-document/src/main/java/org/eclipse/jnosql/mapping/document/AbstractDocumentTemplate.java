@@ -11,15 +11,16 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Alessandro Moscatelli
  */
 package org.eclipse.jnosql.mapping.document;
-
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.criteria.CriteriaQuery;
 import jakarta.nosql.criteria.CriteriaQueryResult;
 import jakarta.nosql.criteria.ExecutableQuery;
+import jakarta.nosql.criteria.SelectQuery;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
@@ -35,6 +36,7 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
+import java.lang.reflect.Array;
 import org.eclipse.jnosql.mapping.reflection.ClassMapping;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
@@ -42,6 +44,7 @@ import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
 import java.time.Duration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -52,13 +55,13 @@ import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
 import org.eclipse.jnosql.communication.criteria.DefaultCriteriaQuery;
+import org.eclipse.jnosql.mapping.document.criteria.CriteriaQueryUtils;
 
 /**
- * This class provides a skeletal implementation of the {@link DocumentTemplate} interface,
- * to minimize the effort required to implement this interface.
+ * This class provides a skeletal implementation of the {@link DocumentTemplate}
+ * interface, to minimize the effort required to implement this interface.
  */
 public abstract class AbstractDocumentTemplate implements DocumentTemplate {
-
 
     private static final DocumentQueryParser PARSER = ServiceLoaderProvider.get(DocumentQueryParser.class);
 
@@ -80,7 +83,6 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     private DocumentObserverParser columnQueryParser;
 
-
     private DocumentObserverParser getObserver() {
         if (Objects.isNull(columnQueryParser)) {
             columnQueryParser = new DocumentMapperObserver(getClassMappings());
@@ -93,7 +95,6 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         requireNonNull(entity, "entity is required");
         return getWorkflow().flow(entity, insert);
     }
-
 
     @Override
     public <T> T insert(T entity, Duration ttl) {
@@ -151,17 +152,16 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return new DocumentPage<>(this, entities, query);
     }
 
-
     @Override
     public <T> Optional<T> singleResult(DocumentQuery query) {
         Objects.requireNonNull(query, "query is required");
         final Stream<T> entities = select(query);
         final Iterator<T> iterator = entities.iterator();
-        if(!iterator.hasNext()) {
+        if (!iterator.hasNext()) {
             return Optional.empty();
         }
         final T entity = iterator.next();
-        if(!iterator.hasNext()) {
+        if (!iterator.hasNext()) {
             return Optional.of(entity);
         }
         throw new NonUniqueResultException("No unique result found to the query: " + query);
@@ -224,12 +224,12 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return new DocumentPreparedStatement(PARSER.prepare(query, getManager(), getObserver()), getConverter());
     }
 
-
     @Override
     public long count(String documentCollection) {
         return getManager().count(documentCollection);
     }
 
+    @Override
     public <T> long count(Class<T> entityClass) {
         requireNonNull(entityClass, "entityClass is required");
         ClassMapping classMapping = getClassMappings().get(entityClass);
@@ -248,13 +248,19 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     public <T extends Object> CriteriaQuery<T> createQuery(Class<T> type) {
         return new DefaultCriteriaQuery<>(type);
     }
-    
+
     @Override
-    public <T extends Object, R extends CriteriaQueryResult<T>> R executeQuery(ExecutableQuery<T, R> criteriaQuery) {
+    public <T, R extends CriteriaQueryResult<T>> R executeQuery(ExecutableQuery<T, R> criteriaQuery) {
         requireNonNull(criteriaQuery, "query is required");
-        getManager().executeQuery(criteriaQuery);
-        return null;
+        if (criteriaQuery instanceof SelectQuery) {
+            SelectQuery<T> selectQuery = SelectQuery.class.cast(criteriaQuery);
+            DocumentQuery documentQuery = CriteriaQueryUtils.convert(selectQuery);
+            getPersistManager().firePreQuery(documentQuery);
+            selectQuery.feed(executeQuery(documentQuery));
+        } else {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        return criteriaQuery.getResult();
     }
-    
 
 }

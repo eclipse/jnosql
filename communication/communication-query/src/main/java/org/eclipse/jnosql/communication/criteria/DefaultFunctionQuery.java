@@ -18,6 +18,7 @@ import jakarta.nosql.criteria.AggregatedQuery;
 import jakarta.nosql.criteria.CriteriaFunction;
 import jakarta.nosql.criteria.Expression;
 import jakarta.nosql.criteria.FunctionQuery;
+import jakarta.nosql.criteria.FunctionQueryResult;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -38,6 +39,11 @@ public class DefaultFunctionQuery<T> extends AbstractRestrictedQuery<T, DefaultF
     @Override
     public AggregatedQuery<T> groupBy(Expression<T, ?, ?>... groupings) {
         return new DefaultAggregatedQuery(this.getType(), groupings);
+    }
+
+    @Override
+    public FunctionQueryResult<T> getResult() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

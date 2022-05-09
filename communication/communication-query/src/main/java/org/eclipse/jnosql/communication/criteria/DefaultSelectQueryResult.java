@@ -15,7 +15,19 @@
 package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.SelectQueryResult;
+import java.util.stream.Stream;
 
 public class DefaultSelectQueryResult<T> extends DefaultRestrictedQueryResult<T> implements SelectQueryResult<T> {
+    
+    private final Stream<T> results;
+
+    public DefaultSelectQueryResult(Stream<T> results) {
+        this.results = results;
+    }
+
+    @Override
+    public Stream<T> getStream() {
+        return this.results;
+    }
     
 }

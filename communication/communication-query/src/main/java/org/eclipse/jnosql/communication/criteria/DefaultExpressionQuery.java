@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class DefaultExpressionQuery<T>
-        extends DefaultSelectQuery<T, DefaultExpressionQueryResult<T>, DefaultExpressionQuery<T>> implements ExpressionQuery<T> {
+        extends DefaultSelectQuery<T, DefaultExpressionQuery<T>> implements ExpressionQuery<T> {
 
     private final Collection<Expression<T, ?, ?>> expressions;
 

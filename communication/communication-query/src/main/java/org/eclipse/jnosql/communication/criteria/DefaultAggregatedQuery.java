@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.AggregatedQuery;
+import jakarta.nosql.criteria.AggregatedQueryResult;
 import jakarta.nosql.criteria.Expression;
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,6 +32,11 @@ public class DefaultAggregatedQuery<T> extends AbstractGenericType<T> implements
 
     public Collection<Expression<T, ?, ?>> getGroupings() {
         return groupings;
+    }
+
+    @Override
+    public AggregatedQueryResult<T> getResult() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
