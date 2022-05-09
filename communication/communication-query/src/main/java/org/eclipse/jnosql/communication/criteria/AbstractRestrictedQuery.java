@@ -15,28 +15,36 @@
 package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.Predicate;
+import jakarta.nosql.criteria.RestrictedQuery;
+import jakarta.nosql.criteria.RestrictedQueryResult;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * Abstract class to extend for {@link RestrictedQuery} implementations
+ *
+ * @param <T> the type of the root entity
+ * @param <R> the type of the query result
+ * @param <Q> the type of the restricted query
+ */
 public abstract class AbstractRestrictedQuery<
-        T,
-        R extends DefaultRestrictedQueryResult<T>,
-        Q extends AbstractRestrictedQuery<T, R, Q>
-    > extends DefaultCriteriaQuery<T> {
-    
+        T, R extends RestrictedQueryResult<T>, Q extends RestrictedQuery<T, R, Q>> extends DefaultCriteriaQuery<T> implements RestrictedQuery<T, R, Q> {
+
     private Collection<Predicate<T>> restrictions;
 
     public AbstractRestrictedQuery(Class<T> type) {
         super(type);
     }
 
+    @Override
     public Q where(Predicate<T>... restrictions) {
         this.restrictions = Arrays.asList(restrictions);
         return (Q) this;
     }
 
+    @Override
     public Collection<Predicate<T>> getRestrictions() {
         return restrictions;
     }
-    
+
 }

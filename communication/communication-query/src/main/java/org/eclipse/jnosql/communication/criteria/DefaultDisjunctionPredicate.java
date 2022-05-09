@@ -18,6 +18,11 @@ import jakarta.nosql.criteria.DisjunctionPredicate;
 import jakarta.nosql.criteria.Predicate;
 import java.util.Collection;
 
+/**
+ * Default implementation for {@link DisjunctionPredicate}
+ *
+ * @param <X> The Entity type whose fetching is to be be restricted
+ */
 public class DefaultDisjunctionPredicate<X> extends AbstractCompositionPredicate<X> implements DisjunctionPredicate<X> {
 
     public DefaultDisjunctionPredicate(Collection<Predicate<X>> predicates) {

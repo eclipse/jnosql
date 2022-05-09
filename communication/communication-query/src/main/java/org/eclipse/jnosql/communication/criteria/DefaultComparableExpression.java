@@ -22,6 +22,13 @@ import jakarta.nosql.criteria.Path;
 import jakarta.nosql.criteria.RangePredicate;
 import jakarta.nosql.metamodel.ComparableAttribute;
 
+/**
+ * Default implementation for {@link ComparableExpression}
+ *
+ * @param <X> the root type
+ * @param <Y> the entity type
+ * @param <T> the comparable type of the expression
+ */
 public class DefaultComparableExpression<X, Y, T extends Comparable> extends DefaultExpression<X, Y, T> implements ComparableExpression<X, Y, T> {
 
     public DefaultComparableExpression(Path<X, Y> path, ComparableAttribute<Y, T> attribute) {

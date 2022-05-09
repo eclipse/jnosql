@@ -17,6 +17,14 @@ package org.eclipse.jnosql.communication.criteria;
 import jakarta.nosql.criteria.BinaryPredicate;
 import jakarta.nosql.criteria.Expression;
 
+/**
+ * Default implementation for {@link BinaryPredicate}
+ * This holds the operator, the expression and the right hand side
+ *
+ * @param <X> The root type
+ * @param <LHS> The left hand side type
+ * @param <RHS> The right hand side type
+ */
 public class DefaultBinaryPredicate<X, LHS, RHS> extends AbstractPredicate<X> implements BinaryPredicate<X, LHS, RHS> {
 
     private final Operator operator;

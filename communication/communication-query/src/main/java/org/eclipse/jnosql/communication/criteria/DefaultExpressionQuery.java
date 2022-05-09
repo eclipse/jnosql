@@ -19,8 +19,14 @@ import jakarta.nosql.criteria.ExpressionQuery;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * Default implementation for {@link ExpressionQuery}
+ * This holds the expressions to retrieve.
+ *
+ * @param <T> the type of the expression
+ */
 public class DefaultExpressionQuery<T>
-        extends DefaultSelectQuery<T, DefaultExpressionQuery<T>> implements ExpressionQuery<T> {
+        extends DefaultSelectQuery<T> implements ExpressionQuery<T> {
 
     private final Collection<Expression<T, ?, ?>> expressions;
 

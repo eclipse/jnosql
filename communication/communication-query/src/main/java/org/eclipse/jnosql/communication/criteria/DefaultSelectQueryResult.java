@@ -17,7 +17,13 @@ package org.eclipse.jnosql.communication.criteria;
 import jakarta.nosql.criteria.SelectQueryResult;
 import java.util.stream.Stream;
 
-public class DefaultSelectQueryResult<T> extends DefaultRestrictedQueryResult<T> implements SelectQueryResult<T> {
+/**
+ * Default implementation for {@link SelectQueryResult}
+ * This contains the results entiry stream
+ *
+ * @param <T> the type of the root entity
+ */
+public class DefaultSelectQueryResult<T> implements SelectQueryResult<T> {
     
     private final Stream<T> results;
 

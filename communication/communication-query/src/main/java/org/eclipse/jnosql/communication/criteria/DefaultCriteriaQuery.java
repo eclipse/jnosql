@@ -23,6 +23,11 @@ import jakarta.nosql.criteria.Root;
 import jakarta.nosql.criteria.SelectQuery;
 import org.eclipse.jnosql.AbstractGenericType;
 
+/**
+ * Default implementation for {@link CriteriaQuery}
+ *
+ * @param <T> the type of the root entity
+ */
 public class DefaultCriteriaQuery<T> extends AbstractGenericType<T> implements CriteriaQuery<T> {
     
     private final Root<T> from;

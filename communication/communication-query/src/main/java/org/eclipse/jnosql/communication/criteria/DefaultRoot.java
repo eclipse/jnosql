@@ -18,6 +18,11 @@ import jakarta.nosql.criteria.Path;
 import jakarta.nosql.criteria.PathFunction;
 import jakarta.nosql.criteria.Root;
 
+/**
+ * Default implementation for {@link Root}
+ *
+ * @param <X> The Entity type whose fetching is to be be restricted
+ */
 public class DefaultRoot<X> extends DefaultPath<X, X> implements Root<X> {
 
     public DefaultRoot(Class<X> type) {

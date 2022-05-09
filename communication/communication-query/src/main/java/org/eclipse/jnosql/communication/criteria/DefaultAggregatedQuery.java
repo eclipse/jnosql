@@ -21,6 +21,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import org.eclipse.jnosql.AbstractGenericType;
 
+/**
+ * Default implementation for {@link AggregatedQuery}
+ *
+ * @param <T> the type of the root entity
+ */
 public class DefaultAggregatedQuery<T> extends AbstractGenericType<T> implements AggregatedQuery<T> {
 
     private final Collection<Expression<T, ?, ?>> groupings;
@@ -36,7 +41,7 @@ public class DefaultAggregatedQuery<T> extends AbstractGenericType<T> implements
 
     @Override
     public AggregatedQueryResult<T> getResult() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

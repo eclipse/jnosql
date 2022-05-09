@@ -20,6 +20,12 @@ import jakarta.nosql.criteria.NegationPredicate;
 import jakarta.nosql.criteria.Predicate;
 import java.util.Arrays;
 
+/**
+ * Abstract class for {@link Predicate} implementations.
+ * Supports basic operations such as negation, conjunction and disjunction.
+ *
+ * @param <T> The Entity type whose fetching is to be be restricted
+ */
 public abstract class AbstractPredicate<T> implements Predicate<T>{
     
     @Override

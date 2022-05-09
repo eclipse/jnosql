@@ -16,14 +16,18 @@ package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.Order;
 import jakarta.nosql.criteria.SelectQuery;
+import jakarta.nosql.criteria.SelectQueryResult;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * Default implementation for {@link SelectQuery}
+ *
+ * @param <X> the type of the root entity
+ */
 public class DefaultSelectQuery<
-        X,
-        Q extends DefaultSelectQuery<X, Q>
-    > extends AbstractRestrictedQuery<X, DefaultSelectQueryResult<X>, Q> implements SelectQuery<X> {
+        X> extends AbstractRestrictedQuery<X, SelectQueryResult<X>, SelectQuery<X>> implements SelectQuery<X> {
 
     private List<Order<X, ?>> sortings;
     private Integer maxResults;
@@ -74,7 +78,7 @@ public class DefaultSelectQuery<
     }
 
     @Override
-    public DefaultSelectQueryResult<X> getResult() {
+    public SelectQueryResult<X> getResult() {
         return this.result;
     }
 

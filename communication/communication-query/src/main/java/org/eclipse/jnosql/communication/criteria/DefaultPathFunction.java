@@ -17,6 +17,15 @@ package org.eclipse.jnosql.communication.criteria;
 import jakarta.nosql.criteria.Path;
 import jakarta.nosql.criteria.PathFunction;
 
+/**
+ * Default implementation for {@link PathFunction}
+ * This holds the function and the path to apply the function to
+ *
+ * @param <X> the root entity type
+ * @param <Y> the entity type
+ * @param <T> the type of the attribute the function is applied to
+ * @param <R> the return type of the function
+ */
 public class DefaultPathFunction<X, Y, T, R> implements PathFunction<X, Y, T, R> {
     
     private final Path<X, Y> path;

@@ -22,7 +22,13 @@ import jakarta.nosql.criteria.FunctionQueryResult;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class DefaultFunctionQuery<T> extends AbstractRestrictedQuery<T, DefaultFunctionQueryResult<T>, DefaultFunctionQuery<T>> implements FunctionQuery<T> {
+/**
+ * Default implementation for {@link FunctionQuery}
+ * This holds the functions to retrieve.
+ *
+ * @param <T> the type of the expression
+ */
+public class DefaultFunctionQuery<T> extends AbstractRestrictedQuery<T, FunctionQueryResult<T>, FunctionQuery<T>> implements FunctionQuery<T> {
 
     private final Collection<CriteriaFunction<T, ?, ?, ?>> functions;
 
@@ -43,7 +49,7 @@ public class DefaultFunctionQuery<T> extends AbstractRestrictedQuery<T, DefaultF
 
     @Override
     public FunctionQueryResult<T> getResult() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

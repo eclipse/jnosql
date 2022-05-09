@@ -17,6 +17,14 @@ package org.eclipse.jnosql.communication.criteria;
 import jakarta.nosql.criteria.Expression;
 import jakarta.nosql.criteria.RangePredicate;
 
+/**
+ * Default implementation for {@link RangePredicate}
+ * This holds the expression, the right hand side and the operator to apply to them
+ *
+ * @param <X> The root type
+ * @param <LHS> The left hand side type
+ * @param <RHS> The right hand side type
+ */
 public class DefaultRangePredicate<X, LHS, RHS> extends AbstractPredicate<X> implements RangePredicate<X, LHS, RHS> {
 
     private final Operator operator;

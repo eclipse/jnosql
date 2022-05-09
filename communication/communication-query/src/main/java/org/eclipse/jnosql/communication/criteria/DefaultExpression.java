@@ -20,6 +20,14 @@ import jakarta.nosql.criteria.Path;
 import jakarta.nosql.metamodel.Attribute;
 import java.util.Collection;
 
+/**
+ * Default implementation for {@link Expression}
+ * This holds the attribute and the path to the entity the attribute belongs to.
+ *
+ * @param <X> the root type
+ * @param <Y> the entity type
+ * @param <T> the type of the expression
+ */
 public class DefaultExpression<X, Y, T> implements Expression<X, Y, T> {
     
     private final Path<X, Y> path;

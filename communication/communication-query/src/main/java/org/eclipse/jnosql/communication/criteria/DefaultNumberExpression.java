@@ -19,6 +19,13 @@ import jakarta.nosql.criteria.NumberExpression;
 import jakarta.nosql.criteria.Path;
 import jakarta.nosql.metamodel.NumberAttribute;
 
+/**
+ * Default implementation for {@link NumberExpression}
+ *
+ * @param <X> the root type
+ * @param <Y> the entity type
+ * @param <N> the number type of the expression
+ */
 public class DefaultNumberExpression<X, Y, N extends Number & Comparable> extends DefaultComparableExpression<X, Y, N> implements NumberExpression<X, Y, N> {
 
     public DefaultNumberExpression(Path<X, Y> path, NumberAttribute attribute) {

@@ -19,6 +19,12 @@ import jakarta.nosql.criteria.Path;
 import jakarta.nosql.criteria.StringExpression;
 import jakarta.nosql.metamodel.StringAttribute;
 
+/**
+ * Default implementation for {@link StringExpression}
+ *
+ * @param <X> the root type
+ * @param <Y> the entity type
+ */
 public class DefaultStringExpression<X, Y> extends DefaultExpression<X, Y, String> implements StringExpression<X, Y> {
 
     public DefaultStringExpression(Path<X, Y> path, StringAttribute attribute) {

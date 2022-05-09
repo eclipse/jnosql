@@ -16,6 +16,12 @@ package org.eclipse.jnosql.communication.criteria;
 
 import jakarta.nosql.criteria.AggregatedQueryResult;
 
+/**
+ * Default implementation for {@link AggregatedQueryResult}
+ * A container for aggregated results
+ *
+ * @param <T> the type of the root entity
+ */
 public class DefaultAggregatedQueryResult<T> extends DefaultFunctionQueryResult<T> implements AggregatedQueryResult<T> {
     
 }

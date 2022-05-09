@@ -17,6 +17,14 @@ package org.eclipse.jnosql.communication.criteria;
 import jakarta.nosql.criteria.Expression;
 import jakarta.nosql.criteria.ExpressionFunction;
 
+/**
+ * Default implementation for {@link ExpressionFunction}
+ * This holds the function and the expression the function is applied to.
+ *
+ * @param <X> the root type
+ * @param <Y> the entity type
+ * @param <T> the type of the expression
+ */
 public class DefaultExpressionFunction<X, Y, T, R> implements ExpressionFunction<X, Y, T, R> {
     
     private final Expression<X, Y, T> expression;

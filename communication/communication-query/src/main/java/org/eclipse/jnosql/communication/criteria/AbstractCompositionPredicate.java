@@ -18,6 +18,11 @@ import jakarta.nosql.criteria.CompositionPredicate;
 import jakarta.nosql.criteria.Predicate;
 import java.util.Collection;
 
+/**
+ * Abstract class to extend for composing {@link Predicate}s
+ *
+ * @param <X> The Entity type whose fetching is to be be restricted
+ */
 public abstract class AbstractCompositionPredicate<X> extends AbstractPredicate<X> implements CompositionPredicate<X> {
 
     private final Collection<Predicate<X>> predicates;

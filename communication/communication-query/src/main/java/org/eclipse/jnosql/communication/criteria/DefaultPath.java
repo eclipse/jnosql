@@ -27,6 +27,12 @@ import jakarta.nosql.criteria.NumberExpression;
 import jakarta.nosql.metamodel.Attribute;
 import jakarta.nosql.metamodel.NumberAttribute;
 
+/**
+ * Default implementation for for {@link Path}
+ *
+ * @param <X> the entity type referenced by the root
+ * @param <Y> the destination type
+ */
 public class DefaultPath<X, Y> extends AbstractGenericType<X> implements Path<X, Y> {
 
     private Path<X, ?> parent;

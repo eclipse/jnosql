@@ -17,6 +17,12 @@ package org.eclipse.jnosql.communication.criteria;
 import jakarta.nosql.criteria.NegationPredicate;
 import jakarta.nosql.criteria.Predicate;
 
+/**
+ * Default implementation for {@link NegationPredicate}
+ * This holds the predicate to negate.
+ *
+ * @param <X> The Entity type whose fetching is to be be restricted
+ */
 public class DefaultNegationPredicate<X> extends AbstractPredicate<X> implements NegationPredicate<X> {
 
     private final Predicate<X> predicate;
