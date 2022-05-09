@@ -16,6 +16,11 @@ package org.eclipse.jnosql.metamodel;
 
 import jakarta.nosql.metamodel.ValueAttribute;
 
+/**
+ * Default metamodel value attribute implementation
+ * @param <X> The Entity type the attribute belongs to
+ * @param <T> The value attribute type (cannot be an entity)
+ */
 public class DefaultValueAttribute<X, T> extends DefaultSingularAttribute<X, T> implements ValueAttribute<X, T>{
 
     public DefaultValueAttribute(Class<X> type, Class<T> attributeType, String name) {

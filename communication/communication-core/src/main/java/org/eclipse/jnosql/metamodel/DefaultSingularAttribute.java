@@ -16,9 +16,14 @@ package org.eclipse.jnosql.metamodel;
 
 import jakarta.nosql.metamodel.SingularAttribute;
 
-public abstract class DefaultSingularAttribute<X, Y> extends DefaultAttribute<X, Y> implements SingularAttribute<X, Y> {
+/**
+ * Default metamodel singular attribute implementation
+ * @param <X> The Entity type the attribute belongs to
+ * @param <T> The singular attribute type
+ */
+public abstract class DefaultSingularAttribute<X, T> extends DefaultAttribute<X, T> implements SingularAttribute<X, T> {
 
-    public DefaultSingularAttribute(Class<X> type, Class<Y> attributeType, String name) {
+    public DefaultSingularAttribute(Class<X> type, Class<T> attributeType, String name) {
         super(type, attributeType, name);
     }
 

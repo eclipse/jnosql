@@ -14,6 +14,11 @@
  */
 package org.eclipse.jnosql.metamodel;
 
+/**
+ * Default metamodel numeric attribute implementation
+ * @param <X> The Entity type the attribute belongs to
+ * @param <T> The numeric attribute type
+ */
 import jakarta.nosql.metamodel.NumberAttribute;
 
 public class DefaultNumberAttribute<X, T extends Number & Comparable> extends DefaultComparableAttribute<X, T> implements NumberAttribute<X, T> {

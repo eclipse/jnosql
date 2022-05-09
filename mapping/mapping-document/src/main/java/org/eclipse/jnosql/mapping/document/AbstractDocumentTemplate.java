@@ -36,7 +36,6 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import java.lang.reflect.Array;
 import org.eclipse.jnosql.mapping.reflection.ClassMapping;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
@@ -44,7 +43,6 @@ import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
 import java.time.Duration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -245,7 +243,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     }
 
     @Override
-    public <T extends Object> CriteriaQuery<T> createQuery(Class<T> type) {
+    public <T> CriteriaQuery<T> createQuery(Class<T> type) {
         return new DefaultCriteriaQuery<>(type);
     }
 

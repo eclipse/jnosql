@@ -16,9 +16,14 @@ package org.eclipse.jnosql.metamodel;
 
 import jakarta.nosql.metamodel.EntityAttribute;
 
-public class DefaultEntityAttribute<X, Y> extends DefaultSingularAttribute<X, Y> implements EntityAttribute<X, Y>{
+/**
+ * Default metamodel entity attribute implementation
+ * @param <X> The Entity type the attribute belongs to
+ * @param <T> The entity attribute type (could be an embed or nested entity)
+ */
+public class DefaultEntityAttribute<X, T> extends DefaultSingularAttribute<X, T> implements EntityAttribute<X, T>{
 
-    public DefaultEntityAttribute(Class<X> type, Class<Y> attributeType, String name) {
+    public DefaultEntityAttribute(Class<X> type, Class<T> attributeType, String name) {
         super(type, attributeType, name);
     }
     

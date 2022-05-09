@@ -14,6 +14,10 @@
  */
 package org.eclipse.jnosql;
 
+/**
+ * Utility generic abstract base class storing the generic type
+ * @param <T> generic type
+ */
 public abstract class AbstractGenericType<T> {
     
     private final Class<T> type;

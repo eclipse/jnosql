@@ -15,7 +15,11 @@
 package org.eclipse.jnosql.metamodel;
 
 import jakarta.nosql.metamodel.PluralAttribute;
-
+/**
+ * Default metamodel plural attribute implementation
+ * @param <X> The Entity type the attribute belongs to
+ * @param <T> The plural attribute type
+ */
 public class DefaultPluralAttribute<X, T> extends DefaultAttribute<X, T> implements PluralAttribute<X, T> {
 
     public DefaultPluralAttribute(Class<X> type, Class<T> attributeType, String name) {

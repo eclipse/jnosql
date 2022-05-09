@@ -16,6 +16,10 @@ package org.eclipse.jnosql.metamodel;
 
 import jakarta.nosql.metamodel.StringAttribute;
 
+/**
+ * Default metamodel string attribute implementation
+ * @param <X> The Entity type the attribute belongs to
+ */
 public class DefaultStringAttribute<X> extends DefaultValueAttribute<X, String> implements StringAttribute<X>{
 
     public DefaultStringAttribute(Class<X> type, String name) {
