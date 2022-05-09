@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.document.reactive.configuration;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.criteria.ExecutableQuery;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import jakarta.nosql.document.DocumentConfiguration;
@@ -110,11 +109,6 @@ class DocumentConfigurationMock implements DocumentConfiguration {
 
         @Override
         public Stream<DocumentEntity> select(DocumentQuery query) {
-            return null;
-        }
-
-        @Override
-        public Stream<DocumentEntity> executeQuery(ExecutableQuery query) {
             return null;
         }
 
