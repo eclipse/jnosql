@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2022 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -16,130 +16,101 @@
  */
 package org.eclipse.jnosql.communication.column.query;
 
-
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnDeleteQuery.ColumnDelete;
-import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteFrom;
-import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteNotCondition;
-import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteWhere;
+import jakarta.nosql.Sort;
 import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnCondition;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteQueryBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-/**
- * The default implementation to Delete query
- */
-class DefaultDeleteQueryBuilder extends BaseQueryBuilder implements ColumnDelete, ColumnDeleteFrom,
-        ColumnDeleteWhere, ColumnDeleteNotCondition {
+class DefaultDeleteQueryBuilder implements ColumnDeleteQueryBuilder {
 
-    private String columnFamily;
+    private List<String> documents = new ArrayList<>();
 
+    private List<Sort> sorts = new ArrayList<>();
 
-    private final List<String> columns;
+    private String documentCollection;
 
-
-    DefaultDeleteQueryBuilder(List<String> columns) {
-        this.columns = columns;
-    }
-
-    @Override
-    public ColumnDeleteFrom from(String columnFamily) {
-        requireNonNull(columnFamily, "columnFamily is required");
-        this.columnFamily = columnFamily;
-        return this;
-    }
+    private ColumnCondition condition;
 
 
     @Override
-    public ColumnDeleteQuery.ColumnDeleteNameCondition where(String name) {
-        requireNonNull(name, "name is required");
-        this.name = name;
-        return this;
-    }
-
-
-    @Override
-    public ColumnDeleteQuery.ColumnDeleteNameCondition and(String name) {
-        requireNonNull(name, "name is required");
-        this.name = name;
-        this.and = true;
+    public ColumnDeleteQueryBuilder delete(String column) {
+        Objects.requireNonNull(column, "column is required");
+        this.documents.add(column);
         return this;
     }
 
     @Override
-    public ColumnDeleteQuery.ColumnDeleteNameCondition or(String name) {
-        requireNonNull(name, "name is required");
-        this.name = name;
-        this.and = false;
-        return this;
-    }
-
-
-    @Override
-    public ColumnDeleteNotCondition not() {
-        this.negate = true;
+    public ColumnDeleteQueryBuilder delete(String... columns) {
+        Consumer<String> validNull = c -> requireNonNull(c, "there is null column in the query");
+        Consumer<String> consume = this.documents::add;
+        Stream.of(columns).forEach(validNull.andThen(consume));
         return this;
     }
 
     @Override
-    public <T> ColumnDeleteWhere eq(T value) {
-        eqImpl(value);
+    public ColumnDeleteQueryBuilder from(String documentCollection) {
+        Objects.requireNonNull(documentCollection, "documentCollection is required");
+        this.documentCollection = documentCollection;
         return this;
     }
 
     @Override
-    public ColumnDeleteWhere like(String value) {
-        likeImpl(value);
-        return this;
-    }
-
-    @Override
-    public <T> ColumnDeleteWhere gt(T value) {
-        gtImpl(value);
-        return this;
-    }
-
-    @Override
-    public <T> ColumnDeleteWhere gte(T value) {
-        gteImpl(value);
-        return this;
-    }
-
-    @Override
-    public <T> ColumnDeleteWhere lt(T value) {
-        ltImpl(value);
-        return this;
-    }
-
-    @Override
-    public <T> ColumnDeleteWhere lte(T value) {
-        lteImpl(value);
-        return this;
-    }
-
-    @Override
-    public <T> ColumnDeleteWhere between(T valueA, T valueB) {
-        betweenImpl(valueA, valueB);
-        return this;
-    }
-
-    @Override
-    public <T> ColumnDeleteWhere in(Iterable<T> values) {
-        inImpl(values);
+    public ColumnDeleteQueryBuilder where(ColumnCondition condition) {
+        Objects.requireNonNull(condition, "condition is required");
+        this.condition = condition;
         return this;
     }
 
     @Override
     public ColumnDeleteQuery build() {
-        return new DefaultColumnDeleteQuery(columnFamily, condition, columns);
+        if (Objects.isNull(documentCollection)) {
+            throw new IllegalArgumentException("The document collection is mandatory to build");
+        }
+        return new DefaultColumnDeleteQuery(documentCollection, condition, documents);
     }
 
     @Override
     public void delete(ColumnFamilyManager manager) {
-        requireNonNull(manager, "manager is required");
-        manager.delete(this.build());
+        Objects.requireNonNull(manager, "manager is required");
+        manager.delete(build());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DefaultDeleteQueryBuilder that = (DefaultDeleteQueryBuilder) o;
+        return Objects.equals(documents, that.documents)
+                && Objects.equals(sorts, that.sorts)
+                && Objects.equals(documentCollection, that.documentCollection)
+                && Objects.equals(condition, that.condition);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(documents, sorts, documentCollection, condition);
+    }
+
+    @Override
+    public String toString() {
+        return "DefaultDeleteQueryBuilder{" +
+                "documents=" + documents +
+                ", sorts=" + sorts +
+                ", documentCollection='" + documentCollection + '\'' +
+                ", condition=" + condition +
+                '}';
+    }
 }

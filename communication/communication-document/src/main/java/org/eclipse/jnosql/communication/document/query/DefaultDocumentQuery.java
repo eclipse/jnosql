@@ -31,9 +31,9 @@ import static java.util.Optional.ofNullable;
 
 class DefaultDocumentQuery implements DocumentQuery {
 
-    private final long maxResult;
+    private final long limit;
 
-    private final long firstResult;
+    private final long skip;
 
     private final String documentCollection;
 
@@ -43,11 +43,11 @@ class DefaultDocumentQuery implements DocumentQuery {
 
     private final List<String> documents;
 
-    DefaultDocumentQuery(long maxResult, long firstResult, String documentCollection,
+    DefaultDocumentQuery(long limit, long skip, String documentCollection,
                          List<String> documents, List<Sort> sorts, DocumentCondition condition) {
 
-        this.maxResult = maxResult;
-        this.firstResult = firstResult;
+        this.limit = limit;
+        this.skip = skip;
         this.documentCollection = documentCollection;
         this.condition = ofNullable(condition).map(DefaultDocumentCondition::readOnly).orElse(null);
         this.sorts = sorts;
@@ -56,12 +56,12 @@ class DefaultDocumentQuery implements DocumentQuery {
 
     @Override
     public long getLimit() {
-        return maxResult;
+        return limit;
     }
 
     @Override
     public long getSkip() {
-        return firstResult;
+        return skip;
     }
 
     @Override
@@ -93,8 +93,8 @@ class DefaultDocumentQuery implements DocumentQuery {
             return false;
         }
         DocumentQuery that = (DocumentQuery) o;
-        return maxResult == that.getLimit() &&
-                firstResult == that.getSkip() &&
+        return limit == that.getLimit() &&
+                skip == that.getSkip() &&
                 Objects.equals(documentCollection, that.getDocumentCollection()) &&
                 Objects.equals(condition, that.getCondition().orElse(null)) &&
                 Objects.equals(sorts, that.getSorts()) &&
@@ -103,13 +103,13 @@ class DefaultDocumentQuery implements DocumentQuery {
 
     @Override
     public int hashCode() {
-        return Objects.hash(maxResult, firstResult, documentCollection, condition, sorts, documents);
+        return Objects.hash(limit, skip, documentCollection, condition, sorts, documents);
     }
 
     @Override
     public String toString() {
-        return  "DefaultDocumentQuery{" + "maxResult=" + maxResult +
-                ", firstResult=" + firstResult +
+        return  "DefaultDocumentQuery{" + "maxResult=" + limit +
+                ", firstResult=" + skip +
                 ", documentCollection='" + documentCollection + '\'' +
                 ", condition=" + condition +
                 ", sorts=" + sorts +

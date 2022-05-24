@@ -33,11 +33,11 @@ public final class DefaultDocumentSelectProvider implements DocumentSelectProvid
     @Override
     public DocumentSelect apply(String[] documents) {
         Stream.of(documents).forEach(d -> requireNonNull(d, "there is null document in the query"));
-        return new DefaultSelectQueryBuilder(Arrays.asList(documents));
+        return new DefaultFluentDocumentQueryBuilder(Arrays.asList(documents));
     }
 
     @Override
     public DocumentSelect get() {
-        return new DefaultSelectQueryBuilder(Collections.emptyList());
+        return new DefaultFluentDocumentQueryBuilder(Collections.emptyList());
     }
 }

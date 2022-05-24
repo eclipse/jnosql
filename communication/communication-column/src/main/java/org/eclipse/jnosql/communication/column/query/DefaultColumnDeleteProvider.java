@@ -30,11 +30,11 @@ public final class DefaultColumnDeleteProvider implements ColumnDeleteProvider {
     @Override
     public ColumnDelete apply(String[] columns) {
         Stream.of(columns).forEach(d -> requireNonNull(d, "there is null column in the query"));
-        return new DefaultDeleteQueryBuilder(asList(columns));
+        return new DefaultFluentDeleteQueryBuilder(asList(columns));
     }
 
     @Override
     public ColumnDelete get() {
-        return new DefaultDeleteQueryBuilder(emptyList());
+        return new DefaultFluentDeleteQueryBuilder(emptyList());
     }
 }

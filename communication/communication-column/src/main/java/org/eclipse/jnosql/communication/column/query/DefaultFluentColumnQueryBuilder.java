@@ -43,7 +43,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of the Select in the column
  */
-class DefaultSelectQueryBuilder extends BaseQueryBuilder implements
+class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
         ColumnSelect, ColumnFrom, ColumnLimit, ColumnSkip,
         ColumnOrder, ColumnNameCondition, ColumnNotCondition, ColumnNameOrder, ColumnWhere, ColumnQueryBuild {
 
@@ -59,7 +59,7 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements
     private final List<String> columns;
 
 
-    DefaultSelectQueryBuilder(List<String> columns) {
+    DefaultFluentColumnQueryBuilder(List<String> columns) {
         this.columns = columns;
     }
 
@@ -97,12 +97,18 @@ class DefaultSelectQueryBuilder extends BaseQueryBuilder implements
 
     @Override
     public ColumnSkip skip(long skip) {
+        if (skip < 0) {
+            throw new IllegalArgumentException("The skip should not be negative, skip: " + skip);
+        }
         this.skip = skip;
         return this;
     }
 
     @Override
     public ColumnLimit limit(long limit) {
+        if (limit < 0) {
+            throw new IllegalArgumentException("The limit should not be negative, limit: " + limit);
+        }
         this.limit = limit;
         return this;
     }
