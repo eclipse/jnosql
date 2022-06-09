@@ -72,7 +72,6 @@ public class DefaultDocumentConditionTest {
         Assertions.assertEquals(condition, affirmative);
     }
 
-
     @Test
     public void shouldCreateAndCondition() {
         Document age = Document.of("age", 26);
