@@ -22,6 +22,7 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCondition;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -61,6 +62,14 @@ public class DefaultDocumentConditionTest {
         assertEquals(Condition.NOT, negate.getCondition());
         assertEquals(Condition.NOT.getNameField(), negateDocument.getName());
         assertEquals(DefaultDocumentCondition.of(age, Condition.GREATER_THAN), negateDocument.getValue().get());
+    }
+
+    @Test
+    public void shouldReturnValidDoubleNegation() {
+        Document age = Document.of("age", 26);
+        DocumentCondition condition = DefaultDocumentCondition.of(age, Condition.GREATER_THAN);
+        DocumentCondition affirmative = condition.negate().negate();
+        Assertions.assertEquals(condition, affirmative);
     }
 
 
