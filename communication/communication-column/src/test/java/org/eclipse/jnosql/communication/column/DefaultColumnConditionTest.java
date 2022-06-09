@@ -21,6 +21,7 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -64,6 +65,13 @@ public class DefaultColumnConditionTest {
         assertEquals(DefaultColumnCondition.of(age, Condition.GREATER_THAN), negateColumn.getValue().get());
     }
 
+    @Test
+    public void shouldReturnValidDoubleNegation() {
+        Column age = Column.of("age", 26);
+        ColumnCondition condition = DefaultColumnCondition.of(age, Condition.GREATER_THAN);
+        ColumnCondition affirmative = condition.negate().negate();
+        Assertions.assertEquals(condition, affirmative);
+    }
 
     @Test
     public void shouldCreateAndCondition() {
