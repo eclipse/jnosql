@@ -17,11 +17,11 @@
 
 package org.eclipse.jnosql.communication.writer;
 
+import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.ValueWriter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ServiceLoader;
 
 /**
  * Decorators of all {@link ValueWriter} supported by Diana
@@ -37,7 +37,9 @@ public final class ValueWriterDecorator<T, S> implements ValueWriter<T, S> {
     private final List<ValueWriter> writers = new ArrayList<>();
 
     {
-        ServiceLoader.load(ValueWriter.class).forEach(writers::add);
+        ServiceLoaderProvider.getSupplierStream(ValueWriter.class)
+            .map(ValueWriter.class::cast)
+            .forEach(writers::add);
     }
 
     private ValueWriterDecorator() {
