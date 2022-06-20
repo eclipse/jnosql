@@ -15,7 +15,7 @@
  *
  */
 module org.eclipse.jnosql.communication.core {
-    requires jakarta.nosql.communication.core;
+    requires jakarta.nosql;
 
     exports org.eclipse.jnosql.communication;
     exports org.eclipse.jnosql.communication.reader;
