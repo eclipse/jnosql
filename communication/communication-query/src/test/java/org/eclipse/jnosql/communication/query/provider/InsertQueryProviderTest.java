@@ -17,11 +17,14 @@ import org.eclipse.jnosql.communication.query.cache.CachedInsertQueryProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ServiceLoader;
+
 public class InsertQueryProviderTest {
 
     @Test
     public void shouldGetSupplier() {
-        InsertQueryProvider provider = ServiceLoaderProvider.get(InsertQueryProvider.class);
+        InsertQueryProvider provider = ServiceLoaderProvider.get(InsertQueryProvider.class,
+                ()-> ServiceLoader.load(InsertQueryProvider.class));
         Assertions.assertNotNull(provider);
         Assertions.assertTrue(provider instanceof CachedInsertQueryProvider);
     }

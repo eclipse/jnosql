@@ -17,11 +17,14 @@ import org.eclipse.jnosql.communication.query.cache.CachedDelQueryProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ServiceLoader;
+
 public class DelQueryProviderTest {
 
     @Test
     public void shouldGetSupplier() {
-        DelQueryProvider supplier = ServiceLoaderProvider.get(DelQueryProvider.class);
+        DelQueryProvider supplier = ServiceLoaderProvider.get(DelQueryProvider.class,
+                ()-> ServiceLoader.load(DelQueryProvider.class));
         Assertions.assertNotNull(supplier);
         Assertions.assertTrue(supplier instanceof CachedDelQueryProvider);
     }

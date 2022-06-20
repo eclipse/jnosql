@@ -17,11 +17,14 @@ import org.eclipse.jnosql.communication.query.cache.CachedSelectQueryProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ServiceLoader;
+
 public class SelectQueryProviderTest {
 
     @Test
     public void shouldGetSupplier() {
-        SelectQueryProvider provider = ServiceLoaderProvider.get(SelectQueryProvider.class);
+        SelectQueryProvider provider = ServiceLoaderProvider.get(SelectQueryProvider.class,
+                ()-> ServiceLoader.load(SelectQueryProvider.class));
         Assertions.assertNotNull(provider);
         Assertions.assertTrue(provider instanceof CachedSelectQueryProvider);
     }
