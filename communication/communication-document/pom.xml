@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.eclipse.jnosql.communication</groupId>
         <artifactId>communication</artifactId>
-        <version>1.0.0-b4</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>communication-document</artifactId>
