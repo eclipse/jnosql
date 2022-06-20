@@ -25,7 +25,7 @@
     <properties>
         <antlr4.visitor>false</antlr4.visitor>
         <antlr4.listener>true</antlr4.listener>
-        <antlr4.version>4.9.2</antlr4.version>
+        <antlr4.version>4.10.1</antlr4.version>
     </properties>
 
     <dependencies>
@@ -55,7 +55,7 @@
                 <version>${antlr4.version}</version>
                 <configuration>
                     <sourceDirectory>src/main/java</sourceDirectory>
-                    <outputDirectory>src/main/generated-sources</outputDirectory>
+                    <outputDirectory>target/generated-sources/generated-sources</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
