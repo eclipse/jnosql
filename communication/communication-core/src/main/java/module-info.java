@@ -1,9 +1,3 @@
-import jakarta.nosql.Params;
-import jakarta.nosql.Settings;
-import jakarta.nosql.Sort;
-import jakarta.nosql.Value;
-import org.eclipse.jnosql.communication.DefaultParamsProvider;
-
 /*
  *
  *  Copyright (c) 2022 Otavio Santana and others
@@ -26,9 +20,12 @@ module org.eclipse.jnosql.communication.core {
     exports org.eclipse.jnosql.communication;
     exports org.eclipse.jnosql.communication.reader;
     exports org.eclipse.jnosql.communication.writer;
-    provides Params.ParamsProvider with DefaultParamsProvider;
-    provides Settings.SettingsBuilderProvider with org.eclipse.jnosql.communication.DefaultSettingsBuilderProvider;
-    provides Sort.SortProvider with org.eclipse.jnosql.communication.DefaultSortProvider;
+    opens org.eclipse.jnosql.communication;
+    opens org.eclipse.jnosql.communication.reader;
+    opens org.eclipse.jnosql.communication.writer;
+    provides jakarta.nosql.Params.ParamsProvider with org.eclipse.jnosql.communication.DefaultParamsProvider;
+    provides jakarta.nosql.Settings.SettingsBuilderProvider with org.eclipse.jnosql.communication.DefaultSettingsBuilderProvider;
+    provides jakarta.nosql.Sort.SortProvider with org.eclipse.jnosql.communication.DefaultSortProvider;
     provides jakarta.nosql.TypeReferenceReader with org.eclipse.jnosql.communication.reader.ListTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.SetTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.MapTypeReferenceReader,
@@ -36,7 +33,7 @@ module org.eclipse.jnosql.communication.core {
             org.eclipse.jnosql.communication.reader.OptionalTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.QueueTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.NavigableSetTypeReferenceReader;
-    provides Value.ValueProvider with org.eclipse.jnosql.communication.DefaultValueProvider;
+    provides jakarta.nosql.Value.ValueProvider with org.eclipse.jnosql.communication.DefaultValueProvider;
     provides jakarta.nosql.ValueReader with org.eclipse.jnosql.communication.reader.AtomicIntegerReader,
             org.eclipse.jnosql.communication.reader.AtomicLongReader,
             org.eclipse.jnosql.communication.reader.BigDecimalReader,
