@@ -9,10 +9,10 @@
  *  Contributors:
  *  Otavio Santana
  */
-module communication.query {
+module org.eclipse.jnosql.communication.query {
     requires org.antlr.antlr4.runtime;
-    requires jakarta.nosql;
-    requires jakarta.nosql.query;
+    requires jakarta.nosql.communication.core;
+    requires jakarta.nosql.communication.query;
     requires java.json;
 
     opens org.eclipse.jnosql.communication.query;
