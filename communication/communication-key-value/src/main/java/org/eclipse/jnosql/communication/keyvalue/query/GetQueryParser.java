@@ -37,7 +37,7 @@ final class GetQueryParser {
     private final GetQueryProvider provider;
 
     GetQueryParser() {
-        this.provider = ServiceLoaderProvider.get(GetQueryProvider.class);
+        this.provider = GetQuery.getProvider();
     }
 
     Stream<Value> query(String query, BucketManager manager) {

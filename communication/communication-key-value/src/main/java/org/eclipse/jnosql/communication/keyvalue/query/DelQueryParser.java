@@ -35,7 +35,7 @@ final class DelQueryParser {
     private final DelQueryProvider provider;
 
     DelQueryParser() {
-        this.provider = ServiceLoaderProvider.get(DelQueryProvider.class);
+        this.provider = DelQuery.getProvider();
     }
 
     Stream<Value> query(String query, BucketManager manager) {

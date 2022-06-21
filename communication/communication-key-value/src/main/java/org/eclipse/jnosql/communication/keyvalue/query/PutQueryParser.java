@@ -35,7 +35,7 @@ final class PutQueryParser {
     private final PutQueryProvider provider;
 
     PutQueryParser() {
-        this.provider = ServiceLoaderProvider.get(PutQueryProvider.class);
+        this.provider = PutQuery.getProvider();
     }
 
     Stream<Value> query(String query, BucketManager manager) {
