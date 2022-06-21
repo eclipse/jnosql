@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping;
+package org.eclipse.jnosql.mapping.keyvalue;
 
 
 import jakarta.nosql.Value;
