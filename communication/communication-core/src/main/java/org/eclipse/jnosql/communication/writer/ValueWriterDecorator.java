@@ -37,9 +37,7 @@ public final class ValueWriterDecorator<T, S> implements ValueWriter<T, S> {
     private final List<ValueWriter> writers = new ArrayList<>();
 
     {
-        ServiceLoaderProvider.getSupplierStream(ValueWriter.class)
-            .map(ValueWriter.class::cast)
-            .forEach(writers::add);
+        ValueWriter.getWriters().forEach(writers::add);
     }
 
     private ValueWriterDecorator() {
