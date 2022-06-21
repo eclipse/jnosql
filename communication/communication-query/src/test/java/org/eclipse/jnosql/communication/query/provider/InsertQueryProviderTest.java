@@ -15,12 +15,18 @@ import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
 import org.eclipse.jnosql.communication.query.cache.CachedInsertQueryProvider;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ServiceLoader;
 
 public class InsertQueryProviderTest {
 
+    @BeforeEach
+    public void setUp() {
+        Module module = DeleteQueryProviderTest.class.getModule();
+        module.addUses(InsertQueryProvider.class);
+    }
     @Test
     public void shouldGetSupplier() {
         InsertQueryProvider provider = ServiceLoaderProvider.get(InsertQueryProvider.class,
