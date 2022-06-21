@@ -19,14 +19,6 @@ module org.eclipse.jnosql.communication.query {
     opens org.eclipse.jnosql.communication.query.method;
     opens org.eclipse.jnosql.communication.query.cache;
 
-    uses jakarta.nosql.query.SelectQuery.SelectQueryProvider;
-    uses jakarta.nosql.query.GetQuery.GetQueryProvider;
-    uses jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
-    uses jakarta.nosql.query.InsertQuery.InsertQueryProvider;
-    uses jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
-    uses jakarta.nosql.query.DelQuery.DelQueryProvider;
-    uses jakarta.nosql.query.PutQuery.PutQueryProvider;
-
     provides jakarta.nosql.query.DeleteQuery.DeleteQueryProvider with org.eclipse.jnosql.communication.query.cache.CachedDeleteQueryProvider;
     provides jakarta.nosql.query.DelQuery.DelQueryProvider with org.eclipse.jnosql.communication.query.cache.CachedDelQueryProvider;
     provides jakarta.nosql.query.GetQuery.GetQueryProvider with org.eclipse.jnosql.communication.query.cache.CachedGetQueryProvider;
