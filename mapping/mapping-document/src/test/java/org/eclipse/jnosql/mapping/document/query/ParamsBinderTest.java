@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import javax.inject.Inject;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -65,7 +66,8 @@ class ParamsBinderTest {
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
         SelectQuery selectQuery = selectMethodFactory.apply(method, classMapping.getName());
-        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class);
+        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class,
+                ()-> ServiceLoader.load(SelectQueryConverter.class));
         DocumentQueryParams columnQueryParams = converter.apply(selectQuery, parser);
         Params params = columnQueryParams.getParams();
         Object[] args = {10};
@@ -88,7 +90,8 @@ class ParamsBinderTest {
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
         SelectQuery selectQuery = selectMethodFactory.apply(method, classMapping.getName());
-        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class);
+        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class,
+                ()-> ServiceLoader.load(SelectQueryConverter.class));
         DocumentQueryParams queryParams = converter.apply(selectQuery, parser);
         Params params = queryParams.getParams();
         paramsBinder.bind(params, new Object[]{10L, "Ada"}, method);

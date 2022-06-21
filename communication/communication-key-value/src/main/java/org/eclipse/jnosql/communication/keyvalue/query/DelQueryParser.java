@@ -18,7 +18,6 @@ package org.eclipse.jnosql.communication.keyvalue.query;
 
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
-import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.Value;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
@@ -35,7 +34,7 @@ final class DelQueryParser {
     private final DelQueryProvider provider;
 
     DelQueryParser() {
-        this.provider = ServiceLoaderProvider.get(DelQueryProvider.class);
+        this.provider = DelQuery.getProvider();
     }
 
     Stream<Value> query(String query, BucketManager manager) {

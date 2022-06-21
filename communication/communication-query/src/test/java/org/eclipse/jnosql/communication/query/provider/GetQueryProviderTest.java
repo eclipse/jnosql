@@ -15,14 +15,23 @@ import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.query.GetQuery.GetQueryProvider;
 import org.eclipse.jnosql.communication.query.cache.CachedGetQueryProvider;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ServiceLoader;
 
 public class GetQueryProviderTest {
 
+    @BeforeEach
+    public void setUp() {
+        Module module = DeleteQueryProviderTest.class.getModule();
+        module.addUses(GetQueryProvider.class);
+    }
     @Test
     public void shouldGetSupplier() {
 
-        GetQueryProvider provider = ServiceLoaderProvider.get(GetQueryProvider.class);
+        GetQueryProvider provider = ServiceLoaderProvider.get(GetQueryProvider.class,
+                ()-> ServiceLoader.load(GetQueryProvider.class));
         Assertions.assertNotNull(provider);
         Assertions.assertTrue(provider instanceof CachedGetQueryProvider);
     }

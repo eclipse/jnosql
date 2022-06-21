@@ -41,6 +41,7 @@ import java.time.Duration;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -55,7 +56,8 @@ import static java.util.Objects.requireNonNull;
 public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
 
-    private static final ColumnQueryParser PARSER = ServiceLoaderProvider.get(ColumnQueryParser.class);
+    private static final ColumnQueryParser PARSER = ServiceLoaderProvider.get(ColumnQueryParser.class,
+            ()-> ServiceLoader.load(ColumnQueryParser.class));
 
     protected abstract ColumnEntityConverter getConverter();
 

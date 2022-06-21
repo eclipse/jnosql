@@ -41,6 +41,7 @@ import java.time.Duration;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -56,7 +57,8 @@ import static java.util.Objects.requireNonNull;
 public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
 
-    private static final DocumentQueryParser PARSER = ServiceLoaderProvider.get(DocumentQueryParser.class);
+    private static final DocumentQueryParser PARSER = ServiceLoaderProvider.get(
+            DocumentQueryParser.class, () -> ServiceLoader.load(DocumentQueryParser.class));
 
     protected abstract DocumentEntityConverter getConverter();
 

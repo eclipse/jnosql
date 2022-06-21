@@ -21,6 +21,7 @@ import org.eclipse.jnosql.mapping.reflection.RepositoryReflectionUtils;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
+import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -48,7 +49,8 @@ enum DynamicReturnConverter {
         Class<?> returnType = method.getReturnType();
 
         RepositoryReturn repositoryReturn = ServiceLoaderProvider
-                .getSupplierStream(RepositoryReturn.class)
+                .getSupplierStream(RepositoryReturn.class,
+                        ()-> ServiceLoader.load(RepositoryReturn.class))
                 .filter(RepositoryReturn.class::isInstance)
                 .map(RepositoryReturn.class::cast)
                 .filter(r -> r.isCompatible(typeClass, returnType))

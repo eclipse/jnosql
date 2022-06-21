@@ -18,7 +18,6 @@ package org.eclipse.jnosql.communication.document.query;
 
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
-import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.document.DeleteQueryConverter;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCondition;
@@ -44,7 +43,7 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
     private final CacheQuery<DocumentDeleteQuery> cache;
 
     public DeleteQueryParser() {
-        this.deleteQueryProvider = ServiceLoaderProvider.get(DeleteQueryProvider.class);
+        this.deleteQueryProvider = DeleteQuery.getProvider();
         cache = new CacheQuery<>(this::getQuery);
     }
 

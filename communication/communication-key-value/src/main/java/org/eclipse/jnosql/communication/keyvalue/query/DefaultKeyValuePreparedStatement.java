@@ -34,10 +34,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatement {
-
-
     private final List<Value> keys;
-
     private final PreparedStatementType type;
 
     private final BucketManager manager;

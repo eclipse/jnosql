@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unchecked")
 public class MapTypeReferenceReader implements TypeReferenceReader {
 
-    private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
+    private static final ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
     private static final Predicate<Type> IS_CLASS = c -> c instanceof Class;
 
     @Override

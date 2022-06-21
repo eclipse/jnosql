@@ -15,13 +15,24 @@ import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
 import org.eclipse.jnosql.communication.query.cache.CachedDeleteQueryProvider;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ServiceLoader;
 
 public class DeleteQueryProviderTest {
 
+
+    @BeforeEach
+    public void setUp() {
+        Module module = DeleteQueryProviderTest.class.getModule();
+        module.addUses(DeleteQueryProvider.class);
+    }
     @Test
     public void shouldGetSupplier() {
-        DeleteQueryProvider provider = ServiceLoaderProvider.get(DeleteQueryProvider.class);
+        DeleteQueryProvider provider = ServiceLoaderProvider.get(DeleteQueryProvider.class
+        ,()-> ServiceLoader.load(DeleteQueryProvider.class));
         Assertions.assertNotNull(provider);
         Assertions.assertTrue(provider instanceof CachedDeleteQueryProvider);
     }

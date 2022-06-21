@@ -18,7 +18,6 @@ package org.eclipse.jnosql.communication.document.query;
 
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
-import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.Sort;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCondition;
@@ -47,7 +46,7 @@ public final class SelectQueryParser implements SelectQueryConverter {
     private final CacheQuery<DocumentQuery> cache;
 
     public SelectQueryParser() {
-        this.selectQueryProvider = ServiceLoaderProvider.get(SelectQueryProvider.class);
+        this.selectQueryProvider = SelectQuery.getProvider();
         this.cache = new CacheQuery<>(this::getDocumentQuery);
     }
 

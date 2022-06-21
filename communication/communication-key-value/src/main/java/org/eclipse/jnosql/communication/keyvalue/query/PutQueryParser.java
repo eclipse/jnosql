@@ -18,7 +18,6 @@ package org.eclipse.jnosql.communication.keyvalue.query;
 
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
-import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.Value;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValueEntity;
@@ -35,7 +34,7 @@ final class PutQueryParser {
     private final PutQueryProvider provider;
 
     PutQueryParser() {
-        this.provider = ServiceLoaderProvider.get(PutQueryProvider.class);
+        this.provider = PutQuery.getProvider();
     }
 
     Stream<Value> query(String query, BucketManager manager) {

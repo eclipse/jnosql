@@ -26,12 +26,15 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
  * The Default implementation to {@link Converters}
  */
 @ApplicationScoped
 class DefaultConverters implements Converters {
+
+    private static final Logger LOGGER = Logger.getLogger(DefaultConverters.class.getName());
 
     @Inject
     private BeanManager beanManager;
@@ -45,14 +48,15 @@ class DefaultConverters implements Converters {
         return getInstance(converterClass);
     }
 
-    private <T> T getInstance(Class<T> clazz) {
-        Iterator<Bean<?>> iterator = beanManager.getBeans(clazz).iterator();
+    private <T> T getInstance(Class<T> entity) {
+        Iterator<Bean<?>> iterator = beanManager.getBeans(entity).iterator();
         if (iterator.hasNext()) {
             Bean<T> bean = (Bean<T>) iterator.next();
             CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-            return (T) beanManager.getReference(bean, clazz, ctx);
+            return (T) beanManager.getReference(bean, entity, ctx);
         } else {
-            return instanceProducer.create(clazz);
+            LOGGER.info("The entity type: " + entity + " not found on CDI context, creating by constructor");
+            return instanceProducer.create(entity);
         }
 
     }

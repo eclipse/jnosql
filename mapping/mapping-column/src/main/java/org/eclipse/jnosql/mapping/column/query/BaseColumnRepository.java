@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -58,9 +59,11 @@ public abstract class BaseColumnRepository<T> {
 
     private ParamsBinder paramsBinder;
 
-    private static final SelectQueryConverter SELECT_CONVERTER = ServiceLoaderProvider.get(SelectQueryConverter.class);
+    private static final SelectQueryConverter SELECT_CONVERTER = ServiceLoaderProvider.get(SelectQueryConverter.class,
+            ()-> ServiceLoader.load(SelectQueryConverter.class));
 
-    private static final DeleteQueryConverter DELETE_CONVERTER = ServiceLoaderProvider.get(DeleteQueryConverter.class);
+    private static final DeleteQueryConverter DELETE_CONVERTER = ServiceLoaderProvider.get(DeleteQueryConverter.class,
+            ()-> ServiceLoader.load(DeleteQueryConverter.class));
 
     protected ColumnQuery getQuery(Method method, Object[] args) {
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
