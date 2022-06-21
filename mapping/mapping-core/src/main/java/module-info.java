@@ -20,6 +20,10 @@ open module org.eclipse.jnosql.mapping.core {
     requires jakarta.enterprise.cdi.api;
     requires javax.inject;
 
+    exports org.eclipse.jnosql.mapping.spi;
+    exports org.eclipse.jnosql.mapping;
+    exports org.eclipse.jnosql.mapping.reflection;
+
     uses org.eclipse.jnosql.mapping.repository.RepositoryReturn;
     uses org.eclipse.jnosql.mapping.reflection.CollectionSupplier;
     uses org.eclipse.jnosql.mapping.reflection.ClassOperation;
