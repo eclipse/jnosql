@@ -15,6 +15,8 @@ module org.eclipse.jnosql.communication.query {
     requires jakarta.nosql.communication.query;
     requires java.json;
 
+    exports org.eclipse.jnosql.communication.query.method;
+
     opens org.eclipse.jnosql.communication.query;
     opens org.eclipse.jnosql.communication.query.method;
     opens org.eclipse.jnosql.communication.query.cache;
