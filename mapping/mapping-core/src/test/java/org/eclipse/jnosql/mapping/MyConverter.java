@@ -20,7 +20,8 @@ import javax.inject.Inject;
 
 public class MyConverter implements AttributeConverter<String, String> {
 
-    private RandomText text = new RandomText();
+    @Inject
+    private RandomText text;
 
     @Override
     public String convertToDatabaseColumn(String attribute) {
