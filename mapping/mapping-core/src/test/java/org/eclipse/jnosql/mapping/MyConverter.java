@@ -16,8 +16,10 @@ package org.eclipse.jnosql.mapping;
 
 import jakarta.nosql.mapping.AttributeConverter;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+@ApplicationScoped
 public class MyConverter implements AttributeConverter<String, String> {
 
     @Inject
