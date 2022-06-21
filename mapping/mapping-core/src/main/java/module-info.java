@@ -23,6 +23,10 @@ open module org.eclipse.jnosql.mapping.core {
     exports org.eclipse.jnosql.mapping.spi;
     exports org.eclipse.jnosql.mapping;
     exports org.eclipse.jnosql.mapping.reflection;
+    exports org.eclipse.jnosql.mapping.configuration;
+    exports org.eclipse.jnosql.mapping.util;
+    exports org.eclipse.jnosql.mapping.query;
+    exports org.eclipse.jnosql.mapping.repository;
 
     uses org.eclipse.jnosql.mapping.repository.RepositoryReturn;
     uses org.eclipse.jnosql.mapping.reflection.CollectionSupplier;
