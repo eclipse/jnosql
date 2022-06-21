@@ -35,7 +35,6 @@ import static java.util.stream.Collectors.toMap;
 @ApplicationScoped
 class ClassConverter {
 
-
     private static final Logger LOGGER = Logger.getLogger(ClassConverter.class.getName());
 
     private Reflections reflections;
