@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 import javax.inject.Inject;
 
 @CDIExtension
-@Disabled
 public class KeyValueIntegrationTest {
 
     @Inject

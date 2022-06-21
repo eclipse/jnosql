@@ -21,7 +21,6 @@ import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.User;
 import jakarta.nosql.tck.entities.UserRepository;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -29,7 +28,6 @@ import javax.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
-@Disabled
 public class KeyValueExtensionTest {
 
     @Inject
