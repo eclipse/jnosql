@@ -27,6 +27,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.ServiceLoader;
 
 public class GenericFieldMapping extends AbstractFieldMapping {
 
@@ -99,7 +100,8 @@ public class GenericFieldMapping extends AbstractFieldMapping {
 
     public Collection<?> getCollectionInstance() {
         Class<?> type = getNativeField().getType();
-        final CollectionSupplier supplier = ServiceLoaderProvider.getSupplierStream(CollectionSupplier.class)
+        final CollectionSupplier supplier = ServiceLoaderProvider.getSupplierStream(CollectionSupplier.class
+                , ()-> ServiceLoader.load(CollectionSupplier.class))
                 .map(CollectionSupplier.class::cast)
                 .filter(c -> c.test(type))
                 .findFirst()
