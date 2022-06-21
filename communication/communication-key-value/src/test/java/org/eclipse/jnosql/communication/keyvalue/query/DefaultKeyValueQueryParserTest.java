@@ -45,8 +45,6 @@ class DefaultKeyValueQueryParserTest {
 
     private final BucketManager manager = Mockito.mock(BucketManager.class);
 
-
-
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get \"Diana\""})
     public void shouldReturnParserQuery1(String query) {
