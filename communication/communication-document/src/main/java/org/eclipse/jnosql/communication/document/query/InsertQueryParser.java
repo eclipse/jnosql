@@ -18,7 +18,6 @@ package org.eclipse.jnosql.communication.document.query;
 
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
-import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
@@ -38,7 +37,7 @@ final class InsertQueryParser extends ConditionQueryParser {
     private final InsertQueryProvider insertQueryProvider;
 
     InsertQueryParser() {
-        this.insertQueryProvider = ServiceLoaderProvider.get(InsertQueryProvider.class);
+        this.insertQueryProvider = InsertQuery.getProvider();
     }
 
     Stream<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
