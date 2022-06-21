@@ -18,7 +18,6 @@ package org.eclipse.jnosql.communication.column.query;
 
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
-import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnDeleteQueryParams;
@@ -45,7 +44,7 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
     private final CacheQuery<ColumnDeleteQuery> cache;
 
     public DeleteQueryParser() {
-        this.deleteQueryProvider = ServiceLoaderProvider.get(DeleteQueryProvider.class);
+        this.deleteQueryProvider = DeleteQuery.getProvider();
         cache = new CacheQuery<>(this::getQuery);
     }
 
