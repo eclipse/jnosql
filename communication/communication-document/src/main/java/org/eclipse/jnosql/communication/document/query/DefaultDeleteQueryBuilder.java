@@ -32,9 +32,9 @@ import static java.util.Objects.requireNonNull;
 
 class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
 
-    private List<String> documents = new ArrayList<>();
+    private final List<String> documents = new ArrayList<>();
 
-    private List<Sort> sorts = new ArrayList<>();
+    private final List<Sort> sorts = new ArrayList<>();
 
     private String documentCollection;
 

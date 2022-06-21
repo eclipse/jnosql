@@ -33,9 +33,9 @@ import static java.util.Objects.requireNonNull;
 
 class DefaultColumnQueryBuilder implements ColumnQuery.ColumnQueryBuilder {
 
-    private List<String> columns = new ArrayList<>();
+    private final List<String> columns = new ArrayList<>();
 
-    private List<Sort> sorts = new ArrayList<>();
+    private final List<Sort> sorts = new ArrayList<>();
 
     private String documentCollection;
 

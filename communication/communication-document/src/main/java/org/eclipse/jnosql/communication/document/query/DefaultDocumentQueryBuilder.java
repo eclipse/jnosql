@@ -33,9 +33,9 @@ import static java.util.Objects.requireNonNull;
 
 class DefaultDocumentQueryBuilder implements DocumentQuery.DocumentQueryBuilder {
 
-    private List<String> documents = new ArrayList<>();
+    private final List<String> documents = new ArrayList<>();
 
-    private List<Sort> sorts = new ArrayList<>();
+    private final List<Sort> sorts = new ArrayList<>();
 
     private String documentCollection;
 
