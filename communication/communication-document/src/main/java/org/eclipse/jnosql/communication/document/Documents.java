@@ -33,7 +33,6 @@ import static java.util.stream.StreamSupport.stream;
  */
 public final class Documents {
 
-
     private static final Predicate<Map.Entry<String, ?>> IS_VALUE_NULL = e -> Objects.nonNull(e.getValue());
 
     private Documents() {
