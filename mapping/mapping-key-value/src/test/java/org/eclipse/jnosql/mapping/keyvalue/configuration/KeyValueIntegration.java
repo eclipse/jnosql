@@ -20,8 +20,10 @@ import jakarta.nosql.keyvalue.BucketManagerFactory;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+@ApplicationScoped
 public class KeyValueIntegration {
 
     private static final String KEY_VALUE = "keyvalue";
