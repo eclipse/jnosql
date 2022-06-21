@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -61,7 +62,8 @@ public abstract class BaseDocumentRepository<T> {
     protected DocumentQuery getQuery(Method method, Object[] args) {
         SelectMethodProvider methodProvider = SelectMethodProvider.get();
         SelectQuery selectQuery = methodProvider.apply(method, getClassMapping().getName());
-        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class);
+        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class,
+                ()-> ServiceLoader.load(SelectQueryConverter.class));
         DocumentQueryParams queryParams = converter.apply(selectQuery, getParser());
         DocumentQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
@@ -84,7 +86,8 @@ public abstract class BaseDocumentRepository<T> {
     protected DocumentDeleteQuery getDeleteQuery(Method method, Object[] args) {
         DeleteMethodProvider methodProvider = DeleteMethodProvider.get();
         DeleteQuery deleteQuery = methodProvider.apply(method, getClassMapping().getName());
-        DeleteQueryConverter converter = ServiceLoaderProvider.get(DeleteQueryConverter.class);
+        DeleteQueryConverter converter = ServiceLoaderProvider.get(DeleteQueryConverter.class,
+                ()-> ServiceLoader.load(DeleteQueryConverter.class));
         DocumentDeleteQueryParams queryParams = converter.apply(deleteQuery, getParser());
         DocumentDeleteQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
