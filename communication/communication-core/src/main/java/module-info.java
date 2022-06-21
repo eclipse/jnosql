@@ -23,6 +23,7 @@ module org.eclipse.jnosql.communication.core {
     opens org.eclipse.jnosql.communication;
     opens org.eclipse.jnosql.communication.reader;
     opens org.eclipse.jnosql.communication.writer;
+
     provides jakarta.nosql.Params.ParamsProvider with org.eclipse.jnosql.communication.DefaultParamsProvider;
     provides jakarta.nosql.Settings.SettingsBuilderProvider with org.eclipse.jnosql.communication.DefaultSettingsBuilderProvider;
     provides jakarta.nosql.Sort.SortProvider with org.eclipse.jnosql.communication.DefaultSortProvider;
