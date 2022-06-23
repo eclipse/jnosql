@@ -19,22 +19,22 @@
 
     <parent>
          <groupId>org.eclipse.jnosql.mapping.reactive</groupId>
-         <artifactId>mapping-reactive-parent</artifactId>
+         <artifactId>jnosql-mapping-reactive-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-     <artifactId>mapping-reactive-column</artifactId>
+     <artifactId>jnosql-mapping-reactive-column</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
        <dependency>
             <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>mapping-column</artifactId>
+            <artifactId>jnosql-mapping-column</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mapping-reactive-core</artifactId>
+            <artifactId>jnosql-mapping-reactive-core</artifactId>
             <version>${jakarta.nosql.version}</version>
         </dependency>
         <dependency>

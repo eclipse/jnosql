@@ -20,11 +20,11 @@
 
     <parent>
          <groupId>org.eclipse.jnosql.mapping.reactive</groupId>
-         <artifactId>mapping-reactive-parent</artifactId>
+         <artifactId>jnosql-mapping-reactive-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mapping-reactive-core</artifactId>
+    <artifactId>jnosql-mapping-reactive-core</artifactId>
     <packaging>jar</packaging>
 
     <properties>
@@ -33,7 +33,7 @@
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jnosql.mapping</groupId>
-             <artifactId>mapping-core</artifactId>
+             <artifactId>jnosql-mapping-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

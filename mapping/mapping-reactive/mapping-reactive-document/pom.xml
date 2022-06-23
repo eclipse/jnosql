@@ -19,17 +19,17 @@
 
     <parent>
          <groupId>org.eclipse.jnosql.mapping.reactive</groupId>
-         <artifactId>mapping-reactive-parent</artifactId>
+         <artifactId>jnosql-mapping-reactive-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-     <artifactId>mapping-reactive-document</artifactId>
+     <artifactId>jnosql-mapping-reactive-document</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
        <dependency>
             <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>mapping-document</artifactId>
+            <artifactId>jnosql-mapping-document</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
