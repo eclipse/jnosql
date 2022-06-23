@@ -31,14 +31,14 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mapping-test</module>
-        <module>mapping-core</module>
-        <module>mapping-graph</module>
-        <module>mapping-document</module>
-        <module>mapping-column</module>
-        <module>mapping-key-value</module>
-        <module>mapping-validation</module>
-        <module>mapping-reactive</module>
+        <module>jnosql-mapping-test</module>
+        <module>jnosql-mapping-core</module>
+        <module>jnosql-mapping-graph</module>
+        <module>jnosql-mapping-document</module>
+        <module>jnosql-mapping-column</module>
+        <module>jnosql-mapping-key-value</module>
+        <module>jnosql-mapping-validation</module>
+        <module>jnosql-mapping-reactive</module>
     </modules>
 
     <dependencies>

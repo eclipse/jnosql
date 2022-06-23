@@ -34,10 +34,10 @@
     </dependencies>
 
     <modules>
-        <module>communication-core</module>
-        <module>communication-query</module>
-        <module>communication-key-value</module>
-        <module>communication-column</module>
-        <module>communication-document</module>
+        <module>jnosql-communication-core</module>
+        <module>jnosql-communication-query</module>
+        <module>jnosql-communication-key-value</module>
+        <module>jnosql-communication-column</module>
+        <module>jnosql-communication-document</module>
     </modules>
 </project>

@@ -31,10 +31,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mapping-reactive-core</module>
-        <module>mapping-reactive-key-value</module>
-        <module>mapping-reactive-column</module>
-        <module>mapping-reactive-document</module>
+        <module>jnosql-mapping-reactive-core</module>
+        <module>jnosql-mapping-reactive-key-value</module>
+        <module>jnosql-mapping-reactive-column</module>
+        <module>jnosql-mapping-reactive-document</module>
     </modules>
 
     <dependencies>
