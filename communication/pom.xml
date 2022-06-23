@@ -27,7 +27,7 @@
     </parent>
 
     <groupId>org.eclipse.jnosql.communication</groupId>
-    <artifactId>communication</artifactId>
+    <artifactId>jnosql-communication</artifactId>
     <packaging>pom</packaging>
 
     <dependencies>

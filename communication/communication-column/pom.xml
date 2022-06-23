@@ -22,28 +22,28 @@
 
     <parent>
         <groupId>org.eclipse.jnosql.communication</groupId>
-        <artifactId>communication</artifactId>
+        <artifactId>jnosql-communication</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>communication-column</artifactId>
+    <artifactId>jnosql-communication-column</artifactId>
     <packaging>jar</packaging>
 
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>communication-core</artifactId>
+            <artifactId>jnosql-communication-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>communication-query</artifactId>
+            <artifactId>jnosql-communication-query</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.nosql.communication</groupId>
-            <artifactId>communication-column</artifactId>
+            <artifactId>jnosql-communication-column</artifactId>
             <version>${jakarta.nosql.version}</version>
         </dependency>
         <dependency>

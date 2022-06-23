@@ -16,11 +16,11 @@
 
     <parent>
         <groupId>org.eclipse.jnosql.communication</groupId>
-        <artifactId>communication</artifactId>
+        <artifactId>jnosql-communication</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>communication-query</artifactId>
+    <artifactId>jnosql-communication-query</artifactId>
 
     <properties>
         <antlr4.visitor>false</antlr4.visitor>
@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>communication-core</artifactId>
+            <artifactId>jnosql-communication-core</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
