@@ -43,7 +43,7 @@
         </dependency>
         <dependency>
             <groupId>jakarta.nosql.communication</groupId>
-            <artifactId>jnosql-communication-column</artifactId>
+            <artifactId>communication-column</artifactId>
             <version>${jakarta.nosql.version}</version>
         </dependency>
         <dependency>
