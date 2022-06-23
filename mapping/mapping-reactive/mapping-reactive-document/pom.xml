@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mapping-reactive-core</artifactId>
+            <artifactId>jnosql-mapping-reactive-core</artifactId>
             <version>${jakarta.nosql.version}</version>
         </dependency>
         <dependency>
