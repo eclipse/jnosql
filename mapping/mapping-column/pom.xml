@@ -18,22 +18,22 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.eclipse.jnosql.mapping</groupId>
-        <artifactId>mapping-parent</artifactId>
+        <artifactId>jnosql-mapping-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     
-    <artifactId>mapping-column</artifactId>
+    <artifactId>jnosql-mapping-column</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jnosql.communication</groupId>
-            <artifactId>communication-column</artifactId>
+            <artifactId>jnosql-communication-column</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mapping-core</artifactId>
+            <artifactId>jnosql-mapping-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

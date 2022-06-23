@@ -20,11 +20,11 @@
 
     <parent>
         <groupId>org.eclipse.jnosql.mapping</groupId>
-        <artifactId>mapping-parent</artifactId>
+        <artifactId>jnosql-mapping-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mapping-test</artifactId>
+    <artifactId>jnosql-mapping-test</artifactId>
     <packaging>jar</packaging>
 
     <properties>
