@@ -31,7 +31,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>jnosql-mapping-test</module>
         <module>jnosql-mapping-core</module>
         <module>jnosql-mapping-graph</module>
         <module>jnosql-mapping-document</module>
