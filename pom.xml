@@ -130,8 +130,8 @@
     </build>
 
     <modules>
-        <module>communication</module>
-        <module>mapping</module>
+        <module>jnosql-communication</module>
+        <module>jnosql-mapping</module>
     </modules>
 
     <profiles>
