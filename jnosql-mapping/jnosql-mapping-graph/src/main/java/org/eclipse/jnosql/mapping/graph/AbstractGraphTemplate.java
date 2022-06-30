@@ -380,7 +380,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
             throw new IllegalStateException("Entity id is required");
         }
 
-        if (!getVertex(entity).isPresent()) {
+        if (getVertex(entity).isEmpty()) {
             return Collections.emptyList();
         }
         Object id = getConverter().toVertex(entity).id();
