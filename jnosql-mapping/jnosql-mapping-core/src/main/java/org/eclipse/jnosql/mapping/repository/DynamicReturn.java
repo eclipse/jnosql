@@ -23,7 +23,6 @@ import org.eclipse.jnosql.mapping.reflection.MethodDynamicExecutable;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -86,11 +85,11 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         }
 
         List<Sort> sorts = new ArrayList<>();
-        for (Object param : Arrays.asList(params)) {
+        for (Object param : params) {
             if (param instanceof Sort) {
-                sorts.add(Sort.class.cast(param));
+                sorts.add((Sort) param);
             } else if (param instanceof Sorts) {
-                sorts.addAll(Sorts.class.cast(param).getSorts());
+                sorts.addAll(((Sorts) param).getSorts());
             }
         }
         return sorts;
