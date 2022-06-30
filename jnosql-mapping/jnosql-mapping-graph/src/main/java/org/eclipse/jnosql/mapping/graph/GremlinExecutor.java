@@ -57,7 +57,7 @@ final class GremlinExecutor {
                 return convertToStream(StreamSupport.stream(((Iterable) eval).spliterator(), false));
             }
             if (eval instanceof Stream) {
-                return convertToStream(Stream.class.cast(eval));
+                return convertToStream((Stream) eval);
             }
             return Stream.of((T) eval);
         } catch (ScriptException e) {
