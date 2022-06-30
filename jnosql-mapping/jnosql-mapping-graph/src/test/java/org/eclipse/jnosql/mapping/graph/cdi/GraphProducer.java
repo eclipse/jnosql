@@ -79,7 +79,7 @@ public class GraphProducer {
 
         when(vertex.label()).thenReturn("Person");
         when(vertex.id()).thenReturn(10L);
-        when(graphMock.vertices(10L)).thenReturn(Collections.<Vertex>emptyList().iterator());
+        when(graphMock.vertices(10L)).thenReturn(Collections.emptyIterator());
         when(vertex.keys()).thenReturn(singleton("name"));
         when(vertex.value("name")).thenReturn("nameMock");
         when(graphMock.addVertex(Mockito.anyString())).thenReturn(vertex);
