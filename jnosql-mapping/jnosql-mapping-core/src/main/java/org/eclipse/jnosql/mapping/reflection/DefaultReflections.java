@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.DiscriminatorColumn;
+import jakarta.nosql.mapping.DiscriminatorValue;
 import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Id;
 import jakarta.nosql.mapping.Inheritance;
@@ -28,6 +30,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -147,18 +150,11 @@ public class DefaultReflections implements Reflections {
     @Override
     public String getEntityName(Class<?> entity) {
         requireNonNull(entity, "class entity is required");
-        Class<?> superclass = entity.getSuperclass();
-        if (superclass.getAnnotation(Inheritance.class) != null) {
-            return readEntity(superclass);
+
+        if (isInheritance(entity)) {
+            return readEntity(entity.getSuperclass());
         }
         return readEntity(entity);
-    }
-
-    private String readEntity(Class<?> entity) {
-        return Optional.ofNullable((Entity) entity.getAnnotation(Entity.class))
-                .map(Entity::value)
-                .filter(StringUtils::isNotBlank)
-                .orElse(entity.getSimpleName());
     }
 
     @Override
@@ -211,5 +207,41 @@ public class DefaultReflections implements Reflections {
                 .orElse(field.getName());
     }
 
+    @Override
+    public Optional<InheritanceClassMapping> getInheritance(Class<?> entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        if(isInheritance(entity)) {
+            Class<?> parent = entity.getSuperclass();
+            String discriminatorColumn = getDiscriminatorColumn(parent);
+            String discriminatorValue = getDiscriminatorValue(entity);
+            return Optional.of(new InheritanceClassMapping(discriminatorValue, discriminatorColumn, parent));
+        }
+        return Optional.empty();
+    }
 
+
+    private String getDiscriminatorColumn(Class<?> parent) {
+        return Optional
+                .ofNullable(parent.getAnnotation(DiscriminatorColumn.class))
+                .map(DiscriminatorColumn::value)
+                .orElse(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN);
+    }
+
+    private String getDiscriminatorValue(Class<?> entity) {
+        return Optional
+                .ofNullable(entity.getAnnotation(DiscriminatorValue.class))
+                .map(DiscriminatorValue::value)
+                .orElse(entity.getSimpleName());
+    }
+    private String readEntity(Class<?> entity) {
+        return Optional.ofNullable((Entity) entity.getAnnotation(Entity.class))
+                .map(Entity::value)
+                .filter(StringUtils::isNotBlank)
+                .orElse(entity.getSimpleName());
+    }
+
+    private boolean isInheritance(Class<?> entity){
+        Class<?> superclass = entity.getSuperclass();
+        return superclass.getAnnotation(Inheritance.class) != null;
+    }
 }
