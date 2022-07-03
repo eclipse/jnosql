@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Id;
+import jakarta.nosql.mapping.Inheritance;
 import jakarta.nosql.mapping.MappedSuperclass;
 import org.eclipse.jnosql.mapping.util.StringUtils;
 
@@ -144,17 +145,24 @@ public class DefaultReflections implements Reflections {
     }
 
     @Override
-    public String getEntityName(Class classEntity) {
-        requireNonNull(classEntity, "class entity is required");
+    public String getEntityName(Class<?> entity) {
+        requireNonNull(entity, "class entity is required");
+        Class<?> superclass = entity.getSuperclass();
+        if (superclass.getAnnotation(Inheritance.class) != null) {
+            return readEntity(superclass);
+        }
+        return readEntity(entity);
+    }
 
-        return Optional.ofNullable((Entity) classEntity.getAnnotation(Entity.class))
+    private String readEntity(Class<?> entity) {
+        return Optional.ofNullable((Entity) entity.getAnnotation(Entity.class))
                 .map(Entity::value)
                 .filter(StringUtils::isNotBlank)
-                .orElse(classEntity.getSimpleName());
+                .orElse(entity.getSimpleName());
     }
 
     @Override
-    public List<Field> getFields(Class classEntity) {
+    public List<Field> getFields(Class<?> classEntity) {
         requireNonNull(classEntity, "class entity is required");
 
         List<Field> fields = new ArrayList<>();
@@ -174,7 +182,9 @@ public class DefaultReflections implements Reflections {
     @Override
     public boolean isMappedSuperclass(Class<?> classEntity) {
         requireNonNull(classEntity, "class entity is required");
-        return classEntity.getSuperclass().getAnnotation(MappedSuperclass.class) != null;
+        Class<?> superclass = classEntity.getSuperclass();
+        return superclass.getAnnotation(MappedSuperclass.class) != null
+                || superclass.getAnnotation(Inheritance.class) != null;
     }
 
     @Override

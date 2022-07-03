@@ -68,25 +68,24 @@ public class ReflectionsTest {
     @Test
     public void shouldGetEntityNameWhenThereIsNoAnnotation(){
         String entityName = reflections.getEntityName(Person.class);
-        Assertions.assertEquals(Person.class.getSimpleName(), entityName);
+        assertEquals(Person.class.getSimpleName(), entityName);
     }
 
     @Test
     public void shouldGetEntityNameFromAnnotation() {
         String entityName = reflections.getEntityName(Download.class);
-        Assertions.assertEquals("download", entityName);
-        Assertions.assertEquals("vendors", reflections.getEntityName(Vendor.class));
+        assertEquals("download", entityName);
+        assertEquals("vendors", reflections.getEntityName(Vendor.class));
     }
 
     @Test
     public void shouldGetEntityFromInheritance() {
-        Assertions.assertEquals("Notification", reflections.getEntityName(SocialMediaNotification.class));
-        Assertions.assertEquals("Notification", reflections.getEntityName(SmsNotification.class));
-        Assertions.assertEquals("Notification", reflections.getEntityName(EmailNotification.class));
+        assertEquals("Notification", reflections.getEntityName(SocialMediaNotification.class));
+        assertEquals("Notification", reflections.getEntityName(SmsNotification.class));
+        assertEquals("Notification", reflections.getEntityName(EmailNotification.class));
 
-
-        Assertions.assertEquals("Project", reflections.getEntityName(LargeProject.class));
-        Assertions.assertEquals("Project", reflections.getEntityName(SmallProject.class));
+        assertEquals("Project", reflections.getEntityName(LargeProject.class));
+        assertEquals("Project", reflections.getEntityName(SmallProject.class));
     }
 
 }
