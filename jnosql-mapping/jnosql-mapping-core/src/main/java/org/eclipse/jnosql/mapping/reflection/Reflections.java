@@ -21,6 +21,7 @@ import jakarta.nosql.mapping.Id;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Utilitarian class to reflection
@@ -171,6 +172,17 @@ public interface Reflections {
      * @throws NullPointerException when the field is null
      */
     String getIdName(Field field);
+
+    /**
+     * Reads the entity annotation and checks if the inheritance has an
+     * {@link jakarta.nosql.mapping.Inheritance} annotation.
+     * If it has, it will return the {@link InheritanceClassMapping} otherwise it will return
+     * {@link Optional#empty()}
+     * @param entity the entity class
+     * @return the {@link InheritanceClassMapping} or {@link Optional#empty()}
+     * @throws NullPointerException when entity is null
+     */
+    Optional<InheritanceClassMapping> getInheritance(Class<?> entity);
 
     /**
      * data structured to store key and value class to map collection.
