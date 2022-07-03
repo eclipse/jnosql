@@ -15,9 +15,12 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.tck.entities.Actor;
+import jakarta.nosql.tck.entities.Download;
 import jakarta.nosql.tck.entities.Movie;
 import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -55,6 +58,19 @@ public class ReflectionsTest {
         assertEquals("phones", reflections.getColumnName(phones));
         assertEquals("id", reflections.getColumnName(id));
         assertEquals("_id", reflections.getIdName(id));
+    }
+
+    @Test
+    public void shouldGetEntityNameWhenThereIsNoAnnotation(){
+        String entityName = reflections.getEntityName(Person.class);
+        Assertions.assertEquals(Person.class.getSimpleName(), entityName);
+    }
+
+    @Test
+    public void shouldGetEntityNameFromAnnotation() {
+        String entityName = reflections.getEntityName(Download.class);
+        Assertions.assertEquals("download", entityName);
+        Assertions.assertEquals("vendors", reflections.getEntityName(Vendor.class));
     }
 
 }
