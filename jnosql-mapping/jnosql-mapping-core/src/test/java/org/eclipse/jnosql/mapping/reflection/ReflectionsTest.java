@@ -21,6 +21,8 @@ import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.entities.inheritance.EmailNotification;
 import jakarta.nosql.tck.entities.inheritance.LargeProject;
+import jakarta.nosql.tck.entities.inheritance.Notification;
+import jakarta.nosql.tck.entities.inheritance.Project;
 import jakarta.nosql.tck.entities.inheritance.SmallProject;
 import jakarta.nosql.tck.entities.inheritance.SmsNotification;
 import jakarta.nosql.tck.entities.inheritance.SocialMediaNotification;
@@ -30,6 +32,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -87,5 +90,42 @@ public class ReflectionsTest {
         assertEquals("Project", reflections.getEntityName(LargeProject.class));
         assertEquals("Project", reflections.getEntityName(SmallProject.class));
     }
+
+    @Test
+    public void shouldReturnEmptyGetInheritance() {
+        Optional<InheritanceClassMapping> inheritance = this.reflections.getInheritance(Person.class);
+        Assertions.assertTrue(inheritance.isEmpty());
+    }
+
+    @Test
+    public void shouldReturnGetInheritance() {
+        Optional<InheritanceClassMapping> inheritance = this.reflections.getInheritance(LargeProject.class);
+        Assertions.assertFalse(inheritance.isEmpty());
+        InheritanceClassMapping project = inheritance.get();
+        assertEquals("size", project.getDiscriminatorColumn());
+        assertEquals("Large", project.getDiscriminatorValue());
+        assertEquals(Project.class, project.getParent());
+    }
+
+    @Test
+    public void shouldReturnGetInheritanceWithoutColumn() {
+        Optional<InheritanceClassMapping> inheritance = this.reflections.getInheritance(SmsNotification.class);
+        Assertions.assertFalse(inheritance.isEmpty());
+        InheritanceClassMapping project = inheritance.get();
+        assertEquals("type", project.getDiscriminatorColumn());
+        assertEquals("SMS", project.getDiscriminatorValue());
+        assertEquals(Notification.class, project.getParent());
+    }
+
+    @Test
+    public void shouldReturnGetInheritanceWithoutDiscriminatorValue() {
+        Optional<InheritanceClassMapping> inheritance = this.reflections.getInheritance(SocialMediaNotification.class);
+        Assertions.assertFalse(inheritance.isEmpty());
+        InheritanceClassMapping project = inheritance.get();
+        assertEquals("type", project.getDiscriminatorColumn());
+        assertEquals("SocialMediaNotification", project.getDiscriminatorValue());
+        assertEquals(Notification.class, project.getParent());
+    }
+
 
 }
