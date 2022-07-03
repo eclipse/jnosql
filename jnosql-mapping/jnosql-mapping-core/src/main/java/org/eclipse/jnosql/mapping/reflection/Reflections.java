@@ -119,11 +119,11 @@ public interface Reflections {
      * Returns the name of the entity. So it tries to read the {@link Entity} otherwise
      * {@link Class#getSimpleName()}
      *
-     * @param classEntity the class to read
+     * @param entity the class to read
      * @return the {@link Entity} when is not blank otherwise {@link Class#getSimpleName()}
-     * @throws NullPointerException when classEntity is null
+     * @throws NullPointerException when entity is null
      */
-    String getEntityName(Class classEntity);
+    String getEntityName(Class<?> entity);
 
     /**
      * Returns the fields from the entity class
@@ -133,7 +133,7 @@ public interface Reflections {
      * {@link Id}
      * @throws NullPointerException when class entity is null
      */
-    List<Field> getFields(Class classEntity);
+    List<Field> getFields(Class<?> classEntity);
 
     /**
      * Checks if the class is annotated with {@link MappedSuperclass}
