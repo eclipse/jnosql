@@ -23,9 +23,9 @@ public final class InheritanceClassMapping {
 
     private final String discriminatorValue;
 
-    private final  String discriminatorColumn;
+    private final String discriminatorColumn;
 
-    private final  Class<?> parent;
+    private final Class<?> parent;
 
     InheritanceClassMapping(String discriminatorValue, String discriminatorColumn, Class<?> parent) {
         this.discriminatorValue = discriminatorValue;
@@ -36,6 +36,7 @@ public final class InheritanceClassMapping {
     /**
      * Return the information from the class the annotation {@link jakarta.nosql.mapping.DiscriminatorValue}
      * or the {@link Class#getSimpleName()}.
+     *
      * @return the {@link jakarta.nosql.mapping.DiscriminatorValue} from entity
      */
     public String getDiscriminatorValue() {
@@ -45,6 +46,7 @@ public final class InheritanceClassMapping {
     /**
      * Return the information parent from the annotation {@link jakarta.nosql.mapping.DiscriminatorColumn}
      * or the "type".
+     *
      * @return the {@link jakarta.nosql.mapping.DiscriminatorValue} from entity
      */
     public String getDiscriminatorColumn() {
@@ -52,11 +54,23 @@ public final class InheritanceClassMapping {
     }
 
     /**
-     *
      * @return The parent class
      */
     public Class<?> getParent() {
         return parent;
+    }
+
+
+    /**
+     * Checks if the parent is equals to the parameter
+     *
+     * @param parent the parameter
+     * @return if the parent is equals or not
+     * @throws NullPointerException if the parent is null
+     */
+    public boolean isParent(Class<?> parent) {
+        Objects.requireNonNull(parent, "parent is required");
+        return this.parent.equals(parent);
     }
 
     @Override
