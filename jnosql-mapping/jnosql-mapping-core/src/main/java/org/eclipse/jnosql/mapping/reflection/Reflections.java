@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Id;
-import jakarta.nosql.mapping.MappedSuperclass;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -136,7 +135,8 @@ public interface Reflections {
     List<Field> getFields(Class<?> classEntity);
 
     /**
-     * Checks if the class is annotated with {@link MappedSuperclass}
+     * Checks if the class is annotated with {@link jakarta.nosql.mapping.MappedSuperclass} or
+     * {@link jakarta.nosql.mapping.Inheritance}
      *
      * @param classEntity the entity class
      * @return if the class is annotated
