@@ -19,6 +19,11 @@ import jakarta.nosql.tck.entities.Download;
 import jakarta.nosql.tck.entities.Movie;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Vendor;
+import jakarta.nosql.tck.entities.inheritance.EmailNotification;
+import jakarta.nosql.tck.entities.inheritance.LargeProject;
+import jakarta.nosql.tck.entities.inheritance.SmallProject;
+import jakarta.nosql.tck.entities.inheritance.SmsNotification;
+import jakarta.nosql.tck.entities.inheritance.SocialMediaNotification;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -71,6 +76,17 @@ public class ReflectionsTest {
         String entityName = reflections.getEntityName(Download.class);
         Assertions.assertEquals("download", entityName);
         Assertions.assertEquals("vendors", reflections.getEntityName(Vendor.class));
+    }
+
+    @Test
+    public void shouldGetEntityFromInheritance() {
+        Assertions.assertEquals("Notification", reflections.getEntityName(SocialMediaNotification.class));
+        Assertions.assertEquals("Notification", reflections.getEntityName(SmsNotification.class));
+        Assertions.assertEquals("Notification", reflections.getEntityName(EmailNotification.class));
+
+
+        Assertions.assertEquals("Project", reflections.getEntityName(LargeProject.class));
+        Assertions.assertEquals("Project", reflections.getEntityName(SmallProject.class));
     }
 
 }
