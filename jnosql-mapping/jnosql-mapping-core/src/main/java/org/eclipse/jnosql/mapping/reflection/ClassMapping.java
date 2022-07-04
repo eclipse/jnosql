@@ -43,6 +43,13 @@ public interface ClassMapping {
     Class<?> getClassInstance();
 
     /**
+     * Return the parent class of this class mapping.
+     * It will check the parent class has the {@link jakarta.nosql.mapping.Inheritance} annotation.
+     * @return the parent annotation otherwise {@link  Optional#empty()}
+     */
+    Optional<InheritanceClassMapping> getInheritance();
+
+    /**
      * @return The fields from this class
      */
     List<FieldMapping> getFields();
