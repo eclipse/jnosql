@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -30,7 +31,16 @@ public interface ClassMappings {
      * @return the {@link ClassMapping}
      * @throws NullPointerException when class entity is null
      */
-    ClassMapping get(Class classEntity);
+    ClassMapping get(Class<?> classEntity);
+
+    /**
+     * Find the {@link InheritanceClassMapping} where the parameter is the parent parameter
+     * and it returns a map group by the {@link jakarta.nosql.mapping.DiscriminatorValue}
+     * @param parent the parent
+     * @return a {@link Map}
+     * @throws NullPointerException when parent is null
+     */
+    Map<String, InheritanceClassMapping> findByParentGroupByDiscriminatorValue(Class<?> parent);
 
     /**
      * Returns the {@link ClassMapping} instance from {@link ClassMapping#getName()} in ignore case
