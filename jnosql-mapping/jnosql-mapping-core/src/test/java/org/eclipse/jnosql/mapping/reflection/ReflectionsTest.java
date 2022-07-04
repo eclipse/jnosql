@@ -19,6 +19,7 @@ import jakarta.nosql.tck.entities.Download;
 import jakarta.nosql.tck.entities.Movie;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Vendor;
+import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.entities.inheritance.EmailNotification;
 import jakarta.nosql.tck.entities.inheritance.LargeProject;
 import jakarta.nosql.tck.entities.inheritance.Notification;
@@ -125,6 +126,17 @@ public class ReflectionsTest {
         assertEquals("type", project.getDiscriminatorColumn());
         assertEquals("SocialMediaNotification", project.getDiscriminatorValue());
         assertEquals(Notification.class, project.getParent());
+    }
+
+    @Test
+    public void shouldReturnHasInheritanceAnnotation() {
+        Assertions.assertFalse(this.reflections.hasInheritanceAnnotation(Person.class));
+        Assertions.assertFalse(this.reflections.hasInheritanceAnnotation(Worker.class));
+        Assertions.assertFalse(this.reflections.hasInheritanceAnnotation(SmsNotification.class));
+        Assertions.assertFalse(this.reflections.hasInheritanceAnnotation(SmallProject.class));
+
+        Assertions.assertTrue(this.reflections.hasInheritanceAnnotation(Notification.class));
+        Assertions.assertTrue(this.reflections.hasInheritanceAnnotation(Project.class));
     }
 
 
