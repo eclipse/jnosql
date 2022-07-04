@@ -134,13 +134,16 @@ class DefaultClassMapping implements ClassMapping {
 
     @Override
     public String toString() {
-        return  "DefaultClassMapping{" + "name='" + name + '\'' +
+        return "DefaultClassMapping{" +
+                "name='" + name + '\'' +
                 ", fieldsName=" + fieldsName +
                 ", classInstance=" + classInstance +
                 ", fields=" + fields +
+                ", instanceSupplier=" + instanceSupplier +
                 ", javaFieldGroupedByColumn=" + javaFieldGroupedByColumn +
                 ", fieldsGroupedByName=" + fieldsGroupedByName +
                 ", id=" + id +
+                ", inheritance=" + inheritance +
                 '}';
     }
 
