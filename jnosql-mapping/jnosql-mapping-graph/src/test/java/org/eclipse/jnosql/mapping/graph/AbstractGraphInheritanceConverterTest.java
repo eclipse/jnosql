@@ -151,54 +151,48 @@ public abstract class AbstractGraphInheritanceConverterTest {
         assertEquals(date, notification.getCreatedOn());
     }
 
-//    @Test
-//    public void shouldConvertSocialMediaToCommunicationEntity(){
-//        SocialMediaNotification notification = new SocialMediaNotification();
-//        notification.setId(100L);
-//        notification.setName("Social Media");
-//        notification.setCreatedOn(LocalDate.now());
-//        notification.setNickname("otaviojava");
-//        DocumentEntity entity = this.converter.toDocument(notification);
-//        assertNotNull(entity);
-//        assertEquals("Notification", entity.getName());
-//        assertEquals(notification.getId(), entity.find("_id", Long.class).get());
-//        assertEquals(notification.getName(), entity.find("name", String.class).get());
-//        assertEquals(notification.getNickname(), entity.find("nickname", String.class).get());
-//        assertEquals(notification.getCreatedOn(), entity.find("createdOn", LocalDate.class).get());
-//    }
-//
-//    @Test
-//    public void shouldConvertSmsToCommunicationEntity(){
-//        SmsNotification notification = new SmsNotification();
-//        notification.setId(100L);
-//        notification.setName("SMS");
-//        notification.setCreatedOn(LocalDate.now());
-//        notification.setPhone("+351123456987");
-//        DocumentEntity entity = this.converter.toDocument(notification);
-//        assertNotNull(entity);
-//        assertEquals("Notification", entity.getName());
-//        assertEquals(notification.getId(), entity.find("_id", Long.class).get());
-//        assertEquals(notification.getName(), entity.find("name", String.class).get());
-//        assertEquals(notification.getPhone(), entity.find("phone", String.class).get());
-//        assertEquals(notification.getCreatedOn(), entity.find("createdOn", LocalDate.class).get());
-//    }
-//
-//    @Test
-//    public void shouldConvertEmailToCommunicationEntity(){
-//        EmailNotification notification = new EmailNotification();
-//        notification.setId(100L);
-//        notification.setName("Email Media");
-//        notification.setCreatedOn(LocalDate.now());
-//        notification.setEmail("otavio@otavio.test.com");
-//        DocumentEntity entity = this.converter.toDocument(notification);
-//        assertNotNull(entity);
-//        assertEquals("Notification", entity.getName());
-//        assertEquals(notification.getId(), entity.find("_id", Long.class).get());
-//        assertEquals(notification.getName(), entity.find("name", String.class).get());
-//        assertEquals(notification.getEmail(), entity.find("email", String.class).get());
-//        assertEquals(notification.getCreatedOn(), entity.find("createdOn", LocalDate.class).get());
-//    }
-//
+    @Test
+    public void shouldConvertSocialMediaToCommunicationEntity(){
+        SocialMediaNotification notification = new SocialMediaNotification();
+        notification.setName("Social Media");
+        notification.setCreatedOn(LocalDate.now());
+        notification.setNickname("otaviojava");
+        Vertex entity = this.getConverter().toVertex(notification);
+        assertNotNull(entity);
+        assertEquals("Notification", entity.label());
+        assertEquals(notification.getName(), entity.property("name").value());
+        assertEquals(notification.getNickname(),entity.property("nickname").value());
+        assertEquals(notification.getCreatedOn(), entity.property("createdOn").value());
+    }
+
+    @Test
+    public void shouldConvertSmsToCommunicationEntity(){
+        SmsNotification notification = new SmsNotification();
+        notification.setName("SMS");
+        notification.setCreatedOn(LocalDate.now());
+        notification.setPhone("+351123456987");
+        Vertex entity = this.getConverter().toVertex(notification);
+        assertNotNull(entity);
+        assertEquals("Notification", entity.label());
+        assertEquals(notification.getName(), entity.property("name").value());
+        assertEquals(notification.getPhone(), entity.property("phone").value());
+        assertEquals(notification.getCreatedOn(), entity.property("createdOn").value());
+    }
+
+    @Test
+    public void shouldConvertEmailToCommunicationEntity(){
+        EmailNotification notification = new EmailNotification();
+        notification.setName("Email Media");
+        notification.setCreatedOn(LocalDate.now());
+        notification.setEmail("otavio@otavio.test.com");
+        Vertex entity = this.getConverter().toVertex(notification);
+        assertNotNull(entity);
+        assertEquals("Notification", entity.label());
+        assertEquals(notification.getName(),  entity.property("name").value());
+        assertEquals(notification.getEmail(),  entity.property("email").value());
+        assertEquals(notification.getCreatedOn(),  entity.property("createdOn").value());
+    }
+
 //    @Test
 //    public void shouldReturnErrorWhenConvertMissingColumn(){
 //        LocalDate date = LocalDate.now();
