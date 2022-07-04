@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import static jakarta.nosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -142,7 +143,7 @@ public class ClassConverterTest {
         InheritanceClassMapping inheritance = entity.getInheritance()
                 .orElseThrow(() -> new MappingException());
 
-        assertEquals("type", inheritance.getDiscriminatorColumn());
+        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
         assertEquals("SocialMediaNotification", inheritance.getDiscriminatorValue());
         assertEquals(Notification.class, inheritance.getParent());
     }
@@ -156,7 +157,7 @@ public class ClassConverterTest {
         InheritanceClassMapping inheritance = entity.getInheritance()
                 .orElseThrow(() -> new MappingException());
 
-        assertEquals("type", inheritance.getDiscriminatorColumn());
+        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
         assertEquals("Email", inheritance.getDiscriminatorValue());
         assertEquals(Notification.class, inheritance.getParent());
     }

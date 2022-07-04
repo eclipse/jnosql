@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.nosql.mapping.DiscriminatorColumn;
 import jakarta.nosql.tck.entities.Actor;
 import jakarta.nosql.tck.entities.Download;
 import jakarta.nosql.tck.entities.Movie;
@@ -34,6 +35,7 @@ import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.util.Optional;
 
+import static jakarta.nosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -115,7 +117,7 @@ public class ReflectionsTest {
         Optional<InheritanceClassMapping> inheritance = this.reflections.getInheritance(SmsNotification.class);
         assertFalse(inheritance.isEmpty());
         InheritanceClassMapping project = inheritance.get();
-        assertEquals("type", project.getDiscriminatorColumn());
+        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, project.getDiscriminatorColumn());
         assertEquals("SMS", project.getDiscriminatorValue());
         assertEquals(Notification.class, project.getParent());
         assertEquals(SmsNotification.class, project.getEntity());
@@ -126,7 +128,7 @@ public class ReflectionsTest {
         Optional<InheritanceClassMapping> inheritance = this.reflections.getInheritance(SocialMediaNotification.class);
         assertFalse(inheritance.isEmpty());
         InheritanceClassMapping project = inheritance.get();
-        assertEquals("type", project.getDiscriminatorColumn());
+        assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, project.getDiscriminatorColumn());
         assertEquals("SocialMediaNotification", project.getDiscriminatorValue());
         assertEquals(Notification.class, project.getParent());
         assertEquals(SocialMediaNotification.class, project.getEntity());
