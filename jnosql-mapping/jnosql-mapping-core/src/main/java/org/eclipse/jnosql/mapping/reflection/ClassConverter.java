@@ -59,12 +59,12 @@ class ClassConverter {
     ClassConverter() {
     }
 
-    public ClassMapping create(Class<?> entityClass) {
+    public ClassMapping create(Class<?> entity) {
 
         long start = System.currentTimeMillis();
-        String entityName = reflections.getEntityName(entityClass);
+        String entityName = reflections.getEntityName(entity);
 
-        List<FieldMapping> fields = reflections.getFields(entityClass)
+        List<FieldMapping> fields = reflections.getFields(entity)
                 .stream().map(this::to).collect(toList());
 
         List<String> fieldsName = fields.stream().map(FieldMapping::getName).collect(toList());
@@ -76,19 +76,21 @@ class ClassConverter {
                 .collect(collectingAndThen(toMap(FieldMapping::getName,
                         Function.identity()), Collections::unmodifiableMap));
 
-        InstanceSupplier instanceSupplier = instanceSupplierFactory.apply(reflections.makeAccessible(entityClass));
+        InstanceSupplier instanceSupplier = instanceSupplierFactory.apply(reflections.makeAccessible(entity));
+        InheritanceClassMapping inheritance = reflections.getInheritance(entity).orElse(null);
 
         ClassMapping mapping = DefaultClassMapping.builder().withName(entityName)
-                .withClassInstance(entityClass)
+                .withClassInstance(entity)
                 .withFields(fields)
                 .withFieldsName(fieldsName)
                 .withInstanceSupplier(instanceSupplier)
                 .withJavaFieldGroupedByColumn(nativeFieldGroupByJavaField)
                 .withFieldsGroupedByName(fieldsGroupedByName)
+                .withInheritance(inheritance)
                 .build();
 
         long end = System.currentTimeMillis() - start;
-        LOGGER.info(String.format("Scanned the entity %s loaded with time of %d ms", entityClass.getName(), end));
+        LOGGER.info(String.format("Scanned the entity %s loaded with time of %d ms", entity.getName(), end));
         return mapping;
     }
 
