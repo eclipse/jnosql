@@ -74,9 +74,9 @@ class DefaultDocumentEntityConverterInheritanceTest {
         DocumentEntity entity = this.converter.toDocument(project);
         assertNotNull(entity);
         assertEquals("Project", entity.getName());
-        assertEquals(project.getName(), entity.find("name", String.class).get());
+        assertEquals(project.getName(), entity.find("_id", String.class).get());
         assertEquals(project.getBudget(), entity.find("budget", BigDecimal.class).get());
-        assertEquals("Large", entity.find("type", String.class).get());
+        assertEquals("Large", entity.find("size", String.class).get());
     }
 
     @Test
@@ -87,9 +87,9 @@ class DefaultDocumentEntityConverterInheritanceTest {
         DocumentEntity entity = this.converter.toDocument(project);
         assertNotNull(entity);
         assertEquals("Project", entity.getName());
-        assertEquals(project.getName(), entity.find("name", String.class).get());
+        assertEquals(project.getName(), entity.find("_id", String.class).get());
         assertEquals(project.getInvestor(), entity.find("investor", String.class).get());
-        assertEquals("Small", entity.find("type", String.class).get());
+        assertEquals("Small", entity.find("size", String.class).get());
     }
 
     @Test
@@ -184,7 +184,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         assertEquals("Notification", entity.getName());
         assertEquals(notification.getId(), entity.find("_id", Long.class).get());
         assertEquals(notification.getName(), entity.find("name", String.class).get());
-        assertEquals(notification.getEmail(), entity.find("phone", String.class).get());
+        assertEquals(notification.getEmail(), entity.find("email", String.class).get());
         assertEquals(notification.getCreatedOn(), entity.find("createdOn", LocalDate.class).get());
     }
 

@@ -62,6 +62,8 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
                 .map(f -> f.toDocument(this, getConverters()))
                 .flatMap(List::stream)
                 .forEach(entity::add);
+
+        mapping.getInheritance().ifPresent(i -> entity.add(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
         return entity;
 
     }
