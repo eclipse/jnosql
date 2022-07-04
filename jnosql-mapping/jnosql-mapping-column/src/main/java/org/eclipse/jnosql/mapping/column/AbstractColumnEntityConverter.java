@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.column;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.ColumnFieldConverters.ColumnFieldConverterFactory;
 import org.eclipse.jnosql.mapping.reflection.ClassMapping;
@@ -24,6 +25,7 @@ import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.FieldType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
+import org.eclipse.jnosql.mapping.reflection.InheritanceClassMapping;
 
 import java.util.Collections;
 import java.util.List;
@@ -61,6 +63,8 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
                 .map(f -> f.toColumn(this, getConverters()))
                 .flatMap(List::stream)
                 .forEach(entity::add);
+
+        mapping.getInheritance().ifPresent(i -> entity.add(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
         return entity;
     }
 
@@ -83,6 +87,9 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
     public <T> T toEntity(ColumnEntity entity) {
         requireNonNull(entity, "entity is required");
         ClassMapping mapping = getClassMappings().findByName(entity.getName());
+        if (mapping.isInheritance()) {
+            return mapInheritanceEntity(entity, mapping.getClassInstance());
+        }
         T instance = mapping.newInstance();
         return convertEntity(entity.getColumns(), mapping, instance);
     }
@@ -125,6 +132,34 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
                 .forEach(feedObject(instance, columns, fieldsGroupByName));
 
         return instance;
+    }
+
+    private <T> T mapInheritanceEntity(ColumnEntity entity, Class<?> entityClass) {
+        Map<String, InheritanceClassMapping> group = getClassMappings()
+                .findByParentGroupByDiscriminatorValue(entityClass);
+
+        if (group.isEmpty()) {
+            throw new MappingException("There is no discriminator inheritance to the document collection "
+                    + entity.getName());
+        }
+        String column = group.values()
+                .stream()
+                .findFirst()
+                .map(InheritanceClassMapping::getDiscriminatorColumn)
+                .orElseThrow();
+
+        String discriminator = entity.find(column, String.class)
+                .orElseThrow(
+                        () -> new MappingException("To inheritance there is the discriminator column missing" +
+                                " on the Document Collection, the document name: " + column));
+
+        InheritanceClassMapping inheritance = Optional.ofNullable(group.get(discriminator))
+                .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
+                        " column value " + discriminator));
+
+        ClassMapping mapping = getClassMappings().get(inheritance.getEntity());
+        T instance = mapping.newInstance();
+        return convertEntity(entity.getColumns(), mapping, instance);
     }
 
 }
