@@ -26,13 +26,13 @@ import java.math.BigDecimal;
 public class LargeProject extends Project {
 
     @Column
-    private BigDecimal budget;
+    private Double budget;
 
-    public void setBudget(BigDecimal budget) {
+    public void setBudget(Double budget) {
         this.budget = budget;
     }
 
-    public BigDecimal getBudget() {
+    public Double getBudget() {
         return budget;
     }
 }

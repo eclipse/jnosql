@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static io.smallrye.common.constraint.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -71,34 +72,34 @@ public abstract class AbstractGraphInheritanceConverterTest {
         assertEquals("Large Project", project.getName());
         assertEquals(LargeProject.class, project.getClass());
         LargeProject smallProject = LargeProject.class.cast(project);
-        assertTrue(BigDecimal.TEN.compareTo(smallProject.getBudget()) == 0);
+        assertEquals(10D, smallProject.getBudget());
     }
 
-//    @Test
-//    public void shouldConvertLargeProjectToCommunicationEntity() {
-//        LargeProject project = new LargeProject();
-//        project.setName("Large Project");
-//        project.setBudget(BigDecimal.TEN);
-//        DocumentEntity entity = this.converter.toDocument(project);
-//        assertNotNull(entity);
-//        assertEquals("Project", entity.getName());
-//        assertEquals(project.getName(), entity.find("_id", String.class).get());
-//        assertEquals(project.getBudget(), entity.find("budget", BigDecimal.class).get());
-//        assertEquals("Large", entity.find("size", String.class).get());
-//    }
-//
-//    @Test
-//    public void shouldConvertSmallProjectToCommunicationEntity() {
-//        SmallProject project = new SmallProject();
-//        project.setName("Small Project");
-//        project.setInvestor("Otavio Santana");
-//        DocumentEntity entity = this.converter.toDocument(project);
-//        assertNotNull(entity);
-//        assertEquals("Project", entity.getName());
-//        assertEquals(project.getName(), entity.find("_id", String.class).get());
-//        assertEquals(project.getInvestor(), entity.find("investor", String.class).get());
-//        assertEquals("Small", entity.find("size", String.class).get());
-//    }
+    @Test
+    public void shouldConvertLargeProjectToCommunicationEntity() {
+        LargeProject project = new LargeProject();
+        project.setName("Large Project");
+        project.setBudget(10D);
+        Vertex entity = this.getConverter().toVertex(project);
+        assertNotNull(entity);
+        assertEquals("Project", entity.label());
+        assertEquals(project.getName(), entity.property("name").value());
+        assertEquals(project.getBudget(), entity.property("budget").value());
+        assertEquals("Large", entity.property("size").value());
+    }
+
+    @Test
+    public void shouldConvertSmallProjectToCommunicationEntity() {
+        SmallProject project = new SmallProject();
+        project.setName("Small Project");
+        project.setInvestor("Otavio Santana");
+        Vertex entity = this.getConverter().toVertex(project);
+        assertNotNull(entity);
+        assertEquals("Project", entity.label());
+        assertEquals(project.getName(), entity.property("name").value());
+        assertEquals(project.getInvestor(), entity.property("investor").value());
+        assertEquals("Small", entity.property("size").value());
+    }
 
     @Test
     public void shouldConvertDocumentEntityToSocialMedia(){
