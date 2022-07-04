@@ -39,6 +39,8 @@ class ClassMappingBuilder {
 
     private InheritanceClassMapping inheritance;
 
+    private boolean hasInheritanceAnnotation;
+
     public ClassMappingBuilder withName(String name) {
         this.name = name;
         return this;
@@ -79,8 +81,15 @@ class ClassMappingBuilder {
         return this;
     }
 
+    public ClassMappingBuilder withHasInheritanceAnnotation(boolean hasInheritanceAnnotation) {
+        this.hasInheritanceAnnotation = hasInheritanceAnnotation;
+        return this;
+    }
+
+
     public ClassMapping build() {
         return new DefaultClassMapping(name, fieldsName, classInstance, fields,
-                 javaFieldGroupedByColumn, fieldsGroupedByName, instanceSupplier, inheritance);
+                javaFieldGroupedByColumn, fieldsGroupedByName, instanceSupplier, inheritance
+                , hasInheritanceAnnotation);
     }
 }

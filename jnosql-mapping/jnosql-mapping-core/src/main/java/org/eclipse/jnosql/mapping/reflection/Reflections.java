@@ -109,7 +109,7 @@ public interface Reflections {
      * conflicts with a JVM SecurityManager (if active).
      *
      * @param clazz the class constructor acessible
-     * @param <T> the entity type
+     * @param <T>   the entity type
      * @return the constructor class
      * @throws ConstructorException when the constructor has public and default
      */
@@ -178,11 +178,20 @@ public interface Reflections {
      * {@link jakarta.nosql.mapping.Inheritance} annotation.
      * If it has, it will return the {@link InheritanceClassMapping} otherwise it will return
      * {@link Optional#empty()}
+     *
      * @param entity the entity class
      * @return the {@link InheritanceClassMapping} or {@link Optional#empty()}
      * @throws NullPointerException when entity is null
      */
     Optional<InheritanceClassMapping> getInheritance(Class<?> entity);
+
+    /**
+     * Check if the entity has the {@link jakarta.nosql.mapping.Inheritance} annotation
+     *
+     * @param entity the entity
+     * @return true if it has the {@link jakarta.nosql.mapping.Inheritance} annotation
+     */
+    boolean hasInheritanceAnnotation(Class<?> entity);
 
     /**
      * data structured to store key and value class to map collection.

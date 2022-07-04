@@ -219,6 +219,12 @@ public class DefaultReflections implements Reflections {
         return Optional.empty();
     }
 
+    @Override
+    public boolean hasInheritanceAnnotation(Class<?> entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return entity.getAnnotation(Inheritance.class) != null;
+    }
+
 
     private String getDiscriminatorColumn(Class<?> parent) {
         return Optional

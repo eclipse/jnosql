@@ -78,7 +78,7 @@ class ClassConverter {
 
         InstanceSupplier instanceSupplier = instanceSupplierFactory.apply(reflections.makeAccessible(entity));
         InheritanceClassMapping inheritance = reflections.getInheritance(entity).orElse(null);
-
+        boolean hasInheritanceAnnotation = reflections.hasInheritanceAnnotation(entity);
         ClassMapping mapping = DefaultClassMapping.builder().withName(entityName)
                 .withClassInstance(entity)
                 .withFields(fields)
@@ -87,6 +87,7 @@ class ClassConverter {
                 .withJavaFieldGroupedByColumn(nativeFieldGroupByJavaField)
                 .withFieldsGroupedByName(fieldsGroupedByName)
                 .withInheritance(inheritance)
+                .withHasInheritanceAnnotation(hasInheritanceAnnotation)
                 .build();
 
         long end = System.currentTimeMillis() - start;
