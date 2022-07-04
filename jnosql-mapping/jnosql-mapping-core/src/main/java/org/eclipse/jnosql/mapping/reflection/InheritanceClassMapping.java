@@ -27,10 +27,14 @@ public final class InheritanceClassMapping {
 
     private final Class<?> parent;
 
-    InheritanceClassMapping(String discriminatorValue, String discriminatorColumn, Class<?> parent) {
+    private final Class<?> entity;
+
+    InheritanceClassMapping(String discriminatorValue, String discriminatorColumn, Class<?> parent
+    , Class<?> entity) {
         this.discriminatorValue = discriminatorValue;
         this.discriminatorColumn = discriminatorColumn;
         this.parent = parent;
+        this.entity = entity;
     }
 
     /**
@@ -60,6 +64,12 @@ public final class InheritanceClassMapping {
         return parent;
     }
 
+    /**
+     * @return the entity class
+     */
+    public Class<?> getEntity() {
+        return entity;
+    }
 
     /**
      * Checks if the parent is equals to the parameter
