@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.tck.entities.Actor;
 import jakarta.nosql.tck.entities.Director;
 import jakarta.nosql.tck.entities.Machine;
@@ -21,12 +22,18 @@ import jakarta.nosql.tck.entities.NoConstructorEntity;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.User;
 import jakarta.nosql.tck.entities.Worker;
+import jakarta.nosql.tck.entities.inheritance.EmailNotification;
+import jakarta.nosql.tck.entities.inheritance.Notification;
+import jakarta.nosql.tck.entities.inheritance.Project;
+import jakarta.nosql.tck.entities.inheritance.SmallProject;
+import jakarta.nosql.tck.entities.inheritance.SocialMediaNotification;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,7 +46,6 @@ public class ClassConverterTest {
 
     @Inject
     private ClassConverter classConverter;
-
 
     @Test
     public void shouldCreateClassMapping() {
@@ -104,6 +110,55 @@ public class ClassConverterTest {
         ClassMapping classMapping = classConverter.create(Machine.class);
         List<FieldMapping> fields = classMapping.getFields();
         assertEquals(1, fields.size());
+    }
+
+    @Test
+    public void shouldReturnEmptyInheritance() {
+        ClassMapping classMapping = classConverter.create(Person.class);
+        Optional<InheritanceClassMapping> inheritance = classMapping.getInheritance();
+        Assertions.assertTrue(inheritance.isEmpty());
+    }
+
+    @Test
+    public void shouldInheritance() {
+        ClassMapping entity = classConverter.create(SmallProject.class);
+        Assertions.assertEquals(2, entity.getFields().size());
+        Assertions.assertEquals(SmallProject.class, entity.getClassInstance());
+
+        InheritanceClassMapping inheritance = entity.getInheritance()
+                .orElseThrow(() -> new MappingException());
+
+        assertEquals("size", inheritance.getDiscriminatorColumn());
+        assertEquals("Small", inheritance.getDiscriminatorValue());
+        assertEquals(Project.class, inheritance.getParent());
+    }
+
+    @Test
+    public void shouldInheritanceNoDiscriminatorValue() {
+        ClassMapping entity = classConverter.create(SocialMediaNotification.class);
+        Assertions.assertEquals(4, entity.getFields().size());
+        Assertions.assertEquals(SocialMediaNotification.class, entity.getClassInstance());
+
+        InheritanceClassMapping inheritance = entity.getInheritance()
+                .orElseThrow(() -> new MappingException());
+
+        assertEquals("type", inheritance.getDiscriminatorColumn());
+        assertEquals("SocialMediaNotification", inheritance.getDiscriminatorValue());
+        assertEquals(Notification.class, inheritance.getParent());
+    }
+
+    @Test
+    public void shouldInheritanceNoDiscriminatorColumn() {
+        ClassMapping entity = classConverter.create(EmailNotification.class);
+        Assertions.assertEquals(4, entity.getFields().size());
+        Assertions.assertEquals(EmailNotification.class, entity.getClassInstance());
+
+        InheritanceClassMapping inheritance = entity.getInheritance()
+                .orElseThrow(() -> new MappingException());
+
+        assertEquals("type", inheritance.getDiscriminatorColumn());
+        assertEquals("Email", inheritance.getDiscriminatorValue());
+        assertEquals(Notification.class, inheritance.getParent());
     }
 
 }
