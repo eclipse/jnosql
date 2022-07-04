@@ -28,7 +28,6 @@ import jakarta.nosql.tck.entities.inheritance.SmallProject;
 import jakarta.nosql.tck.entities.inheritance.SmsNotification;
 import jakarta.nosql.tck.entities.inheritance.SocialMediaNotification;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -36,6 +35,8 @@ import java.lang.reflect.Field;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @CDIExtension
@@ -95,13 +96,13 @@ public class ReflectionsTest {
     @Test
     public void shouldReturnEmptyGetInheritance() {
         Optional<InheritanceClassMapping> inheritance = this.reflections.getInheritance(Person.class);
-        Assertions.assertTrue(inheritance.isEmpty());
+        assertTrue(inheritance.isEmpty());
     }
 
     @Test
     public void shouldReturnGetInheritance() {
         Optional<InheritanceClassMapping> inheritance = this.reflections.getInheritance(LargeProject.class);
-        Assertions.assertFalse(inheritance.isEmpty());
+        assertFalse(inheritance.isEmpty());
         InheritanceClassMapping project = inheritance.get();
         assertEquals("size", project.getDiscriminatorColumn());
         assertEquals("Large", project.getDiscriminatorValue());
@@ -111,7 +112,7 @@ public class ReflectionsTest {
     @Test
     public void shouldReturnGetInheritanceWithoutColumn() {
         Optional<InheritanceClassMapping> inheritance = this.reflections.getInheritance(SmsNotification.class);
-        Assertions.assertFalse(inheritance.isEmpty());
+        assertFalse(inheritance.isEmpty());
         InheritanceClassMapping project = inheritance.get();
         assertEquals("type", project.getDiscriminatorColumn());
         assertEquals("SMS", project.getDiscriminatorValue());
@@ -121,7 +122,7 @@ public class ReflectionsTest {
     @Test
     public void shouldReturnGetInheritanceWithoutDiscriminatorValue() {
         Optional<InheritanceClassMapping> inheritance = this.reflections.getInheritance(SocialMediaNotification.class);
-        Assertions.assertFalse(inheritance.isEmpty());
+        assertFalse(inheritance.isEmpty());
         InheritanceClassMapping project = inheritance.get();
         assertEquals("type", project.getDiscriminatorColumn());
         assertEquals("SocialMediaNotification", project.getDiscriminatorValue());
@@ -130,13 +131,13 @@ public class ReflectionsTest {
 
     @Test
     public void shouldReturnHasInheritanceAnnotation() {
-        Assertions.assertFalse(this.reflections.hasInheritanceAnnotation(Person.class));
-        Assertions.assertFalse(this.reflections.hasInheritanceAnnotation(Worker.class));
-        Assertions.assertFalse(this.reflections.hasInheritanceAnnotation(SmsNotification.class));
-        Assertions.assertFalse(this.reflections.hasInheritanceAnnotation(SmallProject.class));
+        assertFalse(this.reflections.hasInheritanceAnnotation(Person.class));
+        assertFalse(this.reflections.hasInheritanceAnnotation(Worker.class));
+        assertFalse(this.reflections.hasInheritanceAnnotation(SmsNotification.class));
+        assertFalse(this.reflections.hasInheritanceAnnotation(SmallProject.class));
 
-        Assertions.assertTrue(this.reflections.hasInheritanceAnnotation(Notification.class));
-        Assertions.assertTrue(this.reflections.hasInheritanceAnnotation(Project.class));
+        assertTrue(this.reflections.hasInheritanceAnnotation(Notification.class));
+        assertTrue(this.reflections.hasInheritanceAnnotation(Project.class));
     }
 
 
