@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * The default implementation of {@link ClassMapping}.
@@ -70,7 +72,7 @@ class DefaultClassMappings implements ClassMappings {
     }
 
     @Override
-    public ClassMapping get(Class classEntity) {
+    public ClassMapping get(Class<?> classEntity) {
         ClassMapping classMapping = classes.get(classEntity);
         if (classMapping == null) {
             classMapping = classConverter.create(classEntity);
@@ -78,6 +80,14 @@ class DefaultClassMappings implements ClassMappings {
             return this.get(classEntity);
         }
         return classMapping;
+    }
+
+    @Override
+    public Map<String, InheritanceClassMapping> findByParentGroupByDiscriminatorValue(Class<?> parent) {
+        Objects.requireNonNull(parent, "parent is required");
+        return this.classes.values().stream()
+                .flatMap(c -> c.getInheritance().stream())
+                .collect(Collectors.toMap(i -> i.getDiscriminatorValue(), Function.identity()));
     }
 
     @Override
