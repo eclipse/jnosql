@@ -14,20 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.mapping.MappingException;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.junit.jupiter.api.Assertions;
+import org.eclipse.jnosql.mapping.graph.model.inheritance.Project;
+import org.eclipse.jnosql.mapping.graph.model.inheritance.SmallProject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class AbstractGraphInheritanceConverterTest {
 
@@ -44,11 +40,8 @@ public abstract class AbstractGraphInheritanceConverterTest {
     @Test
     public void shouldConvertProjectToSmallProject() {
         Vertex vertex = getGraph().addVertex(T.label, "Project",
-                "age", 22, "investor", "Otavio Santana", "size", "Small");
-        entity.add("_id", "Small Project");
-        entity.add("investor", "Otavio Santana");
-        entity.add("size", "Small");
-        Project project = this.getConverter().toEntity(entity);
+                "investor", "Otavio Santana", "size", "Small", "name", "Small Project");
+        Project project = this.getConverter().toEntity(vertex);
         assertEquals("Small Project", project.getName());
         assertEquals(SmallProject.class, project.getClass());
         SmallProject smallProject = SmallProject.class.cast(project);
