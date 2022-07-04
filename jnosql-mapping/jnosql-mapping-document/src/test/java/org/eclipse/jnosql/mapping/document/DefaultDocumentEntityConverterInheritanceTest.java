@@ -43,7 +43,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
     @Test
     public void shouldConvertProjectToSmallProject() {
         DocumentEntity entity = DocumentEntity.of("Project");
-        entity.add("name", "Small Project");
+        entity.add("_id", "Small Project");
         entity.add("investor", "Otavio Santana");
         entity.add("size", "Small");
         Project project = this.converter.toEntity(entity);
@@ -56,7 +56,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
     @Test
     public void shouldConvertProjectToLargeProject() {
         DocumentEntity entity = DocumentEntity.of("Project");
-        entity.add("name", "Large Project");
+        entity.add("_id", "Large Project");
         entity.add("budget", BigDecimal.TEN);
         entity.add("size", "Large");
         Project project = this.converter.toEntity(entity);
@@ -120,7 +120,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         SmsNotification notification = this.converter.toEntity(entity);
         Assertions.assertEquals(100L, notification.getId());
         Assertions.assertEquals("SMS Notification", notification.getName());
-        Assertions.assertEquals("351987654123", notification.getPhone());
+        Assertions.assertEquals("+351987654123", notification.getPhone());
         assertEquals(date, notification.getCreatedOn());
     }
 
@@ -130,12 +130,12 @@ class DefaultDocumentEntityConverterInheritanceTest {
         DocumentEntity entity = DocumentEntity.of("Notification");
         entity.add("_id", 100L);
         entity.add("name", "Email Notification");
-        entity.add("phone", "otavio@otavio.test");
+        entity.add("email", "otavio@otavio.test");
         entity.add("createdOn", date);
         entity.add("type", "Email");
         EmailNotification notification = this.converter.toEntity(entity);
         Assertions.assertEquals(100L, notification.getId());
-        Assertions.assertEquals("SMS Notification", notification.getName());
+        Assertions.assertEquals("Email Notification", notification.getName());
         Assertions.assertEquals("otavio@otavio.test", notification.getEmail());
         assertEquals(date, notification.getCreatedOn());
     }
@@ -187,4 +187,9 @@ class DefaultDocumentEntityConverterInheritanceTest {
         assertEquals(notification.getEmail(), entity.find("phone", String.class).get());
         assertEquals(notification.getCreatedOn(), entity.find("createdOn", LocalDate.class).get());
     }
+
+    //field missing
+    //mismatch field
+    //empty herança
+
 }
