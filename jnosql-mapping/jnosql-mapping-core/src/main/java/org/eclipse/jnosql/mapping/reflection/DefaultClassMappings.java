@@ -63,9 +63,9 @@ class DefaultClassMappings implements ClassMappings {
         });
     }
 
-    void load(Class classEntity) {
+    void load(Class<?> classEntity) {
         ClassMapping classMapping = classConverter.create(classEntity);
-        if (classMapping.getInheritance().isEmpty()) {
+        if (classMapping.hasEntityName()) {
             mappings.put(classEntity.getName(), classMapping);
         }
         findBySimpleName.put(classEntity.getSimpleName(), classMapping);

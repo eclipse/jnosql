@@ -57,7 +57,9 @@ public class ClassMappingExtension implements Extension {
         if (annotatedType.isAnnotationPresent(Entity.class)) {
             Class<T> javaClass = target.getAnnotatedType().getJavaClass();
             ClassMapping classMapping = classConverter.create(javaClass);
-            mappings.put(classMapping.getName(), classMapping);
+            if (classMapping.hasEntityName()) {
+                mappings.put(classMapping.getName(), classMapping);
+            }
             classes.put(javaClass, classMapping);
         } else if (isSubElement(annotatedType)) {
             Class<T> javaClass = target.getAnnotatedType().getJavaClass();

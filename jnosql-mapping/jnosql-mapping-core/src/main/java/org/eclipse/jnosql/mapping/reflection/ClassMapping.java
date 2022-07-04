@@ -45,9 +45,18 @@ public interface ClassMapping {
     /**
      * Return the parent class of this class mapping.
      * It will check the parent class has the {@link jakarta.nosql.mapping.Inheritance} annotation.
+     *
      * @return the parent annotation otherwise {@link  Optional#empty()}
      */
     Optional<InheritanceClassMapping> getInheritance();
+
+    /**
+     * A class that has a parent with {@link jakarta.nosql.mapping.Inheritance} annotation
+     * won't use the name. It will use the parent name instead.
+     *
+     * @return true if has not parent class with {@link jakarta.nosql.mapping.Inheritance}
+     */
+    boolean hasEntityName();
 
     /**
      * @return The fields from this class
@@ -57,6 +66,7 @@ public interface ClassMapping {
 
     /**
      * Creates a new instance from {@link InstanceSupplier}
+     *
      * @param <T> the instance type
      * @return a new instance of this class
      */

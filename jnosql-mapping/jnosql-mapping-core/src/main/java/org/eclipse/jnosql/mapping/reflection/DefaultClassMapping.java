@@ -81,6 +81,11 @@ class DefaultClassMapping implements ClassMapping {
     }
 
     @Override
+    public boolean hasEntityName() {
+        return Objects.isNull(inheritance);
+    }
+
+    @Override
     public List<FieldMapping> getFields() {
         return fields;
     }
