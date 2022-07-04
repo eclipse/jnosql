@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -66,7 +65,9 @@ class DefaultClassMappings implements ClassMappings {
 
     void load(Class classEntity) {
         ClassMapping classMapping = classConverter.create(classEntity);
-        mappings.put(classEntity.getName(), classMapping);
+        if (classMapping.getInheritance().isEmpty()) {
+            mappings.put(classEntity.getName(), classMapping);
+        }
         findBySimpleName.put(classEntity.getSimpleName(), classMapping);
         findByClassName.put(classEntity.getName(), classMapping);
     }
@@ -112,7 +113,7 @@ class DefaultClassMappings implements ClassMappings {
 
     @Override
     public String toString() {
-        return  "DefaultClassMappings{" + "mappings-size=" + mappings.size() +
+        return "DefaultClassMappings{" + "mappings-size=" + mappings.size() +
                 ", classes=" + classes +
                 ", classConverter=" + classConverter +
                 ", extension=" + extension +
