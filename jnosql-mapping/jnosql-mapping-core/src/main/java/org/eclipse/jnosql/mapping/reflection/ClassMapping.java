@@ -59,6 +59,11 @@ public interface ClassMapping {
     boolean hasEntityName();
 
     /**
+     * @return true if the entity class has the {@link jakarta.nosql.mapping.Inheritance} annotation
+     */
+    boolean isInheritance();
+
+    /**
      * @return The fields from this class
      */
     List<FieldMapping> getFields();
