@@ -88,6 +88,7 @@ class DefaultClassMappings implements ClassMappings {
         Objects.requireNonNull(parent, "parent is required");
         return this.classes.values().stream()
                 .flatMap(c -> c.getInheritance().stream())
+                .filter(p -> p.isParent(parent))
                 .collect(Collectors.toMap(i -> i.getDiscriminatorValue(), Function.identity()));
     }
 

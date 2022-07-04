@@ -29,6 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -105,7 +106,26 @@ class DefaultClassMappingsTest {
         Assertions.assertNotNull(parent);
         Assertions.assertTrue(parent.getInheritance().isEmpty());
         Assertions.assertEquals(Project.class, parent.getClassInstance());
-
     }
 
+    @Test
+    public void shouldFindByParentGroupByDiscriminatorValue() {
+        Map<String, InheritanceClassMapping> group = this.mappings
+                .findByParentGroupByDiscriminatorValue(Notification.class);
+
+        Assertions.assertEquals(3, group.size());
+        Assertions.assertNotNull(group.get("SocialMediaNotification"));
+        Assertions.assertNotNull(group.get("SMS"));
+        Assertions.assertNotNull(group.get("Email"));
+    }
+
+    @Test
+    public void shouldFindByParentGroupByDiscriminatorValue2() {
+        Map<String, InheritanceClassMapping> group = this.mappings
+                .findByParentGroupByDiscriminatorValue(Project.class);
+
+        Assertions.assertEquals(2, group.size());
+        Assertions.assertNotNull(group.get("Small"));
+        Assertions.assertNotNull(group.get("Large"));
+    }
 }
