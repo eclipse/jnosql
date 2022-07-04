@@ -32,6 +32,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractGraphInheritanceConverterTest {
 
@@ -64,13 +65,13 @@ public abstract class AbstractGraphInheritanceConverterTest {
                 "investor", "Otavio Santana",
                 "size", "Large",
                 "name", "Large Project",
-                "budget", BigDecimal.TEN);
+                "budget", 10D);
 
         Project project = this.getConverter().toEntity(vertex);
         assertEquals("Large Project", project.getName());
         assertEquals(LargeProject.class, project.getClass());
         LargeProject smallProject = LargeProject.class.cast(project);
-        assertEquals(BigDecimal.TEN, smallProject.getBudget());
+        assertTrue(BigDecimal.TEN.compareTo(smallProject.getBudget()) == 0);
     }
 
 //    @Test
@@ -105,12 +106,11 @@ public abstract class AbstractGraphInheritanceConverterTest {
         Vertex vertex = getGraph().addVertex(T.label, "Notification",
                 "name", "Social Media",
                 "nickname", "otaviojava",
-                "type", SocialMediaNotification.class.getSimpleName(),
-                "createdOn",date,
-                "budget", BigDecimal.TEN);
+                "dtype", SocialMediaNotification.class.getSimpleName(),
+                "createdOn",date);
 
         SocialMediaNotification notification = this.getConverter().toEntity(vertex);
-        assertEquals(100L, notification.getId());
+        Assertions.assertNotNull(notification.getId());
         assertEquals("Social Media", notification.getName());
         assertEquals("otaviojava", notification.getNickname());
         assertEquals(date, notification.getCreatedOn());
@@ -123,12 +123,11 @@ public abstract class AbstractGraphInheritanceConverterTest {
         Vertex vertex = getGraph().addVertex(T.label, "Notification",
                 "name", "SMS Notification",
                 "phone", "+351987654123",
-                "type", "SMS",
-                "createdOn",date,
-                "budget", BigDecimal.TEN);
+                "dtype", "SMS",
+                "createdOn",date);
 
         SmsNotification notification = this.getConverter().toEntity(vertex);
-        Assertions.assertEquals(100L, notification.getId());
+        Assertions.assertNotNull(notification.getId());
         Assertions.assertEquals("SMS Notification", notification.getName());
         Assertions.assertEquals("+351987654123", notification.getPhone());
         assertEquals(date, notification.getCreatedOn());
@@ -141,13 +140,12 @@ public abstract class AbstractGraphInheritanceConverterTest {
         Vertex vertex = getGraph().addVertex(T.label, "Notification",
                 "name", "SMS Notification",
                 "email", "otavio@otavio.test",
-                "type", "Email",
-                "createdOn",date,
-                "budget", BigDecimal.TEN);
+                "dtype", "Email",
+                "createdOn",date);
 
         EmailNotification notification = this.getConverter().toEntity(vertex);
-        Assertions.assertEquals(100L, notification.getId());
-        Assertions.assertEquals("Email Notification", notification.getName());
+        Assertions.assertNotNull(notification.getId());
+        Assertions.assertEquals("SMS Notification", notification.getName());
         Assertions.assertEquals("otavio@otavio.test", notification.getEmail());
         assertEquals(date, notification.getCreatedOn());
     }
