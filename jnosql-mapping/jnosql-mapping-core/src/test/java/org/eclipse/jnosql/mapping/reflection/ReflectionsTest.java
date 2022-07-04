@@ -107,6 +107,7 @@ public class ReflectionsTest {
         assertEquals("size", project.getDiscriminatorColumn());
         assertEquals("Large", project.getDiscriminatorValue());
         assertEquals(Project.class, project.getParent());
+        assertEquals(LargeProject.class, project.getEntity());
     }
 
     @Test
@@ -117,6 +118,7 @@ public class ReflectionsTest {
         assertEquals("type", project.getDiscriminatorColumn());
         assertEquals("SMS", project.getDiscriminatorValue());
         assertEquals(Notification.class, project.getParent());
+        assertEquals(SmsNotification.class, project.getEntity());
     }
 
     @Test
@@ -127,6 +129,7 @@ public class ReflectionsTest {
         assertEquals("type", project.getDiscriminatorColumn());
         assertEquals("SocialMediaNotification", project.getDiscriminatorValue());
         assertEquals(Notification.class, project.getParent());
+        assertEquals(SocialMediaNotification.class, project.getEntity());
     }
 
     @Test
