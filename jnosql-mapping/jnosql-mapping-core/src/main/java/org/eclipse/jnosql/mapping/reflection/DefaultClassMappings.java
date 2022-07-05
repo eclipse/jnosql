@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -23,6 +22,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * The default implementation of {@link ClassMapping}.
@@ -62,15 +63,17 @@ class DefaultClassMappings implements ClassMappings {
         });
     }
 
-    void load(Class classEntity) {
+    void load(Class<?> classEntity) {
         ClassMapping classMapping = classConverter.create(classEntity);
-        mappings.put(classEntity.getName(), classMapping);
+        if (classMapping.hasEntityName()) {
+            mappings.put(classEntity.getName(), classMapping);
+        }
         findBySimpleName.put(classEntity.getSimpleName(), classMapping);
         findByClassName.put(classEntity.getName(), classMapping);
     }
 
     @Override
-    public ClassMapping get(Class classEntity) {
+    public ClassMapping get(Class<?> classEntity) {
         ClassMapping classMapping = classes.get(classEntity);
         if (classMapping == null) {
             classMapping = classConverter.create(classEntity);
@@ -78,6 +81,15 @@ class DefaultClassMappings implements ClassMappings {
             return this.get(classEntity);
         }
         return classMapping;
+    }
+
+    @Override
+    public Map<String, InheritanceClassMapping> findByParentGroupByDiscriminatorValue(Class<?> parent) {
+        Objects.requireNonNull(parent, "parent is required");
+        return this.classes.values().stream()
+                .flatMap(c -> c.getInheritance().stream())
+                .filter(p -> p.isParent(parent))
+                .collect(Collectors.toMap(i -> i.getDiscriminatorValue(), Function.identity()));
     }
 
     @Override
@@ -102,7 +114,7 @@ class DefaultClassMappings implements ClassMappings {
 
     @Override
     public String toString() {
-        return  "DefaultClassMappings{" + "mappings-size=" + mappings.size() +
+        return "DefaultClassMappings{" + "mappings-size=" + mappings.size() +
                 ", classes=" + classes +
                 ", classConverter=" + classConverter +
                 ", extension=" + extension +

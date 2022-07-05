@@ -103,6 +103,9 @@ class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
                 .flatMap(f -> f.toElements(this, getConverters()).stream())
                 .forEach(p -> vertex.property(p.key(), p.value()));
 
+        mapping.getInheritance().ifPresent(i ->
+                vertex.property(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
+
         return vertex;
 
     }

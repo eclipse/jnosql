@@ -42,10 +42,16 @@ class DefaultClassMapping implements ClassMapping {
 
     private final FieldMapping id;
 
+    private final InheritanceClassMapping inheritance;
+
+    private final boolean hasInheritanceAnnotation;
+
     DefaultClassMapping(String name, List<String> fieldsName, Class<?> classInstance,
                         List<FieldMapping> fields,
                         Map<String, NativeMapping> javaFieldGroupedByColumn,
-                        Map<String, FieldMapping> fieldsGroupedByName, InstanceSupplier instanceSupplier) {
+                        Map<String, FieldMapping> fieldsGroupedByName, InstanceSupplier instanceSupplier,
+                        InheritanceClassMapping inheritance,
+                        boolean hasInheritanceAnnotation) {
         this.name = name;
         this.fieldsName = fieldsName;
         this.classInstance = classInstance;
@@ -54,6 +60,8 @@ class DefaultClassMapping implements ClassMapping {
         this.javaFieldGroupedByColumn = javaFieldGroupedByColumn;
         this.instanceSupplier = instanceSupplier;
         this.id = fields.stream().filter(FieldMapping::isId).findFirst().orElse(null);
+        this.inheritance = inheritance;
+        this.hasInheritanceAnnotation = hasInheritanceAnnotation;
     }
 
     @Override
@@ -69,6 +77,21 @@ class DefaultClassMapping implements ClassMapping {
     @Override
     public Class<?> getClassInstance() {
         return classInstance;
+    }
+
+    @Override
+    public Optional<InheritanceClassMapping> getInheritance() {
+        return Optional.ofNullable(inheritance);
+    }
+
+    @Override
+    public boolean hasEntityName() {
+        return Objects.isNull(inheritance);
+    }
+
+    @Override
+    public boolean isInheritance() {
+        return hasInheritanceAnnotation;
     }
 
     @Override
@@ -125,13 +148,17 @@ class DefaultClassMapping implements ClassMapping {
 
     @Override
     public String toString() {
-        return  "DefaultClassMapping{" + "name='" + name + '\'' +
+        return "DefaultClassMapping{" +
+                "name='" + name + '\'' +
                 ", fieldsName=" + fieldsName +
                 ", classInstance=" + classInstance +
                 ", fields=" + fields +
+                ", instanceSupplier=" + instanceSupplier +
                 ", javaFieldGroupedByColumn=" + javaFieldGroupedByColumn +
                 ", fieldsGroupedByName=" + fieldsGroupedByName +
                 ", id=" + id +
+                ", inheritance=" + inheritance +
+                ", hasInheritanceAnnotation=" + hasInheritanceAnnotation +
                 '}';
     }
 

@@ -18,6 +18,7 @@ import jakarta.nosql.Value;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.EntityNotFoundException;
+import jakarta.nosql.mapping.MappingException;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
@@ -25,6 +26,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.reflection.ClassMapping;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.reflection.InheritanceClassMapping;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -77,6 +79,9 @@ abstract class AbstractGraphConverter implements GraphConverter {
                 .flatMap(f -> f.toElements(this, getConverters()).stream())
                 .forEach(p -> vertex.property(p.key(), p.value()));
 
+        mapping.getInheritance().ifPresent(i ->
+                vertex.property(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
+
         return vertex;
     }
 
@@ -98,8 +103,16 @@ abstract class AbstractGraphConverter implements GraphConverter {
         requireNonNull(vertex, "vertex is required");
         ClassMapping mapping = getClassMappings().findByName(vertex.label());
 
-        List<Property> properties = vertex.keys().stream().map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
-        T entity = toEntity((Class<T>) mapping.getClassInstance(), properties);
+        List<Property> properties = vertex.keys()
+                .stream()
+                .map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
+
+        T entity;
+        if(mapping.isInheritance()) {
+            entity =  mapInheritanceEntity(vertex, properties, mapping.getClassInstance());
+        } else {
+            entity = toEntity((Class<T>) mapping.getClassInstance(), properties);
+        }
         feedId(vertex, entity);
         return entity;
     }
@@ -228,5 +241,37 @@ abstract class AbstractGraphConverter implements GraphConverter {
     protected FieldGraph to(FieldMapping field, Object entityInstance) {
         Object value = field.read(entityInstance);
         return FieldGraph.of(value, field);
+    }
+
+    private <T> T mapInheritanceEntity(Vertex vertex,
+                                       List<Property> properties, Class<?> entityClass) {
+
+        Map<String, InheritanceClassMapping> group = getClassMappings()
+                .findByParentGroupByDiscriminatorValue(entityClass);
+
+        if (group.isEmpty()) {
+            throw new MappingException("There is no discriminator inheritance to the vertex "
+                    + vertex.label());
+        }
+        String column = group.values()
+                .stream()
+                .findFirst()
+                .map(InheritanceClassMapping::getDiscriminatorColumn)
+                .orElseThrow();
+
+
+        String discriminator = properties.stream().filter(p -> p.key().equals(column))
+                .map(Property::value).map(Object::toString)
+                .findFirst()
+                .orElseThrow(
+                        () -> new MappingException("To inheritance there is the discriminator column missing" +
+                                " on the Vertex, the document name: " + column));
+
+        InheritanceClassMapping inheritance = Optional.ofNullable(group.get(discriminator))
+                .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
+                        " column value " + discriminator));
+
+        ClassMapping mapping = getClassMappings().get(inheritance.getEntity());
+        return toEntity((Class<T>) mapping.getClassInstance(), properties);
     }
 }

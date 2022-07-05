@@ -17,11 +17,11 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Id;
-import jakarta.nosql.mapping.MappedSuperclass;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Utilitarian class to reflection
@@ -109,7 +109,7 @@ public interface Reflections {
      * conflicts with a JVM SecurityManager (if active).
      *
      * @param clazz the class constructor acessible
-     * @param <T> the entity type
+     * @param <T>   the entity type
      * @return the constructor class
      * @throws ConstructorException when the constructor has public and default
      */
@@ -119,11 +119,11 @@ public interface Reflections {
      * Returns the name of the entity. So it tries to read the {@link Entity} otherwise
      * {@link Class#getSimpleName()}
      *
-     * @param classEntity the class to read
+     * @param entity the class to read
      * @return the {@link Entity} when is not blank otherwise {@link Class#getSimpleName()}
-     * @throws NullPointerException when classEntity is null
+     * @throws NullPointerException when entity is null
      */
-    String getEntityName(Class classEntity);
+    String getEntityName(Class<?> entity);
 
     /**
      * Returns the fields from the entity class
@@ -133,10 +133,11 @@ public interface Reflections {
      * {@link Id}
      * @throws NullPointerException when class entity is null
      */
-    List<Field> getFields(Class classEntity);
+    List<Field> getFields(Class<?> classEntity);
 
     /**
-     * Checks if the class is annotated with {@link MappedSuperclass}
+     * Checks if the class is annotated with {@link jakarta.nosql.mapping.MappedSuperclass} or
+     * {@link jakarta.nosql.mapping.Inheritance}
      *
      * @param classEntity the entity class
      * @return if the class is annotated
@@ -171,6 +172,26 @@ public interface Reflections {
      * @throws NullPointerException when the field is null
      */
     String getIdName(Field field);
+
+    /**
+     * Reads the entity annotation and checks if the inheritance has an
+     * {@link jakarta.nosql.mapping.Inheritance} annotation.
+     * If it has, it will return the {@link InheritanceClassMapping} otherwise it will return
+     * {@link Optional#empty()}
+     *
+     * @param entity the entity class
+     * @return the {@link InheritanceClassMapping} or {@link Optional#empty()}
+     * @throws NullPointerException when entity is null
+     */
+    Optional<InheritanceClassMapping> getInheritance(Class<?> entity);
+
+    /**
+     * Check if the entity has the {@link jakarta.nosql.mapping.Inheritance} annotation
+     *
+     * @param entity the entity
+     * @return true if it has the {@link jakarta.nosql.mapping.Inheritance} annotation
+     */
+    boolean hasInheritanceAnnotation(Class<?> entity);
 
     /**
      * data structured to store key and value class to map collection.

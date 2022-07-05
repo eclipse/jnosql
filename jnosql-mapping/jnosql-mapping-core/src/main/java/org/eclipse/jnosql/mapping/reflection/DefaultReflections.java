@@ -15,8 +15,11 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.DiscriminatorColumn;
+import jakarta.nosql.mapping.DiscriminatorValue;
 import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Id;
+import jakarta.nosql.mapping.Inheritance;
 import jakarta.nosql.mapping.MappedSuperclass;
 import org.eclipse.jnosql.mapping.util.StringUtils;
 
@@ -27,6 +30,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -144,17 +148,17 @@ public class DefaultReflections implements Reflections {
     }
 
     @Override
-    public String getEntityName(Class classEntity) {
-        requireNonNull(classEntity, "class entity is required");
+    public String getEntityName(Class<?> entity) {
+        requireNonNull(entity, "class entity is required");
 
-        return Optional.ofNullable((Entity) classEntity.getAnnotation(Entity.class))
-                .map(Entity::value)
-                .filter(StringUtils::isNotBlank)
-                .orElse(classEntity.getSimpleName());
+        if (isInheritance(entity)) {
+            return readEntity(entity.getSuperclass());
+        }
+        return readEntity(entity);
     }
 
     @Override
-    public List<Field> getFields(Class classEntity) {
+    public List<Field> getFields(Class<?> classEntity) {
         requireNonNull(classEntity, "class entity is required");
 
         List<Field> fields = new ArrayList<>();
@@ -174,7 +178,9 @@ public class DefaultReflections implements Reflections {
     @Override
     public boolean isMappedSuperclass(Class<?> classEntity) {
         requireNonNull(classEntity, "class entity is required");
-        return classEntity.getSuperclass().getAnnotation(MappedSuperclass.class) != null;
+        Class<?> superclass = classEntity.getSuperclass();
+        return superclass.getAnnotation(MappedSuperclass.class) != null
+                || superclass.getAnnotation(Inheritance.class) != null;
     }
 
     @Override
@@ -201,5 +207,48 @@ public class DefaultReflections implements Reflections {
                 .orElse(field.getName());
     }
 
+    @Override
+    public Optional<InheritanceClassMapping> getInheritance(Class<?> entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        if(isInheritance(entity)) {
+            Class<?> parent = entity.getSuperclass();
+            String discriminatorColumn = getDiscriminatorColumn(parent);
+            String discriminatorValue = getDiscriminatorValue(entity);
+            return Optional.of(new InheritanceClassMapping(discriminatorValue, discriminatorColumn,
+                    parent, entity));
+        }
+        return Optional.empty();
+    }
 
+    @Override
+    public boolean hasInheritanceAnnotation(Class<?> entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        return entity.getAnnotation(Inheritance.class) != null;
+    }
+
+
+    private String getDiscriminatorColumn(Class<?> parent) {
+        return Optional
+                .ofNullable(parent.getAnnotation(DiscriminatorColumn.class))
+                .map(DiscriminatorColumn::value)
+                .orElse(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN);
+    }
+
+    private String getDiscriminatorValue(Class<?> entity) {
+        return Optional
+                .ofNullable(entity.getAnnotation(DiscriminatorValue.class))
+                .map(DiscriminatorValue::value)
+                .orElse(entity.getSimpleName());
+    }
+    private String readEntity(Class<?> entity) {
+        return Optional.ofNullable((Entity) entity.getAnnotation(Entity.class))
+                .map(Entity::value)
+                .filter(StringUtils::isNotBlank)
+                .orElse(entity.getSimpleName());
+    }
+
+    private boolean isInheritance(Class<?> entity){
+        Class<?> superclass = entity.getSuperclass();
+        return superclass.getAnnotation(Inheritance.class) != null;
+    }
 }
