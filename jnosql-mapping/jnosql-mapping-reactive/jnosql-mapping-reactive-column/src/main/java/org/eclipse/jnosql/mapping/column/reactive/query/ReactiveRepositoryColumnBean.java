@@ -48,11 +48,9 @@ public class ReactiveRepositoryColumnBean extends AbstractBean<ReactiveRepositor
      * Constructor
      *
      * @param type        the tye
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public ReactiveRepositoryColumnBean(Class<?> type, BeanManager beanManager, String provider) {
-        super(beanManager);
+    public ReactiveRepositoryColumnBean(Class<?> type,  String provider) {
         this.type = type;
         this.types = Collections.singleton(type);
         this.provider = provider;

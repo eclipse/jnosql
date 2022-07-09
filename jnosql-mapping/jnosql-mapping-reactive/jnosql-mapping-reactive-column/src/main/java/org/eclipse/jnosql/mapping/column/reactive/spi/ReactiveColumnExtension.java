@@ -67,23 +67,23 @@ public class ReactiveColumnExtension implements Extension {
     }
 
 
-    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
+    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
         LOGGER.info(String.format("Processing Reactive Column extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a Reactive Column implementation: " + crudTypes);
 
         databases.forEach(type -> {
-            final ReactiveTemplateBean bean = new ReactiveTemplateBean(beanManager, type.getProvider());
+            final ReactiveTemplateBean bean = new ReactiveTemplateBean(type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 
 
         crudTypes.forEach(type -> {
             if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
-                afterBeanDiscovery.addBean(new ReactiveRepositoryColumnBean(type, beanManager, ""));
+                afterBeanDiscovery.addBean(new ReactiveRepositoryColumnBean(type, ""));
             }
             databases.forEach(database -> {
-                final ReactiveRepositoryColumnBean bean = new ReactiveRepositoryColumnBean(type, beanManager, database.getProvider());
+                final ReactiveRepositoryColumnBean bean = new ReactiveRepositoryColumnBean(type, database.getProvider());
                 afterBeanDiscovery.addBean(bean);
             });
         });
