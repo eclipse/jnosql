@@ -23,7 +23,6 @@ import org.eclipse.jnosql.mapping.keyvalue.reactive.ReactiveKeyValueTemplateProd
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.BeanManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;

@@ -48,7 +48,6 @@ public class RepositoryColumnBean extends AbstractBean<Repository> {
      * Constructor
      *
      * @param type        the tye
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
     public RepositoryColumnBean(Class type, String provider) {

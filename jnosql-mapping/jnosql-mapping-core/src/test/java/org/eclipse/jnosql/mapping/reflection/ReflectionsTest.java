@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.mapping.DiscriminatorColumn;
 import jakarta.nosql.tck.entities.Actor;
 import jakarta.nosql.tck.entities.Download;
 import jakarta.nosql.tck.entities.Movie;

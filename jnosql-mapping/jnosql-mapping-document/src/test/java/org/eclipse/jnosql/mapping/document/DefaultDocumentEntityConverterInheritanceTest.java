@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.mapping.Inheritance;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.tck.entities.inheritance.EmailNotification;
