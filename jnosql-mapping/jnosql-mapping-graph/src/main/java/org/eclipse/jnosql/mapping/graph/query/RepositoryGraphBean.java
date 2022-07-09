@@ -52,11 +52,9 @@ public class RepositoryGraphBean extends AbstractBean<Repository>{
      * Constructor
      *
      * @param type        the tye
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public RepositoryGraphBean(Class type, BeanManager beanManager, String provider) {
-        super(beanManager);
+    public RepositoryGraphBean(Class type, String provider) {
         this.type = type;
         this.types = Collections.singleton(type);
         this.provider = provider;
