@@ -89,7 +89,7 @@ class DefaultClassMappings implements ClassMappings {
         return this.classes.values().stream()
                 .flatMap(c -> c.getInheritance().stream())
                 .filter(p -> p.isParent(parent))
-                .collect(Collectors.toMap(i -> i.getDiscriminatorValue(), Function.identity()));
+                .collect(Collectors.toMap(InheritanceClassMapping::getDiscriminatorValue, Function.identity()));
     }
 
     @Override
