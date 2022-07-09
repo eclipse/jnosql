@@ -42,7 +42,6 @@ class TemplateBean extends AbstractBean<DocumentTemplate> {
     /**
      * Constructor
      *
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
     public TemplateBean( String provider) {

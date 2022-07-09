@@ -38,8 +38,6 @@ class TemplateBean extends AbstractBean<KeyValueTemplate> {
 
     /**
      * Constructor
-     *
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
     public TemplateBean(String provider) {
