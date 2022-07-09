@@ -46,7 +46,6 @@ public class RepositoryKeyValueBean extends AbstractBean<Repository> {
      * Constructor
      *
      * @param type        the tye
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
     public RepositoryKeyValueBean(Class type, String provider) {

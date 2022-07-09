@@ -48,7 +48,6 @@ public class RepositoryDocumentBean extends AbstractBean<Repository> {
      * Constructor
      *
      * @param type        the tye
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
     public RepositoryDocumentBean(Class type, String provider) {
