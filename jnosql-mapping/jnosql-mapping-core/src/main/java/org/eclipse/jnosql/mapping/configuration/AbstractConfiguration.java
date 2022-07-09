@@ -14,10 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.configuration;
 
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
+import javax.enterprise.inject.spi.CDI;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -49,8 +49,8 @@ public abstract class AbstractConfiguration<T> implements Converter<T> {
     @Override
     public T convert(String value) {
         try {
-            BeanManagers.getBeanManager();
-            BeanManagers.getInstance(Config.class);
+            CDI.current();
+            CDI.current().select(Config.class);
         } catch (Exception ex) {
             LOGGER.log(Level.FINEST, "CDI container is not up, using a dump instance", ex);
             return getMock(beanType);
