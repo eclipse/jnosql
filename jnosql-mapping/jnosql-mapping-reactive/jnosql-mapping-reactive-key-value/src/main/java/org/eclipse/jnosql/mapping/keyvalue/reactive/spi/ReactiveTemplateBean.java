@@ -40,11 +40,9 @@ class ReactiveTemplateBean extends AbstractBean<ReactiveKeyValueTemplate> {
     /**
      * Constructor
      *
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public ReactiveTemplateBean(BeanManager beanManager, String provider) {
-        super(beanManager);
+    public ReactiveTemplateBean(String provider) {
         this.types = Collections.singleton(ReactiveKeyValueTemplate.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofKeyValue(provider));
