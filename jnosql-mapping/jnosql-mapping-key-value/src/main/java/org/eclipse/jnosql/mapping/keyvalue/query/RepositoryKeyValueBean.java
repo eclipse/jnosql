@@ -22,7 +22,6 @@ import org.eclipse.jnosql.mapping.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.BeanManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -50,8 +49,7 @@ public class RepositoryKeyValueBean extends AbstractBean<Repository> {
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public RepositoryKeyValueBean(Class type, BeanManager beanManager, String provider) {
-        super(beanManager);
+    public RepositoryKeyValueBean(Class type, String provider) {
         this.type = type;
         this.types = Collections.singleton(type);
         this.provider = provider;
