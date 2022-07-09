@@ -51,11 +51,9 @@ public class ReactiveRepositoryDocumentBean extends AbstractBean<ReactiveReposit
      * Constructor
      *
      * @param type        the tye
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public ReactiveRepositoryDocumentBean(Class<?> type, BeanManager beanManager, String provider) {
-        super(beanManager);
+    public ReactiveRepositoryDocumentBean(Class<?> type,  String provider) {
         this.type = type;
         this.types = Collections.singleton(type);
         this.provider = provider;

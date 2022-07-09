@@ -66,22 +66,22 @@ public class ReactiveDocumentExtension implements Extension {
     }
 
 
-    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
+    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
         LOGGER.info(String.format("Processing Reactive Document extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a Reactive Document implementation: " + crudTypes);
 
         databases.forEach(type -> {
-            final ReactiveTemplateBean bean = new ReactiveTemplateBean(beanManager, type.getProvider());
+            final ReactiveTemplateBean bean = new ReactiveTemplateBean(type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 
         crudTypes.forEach(type -> {
             if (!databases.contains(DatabaseMetadata.DEFAULT_DOCUMENT)) {
-                afterBeanDiscovery.addBean(new ReactiveRepositoryDocumentBean(type, beanManager, ""));
+                afterBeanDiscovery.addBean(new ReactiveRepositoryDocumentBean(type, ""));
             }
             databases.forEach(database -> {
-                final ReactiveRepositoryDocumentBean bean = new ReactiveRepositoryDocumentBean(type, beanManager, database.getProvider());
+                final ReactiveRepositoryDocumentBean bean = new ReactiveRepositoryDocumentBean(type, database.getProvider());
                 afterBeanDiscovery.addBean(bean);
             });
         });

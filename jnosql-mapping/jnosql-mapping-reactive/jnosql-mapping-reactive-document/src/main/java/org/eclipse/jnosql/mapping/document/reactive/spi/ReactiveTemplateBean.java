@@ -42,11 +42,9 @@ class ReactiveTemplateBean extends AbstractBean<ReactiveDocumentTemplate> {
     /**
      * Constructor
      *
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public ReactiveTemplateBean(BeanManager beanManager, String provider) {
-        super(beanManager);
+    public ReactiveTemplateBean(String provider) {
         this.types = Collections.singleton(ReactiveDocumentTemplate.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));
