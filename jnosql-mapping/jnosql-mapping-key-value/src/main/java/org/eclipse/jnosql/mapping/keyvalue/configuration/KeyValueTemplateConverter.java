@@ -19,10 +19,11 @@ import jakarta.nosql.keyvalue.KeyValueConfiguration;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.jnosql.mapping.configuration.SettingsConverter;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 /**
  * Converter the {@link String} to {@link KeyValueTemplate} it will use the
@@ -34,9 +35,9 @@ public class KeyValueTemplateConverter extends AbstractConfiguration<KeyValueTem
 
     @Override
     public KeyValueTemplate success(String value) {
-        Config config = BeanManagers.getInstance(Config.class);
+        Config config = CDI.current().select(Config.class).get();
         final BucketManager manager = config.getValue(value, BucketManager.class);
-        KeyValueTemplateProducer producer = BeanManagers.getInstance(KeyValueTemplateProducer.class);
+        KeyValueTemplateProducer producer = CDI.current().select(KeyValueTemplateProducer.class).get();
 
         return producer.get(manager);
     }

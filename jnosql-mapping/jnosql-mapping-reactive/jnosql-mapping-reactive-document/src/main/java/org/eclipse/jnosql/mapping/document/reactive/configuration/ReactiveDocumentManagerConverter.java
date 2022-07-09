@@ -15,18 +15,19 @@ import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplateProducer;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 public class ReactiveDocumentManagerConverter  extends AbstractConfiguration<ReactiveDocumentTemplate>
         implements Converter<ReactiveDocumentTemplate> {
 
     @Override
     protected ReactiveDocumentTemplate success(String value) {
-        Config config = BeanManagers.getInstance(Config.class);
+        Config config = CDI.current().select(Config.class).get();
         final DocumentTemplate template = config.getValue(value, DocumentTemplate.class);
-        ReactiveDocumentTemplateProducer producer = BeanManagers.getInstance(ReactiveDocumentTemplateProducer.class);
+        ReactiveDocumentTemplateProducer producer = CDI.current().select(ReactiveDocumentTemplateProducer.class).get();
         return producer.get(template);
     }
 }

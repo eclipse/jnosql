@@ -15,16 +15,16 @@
 package org.eclipse.jnosql.mapping.graph.configuration;
 
 import jakarta.nosql.Settings;
-import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
-import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.mapping.configuration.ConfigurationException;
 import org.eclipse.jnosql.mapping.configuration.SettingsConverter;
-
-import org.eclipse.jnosql.mapping.util.BeanManagers;
+import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 /**
  * Converter the {@link String} to {@link Graph}
@@ -33,13 +33,13 @@ public class GraphConverter extends AbstractConfiguration<Graph> implements Conv
 
     @Override
     protected Graph success(String value) {
-        final SettingsConverter settingsConverter = BeanManagers.getInstance(SettingsConverter.class);
-        Config config = BeanManagers.getInstance(Config.class);
+        final SettingsConverter settingsConverter = CDI.current().select(SettingsConverter.class).get();
+        Config config = CDI.current().select(Config.class).get();
         final Settings settings = settingsConverter.convert(value);
         final String provider = value + ".provider";
         final Class<?> configurationClass = config.getValue(provider, Class.class);
         if (GraphConfiguration.class.isAssignableFrom(configurationClass)) {
-            final Reflections reflections = BeanManagers.getInstance(Reflections.class);
+            final Reflections reflections = CDI.current().select(Reflections.class).get();
             final GraphConfiguration configuration = (GraphConfiguration) reflections.newInstance(configurationClass);
             return configuration.apply(settings);
         }

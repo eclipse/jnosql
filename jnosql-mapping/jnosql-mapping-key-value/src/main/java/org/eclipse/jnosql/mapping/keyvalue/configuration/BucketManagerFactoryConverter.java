@@ -17,13 +17,14 @@ package org.eclipse.jnosql.mapping.keyvalue.configuration;
 import jakarta.nosql.Settings;
 import jakarta.nosql.keyvalue.BucketManagerFactory;
 import jakarta.nosql.keyvalue.KeyValueConfiguration;
-import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.mapping.configuration.ConfigurationException;
 import org.eclipse.jnosql.mapping.configuration.SettingsConverter;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 /**
  * Converter the {@link String} to {@link BucketManagerFactory} it will
@@ -35,13 +36,13 @@ public class BucketManagerFactoryConverter extends AbstractConfiguration<BucketM
 
     @Override
     public BucketManagerFactory success(String value) {
-        final SettingsConverter settingsConverter = BeanManagers.getInstance(SettingsConverter.class);
-        Config config = BeanManagers.getInstance(Config.class);
+        final SettingsConverter settingsConverter = CDI.current().select(SettingsConverter.class).get();
+        Config config = CDI.current().select(Config.class).get();
         final Settings settings = settingsConverter.convert(value);
         String provider = value + ".provider";
         final Class<?> configurationClass = config.getValue(provider, Class.class);
         if (KeyValueConfiguration.class.isAssignableFrom(configurationClass)) {
-            final Reflections reflections = BeanManagers.getInstance(Reflections.class);
+            final Reflections reflections = CDI.current().select(Reflections.class).get();
             final KeyValueConfiguration configuration = (KeyValueConfiguration) reflections.newInstance(configurationClass);
             return configuration.get(settings);
 

@@ -19,10 +19,11 @@ import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.BucketManagerFactory;
 import jakarta.nosql.keyvalue.KeyValueConfiguration;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.jnosql.mapping.configuration.SettingsConverter;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 /**
  * Converter the {@link String} to {@link BucketManager} it will use the {@link SettingsConverter} and
@@ -33,7 +34,7 @@ public class BucketManagerConverter extends AbstractConfiguration<BucketManager>
     @Override
     public BucketManager success(String value) {
 
-        Config config = BeanManagers.getInstance(Config.class);
+        Config config = CDI.current().select(Config.class).get();
         final BucketManagerFactory managerFactory = config.getValue(value, BucketManagerFactory.class);
         final String database = value + ".database";
         final String entity = config.getValue(database, String.class);

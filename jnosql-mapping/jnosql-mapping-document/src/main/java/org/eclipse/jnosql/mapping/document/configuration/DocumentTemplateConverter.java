@@ -19,9 +19,10 @@ import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateProducer;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.mapping.configuration.SettingsConverter;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 /**
  * Converter the {@link String} to {@link DocumentTemplate} it will use the {@link SettingsConverter} and
@@ -32,9 +33,9 @@ public class DocumentTemplateConverter extends AbstractConfiguration<DocumentTem
 
     @Override
     public DocumentTemplate success(String value) {
-        Config config = BeanManagers.getInstance(Config.class);
+        Config config = CDI.current().select(Config.class).get();
         final DocumentCollectionManager manager = config.getValue(value, DocumentCollectionManager.class);
-        DocumentTemplateProducer producer = BeanManagers.getInstance(DocumentTemplateProducer.class);
+        DocumentTemplateProducer producer = CDI.current().select(DocumentTemplateProducer.class).get();
 
         return producer.get(manager);
     }
