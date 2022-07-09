@@ -14,12 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.spi;
 
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.PassivationCapable;
 import java.lang.annotation.Annotation;
@@ -35,20 +34,12 @@ import java.util.Set;
  */
 public abstract class AbstractBean<T> implements Bean<T>, PassivationCapable {
 
-
-    private final BeanManager beanManager;
-
-    protected AbstractBean(BeanManager beanManager) {
-        this.beanManager = beanManager;
+    protected <T> T getInstance(Class<T> bean) {
+        return CDI.current().select(bean).get();
     }
 
-
-    protected <T> T getInstance(Class<T> clazz) {
-        return BeanManagers.getInstance(clazz, beanManager);
-    }
-
-    protected <T> T getInstance(Class<T> clazz, Annotation qualifier) {
-        return BeanManagers.getInstance(clazz, qualifier, beanManager);
+    protected <T> T getInstance(Class<T> bean, Annotation qualifier) {
+        return CDI.current().select(bean, qualifier).get();
     }
 
     @Override
