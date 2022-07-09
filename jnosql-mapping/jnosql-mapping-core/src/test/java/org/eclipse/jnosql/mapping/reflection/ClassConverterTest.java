@@ -127,7 +127,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(SmallProject.class, entity.getClassInstance());
 
         InheritanceClassMapping inheritance = entity.getInheritance()
-                .orElseThrow(() -> new MappingException());
+                .orElseThrow(MappingException::new);
 
         assertEquals("size", inheritance.getDiscriminatorColumn());
         assertEquals("Small", inheritance.getDiscriminatorValue());
@@ -141,7 +141,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(SocialMediaNotification.class, entity.getClassInstance());
 
         InheritanceClassMapping inheritance = entity.getInheritance()
-                .orElseThrow(() -> new MappingException());
+                .orElseThrow(MappingException::new);
 
         assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
         assertEquals("SocialMediaNotification", inheritance.getDiscriminatorValue());
@@ -155,7 +155,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(EmailNotification.class, entity.getClassInstance());
 
         InheritanceClassMapping inheritance = entity.getInheritance()
-                .orElseThrow(() -> new MappingException());
+                .orElseThrow(MappingException::new);
 
         assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
         assertEquals("Email", inheritance.getDiscriminatorValue());
