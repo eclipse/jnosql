@@ -43,8 +43,7 @@ class TemplateBean extends AbstractBean<ColumnTemplate> {
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public TemplateBean(BeanManager beanManager, String provider) {
-        super(beanManager);
+    public TemplateBean(String provider) {
         this.types = Collections.singleton(ColumnTemplate.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofColumn(provider));

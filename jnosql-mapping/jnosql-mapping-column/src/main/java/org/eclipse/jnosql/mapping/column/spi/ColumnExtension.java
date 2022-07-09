@@ -23,7 +23,6 @@ import org.eclipse.jnosql.mapping.column.query.RepositoryColumnBean;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessProducer;
@@ -65,23 +64,23 @@ public class ColumnExtension implements Extension {
     }
 
 
-    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
+    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
 
         LOGGER.info(String.format("Processing Column extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a Column implementation: " + crudTypes);
 
         databases.forEach(type -> {
-            final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
+            final TemplateBean bean = new TemplateBean(type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 
         crudTypes.forEach(type -> {
             if (!databases.contains(DatabaseMetadata.DEFAULT_COLUMN)) {
-                afterBeanDiscovery.addBean(new RepositoryColumnBean(type, beanManager, ""));
+                afterBeanDiscovery.addBean(new RepositoryColumnBean(type, ""));
             }
             databases.forEach(database -> afterBeanDiscovery
-                    .addBean(new RepositoryColumnBean(type, beanManager, database.getProvider())));
+                    .addBean(new RepositoryColumnBean(type, database.getProvider())));
         });
 
     }
