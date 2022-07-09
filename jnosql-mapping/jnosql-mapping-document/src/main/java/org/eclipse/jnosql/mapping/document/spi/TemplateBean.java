@@ -45,8 +45,7 @@ class TemplateBean extends AbstractBean<DocumentTemplate> {
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public TemplateBean(BeanManager beanManager, String provider) {
-        super(beanManager);
+    public TemplateBean( String provider) {
         this.types = Collections.singleton(DocumentTemplate.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));

@@ -52,8 +52,7 @@ public class RepositoryDocumentBean extends AbstractBean<Repository> {
      * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public RepositoryDocumentBean(Class type, BeanManager beanManager, String provider) {
-        super(beanManager);
+    public RepositoryDocumentBean(Class type, String provider) {
         this.type = type;
         this.types = Collections.singleton(type);
         this.provider = provider;
