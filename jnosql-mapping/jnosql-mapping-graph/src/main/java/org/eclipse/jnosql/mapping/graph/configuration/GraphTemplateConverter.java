@@ -17,12 +17,13 @@ package org.eclipse.jnosql.mapping.graph.configuration;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.mapping.configuration.SettingsConverter;
+import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.GraphTemplateProducer;
-import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 /**
  * Converter the {@link String} to {@link GraphTemplate} it will use the {@link SettingsConverter} and
@@ -32,9 +33,10 @@ public class GraphTemplateConverter  extends AbstractConfiguration<GraphTemplate
 
     @Override
     public GraphTemplate success(String value) {
-        Config config = BeanManagers.getInstance(Config.class);
+
+        Config config = CDI.current().select(Config.class).get();
         final Graph manager = config.getValue(value, Graph.class);
-        GraphTemplateProducer producer = BeanManagers.getInstance(GraphTemplateProducer.class);
+        GraphTemplateProducer producer =  CDI.current().select(GraphTemplateProducer.class).get();
         return producer.get(manager);
     }
 }
