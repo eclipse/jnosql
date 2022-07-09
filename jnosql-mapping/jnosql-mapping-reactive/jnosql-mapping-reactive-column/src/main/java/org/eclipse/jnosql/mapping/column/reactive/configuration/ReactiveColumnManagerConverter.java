@@ -15,18 +15,19 @@ import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplate;
 import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplateProducer;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 public class ReactiveColumnManagerConverter  extends AbstractConfiguration<ReactiveColumnTemplate>
         implements Converter<ReactiveColumnTemplate> {
 
     @Override
     protected ReactiveColumnTemplate success(String value) {
-        Config config = BeanManagers.getInstance(Config.class);
+        Config config = CDI.current().select(Config.class).get();
         final ColumnTemplate template = config.getValue(value, ColumnTemplate.class);
-        ReactiveColumnTemplateProducer producer = BeanManagers.getInstance(ReactiveColumnTemplateProducer.class);
+        ReactiveColumnTemplateProducer producer = CDI.current().select(ReactiveColumnTemplateProducer.class).get();
         return producer.get(template);
     }
 }

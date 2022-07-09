@@ -23,7 +23,6 @@ import org.eclipse.jnosql.mapping.reactive.ReactiveRepository;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessProducer;
@@ -65,23 +64,23 @@ public class ReactiveKeyValueExtension implements Extension {
         }
     }
 
-    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
+    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
         LOGGER.info(String.format("Processing reactive Key-Value extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a reactive Key-Value implementation: " + crudTypes);
         databases.forEach(type -> {
-            final ReactiveTemplateBean bean = new ReactiveTemplateBean(beanManager, type.getProvider());
+            final ReactiveTemplateBean bean = new ReactiveTemplateBean(type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 
         crudTypes.forEach(type -> {
 
             if (!databases.contains(DatabaseMetadata.DEFAULT_KEY_VALUE)) {
-                afterBeanDiscovery.addBean(new ReactiveRepositoryKeyValueBean(type, beanManager, ""));
+                afterBeanDiscovery.addBean(new ReactiveRepositoryKeyValueBean(type, ""));
             }
 
             databases.forEach(database -> afterBeanDiscovery
-                    .addBean(new ReactiveRepositoryKeyValueBean(type, beanManager, database.getProvider())));
+                    .addBean(new ReactiveRepositoryKeyValueBean(type, database.getProvider())));
         });
 
     }

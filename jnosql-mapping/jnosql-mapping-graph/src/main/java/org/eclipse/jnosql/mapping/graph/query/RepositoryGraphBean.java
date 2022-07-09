@@ -17,16 +17,15 @@ package org.eclipse.jnosql.mapping.graph.query;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.Repository;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.BeanManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -52,11 +51,9 @@ public class RepositoryGraphBean extends AbstractBean<Repository>{
      * Constructor
      *
      * @param type        the tye
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public RepositoryGraphBean(Class type, BeanManager beanManager, String provider) {
-        super(beanManager);
+    public RepositoryGraphBean(Class type, String provider) {
         this.type = type;
         this.types = Collections.singleton(type);
         this.provider = provider;

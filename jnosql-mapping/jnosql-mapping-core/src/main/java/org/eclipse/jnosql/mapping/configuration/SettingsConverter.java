@@ -16,11 +16,11 @@
 package org.eclipse.jnosql.mapping.configuration;
 
 import jakarta.nosql.Settings;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.jnosql.mapping.util.StringUtils;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
 
+import javax.enterprise.inject.spi.CDI;
 import java.util.Map;
 import java.util.Spliterator;
 import java.util.function.Predicate;
@@ -36,7 +36,7 @@ public class SettingsConverter extends AbstractConfiguration<Settings> implement
     @Override
     public Settings success(String value) {
 
-        Config config = BeanManagers.getInstance(Config.class);
+        Config config = CDI.current().select(Config.class).get();
         final Spliterator<String> spliterator = config.getPropertyNames().spliterator();
 
         final String settingsPrefix = getSettingsPrefix(value);

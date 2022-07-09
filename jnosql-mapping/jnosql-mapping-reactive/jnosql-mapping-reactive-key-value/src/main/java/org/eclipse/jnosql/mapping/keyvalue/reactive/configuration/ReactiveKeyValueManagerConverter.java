@@ -15,18 +15,19 @@ import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.mapping.keyvalue.reactive.ReactiveKeyValueTemplate;
 import org.eclipse.jnosql.mapping.keyvalue.reactive.ReactiveKeyValueTemplateProducer;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 public class ReactiveKeyValueManagerConverter extends AbstractConfiguration<ReactiveKeyValueTemplate>
         implements Converter<ReactiveKeyValueTemplate> {
 
     @Override
     protected ReactiveKeyValueTemplate success(String value) {
-        Config config = BeanManagers.getInstance(Config.class);
+        Config config = CDI.current().select(Config.class).get();
         final KeyValueTemplate template = config.getValue(value, KeyValueTemplate.class);
-        ReactiveKeyValueTemplateProducer producer = BeanManagers.getInstance(ReactiveKeyValueTemplateProducer.class);
+        ReactiveKeyValueTemplateProducer producer = CDI.current().select(ReactiveKeyValueTemplateProducer.class).get();
         return producer.get(template);
     }
 }

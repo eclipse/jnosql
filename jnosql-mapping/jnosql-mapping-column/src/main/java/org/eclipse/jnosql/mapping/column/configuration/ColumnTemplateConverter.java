@@ -19,9 +19,10 @@ import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateProducer;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.mapping.configuration.SettingsConverter;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 /**
  * Converter the {@link String} to {@link ColumnTemplate} it will use the {@link SettingsConverter} and
@@ -32,9 +33,9 @@ public class ColumnTemplateConverter extends AbstractConfiguration<ColumnTemplat
 
     @Override
     public ColumnTemplate success(String value) {
-        Config config = BeanManagers.getInstance(Config.class);
+        Config config = CDI.current().select(Config.class).get();
         final ColumnFamilyManager manager = config.getValue(value, ColumnFamilyManager.class);
-        ColumnTemplateProducer producer = BeanManagers.getInstance(ColumnTemplateProducer.class);
+        ColumnTemplateProducer producer = CDI.current().select(ColumnTemplateProducer.class).get();
 
         return producer.get(manager);
     }

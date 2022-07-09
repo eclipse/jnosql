@@ -19,8 +19,6 @@ import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.DiscriminatorValue;
 import jakarta.nosql.mapping.Entity;
 
-import java.math.BigDecimal;
-
 @Entity
 @DiscriminatorValue("Large")
 public class LargeProject extends Project {

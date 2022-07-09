@@ -23,7 +23,6 @@ import org.eclipse.jnosql.mapping.keyvalue.query.RepositoryKeyValueBean;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.ProcessProducer;
@@ -66,24 +65,24 @@ public class KeyValueExtension implements Extension {
     }
 
 
-    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery, final BeanManager beanManager) {
+    void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
         LOGGER.info(String.format("Processing Key-Value extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a Key-Value implementation: " + crudTypes);
 
         databases.forEach(type -> {
-            final TemplateBean bean = new TemplateBean(beanManager, type.getProvider());
+            final TemplateBean bean = new TemplateBean(type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 
         crudTypes.forEach(type -> {
 
             if (!databases.contains(DatabaseMetadata.DEFAULT_KEY_VALUE)) {
-                afterBeanDiscovery.addBean(new RepositoryKeyValueBean(type, beanManager, ""));
+                afterBeanDiscovery.addBean(new RepositoryKeyValueBean(type, ""));
             }
 
             databases.forEach(database -> afterBeanDiscovery
-                    .addBean(new RepositoryKeyValueBean(type, beanManager, database.getProvider())));
+                    .addBean(new RepositoryKeyValueBean(type, database.getProvider())));
         });
 
     }

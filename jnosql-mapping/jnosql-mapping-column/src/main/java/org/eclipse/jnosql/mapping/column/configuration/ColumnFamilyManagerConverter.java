@@ -19,9 +19,10 @@ import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnFamilyManagerFactory;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.mapping.configuration.SettingsConverter;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 /**
  * Converter the {@link String} to {@link ColumnFamilyManager} it will use the {@link SettingsConverter} and
@@ -32,7 +33,7 @@ public class ColumnFamilyManagerConverter extends AbstractConfiguration<ColumnFa
 
     @Override
     public ColumnFamilyManager success(String value) {
-        Config config = BeanManagers.getInstance(Config.class);
+        Config config = CDI.current().select(Config.class).get();
         final ColumnFamilyManagerFactory managerFactory = config.getValue(value, ColumnFamilyManagerFactory.class);
         final String database = value + ".database";
         final String entity = config.getValue(database, String.class);

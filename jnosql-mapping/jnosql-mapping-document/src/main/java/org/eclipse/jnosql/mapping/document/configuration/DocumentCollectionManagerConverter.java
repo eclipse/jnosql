@@ -18,9 +18,10 @@ import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCollectionManagerFactory;
 import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
 import org.eclipse.jnosql.mapping.configuration.SettingsConverter;
-import org.eclipse.jnosql.mapping.util.BeanManagers;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.spi.Converter;
+
+import javax.enterprise.inject.spi.CDI;
 
 /**
  * Converter the {@link String} to {@link DocumentCollectionManager} it will use the {@link SettingsConverter} and
@@ -31,7 +32,7 @@ public class DocumentCollectionManagerConverter extends AbstractConfiguration<Do
 
     @Override
     public DocumentCollectionManager success(String value) {
-        Config config = BeanManagers.getInstance(Config.class);
+        Config config = CDI.current().select(Config.class).get();
         final DocumentCollectionManagerFactory managerFactory = config.getValue(value, DocumentCollectionManagerFactory.class);
         final String database = value + ".database";
         final String entity = config.getValue(database, String.class);

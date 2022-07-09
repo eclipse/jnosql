@@ -22,7 +22,6 @@ import org.eclipse.jnosql.mapping.graph.GraphTemplateProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.BeanManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -39,11 +38,9 @@ class TemplateBean extends AbstractBean<GraphTemplate> {
     /**
      * Constructor
      *
-     * @param beanManager the beanManager
      * @param provider    the provider name, that must be a
      */
-    public TemplateBean(BeanManager beanManager, String provider) {
-        super(beanManager);
+    public TemplateBean(String provider) {
         this.types = Collections.singleton(GraphTemplate.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofGraph(provider));
