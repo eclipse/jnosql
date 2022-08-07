@@ -216,6 +216,11 @@ public class DefaultReflections implements Reflections {
             String discriminatorValue = getDiscriminatorValue(entity);
             return Optional.of(new InheritanceClassMapping(discriminatorValue, discriminatorColumn,
                     parent, entity));
+        } else if(entity.getAnnotation(Inheritance.class) != null) {
+            String discriminatorColumn = getDiscriminatorColumn(entity);
+            String discriminatorValue = getDiscriminatorValue(entity);
+            return Optional.of(new InheritanceClassMapping(discriminatorValue, discriminatorColumn,
+                    entity, entity));
         }
         return Optional.empty();
     }

@@ -86,7 +86,7 @@ class DefaultClassMapping implements ClassMapping {
 
     @Override
     public boolean hasEntityName() {
-        return Objects.isNull(inheritance);
+        return Objects.isNull(inheritance) || hasInheritanceAnnotation;
     }
 
     @Override

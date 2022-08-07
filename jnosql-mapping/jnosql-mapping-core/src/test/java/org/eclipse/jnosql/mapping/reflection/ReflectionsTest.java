@@ -134,6 +134,17 @@ public class ReflectionsTest {
     }
 
     @Test
+    public void shouldGetInheritanceParent() {
+        Optional<InheritanceClassMapping> inheritance = this.reflections.getInheritance(Project.class);
+        assertFalse(inheritance.isEmpty());
+        InheritanceClassMapping project = inheritance.get();
+        assertEquals("size", project.getDiscriminatorColumn());
+        assertEquals("Project", project.getDiscriminatorValue());
+        assertEquals(Project.class, project.getParent());
+        assertEquals(Project.class, project.getEntity());
+    }
+
+    @Test
     public void shouldReturnHasInheritanceAnnotation() {
         assertFalse(this.reflections.hasInheritanceAnnotation(Person.class));
         assertFalse(this.reflections.hasInheritanceAnnotation(Worker.class));

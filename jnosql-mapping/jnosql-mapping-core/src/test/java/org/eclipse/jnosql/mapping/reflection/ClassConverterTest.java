@@ -162,4 +162,19 @@ public class ClassConverterTest {
         assertEquals(Notification.class, inheritance.getParent());
     }
 
+    @Test
+    public void shouldInheritanceSameParent() {
+        ClassMapping entity = classConverter.create(Project.class);
+        Assertions.assertEquals(1, entity.getFields().size());
+        Assertions.assertEquals(Project.class, entity.getClassInstance());
+
+        InheritanceClassMapping inheritance = entity.getInheritance()
+                .orElseThrow(MappingException::new);
+
+        assertEquals("size", inheritance.getDiscriminatorColumn());
+        assertEquals("Project", inheritance.getDiscriminatorValue());
+        assertEquals(Project.class, inheritance.getParent());
+        assertEquals(Project.class, inheritance.getEntity());
+    }
+
 }
