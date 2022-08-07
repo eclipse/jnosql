@@ -93,6 +93,26 @@ class DefaultColumnEntityConverterInheritanceTest {
     }
 
     @Test
+    public void shouldConvertProject() {
+        ColumnEntity entity = ColumnEntity.of("Project");
+        entity.add("_id", "Project");
+        entity.add("size", "Project");
+        Project project = this.converter.toEntity(entity);
+        assertEquals("Project", project.getName());
+    }
+
+    @Test
+    public void shouldConvertProjectToCommunicationEntity() {
+        Project project = new Project();
+        project.setName("Large Project");
+        ColumnEntity entity = this.converter.toColumn(project);
+        assertNotNull(entity);
+        assertEquals("Project", entity.getName());
+        assertEquals(project.getName(), entity.find("_id", String.class).get());
+        assertEquals("Project", entity.find("size", String.class).get());
+    }
+
+    @Test
     public void shouldConvertColumnEntityToSocialMedia(){
         LocalDate date = LocalDate.now();
         ColumnEntity entity = ColumnEntity.of("Notification");
