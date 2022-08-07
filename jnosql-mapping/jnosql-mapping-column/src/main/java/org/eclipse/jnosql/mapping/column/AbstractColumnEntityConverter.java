@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.ColumnFieldConverters.ColumnFieldConverterFactory;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.FieldType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
@@ -48,7 +48,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
 
     private final ColumnFieldConverterFactory converterFactory = new ColumnFieldConverterFactory();
 
-    protected abstract ClassMappings getClassMappings();
+    protected abstract EntitiesMetadata getClassMappings();
 
     protected abstract Converters getConverters();
 

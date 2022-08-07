@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.nosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -28,7 +28,7 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
 
     private Instance<Graph> graph;
 
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     private GraphConverter converter;
 
@@ -37,11 +37,11 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     private Converters converters;
 
     @Inject
-    DefaultGraphTemplate(Instance<Graph> graph, ClassMappings classMappings, GraphConverter converter,
+    DefaultGraphTemplate(Instance<Graph> graph, EntitiesMetadata entities, GraphConverter converter,
                          GraphWorkflow workflow,
                          Converters converters) {
         this.graph = graph;
-        this.classMappings = classMappings;
+        this.entities = entities;
         this.converter = converter;
         this.workflow = workflow;
         this.converters = converters;
@@ -56,8 +56,8 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     }
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return classMappings;
+    protected EntitiesMetadata getClassMappings() {
+        return entities;
     }
 
     @Override

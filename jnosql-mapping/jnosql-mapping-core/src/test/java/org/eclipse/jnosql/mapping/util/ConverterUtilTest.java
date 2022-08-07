@@ -20,7 +20,7 @@ import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -37,7 +37,7 @@ public class ConverterUtilTest {
     private Converters converters;
 
     @Inject
-    private ClassMappings mappings;
+    private EntitiesMetadata mappings;
 
     @Test
     public void shouldNotConvert() {

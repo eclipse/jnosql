@@ -16,16 +16,16 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.document.DocumentObserverParser;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import java.util.Optional;
 
 final class DocumentMapperObserver  implements DocumentObserverParser {
 
 
-    private final ClassMappings mappings;
+    private final EntitiesMetadata mappings;
 
-    DocumentMapperObserver(ClassMappings mappings) {
+    DocumentMapperObserver(EntitiesMetadata mappings) {
         this.mappings = mappings;
     }
 

@@ -16,16 +16,16 @@ package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.column.ColumnObserverParser;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import java.util.Optional;
 
 final class ColumnMapperObserver implements ColumnObserverParser {
 
 
-    private final ClassMappings mappings;
+    private final EntitiesMetadata mappings;
 
-    ColumnMapperObserver(ClassMappings mappings) {
+    ColumnMapperObserver(EntitiesMetadata mappings) {
         this.mappings = mappings;
     }
 

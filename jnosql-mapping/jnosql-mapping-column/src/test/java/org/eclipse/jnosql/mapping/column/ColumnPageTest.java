@@ -24,7 +24,7 @@ import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +54,7 @@ class ColumnPageTest {
     private ColumnEntityConverter converter;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -76,7 +76,7 @@ class ColumnPageTest {
         Instance<ColumnFamilyManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerMock);
         this.subject = new DefaultColumnTemplate(converter, instance, new DefaultColumnWorkflow(columnEventPersistManager, converter),
-                columnEventPersistManager, classMappings, converters);
+                columnEventPersistManager, entities, converters);
 
         Pagination pagination = Pagination.page(1).size(1);
         ColumnQueryPagination query = ColumnQueryPagination.of(select().from("person").build(), pagination);

@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.Param;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplate;
@@ -69,7 +69,7 @@ public class DocumentReactiveRepositoryProxyTest {
     private DocumentTemplate template;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -87,7 +87,7 @@ public class DocumentReactiveRepositoryProxyTest {
         final ReactiveDocumentTemplate reactiveTemplate = reactiveProducer.get(template);
 
         ReactiveDocumentRepositoryProxy<?> personHandler = new ReactiveDocumentRepositoryProxy<>(reactiveTemplate,
-                template, converters, classMappings, PersonRepository.class);
+                template, converters, entities, PersonRepository.class);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());

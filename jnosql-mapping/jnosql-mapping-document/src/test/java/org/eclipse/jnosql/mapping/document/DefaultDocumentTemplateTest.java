@@ -26,7 +26,7 @@ import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.entities.Job;
 import jakarta.nosql.tck.entities.Movie;
 import jakarta.nosql.tck.entities.Person;
@@ -79,7 +79,7 @@ public class DefaultDocumentTemplateTest {
     private DocumentEntityConverter converter;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -101,7 +101,7 @@ public class DefaultDocumentTemplateTest {
         when(instance.get()).thenReturn(managerMock);
         DefaultDocumentWorkflow workflow = new DefaultDocumentWorkflow(documentEventPersistManager, converter);
         this.subject = new DefaultDocumentTemplate(converter, instance, workflow,
-                documentEventPersistManager, classMappings, converters);
+                documentEventPersistManager, entities, converters);
     }
 
     @Test

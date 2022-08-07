@@ -24,7 +24,7 @@ import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +54,7 @@ class DocumentPageTest {
     private DocumentEntityConverter converter;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -77,7 +77,7 @@ class DocumentPageTest {
         Instance<DocumentCollectionManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerMock);
         this.subject = new DefaultDocumentTemplate(converter, instance, new DefaultDocumentWorkflow(columnEventPersistManager, converter),
-                columnEventPersistManager, classMappings, converters);
+                columnEventPersistManager, entities, converters);
 
         Pagination pagination = Pagination.page(1).size(1);
         DocumentQueryPagination query = DocumentQueryPagination.of(select().from("person").build(), pagination);

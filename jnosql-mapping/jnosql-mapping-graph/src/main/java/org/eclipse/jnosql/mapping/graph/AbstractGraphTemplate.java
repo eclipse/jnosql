@@ -28,7 +28,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
@@ -62,7 +62,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     protected abstract Graph getGraph();
 
-    protected abstract ClassMappings getClassMappings();
+    protected abstract EntitiesMetadata getClassMappings();
 
     protected abstract GraphConverter getConverter();
 

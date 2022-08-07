@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.graph.model.Person;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
@@ -47,7 +47,7 @@ class DeleteQueryConverterTest {
     private DeleteQueryConverter converter;
 
     @Inject
-    private ClassMappings mappings;
+    private EntitiesMetadata mappings;
 
     @Inject
     private Converters converters;

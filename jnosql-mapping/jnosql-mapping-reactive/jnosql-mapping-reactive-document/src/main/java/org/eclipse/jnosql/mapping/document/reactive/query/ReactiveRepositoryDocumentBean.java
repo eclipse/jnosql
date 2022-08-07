@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.document.reactive.query;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplateProducer;
@@ -73,7 +73,7 @@ public class ReactiveRepositoryDocumentBean extends AbstractBean<ReactiveReposit
 
     @Override
     public ReactiveRepository<?,?> create(CreationalContext<ReactiveRepository<?,?>> context) {
-        ClassMappings classMappings = getInstance(ClassMappings.class);
+        EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
         DocumentTemplate template = provider.isEmpty() ? getInstance(DocumentTemplate.class) :
                 getInstance(DocumentTemplate.class, DatabaseQualifier.ofDocument(provider));
 
@@ -82,7 +82,7 @@ public class ReactiveRepositoryDocumentBean extends AbstractBean<ReactiveReposit
         Converters converters = getInstance(Converters.class);
 
         ReactiveDocumentRepositoryProxy<?> handler = new ReactiveDocumentRepositoryProxy<>(reactiveDocumentTemplate, template,
-                converters, classMappings, type);
+                converters, entities, type);
         return (ReactiveRepository<?,?>) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

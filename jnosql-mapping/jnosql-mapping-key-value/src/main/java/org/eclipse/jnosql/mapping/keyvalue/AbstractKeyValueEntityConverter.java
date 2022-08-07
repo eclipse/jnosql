@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 import java.util.Objects;
@@ -33,7 +33,7 @@ import static java.util.Objects.requireNonNull;
  */
 public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityConverter {
 
-    protected abstract ClassMappings getClassMappings();
+    protected abstract EntitiesMetadata getClassMappings();
 
     protected abstract Converters getConverters();
 

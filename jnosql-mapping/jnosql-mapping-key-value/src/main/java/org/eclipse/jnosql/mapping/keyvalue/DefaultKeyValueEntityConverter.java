@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.keyvalue;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.inject.Inject;
 
@@ -26,14 +26,14 @@ import javax.inject.Inject;
 class DefaultKeyValueEntityConverter extends AbstractKeyValueEntityConverter implements KeyValueEntityConverter {
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return classMappings;
+    protected EntitiesMetadata getClassMappings() {
+        return entities;
     }
 
     @Override

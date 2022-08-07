@@ -33,7 +33,7 @@ import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
@@ -68,7 +68,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     protected abstract DocumentEventPersistManager getPersistManager();
 
-    protected abstract ClassMappings getClassMappings();
+    protected abstract EntitiesMetadata getClassMappings();
 
     protected abstract Converters getConverters();
 

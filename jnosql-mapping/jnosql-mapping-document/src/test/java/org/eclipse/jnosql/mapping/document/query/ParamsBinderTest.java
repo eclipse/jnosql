@@ -26,7 +26,7 @@ import jakarta.nosql.document.DocumentQueryParams;
 import jakarta.nosql.document.SelectQueryConverter;
 import jakarta.nosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.query.SelectQuery;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
@@ -48,7 +48,7 @@ class ParamsBinderTest {
 
 
     @Inject
-    private ClassMappings mappings;
+    private EntitiesMetadata mappings;
 
     @Inject
     private Converters converters;

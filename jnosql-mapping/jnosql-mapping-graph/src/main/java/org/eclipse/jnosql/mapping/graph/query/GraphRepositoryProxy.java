@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
 import java.lang.reflect.ParameterizedType;
@@ -46,7 +46,7 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
     private final Converters converters;
 
 
-    GraphRepositoryProxy(GraphTemplate template, ClassMappings classMappings,
+    GraphRepositoryProxy(GraphTemplate template, EntitiesMetadata entities,
                          Class<?> repositoryType,
                          Graph graph, GraphConverter converter,
                          Converters converters) {
@@ -56,7 +56,7 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
 
         this.graph = graph;
         this.converter = converter;
-        this.entityMetadata = classMappings.get(typeClass);
+        this.entityMetadata = entities.get(typeClass);
         this.repository = new GraphRepository(template, entityMetadata);
         this.template = template;
         this.converters = converters;

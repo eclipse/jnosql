@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.DocumentFieldConverters.DocumentFieldConverterFactory;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.FieldType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
@@ -44,7 +44,7 @@ import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
  */
 public abstract class AbstractDocumentEntityConverter implements DocumentEntityConverter {
 
-    protected abstract ClassMappings getClassMappings();
+    protected abstract EntitiesMetadata getClassMappings();
 
     protected abstract Converters getConverters();
 

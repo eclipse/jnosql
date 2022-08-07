@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateProducer;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -31,7 +31,7 @@ import java.util.Objects;
 class DefaultColumnRepositoryProducer implements ColumnRepositoryProducer {
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -53,7 +53,7 @@ class DefaultColumnRepositoryProducer implements ColumnRepositoryProducer {
         Objects.requireNonNull(template, "template class is required");
 
         ColumnRepositoryProxy<T, K> handler = new ColumnRepositoryProxy<>(template,
-                classMappings, repositoryClass, converters);
+                entities, repositoryClass, converters);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);

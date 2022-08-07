@@ -22,7 +22,7 @@ import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateProducer;
 import jakarta.nosql.mapping.column.ColumnWorkflow;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Vetoed;
@@ -46,7 +46,7 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
     private ColumnEventPersistManager eventManager;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -55,7 +55,7 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
     public ColumnTemplate get(ColumnFamilyManager columnFamilyManager) {
         Objects.requireNonNull(columnFamilyManager, "columnFamilyManager is required");
         return new ProducerColumnTemplate(converter, columnWorkflow, columnFamilyManager,
-                eventManager, classMappings, converters);
+                eventManager, entities, converters);
     }
 
 
@@ -70,20 +70,20 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
 
         private ColumnEventPersistManager eventManager;
 
-        private ClassMappings classMappings;
+        private EntitiesMetadata entities;
 
         private Converters converters;
 
         ProducerColumnTemplate(ColumnEntityConverter converter, ColumnWorkflow columnWorkflow,
                                ColumnFamilyManager columnFamilyManager,
                                ColumnEventPersistManager eventManager,
-                               ClassMappings classMappings,
+                               EntitiesMetadata entities,
                                Converters converters) {
             this.converter = converter;
             this.columnWorkflow = columnWorkflow;
             this.columnFamilyManager = columnFamilyManager;
             this.eventManager = eventManager;
-            this.classMappings = classMappings;
+            this.entities = entities;
             this.converters = converters;
         }
 
@@ -111,8 +111,8 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
         }
 
         @Override
-        protected ClassMappings getClassMappings() {
-            return classMappings;
+        protected EntitiesMetadata getClassMappings() {
+            return entities;
         }
 
         @Override

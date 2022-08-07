@@ -31,10 +31,10 @@ import javax.inject.Inject;
 import java.util.Map;
 
 @CDIExtension
-class DefaultClassMappingsTest {
+class DefaultEntitiesMetadataTest {
 
     @Inject
-    private DefaultClassMappings mappings;
+    private DefaultEntitiesMetadata mappings;
 
     @Test
     public void shouldGet(){

@@ -22,7 +22,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -41,7 +41,7 @@ import static java.util.stream.Collectors.toList;
 class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
 
 
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     private Converters converters;
 
@@ -49,9 +49,9 @@ class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
 
 
     @Inject
-    DefaultGraphTraversalSourceConverter(ClassMappings classMappings, Converters converters,
+    DefaultGraphTraversalSourceConverter(EntitiesMetadata entities, Converters converters,
                                          Instance<GraphTraversalSourceSupplier> suppliers) {
-        this.classMappings = classMappings;
+        this.entities = entities;
         this.converters = converters;
         this.suppliers = suppliers;
     }
@@ -60,8 +60,8 @@ class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
     }
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return classMappings;
+    protected EntitiesMetadata getClassMappings() {
+        return entities;
     }
 
     @Override

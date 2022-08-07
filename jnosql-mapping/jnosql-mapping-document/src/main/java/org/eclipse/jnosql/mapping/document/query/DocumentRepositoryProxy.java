@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -40,12 +40,12 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
     private final Converters converters;
 
 
-    DocumentRepositoryProxy(DocumentTemplate template, ClassMappings classMappings,
+    DocumentRepositoryProxy(DocumentTemplate template, EntitiesMetadata entities,
                             Class<?> repositoryType, Converters converters) {
         this.template = template;
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
-        this.entityMetadata = classMappings.get(typeClass);
+        this.entityMetadata = entities.get(typeClass);
         this.repository = new DocumentRepository(template, entityMetadata);
         this.converters = converters;
     }

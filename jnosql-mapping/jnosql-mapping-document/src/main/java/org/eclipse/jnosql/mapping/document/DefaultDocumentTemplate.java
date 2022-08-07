@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -38,19 +38,19 @@ class DefaultDocumentTemplate extends AbstractDocumentTemplate {
 
     private DocumentEventPersistManager persistManager;
 
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     private Converters converters;
 
     @Inject
     DefaultDocumentTemplate(DocumentEntityConverter converter, Instance<DocumentCollectionManager> manager,
                             DocumentWorkflow workflow, DocumentEventPersistManager persistManager,
-                            ClassMappings classMappings, Converters converters) {
+                            EntitiesMetadata entities, Converters converters) {
         this.converter = converter;
         this.manager = manager;
         this.workflow = workflow;
         this.persistManager = persistManager;
-        this.classMappings = classMappings;
+        this.entities = entities;
         this.converters = converters;
     }
 
@@ -78,8 +78,8 @@ class DefaultDocumentTemplate extends AbstractDocumentTemplate {
     }
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return classMappings;
+    protected EntitiesMetadata getClassMappings() {
+        return entities;
     }
 
     @Override

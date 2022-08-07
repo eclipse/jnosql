@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplate;
 import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplateProducer;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reactive.ReactiveRepository;
 
 import javax.inject.Inject;
@@ -31,7 +31,7 @@ class DefaultReactiveColumnRepositoryProducer implements ReactiveColumnRepositor
     private ReactiveColumnTemplateProducer producerReactive;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -44,7 +44,7 @@ class DefaultReactiveColumnRepositoryProducer implements ReactiveColumnRepositor
 
         final ReactiveColumnTemplate reactiveTemplate = producerReactive.get(template);
         ReactiveColumnRepositoryProxy<R> handler = new ReactiveColumnRepositoryProxy<>(reactiveTemplate,
-                template, converters, classMappings, repositoryClass);
+                template, converters, entities, repositoryClass);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);

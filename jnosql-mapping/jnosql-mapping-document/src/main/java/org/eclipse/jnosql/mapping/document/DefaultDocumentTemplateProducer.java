@@ -22,7 +22,7 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateProducer;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Vetoed;
@@ -46,7 +46,7 @@ class DefaultDocumentTemplateProducer implements DocumentTemplateProducer {
     private DocumentEventPersistManager persistManager;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -56,7 +56,7 @@ class DefaultDocumentTemplateProducer implements DocumentTemplateProducer {
     public DocumentTemplate get(DocumentCollectionManager collectionManager) {
         Objects.requireNonNull(collectionManager, "collectionManager is required");
         return new ProducerDocumentTemplate(converter, collectionManager, workflow,
-                persistManager, classMappings, converters);
+                persistManager, entities, converters);
     }
 
     @Vetoed
@@ -72,16 +72,16 @@ class DefaultDocumentTemplateProducer implements DocumentTemplateProducer {
 
         private Converters converters;
 
-        private ClassMappings classMappings;
+        private EntitiesMetadata entities;
         ProducerDocumentTemplate(DocumentEntityConverter converter, DocumentCollectionManager manager,
                                  DocumentWorkflow workflow,
                                  DocumentEventPersistManager persistManager,
-                                 ClassMappings classMappings, Converters converters) {
+                                 EntitiesMetadata entities, Converters converters) {
             this.converter = converter;
             this.manager = manager;
             this.workflow = workflow;
             this.persistManager = persistManager;
-            this.classMappings = classMappings;
+            this.entities = entities;
             this.converters = converters;
         }
 
@@ -109,8 +109,8 @@ class DefaultDocumentTemplateProducer implements DocumentTemplateProducer {
         }
 
         @Override
-        protected ClassMappings getClassMappings() {
-            return classMappings;
+        protected EntitiesMetadata getClassMappings() {
+            return entities;
         }
 
         @Override

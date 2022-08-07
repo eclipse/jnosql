@@ -33,7 +33,7 @@ import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
@@ -67,7 +67,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
     protected abstract ColumnEventPersistManager getEventManager();
 
-    protected abstract ClassMappings getClassMappings();
+    protected abstract EntitiesMetadata getClassMappings();
 
     protected abstract Converters getConverters();
 

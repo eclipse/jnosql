@@ -13,7 +13,7 @@ package org.eclipse.jnosql.mapping.document.reactive.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplateProducer;
 import org.eclipse.jnosql.mapping.reactive.ReactiveRepository;
@@ -28,7 +28,7 @@ class DefaultReactiveDocumentRepositoryProducer implements ReactiveDocumentRepos
     private ReactiveDocumentTemplateProducer producerReactive;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -41,7 +41,7 @@ class DefaultReactiveDocumentRepositoryProducer implements ReactiveDocumentRepos
 
         final ReactiveDocumentTemplate reactiveTemplate = producerReactive.get(template);
         ReactiveDocumentRepositoryProxy<R> handler = new ReactiveDocumentRepositoryProxy<>(reactiveTemplate,
-                template, converters, classMappings, repositoryClass);
+                template, converters, entities, repositoryClass);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);

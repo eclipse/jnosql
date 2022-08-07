@@ -20,7 +20,7 @@ import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphRepositoryProducer;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.GraphTemplateProducer;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -32,7 +32,7 @@ import java.util.Objects;
 class DefaultGraphRepositoryProducer implements GraphRepositoryProducer {
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private GraphConverter converter;
@@ -49,7 +49,7 @@ class DefaultGraphRepositoryProducer implements GraphRepositoryProducer {
         Objects.requireNonNull(manager, "manager class is required");
         GraphTemplate template = producer.get(manager);
         GraphRepositoryProxy<R, K> handler = new GraphRepositoryProxy(template,
-                classMappings, repositoryClass, manager, converter, converters);
+                entities, repositoryClass, manager, converter, converters);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);

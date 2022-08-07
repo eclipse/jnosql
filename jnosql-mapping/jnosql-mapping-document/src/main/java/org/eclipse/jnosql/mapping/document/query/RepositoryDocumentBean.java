@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
 
@@ -71,14 +71,14 @@ public class RepositoryDocumentBean extends AbstractBean<Repository> {
 
     @Override
     public Repository create(CreationalContext<Repository> context) {
-        ClassMappings classMappings = getInstance(ClassMappings.class);
+        EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
         DocumentTemplate template = provider.isEmpty() ? getInstance(DocumentTemplate.class) :
                 getInstance(DocumentTemplate.class, DatabaseQualifier.ofDocument(provider));
 
         Converters converters = getInstance(Converters.class);
 
         DocumentRepositoryProxy handler = new DocumentRepositoryProxy(template,
-                classMappings, type, converters);
+                entities, type, converters);
         return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

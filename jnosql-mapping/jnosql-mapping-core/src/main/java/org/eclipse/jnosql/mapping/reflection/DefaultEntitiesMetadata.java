@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * It's storage the class information in a {@link ConcurrentHashMap}
  */
 @ApplicationScoped
-class DefaultClassMappings implements ClassMappings {
+class DefaultEntitiesMetadata implements EntitiesMetadata {
 
     private Map<String, EntityMetadata> mappings;
 

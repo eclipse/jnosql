@@ -24,7 +24,7 @@ import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.Sorts;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.hamcrest.Matchers;
@@ -57,7 +57,7 @@ public class ColumnRepositoryProxySortTest {
     private ColumnTemplate template;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -69,7 +69,7 @@ public class ColumnRepositoryProxySortTest {
         this.template = Mockito.mock(ColumnTemplate.class);
 
         ColumnRepositoryProxy personHandler = new ColumnRepositoryProxy(template,
-                classMappings, PersonRepository.class, converters);
+                entities, PersonRepository.class, converters);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());
