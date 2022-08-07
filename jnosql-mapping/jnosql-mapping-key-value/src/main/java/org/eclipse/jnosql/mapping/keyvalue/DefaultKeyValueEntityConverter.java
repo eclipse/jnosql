@@ -32,7 +32,7 @@ class DefaultKeyValueEntityConverter extends AbstractKeyValueEntityConverter imp
     private Converters converters;
 
     @Override
-    protected EntitiesMetadata getClassMappings() {
+    protected EntitiesMetadata getEntities() {
         return entities;
     }
 

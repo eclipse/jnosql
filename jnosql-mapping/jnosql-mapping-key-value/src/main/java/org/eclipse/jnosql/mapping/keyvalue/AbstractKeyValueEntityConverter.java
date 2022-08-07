@@ -33,7 +33,7 @@ import static java.util.Objects.requireNonNull;
  */
 public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityConverter {
 
-    protected abstract EntitiesMetadata getClassMappings();
+    protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();
 
@@ -79,7 +79,7 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
     }
 
     private FieldMapping getId(Class<?> clazz) {
-        EntityMetadata mapping = getClassMappings().get(clazz);
+        EntityMetadata mapping = getEntities().get(clazz);
         return mapping.getId().orElseThrow(() -> IdNotFoundException.newInstance(clazz));
     }
 }

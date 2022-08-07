@@ -62,7 +62,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     protected abstract Graph getGraph();
 
-    protected abstract EntitiesMetadata getClassMappings();
+    protected abstract EntitiesMetadata getEntities();
 
     protected abstract GraphConverter getConverter();
 
@@ -122,7 +122,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T, K> Optional<T> find(Class<T> entityClass, K id) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
-        EntityMetadata entityMetadata = getClassMappings().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(entityClass);
         FieldMapping idField = entityMetadata.getId()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
@@ -142,7 +142,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T, K> void delete(Class<T> entityClass, K id) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
-        EntityMetadata mapping = getClassMappings().get(entityClass);
+        EntityMetadata mapping = getEntities().get(entityClass);
         getTraversal()
                 .V(id)
                 .hasLabel(mapping.getName())
@@ -345,7 +345,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <T> long count(Class<T> entityClass) {
         Objects.requireNonNull(entityClass, "entity class is required");
-        return count(getClassMappings().get(entityClass).getName());
+        return count(getEntities().get(entityClass).getName());
     }
 
     private <K> Collection<EdgeEntity> getEdgesByIdImpl(K id, Direction direction, String... labels) {
@@ -363,7 +363,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     private <T> Optional<Vertex> getVertex(T entity) {
-        EntityMetadata entityMetadata = getClassMappings().get(entity.getClass());
+        EntityMetadata entityMetadata = getEntities().get(entity.getClass());
         FieldMapping field = entityMetadata.getId().get();
         Object id = field.read(entity);
         Iterator<Vertex> vertices = getVertices(id);
@@ -394,14 +394,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     private <T> boolean isIdNull(T entity) {
-        EntityMetadata entityMetadata = getClassMappings().get(entity.getClass());
+        EntityMetadata entityMetadata = getEntities().get(entity.getClass());
         FieldMapping field = entityMetadata.getId().get();
         return isNull(field.read(entity));
 
     }
 
     private <T> void checkId(T entity) {
-        EntityMetadata entityMetadata = getClassMappings().get(entity.getClass());
+        EntityMetadata entityMetadata = getEntities().get(entity.getClass());
         entityMetadata.getId().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
     }
 }

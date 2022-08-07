@@ -73,7 +73,7 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
         return supplierInstance.get().get();
     }
     @Override
-    protected EntitiesMetadata getClassMappings() {
+    protected EntitiesMetadata getEntities() {
         return entities;
     }
 
