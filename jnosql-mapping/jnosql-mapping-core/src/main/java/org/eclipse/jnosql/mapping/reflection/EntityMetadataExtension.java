@@ -94,7 +94,7 @@ public class EntityMetadataExtension implements Extension {
 
     @Override
     public String toString() {
-        return "ClassMappingExtension{" + "classConverter=" + classConverter +
+        return "EntityMetadataExtension{" + "classConverter=" + classConverter +
                 ", mappings-size=" + mappings.size() +
                 ", classes=" + classes +
                 '}';

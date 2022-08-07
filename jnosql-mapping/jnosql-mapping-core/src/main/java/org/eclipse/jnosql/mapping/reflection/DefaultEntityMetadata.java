@@ -148,7 +148,7 @@ class DefaultEntityMetadata implements EntityMetadata {
 
     @Override
     public String toString() {
-        return "DefaultClassMapping{" +
+        return "DefaultEntityMetadata{" +
                 "name='" + name + '\'' +
                 ", fieldsName=" + fieldsName +
                 ", classInstance=" + classInstance +
