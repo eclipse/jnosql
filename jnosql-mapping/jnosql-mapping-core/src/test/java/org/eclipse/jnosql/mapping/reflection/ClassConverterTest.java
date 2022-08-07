@@ -71,7 +71,7 @@ public class ClassConverterTest {
     }
 
     @Test
-    public void shouldCreateClassMappingWithEmbeddedClass() {
+    public void shouldCreateEntityMetadataWithEmbeddedClass() {
         EntityMetadata entityMetadata = classConverter.create(Director.class);
         assertEquals("Director", entityMetadata.getName());
         assertEquals(Director.class, entityMetadata.getType());

@@ -32,17 +32,17 @@ final class ColumnMapperObserver implements ColumnObserverParser {
 
     @Override
     public String fireEntity(String entity) {
-        Optional<EntityMetadata> mapping = getClassMapping(entity);
+        Optional<EntityMetadata> mapping = getEntityMetadata(entity);
         return mapping.map(EntityMetadata::getName).orElse(entity);
     }
 
     @Override
     public String fireField(String entity, String field) {
-        Optional<EntityMetadata> mapping = getClassMapping(entity);
+        Optional<EntityMetadata> mapping = getEntityMetadata(entity);
         return mapping.map(c -> c.getColumnField(field)).orElse(field);
     }
 
-    private Optional<EntityMetadata> getClassMapping(String entity) {
+    private Optional<EntityMetadata> getEntityMetadata(String entity) {
         Optional<EntityMetadata> bySimpleName = mappings.findBySimpleName(entity);
         if (bySimpleName.isPresent()) {
             return bySimpleName;

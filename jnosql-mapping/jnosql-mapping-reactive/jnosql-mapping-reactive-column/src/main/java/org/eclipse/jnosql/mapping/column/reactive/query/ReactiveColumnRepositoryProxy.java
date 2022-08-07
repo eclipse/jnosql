@@ -57,7 +57,7 @@ class ReactiveColumnRepositoryProxy<T> extends AbstractReactiveColumnRepositoryP
     }
 
     @Override
-    protected EntityMetadata getClassMapping() {
+    protected EntityMetadata getEntityMetadata() {
         return entityMetadata;
     }
 

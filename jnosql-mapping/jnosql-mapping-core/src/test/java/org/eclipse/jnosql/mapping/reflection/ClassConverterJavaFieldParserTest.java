@@ -52,7 +52,7 @@ public class ClassConverterJavaFieldParserTest {
     }
 
     @Test
-    public void shouldReturnTheSameValueWhenTheFieldDoesNotExistInTheClassMapping() {
+    public void shouldReturnTheSameValueWhenTheFieldDoesNotExistInTheEntityMetadata() {
         EntityMetadata entityMetadata = classConverter.create(Person.class);
         String notFound = entityMetadata.getColumnField("notFound");
         assertEquals("notFound", notFound);
