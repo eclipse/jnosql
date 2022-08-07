@@ -41,7 +41,7 @@ class DefaultClassMappingsTest {
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
-        ClassMapping mapping = this.mappings.get(Person.class);
+        EntityMetadata mapping = this.mappings.get(Person.class);
         Assertions.assertNotNull(mapping);
         Assertions.assertEquals(Person.class, mapping.getClassInstance());
     }
@@ -51,7 +51,7 @@ class DefaultClassMappingsTest {
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
-        ClassMapping mapping = this.mappings.findByName("vendors");
+        EntityMetadata mapping = this.mappings.findByName("vendors");
         Assertions.assertNotNull(mapping);
         Assertions.assertEquals(Vendor.class, mapping.getClassInstance());
     }
@@ -60,7 +60,7 @@ class DefaultClassMappingsTest {
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
-        ClassMapping mapping = this.mappings
+        EntityMetadata mapping = this.mappings
                 .findBySimpleName(Person.class.getSimpleName())
                 .orElseThrow();
 
@@ -73,7 +73,7 @@ class DefaultClassMappingsTest {
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
-        ClassMapping mapping = this.mappings
+        EntityMetadata mapping = this.mappings
                 .findByClassName(Person.class.getName())
                 .orElseThrow();
 
@@ -93,7 +93,7 @@ class DefaultClassMappingsTest {
         this.mappings.load(Project.class);
 
 
-        ClassMapping parent = this.mappings.findByName("Notification");
+        EntityMetadata parent = this.mappings.findByName("Notification");
         Assertions.assertNotNull(parent);
         Assertions.assertEquals(Notification.class, parent.getClassInstance());
 

@@ -18,7 +18,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplate;
 import org.eclipse.jnosql.mapping.reactive.ReactiveRepository;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
 import java.lang.reflect.ParameterizedType;
@@ -26,7 +26,7 @@ import java.lang.reflect.ParameterizedType;
 class ReactiveColumnRepositoryProxy<T> extends AbstractReactiveColumnRepositoryProxy<T> {
 
 
-    private final ClassMapping classMapping;
+    private final EntityMetadata entityMetadata;
     private final ReactiveRepository<?, ?> repository;
     private final Converters converters;
     private final ColumnTemplate template;
@@ -39,8 +39,8 @@ class ReactiveColumnRepositoryProxy<T> extends AbstractReactiveColumnRepositoryP
 
         Class<T> typeClass = (Class<T>) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
-        this.classMapping = classMappings.get(typeClass);
-        this.repository = new DefaultReactiveColumnRepository<>(reactiveTemplate, classMapping);
+        this.entityMetadata = classMappings.get(typeClass);
+        this.repository = new DefaultReactiveColumnRepository<>(reactiveTemplate, entityMetadata);
         this.converters = converters;
         this.template = template;
     }
@@ -57,8 +57,8 @@ class ReactiveColumnRepositoryProxy<T> extends AbstractReactiveColumnRepositoryP
     }
 
     @Override
-    protected ClassMapping getClassMapping() {
-        return classMapping;
+    protected EntityMetadata getClassMapping() {
+        return entityMetadata;
     }
 
     @Override

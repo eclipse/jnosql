@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 interface DocumentTokenProcessor {
 
@@ -24,6 +24,6 @@ interface DocumentTokenProcessor {
                               int index,
                               Object[] args,
                               String methodName,
-                              ClassMapping mapping,
+                              EntityMetadata mapping,
                               Converters converters);
 }

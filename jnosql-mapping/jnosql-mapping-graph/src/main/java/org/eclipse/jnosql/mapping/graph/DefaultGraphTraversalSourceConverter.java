@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.EntityNotFoundException;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -78,7 +78,7 @@ class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
     public <T> Vertex toVertex(T entity) {
         requireNonNull(entity, "entity is required");
 
-        ClassMapping mapping = getClassMappings().get(entity.getClass());
+        EntityMetadata mapping = getClassMappings().get(entity.getClass());
         String label = mapping.getName();
 
         List<FieldGraph> fields = mapping.getFields().stream()

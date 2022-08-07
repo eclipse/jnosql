@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 import java.util.Objects;
@@ -38,7 +38,7 @@ public abstract class AbstractColumnRepository<T, K> implements Repository<T, K>
 
     protected abstract ColumnTemplate getTemplate();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getClassMapping();
 
 
     @Override

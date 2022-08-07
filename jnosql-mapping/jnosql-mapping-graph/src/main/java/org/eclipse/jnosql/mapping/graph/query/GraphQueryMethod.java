@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
@@ -30,14 +30,14 @@ import static java.util.Collections.singletonList;
 
 final class GraphQueryMethod {
 
-    private final ClassMapping mapping;
+    private final EntityMetadata mapping;
     private final GraphTraversal<Vertex, Vertex> traversal;
     private final Object[] args;
     private final Converters converters;
     private final Method method;
     private int counter = 0;
 
-    GraphQueryMethod(ClassMapping mapping,
+    GraphQueryMethod(EntityMetadata mapping,
                      GraphTraversal<Vertex, Vertex> traversal,
                      Converters converters, Method method, Object[] args) {
         this.mapping = mapping;
@@ -55,7 +55,7 @@ final class GraphQueryMethod {
         return mapping.getName();
     }
 
-    public ClassMapping getMapping() {
+    public EntityMetadata getMapping() {
         return mapping;
     }
 

@@ -32,7 +32,7 @@ import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnWorkflow;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
@@ -173,12 +173,12 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     public <T, K> Optional<T> find(Class<T> entityClass, K id) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
-        ClassMapping classMapping = getClassMappings().get(entityClass);
-        FieldMapping idField = classMapping.getId()
+        EntityMetadata entityMetadata = getClassMappings().get(entityClass);
+        FieldMapping idField = entityMetadata.getId()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
-        Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
-        ColumnQuery query = ColumnQuery.select().from(classMapping.getName())
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
+        ColumnQuery query = ColumnQuery.select().from(entityMetadata.getName())
                 .where(idField.getName()).eq(value).build();
 
         return singleResult(query);
@@ -189,12 +189,12 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
 
-        ClassMapping classMapping = getClassMappings().get(entityClass);
-        FieldMapping idField = classMapping.getId()
+        EntityMetadata entityMetadata = getClassMappings().get(entityClass);
+        FieldMapping idField = entityMetadata.getId()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
-        Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
 
-        ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(classMapping.getName())
+        ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(entityMetadata.getName())
                 .where(idField.getName()).eq(value).build();
         getManager().delete(query);
     }
@@ -236,8 +236,8 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     @Override
     public <T> long count(Class<T> entityClass) {
         requireNonNull(entityClass, "entity class is required");
-        ClassMapping classMapping = getClassMappings().get(entityClass);
-        return getManager().count(classMapping.getName());
+        EntityMetadata entityMetadata = getClassMappings().get(entityClass);
+        return getManager().count(entityMetadata.getName());
     }
 
     private <T> Stream<T> executeQuery(ColumnQuery query) {

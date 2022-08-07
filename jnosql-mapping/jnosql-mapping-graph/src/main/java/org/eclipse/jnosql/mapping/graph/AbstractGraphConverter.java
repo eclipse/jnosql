@@ -23,7 +23,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.InheritanceClassMapping;
@@ -56,7 +56,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     public <T> Vertex toVertex(T entity) {
         requireNonNull(entity, "entity is required");
 
-        ClassMapping mapping = getClassMappings().get(entity.getClass());
+        EntityMetadata mapping = getClassMappings().get(entity.getClass());
         String label = mapping.getName();
 
         List<FieldGraph> fields = mapping.getFields().stream()
@@ -88,7 +88,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     @Override
     public <T> List<Property<?>> getProperties(T entity) {
         Objects.requireNonNull(entity, "entity is required");
-        ClassMapping mapping = getClassMappings().get(entity.getClass());
+        EntityMetadata mapping = getClassMappings().get(entity.getClass());
         List<FieldGraph> fields = mapping.getFields().stream()
                 .map(f -> to(f, entity))
                 .filter(FieldGraph::isNotEmpty).collect(toList());
@@ -101,7 +101,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     @Override
     public <T> T toEntity(Vertex vertex) {
         requireNonNull(vertex, "vertex is required");
-        ClassMapping mapping = getClassMappings().findByName(vertex.label());
+        EntityMetadata mapping = getClassMappings().findByName(vertex.label());
 
         List<Property> properties = vertex.keys()
                 .stream()
@@ -135,7 +135,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
         List<Property> properties = vertex.keys().stream().map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
 
-        ClassMapping mapping = getClassMappings().get(entityInstance.getClass());
+        EntityMetadata mapping = getClassMappings().get(entityInstance.getClass());
         convertEntity(properties, mapping, entityInstance);
         feedId(vertex, entityInstance);
         return entityInstance;
@@ -162,7 +162,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     }
 
     private <T> void feedId(Vertex vertex, T entity) {
-        ClassMapping mapping = getClassMappings().get(entity.getClass());
+        EntityMetadata mapping = getClassMappings().get(entity.getClass());
         Optional<FieldMapping> id = mapping.getId();
 
 
@@ -183,12 +183,12 @@ abstract class AbstractGraphConverter implements GraphConverter {
     }
 
     private <T> T toEntity(Class<T> entityClass, List<Property> properties) {
-        ClassMapping mapping = getClassMappings().get(entityClass);
+        EntityMetadata mapping = getClassMappings().get(entityClass);
         T instance = mapping.newInstance();
         return convertEntity(properties, mapping, instance);
     }
 
-    private <T> T convertEntity(List<Property> elements, ClassMapping mapping, T instance) {
+    private <T> T convertEntity(List<Property> elements, EntityMetadata mapping, T instance) {
 
         Map<String, FieldMapping> fieldsGroupByName = mapping.getFieldsGroupByName();
         List<String> names = elements.stream()
@@ -271,7 +271,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        ClassMapping mapping = getClassMappings().get(inheritance.getEntity());
+        EntityMetadata mapping = getClassMappings().get(inheritance.getEntity());
         return toEntity((Class<T>) mapping.getClassInstance(), properties);
     }
 }

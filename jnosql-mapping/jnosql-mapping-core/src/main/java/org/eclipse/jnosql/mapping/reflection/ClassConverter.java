@@ -59,7 +59,7 @@ class ClassConverter {
     ClassConverter() {
     }
 
-    public ClassMapping create(Class<?> entity) {
+    public EntityMetadata create(Class<?> entity) {
 
         long start = System.currentTimeMillis();
         String entityName = reflections.getEntityName(entity);
@@ -79,7 +79,7 @@ class ClassConverter {
         InstanceSupplier instanceSupplier = instanceSupplierFactory.apply(reflections.makeAccessible(entity));
         InheritanceClassMapping inheritance = reflections.getInheritance(entity).orElse(null);
         boolean hasInheritanceAnnotation = reflections.hasInheritanceAnnotation(entity);
-        ClassMapping mapping = DefaultClassMapping.builder().withName(entityName)
+        EntityMetadata mapping = DefaultEntityMetadata.builder().withName(entityName)
                 .withClassInstance(entity)
                 .withFields(fields)
                 .withFieldsName(fieldsName)

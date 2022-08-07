@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document.reactive.query;
 
 import jakarta.nosql.mapping.MappingException;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplate;
 import org.eclipse.jnosql.mapping.reactive.Observable;
@@ -42,7 +42,7 @@ public abstract class AbstractReactiveDocumentRepository<T, K> implements Reacti
 
     protected abstract ReactiveDocumentTemplate getTemplate();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getClassMapping();
     @Override
     public <S extends T> Observable<S> save(S entity) {
         Objects.requireNonNull(entity, "entity is required");

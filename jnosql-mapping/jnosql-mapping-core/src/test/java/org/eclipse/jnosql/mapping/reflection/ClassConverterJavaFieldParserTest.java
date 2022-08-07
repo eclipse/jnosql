@@ -38,37 +38,37 @@ public class ClassConverterJavaFieldParserTest {
     @Test
     public void shouldReturnErrorWhenParameterIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            ClassMapping classMapping = classConverter.create(Person.class);
-            classMapping.getColumnField(null);
+            EntityMetadata entityMetadata = classConverter.create(Person.class);
+            entityMetadata.getColumnField(null);
         });
     }
 
     @Test
     public void shouldReturnTheNativeName() {
-        ClassMapping classMapping = classConverter.create(Worker.class);
-        String notFound = classMapping.getColumnField("salary");
+        EntityMetadata entityMetadata = classConverter.create(Worker.class);
+        String notFound = entityMetadata.getColumnField("salary");
         assertEquals("money", notFound);
 
     }
 
     @Test
     public void shouldReturnTheSameValueWhenTheFieldDoesNotExistInTheClassMapping() {
-        ClassMapping classMapping = classConverter.create(Person.class);
-        String notFound = classMapping.getColumnField("notFound");
+        EntityMetadata entityMetadata = classConverter.create(Person.class);
+        String notFound = entityMetadata.getColumnField("notFound");
         assertEquals("notFound", notFound);
     }
 
     @Test
     public void shouldReadFieldWhenFieldIsSubEntity() {
-        ClassMapping classMapping = classConverter.create(Address.class);
-        String result = classMapping.getColumnField("zipCode.plusFour");
+        EntityMetadata entityMetadata = classConverter.create(Address.class);
+        String result = entityMetadata.getColumnField("zipCode.plusFour");
         assertEquals("zipCode.plusFour", result);
     }
 
     @Test
     public void shouldReturnAllFieldWhenSelectTheSubEntityField() {
-        ClassMapping classMapping = classConverter.create(Address.class);
-        String result = classMapping.getColumnField("zipCode");
+        EntityMetadata entityMetadata = classConverter.create(Address.class);
+        String result = entityMetadata.getColumnField("zipCode");
         List<String> resultList = Stream.of(result.split(",")).sorted().collect(toList());
         List<String> expected = Stream.of("zipCode.plusFour", "zipCode.zip").sorted().collect(toList());
         assertEquals(expected, resultList);
@@ -76,15 +76,15 @@ public class ClassConverterJavaFieldParserTest {
 
     @Test
     public void shouldReadFieldWhenFieldIsEmbedded() {
-        ClassMapping classMapping = classConverter.create(Worker.class);
-        String result = classMapping.getColumnField("job.city");
+        EntityMetadata entityMetadata = classConverter.create(Worker.class);
+        String result = entityMetadata.getColumnField("job.city");
         assertEquals("city", result);
     }
 
     @Test
     public void shouldReturnAllFieldWhenSelectTheEmbeddedField() {
-        ClassMapping classMapping = classConverter.create(Worker.class);
-        String result = classMapping.getColumnField("job");
+        EntityMetadata entityMetadata = classConverter.create(Worker.class);
+        String result = entityMetadata.getColumnField("job");
         List<String> resultList = Stream.of(result.split(",")).sorted().collect(toList());
         List<String> expected = Stream.of("description", "city").sorted().collect(toList());
         assertEquals(expected, resultList);
@@ -93,8 +93,8 @@ public class ClassConverterJavaFieldParserTest {
 
     @Test
     public void shouldReturnEmbeddedFieldInCollection() {
-        ClassMapping classMapping = classConverter.create(AppointmentBook.class);
-        String result = classMapping.getColumnField("contacts.name");
+        EntityMetadata entityMetadata = classConverter.create(AppointmentBook.class);
+        String result = entityMetadata.getColumnField("contacts.name");
         assertEquals("contacts.contact_name", result);
     }
 

@@ -26,19 +26,19 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * The default implementation of {@link ClassMapping}.
+ * The default implementation of {@link EntityMetadata}.
  * It's storage the class information in a {@link ConcurrentHashMap}
  */
 @ApplicationScoped
 class DefaultClassMappings implements ClassMappings {
 
-    private Map<String, ClassMapping> mappings;
+    private Map<String, EntityMetadata> mappings;
 
-    private Map<Class<?>, ClassMapping> classes;
+    private Map<Class<?>, EntityMetadata> classes;
 
-    private Map<String, ClassMapping> findBySimpleName;
+    private Map<String, EntityMetadata> findBySimpleName;
 
-    private Map<String, ClassMapping> findByClassName;
+    private Map<String, EntityMetadata> findByClassName;
 
 
     @Inject
@@ -64,23 +64,23 @@ class DefaultClassMappings implements ClassMappings {
     }
 
     void load(Class<?> classEntity) {
-        ClassMapping classMapping = classConverter.create(classEntity);
-        if (classMapping.hasEntityName()) {
-            mappings.put(classEntity.getName(), classMapping);
+        EntityMetadata entityMetadata = classConverter.create(classEntity);
+        if (entityMetadata.hasEntityName()) {
+            mappings.put(classEntity.getName(), entityMetadata);
         }
-        findBySimpleName.put(classEntity.getSimpleName(), classMapping);
-        findByClassName.put(classEntity.getName(), classMapping);
+        findBySimpleName.put(classEntity.getSimpleName(), entityMetadata);
+        findByClassName.put(classEntity.getName(), entityMetadata);
     }
 
     @Override
-    public ClassMapping get(Class<?> classEntity) {
-        ClassMapping classMapping = classes.get(classEntity);
-        if (classMapping == null) {
-            classMapping = classConverter.create(classEntity);
-            classes.put(classEntity, classMapping);
+    public EntityMetadata get(Class<?> classEntity) {
+        EntityMetadata entityMetadata = classes.get(classEntity);
+        if (entityMetadata == null) {
+            entityMetadata = classConverter.create(classEntity);
+            classes.put(classEntity, entityMetadata);
             return this.get(classEntity);
         }
-        return classMapping;
+        return entityMetadata;
     }
 
     @Override
@@ -93,7 +93,7 @@ class DefaultClassMappings implements ClassMappings {
     }
 
     @Override
-    public ClassMapping findByName(String name) {
+    public EntityMetadata findByName(String name) {
         return mappings.keySet().stream()
                 .map(k -> mappings.get(k))
                 .filter(r -> r.getName().equalsIgnoreCase(name)).findFirst()
@@ -101,13 +101,13 @@ class DefaultClassMappings implements ClassMappings {
     }
 
     @Override
-    public Optional<ClassMapping> findBySimpleName(String name) {
+    public Optional<EntityMetadata> findBySimpleName(String name) {
         Objects.requireNonNull(name, "name is required");
         return Optional.ofNullable(findBySimpleName.get(name));
     }
 
     @Override
-    public Optional<ClassMapping> findByClassName(String name) {
+    public Optional<EntityMetadata> findByClassName(String name) {
         Objects.requireNonNull(name, "name is required");
         return Optional.ofNullable(findByClassName.get(name));
     }

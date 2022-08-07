@@ -30,14 +30,14 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * This class is a CDI extension to load all class that has {@link Entity} annotation.
  * This extension will load all Classes and put in a map.
- * Where the key is {@link Class#getName()} and the value is {@link ClassMapping}
+ * Where the key is {@link Class#getName()} and the value is {@link EntityMetadata}
  */
 @ApplicationScoped
 public class ClassMappingExtension implements Extension {
 
-    private final Map<String, ClassMapping> mappings = new ConcurrentHashMap<>();
+    private final Map<String, EntityMetadata> mappings = new ConcurrentHashMap<>();
 
-    private final Map<Class<?>, ClassMapping> classes = new ConcurrentHashMap<>();
+    private final Map<Class<?>, EntityMetadata> classes = new ConcurrentHashMap<>();
 
     private final ClassConverter classConverter;
 
@@ -56,15 +56,15 @@ public class ClassMappingExtension implements Extension {
         AnnotatedType<T> annotatedType = target.getAnnotatedType();
         if (annotatedType.isAnnotationPresent(Entity.class)) {
             Class<T> javaClass = target.getAnnotatedType().getJavaClass();
-            ClassMapping classMapping = classConverter.create(javaClass);
-            if (classMapping.hasEntityName()) {
-                mappings.put(classMapping.getName(), classMapping);
+            EntityMetadata entityMetadata = classConverter.create(javaClass);
+            if (entityMetadata.hasEntityName()) {
+                mappings.put(entityMetadata.getName(), entityMetadata);
             }
-            classes.put(javaClass, classMapping);
+            classes.put(javaClass, entityMetadata);
         } else if (isSubElement(annotatedType)) {
             Class<T> javaClass = target.getAnnotatedType().getJavaClass();
-            ClassMapping classMapping = classConverter.create(javaClass);
-            classes.put(javaClass, classMapping);
+            EntityMetadata entityMetadata = classConverter.create(javaClass);
+            classes.put(javaClass, entityMetadata);
         }
 
     }
@@ -79,7 +79,7 @@ public class ClassMappingExtension implements Extension {
      *
      * @return the class loaded
      */
-    public Map<String, ClassMapping> getMappings() {
+    public Map<String, EntityMetadata> getMappings() {
         return mappings;
     }
 
@@ -88,7 +88,7 @@ public class ClassMappingExtension implements Extension {
      *
      * @return the map instance
      */
-    public Map<Class<?>, ClassMapping> getClasses() {
+    public Map<Class<?>, EntityMetadata> getClasses() {
         return classes;
     }
 

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 
@@ -36,7 +36,7 @@ abstract class AbstractGraphRepository<T, K> implements Repository<T, K> {
 
     protected abstract GraphTemplate getTemplate();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getClassMapping();
 
 
     @Override

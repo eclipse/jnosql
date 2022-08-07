@@ -18,7 +18,7 @@ package org.eclipse.jnosql.mapping.document.query;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
 import java.lang.reflect.ParameterizedType;
@@ -35,7 +35,7 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
 
     private final DocumentRepository repository;
 
-    private final ClassMapping classMapping;
+    private final EntityMetadata entityMetadata;
 
     private final Converters converters;
 
@@ -45,8 +45,8 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
         this.template = template;
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
-        this.classMapping = classMappings.get(typeClass);
-        this.repository = new DocumentRepository(template, classMapping);
+        this.entityMetadata = classMappings.get(typeClass);
+        this.repository = new DocumentRepository(template, entityMetadata);
         this.converters = converters;
     }
 
@@ -62,8 +62,8 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
     }
 
     @Override
-    protected ClassMapping getClassMapping() {
-        return classMapping;
+    protected EntityMetadata getClassMapping() {
+        return entityMetadata;
     }
 
     @Override
@@ -76,11 +76,11 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
 
         private final DocumentTemplate template;
 
-        private final ClassMapping classMapping;
+        private final EntityMetadata entityMetadata;
 
-        DocumentRepository(DocumentTemplate template, ClassMapping classMapping) {
+        DocumentRepository(DocumentTemplate template, EntityMetadata entityMetadata) {
             this.template = template;
-            this.classMapping = classMapping;
+            this.entityMetadata = entityMetadata;
         }
 
         @Override
@@ -89,8 +89,8 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
         }
 
         @Override
-        protected ClassMapping getClassMapping() {
-            return classMapping;
+        protected EntityMetadata getClassMapping() {
+            return entityMetadata;
         }
 
 

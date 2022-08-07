@@ -15,7 +15,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplate;
 import org.eclipse.jnosql.mapping.reactive.ReactiveRepository;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
 import java.lang.reflect.ParameterizedType;
@@ -23,7 +23,7 @@ import java.lang.reflect.ParameterizedType;
 class ReactiveDocumentRepositoryProxy<T> extends AbstractReactiveDocumentRepositoryProxy<T> {
 
 
-    private final ClassMapping classMapping;
+    private final EntityMetadata entityMetadata;
     private final ReactiveRepository<?, ?> repository;
     private final Converters converters;
     private final DocumentTemplate template;
@@ -36,8 +36,8 @@ class ReactiveDocumentRepositoryProxy<T> extends AbstractReactiveDocumentReposit
 
         Class<T> typeClass = (Class<T>) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
-        this.classMapping = classMappings.get(typeClass);
-        this.repository = new DefaultReactiveDocumentRepository<>(reactiveTemplate, classMapping);
+        this.entityMetadata = classMappings.get(typeClass);
+        this.repository = new DefaultReactiveDocumentRepository<>(reactiveTemplate, entityMetadata);
         this.converters = converters;
         this.template = template;
     }
@@ -54,8 +54,8 @@ class ReactiveDocumentRepositoryProxy<T> extends AbstractReactiveDocumentReposit
     }
 
     @Override
-    protected ClassMapping getClassMapping() {
-        return classMapping;
+    protected EntityMetadata getClassMapping() {
+        return entityMetadata;
     }
 
     @Override

@@ -30,7 +30,7 @@ import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.SelectQuery;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
@@ -51,7 +51,7 @@ public abstract class BaseColumnRepository<T> {
 
     protected abstract Converters getConverters();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getClassMapping();
 
     protected abstract ColumnTemplate getTemplate();
 

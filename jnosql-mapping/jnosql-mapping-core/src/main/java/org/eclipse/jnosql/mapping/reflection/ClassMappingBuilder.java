@@ -87,8 +87,8 @@ class ClassMappingBuilder {
     }
 
 
-    public ClassMapping build() {
-        return new DefaultClassMapping(name, fieldsName, classInstance, fields,
+    public EntityMetadata build() {
+        return new DefaultEntityMetadata(name, fieldsName, classInstance, fields,
                 javaFieldGroupedByColumn, fieldsGroupedByName, instanceSupplier, inheritance
                 , hasInheritanceAnnotation);
     }

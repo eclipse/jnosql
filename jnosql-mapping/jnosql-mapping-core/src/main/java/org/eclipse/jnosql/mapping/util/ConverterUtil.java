@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.util;
 import jakarta.nosql.Value;
 import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 import java.lang.reflect.Field;
@@ -46,7 +46,7 @@ public final class ConverterUtil {
      * @param converters the collection of converter
      * @return the value converted
      */
-    public static Object getValue(Object value, ClassMapping mapping, String name, Converters converters) {
+    public static Object getValue(Object value, EntityMetadata mapping, String name, Converters converters) {
         Optional<FieldMapping> fieldOptional = mapping.getFieldMapping(name);
         if (fieldOptional.isPresent()) {
             FieldMapping field = fieldOptional.get();

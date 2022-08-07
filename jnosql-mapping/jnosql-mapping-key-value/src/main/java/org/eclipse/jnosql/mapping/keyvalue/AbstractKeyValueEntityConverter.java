@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
@@ -79,7 +79,7 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
     }
 
     private FieldMapping getId(Class<?> clazz) {
-        ClassMapping mapping = getClassMappings().get(clazz);
+        EntityMetadata mapping = getClassMappings().get(clazz);
         return mapping.getId().orElseThrow(() -> IdNotFoundException.newInstance(clazz));
     }
 }

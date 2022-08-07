@@ -29,7 +29,7 @@ import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.SelectQuery;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
@@ -50,7 +50,7 @@ public abstract class BaseDocumentRepository<T> {
 
     protected abstract Converters getConverters();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getClassMapping();
 
     protected abstract DocumentTemplate getTemplate();
 

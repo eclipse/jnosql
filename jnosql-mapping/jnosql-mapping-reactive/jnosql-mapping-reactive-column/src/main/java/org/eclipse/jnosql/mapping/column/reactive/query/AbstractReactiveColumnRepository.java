@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.column.reactive.query;
 
 import jakarta.nosql.mapping.MappingException;
 import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reactive.Observable;
 import org.eclipse.jnosql.mapping.reactive.ReactiveException;
@@ -41,7 +41,7 @@ public abstract class AbstractReactiveColumnRepository<T, K> implements Reactive
 
     protected abstract ReactiveColumnTemplate getTemplate();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getClassMapping();
 
     @Override
     public <S extends T> Observable<S> save(S entity) {

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnQueryMapper;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -37,14 +37,14 @@ class DefaultColumnQueryMapperBuilder implements ColumnQueryMapper {
     @Override
     public <T> ColumnMapperFrom selectFrom(Class<T> entityClass) {
         requireNonNull(entityClass, "entity is required");
-        ClassMapping mapping = mappings.get().get(entityClass);
+        EntityMetadata mapping = mappings.get().get(entityClass);
         return new DefaultColumnMapperSelectBuilder(mapping, converters.get());
     }
 
     @Override
     public <T> ColumnMapperDeleteFrom deleteFrom(Class<T> entityClass) {
         requireNonNull(entityClass, "entity is required");
-        ClassMapping mapping = mappings.get().get(entityClass);
+        EntityMetadata mapping = mappings.get().get(entityClass);
         return new DefaultColumnMapperDeleteBuilder(mapping, converters.get());
     }
 }

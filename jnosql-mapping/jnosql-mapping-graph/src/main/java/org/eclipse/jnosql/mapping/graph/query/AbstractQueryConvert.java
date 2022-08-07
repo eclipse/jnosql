@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import jakarta.nosql.query.Condition;
 import jakarta.nosql.query.ConditionQueryValue;
 import jakarta.nosql.query.Operator;
@@ -31,7 +31,7 @@ abstract class AbstractQueryConvert {
 
 
     protected GraphTraversal<Vertex, Vertex> getPredicate(GraphQueryMethod graphQuery, Condition condition,
-                                                        ClassMapping mapping) {
+                                                        EntityMetadata mapping) {
         Operator operator = condition.getOperator();
         String name = condition.getName();
         String nativeName = mapping.getColumnField(name);
@@ -70,7 +70,7 @@ abstract class AbstractQueryConvert {
 
     protected GraphTraversal<Vertex, Vertex> getGraphTraversal(GraphQueryMethod graphQuery,
                                                                Supplier<Optional<Where>> whereSupplier,
-                                                               ClassMapping mapping) {
+                                                               EntityMetadata mapping) {
 
         GraphTraversal<Vertex, Vertex> traversal = graphQuery.getTraversal();
         Optional<Where> whereOptional = whereSupplier.get();

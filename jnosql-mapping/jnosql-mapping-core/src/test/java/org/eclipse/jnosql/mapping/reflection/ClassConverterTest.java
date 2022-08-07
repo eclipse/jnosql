@@ -50,48 +50,48 @@ public class ClassConverterTest {
 
     @Test
     public void shouldCreateClassMapping() {
-        ClassMapping classMapping = classConverter.create(Person.class);
+        EntityMetadata entityMetadata = classConverter.create(Person.class);
 
-        assertEquals("Person", classMapping.getName());
-        assertEquals(Person.class, classMapping.getClassInstance());
-        assertEquals(4, classMapping.getFields().size());
-        assertThat(classMapping.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones"));
+        assertEquals("Person", entityMetadata.getName());
+        assertEquals(Person.class, entityMetadata.getClassInstance());
+        assertEquals(4, entityMetadata.getFields().size());
+        assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones"));
 
     }
 
     @Test
     public void shouldCreateClassMapping2() {
-        ClassMapping classMapping = classConverter.create(Actor.class);
+        EntityMetadata entityMetadata = classConverter.create(Actor.class);
 
-        assertEquals("Actor", classMapping.getName());
-        assertEquals(Actor.class, classMapping.getClassInstance());
-        assertEquals(6, classMapping.getFields().size());
-        assertThat(classMapping.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones", "movieCharacter", "movieRating"));
+        assertEquals("Actor", entityMetadata.getName());
+        assertEquals(Actor.class, entityMetadata.getClassInstance());
+        assertEquals(6, entityMetadata.getFields().size());
+        assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones", "movieCharacter", "movieRating"));
 
     }
 
     @Test
     public void shouldCreateClassMappingWithEmbeddedClass() {
-        ClassMapping classMapping = classConverter.create(Director.class);
-        assertEquals("Director", classMapping.getName());
-        assertEquals(Director.class, classMapping.getClassInstance());
-        assertEquals(5, classMapping.getFields().size());
-        assertThat(classMapping.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones", "movie"));
+        EntityMetadata entityMetadata = classConverter.create(Director.class);
+        assertEquals("Director", entityMetadata.getName());
+        assertEquals(Director.class, entityMetadata.getClassInstance());
+        assertEquals(5, entityMetadata.getFields().size());
+        assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones", "movie"));
 
     }
 
     @Test
     public void shouldReturnFalseWhenThereIsNotKey() {
-        ClassMapping classMapping = classConverter.create(Worker.class);
-        boolean allMatch = classMapping.getFields().stream().noneMatch(FieldMapping::isId);
+        EntityMetadata entityMetadata = classConverter.create(Worker.class);
+        boolean allMatch = entityMetadata.getFields().stream().noneMatch(FieldMapping::isId);
         assertTrue(allMatch);
     }
 
 
     @Test
     public void shouldReturnTrueWhenThereIsKey() {
-        ClassMapping classMapping = classConverter.create(User.class);
-        List<FieldMapping> fields = classMapping.getFields();
+        EntityMetadata entityMetadata = classConverter.create(User.class);
+        List<FieldMapping> fields = entityMetadata.getFields();
 
         Predicate<FieldMapping> hasKeyAnnotation = FieldMapping::isId;
         assertTrue(fields.stream().anyMatch(hasKeyAnnotation));
@@ -108,21 +108,21 @@ public class ClassConverterTest {
 
     @Test
     public void shouldReturnWhenIsDefaultConstructor() {
-        ClassMapping classMapping = classConverter.create(Machine.class);
-        List<FieldMapping> fields = classMapping.getFields();
+        EntityMetadata entityMetadata = classConverter.create(Machine.class);
+        List<FieldMapping> fields = entityMetadata.getFields();
         assertEquals(1, fields.size());
     }
 
     @Test
     public void shouldReturnEmptyInheritance() {
-        ClassMapping classMapping = classConverter.create(Person.class);
-        Optional<InheritanceClassMapping> inheritance = classMapping.getInheritance();
+        EntityMetadata entityMetadata = classConverter.create(Person.class);
+        Optional<InheritanceClassMapping> inheritance = entityMetadata.getInheritance();
         Assertions.assertTrue(inheritance.isEmpty());
     }
 
     @Test
     public void shouldInheritance() {
-        ClassMapping entity = classConverter.create(SmallProject.class);
+        EntityMetadata entity = classConverter.create(SmallProject.class);
         Assertions.assertEquals(2, entity.getFields().size());
         Assertions.assertEquals(SmallProject.class, entity.getClassInstance());
 
@@ -136,7 +136,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldInheritanceNoDiscriminatorValue() {
-        ClassMapping entity = classConverter.create(SocialMediaNotification.class);
+        EntityMetadata entity = classConverter.create(SocialMediaNotification.class);
         Assertions.assertEquals(4, entity.getFields().size());
         Assertions.assertEquals(SocialMediaNotification.class, entity.getClassInstance());
 
@@ -150,7 +150,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldInheritanceNoDiscriminatorColumn() {
-        ClassMapping entity = classConverter.create(EmailNotification.class);
+        EntityMetadata entity = classConverter.create(EmailNotification.class);
         Assertions.assertEquals(4, entity.getFields().size());
         Assertions.assertEquals(EmailNotification.class, entity.getClassInstance());
 
@@ -164,7 +164,7 @@ public class ClassConverterTest {
 
     @Test
     public void shouldInheritanceSameParent() {
-        ClassMapping entity = classConverter.create(Project.class);
+        EntityMetadata entity = classConverter.create(Project.class);
         Assertions.assertEquals(1, entity.getFields().size());
         Assertions.assertEquals(Project.class, entity.getClassInstance());
 

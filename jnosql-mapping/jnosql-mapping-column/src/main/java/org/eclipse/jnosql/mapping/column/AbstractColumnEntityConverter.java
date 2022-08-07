@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.ColumnFieldConverters.ColumnFieldConverterFactory;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.ClassMappings;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.FieldType;
@@ -55,7 +55,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
     @Override
     public ColumnEntity toColumn(Object entityInstance) {
         requireNonNull(entityInstance, "Object is required");
-        ClassMapping mapping = getClassMappings().get(entityInstance.getClass());
+        EntityMetadata mapping = getClassMappings().get(entityInstance.getClass());
         ColumnEntity entity = ColumnEntity.of(mapping.getName());
         mapping.getFields().stream()
                 .map(f -> to(f, entityInstance))
@@ -79,14 +79,14 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
     public <T> T toEntity(T entityInstance, ColumnEntity entity) {
         requireNonNull(entity, "entity is required");
         requireNonNull(entityInstance, "entityInstance is required");
-        ClassMapping mapping = getClassMappings().get(entityInstance.getClass());
+        EntityMetadata mapping = getClassMappings().get(entityInstance.getClass());
         return convertEntity(entity.getColumns(), mapping, entityInstance);
     }
 
     @Override
     public <T> T toEntity(ColumnEntity entity) {
         requireNonNull(entity, "entity is required");
-        ClassMapping mapping = getClassMappings().findByName(entity.getName());
+        EntityMetadata mapping = getClassMappings().findByName(entity.getName());
         if (mapping.isInheritance()) {
             return mapInheritanceEntity(entity, mapping.getClassInstance());
         }
@@ -114,12 +114,12 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
 
 
     protected <T> T toEntity(Class<T> entityClass, List<Column> columns) {
-        ClassMapping mapping = getClassMappings().get(entityClass);
+        EntityMetadata mapping = getClassMappings().get(entityClass);
         T instance = mapping.newInstance();
         return convertEntity(columns, mapping, instance);
     }
 
-    private <T> T convertEntity(List<Column> columns, ClassMapping mapping, T instance) {
+    private <T> T convertEntity(List<Column> columns, EntityMetadata mapping, T instance) {
         final Map<String, FieldMapping> fieldsGroupByName = mapping.getFieldsGroupByName();
         final List<String> names = columns.stream().map(Column::getName).sorted().collect(Collectors.toList());
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
@@ -157,7 +157,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        ClassMapping mapping = getClassMappings().get(inheritance.getEntity());
+        EntityMetadata mapping = getClassMappings().get(inheritance.getEntity());
         T instance = mapping.newInstance();
         return convertEntity(entity.getColumns(), mapping, instance);
     }

@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * This instance is the meta-info of a loaded class that used to be annotated with {@link Entity}.
  */
-public interface ClassMapping {
+public interface EntityMetadata {
 
 
     /**

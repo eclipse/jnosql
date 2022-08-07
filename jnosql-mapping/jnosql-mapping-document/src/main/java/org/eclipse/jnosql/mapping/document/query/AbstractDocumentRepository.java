@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 import java.util.Objects;
@@ -39,7 +39,7 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
 
     protected abstract DocumentTemplate getTemplate();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getClassMapping();
 
     @Override
     public <S extends T> S save(S entity) {
