@@ -114,7 +114,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
 
     @Override
     public String toString() {
-        return "DefaultClassMappings{" + "mappings-size=" + mappings.size() +
+        return "DefaultEntitiesMetadata{" + "mappings-size=" + mappings.size() +
                 ", classes=" + classes +
                 ", classConverter=" + classConverter +
                 ", extension=" + extension +
