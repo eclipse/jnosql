@@ -104,7 +104,7 @@ public final class InheritanceMetadata {
 
     @Override
     public String toString() {
-        return "InheritanceClassMapping{" +
+        return "InheritanceMetadata{" +
                 "discriminatorValue='" + discriminatorValue + '\'' +
                 ", discriminatorColumn='" + discriminatorColumn + '\'' +
                 ", parent=" + parent +
