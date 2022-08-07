@@ -21,7 +21,7 @@ import java.util.Map;
 
 import static java.util.Collections.emptyMap;
 
-class ClassMappingBuilder {
+class EntityMetadataBuilder {
 
     private String name;
 
@@ -41,47 +41,47 @@ class ClassMappingBuilder {
 
     private boolean hasInheritanceAnnotation;
 
-    public ClassMappingBuilder withName(String name) {
+    public EntityMetadataBuilder withName(String name) {
         this.name = name;
         return this;
     }
 
-    public ClassMappingBuilder withFieldsName(List<String> fieldsName) {
+    public EntityMetadataBuilder withFieldsName(List<String> fieldsName) {
         this.fieldsName = fieldsName;
         return this;
     }
 
-    public ClassMappingBuilder withClassInstance(Class<?> classInstance) {
+    public EntityMetadataBuilder withClassInstance(Class<?> classInstance) {
         this.classInstance = classInstance;
         return this;
     }
 
-    public ClassMappingBuilder withFields(List<FieldMapping> fields) {
+    public EntityMetadataBuilder withFields(List<FieldMapping> fields) {
         this.fields = fields;
         return this;
     }
 
-    public ClassMappingBuilder withJavaFieldGroupedByColumn(Map<String, NativeMapping> javaFieldGroupedByColumn) {
+    public EntityMetadataBuilder withJavaFieldGroupedByColumn(Map<String, NativeMapping> javaFieldGroupedByColumn) {
         this.javaFieldGroupedByColumn = javaFieldGroupedByColumn;
         return this;
     }
 
-    public ClassMappingBuilder withFieldsGroupedByName(Map<String, FieldMapping> fieldsGroupedByName) {
+    public EntityMetadataBuilder withFieldsGroupedByName(Map<String, FieldMapping> fieldsGroupedByName) {
         this.fieldsGroupedByName = fieldsGroupedByName;
         return this;
     }
 
-    public ClassMappingBuilder withInstanceSupplier(InstanceSupplier instanceSupplier) {
+    public EntityMetadataBuilder withInstanceSupplier(InstanceSupplier instanceSupplier) {
         this.instanceSupplier = instanceSupplier;
         return this;
     }
 
-    public ClassMappingBuilder withInheritance(InheritanceMetadata inheritance) {
+    public EntityMetadataBuilder withInheritance(InheritanceMetadata inheritance) {
         this.inheritance = inheritance;
         return this;
     }
 
-    public ClassMappingBuilder withHasInheritanceAnnotation(boolean hasInheritanceAnnotation) {
+    public EntityMetadataBuilder withHasInheritanceAnnotation(boolean hasInheritanceAnnotation) {
         this.hasInheritanceAnnotation = hasInheritanceAnnotation;
         return this;
     }

@@ -165,10 +165,10 @@ class DefaultEntityMetadata implements EntityMetadata {
     /**
      * Creates a builder
      *
-     * @return {@link ClassMappingBuilder}
+     * @return {@link EntityMetadataBuilder}
      */
-    static ClassMappingBuilder builder() {
-        return new ClassMappingBuilder();
+    static EntityMetadataBuilder builder() {
+        return new EntityMetadataBuilder();
     }
 
 
