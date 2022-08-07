@@ -109,9 +109,9 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
         T entity;
         if(mapping.isInheritance()) {
-            entity =  mapInheritanceEntity(vertex, properties, mapping.getClassInstance());
+            entity =  mapInheritanceEntity(vertex, properties, mapping.getType());
         } else {
-            entity = toEntity((Class<T>) mapping.getClassInstance(), properties);
+            entity = toEntity((Class<T>) mapping.getType(), properties);
         }
         feedId(vertex, entity);
         return entity;
@@ -272,6 +272,6 @@ abstract class AbstractGraphConverter implements GraphConverter {
                         " column value " + discriminator));
 
         EntityMetadata mapping = getClassMappings().get(inheritance.getEntity());
-        return toEntity((Class<T>) mapping.getClassInstance(), properties);
+        return toEntity((Class<T>) mapping.getType(), properties);
     }
 }

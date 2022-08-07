@@ -41,7 +41,7 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
         RepositoryType type = RepositoryType.of(method);
-        Class<?> typeClass = getClassMapping().getClassInstance();
+        Class<?> typeClass = getClassMapping().getType();
 
         switch (type) {
             case DEFAULT:

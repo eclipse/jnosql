@@ -40,7 +40,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
         RepositoryType type = RepositoryType.of(method);
-        Class<?> typeClass = getClassMapping().getClassInstance();
+        Class<?> typeClass = getClassMapping().getType();
 
         switch (type) {
             case DEFAULT:

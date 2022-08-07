@@ -53,7 +53,7 @@ public class ClassConverterTest {
         EntityMetadata entityMetadata = classConverter.create(Person.class);
 
         assertEquals("Person", entityMetadata.getName());
-        assertEquals(Person.class, entityMetadata.getClassInstance());
+        assertEquals(Person.class, entityMetadata.getType());
         assertEquals(4, entityMetadata.getFields().size());
         assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones"));
 
@@ -64,7 +64,7 @@ public class ClassConverterTest {
         EntityMetadata entityMetadata = classConverter.create(Actor.class);
 
         assertEquals("Actor", entityMetadata.getName());
-        assertEquals(Actor.class, entityMetadata.getClassInstance());
+        assertEquals(Actor.class, entityMetadata.getType());
         assertEquals(6, entityMetadata.getFields().size());
         assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones", "movieCharacter", "movieRating"));
 
@@ -74,7 +74,7 @@ public class ClassConverterTest {
     public void shouldCreateClassMappingWithEmbeddedClass() {
         EntityMetadata entityMetadata = classConverter.create(Director.class);
         assertEquals("Director", entityMetadata.getName());
-        assertEquals(Director.class, entityMetadata.getClassInstance());
+        assertEquals(Director.class, entityMetadata.getType());
         assertEquals(5, entityMetadata.getFields().size());
         assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones", "movie"));
 
@@ -124,7 +124,7 @@ public class ClassConverterTest {
     public void shouldInheritance() {
         EntityMetadata entity = classConverter.create(SmallProject.class);
         Assertions.assertEquals(2, entity.getFields().size());
-        Assertions.assertEquals(SmallProject.class, entity.getClassInstance());
+        Assertions.assertEquals(SmallProject.class, entity.getType());
 
         InheritanceClassMapping inheritance = entity.getInheritance()
                 .orElseThrow(MappingException::new);
@@ -138,7 +138,7 @@ public class ClassConverterTest {
     public void shouldInheritanceNoDiscriminatorValue() {
         EntityMetadata entity = classConverter.create(SocialMediaNotification.class);
         Assertions.assertEquals(4, entity.getFields().size());
-        Assertions.assertEquals(SocialMediaNotification.class, entity.getClassInstance());
+        Assertions.assertEquals(SocialMediaNotification.class, entity.getType());
 
         InheritanceClassMapping inheritance = entity.getInheritance()
                 .orElseThrow(MappingException::new);
@@ -152,7 +152,7 @@ public class ClassConverterTest {
     public void shouldInheritanceNoDiscriminatorColumn() {
         EntityMetadata entity = classConverter.create(EmailNotification.class);
         Assertions.assertEquals(4, entity.getFields().size());
-        Assertions.assertEquals(EmailNotification.class, entity.getClassInstance());
+        Assertions.assertEquals(EmailNotification.class, entity.getType());
 
         InheritanceClassMapping inheritance = entity.getInheritance()
                 .orElseThrow(MappingException::new);
@@ -166,7 +166,7 @@ public class ClassConverterTest {
     public void shouldInheritanceSameParent() {
         EntityMetadata entity = classConverter.create(Project.class);
         Assertions.assertEquals(1, entity.getFields().size());
-        Assertions.assertEquals(Project.class, entity.getClassInstance());
+        Assertions.assertEquals(Project.class, entity.getType());
 
         InheritanceClassMapping inheritance = entity.getInheritance()
                 .orElseThrow(MappingException::new);

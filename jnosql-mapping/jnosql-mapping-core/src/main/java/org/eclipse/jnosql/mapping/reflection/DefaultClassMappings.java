@@ -57,7 +57,7 @@ class DefaultClassMappings implements ClassMappings {
         classes.putAll(extension.getClasses());
         mappings.putAll(extension.getMappings());
         mappings.values().forEach(r -> {
-            Class<?> entityClass = r.getClassInstance();
+            Class<?> entityClass = r.getType();
             findBySimpleName.put(entityClass.getSimpleName(), r);
             findByClassName.put(entityClass.getName(), r);
         });

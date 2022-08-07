@@ -75,7 +75,7 @@ class DefaultEntityMetadata implements EntityMetadata {
     }
 
     @Override
-    public Class<?> getClassInstance() {
+    public Class<?> getType() {
         return classInstance;
     }
 

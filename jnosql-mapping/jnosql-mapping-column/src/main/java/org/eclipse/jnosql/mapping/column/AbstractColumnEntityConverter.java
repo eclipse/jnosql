@@ -88,7 +88,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         requireNonNull(entity, "entity is required");
         EntityMetadata mapping = getClassMappings().findByName(entity.getName());
         if (mapping.isInheritance()) {
-            return mapInheritanceEntity(entity, mapping.getClassInstance());
+            return mapInheritanceEntity(entity, mapping.getType());
         }
         T instance = mapping.newInstance();
         return convertEntity(entity.getColumns(), mapping, instance);

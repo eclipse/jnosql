@@ -86,7 +86,7 @@ public abstract class AbstractColumnRepository<T, K> implements Repository<T, K>
     }
 
     private Class<T> getEntityClass() {
-        return (Class<T>) getClassMapping().getClassInstance();
+        return (Class<T>) getClassMapping().getType();
     }
 
     @Override

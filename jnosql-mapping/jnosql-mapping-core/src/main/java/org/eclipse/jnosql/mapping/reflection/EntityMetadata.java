@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Id;
 
 import java.util.List;
@@ -39,9 +38,10 @@ public interface EntityMetadata {
     List<String> getFieldsName();
 
     /**
-     * @return The entity type.
+     * @return a {@code Class} object identifying the declared
+     * type of the entity represented by this object
      */
-    Class<?> getClassInstance();
+    Class<?> getType();
 
     /**
      * Return the parent class of this class mapping.

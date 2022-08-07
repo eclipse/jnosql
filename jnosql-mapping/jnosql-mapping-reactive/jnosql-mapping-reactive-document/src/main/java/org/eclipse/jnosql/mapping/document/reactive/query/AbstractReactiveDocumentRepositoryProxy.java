@@ -40,7 +40,7 @@ public abstract class AbstractReactiveDocumentRepositoryProxy<T> extends BaseDoc
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
         RepositoryType type = ReactiveRepositoryType.of(method);
-        Class<?> typeClass = getClassMapping().getClassInstance();
+        Class<?> typeClass = getClassMapping().getType();
 
         switch (type) {
             case DEFAULT:

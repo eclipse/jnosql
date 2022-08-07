@@ -109,6 +109,6 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
     }
 
     private Class<T> getEntityClass() {
-        return (Class<T>) getClassMapping().getClassInstance();
+        return (Class<T>) getClassMapping().getType();
     }
 }

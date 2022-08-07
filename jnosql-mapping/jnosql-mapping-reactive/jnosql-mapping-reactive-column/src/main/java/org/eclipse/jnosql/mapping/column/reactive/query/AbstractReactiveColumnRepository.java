@@ -164,7 +164,7 @@ public abstract class AbstractReactiveColumnRepository<T, K> implements Reactive
     }
 
     private Class<T> getEntityClass() {
-        return (Class<T>) getClassMapping().getClassInstance();
+        return (Class<T>) getClassMapping().getType();
     }
 
     private <S extends T> CompletionStage<S> loadPublisher(Observable<S> publisher) {

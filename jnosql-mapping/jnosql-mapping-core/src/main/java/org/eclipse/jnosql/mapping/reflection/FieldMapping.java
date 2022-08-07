@@ -41,7 +41,9 @@ public interface FieldMapping {
      *
      * @return the field
      */
-    Field getNativeField();
+    default Field getNativeField() {
+        return null;
+    }
 
     /**
      * Reads the field using {@link FieldReader}

@@ -164,7 +164,7 @@ public abstract class AbstractReactiveDocumentRepository<T, K> implements Reacti
     }
 
     private Class<T> getEntityClass() {
-        return (Class<T>) getClassMapping().getClassInstance();
+        return (Class<T>) getClassMapping().getType();
     }
 
     private <S extends T> CompletionStage<S> loadPublisher(Observable<S> publisher) {
