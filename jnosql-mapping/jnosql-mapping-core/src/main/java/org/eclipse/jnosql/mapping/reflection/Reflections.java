@@ -176,14 +176,14 @@ public interface Reflections {
     /**
      * Reads the entity annotation and checks if the inheritance has an
      * {@link jakarta.nosql.mapping.Inheritance} annotation.
-     * If it has, it will return the {@link InheritanceClassMapping} otherwise it will return
+     * If it has, it will return the {@link InheritanceMetadata} otherwise it will return
      * {@link Optional#empty()}
      *
      * @param entity the entity class
-     * @return the {@link InheritanceClassMapping} or {@link Optional#empty()}
+     * @return the {@link InheritanceMetadata} or {@link Optional#empty()}
      * @throws NullPointerException when entity is null
      */
-    Optional<InheritanceClassMapping> getInheritance(Class<?> entity);
+    Optional<InheritanceMetadata> getInheritance(Class<?> entity);
 
     /**
      * Check if the entity has the {@link jakarta.nosql.mapping.Inheritance} annotation

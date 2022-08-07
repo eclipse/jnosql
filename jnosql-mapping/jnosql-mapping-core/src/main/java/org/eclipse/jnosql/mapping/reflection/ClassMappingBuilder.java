@@ -37,7 +37,7 @@ class ClassMappingBuilder {
 
     private InstanceSupplier instanceSupplier;
 
-    private InheritanceClassMapping inheritance;
+    private InheritanceMetadata inheritance;
 
     private boolean hasInheritanceAnnotation;
 
@@ -76,7 +76,7 @@ class ClassMappingBuilder {
         return this;
     }
 
-    public ClassMappingBuilder withInheritance(InheritanceClassMapping inheritance) {
+    public ClassMappingBuilder withInheritance(InheritanceMetadata inheritance) {
         this.inheritance = inheritance;
         return this;
     }

@@ -26,7 +26,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.InheritanceClassMapping;
+import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -246,7 +246,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     private <T> T mapInheritanceEntity(Vertex vertex,
                                        List<Property> properties, Class<?> entityClass) {
 
-        Map<String, InheritanceClassMapping> group = getClassMappings()
+        Map<String, InheritanceMetadata> group = getClassMappings()
                 .findByParentGroupByDiscriminatorValue(entityClass);
 
         if (group.isEmpty()) {
@@ -256,7 +256,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         String column = group.values()
                 .stream()
                 .findFirst()
-                .map(InheritanceClassMapping::getDiscriminatorColumn)
+                .map(InheritanceMetadata::getDiscriminatorColumn)
                 .orElseThrow();
 
 
@@ -267,7 +267,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
                         () -> new MappingException("To inheritance there is the discriminator column missing" +
                                 " on the Vertex, the document name: " + column));
 
-        InheritanceClassMapping inheritance = Optional.ofNullable(group.get(discriminator))
+        InheritanceMetadata inheritance = Optional.ofNullable(group.get(discriminator))
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 

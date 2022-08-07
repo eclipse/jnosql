@@ -35,13 +35,13 @@ public interface EntitiesMetadata {
     EntityMetadata get(Class<?> classEntity);
 
     /**
-     * Find the {@link InheritanceClassMapping} where the parameter is the parent parameter
+     * Find the {@link InheritanceMetadata} where the parameter is the parent parameter
      * and it returns a map group by the {@link jakarta.nosql.mapping.DiscriminatorValue}
      * @param parent the parent
      * @return a {@link Map}
      * @throws NullPointerException when parent is null
      */
-    Map<String, InheritanceClassMapping> findByParentGroupByDiscriminatorValue(Class<?> parent);
+    Map<String, InheritanceMetadata> findByParentGroupByDiscriminatorValue(Class<?> parent);
 
     /**
      * Returns the {@link EntityMetadata} instance from {@link EntityMetadata#getName()} in ignore case

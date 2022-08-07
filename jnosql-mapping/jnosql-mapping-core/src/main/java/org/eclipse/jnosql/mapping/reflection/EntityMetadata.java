@@ -49,7 +49,7 @@ public interface EntityMetadata {
      *
      * @return the parent annotation otherwise {@link  Optional#empty()}
      */
-    Optional<InheritanceClassMapping> getInheritance();
+    Optional<InheritanceMetadata> getInheritance();
 
     /**
      * A class that has a parent with {@link jakarta.nosql.mapping.Inheritance} annotation

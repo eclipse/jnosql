@@ -25,7 +25,7 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.FieldType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
-import org.eclipse.jnosql.mapping.reflection.InheritanceClassMapping;
+import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
 
 import java.util.Collections;
 import java.util.List;
@@ -135,7 +135,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
     }
 
     private <T> T mapInheritanceEntity(ColumnEntity entity, Class<?> entityClass) {
-        Map<String, InheritanceClassMapping> group = getClassMappings()
+        Map<String, InheritanceMetadata> group = getClassMappings()
                 .findByParentGroupByDiscriminatorValue(entityClass);
 
         if (group.isEmpty()) {
@@ -145,7 +145,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         String column = group.values()
                 .stream()
                 .findFirst()
-                .map(InheritanceClassMapping::getDiscriminatorColumn)
+                .map(InheritanceMetadata::getDiscriminatorColumn)
                 .orElseThrow();
 
         String discriminator = entity.find(column, String.class)
@@ -153,7 +153,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
                         () -> new MappingException("To inheritance there is the discriminator column missing" +
                                 " on the Document Collection, the document name: " + column));
 
-        InheritanceClassMapping inheritance = Optional.ofNullable(group.get(discriminator))
+        InheritanceMetadata inheritance = Optional.ofNullable(group.get(discriminator))
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 

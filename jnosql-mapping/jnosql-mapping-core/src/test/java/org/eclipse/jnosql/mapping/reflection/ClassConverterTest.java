@@ -116,7 +116,7 @@ public class ClassConverterTest {
     @Test
     public void shouldReturnEmptyInheritance() {
         EntityMetadata entityMetadata = classConverter.create(Person.class);
-        Optional<InheritanceClassMapping> inheritance = entityMetadata.getInheritance();
+        Optional<InheritanceMetadata> inheritance = entityMetadata.getInheritance();
         Assertions.assertTrue(inheritance.isEmpty());
     }
 
@@ -126,7 +126,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(2, entity.getFields().size());
         Assertions.assertEquals(SmallProject.class, entity.getType());
 
-        InheritanceClassMapping inheritance = entity.getInheritance()
+        InheritanceMetadata inheritance = entity.getInheritance()
                 .orElseThrow(MappingException::new);
 
         assertEquals("size", inheritance.getDiscriminatorColumn());
@@ -140,7 +140,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(4, entity.getFields().size());
         Assertions.assertEquals(SocialMediaNotification.class, entity.getType());
 
-        InheritanceClassMapping inheritance = entity.getInheritance()
+        InheritanceMetadata inheritance = entity.getInheritance()
                 .orElseThrow(MappingException::new);
 
         assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
@@ -154,7 +154,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(4, entity.getFields().size());
         Assertions.assertEquals(EmailNotification.class, entity.getType());
 
-        InheritanceClassMapping inheritance = entity.getInheritance()
+        InheritanceMetadata inheritance = entity.getInheritance()
                 .orElseThrow(MappingException::new);
 
         assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
@@ -168,7 +168,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(1, entity.getFields().size());
         Assertions.assertEquals(Project.class, entity.getType());
 
-        InheritanceClassMapping inheritance = entity.getInheritance()
+        InheritanceMetadata inheritance = entity.getInheritance()
                 .orElseThrow(MappingException::new);
 
         assertEquals("size", inheritance.getDiscriminatorColumn());

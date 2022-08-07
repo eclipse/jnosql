@@ -42,7 +42,7 @@ class DefaultEntityMetadata implements EntityMetadata {
 
     private final FieldMapping id;
 
-    private final InheritanceClassMapping inheritance;
+    private final InheritanceMetadata inheritance;
 
     private final boolean hasInheritanceAnnotation;
 
@@ -50,7 +50,7 @@ class DefaultEntityMetadata implements EntityMetadata {
                           List<FieldMapping> fields,
                           Map<String, NativeMapping> javaFieldGroupedByColumn,
                           Map<String, FieldMapping> fieldsGroupedByName, InstanceSupplier instanceSupplier,
-                          InheritanceClassMapping inheritance,
+                          InheritanceMetadata inheritance,
                           boolean hasInheritanceAnnotation) {
         this.name = name;
         this.fieldsName = fieldsName;
@@ -80,7 +80,7 @@ class DefaultEntityMetadata implements EntityMetadata {
     }
 
     @Override
-    public Optional<InheritanceClassMapping> getInheritance() {
+    public Optional<InheritanceMetadata> getInheritance() {
         return Optional.ofNullable(inheritance);
     }
 

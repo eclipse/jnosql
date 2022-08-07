@@ -84,12 +84,12 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
     }
 
     @Override
-    public Map<String, InheritanceClassMapping> findByParentGroupByDiscriminatorValue(Class<?> parent) {
+    public Map<String, InheritanceMetadata> findByParentGroupByDiscriminatorValue(Class<?> parent) {
         Objects.requireNonNull(parent, "parent is required");
         return this.classes.values().stream()
                 .flatMap(c -> c.getInheritance().stream())
                 .filter(p -> p.isParent(parent))
-                .collect(Collectors.toMap(InheritanceClassMapping::getDiscriminatorValue, Function.identity()));
+                .collect(Collectors.toMap(InheritanceMetadata::getDiscriminatorValue, Function.identity()));
     }
 
     @Override

@@ -104,7 +104,7 @@ class DefaultEntitiesMetadataTest {
 
     @Test
     public void shouldFindByParentGroupByDiscriminatorValue() {
-        Map<String, InheritanceClassMapping> group = this.mappings
+        Map<String, InheritanceMetadata> group = this.mappings
                 .findByParentGroupByDiscriminatorValue(Notification.class);
 
         Assertions.assertEquals(4, group.size());
@@ -115,7 +115,7 @@ class DefaultEntitiesMetadataTest {
 
     @Test
     public void shouldFindByParentGroupByDiscriminatorValue2() {
-        Map<String, InheritanceClassMapping> group = this.mappings
+        Map<String, InheritanceMetadata> group = this.mappings
                 .findByParentGroupByDiscriminatorValue(Project.class);
 
         Assertions.assertEquals(3, group.size());
