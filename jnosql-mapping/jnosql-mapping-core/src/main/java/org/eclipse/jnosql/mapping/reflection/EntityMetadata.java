@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Id;
 
 import java.util.List;
@@ -22,9 +21,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * This instance is the meta-info of a loaded class that used to be annotated with {@link Entity}.
+ * This instance is the meta-info of a loaded class that has the  {@link jakarta.nosql.mapping.Entity} annotation.
+ * It represents the information of an entity on Jakarta NoSQL as metadata.
  */
-public interface ClassMapping {
+public interface EntityMetadata {
 
 
     /**
@@ -38,9 +38,10 @@ public interface ClassMapping {
     List<String> getFieldsName();
 
     /**
-     * @return The class
+     * @return a {@code Class} object identifying the declared
+     * type of the entity represented by this object
      */
-    Class<?> getClassInstance();
+    Class<?> getType();
 
     /**
      * Return the parent class of this class mapping.
@@ -48,13 +49,13 @@ public interface ClassMapping {
      *
      * @return the parent annotation otherwise {@link  Optional#empty()}
      */
-    Optional<InheritanceClassMapping> getInheritance();
+    Optional<InheritanceMetadata> getInheritance();
 
     /**
      * A class that has a parent with {@link jakarta.nosql.mapping.Inheritance} annotation
      * won't use the name. It will use the parent name instead.
      *
-     * @return true if has not parent class with {@link jakarta.nosql.mapping.Inheritance}
+     * @return true if has not parent class with {@link jakarta.nosql.mapping.Inheritance} or is the parent itself
      */
     boolean hasEntityName();
 

@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.util;
 import jakarta.nosql.Params;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 import java.lang.reflect.Method;
@@ -30,7 +30,7 @@ import java.util.Optional;
  */
 public class ParamsBinder {
 
-    private final ClassMapping mapping;
+    private final EntityMetadata mapping;
 
     private final Converters converters;
 
@@ -40,7 +40,7 @@ public class ParamsBinder {
      * @param converters the converts
      * @throws NullPointerException when there is null parameter
      */
-    public ParamsBinder(ClassMapping mapping, Converters converters) {
+    public ParamsBinder(EntityMetadata mapping, Converters converters) {
         this.mapping = Objects.requireNonNull(mapping, "mapping is required");
         this.converters = Objects.requireNonNull(converters, "converters is required");
     }

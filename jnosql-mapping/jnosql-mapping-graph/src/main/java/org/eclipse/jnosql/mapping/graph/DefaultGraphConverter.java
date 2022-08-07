@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.nosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
@@ -25,16 +25,16 @@ import javax.inject.Inject;
 @ApplicationScoped
 class DefaultGraphConverter extends AbstractGraphConverter implements GraphConverter {
 
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     private Converters converters;
 
     private Instance<Graph> graph;
 
     @Inject
-    DefaultGraphConverter(ClassMappings classMappings, Converters converters,
+    DefaultGraphConverter(EntitiesMetadata entities, Converters converters,
                           Instance<Graph> graph) {
-        this.classMappings = classMappings;
+        this.entities = entities;
         this.converters = converters;
         this.graph = graph;
     }
@@ -43,8 +43,8 @@ class DefaultGraphConverter extends AbstractGraphConverter implements GraphConve
     }
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return classMappings;
+    protected EntitiesMetadata getEntities() {
+        return entities;
     }
 
     @Override

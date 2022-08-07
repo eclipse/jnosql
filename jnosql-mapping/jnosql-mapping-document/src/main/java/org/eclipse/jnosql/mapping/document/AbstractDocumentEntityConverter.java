@@ -20,12 +20,12 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.document.DocumentFieldConverters.DocumentFieldConverterFactory;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.FieldType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
-import org.eclipse.jnosql.mapping.reflection.InheritanceClassMapping;
+import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +44,7 @@ import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
  */
 public abstract class AbstractDocumentEntityConverter implements DocumentEntityConverter {
 
-    protected abstract ClassMappings getClassMappings();
+    protected abstract EntitiesMetadata getEntityMetadata();
 
     protected abstract Converters getConverters();
 
@@ -54,7 +54,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     @Override
     public DocumentEntity toDocument(Object entityInstance) {
         requireNonNull(entityInstance, "Object is required");
-        ClassMapping mapping = getClassMappings().get(entityInstance.getClass());
+        EntityMetadata mapping = getEntityMetadata().get(entityInstance.getClass());
         DocumentEntity entity = DocumentEntity.of(mapping.getName());
         mapping.getFields().stream()
                 .map(f -> to(f, entityInstance))
@@ -80,12 +80,12 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     public <T> T toEntity(T entityInstance, DocumentEntity entity) {
         requireNonNull(entity, "entity is required");
         requireNonNull(entityInstance, "entityInstance is required");
-        ClassMapping mapping = getClassMappings().get(entityInstance.getClass());
+        EntityMetadata mapping = getEntityMetadata().get(entityInstance.getClass());
         return convertEntity(entity.getDocuments(), mapping, entityInstance);
     }
 
     protected <T> T toEntity(Class<T> entityClass, List<Document> documents) {
-        ClassMapping mapping = getClassMappings().get(entityClass);
+        EntityMetadata mapping = getEntityMetadata().get(entityClass);
         T instance = mapping.newInstance();
         return convertEntity(documents, mapping, instance);
     }
@@ -95,16 +95,16 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     @Override
     public <T> T toEntity(DocumentEntity entity) {
         requireNonNull(entity, "entity is required");
-        ClassMapping mapping = getClassMappings().findByName(entity.getName());
+        EntityMetadata mapping = getEntityMetadata().findByName(entity.getName());
         if (mapping.isInheritance()) {
-            return mapInheritanceEntity(entity, mapping.getClassInstance());
+            return mapInheritanceEntity(entity, mapping.getType());
         }
         T instance = mapping.newInstance();
         return convertEntity(entity.getDocuments(), mapping, instance);
     }
 
     private <T> T mapInheritanceEntity(DocumentEntity entity, Class<?> entityClass) {
-        Map<String, InheritanceClassMapping> group = getClassMappings()
+        Map<String, InheritanceMetadata> group = getEntityMetadata()
                 .findByParentGroupByDiscriminatorValue(entityClass);
 
         if (group.isEmpty()) {
@@ -114,7 +114,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         String column = group.values()
                 .stream()
                 .findFirst()
-                .map(InheritanceClassMapping::getDiscriminatorColumn)
+                .map(InheritanceMetadata::getDiscriminatorColumn)
                 .orElseThrow();
 
         String discriminator = entity.find(column, String.class)
@@ -122,16 +122,16 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
                         () -> new MappingException("To inheritance there is the discriminator column missing" +
                                 " on the Document Collection, the document name: " + column));
 
-        InheritanceClassMapping inheritance = Optional.ofNullable(group.get(discriminator))
+        InheritanceMetadata inheritance = Optional.ofNullable(group.get(discriminator))
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        ClassMapping mapping = getClassMappings().get(inheritance.getEntity());
+        EntityMetadata mapping = getEntityMetadata().get(inheritance.getEntity());
         T instance = mapping.newInstance();
         return convertEntity(entity.getDocuments(), mapping, instance);
     }
 
-    private <T> T convertEntity(List<Document> documents, ClassMapping mapping, T instance) {
+    private <T> T convertEntity(List<Document> documents, EntityMetadata mapping, T instance) {
         final Map<String, FieldMapping> fieldsGroupByName = mapping.getFieldsGroupByName();
         final List<String> names = documents.stream().map(Document::getName).sorted().collect(Collectors.toList());
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;

@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.mapping.column.ColumnWorkflow;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -37,7 +37,7 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
 
     private ColumnEventPersistManager eventManager;
 
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     private Converters converters;
 
@@ -45,12 +45,12 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
     DefaultColumnTemplate(ColumnEntityConverter converter, Instance<ColumnFamilyManager> manager,
                           ColumnWorkflow flow,
                           ColumnEventPersistManager eventManager,
-                          ClassMappings classMappings, Converters converters) {
+                          EntitiesMetadata entities, Converters converters) {
         this.converter = converter;
         this.manager = manager;
         this.flow = flow;
         this.eventManager = eventManager;
-        this.classMappings = classMappings;
+        this.entities = entities;
         this.converters = converters;
     }
 
@@ -79,8 +79,8 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
     }
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return classMappings;
+    protected EntitiesMetadata getEntities() {
+        return entities;
     }
 
     @Override

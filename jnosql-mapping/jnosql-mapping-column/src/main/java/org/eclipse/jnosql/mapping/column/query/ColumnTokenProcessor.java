@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 interface ColumnTokenProcessor {
 
@@ -24,6 +24,6 @@ interface ColumnTokenProcessor {
                             int index,
                             Object[] args,
                             String methodName,
-                            ClassMapping mapping,
+                            EntityMetadata mapping,
                             Converters converters);
 }

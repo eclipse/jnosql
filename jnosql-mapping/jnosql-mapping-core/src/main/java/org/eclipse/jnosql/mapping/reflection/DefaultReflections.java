@@ -208,18 +208,18 @@ public class DefaultReflections implements Reflections {
     }
 
     @Override
-    public Optional<InheritanceClassMapping> getInheritance(Class<?> entity) {
+    public Optional<InheritanceMetadata> getInheritance(Class<?> entity) {
         Objects.requireNonNull(entity, "entity is required");
         if(isInheritance(entity)) {
             Class<?> parent = entity.getSuperclass();
             String discriminatorColumn = getDiscriminatorColumn(parent);
             String discriminatorValue = getDiscriminatorValue(entity);
-            return Optional.of(new InheritanceClassMapping(discriminatorValue, discriminatorColumn,
+            return Optional.of(new InheritanceMetadata(discriminatorValue, discriminatorColumn,
                     parent, entity));
         } else if(entity.getAnnotation(Inheritance.class) != null) {
             String discriminatorColumn = getDiscriminatorColumn(entity);
             String discriminatorValue = getDiscriminatorValue(entity);
-            return Optional.of(new InheritanceClassMapping(discriminatorValue, discriminatorColumn,
+            return Optional.of(new InheritanceMetadata(discriminatorValue, discriminatorColumn,
                     entity, entity));
         }
         return Optional.empty();

@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column.query;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
 import java.util.List;
@@ -40,7 +40,7 @@ abstract class AbstractMapperQuery {
 
     protected String name;
 
-    protected final ClassMapping mapping;
+    protected final EntityMetadata mapping;
 
     protected final Converters converters;
 
@@ -49,7 +49,7 @@ abstract class AbstractMapperQuery {
     protected long limit;
 
 
-    AbstractMapperQuery(ClassMapping mapping, Converters converters) {
+    AbstractMapperQuery(EntityMetadata mapping, Converters converters) {
         this.mapping = mapping;
         this.converters = converters;
         this.columnFamily = mapping.getName();

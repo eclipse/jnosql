@@ -18,8 +18,8 @@ package org.eclipse.jnosql.mapping.column.query;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -37,18 +37,18 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
 
     private final ColumnRepository repository;
 
-    private final ClassMapping classMapping;
+    private final EntityMetadata entityMetadata;
 
     private final Converters converters;
 
 
-    ColumnRepositoryProxy(ColumnTemplate template, ClassMappings classMappings, Class<?> repositoryType,
+    ColumnRepositoryProxy(ColumnTemplate template, EntitiesMetadata entities, Class<?> repositoryType,
                           Converters converters) {
         this.template = template;
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
                 .getActualTypeArguments()[0];
-        this.classMapping = classMappings.get(typeClass);
-        this.repository = new ColumnRepository(template, classMapping);
+        this.entityMetadata = entities.get(typeClass);
+        this.repository = new ColumnRepository(template, entityMetadata);
         this.converters = converters;
     }
 
@@ -58,8 +58,8 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
     }
 
     @Override
-    protected ClassMapping getClassMapping() {
-        return classMapping;
+    protected EntityMetadata getEntityMetadata() {
+        return entityMetadata;
     }
 
     @Override
@@ -77,11 +77,11 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
 
         private final ColumnTemplate template;
 
-        private final ClassMapping classMapping;
+        private final EntityMetadata entityMetadata;
 
-        ColumnRepository(ColumnTemplate template, ClassMapping classMapping) {
+        ColumnRepository(ColumnTemplate template, EntityMetadata entityMetadata) {
             this.template = template;
-            this.classMapping = classMapping;
+            this.entityMetadata = entityMetadata;
         }
 
         @Override
@@ -90,8 +90,8 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
         }
 
         @Override
-        protected ClassMapping getClassMapping() {
-            return classMapping;
+        protected EntityMetadata getEntityMetadata() {
+            return entityMetadata;
         }
 
     }

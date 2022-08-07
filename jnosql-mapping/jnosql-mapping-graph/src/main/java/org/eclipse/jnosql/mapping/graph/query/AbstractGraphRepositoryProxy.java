@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -50,7 +50,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
     private final DeleteQueryConverter deleteConverter = new DeleteQueryConverter();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getEntityMetadata();
 
     protected abstract Repository getRepository();
 
@@ -67,7 +67,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
         RepositoryType type = RepositoryType.of(method);
-        Class<?> typeClass = getClassMapping().getClassInstance();
+        Class<?> typeClass = getEntityMetadata().getType();
 
         switch (type) {
             case DEFAULT:
@@ -99,7 +99,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
         Supplier<Stream<?>> querySupplier = () -> {
 
-            GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V().hasLabel(getClassMapping().getName());
+            GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V().hasLabel(getEntityMetadata().getName());
 
             SelectQueryConverter.setSort(args, traversal);
             SelectQueryConverter.setPagination(args, traversal);
@@ -113,7 +113,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
     private Object findBy(Method method, Object[] args, Class<?> typeClass) {
 
         Supplier<Stream<?>> querySupplier = () -> {
-            GraphQueryMethod queryMethod = new GraphQueryMethod(getClassMapping(),
+            GraphQueryMethod queryMethod = new GraphQueryMethod(getEntityMetadata(),
                     getGraph().traversal().V(),
                     getConverters(), method, args);
 
@@ -151,7 +151,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
     private Object executeDeleteMethod(Method method, Object[] args) {
 
-        GraphQueryMethod queryMethod = new GraphQueryMethod(getClassMapping(),
+        GraphQueryMethod queryMethod = new GraphQueryMethod(getEntityMetadata(),
                 getGraph().traversal().V(),
                 getConverters(), method, args);
 

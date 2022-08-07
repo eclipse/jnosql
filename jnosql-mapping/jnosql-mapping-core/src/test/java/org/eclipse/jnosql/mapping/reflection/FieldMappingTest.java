@@ -40,8 +40,8 @@ public class FieldMappingTest {
 
     @Test
     public void shouldReadDefaultField() {
-        ClassMapping classMapping = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = classMapping.getFields();
+        EntityMetadata entityMetadata = classConverter.create(ForClass.class);
+        List<FieldMapping> fields = entityMetadata.getFields();
 
         FieldMapping field = fields.stream()
                 .filter(f -> "string".equals(f.getFieldName())).findFirst().get();
@@ -54,8 +54,8 @@ public class FieldMappingTest {
 
     @Test
     public void shouldReadCollectionField() {
-        ClassMapping classMapping = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = classMapping.getFields();
+        EntityMetadata entityMetadata = classConverter.create(ForClass.class);
+        List<FieldMapping> fields = entityMetadata.getFields();
         FieldMapping field = fields.stream()
                 .filter(f -> "list".equals(f.getFieldName())).findFirst().get();
 
@@ -66,8 +66,8 @@ public class FieldMappingTest {
 
     @Test
     public void shouldReadMapField() {
-        ClassMapping classMapping = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = classMapping.getFields();
+        EntityMetadata entityMetadata = classConverter.create(ForClass.class);
+        List<FieldMapping> fields = entityMetadata.getFields();
         FieldMapping field = fields.stream()
                 .filter(f -> "map".equals(f.getFieldName())).findFirst().get();
 
@@ -79,8 +79,8 @@ public class FieldMappingTest {
 
     @Test
     public void shouldReadEmbeddableField() {
-        ClassMapping classMapping = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = classMapping.getFields();
+        EntityMetadata entityMetadata = classConverter.create(ForClass.class);
+        List<FieldMapping> fields = entityMetadata.getFields();
         FieldMapping field = fields.stream()
                 .filter(f -> "barClass".equals(f.getFieldName())).findFirst().get();
 
@@ -98,12 +98,12 @@ public class FieldMappingTest {
         forClass.barClass = new BarClass();
         forClass.barClass.integer = 10;
 
-        ClassMapping classMapping = classConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = classConverter.create(ForClass.class);
 
-        FieldMapping string = classMapping.getFieldMapping("string").get();
-        FieldMapping list = classMapping.getFieldMapping("list").get();
-        FieldMapping map = classMapping.getFieldMapping("map").get();
-        FieldMapping barClass = classMapping.getFieldMapping("barClass").get();
+        FieldMapping string = entityMetadata.getFieldMapping("string").get();
+        FieldMapping list = entityMetadata.getFieldMapping("list").get();
+        FieldMapping map = entityMetadata.getFieldMapping("map").get();
+        FieldMapping barClass = entityMetadata.getFieldMapping("barClass").get();
 
         assertEquals("text", string.read(forClass));
         assertEquals(forClass.list, list.read(forClass));
@@ -118,12 +118,12 @@ public class FieldMappingTest {
         BarClass value = new BarClass();
         value.integer = 10;
 
-        ClassMapping classMapping = classConverter.create(ForClass.class);
+        EntityMetadata entityMetadata = classConverter.create(ForClass.class);
 
-        FieldMapping string = classMapping.getFieldMapping("string").get();
-        FieldMapping list = classMapping.getFieldMapping("list").get();
-        FieldMapping map = classMapping.getFieldMapping("map").get();
-        FieldMapping barClass = classMapping.getFieldMapping("barClass").get();
+        FieldMapping string = entityMetadata.getFieldMapping("string").get();
+        FieldMapping list = entityMetadata.getFieldMapping("list").get();
+        FieldMapping map = entityMetadata.getFieldMapping("map").get();
+        FieldMapping barClass = entityMetadata.getFieldMapping("barClass").get();
 
         string.write(forClass, "text");
         list.write(forClass, Collections.singletonList("text"));

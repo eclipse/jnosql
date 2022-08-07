@@ -21,7 +21,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
 
@@ -75,7 +75,7 @@ public class RepositoryGraphBean extends AbstractBean<Repository>{
     @Override
     public Repository create(CreationalContext<Repository> creationalContext) {
 
-        ClassMappings classMappings = getInstance(ClassMappings.class);
+        EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
         GraphTemplate repository = provider.isEmpty() ? getInstance(GraphTemplate.class) :
                 getInstance(GraphTemplate.class, DatabaseQualifier.ofGraph(provider));
         GraphConverter converter = getInstance(GraphConverter.class);
@@ -84,7 +84,7 @@ public class RepositoryGraphBean extends AbstractBean<Repository>{
         Converters converters = getInstance(Converters.class);
 
         GraphRepositoryProxy handler = new GraphRepositoryProxy(repository,
-                classMappings, type, graph, converter, converters);
+                entities, type, graph, converter, converters);
         return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

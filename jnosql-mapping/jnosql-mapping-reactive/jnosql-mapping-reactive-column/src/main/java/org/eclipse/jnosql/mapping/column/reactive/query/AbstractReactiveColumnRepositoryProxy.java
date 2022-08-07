@@ -41,7 +41,7 @@ public abstract class AbstractReactiveColumnRepositoryProxy<T> extends BaseColum
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
         RepositoryType type = ReactiveRepositoryType.of(method);
-        Class<?> typeClass = getClassMapping().getClassInstance();
+        Class<?> typeClass = getEntityMetadata().getType();
 
         switch (type) {
             case DEFAULT:
@@ -50,7 +50,7 @@ public abstract class AbstractReactiveColumnRepositoryProxy<T> extends BaseColum
                 ColumnQuery query = getQuery(method, args);
                 return executeQuery(method, args, typeClass, query);
             case FIND_ALL:
-                ColumnQuery queryFindAll = select().from(getClassMapping().getName()).build();
+                ColumnQuery queryFindAll = select().from(getEntityMetadata().getName()).build();
                 return executeQuery(method, args, typeClass, getQuerySorts(args, queryFindAll));
             case DELETE_BY:
                 ColumnDeleteQuery columnDeleteQuery = getDeleteQuery(method, args);

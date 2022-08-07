@@ -23,7 +23,7 @@ import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplate;
 import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplateProducer;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.eclipse.jnosql.mapping.reactive.Observable;
@@ -69,7 +69,7 @@ public class ColumnReactiveRepositoryProxyTest {
     private ColumnTemplate template;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -87,7 +87,7 @@ public class ColumnReactiveRepositoryProxyTest {
         final ReactiveColumnTemplate reactiveTemplate = reactiveProducer.get(template);
 
         ReactiveColumnRepositoryProxy<?> personHandler = new ReactiveColumnRepositoryProxy<>(reactiveTemplate,
-                template, converters, classMappings, PersonRepository.class);
+                template, converters, entities, PersonRepository.class);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());

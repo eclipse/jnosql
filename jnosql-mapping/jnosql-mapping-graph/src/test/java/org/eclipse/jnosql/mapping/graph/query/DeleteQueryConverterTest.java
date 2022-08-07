@@ -17,8 +17,8 @@ package org.eclipse.jnosql.mapping.graph.query;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.graph.model.Person;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
@@ -47,7 +47,7 @@ class DeleteQueryConverterTest {
     private DeleteQueryConverter converter;
 
     @Inject
-    private ClassMappings mappings;
+    private EntitiesMetadata mappings;
 
     @Inject
     private Converters converters;
@@ -82,7 +82,7 @@ class DeleteQueryConverterTest {
         graph.addVertex("Person").property("name", "Otavio");
         graph.addVertex("Person").property("name", "Ada");
         graph.addVertex("Person").property("name", "Poliana");
-        ClassMapping mapping = mappings.get(Person.class);
+        EntityMetadata mapping = mappings.get(Person.class);
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{"Ada"});
 
@@ -101,7 +101,7 @@ class DeleteQueryConverterTest {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 40);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 25);
-        ClassMapping mapping = mappings.get(Person.class);
+        EntityMetadata mapping = mappings.get(Person.class);
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{30});
 
@@ -119,7 +119,7 @@ class DeleteQueryConverterTest {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 40);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 25);
-        ClassMapping mapping = mappings.get(Person.class);
+        EntityMetadata mapping = mappings.get(Person.class);
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{30});
 
@@ -139,7 +139,7 @@ class DeleteQueryConverterTest {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 40);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 25);
-        ClassMapping mapping = mappings.get(Person.class);
+        EntityMetadata mapping = mappings.get(Person.class);
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{30});
 
@@ -157,7 +157,7 @@ class DeleteQueryConverterTest {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 40);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 25);
-        ClassMapping mapping = mappings.get(Person.class);
+        EntityMetadata mapping = mappings.get(Person.class);
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{30});
 
@@ -176,7 +176,7 @@ class DeleteQueryConverterTest {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 40);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 25);
-        ClassMapping mapping = mappings.get(Person.class);
+        EntityMetadata mapping = mappings.get(Person.class);
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{29, 41});
 
@@ -196,7 +196,7 @@ class DeleteQueryConverterTest {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 40);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 25);
-        ClassMapping mapping = mappings.get(Person.class);
+        EntityMetadata mapping = mappings.get(Person.class);
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{Arrays.asList(25,40,30)});
 
@@ -217,7 +217,7 @@ class DeleteQueryConverterTest {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
         graph.addVertex(T.label, "Person", "name", "Ada", "age", 40);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 25);
-        ClassMapping mapping = mappings.get(Person.class);
+        EntityMetadata mapping = mappings.get(Person.class);
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{Arrays.asList("Otavio", "Ada", "Poliana")});
 
@@ -237,7 +237,7 @@ class DeleteQueryConverterTest {
         graph.addVertex("Person").property("name", "Otavio");
         graph.addVertex("Person").property("name", "Ada");
         graph.addVertex("Person").property("name", "Poliana");
-        ClassMapping mapping = mappings.get(Person.class);
+        EntityMetadata mapping = mappings.get(Person.class);
         GraphQueryMethod queryMethod = new GraphQueryMethod(mapping, graph.traversal().V(),
                 converters, method, new Object[]{"Ada"});
 

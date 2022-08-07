@@ -27,8 +27,8 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
@@ -62,7 +62,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     protected abstract Graph getGraph();
 
-    protected abstract ClassMappings getClassMappings();
+    protected abstract EntitiesMetadata getEntities();
 
     protected abstract GraphConverter getConverter();
 
@@ -122,13 +122,13 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T, K> Optional<T> find(Class<T> entityClass, K id) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
-        ClassMapping classMapping = getClassMappings().get(entityClass);
-        FieldMapping idField = classMapping.getId()
+        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        FieldMapping idField = entityMetadata.getId()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
-        Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
 
-        final Optional<Vertex> vertex = getTraversal().V(value).hasLabel(classMapping.getName()).tryNext();
+        final Optional<Vertex> vertex = getTraversal().V(value).hasLabel(entityMetadata.getName()).tryNext();
         return (Optional<T>) vertex.map(getConverter()::toEntity);
     }
 
@@ -142,7 +142,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T, K> void delete(Class<T> entityClass, K id) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
-        ClassMapping mapping = getClassMappings().get(entityClass);
+        EntityMetadata mapping = getEntities().get(entityClass);
         getTraversal()
                 .V(id)
                 .hasLabel(mapping.getName())
@@ -345,7 +345,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <T> long count(Class<T> entityClass) {
         Objects.requireNonNull(entityClass, "entity class is required");
-        return count(getClassMappings().get(entityClass).getName());
+        return count(getEntities().get(entityClass).getName());
     }
 
     private <K> Collection<EdgeEntity> getEdgesByIdImpl(K id, Direction direction, String... labels) {
@@ -363,8 +363,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     private <T> Optional<Vertex> getVertex(T entity) {
-        ClassMapping classMapping = getClassMappings().get(entity.getClass());
-        FieldMapping field = classMapping.getId().get();
+        EntityMetadata entityMetadata = getEntities().get(entity.getClass());
+        FieldMapping field = entityMetadata.getId().get();
         Object id = field.read(entity);
         Iterator<Vertex> vertices = getVertices(id);
         if (vertices.hasNext()) {
@@ -394,14 +394,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     private <T> boolean isIdNull(T entity) {
-        ClassMapping classMapping = getClassMappings().get(entity.getClass());
-        FieldMapping field = classMapping.getId().get();
+        EntityMetadata entityMetadata = getEntities().get(entity.getClass());
+        FieldMapping field = entityMetadata.getId().get();
         return isNull(field.read(entity));
 
     }
 
     private <T> void checkId(T entity) {
-        ClassMapping classMapping = getClassMappings().get(entity.getClass());
-        classMapping.getId().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
+        EntityMetadata entityMetadata = getEntities().get(entity.getClass());
+        entityMetadata.getId().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
     }
 }

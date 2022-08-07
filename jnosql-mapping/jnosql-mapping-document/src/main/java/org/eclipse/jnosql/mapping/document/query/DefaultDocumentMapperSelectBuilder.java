@@ -30,7 +30,7 @@ import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperSkip;
 import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperWhere;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
     private final List<Sort> sorts = new ArrayList<>();
 
 
-    DefaultDocumentMapperSelectBuilder(ClassMapping mapping, Converters converters) {
+    DefaultDocumentMapperSelectBuilder(EntityMetadata mapping, Converters converters) {
         super(mapping, converters);
     }
 

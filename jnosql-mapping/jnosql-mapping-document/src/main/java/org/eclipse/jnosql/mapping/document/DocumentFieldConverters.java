@@ -18,7 +18,7 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.mapping.AttributeConverter;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
 
@@ -103,7 +103,7 @@ class DocumentFieldConverters {
 
             Field nativeField = field.getNativeField();
             Object subEntity = converter.toEntity(nativeField.getType(), documents);
-            ClassMapping mapping = converter.getClassMappings().get(subEntity.getClass());
+            EntityMetadata mapping = converter.getEntityMetadata().get(subEntity.getClass());
             boolean areAllFieldsNull = mapping.getFields()
                     .stream()
                     .map(f -> f.read(subEntity))

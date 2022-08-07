@@ -29,7 +29,7 @@ import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.SelectQuery;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
@@ -50,7 +50,7 @@ public abstract class BaseDocumentRepository<T> {
 
     protected abstract Converters getConverters();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getEntityMetadata();
 
     protected abstract DocumentTemplate getTemplate();
 
@@ -61,7 +61,7 @@ public abstract class BaseDocumentRepository<T> {
 
     protected DocumentQuery getQuery(Method method, Object[] args) {
         SelectMethodProvider methodProvider = SelectMethodProvider.get();
-        SelectQuery selectQuery = methodProvider.apply(method, getClassMapping().getName());
+        SelectQuery selectQuery = methodProvider.apply(method, getEntityMetadata().getName());
         SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class,
                 ()-> ServiceLoader.load(SelectQueryConverter.class));
         DocumentQueryParams queryParams = converter.apply(selectQuery, getParser());
@@ -85,7 +85,7 @@ public abstract class BaseDocumentRepository<T> {
 
     protected DocumentDeleteQuery getDeleteQuery(Method method, Object[] args) {
         DeleteMethodProvider methodProvider = DeleteMethodProvider.get();
-        DeleteQuery deleteQuery = methodProvider.apply(method, getClassMapping().getName());
+        DeleteQuery deleteQuery = methodProvider.apply(method, getEntityMetadata().getName());
         DeleteQueryConverter converter = ServiceLoaderProvider.get(DeleteQueryConverter.class,
                 ()-> ServiceLoader.load(DeleteQueryConverter.class));
         DocumentDeleteQueryParams queryParams = converter.apply(deleteQuery, getParser());
@@ -98,14 +98,14 @@ public abstract class BaseDocumentRepository<T> {
 
     protected DocumentObserverParser getParser() {
         if (parser == null) {
-            this.parser = new RepositoryDocumentObserverParser(getClassMapping());
+            this.parser = new RepositoryDocumentObserverParser(getEntityMetadata());
         }
         return parser;
     }
 
     protected ParamsBinder getParamsBinder() {
         if (Objects.isNull(paramsBinder)) {
-            this.paramsBinder = new ParamsBinder(getClassMapping(), getConverters());
+            this.paramsBinder = new ParamsBinder(getEntityMetadata(), getConverters());
         }
         return paramsBinder;
     }

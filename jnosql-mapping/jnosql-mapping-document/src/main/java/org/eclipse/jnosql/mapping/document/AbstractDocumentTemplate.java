@@ -32,8 +32,8 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
@@ -68,7 +68,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     protected abstract DocumentEventPersistManager getPersistManager();
 
-    protected abstract ClassMappings getClassMappings();
+    protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();
 
@@ -81,7 +81,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     private DocumentObserverParser getObserver() {
         if (Objects.isNull(columnQueryParser)) {
-            columnQueryParser = new DocumentMapperObserver(getClassMappings());
+            columnQueryParser = new DocumentMapperObserver(getEntities());
         }
         return columnQueryParser;
     }
@@ -169,12 +169,12 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     public <T, K> Optional<T> find(Class<T> entityClass, K id) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
-        ClassMapping classMapping = getClassMappings().get(entityClass);
-        FieldMapping idField = classMapping.getId()
+        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        FieldMapping idField = entityMetadata.getId()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
-        Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
-        DocumentQuery query = DocumentQuery.select().from(classMapping.getName())
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
+        DocumentQuery query = DocumentQuery.select().from(entityMetadata.getName())
                 .where(idField.getName()).eq(value).build();
 
         return singleResult(query);
@@ -185,12 +185,12 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
 
-        ClassMapping classMapping = getClassMappings().get(entityClass);
-        FieldMapping idField = classMapping.getId()
+        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        FieldMapping idField = entityMetadata.getId()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
-        Object value = ConverterUtil.getValue(id, classMapping, idField.getFieldName(), getConverters());
-        DocumentDeleteQuery query = DocumentDeleteQuery.delete().from(classMapping.getName())
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
+        DocumentDeleteQuery query = DocumentDeleteQuery.delete().from(entityMetadata.getName())
                 .where(idField.getName()).eq(value).build();
 
         delete(query);
@@ -230,8 +230,8 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     public <T> long count(Class<T> entityClass) {
         requireNonNull(entityClass, "entityClass is required");
-        ClassMapping classMapping = getClassMappings().get(entityClass);
-        return getManager().count(classMapping.getName());
+        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        return getManager().count(entityMetadata.getName());
     }
 
     private <T> Stream<T> executeQuery(DocumentQuery query) {

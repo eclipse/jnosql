@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * The mapping information about {@link jakarta.nosql.mapping.Inheritance}
  */
-public final class InheritanceClassMapping {
+public final class InheritanceMetadata {
 
     private final String discriminatorValue;
 
@@ -29,7 +29,7 @@ public final class InheritanceClassMapping {
 
     private final Class<?> entity;
 
-    InheritanceClassMapping(String discriminatorValue, String discriminatorColumn, Class<?> parent
+    InheritanceMetadata(String discriminatorValue, String discriminatorColumn, Class<?> parent
     , Class<?> entity) {
         this.discriminatorValue = discriminatorValue;
         this.discriminatorColumn = discriminatorColumn;
@@ -91,7 +91,7 @@ public final class InheritanceClassMapping {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InheritanceClassMapping that = (InheritanceClassMapping) o;
+        InheritanceMetadata that = (InheritanceMetadata) o;
         return Objects.equals(discriminatorValue, that.discriminatorValue)
                 && Objects.equals(discriminatorColumn, that.discriminatorColumn)
                 && Objects.equals(parent, that.parent);
@@ -104,7 +104,7 @@ public final class InheritanceClassMapping {
 
     @Override
     public String toString() {
-        return "InheritanceClassMapping{" +
+        return "InheritanceMetadata{" +
                 "discriminatorValue='" + discriminatorValue + '\'' +
                 ", discriminatorColumn='" + discriminatorColumn + '\'' +
                 ", parent=" + parent +

@@ -30,7 +30,7 @@ import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperSkip;
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperWhere;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
 
     private final List<Sort> sorts = new ArrayList<>();
 
-    DefaultColumnMapperSelectBuilder(ClassMapping mapping, Converters converters) {
+    DefaultColumnMapperSelectBuilder(EntityMetadata mapping, Converters converters) {
         super(mapping, converters);
     }
 

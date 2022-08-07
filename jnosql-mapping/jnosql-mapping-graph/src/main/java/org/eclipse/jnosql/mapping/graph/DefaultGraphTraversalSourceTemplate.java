@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.nosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
@@ -34,7 +34,7 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
 
     private Instance<GraphTraversalSourceSupplier> supplierInstance;
 
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     private GraphConverter converter;
 
@@ -44,12 +44,12 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
 
     @Inject
     DefaultGraphTraversalSourceTemplate(Instance<GraphTraversalSourceSupplier> supplierInstance,
-                                        ClassMappings classMappings,
+                                        EntitiesMetadata entities,
                                         @GraphTraversalSourceOperation GraphConverter converter,
                                         GraphWorkflow workflow,
                                         Converters converters) {
         this.supplierInstance = supplierInstance;
-        this.classMappings = classMappings;
+        this.entities = entities;
         this.converter = converter;
         this.workflow = workflow;
         this.converters = converters;
@@ -73,8 +73,8 @@ class DefaultGraphTraversalSourceTemplate extends AbstractGraphTemplate {
         return supplierInstance.get().get();
     }
     @Override
-    protected ClassMappings getClassMappings() {
-        return classMappings;
+    protected EntitiesMetadata getEntities() {
+        return entities;
     }
 
     @Override

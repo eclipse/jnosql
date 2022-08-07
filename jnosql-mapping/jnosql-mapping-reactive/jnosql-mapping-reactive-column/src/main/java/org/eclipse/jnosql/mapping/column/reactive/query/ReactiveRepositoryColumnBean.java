@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplate;
 import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplateProducer;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.eclipse.jnosql.mapping.reactive.ReactiveRepository;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
@@ -70,7 +70,7 @@ public class ReactiveRepositoryColumnBean extends AbstractBean<ReactiveRepositor
 
     @Override
     public ReactiveRepository<?,?> create(CreationalContext<ReactiveRepository<?,?>> context) {
-        ClassMappings classMappings = getInstance(ClassMappings.class);
+        EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
         ColumnTemplate template = provider.isEmpty() ? getInstance(ColumnTemplate.class) :
                 getInstance(ColumnTemplate.class, DatabaseQualifier.ofDocument(provider));
 
@@ -79,7 +79,7 @@ public class ReactiveRepositoryColumnBean extends AbstractBean<ReactiveRepositor
         Converters converters = getInstance(Converters.class);
 
         ReactiveColumnRepositoryProxy<?> handler = new ReactiveColumnRepositoryProxy<>(reactiveTemplate, template,
-                converters, classMappings, type);
+                converters, entities, type);
         return (ReactiveRepository<?,?>) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);

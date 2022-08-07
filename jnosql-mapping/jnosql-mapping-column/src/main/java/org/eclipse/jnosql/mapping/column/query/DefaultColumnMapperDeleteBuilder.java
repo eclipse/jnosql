@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteNameCond
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteNotCondition;
 import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteWhere;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import static java.util.Objects.requireNonNull;
 
@@ -29,7 +29,7 @@ class DefaultColumnMapperDeleteBuilder extends AbstractMapperQuery implements Co
         ColumnMapperDeleteWhere, ColumnMapperDeleteNameCondition, ColumnMapperDeleteNotCondition {
 
 
-    DefaultColumnMapperDeleteBuilder(ClassMapping mapping, Converters converters) {
+    DefaultColumnMapperDeleteBuilder(EntityMetadata mapping, Converters converters) {
         super(mapping, converters);
     }
 

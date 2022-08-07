@@ -23,7 +23,7 @@ import java.util.Optional;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 
-class DefaultClassMapping implements ClassMapping {
+class DefaultEntityMetadata implements EntityMetadata {
 
 
     private final String name;
@@ -42,16 +42,16 @@ class DefaultClassMapping implements ClassMapping {
 
     private final FieldMapping id;
 
-    private final InheritanceClassMapping inheritance;
+    private final InheritanceMetadata inheritance;
 
     private final boolean hasInheritanceAnnotation;
 
-    DefaultClassMapping(String name, List<String> fieldsName, Class<?> classInstance,
-                        List<FieldMapping> fields,
-                        Map<String, NativeMapping> javaFieldGroupedByColumn,
-                        Map<String, FieldMapping> fieldsGroupedByName, InstanceSupplier instanceSupplier,
-                        InheritanceClassMapping inheritance,
-                        boolean hasInheritanceAnnotation) {
+    DefaultEntityMetadata(String name, List<String> fieldsName, Class<?> classInstance,
+                          List<FieldMapping> fields,
+                          Map<String, NativeMapping> javaFieldGroupedByColumn,
+                          Map<String, FieldMapping> fieldsGroupedByName, InstanceSupplier instanceSupplier,
+                          InheritanceMetadata inheritance,
+                          boolean hasInheritanceAnnotation) {
         this.name = name;
         this.fieldsName = fieldsName;
         this.classInstance = classInstance;
@@ -75,12 +75,12 @@ class DefaultClassMapping implements ClassMapping {
     }
 
     @Override
-    public Class<?> getClassInstance() {
+    public Class<?> getType() {
         return classInstance;
     }
 
     @Override
-    public Optional<InheritanceClassMapping> getInheritance() {
+    public Optional<InheritanceMetadata> getInheritance() {
         return Optional.ofNullable(inheritance);
     }
 
@@ -134,10 +134,10 @@ class DefaultClassMapping implements ClassMapping {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultClassMapping)) {
+        if (!(o instanceof DefaultEntityMetadata)) {
             return false;
         }
-        DefaultClassMapping that = (DefaultClassMapping) o;
+        DefaultEntityMetadata that = (DefaultEntityMetadata) o;
         return Objects.equals(classInstance, that.classInstance);
     }
 
@@ -148,7 +148,7 @@ class DefaultClassMapping implements ClassMapping {
 
     @Override
     public String toString() {
-        return "DefaultClassMapping{" +
+        return "DefaultEntityMetadata{" +
                 "name='" + name + '\'' +
                 ", fieldsName=" + fieldsName +
                 ", classInstance=" + classInstance +
@@ -165,10 +165,10 @@ class DefaultClassMapping implements ClassMapping {
     /**
      * Creates a builder
      *
-     * @return {@link ClassMappingBuilder}
+     * @return {@link EntityMetadataBuilder}
      */
-    static ClassMappingBuilder builder() {
-        return new ClassMappingBuilder();
+    static EntityMetadataBuilder builder() {
+        return new EntityMetadataBuilder();
     }
 
 

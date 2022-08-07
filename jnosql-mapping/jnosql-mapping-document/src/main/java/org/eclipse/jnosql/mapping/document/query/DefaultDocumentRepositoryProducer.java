@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateProducer;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -31,7 +31,7 @@ import java.util.Objects;
 class DefaultDocumentRepositoryProducer implements DocumentRepositoryProducer {
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -53,7 +53,7 @@ class DefaultDocumentRepositoryProducer implements DocumentRepositoryProducer {
         Objects.requireNonNull(template, "template class is required");
 
         DocumentRepositoryProxy<R> handler = new DocumentRepositoryProxy<>(template,
-                classMappings, repositoryClass, converters);
+                entities, repositoryClass, converters);
         return (R) Proxy.newProxyInstance(repositoryClass.getClassLoader(),
                 new Class[]{repositoryClass},
                 handler);

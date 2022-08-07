@@ -28,7 +28,7 @@ import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.test.CDIExtension;
@@ -79,7 +79,7 @@ public class DocumentRepositoryProxyTest {
     private DocumentTemplate template;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -94,10 +94,10 @@ public class DocumentRepositoryProxyTest {
         this.template = Mockito.mock(DocumentTemplate.class);
 
         DocumentRepositoryProxy personHandler = new DocumentRepositoryProxy(template,
-                classMappings, PersonRepository.class, converters);
+                entities, PersonRepository.class, converters);
 
         DocumentRepositoryProxy vendorHandler = new DocumentRepositoryProxy(template,
-                classMappings, VendorRepository.class, converters);
+                entities, VendorRepository.class, converters);
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());

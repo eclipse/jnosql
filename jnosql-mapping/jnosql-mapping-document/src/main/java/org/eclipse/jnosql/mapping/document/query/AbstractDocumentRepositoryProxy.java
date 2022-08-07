@@ -40,7 +40,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
         RepositoryType type = RepositoryType.of(method);
-        Class<?> typeClass = getClassMapping().getClassInstance();
+        Class<?> typeClass = getEntityMetadata().getType();
 
         switch (type) {
             case DEFAULT:
@@ -49,7 +49,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 DocumentQuery query = getQuery(method, args);
                 return executeQuery(method, args, typeClass, query);
             case FIND_ALL:
-                DocumentQuery queryFindAll = select().from(getClassMapping().getName()).build();
+                DocumentQuery queryFindAll = select().from(getEntityMetadata().getName()).build();
                 return executeQuery(method, args, typeClass, getQuerySorts(args, queryFindAll));
             case DELETE_BY:
                 DocumentDeleteQuery documentDeleteQuery = getDeleteQuery(method, args);

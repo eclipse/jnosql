@@ -30,7 +30,7 @@ import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import jakarta.nosql.query.DeleteQuery;
 import jakarta.nosql.query.SelectQuery;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
@@ -51,7 +51,7 @@ public abstract class BaseColumnRepository<T> {
 
     protected abstract Converters getConverters();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getEntityMetadata();
 
     protected abstract ColumnTemplate getTemplate();
 
@@ -67,7 +67,7 @@ public abstract class BaseColumnRepository<T> {
 
     protected ColumnQuery getQuery(Method method, Object[] args) {
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
-        SelectQuery selectQuery = selectMethodFactory.apply(method, getClassMapping().getName());
+        SelectQuery selectQuery = selectMethodFactory.apply(method, getEntityMetadata().getName());
         ColumnQueryParams queryParams = SELECT_CONVERTER.apply(selectQuery, getParser());
         ColumnQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
@@ -77,7 +77,7 @@ public abstract class BaseColumnRepository<T> {
 
     protected ColumnDeleteQuery getDeleteQuery(Method method, Object[] args) {
         DeleteMethodProvider deleteMethodFactory = DeleteMethodProvider.get();
-        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getClassMapping().getName());
+        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getEntityMetadata().getName());
         ColumnDeleteQueryParams queryParams = DELETE_CONVERTER.apply(deleteQuery, getParser());
         ColumnDeleteQuery query = queryParams.getQuery();
         Params params = queryParams.getParams();
@@ -100,14 +100,14 @@ public abstract class BaseColumnRepository<T> {
 
     protected ColumnObserverParser getParser() {
         if (parser == null) {
-            this.parser = new RepositoryColumnObserverParser(getClassMapping());
+            this.parser = new RepositoryColumnObserverParser(getEntityMetadata());
         }
         return parser;
     }
 
     protected ParamsBinder getParamsBinder() {
         if (Objects.isNull(paramsBinder)) {
-            this.paramsBinder = new ParamsBinder(getClassMapping(), getConverters());
+            this.paramsBinder = new ParamsBinder(getEntityMetadata(), getConverters());
         }
         return paramsBinder;
     }

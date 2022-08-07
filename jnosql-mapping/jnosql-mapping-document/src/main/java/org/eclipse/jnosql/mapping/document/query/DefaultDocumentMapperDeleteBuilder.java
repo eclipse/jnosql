@@ -21,7 +21,7 @@ import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteNa
 import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteNotCondition;
 import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperDeleteWhere;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import static java.util.Objects.requireNonNull;
 
@@ -29,7 +29,7 @@ class DefaultDocumentMapperDeleteBuilder extends AbstractMapperQuery implements 
         DocumentMapperDeleteWhere, DocumentMapperDeleteNameCondition, DocumentMapperDeleteNotCondition {
 
 
-    DefaultDocumentMapperDeleteBuilder(ClassMapping mapping, Converters converters) {
+    DefaultDocumentMapperDeleteBuilder(EntityMetadata mapping, Converters converters) {
         super(mapping, converters);
     }
 

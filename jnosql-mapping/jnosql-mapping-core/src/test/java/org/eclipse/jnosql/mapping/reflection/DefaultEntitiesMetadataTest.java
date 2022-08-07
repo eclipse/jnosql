@@ -31,19 +31,19 @@ import javax.inject.Inject;
 import java.util.Map;
 
 @CDIExtension
-class DefaultClassMappingsTest {
+class DefaultEntitiesMetadataTest {
 
     @Inject
-    private DefaultClassMappings mappings;
+    private DefaultEntitiesMetadata mappings;
 
     @Test
     public void shouldGet(){
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
-        ClassMapping mapping = this.mappings.get(Person.class);
+        EntityMetadata mapping = this.mappings.get(Person.class);
         Assertions.assertNotNull(mapping);
-        Assertions.assertEquals(Person.class, mapping.getClassInstance());
+        Assertions.assertEquals(Person.class, mapping.getType());
     }
 
     @Test
@@ -51,21 +51,21 @@ class DefaultClassMappingsTest {
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
-        ClassMapping mapping = this.mappings.findByName("vendors");
+        EntityMetadata mapping = this.mappings.findByName("vendors");
         Assertions.assertNotNull(mapping);
-        Assertions.assertEquals(Vendor.class, mapping.getClassInstance());
+        Assertions.assertEquals(Vendor.class, mapping.getType());
     }
     @Test
     public void shouldFindBySimpleName(){
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
-        ClassMapping mapping = this.mappings
+        EntityMetadata mapping = this.mappings
                 .findBySimpleName(Person.class.getSimpleName())
                 .orElseThrow();
 
         Assertions.assertNotNull(mapping);
-        Assertions.assertEquals(Person.class, mapping.getClassInstance());
+        Assertions.assertEquals(Person.class, mapping.getType());
     }
 
     @Test
@@ -73,12 +73,12 @@ class DefaultClassMappingsTest {
         this.mappings.load(Person.class);
         this.mappings.load(Vendor.class);
 
-        ClassMapping mapping = this.mappings
+        EntityMetadata mapping = this.mappings
                 .findByClassName(Person.class.getName())
                 .orElseThrow();
 
         Assertions.assertNotNull(mapping);
-        Assertions.assertEquals(Person.class, mapping.getClassInstance());
+        Assertions.assertEquals(Person.class, mapping.getType());
     }
 
     @Test
@@ -93,18 +93,18 @@ class DefaultClassMappingsTest {
         this.mappings.load(Project.class);
 
 
-        ClassMapping parent = this.mappings.findByName("Notification");
+        EntityMetadata parent = this.mappings.findByName("Notification");
         Assertions.assertNotNull(parent);
-        Assertions.assertEquals(Notification.class, parent.getClassInstance());
+        Assertions.assertEquals(Notification.class, parent.getType());
 
         parent = this.mappings.findByName("Project");
         Assertions.assertNotNull(parent);
-        Assertions.assertEquals(Project.class, parent.getClassInstance());
+        Assertions.assertEquals(Project.class, parent.getType());
     }
 
     @Test
     public void shouldFindByParentGroupByDiscriminatorValue() {
-        Map<String, InheritanceClassMapping> group = this.mappings
+        Map<String, InheritanceMetadata> group = this.mappings
                 .findByParentGroupByDiscriminatorValue(Notification.class);
 
         Assertions.assertEquals(4, group.size());
@@ -115,7 +115,7 @@ class DefaultClassMappingsTest {
 
     @Test
     public void shouldFindByParentGroupByDiscriminatorValue2() {
-        Map<String, InheritanceClassMapping> group = this.mappings
+        Map<String, InheritanceMetadata> group = this.mappings
                 .findByParentGroupByDiscriminatorValue(Project.class);
 
         Assertions.assertEquals(3, group.size());

@@ -26,7 +26,7 @@ import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.entities.Job;
 import jakarta.nosql.tck.entities.Movie;
 import jakarta.nosql.tck.entities.Person;
@@ -76,7 +76,7 @@ public class DefaultColumnTemplateTest {
     private ColumnEntityConverter converter;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
@@ -98,7 +98,7 @@ public class DefaultColumnTemplateTest {
         Instance<ColumnFamilyManager> instance = Mockito.mock(Instance.class);
         Mockito.when(instance.get()).thenReturn(managerMock);
         this.subject = new DefaultColumnTemplate(converter, instance, new DefaultColumnWorkflow(columnEventPersistManager, converter),
-                columnEventPersistManager, classMappings, converters);
+                columnEventPersistManager, entities, converters);
     }
 
     @Test

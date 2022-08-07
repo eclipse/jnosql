@@ -16,8 +16,8 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentQueryMapper;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 class DefaultDocumentQueryMapper implements DocumentQueryMapper {
 
     @Inject
-    private Instance<ClassMappings> mappings;
+    private Instance<EntitiesMetadata> mappings;
 
     @Inject
     private Instance<Converters> converters;
@@ -37,14 +37,14 @@ class DefaultDocumentQueryMapper implements DocumentQueryMapper {
     @Override
     public <T> DocumentMapperFrom selectFrom(Class<T> entityClass) {
         requireNonNull(entityClass, "entity is required");
-        ClassMapping mapping = mappings.get().get(entityClass);
+        EntityMetadata mapping = mappings.get().get(entityClass);
         return new DefaultDocumentMapperSelectBuilder(mapping, converters.get());
     }
 
     @Override
     public <T> DocumentMapperDeleteFrom deleteFrom(Class<T> entityClass) {
         requireNonNull(entityClass, "entity is required");
-        ClassMapping mapping = mappings.get().get(entityClass);
+        EntityMetadata mapping = mappings.get().get(entityClass);
         return new DefaultDocumentMapperDeleteBuilder(mapping, converters.get());
     }
 }

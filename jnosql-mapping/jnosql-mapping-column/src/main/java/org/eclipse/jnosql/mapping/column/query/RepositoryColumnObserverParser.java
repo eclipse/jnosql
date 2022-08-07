@@ -15,25 +15,25 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.nosql.column.ColumnObserverParser;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.util.Optional;
 
 final class RepositoryColumnObserverParser implements ColumnObserverParser {
 
-    private final ClassMapping classMapping;
+    private final EntityMetadata entityMetadata;
 
-    RepositoryColumnObserverParser(ClassMapping classMapping) {
-        this.classMapping = classMapping;
+    RepositoryColumnObserverParser(EntityMetadata entityMetadata) {
+        this.entityMetadata = entityMetadata;
     }
 
     @Override
     public String fireEntity(String entity) {
-        return classMapping.getName();
+        return entityMetadata.getName();
     }
 
     @Override
     public String fireField(String entity, String field) {
-        return Optional.ofNullable(classMapping.getColumnField(field)).orElse(field);
+        return Optional.ofNullable(entityMetadata.getColumnField(field)).orElse(field);
     }
 }

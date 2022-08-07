@@ -15,35 +15,35 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.document.DocumentObserverParser;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import java.util.Optional;
 
 final class DocumentMapperObserver  implements DocumentObserverParser {
 
 
-    private final ClassMappings mappings;
+    private final EntitiesMetadata mappings;
 
-    DocumentMapperObserver(ClassMappings mappings) {
+    DocumentMapperObserver(EntitiesMetadata mappings) {
         this.mappings = mappings;
     }
 
 
     @Override
     public String fireEntity(String entity) {
-        Optional<ClassMapping> mapping = getClassMapping(entity);
-        return mapping.map(ClassMapping::getName).orElse(entity);
+        Optional<EntityMetadata> entityMetadata = getEntityMetadata(entity);
+        return entityMetadata.map(EntityMetadata::getName).orElse(entity);
     }
 
     @Override
     public String fireField(String entity, String field) {
-        Optional<ClassMapping> mapping = getClassMapping(entity);
+        Optional<EntityMetadata> mapping = getEntityMetadata(entity);
         return mapping.map(c -> c.getColumnField(field)).orElse(field);
     }
 
-    private Optional<ClassMapping> getClassMapping(String entity) {
-        Optional<ClassMapping> bySimpleName = mappings.findBySimpleName(entity);
+    private Optional<EntityMetadata> getEntityMetadata(String entity) {
+        Optional<EntityMetadata> bySimpleName = mappings.findBySimpleName(entity);
         if (bySimpleName.isPresent()) {
             return bySimpleName;
         }

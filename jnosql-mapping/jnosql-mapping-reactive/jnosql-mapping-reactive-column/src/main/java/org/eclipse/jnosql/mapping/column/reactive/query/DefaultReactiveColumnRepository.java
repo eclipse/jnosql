@@ -15,15 +15,15 @@
 package org.eclipse.jnosql.mapping.column.reactive.query;
 
 import org.eclipse.jnosql.mapping.column.reactive.ReactiveColumnTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 public class DefaultReactiveColumnRepository<T, K> extends AbstractReactiveColumnRepository<T, K> {
 
     private final ReactiveColumnTemplate template;
 
-    private final ClassMapping mapping;
+    private final EntityMetadata mapping;
 
-    DefaultReactiveColumnRepository(ReactiveColumnTemplate template, ClassMapping mapping) {
+    DefaultReactiveColumnRepository(ReactiveColumnTemplate template, EntityMetadata mapping) {
         this.template = template;
         this.mapping = mapping;
     }
@@ -34,7 +34,7 @@ public class DefaultReactiveColumnRepository<T, K> extends AbstractReactiveColum
     }
 
     @Override
-    protected ClassMapping getClassMapping() {
+    protected EntityMetadata getEntityMetadata() {
         return mapping;
     }
 }

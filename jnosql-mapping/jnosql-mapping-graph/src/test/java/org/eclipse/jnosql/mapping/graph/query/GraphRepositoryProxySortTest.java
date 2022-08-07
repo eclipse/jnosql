@@ -20,7 +20,7 @@ import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.Sorts;
 import org.eclipse.jnosql.mapping.graph.model.Person;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
@@ -52,7 +52,7 @@ public class GraphRepositoryProxySortTest {
     private GraphTemplate template;
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
 
     @Inject
@@ -76,7 +76,7 @@ public class GraphRepositoryProxySortTest {
         this.template = Mockito.mock(GraphTemplate.class);
 
         GraphRepositoryProxy personHandler = new GraphRepositoryProxy(template,
-                classMappings, PersonRepository.class, graph, converter, converters);
+                entities, PersonRepository.class, graph, converter, converters);
 
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());

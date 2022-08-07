@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -29,14 +29,14 @@ import javax.inject.Inject;
 class DefaultColumnEntityConverter extends AbstractColumnEntityConverter implements ColumnEntityConverter {
 
     @Inject
-    private ClassMappings classMappings;
+    private EntitiesMetadata entities;
 
     @Inject
     private Converters converters;
 
     @Override
-    protected ClassMappings getClassMappings() {
-        return classMappings;
+    protected EntitiesMetadata getEntities() {
+        return entities;
     }
 
     @Override

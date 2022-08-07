@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 import java.util.Objects;
@@ -39,7 +39,7 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
 
     protected abstract DocumentTemplate getTemplate();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getEntityMetadata();
 
     @Override
     public <S extends T> S save(S entity) {
@@ -93,7 +93,7 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
 
 
     private FieldMapping getIdField() {
-        return getClassMapping().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return getEntityMetadata().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     private Function optionalToStream() {
@@ -109,6 +109,6 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
     }
 
     private Class<T> getEntityClass() {
-        return (Class<T>) getClassMapping().getClassInstance();
+        return (Class<T>) getEntityMetadata().getType();
     }
 }

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 
@@ -36,7 +36,7 @@ abstract class AbstractGraphRepository<T, K> implements Repository<T, K> {
 
     protected abstract GraphTemplate getTemplate();
 
-    protected abstract ClassMapping getClassMapping();
+    protected abstract EntityMetadata getEntityMetadata();
 
 
     @Override
@@ -88,11 +88,11 @@ abstract class AbstractGraphRepository<T, K> implements Repository<T, K> {
 
     @Override
     public long count() {
-        return getTemplate().count(getClassMapping().getName());
+        return getTemplate().count(getEntityMetadata().getName());
     }
 
     private FieldMapping getIdField() {
-        return getClassMapping().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return getEntityMetadata().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     private Function optionalToStream() {

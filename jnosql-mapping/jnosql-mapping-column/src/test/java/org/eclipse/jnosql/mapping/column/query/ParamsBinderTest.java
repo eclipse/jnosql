@@ -24,8 +24,8 @@ import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.column.ColumnQueryParams;
 import jakarta.nosql.column.SelectQueryConverter;
 import jakarta.nosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.query.SelectQuery;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
@@ -47,7 +47,7 @@ class ParamsBinderTest {
 
 
     @Inject
-    private ClassMappings mappings;
+    private EntitiesMetadata mappings;
 
     @Inject
     private Converters converters;
@@ -59,12 +59,12 @@ class ParamsBinderTest {
 
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals("findByAge")).findFirst().get();
-        ClassMapping classMapping = mappings.get(Person.class);
-        RepositoryColumnObserverParser parser = new RepositoryColumnObserverParser(classMapping);
-        paramsBinder = new ParamsBinder(classMapping, converters);
+        EntityMetadata entityMetadata = mappings.get(Person.class);
+        RepositoryColumnObserverParser parser = new RepositoryColumnObserverParser(entityMetadata);
+        paramsBinder = new ParamsBinder(entityMetadata, converters);
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
-        SelectQuery selectQuery = selectMethodFactory.apply(method, classMapping.getName());
+        SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.getName());
         SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class,
                 ()-> ServiceLoader.load(SelectQueryConverter.class));
         ColumnQueryParams columnQueryParams = converter.apply(selectQuery, parser);
@@ -83,12 +83,12 @@ class ParamsBinderTest {
 
         Method method = Stream.of(PersonRepository.class.getMethods())
                 .filter(m -> m.getName().equals("findByAgeAndName")).findFirst().get();
-        ClassMapping classMapping = mappings.get(Person.class);
-        RepositoryColumnObserverParser parser = new RepositoryColumnObserverParser(classMapping);
-        paramsBinder = new ParamsBinder(classMapping, converters);
+        EntityMetadata entityMetadata = mappings.get(Person.class);
+        RepositoryColumnObserverParser parser = new RepositoryColumnObserverParser(entityMetadata);
+        paramsBinder = new ParamsBinder(entityMetadata, converters);
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
-        SelectQuery selectQuery = selectMethodFactory.apply(method, classMapping.getName());
+        SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.getName());
         SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class,
                 ()-> ServiceLoader.load(SelectQueryConverter.class));
         ColumnQueryParams queryParams = converter.apply(selectQuery, parser);

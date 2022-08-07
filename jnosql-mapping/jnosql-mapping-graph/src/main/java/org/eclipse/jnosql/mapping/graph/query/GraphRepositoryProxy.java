@@ -18,8 +18,8 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
-import org.eclipse.jnosql.mapping.reflection.ClassMappings;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
 import java.lang.reflect.ParameterizedType;
@@ -35,7 +35,7 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
 
     private final GraphRepository repository;
 
-    private final ClassMapping classMapping;
+    private final EntityMetadata entityMetadata;
 
     private final Graph graph;
 
@@ -46,7 +46,7 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
     private final Converters converters;
 
 
-    GraphRepositoryProxy(GraphTemplate template, ClassMappings classMappings,
+    GraphRepositoryProxy(GraphTemplate template, EntitiesMetadata entities,
                          Class<?> repositoryType,
                          Graph graph, GraphConverter converter,
                          Converters converters) {
@@ -56,16 +56,16 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
 
         this.graph = graph;
         this.converter = converter;
-        this.classMapping = classMappings.get(typeClass);
-        this.repository = new GraphRepository(template, classMapping);
+        this.entityMetadata = entities.get(typeClass);
+        this.repository = new GraphRepository(template, entityMetadata);
         this.template = template;
         this.converters = converters;
 
     }
 
     @Override
-    protected ClassMapping getClassMapping() {
-        return classMapping;
+    protected EntityMetadata getEntityMetadata() {
+        return entityMetadata;
     }
 
     @Override
@@ -98,11 +98,11 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
 
         private final GraphTemplate template;
 
-        private final ClassMapping classMapping;
+        private final EntityMetadata entityMetadata;
 
-        GraphRepository(GraphTemplate template, ClassMapping classMapping) {
+        GraphRepository(GraphTemplate template, EntityMetadata entityMetadata) {
             this.template = template;
-            this.classMapping = classMapping;
+            this.entityMetadata = entityMetadata;
         }
 
         @Override
@@ -111,8 +111,8 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
         }
 
         @Override
-        protected ClassMapping getClassMapping() {
-            return classMapping;
+        protected EntityMetadata getEntityMetadata() {
+            return entityMetadata;
         }
 
     }

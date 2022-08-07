@@ -14,16 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.document.reactive.query;
 
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.document.reactive.ReactiveDocumentTemplate;
 
 class DefaultReactiveDocumentRepository<T, K> extends AbstractReactiveDocumentRepository<T, K> {
 
     private final ReactiveDocumentTemplate template;
 
-    private final ClassMapping mapping;
+    private final EntityMetadata mapping;
 
-    DefaultReactiveDocumentRepository(ReactiveDocumentTemplate template, ClassMapping mapping) {
+    DefaultReactiveDocumentRepository(ReactiveDocumentTemplate template, EntityMetadata mapping) {
         this.template = template;
         this.mapping = mapping;
     }
@@ -34,7 +34,7 @@ class DefaultReactiveDocumentRepository<T, K> extends AbstractReactiveDocumentRe
     }
 
     @Override
-    protected ClassMapping getClassMapping() {
+    protected EntityMetadata getEntityMetadata() {
         return mapping;
     }
 }

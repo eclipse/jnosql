@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph.query;
 import jakarta.nosql.Sort;
 import jakarta.nosql.SortType;
 import jakarta.nosql.mapping.Pagination;
-import org.eclipse.jnosql.mapping.reflection.ClassMapping;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import jakarta.nosql.query.SelectQuery;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -40,7 +40,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
         SelectQuery query = selectMethodFactory.apply(graphQuery.getMethod(), graphQuery.getEntityName());
-        ClassMapping mapping = graphQuery.getMapping();
+        EntityMetadata mapping = graphQuery.getMapping();
 
         GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, query::getWhere, mapping);
 
@@ -52,7 +52,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
     }
 
 
-    private Consumer<Sort> getSort(GraphTraversal<Vertex, Vertex> traversal, ClassMapping mapping) {
+    private Consumer<Sort> getSort(GraphTraversal<Vertex, Vertex> traversal, EntityMetadata mapping) {
         return o -> {
             if (SortType.ASC.equals(o.getType())) {
                 traversal.order().by(mapping.getColumnField(o.getName()), asc);
