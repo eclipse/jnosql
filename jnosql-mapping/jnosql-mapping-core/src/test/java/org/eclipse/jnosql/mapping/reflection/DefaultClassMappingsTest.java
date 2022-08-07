@@ -95,12 +95,10 @@ class DefaultClassMappingsTest {
 
         ClassMapping parent = this.mappings.findByName("Notification");
         Assertions.assertNotNull(parent);
-        Assertions.assertTrue(parent.getInheritance().isEmpty());
         Assertions.assertEquals(Notification.class, parent.getClassInstance());
 
         parent = this.mappings.findByName("Project");
         Assertions.assertNotNull(parent);
-        Assertions.assertTrue(parent.getInheritance().isEmpty());
         Assertions.assertEquals(Project.class, parent.getClassInstance());
     }
 
@@ -109,7 +107,7 @@ class DefaultClassMappingsTest {
         Map<String, InheritanceClassMapping> group = this.mappings
                 .findByParentGroupByDiscriminatorValue(Notification.class);
 
-        Assertions.assertEquals(3, group.size());
+        Assertions.assertEquals(4, group.size());
         Assertions.assertNotNull(group.get("SocialMediaNotification"));
         Assertions.assertNotNull(group.get("SMS"));
         Assertions.assertNotNull(group.get("Email"));
@@ -120,8 +118,9 @@ class DefaultClassMappingsTest {
         Map<String, InheritanceClassMapping> group = this.mappings
                 .findByParentGroupByDiscriminatorValue(Project.class);
 
-        Assertions.assertEquals(2, group.size());
+        Assertions.assertEquals(3, group.size());
         Assertions.assertNotNull(group.get("Small"));
         Assertions.assertNotNull(group.get("Large"));
+        Assertions.assertNotNull(group.get("Project"));
     }
 }
