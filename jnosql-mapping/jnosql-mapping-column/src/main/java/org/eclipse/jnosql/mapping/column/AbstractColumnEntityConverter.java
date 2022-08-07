@@ -48,14 +48,14 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
 
     private final ColumnFieldConverterFactory converterFactory = new ColumnFieldConverterFactory();
 
-    protected abstract EntitiesMetadata getClassMappings();
+    protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();
 
     @Override
     public ColumnEntity toColumn(Object entityInstance) {
         requireNonNull(entityInstance, "Object is required");
-        EntityMetadata mapping = getClassMappings().get(entityInstance.getClass());
+        EntityMetadata mapping = getEntities().get(entityInstance.getClass());
         ColumnEntity entity = ColumnEntity.of(mapping.getName());
         mapping.getFields().stream()
                 .map(f -> to(f, entityInstance))
@@ -79,14 +79,14 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
     public <T> T toEntity(T entityInstance, ColumnEntity entity) {
         requireNonNull(entity, "entity is required");
         requireNonNull(entityInstance, "entityInstance is required");
-        EntityMetadata mapping = getClassMappings().get(entityInstance.getClass());
+        EntityMetadata mapping = getEntities().get(entityInstance.getClass());
         return convertEntity(entity.getColumns(), mapping, entityInstance);
     }
 
     @Override
     public <T> T toEntity(ColumnEntity entity) {
         requireNonNull(entity, "entity is required");
-        EntityMetadata mapping = getClassMappings().findByName(entity.getName());
+        EntityMetadata mapping = getEntities().findByName(entity.getName());
         if (mapping.isInheritance()) {
             return mapInheritanceEntity(entity, mapping.getType());
         }
@@ -114,7 +114,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
 
 
     protected <T> T toEntity(Class<T> entityClass, List<Column> columns) {
-        EntityMetadata mapping = getClassMappings().get(entityClass);
+        EntityMetadata mapping = getEntities().get(entityClass);
         T instance = mapping.newInstance();
         return convertEntity(columns, mapping, instance);
     }
@@ -135,7 +135,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
     }
 
     private <T> T mapInheritanceEntity(ColumnEntity entity, Class<?> entityClass) {
-        Map<String, InheritanceMetadata> group = getClassMappings()
+        Map<String, InheritanceMetadata> group = getEntities()
                 .findByParentGroupByDiscriminatorValue(entityClass);
 
         if (group.isEmpty()) {
@@ -157,7 +157,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        EntityMetadata mapping = getClassMappings().get(inheritance.getEntity());
+        EntityMetadata mapping = getEntities().get(inheritance.getEntity());
         T instance = mapping.newInstance();
         return convertEntity(entity.getColumns(), mapping, instance);
     }

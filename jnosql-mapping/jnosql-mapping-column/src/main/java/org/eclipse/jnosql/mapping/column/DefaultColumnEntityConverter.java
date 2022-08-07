@@ -35,7 +35,7 @@ class DefaultColumnEntityConverter extends AbstractColumnEntityConverter impleme
     private Converters converters;
 
     @Override
-    protected EntitiesMetadata getClassMappings() {
+    protected EntitiesMetadata getEntities() {
         return entities;
     }
 

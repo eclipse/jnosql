@@ -102,7 +102,7 @@ class ColumnFieldConverters {
                                       FieldMapping field, AbstractColumnEntityConverter converter) {
             Field nativeField = field.getNativeField();
             Object subEntity = converter.toEntity(nativeField.getType(), columns);
-            EntityMetadata mapping = converter.getClassMappings().get(subEntity.getClass());
+            EntityMetadata mapping = converter.getEntities().get(subEntity.getClass());
             boolean areAllFieldsNull = mapping.getFields()
                     .stream()
                     .map(f -> f.read(subEntity))
