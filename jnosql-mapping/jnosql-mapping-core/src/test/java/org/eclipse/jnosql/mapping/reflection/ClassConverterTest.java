@@ -49,7 +49,7 @@ public class ClassConverterTest {
     private ClassConverter classConverter;
 
     @Test
-    public void shouldCreateClassMapping() {
+    public void shouldCreateEntityMetadata() {
         EntityMetadata entityMetadata = classConverter.create(Person.class);
 
         assertEquals("Person", entityMetadata.getName());
@@ -60,7 +60,7 @@ public class ClassConverterTest {
     }
 
     @Test
-    public void shouldCreateClassMapping2() {
+    public void shouldEntityMetadata2() {
         EntityMetadata entityMetadata = classConverter.create(Actor.class);
 
         assertEquals("Actor", entityMetadata.getName());

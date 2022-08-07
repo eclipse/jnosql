@@ -111,7 +111,7 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
         }
 
         @Override
-        protected EntitiesMetadata getClassMappings() {
+        protected EntitiesMetadata getEntities() {
             return entities;
         }
 

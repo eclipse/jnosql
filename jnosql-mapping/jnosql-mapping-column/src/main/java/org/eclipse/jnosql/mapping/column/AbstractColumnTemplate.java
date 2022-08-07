@@ -67,7 +67,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
     protected abstract ColumnEventPersistManager getEventManager();
 
-    protected abstract EntitiesMetadata getClassMappings();
+    protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();
 
@@ -80,7 +80,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
     private ColumnObserverParser getObserver() {
         if (Objects.isNull(observer)) {
-            observer = new ColumnMapperObserver(getClassMappings());
+            observer = new ColumnMapperObserver(getEntities());
         }
         return observer;
     }
@@ -173,7 +173,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     public <T, K> Optional<T> find(Class<T> entityClass, K id) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
-        EntityMetadata entityMetadata = getClassMappings().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(entityClass);
         FieldMapping idField = entityMetadata.getId()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
@@ -189,7 +189,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
 
-        EntityMetadata entityMetadata = getClassMappings().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(entityClass);
         FieldMapping idField = entityMetadata.getId()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
@@ -236,7 +236,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     @Override
     public <T> long count(Class<T> entityClass) {
         requireNonNull(entityClass, "entity class is required");
-        EntityMetadata entityMetadata = getClassMappings().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(entityClass);
         return getManager().count(entityMetadata.getName());
     }
 

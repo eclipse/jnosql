@@ -79,7 +79,7 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
     }
 
     @Override
-    protected EntitiesMetadata getClassMappings() {
+    protected EntitiesMetadata getEntities() {
         return entities;
     }
 
