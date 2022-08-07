@@ -41,7 +41,7 @@ public abstract class AbstractReactiveColumnRepository<T, K> implements Reactive
 
     protected abstract ReactiveColumnTemplate getTemplate();
 
-    protected abstract EntityMetadata getClassMapping();
+    protected abstract EntityMetadata getEntityMetadata();
 
     @Override
     public <S extends T> Observable<S> save(S entity) {
@@ -160,11 +160,11 @@ public abstract class AbstractReactiveColumnRepository<T, K> implements Reactive
     }
 
     private FieldMapping getIdField() {
-        return getClassMapping().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return getEntityMetadata().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     private Class<T> getEntityClass() {
-        return (Class<T>) getClassMapping().getType();
+        return (Class<T>) getEntityMetadata().getType();
     }
 
     private <S extends T> CompletionStage<S> loadPublisher(Observable<S> publisher) {

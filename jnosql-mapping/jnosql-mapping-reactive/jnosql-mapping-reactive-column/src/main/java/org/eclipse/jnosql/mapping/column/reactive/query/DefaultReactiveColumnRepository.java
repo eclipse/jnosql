@@ -34,7 +34,7 @@ public class DefaultReactiveColumnRepository<T, K> extends AbstractReactiveColum
     }
 
     @Override
-    protected EntityMetadata getClassMapping() {
+    protected EntityMetadata getEntityMetadata() {
         return mapping;
     }
 }
