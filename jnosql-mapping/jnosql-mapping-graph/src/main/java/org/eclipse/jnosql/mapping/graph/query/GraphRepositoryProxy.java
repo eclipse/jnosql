@@ -64,7 +64,7 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
     }
 
     @Override
-    protected EntityMetadata getClassMapping() {
+    protected EntityMetadata getEntityMetadata() {
         return entityMetadata;
     }
 

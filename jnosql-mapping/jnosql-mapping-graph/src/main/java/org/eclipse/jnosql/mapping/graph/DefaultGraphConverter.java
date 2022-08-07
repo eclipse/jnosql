@@ -43,7 +43,7 @@ class DefaultGraphConverter extends AbstractGraphConverter implements GraphConve
     }
 
     @Override
-    protected EntitiesMetadata getClassMappings() {
+    protected EntitiesMetadata getEntities() {
         return entities;
     }
 

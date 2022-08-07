@@ -68,7 +68,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     protected abstract DocumentEventPersistManager getPersistManager();
 
-    protected abstract EntitiesMetadata getClassMappings();
+    protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();
 
@@ -81,7 +81,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     private DocumentObserverParser getObserver() {
         if (Objects.isNull(columnQueryParser)) {
-            columnQueryParser = new DocumentMapperObserver(getClassMappings());
+            columnQueryParser = new DocumentMapperObserver(getEntities());
         }
         return columnQueryParser;
     }
@@ -169,7 +169,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     public <T, K> Optional<T> find(Class<T> entityClass, K id) {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
-        EntityMetadata entityMetadata = getClassMappings().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(entityClass);
         FieldMapping idField = entityMetadata.getId()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
@@ -185,7 +185,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         requireNonNull(entityClass, "entityClass is required");
         requireNonNull(id, "id is required");
 
-        EntityMetadata entityMetadata = getClassMappings().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(entityClass);
         FieldMapping idField = entityMetadata.getId()
                 .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
 
@@ -230,7 +230,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     public <T> long count(Class<T> entityClass) {
         requireNonNull(entityClass, "entityClass is required");
-        EntityMetadata entityMetadata = getClassMappings().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(entityClass);
         return getManager().count(entityMetadata.getName());
     }
 

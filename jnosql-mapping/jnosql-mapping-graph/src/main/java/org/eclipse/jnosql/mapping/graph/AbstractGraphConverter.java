@@ -46,7 +46,7 @@ import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
 abstract class AbstractGraphConverter implements GraphConverter {
 
 
-    protected abstract EntitiesMetadata getClassMappings();
+    protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();
 
@@ -56,7 +56,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     public <T> Vertex toVertex(T entity) {
         requireNonNull(entity, "entity is required");
 
-        EntityMetadata mapping = getClassMappings().get(entity.getClass());
+        EntityMetadata mapping = getEntities().get(entity.getClass());
         String label = mapping.getName();
 
         List<FieldGraph> fields = mapping.getFields().stream()
@@ -88,7 +88,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     @Override
     public <T> List<Property<?>> getProperties(T entity) {
         Objects.requireNonNull(entity, "entity is required");
-        EntityMetadata mapping = getClassMappings().get(entity.getClass());
+        EntityMetadata mapping = getEntities().get(entity.getClass());
         List<FieldGraph> fields = mapping.getFields().stream()
                 .map(f -> to(f, entity))
                 .filter(FieldGraph::isNotEmpty).collect(toList());
@@ -101,7 +101,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     @Override
     public <T> T toEntity(Vertex vertex) {
         requireNonNull(vertex, "vertex is required");
-        EntityMetadata mapping = getClassMappings().findByName(vertex.label());
+        EntityMetadata mapping = getEntities().findByName(vertex.label());
 
         List<Property> properties = vertex.keys()
                 .stream()
@@ -135,7 +135,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
         List<Property> properties = vertex.keys().stream().map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
 
-        EntityMetadata mapping = getClassMappings().get(entityInstance.getClass());
+        EntityMetadata mapping = getEntities().get(entityInstance.getClass());
         convertEntity(properties, mapping, entityInstance);
         feedId(vertex, entityInstance);
         return entityInstance;
@@ -162,7 +162,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     }
 
     private <T> void feedId(Vertex vertex, T entity) {
-        EntityMetadata mapping = getClassMappings().get(entity.getClass());
+        EntityMetadata mapping = getEntities().get(entity.getClass());
         Optional<FieldMapping> id = mapping.getId();
 
 
@@ -183,7 +183,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     }
 
     private <T> T toEntity(Class<T> entityClass, List<Property> properties) {
-        EntityMetadata mapping = getClassMappings().get(entityClass);
+        EntityMetadata mapping = getEntities().get(entityClass);
         T instance = mapping.newInstance();
         return convertEntity(properties, mapping, instance);
     }
@@ -246,7 +246,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
     private <T> T mapInheritanceEntity(Vertex vertex,
                                        List<Property> properties, Class<?> entityClass) {
 
-        Map<String, InheritanceMetadata> group = getClassMappings()
+        Map<String, InheritanceMetadata> group = getEntities()
                 .findByParentGroupByDiscriminatorValue(entityClass);
 
         if (group.isEmpty()) {
@@ -271,7 +271,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        EntityMetadata mapping = getClassMappings().get(inheritance.getEntity());
+        EntityMetadata mapping = getEntities().get(inheritance.getEntity());
         return toEntity((Class<T>) mapping.getType(), properties);
     }
 }

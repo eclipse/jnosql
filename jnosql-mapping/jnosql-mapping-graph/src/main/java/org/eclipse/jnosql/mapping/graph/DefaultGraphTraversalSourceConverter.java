@@ -60,7 +60,7 @@ class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
     }
 
     @Override
-    protected EntitiesMetadata getClassMappings() {
+    protected EntitiesMetadata getEntities() {
         return entities;
     }
 
@@ -78,7 +78,7 @@ class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
     public <T> Vertex toVertex(T entity) {
         requireNonNull(entity, "entity is required");
 
-        EntityMetadata mapping = getClassMappings().get(entity.getClass());
+        EntityMetadata mapping = getEntities().get(entity.getClass());
         String label = mapping.getName();
 
         List<FieldGraph> fields = mapping.getFields().stream()

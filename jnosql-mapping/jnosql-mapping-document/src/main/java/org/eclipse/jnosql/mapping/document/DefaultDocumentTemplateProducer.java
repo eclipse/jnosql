@@ -109,7 +109,7 @@ class DefaultDocumentTemplateProducer implements DocumentTemplateProducer {
         }
 
         @Override
-        protected EntitiesMetadata getClassMappings() {
+        protected EntitiesMetadata getEntities() {
             return entities;
         }
 
