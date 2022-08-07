@@ -44,7 +44,7 @@ import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
  */
 public abstract class AbstractDocumentEntityConverter implements DocumentEntityConverter {
 
-    protected abstract EntitiesMetadata getClassMappings();
+    protected abstract EntitiesMetadata getEntityMetadata();
 
     protected abstract Converters getConverters();
 
@@ -54,7 +54,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     @Override
     public DocumentEntity toDocument(Object entityInstance) {
         requireNonNull(entityInstance, "Object is required");
-        EntityMetadata mapping = getClassMappings().get(entityInstance.getClass());
+        EntityMetadata mapping = getEntityMetadata().get(entityInstance.getClass());
         DocumentEntity entity = DocumentEntity.of(mapping.getName());
         mapping.getFields().stream()
                 .map(f -> to(f, entityInstance))
@@ -80,12 +80,12 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     public <T> T toEntity(T entityInstance, DocumentEntity entity) {
         requireNonNull(entity, "entity is required");
         requireNonNull(entityInstance, "entityInstance is required");
-        EntityMetadata mapping = getClassMappings().get(entityInstance.getClass());
+        EntityMetadata mapping = getEntityMetadata().get(entityInstance.getClass());
         return convertEntity(entity.getDocuments(), mapping, entityInstance);
     }
 
     protected <T> T toEntity(Class<T> entityClass, List<Document> documents) {
-        EntityMetadata mapping = getClassMappings().get(entityClass);
+        EntityMetadata mapping = getEntityMetadata().get(entityClass);
         T instance = mapping.newInstance();
         return convertEntity(documents, mapping, instance);
     }
@@ -95,7 +95,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     @Override
     public <T> T toEntity(DocumentEntity entity) {
         requireNonNull(entity, "entity is required");
-        EntityMetadata mapping = getClassMappings().findByName(entity.getName());
+        EntityMetadata mapping = getEntityMetadata().findByName(entity.getName());
         if (mapping.isInheritance()) {
             return mapInheritanceEntity(entity, mapping.getType());
         }
@@ -104,7 +104,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     }
 
     private <T> T mapInheritanceEntity(DocumentEntity entity, Class<?> entityClass) {
-        Map<String, InheritanceMetadata> group = getClassMappings()
+        Map<String, InheritanceMetadata> group = getEntityMetadata()
                 .findByParentGroupByDiscriminatorValue(entityClass);
 
         if (group.isEmpty()) {
@@ -126,7 +126,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        EntityMetadata mapping = getClassMappings().get(inheritance.getEntity());
+        EntityMetadata mapping = getEntityMetadata().get(inheritance.getEntity());
         T instance = mapping.newInstance();
         return convertEntity(entity.getDocuments(), mapping, instance);
     }

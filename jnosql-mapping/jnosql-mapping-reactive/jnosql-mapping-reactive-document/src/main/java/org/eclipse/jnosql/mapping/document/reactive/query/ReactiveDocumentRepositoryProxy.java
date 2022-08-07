@@ -54,7 +54,7 @@ class ReactiveDocumentRepositoryProxy<T> extends AbstractReactiveDocumentReposit
     }
 
     @Override
-    protected EntityMetadata getClassMapping() {
+    protected EntityMetadata getEntityMetadata() {
         return entityMetadata;
     }
 

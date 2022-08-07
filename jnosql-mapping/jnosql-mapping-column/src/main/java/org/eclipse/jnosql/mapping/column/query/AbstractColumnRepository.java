@@ -38,7 +38,7 @@ public abstract class AbstractColumnRepository<T, K> implements Repository<T, K>
 
     protected abstract ColumnTemplate getTemplate();
 
-    protected abstract EntityMetadata getClassMapping();
+    protected abstract EntityMetadata getEntityMetadata();
 
 
     @Override
@@ -86,7 +86,7 @@ public abstract class AbstractColumnRepository<T, K> implements Repository<T, K>
     }
 
     private Class<T> getEntityClass() {
-        return (Class<T>) getClassMapping().getType();
+        return (Class<T>) getEntityMetadata().getType();
     }
 
     @Override
@@ -97,7 +97,7 @@ public abstract class AbstractColumnRepository<T, K> implements Repository<T, K>
     }
 
     private FieldMapping getIdField() {
-        return getClassMapping().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return getEntityMetadata().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     private Function optionalToStream() {

@@ -62,7 +62,7 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
     }
 
     @Override
-    protected EntityMetadata getClassMapping() {
+    protected EntityMetadata getEntityMetadata() {
         return entityMetadata;
     }
 

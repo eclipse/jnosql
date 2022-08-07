@@ -90,7 +90,7 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
         }
 
         @Override
-        protected EntityMetadata getClassMapping() {
+        protected EntityMetadata getEntityMetadata() {
             return entityMetadata;
         }
 
