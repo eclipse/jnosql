@@ -55,7 +55,7 @@ public interface EntityMetadata {
      * A class that has a parent with {@link jakarta.nosql.mapping.Inheritance} annotation
      * won't use the name. It will use the parent name instead.
      *
-     * @return true if has not parent class with {@link jakarta.nosql.mapping.Inheritance}
+     * @return true if has not parent class with {@link jakarta.nosql.mapping.Inheritance} or is the parent itself
      */
     boolean hasEntityName();
 
