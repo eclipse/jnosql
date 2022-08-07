@@ -39,7 +39,7 @@ public interface EntityMetadata {
     List<String> getFieldsName();
 
     /**
-     * @return The class
+     * @return The entity type.
      */
     Class<?> getClassInstance();
 
