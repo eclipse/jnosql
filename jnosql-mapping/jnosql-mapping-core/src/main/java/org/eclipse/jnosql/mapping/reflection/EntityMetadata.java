@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * This instance is the meta-info of a loaded class that used to be annotated with {@link Entity}.
+ * This instance is the meta-info of a loaded class that has the  {@link jakarta.nosql.mapping.Entity} annotation.
  */
 public interface EntityMetadata {
 
