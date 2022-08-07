@@ -45,7 +45,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
     private ClassConverter classConverter;
 
     @Inject
-    private ClassMappingExtension extension;
+    private EntityMetadataExtension extension;
 
     @PostConstruct
     public void init() {

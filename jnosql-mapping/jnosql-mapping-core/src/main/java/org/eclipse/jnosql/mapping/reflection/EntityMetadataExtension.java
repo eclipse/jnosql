@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Where the key is {@link Class#getName()} and the value is {@link EntityMetadata}
  */
 @ApplicationScoped
-public class ClassMappingExtension implements Extension {
+public class EntityMetadataExtension implements Extension {
 
     private final Map<String, EntityMetadata> mappings = new ConcurrentHashMap<>();
 
