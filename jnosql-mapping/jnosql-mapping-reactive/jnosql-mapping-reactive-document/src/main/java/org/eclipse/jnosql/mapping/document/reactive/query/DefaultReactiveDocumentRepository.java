@@ -34,7 +34,7 @@ class DefaultReactiveDocumentRepository<T, K> extends AbstractReactiveDocumentRe
     }
 
     @Override
-    protected EntityMetadata getClassMapping() {
+    protected EntityMetadata getEntityMetadata() {
         return mapping;
     }
 }

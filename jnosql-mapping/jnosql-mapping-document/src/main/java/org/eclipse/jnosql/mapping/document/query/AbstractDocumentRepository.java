@@ -39,7 +39,7 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
 
     protected abstract DocumentTemplate getTemplate();
 
-    protected abstract EntityMetadata getClassMapping();
+    protected abstract EntityMetadata getEntityMetadata();
 
     @Override
     public <S extends T> S save(S entity) {
@@ -93,7 +93,7 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
 
 
     private FieldMapping getIdField() {
-        return getClassMapping().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return getEntityMetadata().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     private Function optionalToStream() {
@@ -109,6 +109,6 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
     }
 
     private Class<T> getEntityClass() {
-        return (Class<T>) getClassMapping().getType();
+        return (Class<T>) getEntityMetadata().getType();
     }
 }
