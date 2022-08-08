@@ -97,9 +97,9 @@ public class DefaultGraphEventPersistManagerTest {
         Jedi jedi = new Jedi();
         jedi.name = "Luke";
         subject.firePostEntity(jedi);
-        ArgumentCaptor<EntityPostPersit> captor = ArgumentCaptor.forClass(EntityPostPersit.class);
+        ArgumentCaptor<EntityPostPersist> captor = ArgumentCaptor.forClass(EntityPostPersist.class);
         verify(entityPostPersistEvent).fire(captor.capture());
-        EntityPostPersit value = captor.getValue();
+        EntityPostPersist value = captor.getValue();
         assertEquals(jedi, value.getValue());
     }
 
