@@ -15,14 +15,14 @@
 package org.eclipse.jnosql.mapping;
 
 
-import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPostPersist;
 
 import java.util.Objects;
 
 /**
- * The default implementation to {@link EntityPostPersit}
+ * The default implementation to {@link EntityPostPersist}
  */
-public final class DefaultEntityPostPersist implements EntityPostPersit {
+public final class DefaultEntityPostPersist implements EntityPostPersist {
 
     private final Object value;
 
