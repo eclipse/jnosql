@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPostPersist;
 import jakarta.nosql.mapping.EntityPrePersist;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ public class DefaultGraphEventPersistManagerTest {
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Mock
-    private Event<EntityPostPersit> entityPostPersistEvent;
+    private Event<EntityPostPersist> entityPostPersistEvent;
 
     @Mock
     private Event<EntityGraphPrePersist> entityGraphPrePersist;
