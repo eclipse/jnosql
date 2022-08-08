@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.document;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPostPersist;
 import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.mapping.document.DocumentDeleteQueryExecute;
 import jakarta.nosql.mapping.document.DocumentEntityPostPersist;
@@ -53,7 +53,7 @@ public class DefaultDocumentEventPersistManagerTest {
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Mock
-    private Event<EntityPostPersit> entityPostPersistEvent;
+    private Event<EntityPostPersist> entityPostPersistEvent;
 
     @Mock
     private Event<EntityDocumentPrePersist> entityDocumentPrePersist;
@@ -106,9 +106,9 @@ public class DefaultDocumentEventPersistManagerTest {
         Jedi jedi = new Jedi();
         jedi.name = "Luke";
         subject.firePostEntity(jedi);
-        ArgumentCaptor<EntityPostPersit> captor = ArgumentCaptor.forClass(EntityPostPersit.class);
+        ArgumentCaptor<EntityPostPersist> captor = ArgumentCaptor.forClass(EntityPostPersist.class);
         verify(entityPostPersistEvent).fire(captor.capture());
-        EntityPostPersit value = captor.getValue();
+        EntityPostPersist value = captor.getValue();
         assertEquals(jedi, value.getValue());
     }
     //

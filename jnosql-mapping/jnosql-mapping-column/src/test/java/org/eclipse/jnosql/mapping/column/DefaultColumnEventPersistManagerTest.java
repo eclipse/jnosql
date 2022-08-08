@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPostPersist;
 import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.mapping.column.ColumnDeleteQueryExecute;
 import jakarta.nosql.mapping.column.ColumnEntityPostPersist;
@@ -56,7 +56,7 @@ public class DefaultColumnEventPersistManagerTest {
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Mock
-    private Event<EntityPostPersit> entityPostPersistEvent;
+    private Event<EntityPostPersist> entityPostPersistEvent;
 
     @Mock
     private Event<EntityColumnPrePersist> entityColumnPrePersist;
@@ -110,9 +110,9 @@ public class DefaultColumnEventPersistManagerTest {
         Jedi jedi = new Jedi();
         jedi.name = "Luke";
         subject.firePostEntity(jedi);
-        ArgumentCaptor<EntityPostPersit> captor = ArgumentCaptor.forClass(EntityPostPersit.class);
+        ArgumentCaptor<EntityPostPersist> captor = ArgumentCaptor.forClass(EntityPostPersist.class);
         verify(entityPostPersistEvent).fire(captor.capture());
-        EntityPostPersit value = captor.getValue();
+        EntityPostPersist value = captor.getValue();
         assertEquals(jedi, value.getValue());
     }
 

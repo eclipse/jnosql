@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPostPersist;
 import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.mapping.keyvalue.EntityKeyValuePostPersist;
 import jakarta.nosql.mapping.keyvalue.EntityKeyValuePrePersist;
@@ -50,7 +50,7 @@ public class DefaultKeyValueEventPersistManagerTest {
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Mock
-    private Event<EntityPostPersit> entityPostPersistEvent;
+    private Event<EntityPostPersist> entityPostPersistEvent;
 
     @Mock
     private Event<EntityKeyValuePrePersist> entityKeyValuePrePersist;
@@ -97,9 +97,9 @@ public class DefaultKeyValueEventPersistManagerTest {
         Actor actor = new Actor();
         actor.name = "Luke";
         subject.firePostEntity(actor);
-        ArgumentCaptor<EntityPostPersit> captor = ArgumentCaptor.forClass(EntityPostPersit.class);
+        ArgumentCaptor<EntityPostPersist> captor = ArgumentCaptor.forClass(EntityPostPersist.class);
         verify(entityPostPersistEvent).fire(captor.capture());
-        EntityPostPersit value = captor.getValue();
+        EntityPostPersist value = captor.getValue();
         assertEquals(actor, value.getValue());
     }
 
