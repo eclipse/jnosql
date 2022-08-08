@@ -18,7 +18,7 @@ package org.eclipse.jnosql.mapping.document;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPostPersist;
 import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.mapping.document.DocumentDeleteQueryExecute;
 import jakarta.nosql.mapping.document.DocumentEntityPostPersist;
@@ -50,7 +50,7 @@ class DefaultDocumentEventPersistManager implements DocumentEventPersistManager 
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Inject
-    private Event<EntityPostPersit> entityPostPersistEvent;
+    private Event<EntityPostPersist> entityPostPersistEvent;
 
     @Inject
     private Event<EntityDocumentPrePersist> entityDocumentPrePersist;

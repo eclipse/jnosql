@@ -18,7 +18,7 @@ package org.eclipse.jnosql.mapping.column;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPostPersist;
 import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.mapping.column.ColumnDeleteQueryExecute;
 import jakarta.nosql.mapping.column.ColumnEntityPostPersist;
@@ -50,7 +50,7 @@ class DefaultColumnEventPersistManager implements ColumnEventPersistManager {
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Inject
-    private Event<EntityPostPersit> entityPostPersistEvent;
+    private Event<EntityPostPersist> entityPostPersistEvent;
 
     @Inject
     private Event<EntityColumnPrePersist> entityColumnPrePersist;

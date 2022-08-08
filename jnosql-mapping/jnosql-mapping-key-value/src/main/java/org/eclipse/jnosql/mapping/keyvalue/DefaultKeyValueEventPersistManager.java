@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.keyvalue;
 
 
 import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.mapping.EntityPostPersit;
+import jakarta.nosql.mapping.EntityPostPersist;
 import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.mapping.keyvalue.EntityKeyValuePostPersist;
 import jakarta.nosql.mapping.keyvalue.EntityKeyValuePrePersist;
@@ -41,7 +41,7 @@ class DefaultKeyValueEventPersistManager implements KeyValueEventPersistManager 
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Inject
-    private Event<EntityPostPersit> entityPostPersistEvent;
+    private Event<EntityPostPersist> entityPostPersistEvent;
 
     @Inject
     private Event<EntityKeyValuePrePersist> entityKeyValuePrePersist;
