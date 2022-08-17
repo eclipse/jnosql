@@ -273,7 +273,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         DocumentEntity entity = DocumentEntity.of("NotificationReader");
         entity.add("_id", "poli");
         entity.add("name", "Poliana Santana");
-        entity.add("_id", Arrays.asList(
+        entity.add("notification", Arrays.asList(
                 Document.of("_id", 10L),
                 Document.of("name", "News"),
                 Document.of("phone", "123456789"),
@@ -299,7 +299,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         DocumentEntity entity = DocumentEntity.of("NotificationReader");
         entity.add("_id", "poli");
         entity.add("name", "Poliana Santana");
-        entity.add("_id", Arrays.asList(
+        entity.add("notification", Arrays.asList(
                 Document.of("_id", 10L),
                 Document.of("name", "News"),
                 Document.of("nickname", "123456789"),
