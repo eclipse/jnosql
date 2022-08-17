@@ -86,8 +86,44 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
 
     protected <T> T toEntity(Class<T> entityClass, List<Document> documents) {
         EntityMetadata mapping = getEntityMetadata().get(entityClass);
+        if (mapping.isInheritance()) {
+            return inheritanceToEntity(documents, mapping);
+
+        }
         T instance = mapping.newInstance();
         return convertEntity(documents, mapping, instance);
+    }
+
+    private <T> T inheritanceToEntity(List<Document> documents, EntityMetadata mapping) {
+        Map<String, InheritanceMetadata> group = getEntityMetadata()
+                .findByParentGroupByDiscriminatorValue(mapping.getType());
+
+        if (group.isEmpty()) {
+            throw new MappingException("There is no discriminator inheritance to the document collection "
+                    + mapping.getName());
+        }
+
+        String column = group.values()
+                .stream()
+                .findFirst()
+                .map(InheritanceMetadata::getDiscriminatorColumn)
+                .orElseThrow();
+
+        String discriminator = documents.stream()
+                .filter(d -> d.getName().equals(column))
+                .findFirst()
+                .map(d -> d.get(String.class))
+                .orElseThrow(
+                        () -> new MappingException("To inheritance there is the discriminator column missing" +
+                                " on the Document Collection, the document name: " + column));
+
+        InheritanceMetadata inheritance = Optional.ofNullable(group.get(discriminator))
+                .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
+                        " column value " + discriminator));
+
+        EntityMetadata inheritanceMetadata = getEntityMetadata().get(inheritance.getEntity());
+        T instance = inheritanceMetadata.newInstance();
+        return convertEntity(documents, inheritanceMetadata, instance);
     }
 
 
@@ -103,9 +139,9 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         return convertEntity(entity.getDocuments(), mapping, instance);
     }
 
-    private <T> T mapInheritanceEntity(DocumentEntity entity, Class<?> entityClass) {
+    private <T> T mapInheritanceEntity(DocumentEntity entity, Class<?> type) {
         Map<String, InheritanceMetadata> group = getEntityMetadata()
-                .findByParentGroupByDiscriminatorValue(entityClass);
+                .findByParentGroupByDiscriminatorValue(type);
 
         if (group.isEmpty()) {
             throw new MappingException("There is no discriminator inheritance to the document collection "
