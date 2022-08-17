@@ -326,21 +326,19 @@ class DefaultDocumentEntityConverterInheritanceTest {
         notification.setId(10L);
         notification.setName("Ada");
         notification.setNickname("ada.lovelace");
-        notification.setCreatedOn(LocalDate.now());
         NotificationReader reader = new NotificationReader("otavio", "Otavio", notification);
 
         DocumentEntity entity = this.converter.toDocument(reader);
         assertNotNull(entity);
 
         assertEquals("NotificationReader", entity.getName());
-        assertEquals("otavio", entity.find("_id"));
-        assertEquals("Otavio", entity.find("name"));
+        assertEquals("otavio", entity.find("_id", String.class).get());
+        assertEquals("Otavio", entity.find("name", String.class).get());
         List<Document> documents = entity.find("notification", new TypeReference<List<Document>>() {
         }).get();
 
         MatcherAssert.assertThat(documents,
                 Matchers.containsInAnyOrder(Document.of("_id", 10L),
-                        Document.of("_id", 10L),
                         Document.of("name", "Ada"),
                         Document.of("dtype", "SocialMediaNotification"),
                         Document.of("nickname", "ada.lovelace")));
@@ -394,12 +392,12 @@ class DefaultDocumentEntityConverterInheritanceTest {
         communication.add("name", "manager");
         List<List<Document>> documents = new ArrayList<>();
         documents.add(Arrays.asList(
-                Document.of("name","small-project"),
+                Document.of("_id","small-project"),
                 Document.of("size","Small"),
                 Document.of("investor","investor")
         ));
         documents.add(Arrays.asList(
-                Document.of("name","large-project"),
+                Document.of("_id","large-project"),
                 Document.of("size","Large"),
                 Document.of("budget",BigDecimal.TEN)
         ));
