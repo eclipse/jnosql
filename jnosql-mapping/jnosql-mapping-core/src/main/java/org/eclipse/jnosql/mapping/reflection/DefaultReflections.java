@@ -27,6 +27,7 @@ import javax.enterprise.context.ApplicationScoped;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,10 +127,21 @@ public class DefaultReflections implements Reflections {
 
     @Override
     public <T> Constructor<T> makeAccessible(Class<T> clazz) {
+        final Predicate<Constructor<?>> defaultConstructor = c -> c.getParameterCount() == 0;
+        final Predicate<Constructor<?>> customConstructor = c -> {
+            for (Parameter parameter : c.getParameters()) {
+                if(parameter.getAnnotation(Id.class) != null || parameter.getAnnotation(Column.class) != null) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
         List<Constructor<?>> constructors = Stream.
                 of(clazz.getDeclaredConstructors())
-                .filter(c -> c.getParameterCount() == 0)
+                .filter(defaultConstructor.or(customConstructor))
                 .collect(toList());
+
 
         if (constructors.isEmpty()) {
             throw new ConstructorException(clazz);
