@@ -103,7 +103,7 @@ class DocumentFieldConverters {
 
             Field nativeField = field.getNativeField();
             Object subEntity = converter.toEntity(nativeField.getType(), documents);
-            EntityMetadata mapping = converter.getEntityMetadata().get(subEntity.getClass());
+            EntityMetadata mapping = converter.getEntities().get(subEntity.getClass());
             boolean areAllFieldsNull = mapping.getFields()
                     .stream()
                     .map(f -> f.read(subEntity))

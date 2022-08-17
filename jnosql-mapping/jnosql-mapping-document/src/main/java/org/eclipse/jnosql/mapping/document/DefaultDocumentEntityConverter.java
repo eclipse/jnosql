@@ -36,7 +36,7 @@ class DefaultDocumentEntityConverter extends AbstractDocumentEntityConverter imp
 
 
     @Override
-    protected EntitiesMetadata getEntityMetadata() {
+    protected EntitiesMetadata getEntities() {
         return entities;
     }
 

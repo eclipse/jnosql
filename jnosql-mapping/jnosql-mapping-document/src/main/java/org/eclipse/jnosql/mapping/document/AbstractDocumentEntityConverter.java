@@ -44,7 +44,7 @@ import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
  */
 public abstract class AbstractDocumentEntityConverter implements DocumentEntityConverter {
 
-    protected abstract EntitiesMetadata getEntityMetadata();
+    protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();
 
@@ -54,7 +54,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     @Override
     public DocumentEntity toDocument(Object entityInstance) {
         requireNonNull(entityInstance, "Object is required");
-        EntityMetadata mapping = getEntityMetadata().get(entityInstance.getClass());
+        EntityMetadata mapping = getEntities().get(entityInstance.getClass());
         DocumentEntity entity = DocumentEntity.of(mapping.getName());
         mapping.getFields().stream()
                 .map(f -> to(f, entityInstance))
@@ -80,12 +80,12 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     public <T> T toEntity(T entityInstance, DocumentEntity entity) {
         requireNonNull(entity, "entity is required");
         requireNonNull(entityInstance, "entityInstance is required");
-        EntityMetadata mapping = getEntityMetadata().get(entityInstance.getClass());
+        EntityMetadata mapping = getEntities().get(entityInstance.getClass());
         return convertEntity(entity.getDocuments(), mapping, entityInstance);
     }
 
     protected <T> T toEntity(Class<T> entityClass, List<Document> documents) {
-        EntityMetadata mapping = getEntityMetadata().get(entityClass);
+        EntityMetadata mapping = getEntities().get(entityClass);
         if (mapping.isInheritance()) {
             return inheritanceToEntity(documents, mapping);
 
@@ -99,7 +99,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     @Override
     public <T> T toEntity(DocumentEntity entity) {
         requireNonNull(entity, "entity is required");
-        EntityMetadata mapping = getEntityMetadata().findByName(entity.getName());
+        EntityMetadata mapping = getEntities().findByName(entity.getName());
         if (mapping.isInheritance()) {
             return mapInheritanceEntity(entity, mapping.getType());
         }
@@ -122,7 +122,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     }
 
     private <T> T mapInheritanceEntity(DocumentEntity entity, Class<?> type) {
-        Map<String, InheritanceMetadata> group = getEntityMetadata()
+        Map<String, InheritanceMetadata> group = getEntities()
                 .findByParentGroupByDiscriminatorValue(type);
 
         if (group.isEmpty()) {
@@ -144,7 +144,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        EntityMetadata mapping = getEntityMetadata().get(inheritance.getEntity());
+        EntityMetadata mapping = getEntities().get(inheritance.getEntity());
         T instance = mapping.newInstance();
         return convertEntity(entity.getDocuments(), mapping, instance);
     }
@@ -166,7 +166,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     }
 
     private <T> T inheritanceToEntity(List<Document> documents, EntityMetadata mapping) {
-        Map<String, InheritanceMetadata> group = getEntityMetadata()
+        Map<String, InheritanceMetadata> group = getEntities()
                 .findByParentGroupByDiscriminatorValue(mapping.getType());
 
         if (group.isEmpty()) {
@@ -192,7 +192,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
                 .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
                         " column value " + discriminator));
 
-        EntityMetadata inheritanceMetadata = getEntityMetadata().get(inheritance.getEntity());
+        EntityMetadata inheritanceMetadata = getEntities().get(inheritance.getEntity());
         T instance = inheritanceMetadata.newInstance();
         return convertEntity(documents, inheritanceMetadata, instance);
     }
