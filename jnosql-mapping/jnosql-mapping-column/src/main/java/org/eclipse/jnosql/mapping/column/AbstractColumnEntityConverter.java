@@ -115,6 +115,9 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
 
     protected <T> T toEntity(Class<T> entityClass, List<Column> columns) {
         EntityMetadata mapping = getEntities().get(entityClass);
+        if (mapping.isInheritance()) {
+            return inheritanceToEntity(columns, mapping);
+        }
         T instance = mapping.newInstance();
         return convertEntity(columns, mapping, instance);
     }
@@ -162,4 +165,35 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         return convertEntity(entity.getColumns(), mapping, instance);
     }
 
+    private <T> T inheritanceToEntity(List<Column> columns, EntityMetadata mapping) {
+        Map<String, InheritanceMetadata> group = getEntities()
+                .findByParentGroupByDiscriminatorValue(mapping.getType());
+
+        if (group.isEmpty()) {
+            throw new MappingException("There is no discriminator inheritance to the document collection "
+                    + mapping.getName());
+        }
+
+        String column = group.values()
+                .stream()
+                .findFirst()
+                .map(InheritanceMetadata::getDiscriminatorColumn)
+                .orElseThrow();
+
+        String discriminator = columns.stream()
+                .filter(d -> d.getName().equals(column))
+                .findFirst()
+                .map(d -> d.get(String.class))
+                .orElseThrow(
+                        () -> new MappingException("To inheritance there is the discriminator column missing" +
+                                " on the Document Collection, the document name: " + column));
+
+        InheritanceMetadata inheritance = Optional.ofNullable(group.get(discriminator))
+                .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
+                        " column value " + discriminator));
+
+        EntityMetadata inheritanceMetadata = getEntities().get(inheritance.getEntity());
+        T instance = inheritanceMetadata.newInstance();
+        return convertEntity(columns, inheritanceMetadata, instance);
+    }
 }
