@@ -53,34 +53,34 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
     protected abstract Converters getConverters();
 
     @Override
-    public ColumnEntity toColumn(Object entityInstance) {
-        requireNonNull(entityInstance, "Object is required");
-        EntityMetadata mapping = getEntities().get(entityInstance.getClass());
-        ColumnEntity entity = ColumnEntity.of(mapping.getName());
+    public ColumnEntity toColumn(Object entity) {
+        requireNonNull(entity, "entity is required");
+        EntityMetadata mapping = getEntities().get(entity.getClass());
+        ColumnEntity communication = ColumnEntity.of(mapping.getName());
         mapping.getFields().stream()
-                .map(f -> to(f, entityInstance))
+                .map(f -> to(f, entity))
                 .filter(FieldValue::isNotEmpty)
                 .map(f -> f.toColumn(this, getConverters()))
                 .flatMap(List::stream)
-                .forEach(entity::add);
+                .forEach(communication::add);
 
-        mapping.getInheritance().ifPresent(i -> entity.add(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
-        return entity;
+        mapping.getInheritance().ifPresent(i -> communication.add(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
+        return communication;
     }
 
     @Override
-    public <T> T toEntity(Class<T> entityClass, ColumnEntity entity) {
+    public <T> T toEntity(Class<T> entity, ColumnEntity communication) {
+        requireNonNull(communication, "communication is required");
         requireNonNull(entity, "entity is required");
-        requireNonNull(entityClass, "entityClass is required");
-        return toEntity(entityClass, entity.getColumns());
+        return toEntity(entity, communication.getColumns());
     }
 
     @Override
-    public <T> T toEntity(T entityInstance, ColumnEntity entity) {
+    public <T> T toEntity(T entity, ColumnEntity communication) {
+        requireNonNull(communication, "communication is required");
         requireNonNull(entity, "entity is required");
-        requireNonNull(entityInstance, "entityInstance is required");
-        EntityMetadata mapping = getEntities().get(entityInstance.getClass());
-        return convertEntity(entity.getColumns(), mapping, entityInstance);
+        EntityMetadata mapping = getEntities().get(entity.getClass());
+        return convertEntity(communication.getColumns(), mapping, entity);
     }
 
     @Override
