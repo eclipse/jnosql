@@ -41,6 +41,9 @@ class EntityMetadataBuilder {
 
     private boolean hasInheritanceAnnotation;
 
+    private ConstructorMetadata constructor;
+
+
     public EntityMetadataBuilder withName(String name) {
         this.name = name;
         return this;
@@ -86,10 +89,15 @@ class EntityMetadataBuilder {
         return this;
     }
 
+    public EntityMetadataBuilder constructor(ConstructorMetadata constructor) {
+        this.constructor = constructor;
+        return this;
+    }
+
 
     public EntityMetadata build() {
         return new DefaultEntityMetadata(name, fieldsName, classInstance, fields,
-                javaFieldGroupedByColumn, fieldsGroupedByName, instanceSupplier, inheritance
-                , hasInheritanceAnnotation);
+                javaFieldGroupedByColumn, fieldsGroupedByName, instanceSupplier, inheritance,
+                constructor, hasInheritanceAnnotation);
     }
 }
