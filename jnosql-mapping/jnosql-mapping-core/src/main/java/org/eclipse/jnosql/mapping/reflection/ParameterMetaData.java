@@ -32,7 +32,7 @@ public interface ParameterMetaData {
      *
      * @return the {@link FieldType}
      */
-    FieldType getType();
+    FieldType getParamType();
 
     /**
      * Returns the name of the field that can be either the field name
@@ -41,6 +41,12 @@ public interface ParameterMetaData {
      * @return the name
      */
     String getName();
+
+    /**
+     * @return a {@code Class} object identifying the declared
+     * type of the entity represented by this object
+     */
+    Class<?> getType();
 
     /**
      * Returns true is the field is annotated with {@link Id}
