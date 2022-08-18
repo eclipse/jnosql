@@ -25,7 +25,7 @@ final class ConstructorMetadataBuilder {
         this.reflections = reflections;
     }
 
-    public <T> ConstructorMetadata build(Class<T> entity) {
+    <T> ConstructorMetadata build(Class<T> entity) {
         Constructor<T> constructor = reflections.getConstructor(entity);
         if(constructor.getParameterCount() == 0) {
             return new ConstructorMetadata(constructor, Collections.emptyList());

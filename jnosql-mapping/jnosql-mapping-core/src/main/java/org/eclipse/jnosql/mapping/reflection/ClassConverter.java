@@ -76,7 +76,7 @@ class ClassConverter {
                 .collect(collectingAndThen(toMap(FieldMapping::getName,
                         Function.identity()), Collections::unmodifiableMap));
 
-        InstanceSupplier instanceSupplier = instanceSupplierFactory.apply(reflections.makeAccessible(entity));
+        InstanceSupplier instanceSupplier = instanceSupplierFactory.apply(reflections.getConstructor(entity));
         InheritanceMetadata inheritance = reflections.getInheritance(entity).orElse(null);
         boolean hasInheritanceAnnotation = reflections.hasInheritanceAnnotation(entity);
         EntityMetadata mapping = DefaultEntityMetadata.builder().name(entityName)
