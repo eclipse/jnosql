@@ -82,7 +82,7 @@ public class DefaultReflections implements Reflections {
     @Override
     public <T> T newInstance(Class<T> clazz) {
         try {
-            Constructor<T> constructor = makeAccessible(clazz);
+            Constructor<T> constructor = getConstructor(clazz);
             return newInstance(constructor);
         } catch (Exception exception) {
             Logger.getLogger(Reflections.class.getName()).log(Level.SEVERE, null, exception);
@@ -117,7 +117,7 @@ public class DefaultReflections implements Reflections {
 
 
     @Override
-    public void makeAccessible(Field field) {
+    public void getConstructor(Field field) {
         if ((!Modifier.isPublic(field.getModifiers()) || !Modifier
                 .isPublic(field.getDeclaringClass().getModifiers()))
                 && !field.isAccessible()) {
@@ -126,7 +126,7 @@ public class DefaultReflections implements Reflections {
     }
 
     @Override
-    public <T> Constructor<T> makeAccessible(Class<T> clazz) {
+    public <T> Constructor<T> getConstructor(Class<T> type) {
         final Predicate<Constructor<?>> defaultConstructor = c -> c.getParameterCount() == 0;
         final Predicate<Constructor<?>> customConstructor = c -> {
             for (Parameter parameter : c.getParameters()) {
@@ -138,13 +138,13 @@ public class DefaultReflections implements Reflections {
         };
 
         List<Constructor<?>> constructors = Stream.
-                of(clazz.getDeclaredConstructors())
+                of(type.getDeclaredConstructors())
                 .filter(defaultConstructor.or(customConstructor))
                 .collect(toList());
 
 
         if (constructors.isEmpty()) {
-            throw new ConstructorException(clazz);
+            throw new ConstructorException(type);
         }
         Optional<Constructor<?>> publicConstructor = constructors
                 .stream()
@@ -170,27 +170,27 @@ public class DefaultReflections implements Reflections {
     }
 
     @Override
-    public List<Field> getFields(Class<?> classEntity) {
-        requireNonNull(classEntity, "class entity is required");
+    public List<Field> getFields(Class<?> type) {
+        requireNonNull(type, "class entity is required");
 
         List<Field> fields = new ArrayList<>();
 
-        if (isMappedSuperclass(classEntity)) {
-            fields.addAll(getFields(classEntity.getSuperclass()));
+        if (isMappedSuperclass(type)) {
+            fields.addAll(getFields(type.getSuperclass()));
         }
         Predicate<Field> hasColumnAnnotation = f -> f.getAnnotation(Column.class) != null;
         Predicate<Field> hasIdAnnotation = f -> f.getAnnotation(Id.class) != null;
 
-        Stream.of(classEntity.getDeclaredFields())
+        Stream.of(type.getDeclaredFields())
                 .filter(hasColumnAnnotation.or(hasIdAnnotation))
                 .forEach(fields::add);
         return fields;
     }
 
     @Override
-    public boolean isMappedSuperclass(Class<?> classEntity) {
-        requireNonNull(classEntity, "class entity is required");
-        Class<?> superclass = classEntity.getSuperclass();
+    public boolean isMappedSuperclass(Class<?> type) {
+        requireNonNull(type, "class entity is required");
+        Class<?> superclass = type.getSuperclass();
         return superclass.getAnnotation(MappedSuperclass.class) != null
                 || superclass.getAnnotation(Inheritance.class) != null;
     }
@@ -220,19 +220,19 @@ public class DefaultReflections implements Reflections {
     }
 
     @Override
-    public Optional<InheritanceMetadata> getInheritance(Class<?> entity) {
-        Objects.requireNonNull(entity, "entity is required");
-        if(isInheritance(entity)) {
-            Class<?> parent = entity.getSuperclass();
+    public Optional<InheritanceMetadata> getInheritance(Class<?> type) {
+        Objects.requireNonNull(type, "entity is required");
+        if(isInheritance(type)) {
+            Class<?> parent = type.getSuperclass();
             String discriminatorColumn = getDiscriminatorColumn(parent);
-            String discriminatorValue = getDiscriminatorValue(entity);
+            String discriminatorValue = getDiscriminatorValue(type);
             return Optional.of(new InheritanceMetadata(discriminatorValue, discriminatorColumn,
-                    parent, entity));
-        } else if(entity.getAnnotation(Inheritance.class) != null) {
-            String discriminatorColumn = getDiscriminatorColumn(entity);
-            String discriminatorValue = getDiscriminatorValue(entity);
+                    parent, type));
+        } else if(type.getAnnotation(Inheritance.class) != null) {
+            String discriminatorColumn = getDiscriminatorColumn(type);
+            String discriminatorValue = getDiscriminatorValue(type);
             return Optional.of(new InheritanceMetadata(discriminatorValue, discriminatorColumn,
-                    entity, entity));
+                    type, type));
         }
         return Optional.empty();
     }
