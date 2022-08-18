@@ -15,20 +15,31 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.util.Comparator;
 
 /**
  * This Comparator defines the priority of the entity's constructor that JNoSQL will use as a priority.
  * The emphasis will be on a default constructor, a non-arg-param constructor, either default or public,
  * and then the constructor with more visibility.
+ *
  * @param <T> the entity type
  */
-class ConstructorComparable<T> implements Comparator<Constructor<T>> {
+enum ConstructorComparable implements Comparator<Constructor<?>> {
+
+    INSTANCE;
 
     @Override
-    public int compare(Constructor<T> constructorA, Constructor<T> constructorB) {
+    public int compare(Constructor<?> constructorA, Constructor<?> constructorB) {
         int parameterCount = constructorA.getParameterCount();
         int parameterCountB = constructorB.getParameterCount();
+        if (parameterCount == 0 && parameterCountB == 0) {
+            return Modifier.isPublic(constructorA.getModifiers()) ? -1 : 1;
+        } else if (parameterCount == 0) {
+            return -1;
+        } else if (parameterCountB == 0) {
+            return 1;
+        }
         return 0;
     }
 }
