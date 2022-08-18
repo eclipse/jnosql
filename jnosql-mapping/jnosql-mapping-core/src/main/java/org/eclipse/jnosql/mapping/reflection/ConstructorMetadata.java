@@ -25,7 +25,6 @@ import java.util.Objects;
  */
 public final class ConstructorMetadata {
 
-
     private final Constructor<?> constructor;
     private final List<ParameterMetaData> parameters;
 
