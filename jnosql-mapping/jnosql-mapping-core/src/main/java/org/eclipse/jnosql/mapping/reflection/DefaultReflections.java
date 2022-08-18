@@ -117,7 +117,7 @@ public class DefaultReflections implements Reflections {
 
 
     @Override
-    public void getConstructor(Field field) {
+    public void makeAccessible(Field field) {
         if ((!Modifier.isPublic(field.getModifiers()) || !Modifier
                 .isPublic(field.getDeclaringClass().getModifiers()))
                 && !field.isAccessible()) {
@@ -127,8 +127,8 @@ public class DefaultReflections implements Reflections {
 
     @Override
     public <T> Constructor<T> getConstructor(Class<T> type) {
-        final Predicate<Constructor<?>> defaultConstructor = c -> c.getParameterCount() == 0;
-        final Predicate<Constructor<?>> customConstructor = c -> {
+        final Predicate<Constructor<?>> defaultConstructorPredicate = c -> c.getParameterCount() == 0;
+        final Predicate<Constructor<?>> customConstructorPredicate = c -> {
             for (Parameter parameter : c.getParameters()) {
                 if(parameter.getAnnotation(Id.class) != null || parameter.getAnnotation(Column.class) != null) {
                     return true;
@@ -139,15 +139,17 @@ public class DefaultReflections implements Reflections {
 
         List<Constructor<?>> constructors = Stream.
                 of(type.getDeclaredConstructors())
-                .filter(defaultConstructor.or(customConstructor))
+                .filter(defaultConstructorPredicate.or(customConstructorPredicate))
                 .collect(toList());
 
 
         if (constructors.isEmpty()) {
             throw new ConstructorException(type);
         }
+
         Optional<Constructor<?>> publicConstructor = constructors
                 .stream()
+                .sorted(ConstructorComparable.INSTANCE)
                 .filter(c -> Modifier.isPublic(c.getModifiers()))
                 .findFirst();
         if (publicConstructor.isPresent()) {

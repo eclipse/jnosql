@@ -100,7 +100,7 @@ public interface Reflections {
      *
      * @param field field the field to make accessible
      */
-    void getConstructor(Field field);
+    void makeAccessible(Field field);
 
     /**
      * Make the given a constructor class accessible, explicitly setting it accessible
