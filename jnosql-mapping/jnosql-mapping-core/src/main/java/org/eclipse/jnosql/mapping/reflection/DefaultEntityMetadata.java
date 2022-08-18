@@ -30,7 +30,7 @@ class DefaultEntityMetadata implements EntityMetadata {
 
     private final List<String> fieldsName;
 
-    private final Class<?> classInstance;
+    private final Class<?> type;
 
     private final List<FieldMapping> fields;
 
@@ -46,21 +46,26 @@ class DefaultEntityMetadata implements EntityMetadata {
 
     private final boolean hasInheritanceAnnotation;
 
-    DefaultEntityMetadata(String name, List<String> fieldsName, Class<?> classInstance,
+    private final ConstructorMetadata constructor;
+
+    DefaultEntityMetadata(String name, List<String> fieldsName, Class<?> type,
                           List<FieldMapping> fields,
                           Map<String, NativeMapping> javaFieldGroupedByColumn,
-                          Map<String, FieldMapping> fieldsGroupedByName, InstanceSupplier instanceSupplier,
+                          Map<String, FieldMapping> fieldsGroupedByName,
+                          InstanceSupplier instanceSupplier,
                           InheritanceMetadata inheritance,
+                          ConstructorMetadata constructor,
                           boolean hasInheritanceAnnotation) {
         this.name = name;
         this.fieldsName = fieldsName;
-        this.classInstance = classInstance;
+        this.type = type;
         this.fields = fields;
         this.fieldsGroupedByName = fieldsGroupedByName;
         this.javaFieldGroupedByColumn = javaFieldGroupedByColumn;
         this.instanceSupplier = instanceSupplier;
         this.id = fields.stream().filter(FieldMapping::isId).findFirst().orElse(null);
         this.inheritance = inheritance;
+        this.constructor = constructor;
         this.hasInheritanceAnnotation = hasInheritanceAnnotation;
     }
 
@@ -76,7 +81,7 @@ class DefaultEntityMetadata implements EntityMetadata {
 
     @Override
     public Class<?> getType() {
-        return classInstance;
+        return type;
     }
 
     @Override
@@ -102,6 +107,11 @@ class DefaultEntityMetadata implements EntityMetadata {
     @Override
     public <T> T newInstance() {
         return (T) instanceSupplier.get();
+    }
+
+    @Override
+    public ConstructorMetadata getConstructor() {
+        return constructor;
     }
 
     @Override
@@ -138,12 +148,12 @@ class DefaultEntityMetadata implements EntityMetadata {
             return false;
         }
         DefaultEntityMetadata that = (DefaultEntityMetadata) o;
-        return Objects.equals(classInstance, that.classInstance);
+        return Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(classInstance);
+        return Objects.hashCode(type);
     }
 
     @Override
@@ -151,7 +161,7 @@ class DefaultEntityMetadata implements EntityMetadata {
         return "DefaultEntityMetadata{" +
                 "name='" + name + '\'' +
                 ", fieldsName=" + fieldsName +
-                ", classInstance=" + classInstance +
+                ", classInstance=" + type +
                 ", fields=" + fields +
                 ", instanceSupplier=" + instanceSupplier +
                 ", javaFieldGroupedByColumn=" + javaFieldGroupedByColumn +
