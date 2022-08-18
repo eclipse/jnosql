@@ -80,6 +80,13 @@ public interface EntityMetadata {
 
 
     /**
+     * Returns the {@link  ConstructorMetadata} the representation of a constructor
+     * @return The {@link  ConstructorMetadata}
+     */
+    ConstructorMetadata getConstructor();
+
+
+    /**
      * Gets the native column name from the Java field name
      *
      * @param javaField the java field
