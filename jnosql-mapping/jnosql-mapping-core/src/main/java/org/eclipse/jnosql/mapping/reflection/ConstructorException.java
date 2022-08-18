@@ -22,7 +22,7 @@ import jakarta.nosql.mapping.MappingException;
  */
 public class ConstructorException extends MappingException {
 
-    public ConstructorException(Class clazz) {
-        super("This class must have a no arg with either public or default visibility: " + clazz.getName());
+    public ConstructorException(Class<?> type) {
+        super("This class must have a no arg with either public or default visibility: " + type.getName());
     }
 }
