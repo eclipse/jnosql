@@ -14,14 +14,22 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Embeddable;
 import jakarta.nosql.tck.entities.Actor;
 import jakarta.nosql.tck.entities.Address;
 import jakarta.nosql.tck.entities.Movie;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;
+import jakarta.nosql.tck.entities.constructor.BookUser;
+import jakarta.nosql.tck.entities.constructor.PetOwner;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -71,12 +79,58 @@ class MappingTypeTest {
     //parameter EMBEDDED
 
     @Test
-    public void shouldReturnDefaultParameter(){
-
+    public void shouldReturnParameterDefault() throws NoSuchMethodException {
+        Constructor<BookUser> constructor = (Constructor<BookUser>) BookUser.class.getDeclaredConstructors()[0];
+        Parameter id = constructor.getParameters()[0];
+        Parameter name = constructor.getParameters()[1];
+        assertEquals(MappingType.DEFAULT, MappingType.of(id));
+        assertEquals(MappingType.DEFAULT, MappingType.of(name));
     }
-    public void shouldReturnDefaultCollection(){}
-    public void shouldReturnDefaultMap(){}
-    public void shouldReturnDefaultEntity(){}
-    public void shouldReturnDefaultEmbedded(){}
+    @Test
+    public void shouldReturnParameterCollection(){
+        Constructor<BookUser> constructor = (Constructor<BookUser>) BookUser.class.getDeclaredConstructors()[0];
+        Parameter books = constructor.getParameters()[2];
+        assertEquals(MappingType.COLLECTION, MappingType.of(books));
+    }
+    @Test
+    public void shouldReturnParameterEntity(){
+        Constructor<PetOwner> constructor = (Constructor<PetOwner>) PetOwner.class.getDeclaredConstructors()[0];
+        Parameter animal = constructor.getParameters()[2];
+        assertEquals(MappingType.ENTITY, MappingType.of(animal));
+    }
+    @Test
+    public void shouldReturnParameterMap(){
+        Constructor<ForClass> constructor = (Constructor<ForClass>) ForClass.class.getDeclaredConstructors()[0];
+        Parameter map = constructor.getParameters()[0];
+        assertEquals(MappingType.MAP, MappingType.of(map));
+    }
+    @Test
+    public void shouldReturnParameterEmbedded(){
+        Constructor<ForClass> constructor = (Constructor<ForClass>) ForClass.class.getDeclaredConstructors()[0];
+        Parameter map = constructor.getParameters()[1];
+        assertEquals(MappingType.EMBEDDED, MappingType.of(map));
+    }
 
+
+    public static class ForClass {
+
+        @Column("mapAnnotation")
+        private Map<String, String> map;
+
+
+        @Column
+        private BarClass barClass;
+
+        public ForClass(@Column("map")Map<String, String> map, @Column("barClass") BarClass barClass) {
+            this.map = map;
+            this.barClass = barClass;
+        }
+    }
+
+    @Embeddable
+    public static class BarClass {
+
+        @Column("integerAnnotation")
+        private Integer integer;
+    }
 }
