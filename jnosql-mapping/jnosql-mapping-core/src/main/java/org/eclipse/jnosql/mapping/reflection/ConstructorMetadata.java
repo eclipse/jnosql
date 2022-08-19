@@ -34,7 +34,7 @@ public final class ConstructorMetadata {
     }
 
     public List<ParameterMetaData> getParameters() {
-        return Collections.unmodifiableList(parameters);
+        return parameters;
     }
 
     public Constructor<?> getConstructor() {
