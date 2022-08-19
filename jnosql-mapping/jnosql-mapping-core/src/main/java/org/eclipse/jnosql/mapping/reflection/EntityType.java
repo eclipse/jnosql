@@ -14,9 +14,44 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.nosql.mapping.Embeddable;
+import jakarta.nosql.mapping.Entity;
+
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * enum that contains kinds of annotations to fields on java.
  */
 public enum EntityType {
-    EMBEDDED, MAP, COLLECTION, DEFAULT, ENTITY
+    EMBEDDED, MAP, COLLECTION, DEFAULT, ENTITY;
+
+    /**
+     * select you the kind of annotation on field and then define a enum type, follow the sequences:
+     * <ul>
+     * <li>Collection</li>
+     * <li>Map</li>
+     * <li>embedded</li>
+     * </ul>.
+     *
+     * @param field - the field with annotation
+     * @return the type
+     */
+    static EntityType of(Field field) {
+        if (Collection.class.isAssignableFrom(field.getType())) {
+            return EntityType.COLLECTION;
+        }
+        if (Map.class.isAssignableFrom(field.getType())) {
+            return EntityType.MAP;
+        }
+        if (field.getType().isAnnotationPresent(Embeddable.class)) {
+            return EntityType.EMBEDDED;
+        }
+        if (field.getType().isAnnotationPresent(Entity.class)) {
+            return EntityType.ENTITY;
+        }
+
+        return EntityType.DEFAULT;
+    }
 }

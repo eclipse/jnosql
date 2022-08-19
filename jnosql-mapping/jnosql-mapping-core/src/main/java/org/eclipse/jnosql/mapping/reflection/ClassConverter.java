@@ -178,7 +178,7 @@ class ClassConverter {
 
 
     private FieldMapping to(Field field) {
-        EntityType entityType = FieldTypeUtil.of(field);
+        EntityType entityType = EntityType.of(field);
         reflections.makeAccessible(field);
         Convert convert = field.getAnnotation(Convert.class);
         boolean id = reflections.isIdField(field);
