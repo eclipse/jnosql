@@ -178,21 +178,21 @@ class ClassConverter {
 
 
     private FieldMapping to(Field field) {
-        EntityType entityType = EntityType.of(field);
+        MappingType mappingType = MappingType.of(field);
         reflections.makeAccessible(field);
         Convert convert = field.getAnnotation(Convert.class);
         boolean id = reflections.isIdField(field);
         String columnName = id ? reflections.getIdName(field) : reflections.getColumnName(field);
 
         FieldMappingBuilder builder = new FieldMappingBuilder().withName(columnName)
-                .withField(field).withType(entityType).withId(id)
+                .withField(field).withType(mappingType).withId(id)
                 .withReader(readerFactory.apply(field))
                 .withWriter(writerFactory.apply(field));
 
         if (nonNull(convert)) {
             builder.withConverter(convert.value());
         }
-        switch (entityType) {
+        switch (mappingType) {
             case COLLECTION:
             case MAP:
                 builder.withTypeSupplier(field::getGenericType);

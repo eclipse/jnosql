@@ -37,8 +37,8 @@ class DefaultParameterMetaData implements ParameterMetaData {
     }
 
     @Override
-    public EntityType getParamType() {
-        return EntityType.DEFAULT;
+    public MappingType getParamType() {
+        return MappingType.DEFAULT;
     }
 
     @Override

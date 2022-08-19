@@ -23,7 +23,7 @@ import org.eclipse.jnosql.mapping.column.ColumnFieldConverters.ColumnFieldConver
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.EntityType;
+import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
 
@@ -36,8 +36,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
-import static org.eclipse.jnosql.mapping.reflection.EntityType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.EntityType.ENTITY;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
 
 
 
@@ -127,7 +127,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         final List<String> names = columns.stream().map(Column::getName).sorted().collect(Collectors.toList());
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
-            EntityType type = fieldsGroupByName.get(k).getType();
+            MappingType type = fieldsGroupByName.get(k).getType();
             return EMBEDDED.equals(type) || ENTITY.equals(type);
         };
         fieldsGroupByName.keySet().stream()

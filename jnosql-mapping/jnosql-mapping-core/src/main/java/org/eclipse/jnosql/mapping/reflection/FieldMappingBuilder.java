@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
 
 class FieldMappingBuilder {
 
-    private EntityType type;
+    private MappingType type;
 
     private Field field;
 
@@ -40,7 +40,7 @@ class FieldMappingBuilder {
     private FieldWriter writer;
 
 
-    public FieldMappingBuilder withType(EntityType type) {
+    public FieldMappingBuilder withType(MappingType type) {
         this.type = type;
         return this;
     }

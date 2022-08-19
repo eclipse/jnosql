@@ -25,42 +25,42 @@ import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EntityTypeTest {
+class MappingTypeTest {
 
     @Test
     public void shouldReturnList() throws NoSuchFieldException {
         Field field = Person.class.getDeclaredField("phones");
-        assertEquals(EntityType.COLLECTION, EntityType.of(field));
+        assertEquals(MappingType.COLLECTION, MappingType.of(field));
     }
 
     @Test
     public void shouldReturnSet() throws NoSuchFieldException {
         Field field = Movie.class.getDeclaredField("actors");
-        assertEquals(EntityType.COLLECTION, EntityType.of(field));
+        assertEquals(MappingType.COLLECTION, MappingType.of(field));
     }
 
     @Test
     public void shouldReturnMap() throws NoSuchFieldException {
         Field field = Actor.class.getDeclaredField("movieCharacter");
-        assertEquals(EntityType.MAP, EntityType.of(field));
+        assertEquals(MappingType.MAP, MappingType.of(field));
     }
 
     @Test
     public void shouldReturnDefault() throws NoSuchFieldException {
         Field field = Person.class.getDeclaredField("name");
-        assertEquals(EntityType.DEFAULT, EntityType.of(field));
+        assertEquals(MappingType.DEFAULT, MappingType.of(field));
     }
 
 
     @Test
     public void shouldReturnEmbedded() throws NoSuchFieldException{
         Field field = Worker.class.getDeclaredField("job");
-        assertEquals(EntityType.EMBEDDED, EntityType.of(field));
+        assertEquals(MappingType.EMBEDDED, MappingType.of(field));
     }
 
     @Test
     public void shouldReturnSubEntity() throws NoSuchFieldException{
         Field field = Address.class.getDeclaredField("zipCode");
-        assertEquals(EntityType.ENTITY, EntityType.of(field));
+        assertEquals(MappingType.ENTITY, MappingType.of(field));
     }
 }

@@ -21,7 +21,7 @@ public final class EmbeddedFieldMapping extends AbstractFieldMapping {
 
     private final String entityName;
 
-    public EmbeddedFieldMapping(EntityType type, Field field, String name, String entityName,
+    public EmbeddedFieldMapping(MappingType type, Field field, String name, String entityName,
                                 FieldReader reader, FieldWriter writer) {
         super(type, field, name, null, reader, writer);
         this.entityName = entityName;

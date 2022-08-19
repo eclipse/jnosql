@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
-import static org.eclipse.jnosql.mapping.reflection.EntityType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
 
 final class FieldGraph {
 

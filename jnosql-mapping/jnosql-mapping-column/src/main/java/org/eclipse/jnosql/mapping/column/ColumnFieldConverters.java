@@ -31,9 +31,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.eclipse.jnosql.mapping.reflection.EntityType.COLLECTION;
-import static org.eclipse.jnosql.mapping.reflection.EntityType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.EntityType.ENTITY;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.COLLECTION;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
 
 class ColumnFieldConverters {
 

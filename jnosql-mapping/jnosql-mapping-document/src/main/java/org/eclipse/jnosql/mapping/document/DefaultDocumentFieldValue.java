@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.EntityType;
+import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.DefaultFieldValue;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
@@ -28,9 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.eclipse.jnosql.mapping.reflection.EntityType.COLLECTION;
-import static org.eclipse.jnosql.mapping.reflection.EntityType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.EntityType.ENTITY;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.COLLECTION;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
 import static java.util.Collections.singletonList;
 
 final class DefaultDocumentFieldValue implements DocumentFieldValue {
@@ -86,7 +86,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
         return fieldValue.isNotEmpty();
     }
 
-    private EntityType getType() {
+    private MappingType getType() {
         return getField().getType();
     }
 

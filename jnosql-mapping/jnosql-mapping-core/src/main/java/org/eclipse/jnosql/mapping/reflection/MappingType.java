@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * enum that contains kinds of annotations to fields on java.
  */
-public enum EntityType {
+public enum MappingType {
     EMBEDDED, MAP, COLLECTION, DEFAULT, ENTITY;
 
     /**
@@ -38,20 +38,20 @@ public enum EntityType {
      * @param field - the field with annotation
      * @return the type
      */
-    static EntityType of(Field field) {
+    static MappingType of(Field field) {
         if (Collection.class.isAssignableFrom(field.getType())) {
-            return EntityType.COLLECTION;
+            return MappingType.COLLECTION;
         }
         if (Map.class.isAssignableFrom(field.getType())) {
-            return EntityType.MAP;
+            return MappingType.MAP;
         }
         if (field.getType().isAnnotationPresent(Embeddable.class)) {
-            return EntityType.EMBEDDED;
+            return MappingType.EMBEDDED;
         }
         if (field.getType().isAnnotationPresent(Entity.class)) {
-            return EntityType.ENTITY;
+            return MappingType.ENTITY;
         }
 
-        return EntityType.DEFAULT;
+        return MappingType.DEFAULT;
     }
 }

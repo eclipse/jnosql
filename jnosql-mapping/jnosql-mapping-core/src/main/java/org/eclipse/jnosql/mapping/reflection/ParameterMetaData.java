@@ -30,9 +30,9 @@ public interface ParameterMetaData {
     /**
      * Return the type of the field
      *
-     * @return the {@link EntityType}
+     * @return the {@link MappingType}
      */
-    EntityType getParamType();
+    MappingType getParamType();
 
     /**
      * Returns the name of the field that can be either the field name

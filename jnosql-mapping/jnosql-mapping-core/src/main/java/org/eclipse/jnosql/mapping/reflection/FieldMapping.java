@@ -32,9 +32,9 @@ public interface FieldMapping {
     /**
      * Return the type of the field
      *
-     * @return the {@link EntityType}
+     * @return the {@link MappingType}
      */
-    EntityType getType();
+    MappingType getType();
 
     /**
      * The {@link Field}
