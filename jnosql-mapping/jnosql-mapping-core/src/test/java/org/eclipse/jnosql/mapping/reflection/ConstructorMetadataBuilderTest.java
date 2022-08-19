@@ -18,6 +18,8 @@ import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.entities.constructor.Computer;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import javax.inject.Inject;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 @CDIExtension
@@ -60,5 +63,10 @@ class ConstructorMetadataBuilderTest {
         ConstructorMetadata metadata = builder.build(Computer.class);
         List<ParameterMetaData> parameters = metadata.getParameters();
         assertEquals(5, parameters.size());
+        List<String> names = parameters.stream()
+                .map(ParameterMetaData::getName)
+                .collect(Collectors.toUnmodifiableList());
+
+        MatcherAssert.assertThat(names, Matchers.contains("_id", "name", "age", "model", "price"));
     }
 }
