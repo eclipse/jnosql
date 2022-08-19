@@ -15,12 +15,16 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.tck.entities.Person;
+import jakarta.nosql.tck.entities.Worker;
+import jakarta.nosql.tck.entities.constructor.Computer;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 @CDIExtension
@@ -42,5 +46,19 @@ class ConstructorMetadataBuilderTest {
         ConstructorMetadata metadata = builder.build(Person.class);
         Assertions.assertNotNull(metadata);
         Assertions.assertTrue(metadata.getParameters().isEmpty());
+    }
+
+    @Test
+    public void shouldReturnEmptyDefaultConstructor() {
+        ConstructorMetadata metadata = builder.build(Worker.class);
+        Assertions.assertNotNull(metadata);
+        Assertions.assertTrue(metadata.getParameters().isEmpty());
+    }
+
+    @Test
+    public void shouldReturnComputerEntityConstructor() {
+        ConstructorMetadata metadata = builder.build(Computer.class);
+        List<ParameterMetaData> parameters = metadata.getParameters();
+        assertEquals(5, parameters.size());
     }
 }
