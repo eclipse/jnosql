@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * enum that contains kinds of annotations to fields on java.
+ * enum that contains kinds of annotations to either fields constructor parameters on java.
  */
 public enum MappingType {
     EMBEDDED, MAP, COLLECTION, DEFAULT, ENTITY;
