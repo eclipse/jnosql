@@ -59,8 +59,24 @@ class MappingTypeTest {
     }
 
     @Test
-    public void shouldReturnSubEntity() throws NoSuchFieldException{
+    public void shouldReturnEntity() throws NoSuchFieldException{
         Field field = Address.class.getDeclaredField("zipCode");
         assertEquals(MappingType.ENTITY, MappingType.of(field));
     }
+
+    //parameter default
+    //parameter collection
+    //parameter  map
+    //parameter entity
+    //parameter EMBEDDED
+
+    @Test
+    public void shouldReturnDefaultParameter(){
+
+    }
+    public void shouldReturnDefaultCollection(){}
+    public void shouldReturnDefaultMap(){}
+    public void shouldReturnDefaultEntity(){}
+    public void shouldReturnDefaultEmbedded(){}
+
 }
