@@ -18,6 +18,7 @@ import jakarta.nosql.mapping.Embeddable;
 import jakarta.nosql.mapping.Entity;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
 import java.util.Collection;
 import java.util.Map;
 
@@ -39,16 +40,35 @@ public enum MappingType {
      * @return the type
      */
     static MappingType of(Field field) {
-        if (Collection.class.isAssignableFrom(field.getType())) {
+        return MappingType.of(field.getType());
+    }
+
+    /**
+     * select you the kind of annotation on field and then define a enum type, follow the sequences:
+     * <ul>
+     * <li>Collection</li>
+     * <li>Map</li>
+     * <li>embedded</li>
+     * </ul>.
+     *
+     * @param parameter - the parameter with annotation
+     * @return the type
+     */
+    static MappingType of(Parameter parameter) {
+        return MappingType.of(parameter.getType());
+    }
+
+    private static MappingType of(Class<?> type) {
+        if (Collection.class.isAssignableFrom(type)) {
             return MappingType.COLLECTION;
         }
-        if (Map.class.isAssignableFrom(field.getType())) {
+        if (Map.class.isAssignableFrom(type)) {
             return MappingType.MAP;
         }
-        if (field.getType().isAnnotationPresent(Embeddable.class)) {
+        if (type.isAnnotationPresent(Embeddable.class)) {
             return MappingType.EMBEDDED;
         }
-        if (field.getType().isAnnotationPresent(Entity.class)) {
+        if (type.isAnnotationPresent(Entity.class)) {
             return MappingType.ENTITY;
         }
 
