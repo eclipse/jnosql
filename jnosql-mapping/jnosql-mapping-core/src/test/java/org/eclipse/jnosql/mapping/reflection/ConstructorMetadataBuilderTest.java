@@ -17,6 +17,8 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.entities.constructor.Computer;
+import jakarta.nosql.tck.entities.constructor.BookUser;
+import jakarta.nosql.tck.entities.constructor.PetOwner;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -68,5 +70,29 @@ class ConstructorMetadataBuilderTest {
                 .collect(Collectors.toUnmodifiableList());
 
         MatcherAssert.assertThat(names, Matchers.contains("_id", "name", "age", "model", "price"));
+    }
+
+    @Test
+    public void shouldReturnBookUserEntityConstructor() {
+        ConstructorMetadata metadata = builder.build(BookUser.class);
+        List<ParameterMetaData> parameters = metadata.getParameters();
+        assertEquals(3, parameters.size());
+        List<String> names = parameters.stream()
+                .map(ParameterMetaData::getName)
+                .collect(Collectors.toUnmodifiableList());
+
+        MatcherAssert.assertThat(names, Matchers.contains("_id", "native_name", "books"));
+    }
+
+    @Test
+    public void shouldReturnPetOwnerEntityConstructor() {
+        ConstructorMetadata metadata = builder.build(PetOwner.class);
+        List<ParameterMetaData> parameters = metadata.getParameters();
+        assertEquals(3, parameters.size());
+        List<String> names = parameters.stream()
+                .map(ParameterMetaData::getName)
+                .collect(Collectors.toUnmodifiableList());
+
+        MatcherAssert.assertThat(names, Matchers.contains("_id", "name", "animal"));
     }
 }
