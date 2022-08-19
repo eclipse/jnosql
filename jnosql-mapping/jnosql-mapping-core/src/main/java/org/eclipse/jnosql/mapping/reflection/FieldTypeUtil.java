@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.Map;
 
 
-public final class FieldTypeUtil {
+ final class FieldTypeUtil {
 
     private FieldTypeUtil() {
     }
