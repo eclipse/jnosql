@@ -33,7 +33,7 @@ import java.util.Set;
 
 import static org.eclipse.jnosql.mapping.reflection.FieldType.COLLECTION;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
+import static org.eclipse.jnosql.mapping.reflection.FieldType.ENTITY;
 
 class DocumentFieldConverters {
 
@@ -47,7 +47,7 @@ class DocumentFieldConverters {
         DocumentFieldConverter get(FieldMapping field) {
             if (EMBEDDED.equals(field.getType())) {
                 return embeddedFieldConverter;
-            } else if (SUB_ENTITY.equals(field.getType())) {
+            } else if (ENTITY.equals(field.getType())) {
                 return subEntityConverter;
             } else if (isCollectionEmbeddable(field)) {
                 return embeddableConverter;

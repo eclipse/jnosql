@@ -112,7 +112,7 @@ class ClassConverter {
 
 
         switch (field.getType()) {
-            case SUB_ENTITY:
+            case ENTITY:
                 appendFields(nativeFieldGroupByJavaField, field, javaField, appendPreparePrefix(nativeField, field.getName()));
                 return;
             case EMBEDDED:

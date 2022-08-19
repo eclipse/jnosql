@@ -31,7 +31,7 @@ import java.util.Optional;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.COLLECTION;
 
 import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
+import static org.eclipse.jnosql.mapping.reflection.FieldType.ENTITY;
 import static java.util.Collections.singletonList;
 
 final class DefaultColumnFieldValue implements ColumnFieldValue {
@@ -61,7 +61,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     public <X, Y> List<Column> toColumn(ColumnEntityConverter converter, Converters converters) {
         if (EMBEDDED.equals(getType())) {
             return converter.toColumn(getValue()).getColumns();
-        } else if (SUB_ENTITY.equals(getType())) {
+        } else if (ENTITY.equals(getType())) {
             return singletonList(Column.of(getName(), converter.toColumn(getValue()).getColumns()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Column.of(getName(), getColumns(converter)));

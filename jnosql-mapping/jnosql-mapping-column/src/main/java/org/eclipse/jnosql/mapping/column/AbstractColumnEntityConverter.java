@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
+import static org.eclipse.jnosql.mapping.reflection.FieldType.ENTITY;
 
 
 
@@ -104,7 +104,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
             Optional<Column> column = columns.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
             ColumnFieldConverter fieldConverter = converterFactory.get(field);
-            if (SUB_ENTITY.equals(field.getType())) {
+            if (ENTITY.equals(field.getType())) {
                 column.ifPresent(c -> fieldConverter.convert(instance,  c, field, this));
             } else {
                 fieldConverter.convert(instance, columns, column.orElse(null), field, this);
@@ -128,7 +128,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
             FieldType type = fieldsGroupByName.get(k).getType();
-            return EMBEDDED.equals(type) || SUB_ENTITY.equals(type);
+            return EMBEDDED.equals(type) || ENTITY.equals(type);
         };
         fieldsGroupByName.keySet().stream()
                 .filter(existField.or(isElementType))

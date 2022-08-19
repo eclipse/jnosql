@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
+import static org.eclipse.jnosql.mapping.reflection.FieldType.ENTITY;
 
 /**
  * Template method to {@link DocumentEntityConverter}
@@ -112,7 +112,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
             Optional<Document> document = documents.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
             DocumentFieldConverter fieldConverter = converterFactory.get(field);
-            if (SUB_ENTITY.equals(field.getType())) {
+            if (ENTITY.equals(field.getType())) {
                 document.ifPresent(d -> fieldConverter.convert(instance,
                         null, d, field, this));
             } else {
@@ -155,7 +155,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
             FieldType type = fieldsGroupByName.get(k).getType();
-            return EMBEDDED.equals(type) || SUB_ENTITY.equals(type);
+            return EMBEDDED.equals(type) || ENTITY.equals(type);
         };
 
         fieldsGroupByName.keySet().stream()
