@@ -30,7 +30,7 @@ class ParameterMetaDataBuilder {
         this.parameter = parameter;
     }
 
-    public ParameterMetaData build() {
+    ParameterMetaData build() {
         Id id = parameter.getAnnotation(Id.class);
         Column column = parameter.getAnnotation(Column.class);
         Convert convert = parameter.getAnnotation(Convert.class);
