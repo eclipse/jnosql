@@ -61,13 +61,13 @@ class MappingTypeTest {
 
 
     @Test
-    public void shouldReturnEmbedded() throws NoSuchFieldException{
+    public void shouldReturnEmbedded() throws NoSuchFieldException {
         Field field = Worker.class.getDeclaredField("job");
         assertEquals(MappingType.EMBEDDED, MappingType.of(field));
     }
 
     @Test
-    public void shouldReturnEntity() throws NoSuchFieldException{
+    public void shouldReturnEntity() throws NoSuchFieldException {
         Field field = Address.class.getDeclaredField("zipCode");
         assertEquals(MappingType.ENTITY, MappingType.of(field));
     }
@@ -86,26 +86,30 @@ class MappingTypeTest {
         assertEquals(MappingType.DEFAULT, MappingType.of(id));
         assertEquals(MappingType.DEFAULT, MappingType.of(name));
     }
+
     @Test
-    public void shouldReturnParameterCollection(){
+    public void shouldReturnParameterCollection() {
         Constructor<BookUser> constructor = (Constructor<BookUser>) BookUser.class.getDeclaredConstructors()[0];
         Parameter books = constructor.getParameters()[2];
         assertEquals(MappingType.COLLECTION, MappingType.of(books));
     }
+
     @Test
-    public void shouldReturnParameterEntity(){
+    public void shouldReturnParameterEntity() {
         Constructor<PetOwner> constructor = (Constructor<PetOwner>) PetOwner.class.getDeclaredConstructors()[0];
         Parameter animal = constructor.getParameters()[2];
         assertEquals(MappingType.ENTITY, MappingType.of(animal));
     }
+
     @Test
-    public void shouldReturnParameterMap(){
+    public void shouldReturnParameterMap() {
         Constructor<ForClass> constructor = (Constructor<ForClass>) ForClass.class.getDeclaredConstructors()[0];
         Parameter map = constructor.getParameters()[0];
         assertEquals(MappingType.MAP, MappingType.of(map));
     }
+
     @Test
-    public void shouldReturnParameterEmbedded(){
+    public void shouldReturnParameterEmbedded() {
         Constructor<ForClass> constructor = (Constructor<ForClass>) ForClass.class.getDeclaredConstructors()[0];
         Parameter map = constructor.getParameters()[1];
         assertEquals(MappingType.EMBEDDED, MappingType.of(map));
@@ -121,7 +125,7 @@ class MappingTypeTest {
         @Column
         private BarClass barClass;
 
-        public ForClass(@Column("map")Map<String, String> map, @Column("barClass") BarClass barClass) {
+        public ForClass(@Column("map") Map<String, String> map, @Column("barClass") BarClass barClass) {
             this.map = map;
             this.barClass = barClass;
         }
