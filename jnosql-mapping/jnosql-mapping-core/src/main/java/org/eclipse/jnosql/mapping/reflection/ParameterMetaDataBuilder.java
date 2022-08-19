@@ -14,22 +14,37 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import java.lang.reflect.Constructor;
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Convert;
+import jakarta.nosql.mapping.Id;
 
-class ParameterMetaDataBuilder<T> {
+import java.lang.reflect.Parameter;
+import java.util.Optional;
 
-    private final Reflections reflections;
+class ParameterMetaDataBuilder {
 
-    private final Class<T> type;
+    private final Parameter parameter;
 
-    private ParameterMetaDataBuilder(Reflections reflections, Class<T> type) {
-        this.reflections = reflections;
-        this.type = type;
+
+    private ParameterMetaDataBuilder(Parameter parameter) {
+        this.parameter = parameter;
     }
 
-    public ConstructorMetadata build() {
-     //   Constructor<T> constructor = this.reflections.getConstructor(type);
-        return null;
+    public ParameterMetaData build() {
+        Id id = parameter.getAnnotation(Id.class);
+        Column column = parameter.getAnnotation(Column.class);
+        Convert convert = parameter.getAnnotation(Convert.class);
+        Class<?> type = parameter.getType();
+        String name = Optional.ofNullable(id)
+                .map(Id::value)
+                .orElseGet(() -> column.value());
+
+        return new DefaultParameterMetaData(name, type, id != null,
+                Optional.ofNullable(convert).map(Convert::value).orElse(null));
     }
 
+    public static ParameterMetaData of(Parameter parameter) {
+        ParameterMetaDataBuilder builder = new ParameterMetaDataBuilder(parameter);
+        return builder.build();
+    }
 }
