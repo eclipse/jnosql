@@ -27,18 +27,24 @@ class DefaultParameterMetaData implements ParameterMetaData {
 
     private final boolean id;
 
+    private final MappingType mappingType;
+
     private final Class<? extends AttributeConverter<?, ?>> converter;
 
-    DefaultParameterMetaData(String name, Class<?> type, boolean id, Class<? extends AttributeConverter<?, ?>> converter) {
+    DefaultParameterMetaData(String name,
+                             Class<?> type, boolean id,
+                             Class<? extends AttributeConverter<?, ?>> converter,
+                             MappingType mappingType) {
         this.name = name;
         this.type = type;
         this.id = id;
         this.converter = converter;
+        this.mappingType = mappingType;
     }
 
     @Override
     public MappingType getParamType() {
-        return MappingType.DEFAULT;
+        return mappingType;
     }
 
     @Override
@@ -82,7 +88,7 @@ class DefaultParameterMetaData implements ParameterMetaData {
 
     @Override
     public String toString() {
-        return "DefaultParameterMetaData{" +
+        return "ParameterMetaData{" +
                 "name='" + name + '\'' +
                 ", type=" + type +
                 ", id=" + id +

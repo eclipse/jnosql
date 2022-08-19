@@ -14,23 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.mapping.AttributeConverter;
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.tck.entities.Animal;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.MoneyConverter;
 import jakarta.nosql.tck.entities.constructor.Computer;
+import jakarta.nosql.tck.entities.constructor.PetOwner;
+import jakarta.nosql.tck.entities.constructor.BookUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ParameterMetaDataBuilderTest {
-
-
-    //parameter wit collection
-    //parameter with EMBEDDED
-    //parameter with entity
 
     @Test
     public void shouldConvertIdParameter() {
@@ -68,6 +70,61 @@ class ParameterMetaDataBuilderTest {
         Assertions.assertFalse(price.getConverter().isEmpty());
         Class<? extends AttributeConverter<Object, Object>> converter = price.getConverter().orElseThrow();
         assertEquals(MoneyConverter.class, converter);
+    }
+    //parameter wit collection
+    //parameter with EMBEDDED
+    //parameter with map
+
+    @Test
+    public void shouldConvertEntityParameter() {
+        Constructor<PetOwner> constructor = (Constructor<PetOwner>) PetOwner.class.getDeclaredConstructors()[0];
+        ParameterMetaData animal = ParameterMetaDataBuilder.of(constructor.getParameters()[2]);
+        Assertions.assertNotNull(animal);
+        Assertions.assertFalse(animal.isId());
+        Assertions.assertEquals("animal", animal.getName());
+        Assertions.assertEquals(Animal.class, animal.getType());
+        Assertions.assertEquals(MappingType.ENTITY, animal.getParamType());
+        Assertions.assertTrue(animal.getConverter().isEmpty());
+    }
+
+    @Test
+    public void shouldConvertCollectionParameter() {
+        Constructor<BookUser> constructor = (Constructor<BookUser>) BookUser.class.getDeclaredConstructors()[0];
+        ParameterMetaData books = ParameterMetaDataBuilder.of(constructor.getParameters()[2]);
+        Assertions.assertNotNull(books);
+        Assertions.assertFalse(books.isId());
+        Assertions.assertEquals("books", books.getName());
+        Assertions.assertEquals(List.class, books.getType());
+        Assertions.assertEquals(MappingType.COLLECTION, books.getParamType());
+        Assertions.assertTrue(books.getConverter().isEmpty());
+        assertEquals(GenericParameterMetaData.class, books.getClass());
+        GenericParameterMetaData generic = (GenericParameterMetaData) books;
+        TypeSupplier<?> typeSupplier = generic.getTypeSupplier();
+        Assertions.assertNotNull(typeSupplier);
+    }
+
+    @Test
+    public void shouldConvertMapParameter() {
+        Constructor<Foo> constructor = (Constructor<Foo>) Foo.class.getDeclaredConstructors()[0];
+        ParameterMetaData map = ParameterMetaDataBuilder.of(constructor.getParameters()[0]);
+        Assertions.assertNotNull(map);
+        Assertions.assertFalse(map.isId());
+        Assertions.assertEquals("map", map.getName());
+        Assertions.assertEquals(Map.class, map.getType());
+        Assertions.assertEquals(MappingType.MAP, map.getParamType());
+        Assertions.assertTrue(map.getConverter().isEmpty());
+        assertEquals(GenericParameterMetaData.class, map.getClass());
+        GenericParameterMetaData generic = (GenericParameterMetaData) map;
+        TypeSupplier<?> typeSupplier = generic.getTypeSupplier();
+        Assertions.assertNotNull(typeSupplier);
+    }
+
+    static class Foo{
+        private Map<String, String> map;
+
+        public Foo(@Column("map") Map<String, String> map) {
+            this.map = map;
+        }
     }
 
 
