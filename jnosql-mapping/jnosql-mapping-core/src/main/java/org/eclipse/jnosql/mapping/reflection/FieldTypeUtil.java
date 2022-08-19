@@ -38,21 +38,21 @@ import java.util.Map;
      * @param field - the field with annotation
      * @return the type
      */
-    public static FieldType of(Field field) {
+    public static EntityType of(Field field) {
         if (Collection.class.isAssignableFrom(field.getType())) {
-            return FieldType.COLLECTION;
+            return EntityType.COLLECTION;
         }
         if (Map.class.isAssignableFrom(field.getType())) {
-            return FieldType.MAP;
+            return EntityType.MAP;
         }
         if (field.getType().isAnnotationPresent(Embeddable.class)) {
-            return FieldType.EMBEDDED;
+            return EntityType.EMBEDDED;
         }
         if (field.getType().isAnnotationPresent(Entity.class)) {
-            return FieldType.ENTITY;
+            return EntityType.ENTITY;
         }
 
-        return FieldType.DEFAULT;
+        return EntityType.DEFAULT;
     }
 
 }

@@ -28,7 +28,7 @@ public class DefaultFieldMapping extends AbstractFieldMapping {
 
     private final boolean id;
 
-    DefaultFieldMapping(FieldType type, Field field, String name,
+    DefaultFieldMapping(EntityType type, Field field, String name,
                         Class<? extends AttributeConverter<?, ?>> converter, boolean id,
                         FieldReader reader, FieldWriter writer) {
         super(type, field, name, converter, reader, writer);

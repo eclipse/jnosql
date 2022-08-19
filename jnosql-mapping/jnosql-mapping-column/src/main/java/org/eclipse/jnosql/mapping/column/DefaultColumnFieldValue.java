@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.FieldType;
+import org.eclipse.jnosql.mapping.reflection.EntityType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.DefaultFieldValue;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
@@ -28,10 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.eclipse.jnosql.mapping.reflection.FieldType.COLLECTION;
+import static org.eclipse.jnosql.mapping.reflection.EntityType.COLLECTION;
 
-import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.ENTITY;
+import static org.eclipse.jnosql.mapping.reflection.EntityType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.reflection.EntityType.ENTITY;
 import static java.util.Collections.singletonList;
 
 final class DefaultColumnFieldValue implements ColumnFieldValue {
@@ -86,7 +86,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
         return COLLECTION.equals(getType()) && isEmbeddableElement();
     }
 
-    private FieldType getType() {
+    private EntityType getType() {
         return getField().getType();
     }
 

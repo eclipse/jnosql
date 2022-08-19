@@ -23,7 +23,7 @@ import org.eclipse.jnosql.mapping.document.DocumentFieldConverters.DocumentField
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.FieldType;
+import org.eclipse.jnosql.mapping.reflection.EntityType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
 
@@ -36,8 +36,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.ENTITY;
+import static org.eclipse.jnosql.mapping.reflection.EntityType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.reflection.EntityType.ENTITY;
 
 /**
  * Template method to {@link DocumentEntityConverter}
@@ -154,7 +154,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         final List<String> names = documents.stream().map(Document::getName).sorted().collect(Collectors.toList());
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
-            FieldType type = fieldsGroupByName.get(k).getType();
+            EntityType type = fieldsGroupByName.get(k).getType();
             return EMBEDDED.equals(type) || ENTITY.equals(type);
         };
 

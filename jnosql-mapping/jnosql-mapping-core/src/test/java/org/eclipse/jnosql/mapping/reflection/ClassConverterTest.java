@@ -97,7 +97,7 @@ public class ClassConverterTest {
         assertTrue(fields.stream().anyMatch(hasKeyAnnotation));
         FieldMapping fieldMapping = fields.stream().filter(hasKeyAnnotation).findFirst().get();
         assertEquals("_id", fieldMapping.getName());
-        assertEquals(FieldType.DEFAULT, fieldMapping.getType());
+        assertEquals(EntityType.DEFAULT, fieldMapping.getType());
 
     }
 

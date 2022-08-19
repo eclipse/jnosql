@@ -33,7 +33,7 @@ public class GenericFieldMapping extends AbstractFieldMapping {
 
     private final TypeSupplier<?> typeSupplier;
 
-    GenericFieldMapping(FieldType type, Field field, String name, TypeSupplier<?> typeSupplier,
+    GenericFieldMapping(EntityType type, Field field, String name, TypeSupplier<?> typeSupplier,
                         Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
         super(type, field, name, converter, reader, writer);
         this.typeSupplier = typeSupplier;

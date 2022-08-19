@@ -28,7 +28,7 @@ import java.util.Optional;
  */
 abstract class AbstractFieldMapping implements FieldMapping {
 
-    protected final FieldType type;
+    protected final EntityType type;
 
     protected final Field field;
 
@@ -42,7 +42,7 @@ abstract class AbstractFieldMapping implements FieldMapping {
 
     protected final FieldWriter writer;
 
-    AbstractFieldMapping(FieldType type, Field field, String name,
+    AbstractFieldMapping(EntityType type, Field field, String name,
                          Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
         this.type = type;
         this.field = field;
@@ -54,7 +54,7 @@ abstract class AbstractFieldMapping implements FieldMapping {
     }
 
     @Override
-    public FieldType getType() {
+    public EntityType getType() {
         return type;
     }
 

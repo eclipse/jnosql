@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.reflection.EntityType.EMBEDDED;
 
 abstract class AbstractGraphConverter implements GraphConverter {
 

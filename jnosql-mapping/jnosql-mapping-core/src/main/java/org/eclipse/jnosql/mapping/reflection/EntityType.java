@@ -17,6 +17,6 @@ package org.eclipse.jnosql.mapping.reflection;
 /**
  * enum that contains kinds of annotations to fields on java.
  */
-public enum FieldType {
+public enum EntityType {
     EMBEDDED, MAP, COLLECTION, DEFAULT, ENTITY
 }
