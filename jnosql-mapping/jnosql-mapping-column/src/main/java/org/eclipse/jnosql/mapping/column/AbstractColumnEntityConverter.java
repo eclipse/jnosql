@@ -20,12 +20,14 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.column.ColumnFieldConverters.ColumnFieldConverterFactory;
+import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
+import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +40,6 @@ import java.util.stream.Collectors;
 import static java.util.Objects.requireNonNull;
 import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
 import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
-
 
 
 /**
@@ -105,7 +106,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
             FieldMapping field = fieldsGroupByName.get(k);
             ColumnFieldConverter fieldConverter = converterFactory.get(field);
             if (ENTITY.equals(field.getType())) {
-                column.ifPresent(c -> fieldConverter.convert(instance,  c, field, this));
+                column.ifPresent(c -> fieldConverter.convert(instance, c, field, this));
             } else {
                 fieldConverter.convert(instance, columns, column.orElse(null), field, this);
             }
@@ -115,6 +116,35 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
 
     protected <T> T toEntity(Class<T> entityClass, List<Column> columns) {
         EntityMetadata mapping = getEntities().get(entityClass);
+        ConstructorMetadata constructor = mapping.getConstructor();
+        if (constructor.getParameters().isEmpty()) {
+            return convertEntityByFields(columns, mapping);
+        } else {
+            return convertEntityByConstructor(columns, mapping);
+        }
+    }
+
+    private <T> T convertEntityByConstructor(List<Column> columns, EntityMetadata mapping) {
+        if (mapping.isInheritance()) {
+            return null;
+        }
+
+        ConstructorBuilder builder = new ConstructorBuilder(mapping.getConstructor());
+        for (ParameterMetaData parameter : builder.getParameters()) {
+            Object value = columns.stream()
+                    .filter(c -> c.getName().equals(parameter.getName()))
+                    .map(Column::get).findFirst().orElse(null);
+            if (value == null) {
+                builder.addEmptyParameter();
+            } else {
+
+            }
+
+        }
+        return builder.build();
+    }
+
+    private <T> T convertEntityByFields(List<Column> columns, EntityMetadata mapping) {
         if (mapping.isInheritance()) {
             return inheritanceToEntity(columns, mapping);
         }
