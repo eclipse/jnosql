@@ -45,6 +45,8 @@ class ClassConverter {
 
     private InstanceSupplierFactory instanceSupplierFactory;
 
+    private ConstructorMetadataBuilder constructorMetadataBuilder;
+
 
     @Inject
     ClassConverter(Reflections reflections) {
@@ -54,6 +56,7 @@ class ClassConverter {
         this.readerFactory = classOperation.getFieldReaderFactory();
         this.writerFactory = classOperation.getFieldWriterFactory();
         this.instanceSupplierFactory = classOperation.getInstanceSupplierFactory();
+        this.constructorMetadataBuilder = new ConstructorMetadataBuilder(reflections);
     }
 
     ClassConverter() {
@@ -79,6 +82,7 @@ class ClassConverter {
         InstanceSupplier instanceSupplier = instanceSupplierFactory.apply(reflections.getConstructor(entity));
         InheritanceMetadata inheritance = reflections.getInheritance(entity).orElse(null);
         boolean hasInheritanceAnnotation = reflections.hasInheritanceAnnotation(entity);
+
         EntityMetadata mapping = DefaultEntityMetadata.builder().name(entityName)
                 .type(entity)
                 .fields(fields)
@@ -88,6 +92,7 @@ class ClassConverter {
                 .fieldsGroupedByName(fieldsGroupedByName)
                 .inheritance(inheritance)
                 .hasInheritanceAnnotation(hasInheritanceAnnotation)
+                .constructor(constructorMetadataBuilder.build(entity))
                 .build();
 
         long end = System.currentTimeMillis() - start;
