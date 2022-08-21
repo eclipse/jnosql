@@ -75,7 +75,7 @@ class DefaultColumnEntityConverterConstructorTest {
 
     @Test
     public void shouldConvertPetOwner() {
-        ColumnEntity communication = ColumnEntity.of("Computer");
+        ColumnEntity communication = ColumnEntity.of("PetOwner");
         communication.add("_id", 10L);
         communication.add("name", "Otavio");
         communication.add("animal", Arrays.asList(Column.of("_id", 23)
