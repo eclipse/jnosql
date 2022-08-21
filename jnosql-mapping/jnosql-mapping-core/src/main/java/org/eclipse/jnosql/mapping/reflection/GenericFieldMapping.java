@@ -92,7 +92,7 @@ public class GenericFieldMapping extends AbstractFieldMapping {
                 .getAnnotation(annotation) != null;
     }
 
-    public Class getElementType() {
+    public Class<?> getElementType() {
         return (Class) ((ParameterizedType) getNativeField()
                 .getGenericType())
                 .getActualTypeArguments()[0];

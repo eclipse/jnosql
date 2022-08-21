@@ -14,8 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.mapping.AttributeConverter;
+
+import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
+import java.util.ServiceLoader;
 
 public final class GenericParameterMetaData extends DefaultParameterMetaData implements ParameterMetaData {
 
@@ -30,6 +35,21 @@ public final class GenericParameterMetaData extends DefaultParameterMetaData imp
 
     public TypeSupplier<?> getTypeSupplier() {
         return typeSupplier;
+    }
+
+    public Class<?> getElementType() {
+        return (Class<?>) ((ParameterizedType) typeSupplier).getActualTypeArguments()[0];
+    }
+
+    public Collection<?> getCollectionInstance() {
+        Class<?> type =  getType();
+        final CollectionSupplier supplier = ServiceLoaderProvider.getSupplierStream(CollectionSupplier.class
+                        , ()-> ServiceLoader.load(CollectionSupplier.class))
+                .map(CollectionSupplier.class::cast)
+                .filter(c -> c.test(type))
+                .findFirst()
+                .orElseThrow(() -> new UnsupportedOperationException("This collection is not supported yet: " + type));
+        return (Collection<?>) supplier.get();
     }
 
 }
