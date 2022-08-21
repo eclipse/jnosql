@@ -48,6 +48,7 @@ import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
 public abstract class AbstractColumnEntityConverter implements ColumnEntityConverter {
 
     private final ColumnFieldConverterFactory converterFactory = new ColumnFieldConverterFactory();
+    //TODO improve it with enum
 
     protected abstract EntitiesMetadata getEntities();
 
@@ -91,8 +92,13 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         if (mapping.isInheritance()) {
             return mapInheritanceEntity(entity, mapping.getType());
         }
-        T instance = mapping.newInstance();
-        return convertEntity(entity.getColumns(), mapping, instance);
+        ConstructorMetadata constructor = mapping.getConstructor();
+        if (constructor.isDefault()) {
+            T instance = mapping.newInstance();
+            return convertEntity(entity.getColumns(), mapping, instance);
+        } else {
+            return convertEntityByConstructor(entity.getColumns(), mapping);
+        }
     }
 
     protected ColumnFieldValue to(FieldMapping field, Object entityInstance) {
@@ -116,40 +122,30 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
 
     protected <T> T toEntity(Class<T> entityClass, List<Column> columns) {
         EntityMetadata mapping = getEntities().get(entityClass);
+        if (mapping.isInheritance()) {
+            return inheritanceToEntity(columns, mapping);
+        }
         ConstructorMetadata constructor = mapping.getConstructor();
-        if (constructor.getParameters().isEmpty()) {
-            return convertEntityByFields(columns, mapping);
+        if (constructor.isDefault()) {
+            T instance = mapping.newInstance();
+            return convertEntity(columns, mapping, instance);
         } else {
             return convertEntityByConstructor(columns, mapping);
         }
     }
 
     private <T> T convertEntityByConstructor(List<Column> columns, EntityMetadata mapping) {
-        if (mapping.isInheritance()) {
-            return null;
-        }
-
         ConstructorBuilder builder = new ConstructorBuilder(mapping.getConstructor());
         for (ParameterMetaData parameter : builder.getParameters()) {
-            Object value = columns.stream()
+            Optional<Column> column = columns.stream()
                     .filter(c -> c.getName().equals(parameter.getName()))
-                    .map(Column::get).findFirst().orElse(null);
-            if (value == null) {
-                builder.addEmptyParameter();
-            } else {
-
-            }
-
+                    .findFirst();
+            column.ifPresentOrElse(c -> {
+                ParameterConverter converter = ParameterConverter.of(parameter);
+                converter.convert(this, c, parameter, builder);
+            }, builder::addEmptyParameter);
         }
         return builder.build();
-    }
-
-    private <T> T convertEntityByFields(List<Column> columns, EntityMetadata mapping) {
-        if (mapping.isInheritance()) {
-            return inheritanceToEntity(columns, mapping);
-        }
-        T instance = mapping.newInstance();
-        return convertEntity(columns, mapping, instance);
     }
 
     private <T> T convertEntity(List<Column> columns, EntityMetadata mapping, T instance) {
