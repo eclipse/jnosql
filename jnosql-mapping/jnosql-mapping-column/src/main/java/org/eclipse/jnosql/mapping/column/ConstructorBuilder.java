@@ -22,6 +22,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 class ConstructorBuilder {
 
@@ -56,5 +57,30 @@ class ConstructorBuilder {
             throw new MappingException("There is an issue to create a new instance of this class" +
                     " using this constructor: " + constructor, e);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ConstructorBuilder that = (ConstructorBuilder) o;
+        return Objects.equals(values, that.values) && Objects.equals(metadata, that.metadata);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(values, metadata);
+    }
+
+    @Override
+    public String toString() {
+        return "ConstructorBuilder{" +
+                "values=" + values +
+                ", metadata=" + metadata +
+                '}';
     }
 }
