@@ -16,14 +16,13 @@ package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.column.Column;
-import jakarta.nosql.mapping.AttributeConverter;
+import org.eclipse.jnosql.mapping.reflection.GenericParameterMetaData;
 import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 enum ParameterConverter {
 
@@ -64,6 +63,22 @@ enum ParameterConverter {
                 builder.add(entity);
             }
         }
+    }, COLLECTION {
+        @Override
+        void convert(AbstractColumnEntityConverter converter, Column column, ParameterMetaData parameterMetaData,
+                     ConstructorBuilder builder) {
+
+            GenericParameterMetaData genericParameter = (GenericParameterMetaData) parameterMetaData;
+            Collection elements = genericParameter.getCollectionInstance();
+            List<List<Column>> embeddable = (List<List<Column>>) column.get();
+            for (List<Column> columnList : embeddable) {
+                Object element = converter.toEntity(genericParameter.getElementType(), columnList);
+                elements.add(element);
+            }
+            builder.add(elements);
+
+        }
+
     };
 
     abstract void convert(AbstractColumnEntityConverter converter,
@@ -72,6 +87,8 @@ enum ParameterConverter {
 
     static ParameterConverter of(ParameterMetaData parameter) {
         switch (parameter.getParamType()) {
+            case COLLECTION:
+                return COLLECTION;
             case ENTITY:
                 return ENTITY;
             default:

@@ -143,13 +143,13 @@ class ColumnFieldConverters {
 
             if (Objects.nonNull(column)) {
                 GenericFieldMapping genericField = (GenericFieldMapping) field;
-                Collection collection = genericField.getCollectionInstance();
+                Collection elements = genericField.getCollectionInstance();
                 List<List<Column>> embeddable = (List<List<Column>>) column.get();
                 for (List<Column> columnList : embeddable) {
                     Object element = converter.toEntity(genericField.getElementType(), columnList);
-                    collection.add(element);
+                    elements.add(element);
                 }
-                field.write(instance, collection);
+                field.write(instance, elements);
             }
         }
     }

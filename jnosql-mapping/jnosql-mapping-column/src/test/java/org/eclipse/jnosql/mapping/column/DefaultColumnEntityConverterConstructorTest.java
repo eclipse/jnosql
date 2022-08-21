@@ -19,11 +19,13 @@ import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.tck.entities.Animal;
+import jakarta.nosql.tck.entities.Book;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.constructor.BookUser;
 import jakarta.nosql.tck.entities.constructor.Computer;
 import jakarta.nosql.tck.entities.constructor.PetOwner;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +33,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -106,8 +109,8 @@ class DefaultColumnEntityConverterConstructorTest {
     @Test
     public void shouldConvertBookUser() {
         ColumnEntity communication = ColumnEntity.of("BookUser");
-        communication.add("nickname", "otaviojava");
-        communication.add("name", "Otavio Santana");
+        communication.add("_id", "otaviojava");
+        communication.add("native_name", "Otavio Santana");
         List<List<Column>> columns = new ArrayList<>();
         columns.add(Arrays.asList(Column.of("_id", 10), Column.of("name", "Effective Java")));
         columns.add(Arrays.asList(Column.of("_id", 12), Column.of("name", "Clean Code")));
@@ -118,6 +121,8 @@ class DefaultColumnEntityConverterConstructorTest {
         assertEquals("Otavio Santana", bookUser.getName());
         assertEquals("otaviojava", bookUser.getNickname());
         assertEquals(2, bookUser.getBooks().size());
+        List<String> names = bookUser.getBooks().stream().map(Book::getName).collect(Collectors.toUnmodifiableList());
+        assertThat(names, Matchers.containsInAnyOrder("Effective Java", "Clean Code"));
 
     }
 }
