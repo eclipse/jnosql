@@ -12,10 +12,10 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.column;
+package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.TypeReference;
-import jakarta.nosql.column.Column;
+import jakarta.nosql.document.Document;
 import org.eclipse.jnosql.mapping.reflection.GenericParameterMetaData;
 import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
 
@@ -28,49 +28,50 @@ enum ParameterConverter {
 
     DEFAULT {
         @Override
-        void convert(AbstractColumnEntityConverter converter,
-                     Column column,
+        void convert(AbstractDocumentEntityConverter converter,
+                     Document document,
                      ParameterMetaData parameterMetaData,
                      ConstructorBuilder builder) {
 
             parameterMetaData.getConverter().ifPresentOrElse(c -> {
-                Object value = converter.getConverters().get(c).convertToEntityAttribute(column.get());
+                Object value = converter.getConverters().get(c).convertToEntityAttribute(document.get());
                 builder.add(value);
-            }, () -> builder.add(column.get()));
+            }, () -> builder.add(document.get()));
 
         }
     }, ENTITY {
         @Override
-        void convert(AbstractColumnEntityConverter converter, Column column, ParameterMetaData parameterMetaData,
+        void convert(AbstractDocumentEntityConverter converter, Document document, ParameterMetaData parameterMetaData,
                      ConstructorBuilder builder) {
 
-            Object value = column.get();
+            Object value = document.get();
             if (value instanceof Map) {
                 Map<?, ?> map = (Map) value;
-                List<Column> columns = new ArrayList<>();
+                List<Document> documents = new ArrayList<>();
 
                 for (Map.Entry<?, ?> entry : map.entrySet()) {
-                    columns.add(Column.of(entry.getKey().toString(), entry.getValue()));
+                    documents.add(Document.of(entry.getKey().toString(), entry.getValue()));
                 }
 
-                Object entity = converter.toEntity(parameterMetaData.getType(), columns);
+                Object entity = converter.toEntity(parameterMetaData.getType(), documents);
                 builder.add(entity);
 
             } else {
-                List<Column> columns = column.get(new TypeReference<>() {});
-                Object entity = converter.toEntity(parameterMetaData.getType(), columns);
+                List<Document> documents = document.get(new TypeReference<>() {
+                });
+                Object entity = converter.toEntity(parameterMetaData.getType(), documents);
                 builder.add(entity);
             }
         }
     }, COLLECTION {
         @Override
-        void convert(AbstractColumnEntityConverter converter, Column column, ParameterMetaData parameterMetaData,
+        void convert(AbstractDocumentEntityConverter converter, Document document, ParameterMetaData parameterMetaData,
                      ConstructorBuilder builder) {
 
             GenericParameterMetaData genericParameter = (GenericParameterMetaData) parameterMetaData;
             Collection elements = genericParameter.getCollectionInstance();
-            List<List<Column>> embeddable = (List<List<Column>>) column.get();
-            for (List<Column> columnList : embeddable) {
+            List<List<Document>> embeddable = (List<List<Document>>) document.get();
+            for (List<Document> columnList : embeddable) {
                 Object element = converter.toEntity(genericParameter.getElementType(), columnList);
                 elements.add(element);
             }
@@ -80,8 +81,8 @@ enum ParameterConverter {
 
     };
 
-    abstract void convert(AbstractColumnEntityConverter converter,
-                          Column column, ParameterMetaData parameterMetaData,
+    abstract void convert(AbstractDocumentEntityConverter converter,
+                          Document document, ParameterMetaData parameterMetaData,
                           ConstructorBuilder builder);
 
     static ParameterConverter of(ParameterMetaData parameter) {
