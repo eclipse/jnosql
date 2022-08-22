@@ -19,14 +19,13 @@ import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import org.eclipse.jnosql.mapping.column.ColumnFieldConverters.ColumnFieldConverterFactory;
 import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
+import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
 
 import java.util.Collections;
@@ -47,8 +46,6 @@ import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
  */
 public abstract class AbstractColumnEntityConverter implements ColumnEntityConverter {
 
-    private final ColumnFieldConverterFactory converterFactory = new ColumnFieldConverterFactory();
-    //TODO improve it with enum
 
     protected abstract EntitiesMetadata getEntities();
 
@@ -110,7 +107,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         return (String k) -> {
             Optional<Column> column = columns.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
-            ColumnFieldConverter fieldConverter = converterFactory.get(field);
+            FieldConverter fieldConverter = FieldConverter.get(field);
             if (ENTITY.equals(field.getType())) {
                 column.ifPresent(c -> fieldConverter.convert(instance, c, field, this));
             } else {
