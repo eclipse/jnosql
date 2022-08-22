@@ -19,13 +19,12 @@ import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import org.eclipse.jnosql.mapping.document.DocumentFieldConverters.DocumentFieldConverterFactory;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
+import org.eclipse.jnosql.mapping.reflection.MappingType;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,9 +46,6 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();
-
-    private final DocumentFieldConverterFactory converterFactory = new DocumentFieldConverterFactory();
-
 
     @Override
     public DocumentEntity toDocument(Object entityInstance) {
@@ -111,7 +107,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         return k -> {
             Optional<Document> document = documents.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
-            DocumentFieldConverter fieldConverter = converterFactory.get(field);
+            FieldConverter fieldConverter = FieldConverter.get(field);
             if (ENTITY.equals(field.getType())) {
                 document.ifPresent(d -> fieldConverter.convert(instance,
                         null, d, field, this));
