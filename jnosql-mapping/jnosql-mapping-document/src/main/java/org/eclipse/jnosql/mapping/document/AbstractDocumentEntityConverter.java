@@ -19,12 +19,14 @@ import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
+import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
 
 import java.util.Collections;
 import java.util.List;
@@ -86,8 +88,13 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
             return inheritanceToEntity(documents, mapping);
 
         }
-        T instance = mapping.newInstance();
-        return convertEntity(documents, mapping, instance);
+        ConstructorMetadata constructor = mapping.getConstructor();
+        if (constructor.isDefault()) {
+            T instance = mapping.newInstance();
+            return convertEntity(documents, mapping, instance);
+        } else {
+            return convertEntityByConstructor(documents, mapping);
+        }
     }
 
 
@@ -115,6 +122,20 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
                 fieldConverter.convert(instance, documents, document.orElse(null), field, this);
             }
         };
+    }
+
+    private <T> T convertEntityByConstructor(List<Document> documents, EntityMetadata mapping) {
+        ConstructorBuilder builder = new ConstructorBuilder(mapping.getConstructor());
+        for (ParameterMetaData parameter : builder.getParameters()) {
+            Optional<Document> document = documents.stream()
+                    .filter(c -> c.getName().equals(parameter.getName()))
+                    .findFirst();
+            document.ifPresentOrElse(c -> {
+                ParameterConverter converter = ParameterConverter.of(parameter);
+                converter.convert(this, c, parameter, builder);
+            }, builder::addEmptyParameter);
+        }
+        return builder.build();
     }
 
     private <T> T mapInheritanceEntity(DocumentEntity entity, Class<?> type) {
