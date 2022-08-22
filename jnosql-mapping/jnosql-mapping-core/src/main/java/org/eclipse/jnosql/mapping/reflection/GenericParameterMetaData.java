@@ -38,7 +38,7 @@ public final class GenericParameterMetaData extends DefaultParameterMetaData imp
     }
 
     public Class<?> getElementType() {
-        return (Class<?>) ((ParameterizedType) typeSupplier).getActualTypeArguments()[0];
+        return (Class<?>) ((ParameterizedType) typeSupplier.get()).getActualTypeArguments()[0];
     }
 
     public Collection<?> getCollectionInstance() {
