@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping;
+package org.eclipse.jnosql.mapping.reflection;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;

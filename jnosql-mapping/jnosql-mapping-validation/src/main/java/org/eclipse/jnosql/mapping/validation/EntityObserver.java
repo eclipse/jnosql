@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.validation;
 
 
 import jakarta.nosql.mapping.EntityPrePersist;
-import org.eclipse.jnosql.mapping.ConstructorEvent;
+import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;

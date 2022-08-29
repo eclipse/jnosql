@@ -1,23 +1,7 @@
-/*
- *  Copyright (c) 2022 Otávio Santana and others
- *   All rights reserved. This program and the accompanying materials
- *   are made available under the terms of the Eclipse Public License v1.0
- *   and Apache License v2.0 which accompanies this distribution.
- *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
- *
- *   You may elect to redistribute this code under either of these licenses.
- *
- *   Contributors:
- *
- *   Otavio Santana
- */
-package org.eclipse.jnosql.mapping.column;
+package org.eclipse.jnosql.mapping.reflection;
+
 
 import jakarta.nosql.mapping.MappingException;
-import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
-import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
-import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
 
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Instance;
@@ -29,13 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-class ConstructorBuilder {
+/**
+ * A Builder class to create an entity from the constructor
+ */
+public final class ConstructorBuilder {
 
     private final List<Object> values = new ArrayList<>();
 
     private final ConstructorMetadata metadata;
 
-    ConstructorBuilder(ConstructorMetadata metadata) {
+    private ConstructorBuilder(ConstructorMetadata metadata) {
         this.metadata = metadata;
     }
 
@@ -91,4 +78,17 @@ class ConstructorBuilder {
                 ", metadata=" + metadata +
                 '}';
     }
+
+    /**
+     * Create ConstructorBuilder from the method factory
+     *
+     * @param metadata the metadata
+     * @return the builder instance
+     * @throws NullPointerException when metadata is null
+     */
+    public static ConstructorBuilder of(ConstructorMetadata metadata) {
+        Objects.requireNonNull(metadata, "metadata is required");
+        return new ConstructorBuilder(metadata);
+    }
+
 }

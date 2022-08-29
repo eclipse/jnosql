@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.validation;
 
 
-import org.eclipse.jnosql.mapping.ConstructorEvent;
+import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
 
 /**
  * Validates bean instances. Implementations of this interface must be thread-safe.

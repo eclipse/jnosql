@@ -15,9 +15,14 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.mapping.MappingException;
+import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
 import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
 
+import javax.enterprise.event.Event;
+import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.util.TypeLiteral;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -50,8 +55,11 @@ class ConstructorBuilder {
     public <T> T build() {
         Constructor<?> constructor = metadata.getConstructor();
 
-        //fire an event here later
         try {
+            Instance<Event<ConstructorEvent>> instance = CDI.current().select(new TypeLiteral<>() {
+            });
+            Event<ConstructorEvent> event = instance.get();
+            event.fire(ConstructorEvent.of(constructor, values.toArray()));
             return (T) constructor.newInstance(values.toArray());
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new MappingException("There is an issue to create a new instance of this class" +
