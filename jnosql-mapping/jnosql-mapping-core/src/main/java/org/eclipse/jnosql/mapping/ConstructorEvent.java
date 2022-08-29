@@ -15,9 +15,12 @@
 package org.eclipse.jnosql.mapping;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
- *
+ * Defines an event to be fired when the engine creates an entity by a constructor.
+ * This is useful for the bean validation proposals.
  */
 public final class ConstructorEvent {
 
@@ -30,11 +33,43 @@ public final class ConstructorEvent {
         this.params = params;
     }
 
+    /**
+     * @return the constructor
+     */
     public Constructor<?> getConstructor() {
         return constructor;
     }
 
+    /**
+     * @return the param to the respective constructor
+     */
     public Object[] getParams() {
         return params;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ConstructorEvent that = (ConstructorEvent) o;
+        return Objects.equals(constructor, that.constructor)
+                && Arrays.equals(params, that.params);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * Objects.hashCode(constructor) + Arrays.hashCode(params);
+    }
+
+    @Override
+    public String toString() {
+        return "ConstructorEvent{" +
+                "constructor=" + constructor +
+                ", params=" + Arrays.toString(params) +
+                '}';
     }
 }
