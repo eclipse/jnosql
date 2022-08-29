@@ -33,9 +33,9 @@ class DefaultMappingValidator implements MappingValidator {
     @Inject
     private Instance<Validator> validators;
 
-    public void validate(Object bean) {
+    public void validate(Object entity) {
         Validator validator = getValidator();
-        Set<ConstraintViolation<Object>> violations = validator.validate(bean);
+        Set<ConstraintViolation<Object>> violations = validator.validate(entity);
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(new HashSet<>(violations));

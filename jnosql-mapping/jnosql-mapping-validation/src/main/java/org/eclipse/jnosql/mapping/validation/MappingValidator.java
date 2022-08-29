@@ -22,13 +22,13 @@ public interface MappingValidator {
 
 
     /**
-     * Validate a bean using bean validation
+     * Validate an entity using entity validation
      *
-     * @param bean the be to be validated
+     * @param entity the entity to be validated
      * @param <T>  the type
-     * @throws NullPointerException       when bean is null
+     * @throws NullPointerException       when entity is null
      * @throws javax.validation.ConstraintViolationException when {@link javax.validation.Validator#validate(Object, Class[])}
      *                                    returns a non empty collection
      */
-    <T> void validate(T bean);
+    <T> void validate(T entity);
 }
