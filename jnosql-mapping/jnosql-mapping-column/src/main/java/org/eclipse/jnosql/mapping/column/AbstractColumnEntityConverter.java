@@ -19,6 +19,7 @@ import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
@@ -132,7 +133,7 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
     }
 
     private <T> T convertEntityByConstructor(List<Column> columns, EntityMetadata mapping) {
-        ConstructorBuilder builder = new ConstructorBuilder(mapping.getConstructor());
+        ConstructorBuilder builder = ConstructorBuilder.of(mapping.getConstructor());
         for (ParameterMetaData parameter : builder.getParameters()) {
             Optional<Column> column = columns.stream()
                     .filter(c -> c.getName().equals(parameter.getName()))

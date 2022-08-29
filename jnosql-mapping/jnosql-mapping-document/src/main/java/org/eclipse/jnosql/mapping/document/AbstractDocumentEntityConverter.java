@@ -19,6 +19,7 @@ import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
@@ -130,7 +131,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     }
 
     private <T> T convertEntityByConstructor(List<Document> documents, EntityMetadata mapping) {
-        ConstructorBuilder builder = new ConstructorBuilder(mapping.getConstructor());
+        ConstructorBuilder builder = ConstructorBuilder.of(mapping.getConstructor());
         for (ParameterMetaData parameter : builder.getParameters()) {
             Optional<Document> document = documents.stream()
                     .filter(c -> c.getName().equals(parameter.getName()))

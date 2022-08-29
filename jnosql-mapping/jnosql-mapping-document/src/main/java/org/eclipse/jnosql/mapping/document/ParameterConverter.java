@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
+import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.reflection.GenericParameterMetaData;
 import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
 
