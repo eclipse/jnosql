@@ -14,8 +14,30 @@
  */
 package org.eclipse.jnosql.mapping.validation;
 
+import jakarta.nosql.mapping.MappingException;
 import org.eclipse.jnosql.mapping.test.CDIExtension;
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Constructor;
 
 @CDIExtension
 public class ConstructorValidationTest {
+
+    //constructor valid values
+    //constructor invalid values
+
+    @Test
+    public void shouldReturnErrorWhenInvalidConstructor() {
+        Constructor<Computer> constructor = getConstructor();
+        Object[] params = new Object[]{null, 2000, ""};
+
+    }
+
+    private Constructor<Computer> getConstructor() {
+        try {
+            return Computer.class.getConstructor(String.class,int.class, String.class);
+        } catch (NoSuchMethodException error) {
+            throw new MappingException("There is an error to find Computer constructor",error);
+        }
+    }
 }

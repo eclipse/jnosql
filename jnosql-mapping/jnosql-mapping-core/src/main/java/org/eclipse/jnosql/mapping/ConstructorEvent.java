@@ -72,4 +72,10 @@ public final class ConstructorEvent {
                 ", params=" + Arrays.toString(params) +
                 '}';
     }
+
+    public static ConstructorEvent of(Constructor<?> constructor, Object[] params) {
+        Objects.requireNonNull(constructor, "constructor is required");
+        Objects.requireNonNull(params, "params is required");
+        return new ConstructorEvent(constructor, params);
+    }
 }
