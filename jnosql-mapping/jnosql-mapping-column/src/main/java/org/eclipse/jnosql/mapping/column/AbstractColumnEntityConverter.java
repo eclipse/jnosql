@@ -185,8 +185,13 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
                         " column value " + discriminator));
 
         EntityMetadata mapping = getEntities().get(inheritance.getEntity());
-        T instance = mapping.newInstance();
-        return convertEntity(entity.getColumns(), mapping, instance);
+        ConstructorMetadata constructor = mapping.getConstructor();
+        if (constructor.isDefault()) {
+            T instance = mapping.newInstance();
+            return convertEntity(entity.getColumns(), mapping, instance);
+        } else {
+            return convertEntityByConstructor(entity.getColumns(), mapping);
+        }
     }
 
     private <T> T inheritanceToEntity(List<Column> columns, EntityMetadata mapping) {
