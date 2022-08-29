@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class KeyValueRepositoryValidationTest {
 
     @Inject
-    private KeyValueTemplate repository;
+    private KeyValueTemplate template;
 
 
     @Test
@@ -44,7 +44,7 @@ public class KeyValueRepositoryValidationTest {
                 .withSalary(BigDecimal.ONE)
                 .withPhones(singletonList("123131231"))
                 .build();
-        repository.put(person);
+        template.put(person);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class KeyValueRepositoryValidationTest {
                     .withSalary(BigDecimal.ONE)
                     .withPhones(singletonList("123131231"))
                     .build();
-            repository.put(person);
+            template.put(person);
         });
     }
 
@@ -71,7 +71,7 @@ public class KeyValueRepositoryValidationTest {
                 .withPhones(singletonList("123131231"))
                 .build();
         try {
-            repository.put(person);
+            template.put(person);
         } catch (ConstraintViolationException ex) {
             Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
             assertEquals(2, violations.size());
