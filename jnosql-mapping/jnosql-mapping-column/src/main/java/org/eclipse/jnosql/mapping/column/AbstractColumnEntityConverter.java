@@ -68,18 +68,18 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
     }
 
     @Override
-    public <T> T toEntity(Class<T> entity, ColumnEntity communication) {
-        requireNonNull(communication, "communication is required");
+    public <T> T toEntity(Class<T> type, ColumnEntity entity) {
         requireNonNull(entity, "entity is required");
-        return toEntity(entity, communication.getColumns());
+        requireNonNull(type, "type is required");
+        return toEntity(type, entity.getColumns());
     }
 
     @Override
-    public <T> T toEntity(T entity, ColumnEntity communication) {
-        requireNonNull(communication, "communication is required");
+    public <T> T toEntity(T type, ColumnEntity entity) {
         requireNonNull(entity, "entity is required");
-        EntityMetadata mapping = getEntities().get(entity.getClass());
-        return convertEntity(communication.getColumns(), mapping, entity);
+        requireNonNull(type, "type is required");
+        EntityMetadata mapping = getEntities().get(type.getClass());
+        return convertEntity(entity.getColumns(), mapping, type);
     }
 
     @Override
@@ -98,27 +98,27 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         }
     }
 
-    protected ColumnFieldValue to(FieldMapping field, Object entityInstance) {
-        Object value = field.read(entityInstance);
+    protected ColumnFieldValue to(FieldMapping field, Object entity) {
+        Object value = field.read(entity);
         return DefaultColumnFieldValue.of(value, field);
     }
 
-    protected <T> Consumer<String> feedObject(T instance, List<Column> columns, Map<String, FieldMapping> fieldsGroupByName) {
+    protected <T> Consumer<String> feedObject(T entity, List<Column> columns, Map<String, FieldMapping> fieldsGroupByName) {
         return (String k) -> {
             Optional<Column> column = columns.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
             FieldConverter fieldConverter = FieldConverter.get(field);
             if (ENTITY.equals(field.getType())) {
-                column.ifPresent(c -> fieldConverter.convert(instance, c, field, this));
+                column.ifPresent(c -> fieldConverter.convert(entity, c, field, this));
             } else {
-                fieldConverter.convert(instance, columns, column.orElse(null), field, this);
+                fieldConverter.convert(entity, columns, column.orElse(null), field, this);
             }
         };
     }
 
 
-    protected <T> T toEntity(Class<T> entityClass, List<Column> columns) {
-        EntityMetadata mapping = getEntities().get(entityClass);
+    protected <T> T toEntity(Class<T> type, List<Column> columns) {
+        EntityMetadata mapping = getEntities().get(type);
         if (mapping.isInheritance()) {
             return inheritanceToEntity(columns, mapping);
         }
@@ -160,9 +160,9 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         return instance;
     }
 
-    private <T> T mapInheritanceEntity(ColumnEntity entity, Class<?> entityClass) {
+    private <T> T mapInheritanceEntity(ColumnEntity entity, Class<?> type) {
         Map<String, InheritanceMetadata> group = getEntities()
-                .findByParentGroupByDiscriminatorValue(entityClass);
+                .findByParentGroupByDiscriminatorValue(type);
 
         if (group.isEmpty()) {
             throw new MappingException("There is no discriminator inheritance to the document collection "

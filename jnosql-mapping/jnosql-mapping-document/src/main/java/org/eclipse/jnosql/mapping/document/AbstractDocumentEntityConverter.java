@@ -50,40 +50,40 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     protected abstract Converters getConverters();
 
     @Override
-    public DocumentEntity toDocument(Object entityInstance) {
-        requireNonNull(entityInstance, "Object is required");
-        EntityMetadata mapping = getEntities().get(entityInstance.getClass());
-        DocumentEntity entity = DocumentEntity.of(mapping.getName());
+    public DocumentEntity toDocument(Object entity) {
+        requireNonNull(entity, "entity is required");
+        EntityMetadata mapping = getEntities().get(entity.getClass());
+        DocumentEntity communication = DocumentEntity.of(mapping.getName());
         mapping.getFields().stream()
-                .map(f -> to(f, entityInstance))
+                .map(f -> to(f, entity))
                 .filter(FieldValue::isNotEmpty)
                 .map(f -> f.toDocument(this, getConverters()))
                 .flatMap(List::stream)
-                .forEach(entity::add);
+                .forEach(communication::add);
 
-        mapping.getInheritance().ifPresent(i -> entity.add(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
-        return entity;
-
-    }
-
-    @Override
-    public <T> T toEntity(Class<T> entityClass, DocumentEntity entity) {
-        requireNonNull(entity, "entity is required");
-        requireNonNull(entityClass, "entityClass is required");
-        return toEntity(entityClass, entity.getDocuments());
+        mapping.getInheritance().ifPresent(i -> communication.add(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
+        return communication;
 
     }
 
     @Override
-    public <T> T toEntity(T entityInstance, DocumentEntity entity) {
+    public <T> T toEntity(Class<T> type, DocumentEntity entity) {
         requireNonNull(entity, "entity is required");
-        requireNonNull(entityInstance, "entityInstance is required");
-        EntityMetadata mapping = getEntities().get(entityInstance.getClass());
-        return convertEntity(entity.getDocuments(), mapping, entityInstance);
+        requireNonNull(type, "type is required");
+        return toEntity(type, entity.getDocuments());
+
     }
 
-    protected <T> T toEntity(Class<T> entityClass, List<Document> documents) {
-        EntityMetadata mapping = getEntities().get(entityClass);
+    @Override
+    public <T> T toEntity(T type, DocumentEntity entity) {
+        requireNonNull(entity, "entity is required");
+        requireNonNull(type, "type is required");
+        EntityMetadata mapping = getEntities().get(type.getClass());
+        return convertEntity(entity.getDocuments(), mapping, type);
+    }
+
+    protected <T> T toEntity(Class<T> type, List<Document> documents) {
+        EntityMetadata mapping = getEntities().get(type);
         if (mapping.isInheritance()) {
             return inheritanceToEntity(documents, mapping);
 
@@ -115,16 +115,16 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         }
     }
 
-    protected <T> Consumer<String> feedObject(T instance, List<Document> documents, Map<String, FieldMapping> fieldsGroupByName) {
+    protected <T> Consumer<String> feedObject(T entity, List<Document> documents, Map<String, FieldMapping> fieldsGroupByName) {
         return k -> {
             Optional<Document> document = documents.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
             FieldConverter fieldConverter = FieldConverter.get(field);
             if (ENTITY.equals(field.getType())) {
-                document.ifPresent(d -> fieldConverter.convert(instance,
+                document.ifPresent(d -> fieldConverter.convert(entity,
                         null, d, field, this));
             } else {
-                fieldConverter.convert(instance, documents, document.orElse(null), field, this);
+                fieldConverter.convert(entity, documents, document.orElse(null), field, this);
             }
         };
     }

@@ -50,22 +50,22 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
     }
 
     @Override
-    public <T> T toEntity(Class<T> entityClass, KeyValueEntity entity) {
-        requireNonNull(entityClass, "entityClass is required");
+    public <T> T toEntity(Class<T> type, KeyValueEntity entity) {
+        requireNonNull(type, "type is required");
         requireNonNull(entity, "entity is required");
-        T bean = entity.getValue(entityClass);
+        T bean = entity.getValue(type);
         if (Objects.isNull(bean)) {
             return null;
         }
 
-        Object key = getKey(entity.getKey(), entityClass, true);
-        FieldMapping id = getId(entityClass);
+        Object key = getKey(entity.getKey(), type, true);
+        FieldMapping id = getId(type);
         id.write(bean, key);
         return bean;
     }
 
-    private <T> Object getKey(Object key, Class<T> entityClass, boolean toEntity) {
-        FieldMapping id = getId(entityClass);
+    private <T> Object getKey(Object key, Class<T> type, boolean toEntity) {
+        FieldMapping id = getId(type);
         if (id.getConverter().isPresent()) {
             AttributeConverter attributeConverter = getConverters().get(id.getConverter().get());
             if(toEntity) {
