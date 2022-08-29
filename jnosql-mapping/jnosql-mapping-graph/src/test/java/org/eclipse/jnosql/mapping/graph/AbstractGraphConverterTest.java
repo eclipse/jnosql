@@ -19,6 +19,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.graph.model.Computer;
 import org.eclipse.jnosql.mapping.graph.model.Job;
 import org.eclipse.jnosql.mapping.graph.model.Money;
 import org.eclipse.jnosql.mapping.graph.model.Movie;
@@ -264,5 +265,18 @@ abstract class AbstractGraphConverterTest {
                     assertEquals("name", property.key());
                     assertEquals("name", property.value());
                 });
+    }
+
+    @Test
+    public void shouldCreateByConstructor() {
+        Vertex vertex = getGraph().addVertex(T.label, "Computer",
+                "name", "Dell", "age", 2020, "model", "Dell 2020", "price", "USD 20");
+
+        Computer computer = this.getConverter().toEntity(vertex);
+        assertNotNull(computer);
+        assertEquals("Dell", computer.getName());
+        assertEquals(2020, computer.getAge());
+        assertEquals("Dell 2020", computer.getModel());
+        assertEquals(Money.parse("USD 20"), computer.getPrice());
     }
 }
