@@ -106,8 +106,8 @@ public class DefaultDocumentEntityConverterConstructorTest {
     @Test
     public void shouldConvertBookUser() {
         DocumentEntity communication = DocumentEntity.of("BookUser");
-        communication.add("nickname", "otaviojava");
-        communication.add("name", "Otavio Santana");
+        communication.add("_id", "otaviojava");
+        communication.add("native_name", "Otavio Santana");
         List<List<Document>> documents = new ArrayList<>();
         documents.add(Arrays.asList(Document.of("_id", 10), Document.of("name", "Effective Java")));
         documents.add(Arrays.asList(Document.of("_id", 12), Document.of("name", "Clean Code")));
