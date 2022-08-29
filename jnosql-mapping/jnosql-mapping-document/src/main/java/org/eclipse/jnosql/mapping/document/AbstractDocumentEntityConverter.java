@@ -106,8 +106,13 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         if (mapping.isInheritance()) {
             return mapInheritanceEntity(entity, mapping.getType());
         }
-        T instance = mapping.newInstance();
-        return convertEntity(entity.getDocuments(), mapping, instance);
+        ConstructorMetadata constructor = mapping.getConstructor();
+        if (constructor.isDefault()) {
+            T instance = mapping.newInstance();
+            return convertEntity(entity.getDocuments(), mapping, instance);
+        } else {
+            return convertEntityByConstructor(entity.getDocuments(), mapping);
+        }
     }
 
     protected <T> Consumer<String> feedObject(T instance, List<Document> documents, Map<String, FieldMapping> fieldsGroupByName) {
