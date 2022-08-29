@@ -15,21 +15,41 @@
 package org.eclipse.jnosql.mapping.validation;
 
 import jakarta.nosql.mapping.MappingException;
+import org.eclipse.jnosql.mapping.ConstructorEvent;
 import org.eclipse.jnosql.mapping.test.CDIExtension;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.lang.reflect.Constructor;
+import java.util.Set;
 
 @CDIExtension
 public class ConstructorValidationTest {
 
-    //constructor valid values
-    //constructor invalid values
+    @Inject
+    private MappingValidator validator;
 
     @Test
     public void shouldReturnErrorWhenInvalidConstructor() {
         Constructor<Computer> constructor = getConstructor();
         Object[] params = new Object[]{null, 2000, ""};
+        ConstructorEvent event = ConstructorEvent.of(constructor, params);
+        ConstraintViolationException exception = Assertions.assertThrows(ConstraintViolationException.class,
+                () -> validator.validate(event));
+
+        Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
+        Assertions.assertEquals(3, violations.size());
+    }
+
+    @Test
+    public void shouldValidateByConstructor() {
+        Constructor<Computer> constructor = getConstructor();
+        Object[] params = new Object[]{"Computer", 2023, "Nice"};
+        ConstructorEvent event = ConstructorEvent.of(constructor, params);
+        validator.validate(event);
 
     }
 
