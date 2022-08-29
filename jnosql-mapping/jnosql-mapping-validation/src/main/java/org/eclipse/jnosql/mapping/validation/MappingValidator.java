@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.validation;
 
 
+import org.eclipse.jnosql.mapping.ConstructorEvent;
+
 /**
  * Validates bean instances. Implementations of this interface must be thread-safe.
  */
@@ -25,10 +27,21 @@ public interface MappingValidator {
      * Validate an entity using entity validation
      *
      * @param entity the entity to be validated
-     * @param <T>  the type
-     * @throws NullPointerException       when entity is null
+     * @param <T>    the type
+     * @throws NullPointerException                          when entity is null
      * @throws javax.validation.ConstraintViolationException when {@link javax.validation.Validator#validate(Object, Class[])}
-     *                                    returns a non-empty collection
+     *                                                       returns a non-empty collection
      */
     <T> void validate(T entity);
+
+
+    /**
+     * Validate an entity using entity validation
+     *
+     * @param event the event
+     * @throws NullPointerException                          when entity is null
+     * @throws javax.validation.ConstraintViolationException when {@link javax.validation.Validator#validate(Object, Class[])}
+     *                                                       returns a non-empty collection
+     */
+    void validate(ConstructorEvent event);
 }
