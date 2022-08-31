@@ -45,6 +45,8 @@ class ClassConverter {
 
     private InstanceSupplierFactory instanceSupplierFactory;
 
+    private ConstructorMetadataBuilder constructorMetadataBuilder;
+
 
     @Inject
     ClassConverter(Reflections reflections) {
@@ -54,6 +56,7 @@ class ClassConverter {
         this.readerFactory = classOperation.getFieldReaderFactory();
         this.writerFactory = classOperation.getFieldWriterFactory();
         this.instanceSupplierFactory = classOperation.getInstanceSupplierFactory();
+        this.constructorMetadataBuilder = new ConstructorMetadataBuilder(reflections);
     }
 
     ClassConverter() {
@@ -76,18 +79,20 @@ class ClassConverter {
                 .collect(collectingAndThen(toMap(FieldMapping::getName,
                         Function.identity()), Collections::unmodifiableMap));
 
-        InstanceSupplier instanceSupplier = instanceSupplierFactory.apply(reflections.makeAccessible(entity));
+        InstanceSupplier instanceSupplier = instanceSupplierFactory.apply(reflections.getConstructor(entity));
         InheritanceMetadata inheritance = reflections.getInheritance(entity).orElse(null);
         boolean hasInheritanceAnnotation = reflections.hasInheritanceAnnotation(entity);
-        EntityMetadata mapping = DefaultEntityMetadata.builder().withName(entityName)
-                .withClassInstance(entity)
-                .withFields(fields)
-                .withFieldsName(fieldsName)
-                .withInstanceSupplier(instanceSupplier)
-                .withJavaFieldGroupedByColumn(nativeFieldGroupByJavaField)
-                .withFieldsGroupedByName(fieldsGroupedByName)
-                .withInheritance(inheritance)
-                .withHasInheritanceAnnotation(hasInheritanceAnnotation)
+
+        EntityMetadata mapping = DefaultEntityMetadata.builder().name(entityName)
+                .type(entity)
+                .fields(fields)
+                .fieldsName(fieldsName)
+                .instanceSupplier(instanceSupplier)
+                .javaFieldGroupedByColumn(nativeFieldGroupByJavaField)
+                .fieldsGroupedByName(fieldsGroupedByName)
+                .inheritance(inheritance)
+                .hasInheritanceAnnotation(hasInheritanceAnnotation)
+                .constructor(constructorMetadataBuilder.build(entity))
                 .build();
 
         long end = System.currentTimeMillis() - start;
@@ -112,7 +117,7 @@ class ClassConverter {
 
 
         switch (field.getType()) {
-            case SUB_ENTITY:
+            case ENTITY:
                 appendFields(nativeFieldGroupByJavaField, field, javaField, appendPreparePrefix(nativeField, field.getName()));
                 return;
             case EMBEDDED:
@@ -178,21 +183,21 @@ class ClassConverter {
 
 
     private FieldMapping to(Field field) {
-        FieldType fieldType = FieldTypeUtil.of(field);
+        MappingType mappingType = MappingType.of(field);
         reflections.makeAccessible(field);
         Convert convert = field.getAnnotation(Convert.class);
         boolean id = reflections.isIdField(field);
         String columnName = id ? reflections.getIdName(field) : reflections.getColumnName(field);
 
         FieldMappingBuilder builder = new FieldMappingBuilder().withName(columnName)
-                .withField(field).withType(fieldType).withId(id)
+                .withField(field).withType(mappingType).withId(id)
                 .withReader(readerFactory.apply(field))
                 .withWriter(writerFactory.apply(field));
 
         if (nonNull(convert)) {
             builder.withConverter(convert.value());
         }
-        switch (fieldType) {
+        switch (mappingType) {
             case COLLECTION:
             case MAP:
                 builder.withTypeSupplier(field::getGenericType);

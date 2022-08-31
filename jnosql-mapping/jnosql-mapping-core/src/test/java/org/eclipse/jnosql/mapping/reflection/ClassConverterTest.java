@@ -22,6 +22,7 @@ import jakarta.nosql.tck.entities.NoConstructorEntity;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.User;
 import jakarta.nosql.tck.entities.Worker;
+import jakarta.nosql.tck.entities.constructor.Computer;
 import jakarta.nosql.tck.entities.inheritance.EmailNotification;
 import jakarta.nosql.tck.entities.inheritance.Notification;
 import jakarta.nosql.tck.entities.inheritance.Project;
@@ -40,6 +41,8 @@ import static jakarta.nosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_CO
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @CDIExtension
@@ -56,6 +59,9 @@ public class ClassConverterTest {
         assertEquals(Person.class, entityMetadata.getType());
         assertEquals(4, entityMetadata.getFields().size());
         assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones"));
+        ConstructorMetadata constructor = entityMetadata.getConstructor();
+        assertNotNull(constructor);
+        assertTrue(constructor.isDefault());
 
     }
 
@@ -97,7 +103,7 @@ public class ClassConverterTest {
         assertTrue(fields.stream().anyMatch(hasKeyAnnotation));
         FieldMapping fieldMapping = fields.stream().filter(hasKeyAnnotation).findFirst().get();
         assertEquals("_id", fieldMapping.getName());
-        assertEquals(FieldType.DEFAULT, fieldMapping.getType());
+        assertEquals(MappingType.DEFAULT, fieldMapping.getType());
 
     }
 
@@ -175,6 +181,21 @@ public class ClassConverterTest {
         assertEquals("Project", inheritance.getDiscriminatorValue());
         assertEquals(Project.class, inheritance.getParent());
         assertEquals(Project.class, inheritance.getEntity());
+    }
+
+
+    @Test
+    public void shouldCreateEntityMetadataWithConstructor() {
+        EntityMetadata entityMetadata = classConverter.create(Computer.class);
+
+        assertEquals("Computer", entityMetadata.getName());
+        assertEquals(Computer.class, entityMetadata.getType());
+        assertEquals(5, entityMetadata.getFields().size());
+        assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "model", "price"));
+        ConstructorMetadata constructor = entityMetadata.getConstructor();
+        assertNotNull(constructor);
+        assertFalse(constructor.isDefault());
+        assertEquals(5, constructor.getParameters().size());
     }
 
 }

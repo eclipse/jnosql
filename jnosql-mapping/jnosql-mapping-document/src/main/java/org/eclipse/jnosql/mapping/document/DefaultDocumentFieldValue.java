@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.FieldType;
+import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.DefaultFieldValue;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
@@ -28,9 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.eclipse.jnosql.mapping.reflection.FieldType.COLLECTION;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.COLLECTION;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
 import static java.util.Collections.singletonList;
 
 final class DefaultDocumentFieldValue implements DocumentFieldValue {
@@ -56,7 +56,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     public <X, Y> List<Document> toDocument(DocumentEntityConverter converter, Converters converters) {
         if (EMBEDDED.equals(getType())) {
             return converter.toDocument(getValue()).getDocuments();
-        }  else if (SUB_ENTITY.equals(getType())) {
+        }  else if (ENTITY.equals(getType())) {
             return singletonList(Document.of(getName(), converter.toDocument(getValue()).getDocuments()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Document.of(getName(), getDocuments(converter)));
@@ -86,7 +86,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
         return fieldValue.isNotEmpty();
     }
 
-    private FieldType getType() {
+    private MappingType getType() {
         return getField().getType();
     }
 

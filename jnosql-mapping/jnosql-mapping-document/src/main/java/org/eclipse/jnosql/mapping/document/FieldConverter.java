@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2017 Otávio Santana and others
+ *  Copyright (c) 2022 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -21,6 +21,7 @@ import jakarta.nosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
+import org.eclipse.jnosql.mapping.reflection.MappingType;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -31,38 +32,25 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.eclipse.jnosql.mapping.reflection.FieldType.COLLECTION;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
+enum FieldConverter {
+    EMBEDDED {
+        @Override
+        public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
+                                      FieldMapping field, AbstractDocumentEntityConverter converter) {
 
-class DocumentFieldConverters {
-
-    static class DocumentFieldConverterFactory {
-
-        private final EmbeddedFieldConverter embeddedFieldConverter = new EmbeddedFieldConverter();
-        private final DefaultConverter defaultConverter = new DefaultConverter();
-        private final CollectionEmbeddableConverter embeddableConverter = new CollectionEmbeddableConverter();
-        private final SubEntityConverter subEntityConverter = new SubEntityConverter();
-
-        DocumentFieldConverter get(FieldMapping field) {
-            if (EMBEDDED.equals(field.getType())) {
-                return embeddedFieldConverter;
-            } else if (SUB_ENTITY.equals(field.getType())) {
-                return subEntityConverter;
-            } else if (isCollectionEmbeddable(field)) {
-                return embeddableConverter;
-            } else {
-                return defaultConverter;
+            Field nativeField = field.getNativeField();
+            Object subEntity = converter.toEntity(nativeField.getType(), documents);
+            EntityMetadata mapping = converter.getEntities().get(subEntity.getClass());
+            boolean areAllFieldsNull = mapping.getFields()
+                    .stream()
+                    .map(f -> f.read(subEntity))
+                    .allMatch(Objects::isNull);
+            if (!areAllFieldsNull) {
+                field.write(instance, subEntity);
             }
+
         }
-
-        private boolean isCollectionEmbeddable(FieldMapping field) {
-            return COLLECTION.equals(field.getType()) && ((GenericFieldMapping) field).isEmbeddable();
-        }
-    }
-
-    private static class SubEntityConverter implements DocumentFieldConverter {
-
+    }, ENTITY {
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
                                       FieldMapping field, AbstractDocumentEntityConverter converter) {
@@ -92,31 +80,23 @@ class DocumentFieldConverters {
                         })));
             }
         }
-    }
-
-    private static class EmbeddedFieldConverter implements DocumentFieldConverter {
-
-
+    }, COLLECTION {
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
                                       FieldMapping field, AbstractDocumentEntityConverter converter) {
 
-            Field nativeField = field.getNativeField();
-            Object subEntity = converter.toEntity(nativeField.getType(), documents);
-            EntityMetadata mapping = converter.getEntityMetadata().get(subEntity.getClass());
-            boolean areAllFieldsNull = mapping.getFields()
-                    .stream()
-                    .map(f -> f.read(subEntity))
-                    .allMatch(Objects::isNull);
-            if (!areAllFieldsNull) {
-                field.write(instance, subEntity);
+            if (Objects.nonNull(document)) {
+                GenericFieldMapping genericField = (GenericFieldMapping) field;
+                Collection collection = genericField.getCollectionInstance();
+                List<List<Document>> embeddable = (List<List<Document>>) document.get();
+                for (List<Document> documentList : embeddable) {
+                    Object element = converter.toEntity(genericField.getElementType(), documentList);
+                    collection.add(element);
+                }
+                field.write(instance, collection);
             }
-
         }
-    }
-
-    private static class DefaultConverter implements DocumentFieldConverter {
-
+    }, DEFAULT {
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
                                       FieldMapping field, AbstractDocumentEntityConverter converter) {
@@ -134,25 +114,30 @@ class DocumentFieldConverters {
                 }
             }
         }
+    };
+
+
+    abstract <X, Y, T> void convert(T instance, List<Document> documents, Document document, FieldMapping field,
+                                    AbstractDocumentEntityConverter converter);
+
+    <X, Y, T> void convert(T instance, Document document, FieldMapping field,
+                           AbstractDocumentEntityConverter converter) {
+        convert(instance, null, document, field, converter);
     }
 
-    private static class CollectionEmbeddableConverter implements DocumentFieldConverter {
-
-        @Override
-        public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
-                                      FieldMapping field, AbstractDocumentEntityConverter converter) {
-
-            if (Objects.nonNull(document)) {
-                GenericFieldMapping genericField = (GenericFieldMapping) field;
-                Collection collection = genericField.getCollectionInstance();
-                List<List<Document>> embeddable = (List<List<Document>>) document.get();
-                for (List<Document> documentList : embeddable) {
-                    Object element = converter.toEntity(genericField.getElementType(), documentList);
-                    collection.add(element);
-                }
-                field.write(instance, collection);
-            }
+    static FieldConverter get(FieldMapping field) {
+        if (MappingType.EMBEDDED.equals(field.getType())) {
+            return EMBEDDED;
+        } else if (MappingType.ENTITY.equals(field.getType())) {
+            return ENTITY;
+        } else if (isCollectionEmbeddable(field)) {
+            return COLLECTION;
+        } else {
+            return DEFAULT;
         }
     }
 
+    private static boolean isCollectionEmbeddable(FieldMapping field) {
+        return MappingType.COLLECTION.equals(field.getType()) && ((GenericFieldMapping) field).isEmbeddable();
+    }
 }

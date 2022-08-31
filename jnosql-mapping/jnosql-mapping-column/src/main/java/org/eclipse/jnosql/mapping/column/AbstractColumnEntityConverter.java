@@ -19,13 +19,15 @@ import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import org.eclipse.jnosql.mapping.column.ColumnFieldConverters.ColumnFieldConverterFactory;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
+import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.FieldType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.InheritanceMetadata;
+import org.eclipse.jnosql.mapping.reflection.MappingType;
+import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,9 +38,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
-
+import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
 
 
 /**
@@ -46,41 +47,40 @@ import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
  */
 public abstract class AbstractColumnEntityConverter implements ColumnEntityConverter {
 
-    private final ColumnFieldConverterFactory converterFactory = new ColumnFieldConverterFactory();
 
     protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();
 
     @Override
-    public ColumnEntity toColumn(Object entityInstance) {
-        requireNonNull(entityInstance, "Object is required");
-        EntityMetadata mapping = getEntities().get(entityInstance.getClass());
-        ColumnEntity entity = ColumnEntity.of(mapping.getName());
+    public ColumnEntity toColumn(Object entity) {
+        requireNonNull(entity, "entity is required");
+        EntityMetadata mapping = getEntities().get(entity.getClass());
+        ColumnEntity communication = ColumnEntity.of(mapping.getName());
         mapping.getFields().stream()
-                .map(f -> to(f, entityInstance))
+                .map(f -> to(f, entity))
                 .filter(FieldValue::isNotEmpty)
                 .map(f -> f.toColumn(this, getConverters()))
                 .flatMap(List::stream)
-                .forEach(entity::add);
+                .forEach(communication::add);
 
-        mapping.getInheritance().ifPresent(i -> entity.add(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
-        return entity;
+        mapping.getInheritance().ifPresent(i -> communication.add(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
+        return communication;
     }
 
     @Override
-    public <T> T toEntity(Class<T> entityClass, ColumnEntity entity) {
+    public <T> T toEntity(Class<T> type, ColumnEntity entity) {
         requireNonNull(entity, "entity is required");
-        requireNonNull(entityClass, "entityClass is required");
-        return toEntity(entityClass, entity.getColumns());
+        requireNonNull(type, "type is required");
+        return toEntity(type, entity.getColumns());
     }
 
     @Override
-    public <T> T toEntity(T entityInstance, ColumnEntity entity) {
+    public <T> T toEntity(T type, ColumnEntity entity) {
         requireNonNull(entity, "entity is required");
-        requireNonNull(entityInstance, "entityInstance is required");
-        EntityMetadata mapping = getEntities().get(entityInstance.getClass());
-        return convertEntity(entity.getColumns(), mapping, entityInstance);
+        requireNonNull(type, "type is required");
+        EntityMetadata mapping = getEntities().get(type.getClass());
+        return convertEntity(entity.getColumns(), mapping, type);
     }
 
     @Override
@@ -90,33 +90,60 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         if (mapping.isInheritance()) {
             return mapInheritanceEntity(entity, mapping.getType());
         }
-        T instance = mapping.newInstance();
-        return convertEntity(entity.getColumns(), mapping, instance);
+        ConstructorMetadata constructor = mapping.getConstructor();
+        if (constructor.isDefault()) {
+            T instance = mapping.newInstance();
+            return convertEntity(entity.getColumns(), mapping, instance);
+        } else {
+            return convertEntityByConstructor(entity.getColumns(), mapping);
+        }
     }
 
-    protected ColumnFieldValue to(FieldMapping field, Object entityInstance) {
-        Object value = field.read(entityInstance);
+    protected ColumnFieldValue to(FieldMapping field, Object entity) {
+        Object value = field.read(entity);
         return DefaultColumnFieldValue.of(value, field);
     }
 
-    protected <T> Consumer<String> feedObject(T instance, List<Column> columns, Map<String, FieldMapping> fieldsGroupByName) {
+    protected <T> Consumer<String> feedObject(T entity, List<Column> columns, Map<String, FieldMapping> fieldsGroupByName) {
         return (String k) -> {
             Optional<Column> column = columns.stream().filter(c -> c.getName().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
-            ColumnFieldConverter fieldConverter = converterFactory.get(field);
-            if (SUB_ENTITY.equals(field.getType())) {
-                column.ifPresent(c -> fieldConverter.convert(instance,  c, field, this));
+            FieldConverter fieldConverter = FieldConverter.get(field);
+            if (ENTITY.equals(field.getType())) {
+                column.ifPresent(c -> fieldConverter.convert(entity, c, field, this));
             } else {
-                fieldConverter.convert(instance, columns, column.orElse(null), field, this);
+                fieldConverter.convert(entity, columns, column.orElse(null), field, this);
             }
         };
     }
 
 
-    protected <T> T toEntity(Class<T> entityClass, List<Column> columns) {
-        EntityMetadata mapping = getEntities().get(entityClass);
-        T instance = mapping.newInstance();
-        return convertEntity(columns, mapping, instance);
+    protected <T> T toEntity(Class<T> type, List<Column> columns) {
+        EntityMetadata mapping = getEntities().get(type);
+        if (mapping.isInheritance()) {
+            return inheritanceToEntity(columns, mapping);
+        }
+        ConstructorMetadata constructor = mapping.getConstructor();
+        if (constructor.isDefault()) {
+            T instance = mapping.newInstance();
+            return convertEntity(columns, mapping, instance);
+        } else {
+            return convertEntityByConstructor(columns, mapping);
+        }
+    }
+
+    private <T> T convertEntityByConstructor(List<Column> columns, EntityMetadata mapping) {
+        ConstructorBuilder builder = ConstructorBuilder.of(mapping.getConstructor());
+        for (ParameterMetaData parameter : builder.getParameters()) {
+            Optional<Column> column = columns.stream()
+                    .filter(c -> c.getName().equals(parameter.getName()))
+                    .findFirst();
+            column.ifPresentOrElse(c -> {
+                ParameterConverter converter = ParameterConverter.of(parameter);
+                converter.convert(this, c, parameter, builder);
+            }, builder::addEmptyParameter);
+        }
+        return builder.build();
     }
 
     private <T> T convertEntity(List<Column> columns, EntityMetadata mapping, T instance) {
@@ -124,8 +151,8 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         final List<String> names = columns.stream().map(Column::getName).sorted().collect(Collectors.toList());
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
-            FieldType type = fieldsGroupByName.get(k).getType();
-            return EMBEDDED.equals(type) || SUB_ENTITY.equals(type);
+            MappingType type = fieldsGroupByName.get(k).getType();
+            return EMBEDDED.equals(type) || ENTITY.equals(type);
         };
         fieldsGroupByName.keySet().stream()
                 .filter(existField.or(isElementType))
@@ -134,9 +161,9 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
         return instance;
     }
 
-    private <T> T mapInheritanceEntity(ColumnEntity entity, Class<?> entityClass) {
+    private <T> T mapInheritanceEntity(ColumnEntity entity, Class<?> type) {
         Map<String, InheritanceMetadata> group = getEntities()
-                .findByParentGroupByDiscriminatorValue(entityClass);
+                .findByParentGroupByDiscriminatorValue(type);
 
         if (group.isEmpty()) {
             throw new MappingException("There is no discriminator inheritance to the document collection "
@@ -158,8 +185,44 @@ public abstract class AbstractColumnEntityConverter implements ColumnEntityConve
                         " column value " + discriminator));
 
         EntityMetadata mapping = getEntities().get(inheritance.getEntity());
-        T instance = mapping.newInstance();
-        return convertEntity(entity.getColumns(), mapping, instance);
+        ConstructorMetadata constructor = mapping.getConstructor();
+        if (constructor.isDefault()) {
+            T instance = mapping.newInstance();
+            return convertEntity(entity.getColumns(), mapping, instance);
+        } else {
+            return convertEntityByConstructor(entity.getColumns(), mapping);
+        }
     }
 
+    private <T> T inheritanceToEntity(List<Column> columns, EntityMetadata mapping) {
+        Map<String, InheritanceMetadata> group = getEntities()
+                .findByParentGroupByDiscriminatorValue(mapping.getType());
+
+        if (group.isEmpty()) {
+            throw new MappingException("There is no discriminator inheritance to the document collection "
+                    + mapping.getName());
+        }
+
+        String column = group.values()
+                .stream()
+                .findFirst()
+                .map(InheritanceMetadata::getDiscriminatorColumn)
+                .orElseThrow();
+
+        String discriminator = columns.stream()
+                .filter(d -> d.getName().equals(column))
+                .findFirst()
+                .map(d -> d.get(String.class))
+                .orElseThrow(
+                        () -> new MappingException("To inheritance there is the discriminator column missing" +
+                                " on the Document Collection, the document name: " + column));
+
+        InheritanceMetadata inheritance = Optional.ofNullable(group.get(discriminator))
+                .orElseThrow(() -> new MappingException("There is no inheritance map to the discriminator" +
+                        " column value " + discriminator));
+
+        EntityMetadata inheritanceMetadata = getEntities().get(inheritance.getEntity());
+        T instance = inheritanceMetadata.newInstance();
+        return convertEntity(columns, inheritanceMetadata, instance);
+    }
 }

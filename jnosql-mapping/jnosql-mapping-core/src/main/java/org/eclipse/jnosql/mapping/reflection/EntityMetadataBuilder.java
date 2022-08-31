@@ -27,7 +27,7 @@ class EntityMetadataBuilder {
 
     private List<String> fieldsName = Collections.emptyList();
 
-    private Class<?> classInstance;
+    private Class<?> type;
 
     private List<FieldMapping> fields = Collections.emptyList();
 
@@ -41,55 +41,63 @@ class EntityMetadataBuilder {
 
     private boolean hasInheritanceAnnotation;
 
-    public EntityMetadataBuilder withName(String name) {
+    private ConstructorMetadata constructor;
+
+
+    public EntityMetadataBuilder name(String name) {
         this.name = name;
         return this;
     }
 
-    public EntityMetadataBuilder withFieldsName(List<String> fieldsName) {
+    public EntityMetadataBuilder fieldsName(List<String> fieldsName) {
         this.fieldsName = fieldsName;
         return this;
     }
 
-    public EntityMetadataBuilder withClassInstance(Class<?> classInstance) {
-        this.classInstance = classInstance;
+    public EntityMetadataBuilder type(Class<?> type) {
+        this.type = type;
         return this;
     }
 
-    public EntityMetadataBuilder withFields(List<FieldMapping> fields) {
+    public EntityMetadataBuilder fields(List<FieldMapping> fields) {
         this.fields = fields;
         return this;
     }
 
-    public EntityMetadataBuilder withJavaFieldGroupedByColumn(Map<String, NativeMapping> javaFieldGroupedByColumn) {
+    public EntityMetadataBuilder javaFieldGroupedByColumn(Map<String, NativeMapping> javaFieldGroupedByColumn) {
         this.javaFieldGroupedByColumn = javaFieldGroupedByColumn;
         return this;
     }
 
-    public EntityMetadataBuilder withFieldsGroupedByName(Map<String, FieldMapping> fieldsGroupedByName) {
+    public EntityMetadataBuilder fieldsGroupedByName(Map<String, FieldMapping> fieldsGroupedByName) {
         this.fieldsGroupedByName = fieldsGroupedByName;
         return this;
     }
 
-    public EntityMetadataBuilder withInstanceSupplier(InstanceSupplier instanceSupplier) {
+    public EntityMetadataBuilder instanceSupplier(InstanceSupplier instanceSupplier) {
         this.instanceSupplier = instanceSupplier;
         return this;
     }
 
-    public EntityMetadataBuilder withInheritance(InheritanceMetadata inheritance) {
+    public EntityMetadataBuilder inheritance(InheritanceMetadata inheritance) {
         this.inheritance = inheritance;
         return this;
     }
 
-    public EntityMetadataBuilder withHasInheritanceAnnotation(boolean hasInheritanceAnnotation) {
+    public EntityMetadataBuilder hasInheritanceAnnotation(boolean hasInheritanceAnnotation) {
         this.hasInheritanceAnnotation = hasInheritanceAnnotation;
+        return this;
+    }
+
+    public EntityMetadataBuilder constructor(ConstructorMetadata constructor) {
+        this.constructor = constructor;
         return this;
     }
 
 
     public EntityMetadata build() {
-        return new DefaultEntityMetadata(name, fieldsName, classInstance, fields,
-                javaFieldGroupedByColumn, fieldsGroupedByName, instanceSupplier, inheritance
-                , hasInheritanceAnnotation);
+        return new DefaultEntityMetadata(name, fieldsName, type, fields,
+                javaFieldGroupedByColumn, fieldsGroupedByName, instanceSupplier, inheritance,
+                constructor, hasInheritanceAnnotation);
     }
 }

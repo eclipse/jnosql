@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020 Otávio Santana and others
+ *  Copyright (c) 2022 Otávio Santana and others
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,54 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-
-import jakarta.nosql.Value;
+import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Id;
-import jakarta.nosql.mapping.AttributeConverter;
 
-import java.lang.reflect.Field;
 import java.util.Optional;
 
 /**
- * This class represents the information from {@link Field}.
- * The strategy is to cache in all fields in a class to either read and write faster from Field
+ * This class represents the information from {@link java.lang.reflect.Constructor#getParameters()}.
+ * The strategy is to cache all the parameters in a class to create an instance
  */
-public interface FieldMapping {
+public interface ParameterMetaData {
+
 
     /**
      * Return the type of the field
      *
      * @return the {@link MappingType}
      */
-    MappingType getType();
-
-    /**
-     * The {@link Field}
-     *
-     * @return the field
-     */
-    default Field getNativeField() {
-        return null;
-    }
-
-    /**
-     * Reads the field using {@link FieldReader}
-     *
-     * @param bean the bean
-     * @return the property value
-     * @throws NullPointerException when bean is null
-     */
-    Object read(Object bean);
-
-    /**
-     * Writes the field using {@link java.io.FileWriter}
-     *
-     * @param bean  the bean
-     * @param value the value to write
-     * @throws NullPointerException when there is null parameter
-     */
-    void write(Object bean, Object value);
+    MappingType getParamType();
 
     /**
      * Returns the name of the field that can be either the field name
@@ -72,21 +43,10 @@ public interface FieldMapping {
     String getName();
 
     /**
-     * Returns the Java Fields name.
-     * {@link Field#getName()}
-     *
-     * @return The Java Field name {@link Field#getName()}
+     * @return a {@code Class} object identifying the declared
+     * type of the entity represented by this object
      */
-    String getFieldName();
-
-
-    /**
-     * Returns the object from the field type
-     *
-     * @param value the value {@link Value}
-     * @return the instance from the field type
-     */
-    Object getValue(Value value);
+    Class<?> getType();
 
     /**
      * Returns true is the field is annotated with {@link Id}
@@ -103,6 +63,4 @@ public interface FieldMapping {
      * @return the converter if present
      */
     <X, Y, T extends AttributeConverter<X, Y>> Optional<Class<? extends AttributeConverter<X, Y>>> getConverter();
-
-
 }

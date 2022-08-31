@@ -15,6 +15,9 @@
 package org.eclipse.jnosql.mapping.validation;
 
 
+import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
+
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
@@ -22,9 +25,12 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import javax.validation.executable.ExecutableValidator;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
+@ApplicationScoped
 class DefaultMappingValidator implements MappingValidator {
 
     @Inject
@@ -33,9 +39,10 @@ class DefaultMappingValidator implements MappingValidator {
     @Inject
     private Instance<Validator> validators;
 
-    public void validate(Object bean) {
+    public void validate(Object entity) {
+        Objects.requireNonNull(entity, "entity is required");
         Validator validator = getValidator();
-        Set<ConstraintViolation<Object>> violations = validator.validate(bean);
+        Set<ConstraintViolation<Object>> violations = validator.validate(entity);
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(new HashSet<>(violations));
@@ -43,6 +50,19 @@ class DefaultMappingValidator implements MappingValidator {
 
     }
 
+    @Override
+    public void validate(ConstructorEvent event) {
+        Objects.requireNonNull(event, "event is required");
+        Validator validator = getValidator();
+        ExecutableValidator executableValidator = validator.forExecutables();
+        Set<? extends ConstraintViolation<?>> violations =
+                executableValidator.validateConstructorParameters(event.getConstructor(),
+                        event.getParams());
+
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(new HashSet<>(violations));
+        }
+    }
 
     private Validator getValidator() {
         if (!validators.isUnsatisfied()) {
@@ -55,4 +75,5 @@ class DefaultMappingValidator implements MappingValidator {
             return factory.getValidator();
         }
     }
+
 }

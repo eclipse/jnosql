@@ -108,12 +108,12 @@ public interface Reflections {
      * called when actually necessary, to avoid unnecessary
      * conflicts with a JVM SecurityManager (if active).
      *
-     * @param clazz the class constructor acessible
+     * @param type the class constructor acessible
      * @param <T>   the entity type
      * @return the constructor class
      * @throws ConstructorException when the constructor has public and default
      */
-    <T> Constructor<T> makeAccessible(Class<T> clazz);
+    <T> Constructor<T> getConstructor(Class<T> type);
 
     /**
      * Returns the name of the entity. So it tries to read the {@link Entity} otherwise
@@ -128,22 +128,22 @@ public interface Reflections {
     /**
      * Returns the fields from the entity class
      *
-     * @param classEntity the entity class
+     * @param type the entity class
      * @return the list of fields that is annotated with either {@link Column} or
      * {@link Id}
      * @throws NullPointerException when class entity is null
      */
-    List<Field> getFields(Class<?> classEntity);
+    List<Field> getFields(Class<?> type);
 
     /**
      * Checks if the class is annotated with {@link jakarta.nosql.mapping.MappedSuperclass} or
      * {@link jakarta.nosql.mapping.Inheritance}
      *
-     * @param classEntity the entity class
+     * @param type the entity class
      * @return if the class is annotated
-     * @throws NullPointerException when classEntity is null
+     * @throws NullPointerException when type is null
      */
-    boolean isMappedSuperclass(Class<?> classEntity);
+    boolean isMappedSuperclass(Class<?> type);
 
     /**
      * Checks if the field is annotated with {@link Column}
@@ -174,16 +174,16 @@ public interface Reflections {
     String getIdName(Field field);
 
     /**
-     * Reads the entity annotation and checks if the inheritance has an
+     * Reads the type annotation and checks if the inheritance has an
      * {@link jakarta.nosql.mapping.Inheritance} annotation.
      * If it has, it will return the {@link InheritanceMetadata} otherwise it will return
      * {@link Optional#empty()}
      *
-     * @param entity the entity class
+     * @param type the type class
      * @return the {@link InheritanceMetadata} or {@link Optional#empty()}
-     * @throws NullPointerException when entity is null
+     * @throws NullPointerException when type is null
      */
-    Optional<InheritanceMetadata> getInheritance(Class<?> entity);
+    Optional<InheritanceMetadata> getInheritance(Class<?> type);
 
     /**
      * Check if the entity has the {@link jakarta.nosql.mapping.Inheritance} annotation

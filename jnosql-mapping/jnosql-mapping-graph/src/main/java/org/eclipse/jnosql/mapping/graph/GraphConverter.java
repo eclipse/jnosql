@@ -45,13 +45,13 @@ public interface GraphConverter {
     /**
      * Converts vertex to an entity
      *
-     * @param entityClass the entity class
+     * @param type the entity class
      * @param vertex      the vertex
      * @param <T>         the entity type
      * @return a entity instance
-     * @throws NullPointerException when vertex or entityClass is null
+     * @throws NullPointerException when vertex or type is null
      */
-    <T> T toEntity(Class<T> entityClass, Vertex vertex);
+    <T> T toEntity(Class<T> type, Vertex vertex);
 
     /**
      *List the fields in the entity as property exclude fields annotated with {@link jakarta.nosql.mapping.Id}
@@ -66,13 +66,13 @@ public interface GraphConverter {
      * Converts vertex to an entity
      * Instead of creating a new object is uses the instance used in this parameters
      *
-     * @param entityInstance the entity class
+     * @param type the entity class
      * @param vertex         the vertex
      * @param <T>            the entity type
      * @return a entity instance
-     * @throws NullPointerException when vertex or entityInstance is null
+     * @throws NullPointerException when vertex or type is null
      */
-    <T> T toEntity(T entityInstance, Vertex vertex);
+    <T> T toEntity(T type, Vertex vertex);
 
     /**
      * Converts {@link EdgeEntity} from {@link Edge} Thinkerpop

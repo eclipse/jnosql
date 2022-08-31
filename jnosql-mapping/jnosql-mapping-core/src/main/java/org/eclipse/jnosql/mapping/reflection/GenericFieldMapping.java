@@ -33,7 +33,7 @@ public class GenericFieldMapping extends AbstractFieldMapping {
 
     private final TypeSupplier<?> typeSupplier;
 
-    GenericFieldMapping(FieldType type, Field field, String name, TypeSupplier<?> typeSupplier,
+    GenericFieldMapping(MappingType type, Field field, String name, TypeSupplier<?> typeSupplier,
                         Class<? extends AttributeConverter<?, ?>> converter, FieldReader reader, FieldWriter writer) {
         super(type, field, name, converter, reader, writer);
         this.typeSupplier = typeSupplier;
@@ -92,7 +92,7 @@ public class GenericFieldMapping extends AbstractFieldMapping {
                 .getAnnotation(annotation) != null;
     }
 
-    public Class getElementType() {
+    public Class<?> getElementType() {
         return (Class) ((ParameterizedType) getNativeField()
                 .getGenericType())
                 .getActualTypeArguments()[0];

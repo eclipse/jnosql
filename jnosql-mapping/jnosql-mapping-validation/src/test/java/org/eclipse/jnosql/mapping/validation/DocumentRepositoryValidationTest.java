@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DocumentRepositoryValidationTest {
 
     @Inject
-    private DocumentTemplate repository;
+    private DocumentTemplate template;
 
 
     @Test
@@ -44,7 +44,7 @@ public class DocumentRepositoryValidationTest {
                 .withSalary(BigDecimal.ONE)
                 .withPhones(singletonList("123131231"))
                 .build();
-        repository.insert(person);
+        template.insert(person);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class DocumentRepositoryValidationTest {
                     .withSalary(BigDecimal.ONE)
                     .withPhones(singletonList("123131231"))
                     .build();
-            repository.insert(person);
+            template.insert(person);
         });
     }
 
@@ -71,7 +71,7 @@ public class DocumentRepositoryValidationTest {
                 .withPhones(singletonList("123131231"))
                 .build();
         try {
-            repository.insert(person);
+            template.insert(person);
         } catch (ConstraintViolationException ex) {
             Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
             assertEquals(2, violations.size());
@@ -88,7 +88,7 @@ public class DocumentRepositoryValidationTest {
                 .withSalary(BigDecimal.ONE)
                 .withPhones(singletonList("123131231"))
                 .build();
-        repository.update(person);
+        template.update(person);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class DocumentRepositoryValidationTest {
                     .withSalary(BigDecimal.ONE)
                     .withPhones(singletonList("123131231"))
                     .build();
-            repository.update(person);
+            template.update(person);
         });
     }
 
@@ -115,7 +115,7 @@ public class DocumentRepositoryValidationTest {
                 .withPhones(singletonList("123131231"))
                 .build();
         try {
-            repository.update(person);
+            template.update(person);
         } catch (ConstraintViolationException ex) {
             Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
             assertEquals(2, violations.size());

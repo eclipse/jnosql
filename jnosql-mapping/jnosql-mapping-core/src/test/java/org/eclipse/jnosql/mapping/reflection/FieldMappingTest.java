@@ -25,10 +25,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.eclipse.jnosql.mapping.reflection.FieldType.COLLECTION;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.DEFAULT;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.MAP;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.COLLECTION;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.DEFAULT;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.MAP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension

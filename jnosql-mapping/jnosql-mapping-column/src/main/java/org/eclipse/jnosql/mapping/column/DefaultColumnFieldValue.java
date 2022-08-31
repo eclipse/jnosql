@@ -19,7 +19,7 @@ import jakarta.nosql.mapping.AttributeConverter;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
-import org.eclipse.jnosql.mapping.reflection.FieldType;
+import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 import org.eclipse.jnosql.mapping.reflection.DefaultFieldValue;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
@@ -28,10 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.eclipse.jnosql.mapping.reflection.FieldType.COLLECTION;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.COLLECTION;
 
-import static org.eclipse.jnosql.mapping.reflection.FieldType.EMBEDDED;
-import static org.eclipse.jnosql.mapping.reflection.FieldType.SUB_ENTITY;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
+import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
 import static java.util.Collections.singletonList;
 
 final class DefaultColumnFieldValue implements ColumnFieldValue {
@@ -61,7 +61,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     public <X, Y> List<Column> toColumn(ColumnEntityConverter converter, Converters converters) {
         if (EMBEDDED.equals(getType())) {
             return converter.toColumn(getValue()).getColumns();
-        } else if (SUB_ENTITY.equals(getType())) {
+        } else if (ENTITY.equals(getType())) {
             return singletonList(Column.of(getName(), converter.toColumn(getValue()).getColumns()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Column.of(getName(), getColumns(converter)));
@@ -86,7 +86,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
         return COLLECTION.equals(getType()) && isEmbeddableElement();
     }
 
-    private FieldType getType() {
+    private MappingType getType() {
         return getField().getType();
     }
 
