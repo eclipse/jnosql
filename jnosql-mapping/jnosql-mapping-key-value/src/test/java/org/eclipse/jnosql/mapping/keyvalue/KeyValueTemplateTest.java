@@ -15,13 +15,13 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 import jakarta.nosql.mapping.Template;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-@ApplicationScoped
+@CDIExtension
 class KeyValueTemplateTest {
 
     @Inject
