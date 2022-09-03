@@ -27,6 +27,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -280,7 +282,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     public void shouldReturnMapValueAsEmptyStream() {
         Stream<Map<String, Object>> stream = graphTemplate.getTraversalVertex().hasLabel("Person")
                 .valueMap("noField").stream();
-        assertTrue(stream.allMatch(Map::isEmpty));
+        assertTrue(stream.allMatch(m -> Objects.isNull(m.get("noFoundProperty"))));
     }
 
     @Test
@@ -375,7 +377,8 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenThePropertyDoesNotExist() {
-        assertThrows(IllegalStateException.class, () -> graphTemplate.getTraversalVertex().orderBy("wrong property").asc().next());
+        assertThrows(NoSuchElementException.class, () ->
+                graphTemplate.getTraversalVertex().orderBy("wrong property").asc().next().get());
     }
 
     @Test
