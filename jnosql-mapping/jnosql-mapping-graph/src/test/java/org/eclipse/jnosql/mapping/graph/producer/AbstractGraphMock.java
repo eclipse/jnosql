@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.graph.producer;
 
 import jakarta.nosql.Settings;
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.tinkerpop.gremlin.process.computer.GraphComputer;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
