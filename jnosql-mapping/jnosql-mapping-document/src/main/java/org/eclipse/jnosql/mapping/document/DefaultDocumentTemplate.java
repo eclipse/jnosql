@@ -21,6 +21,7 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
@@ -28,6 +29,7 @@ import javax.inject.Inject;
  * The default implementation of {@link jakarta.nosql.mapping.document.DocumentTemplate}
  */
 @SuppressWarnings("unchecked")
+@ApplicationScoped
 class DefaultDocumentTemplate extends AbstractDocumentTemplate {
 
     private DocumentEntityConverter converter;
