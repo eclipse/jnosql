@@ -43,8 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 @CDIExtension
 class DeleteQueryConverterTest {
 
-    @Inject
-    private DeleteQueryConverter converter;
+    private DeleteQueryConverter converter = new DeleteQueryConverter();
 
     @Inject
     private EntitiesMetadata mappings;
