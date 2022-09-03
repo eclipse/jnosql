@@ -21,12 +21,14 @@ import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.mapping.column.ColumnWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 /**
  * The default implementation of {@link jakarta.nosql.mapping.column.ColumnTemplate}
  */
+@ApplicationScoped
 class DefaultColumnTemplate extends AbstractColumnTemplate {
 
     private ColumnEntityConverter converter;
