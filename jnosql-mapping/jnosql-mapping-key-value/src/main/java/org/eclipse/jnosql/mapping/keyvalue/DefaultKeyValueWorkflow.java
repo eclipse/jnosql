@@ -17,12 +17,14 @@ package org.eclipse.jnosql.mapping.keyvalue;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 
 /**
  * Default implementation of {@link jakarta.nosql.mapping.keyvalue.KeyValueWorkflow}
  */
+@ApplicationScoped
 class DefaultKeyValueWorkflow extends AbstractKeyValueWorkflow {
 
     private KeyValueEventPersistManager eventPersistManager;

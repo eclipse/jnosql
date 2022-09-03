@@ -26,9 +26,11 @@ import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import org.eclipse.jnosql.mapping.DefaultEntityPostPersist;
 import org.eclipse.jnosql.mapping.DefaultEntityPrePersist;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
+@ApplicationScoped
 class DefaultKeyValueEventPersistManager implements KeyValueEventPersistManager {
 
     @Inject

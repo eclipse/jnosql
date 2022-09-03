@@ -18,11 +18,13 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 /**
  * The default implementation of {@link KeyValueEntityConverter}
  */
+@ApplicationScoped
 class DefaultKeyValueEntityConverter extends AbstractKeyValueEntityConverter implements KeyValueEntityConverter {
 
     @Inject
