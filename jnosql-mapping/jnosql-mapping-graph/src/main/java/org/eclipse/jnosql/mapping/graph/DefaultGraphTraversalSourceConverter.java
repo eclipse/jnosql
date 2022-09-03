@@ -24,6 +24,7 @@ import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.Iterator;
@@ -38,6 +39,7 @@ import static java.util.stream.Collectors.toList;
  * A default implementation to GraphTraversalSourceOperation
  */
 @GraphTraversalSourceOperation
+@ApplicationScoped
 class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
 
 

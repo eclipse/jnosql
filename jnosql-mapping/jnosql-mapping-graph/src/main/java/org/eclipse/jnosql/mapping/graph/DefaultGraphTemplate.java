@@ -18,12 +18,14 @@ import jakarta.nosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 /**
  * The default {@link GraphTemplate}
  */
+@ApplicationScoped
 class DefaultGraphTemplate extends AbstractGraphTemplate {
 
     private Instance<Graph> graph;

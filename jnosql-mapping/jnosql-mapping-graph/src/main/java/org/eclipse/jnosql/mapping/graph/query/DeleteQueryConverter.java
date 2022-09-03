@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import jakarta.nosql.query.DeleteQuery;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.communication.query.method.DeleteMethodProvider;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.util.List;
 import java.util.function.Function;

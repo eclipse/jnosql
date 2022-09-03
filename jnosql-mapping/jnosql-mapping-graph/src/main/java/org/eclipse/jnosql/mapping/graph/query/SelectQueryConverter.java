@@ -17,12 +17,12 @@ package org.eclipse.jnosql.mapping.graph.query;
 import jakarta.nosql.Sort;
 import jakarta.nosql.SortType;
 import jakarta.nosql.mapping.Pagination;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import jakarta.nosql.query.SelectQuery;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
 import java.util.List;
 import java.util.function.BiFunction;

@@ -18,6 +18,7 @@ import jakarta.nosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.util.TypeLiteral;
 import javax.inject.Inject;
@@ -30,6 +31,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * The default implementation of {@link GraphTemplateProducer}
  */
+@ApplicationScoped
 class DefaultGraphTemplateProducer implements GraphTemplateProducer {
 
     @Inject

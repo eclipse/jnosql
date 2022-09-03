@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Objects;
 import java.util.function.Function;
@@ -24,6 +25,7 @@ import java.util.function.UnaryOperator;
 /**
  * The default implementation of {@link GraphWorkflow}
  */
+@ApplicationScoped
 class DefaultGraphWorkflow implements GraphWorkflow {
 
     private GraphEventPersistManager graphEventPersistManager;
