@@ -26,7 +26,7 @@ class ColumnTemplateTest {
 
     @Inject
     private Template template;
-    
+
     @Test
     public void shouldInjectTemplate() {
         Assertions.assertNotNull(template);
