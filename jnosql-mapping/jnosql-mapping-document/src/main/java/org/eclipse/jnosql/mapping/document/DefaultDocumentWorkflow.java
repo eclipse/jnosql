@@ -18,11 +18,13 @@ package org.eclipse.jnosql.mapping.document;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 /**
  * The default implementation of {@link jakarta.nosql.mapping.document.DocumentWorkflow}
  */
+@ApplicationScoped
 class DefaultDocumentWorkflow extends AbstractDocumentWorkflow {
 
     private DocumentEventPersistManager documentEventPersistManager;
