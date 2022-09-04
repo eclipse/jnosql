@@ -46,8 +46,6 @@ import java.util.stream.Stream;
 abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
 
-    private final SelectQueryConverter converter = new SelectQueryConverter();
-
     private final DeleteQueryConverter deleteConverter = new DeleteQueryConverter();
 
     protected abstract EntityMetadata getEntityMetadata();
@@ -117,7 +115,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                     getGraph().traversal().V(),
                     getConverters(), method, args);
 
-            return converter.apply(queryMethod, args)
+            return SelectQueryConverter.INSTANCE.apply(queryMethod, args)
                     .map(getConverter()::toEntity);
         };
 
