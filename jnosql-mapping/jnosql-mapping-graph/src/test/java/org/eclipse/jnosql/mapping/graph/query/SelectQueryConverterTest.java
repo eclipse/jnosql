@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 @CDIExtension
 class SelectQueryConverterTest {
 
-    private SelectQueryConverter converter = SelectQueryConverter.INSTANCE;
+    private final SelectQueryConverter converter = SelectQueryConverter.INSTANCE;
 
     @Inject
     private EntitiesMetadata mappings;
