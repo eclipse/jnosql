@@ -46,8 +46,6 @@ import java.util.stream.Stream;
 abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
 
-    private final DeleteQueryConverter deleteConverter = new DeleteQueryConverter();
-
     protected abstract EntityMetadata getEntityMetadata();
 
     protected abstract Repository getRepository();
@@ -153,7 +151,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 getGraph().traversal().V(),
                 getConverters(), method, args);
 
-        List<Vertex> vertices = deleteConverter.apply(queryMethod);
+        List<Vertex> vertices = DeleteQueryConverter.INSTANCE.apply(queryMethod);
         vertices.forEach(Vertex::remove);
         return Void.class;
     }
