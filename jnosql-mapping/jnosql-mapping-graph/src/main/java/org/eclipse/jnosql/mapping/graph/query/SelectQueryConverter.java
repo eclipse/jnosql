@@ -34,6 +34,10 @@ import static org.apache.tinkerpop.gremlin.process.traversal.Order.desc;
 
 final class SelectQueryConverter extends AbstractQueryConvert implements BiFunction<GraphQueryMethod, Object[], Stream<Vertex>> {
 
+    static final SelectQueryConverter INSTANCE = new SelectQueryConverter();
+
+    private SelectQueryConverter() {
+    }
 
     @Override
     public Stream<Vertex> apply(GraphQueryMethod graphQuery, Object[] params) {
