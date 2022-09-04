@@ -25,7 +25,7 @@ import java.util.function.Function;
 
 final class DeleteQueryConverter extends AbstractQueryConvert implements Function<GraphQueryMethod, List<Vertex>> {
 
-    private static final DeleteQueryConverter INSTANCE = new DeleteQueryConverter();
+    static final DeleteQueryConverter INSTANCE = new DeleteQueryConverter();
 
     private DeleteQueryConverter() {
     }
