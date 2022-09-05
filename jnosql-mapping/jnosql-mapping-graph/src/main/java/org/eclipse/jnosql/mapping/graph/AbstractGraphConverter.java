@@ -180,12 +180,10 @@ abstract class AbstractGraphConverter implements GraphConverter {
             Optional<Property<?>> property = properties.stream()
                     .filter(c -> c.key().equals(parameter.getName()))
                     .findFirst();
-            property.ifPresentOrElse(p -> {
-                parameter.getConverter().ifPresentOrElse(c -> {
-                    Object value = getConverters().get(c).convertToEntityAttribute(p.value());
-                    builder.add(value);
-                }, () -> builder.add(p.value()));
-            }, builder::addEmptyParameter);
+            property.ifPresentOrElse(p -> parameter.getConverter().ifPresentOrElse(c -> {
+                Object value = getConverters().get(c).convertToEntityAttribute(p.value());
+                builder.add(value);
+            }, () -> builder.add(p.value())), builder::addEmptyParameter);
         }
         return builder.build();
     }
