@@ -352,7 +352,7 @@ public class ColumnRepositoryProxyTest {
         ColumnCondition condition = query.getCondition().get();
         assertEquals("Person", query.getColumnFamily());
         assertEquals(AND, condition.getCondition());
-        List<ColumnCondition> conditions = condition.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = condition.getColumn().get(new TypeReference<>() {
         });
         ColumnCondition columnCondition = conditions.get(0);
         ColumnCondition columnCondition2 = conditions.get(1);
@@ -438,7 +438,7 @@ public class ColumnRepositoryProxyTest {
         ColumnCondition condition = query.getCondition().get();
         assertEquals("Person", query.getColumnFamily());
         assertEquals(BETWEEN, condition.getCondition());
-        List<Value> values = condition.getColumn().get(new TypeReference<List<Value>>() {
+        List<Value> values = condition.getColumn().get(new TypeReference<>() {
         });
         assertEquals(Arrays.asList(10, 15), values.stream().map(Value::get).collect(Collectors.toList()));
         assertTrue(condition.getColumn().getName().contains("age"));
@@ -569,7 +569,7 @@ public class ColumnRepositoryProxyTest {
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.getCondition().get();
         final Column column = condition.getColumn();
-        final List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        final List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         final List<String> names = conditions.stream().map(ColumnCondition::getColumn)
                 .map(Column::getName).collect(Collectors.toList());

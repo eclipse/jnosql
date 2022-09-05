@@ -96,7 +96,7 @@ class ParamsBinderTest {
         paramsBinder.bind(params, new Object[]{10L, "Ada"}, method);
         ColumnQuery query = queryParams.getQuery();
         ColumnCondition columnCondition = query.getCondition().get();
-        List<ColumnCondition> conditions = columnCondition.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = columnCondition.getColumn().get(new TypeReference<>() {
         });
         List<Object> values = conditions.stream().map(ColumnCondition::getColumn)
                 .map(Column::getValue)
