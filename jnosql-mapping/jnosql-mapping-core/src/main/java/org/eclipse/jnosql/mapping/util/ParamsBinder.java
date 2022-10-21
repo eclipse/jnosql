@@ -21,6 +21,7 @@ import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,7 +37,8 @@ public class ParamsBinder {
 
     /**
      * Creates a ParamsBinder instance
-     * @param mapping the mapping of the used class
+     *
+     * @param mapping    the mapping of the used class
      * @param converters the converts
      * @throws NullPointerException when there is null parameter
      */
@@ -47,8 +49,9 @@ public class ParamsBinder {
 
     /**
      * Fill up the Params with the args
+     *
      * @param params the params
-     * @param args the args
+     * @param args   the args
      * @param method the method
      * @throws NullPointerException when there is null parameter
      */
@@ -65,17 +68,29 @@ public class ParamsBinder {
         }
         for (int index = 0; index < names.size(); index++) {
             String name = names.get(index);
-            String fieldName = name.substring(0, name.lastIndexOf('_'));
+            int lastIndex = name.lastIndexOf('_') == -1 ? name.length() : name.lastIndexOf('_');
+            String fieldName = name.substring(0, lastIndex);
             Optional<FieldMapping> field = this.mapping.getFields().stream()
                     .filter(f -> f.getName().equals(fieldName)).findFirst();
 
-            Object value;
-            if (field.isPresent()) {
-                value = ConverterUtil.getValue(args[index], converters, field.get());
-            } else {
-                value = args[index];
-            }
+            Object value = getValue(args, index, field);
             params.bind(name, value);
+        }
+    }
+
+    private Object getValue(Object[] args, int index, Optional<FieldMapping> field) {
+        Object value = args[index];
+        if (field.isPresent()) {
+            if (value instanceof Iterable) {
+                List<Object> values = new ArrayList<>();
+                for (Object item : Iterable.class.cast(value)) {
+                    values.add(ConverterUtil.getValue(item, converters, field.get()));
+                }
+                return values;
+            }
+            return ConverterUtil.getValue(value, converters, field.get());
+        } else {
+            return value;
         }
     }
 }
