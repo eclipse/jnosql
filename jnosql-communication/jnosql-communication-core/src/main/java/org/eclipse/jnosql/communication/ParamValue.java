@@ -30,7 +30,7 @@ final class ParamValue implements Value {
         this.name = name;
     }
 
-    public void setValue(Object value) {
+    void setValue(Object value) {
         this.value = value;
     }
 
