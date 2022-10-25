@@ -29,9 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -72,7 +70,7 @@ public class DefaultSettingsTest {
     @Test
     public void shouldGetKeys() {
         Settings settings = Settings.of(singletonMap("key", "value"));
-        assertThat(settings.keySet(), contains("key"));
+        assertThat(settings.keySet()).contains("key");
     }
 
     @Test
@@ -165,7 +163,7 @@ public class DefaultSettingsTest {
 
         List<Object> hosts = settings.prefix("host");
         Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts, containsInAnyOrder("host", "host-1", "host-2", "host-3"));
+        assertThat(hosts).contains("host", "host-1", "host-2", "host-3");
     }
 
     @Test
@@ -179,7 +177,7 @@ public class DefaultSettingsTest {
 
         List<Object> hosts = settings.prefix("host");
         Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts, contains("host", "host-1", "host-2", "host-3"));
+        assertThat(hosts).contains("host", "host-1", "host-2", "host-3");
     }
 
 
@@ -205,7 +203,7 @@ public class DefaultSettingsTest {
 
         List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
         Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts, containsInAnyOrder("host", "host-1", "server", "server-1"));
+        assertThat(hosts).contains("host", "host-1", "server", "server-1");
 
     }
 
@@ -220,9 +218,8 @@ public class DefaultSettingsTest {
 
         List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
         Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts, containsInAnyOrder("host", "host-1", "server", "server-1"));
+        assertThat(hosts).contains("host", "host-1", "server", "server-1");
 
     }
-
 
 }

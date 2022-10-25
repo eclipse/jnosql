@@ -14,17 +14,16 @@ package org.eclipse.jnosql.communication;
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.Value;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ParamValueTest {
-
-
 
 
     @Test
@@ -32,7 +31,8 @@ class ParamValueTest {
         Params params = Params.newParams();
         Value name = params.add("name");
         assertNotNull(name);
-        MatcherAssert.<List<String>>assertThat(params.getParametersNames(), containsInAnyOrder("name"));
+
+        assertThat(params.getParametersNames()).contains("name");
     }
 
     @Test
