@@ -40,8 +40,8 @@ final class DefaultSettings  implements Settings {
 
     DefaultSettings(Map<String, Object> configurations) {
         this.configurations = configurations.entrySet().stream()
-                .collect(Collectors.toMap(e -> e.getKey(),
-                        e -> e.getValue()));
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue));
     }
 
 
@@ -71,7 +71,7 @@ final class DefaultSettings  implements Settings {
 
         Predicate<Map.Entry<String, Object>> equals = keys.stream()
                 .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().equals(prefix))
-                .reduce((a, b) -> a.or(b)).orElse(e -> false);
+                .reduce(Predicate::or).orElse(e -> false);
 
         return configurations.entrySet().stream()
                 .filter(equals)
@@ -97,7 +97,7 @@ final class DefaultSettings  implements Settings {
         }
         Predicate<Map.Entry<String, Object>> prefixCondition = prefixes.stream()
                 .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().startsWith(prefix))
-                .reduce((a, b) -> a.or(b)).orElse(e -> false);
+                .reduce(Predicate::or).orElse(e -> false);
 
         return configurations.entrySet().stream()
                 .filter(prefixCondition)
