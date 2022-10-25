@@ -43,7 +43,7 @@ public final class AtomicIntegerReader implements ValueReader {
         if (Number.class.isInstance(value)) {
             return (T) new AtomicInteger(Number.class.cast(value).intValue());
         } else {
-            return (T) new AtomicInteger(Integer.valueOf(value.toString()));
+            return (T) new AtomicInteger(Integer.parseInt(value.toString()));
         }
     }
 }
