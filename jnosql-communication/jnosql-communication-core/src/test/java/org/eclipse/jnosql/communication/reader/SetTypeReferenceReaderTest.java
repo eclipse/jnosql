@@ -63,7 +63,7 @@ public class SetTypeReferenceReaderTest {
 
     @Test
     public void shouldConvertAndBeMutable() {
-        Set<String> strings = referenceReader.convert(new TypeReference<Set<String>>() {
+        Set<String> strings = referenceReader.convert(new TypeReference<>() {
         }, "123");
         strings.add("456");
         Assertions.assertEquals(2, strings.size());
@@ -71,7 +71,7 @@ public class SetTypeReferenceReaderTest {
 
     @Test
     public void shouldConvertAndBeMutable2() {
-        Set<String> strings = referenceReader.convert(new TypeReference<Set<String>>() {
+        Set<String> strings = referenceReader.convert(new TypeReference<>() {
         }, Arrays.asList("123", "32"));
         strings.add("456");
         Assertions.assertEquals(3, strings.size());

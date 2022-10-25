@@ -80,7 +80,7 @@ class QueueTypeReferenceReaderTest {
 
     @Test
     public void shouldConvertAndBeMutable() {
-        Queue<String> strings = referenceReader.convert(new TypeReference<Queue<String>>() {
+        Queue<String> strings = referenceReader.convert(new TypeReference<>() {
         }, "123");
         strings.add("456");
         Assertions.assertEquals(2, strings.size());
@@ -88,7 +88,7 @@ class QueueTypeReferenceReaderTest {
 
     @Test
     public void shouldConvertAndBeMutable2() {
-        Queue<String> strings = referenceReader.convert(new TypeReference<Queue<String>>() {
+        Queue<String> strings = referenceReader.convert(new TypeReference<>() {
         }, Arrays.asList("123", "32"));
         strings.add("456");
         Assertions.assertEquals(3, strings.size());

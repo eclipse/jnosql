@@ -91,7 +91,7 @@ class NavigableSetTypeReferenceReaderTest {
 
     @Test
     public void shouldConvertAndBeMutable() {
-        NavigableSet<String> strings = referenceReader.convert(new TypeReference<NavigableSet<String>>() {
+        NavigableSet<String> strings = referenceReader.convert(new TypeReference<>() {
         }, "123");
         strings.add("456");
         Assertions.assertEquals(2, strings.size());
@@ -99,7 +99,7 @@ class NavigableSetTypeReferenceReaderTest {
 
     @Test
     public void shouldConvertAndBeMutable2() {
-        NavigableSet<String> strings = referenceReader.convert(new TypeReference<NavigableSet<String>>() {
+        NavigableSet<String> strings = referenceReader.convert(new TypeReference<>() {
         }, Arrays.asList("123", "32"));
         strings.add("456");
         Assertions.assertEquals(3, strings.size());

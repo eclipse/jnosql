@@ -60,7 +60,8 @@ public class StreamTypeReferenceReaderTest {
 
     @Test
     public void shouldConvert() {
-        Stream<String> stream = referenceReader.convert(new TypeReference<Stream<String>>() {}, "123");
+        Stream<String> stream = referenceReader.convert(new TypeReference<>() {
+        }, "123");
         assertEquals("123", stream.findAny().get());
     }
 }
