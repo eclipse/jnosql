@@ -117,9 +117,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     @Test
     public void shouldReturnErrorWhenLimitIsNegative() {
         String documentCollection = "documentCollection";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            select().from(documentCollection).limit(-1);
-        });
+        assertThrows(IllegalArgumentException.class, () -> select().from(documentCollection).limit(-1));
     }
 
     @Test
@@ -135,9 +133,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
     @Test
     public void shouldReturnErrorWhenSkipIsNegative() {
         String documentCollection = "documentCollection";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            select().from(documentCollection).skip(-1);
-        });
+        assertThrows(IllegalArgumentException.class, () -> select().from(documentCollection).skip(-1));
     }
 
     @Test
