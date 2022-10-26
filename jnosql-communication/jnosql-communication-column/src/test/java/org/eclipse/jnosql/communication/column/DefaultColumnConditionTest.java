@@ -120,7 +120,7 @@ public class DefaultColumnConditionTest {
         ColumnCondition gt = ColumnCondition.gt(Column.of("age", 10));
         ColumnCondition and = ColumnCondition.and(eq, gt);
         assertEquals(Condition.AND, and.getCondition());
-        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq, gt);
     }
@@ -131,7 +131,7 @@ public class DefaultColumnConditionTest {
         ColumnCondition gt = ColumnCondition.gt(Column.of("age", 10));
         ColumnCondition and = ColumnCondition.or(eq, gt);
         assertEquals(Condition.OR, and.getCondition());
-        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq, gt);
     }
@@ -143,7 +143,7 @@ public class DefaultColumnConditionTest {
         ColumnCondition lte = ColumnCondition.lte(Column.of("salary", 10_000.00));
 
         ColumnCondition and = eq.and(gt);
-        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, and.getCondition());
         assertThat(conditions).contains(eq, gt);
@@ -162,7 +162,7 @@ public class DefaultColumnConditionTest {
         ColumnCondition lte = ColumnCondition.lte(Column.of("salary", 10_000.00));
 
         ColumnCondition or = eq.or(gt);
-        List<ColumnCondition> conditions = or.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = or.getColumn().get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, or.getCondition());
         assertThat(conditions).contains(eq, gt);
@@ -225,7 +225,7 @@ public class DefaultColumnConditionTest {
         Column column = Column.of("age", Arrays.asList(12, 13));
         ColumnCondition between = ColumnCondition.between(column);
         assertEquals(Condition.BETWEEN, between.getCondition());
-        Iterable<Integer> integers = between.getColumn().get(new TypeReference<Iterable<Integer>>() {
+        Iterable<Integer> integers = between.getColumn().get(new TypeReference<>() {
         });
         assertThat(integers).contains(12, 13);
     }
@@ -241,7 +241,7 @@ public class DefaultColumnConditionTest {
         Column column = Column.of("age", Arrays.asList(12, 13));
         ColumnCondition in = ColumnCondition.in(column);
         assertEquals(Condition.IN, in.getCondition());
-        Iterable<Integer> integers = in.getColumn().get(new TypeReference<Iterable<Integer>>() {
+        Iterable<Integer> integers = in.getColumn().get(new TypeReference<>() {
         });
         assertThat(integers).contains(12, 13);
     }

@@ -302,7 +302,7 @@ public class SelectQueryParserTest {
 
         assertEquals(Condition.EQUALS, condition.getCondition());
         Column column = condition.getColumn();
-        List<Column> columns = column.get(new TypeReference<List<Column>>() {
+        List<Column> columns = column.get(new TypeReference<>() {
         });
         assertThat(columns).contains(Column.of("apollo", "Brother"),
                 Column.of("Zeus", "Father"));
@@ -342,7 +342,7 @@ public class SelectQueryParserTest {
         Column column = condition.getColumn();
         assertEquals(Condition.IN, condition.getCondition());
         assertEquals("name", column.getName());
-        List<String> values = column.get(new TypeReference<List<String>>() {
+        List<String> values = column.get(new TypeReference<>() {
         });
         assertThat(values).contains("Ada", "Apollo");
     }
@@ -377,7 +377,7 @@ public class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.getCondition().get();
         Column column = condition.getColumn();
         assertEquals(Condition.NOT, condition.getCondition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         ColumnCondition columnCondition = conditions.get(0);
         assertEquals(Condition.LIKE, columnCondition.getCondition());
@@ -397,7 +397,7 @@ public class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.getCondition().get();
         Column column = condition.getColumn();
         assertEquals(Condition.AND, condition.getCondition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq(Column.of("name", "Ada")),
                 eq(Column.of("age", 20L)));
@@ -416,7 +416,7 @@ public class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.getCondition().get();
         Column column = condition.getColumn();
         assertEquals(Condition.OR, condition.getCondition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq(Column.of("name", "Ada")),
                 eq(Column.of("age", 20L)));
@@ -437,7 +437,7 @@ public class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.getCondition().get();
         Column column = condition.getColumn();
         assertEquals(Condition.AND, condition.getCondition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
         assertEquals(Condition.EQUALS, conditions.get(1).getCondition());
@@ -460,7 +460,7 @@ public class SelectQueryParserTest {
         ColumnCondition condition = columnQuery.getCondition().get();
         Column column = condition.getColumn();
         assertEquals(Condition.AND, condition.getCondition());
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
         assertEquals(Condition.EQUALS, conditions.get(1).getCondition());

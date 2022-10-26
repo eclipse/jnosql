@@ -216,9 +216,9 @@ class InsertQueryParserTest {
         parser.query(query, manager, observer);
         Mockito.verify(manager).insert(captor.capture());
         ColumnEntity entity = captor.getValue();
-        List<String> siblings = entity.find("sibling").get().get(new TypeReference<List<String>>() {
+        List<String> siblings = entity.find("sibling").get().get(new TypeReference<>() {
         });
-        List<Column> address = entity.find("address").get().get(new TypeReference<List<Column>>() {
+        List<Column> address = entity.find("address").get().get(new TypeReference<>() {
         });
         assertEquals("Person", entity.getName());
         assertEquals(Column.of("name", "Ada Lovelace"), entity.find("name").get());

@@ -79,7 +79,8 @@ public class ColumnTest {
     public void shouldReturnGetType() {
         Value value = Value.of("text");
         Column column = Column.of("name", value);
-        TypeReference<List<String>> typeReference = new TypeReference<List<String>>(){};
+        TypeReference<List<String>> typeReference = new TypeReference<>() {
+        };
         assertEquals(value.get(typeReference), column.get(typeReference));
     }
 }
