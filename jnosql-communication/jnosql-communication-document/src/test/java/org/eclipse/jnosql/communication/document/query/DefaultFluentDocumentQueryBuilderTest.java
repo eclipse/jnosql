@@ -25,7 +25,6 @@ import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
