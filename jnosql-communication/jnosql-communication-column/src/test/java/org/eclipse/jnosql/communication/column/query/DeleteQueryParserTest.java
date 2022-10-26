@@ -26,8 +26,6 @@ import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ClassBasedNavigableIterableAssert;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -38,7 +36,6 @@ import java.util.List;
 
 import static jakarta.nosql.column.ColumnCondition.eq;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.ClassBasedNavigableIterableAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;

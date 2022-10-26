@@ -18,7 +18,6 @@
 package org.eclipse.jnosql.communication.column;
 
 import jakarta.nosql.column.Column;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
