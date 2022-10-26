@@ -120,7 +120,7 @@ public class DefaultDocumentConditionTest {
         DocumentCondition gt = DocumentCondition.gt(Document.of("age", 10));
         DocumentCondition and = DocumentCondition.and(eq, gt);
         assertEquals(Condition.AND, and.getCondition());
-        List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq, gt);
     }
@@ -131,7 +131,7 @@ public class DefaultDocumentConditionTest {
         DocumentCondition gt = DocumentCondition.gt(Document.of("age", 10));
         DocumentCondition and = DocumentCondition.or(eq, gt);
         assertEquals(Condition.OR, and.getCondition());
-        List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq, gt);
     }
@@ -143,7 +143,7 @@ public class DefaultDocumentConditionTest {
         DocumentCondition lte = DocumentCondition.lte(Document.of("salary", 10_000.00));
 
         DocumentCondition and = eq.and(gt);
-        List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, and.getCondition());
         assertThat(conditions).contains(eq, gt);
@@ -162,7 +162,7 @@ public class DefaultDocumentConditionTest {
         DocumentCondition lte = DocumentCondition.lte(Document.of("salary", 10_000.00));
 
         DocumentCondition or = eq.or(gt);
-        List<DocumentCondition> conditions = or.getDocument().get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = or.getDocument().get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, or.getCondition());
         assertThat(conditions).contains(eq, gt);
@@ -225,7 +225,7 @@ public class DefaultDocumentConditionTest {
         Document document = Document.of("age", Arrays.asList(12, 13));
         DocumentCondition between = DocumentCondition.between(document);
         assertEquals(Condition.BETWEEN, between.getCondition());
-        Iterable<Integer> integers = between.getDocument().get(new TypeReference<Iterable<Integer>>() {
+        Iterable<Integer> integers = between.getDocument().get(new TypeReference<>() {
         });
         assertThat(integers).contains(12, 13);
     }
@@ -241,7 +241,7 @@ public class DefaultDocumentConditionTest {
         Document column = Document.of("age", Arrays.asList(12, 13));
         DocumentCondition in = DocumentCondition.in(column);
         assertEquals(Condition.IN, in.getCondition());
-        Iterable<Integer> integers = in.getDocument().get(new TypeReference<Iterable<Integer>>() {
+        Iterable<Integer> integers = in.getDocument().get(new TypeReference<>() {
         });
         assertThat(integers).contains(12, 13);
     }

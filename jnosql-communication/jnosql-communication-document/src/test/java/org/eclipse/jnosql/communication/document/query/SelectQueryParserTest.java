@@ -307,7 +307,7 @@ public class SelectQueryParserTest {
 
         assertEquals(Condition.EQUALS, condition.getCondition());
         Document document = condition.getDocument();
-        List<Document> documents = document.get(new TypeReference<List<Document>>() {
+        List<Document> documents = document.get(new TypeReference<>() {
         });
         assertThat(documents).contains(Document.of("apollo", "Brother"),
                 Document.of("Zeus", "Father"));
@@ -347,7 +347,7 @@ public class SelectQueryParserTest {
         Document document = condition.getDocument();
         assertEquals(Condition.IN, condition.getCondition());
         assertEquals("name", document.getName());
-        List<String> values = document.get(new TypeReference<List<String>>() {
+        List<String> values = document.get(new TypeReference<>() {
         });
         assertThat(values).contains("Ada", "Apollo");
     }
@@ -382,7 +382,7 @@ public class SelectQueryParserTest {
         DocumentCondition condition = documentQuery.getCondition().get();
         Document document = condition.getDocument();
         assertEquals(Condition.NOT, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         DocumentCondition documentCondition = conditions.get(0);
         assertEquals(Condition.LIKE, documentCondition.getCondition());
@@ -402,7 +402,7 @@ public class SelectQueryParserTest {
         DocumentCondition condition = documentQuery.getCondition().get();
         Document document = condition.getDocument();
         assertEquals(Condition.AND, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq(Document.of("name", "Ada")),
                 eq(Document.of("age", 20L)));
@@ -421,7 +421,7 @@ public class SelectQueryParserTest {
         DocumentCondition condition = documentQuery.getCondition().get();
         Document document = condition.getDocument();
         assertEquals(Condition.OR, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq(Document.of("name", "Ada")),
                 eq(Document.of("age", 20L)));
@@ -442,7 +442,7 @@ public class SelectQueryParserTest {
         DocumentCondition condition = documentQuery.getCondition().get();
         Document document = condition.getDocument();
         assertEquals(Condition.AND, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
         assertEquals(Condition.EQUALS, conditions.get(1).getCondition());
@@ -465,7 +465,7 @@ public class SelectQueryParserTest {
         DocumentCondition condition = documentQuery.getCondition().get();
         Document document = condition.getDocument();
         assertEquals(Condition.AND, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
         assertEquals(Condition.EQUALS, conditions.get(1).getCondition());

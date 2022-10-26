@@ -16,7 +16,7 @@
  */
 
 /**
- *This package contains all objects to use a Document Collection. This API gonna focus in domain, in other words,
+ *This package contains all objects to use a Document Collection. This API going to focus in domain, in other words,
  * ubiquitous language.
  *  A document-oriented database, or document store,
  * is a computer program designed for storing, retrieving, and managing document-oriented information,

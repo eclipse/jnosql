@@ -277,7 +277,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
         DocumentCondition condition = query.getCondition().get();
 
         Document document = condition.getDocument();
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
         assertThat(conditions).contains(eq(Document.of("name", name)),
@@ -292,7 +292,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
         DocumentCondition condition = query.getCondition().get();
 
         Document document = condition.getDocument();
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, condition.getCondition());
         assertThat(conditions).contains(eq(Document.of("name", name)),
@@ -309,7 +309,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
         DocumentCondition condition = query.getCondition().orElseThrow(RuntimeException::new);
         assertEquals(columnFamily, query.getDocumentCollection());
         Document column = condition.getDocument();
-        List<DocumentCondition> conditions = column.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = column.get(new TypeReference<>() {
         });
 
         assertEquals(Condition.AND, condition.getCondition());

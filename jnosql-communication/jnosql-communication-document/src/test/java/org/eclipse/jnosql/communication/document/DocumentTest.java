@@ -78,7 +78,7 @@ public class DocumentTest {
     public void shouldReturnGetType() {
         Value value = Value.of("text");
         Document document = Document.of("name", value);
-        TypeReference<List<String>> typeReference = new TypeReference<List<String>>() {
+        TypeReference<List<String>> typeReference = new TypeReference<>() {
         };
         assertEquals(value.get(typeReference), document.get(typeReference));
     }
