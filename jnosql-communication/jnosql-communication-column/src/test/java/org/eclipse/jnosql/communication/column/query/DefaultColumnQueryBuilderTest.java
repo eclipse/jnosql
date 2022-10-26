@@ -25,7 +25,6 @@ import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnQuery;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -38,9 +37,7 @@ import java.util.stream.Stream;
 
 import static jakarta.nosql.column.ColumnCondition.eq;
 import static jakarta.nosql.column.ColumnQuery.builder;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DefaultColumnQueryBuilderTest {
@@ -63,7 +60,7 @@ class DefaultColumnQueryBuilderTest {
     public void shouldSelectDocument() {
         String documentCollection = "documentCollection";
         ColumnQuery query = builder("document", "document2").from(documentCollection).build();
-        assertThat(query.getColumns(), containsInAnyOrder("document", "document2"));
+        assertThat(query.getColumns()).contains("document", "document2");
         assertFalse(query.getCondition().isPresent());
         assertEquals(documentCollection, query.getColumnFamily());
     }
@@ -81,7 +78,7 @@ class DefaultColumnQueryBuilderTest {
         assertTrue(query.getColumns().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(documentCollection, query.getColumnFamily());
-        assertThat(query.getSorts(), Matchers.contains(Sort.of("name", SortType.ASC)));
+        assertThat(query.getSorts()).contains(Sort.of("name", SortType.ASC));
     }
 
     @Test
@@ -91,7 +88,7 @@ class DefaultColumnQueryBuilderTest {
         assertTrue(query.getColumns().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(documentCollection, query.getColumnFamily());
-        assertThat(query.getSorts(), contains(Sort.of("name", SortType.DESC)));
+        assertThat(query.getSorts()).contains(Sort.of("name", SortType.DESC));
     }
 
 
@@ -266,7 +263,7 @@ class DefaultColumnQueryBuilderTest {
         assertEquals(Condition.BETWEEN, condition.getCondition());
         assertEquals("name", column.getName());
         assertThat(column.get(new TypeReference<List<Number>>() {
-        }), Matchers.contains(10, 20));
+        })).contains(10, 20);
     }
 
     @Test
@@ -304,8 +301,8 @@ class DefaultColumnQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
+        assertThat(conditions).contains(eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10)));
     }
 
     @Test
@@ -322,8 +319,8 @@ class DefaultColumnQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
         assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
+        assertThat(conditions).contains(eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10)));
     }
 
 
@@ -341,7 +338,7 @@ class DefaultColumnQueryBuilderTest {
         });
 
         assertEquals(Condition.NOT, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(eq(Column.of("name", "Lucas"))));
+        assertThat(conditions).contains(eq(Column.of("name", "Lucas")));
 
     }
 

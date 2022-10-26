@@ -32,9 +32,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -225,10 +223,10 @@ class InsertQueryParserTest {
         assertEquals("Person", entity.getName());
         assertEquals(Column.of("name", "Ada Lovelace"), entity.find("name").get());
         assertEquals(Column.of("age", BigDecimal.valueOf(12)), entity.find("age").get());
-        assertThat(siblings, contains("Ana", "Maria"));
-        assertThat(address, containsInAnyOrder(
+        assertThat(siblings).contains("Ana", "Maria");
+        assertThat(address).contains(
                 Column.of("country", "United Kingdom"),
-                Column.of("city", "London")));
+                Column.of("city", "London"));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

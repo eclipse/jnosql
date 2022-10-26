@@ -30,8 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ColumnTest {
 
-
-
     private static final Value DEFAULT_VALUE = Value.of(12);
 
     @Test

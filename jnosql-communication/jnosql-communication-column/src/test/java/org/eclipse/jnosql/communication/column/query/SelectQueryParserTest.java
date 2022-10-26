@@ -28,7 +28,6 @@ import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.column.ColumnQuery;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -38,9 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static jakarta.nosql.column.ColumnCondition.eq;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -64,7 +61,7 @@ public class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
 
-        assertThat(columnQuery.getColumns(), contains("name", "address"));
+        assertThat(columnQuery.getColumns()).contains("name", "address");
         assertTrue(columnQuery.getSorts().isEmpty());
         assertEquals(0L, columnQuery.getLimit());
         assertEquals(0L, columnQuery.getSkip());
@@ -81,7 +78,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts(), Matchers.contains(Sort.of("name", SortType.ASC)));
+        assertThat(columnQuery.getSorts()).contains(Sort.of("name", SortType.ASC));
         assertEquals(0L, columnQuery.getLimit());
         assertEquals(0L, columnQuery.getSkip());
         assertEquals("God", columnQuery.getColumnFamily());
@@ -97,7 +94,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts(), contains(Sort.of("name", SortType.ASC)));
+        assertThat(columnQuery.getSorts()).contains(Sort.of("name", SortType.ASC));
         assertEquals(0L, columnQuery.getLimit());
         assertEquals(0L, columnQuery.getSkip());
         assertEquals("God", columnQuery.getColumnFamily());
@@ -113,7 +110,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts(), contains(Sort.of("name", SortType.DESC)));
+        assertThat(columnQuery.getSorts()).contains(Sort.of("name", SortType.DESC));
         assertEquals(0L, columnQuery.getLimit());
         assertEquals(0L, columnQuery.getSkip());
         assertEquals("God", columnQuery.getColumnFamily());
@@ -130,8 +127,8 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts(), contains(Sort.of("name", SortType.DESC), Sort.of("age",
-                SortType.ASC)));
+        assertThat(columnQuery.getSorts()).contains(Sort.of("name", SortType.DESC), Sort.of("age",
+                SortType.ASC));
         assertEquals(0L, columnQuery.getLimit());
         assertEquals(0L, columnQuery.getSkip());
         assertEquals("God", columnQuery.getColumnFamily());
@@ -307,8 +304,8 @@ public class SelectQueryParserTest {
         Column column = condition.getColumn();
         List<Column> columns = column.get(new TypeReference<List<Column>>() {
         });
-        assertThat(columns, containsInAnyOrder(Column.of("apollo", "Brother"),
-                Column.of("Zeus", "Father")));
+        assertThat(columns).contains(Column.of("apollo", "Brother"),
+                Column.of("Zeus", "Father"));
         assertEquals("siblings", column.getName());
     }
 
@@ -347,7 +344,7 @@ public class SelectQueryParserTest {
         assertEquals("name", column.getName());
         List<String> values = column.get(new TypeReference<List<String>>() {
         });
-        assertThat(values, containsInAnyOrder("Ada", "Apollo"));
+        assertThat(values).contains("Ada", "Apollo");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -402,8 +399,8 @@ public class SelectQueryParserTest {
         assertEquals(Condition.AND, condition.getCondition());
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
-        assertThat(conditions, contains(eq(Column.of("name", "Ada")),
-                eq(Column.of("age", 20L))));
+        assertThat(conditions).contains(eq(Column.of("name", "Ada")),
+                eq(Column.of("age", 20L)));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -421,8 +418,8 @@ public class SelectQueryParserTest {
         assertEquals(Condition.OR, condition.getCondition());
         List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
         });
-        assertThat(conditions, contains(eq(Column.of("name", "Ada")),
-                eq(Column.of("age", 20L))));
+        assertThat(conditions).contains(eq(Column.of("name", "Ada")),
+                eq(Column.of("age", 20L)));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
