@@ -234,7 +234,7 @@ public class DefaultColumnQueryParserTest {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);
-       assertThrows(NonUniqueResultException.class, () -> prepare.getSingleResult());
+       assertThrows(NonUniqueResultException.class, prepare::getSingleResult);
     }
 
 }

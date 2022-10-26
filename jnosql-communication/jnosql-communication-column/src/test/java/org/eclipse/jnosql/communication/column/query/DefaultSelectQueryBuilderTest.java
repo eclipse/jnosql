@@ -117,9 +117,7 @@ public class DefaultSelectQueryBuilderTest {
     @Test
     public void shouldReturnErrorWhenLimitIsNegative() {
         String columnFamily = "columnFamily";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            builder().from(columnFamily).limit(-1);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> builder().from(columnFamily).limit(-1));
     }
 
     @Test
@@ -135,9 +133,7 @@ public class DefaultSelectQueryBuilderTest {
     @Test
     public void shouldReturnErrorWhenSkipIsNegative() {
         String columnFamily = "columnFamily";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            builder().from(columnFamily).skip(-1);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> builder().from(columnFamily).skip(-1));
     }
 
     @Test
