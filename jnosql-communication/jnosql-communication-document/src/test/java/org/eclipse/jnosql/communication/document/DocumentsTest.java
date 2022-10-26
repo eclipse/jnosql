@@ -20,15 +20,12 @@ import jakarta.nosql.document.Document;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -46,7 +43,7 @@ public class DocumentsTest {
         Map<String, String> map = singletonMap("name", "Ada");
         List<Document> documents = Documents.of(map);
         assertFalse(documents.isEmpty());
-        assertThat(documents, contains(Document.of("name", "Ada")));
+        assertThat(documents).contains(Document.of("name", "Ada"));
     }
 
     @Test

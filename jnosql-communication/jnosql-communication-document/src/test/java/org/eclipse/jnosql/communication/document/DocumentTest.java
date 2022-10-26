@@ -35,9 +35,7 @@ public class DocumentTest {
 
     @Test
     public void shouldReturnNameWhenNameIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Document document = Document.of(null, DEFAULT_VALUE);
-        });
+        Assertions.assertThrows(NullPointerException.class, () -> Document.of(null, DEFAULT_VALUE));
     }
 
     @Test

@@ -23,6 +23,7 @@ import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -31,9 +32,7 @@ import org.mockito.Mockito;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -113,10 +112,10 @@ class UpdateQueryParserTest {
         assertEquals("Person", entity.getName());
         assertEquals(Document.of("name", "Ada Lovelace"), entity.find("name").get());
         assertEquals(Document.of("age", BigDecimal.valueOf(12)), entity.find("age").get());
-        assertThat(siblings, contains("Ana", "Maria"));
-        assertThat(address, containsInAnyOrder(
+        assertThat(siblings).contains("Ana", "Maria");
+        assertThat(address).contains(
                 Document.of("country", "United Kingdom"),
-                Document.of("city", "London")));
+                Document.of("city", "London"));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

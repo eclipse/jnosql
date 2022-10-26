@@ -21,7 +21,6 @@ import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
 import jakarta.nosql.document.DocumentCondition;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +28,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -84,8 +82,7 @@ public class DefaultDocumentConditionTest {
         assertEquals(Condition.AND, and.getCondition());
         assertEquals(Condition.AND.getNameField(), andDocument.getName());
         assertThat(andDocument.getValue().get(new TypeReference<List<DocumentCondition>>() {
-                }),
-                Matchers.containsInAnyOrder(condition1, condition2));
+                })).contains(condition1, condition2);
 
     }
 
@@ -101,8 +98,7 @@ public class DefaultDocumentConditionTest {
         assertEquals(Condition.OR, and.getCondition());
         assertEquals(Condition.OR.getNameField(), andDocument.getName());
         assertThat(andDocument.getValue().get(new TypeReference<List<DocumentCondition>>() {
-                }),
-                Matchers.containsInAnyOrder(condition1, condition2));
+                })).contains(condition1, condition2);
 
     }
 
@@ -126,7 +122,7 @@ public class DefaultDocumentConditionTest {
         assertEquals(Condition.AND, and.getCondition());
         List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<List<DocumentCondition>>() {
         });
-        assertThat(conditions, Matchers.containsInAnyOrder(eq, gt));
+        assertThat(conditions).contains(eq, gt);
     }
 
     @Test
@@ -137,7 +133,7 @@ public class DefaultDocumentConditionTest {
         assertEquals(Condition.OR, and.getCondition());
         List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<List<DocumentCondition>>() {
         });
-        assertThat(conditions, Matchers.containsInAnyOrder(eq, gt));
+        assertThat(conditions).contains(eq, gt);
     }
 
     @Test
@@ -150,12 +146,12 @@ public class DefaultDocumentConditionTest {
         List<DocumentCondition> conditions = and.getDocument().get(new TypeReference<List<DocumentCondition>>() {
         });
         assertEquals(Condition.AND, and.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(eq, gt));
+        assertThat(conditions).contains(eq, gt);
         DocumentCondition result = and.and(lte);
 
         assertEquals(Condition.AND, result.getCondition());
         assertThat(result.getDocument().get(new TypeReference<List<DocumentCondition>>() {
-        }), Matchers.containsInAnyOrder(eq, gt, lte));
+        })).contains(eq, gt, lte);
 
     }
 
@@ -169,12 +165,12 @@ public class DefaultDocumentConditionTest {
         List<DocumentCondition> conditions = or.getDocument().get(new TypeReference<List<DocumentCondition>>() {
         });
         assertEquals(Condition.OR, or.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(eq, gt));
+        assertThat(conditions).contains(eq, gt);
         DocumentCondition result = or.or(lte);
 
         assertEquals(Condition.OR, result.getCondition());
         assertThat(result.getDocument().get(new TypeReference<List<DocumentCondition>>() {
-        }), Matchers.containsInAnyOrder(eq, gt, lte));
+        })).contains(eq, gt, lte);
 
     }
 
@@ -231,7 +227,7 @@ public class DefaultDocumentConditionTest {
         assertEquals(Condition.BETWEEN, between.getCondition());
         Iterable<Integer> integers = between.getDocument().get(new TypeReference<Iterable<Integer>>() {
         });
-        assertThat(integers, contains(12, 13));
+        assertThat(integers).contains(12, 13);
     }
 
     @Test
@@ -247,6 +243,6 @@ public class DefaultDocumentConditionTest {
         assertEquals(Condition.IN, in.getCondition());
         Iterable<Integer> integers = in.getDocument().get(new TypeReference<Iterable<Integer>>() {
         });
-        assertThat(integers, contains(12, 13));
+        assertThat(integers).contains(12, 13);
     }
 }
