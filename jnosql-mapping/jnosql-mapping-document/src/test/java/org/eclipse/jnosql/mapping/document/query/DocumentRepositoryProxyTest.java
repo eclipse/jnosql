@@ -357,7 +357,7 @@ public class DocumentRepositoryProxyTest {
         DocumentCondition condition = query.getCondition().get();
         assertEquals("Person", query.getDocumentCollection());
         assertEquals(AND, condition.getCondition());
-        List<DocumentCondition> conditions = condition.getDocument().get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = condition.getDocument().get(new TypeReference<>() {
         });
         DocumentCondition columnCondition = conditions.get(0);
         DocumentCondition columnCondition2 = conditions.get(1);
@@ -445,7 +445,7 @@ public class DocumentRepositoryProxyTest {
         DocumentCondition condition = query.getCondition().get();
         assertEquals("Person", query.getDocumentCollection());
         assertEquals(BETWEEN, condition.getCondition());
-        List<Value> values = condition.getDocument().get(new TypeReference<List<Value>>() {
+        List<Value> values = condition.getDocument().get(new TypeReference<>() {
         });
         assertEquals(Arrays.asList(10, 15), values.stream().map(Value::get).collect(Collectors.toList()));
         assertTrue(condition.getDocument().getName().contains("age"));
@@ -574,7 +574,7 @@ public class DocumentRepositoryProxyTest {
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.getCondition().get();
         final Document document = condition.getDocument();
-        final List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        final List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         final List<String> names = conditions.stream().map(DocumentCondition::getDocument)
                 .map(Document::getName).collect(Collectors.toList());
