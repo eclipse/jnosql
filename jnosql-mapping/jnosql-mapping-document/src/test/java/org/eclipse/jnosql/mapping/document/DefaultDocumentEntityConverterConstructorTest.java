@@ -24,7 +24,7 @@ import jakarta.nosql.tck.entities.constructor.BookUser;
 import jakarta.nosql.tck.entities.constructor.Computer;
 import jakarta.nosql.tck.entities.constructor.PetOwner;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.Matchers;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -100,7 +100,7 @@ public class DefaultDocumentEntityConverterConstructorTest {
         assertEquals("Poliana", communication.find("name", String.class).get());
         List<Document> documents = communication.find("animal", new TypeReference<List<Document>>() {})
                 .get();
-        assertThat(documents, Matchers.containsInAnyOrder(Document.of("name", "Ada")));
+        assertThat(documents).contains(Document.of("name", "Ada"));
     }
 
     @Test
