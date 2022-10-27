@@ -18,6 +18,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.graph.model.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,8 +30,7 @@ import java.util.Map;
 
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -93,7 +93,7 @@ class GremlinExecutorTest {
                 .collect(toList());
         assertFalse(people.isEmpty());
         List<String> names = people.stream().map(Person::getName).collect(toList());
-        assertThat(names, containsInAnyOrder("Bruce Banner", "Natasha Romanoff"));
+        assertThat(names).contains("Bruce Banner", "Natasha Romanoff");
 
     }
 
@@ -103,7 +103,7 @@ class GremlinExecutorTest {
                 .collect(toList());
         assertFalse(people.isEmpty());
         List<String> names = people.stream().map(Person::getName).collect(toList());
-        assertThat(names, containsInAnyOrder("Bruce Banner", "Natasha Romanoff"));
+        assertThat(names).contains("Bruce Banner", "Natasha Romanoff");
 
     }
 
@@ -112,7 +112,7 @@ class GremlinExecutorTest {
         List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().in('loves').toList()")
                 .collect(toList());
         List<String> names = people.stream().map(Person::getName).collect(toList());
-        assertThat(names, containsInAnyOrder("Bruce Banner"));
+        assertThat(names).contains("Bruce Banner");
 
     }
 
@@ -121,7 +121,7 @@ class GremlinExecutorTest {
         List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().in('loves').toSet()")
                 .collect(toList());
         List<String> names = people.stream().map(Person::getName).collect(toList());
-        assertThat(names, containsInAnyOrder("Bruce Banner"));
+        assertThat(names).contains("Bruce Banner");
 
     }
 
@@ -130,7 +130,7 @@ class GremlinExecutorTest {
         List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().in('loves').toStream()")
                 .collect(toList());
         List<String> names = people.stream().map(Person::getName).collect(toList());
-        assertThat(names, containsInAnyOrder("Bruce Banner"));
+        assertThat(names).contains("Bruce Banner");
 
     }
 
@@ -139,7 +139,7 @@ class GremlinExecutorTest {
         List<Long> count = executor.<Long>executeGremlin(graph.traversal(), "g.V().count().toList()")
                 .collect(toList());
         assertFalse(count.isEmpty());
-        assertThat(count, containsInAnyOrder(2L));
+        assertThat(count).contains(2L);
     }
 
     @Test
@@ -147,7 +147,7 @@ class GremlinExecutorTest {
         List<Long> count = executor.<Long>executeGremlin(graph.traversal(), "g.V().count()")
                 .collect(toList());
         assertFalse(count.isEmpty());
-        assertThat(count, containsInAnyOrder(2L));
+        assertThat(count).contains(2L);
     }
 
     @Test
@@ -156,7 +156,7 @@ class GremlinExecutorTest {
                 .collect(toList());
         assertFalse(properties.isEmpty());
         assertEquals(4, properties.size());
-        assertThat(properties, containsInAnyOrder("Bruce Banner", 30, 30, "Natasha Romanoff"));
+        assertThat(properties).contains("Bruce Banner", 30, 30, "Natasha Romanoff");
     }
 
     @Test
@@ -165,7 +165,7 @@ class GremlinExecutorTest {
                 .collect(toList());
         assertFalse(properties.isEmpty());
         assertEquals(4, properties.size());
-        assertThat(properties, containsInAnyOrder("Bruce Banner", 30, 30, "Natasha Romanoff"));
+        assertThat(properties).contains("Bruce Banner", 30, 30, "Natasha Romanoff");
     }
 
     @Test
@@ -176,7 +176,7 @@ class GremlinExecutorTest {
         assertFalse(properties.isEmpty());
         assertEquals(2, properties.size());
         List<String> names = properties.stream().map(p -> p.get("name")).flatMap(List::stream).collect(toList());
-        assertThat(names, containsInAnyOrder("Bruce Banner", "Natasha Romanoff"));
+        assertThat(names).contains("Bruce Banner", "Natasha Romanoff");
     }
 
     @Test
@@ -186,7 +186,7 @@ class GremlinExecutorTest {
                 .collect(toList());
         assertEquals(2, properties.size());
         List<String> names = properties.stream().map(p -> p.get("name")).flatMap(List::stream).collect(toList());
-        assertThat(names, containsInAnyOrder("Bruce Banner", "Natasha Romanoff"));
+        assertThat(names).contains("Bruce Banner", "Natasha Romanoff");
     }
 
     @Test
@@ -198,6 +198,6 @@ class GremlinExecutorTest {
 
         assertFalse(people.isEmpty());
         List<String> names = people.stream().map(Person::getName).collect(toList());
-        assertThat(names, containsInAnyOrder("Bruce Banner"));
+        assertThat(names).contains("Bruce Banner");
     }
 }

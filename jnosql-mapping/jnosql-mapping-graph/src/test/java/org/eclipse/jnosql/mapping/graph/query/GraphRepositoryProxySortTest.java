@@ -28,8 +28,6 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +39,7 @@ import java.lang.reflect.Proxy;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -108,7 +107,7 @@ public class GraphRepositoryProxySortTest {
         assertEquals(2, people.size());
 
         List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
-        MatcherAssert.assertThat(names, Matchers.contains("name6", "name5"));
+        assertThat(names).contains("name6", "name5");
     }
 
     @Test
@@ -118,7 +117,7 @@ public class GraphRepositoryProxySortTest {
         assertEquals(1, people.size());
 
         List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
-        MatcherAssert.assertThat(names, Matchers.contains("name1"));
+        assertThat(names).contains("name1");
     }
 
 
@@ -127,7 +126,7 @@ public class GraphRepositoryProxySortTest {
         List<Person> people = personRepository.findByAgeGreaterThan(22, Sort.desc("name"));
         Assertions.assertEquals(4, people.size());
         List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
-        MatcherAssert.assertThat(names, Matchers.contains("name6", "name5", "name4", "name3"));
+        assertThat(names).contains("name6", "name5", "name4", "name3");
 
     }
 
@@ -136,7 +135,7 @@ public class GraphRepositoryProxySortTest {
         List<Person> people = personRepository.findByNameAndAgeGreaterThan("name4", 22, Sorts.sorts().desc("name"));
         Assertions.assertEquals(1, people.size());
         List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
-        MatcherAssert.assertThat(names, Matchers.contains("name4"));
+        assertThat(names).contains("name4");
     }
 
     @Test
@@ -144,7 +143,7 @@ public class GraphRepositoryProxySortTest {
         List<Person> people = personRepository.findByAgeGreaterThanOrderByName(22, Pagination.page(2).size(3), Sort.desc("age"));
         Assertions.assertEquals(1, people.size());
         List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
-        MatcherAssert.assertThat(names, Matchers.contains("name3"));
+        assertThat(names).contains("name3");
     }
 
     @Test
@@ -152,7 +151,7 @@ public class GraphRepositoryProxySortTest {
         List<Person> people = personRepository.findByAgeGreaterThanOrderByName(22, Pagination.page(2).size(3), Sorts.sorts().desc("age"));
         Assertions.assertEquals(1, people.size());
         List<String> names = people.stream().map(Person::getName).collect(Collectors.toList());
-        MatcherAssert.assertThat(names, Matchers.contains("name3"));
+        assertThat(names).contains("name3");
     }
 
 

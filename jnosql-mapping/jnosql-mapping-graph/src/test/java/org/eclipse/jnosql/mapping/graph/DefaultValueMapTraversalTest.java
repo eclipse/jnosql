@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.nosql.NonUniqueResultException;
 import org.eclipse.jnosql.mapping.graph.model.Person;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -26,7 +25,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -52,7 +51,7 @@ class DefaultValueMapTraversalTest extends AbstractTraversalTest {
                 .map(m -> m.getOrDefault("name", "").toString()).collect(Collectors.toList());
 
 
-        assertThat(names, Matchers.containsInAnyOrder("[Poliana]", "[Otavio]", "[Paulo]"));
+        assertThat(names).contains("[Poliana]", "[Otavio]", "[Paulo]");
     }
 
     @Test
