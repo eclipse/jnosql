@@ -18,8 +18,6 @@ import jakarta.nosql.query.GetQuery.GetQueryProvider;
 import jakarta.nosql.query.NumberQueryValue;
 import jakarta.nosql.query.QueryValue;
 import jakarta.nosql.query.StringQueryValue;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -107,8 +106,9 @@ class GetProviderTest {
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof ArrayQueryValue);
         QueryValue<?>[] values = ArrayQueryValue.class.cast(key).get();
-        MatcherAssert.assertThat(Arrays.stream(values).map(QueryValue::get)
-                .collect(Collectors.toList()), Matchers.contains(1L, 12L));
+        List<Object> ids = Arrays.stream(values).map(QueryValue::get)
+                .collect(Collectors.toList());
+        assertThat(ids).contains(1L, 12L);
     }
 
 
