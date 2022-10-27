@@ -20,8 +20,6 @@ import jakarta.nosql.tck.entities.constructor.Computer;
 import jakarta.nosql.tck.entities.constructor.BookUser;
 import jakarta.nosql.tck.entities.constructor.PetOwner;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +29,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 @CDIExtension
 class ConstructorMetadataBuilderTest {
@@ -69,7 +68,7 @@ class ConstructorMetadataBuilderTest {
                 .map(ParameterMetaData::getName)
                 .collect(Collectors.toUnmodifiableList());
 
-        MatcherAssert.assertThat(names, Matchers.contains("_id", "name", "age", "model", "price"));
+        assertThat(names).contains("_id", "name", "age", "model", "price");
     }
 
     @Test
@@ -81,7 +80,7 @@ class ConstructorMetadataBuilderTest {
                 .map(ParameterMetaData::getName)
                 .collect(Collectors.toUnmodifiableList());
 
-        MatcherAssert.assertThat(names, Matchers.contains("_id", "native_name", "books"));
+        assertThat(names).contains("_id", "native_name", "books");
     }
 
     @Test
@@ -93,6 +92,6 @@ class ConstructorMetadataBuilderTest {
                 .map(ParameterMetaData::getName)
                 .collect(Collectors.toUnmodifiableList());
 
-        MatcherAssert.assertThat(names, Matchers.contains("_id", "name", "animal"));
+        assertThat(names).contains("_id", "name", "animal");
     }
 }

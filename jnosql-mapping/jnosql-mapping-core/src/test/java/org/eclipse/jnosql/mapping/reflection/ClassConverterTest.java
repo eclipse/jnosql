@@ -38,8 +38,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import static jakarta.nosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -58,7 +57,7 @@ public class ClassConverterTest {
         assertEquals("Person", entityMetadata.getName());
         assertEquals(Person.class, entityMetadata.getType());
         assertEquals(4, entityMetadata.getFields().size());
-        assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones"));
+        assertThat(entityMetadata.getFieldsName()).contains("_id", "name", "age", "phones");
         ConstructorMetadata constructor = entityMetadata.getConstructor();
         assertNotNull(constructor);
         assertTrue(constructor.isDefault());
@@ -72,7 +71,8 @@ public class ClassConverterTest {
         assertEquals("Actor", entityMetadata.getName());
         assertEquals(Actor.class, entityMetadata.getType());
         assertEquals(6, entityMetadata.getFields().size());
-        assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones", "movieCharacter", "movieRating"));
+        assertThat(entityMetadata.getFieldsName())
+                .contains("_id", "name", "age", "phones", "movieCharacter", "movieRating");
 
     }
 
@@ -82,7 +82,7 @@ public class ClassConverterTest {
         assertEquals("Director", entityMetadata.getName());
         assertEquals(Director.class, entityMetadata.getType());
         assertEquals(5, entityMetadata.getFields().size());
-        assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "phones", "movie"));
+        assertThat(entityMetadata.getFieldsName()).contains("_id", "name", "age", "phones", "movie");
 
     }
 
@@ -191,7 +191,7 @@ public class ClassConverterTest {
         assertEquals("Computer", entityMetadata.getName());
         assertEquals(Computer.class, entityMetadata.getType());
         assertEquals(5, entityMetadata.getFields().size());
-        assertThat(entityMetadata.getFieldsName(), containsInAnyOrder("_id", "name", "age", "model", "price"));
+        assertThat(entityMetadata.getFieldsName()).contains("_id", "name", "age", "model", "price");
         ConstructorMetadata constructor = entityMetadata.getConstructor();
         assertNotNull(constructor);
         assertFalse(constructor.isDefault());
