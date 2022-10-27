@@ -19,14 +19,13 @@ import jakarta.nosql.mapping.EntityNotFoundException;
 import org.eclipse.jnosql.mapping.graph.model.Book;
 import org.eclipse.jnosql.mapping.graph.model.Person;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -230,7 +229,7 @@ public class EdgeEntityTest {
 
         assertFalse(edge.isEmpty());
         assertEquals(1, edge.size());
-        assertThat(edge.getProperties(), Matchers.contains(DefaultProperty.of("where", "Brazil")));
+        assertThat(edge.getProperties()).contains(DefaultProperty.of("where", "Brazil"));
     }
 
     @Test
@@ -242,7 +241,7 @@ public class EdgeEntityTest {
 
         assertFalse(edge.isEmpty());
         assertEquals(1, edge.size());
-        assertThat(edge.getProperties(), Matchers.contains(DefaultProperty.of("where", "Brazil")));
+        assertThat(edge.getProperties()).contains(DefaultProperty.of("where", "Brazil"));
     }
 
 

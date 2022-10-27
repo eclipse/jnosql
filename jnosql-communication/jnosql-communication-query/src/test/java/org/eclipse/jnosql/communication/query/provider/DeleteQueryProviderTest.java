@@ -15,7 +15,6 @@ import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
 import org.eclipse.jnosql.communication.query.cache.CachedDeleteQueryProvider;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

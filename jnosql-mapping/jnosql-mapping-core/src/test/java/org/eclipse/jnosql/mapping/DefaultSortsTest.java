@@ -16,10 +16,9 @@ package org.eclipse.jnosql.mapping;
 
 import jakarta.nosql.Sort;
 import jakarta.nosql.mapping.Sorts;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -34,20 +33,20 @@ class DefaultSortsTest {
     @Test
     public void shouldAsc() {
         Sorts sorts = Sorts.sorts().asc("name");
-        assertThat(sorts.getSorts(), Matchers.contains(Sort.asc("name")));
+        assertThat(sorts.getSorts()).contains(Sort.asc("name"));
     }
 
     @Test
     public void shouldDesc() {
         Sorts sorts = Sorts.sorts().desc("name");
-        assertThat(sorts.getSorts(), Matchers.contains(Sort.desc("name")));
+        assertThat(sorts.getSorts()).contains(Sort.desc("name"));
     }
 
     @Test
     public void shouldAdd() {
         Sort sort = Sort.desc("name");
         Sorts sorts = Sorts.sorts().add(sort);
-        assertThat(sorts.getSorts(), Matchers.contains(sort));
+        assertThat(sorts.getSorts()).contains(sort);
     }
 
     @Test

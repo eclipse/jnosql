@@ -25,8 +25,6 @@ import jakarta.nosql.tck.entities.constructor.BookUser;
 import jakarta.nosql.tck.entities.constructor.Computer;
 import jakarta.nosql.tck.entities.constructor.PetOwner;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -35,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -103,7 +101,7 @@ class DefaultColumnEntityConverterConstructorTest {
         assertEquals("Poliana", communication.find("name", String.class).get());
         List<Column> columns = communication.find("animal", new TypeReference<List<Column>>() {})
                 .get();
-        assertThat(columns, Matchers.containsInAnyOrder(Column.of("name", "Ada")));
+        assertThat(columns).contains(Column.of("name", "Ada"));
     }
 
     @Test
@@ -122,7 +120,7 @@ class DefaultColumnEntityConverterConstructorTest {
         assertEquals("otaviojava", bookUser.getNickname());
         assertEquals(2, bookUser.getBooks().size());
         List<String> names = bookUser.getBooks().stream().map(Book::getName).collect(Collectors.toUnmodifiableList());
-        assertThat(names, Matchers.containsInAnyOrder("Effective Java", "Clean Code"));
+        assertThat(names).contains("Effective Java", "Clean Code");
 
     }
 }

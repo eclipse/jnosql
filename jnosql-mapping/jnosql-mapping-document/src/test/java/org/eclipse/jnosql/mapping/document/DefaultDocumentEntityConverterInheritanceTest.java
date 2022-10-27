@@ -29,8 +29,6 @@ import jakarta.nosql.tck.entities.inheritance.SmallProject;
 import jakarta.nosql.tck.entities.inheritance.SmsNotification;
 import jakarta.nosql.tck.entities.inheritance.SocialMediaNotification;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -41,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -337,11 +336,10 @@ class DefaultDocumentEntityConverterInheritanceTest {
         List<Document> documents = entity.find("notification", new TypeReference<List<Document>>() {
         }).get();
 
-        MatcherAssert.assertThat(documents,
-                Matchers.containsInAnyOrder(Document.of("_id", 10L),
+        assertThat(documents).contains(Document.of("_id", 10L),
                         Document.of("name", "Ada"),
                         Document.of("dtype", "SocialMediaNotification"),
-                        Document.of("nickname", "ada.lovelace")));
+                        Document.of("nickname", "ada.lovelace"));
     }
 
     @Test
@@ -370,18 +368,17 @@ class DefaultDocumentEntityConverterInheritanceTest {
 
         List<Document> largeCommunication = documents.get(0);
         List<Document> smallCommunication = documents.get(1);
-        MatcherAssert.assertThat(largeCommunication, Matchers.containsInAnyOrder(
+        assertThat(largeCommunication).contains(
                 Document.of("_id", "large"),
                 Document.of("size", "Large"),
                 Document.of("budget", BigDecimal.TEN)
-        ));
+        );
 
-        MatcherAssert.assertThat(smallCommunication, Matchers.containsInAnyOrder(
+        assertThat(smallCommunication).contains(
                 Document.of("size", "Small"),
                 Document.of("investor", "new investor"),
                 Document.of("_id", "Start up")
-        ));
-
+        );
     }
 
     @Test

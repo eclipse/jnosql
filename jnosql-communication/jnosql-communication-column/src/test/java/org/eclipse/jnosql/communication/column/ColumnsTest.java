@@ -18,7 +18,6 @@
 package org.eclipse.jnosql.communication.column;
 
 import jakarta.nosql.column.Column;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -27,9 +26,9 @@ import java.util.Map;
 
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 
 public class ColumnsTest {
@@ -46,7 +45,7 @@ public class ColumnsTest {
         Map<String, String> map = singletonMap("name", "Ada");
         List<Column> columns = Columns.of(map);
         assertFalse(columns.isEmpty());
-        assertThat(columns, Matchers.contains(Column.of("name", "Ada")));
+        assertThat(columns).contains(Column.of("name", "Ada"));
     }
 
 

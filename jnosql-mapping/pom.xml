@@ -37,7 +37,6 @@
         <module>jnosql-mapping-column</module>
         <module>jnosql-mapping-key-value</module>
         <module>jnosql-mapping-validation</module>
-        <module>jnosql-mapping-reactive</module>
     </modules>
 
     <dependencies>

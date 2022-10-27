@@ -18,7 +18,6 @@ package org.eclipse.jnosql.communication.keyvalue;
 
 import jakarta.nosql.Value;
 import jakarta.nosql.keyvalue.KeyValueEntity;
-import org.hamcrest.Matchers;
 import jakarta.nosql.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,13 +25,12 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class DefaultKeyValueEntityTest {
-
 
     @Test
     public void shouldReturnErrorWhenKeyIsNull() {
@@ -58,8 +56,8 @@ public class DefaultKeyValueEntityTest {
         KeyValueEntity entity = KeyValueEntity.of("key", value);
         assertEquals(value, entity.getValue());
         assertEquals(Integer.valueOf(10), entity.getValue(Integer.class));
-        assertThat(singletonList(10), Matchers.contains(entity.getValue(new TypeReference<List<Integer>>() {
-        }).get(0)));
+        assertThat(singletonList(10)).contains(entity.getValue(new TypeReference<List<Integer>>() {
+        }).get(0));
     }
 
     @Test
@@ -95,8 +93,8 @@ public class DefaultKeyValueEntityTest {
         KeyValueEntity entity = KeyValueEntity.of(value, value);
         assertEquals(value, entity.getValue());
         assertEquals(Integer.valueOf(10), entity.getKey(Integer.class));
-        assertThat(singletonList(10), Matchers.contains(entity.getValue(new TypeReference<List<Integer>>() {
-        }).get(0)));
+        assertThat(singletonList(10)).contains(entity.getValue(new TypeReference<List<Integer>>() {
+        }).get(0));
     }
 
     @Test

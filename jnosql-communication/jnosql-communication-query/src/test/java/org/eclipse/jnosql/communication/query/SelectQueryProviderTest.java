@@ -28,8 +28,6 @@ import jakarta.nosql.query.SelectQuery;
 import jakarta.nosql.query.SelectQuery.SelectQueryProvider;
 import jakarta.nosql.query.StringQueryValue;
 import jakarta.nosql.query.Where;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -41,8 +39,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -69,7 +66,7 @@ class SelectQueryProviderTest {
         SelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertFalse(selectQuery.getFields().isEmpty());
-        assertThat(selectQuery.getFields(), contains("name", "address"));
+        assertThat(selectQuery.getFields()).contains("name", "address");
         assertTrue(selectQuery.getOrderBy().isEmpty());
         assertEquals(0, selectQuery.getLimit());
         assertEquals(0, selectQuery.getSkip());
@@ -82,11 +79,10 @@ class SelectQueryProviderTest {
         SelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertFalse(selectQuery.getFields().isEmpty());
-        assertThat(selectQuery.getFields(), contains("name", "address"));
+        assertThat(selectQuery.getFields()).contains("name", "address");
         assertFalse(selectQuery.getOrderBy().isEmpty());
-        assertThat(selectQuery.getOrderBy().stream().map(Sort::getName).collect(toList()), contains("name"));
-        MatcherAssert.assertThat(selectQuery.getOrderBy().stream().map(Sort::getType).collect(toList()), 
-                Matchers.contains(SortType.ASC));
+        assertThat(selectQuery.getOrderBy().stream().map(Sort::getName).collect(toList())).contains("name");
+        assertThat(selectQuery.getOrderBy().stream().map(Sort::getType).collect(toList())).contains(SortType.ASC);
         assertEquals(0, selectQuery.getLimit());
         assertEquals(0, selectQuery.getSkip());
         assertFalse(selectQuery.getWhere().isPresent());
@@ -98,11 +94,10 @@ class SelectQueryProviderTest {
         SelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertFalse(selectQuery.getFields().isEmpty());
-        assertThat(selectQuery.getFields(), contains("name", "address"));
+        assertThat(selectQuery.getFields()).contains("name", "address");
         assertFalse(selectQuery.getOrderBy().isEmpty());
-        assertThat(selectQuery.getOrderBy().stream().map(Sort::getName).collect(toList()), contains("name"));
-        MatcherAssert.assertThat(selectQuery.getOrderBy().stream().map(Sort::getType).collect(toList()),
-                Matchers.contains(SortType.DESC));
+        assertThat(selectQuery.getOrderBy().stream().map(Sort::getName).collect(toList())).contains("name");
+        assertThat(selectQuery.getOrderBy().stream().map(Sort::getType).collect(toList())).contains(SortType.DESC);
         assertEquals(0, selectQuery.getLimit());
         assertEquals(0, selectQuery.getSkip());
         assertFalse(selectQuery.getWhere().isPresent());
@@ -114,11 +109,11 @@ class SelectQueryProviderTest {
         SelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertFalse(selectQuery.getFields().isEmpty());
-        assertThat(selectQuery.getFields(), contains("name", "address"));
+        assertThat(selectQuery.getFields()).contains("name", "address");
         assertFalse(selectQuery.getOrderBy().isEmpty());
-        assertThat(selectQuery.getOrderBy().stream().map(Sort::getName).collect(toList()), contains("name", "age"));
-        assertThat(selectQuery.getOrderBy().stream().map(Sort::getType).collect(toList()), 
-                Matchers.contains(SortType.DESC, SortType.ASC));
+        assertThat(selectQuery.getOrderBy().stream().map(Sort::getName).collect(toList())).contains("name", "age");
+        assertThat(selectQuery.getOrderBy().stream().map(Sort::getType).collect(toList())).
+                contains(SortType.DESC, SortType.ASC);
         assertEquals(0, selectQuery.getLimit());
         assertEquals(0, selectQuery.getSkip());
         assertFalse(selectQuery.getWhere().isPresent());
@@ -251,7 +246,8 @@ class SelectQueryProviderTest {
         assertTrue(value instanceof ArrayQueryValue);
         ArrayQueryValue arrayValue = ArrayQueryValue.class.cast(value);
         QueryValue<?>[] values = arrayValue.get();
-        assertThat(Stream.of(values).map(QueryValue::get).collect(toList()), contains(10L, 30L));
+        List<Long> ages = Stream.of(values).map(QueryValue::get).map(Long.class::cast).collect(toList());
+        assertThat(ages).hasSize(2).containsExactly(10L, 30L);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -296,9 +292,10 @@ class SelectQueryProviderTest {
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
         assertTrue(value instanceof ArrayQueryValue);
-        List<?> values = Stream.of(ArrayQueryValue.class.cast(value).get()).map(QueryValue::get)
+        List<String> values = Stream.of(ArrayQueryValue.class.cast(value).get()).map(QueryValue::get)
+                .map(String.class::cast)
                 .collect(toList());
-        assertThat(values, contains("diana"));
+        assertThat(values).contains("diana");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -313,9 +310,10 @@ class SelectQueryProviderTest {
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
         assertTrue(value instanceof ArrayQueryValue);
-        List<?> values = Stream.of(ArrayQueryValue.class.cast(value).get())
-                .map(QueryValue::get).collect(toList());
-        assertThat(values, contains("diana", 17L, 20.21));
+        List<Object> values = Stream.of(ArrayQueryValue.class.cast(value).get())
+                .map(QueryValue::get)
+                .collect(toList());
+        assertThat(values).contains("diana", 17L, 20.21);
     }
 
 
@@ -382,9 +380,9 @@ class SelectQueryProviderTest {
         Assertions.assertEquals(Operator.IN, condition.getOperator());
         assertEquals("name", condition.getName());
         assertTrue(value instanceof ArrayQueryValue);
-        List<?> values = Stream.of(ArrayQueryValue.class.cast(value).get())
-                .map(QueryValue::get).collect(toList());
-        assertThat(values, contains("Ada", "Apollo"));
+        List<String> values = Stream.of(ArrayQueryValue.class.cast(value).get())
+                .map(QueryValue::get).map(String.class::cast).collect(toList());
+        assertThat(values).contains("Ada", "Apollo");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

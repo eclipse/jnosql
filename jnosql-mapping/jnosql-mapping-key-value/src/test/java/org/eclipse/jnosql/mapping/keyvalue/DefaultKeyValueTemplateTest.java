@@ -25,8 +25,7 @@ import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 import jakarta.nosql.tck.entities.User;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +47,7 @@ import java.util.stream.Stream;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -290,7 +290,7 @@ public class DefaultKeyValueTemplateTest {
                 .thenReturn(Stream.of(Value.of("12")));
 
         List<Integer> ids = subject.query("get id", Integer.class).collect(toList());
-        MatcherAssert.assertThat(ids, Matchers.contains(12));
+        assertThat(ids).contains(12);
     }
 
     @Test
@@ -328,7 +328,7 @@ public class DefaultKeyValueTemplateTest {
         PreparedStatement statement = subject.prepare("get @id", Integer.class);
         statement.bind("id", 12);
         List<Integer> resultList = statement.<Integer>getResult().collect(toList());
-        MatcherAssert.assertThat(resultList, Matchers.contains(12));
+        assertThat(resultList).contains(12);
         Optional<Object> singleResult = statement.getSingleResult();
         assertTrue(singleResult.isPresent());
         assertEquals(12, singleResult.get());

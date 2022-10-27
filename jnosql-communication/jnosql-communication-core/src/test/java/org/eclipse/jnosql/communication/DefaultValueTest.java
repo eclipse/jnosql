@@ -33,8 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -67,9 +66,9 @@ public class DefaultValueTest {
         Long number = 10L;
         Value value = Value.of(number);
         assertThat(value.get(new TypeReference<List<String>>() {
-        }), containsInAnyOrder("10"));
+        })).contains("10");
         assertThat(value.get(new TypeReference<List<Long>>() {
-        }), containsInAnyOrder(10L));
+        })).contains(10L);
     }
 
     @Test
@@ -78,18 +77,18 @@ public class DefaultValueTest {
         Value value = Value.of(number);
 
         assertThat(value.get(new TypeReference<Stream<String>>() {
-        }).collect(Collectors.toList()), containsInAnyOrder("10"));
+        }).collect(Collectors.toList())).contains("10");
         assertThat(value.get(new TypeReference<Stream<Long>>() {
-        }).collect(Collectors.toList()), containsInAnyOrder(10L));
+        }).collect(Collectors.toList())).contains(10L);
     }
 
     @Test
     public void shouldConvertToList() {
         Value value = Value.of(Arrays.asList(10, 20, 30));
         assertThat(value.get(new TypeReference<List<String>>() {
-        }), containsInAnyOrder("10", "20", "30"));
+        })).contains("10", "20", "30");
         assertThat(value.get(new TypeReference<List<BigInteger>>() {
-        }), containsInAnyOrder(BigInteger.TEN, BigInteger.valueOf(20L), BigInteger.valueOf(30L)));
+        })).contains(BigInteger.TEN, BigInteger.valueOf(20L), BigInteger.valueOf(30L));
     }
 
     @Test
@@ -97,18 +96,18 @@ public class DefaultValueTest {
         Long number = 10L;
         Value value = Value.of(number);
         assertThat(value.get(new TypeReference<Set<String>>() {
-        }), containsInAnyOrder("10"));
+        })).contains("10");
         assertThat(value.get(new TypeReference<List<Long>>() {
-        }), containsInAnyOrder(10L));
+        })).contains(10L);
     }
 
     @Test
     public void shouldConvertToSet() {
         Value value = Value.of(Arrays.asList(10, 20, 30));
         assertThat(value.get(new TypeReference<Set<String>>() {
-        }), containsInAnyOrder("10", "20", "30"));
+        })).contains("10", "20", "30");
         assertThat(value.get(new TypeReference<List<BigInteger>>() {
-        }), containsInAnyOrder(BigInteger.TEN, BigInteger.valueOf(20L), BigInteger.valueOf(30L)));
+        })).contains(BigInteger.TEN, BigInteger.valueOf(20L), BigInteger.valueOf(30L));
     }
 
     @Test
@@ -116,20 +115,20 @@ public class DefaultValueTest {
         Map<String, Integer> map = Collections.singletonMap("ONE", 1);
         Value value = Value.of(map);
 
-        Map<String, Integer> result = value.get(new TypeReference<Map<String, Integer>>() {
+        Map<String, Integer> result = value.get(new TypeReference<>() {
         });
-        assertThat(result.keySet(), containsInAnyOrder("ONE"));
-        assertThat(result.values(), containsInAnyOrder(1));
+        assertThat(result.keySet()).contains("ONE");
+        assertThat(result.values()).contains(1);
     }
 
     @Test
     public void shouldConvertKeyValueInsideMap() {
         Map<Integer, String> map = Collections.singletonMap(10, "1");
         Value value = Value.of(map);
-        Map<String, Integer> result = value.get(new TypeReference<Map<String, Integer>>() {
+        Map<String, Integer> result = value.get(new TypeReference<>() {
         });
-        assertThat(result.keySet(), containsInAnyOrder("10"));
-        assertThat(result.values(), containsInAnyOrder(1));
+        assertThat(result.keySet()).contains("10");
+        assertThat(result.values()).contains(1);
     }
 
     @Test
@@ -137,10 +136,10 @@ public class DefaultValueTest {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             Map<Integer, List<String>> map = Collections.singletonMap(10, Arrays.asList("1", "2", "3"));
             Value value = Value.of(map);
-            Map<String, List<String>> result = value.get(new TypeReference<Map<String, List<String>>>() {
+            Map<String, List<String>> result = value.get(new TypeReference<>() {
             });
-            assertThat(result.keySet(), containsInAnyOrder("10"));
-            assertThat(result.values(), containsInAnyOrder(Arrays.asList("1", "2", "3")));
+            assertThat(result.keySet()).contains("10");
+            assertThat(result.values()).contains(Arrays.asList("1", "2", "3"));
         });
     }
 

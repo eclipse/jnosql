@@ -44,7 +44,7 @@ public final class BigIntegerReader implements ValueReader {
         if (Number.class.isInstance(value)) {
             return (T) BigInteger.valueOf(Number.class.cast(value).longValue());
         } else {
-            return (T) BigInteger.valueOf(Long.valueOf(value.toString()));
+            return (T) BigInteger.valueOf(Long.parseLong(value.toString()));
         }
     }
 }

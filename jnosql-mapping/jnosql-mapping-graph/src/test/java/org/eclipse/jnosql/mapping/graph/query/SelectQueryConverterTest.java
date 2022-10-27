@@ -24,8 +24,6 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -37,6 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -203,7 +202,7 @@ class SelectQueryConverterTest {
         List<Object> names = vertices.stream().map(v -> v.value("name"))
                 .collect(Collectors.toList());
         assertEquals(3, vertices.size());
-        MatcherAssert.assertThat(names, Matchers.contains("Ada", "Otavio", "Poliana"));
+        assertThat(names).contains("Ada", "Otavio", "Poliana");
     }
 
 
@@ -224,7 +223,7 @@ class SelectQueryConverterTest {
         List<Object> names = vertices.stream().map(v -> v.value("name"))
                 .collect(Collectors.toList());
         assertEquals(3, vertices.size());
-        MatcherAssert.assertThat(names, Matchers.contains("Poliana", "Otavio", "Ada"));
+        assertThat(names).contains("Poliana", "Otavio", "Ada");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -244,7 +243,7 @@ class SelectQueryConverterTest {
         List<Object> names = vertices.stream().map(v -> v.value("name"))
                 .collect(Collectors.toList());
         assertEquals(3, vertices.size());
-        MatcherAssert.assertThat(names, Matchers.contains("Poliana", "Otavio", "Ada"));
+        assertThat(names).contains("Poliana", "Otavio", "Ada");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -265,7 +264,7 @@ class SelectQueryConverterTest {
                 .sorted()
                 .collect(Collectors.toList());
         assertEquals(3, vertices.size());
-        MatcherAssert.assertThat(names, Matchers.contains("Ada", "Otavio", "Poliana"));
+        assertThat(names).contains("Ada", "Otavio", "Poliana");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -286,7 +285,7 @@ class SelectQueryConverterTest {
                 .sorted()
                 .collect(Collectors.toList());
         assertEquals(3, vertices.size());
-        MatcherAssert.assertThat(names, Matchers.contains("Ada", "Otavio", "Poliana"));
+        assertThat(names).contains("Ada", "Otavio", "Poliana");
     }
 
 

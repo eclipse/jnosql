@@ -38,8 +38,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -66,7 +65,7 @@ class DeleteQueryProviderTest {
         DeleteQuery deleteQuery = selectProvider.apply(query);
         assertEquals("God", deleteQuery.getEntity());
         assertFalse(deleteQuery.getFields().isEmpty());
-        assertThat(deleteQuery.getFields(), contains("name", "address"));
+        assertThat(deleteQuery.getFields()).contains("name", "address");
         assertFalse(deleteQuery.getWhere().isPresent());
     }
 
@@ -162,7 +161,8 @@ class DeleteQueryProviderTest {
         assertTrue(value instanceof ArrayQueryValue);
         ArrayQueryValue arrayValue = ArrayQueryValue.class.cast(value);
         QueryValue<?>[] values = arrayValue.get();
-        assertThat(Stream.of(values).map(QueryValue::get).collect(toList()), contains(10L, 30L));
+        List<Long> ages = Stream.of(values).map(QueryValue::get).map(Long.class::cast).collect(toList());
+        assertThat(ages).contains(10L, 30L);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -192,9 +192,9 @@ class DeleteQueryProviderTest {
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
         assertTrue(value instanceof ArrayQueryValue);
-        List<?> values = Stream.of(ArrayQueryValue.class.cast(value).get()).map(QueryValue::get)
+        List<Object> values = Stream.of(ArrayQueryValue.class.cast(value).get()).map(QueryValue::get)
                 .collect(toList());
-        assertThat(values, contains("diana"));
+        assertThat(values).contains("diana");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -209,8 +209,8 @@ class DeleteQueryProviderTest {
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
         assertTrue(value instanceof ArrayQueryValue);
-        List<?> values = Stream.of(ArrayQueryValue.class.cast(value).get()).map(QueryValue::get).collect(toList());
-        assertThat(values, contains("diana", 17L, 20.21));
+        List<Object> values = Stream.of(ArrayQueryValue.class.cast(value).get()).map(QueryValue::get).collect(toList());
+        assertThat(values).contains("diana", 17L, 20.21);
     }
 
 
@@ -279,9 +279,9 @@ class DeleteQueryProviderTest {
         Assertions.assertEquals(Operator.IN, condition.getOperator());
         assertEquals("name", condition.getName());
         assertTrue(value instanceof ArrayQueryValue);
-        List<?> values = Stream.of(ArrayQueryValue.class.cast(value).get())
+        List<Object> values = Stream.of(ArrayQueryValue.class.cast(value).get())
                 .map(QueryValue::get).collect(toList());
-        assertThat(values, contains("Ada", "Apollo"));
+        assertThat(values).contains("Ada", "Apollo");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

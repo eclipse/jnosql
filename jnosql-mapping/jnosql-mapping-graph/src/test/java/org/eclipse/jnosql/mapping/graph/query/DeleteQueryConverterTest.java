@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.graph.model.Person;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
@@ -24,8 +25,6 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -37,6 +36,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -203,7 +203,7 @@ class DeleteQueryConverterTest {
                 .sorted()
                 .collect(Collectors.toList());
         assertEquals(3, vertices.size());
-        MatcherAssert.assertThat(names, Matchers.contains("Ada", "Otavio", "Poliana"));
+        assertThat(names).contains("Ada", "Otavio", "Poliana");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -224,7 +224,7 @@ class DeleteQueryConverterTest {
                 .sorted()
                 .collect(Collectors.toList());
         assertEquals(3, vertices.size());
-        MatcherAssert.assertThat(names, Matchers.contains("Ada", "Otavio", "Poliana"));
+        assertThat(names).contains("Ada", "Otavio", "Poliana");
     }
 
 

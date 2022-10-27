@@ -25,7 +25,6 @@ import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
 import jakarta.nosql.column.ColumnQuery;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -33,16 +32,13 @@ import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static jakarta.nosql.column.ColumnCondition.eq;
 import static jakarta.nosql.column.ColumnQuery.builder;
 import static jakarta.nosql.column.ColumnQuery.select;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -68,7 +64,7 @@ public class DefaultSelectQueryBuilderTest {
     public void shouldSelectColumns() {
         String columnFamily = "columnFamily";
         ColumnQuery query = select("column", "column2").from(columnFamily).build();
-        assertThat(query.getColumns(), containsInAnyOrder("column", "column2"));
+        assertThat(query.getColumns()).contains("column", "column2");
         assertFalse(query.getCondition().isPresent());
         assertEquals(columnFamily, query.getColumnFamily());
     }
@@ -86,7 +82,7 @@ public class DefaultSelectQueryBuilderTest {
         assertTrue(query.getColumns().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(columnFamily, query.getColumnFamily());
-        assertThat(query.getSorts(), Matchers.contains(Sort.of("name", SortType.ASC)));
+        assertThat(query.getSorts()).contains(Sort.of("name", SortType.ASC));
     }
 
     @Test
@@ -96,7 +92,7 @@ public class DefaultSelectQueryBuilderTest {
         assertTrue(query.getColumns().isEmpty());
         assertFalse(query.getCondition().isPresent());
         assertEquals(columnFamily, query.getColumnFamily());
-        assertThat(query.getSorts(), contains(Sort.of("name", SortType.DESC)));
+        assertThat(query.getSorts()).contains(Sort.of("name", SortType.DESC));
     }
 
     @Test
@@ -120,9 +116,7 @@ public class DefaultSelectQueryBuilderTest {
     @Test
     public void shouldReturnErrorWhenLimitIsNegative() {
         String columnFamily = "columnFamily";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            builder().from(columnFamily).limit(-1);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> builder().from(columnFamily).limit(-1));
     }
 
     @Test
@@ -138,9 +132,7 @@ public class DefaultSelectQueryBuilderTest {
     @Test
     public void shouldReturnErrorWhenSkipIsNegative() {
         String columnFamily = "columnFamily";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            builder().from(columnFamily).skip(-1);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> builder().from(columnFamily).skip(-1));
     }
 
     @Test
@@ -255,7 +247,7 @@ public class DefaultSelectQueryBuilderTest {
         assertEquals(Condition.BETWEEN, condition.getCondition());
         assertEquals("name", column.getName());
         assertThat(column.get(new TypeReference<List<Number>>() {
-        }), Matchers.contains(10, 20));
+        })).contains(10, 20);
     }
 
     @Test
@@ -284,11 +276,11 @@ public class DefaultSelectQueryBuilderTest {
         ColumnCondition condition = query.getCondition().get();
 
         Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
+        assertThat(conditions).contains(eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10)));
     }
 
     @Test
@@ -299,11 +291,11 @@ public class DefaultSelectQueryBuilderTest {
         ColumnCondition condition = query.getCondition().get();
 
         Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
+        assertThat(conditions).contains(eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10)));
     }
 
     @Test
@@ -315,12 +307,12 @@ public class DefaultSelectQueryBuilderTest {
         ColumnCondition condition = query.getCondition().orElseThrow(RuntimeException::new);
         assertEquals(columnFamily, query.getColumnFamily());
         Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
 
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(eq(Column.of("city", "Assis")).negate(),
-                eq(Column.of("name", "Lucas")).negate()));
+        assertThat(conditions).contains(eq(Column.of("city", "Assis")).negate(),
+                eq(Column.of("name", "Lucas")).negate());
 
 
     }

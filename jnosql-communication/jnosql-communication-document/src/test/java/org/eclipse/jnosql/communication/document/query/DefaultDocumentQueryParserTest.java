@@ -236,7 +236,7 @@ class DefaultDocumentQueryParserTest {
 
         DocumentPreparedStatement prepare = parser.prepare(query, manager, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
-        assertThrows(NonUniqueResultException.class, () -> prepare.getSingleResult());
+        assertThrows(NonUniqueResultException.class, prepare::getSingleResult);
     }
 
 }

@@ -19,8 +19,6 @@ package org.eclipse.jnosql.communication.keyvalue.query;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -29,11 +27,11 @@ import org.mockito.Mockito;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DelQueryParserTest {
-
 
     private final DelQueryParser parser = new DelQueryParser();
 
@@ -51,7 +49,7 @@ class DelQueryParserTest {
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());
-        MatcherAssert.assertThat(value, Matchers.contains("Diana"));
+        assertThat(value).contains("Diana");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -66,7 +64,7 @@ class DelQueryParserTest {
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());
-        MatcherAssert.assertThat(value, Matchers.contains(12L));
+        assertThat(value).contains(12L);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -81,7 +79,7 @@ class DelQueryParserTest {
         List<Object> value = captor.getValue();
 
         assertEquals(1, value.size());
-        MatcherAssert.assertThat(value, Matchers.contains("{\"Ana\":\"Sister\",\"Maria\":\"Mother\"}"));
+        assertThat(value).contains("{\"Ana\":\"Sister\",\"Maria\":\"Mother\"}");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -96,7 +94,7 @@ class DelQueryParserTest {
 
         assertEquals(1, value.size());
 
-        MatcherAssert.assertThat(value, Matchers.contains(LocalDate.parse("2018-01-10")));
+        assertThat(value).contains(LocalDate.parse("2018-01-10"));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -128,7 +126,7 @@ class DelQueryParserTest {
 
         assertEquals(1, value.size());
 
-        MatcherAssert.assertThat(value, Matchers.contains(10));
+        assertThat(value).contains(10);
     }
 
 
@@ -147,7 +145,7 @@ class DelQueryParserTest {
 
         assertEquals(2, value.size());
 
-        MatcherAssert.assertThat(value, Matchers.contains(10, 11));
+        assertThat(value).contains(10, 11);
     }
 
 }

@@ -43,7 +43,7 @@ public final class AtomicLongReader implements ValueReader {
         if (Number.class.isInstance(value)) {
             return (T) new AtomicLong(Number.class.cast(value).longValue());
         } else {
-            return (T) new AtomicLong(Long.valueOf(value.toString()));
+            return (T) new AtomicLong(Long.parseLong(value.toString()));
         }
     }
 

@@ -17,11 +17,11 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.nosql.NonUniqueResultException;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.T;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.graph.model.Animal;
 import org.eclipse.jnosql.mapping.graph.model.Book;
 import org.eclipse.jnosql.mapping.graph.model.Person;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -34,9 +34,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -68,7 +66,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .collect(toList());
 
         assertEquals(3, edges.size());
-        assertThat(edges, Matchers.containsInAnyOrder(reads, reads2, reads3));
+        assertThat(edges).contains(reads, reads2, reads3);
     }
 
     @Test
@@ -78,7 +76,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .collect(toList());
 
         assertEquals(3, edges.size());
-        assertThat(edges, Matchers.containsInAnyOrder(reads, reads2, reads3));
+        assertThat(edges).contains(reads, reads2, reads3);
     }
 
     @Test
@@ -95,7 +93,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .collect(toList());
 
         assertEquals(3, edges.size());
-        assertThat(edges, Matchers.containsInAnyOrder(reads, reads2, reads3));
+        assertThat(edges).contains(reads, reads2, reads3);
     }
 
     @Test
@@ -105,7 +103,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .collect(toList());
 
         assertEquals(3, edges.size());
-        assertThat(edges, Matchers.containsInAnyOrder(reads, reads2, reads3));
+        assertThat(edges).contains(reads, reads2, reads3);
     }
 
 
@@ -147,22 +145,22 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
     public void shouldReturnOut() {
         List<Person> people = graphTemplate.getTraversalVertex().outE(READS).outV().<Person>getResult().collect(toList());
         assertEquals(3, people.size());
-        assertThat(people, containsInAnyOrder(poliana, otavio, paulo));
+        assertThat(people).contains(poliana, otavio, paulo);
     }
 
     @Test
     public void shouldReturnIn() {
         List<Book> books = graphTemplate.getTraversalVertex().outE(READS).inV().<Book>getResult().collect(toList());
         assertEquals(3, books.size());
-        assertThat(books, containsInAnyOrder(shack, effectiveJava, license));
+        assertThat(books).contains(shack, effectiveJava, license);
     }
 
 
     @Test
     public void shouldReturnBoth() {
-        List<?> entities = graphTemplate.getTraversalVertex().outE(READS).bothV().getResult().collect(toList());
+        List<Object> entities = graphTemplate.getTraversalVertex().outE(READS).bothV().getResult().collect(toList());
         assertEquals(6, entities.size());
-        assertThat(entities, containsInAnyOrder(shack, effectiveJava, license, paulo, otavio, poliana));
+        assertThat(entities).contains(shack, effectiveJava, license, paulo, otavio, poliana);
     }
 
 
@@ -289,7 +287,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
 
         maps.forEach(m -> names.add(m.get("motivation").toString()));
 
-        assertThat(names, containsInAnyOrder("hobby", "love", "job"));
+        assertThat(names).contains("hobby", "love", "job");
     }
 
     @Test
@@ -400,7 +398,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .map(v -> v.get(String.class))
                 .collect(toList());
 
-        assertThat(properties, contains("hobby", "job", "love"));
+        assertThat(properties).contains("hobby", "job", "love");
     }
 
     @Test
@@ -417,7 +415,7 @@ public class DefaultEdgeTraversalTest extends AbstractTraversalTest {
                 .map(v -> v.get(String.class))
                 .collect(toList());
 
-        assertThat(properties, contains("love", "job", "hobby"));
+        assertThat(properties).contains("love", "job", "hobby");
     }
 
 

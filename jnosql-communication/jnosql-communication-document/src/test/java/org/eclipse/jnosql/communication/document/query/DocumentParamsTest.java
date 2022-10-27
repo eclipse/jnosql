@@ -20,12 +20,9 @@ import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,7 +36,7 @@ class DocumentParamsTest {
         Params params = Params.newParams();
         Value name = params.add("name");
         assertNotNull(name);
-        MatcherAssert.<List<String>>assertThat(params.getParametersNames(), containsInAnyOrder("name"));
+        assertThat(params.getParametersNames()).contains("name");
     }
 
     @Test

@@ -20,7 +20,6 @@ import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,15 +27,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class DefaultColumnConditionTest {
-
 
     private final ColumnCondition lte = ColumnCondition.lte(Column.of("salary", 10.32));
 
@@ -85,8 +82,7 @@ public class DefaultColumnConditionTest {
         assertEquals(Condition.AND, and.getCondition());
         assertEquals(Condition.AND.getNameField(), andColumn.getName());
         assertThat(andColumn.getValue().get(new TypeReference<List<ColumnCondition>>() {
-                }),
-                Matchers.containsInAnyOrder(condition1, condition2));
+                })).contains(condition1, condition2);
 
     }
 
@@ -102,8 +98,7 @@ public class DefaultColumnConditionTest {
         assertEquals(Condition.OR, and.getCondition());
         assertEquals(Condition.OR.getNameField(), andColumn.getName());
         assertThat(andColumn.getValue().get(new TypeReference<List<ColumnCondition>>() {
-                }),
-                Matchers.containsInAnyOrder(condition1, condition2));
+                })).contains(condition1, condition2);
 
     }
 
@@ -125,9 +120,9 @@ public class DefaultColumnConditionTest {
         ColumnCondition gt = ColumnCondition.gt(Column.of("age", 10));
         ColumnCondition and = ColumnCondition.and(eq, gt);
         assertEquals(Condition.AND, and.getCondition());
-        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<>() {
         });
-        assertThat(conditions, Matchers.containsInAnyOrder(eq, gt));
+        assertThat(conditions).contains(eq, gt);
     }
 
     @Test
@@ -136,9 +131,9 @@ public class DefaultColumnConditionTest {
         ColumnCondition gt = ColumnCondition.gt(Column.of("age", 10));
         ColumnCondition and = ColumnCondition.or(eq, gt);
         assertEquals(Condition.OR, and.getCondition());
-        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<>() {
         });
-        assertThat(conditions, Matchers.containsInAnyOrder(eq, gt));
+        assertThat(conditions).contains(eq, gt);
     }
 
     @Test
@@ -148,15 +143,15 @@ public class DefaultColumnConditionTest {
         ColumnCondition lte = ColumnCondition.lte(Column.of("salary", 10_000.00));
 
         ColumnCondition and = eq.and(gt);
-        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, and.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(eq, gt));
+        assertThat(conditions).contains(eq, gt);
         ColumnCondition result = and.and(lte);
 
         assertEquals(Condition.AND, result.getCondition());
         assertThat(result.getColumn().get(new TypeReference<List<ColumnCondition>>() {
-        }), Matchers.containsInAnyOrder(eq, gt, lte));
+        })).contains(eq, gt, lte);
 
     }
 
@@ -167,15 +162,15 @@ public class DefaultColumnConditionTest {
         ColumnCondition lte = ColumnCondition.lte(Column.of("salary", 10_000.00));
 
         ColumnCondition or = eq.or(gt);
-        List<ColumnCondition> conditions = or.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = or.getColumn().get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, or.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(eq, gt));
+        assertThat(conditions).contains(eq, gt);
         ColumnCondition result = or.or(lte);
 
         assertEquals(Condition.OR, result.getCondition());
         assertThat(result.getColumn().get(new TypeReference<List<ColumnCondition>>() {
-        }), Matchers.containsInAnyOrder(eq, gt, lte));
+        })).contains(eq, gt, lte);
 
     }
 
@@ -230,9 +225,9 @@ public class DefaultColumnConditionTest {
         Column column = Column.of("age", Arrays.asList(12, 13));
         ColumnCondition between = ColumnCondition.between(column);
         assertEquals(Condition.BETWEEN, between.getCondition());
-        Iterable<Integer> integers = between.getColumn().get(new TypeReference<Iterable<Integer>>() {
+        Iterable<Integer> integers = between.getColumn().get(new TypeReference<>() {
         });
-        assertThat(integers, contains(12, 13));
+        assertThat(integers).contains(12, 13);
     }
 
     @Test
@@ -246,9 +241,9 @@ public class DefaultColumnConditionTest {
         Column column = Column.of("age", Arrays.asList(12, 13));
         ColumnCondition in = ColumnCondition.in(column);
         assertEquals(Condition.IN, in.getCondition());
-        Iterable<Integer> integers = in.getColumn().get(new TypeReference<Iterable<Integer>>() {
+        Iterable<Integer> integers = in.getColumn().get(new TypeReference<>() {
         });
-        assertThat(integers, contains(12, 13));
+        assertThat(integers).contains(12, 13);
     }
 
 }

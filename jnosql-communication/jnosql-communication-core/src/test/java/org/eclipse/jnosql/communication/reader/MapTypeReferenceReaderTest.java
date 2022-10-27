@@ -68,7 +68,7 @@ public class MapTypeReferenceReaderTest {
 
     @Test
     public void shouldCreateMutableMap() {
-        Map<String, String> map = referenceReader.convert(new TypeReference<Map<String, String>>() {
+        Map<String, String> map = referenceReader.convert(new TypeReference<>() {
         }, singletonMap(123, 123L));
         map.put("23", "123");
         assertEquals(2, map.size());
@@ -80,7 +80,7 @@ public class MapTypeReferenceReaderTest {
         Map<Integer, Long> oldMap = new HashMap<>();
         oldMap.put(1, 234L);
         oldMap.put(2, 2345L);
-        Map<String, String> map = referenceReader.convert(new TypeReference<Map<String, String>>() {
+        Map<String, String> map = referenceReader.convert(new TypeReference<>() {
         }, oldMap);
 
         map.put("23", "123");
@@ -91,7 +91,7 @@ public class MapTypeReferenceReaderTest {
     @Test
     public void shouldConvertEntryToMap() {
         Entry entry = new EntryTest("key", Value.of("value"));
-        Map<String, String> map = referenceReader.convert(new TypeReference<Map<String, String>>() {
+        Map<String, String> map = referenceReader.convert(new TypeReference<>() {
         }, Collections.singletonList(entry));
 
         assertEquals(1, map.size());
@@ -103,7 +103,7 @@ public class MapTypeReferenceReaderTest {
         Entry subEntry = new EntryTest("key", Value.of("value"));
         Entry entry = new EntryTest("key", Value.of(subEntry));
 
-        Map<String, Map<String, String>> map = referenceReader.convert(new TypeReference<Map<String, Map<String, String>>>() {
+        Map<String, Map<String, String>> map = referenceReader.convert(new TypeReference<>() {
         }, Collections.singletonList(entry));
         assertEquals(1, map.size());
         Map<String, String> subMap = map.get("key");

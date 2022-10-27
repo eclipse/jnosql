@@ -21,7 +21,6 @@ import jakarta.nosql.mapping.Query;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.tck.entities.User;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
@@ -118,7 +117,7 @@ public class KeyValueRepositoryProxyTest {
         when(repository.get(keys, User.class)).thenReturn(
                 Arrays.asList(user, user2));
 
-        assertThat(userRepository.findById(keys), Matchers.containsInAnyOrder(user, user2));
+        assertThat(userRepository.findById(keys)).contains(user, user2);
     }
 
     @Test

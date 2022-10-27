@@ -28,7 +28,6 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -56,7 +55,7 @@ import static jakarta.nosql.Condition.LESSER_THAN;
 import static jakarta.nosql.Condition.LIKE;
 import static java.util.Collections.singletonList;
 import static java.util.concurrent.ThreadLocalRandom.current;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -147,7 +146,7 @@ public class ColumnRepositoryProxyPaginationTest {
         List<Person> persons = personRepository.findByNameAndAge("name", 20, pagination);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
-        assertThat(persons, Matchers.contains(ada));
+        assertThat(persons).contains(ada);
 
         ColumnQuery query = captor.getValue();
         assertEquals("Person", query.getColumnFamily());
@@ -168,7 +167,7 @@ public class ColumnRepositoryProxyPaginationTest {
         Set<Person> persons = personRepository.findByAgeAndName(20, "name", pagination);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
-        assertThat(persons, Matchers.contains(ada));
+        assertThat(persons).contains(ada);
         ColumnQuery query = captor.getValue();
         assertEquals("Person", query.getColumnFamily());
         assertEquals(pagination.getSkip(), query.getSkip());
@@ -189,7 +188,7 @@ public class ColumnRepositoryProxyPaginationTest {
         Stream<Person> persons = personRepository.findByNameAndAgeOrderByName("name", 20, pagination);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
-        assertThat(persons.collect(Collectors.toList()), Matchers.contains(ada));
+        assertThat(persons.collect(Collectors.toList())).contains(ada);
         ColumnQuery query = captor.getValue();
         assertEquals("Person", query.getColumnFamily());
         assertEquals(pagination.getSkip(), query.getSkip());
@@ -209,7 +208,7 @@ public class ColumnRepositoryProxyPaginationTest {
         Queue<Person> persons = personRepository.findByNameAndAgeOrderByAge("name", 20, pagination);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
-        assertThat(persons, Matchers.contains(ada));
+        assertThat(persons).contains(ada);
         ColumnQuery query = captor.getValue();
         assertEquals("Person", query.getColumnFamily());
         assertEquals(pagination.getSkip(), query.getSkip());
@@ -256,7 +255,7 @@ public class ColumnRepositoryProxyPaginationTest {
         ColumnCondition condition = query.getCondition().get();
         assertEquals("Person", query.getColumnFamily());
         assertEquals(AND, condition.getCondition());
-        List<ColumnCondition> conditions = condition.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = condition.getColumn().get(new TypeReference<>() {
         });
         ColumnCondition columnCondition = conditions.get(0);
         ColumnCondition columnCondition2 = conditions.get(1);
@@ -354,7 +353,7 @@ public class ColumnRepositoryProxyPaginationTest {
         ColumnCondition condition = query.getCondition().get();
         assertEquals("Person", query.getColumnFamily());
         assertEquals(BETWEEN, condition.getCondition());
-        List<Value> values = condition.getColumn().get(new TypeReference<List<Value>>() {
+        List<Value> values = condition.getColumn().get(new TypeReference<>() {
         });
         assertEquals(Arrays.asList(10, 15), values.stream().map(Value::get).collect(Collectors.toList()));
         assertTrue(condition.getColumn().getName().contains("age"));

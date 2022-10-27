@@ -13,21 +13,20 @@
 package org.eclipse.jnosql.communication.query;
 
 import jakarta.nosql.query.ArrayQueryValue;
+import jakarta.nosql.query.DelQuery;
 import jakarta.nosql.query.NumberQueryValue;
 import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.DelQuery;
 import jakarta.nosql.query.StringQueryValue;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -106,8 +105,10 @@ class RemoveProviderTest {
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof ArrayQueryValue);
         QueryValue<?>[] values = ArrayQueryValue.class.cast(key).get();
-        MatcherAssert.assertThat(Arrays.stream(values).map(QueryValue::get).collect(Collectors.toList()),
-                Matchers.contains(1L, 12L));
+        List<Long> ids = stream(values).map(QueryValue::get)
+                .map(Long.class::cast)
+                .collect(toList());
+        assertThat(ids).hasSize(2).contains(1L, 12L);
     }
 
 

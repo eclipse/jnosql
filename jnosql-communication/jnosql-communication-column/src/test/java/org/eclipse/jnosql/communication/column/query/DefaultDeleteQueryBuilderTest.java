@@ -19,7 +19,6 @@ package org.eclipse.jnosql.communication.column.query;
 
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnFamilyManager;
-import org.hamcrest.Matchers;
 import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.column.Column;
@@ -29,16 +28,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import static jakarta.nosql.column.ColumnDeleteQuery.delete;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static jakarta.nosql.column.ColumnCondition.eq;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -62,7 +58,7 @@ public class DefaultDeleteQueryBuilderTest {
     public void shouldDeleteColumns() {
         String columnFamily = "columnFamily";
         ColumnDeleteQuery query = delete("column", "column2").from(columnFamily).build();
-        assertThat(query.getColumns(), containsInAnyOrder("column", "column2"));
+        assertThat(query.getColumns()).contains("column", "column2");
         assertFalse(query.getCondition().isPresent());
         assertEquals(columnFamily, query.getColumnFamily());
     }
@@ -186,7 +182,7 @@ public class DefaultDeleteQueryBuilderTest {
         assertEquals(Condition.BETWEEN, condition.getCondition());
         assertEquals("name", column.getName());
         assertThat(column.get(new TypeReference<List<Number>>() {
-        }), Matchers.contains(10, 20));
+        })).contains(10, 20);
     }
 
     @Test
@@ -215,11 +211,11 @@ public class DefaultDeleteQueryBuilderTest {
         ColumnCondition condition = query.getCondition().get();
 
         Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
+        assertThat(conditions).contains(ColumnCondition.eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10)));
     }
 
     @Test
@@ -230,11 +226,11 @@ public class DefaultDeleteQueryBuilderTest {
         ColumnCondition condition = query.getCondition().get();
 
         Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions, Matchers.containsInAnyOrder(ColumnCondition.eq(Column.of("name", name)),
-                ColumnCondition.gt(Column.of("age", 10))));
+        assertThat(conditions).contains(ColumnCondition.eq(Column.of("name", name)),
+                ColumnCondition.gt(Column.of("age", 10)));
     }
 
     @Test
@@ -246,12 +242,12 @@ public class DefaultDeleteQueryBuilderTest {
         ColumnCondition condition = query.getCondition().orElseThrow(RuntimeException::new);
         assertEquals(columnFamily, query.getColumnFamily());
         Column column = condition.getColumn();
-        List<ColumnCondition> conditions = column.get(new TypeReference<List<ColumnCondition>>() {
+        List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
 
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions, containsInAnyOrder(eq(Column.of("city", "Assis")).negate(),
-                eq(Column.of("name", "Lucas")).negate()));
+        assertThat(conditions).contains(eq(Column.of("city", "Assis")).negate(),
+                eq(Column.of("name", "Lucas")).negate());
 
 
     }

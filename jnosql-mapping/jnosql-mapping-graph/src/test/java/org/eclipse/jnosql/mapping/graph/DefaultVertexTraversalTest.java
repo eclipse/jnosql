@@ -15,13 +15,12 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.nosql.NonUniqueResultException;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.eclipse.jnosql.mapping.graph.model.Animal;
 import org.eclipse.jnosql.mapping.graph.model.Book;
 import org.eclipse.jnosql.mapping.graph.model.Person;
-import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -35,9 +34,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -60,16 +57,18 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
         List<Person> people = graphTemplate.getTraversalVertex(otavio.getId(), poliana.getId()).<Person>getResult()
                 .collect(toList());
 
-        assertThat(people, Matchers.containsInAnyOrder(otavio, poliana));
+        assertThat(people).contains(otavio, poliana);
     }
 
     @Test
     public void shouldDefineLimit() {
-        List<Person> people = graphTemplate.getTraversalVertex(otavio.getId(), poliana.getId(), paulo.getId()).limit(1).<Person>getResult()
+        List<Person> people = graphTemplate.getTraversalVertex(otavio.getId(), poliana.getId(),
+                        paulo.getId()).limit(1)
+                .<Person>getResult()
                 .collect(toList());
 
         assertEquals(1, people.size());
-        assertThat(people, containsInAnyOrder(otavio));
+        assertThat(people).contains(otavio);
     }
 
     @Test
@@ -79,7 +78,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
                 .collect(toList());
 
         assertEquals(2, people.size());
-        assertThat(people, Matchers.containsInAnyOrder(otavio, poliana));
+        assertThat(people).contains(otavio, poliana);
     }
 
     @Test
@@ -104,13 +103,16 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenHasNullKey() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().has((String) null, "Poliana").next());
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex()
+                .has((String) null, "Poliana")
+                .next());
     }
 
 
     @Test
     public void shouldReturnErrorWhenHasNullValue() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().has("name", null).next());
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().has("name", null)
+                .next());
     }
 
     @Test
@@ -154,7 +156,8 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenHasKeyIsNull() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().has((String) null, P.gt(26))
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().has((String) null,
+                        P.gt(26))
                 .getResult()
                 .collect(toList()));
     }
@@ -163,29 +166,29 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     public void shouldHaveLabel() {
         List<Book> books = graphTemplate.getTraversalVertex().hasLabel("Book").<Book>getResult().collect(toList());
         assertEquals(3, books.size());
-        assertThat(books, Matchers.containsInAnyOrder(shack, license, effectiveJava));
+        assertThat(books).contains(shack, license, effectiveJava);
     }
 
     @Test
     public void shouldHaveLabel2() {
 
-        List<Book> books = graphTemplate.getTraversalVertex()
+        List<Object> entities = graphTemplate.getTraversalVertex()
                 .hasLabel(P.eq("Book").or(P.eq("Person")))
-                .<Book>getResult().collect(toList());
-        assertEquals(6, books.size());
-        assertThat(books, Matchers.containsInAnyOrder(shack, license, effectiveJava, otavio, poliana, paulo));
+                .getResult().collect(toList());
+        assertThat(entities).hasSize(6).contains(shack, license, effectiveJava, otavio, poliana, paulo);
     }
 
     @Test
     public void shouldReturnErrorWhenHasLabelHasNull() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().hasLabel((String) null).<Book>getResult().collect(toList()));
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().hasLabel((String) null)
+                .<Book>getResult().collect(toList()));
     }
 
     @Test
     public void shouldIn() {
         List<Book> books = graphTemplate.getTraversalVertex().out(READS).<Book>getResult().collect(toList());
         assertEquals(3, books.size());
-        assertThat(books, Matchers.containsInAnyOrder(shack, license, effectiveJava));
+        assertThat(books).contains(shack, license, effectiveJava);
     }
 
     @Test
@@ -197,7 +200,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
     public void shouldOut() {
         List<Person> people = graphTemplate.getTraversalVertex().in(READS).<Person>getResult().collect(toList());
         assertEquals(3, people.size());
-        assertThat(people, Matchers.containsInAnyOrder(otavio, poliana, paulo));
+        assertThat(people).contains(otavio, poliana, paulo);
     }
 
     @Test
@@ -207,13 +210,15 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldBoth() {
-        List<?> entities = graphTemplate.getTraversalVertex().both(READS).<Person>getResult().collect(toList());
+        List<?> entities = graphTemplate.getTraversalVertex().both(READS)
+                .<Person>getResult().collect(toList());
         assertEquals(6, entities.size());
     }
 
     @Test
     public void shouldReturnErrorWhenBothIsNull() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().both((String) null).<Person>getResult().collect(toList()));
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().both((String) null)
+                .<Person>getResult().collect(toList()));
     }
 
     @Test
@@ -224,7 +229,8 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenHasNotIsNull() {
-        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().hasNot((String) null).getResult().collect(toList()));
+        assertThrows(NullPointerException.class, () -> graphTemplate.getTraversalVertex().hasNot((String) null)
+                .getResult().collect(toList()));
     }
 
     @Test
@@ -265,7 +271,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
 
         maps.forEach(m -> names.add(((List) m.get("name")).get(0).toString()));
 
-        assertThat(names, containsInAnyOrder("Otavio", "Poliana", "Paulo"));
+        assertThat(names).contains("Otavio", "Poliana", "Paulo");
     }
 
     @Test
@@ -393,7 +399,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
                 .map(Book::getName)
                 .collect(toList());
 
-        assertThat(properties, contains("Effective Java", "Software License", "The Shack"));
+        assertThat(properties).contains("Effective Java", "Software License", "The Shack");
     }
 
     @Test
@@ -408,7 +414,7 @@ public class DefaultVertexTraversalTest extends AbstractTraversalTest {
                 .map(Book::getName)
                 .collect(toList());
 
-        assertThat(properties, contains("The Shack", "Software License", "Effective Java"));
+        assertThat(properties).contains("The Shack", "Software License", "Effective Java");
     }
 
     @Test

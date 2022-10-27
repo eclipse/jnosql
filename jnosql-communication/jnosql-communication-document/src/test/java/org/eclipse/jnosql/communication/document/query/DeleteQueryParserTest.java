@@ -35,9 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static jakarta.nosql.document.DocumentCondition.eq;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -74,7 +72,7 @@ class DeleteQueryParserTest {
         Mockito.verify(documentCollection).delete(captor.capture());
         DocumentDeleteQuery documentQuery = captor.getValue();
 
-        assertThat(documentQuery.getDocuments(), contains("name", "address"));
+        assertThat(documentQuery.getDocuments()).contains("name", "address");
         assertEquals("God", documentQuery.getDocumentCollection());
         assertFalse(documentQuery.getCondition().isPresent());
     }
@@ -189,10 +187,10 @@ class DeleteQueryParserTest {
 
         assertEquals(Condition.EQUALS, condition.getCondition());
         Document document = condition.getDocument();
-        List<Document> documents = document.get(new TypeReference<List<Document>>() {
+        List<Document> documents = document.get(new TypeReference<>() {
         });
-        assertThat(documents, containsInAnyOrder(Document.of("apollo", "Brother"),
-                Document.of("Zeus", "Father")));
+        assertThat(documents).contains(Document.of("apollo", "Brother"),
+                Document.of("Zeus", "Father"));
         assertEquals("siblings", document.getName());
     }
 
@@ -229,9 +227,9 @@ class DeleteQueryParserTest {
         Document document = condition.getDocument();
         assertEquals(Condition.IN, condition.getCondition());
         assertEquals("name", document.getName());
-        List<String> values = document.get(new TypeReference<List<String>>() {
+        List<String> values = document.get(new TypeReference<>() {
         });
-        assertThat(values, containsInAnyOrder("Ada", "Apollo"));
+        assertThat(values).contains("Ada", "Apollo");
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -264,7 +262,7 @@ class DeleteQueryParserTest {
         DocumentCondition condition = documentQuery.getCondition().get();
         Document document = condition.getDocument();
         assertEquals(Condition.NOT, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         DocumentCondition documentCondition = conditions.get(0);
         assertEquals(Condition.LIKE, documentCondition.getCondition());
@@ -284,10 +282,10 @@ class DeleteQueryParserTest {
         DocumentCondition condition = documentQuery.getCondition().get();
         Document document = condition.getDocument();
         assertEquals(Condition.AND, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
-        assertThat(conditions, contains(eq(Document.of("name", "Ada")),
-                eq(Document.of("age", 20L))));
+        assertThat(conditions).contains(eq(Document.of("name", "Ada")),
+                eq(Document.of("age", 20L)));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -303,10 +301,10 @@ class DeleteQueryParserTest {
         DocumentCondition condition = documentQuery.getCondition().get();
         Document document = condition.getDocument();
         assertEquals(Condition.OR, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
-        assertThat(conditions, contains(eq(Document.of("name", "Ada")),
-                eq(Document.of("age", 20L))));
+        assertThat(conditions).contains(eq(Document.of("name", "Ada")),
+                eq(Document.of("age", 20L)));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -324,7 +322,7 @@ class DeleteQueryParserTest {
         DocumentCondition condition = documentQuery.getCondition().get();
         Document document = condition.getDocument();
         assertEquals(Condition.AND, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
         assertEquals(Condition.EQUALS, conditions.get(1).getCondition());
@@ -347,7 +345,7 @@ class DeleteQueryParserTest {
         DocumentCondition condition = documentQuery.getCondition().get();
         Document document = condition.getDocument();
         assertEquals(Condition.AND, condition.getCondition());
-        List<DocumentCondition> conditions = document.get(new TypeReference<List<DocumentCondition>>() {
+        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
         assertEquals(Condition.EQUALS, conditions.get(1).getCondition());

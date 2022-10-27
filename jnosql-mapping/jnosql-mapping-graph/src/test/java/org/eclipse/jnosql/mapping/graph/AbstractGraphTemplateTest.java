@@ -27,8 +27,6 @@ import org.eclipse.jnosql.mapping.graph.model.Animal;
 import org.eclipse.jnosql.mapping.graph.model.Book;
 import org.eclipse.jnosql.mapping.graph.model.Person;
 import org.eclipse.jnosql.mapping.graph.model.WrongEntity;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -44,8 +42,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -313,10 +310,10 @@ public abstract class AbstractGraphTemplateTest {
         Collection<EdgeEntity> edgesById4 = getGraphTemplate().getEdgesById(cleanCode.getId(), Direction.IN);
 
         assertEquals(edgesById, edgesById3);
-        assertThat(edgesById, Matchers.containsInAnyOrder(likes, reads));
-        assertThat(edgesById1, containsInAnyOrder(reads));
-        assertThat(edgesById2, containsInAnyOrder(likes));
-        assertThat(edgesById4, containsInAnyOrder(reads));
+        assertThat(edgesById).contains(likes, reads);
+        assertThat(edgesById1).contains(reads);
+        assertThat(edgesById2).contains(likes);
+        assertThat(edgesById4).contains(reads);
 
     }
 
@@ -401,10 +398,10 @@ public abstract class AbstractGraphTemplateTest {
         Collection<EdgeEntity> edgesById4 = getGraphTemplate().getEdges(cleanCode, Direction.IN);
 
         assertEquals(edgesById, edgesById3);
-        assertThat(edgesById, Matchers.containsInAnyOrder(likes, reads));
-        assertThat(edgesById1, containsInAnyOrder(reads));
-        assertThat(edgesById2, containsInAnyOrder(likes));
-        assertThat(edgesById4, containsInAnyOrder(reads));
+        assertThat(edgesById).contains(likes, reads);
+        assertThat(edgesById1).contains(reads);
+        assertThat(edgesById2).contains(likes);
+        assertThat(edgesById4).contains(reads);
 
     }
 
@@ -422,7 +419,7 @@ public abstract class AbstractGraphTemplateTest {
         List<Person> people = getGraphTemplate()
                 .<Person>query("g.V().hasLabel('Person')")
                 .collect(Collectors.toList());
-        MatcherAssert.assertThat(people.stream().map(Person::getName).collect(toList()), Matchers.contains("Otavio"));
+        assertThat(people.stream().map(Person::getName).collect(toList())).contains("Otavio");
     }
 
     @Test
@@ -454,7 +451,7 @@ public abstract class AbstractGraphTemplateTest {
         PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(param)");
         prepare.bind("param", "Person");
         List<Person> people = prepare.<Person>getResult().collect(Collectors.toList());
-        MatcherAssert.assertThat(people.stream().map(Person::getName).collect(toList()), Matchers.contains("Otavio"));
+        assertThat(people.stream().map(Person::getName).collect(toList())).contains("Otavio");
     }
 
     @Test
