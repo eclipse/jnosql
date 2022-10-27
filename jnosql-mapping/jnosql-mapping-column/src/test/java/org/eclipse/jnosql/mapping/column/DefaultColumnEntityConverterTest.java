@@ -187,7 +187,7 @@ public class DefaultColumnEntityConverterTest {
 
 
         Column subColumn = entity.find("movie").get();
-        List<Column> columns = subColumn.get(new TypeReference<List<Column>>() {
+        List<Column> columns = subColumn.get(new TypeReference<>() {
         });
 
         assertEquals(3, columns.size());
