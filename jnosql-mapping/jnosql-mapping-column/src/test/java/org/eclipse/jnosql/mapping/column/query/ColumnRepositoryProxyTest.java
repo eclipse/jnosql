@@ -32,8 +32,6 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Vendor;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -62,7 +60,7 @@ import static jakarta.nosql.Condition.LESSER_THAN;
 import static jakarta.nosql.Condition.LIKE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -197,7 +195,7 @@ public class ColumnRepositoryProxyTest {
         List<Person> persons = personRepository.findByNameAndAge("name", 20);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
-        assertThat(persons, Matchers.contains(ada));
+        assertThat(persons).contains(ada);
 
     }
 
@@ -212,7 +210,7 @@ public class ColumnRepositoryProxyTest {
         Set<Person> persons = personRepository.findByAgeAndName(20, "name");
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
-        assertThat(persons, Matchers.contains(ada));
+        assertThat(persons).contains(ada);
 
     }
 
@@ -227,7 +225,7 @@ public class ColumnRepositoryProxyTest {
         Stream<Person> persons = personRepository.findByNameAndAgeOrderByName("name", 20);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
-        assertThat(persons.collect(Collectors.toList()), Matchers.contains(ada));
+        assertThat(persons.collect(Collectors.toList())).contains(ada);
 
     }
 
@@ -242,7 +240,7 @@ public class ColumnRepositoryProxyTest {
         Queue<Person> persons = personRepository.findByNameAndAgeOrderByAge("name", 20);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
-        assertThat(persons, Matchers.contains(ada));
+        assertThat(persons).contains(ada);
 
     }
 
@@ -574,7 +572,7 @@ public class ColumnRepositoryProxyTest {
         final List<String> names = conditions.stream().map(ColumnCondition::getColumn)
                 .map(Column::getName).collect(Collectors.toList());
         assertEquals("Person", query.getColumnFamily());
-        MatcherAssert.assertThat(names, Matchers.containsInAnyOrder("salary.currency", "salary.value"));
+        assertThat(names).contains("salary.currency", "salary.value");
 
     }
 

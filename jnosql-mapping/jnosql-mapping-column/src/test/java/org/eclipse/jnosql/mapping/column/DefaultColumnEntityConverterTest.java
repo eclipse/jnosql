@@ -52,8 +52,7 @@ import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -98,8 +97,9 @@ public class DefaultColumnEntityConverterTest {
         ColumnEntity entity = converter.toColumn(person);
         assertEquals("Person", entity.getName());
         assertEquals(4, entity.size());
-        assertThat(entity.getColumns(), containsInAnyOrder(Column.of("_id", 12L),
-                Column.of("age", 10), Column.of("name", "Otavio"), Column.of("phones", Arrays.asList("234", "2342"))));
+        assertThat(entity.getColumns()).contains(Column.of("_id", 12L),
+                Column.of("age", 10), Column.of("name", "Otavio"),
+                Column.of("phones", Arrays.asList("234", "2342")));
 
     }
 
@@ -110,7 +110,7 @@ public class DefaultColumnEntityConverterTest {
         assertEquals("Actor", entity.getName());
         assertEquals(6, entity.size());
 
-        assertThat(entity.getColumns(), containsInAnyOrder(columns));
+        assertThat(entity.getColumns()).contains(columns);
     }
 
     @Test
