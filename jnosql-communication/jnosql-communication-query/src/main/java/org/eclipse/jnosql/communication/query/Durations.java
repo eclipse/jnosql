@@ -19,7 +19,7 @@ final class Durations {
     }
 
     static Duration get(QueryParser.TtlContext ctx) {
-        long value = Long.valueOf(ctx.INT().getText());
+        long value = Long.parseLong(ctx.INT().getText());
         String unit = ctx.unit().getText();
         switch (unit) {
             case "day":

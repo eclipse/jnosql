@@ -48,12 +48,12 @@ public final class AntlrSelectQueryProvider extends AbstractWhereSupplier implem
 
     @Override
     public void exitSkip(QueryParser.SkipContext ctx) {
-        this.skip = Long.valueOf(ctx.INT().getText());
+        this.skip = Long.parseLong(ctx.INT().getText());
     }
 
     @Override
     public void exitLimit(QueryParser.LimitContext ctx) {
-        this.limit = Long.valueOf(ctx.INT().getText());
+        this.limit = Long.parseLong(ctx.INT().getText());
     }
 
     @Override
