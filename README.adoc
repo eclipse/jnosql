@@ -79,9 +79,9 @@ Optional<Car> nameResult = repository.findByName("Ferrari");
 Eclipse JNoSQL is an implementation of Jakarta NoSQL; it requires the minimum requirements:
 
 * Java 11 (or higher)
-* CDI
-* JSON-B
-* JSON-P
+* https://jakarta.ee/specifications/cdi/2.0/[CDI]
+* https://jakarta.ee/specifications/jsonb/1.0/[JSON-B]
+* https://jakarta.ee/specifications/jsonp/1.1/[JSON-P]
 
 === Key-value
 
