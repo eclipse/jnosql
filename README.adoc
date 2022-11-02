@@ -87,6 +87,18 @@ Eclipse JNoSQL is an implementation of Jakarta NoSQL; it requires the minimum re
 
 Jakarta NoSQL has a key-value template to explore the specific behavior of this NoSQL type.
 
+[source,xml]
+----
+<dependency>
+    <groupId>org.eclipse.jnosql.mapping</groupId>
+    <artifactId>mapping-key-value</artifactId>
+    <version>1.0.0-b4</version>
+</dependency>
+----
+
+Furthermore, check a key-value communication driver.
+You can see some implementations in the https://github.com/eclipse/jnosql-communication-driver[JNoSQL communication-driver project].
+
 [source,java]
 ----
 @Inject
