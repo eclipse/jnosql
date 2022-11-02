@@ -232,6 +232,14 @@ It is Apache TinkerPop agnostic database; thus, you can change the database with
 
 === Bean Validation
 
+[source,xml]
+----
+<dependency>
+    <groupId>org.eclipse.jnosql.mapping</groupId>
+    <artifactId>mapping-validation</artifactId>
+    <version>1.0.0-b4</version>
+</dependency>
+----
 
 === More information
 
