@@ -214,27 +214,20 @@ Despite other Jakarta NoSQL types, Graph has no communication layer from Jakarta
 [source,java]
 ----
 @Inject
-DocumentTemplate template;
+GraphTemplate template;
 ...
 
-Car ferrari = Car.id(1L).name("ferrari").city("Rome").type(CarType.SPORT);
+Category java = Category.of("Java");
+Book effectiveJava = Book.of("Effective Java");
 
-template.insert(ferrari);
-Optional<Car> car = template.find(Car.class, 1L);
+template.insert(java);
+template.insert(effectiveJava);
+EdgeEntity edge = template.edge(java, "is", software);
 
-DocumentDeleteQuery deleteQuery = delete().from("Car")
-                    .where("_id").eq(1L).build();
-template.delete(deleteQuery);
-
-
-DocumentDeleteQuery query = select().from("Car")
-                    .where("_id").eq(1L).build();
-
-Optional<Car> result = template.singleResult("select * from Car where _id = 1");
-
+Stream<Book> books = template.getTraversalVertex().hasLabel("Category").has("name", "Java").in("is").hasLabel("Book").getResult();
 ----
 
-It is a document agnostic database; thus, you can change the database without or less code impact possible.
+It is a Apache TinkerPop agnostic database; thus, you can change the database without or less code impact possible.
 
 === More information
 
