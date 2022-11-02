@@ -74,6 +74,13 @@ Optional<Car> idResult = repository.findById(1L);
 Optional<Car> nameResult = repository.findByName("Ferrari");
 ----
 
+== Getting started
+
+* Java 11 (or higher)
+* CDI
+* JSON-B
+* JSON-P
+
 === Key-value
 
 Jakarta NoSQL has a key-value template to explore the specific behavior of this NoSQL type.
