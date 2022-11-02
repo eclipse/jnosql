@@ -227,7 +227,7 @@ EdgeEntity edge = template.edge(java, "is", software);
 Stream<Book> books = template.getTraversalVertex().hasLabel("Category").has("name", "Java").in("is").hasLabel("Book").getResult();
 ----
 
-It is a Apache TinkerPop agnostic database; thus, you can change the database without or less code impact possible.
+It is Apache TinkerPop agnostic database; thus, you can change the database without or less code impact possible.
 
 === More information
 
