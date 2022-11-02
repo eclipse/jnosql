@@ -167,9 +167,9 @@ This project is governed by the Eclipse Foundation of Conduct. By participating,
 
 == Getting Help
 
-Having trouble with Jakarta NoSQL? We’d love to help!
+Having trouble with Eclipse JNoSQL? We’d love to help!
 
-Report bugs with Jakarta NoSQL at https://github.com/eclipse/jnosql.
+Report bugs with Eclipse JNoSQL at https://github.com/eclipse/jnosql.
 
 == Building from Source
 
@@ -179,15 +179,3 @@ You don’t need to build from source to use the project, but if you want to try
 ----
 mvn clean install
 ----
-
-== TCK
-
-Any Jakarta NoSQL module must pass this test suite.
-The TCK uses `JUnit Jupiter 5`.
-Check it more link:tck/README.adoc[to know more]
-
-== Spec
-
-Any Jakarta NoSQL module must pass this test suite.
-The TCK uses `JUnit Jupiter 5`.
-Check it more link:spec/README.adoc[to know more]
