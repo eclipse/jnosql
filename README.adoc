@@ -118,6 +118,18 @@ It is a key-value agnostic database; thus, you can change the database without o
 
 Jakarta NoSQL has a column template to explore the specific behavior of this NoSQL type.
 
+[source,xml]
+----
+<dependency>
+    <groupId>org.eclipse.jnosql.mapping</groupId>
+    <artifactId>mapping-column</artifactId>
+    <version>1.0.0-b4</version>
+</dependency>
+----
+
+Furthermore, check a column communication driver.
+You can see some implementations in the https://github.com/eclipse/jnosql-communication-driver[JNoSQL communication-driver project].
+
 [source,java]
 ----
 @Inject
@@ -146,6 +158,18 @@ It is a wide-column agnostic database; thus, you can change the database without
 === Document
 
 Jakarta NoSQL has a document template to explore the specific behavior of this NoSQL type.
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.eclipse.jnosql.mapping</groupId>
+    <artifactId>mapping-document</artifactId>
+    <version>1.0.0-b4</version>
+</dependency>
+----
+
+Furthermore, check a document communication driver.
+You can see some implementations in the https://github.com/eclipse/jnosql-communication-driver[JNoSQL communication-driver project].
 
 [source,java]
 ----
