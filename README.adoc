@@ -196,6 +196,46 @@ Optional<Car> result = template.singleResult("select * from Car where _id = 1");
 
 It is a document agnostic database; thus, you can change the database without or less code impact possible.
 
+=== Graph
+
+Jakarta NoSQL has a Graph template to explore the specific behavior of this NoSQL type.
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.eclipse.jnosql.mapping</groupId>
+    <artifactId>mapping-graph</artifactId>
+    <version>1.0.0-b4</version>
+</dependency>
+----
+
+Despite other Jakarta NoSQL types, Graph has no communication layer from Jakarta NoSQL API. It integrates with https://tinkerpop.apache.org/[Apache Tinkerpop] instead.
+
+[source,java]
+----
+@Inject
+DocumentTemplate template;
+...
+
+Car ferrari = Car.id(1L).name("ferrari").city("Rome").type(CarType.SPORT);
+
+template.insert(ferrari);
+Optional<Car> car = template.find(Car.class, 1L);
+
+DocumentDeleteQuery deleteQuery = delete().from("Car")
+                    .where("_id").eq(1L).build();
+template.delete(deleteQuery);
+
+
+DocumentDeleteQuery query = select().from("Car")
+                    .where("_id").eq(1L).build();
+
+Optional<Car> result = template.singleResult("select * from Car where _id = 1");
+
+----
+
+It is a document agnostic database; thus, you can change the database without or less code impact possible.
+
 === More information
 
 Check the https://www.jnosql.org/spec/[reference documentation], and https://www.jnosql.org/javadoc/[Javadocs] to know more.
