@@ -229,6 +229,10 @@ Stream<Book> books = template.getTraversalVertex().hasLabel("Category").has("nam
 
 It is Apache TinkerPop agnostic database; thus, you can change the database without or less code impact possible.
 
+
+=== Bean Validation
+
+
 === More information
 
 Check the https://www.jnosql.org/spec/[reference documentation], and https://www.jnosql.org/javadoc/[Javadocs] to know more.
