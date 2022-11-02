@@ -232,6 +232,8 @@ It is Apache TinkerPop agnostic database; thus, you can change the database with
 
 === Bean Validation
 
+Eclipse JNoSQL has support for Bean Validation. It will validate before inserting/updating and constructing an entity.
+
 [source,xml]
 ----
 <dependency>
@@ -240,6 +242,8 @@ It is Apache TinkerPop agnostic database; thus, you can change the database with
     <version>1.0.0-b4</version>
 </dependency>
 ----
+
+It requires a https://jakarta.ee/specifications/bean-validation/[bean validation implementation].
 
 === More information
 
