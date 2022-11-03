@@ -246,6 +246,35 @@ Eclipse JNoSQL has support for Bean Validation. It will validate before insertin
 
 It requires a https://jakarta.ee/specifications/bean-validation/[bean validation implementation].
 
+[source,java]
+----
+@Entity
+public class Car {
+
+    @Column
+    @NotNull
+    @Pattern(regexp = "[A-Z]{3}-[0-9]{4}", message = "Invalid car plate")
+    private String plate;
+
+    @Column
+    @NotNull
+    @MonetaryMin(value = "100", message = "There is not car cheap like that")
+    @MonetaryMax(value = "1000000", message = "The parking does not support fancy car")
+    @CurrencyAccepted(currencies = "USD", message = "The car price must work with USD")
+    @Convert(MonetaryAmountConverter.class)
+    private MonetaryAmount price;
+
+    @Column
+    @NotBlank
+    private String model;
+
+    @Column
+    @NotBlank
+    private String color;
+    ...
+}
+----
+
 === More information
 
 Check the https://www.jnosql.org/spec/[reference documentation], and https://www.jnosql.org/javadoc/[Javadocs] to know more.
