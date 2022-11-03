@@ -4,8 +4,6 @@ Thanks for your interest in this project.
 
 == Project description
 
-
-
 * https://projects.eclipse.org/projects/technology.jnosql
 
 == Developer resources
