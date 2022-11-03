@@ -82,6 +82,7 @@ Eclipse JNoSQL is an implementation of Jakarta NoSQL; it requires the minimum re
 * https://jakarta.ee/specifications/cdi/2.0/[CDI]
 * https://jakarta.ee/specifications/jsonb/1.0/[JSON-B]
 * https://jakarta.ee/specifications/jsonp/1.1/[JSON-P]
+* https://microprofile.io/microprofile-config/[Eclipse Microprofile Configuration]
 
 === Key-value
 
