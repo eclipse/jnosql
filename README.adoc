@@ -275,6 +275,15 @@ public class Car {
 }
 ----
 
+
+[source,java]
+----
+@Inject
+Template template;
+...
+template.insert(new Car());//invalid car
+----
+
 === More information
 
 Check the https://www.jnosql.org/spec/[reference documentation], and https://www.jnosql.org/javadoc/[Javadocs] to know more.
