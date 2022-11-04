@@ -1,11 +1,11 @@
 = Eclipse JNoSQL
 :toc: auto
 
-Jakarta NoSQL is a Java framework that streamlines the integration of Java applications with NoSQL databases.
+Eclipse JNoSQL is a compatible implementation of the https://jakarta.ee/specifications/nosql/[Jakarta NoSQL] specification, a Java framework that streamlines the integration of Java applications with NoSQL databases.
 
-== One Mapping API to multiples NoSQL databases
+== One Mapping API to Multiples NoSQL Databases
 
-Eclipse JNoSQL has one API for each NoSQL database type. However, it uses the same annotations to map Java objects. Therefore, with just these annotations that look like JPA, there is support for more than twenty NoSQL databases.
+Eclipse JNoSQL provides one API for each NoSQL database type. However, it incorporates the same annotations from the https://jakarta.ee/specifications/persistence/[Jakarta Persistence] specification and heritage Java Persistence API (JPA) to map Java objects. Therefore, with just these annotations that look like JPA, there is support for more than twenty NoSQL databases.
 
 [source,java]
 ----
@@ -20,10 +20,9 @@ public class Car {
     private CarType type;
  //...
 }
-
 ----
 
-The Mapper annotations are pretty familiar if you are a JPA developer:
+Theses annotations from the Mapping API will look familiar to the Jakarta Persistence/JPA developer:
 
 * Entity
 * Id
@@ -35,9 +34,9 @@ The Mapper annotations are pretty familiar if you are a JPA developer:
 * Inheritance
 * MappedSuperclass
 
-IMPORTANT: Although similar to JPA, Jakarta NoSQL defines persistable fields with either ID or Column annotation.
+IMPORTANT: Although similar to JPA, Jakarta NoSQL defines persistable fields with either the ``@Id``` or ```@Column``` annotation.
 
-After mapping an entity, you can explore the advantage of a Template, which is a helper to increase productivity on NoSQL operations.
+After mapping an entity, you can explore the advantage of using a ```Template``` interface, which can increase productivity on NoSQL operations.
 
 [source,java]
 ----
@@ -54,7 +53,7 @@ template.delete(Car.class, 1L);
 
 This template has specialization to take the benefits of a particular NoSQL database type.
 
-There is  ```Repository``` exploring the DDD pattern to have a higher abstraction.
+A ```Repository``` interface is also provided for exploring the Domain-Driven Design (DDD) pattern for a higher abstraction.
 
 [source,java]
 ----
@@ -74,19 +73,26 @@ Optional<Car> idResult = repository.findById(1L);
 Optional<Car> nameResult = repository.findByName("Ferrari");
 ----
 
-== Getting started
+== Getting Started
 
-Eclipse JNoSQL is an implementation of Jakarta NoSQL; it requires the minimum requirements:
+Eclipse JNoSQL requires these minimum requirements:
 
 * Java 11 (or higher)
-* https://jakarta.ee/specifications/cdi/2.0/[CDI]
-* https://jakarta.ee/specifications/jsonb/1.0/[JSON-B]
-* https://jakarta.ee/specifications/jsonp/1.1/[JSON-P]
-* https://microprofile.io/microprofile-config/[Eclipse Microprofile Configuration]
+* https://jakarta.ee/specifications/cdi/2.0/[Jakarta Contexts & Dependenct Injection 2.0] (CDI)
+* https://jakarta.ee/specifications/jsonb/1.0/[Jakarta JSON Binding 1.0] (JSON-B)
+* https://jakarta.ee/specifications/jsonp/1.1/[Jakarta JSON Processing 1.1] (JSON-P)
+* https://microprofile.io/microprofile-config/[MicroProfile Config]
 
-=== Key-value
+=== NoSQL Database Types
 
-Jakarta NoSQL has a key-value template to explore the specific behavior of this NoSQL type.
+* Key-Value
+* Column Family
+* Document
+* Graph
+
+=== Key-Value
+
+Jakarta NoSQL provides a Key-Value template to explore the specific behavior of this NoSQL type.
 
 [source,xml]
 ----
@@ -97,8 +103,7 @@ Jakarta NoSQL has a key-value template to explore the specific behavior of this 
 </dependency>
 ----
 
-Furthermore, check a key-value communication driver.
-You can see some implementations in the https://github.com/eclipse/jnosql-communication-driver[JNoSQL communication-driver project].
+Furthermore, check for a Key-Value communications driver. You can find some implementations in the JNoSQL https://github.com/eclipse/jnosql-communication-driver[Communications Driver API].
 
 [source,java]
 ----
@@ -113,11 +118,11 @@ Optional<Car> car = template.get(1L, Car.class);
 template.delete(1L);
 ----
 
-It is a key-value agnostic database; thus, you can change the database without or less code impact possible.
+Key-Value is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
 
-=== Column
+=== Column Family
 
-Jakarta NoSQL has a column template to explore the specific behavior of this NoSQL type.
+Jakarta NoSQL provides a Column Family template to explore the specific behavior of this NoSQL type.
 
 [source,xml]
 ----
@@ -128,8 +133,7 @@ Jakarta NoSQL has a column template to explore the specific behavior of this NoS
 </dependency>
 ----
 
-Furthermore, check a column communication driver.
-You can see some implementations in the https://github.com/eclipse/jnosql-communication-driver[JNoSQL communication-driver project].
+Furthermore, check for a Column Family communications driver. You can find some implementations in the JNoSQL https://github.com/eclipse/jnosql-communication-driver[Communications Driver API].
 
 [source,java]
 ----
@@ -146,19 +150,17 @@ ColumnDeleteQuery deleteQuery = delete().from("Car")
                     .where("_id").eq(1L).build();
 template.delete(deleteQuery);
 
-
 ColumnDeleteQuery query = select().from("Car")
                     .where("_id").eq(1L).build();
 
 Optional<Car> result = template.singleResult("select * from Car where _id = 1");
-
 ----
 
-It is a wide-column agnostic database; thus, you can change the database without or less code impact possible.
+Column Family is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
 
 === Document
 
-Jakarta NoSQL has a document template to explore the specific behavior of this NoSQL type.
+Jakarta NoSQL provides a Document template to explore the specific behavior of this NoSQL type.
 
 [source,xml]
 ----
@@ -169,8 +171,7 @@ Jakarta NoSQL has a document template to explore the specific behavior of this N
 </dependency>
 ----
 
-Furthermore, check a document communication driver.
-You can see some implementations in the https://github.com/eclipse/jnosql-communication-driver[JNoSQL communication-driver project].
+Furthermore, check for a Document communications driver. You can find some implementations in the JNoSQL https://github.com/eclipse/jnosql-communication-driver[Communications Driver API].
 
 [source,java]
 ----
@@ -187,19 +188,17 @@ DocumentDeleteQuery deleteQuery = delete().from("Car")
                     .where("_id").eq(1L).build();
 template.delete(deleteQuery);
 
-
 DocumentDeleteQuery query = select().from("Car")
                     .where("_id").eq(1L).build();
 
 Optional<Car> result = template.singleResult("select * from Car where _id = 1");
-
 ----
 
-It is a document agnostic database; thus, you can change the database without or less code impact possible.
+Document is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
 
 === Graph
 
-Jakarta NoSQL has a Graph template to explore the specific behavior of this NoSQL type.
+Jakarta NoSQL provides a Graph template to explore the specific behavior of this NoSQL type.
 
 [source,xml]
 ----
@@ -210,7 +209,7 @@ Jakarta NoSQL has a Graph template to explore the specific behavior of this NoSQ
 </dependency>
 ----
 
-Despite other Jakarta NoSQL types, Graph has no communication layer from Jakarta NoSQL API. It integrates with https://tinkerpop.apache.org/[Apache Tinkerpop] instead.
+Despite the other three Jakarta NoSQL types, Graph does *not* provide a communication layer from Jakarta NoSQL API. Instead, it integrates with https://tinkerpop.apache.org/[Apache Tinkerpop].
 
 [source,java]
 ----
@@ -228,12 +227,11 @@ EdgeEntity edge = template.edge(java, "is", software);
 Stream<Book> books = template.getTraversalVertex().hasLabel("Category").has("name", "Java").in("is").hasLabel("Book").getResult();
 ----
 
-It is Apache TinkerPop agnostic database; thus, you can change the database without or less code impact possible.
-
+Apache TinkerPop is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
 
 === Bean Validation
 
-Eclipse JNoSQL has support for Bean Validation. It will validate before inserting/updating and constructing an entity.
+Eclipse JNoSQL provide support for bean validation. It will validate before inserting/updating and constructing an entity.
 
 [source,xml]
 ----
@@ -244,7 +242,7 @@ Eclipse JNoSQL has support for Bean Validation. It will validate before insertin
 </dependency>
 ----
 
-It requires a https://jakarta.ee/specifications/bean-validation/[bean validation implementation].
+This requires the https://jakarta.ee/specifications/bean-validation/[Jakarta Bean Validation] specification.
 
 [source,java]
 ----
@@ -275,24 +273,21 @@ public class Car {
 }
 ----
 
-
 [source,java]
 ----
 @Inject
 Template template;
 ...
-template.insert(new Car());//invalid car
+template.insert(new Car()); // invalid car
 ----
 
-=== More information
+=== More Information
 
-Check the https://www.jnosql.org/spec/[reference documentation], and https://www.jnosql.org/javadoc/[Javadocs] to know more.
-
+Check the https://www.jnosql.org/spec/[reference documentation] and https://www.jnosql.org/javadoc/[JavDocs] to learn more.
 
 == Code of Conduct
 
-This project is governed by the Eclipse Foundation of Conduct. By participating, you are expected to uphold this code of conduct. Please report unacceptable behavior to codeofconduct@eclipse.org.
-
+This project is governed by the Eclipse Foundation Code of Conduct. By participating, you are expected to uphold this code of conduct. Please report unacceptable behavior to codeofconduct@eclipse.org.
 
 == Getting Help
 
