@@ -46,27 +46,27 @@ final class DefaultKeyValueEntity implements KeyValueEntity {
     }
 
     @Override
-    public <K> K getKey(TypeSupplier<K> typeSupplier) {
-        Objects.requireNonNull(typeSupplier, "typeSupplier is required");
-        return Value.of(key).get(typeSupplier);
+    public <K> K getKey(TypeSupplier<K> supplier) {
+        Objects.requireNonNull(supplier, "supplier is required");
+        return Value.of(key).get(supplier);
     }
 
     @Override
-    public <K> K getKey(Class<K> clazz) {
-        Objects.requireNonNull(clazz, "clazz is required");
-        return Value.of(key).get(clazz);
+    public <K> K getKey(Class<K> type) {
+        Objects.requireNonNull(type, "type is required");
+        return Value.of(key).get(type);
     }
 
     @Override
-    public <V> V getValue(TypeSupplier<V> typeSupplier) {
-        Objects.requireNonNull(typeSupplier, "typeSupplier is required");
-        return value.get(typeSupplier);
+    public <V> V getValue(TypeSupplier<V> supplier) {
+        Objects.requireNonNull(supplier, "supplier is required");
+        return value.get(supplier);
     }
 
     @Override
-    public <V> V getValue(Class<V> clazz) {
-        Objects.requireNonNull(clazz, "clazz is required");
-        return value.get(clazz);
+    public <V> V getValue(Class<V> type) {
+        Objects.requireNonNull(type, "type is required");
+        return value.get(type);
     }
 
     @Override
