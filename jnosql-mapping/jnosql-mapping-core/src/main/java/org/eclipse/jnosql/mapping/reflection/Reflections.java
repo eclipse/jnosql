@@ -70,10 +70,10 @@ public interface Reflections {
      * Find the Column from the name field.
      *
      * @param string the name of field
-     * @param clazz  the class
+     * @param type  the class
      * @return the field from the name
      */
-    Field getField(String string, Class<?> clazz);
+    Field getField(String string, Class<?> type);
 
     /**
      * returns the generic type of field.
