@@ -48,12 +48,14 @@ final class DefaultColumn implements Column, Entry {
 
     @Override
     public <T> T get(Class<T> type) {
-        return value.get(clazz);
+        Objects.requireNonNull(type, "type is required");
+        return value.get(type);
     }
 
     @Override
-    public <T> T get(TypeSupplier<T> typeSupplier) {
-        return value.get(typeSupplier);
+    public <T> T get(TypeSupplier<T> supplier) {
+        Objects.requireNonNull(supplier, "supplier is required");
+        return value.get(supplier);
     }
 
     @Override

@@ -39,13 +39,13 @@ public final class EnumReader implements ValueReader {
     public <T> T read(Class<T> type, Object value) {
 
 
-        if (clazz.isInstance(value)) {
+        if (type.isInstance(value)) {
             return (T) value;
         }
-        if (!Enum.class.isAssignableFrom(clazz)) {
-            throw new IllegalArgumentException("The informed class isn't an enum type: " + clazz);
+        if (!Enum.class.isAssignableFrom(type)) {
+            throw new IllegalArgumentException("The informed class isn't an enum type: " + type);
         }
-        List<Enum> elements = getEnumList((Class<Enum>) clazz);
+        List<Enum> elements = getEnumList((Class<Enum>) type);
 
         if (Number.class.isInstance(value)) {
             int index = Number.class.cast(value).intValue();
