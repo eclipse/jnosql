@@ -59,17 +59,17 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
         }
 
         @Override
-        public <T> List<T> getList(String bucketName, Class<T> clazz) {
+        public <T> List<T> getList(String bucketName, Class<T> type) {
             return null;
         }
 
         @Override
-        public <T> Set<T> getSet(String bucketName, Class<T> clazz) {
+        public <T> Set<T> getSet(String bucketName, Class<T> type) {
             return null;
         }
 
         @Override
-        public <T> Queue<T> getQueue(String bucketName, Class<T> clazz) {
+        public <T> Queue<T> getQueue(String bucketName, Class<T> type) {
             return null;
         }
 

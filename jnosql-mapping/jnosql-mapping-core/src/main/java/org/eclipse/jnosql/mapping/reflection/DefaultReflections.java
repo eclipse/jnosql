@@ -80,7 +80,7 @@ public class DefaultReflections implements Reflections {
 
 
     @Override
-    public <T> T newInstance(Class<T> clazz) {
+    public <T> T newInstance(Class<T> type) {
         try {
             Constructor<T> constructor = getConstructor(clazz);
             return newInstance(constructor);

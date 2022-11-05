@@ -47,7 +47,7 @@ final class DefaultValue  implements Value {
     }
 
     @Override
-    public <T> T get(Class<T> clazz) {
+    public <T> T get(Class<T> type) {
         return SERVICE_PROVIDER.read(clazz, value);
     }
 

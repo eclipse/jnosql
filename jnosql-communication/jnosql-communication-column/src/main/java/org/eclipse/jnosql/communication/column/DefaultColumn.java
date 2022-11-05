@@ -47,7 +47,7 @@ final class DefaultColumn implements Column, Entry {
     }
 
     @Override
-    public <T> T get(Class<T> clazz) {
+    public <T> T get(Class<T> type) {
         return value.get(clazz);
     }
 

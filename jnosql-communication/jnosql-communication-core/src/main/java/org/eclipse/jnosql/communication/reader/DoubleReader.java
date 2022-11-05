@@ -32,7 +32,7 @@ public final class DoubleReader implements ValueReader {
     }
 
     @Override
-    public <T> T read(Class<T> clazz, Object value) {
+    public <T> T read(Class<T> type, Object value) {
 
         if (Double.class.isInstance(value)) {
             return (T) value;

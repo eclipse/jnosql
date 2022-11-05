@@ -45,7 +45,7 @@ final class ParamValue implements Value {
     }
 
     @Override
-    public <T> T get(Class<T> clazz) {
+    public <T> T get(Class<T> type) {
         validValue();
         return Value.of(value).get(clazz);
     }

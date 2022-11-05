@@ -35,7 +35,7 @@ public final class BooleanReader implements ValueReader {
     }
 
     @Override
-    public <T> T read(Class<T> clazz, Object value) {
+    public <T> T read(Class<T> type, Object value) {
 
         boolean isAtomicBoolean = AtomicBoolean.class.equals(clazz);
 

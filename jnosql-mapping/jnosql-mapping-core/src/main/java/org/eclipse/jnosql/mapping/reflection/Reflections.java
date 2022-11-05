@@ -64,7 +64,7 @@ public interface Reflections {
      * @param <T>   the instance type
      * @return the new instance that class
      */
-    <T> T newInstance(Class<T> clazz);
+    <T> T newInstance(Class<T> type);
 
     /**
      * Find the Column from the name field.
