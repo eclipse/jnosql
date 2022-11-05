@@ -1,0 +1,203 @@
+= Changelog
+:toc: auto
+
+All notable changes to this project will be documented in this file.
+
+The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
+and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
+
+== [Unreleased]
+
+=== Added
+- Create a CHANGELOG file to track the specification evolution
+
+=== Changed
+- Move the default documentation to ASCIIDOC
+
+== [1.0.0-b4] - 2022-08-04
+
+=== Added
+- Add QueryBuilder
+
+=== Changed
+- Upgrade Tinkerpop to version 3.6.0
+
+=== Fixed
+- Parasite property in document deserialization
+
+== [1.0.0-b3] - 2021-03-01
+
+=== Changed
+- Remove JNoSQL logo from repositories
+- Remove "Artemis" references in the package and use "mapping" instead.
+- Remove "diana" references in the package name and use "communication" instead.
+- Update Cassandra library to use DataStax OSS
+
+=== Fixed
+- Fixes HashMap issue in the mapping API
+
+== [1.0.0-b2] - 2020-06-07
+
+=== Added
+- Creates TCK Mapping
+- Creates TCK Communication
+- Creates TCK Drive
+- Defines Reactive API as an extension
+
+=== Changed
+- Remove Async APIs
+- Keep the compatibility with Java 11 and Java 8
+
+== [1.0.0-b1] - 2019-12-01
+
+=== Added
+- Creates Integration with Eclipse MicroProfile Configuration
+- Creates Tree Graph Operation
+
+=== Changed
+- Split the project into API/implementation
+- Updates the API to use Jakarta NoSQL
+- Moves the Jakarta NoSQL API to the right project
+
+== [0.0.9] - 2019-05-16
+
+=== Added
+- Allows Repository with pagination
+- Allows update query with column using JSON
+- Allows insert query with column using JSON
+- Allows update query with a document using JSON
+- Allows insert query with a document using JSON
+- Allow cryptography in the settings
+- Define alias configuration in the communication layer
+
+=== Changed
+- Improves ConfigurationUnit annotation to inject Repository and RepositoryAsync
+- Make Settings an immutable instance
+
+=== Fixed
+- Native ArangoDB driver uses the type metadata which might cause class cast exception
+
+== [0.0.8] - 2019-02-20
+
+=== Added
+- Defines GraphFactory
+- Creates GraphFactory implementations
+- Allows inject by Template and repositories classes from @ConfigurationUnit
+- Support to DynamoDB
+
+=== Changed
+- Improve performance to access instance creation beyond reading and writing attributes
+- Improve documentation in Class and Field metadata
+- Join projects as one single repository
+
+=== Fixed
+- Fixes repository default configuration
+- Fixes test scope
+
+== [0.0.7] - 2018-10-29
+
+=== Added
+- Adds support to CouchDB
+
+=== Changed
+- Updates OrientDB to version 3.0
+- Improves query to Column
+- Improves query to Document
+- Improves Cassandra query with paging state
+- Optimizes Query cache to avoid memory leak
+- Improves performance of a query method
+
+=== Fixed
+- Fixes MongoDB driver
+- Fixes NPE at Redis Configuration
+
+== [0.0.6] - 2018-06-23
+
+=== Added
+- Adds support to ravenDB
+- Adds support to syntax query with String in Column, Key-value, and document.
+- Adds integration with gremlin as String in Mapper layer
+- Adds support to syntax query in Repository and template class to Mapper
+- Adds support to Repository Producer
+
+=== Break compatibility
+- Changes start to skip when need to jump elements in either Document or Column query
+- Changes maxResult to limit to define the maximum of items that must return in a query in either
+
+=== Fixed
+- Fixes MongoDB limit and start a query
+- Fixes MongoDB order query
+- Avoid duplication injection on repository bean
+
+== [0.0.5] - 2018-04-07
+
+=== Added
+- Adds support to findAll in Graph
+- Adds support to yaml file
+
+=== Changed
+- Couchbase keeps the behavior when key is not found
+- OrientDB improves callback in live query
+- Redis improves SortedSet with clear method
+- Cassandra optimizes query with underscore
+- ArangoDB optimizes AQL query
+- Graph improves getSingleResult
+- Graph improves getResultList
+- Improves performance in Graph
+
+=== Fixed
+- Couchbase fixes TTL behavior in document
+- Couchbase fixes TTL behavior in key-value
+- Couchbase Fixes the JSON structure when a document is saved
+- Couchbase Fixes JSON structures in key-value structures
+- OrientDB fixes live query
+- OrientDB fixes live query with Map param
+- OrientDB fixes delete query without parameters
+- OrientDB fixes query with not condition
+- OrientDB fixes sort of query
+- OrientDB fixes pagination resource
+- MongoDB fixes queries with "in" condition
+- Cassandra fixes query with condition "in"
+- Cassandra fixes UDT
+- ArangoDB fixes insert
+
+== [0.0.4] - 2018-01-18
+
+=== Added
+- Supports to Infinispan
+- Modules at JNoSQL Diana
+- Adds query with param to OrientDB
+- Adds Hazelcast query
+
+=== Changed
+- Updates driver ArangoDB to 2
+- Updates Couchbase driver to version 2.5.1
+- Updates OrientDB driver to version 2.2.29
+- Updates Cassandra driver to version 3.3.0
+- Updates MongoDB driver to version 2.5.1
+- Updates Hazelcast driver version to 3.9
+- Updates Redis driver to version 2.9.0
+- Updates Riak driver to version 2.1.1
+- Improves fluent API in document
+- Improves fluent API in column
+
+=== Fixed
+- Fixes async issues at MongoDB
+- Fix Embedded on Collection
+
+== [0.0.3] - 2017-10-14
+
+=== Added
+- Uses Select/Delete in Document as fluent API
+- Uses Select/Delete in Column as fluent API
+
+=== Changed
+- Improves ColumnEntity to use Map structure instead of List
+- Improves DocumentEntity to use Map structure instead of List
+
+== [0.0.2] - 2017-06-25
+
+=== Changed
+
+- Updates Header license
+- Updates nomenclature (Repository.save discussion)
