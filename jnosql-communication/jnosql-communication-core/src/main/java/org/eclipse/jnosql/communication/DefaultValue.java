@@ -47,16 +47,17 @@ final class DefaultValue  implements Value {
     }
 
     @Override
-    public <T> T get(Class<T> clazz) {
-        return SERVICE_PROVIDER.read(clazz, value);
+    public <T> T get(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        return SERVICE_PROVIDER.read(type, value);
     }
 
     @Override
-    public <T> T get(TypeSupplier<T> typeReference) {
-        if (REFERENCE_READER.test(Objects.requireNonNull(typeReference, "typeReference is required"))) {
-            return REFERENCE_READER.convert(typeReference, value);
+    public <T> T get(TypeSupplier<T> supplier) {
+        if (REFERENCE_READER.test(Objects.requireNonNull(supplier, "supplier is required"))) {
+            return REFERENCE_READER.convert(supplier, value);
         }
-        throw new UnsupportedOperationException("The type " + typeReference + " is not supported");
+        throw new UnsupportedOperationException("The type " + supplier + " is not supported");
     }
 
     @Override

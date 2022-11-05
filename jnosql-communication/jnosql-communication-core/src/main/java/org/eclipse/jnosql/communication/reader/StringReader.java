@@ -32,9 +32,9 @@ public final class StringReader implements ValueReader {
     }
 
     @Override
-    public <T> T read(Class<T> clazz, Object value) {
+    public <T> T read(Class<T> type, Object value) {
 
-        if (CharSequence.class.equals(clazz) && CharSequence.class.isInstance(value)) {
+        if (CharSequence.class.equals(type) && CharSequence.class.isInstance(value)) {
             return (T) value;
         }
         return (T) value.toString();

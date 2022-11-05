@@ -36,7 +36,7 @@ public final class BigDecimalReader implements ValueReader {
     }
 
     @Override
-    public <T> T read(Class<T> clazz, Object value) {
+    public <T> T read(Class<T> type, Object value) {
 
         if (BigDecimal.class.isInstance(value)) {
             return (T) value;

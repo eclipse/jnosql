@@ -80,9 +80,9 @@ public class DefaultReflections implements Reflections {
 
 
     @Override
-    public <T> T newInstance(Class<T> clazz) {
+    public <T> T newInstance(Class<T> type) {
         try {
-            Constructor<T> constructor = getConstructor(clazz);
+            Constructor<T> constructor = getConstructor(type);
             return newInstance(constructor);
         } catch (Exception exception) {
             Logger.getLogger(Reflections.class.getName()).log(Level.SEVERE, null, exception);
@@ -91,8 +91,8 @@ public class DefaultReflections implements Reflections {
     }
 
     @Override
-    public Field getField(String string, Class<?> clazz) {
-        for (Field field : clazz.getDeclaredFields()) {
+    public Field getField(String string, Class<?> type) {
+        for (Field field : type.getDeclaredFields()) {
             if (field.getName().equals(string)) {
                 return field;
             }

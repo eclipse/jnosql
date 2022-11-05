@@ -64,16 +64,16 @@ public interface Reflections {
      * @param <T>   the instance type
      * @return the new instance that class
      */
-    <T> T newInstance(Class<T> clazz);
+    <T> T newInstance(Class<T> type);
 
     /**
      * Find the Column from the name field.
      *
      * @param string the name of field
-     * @param clazz  the class
+     * @param type  the class
      * @return the field from the name
      */
-    Field getField(String string, Class<?> clazz);
+    Field getField(String string, Class<?> type);
 
     /**
      * returns the generic type of field.

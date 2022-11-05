@@ -35,7 +35,7 @@ public final class AtomicLongReader implements ValueReader {
     }
 
     @Override
-    public <T> T read(Class<T> clazz, Object value) {
+    public <T> T read(Class<T> type, Object value) {
 
         if (AtomicLong.class.isInstance(value)) {
             return (T) value;
