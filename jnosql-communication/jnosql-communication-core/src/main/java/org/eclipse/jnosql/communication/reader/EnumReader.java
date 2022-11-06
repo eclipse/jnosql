@@ -57,8 +57,8 @@ public final class EnumReader implements ValueReader {
                 .orElseThrow(() -> new IllegalArgumentException("There isn't name in enum to value: " + name));
     }
 
-    private <T> List<Enum> getEnumList(Class<Enum> clazz) {
-        EnumSet enumSet = EnumSet.allOf(clazz);
+    private <T> List<Enum> getEnumList(Class<Enum> type) {
+        EnumSet enumSet = EnumSet.allOf(type);
         return new ArrayList<>(enumSet);
     }
 

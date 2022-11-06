@@ -60,7 +60,7 @@ public interface Reflections {
     /**
      * Create new instance of this class.
      *
-     * @param clazz the clazz
+     * @param type the class's type
      * @param <T>   the instance type
      * @return the new instance that class
      */

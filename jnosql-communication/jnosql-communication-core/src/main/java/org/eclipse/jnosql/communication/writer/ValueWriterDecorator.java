@@ -53,9 +53,9 @@ public final class ValueWriterDecorator<T, S> implements ValueWriter<T, S> {
 
     @Override
     public Object write(Object object) {
-        Class clazz = object.getClass();
-        ValueWriter valueWriter = writers.stream().filter(r -> r.test(clazz)).findFirst().orElseThrow(
-                () -> new UnsupportedOperationException("The type " + clazz + " is not supported yet"));
+        Class<?> type = object.getClass();
+        ValueWriter valueWriter = writers.stream().filter(r -> r.test(type)).findFirst().orElseThrow(
+                () -> new UnsupportedOperationException("The type " + type + " is not supported yet"));
         return valueWriter.write(object);
     }
 

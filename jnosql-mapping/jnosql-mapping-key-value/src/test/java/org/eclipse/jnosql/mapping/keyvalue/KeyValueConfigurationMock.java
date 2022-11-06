@@ -67,17 +67,17 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
         }
 
         @Override
-        public Queue getQueue(String bucketName, Class clazz) throws UnsupportedOperationException, NullPointerException {
+        public Queue getQueue(String bucketName, Class type) throws UnsupportedOperationException, NullPointerException {
             return null;
         }
 
         @Override
-        public Set getSet(String bucketName, Class clazz) throws UnsupportedOperationException, NullPointerException {
+        public Set getSet(String bucketName, Class type) throws UnsupportedOperationException, NullPointerException {
             return null;
         }
 
         @Override
-        public List getList(String bucketName, Class clazz) throws UnsupportedOperationException, NullPointerException {
+        public List getList(String bucketName, Class type) throws UnsupportedOperationException, NullPointerException {
             return null;
         }
     }
