@@ -3,6 +3,18 @@
 
 Eclipse JNoSQL is a compatible implementation of the https://jakarta.ee/specifications/nosql/[Jakarta NoSQL] specification, a Java framework that streamlines the integration of Java applications with NoSQL databases.
 
+== Goals
+
+* Increase productivity performing common NoSQL operations.
+* Rich Object Mapping integrated with CDI
+* Java-based Query and Fluent-API
+* Persistence lifecycle events
+* Low-level mapping using Standard NoSQL APIs.
+* Specific template API to each NoSQL category.
+* Annotation-oriented using JPA-like naming when it makes sense.
+* Extensible to explore the particular behavior of a NoSQL database
+* Explore the popularity of Apache TinkerPop in Graph API.
+
 == One Mapping API to Multiples NoSQL Databases
 
 Eclipse JNoSQL provides one API for each NoSQL database type. However, it incorporates the same annotations from the https://jakarta.ee/specifications/persistence/[Jakarta Persistence] specification and heritage Java Persistence API (JPA) to map Java objects. Therefore, with just these annotations that look like JPA, there is support for more than twenty NoSQL databases.
