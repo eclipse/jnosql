@@ -185,9 +185,28 @@ public class DefaultSettingsTest {
     }
 
     @Test
+    public void shouldComputeIfPresentSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        List<Map.Entry<String, Object>> references = new ArrayList<>();
+        settings.computeIfPresent(() -> "key", (k, v) -> references.add(new AbstractMap.SimpleEntry<>(k, v)));
+        assertFalse(references.isEmpty());
+        Map.Entry<String, Object> entry = references.get(0);
+        Assertions.assertEquals("key", entry.getKey());
+        Assertions.assertEquals("12", entry.getValue());
+    }
+
+
+    @Test
     public void shouldComputeIAbsent() {
         Settings settings = Settings.of(singletonMap("key", "12"));
         settings.computeIfAbsent("non", (k) -> "no key");
+        assertEquals("no key", settings.get("non").get());
+    }
+
+    @Test
+    public void shouldComputeIAbsentSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        settings.computeIfAbsent(() -> "non", (k) -> "no key");
         assertEquals("no key", settings.get("non").get());
     }
 
