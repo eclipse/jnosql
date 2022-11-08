@@ -60,9 +60,9 @@ final class GraphTransactionUtil {
     }
 
     /**
-     * Check if the transaction is enable
+     * Check if the transaction is enabled
      *
-     * @return Check if the transaction is enable
+     * @return Check if the transaction is enabled
      */
     static boolean isAutomatic() {
         return SettingsPriority.get(TRANSACTION_KEY)
