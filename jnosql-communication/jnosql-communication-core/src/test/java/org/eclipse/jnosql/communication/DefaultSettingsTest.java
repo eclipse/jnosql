@@ -153,6 +153,15 @@ public class DefaultSettingsTest {
     }
 
     @Test
+    public void shouldGetValueClassSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+
+        Integer value = settings.get(() -> "key", Integer.class).get();
+        assertEquals(Integer.valueOf(12), value);
+        assertFalse(settings.get(() -> "key2", Integer.class).isPresent());
+    }
+
+    @Test
     public void shouldIterateUsingForEach() {
         Settings settings = Settings.of(singletonMap("key", "12"));
         List<Map.Entry<String, Object>> references = new ArrayList<>();
@@ -187,6 +196,13 @@ public class DefaultSettingsTest {
         Settings settings = Settings.of(singletonMap("key", "12"));
         assertEquals("12", settings.getOrDefault("key", "13"));
         assertEquals("13", settings.getOrDefault("key-1", "13"));
+    }
+
+    @Test
+    public void shouldGetOrDefaultSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        assertEquals("12", settings.getOrDefault(() -> "key", "13"));
+        assertEquals("13", settings.getOrDefault(() -> "key-1", "13"));
     }
 
     @Test
