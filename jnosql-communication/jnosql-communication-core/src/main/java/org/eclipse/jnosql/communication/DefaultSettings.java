@@ -19,7 +19,6 @@ package org.eclipse.jnosql.communication;
 import jakarta.nosql.Settings;
 import jakarta.nosql.Value;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -30,7 +29,9 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static java.util.Collections.unmodifiableMap;
 
@@ -66,10 +67,21 @@ final class DefaultSettings  implements Settings {
     }
 
     @Override
-    public Optional<Object> get(Collection<String> keys) {
+    public Optional<Object> get(Supplier<String> supplier) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Object> getSupplier(Iterable<Supplier<String>> suppliers) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Object> get(Iterable<String> keys) {
         Objects.requireNonNull(keys, "keys is required");
 
-        Predicate<Map.Entry<String, Object>> equals = keys.stream()
+        Predicate<Map.Entry<String, Object>> equals =
+                StreamSupport.stream(keys.spliterator(), false)
                 .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().equals(prefix))
                 .reduce(Predicate::or).orElse(e -> false);
 
@@ -90,12 +102,25 @@ final class DefaultSettings  implements Settings {
     }
 
     @Override
-    public List<Object> prefix(Collection<String> prefixes) {
+    public List<Object> prefix(Supplier<String> supplier) {
+        return null;
+    }
+
+
+    @Override
+    public List<Object> prefixSupplier(Iterable<Supplier<String>> suppliers) {
+        return null;
+    }
+
+    @Override
+    public List<Object> prefix(Iterable<String> prefixes) {
         Objects.requireNonNull(prefixes, "prefixes is required");
-        if (prefixes.isEmpty()) {
+        List<String> values = StreamSupport.stream(prefixes.spliterator(), false)
+                .collect(Collectors.toUnmodifiableList());
+        if (values.isEmpty()) {
             return Collections.emptyList();
         }
-        Predicate<Map.Entry<String, Object>> prefixCondition = prefixes.stream()
+        Predicate<Map.Entry<String, Object>> prefixCondition = values.stream()
                 .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().startsWith(prefix))
                 .reduce(Predicate::or).orElse(e -> false);
 
@@ -114,11 +139,21 @@ final class DefaultSettings  implements Settings {
     }
 
     @Override
+    public <T> Optional<T> get(Supplier<String> supplier, Class<T> type) {
+        return Optional.empty();
+    }
+
+    @Override
     public <T> T getOrDefault(String key, T defaultValue) {
         Objects.requireNonNull(key, "key is required");
         Objects.requireNonNull(defaultValue, "defaultValue is required");
         Class<T> type = (Class<T>) defaultValue.getClass();
         return (T) get(key, type).orElse(defaultValue);
+    }
+
+    @Override
+    public <T> T getOrDefault(Supplier<String> supplier, T defaultValue) {
+        return null;
     }
 
 
