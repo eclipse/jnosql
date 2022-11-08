@@ -22,6 +22,7 @@ import jakarta.nosql.Settings.SettingsBuilder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
@@ -38,6 +39,13 @@ final class DefaultSettingsBuilder implements SettingsBuilder {
         requireNonNull(value, "value is required");
         settings.put(key, value);
         return this;
+    }
+
+    @Override
+    public SettingsBuilder put(Supplier<String> supplier, Object value) {
+        requireNonNull(supplier, "supplier is required");
+        requireNonNull(value, "value is required");
+        return put(supplier.get(), value);
     }
 
     @Override
