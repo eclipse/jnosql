@@ -27,6 +27,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -95,6 +97,28 @@ public class DefaultSettingsTest {
         assertTrue(settings.isEmpty());
     }
 
+    @Test
+    public void shouldGet() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Optional<Object> value = settings.get("key");
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("12", value.get());
+    }
+
+    @Test
+    public void shouldGetSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Optional<Object> value = settings.get("key");
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("12", value.get());
+    }
+
+    @Test
+    public void shouldNPEGet() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Assertions.assertThrows(NullPointerException.class, () -> settings.get((String)null));
+        Assertions.assertThrows(NullPointerException.class, () -> settings.get((Supplier<String>) null));
+    }
     @Test
     public void shouldGetValueClass() {
         Settings settings = Settings.of(singletonMap("key", "12"));
