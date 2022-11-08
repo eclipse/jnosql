@@ -108,7 +108,7 @@ public class DefaultSettingsTest {
     @Test
     public void shouldGetSupplier() {
         Settings settings = Settings.of(singletonMap("key", "12"));
-        Optional<Object> value = settings.get("key");
+        Optional<Object> value = settings.get(() -> "key");
         Assertions.assertNotNull(value);
         Assertions.assertEquals("12", value.get());
     }
@@ -119,6 +119,30 @@ public class DefaultSettingsTest {
         Assertions.assertThrows(NullPointerException.class, () -> settings.get((String)null));
         Assertions.assertThrows(NullPointerException.class, () -> settings.get((Supplier<String>) null));
     }
+
+    @Test
+    public void shouldGetIterable() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Optional<Object> value = settings.get(Collections.singleton("key"));
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("12", value.get());
+    }
+
+    @Test
+    public void shouldGetIterableSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Optional<Object> value = settings.getSupplier(Collections.singleton(() ->"key"));
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("12", value.get());
+    }
+
+    @Test
+    public void shouldNPEGetIterable() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Assertions.assertThrows(NullPointerException.class, () -> settings.get((Iterable<String>)null));
+        Assertions.assertThrows(NullPointerException.class, () -> settings.getSupplier(null));
+    }
+
     @Test
     public void shouldGetValueClass() {
         Settings settings = Settings.of(singletonMap("key", "12"));
