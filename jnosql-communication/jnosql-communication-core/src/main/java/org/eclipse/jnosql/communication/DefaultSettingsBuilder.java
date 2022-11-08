@@ -21,6 +21,7 @@ import jakarta.nosql.Settings.SettingsBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
@@ -56,6 +57,23 @@ final class DefaultSettingsBuilder implements SettingsBuilder {
         put(entry.getKey(), entry.getValue());
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DefaultSettingsBuilder that = (DefaultSettingsBuilder) o;
+        return Objects.equals(settings, that.settings);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(settings);
+    }
 
     @Override
     public String toString() {
