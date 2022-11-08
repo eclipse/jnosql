@@ -202,9 +202,22 @@ final class DefaultSettings  implements Settings {
     }
 
     @Override
+    public void computeIfPresent(Supplier<String> supplier, BiConsumer<String, Object> action) {
+        Objects.requireNonNull(supplier, "supplier is required");
+        Objects.requireNonNull(action, "action is required");
+        computeIfPresent(supplier.get(), action);
+    }
+
+    @Override
     public void computeIfAbsent(String key, Function<String, Object> action) {
         Objects.requireNonNull(action, "action is required");
         configurations.computeIfAbsent(key, action);
+    }
+
+    @Override
+    public void computeIfAbsent(Supplier<String> supplier, Function<String, Object> action) {
+        Objects.requireNonNull(supplier, "supplier is required");
+        computeIfAbsent(supplier.get(), action);
     }
 
     @Override
