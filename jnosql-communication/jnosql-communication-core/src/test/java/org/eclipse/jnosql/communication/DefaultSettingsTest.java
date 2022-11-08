@@ -292,8 +292,7 @@ public class DefaultSettingsTest {
                 .build();
 
         List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
-        Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts).contains("host", "host-1", "server", "server-1");
+        assertThat(hosts).hasSize(4).contains("host", "host-1", "server", "server-1");
     }
 
 }
