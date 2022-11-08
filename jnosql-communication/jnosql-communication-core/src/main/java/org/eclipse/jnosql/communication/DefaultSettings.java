@@ -63,17 +63,22 @@ final class DefaultSettings  implements Settings {
 
     @Override
     public Optional<Object> get(String key) {
+        Objects.requireNonNull(key, "key is required");
         return Optional.ofNullable(configurations.get(key));
     }
 
     @Override
     public Optional<Object> get(Supplier<String> supplier) {
-        return Optional.empty();
+        Objects.requireNonNull(supplier, "supplier is required");
+        return get(supplier.get());
     }
 
     @Override
     public Optional<Object> getSupplier(Iterable<Supplier<String>> suppliers) {
-        return Optional.empty();
+        Objects.requireNonNull(suppliers, "supplier is required");
+        List<String> keys = StreamSupport.stream(suppliers.spliterator(), false)
+                .map(Supplier::get).collect(Collectors.toUnmodifiableList());
+        return get(keys);
     }
 
     @Override
@@ -103,13 +108,17 @@ final class DefaultSettings  implements Settings {
 
     @Override
     public List<Object> prefix(Supplier<String> supplier) {
-        return null;
+        Objects.requireNonNull(supplier, "supplier is required");
+        return prefix(supplier.get());
     }
-
 
     @Override
     public List<Object> prefixSupplier(Iterable<Supplier<String>> suppliers) {
-        return null;
+        Objects.requireNonNull(suppliers, "suppliers is required");
+        Iterable<String> prefixes = StreamSupport.stream(suppliers.spliterator(), false)
+                .map(Supplier::get)
+                .collect(Collectors.toUnmodifiableList());
+        return prefix(prefixes);
     }
 
     @Override
@@ -140,7 +149,9 @@ final class DefaultSettings  implements Settings {
 
     @Override
     public <T> Optional<T> get(Supplier<String> supplier, Class<T> type) {
-        return Optional.empty();
+        Objects.requireNonNull(supplier, "supplier is required");
+        Objects.requireNonNull(type, "type is required");
+        return get(supplier.get(), type);
     }
 
     @Override
@@ -153,7 +164,9 @@ final class DefaultSettings  implements Settings {
 
     @Override
     public <T> T getOrDefault(Supplier<String> supplier, T defaultValue) {
-        return null;
+        Objects.requireNonNull(supplier, "supplier is required");
+        Objects.requireNonNull(defaultValue, "defaultValue is required");
+        return getOrDefault(supplier.get(), defaultValue);
     }
 
 
