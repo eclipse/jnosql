@@ -27,7 +27,9 @@ import static java.util.Objects.requireNonNull;
 /**
  * A utilitarian class that defines the priority to settings. It follows using Eclipse MicroProfile Configuration and JSR 382.
  * {@link System#getProperties()}, {@link System#getenv()} and {@link Settings}
+ * @deprecated it deprecated once there is an integration with Eclipse MicroProfile and Jakarta Config.
  */
+@Deprecated
 public final class SettingsPriority {
     private SettingsPriority() {
     }

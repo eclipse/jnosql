@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -32,12 +33,15 @@ public class SettingsBuilderTest {
 
     @Test
     public void shouldReturnErrorWhenKeyIsNUll() {
-        Assertions.assertThrows(NullPointerException.class, () -> Settings.builder().put(null, "value"));
+        Assertions.assertThrows(NullPointerException.class, () -> Settings.builder().put((String) null, "value"));
+        Assertions.assertThrows(NullPointerException.class, () -> Settings.builder().put((Supplier<String>) null,
+                "value"));
     }
 
     @Test
     public void shouldReturnErrorWhenValueIsNUll() {
         Assertions.assertThrows(NullPointerException.class, () -> Settings.builder().put("key", null));
+        Assertions.assertThrows(NullPointerException.class, () -> Settings.builder().put(() -> "key", null));
     }
 
     @Test
@@ -61,6 +65,13 @@ public class SettingsBuilderTest {
     @Test
     public void shouldCreateSettingsBuilder() {
         Settings settings = Settings.builder().put("key", "value").build();
+        assertNotNull(settings);
+        assertEquals("value", settings.get("key").get());
+    }
+
+    @Test
+    public void shouldCreateSettingsBuilderWithSupplier() {
+        Settings settings = Settings.builder().put(() -> "key", "value").build();
         assertNotNull(settings);
         assertEquals("value", settings.get("key").get());
     }

@@ -19,7 +19,6 @@ package org.eclipse.jnosql.communication;
 import jakarta.nosql.Settings;
 import jakarta.nosql.Value;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -30,7 +29,9 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static java.util.Collections.unmodifiableMap;
 
@@ -62,14 +63,30 @@ final class DefaultSettings  implements Settings {
 
     @Override
     public Optional<Object> get(String key) {
+        Objects.requireNonNull(key, "key is required");
         return Optional.ofNullable(configurations.get(key));
     }
 
     @Override
-    public Optional<Object> get(Collection<String> keys) {
+    public Optional<Object> get(Supplier<String> supplier) {
+        Objects.requireNonNull(supplier, "supplier is required");
+        return get(supplier.get());
+    }
+
+    @Override
+    public Optional<Object> getSupplier(Iterable<Supplier<String>> suppliers) {
+        Objects.requireNonNull(suppliers, "supplier is required");
+        List<String> keys = StreamSupport.stream(suppliers.spliterator(), false)
+                .map(Supplier::get).collect(Collectors.toUnmodifiableList());
+        return get(keys);
+    }
+
+    @Override
+    public Optional<Object> get(Iterable<String> keys) {
         Objects.requireNonNull(keys, "keys is required");
 
-        Predicate<Map.Entry<String, Object>> equals = keys.stream()
+        Predicate<Map.Entry<String, Object>> equals =
+                StreamSupport.stream(keys.spliterator(), false)
                 .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().equals(prefix))
                 .reduce(Predicate::or).orElse(e -> false);
 
@@ -90,12 +107,29 @@ final class DefaultSettings  implements Settings {
     }
 
     @Override
-    public List<Object> prefix(Collection<String> prefixes) {
+    public List<Object> prefix(Supplier<String> supplier) {
+        Objects.requireNonNull(supplier, "supplier is required");
+        return prefix(supplier.get());
+    }
+
+    @Override
+    public List<Object> prefixSupplier(Iterable<Supplier<String>> suppliers) {
+        Objects.requireNonNull(suppliers, "suppliers is required");
+        Iterable<String> prefixes = StreamSupport.stream(suppliers.spliterator(), false)
+                .map(Supplier::get)
+                .collect(Collectors.toUnmodifiableList());
+        return prefix(prefixes);
+    }
+
+    @Override
+    public List<Object> prefix(Iterable<String> prefixes) {
         Objects.requireNonNull(prefixes, "prefixes is required");
-        if (prefixes.isEmpty()) {
+        List<String> values = StreamSupport.stream(prefixes.spliterator(), false)
+                .collect(Collectors.toUnmodifiableList());
+        if (values.isEmpty()) {
             return Collections.emptyList();
         }
-        Predicate<Map.Entry<String, Object>> prefixCondition = prefixes.stream()
+        Predicate<Map.Entry<String, Object>> prefixCondition = values.stream()
                 .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().startsWith(prefix))
                 .reduce(Predicate::or).orElse(e -> false);
 
@@ -114,9 +148,25 @@ final class DefaultSettings  implements Settings {
     }
 
     @Override
-    public Object getOrDefault(String key, Object defaultValue) {
+    public <T> Optional<T> get(Supplier<String> supplier, Class<T> type) {
+        Objects.requireNonNull(supplier, "supplier is required");
+        Objects.requireNonNull(type, "type is required");
+        return get(supplier.get(), type);
+    }
+
+    @Override
+    public <T> T getOrDefault(String key, T defaultValue) {
         Objects.requireNonNull(key, "key is required");
-        return get(key).orElse(defaultValue);
+        Objects.requireNonNull(defaultValue, "defaultValue is required");
+        Class<T> type = (Class<T>) defaultValue.getClass();
+        return (T) get(key, type).orElse(defaultValue);
+    }
+
+    @Override
+    public <T> T getOrDefault(Supplier<String> supplier, T defaultValue) {
+        Objects.requireNonNull(supplier, "supplier is required");
+        Objects.requireNonNull(defaultValue, "defaultValue is required");
+        return getOrDefault(supplier.get(), defaultValue);
     }
 
 
@@ -152,9 +202,22 @@ final class DefaultSettings  implements Settings {
     }
 
     @Override
+    public void computeIfPresent(Supplier<String> supplier, BiConsumer<String, Object> action) {
+        Objects.requireNonNull(supplier, "supplier is required");
+        Objects.requireNonNull(action, "action is required");
+        computeIfPresent(supplier.get(), action);
+    }
+
+    @Override
     public void computeIfAbsent(String key, Function<String, Object> action) {
         Objects.requireNonNull(action, "action is required");
         configurations.computeIfAbsent(key, action);
+    }
+
+    @Override
+    public void computeIfAbsent(Supplier<String> supplier, Function<String, Object> action) {
+        Objects.requireNonNull(supplier, "supplier is required");
+        computeIfAbsent(supplier.get(), action);
     }
 
     @Override

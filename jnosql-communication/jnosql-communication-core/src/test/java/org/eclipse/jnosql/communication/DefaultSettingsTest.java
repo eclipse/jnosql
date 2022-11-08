@@ -27,6 +27,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -96,12 +98,67 @@ public class DefaultSettingsTest {
     }
 
     @Test
+    public void shouldGet() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Optional<Object> value = settings.get("key");
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("12", value.get());
+    }
+
+    @Test
+    public void shouldGetSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Optional<Object> value = settings.get(() -> "key");
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("12", value.get());
+    }
+
+    @Test
+    public void shouldNPEGet() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Assertions.assertThrows(NullPointerException.class, () -> settings.get((String) null));
+        Assertions.assertThrows(NullPointerException.class, () -> settings.get((Supplier<String>) null));
+    }
+
+    @Test
+    public void shouldGetIterable() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Optional<Object> value = settings.get(Collections.singleton("key"));
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("12", value.get());
+    }
+
+    @Test
+    public void shouldGetIterableSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Optional<Object> value = settings.getSupplier(Collections.singleton(() -> "key"));
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("12", value.get());
+    }
+
+    @Test
+    public void shouldNPEGetIterable() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        Assertions.assertThrows(NullPointerException.class, () -> settings.get((Iterable<String>) null));
+        Assertions.assertThrows(NullPointerException.class, () -> settings.getSupplier(null));
+    }
+
+    @Test
     public void shouldGetValueClass() {
         Settings settings = Settings.of(singletonMap("key", "12"));
 
         Integer value = settings.get("key", Integer.class).get();
         assertEquals(Integer.valueOf(12), value);
         assertFalse(settings.get("key2", Integer.class).isPresent());
+    }
+
+    @Test
+    public void shouldGetValueClassSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+
+        Integer value = settings.get(() -> "key", Integer.class).get();
+        assertEquals(Integer.valueOf(12), value);
+        assertFalse(settings.get(() -> "key2", Integer.class).isPresent());
     }
 
     @Test
@@ -128,9 +185,28 @@ public class DefaultSettingsTest {
     }
 
     @Test
+    public void shouldComputeIfPresentSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        List<Map.Entry<String, Object>> references = new ArrayList<>();
+        settings.computeIfPresent(() -> "key", (k, v) -> references.add(new AbstractMap.SimpleEntry<>(k, v)));
+        assertFalse(references.isEmpty());
+        Map.Entry<String, Object> entry = references.get(0);
+        Assertions.assertEquals("key", entry.getKey());
+        Assertions.assertEquals("12", entry.getValue());
+    }
+
+
+    @Test
     public void shouldComputeIAbsent() {
         Settings settings = Settings.of(singletonMap("key", "12"));
         settings.computeIfAbsent("non", (k) -> "no key");
+        assertEquals("no key", settings.get("non").get());
+    }
+
+    @Test
+    public void shouldComputeIAbsentSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        settings.computeIfAbsent(() -> "non", (k) -> "no key");
         assertEquals("no key", settings.get("non").get());
     }
 
@@ -139,6 +215,13 @@ public class DefaultSettingsTest {
         Settings settings = Settings.of(singletonMap("key", "12"));
         assertEquals("12", settings.getOrDefault("key", "13"));
         assertEquals("13", settings.getOrDefault("key-1", "13"));
+    }
+
+    @Test
+    public void shouldGetOrDefaultSupplier() {
+        Settings settings = Settings.of(singletonMap("key", "12"));
+        assertEquals("12", settings.getOrDefault(() -> "key", "13"));
+        assertEquals("13", settings.getOrDefault(() -> "key-1", "13"));
     }
 
     @Test
@@ -162,8 +245,24 @@ public class DefaultSettingsTest {
                 .build();
 
         List<Object> hosts = settings.prefix("host");
-        Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts).contains("host", "host-1", "host-2", "host-3");
+        assertThat(hosts)
+                .hasSize(4)
+                .contains("host", "host-1", "host-2", "host-3");
+    }
+
+    @Test
+    public void shouldFindPrefixSupplier() {
+        Settings settings = Settings.builder()
+                .put("host", "host")
+                .put("host-1", "host-1")
+                .put("host-2", "host-2")
+                .put("host-3", "host-3")
+                .build();
+
+        List<Object> hosts = settings.prefix(() -> "host");
+        assertThat(hosts)
+                .hasSize(4)
+                .contains("host", "host-1", "host-2", "host-3");
     }
 
     @Test
@@ -176,8 +275,7 @@ public class DefaultSettingsTest {
                 .build();
 
         List<Object> hosts = settings.prefix("host");
-        Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts).contains("host", "host-1", "host-2", "host-3");
+        assertThat(hosts).hasSize(4).contains("host", "host-1", "host-2", "host-3");
     }
 
 
@@ -204,7 +302,19 @@ public class DefaultSettingsTest {
         List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
         Assertions.assertEquals(4, hosts.size());
         assertThat(hosts).contains("host", "host-1", "server", "server-1");
+    }
 
+    @Test
+    public void shouldFindPrefixesSupplier() {
+        Settings settings = Settings.builder()
+                .put("host", "host")
+                .put("host-1", "host-1")
+                .put("server", "server")
+                .put("server-1", "server-1")
+                .build();
+
+        List<Object> hosts = settings.prefixSupplier(Arrays.asList(() -> "host", () -> "server"));
+        assertThat(hosts).hasSize(4).contains("host", "host-1", "server", "server-1");
     }
 
     @Test
@@ -217,9 +327,7 @@ public class DefaultSettingsTest {
                 .build();
 
         List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
-        Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts).contains("host", "host-1", "server", "server-1");
-
+        assertThat(hosts).hasSize(4).contains("host", "host-1", "server", "server-1");
     }
 
 }

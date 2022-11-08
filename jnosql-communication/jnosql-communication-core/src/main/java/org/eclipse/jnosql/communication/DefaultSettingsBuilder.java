@@ -21,6 +21,8 @@ import jakarta.nosql.Settings.SettingsBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
@@ -40,6 +42,13 @@ final class DefaultSettingsBuilder implements SettingsBuilder {
     }
 
     @Override
+    public SettingsBuilder put(Supplier<String> supplier, Object value) {
+        requireNonNull(supplier, "supplier is required");
+        requireNonNull(value, "value is required");
+        return put(supplier.get(), value);
+    }
+
+    @Override
     public SettingsBuilder putAll(Map<String, Object> settings) {
         requireNonNull(settings, "settings is required");
         settings.entrySet().forEach(this::put);
@@ -56,6 +65,23 @@ final class DefaultSettingsBuilder implements SettingsBuilder {
         put(entry.getKey(), entry.getValue());
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DefaultSettingsBuilder that = (DefaultSettingsBuilder) o;
+        return Objects.equals(settings, that.settings);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(settings);
+    }
 
     @Override
     public String toString() {
