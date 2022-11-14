@@ -202,7 +202,12 @@ public final class MemorySettings  implements Settings {
                 '}';
     }
 
-    public static Settings of(Map<String, Object> params) {
+    /**
+     * Create {@link MemorySettings} instance
+     * @param params the params variable
+     * @return a {@link Settings} specialization
+     */
+    public static MemorySettings of(Map<String, Object> params) {
         Objects.requireNonNull(params, "params is required");
         return new MemorySettings(params);
     }
