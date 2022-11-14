@@ -10,6 +10,8 @@
  *
  */
 /**
- *
+ * This package contains the configuration engine that will use at the Eclipse JNoSQL mapping layer.
+ * For instance, the engine will work in tight integration with Eclipse Microprofile Configuration.
+ * Shortly, you may replace it with Jakarta Config.
  */
 package org.eclipse.jnosql.mapping.config;
