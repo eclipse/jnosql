@@ -42,4 +42,7 @@ class BucketManagerSupplierTest {
         System.clearProperty(KEY_VALUE_DATABASE.get());
     }
 
+    //test to wrong supplier
+    //test without supplier
+
 }
