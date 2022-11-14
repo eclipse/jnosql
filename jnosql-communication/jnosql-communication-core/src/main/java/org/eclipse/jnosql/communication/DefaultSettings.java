@@ -54,7 +54,7 @@ final class DefaultSettings implements Settings {
 
     @Override
     public boolean containsKey(String key) {
-        return get(key).isEmpty();
+        return get(key).isPresent();
     }
 
     @Override
