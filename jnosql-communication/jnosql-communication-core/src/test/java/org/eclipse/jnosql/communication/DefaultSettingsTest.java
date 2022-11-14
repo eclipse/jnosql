@@ -84,8 +84,6 @@ public class DefaultSettingsTest {
     public void shouldIsEmpty() {
         Settings settings = Settings.of(singletonMap("key", "value"));
         assertFalse(settings.isEmpty());
-        settings = Settings.of(Collections.emptyMap());
-        assertTrue(settings.isEmpty());
     }
 
     @Test
@@ -170,9 +168,9 @@ public class DefaultSettingsTest {
     public void shouldReturnErrorWhenPrefixIsNull() {
         Settings settings = Settings.builder()
                 .put("host", "host")
-                .put("host-1", "host-1")
-                .put("host-2", "host-2")
-                .put("host-3", "host-3")
+                .put("host.1", "host-1")
+                .put("host.2", "host-2")
+                .put("host.3", "host-3")
                 .build();
         assertThrows(NullPointerException.class, () -> settings.prefix((String) null));
     }
@@ -181,9 +179,9 @@ public class DefaultSettingsTest {
     public void shouldFindPrefix() {
         Settings settings = Settings.builder()
                 .put("host", "host")
-                .put("host-1", "host-1")
-                .put("host-2", "host-2")
-                .put("host-3", "host-3")
+                .put("host.1", "host-1")
+                .put("host.2", "host-2")
+                .put("host.3", "host-3")
                 .build();
 
         List<Object> hosts = settings.prefix("host");
@@ -196,9 +194,9 @@ public class DefaultSettingsTest {
     public void shouldFindPrefixSupplier() {
         Settings settings = Settings.builder()
                 .put("host", "host")
-                .put("host-1", "host-1")
-                .put("host-2", "host-2")
-                .put("host-3", "host-3")
+                .put("host.1", "host-1")
+                .put("host.2", "host-2")
+                .put("host.3", "host-3")
                 .build();
 
         List<Object> hosts = settings.prefix(() -> "host");
@@ -211,9 +209,9 @@ public class DefaultSettingsTest {
     public void shouldFindPrefixWithOrder() {
         Settings settings = Settings.builder()
                 .put("host", "host")
-                .put("host-3", "host-3")
-                .put("host-2", "host-2")
-                .put("host-1", "host-1")
+                .put("host.3", "host-3")
+                .put("host.2", "host-2")
+                .put("host.1", "host-1")
                 .build();
 
         List<Object> hosts = settings.prefix("host");
@@ -225,9 +223,9 @@ public class DefaultSettingsTest {
     public void shouldReturnErrorWhenPrefixesIsNull() {
         Settings settings = Settings.builder()
                 .put("host", "host")
-                .put("host-1", "host-1")
-                .put("host-2", "host-2")
-                .put("host-3", "host-3")
+                .put("host.1", "host-1")
+                .put("host.2", "host-2")
+                .put("host.3", "host-3")
                 .build();
         assertThrows(NullPointerException.class, () -> settings.prefix((Collection<String>) null));
     }
@@ -242,17 +240,16 @@ public class DefaultSettingsTest {
                 .build();
 
         List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
-        Assertions.assertEquals(4, hosts.size());
-        assertThat(hosts).contains("host", "host-1", "server", "server-1");
+        assertThat(hosts).hasSize(4).contains("host", "host-1", "server", "server-1");
     }
 
     @Test
     public void shouldFindPrefixesSupplier() {
         Settings settings = Settings.builder()
                 .put("host", "host")
-                .put("host-1", "host-1")
+                .put("host.1", "host-1")
                 .put("server", "server")
-                .put("server-1", "server-1")
+                .put("server.1", "server-1")
                 .build();
 
         List<Object> hosts = settings.prefixSupplier(Arrays.asList(() -> "host", () -> "server"));
@@ -262,9 +259,9 @@ public class DefaultSettingsTest {
     @Test
     public void shouldFindPrefixesSort() {
         Settings settings = Settings.builder()
-                .put("host-1", "host-1")
+                .put("host.1", "host-1")
                 .put("host", "host")
-                .put("server-1", "server-1")
+                .put("server.1", "server-1")
                 .put("server", "server")
                 .build();
 
