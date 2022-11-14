@@ -17,10 +17,12 @@
 package org.eclipse.jnosql.communication;
 
 import jakarta.nosql.Settings;
+import jakarta.nosql.Value;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -32,36 +34,38 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static java.util.Collections.unmodifiableMap;
+
 final class DefaultSettings implements Settings {
 
-    private final Config config;
+    private final Map<String, Object> configurations;
 
-    private DefaultSettings(Config config) {
-        this.config = config;
+    DefaultSettings(Map<String, Object> configurations) {
+        this.configurations = configurations.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue));
     }
 
 
     @Override
     public int size() {
-        return (int) StreamSupport.stream(config.getPropertyNames().spliterator(), false)
-                .count();
+        return configurations.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return size() == 0;
+        return configurations.isEmpty();
     }
 
     @Override
     public boolean containsKey(String key) {
-        return get(key).isPresent();
+        return configurations.containsKey(key);
     }
 
     @Override
     public Optional<Object> get(String key) {
         Objects.requireNonNull(key, "key is required");
-        return config.getOptionalValue(key, String.class)
-                .map(Object.class::cast);
+        return Optional.ofNullable(configurations.get(key));
     }
 
     @Override
@@ -82,19 +86,25 @@ final class DefaultSettings implements Settings {
     public Optional<Object> get(Iterable<String> keys) {
         Objects.requireNonNull(keys, "keys is required");
 
-        return StreamSupport.stream(keys.spliterator(), false)
-                .flatMap(k -> config.getOptionalValue(k, String.class).stream())
-                .map(Object.class::cast)
-                .findFirst();
+        Predicate<Map.Entry<String, Object>> equals =
+                StreamSupport.stream(keys.spliterator(), false)
+                        .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().equals(prefix))
+                        .reduce(Predicate::or).orElse(e -> false);
+
+        return configurations.entrySet().stream()
+                .filter(equals)
+                .findFirst()
+                .map(Map.Entry::getValue);
     }
 
     @Override
     public List<Object> prefix(String prefix) {
         Objects.requireNonNull(prefix, "prefix is required");
-        return StreamSupport.stream(config.getPropertyNames().spliterator(), false)
-                .filter(p -> p.startsWith(prefix))
-                .map(p -> config.getValue(p, String.class))
-                .collect(Collectors.toUnmodifiableList());
+        return configurations.entrySet().stream()
+                .filter(e -> e.getKey().startsWith(prefix))
+                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -115,21 +125,19 @@ final class DefaultSettings implements Settings {
     @Override
     public List<Object> prefix(Iterable<String> prefixes) {
         Objects.requireNonNull(prefixes, "prefixes is required");
-
         List<String> values = StreamSupport.stream(prefixes.spliterator(), false)
                 .collect(Collectors.toUnmodifiableList());
         if (values.isEmpty()) {
             return Collections.emptyList();
         }
-
-        Predicate<String> prefixCondition = values.stream()
-                .map(prefix -> (Predicate<String>) property -> property.startsWith(prefix))
+        Predicate<Map.Entry<String, Object>> prefixCondition = values.stream()
+                .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().startsWith(prefix))
                 .reduce(Predicate::or).orElse(e -> false);
 
-        return StreamSupport.stream(config.getPropertyNames().spliterator(), false)
+        return configurations.entrySet().stream()
                 .filter(prefixCondition)
-                .sorted()
-                .map(p -> config.getValue(p, String.class))
+                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
     }
 
@@ -137,7 +145,7 @@ final class DefaultSettings implements Settings {
     public <T> Optional<T> get(String key, Class<T> type) {
         Objects.requireNonNull(key, "key is required");
         Objects.requireNonNull(type, "type is required");
-        return config.getOptionalValue(key, type);
+        return get(key).map(Value::of).map(v -> v.get(type));
     }
 
     @Override
@@ -165,14 +173,12 @@ final class DefaultSettings implements Settings {
 
     @Override
     public Set<String> keySet() {
-        return StreamSupport.stream(config.getPropertyNames().spliterator(), false)
-                .collect(Collectors.toUnmodifiableSet());
+        return Collections.unmodifiableSet(configurations.keySet());
     }
 
     @Override
     public Map<String, Object> toMap() {
-        return keySet().stream().collect(Collectors.toMap(Function.identity(), k ->
-                config.getValue(k, String.class)));
+        return unmodifiableMap(configurations);
     }
 
     @Override
@@ -184,25 +190,23 @@ final class DefaultSettings implements Settings {
             return false;
         }
         DefaultSettings that = (DefaultSettings) o;
-        return Objects.equals(config, that.config);
+        return Objects.equals(configurations, that.configurations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(config);
+        return Objects.hashCode(configurations);
     }
 
     @Override
     public String toString() {
         return "DefaultSettings{" +
-                "config=" + config +
+                "configurations=" + configurations +
                 '}';
     }
 
     static DefaultSettings of(Map<String, Object> params) {
         Objects.requireNonNull(params, "params is required");
-        Config config = ConfigProvider.getConfig();
-        params.entrySet().forEach(e -> System.setProperty(e.getKey(), e.getValue().toString()));
-        return new DefaultSettings(config);
+        return new DefaultSettings(params);
     }
 }
