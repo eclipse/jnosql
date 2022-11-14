@@ -75,11 +75,6 @@ public class DefaultSettingsTest {
         assertThat(settings.keySet()).contains("key");
     }
 
-    @Test
-    public void shouldGetEntrySet() {
-        Settings settings = Settings.of(singletonMap("key", "value"));
-        assertEquals(settings.entrySet().stream().findFirst().get().getKey(), "key");
-    }
 
     @Test
     public void shouldSize() {
@@ -159,55 +154,6 @@ public class DefaultSettingsTest {
         Integer value = settings.get(() -> "key", Integer.class).get();
         assertEquals(Integer.valueOf(12), value);
         assertFalse(settings.get(() -> "key2", Integer.class).isPresent());
-    }
-
-    @Test
-    public void shouldIterateUsingForEach() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
-        List<Map.Entry<String, Object>> references = new ArrayList<>();
-        settings.forEach((k, v) -> references.add(new AbstractMap.SimpleEntry<>(k, v)));
-
-        assertFalse(references.isEmpty());
-        Map.Entry<String, Object> entry = references.get(0);
-        Assertions.assertEquals("key", entry.getKey());
-        Assertions.assertEquals("12", entry.getValue());
-    }
-
-    @Test
-    public void shouldComputeIfPresent() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
-        List<Map.Entry<String, Object>> references = new ArrayList<>();
-        settings.computeIfPresent("key", (k, v) -> references.add(new AbstractMap.SimpleEntry<>(k, v)));
-        assertFalse(references.isEmpty());
-        Map.Entry<String, Object> entry = references.get(0);
-        Assertions.assertEquals("key", entry.getKey());
-        Assertions.assertEquals("12", entry.getValue());
-    }
-
-    @Test
-    public void shouldComputeIfPresentSupplier() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
-        List<Map.Entry<String, Object>> references = new ArrayList<>();
-        settings.computeIfPresent(() -> "key", (k, v) -> references.add(new AbstractMap.SimpleEntry<>(k, v)));
-        assertFalse(references.isEmpty());
-        Map.Entry<String, Object> entry = references.get(0);
-        Assertions.assertEquals("key", entry.getKey());
-        Assertions.assertEquals("12", entry.getValue());
-    }
-
-
-    @Test
-    public void shouldComputeIAbsent() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
-        settings.computeIfAbsent("non", (k) -> "no key");
-        assertEquals("no key", settings.get("non").get());
-    }
-
-    @Test
-    public void shouldComputeIAbsentSupplier() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
-        settings.computeIfAbsent(() -> "non", (k) -> "no key");
-        assertEquals("no key", settings.get("non").get());
     }
 
     @Test
