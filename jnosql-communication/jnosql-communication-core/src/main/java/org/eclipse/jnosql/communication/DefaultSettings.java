@@ -60,7 +60,8 @@ final class DefaultSettings implements Settings {
     @Override
     public Optional<Object> get(String key) {
         Objects.requireNonNull(key, "key is required");
-        return config.getOptionalValue(key, Object.class);
+        return config.getOptionalValue(key, String.class)
+                .map(Object.class::cast);
     }
 
     @Override
@@ -82,7 +83,8 @@ final class DefaultSettings implements Settings {
         Objects.requireNonNull(keys, "keys is required");
 
         return StreamSupport.stream(keys.spliterator(), false)
-                .flatMap(k -> config.getOptionalValue(k, Object.class).stream())
+                .flatMap(k -> config.getOptionalValue(k, String.class).stream())
+                .map(Object.class::cast)
                 .findFirst();
     }
 
@@ -91,7 +93,7 @@ final class DefaultSettings implements Settings {
         Objects.requireNonNull(prefix, "prefix is required");
         return StreamSupport.stream(config.getPropertyNames().spliterator(), false)
                 .filter(p -> p.startsWith(prefix))
-                .map(p -> config.getValue(p, Object.class))
+                .map(p -> config.getValue(p, String.class))
                 .collect(Collectors.toUnmodifiableList());
     }
 
@@ -127,7 +129,7 @@ final class DefaultSettings implements Settings {
         return StreamSupport.stream(config.getPropertyNames().spliterator(), false)
                 .filter(prefixCondition)
                 .sorted()
-                .map(p -> config.getValue(p, Object.class))
+                .map(p -> config.getValue(p, String.class))
                 .collect(Collectors.toList());
     }
 
@@ -170,7 +172,7 @@ final class DefaultSettings implements Settings {
     @Override
     public Map<String, Object> toMap() {
         return keySet().stream().collect(Collectors.toMap(Function.identity(), k ->
-                config.getValue(k, Object.class)));
+                config.getValue(k, String.class)));
     }
 
     @Override
