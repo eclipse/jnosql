@@ -18,6 +18,7 @@ package org.eclipse.jnosql.communication;
 
 import jakarta.nosql.Settings;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap;
@@ -40,6 +41,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DefaultSettingsTest {
 
 
+    @BeforeEach
+    public void beforeEach() {
+        System.clearProperty("host");
+        System.clearProperty("host.1");
+        System.clearProperty("host.2");
+        System.clearProperty("host.3");
+        System.clearProperty("server");
+        System.clearProperty("server.1");
+        System.clearProperty("server.2");
+    }
     @Test
     public void shouldReturnNPEWhenInstanceIsNull() {
         assertThrows(NullPointerException.class, () -> Settings.of((Map<String, Object>) null));
@@ -228,6 +239,7 @@ public class DefaultSettingsTest {
                 .put("host.3", "host-3")
                 .build();
         assertThrows(NullPointerException.class, () -> settings.prefix((Collection<String>) null));
+
     }
 
     @Test
