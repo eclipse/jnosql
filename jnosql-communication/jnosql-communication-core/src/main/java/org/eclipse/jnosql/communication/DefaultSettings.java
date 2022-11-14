@@ -18,8 +18,6 @@ package org.eclipse.jnosql.communication;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.Value;
-import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.ConfigProvider;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,7 +26,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
