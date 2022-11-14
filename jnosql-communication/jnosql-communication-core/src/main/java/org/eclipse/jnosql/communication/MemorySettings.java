@@ -33,7 +33,12 @@ import java.util.stream.StreamSupport;
 
 import static java.util.Collections.unmodifiableMap;
 
-public final class MemorySettings  implements Settings {
+/**
+ * A {@link Settings} where it uses {@link Map} instances
+ *
+ * @see MemorySettings#of(Map)
+ */
+public final class MemorySettings implements Settings {
 
     private final Map<String, Object> configurations;
 
@@ -204,6 +209,7 @@ public final class MemorySettings  implements Settings {
 
     /**
      * Create {@link MemorySettings} instance
+     *
      * @param params the params variable
      * @return a {@link Settings} specialization
      */
