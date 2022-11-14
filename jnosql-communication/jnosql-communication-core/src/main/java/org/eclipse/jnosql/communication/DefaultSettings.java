@@ -18,6 +18,7 @@ package org.eclipse.jnosql.communication;
 
 import jakarta.nosql.Settings;
 import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 import java.util.Collections;
 import java.util.List;
@@ -194,5 +195,12 @@ final class DefaultSettings implements Settings {
         return "DefaultSettings{" +
                 "config=" + config +
                 '}';
+    }
+
+    static DefaultSettings of(Map<String, Object> params) {
+        Objects.requireNonNull(params, "params is required");
+        Config config = ConfigProvider.getConfig();
+        params.entrySet().forEach(e -> System.setProperty(e.getKey(), e.getValue().toString()));
+        return new DefaultSettings(config);
     }
 }
