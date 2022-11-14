@@ -201,4 +201,9 @@ public final class MemorySettings  implements Settings {
                 "configurations=" + configurations +
                 '}';
     }
+
+    public static Settings of(Map<String, Object> params) {
+        Objects.requireNonNull(params, "params is required");
+        return new MemorySettings(params);
+    }
 }
