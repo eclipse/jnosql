@@ -178,6 +178,27 @@ public final class MemorySettings  implements Settings {
         return unmodifiableMap(configurations);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MemorySettings that = (MemorySettings) o;
+        return Objects.equals(configurations, that.configurations);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(configurations);
+    }
 
+    @Override
+    public String toString() {
+        return "MemorySettings{" +
+                "configurations=" + configurations +
+                '}';
+    }
 }
