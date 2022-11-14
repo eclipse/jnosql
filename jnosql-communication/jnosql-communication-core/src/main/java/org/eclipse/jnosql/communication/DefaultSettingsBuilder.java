@@ -57,7 +57,7 @@ final class DefaultSettingsBuilder implements SettingsBuilder {
 
     @Override
     public Settings build() {
-        return new DefaultSettings(settings);
+        return DefaultSettings.of(settings);
     }
 
 
