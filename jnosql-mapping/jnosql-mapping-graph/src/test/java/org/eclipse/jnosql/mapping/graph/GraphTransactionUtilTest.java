@@ -17,6 +17,8 @@ package org.eclipse.jnosql.mapping.graph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_TRANSACTION_AUTOMATIC;
+
 class GraphTransactionUtilTest {
 
     @Test
@@ -27,9 +29,9 @@ class GraphTransactionUtilTest {
     @Test
     public void shouldReturnFalse() {
         synchronized (GraphTransactionUtil.class) {
-            System.setProperty(GraphTransactionUtil.TRANSACTION_KEY, Boolean.FALSE.toString());
+            System.setProperty(GRAPH_TRANSACTION_AUTOMATIC.get(), Boolean.FALSE.toString());
             Assertions.assertFalse(GraphTransactionUtil.isAutomatic());
-            System.clearProperty(GraphTransactionUtil.TRANSACTION_KEY);
+            System.clearProperty(GRAPH_TRANSACTION_AUTOMATIC.get());
         }
     }
 
