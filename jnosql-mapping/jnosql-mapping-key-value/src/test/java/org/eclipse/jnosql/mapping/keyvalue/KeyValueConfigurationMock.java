@@ -27,14 +27,8 @@ import java.util.Set;
 
 public class KeyValueConfigurationMock implements KeyValueConfiguration {
 
-
     @Override
-    public BucketManagerFactory get() {
-        return null;
-    }
-
-    @Override
-    public BucketManagerFactory get(Settings settings) {
+    public BucketManagerFactory apply(Settings settings) {
         return new BucketManagerFactoryMock(settings);
     }
 
@@ -52,7 +46,7 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
         }
 
         @Override
-        public BucketManager getBucketManager(String bucketName) throws UnsupportedOperationException, NullPointerException {
+        public BucketManager apply(String bucketName) throws UnsupportedOperationException, NullPointerException {
             return Mockito.mock(BucketManager.class);
         }
 
