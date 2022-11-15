@@ -40,7 +40,7 @@ class ColumnManagerSupplierTest {
     }
 
     @Test
-    public void shouldGetBucketManager() {
+    public void shouldGetManager() {
         System.setProperty(COLUMN_PROVIDER.get(), ColumnConfigurationMock.class.getName());
         System.setProperty(COLUMN_DATABASE.get(), "database");
         ColumnFamilyManager manager = supplier.get();
