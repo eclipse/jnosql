@@ -220,7 +220,7 @@ Jakarta NoSQL provides a Graph template to explore the specific behavior of this
 </dependency>
 ----
 
-Despite the other three Jakarta NoSQL types, Graph does *not* provide a communication layer from Jakarta NoSQL API. Instead, it integrates with https://tinkerpop.apache.org/[Apache Tinkerpop].
+Despite the other three Jakarta NoSQL types, Graph does *not* provide a communication layer from Jakarta NoSQL API. Instead, it integrates with https://tinkerpop.apache.org/[Apache Tinkerpop 3x.].
 
 [source,java]
 ----
