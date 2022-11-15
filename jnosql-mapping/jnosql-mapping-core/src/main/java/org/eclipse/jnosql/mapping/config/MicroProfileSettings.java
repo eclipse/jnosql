@@ -1,5 +1,4 @@
 /*
- *
  *  Copyright (c) 2022 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
@@ -12,57 +11,60 @@
  *   Contributors:
  *
  *   Otavio Santana
- *
  */
-package org.eclipse.jnosql.communication;
+package org.eclipse.jnosql.mapping.config;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.Value;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static java.util.Collections.unmodifiableMap;
+/**
+ *The {@link Settings} implementations that uses {@link Config}
+ */
+public enum MicroProfileSettings implements Settings {
 
-final class DefaultSettings implements Settings {
+    INSTANCE;
 
-    private final Map<String, Object> configurations;
+    private final Config config;
 
-    DefaultSettings(Map<String, Object> configurations) {
-        this.configurations = configurations.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        Map.Entry::getValue));
+    MicroProfileSettings() {
+        this.config = ConfigProvider.getConfig();
     }
 
 
     @Override
     public int size() {
-        return configurations.size();
+        return (int) StreamSupport.stream(config.getPropertyNames().spliterator(), false)
+                .count();
     }
 
     @Override
     public boolean isEmpty() {
-        return configurations.isEmpty();
+        return size() == 0;
     }
 
     @Override
     public boolean containsKey(String key) {
-        return configurations.containsKey(key);
+        return get(key).isPresent();
     }
 
     @Override
     public Optional<Object> get(String key) {
         Objects.requireNonNull(key, "key is required");
-        return Optional.ofNullable(configurations.get(key));
+        return config.getOptionalValue(key, String.class)
+                .map(Object.class::cast);
     }
 
     @Override
@@ -83,25 +85,19 @@ final class DefaultSettings implements Settings {
     public Optional<Object> get(Iterable<String> keys) {
         Objects.requireNonNull(keys, "keys is required");
 
-        Predicate<Map.Entry<String, Object>> equals =
-                StreamSupport.stream(keys.spliterator(), false)
-                        .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().equals(prefix))
-                        .reduce(Predicate::or).orElse(e -> false);
-
-        return configurations.entrySet().stream()
-                .filter(equals)
-                .findFirst()
-                .map(Map.Entry::getValue);
+        return StreamSupport.stream(keys.spliterator(), false)
+                .flatMap(k -> config.getOptionalValue(k, String.class).stream())
+                .map(Object.class::cast)
+                .findFirst();
     }
 
     @Override
     public List<Object> prefix(String prefix) {
         Objects.requireNonNull(prefix, "prefix is required");
-        return configurations.entrySet().stream()
-                .filter(e -> e.getKey().startsWith(prefix))
-                .sorted(Comparator.comparing(Map.Entry::getKey))
-                .map(Map.Entry::getValue)
-                .collect(Collectors.toList());
+        return StreamSupport.stream(config.getPropertyNames().spliterator(), false)
+                .filter(p -> p.startsWith(prefix))
+                .map(p -> config.getValue(p, String.class))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
@@ -122,19 +118,21 @@ final class DefaultSettings implements Settings {
     @Override
     public List<Object> prefix(Iterable<String> prefixes) {
         Objects.requireNonNull(prefixes, "prefixes is required");
+
         List<String> values = StreamSupport.stream(prefixes.spliterator(), false)
                 .collect(Collectors.toUnmodifiableList());
         if (values.isEmpty()) {
             return Collections.emptyList();
         }
-        Predicate<Map.Entry<String, Object>> prefixCondition = values.stream()
-                .map(prefix -> (Predicate<Map.Entry<String, Object>>) e -> e.getKey().startsWith(prefix))
+
+        Predicate<String> prefixCondition = values.stream()
+                .map(prefix -> (Predicate<String>) property -> property.startsWith(prefix))
                 .reduce(Predicate::or).orElse(e -> false);
 
-        return configurations.entrySet().stream()
+        return StreamSupport.stream(config.getPropertyNames().spliterator(), false)
                 .filter(prefixCondition)
-                .sorted(Comparator.comparing(Map.Entry::getKey))
-                .map(Map.Entry::getValue)
+                .sorted()
+                .map(p -> config.getValue(p, String.class))
                 .collect(Collectors.toList());
     }
 
@@ -142,7 +140,7 @@ final class DefaultSettings implements Settings {
     public <T> Optional<T> get(String key, Class<T> type) {
         Objects.requireNonNull(key, "key is required");
         Objects.requireNonNull(type, "type is required");
-        return get(key).map(Value::of).map(v -> v.get(type));
+        return config.getOptionalValue(key, type);
     }
 
     @Override
@@ -170,40 +168,13 @@ final class DefaultSettings implements Settings {
 
     @Override
     public Set<String> keySet() {
-        return Collections.unmodifiableSet(configurations.keySet());
+        return StreamSupport.stream(config.getPropertyNames().spliterator(), false)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     @Override
     public Map<String, Object> toMap() {
-        return unmodifiableMap(configurations);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        DefaultSettings that = (DefaultSettings) o;
-        return Objects.equals(configurations, that.configurations);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(configurations);
-    }
-
-    @Override
-    public String toString() {
-        return "DefaultSettings{" +
-                "configurations=" + configurations +
-                '}';
-    }
-
-    static DefaultSettings of(Map<String, Object> params) {
-        Objects.requireNonNull(params, "params is required");
-        return new DefaultSettings(params);
+        return keySet().stream().collect(Collectors.toMap(Function.identity(), k ->
+                config.getValue(k, String.class)));
     }
 }

@@ -23,15 +23,19 @@ import org.eclipse.jnosql.mapping.graph.GraphTraversalSourceSupplier;
 import org.mockito.Mockito;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
+import javax.interceptor.Interceptor;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import static java.lang.System.currentTimeMillis;
@@ -40,7 +44,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ApplicationScoped
-public class GraphProducer {
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class GraphProducer implements Supplier<Graph> {
 
     private static final Logger LOGGER = Logger.getLogger(GraphProducer.class.getName());
 
@@ -58,7 +64,8 @@ public class GraphProducer {
 
     @Produces
     @ApplicationScoped
-    public Graph getGraph() {
+    @Override
+    public Graph get() {
         return graph;
     }
 

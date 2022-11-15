@@ -46,12 +46,9 @@ import static org.mockito.Mockito.when;
 @CDIExtension
 public class GraphRepositoryProxyPaginationTest {
 
-
     private GraphTemplate template;
-
     @Inject
     private EntitiesMetadata entities;
-
 
     @Inject
     private Graph graph;

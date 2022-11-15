@@ -12,14 +12,11 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.column;
-
+package org.eclipse.jnosql.mapping.validation;
 
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
 import org.mockito.Mockito;
 
 import javax.annotation.Priority;
@@ -27,40 +24,30 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
 import javax.interceptor.Interceptor;
-
+import java.math.BigDecimal;
 import java.util.function.Supplier;
 
-import static org.mockito.Mockito.mock;
+import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.when;
 
 @ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
-public class MockProducer implements Supplier<ColumnFamilyManager> {
+class ColumnMockProducer implements Supplier<ColumnFamilyManager> {
 
-
-    @Produces
     @Override
-    public ColumnFamilyManager get() {
-        ColumnEntity entity = ColumnEntity.of("Person");
-        entity.add(Column.of("name", "Default"));
-        entity.add(Column.of("age", 10));
-        ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
-        when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
-        return manager;
-
-    }
-
     @Produces
-    @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
-    public ColumnFamilyManager getColumnFamilyManagerMock() {
-        ColumnEntity entity = ColumnEntity.of("Person");
-        entity.add(Column.of("name", "columnRepositoryMock"));
+    public ColumnFamilyManager get() {
+        ColumnFamilyManager columnFamilyManager = Mockito.mock(ColumnFamilyManager.class);
+
+        ColumnEntity entity = ColumnEntity.of("person");
+        entity.add(Column.of("name", "Ada"));
         entity.add(Column.of("age", 10));
-        ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
-        when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
-        return manager;
+        entity.add(Column.of("salary", BigDecimal.TEN));
+        entity.add(Column.of("phones", singletonList("22342342")));
+        when(columnFamilyManager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
+        when(columnFamilyManager.update(Mockito.any(ColumnEntity.class))).thenReturn(entity);
 
+        return columnFamilyManager;
     }
-
 }

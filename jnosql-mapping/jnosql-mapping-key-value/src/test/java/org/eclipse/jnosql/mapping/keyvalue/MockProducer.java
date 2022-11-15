@@ -23,15 +23,21 @@ import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.User;
 import org.mockito.Mockito;
 
+import javax.annotation.Priority;
+import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
+import javax.interceptor.Interceptor;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static org.mockito.Mockito.when;
 
-public class MockProducer {
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class MockProducer implements Supplier<BucketManager> {
 
     @Produces
-    public BucketManager getBucketManager() {
+    public BucketManager get() {
         BucketManager bucketManager = Mockito.mock(BucketManager.class);
         Person person = Person.builder().withName("Default").build();
         when(bucketManager.get("key")).thenReturn(Optional.ofNullable(Value.of(person)));

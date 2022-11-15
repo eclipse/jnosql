@@ -158,12 +158,11 @@ Car ferrari = Car.id(1L).name("ferrari").city("Rome").type(CarType.SPORT);
 template.insert(ferrari);
 Optional<Car> car = template.find(Car.class, 1L);
 
-ColumnDeleteQuery deleteQuery = delete().from("Car")
-                    .where("_id").eq(1L).build();
+ColumnDeleteQuery deleteQuery = delete().from("Car").where("_id").eq(1L).build();
+
 template.delete(deleteQuery);
 
-ColumnDeleteQuery query = select().from("Car")
-                    .where("_id").eq(1L).build();
+ColumnDeleteQuery query = select().from("Car").where("_id").eq(1L).build();
 
 Optional<Car> result = template.singleResult("select * from Car where _id = 1");
 ----
@@ -221,7 +220,7 @@ Jakarta NoSQL provides a Graph template to explore the specific behavior of this
 </dependency>
 ----
 
-Despite the other three Jakarta NoSQL types, Graph does *not* provide a communication layer from Jakarta NoSQL API. Instead, it integrates with https://tinkerpop.apache.org/[Apache Tinkerpop].
+Despite the other three Jakarta NoSQL types, Graph does *not* provide a communication layer from Jakarta NoSQL API. Instead, it integrates with https://tinkerpop.apache.org/[Apache Tinkerpop 3x.].
 
 [source,java]
 ----

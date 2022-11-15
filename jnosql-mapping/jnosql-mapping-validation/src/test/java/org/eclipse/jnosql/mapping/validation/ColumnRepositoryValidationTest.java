@@ -34,7 +34,6 @@ public class ColumnRepositoryValidationTest {
     @Inject
     private ColumnTemplate template;
 
-
     @Test
     public void shouldValidateOnSave() {
 

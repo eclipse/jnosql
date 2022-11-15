@@ -10,9 +10,19 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 === Added
 - Create a CHANGELOG file to track the specification evolution
+- Add Settings implementation using Eclipse MicroProfile Config
+- Support to Record and Constructor
 
 === Changed
 - Move the default documentation to ASCIIDOC
+= Replace Hamcrest by AsseJ
+
+==== Removed
+
+- Remove Eclipse MicroProfile Config converts
+
+==== Fixed
+- Fix param binder when bind for In query condition
 
 == [1.0.0-b4] - 2022-08-04
 

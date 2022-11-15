@@ -23,16 +23,26 @@ import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import org.mockito.Mockito;
 
+import javax.annotation.Priority;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
+import javax.interceptor.Interceptor;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MockProducer {
+
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class MockProducer implements Supplier<DocumentCollectionManager> {
 
     @Produces
-    public DocumentCollectionManager getDocumentCollectionManager() {
+    @Override
+    public DocumentCollectionManager get() {
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Default"));
         entity.add(Document.of("age", 10));

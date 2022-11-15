@@ -1,5 +1,4 @@
 /*
- *
  *  Copyright (c) 2022 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
@@ -12,17 +11,14 @@
  *   Contributors:
  *
  *   Otavio Santana
- *
  */
-package org.eclipse.jnosql.communication;
+package org.eclipse.jnosql.mapping.config;
 
 import jakarta.nosql.Settings;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,12 +29,20 @@ import java.util.function.Supplier;
 
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class DefaultSettingsTest {
+class MicroProfileSettingsTest {
+    @BeforeEach
+    public void beforeEach() {
+        System.clearProperty("key");
+        System.clearProperty("host");
+        System.clearProperty("host.1");
+        System.clearProperty("host.2");
+        System.clearProperty("host.3");
+        System.clearProperty("server");
+        System.clearProperty("server.1");
+        System.clearProperty("server.2");
+    }
 
     @Test
     public void shouldReturnNPEWhenInstanceIsNull() {
@@ -48,19 +52,20 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldReturnNewInstance() {
-        Settings settings = Settings.of();
+        Settings settings = MicroProfileSettings.INSTANCE;
         Assertions.assertNotNull(settings);
     }
 
     @Test
     public void shouldCreateFromMap() {
-        Settings settings = Settings.of(singletonMap("key", "value"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         assertFalse(settings.isEmpty());
     }
 
     @Test
     public void shouldContainsKeys() {
-        Settings settings = Settings.of(singletonMap("key", "value"));
+        setProperty(singletonMap("key", "value"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         assertTrue(settings.containsKey("key"));
         assertFalse(settings.containsKey("key2"));
     }
@@ -68,7 +73,8 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldGetKeys() {
-        Settings settings = Settings.of(singletonMap("key", "value"));
+        setProperty(singletonMap("key", "value"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         assertThat(settings.keySet()).contains("key");
     }
 
@@ -82,13 +88,14 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldIsEmpty() {
-        Settings settings = Settings.of(singletonMap("key", "value"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         assertFalse(settings.isEmpty());
     }
 
     @Test
     public void shouldGet() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
+        setProperty(singletonMap("key", "12"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         Optional<Object> value = settings.get("key");
         Assertions.assertNotNull(value);
         Assertions.assertEquals("12", value.get());
@@ -96,7 +103,8 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldGetSupplier() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
+        setProperty(singletonMap("key", "12"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         Optional<Object> value = settings.get(() -> "key");
         Assertions.assertNotNull(value);
         Assertions.assertEquals("12", value.get());
@@ -104,14 +112,16 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldNPEGet() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
+        setProperty(singletonMap("key", "12"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         Assertions.assertThrows(NullPointerException.class, () -> settings.get((String) null));
         Assertions.assertThrows(NullPointerException.class, () -> settings.get((Supplier<String>) null));
     }
 
     @Test
     public void shouldGetIterable() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
+        setProperty(singletonMap("key", "12"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         Optional<Object> value = settings.get(Collections.singleton("key"));
         Assertions.assertNotNull(value);
         Assertions.assertEquals("12", value.get());
@@ -119,7 +129,8 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldGetIterableSupplier() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
+        setProperty(singletonMap("key", "12"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         Optional<Object> value = settings.getSupplier(Collections.singleton(() -> "key"));
         Assertions.assertNotNull(value);
         Assertions.assertEquals("12", value.get());
@@ -127,14 +138,16 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldNPEGetIterable() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
+        setProperty(singletonMap("key", "12"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         Assertions.assertThrows(NullPointerException.class, () -> settings.get((Iterable<String>) null));
         Assertions.assertThrows(NullPointerException.class, () -> settings.getSupplier(null));
     }
 
     @Test
     public void shouldGetValueClass() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
+        setProperty(singletonMap("key", "12"));
+        Settings settings = MicroProfileSettings.INSTANCE;
 
         Integer value = settings.get("key", Integer.class).get();
         assertEquals(Integer.valueOf(12), value);
@@ -143,7 +156,8 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldGetValueClassSupplier() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
+        setProperty(singletonMap("key", "12"));
+        Settings settings = MicroProfileSettings.INSTANCE;
 
         Integer value = settings.get(() -> "key", Integer.class).get();
         assertEquals(Integer.valueOf(12), value);
@@ -152,37 +166,43 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldGetOrDefault() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
+        setProperty(singletonMap("key", "12"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         assertEquals("12", settings.getOrDefault("key", "13"));
         assertEquals("13", settings.getOrDefault("key-1", "13"));
     }
 
     @Test
     public void shouldGetOrDefaultSupplier() {
-        Settings settings = Settings.of(singletonMap("key", "12"));
+        setProperty(singletonMap("key", "12"));
+        Settings settings = MicroProfileSettings.INSTANCE;
         assertEquals("12", settings.getOrDefault(() -> "key", "13"));
         assertEquals("13", settings.getOrDefault(() -> "key-1", "13"));
     }
 
     @Test
     public void shouldReturnErrorWhenPrefixIsNull() {
-        Settings settings = Settings.builder()
-                .put("host", "host")
-                .put("host.1", "host-1")
-                .put("host.2", "host-2")
-                .put("host.3", "host-3")
-                .build();
+
+        Map<String, Object> params = Map.of(
+                "host", "host",
+                "host.1", "host-1",
+                "host.2", "host-2",
+                "host.3", "host-3");
+        setProperty(params);
+        Settings settings = MicroProfileSettings.INSTANCE;
+
         assertThrows(NullPointerException.class, () -> settings.prefix((String) null));
     }
 
     @Test
     public void shouldFindPrefix() {
-        Settings settings = Settings.builder()
-                .put("host", "host")
-                .put("host.1", "host-1")
-                .put("host.2", "host-2")
-                .put("host.3", "host-3")
-                .build();
+        Map<String, Object> params = Map.of(
+                "host", "host",
+                "host.1", "host-1",
+                "host.2", "host-2",
+                "host.3", "host-3");
+        setProperty(params);
+        Settings settings = MicroProfileSettings.INSTANCE;
 
         List<Object> hosts = settings.prefix("host");
         assertThat(hosts)
@@ -192,12 +212,13 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldFindPrefixSupplier() {
-        Settings settings = Settings.builder()
-                .put("host", "host")
-                .put("host.1", "host-1")
-                .put("host.2", "host-2")
-                .put("host.3", "host-3")
-                .build();
+        Map<String, Object> params = Map.of(
+                "host", "host",
+                "host.1", "host-1",
+                "host.2", "host-2",
+                "host.3", "host-3");
+        setProperty(params);
+        Settings settings = MicroProfileSettings.INSTANCE;
 
         List<Object> hosts = settings.prefix(() -> "host");
         assertThat(hosts)
@@ -207,13 +228,13 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldFindPrefixWithOrder() {
-        Settings settings = Settings.builder()
-                .put("host", "host")
-                .put("host.3", "host-3")
-                .put("host.2", "host-2")
-                .put("host.1", "host-1")
-                .build();
-
+        Map<String, Object> params = Map.of(
+                "host", "host",
+                "host.1", "host-1",
+                "host.2", "host-2",
+                "host.3", "host-3");
+        setProperty(params);
+        Settings settings = MicroProfileSettings.INSTANCE;
         List<Object> hosts = settings.prefix("host");
         assertThat(hosts).hasSize(4).contains("host", "host-1", "host-2", "host-3");
     }
@@ -221,24 +242,27 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldReturnErrorWhenPrefixesIsNull() {
-        Settings settings = Settings.builder()
-                .put("host", "host")
-                .put("host.1", "host-1")
-                .put("host.2", "host-2")
-                .put("host.3", "host-3")
-                .build();
+        Map<String, Object> params = Map.of(
+                "host", "host",
+                "host.1", "host-1",
+                "host.2", "host-2",
+                "host.3", "host-3");
+        setProperty(params);
+        Settings settings = MicroProfileSettings.INSTANCE;
         assertThrows(NullPointerException.class, () -> settings.prefix((Collection<String>) null));
 
     }
 
     @Test
     public void shouldFindPrefixes() {
-        Settings settings = Settings.builder()
-                .put("host", "host")
-                .put("host.1", "host-1")
-                .put("server", "server")
-                .put("server.1", "server-1")
-                .build();
+
+        Map<String, Object> params = Map.of(
+                "host", "host",
+                "host.1", "host-1",
+                "server", "server",
+                "server.1", "server-1");
+        setProperty(params);
+        Settings settings = MicroProfileSettings.INSTANCE;
 
         List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
         assertThat(hosts).hasSize(4).contains("host", "host-1", "server", "server-1");
@@ -246,28 +270,34 @@ public class DefaultSettingsTest {
 
     @Test
     public void shouldFindPrefixesSupplier() {
-        Settings settings = Settings.builder()
-                .put("host", "host")
-                .put("host.1", "host-1")
-                .put("server", "server")
-                .put("server.1", "server-1")
-                .build();
+        Map<String, Object> params = Map.of(
+                "host", "host",
+                "host.1", "host-1",
+                "server", "server",
+                "server.1", "server-1");
+        setProperty(params);
 
+        Settings settings = MicroProfileSettings.INSTANCE;
         List<Object> hosts = settings.prefixSupplier(Arrays.asList(() -> "host", () -> "server"));
         assertThat(hosts).hasSize(4).contains("host", "host-1", "server", "server-1");
     }
 
     @Test
     public void shouldFindPrefixesSort() {
-        Settings settings = Settings.builder()
-                .put("host.1", "host-1")
-                .put("host", "host")
-                .put("server.1", "server-1")
-                .put("server", "server")
-                .build();
+        Map<String, Object> params = Map.of(
+                "host", "host",
+                "host.1", "host-1",
+                "server", "server",
+                "server.1", "server-1");
+        setProperty(params);
+
+        Settings settings = MicroProfileSettings.INSTANCE;
 
         List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
         assertThat(hosts).hasSize(4).contains("host", "host-1", "server", "server-1");
     }
 
+    private void setProperty(Map<String, Object> params) {
+        params.forEach((k, v) -> System.setProperty(k, v.toString()));
+    }
 }
