@@ -16,33 +16,41 @@ package org.eclipse.jnosql.mapping.graph.configuration;
 
 import jakarta.nosql.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.mapping.configuration.AbstractConfiguration;
-import org.eclipse.jnosql.mapping.configuration.ConfigurationException;
-import org.eclipse.jnosql.mapping.configuration.SettingsConverter;
+import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
 import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
-import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.spi.Converter;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Disposes;
+import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.CDI;
+import java.util.function.Supplier;
+
+import static org.eclipse.jnosql.mapping.config.MappingConfigurations.
 
 /**
  * Converter the {@link String} to {@link Graph}
  */
-public class GraphConverter extends AbstractConfiguration<Graph> implements Converter<Graph> {
+@ApplicationScoped
+public class GraphConverter implements Supplier<Graph> {
 
     @Override
-    protected Graph success(String value) {
-        final SettingsConverter settingsConverter = CDI.current().select(SettingsConverter.class).get();
-        Config config = CDI.current().select(Config.class).get();
-        final Settings settings = settingsConverter.convert(value);
-        final String provider = value + ".provider";
-        final Class<?> configurationClass = config.getValue(provider, Class.class);
-        if (GraphConfiguration.class.isAssignableFrom(configurationClass)) {
-            final Reflections reflections = CDI.current().select(Reflections.class).get();
-            final GraphConfiguration configuration = (GraphConfiguration) reflections.newInstance(configurationClass);
-            return configuration.apply(settings);
-        }
-        throw new ConfigurationException("The class " + configurationClass + " is not valid to " + GraphConfiguration.class);
+    @Produces
+    public Graph get(){
+        Settings settings = MicroProfileSettings.INSTANCE;
+
+        GraphConfiguration configuration = settings.get(COLUMN_PROVIDER, Class.class)
+                .filter(c -> GraphConfiguration.class.isAssignableFrom(c))
+                .map(c -> {
+                    final Reflections reflections = CDI.current().select(Reflections.class).get();
+                    return (GraphConfiguration) reflections.newInstance(c);
+                }).orElseGet(() -> GraphConfiguration.getConfiguration());
+
+        Graph graph = configuration.apply(settings);
+        return graph;
+    }
+
+    public void close(@Disposes Graph graph) throws Exception {
+        graph.close();
     }
 }
