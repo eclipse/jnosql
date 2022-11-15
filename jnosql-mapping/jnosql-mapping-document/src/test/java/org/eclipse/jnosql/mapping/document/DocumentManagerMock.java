@@ -22,13 +22,9 @@ import org.mockito.Mockito;
 
 public class DocumentManagerMock implements DocumentConfiguration {
 
-    @Override
-    public DocumentMock get() {
-        return null;
-    }
 
     @Override
-    public DocumentMock get(Settings settings) throws NullPointerException {
+    public DocumentMock apply(Settings settings) throws NullPointerException {
         return new DocumentMock(settings);
     }
 
@@ -45,7 +41,7 @@ public class DocumentManagerMock implements DocumentConfiguration {
         }
 
         @Override
-        public DocumentManager get(String database) {
+        public DocumentManager apply(String database) {
             return Mockito.mock(DocumentManager.class);
         }
 
