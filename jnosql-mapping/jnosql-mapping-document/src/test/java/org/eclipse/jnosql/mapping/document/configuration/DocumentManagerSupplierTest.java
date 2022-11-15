@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.document.configuration;
 
 import jakarta.nosql.document.DocumentCollectionManager;
 import jakarta.nosql.mapping.MappingException;
+import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,25 +24,25 @@ import org.junit.jupiter.api.Test;
 import javax.inject.Inject;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_DATABASE;
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_PROVIDER;
+import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_DATABASE;
+import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_PROVIDER;
 
+@CDIExtension
 class DocumentManagerSupplierTest {
-
 
     @Inject
     private DocumentManagerSupplier supplier;
 
     @BeforeEach
     public void beforeEach(){
-        System.clearProperty(KEY_VALUE_PROVIDER.get());
-        System.clearProperty(KEY_VALUE_DATABASE.get());
+        System.clearProperty(DOCUMENT_PROVIDER.get());
+        System.clearProperty(DOCUMENT_DATABASE.get());
     }
 
     @Test
     public void shouldGetBucketManager() {
-        System.setProperty(KEY_VALUE_PROVIDER.get(), DocumentConfigurationMock.class.getName());
-        System.setProperty(KEY_VALUE_DATABASE.get(), "database");
+        System.setProperty(DOCUMENT_PROVIDER.get(), DocumentConfigurationMock.class.getName());
+        System.setProperty(DOCUMENT_DATABASE.get(), "database");
         DocumentCollectionManager manager = supplier.get();
         Assertions.assertNotNull(manager);
         assertThat(manager).isInstanceOf(DocumentConfigurationMock.DocumentCollectionManagerMock.class);
@@ -50,8 +51,8 @@ class DocumentManagerSupplierTest {
 
     @Test
     public void shouldUseDefaultConfigurationWhenProviderIsWrong() {
-        System.setProperty(KEY_VALUE_PROVIDER.get(), Integer.class.getName());
-        System.setProperty(KEY_VALUE_DATABASE.get(), "database");
+        System.setProperty(DOCUMENT_PROVIDER.get(), Integer.class.getName());
+        System.setProperty(DOCUMENT_DATABASE.get(), "database");
         DocumentCollectionManager manager = supplier.get();
         Assertions.assertNotNull(manager);
         assertThat(manager).isInstanceOf(DocumentConfigurationMock2.DocumentCollectionManagerMock.class);
@@ -59,7 +60,7 @@ class DocumentManagerSupplierTest {
 
     @Test
     public void shouldUseDefaultConfiguration() {
-        System.setProperty(KEY_VALUE_DATABASE.get(), "database");
+        System.setProperty(DOCUMENT_DATABASE.get(), "database");
         DocumentCollectionManager manager = supplier.get();
         Assertions.assertNotNull(manager);
         assertThat(manager).isInstanceOf(DocumentConfigurationMock2.DocumentCollectionManagerMock.class);

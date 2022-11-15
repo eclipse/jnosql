@@ -25,7 +25,7 @@ import jakarta.nosql.document.DocumentQuery;
 import java.time.Duration;
 import java.util.stream.Stream;
 
-class DocumentConfigurationMock2 implements DocumentConfiguration {
+public class DocumentConfigurationMock2 implements DocumentConfiguration {
 
     @Override
     public DocumentCollectionManagerFactoryMock get() {
