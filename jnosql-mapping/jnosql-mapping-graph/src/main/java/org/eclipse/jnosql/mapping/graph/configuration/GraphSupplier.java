@@ -30,7 +30,7 @@ import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_PROV
 
 
 @ApplicationScoped
-class GraphConverter implements Supplier<Graph> {
+class GraphSupplier implements Supplier<Graph> {
 
     @Override
     @Produces

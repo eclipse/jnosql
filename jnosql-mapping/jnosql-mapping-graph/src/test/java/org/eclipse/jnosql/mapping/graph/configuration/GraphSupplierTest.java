@@ -16,9 +16,7 @@ package org.eclipse.jnosql.mapping.graph.configuration;
 
 import jakarta.nosql.tck.test.CDIExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @CDIExtension
-class GraphConverterTest {
+class GraphSupplierTest {
 
 }
