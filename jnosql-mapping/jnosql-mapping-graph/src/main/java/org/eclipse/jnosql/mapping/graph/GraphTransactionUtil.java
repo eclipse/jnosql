@@ -15,16 +15,17 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Transaction;
-import org.eclipse.jnosql.communication.SettingsPriority;
+import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
 
 import java.util.Objects;
 
+import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_TRANSACTION_AUTOMATIC;
+
 /**
- * An utilitarian to {@link org.apache.tinkerpop.gremlin.structure.Transaction}
+ * Utilitarian to {@link org.apache.tinkerpop.gremlin.structure.Transaction}
  */
 final class GraphTransactionUtil {
 
-    static final String TRANSACTION_KEY = "jakarta.nosql.transaction.automatic";
 
     private static final ThreadLocal<Transaction> THREAD_LOCAL = new ThreadLocal<>();
 
@@ -65,8 +66,7 @@ final class GraphTransactionUtil {
      * @return Check if the transaction is enabled
      */
     static boolean isAutomatic() {
-        return SettingsPriority.get(TRANSACTION_KEY)
-                .map(Object::toString)
+        return MicroProfileSettings.INSTANCE.get(GRAPH_TRANSACTION_AUTOMATIC, String.class)
                 .map(Boolean::valueOf)
                 .orElse(true);
     }
