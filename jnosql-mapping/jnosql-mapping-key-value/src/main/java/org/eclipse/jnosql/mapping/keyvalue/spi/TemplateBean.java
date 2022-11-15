@@ -52,7 +52,7 @@ class TemplateBean extends AbstractBean<KeyValueTemplate> {
     }
 
     @Override
-    public KeyValueTemplate create(CreationalContext<KeyValueTemplate> creationalContext) {
+    public KeyValueTemplate create(CreationalContext<KeyValueTemplate> context) {
 
         KeyValueTemplateProducer producer = getInstance(KeyValueTemplateProducer.class);
         BucketManager manager = getManager();

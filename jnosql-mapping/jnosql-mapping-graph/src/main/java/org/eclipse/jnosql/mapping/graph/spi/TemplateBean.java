@@ -53,7 +53,7 @@ class TemplateBean extends AbstractBean<GraphTemplate> {
 
 
     @Override
-    public GraphTemplate create(CreationalContext<GraphTemplate> creationalContext) {
+    public GraphTemplate create(CreationalContext<GraphTemplate> context) {
 
         GraphTemplateProducer producer = getInstance(GraphTemplateProducer.class);
         Graph manager = getGraph();

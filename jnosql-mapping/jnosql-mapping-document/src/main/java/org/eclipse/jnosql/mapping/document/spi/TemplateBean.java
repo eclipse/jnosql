@@ -65,7 +65,7 @@ class TemplateBean extends AbstractBean<DocumentTemplate> {
     }
 
     @Override
-    public DocumentTemplate create(CreationalContext<DocumentTemplate> creationalContext) {
+    public DocumentTemplate create(CreationalContext<DocumentTemplate> context) {
 
         DocumentTemplateProducer producer = getInstance(DocumentTemplateProducer.class);
         DocumentManager manager = getManager();
