@@ -26,7 +26,6 @@ import javax.inject.Inject;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_DATABASE;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_PROVIDER;
-import static org.junit.jupiter.api.Assertions.*;
 
 @CDIExtension
 class BucketManagerSupplierTest {
