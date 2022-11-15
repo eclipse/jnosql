@@ -40,7 +40,7 @@ class DocumentManagerSupplierTest {
     }
 
     @Test
-    public void shouldGetBucketManager() {
+    public void shouldGetManager() {
         System.setProperty(DOCUMENT_PROVIDER.get(), DocumentConfigurationMock.class.getName());
         System.setProperty(DOCUMENT_DATABASE.get(), "database");
         DocumentCollectionManager manager = supplier.get();
