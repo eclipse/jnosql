@@ -33,7 +33,7 @@ import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_PROVIDER;
 
 @ApplicationScoped
-public class BucketManagerSupplier implements Supplier<BucketManager> {
+class BucketManagerSupplier implements Supplier<BucketManager> {
 
 
     @Override
