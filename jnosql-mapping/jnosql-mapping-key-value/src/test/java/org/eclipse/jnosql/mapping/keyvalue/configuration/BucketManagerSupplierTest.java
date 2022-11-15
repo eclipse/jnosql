@@ -15,12 +15,14 @@
 package org.eclipse.jnosql.mapping.keyvalue.configuration;
 
 import jakarta.nosql.keyvalue.BucketManager;
+import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_DATABASE;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_PROVIDER;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +39,17 @@ class BucketManagerSupplierTest {
         System.setProperty(KEY_VALUE_DATABASE.get(), "database");
         BucketManager manager = supplier.get();
         Assertions.assertNotNull(manager);
+        assertThat(manager).isInstanceOf(KeyValueConfigurationMock.BucketManagerMock.class);
+        System.clearProperty(KEY_VALUE_PROVIDER.get());
+        System.clearProperty(KEY_VALUE_DATABASE.get());
+    }
+
+
+    @Test
+    public void shouldReturnErrorWhenGetBucketManager() {
+        System.setProperty(KEY_VALUE_PROVIDER.get(), Integer.class.getName());
+        System.setProperty(KEY_VALUE_DATABASE.get(), "database");
+        Assertions.assertThrows(MappingException.class, () -> supplier.get());
 
         System.clearProperty(KEY_VALUE_PROVIDER.get());
         System.clearProperty(KEY_VALUE_DATABASE.get());
