@@ -14,13 +14,29 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
+import java.util.ServiceLoader;
 import java.util.function.Function;
 
 /**
  * The Configuration that creates an instance of {@link Graph} that given a {@link Settings} make an  {@link Graph} instance.
  */
 public interface GraphConfiguration extends Function<Settings, Graph> {
+
+
+    /**
+     * creates and returns a  {@link GraphConfiguration}  instance from {@link java.util.ServiceLoader}
+     *
+     * @param <T> the configuration type
+     * @return {@link GraphConfiguration} instance
+     * @throws jakarta.nosql.ProviderNotFoundException when the provider is not found
+     * @throws jakarta.nosql.NonUniqueResultException  when there is more than one KeyValueConfiguration
+     */
+    static <T extends GraphConfiguration> T getConfiguration() {
+        return (T) ServiceLoaderProvider.getUnique(GraphConfiguration.class,
+                ()-> ServiceLoader.load(GraphConfiguration.class));
+    }
 }
