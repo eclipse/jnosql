@@ -18,7 +18,7 @@ package org.eclipse.jnosql.communication.column.query;
 
 
 import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.Condition;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.column.Column;
@@ -255,7 +255,7 @@ public class DefaultDeleteQueryBuilderTest {
     @Test
     public void shouldExecuteDelete() {
         String columnFamily = "columnFamily";
-        ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
+        ColumnManager manager = mock(ColumnManager.class);
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         delete().from(columnFamily).delete(manager);
         verify(manager).delete(queryCaptor.capture());

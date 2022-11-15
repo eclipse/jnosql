@@ -22,7 +22,7 @@ import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnDeleteQueryParams;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.column.DeleteQueryConverter;
@@ -48,7 +48,7 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
         cache = new CacheQuery<>(this::getQuery);
     }
 
-    Stream<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
 
         ColumnDeleteQuery columnDeleteQuery = cache.get(query, observer);
         manager.delete(columnDeleteQuery);
@@ -56,7 +56,7 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
     }
 
 
-    ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager,
+    ColumnPreparedStatement prepare(String query, ColumnManager manager,
                                     ColumnObserverParser observer) {
         Params params = Params.newParams();
         ColumnDeleteQuery columnDeleteQuery = getQuery(query, params, observer);

@@ -20,7 +20,7 @@ import jakarta.nosql.QueryException;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,7 +40,7 @@ class InsertQueryParserTest {
     
     private final InsertQueryParser parser = new InsertQueryParser();
 
-    private final ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+    private final ColumnManager manager = Mockito.mock(ColumnManager.class);
 
     private final ColumnObserverParser observer = new ColumnObserverParser() {
     };

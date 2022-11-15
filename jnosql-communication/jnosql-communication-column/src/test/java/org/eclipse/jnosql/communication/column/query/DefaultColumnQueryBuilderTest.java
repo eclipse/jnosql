@@ -23,7 +23,7 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -341,7 +341,7 @@ class DefaultColumnQueryBuilderTest {
 
     @Test
     public void shouldExecuteManager() {
-        ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+        ColumnManager manager = Mockito.mock(ColumnManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String collection = "collection";
         Stream<ColumnEntity> entities = builder().from(collection).getResult(manager);
@@ -351,7 +351,7 @@ class DefaultColumnQueryBuilderTest {
 
     @Test
     public void shouldExecuteSingleResultManager() {
-        ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+        ColumnManager manager = Mockito.mock(ColumnManager.class);
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         String collection = "collection";
         Optional<ColumnEntity> entities = builder().from(collection).getSingleResult(manager);

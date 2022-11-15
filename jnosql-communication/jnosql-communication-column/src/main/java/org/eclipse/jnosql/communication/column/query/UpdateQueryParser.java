@@ -19,7 +19,7 @@ package org.eclipse.jnosql.communication.column.query;
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.query.Condition;
@@ -39,7 +39,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
         this.updateQueryProvider = UpdateQuery.getProvider();
     }
 
-    Stream<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
 
         UpdateQuery updateQuery = updateQueryProvider.apply(query);
 
@@ -54,7 +54,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
     }
 
 
-    ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    ColumnPreparedStatement prepare(String query, ColumnManager manager, ColumnObserverParser observer) {
 
         Params params = Params.newParams();
 

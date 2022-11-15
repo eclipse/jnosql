@@ -24,7 +24,7 @@ import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.column.ColumnQuery;
@@ -47,7 +47,7 @@ public class SelectQueryParserTest {
 
     private final SelectQueryParser parser = new SelectQueryParser();
 
-    private final ColumnFamilyManager manager = Mockito.mock(ColumnFamilyManager.class);
+    private final ColumnManager manager = Mockito.mock(ColumnManager.class);
 
     private final ColumnObserverParser observer = new ColumnObserverParser() {
     };

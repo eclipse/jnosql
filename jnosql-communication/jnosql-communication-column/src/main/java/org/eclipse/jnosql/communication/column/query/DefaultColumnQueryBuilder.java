@@ -17,7 +17,7 @@
 package org.eclipse.jnosql.communication.column.query;
 
 import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
@@ -118,13 +118,13 @@ class DefaultColumnQueryBuilder implements ColumnQuery.ColumnQueryBuilder {
     }
 
     @Override
-    public Stream<ColumnEntity> getResult(ColumnFamilyManager manager) {
+    public Stream<ColumnEntity> getResult(ColumnManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return manager.select(build());
     }
 
     @Override
-    public Optional<ColumnEntity> getSingleResult(ColumnFamilyManager manager) {
+    public Optional<ColumnEntity> getSingleResult(ColumnManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return manager.singleResult(build());
     }

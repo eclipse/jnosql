@@ -21,7 +21,7 @@ import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.column.ColumnQuery;
 
@@ -50,7 +50,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
 
     private final Duration duration;
 
-    private final ColumnFamilyManager manager;
+    private final ColumnManager manager;
 
     private DefaultColumnPreparedStatement(ColumnEntity entity,
                                            ColumnQuery columnQuery,
@@ -60,7 +60,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
                                            String query,
                                            List<String> paramsLeft,
                                            Duration duration,
-                                           ColumnFamilyManager manager) {
+                                           ColumnManager manager) {
         this.entity = entity;
         this.columnQuery = columnQuery;
         this.columnDeleteQuery = columnDeleteQuery;
@@ -137,7 +137,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
             ColumnQuery columnQuery,
             Params params,
             String query,
-            ColumnFamilyManager manager) {
+            ColumnManager manager) {
         return new DefaultColumnPreparedStatement(null, columnQuery,
                 null, PreparedStatementType.SELECT, params, query,
                 params.getParametersNames(), null, manager);
@@ -147,7 +147,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
     static ColumnPreparedStatement delete(ColumnDeleteQuery columnDeleteQuery,
                                           Params params,
                                           String query,
-                                          ColumnFamilyManager manager) {
+                                          ColumnManager manager) {
 
         return new DefaultColumnPreparedStatement(null, null,
                 columnDeleteQuery, PreparedStatementType.DELETE, params, query,
@@ -159,7 +159,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
                                           Params params,
                                           String query,
                                           Duration duration,
-                                          ColumnFamilyManager manager) {
+                                          ColumnManager manager) {
         return new DefaultColumnPreparedStatement(entity, null,
                 null, PreparedStatementType.INSERT, params, query,
                 params.getParametersNames(), duration, manager);
@@ -169,7 +169,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
     static ColumnPreparedStatement update(ColumnEntity entity,
                                           Params params,
                                           String query,
-                                          ColumnFamilyManager manager) {
+                                          ColumnManager manager) {
         return new DefaultColumnPreparedStatement(entity, null,
                 null, PreparedStatementType.UPDATE, params, query,
                 params.getParametersNames(), null, manager);

@@ -18,7 +18,7 @@ package org.eclipse.jnosql.communication.column.query;
 
 import jakarta.nosql.QueryException;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.column.ColumnQueryParser;
@@ -37,7 +37,7 @@ public final class DefaultColumnQueryParser implements ColumnQueryParser {
     private final UpdateQueryParser update = new UpdateQueryParser();
 
     @Override
-    public Stream<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    public Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
         switch (command) {
@@ -55,7 +55,7 @@ public final class DefaultColumnQueryParser implements ColumnQueryParser {
     }
 
     @Override
-    public ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    public ColumnPreparedStatement prepare(String query, ColumnManager manager, ColumnObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
 
@@ -74,7 +74,7 @@ public final class DefaultColumnQueryParser implements ColumnQueryParser {
     }
 
 
-    private void validation(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    private void validation(String query, ColumnManager manager, ColumnObserverParser observer) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(manager, "manager is required");
         Objects.requireNonNull(observer, "manager is observer");

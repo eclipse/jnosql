@@ -21,7 +21,7 @@ import jakarta.nosql.QueryException;
 import jakarta.nosql.Sort;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.column.ColumnQuery;
@@ -50,14 +50,14 @@ public final class SelectQueryParser implements SelectQueryConverter {
         this.cache = new CacheQuery<>(this::getColumnQuery);
     }
 
-    Stream<ColumnEntity> query(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
 
         ColumnQuery columnQuery = cache.get(query, observer);
         return manager.select(columnQuery);
     }
 
 
-    ColumnPreparedStatement prepare(String query, ColumnFamilyManager manager, ColumnObserverParser observer) {
+    ColumnPreparedStatement prepare(String query, ColumnManager manager, ColumnObserverParser observer) {
 
         Params params = Params.newParams();
 
