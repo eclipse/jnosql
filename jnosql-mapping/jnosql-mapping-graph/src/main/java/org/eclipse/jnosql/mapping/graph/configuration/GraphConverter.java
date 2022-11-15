@@ -26,20 +26,18 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.CDI;
 import java.util.function.Supplier;
 
-import static org.eclipse.jnosql.mapping.config.MappingConfigurations.
+import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_PROVIDER;
 
-/**
- * Converter the {@link String} to {@link Graph}
- */
+
 @ApplicationScoped
-public class GraphConverter implements Supplier<Graph> {
+class GraphConverter implements Supplier<Graph> {
 
     @Override
     @Produces
     public Graph get(){
         Settings settings = MicroProfileSettings.INSTANCE;
 
-        GraphConfiguration configuration = settings.get(COLUMN_PROVIDER, Class.class)
+        GraphConfiguration configuration = settings.get(GRAPH_PROVIDER, Class.class)
                 .filter(c -> GraphConfiguration.class.isAssignableFrom(c))
                 .map(c -> {
                     final Reflections reflections = CDI.current().select(Reflections.class).get();
