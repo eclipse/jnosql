@@ -25,7 +25,7 @@ import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 
 import java.util.Iterator;
 
-class GraphConfigurationMock2 implements GraphConfiguration {
+public class GraphConfigurationMock2 implements GraphConfiguration {
 
     @Override
     public Graph apply(Settings settings) {

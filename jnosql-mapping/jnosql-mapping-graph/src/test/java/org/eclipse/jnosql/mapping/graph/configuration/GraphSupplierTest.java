@@ -60,9 +60,4 @@ class GraphSupplierTest {
         Assertions.assertNotNull(graph);
         assertThat(graph).isInstanceOf(GraphConfigurationMock2.GraphMock.class);
     }
-
-    @Test
-    public void shouldReturnErrorWhenThereIsNotDatabase() {
-        Assertions.assertThrows(MappingException.class, () -> supplier.get());
-    }
 }
