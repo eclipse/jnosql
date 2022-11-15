@@ -51,7 +51,12 @@ public enum MappingConfigurations implements Supplier<String> {
      * Define the GraphConfiguration that creates a GraphConfiguration instance.
      * It is necessary when there is more than one implementation; otherwise,  it will find automatically.
      */
-    GRAPH_PROVIDER("jnosql.graph.provider"),;
+    GRAPH_PROVIDER("jnosql.graph.provider"),
+    /**
+     * Activate the automatic transaction at Graph database. By default it is true.
+     */
+    GRAPH_TRANSACTION_AUTOMATIC("jnosql.graph.transaction.automatic");
+
 
     private final String value;
 
