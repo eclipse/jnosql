@@ -50,12 +50,12 @@ class BucketManagerSupplier implements Supplier<BucketManager> {
                     return (KeyValueConfiguration) reflections.newInstance(c);
                 }).orElseGet(() -> KeyValueConfiguration.getConfiguration());
 
-        BucketManagerFactory managerFactory = configuration.get(settings);
+        BucketManagerFactory managerFactory = configuration.apply(settings);
 
         Optional<String> database = settings.get(KEY_VALUE_DATABASE, String.class);
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
                 + KEY_VALUE_DATABASE));
-        BucketManager manager = managerFactory.getBucketManager(db);
+        BucketManager manager = managerFactory.apply(db);
         return manager;
     }
 
