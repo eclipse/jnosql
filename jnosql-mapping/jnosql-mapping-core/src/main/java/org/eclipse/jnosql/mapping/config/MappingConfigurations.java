@@ -46,7 +46,12 @@ public enum MappingConfigurations implements Supplier<String> {
     /**
      *Define the column database name.
      */
-    COLUMN_DATABASE("jnosql.column.database");
+    COLUMN_DATABASE("jnosql.column.database"),
+    /**
+     * Define the GraphConfiguration that creates a GraphConfiguration instance.
+     * It is necessary when there is more than one implementation; otherwise,  it will find automatically.
+     */
+    GRAPH_PROVIDER("jnosql.graph.provider"),;
 
     private final String value;
 
