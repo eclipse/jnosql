@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
@@ -62,7 +62,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     protected abstract DocumentEntityConverter getConverter();
 
-    protected abstract DocumentCollectionManager getManager();
+    protected abstract DocumentManager getManager();
 
     protected abstract DocumentWorkflow getWorkflow();
 

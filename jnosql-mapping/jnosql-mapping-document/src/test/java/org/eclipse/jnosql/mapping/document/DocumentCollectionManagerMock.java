@@ -15,12 +15,12 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerFactory;
+import jakarta.nosql.document.DocumentManager;
+import jakarta.nosql.document.DocumentManagerFactory;
 import jakarta.nosql.document.DocumentConfiguration;
 import org.mockito.Mockito;
 
-public class DocumentCollectionManagerMock implements DocumentConfiguration {
+public class DocumentManagerMock implements DocumentConfiguration {
 
     @Override
     public DocumentMock get() {
@@ -32,7 +32,7 @@ public class DocumentCollectionManagerMock implements DocumentConfiguration {
         return new DocumentMock(settings);
     }
 
-    public static class DocumentMock implements DocumentCollectionManagerFactory {
+    public static class DocumentMock implements DocumentManagerFactory {
 
         private final Settings settings;
 
@@ -45,8 +45,8 @@ public class DocumentCollectionManagerMock implements DocumentConfiguration {
         }
 
         @Override
-        public DocumentCollectionManager get(String database) {
-            return Mockito.mock(DocumentCollectionManager.class);
+        public DocumentManager get(String database) {
+            return Mockito.mock(DocumentManager.class);
         }
 
         @Override

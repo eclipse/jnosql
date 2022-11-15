@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
@@ -40,7 +40,7 @@ class DefaultDocumentRepositoryProducer implements DocumentRepositoryProducer {
     private DocumentTemplateProducer producer;
 
     @Override
-    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, DocumentCollectionManager manager) {
+    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, DocumentManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         DocumentTemplate template = producer.get(manager);

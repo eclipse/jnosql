@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.document.configuration;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerFactory;
+import jakarta.nosql.document.DocumentManager;
+import jakarta.nosql.document.DocumentManagerFactory;
 import jakarta.nosql.document.DocumentConfiguration;
 import jakarta.nosql.mapping.MappingException;
 import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
@@ -33,12 +33,12 @@ import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_D
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_PROVIDER;
 
 @ApplicationScoped
-class DocumentManagerSupplier implements Supplier<DocumentCollectionManager> {
+class DocumentManagerSupplier implements Supplier<DocumentManager> {
 
     @Override
     @Produces
     @ApplicationScoped
-    public DocumentCollectionManager get() {
+    public DocumentManager get() {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         DocumentConfiguration configuration = settings.get(DOCUMENT_PROVIDER, Class.class)
@@ -48,16 +48,16 @@ class DocumentManagerSupplier implements Supplier<DocumentCollectionManager> {
                     return (DocumentConfiguration) reflections.newInstance(c);
                 }).orElseGet(() -> DocumentConfiguration.getConfiguration());
 
-        DocumentCollectionManagerFactory managerFactory = configuration.get(settings);
+        DocumentManagerFactory managerFactory = configuration.apply(settings);
 
         Optional<String> database = settings.get(DOCUMENT_DATABASE, String.class);
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
                 + DOCUMENT_DATABASE));
-        DocumentCollectionManager manager = managerFactory.get(db);
+        DocumentManager manager = managerFactory.apply(db);
         return manager;
     }
 
-    public void close(@Disposes DocumentCollectionManager manager) {
+    public void close(@Disposes DocumentManager manager) {
         manager.close();
     }
 }

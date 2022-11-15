@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document;
 
 
 import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Database;
@@ -38,26 +38,26 @@ import static org.mockito.Mockito.when;
 @ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
-public class MockProducer implements Supplier<DocumentCollectionManager> {
+public class MockProducer implements Supplier<DocumentManager> {
 
     @Produces
     @Override
-    public DocumentCollectionManager get() {
+    public DocumentManager get() {
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "Default"));
         entity.add(Document.of("age", 10));
-        DocumentCollectionManager manager = mock(DocumentCollectionManager.class);
+        DocumentManager manager = mock(DocumentManager.class);
         when(manager.insert(Mockito.any(DocumentEntity.class))).thenReturn(entity);
         return manager;
     }
 
     @Produces
     @Database(value = DatabaseType.DOCUMENT, provider = "documentRepositoryMock")
-    public DocumentCollectionManager getDocumentCollectionManagerMock() {
+    public DocumentManager getDocumentManagerMock() {
         DocumentEntity entity = DocumentEntity.of("Person");
         entity.add(Document.of("name", "documentRepositoryMock"));
         entity.add(Document.of("age", 10));
-        DocumentCollectionManager manager = mock(DocumentCollectionManager.class);
+        DocumentManager manager = mock(DocumentManager.class);
         when(manager.insert(Mockito.any(DocumentEntity.class))).thenReturn(entity);
         when(manager.singleResult(Mockito.any(DocumentQuery.class))).thenReturn(Optional.empty());
         return manager;

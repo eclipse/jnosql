@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.document.configuration;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerFactory;
+import jakarta.nosql.document.DocumentManager;
+import jakarta.nosql.document.DocumentManagerFactory;
 import jakarta.nosql.document.DocumentConfiguration;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
@@ -28,20 +28,20 @@ import java.util.stream.Stream;
 class DocumentConfigurationMock implements DocumentConfiguration {
 
     @Override
-    public DocumentCollectionManagerFactoryMock get() {
-        return new DocumentCollectionManagerFactoryMock(Settings.builder().build());
+    public DocumentManagerFactoryMock get() {
+        return new DocumentManagerFactoryMock(Settings.builder().build());
     }
 
     @Override
-    public DocumentCollectionManagerFactoryMock get(Settings settings) {
-        return new DocumentCollectionManagerFactoryMock(settings);
+    public DocumentManagerFactoryMock get(Settings settings) {
+        return new DocumentManagerFactoryMock(settings);
     }
 
-    public static class DocumentCollectionManagerFactoryMock implements DocumentCollectionManagerFactory {
+    public static class DocumentManagerFactoryMock implements DocumentManagerFactory {
 
         private final Settings settings;
 
-        public DocumentCollectionManagerFactoryMock(Settings settings) {
+        public DocumentManagerFactoryMock(Settings settings) {
             this.settings = settings;
         }
 
@@ -50,8 +50,8 @@ class DocumentConfigurationMock implements DocumentConfiguration {
         }
 
         @Override
-        public DocumentCollectionManagerMock  get(String database) {
-            return new DocumentCollectionManagerMock(database);
+        public DocumentManagerMock  get(String database) {
+            return new DocumentManagerMock(database);
         }
 
         @Override
@@ -60,11 +60,11 @@ class DocumentConfigurationMock implements DocumentConfiguration {
         }
     }
 
-    public static class DocumentCollectionManagerMock implements DocumentCollectionManager {
+    public static class DocumentManagerMock implements DocumentManager {
 
         private final String database;
 
-        public DocumentCollectionManagerMock(String database) {
+        public DocumentManagerMock(String database) {
             this.database = database;
         }
 

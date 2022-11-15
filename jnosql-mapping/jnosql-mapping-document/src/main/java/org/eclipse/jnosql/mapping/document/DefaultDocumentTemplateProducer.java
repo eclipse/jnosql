@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document;
 
 
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
@@ -53,7 +53,7 @@ class DefaultDocumentTemplateProducer implements DocumentTemplateProducer {
 
 
     @Override
-    public DocumentTemplate get(DocumentCollectionManager collectionManager) {
+    public DocumentTemplate get(DocumentManager collectionManager) {
         Objects.requireNonNull(collectionManager, "collectionManager is required");
         return new ProducerDocumentTemplate(converter, collectionManager, workflow,
                 persistManager, entities, converters);
@@ -64,7 +64,7 @@ class DefaultDocumentTemplateProducer implements DocumentTemplateProducer {
 
         private DocumentEntityConverter converter;
 
-        private DocumentCollectionManager manager;
+        private DocumentManager manager;
 
         private DocumentWorkflow workflow;
 
@@ -73,7 +73,7 @@ class DefaultDocumentTemplateProducer implements DocumentTemplateProducer {
         private Converters converters;
 
         private EntitiesMetadata entities;
-        ProducerDocumentTemplate(DocumentEntityConverter converter, DocumentCollectionManager manager,
+        ProducerDocumentTemplate(DocumentEntityConverter converter, DocumentManager manager,
                                  DocumentWorkflow workflow,
                                  DocumentEventPersistManager persistManager,
                                  EntitiesMetadata entities, Converters converters) {
@@ -94,7 +94,7 @@ class DefaultDocumentTemplateProducer implements DocumentTemplateProducer {
         }
 
         @Override
-        protected DocumentCollectionManager getManager() {
+        protected DocumentManager getManager() {
             return manager;
         }
 

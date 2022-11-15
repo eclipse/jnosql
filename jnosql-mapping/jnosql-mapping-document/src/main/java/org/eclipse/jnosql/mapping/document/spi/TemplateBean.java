@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document.spi;
 
 
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateProducer;
@@ -68,12 +68,12 @@ class TemplateBean extends AbstractBean<DocumentTemplate> {
     public DocumentTemplate create(CreationalContext<DocumentTemplate> creationalContext) {
 
         DocumentTemplateProducer producer = getInstance(DocumentTemplateProducer.class);
-        DocumentCollectionManager manager = getManager();
+        DocumentManager manager = getManager();
         return producer.get(manager);
     }
 
-    private DocumentCollectionManager getManager() {
-        return getInstance(DocumentCollectionManager.class, DatabaseQualifier.ofDocument(provider));
+    private DocumentManager getManager() {
+        return getInstance(DocumentManager.class, DatabaseQualifier.ofDocument(provider));
     }
 
     @Override
