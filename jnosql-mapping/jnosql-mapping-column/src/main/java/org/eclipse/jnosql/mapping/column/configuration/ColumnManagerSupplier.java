@@ -16,8 +16,8 @@ package org.eclipse.jnosql.mapping.column.configuration;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.column.ColumnConfiguration;
-import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.column.ColumnManager;
+import jakarta.nosql.column.ColumnManagerFactory;
 import jakarta.nosql.mapping.MappingException;
 import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
@@ -33,12 +33,12 @@ import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_DAT
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_PROVIDER;
 
 @ApplicationScoped
-class ColumnManagerSupplier implements Supplier<ColumnFamilyManager> {
+class ColumnManagerSupplier implements Supplier<ColumnManager> {
 
     @Override
     @Produces
     @ApplicationScoped
-    public ColumnFamilyManager get() {
+    public ColumnManager get() {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         ColumnConfiguration configuration = settings.get(COLUMN_PROVIDER, Class.class)
@@ -48,16 +48,16 @@ class ColumnManagerSupplier implements Supplier<ColumnFamilyManager> {
                     return (ColumnConfiguration) reflections.newInstance(c);
                 }).orElseGet(() -> ColumnConfiguration.getConfiguration());
 
-        ColumnFamilyManagerFactory managerFactory = configuration.get(settings);
+        ColumnManagerFactory managerFactory = configuration.get(settings);
 
         Optional<String> database = settings.get(COLUMN_DATABASE, String.class);
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
                 + COLUMN_DATABASE));
-        ColumnFamilyManager manager = managerFactory.get(db);
+        ColumnManager manager = managerFactory.get(db);
         return manager;
     }
 
-    public void close(@Disposes ColumnFamilyManager manager) {
+    public void close(@Disposes ColumnManager manager) {
         manager.close();
     }
 }

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
@@ -59,7 +59,7 @@ class ColumnPageTest {
     @Inject
     private Converters converters;
 
-    private ColumnFamilyManager managerMock;
+    private ColumnManager managerMock;
 
     private DefaultColumnTemplate subject;
 
@@ -70,10 +70,10 @@ class ColumnPageTest {
 
     @BeforeEach
     public void setUp() {
-        managerMock = Mockito.mock(ColumnFamilyManager.class);
+        managerMock = Mockito.mock(ColumnManager.class);
         columnEventPersistManager = Mockito.mock(ColumnEventPersistManager.class);
         captor = ArgumentCaptor.forClass(ColumnEntity.class);
-        Instance<ColumnFamilyManager> instance = Mockito.mock(Instance.class);
+        Instance<ColumnManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerMock);
         this.subject = new DefaultColumnTemplate(converter, instance, new DefaultColumnWorkflow(columnEventPersistManager, converter),
                 columnEventPersistManager, entities, converters);

@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
@@ -40,7 +40,7 @@ class DefaultColumnRepositoryProducer implements ColumnRepositoryProducer {
     private ColumnTemplateProducer producer;
 
     @Override
-    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, ColumnFamilyManager manager) {
+    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, ColumnManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
         ColumnTemplate template = producer.get(manager);

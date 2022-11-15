@@ -19,7 +19,7 @@ import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.column.ColumnQueryParser;
@@ -61,7 +61,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
     protected abstract ColumnEntityConverter getConverter();
 
-    protected abstract ColumnFamilyManager getManager();
+    protected abstract ColumnManager getManager();
 
     protected abstract ColumnWorkflow getFlow();
 

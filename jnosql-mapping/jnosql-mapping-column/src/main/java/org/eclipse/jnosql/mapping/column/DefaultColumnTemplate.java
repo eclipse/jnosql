@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
@@ -33,7 +33,7 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
 
     private ColumnEntityConverter converter;
 
-    private Instance<ColumnFamilyManager> manager;
+    private Instance<ColumnManager> manager;
 
     private ColumnWorkflow flow;
 
@@ -44,7 +44,7 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
     private Converters converters;
 
     @Inject
-    DefaultColumnTemplate(ColumnEntityConverter converter, Instance<ColumnFamilyManager> manager,
+    DefaultColumnTemplate(ColumnEntityConverter converter, Instance<ColumnManager> manager,
                           ColumnWorkflow flow,
                           ColumnEventPersistManager eventManager,
                           EntitiesMetadata entities, Converters converters) {
@@ -66,7 +66,7 @@ class DefaultColumnTemplate extends AbstractColumnTemplate {
     }
 
     @Override
-    protected ColumnFamilyManager getManager() {
+    protected ColumnManager getManager() {
         return manager.get();
     }
 

@@ -16,13 +16,13 @@ package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.column.ColumnConfiguration;
-import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.column.ColumnManager;
+import jakarta.nosql.column.ColumnManagerFactory;
 import org.mockito.Mockito;
 
 import java.util.Collections;
 
-public class ColumnFamilyManagerMock implements ColumnConfiguration {
+public class ColumnManagerMock implements ColumnConfiguration {
 
 
     @Override
@@ -36,7 +36,7 @@ public class ColumnFamilyManagerMock implements ColumnConfiguration {
         return new MockFamilyManager(settings);
     }
 
-    public static class MockFamilyManager implements ColumnFamilyManagerFactory {
+    public static class MockFamilyManager implements ColumnManagerFactory {
         private final Settings settings;
 
         public MockFamilyManager(Settings settings) {
@@ -44,8 +44,8 @@ public class ColumnFamilyManagerMock implements ColumnConfiguration {
         }
 
         @Override
-        public ColumnFamilyManager get(String database) {
-            return Mockito.mock(ColumnFamilyManager.class);
+        public ColumnManager get(String database) {
+            return Mockito.mock(ColumnManager.class);
         }
 
         public Settings getSettings() {

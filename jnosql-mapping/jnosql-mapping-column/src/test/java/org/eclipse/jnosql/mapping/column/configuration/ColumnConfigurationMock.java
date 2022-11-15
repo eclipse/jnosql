@@ -18,8 +18,8 @@ import jakarta.nosql.Settings;
 import jakarta.nosql.column.ColumnConfiguration;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.column.ColumnManager;
+import jakarta.nosql.column.ColumnManagerFactory;
 import jakarta.nosql.column.ColumnQuery;
 
 import java.time.Duration;
@@ -28,17 +28,17 @@ import java.util.stream.Stream;
 class ColumnConfigurationMock implements ColumnConfiguration {
 
     @Override
-    public ColumnFamilyManagerFactoryMock get() {
-        return new ColumnFamilyManagerFactoryMock(Settings.builder().build());
+    public ColumnManagerFactoryMock get() {
+        return new ColumnManagerFactoryMock(Settings.builder().build());
     }
 
     @Override
-    public ColumnFamilyManagerFactoryMock get(Settings settings) {
-        return new ColumnFamilyManagerFactoryMock(settings);
+    public ColumnManagerFactoryMock get(Settings settings) {
+        return new ColumnManagerFactoryMock(settings);
     }
 
 
-    public static class ColumnFamilyManagerFactoryMock implements ColumnFamilyManagerFactory {
+    public static class ColumnManagerFactoryMock implements ColumnManagerFactory {
 
         private final Settings settings;
 
@@ -46,13 +46,13 @@ class ColumnConfigurationMock implements ColumnConfiguration {
             return settings;
         }
 
-        public ColumnFamilyManagerFactoryMock(Settings settings) {
+        public ColumnManagerFactoryMock(Settings settings) {
             this.settings = settings;
         }
 
         @Override
-        public ColumnFamilyManagerMock get(String database) {
-            return new ColumnFamilyManagerMock(database);
+        public ColumnManagerMock get(String database) {
+            return new ColumnManagerMock(database);
         }
 
         @Override
@@ -61,11 +61,11 @@ class ColumnConfigurationMock implements ColumnConfiguration {
         }
     }
 
-    public static class ColumnFamilyManagerMock implements ColumnFamilyManager {
+    public static class ColumnManagerMock implements ColumnManager {
 
         private final String database;
 
-        public ColumnFamilyManagerMock(String database) {
+        public ColumnManagerMock(String database) {
             this.database = database;
         }
 
