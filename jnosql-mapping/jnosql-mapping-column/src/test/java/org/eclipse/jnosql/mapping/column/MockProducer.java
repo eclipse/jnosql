@@ -22,16 +22,26 @@ import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import org.mockito.Mockito;
 
+import javax.annotation.Priority;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
+import javax.interceptor.Interceptor;
+
+import java.util.function.Supplier;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MockProducer {
+@ApplicationScoped
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class MockProducer implements Supplier<ColumnFamilyManager> {
 
 
     @Produces
-    public ColumnFamilyManager getColumnFamilyManager() {
+    @Override
+    public ColumnFamilyManager get() {
         ColumnEntity entity = ColumnEntity.of("Person");
         entity.add(Column.of("name", "Default"));
         entity.add(Column.of("age", 10));
