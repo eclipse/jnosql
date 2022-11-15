@@ -48,12 +48,12 @@ class ColumnManagerSupplier implements Supplier<ColumnManager> {
                     return (ColumnConfiguration) reflections.newInstance(c);
                 }).orElseGet(() -> ColumnConfiguration.getConfiguration());
 
-        ColumnManagerFactory managerFactory = configuration.get(settings);
+        ColumnManagerFactory managerFactory = configuration.apply(settings);
 
         Optional<String> database = settings.get(COLUMN_DATABASE, String.class);
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
                 + COLUMN_DATABASE));
-        ColumnManager manager = managerFactory.get(db);
+        ColumnManager manager = managerFactory.apply(db);
         return manager;
     }
 

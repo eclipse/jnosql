@@ -25,14 +25,9 @@ import java.util.Collections;
 public class ColumnManagerMock implements ColumnConfiguration {
 
 
-    @Override
-    public MockFamilyManager get() {
-        final Settings settings = Settings.of(Collections.emptyMap());
-        return new MockFamilyManager(settings);
-    }
 
     @Override
-    public MockFamilyManager get(Settings settings) {
+    public MockFamilyManager apply(Settings settings) {
         return new MockFamilyManager(settings);
     }
 
@@ -44,7 +39,7 @@ public class ColumnManagerMock implements ColumnConfiguration {
         }
 
         @Override
-        public ColumnManager get(String database) {
+        public ColumnManager apply(String database) {
             return Mockito.mock(ColumnManager.class);
         }
 

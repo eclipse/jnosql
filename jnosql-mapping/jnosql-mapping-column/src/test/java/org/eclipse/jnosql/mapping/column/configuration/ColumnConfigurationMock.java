@@ -27,13 +27,9 @@ import java.util.stream.Stream;
 
 class ColumnConfigurationMock implements ColumnConfiguration {
 
-    @Override
-    public ColumnManagerFactoryMock get() {
-        return new ColumnManagerFactoryMock(Settings.builder().build());
-    }
 
     @Override
-    public ColumnManagerFactoryMock get(Settings settings) {
+    public ColumnManagerFactoryMock apply(Settings settings) {
         return new ColumnManagerFactoryMock(settings);
     }
 
@@ -51,7 +47,7 @@ class ColumnConfigurationMock implements ColumnConfiguration {
         }
 
         @Override
-        public ColumnManagerMock get(String database) {
+        public ColumnManagerMock apply(String database) {
             return new ColumnManagerMock(database);
         }
 

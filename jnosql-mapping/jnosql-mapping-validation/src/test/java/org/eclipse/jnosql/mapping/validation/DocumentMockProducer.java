@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.validation;
 
 import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentEntity;
 import org.mockito.Mockito;
 
@@ -33,12 +33,12 @@ import static org.mockito.Mockito.when;
 @ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
-class DocumentMockProducer implements Supplier<DocumentCollectionManager> {
+class DocumentMockProducer implements Supplier<DocumentManager> {
 
     @Override
     @Produces
-    public DocumentCollectionManager get() {
-        DocumentCollectionManager collectionManager = Mockito.mock(DocumentCollectionManager.class);
+    public DocumentManager get() {
+        DocumentManager collectionManager = Mockito.mock(DocumentManager.class);
 
         DocumentEntity entity = DocumentEntity.of("person");
         entity.add(Document.of("name", "Ada"));

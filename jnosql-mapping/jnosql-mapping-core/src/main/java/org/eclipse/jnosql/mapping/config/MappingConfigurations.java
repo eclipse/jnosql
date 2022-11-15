@@ -30,7 +30,7 @@ public enum MappingConfigurations implements Supplier<String> {
      */
     KEY_VALUE_DATABASE("jnosql.keyvalue.database"),
     /**
-     * Define the DocumentConfiguration that creates a DocumentCollectionManager instance.
+     * Define the DocumentConfiguration that creates a DocumentManager instance.
      * It is necessary when there is more than one implementation; otherwise,  it will find automatically.
      */
     DOCUMENT_PROVIDER("jnosql.document.provider"),
@@ -39,7 +39,7 @@ public enum MappingConfigurations implements Supplier<String> {
      */
     DOCUMENT_DATABASE("jnosql.document.database"),
     /**
-     * Define the ColumnConfiguration that creates a ColumnFamilyManager instance.
+     * Define the ColumnConfiguration that creates a ColumnManager instance.
      * It is necessary when there is more than one implementation; otherwise,  it will find automatically.
      */
     COLUMN_PROVIDER("jnosql.column.provider"),
