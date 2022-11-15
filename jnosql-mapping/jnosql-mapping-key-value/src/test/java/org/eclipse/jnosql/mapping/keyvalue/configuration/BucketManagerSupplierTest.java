@@ -18,6 +18,7 @@ import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -33,6 +34,12 @@ class BucketManagerSupplierTest {
     @Inject
     private BucketManagerSupplier supplier;
 
+    @BeforeEach
+    public void beforeEach(){
+        System.clearProperty(KEY_VALUE_PROVIDER.get());
+        System.clearProperty(KEY_VALUE_DATABASE.get());
+    }
+
     @Test
     public void shouldGetBucketManager() {
         System.setProperty(KEY_VALUE_PROVIDER.get(), KeyValueConfigurationMock.class.getName());
@@ -40,22 +47,29 @@ class BucketManagerSupplierTest {
         BucketManager manager = supplier.get();
         Assertions.assertNotNull(manager);
         assertThat(manager).isInstanceOf(KeyValueConfigurationMock.BucketManagerMock.class);
-        System.clearProperty(KEY_VALUE_PROVIDER.get());
-        System.clearProperty(KEY_VALUE_DATABASE.get());
     }
 
 
     @Test
-    public void shouldReturnErrorWhenGetBucketManager() {
+    public void shouldUseDefaultConfigurationWhenProviderIsWrong() {
         System.setProperty(KEY_VALUE_PROVIDER.get(), Integer.class.getName());
         System.setProperty(KEY_VALUE_DATABASE.get(), "database");
-        Assertions.assertThrows(MappingException.class, () -> supplier.get());
-
-        System.clearProperty(KEY_VALUE_PROVIDER.get());
-        System.clearProperty(KEY_VALUE_DATABASE.get());
+        BucketManager manager = supplier.get();
+        Assertions.assertNotNull(manager);
+        assertThat(manager).isInstanceOf(KeyValueConfigurationMock2.BucketManagerMock.class);
     }
 
-    //test to wrong supplier
-    //test without supplier
+    @Test
+    public void shouldUseDefaultConfiguration() {
+        System.setProperty(KEY_VALUE_DATABASE.get(), "database");
+        BucketManager manager = supplier.get();
+        Assertions.assertNotNull(manager);
+        assertThat(manager).isInstanceOf(KeyValueConfigurationMock2.BucketManagerMock.class);
+    }
+
+    @Test
+    public void shouldReturnErrorWhenThereIsNotDatabase() {
+        Assertions.assertThrows(MappingException.class, () -> supplier.get());
+    }
 
 }
