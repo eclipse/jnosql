@@ -18,7 +18,7 @@ package org.eclipse.jnosql.communication.document.query;
 
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
@@ -39,7 +39,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
         this.supplier = UpdateQuery.getProvider();
     }
 
-    Stream<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
+    Stream<DocumentEntity> query(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
 
         UpdateQuery updateQuery = supplier.apply(query);
 
@@ -54,7 +54,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
     }
 
 
-    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
+    DocumentPreparedStatement prepare(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
 
         Params params = Params.newParams();
 

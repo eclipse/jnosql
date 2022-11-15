@@ -19,7 +19,7 @@ package org.eclipse.jnosql.communication.document.query;
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.Sort;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
@@ -50,14 +50,14 @@ public final class SelectQueryParser implements SelectQueryConverter {
         this.cache = new CacheQuery<>(this::getDocumentQuery);
     }
 
-    Stream<DocumentEntity> query(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
+    Stream<DocumentEntity> query(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
 
         DocumentQuery documentQuery = cache.get(query, observer);
         return collectionManager.select(documentQuery);
     }
 
 
-    DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
+    DocumentPreparedStatement prepare(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
 
         Params params = Params.newParams();
 

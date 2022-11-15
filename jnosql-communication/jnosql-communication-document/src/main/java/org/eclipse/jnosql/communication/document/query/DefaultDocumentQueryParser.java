@@ -17,7 +17,7 @@
 package org.eclipse.jnosql.communication.document.query;
 
 import jakarta.nosql.QueryException;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
@@ -34,7 +34,7 @@ public final class DefaultDocumentQueryParser implements DocumentQueryParser {
     private final UpdateQueryParser update = new UpdateQueryParser();
 
     @Override
-    public Stream<DocumentEntity> query(String query, DocumentCollectionManager collectionManager,
+    public Stream<DocumentEntity> query(String query, DocumentManager collectionManager,
                                         DocumentObserverParser observer) {
         validation(query, collectionManager, observer);
         String command = query.substring(0, 6);
@@ -53,7 +53,7 @@ public final class DefaultDocumentQueryParser implements DocumentQueryParser {
     }
 
     @Override
-    public DocumentPreparedStatement prepare(String query, DocumentCollectionManager collectionManager,
+    public DocumentPreparedStatement prepare(String query, DocumentManager collectionManager,
                                              DocumentObserverParser observer) {
 
         validation(query, collectionManager, observer);
@@ -74,7 +74,7 @@ public final class DefaultDocumentQueryParser implements DocumentQueryParser {
     }
 
 
-    private void validation(String query, DocumentCollectionManager collectionManager, DocumentObserverParser observer) {
+    private void validation(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(collectionManager, "collectionManager is required");
         Objects.requireNonNull(observer, "observer is required");

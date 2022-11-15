@@ -17,7 +17,7 @@
 package org.eclipse.jnosql.communication.document.query;
 
 import jakarta.nosql.Sort;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteQueryBuilder;
@@ -79,7 +79,7 @@ class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
     }
 
     @Override
-    public void delete(DocumentCollectionManager manager) {
+    public void delete(DocumentManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         manager.delete(build());
     }

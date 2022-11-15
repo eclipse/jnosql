@@ -17,7 +17,7 @@
 package org.eclipse.jnosql.communication.document.query;
 
 import jakarta.nosql.Sort;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
@@ -118,13 +118,13 @@ class DefaultDocumentQueryBuilder implements DocumentQuery.DocumentQueryBuilder 
     }
 
     @Override
-    public Stream<DocumentEntity> getResult(DocumentCollectionManager manager) {
+    public Stream<DocumentEntity> getResult(DocumentManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return manager.select(build());
     }
 
     @Override
-    public Optional<DocumentEntity> getSingleResult(DocumentCollectionManager manager) {
+    public Optional<DocumentEntity> getSingleResult(DocumentManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return manager.singleResult(build());
     }
