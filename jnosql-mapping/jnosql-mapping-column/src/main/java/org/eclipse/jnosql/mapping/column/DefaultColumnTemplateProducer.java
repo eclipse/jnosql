@@ -52,9 +52,9 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
     private Converters converters;
 
     @Override
-    public ColumnTemplate get(ColumnManager ColumnManager) {
-        Objects.requireNonNull(ColumnManager, "ColumnManager is required");
-        return new ProducerColumnTemplate(converter, columnWorkflow, ColumnManager,
+    public ColumnTemplate get(ColumnManager manager) {
+        Objects.requireNonNull(manager, "manager is required");
+        return new ProducerColumnTemplate(converter, columnWorkflow, manager,
                 eventManager, entities, converters);
     }
 
@@ -66,7 +66,7 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
 
         private ColumnWorkflow columnWorkflow;
 
-        private ColumnManager ColumnManager;
+        private ColumnManager manager;
 
         private ColumnEventPersistManager eventManager;
 
@@ -75,13 +75,13 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
         private Converters converters;
 
         ProducerColumnTemplate(ColumnEntityConverter converter, ColumnWorkflow columnWorkflow,
-                               ColumnManager ColumnManager,
+                               ColumnManager manager,
                                ColumnEventPersistManager eventManager,
                                EntitiesMetadata entities,
                                Converters converters) {
             this.converter = converter;
             this.columnWorkflow = columnWorkflow;
-            this.ColumnManager = ColumnManager;
+            this.manager = manager;
             this.eventManager = eventManager;
             this.entities = entities;
             this.converters = converters;
@@ -97,7 +97,7 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
 
         @Override
         protected ColumnManager getManager() {
-            return ColumnManager;
+            return manager;
         }
 
         @Override

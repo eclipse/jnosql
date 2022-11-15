@@ -38,16 +38,16 @@ class ColumnMockProducer implements Supplier<ColumnManager> {
     @Override
     @Produces
     public ColumnManager get() {
-        ColumnManager ColumnManager = Mockito.mock(ColumnManager.class);
+        ColumnManager manager = Mockito.mock(ColumnManager.class);
 
         ColumnEntity entity = ColumnEntity.of("person");
         entity.add(Column.of("name", "Ada"));
         entity.add(Column.of("age", 10));
         entity.add(Column.of("salary", BigDecimal.TEN));
         entity.add(Column.of("phones", singletonList("22342342")));
-        when(ColumnManager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
-        when(ColumnManager.update(Mockito.any(ColumnEntity.class))).thenReturn(entity);
+        when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
+        when(manager.update(Mockito.any(ColumnEntity.class))).thenReturn(entity);
 
-        return ColumnManager;
+        return manager;
     }
 }
