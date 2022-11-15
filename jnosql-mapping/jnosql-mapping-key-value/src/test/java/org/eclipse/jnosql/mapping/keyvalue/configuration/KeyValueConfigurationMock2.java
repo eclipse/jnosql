@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 
-public class KeyValueConfigurationMock implements KeyValueConfiguration {
+public class KeyValueConfigurationMock2 implements KeyValueConfiguration {
 
     @Override
     public BucketManagerFactory get() {
