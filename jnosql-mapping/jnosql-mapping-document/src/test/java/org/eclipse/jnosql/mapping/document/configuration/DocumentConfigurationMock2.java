@@ -27,13 +27,9 @@ import java.util.stream.Stream;
 
 public class DocumentConfigurationMock2 implements DocumentConfiguration {
 
-    @Override
-    public DocumentManagerFactoryMock get() {
-        return new DocumentManagerFactoryMock(Settings.builder().build());
-    }
 
     @Override
-    public DocumentManagerFactoryMock get(Settings settings) {
+    public DocumentManagerFactoryMock apply(Settings settings) {
         return new DocumentManagerFactoryMock(settings);
     }
 
@@ -50,7 +46,7 @@ public class DocumentConfigurationMock2 implements DocumentConfiguration {
         }
 
         @Override
-        public DocumentManagerMock  get(String database) {
+        public DocumentManagerMock  apply(String database) {
             return new DocumentManagerMock(database);
         }
 
