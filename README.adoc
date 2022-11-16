@@ -70,9 +70,9 @@ Theses annotations from the Mapping API will look familiar to the Jakarta Persis
 
 |===
 
-IMPORTANT: Although similar to JPA, Jakarta NoSQL defines persistable fields with either the ```@Id``` or ```@Column``` annotation.
+IMPORTANT: Although similar to JPA, Jakarta NoSQL defines persistable fields with either the `@Id` or `@Column` annotation.
 
-After mapping an entity, you can explore the advantage of using a ```Template``` interface, which can increase productivity on NoSQL operations.
+After mapping an entity, you can explore the advantage of using a `Template` interface, which can increase productivity on NoSQL operations.
 
 [source,java]
 ----
@@ -89,7 +89,7 @@ template.delete(Car.class, 1L);
 
 This template has specialization to take the benefits of a particular NoSQL database type.
 
-A ```Repository``` interface is also provided for exploring the Domain-Driven Design (DDD) pattern for a higher abstraction.
+A `Repository` interface is also provided for exploring the Domain-Driven Design (DDD) pattern for a higher abstraction.
 
 [source,java]
 ----
@@ -109,6 +109,7 @@ Optional<Car> idResult = repository.findById(1L);
 Optional<Car> nameResult = repository.findByName("Ferrari");
 ----
 
+
 == Getting Started
 
 Eclipse JNoSQL requires these minimum requirements:
@@ -120,6 +121,10 @@ Eclipse JNoSQL requires these minimum requirements:
 * https://microprofile.io/microprofile-config/[MicroProfile Config]
 
 === NoSQL Database Types
+
+Eclipse JNoSQL has in common the annotations; thus, the same annotation will work on Column, Document, and so on.; furthermore, the `Template` and the `Repository` are interfaces in common.
+
+Jakarta NoSQL also provides particular behavior to each type; currently, it has support for four NoSQL types:
 
 * Key-Value
 * Column Family
