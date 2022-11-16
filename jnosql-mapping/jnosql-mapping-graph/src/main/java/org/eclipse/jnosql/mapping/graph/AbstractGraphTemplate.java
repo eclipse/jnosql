@@ -343,9 +343,9 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
 
     @Override
-    public <T> long count(Class<T> entityClass) {
-        Objects.requireNonNull(entityClass, "entity class is required");
-        return count(getEntities().get(entityClass).getName());
+    public <T> long count(Class<T> type) {
+        Objects.requireNonNull(type, "entity class is required");
+        return count(getEntities().get(type).getName());
     }
 
     private <K> Collection<EdgeEntity> getEdgesByIdImpl(K id, Direction direction, String... labels) {

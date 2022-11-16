@@ -21,6 +21,7 @@ import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
+import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 
@@ -46,6 +47,7 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     protected abstract BucketManager getManager();
 
     protected abstract KeyValueWorkflow getFlow();
+    protected abstract KeyValueEventPersistManager getEventManager();
 
     @Override
     public <T> T put(T entity) {
@@ -103,13 +105,16 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     }
 
     @Override
-    public <K, T> Optional<T> get(K key, Class<T> entityClass) {
+    public <K, T> Optional<T> get(K key, Class<T> type) {
         requireNonNull(key, "key is required");
-        requireNonNull(entityClass, "entity class is required");
+        requireNonNull(type, "entity class is required");
 
         Optional<Value> value = getManager().get(key);
-        return value.map(v -> getConverter().toEntity(entityClass, KeyValueEntity.of(key, v)))
-                .filter(Objects::nonNull);
+        return value.map(v -> getConverter().toEntity(type, KeyValueEntity.of(key, v)))
+                .filter(Objects::nonNull).map(e -> {
+                    getEventManager().firePostEntity(e);
+                    return e;
+                });
     }
 
     @Override

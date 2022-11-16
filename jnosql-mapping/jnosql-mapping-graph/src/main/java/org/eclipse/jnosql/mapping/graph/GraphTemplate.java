@@ -284,10 +284,10 @@ public interface GraphTemplate extends Template {
      * Returns the number of vertices from label
      *
      * @param <T>         the entity type
-     * @param entityClass the label
+     * @param type the label
      * @return the number of elements
      * @throws NullPointerException          when label is null
      * @throws UnsupportedOperationException when the database dot not have support
      */
-    <T> long count(Class<T> entityClass);
+    <T> long count(Class<T> type);
 }
