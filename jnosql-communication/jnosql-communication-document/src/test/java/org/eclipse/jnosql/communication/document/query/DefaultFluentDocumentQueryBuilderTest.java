@@ -21,7 +21,7 @@ import jakarta.nosql.Sort;
 import jakarta.nosql.SortType;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
@@ -321,7 +321,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
 
     @Test
     public void shouldExecuteManager() {
-        DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
+        DocumentManager manager = Mockito.mock(DocumentManager.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         String collection = "collection";
         Stream<DocumentEntity> entities = select().from(collection).getResult(manager);
@@ -331,7 +331,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
 
     @Test
     public void shouldExecuteSingleResultManager() {
-        DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
+        DocumentManager manager = Mockito.mock(DocumentManager.class);
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         String collection = "collection";
         Optional<DocumentEntity> entities = select().from(collection).getSingleResult(manager);

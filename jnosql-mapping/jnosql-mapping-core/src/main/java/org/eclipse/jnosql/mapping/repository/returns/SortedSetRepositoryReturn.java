@@ -29,7 +29,7 @@ public class SortedSetRepositoryReturn extends AbstractRepositoryReturn {
     }
 
     @Override
-    public boolean isCompatible(Class<?> entityClass, Class<?> returnType) {
+    public boolean isCompatible(Class<?> entity, Class<?> returnType) {
         return NavigableSet.class.equals(returnType)
                 || SortedSet.class.equals(returnType);
     }

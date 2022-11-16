@@ -20,7 +20,7 @@ import jakarta.nosql.Condition;
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
@@ -48,7 +48,7 @@ class DefaultDocumentQueryParserTest {
 
     private final DocumentQueryParser parser = new DefaultDocumentQueryParser();
 
-    private final DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
+    private final DocumentManager manager = Mockito.mock(DocumentManager.class);
 
     @Test
     public void shouldReturnNPEWhenThereIsNullParameter() {

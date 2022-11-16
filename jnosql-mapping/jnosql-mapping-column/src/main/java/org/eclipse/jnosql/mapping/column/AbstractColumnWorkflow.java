@@ -28,7 +28,7 @@ import java.util.function.UnaryOperator;
  */
 public abstract class AbstractColumnWorkflow implements ColumnWorkflow {
 
-    protected abstract ColumnEventPersistManager getColumnEventPersistManager();
+    protected abstract ColumnEventPersistManager getEventManager();
 
 
     protected abstract ColumnEntityConverter getConverter();
@@ -45,36 +45,36 @@ public abstract class AbstractColumnWorkflow implements ColumnWorkflow {
         UnaryOperator<T> validation = t -> Objects.requireNonNull(t, "entity is required");
 
         UnaryOperator<T> firePreEntity = t -> {
-            getColumnEventPersistManager().firePreEntity(t);
+            getEventManager().firePreEntity(t);
             return t;
         };
 
         UnaryOperator<T> firePreColumnEntity = t -> {
-            getColumnEventPersistManager().firePreColumnEntity(t);
+            getEventManager().firePreColumnEntity(t);
             return t;
         };
 
         Function<T, ColumnEntity> converterColumn = t -> getConverter().toColumn(t);
 
         UnaryOperator<ColumnEntity> firePreColumn = t -> {
-            getColumnEventPersistManager().firePreColumn(t);
+            getEventManager().firePreColumn(t);
             return t;
         };
 
         UnaryOperator<ColumnEntity> firePostColumn = t -> {
-            getColumnEventPersistManager().firePostColumn(t);
+            getEventManager().firePostColumn(t);
             return t;
         };
 
         Function<ColumnEntity, T> converterEntity = t -> getConverter().toEntity(entity, t);
 
         UnaryOperator<T> firePostEntity = t -> {
-            getColumnEventPersistManager().firePostEntity(t);
+            getEventManager().firePostEntity(t);
             return t;
         };
 
         UnaryOperator<T> firePostColumnEntity = t -> {
-            getColumnEventPersistManager().firePostColumnEntity(t);
+            getEventManager().firePostColumnEntity(t);
             return t;
         };
 

@@ -12,41 +12,39 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.document;
+package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.document.DocumentCollectionManager;
-import jakarta.nosql.document.DocumentCollectionManagerFactory;
-import jakarta.nosql.document.DocumentConfiguration;
+import jakarta.nosql.column.ColumnConfiguration;
+import jakarta.nosql.column.ColumnManager;
+import jakarta.nosql.column.ColumnManagerFactory;
 import org.mockito.Mockito;
 
-public class DocumentCollectionManagerMock implements DocumentConfiguration {
+import java.util.Collections;
+
+public class ColumnManagerMock implements ColumnConfiguration {
+
+
 
     @Override
-    public DocumentMock get() {
-        return null;
+    public MockFamilyManager apply(Settings settings) {
+        return new MockFamilyManager(settings);
     }
 
-    @Override
-    public DocumentMock get(Settings settings) throws NullPointerException {
-        return new DocumentMock(settings);
-    }
-
-    public static class DocumentMock implements DocumentCollectionManagerFactory {
-
+    public static class MockFamilyManager implements ColumnManagerFactory {
         private final Settings settings;
 
-        DocumentMock(Settings settings) {
+        public MockFamilyManager(Settings settings) {
             this.settings = settings;
+        }
+
+        @Override
+        public ColumnManager apply(String database) {
+            return Mockito.mock(ColumnManager.class);
         }
 
         public Settings getSettings() {
             return settings;
-        }
-
-        @Override
-        public DocumentCollectionManager get(String database) {
-            return Mockito.mock(DocumentCollectionManager.class);
         }
 
         @Override

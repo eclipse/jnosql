@@ -25,7 +25,7 @@ import java.util.function.UnaryOperator;
 
 public abstract class AbstractKeyValueWorkflow implements KeyValueWorkflow {
 
-    protected abstract KeyValueEventPersistManager getEventPersistManager();
+    protected abstract KeyValueEventPersistManager getEventManager();
 
 
     protected abstract KeyValueEntityConverter getConverter();
@@ -44,36 +44,36 @@ public abstract class AbstractKeyValueWorkflow implements KeyValueWorkflow {
         UnaryOperator<T> validation = t -> Objects.requireNonNull(t, "entity is required");
 
         UnaryOperator<T> firePreEntity = t -> {
-            getEventPersistManager().firePreEntity(t);
+            getEventManager().firePreEntity(t);
             return t;
         };
 
         UnaryOperator<T> firePreKeyValueEntity = t -> {
-            getEventPersistManager().firePreKeyValueEntity(t);
+            getEventManager().firePreKeyValueEntity(t);
             return t;
         };
 
         Function<T, KeyValueEntity> convertKeyValue = t -> getConverter().toKeyValue(t);
 
         UnaryOperator<KeyValueEntity> firePreDocument = t -> {
-            getEventPersistManager().firePreKeyValue(t);
+            getEventManager().firePreKeyValue(t);
             return t;
         };
 
         UnaryOperator<KeyValueEntity> firePostDocument = t -> {
-            getEventPersistManager().firePostKeyValue(t);
+            getEventManager().firePostKeyValue(t);
             return t;
         };
 
         Function<KeyValueEntity, T> converterEntity = t -> getConverter().toEntity((Class<T>) entity.getClass(), t);
 
         UnaryOperator<T> firePostEntity = t -> {
-            getEventPersistManager().firePostEntity(t);
+            getEventManager().firePostEntity(t);
             return t;
         };
 
         UnaryOperator<T> firePostKeyValueEntity = t -> {
-            getEventPersistManager().firePostKeyValueEntity(t);
+            getEventManager().firePostKeyValueEntity(t);
             return t;
         };
 

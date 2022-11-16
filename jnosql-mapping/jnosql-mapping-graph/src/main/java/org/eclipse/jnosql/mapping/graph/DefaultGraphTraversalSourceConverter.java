@@ -49,13 +49,17 @@ class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
 
     private Instance<GraphTraversalSourceSupplier> suppliers;
 
+    private GraphEventPersistManager eventManager;
+
 
     @Inject
     DefaultGraphTraversalSourceConverter(EntitiesMetadata entities, Converters converters,
-                                         Instance<GraphTraversalSourceSupplier> suppliers) {
+                                         Instance<GraphTraversalSourceSupplier> suppliers,
+                                         GraphEventPersistManager eventManager) {
         this.entities = entities;
         this.converters = converters;
         this.suppliers = suppliers;
+        this.eventManager = eventManager;
     }
 
     DefaultGraphTraversalSourceConverter() {
@@ -69,6 +73,11 @@ class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
     @Override
     protected Converters getConverters() {
         return converters;
+    }
+
+    @Override
+    protected GraphEventPersistManager getEventManager() {
+        return eventManager;
     }
 
     @Override

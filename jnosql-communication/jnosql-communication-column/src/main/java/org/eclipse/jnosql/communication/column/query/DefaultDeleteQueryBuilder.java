@@ -17,7 +17,7 @@
 package org.eclipse.jnosql.communication.column.query;
 
 import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteQueryBuilder;
@@ -79,7 +79,7 @@ class DefaultDeleteQueryBuilder implements ColumnDeleteQueryBuilder {
     }
 
     @Override
-    public void delete(ColumnFamilyManager manager) {
+    public void delete(ColumnManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         manager.delete(build());
     }

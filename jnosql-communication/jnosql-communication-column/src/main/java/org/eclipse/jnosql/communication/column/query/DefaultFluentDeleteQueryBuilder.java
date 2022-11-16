@@ -22,7 +22,7 @@ import jakarta.nosql.column.ColumnDeleteQuery.ColumnDelete;
 import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteFrom;
 import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteNotCondition;
 import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteWhere;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 
 import java.util.List;
 
@@ -137,7 +137,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Column
     }
 
     @Override
-    public void delete(ColumnFamilyManager manager) {
+    public void delete(ColumnManager manager) {
         requireNonNull(manager, "manager is required");
         manager.delete(this.build());
     }

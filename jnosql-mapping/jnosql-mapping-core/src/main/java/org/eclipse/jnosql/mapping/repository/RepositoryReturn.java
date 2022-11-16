@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.repository;
 
 public interface RepositoryReturn {
 
-    boolean isCompatible(Class<?> entityClass, Class<?> returnType);
+    boolean isCompatible(Class<?> entity, Class<?> returnType);
 
     <T> Object convert(DynamicReturn<T> dynamicReturn);
 

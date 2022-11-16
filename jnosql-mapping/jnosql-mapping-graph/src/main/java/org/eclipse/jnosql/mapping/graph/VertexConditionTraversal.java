@@ -204,11 +204,11 @@ public interface VertexConditionTraversal {
      * Defines Vertex as label condition
      *
      * @param <T>         the entity type
-     * @param entityClass reads the {@link jakarta.nosql.mapping.Entity} annotation otherwise the {@link Class#getSimpleName()}
+     * @param type reads the {@link jakarta.nosql.mapping.Entity} annotation otherwise the {@link Class#getSimpleName()}
      * @return a {@link VertexTraversal} with the new condition
      * @throws NullPointerException when entityClazz is null
      */
-    <T> VertexTraversal hasLabel(Class<T> entityClass);
+    <T> VertexTraversal hasLabel(Class<T> type);
 
     /**
      * Defines Vertex as label condition

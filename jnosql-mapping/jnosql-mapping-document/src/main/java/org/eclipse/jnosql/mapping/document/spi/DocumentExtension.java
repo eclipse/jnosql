@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document.spi;
 
 
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;
@@ -61,7 +61,7 @@ public class DocumentExtension implements Extension {
     }
 
 
-    <T, X extends DocumentCollectionManager> void observes(@Observes final ProcessProducer<T, X> pp) {
+    <T, X extends DocumentManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, DOCUMENT, databases);
     }
 

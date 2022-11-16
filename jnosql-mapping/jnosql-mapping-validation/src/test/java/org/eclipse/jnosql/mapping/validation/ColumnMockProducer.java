@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.validation;
 
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import org.mockito.Mockito;
 
 import javax.annotation.Priority;
@@ -33,21 +33,21 @@ import static org.mockito.Mockito.when;
 @ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
-class ColumnMockProducer implements Supplier<ColumnFamilyManager> {
+class ColumnMockProducer implements Supplier<ColumnManager> {
 
     @Override
     @Produces
-    public ColumnFamilyManager get() {
-        ColumnFamilyManager columnFamilyManager = Mockito.mock(ColumnFamilyManager.class);
+    public ColumnManager get() {
+        ColumnManager manager = Mockito.mock(ColumnManager.class);
 
         ColumnEntity entity = ColumnEntity.of("person");
         entity.add(Column.of("name", "Ada"));
-        entity.add(Column.of("age", 10));
+        entity.add(Column.of("age", 30));
         entity.add(Column.of("salary", BigDecimal.TEN));
         entity.add(Column.of("phones", singletonList("22342342")));
-        when(columnFamilyManager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
-        when(columnFamilyManager.update(Mockito.any(ColumnEntity.class))).thenReturn(entity);
+        when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
+        when(manager.update(Mockito.any(ColumnEntity.class))).thenReturn(entity);
 
-        return columnFamilyManager;
+        return manager;
     }
 }

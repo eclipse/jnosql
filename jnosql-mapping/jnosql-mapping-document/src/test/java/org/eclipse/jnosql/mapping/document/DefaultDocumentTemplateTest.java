@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
@@ -84,7 +84,7 @@ public class DefaultDocumentTemplateTest {
     @Inject
     private Converters converters;
 
-    private DocumentCollectionManager managerMock;
+    private DocumentManager managerMock;
 
     private DefaultDocumentTemplate subject;
 
@@ -94,10 +94,10 @@ public class DefaultDocumentTemplateTest {
 
     @BeforeEach
     public void setUp() {
-        managerMock = Mockito.mock(DocumentCollectionManager.class);
+        managerMock = Mockito.mock(DocumentManager.class);
         documentEventPersistManager = Mockito.mock(DocumentEventPersistManager.class);
         captor = ArgumentCaptor.forClass(DocumentEntity.class);
-        Instance<DocumentCollectionManager> instance = Mockito.mock(Instance.class);
+        Instance<DocumentManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerMock);
         DefaultDocumentWorkflow workflow = new DefaultDocumentWorkflow(documentEventPersistManager, converter);
         this.subject = new DefaultDocumentTemplate(converter, instance, workflow,

@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.column;
 
 
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
@@ -52,9 +52,9 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
     private Converters converters;
 
     @Override
-    public ColumnTemplate get(ColumnFamilyManager columnFamilyManager) {
-        Objects.requireNonNull(columnFamilyManager, "columnFamilyManager is required");
-        return new ProducerColumnTemplate(converter, columnWorkflow, columnFamilyManager,
+    public ColumnTemplate get(ColumnManager manager) {
+        Objects.requireNonNull(manager, "manager is required");
+        return new ProducerColumnTemplate(converter, columnWorkflow, manager,
                 eventManager, entities, converters);
     }
 
@@ -66,7 +66,7 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
 
         private ColumnWorkflow columnWorkflow;
 
-        private ColumnFamilyManager columnFamilyManager;
+        private ColumnManager manager;
 
         private ColumnEventPersistManager eventManager;
 
@@ -75,13 +75,13 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
         private Converters converters;
 
         ProducerColumnTemplate(ColumnEntityConverter converter, ColumnWorkflow columnWorkflow,
-                               ColumnFamilyManager columnFamilyManager,
+                               ColumnManager manager,
                                ColumnEventPersistManager eventManager,
                                EntitiesMetadata entities,
                                Converters converters) {
             this.converter = converter;
             this.columnWorkflow = columnWorkflow;
-            this.columnFamilyManager = columnFamilyManager;
+            this.manager = manager;
             this.eventManager = eventManager;
             this.entities = entities;
             this.converters = converters;
@@ -96,8 +96,8 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
         }
 
         @Override
-        protected ColumnFamilyManager getManager() {
-            return columnFamilyManager;
+        protected ColumnManager getManager() {
+            return manager;
         }
 
         @Override

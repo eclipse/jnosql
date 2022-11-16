@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.document.configuration;
 
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
@@ -43,9 +43,9 @@ class DocumentManagerSupplierTest {
     public void shouldGetManager() {
         System.setProperty(DOCUMENT_PROVIDER.get(), DocumentConfigurationMock.class.getName());
         System.setProperty(DOCUMENT_DATABASE.get(), "database");
-        DocumentCollectionManager manager = supplier.get();
+        DocumentManager manager = supplier.get();
         Assertions.assertNotNull(manager);
-        assertThat(manager).isInstanceOf(DocumentConfigurationMock.DocumentCollectionManagerMock.class);
+        assertThat(manager).isInstanceOf(DocumentConfigurationMock.DocumentManagerMock.class);
     }
 
 
@@ -53,17 +53,17 @@ class DocumentManagerSupplierTest {
     public void shouldUseDefaultConfigurationWhenProviderIsWrong() {
         System.setProperty(DOCUMENT_PROVIDER.get(), Integer.class.getName());
         System.setProperty(DOCUMENT_DATABASE.get(), "database");
-        DocumentCollectionManager manager = supplier.get();
+        DocumentManager manager = supplier.get();
         Assertions.assertNotNull(manager);
-        assertThat(manager).isInstanceOf(DocumentConfigurationMock2.DocumentCollectionManagerMock.class);
+        assertThat(manager).isInstanceOf(DocumentConfigurationMock2.DocumentManagerMock.class);
     }
 
     @Test
     public void shouldUseDefaultConfiguration() {
         System.setProperty(DOCUMENT_DATABASE.get(), "database");
-        DocumentCollectionManager manager = supplier.get();
+        DocumentManager manager = supplier.get();
         Assertions.assertNotNull(manager);
-        assertThat(manager).isInstanceOf(DocumentConfigurationMock2.DocumentCollectionManagerMock.class);
+        assertThat(manager).isInstanceOf(DocumentConfigurationMock2.DocumentManagerMock.class);
     }
 
     @Test

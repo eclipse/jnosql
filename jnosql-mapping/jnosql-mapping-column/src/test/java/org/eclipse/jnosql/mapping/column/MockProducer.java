@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 import org.mockito.Mockito;
@@ -36,16 +36,16 @@ import static org.mockito.Mockito.when;
 @ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
-public class MockProducer implements Supplier<ColumnFamilyManager> {
+public class MockProducer implements Supplier<ColumnManager> {
 
 
     @Produces
     @Override
-    public ColumnFamilyManager get() {
+    public ColumnManager get() {
         ColumnEntity entity = ColumnEntity.of("Person");
         entity.add(Column.of("name", "Default"));
         entity.add(Column.of("age", 10));
-        ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
+        ColumnManager manager = mock(ColumnManager.class);
         when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
         return manager;
 
@@ -53,11 +53,11 @@ public class MockProducer implements Supplier<ColumnFamilyManager> {
 
     @Produces
     @Database(value = DatabaseType.COLUMN, provider = "columnRepositoryMock")
-    public ColumnFamilyManager getColumnFamilyManagerMock() {
+    public ColumnManager getColumnManagerMock() {
         ColumnEntity entity = ColumnEntity.of("Person");
         entity.add(Column.of("name", "columnRepositoryMock"));
         entity.add(Column.of("age", 10));
-        ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
+        ColumnManager manager = mock(ColumnManager.class);
         when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
         return manager;
 

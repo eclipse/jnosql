@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.validation;
 
 
+import jakarta.nosql.mapping.EntityPostPersist;
 import jakarta.nosql.mapping.EntityPrePersist;
 import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
 
@@ -29,6 +30,10 @@ class EntityObserver {
     private MappingValidator validator;
 
     void validate(@Observes EntityPrePersist entity) {
+        this.validator.validate(entity.getValue());
+    }
+
+    void validate(@Observes EntityPostPersist entity) {
         this.validator.validate(entity.getValue());
     }
 

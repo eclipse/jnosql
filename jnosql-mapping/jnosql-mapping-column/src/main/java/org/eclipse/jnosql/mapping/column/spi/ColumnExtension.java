@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.column.spi;
 
 
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;
@@ -59,7 +59,7 @@ public class ColumnExtension implements Extension {
     }
 
 
-    <T, X extends ColumnFamilyManager> void observes(@Observes final ProcessProducer<T, X> pp) {
+    <T, X extends ColumnManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, COLUMN, databases);
     }
 

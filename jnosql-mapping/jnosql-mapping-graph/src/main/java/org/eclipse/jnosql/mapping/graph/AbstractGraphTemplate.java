@@ -119,17 +119,17 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T, K> Optional<T> find(Class<T> entityClass, K id) {
-        requireNonNull(entityClass, "entityClass is required");
+    public <T, K> Optional<T> find(Class<T> type, K id) {
+        requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(type);
         FieldMapping idField = entityMetadata.getId()
-                .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
+                .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
 
         final Optional<Vertex> vertex = getTraversal().V(value).hasLabel(entityMetadata.getName()).tryNext();
-        return (Optional<T>) vertex.map(getConverter()::toEntity);
+        return vertex.map(getConverter()::toEntity);
     }
 
     @Override
@@ -139,10 +139,10 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T, K> void delete(Class<T> entityClass, K id) {
-        requireNonNull(entityClass, "entityClass is required");
+    public <T, K> void delete(Class<T> type, K id) {
+        requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
-        EntityMetadata mapping = getEntities().get(entityClass);
+        EntityMetadata mapping = getEntities().get(type);
         getTraversal()
                 .V(id)
                 .hasLabel(mapping.getName())
@@ -343,9 +343,9 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
 
     @Override
-    public <T> long count(Class<T> entityClass) {
-        Objects.requireNonNull(entityClass, "entity class is required");
-        return count(getEntities().get(entityClass).getName());
+    public <T> long count(Class<T> type) {
+        Objects.requireNonNull(type, "entity class is required");
+        return count(getEntities().get(type).getName());
     }
 
     private <K> Collection<EdgeEntity> getEdgesByIdImpl(K id, Direction direction, String... labels) {

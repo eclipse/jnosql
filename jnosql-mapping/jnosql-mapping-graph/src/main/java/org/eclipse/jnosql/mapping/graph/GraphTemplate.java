@@ -241,7 +241,7 @@ public interface GraphTemplate extends Template {
     Transaction getTransaction();
 
     /**
-     * Executes a Gremlin gremlin then bring the result as a {@link List}
+     * Executes a Gremlin then bring the result as a {@link List}
      *
      * @param gremlin the query gremlin
      * @param <T>     the entity type
@@ -284,10 +284,10 @@ public interface GraphTemplate extends Template {
      * Returns the number of vertices from label
      *
      * @param <T>         the entity type
-     * @param entityClass the label
+     * @param type the label
      * @return the number of elements
      * @throws NullPointerException          when label is null
      * @throws UnsupportedOperationException when the database dot not have support
      */
-    <T> long count(Class<T> entityClass);
+    <T> long count(Class<T> type);
 }

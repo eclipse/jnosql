@@ -20,7 +20,7 @@ package org.eclipse.jnosql.communication.column.query;
 import jakarta.nosql.Sort;
 import jakarta.nosql.SortType;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.column.ColumnQuery.ColumnFrom;
 import jakarta.nosql.column.ColumnQuery.ColumnLimit;
@@ -197,13 +197,13 @@ class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
     }
 
     @Override
-    public Stream<ColumnEntity> getResult(ColumnFamilyManager manager) {
+    public Stream<ColumnEntity> getResult(ColumnManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.select(this.build());
     }
 
     @Override
-    public Optional<ColumnEntity> getSingleResult(ColumnFamilyManager manager) {
+    public Optional<ColumnEntity> getSingleResult(ColumnManager manager) {
         requireNonNull(manager, "manager is required");
         return manager.singleResult(this.build());
     }

@@ -21,7 +21,7 @@ import jakarta.nosql.QueryException;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.Value;
 import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentObserverParser;
@@ -45,7 +45,7 @@ class DeleteQueryParserTest {
 
     private final DeleteQueryParser parser = new DeleteQueryParser();
 
-    private final DocumentCollectionManager documentCollection = Mockito.mock(DocumentCollectionManager.class);
+    private final DocumentManager documentCollection = Mockito.mock(DocumentManager.class);
 
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };

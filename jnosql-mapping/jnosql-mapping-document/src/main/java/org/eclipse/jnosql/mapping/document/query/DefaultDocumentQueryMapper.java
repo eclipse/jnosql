@@ -35,16 +35,16 @@ class DefaultDocumentQueryMapper implements DocumentQueryMapper {
     private Instance<Converters> converters;
 
     @Override
-    public <T> DocumentMapperFrom selectFrom(Class<T> entityClass) {
-        requireNonNull(entityClass, "entity is required");
-        EntityMetadata mapping = mappings.get().get(entityClass);
+    public <T> DocumentMapperFrom selectFrom(Class<T> type) {
+        requireNonNull(type, "type is required");
+        EntityMetadata mapping = mappings.get().get(type);
         return new DefaultDocumentMapperSelectBuilder(mapping, converters.get());
     }
 
     @Override
-    public <T> DocumentMapperDeleteFrom deleteFrom(Class<T> entityClass) {
-        requireNonNull(entityClass, "entity is required");
-        EntityMetadata mapping = mappings.get().get(entityClass);
+    public <T> DocumentMapperDeleteFrom deleteFrom(Class<T> type) {
+        requireNonNull(type, "type is required");
+        EntityMetadata mapping = mappings.get().get(type);
         return new DefaultDocumentMapperDeleteBuilder(mapping, converters.get());
     }
 }

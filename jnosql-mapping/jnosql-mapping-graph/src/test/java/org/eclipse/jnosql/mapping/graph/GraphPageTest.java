@@ -91,7 +91,7 @@ class GraphPageTest {
                 .page(pagination);
         assertNotNull(page);
 
-        List<Person> people = page.<Person>getContent().collect(Collectors.toList());
+        List<Person> people = page.getContent().collect(Collectors.toList());
         Person first = template.getTraversalVertex()
                 .orderBy("name")
                 .desc()

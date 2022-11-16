@@ -31,12 +31,15 @@ class DefaultGraphConverter extends AbstractGraphConverter implements GraphConve
 
     private Instance<Graph> graph;
 
+    private GraphEventPersistManager eventManager;
+
     @Inject
     DefaultGraphConverter(EntitiesMetadata entities, Converters converters,
-                          Instance<Graph> graph) {
+                          Instance<Graph> graph, GraphEventPersistManager eventManager) {
         this.entities = entities;
         this.converters = converters;
         this.graph = graph;
+        this.eventManager = eventManager;
     }
 
     DefaultGraphConverter() {
@@ -50,6 +53,11 @@ class DefaultGraphConverter extends AbstractGraphConverter implements GraphConve
     @Override
     protected Converters getConverters() {
         return converters;
+    }
+
+    @Override
+    protected GraphEventPersistManager getEventManager() {
+        return eventManager;
     }
 
     @Override

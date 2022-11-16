@@ -62,7 +62,7 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
     @Override
     public void deleteById(K id) {
         requireNonNull(id, "is is required");
-        getTemplate().delete(getEntityClass(), id);
+        getTemplate().delete(getType(), id);
     }
 
     @Override
@@ -74,7 +74,7 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
     @Override
     public Optional<T> findById(K id) {
         requireNonNull(id, "id is required");
-        return getTemplate().find(getEntityClass(), id);
+        return getTemplate().find(getType(), id);
     }
 
 
@@ -88,7 +88,7 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
 
     @Override
     public long count() {
-        return getTemplate().count(getEntityClass());
+        return getTemplate().count(getType());
     }
 
 
@@ -108,7 +108,7 @@ public abstract class AbstractDocumentRepository<T, K> implements Repository<T, 
         return findById(id).isPresent();
     }
 
-    private Class<T> getEntityClass() {
+    private Class<T> getType() {
         return (Class<T>) getEntityMetadata().getType();
     }
 }

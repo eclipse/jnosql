@@ -35,16 +35,16 @@ class DefaultColumnQueryMapperBuilder implements ColumnQueryMapper {
     private Instance<Converters> converters;
 
     @Override
-    public <T> ColumnMapperFrom selectFrom(Class<T> entityClass) {
-        requireNonNull(entityClass, "entity is required");
-        EntityMetadata mapping = mappings.get().get(entityClass);
+    public <T> ColumnMapperFrom selectFrom(Class<T> type) {
+        requireNonNull(type, "entity is required");
+        EntityMetadata mapping = mappings.get().get(type);
         return new DefaultColumnMapperSelectBuilder(mapping, converters.get());
     }
 
     @Override
-    public <T> ColumnMapperDeleteFrom deleteFrom(Class<T> entityClass) {
-        requireNonNull(entityClass, "entity is required");
-        EntityMetadata mapping = mappings.get().get(entityClass);
+    public <T> ColumnMapperDeleteFrom deleteFrom(Class<T> type) {
+        requireNonNull(type, "entity is required");
+        EntityMetadata mapping = mappings.get().get(type);
         return new DefaultColumnMapperDeleteBuilder(mapping, converters.get());
     }
 }

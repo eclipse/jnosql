@@ -14,9 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.validation;
 
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.test.CDIExtension;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -27,42 +26,42 @@ import java.util.Set;
 
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @CDIExtension
-public class KeyValueRepositoryValidationTest {
+public class ColumnTemplateValidationTest {
 
     @Inject
-    private KeyValueTemplate template;
-
+    private ColumnTemplate template;
 
     @Test
-    public void shouldValidate() {
+    public void shouldValidateOnSave() {
 
         Person person = Person.builder()
-                .withAge(21)
+                .withAge(22)
                 .withName("Ada")
                 .withSalary(BigDecimal.ONE)
                 .withPhones(singletonList("123131231"))
                 .build();
-        template.put(person);
+        template.insert(person);
     }
 
     @Test
-    public void shouldReturnValidationException() {
-        Assertions.assertThrows(ConstraintViolationException.class, () -> {
+    public void shouldReturnValidationExceptionOnSave() {
+        assertThrows(ConstraintViolationException.class, () -> {
             Person person = Person.builder()
                     .withAge(10)
                     .withName("Ada")
                     .withSalary(BigDecimal.ONE)
                     .withPhones(singletonList("123131231"))
                     .build();
-            template.put(person);
+            template.insert(person);
         });
     }
 
 
     @Test
-    public void shouldGetValidations() {
+    public void shouldGetValidationsOnSave() {
 
         Person person = Person.builder()
                 .withAge(10)
@@ -71,7 +70,51 @@ public class KeyValueRepositoryValidationTest {
                 .withPhones(singletonList("123131231"))
                 .build();
         try {
-            template.put(person);
+            template.insert(person);
+        } catch (ConstraintViolationException ex) {
+            Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
+            assertEquals(2, violations.size());
+        }
+
+    }
+
+    @Test
+    public void shouldValidateOnUpdate() {
+
+        Person person = Person.builder()
+                .withAge(22)
+                .withName("Ada")
+                .withSalary(BigDecimal.ONE)
+                .withPhones(singletonList("123131231"))
+                .build();
+        template.update(person);
+    }
+
+    @Test
+    public void shouldReturnValidationExceptionOnUpdate() {
+        assertThrows(ConstraintViolationException.class, () -> {
+            Person person = Person.builder()
+                    .withAge(10)
+                    .withName("Ada")
+                    .withSalary(BigDecimal.ONE)
+                    .withPhones(singletonList("123131231"))
+                    .build();
+            template.update(person);
+        });
+    }
+
+
+    @Test
+    public void shouldGetValidationsOnUpdate() {
+
+        Person person = Person.builder()
+                .withAge(10)
+                .withName("Ada")
+                .withSalary(BigDecimal.valueOf(12991))
+                .withPhones(singletonList("123131231"))
+                .build();
+        try {
+            template.update(person);
         } catch (ConstraintViolationException ex) {
             Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
             assertEquals(2, violations.size());

@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentTemplateProducer;
 import jakarta.nosql.tck.test.CDIExtension;
@@ -41,7 +41,7 @@ public class DefaultDocumentTemplateProducerTest {
 
     @Test
     public void shouldReturn() {
-        DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
+        DocumentManager manager = Mockito.mock(DocumentManager.class);
         DocumentTemplate documentTemplate = producer.get(manager);
         assertNotNull(documentTemplate);
     }

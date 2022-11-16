@@ -125,9 +125,9 @@ class ClassConverter {
                 return;
             case COLLECTION:
                 if (((GenericFieldMapping) field).isEmbeddable()) {
-                    Class<?> entityClass = ((GenericFieldMapping) field).getElementType();
+                    Class<?> type = ((GenericFieldMapping) field).getElementType();
                     String nativeFieldAppended = appendPreparePrefix(nativeField, field.getName());
-                    appendFields(nativeFieldGroupByJavaField, field, javaField, nativeFieldAppended, entityClass);
+                    appendFields(nativeFieldGroupByJavaField, field, javaField, nativeFieldAppended, type);
                     return;
                 }
                 appendDefaultField(nativeFieldGroupByJavaField, field, javaField, nativeField);
@@ -149,16 +149,16 @@ class ClassConverter {
                               FieldMapping field,
                               String javaField, String nativeField) {
 
-        Class<?> entityClass = field.getNativeField().getType();
-        appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField, entityClass);
+        Class<?> type = field.getNativeField().getType();
+        appendFields(nativeFieldGroupByJavaField, field, javaField, nativeField, type);
     }
 
     private void appendFields(Map<String, NativeMapping> nativeFieldGroupByJavaField,
                               FieldMapping field, String javaField, String nativeField,
-                              Class<?> entityClass) {
+                              Class<?> type) {
 
         Map<String, NativeMapping> entityMap = getNativeFieldGroupByJavaField(
-                reflections.getFields(entityClass)
+                reflections.getFields(type)
                         .stream().map(this::to).collect(toList()),
                 appendPreparePrefix(javaField, field.getFieldName()), nativeField);
 

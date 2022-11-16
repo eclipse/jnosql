@@ -19,7 +19,7 @@ import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.column.ColumnQueryParser;
@@ -61,7 +61,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
     protected abstract ColumnEntityConverter getConverter();
 
-    protected abstract ColumnFamilyManager getManager();
+    protected abstract ColumnManager getManager();
 
     protected abstract ColumnWorkflow getFlow();
 
@@ -170,12 +170,12 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     }
 
     @Override
-    public <T, K> Optional<T> find(Class<T> entityClass, K id) {
-        requireNonNull(entityClass, "entityClass is required");
+    public <T, K> Optional<T> find(Class<T> type, K id) {
+        requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(type);
         FieldMapping idField = entityMetadata.getId()
-                .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
+                .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
         ColumnQuery query = ColumnQuery.select().from(entityMetadata.getName())
@@ -185,13 +185,13 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     }
 
     @Override
-    public <T, K> void delete(Class<T> entityClass, K id) {
-        requireNonNull(entityClass, "entityClass is required");
+    public <T, K> void delete(Class<T> type, K id) {
+        requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
 
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(type);
         FieldMapping idField = entityMetadata.getId()
-                .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
+                .orElseThrow(() -> IdNotFoundException.newInstance(type));
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
 
         ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(entityMetadata.getName())
@@ -234,9 +234,9 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
 
     @Override
-    public <T> long count(Class<T> entityClass) {
-        requireNonNull(entityClass, "entity class is required");
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+    public <T> long count(Class<T> type) {
+        requireNonNull(type, "entity class is required");
+        EntityMetadata entityMetadata = getEntities().get(type);
         return getManager().count(entityMetadata.getName());
     }
 
@@ -245,6 +245,6 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
         getEventManager().firePreQuery(query);
         Stream<ColumnEntity> entities = getManager().select(query);
         Function<ColumnEntity, T> function = e -> getConverter().toEntity(e);
-        return entities.map(function);
+        return entities.map(function).peek(getEventManager()::firePostEntity);
     }
 }

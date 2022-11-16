@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
@@ -59,7 +59,7 @@ class DocumentPageTest {
     @Inject
     private Converters converters;
 
-    private DocumentCollectionManager managerMock;
+    private DocumentManager managerMock;
 
     private DefaultDocumentTemplate subject;
 
@@ -70,11 +70,11 @@ class DocumentPageTest {
     @BeforeEach
     public void setUp() {
 
-        managerMock = Mockito.mock(DocumentCollectionManager.class);
+        managerMock = Mockito.mock(DocumentManager.class);
         columnEventPersistManager = Mockito.mock(DocumentEventPersistManager.class);
         captor = ArgumentCaptor.forClass(DocumentEntity.class);
 
-        Instance<DocumentCollectionManager> instance = Mockito.mock(Instance.class);
+        Instance<DocumentManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(managerMock);
         this.subject = new DefaultDocumentTemplate(converter, instance, new DefaultDocumentWorkflow(columnEventPersistManager, converter),
                 columnEventPersistManager, entities, converters);

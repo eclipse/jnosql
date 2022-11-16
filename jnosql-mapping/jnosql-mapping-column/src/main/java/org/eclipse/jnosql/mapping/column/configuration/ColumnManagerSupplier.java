@@ -16,8 +16,8 @@ package org.eclipse.jnosql.mapping.column.configuration;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.column.ColumnConfiguration;
-import jakarta.nosql.column.ColumnFamilyManager;
-import jakarta.nosql.column.ColumnFamilyManagerFactory;
+import jakarta.nosql.column.ColumnManager;
+import jakarta.nosql.column.ColumnManagerFactory;
 import jakarta.nosql.mapping.MappingException;
 import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
@@ -28,36 +28,44 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.CDI;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_DATABASE;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_PROVIDER;
 
 @ApplicationScoped
-class ColumnManagerSupplier implements Supplier<ColumnFamilyManager> {
+class ColumnManagerSupplier implements Supplier<ColumnManager> {
+
+    private static final Logger LOGGER = Logger.getLogger(ColumnManagerSupplier.class.getName());
 
     @Override
     @Produces
     @ApplicationScoped
-    public ColumnFamilyManager get() {
+    public ColumnManager get() {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         ColumnConfiguration configuration = settings.get(COLUMN_PROVIDER, Class.class)
-                .filter(c -> ColumnConfiguration.class.isAssignableFrom(c))
+                .filter(ColumnConfiguration.class::isAssignableFrom)
                 .map(c -> {
                     final Reflections reflections = CDI.current().select(Reflections.class).get();
                     return (ColumnConfiguration) reflections.newInstance(c);
-                }).orElseGet(() -> ColumnConfiguration.getConfiguration());
+                }).orElseGet(ColumnConfiguration::getConfiguration);
 
-        ColumnFamilyManagerFactory managerFactory = configuration.get(settings);
+        ColumnManagerFactory managerFactory = configuration.apply(settings);
 
         Optional<String> database = settings.get(COLUMN_DATABASE, String.class);
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
                 + COLUMN_DATABASE));
-        ColumnFamilyManager manager = managerFactory.get(db);
+        ColumnManager manager = managerFactory.apply(db);
+
+        LOGGER.log(Level.FINEST, "Starting  a ColumnManager instance using Eclipse MicroProfile Config," +
+                " database name: " + db);
         return manager;
     }
 
-    public void close(@Disposes ColumnFamilyManager manager) {
+    public void close(@Disposes ColumnManager manager) {
+        LOGGER.log(Level.FINEST, "Closing ColumnManager resource, database name: " + manager.getName());
         manager.close();
     }
 }

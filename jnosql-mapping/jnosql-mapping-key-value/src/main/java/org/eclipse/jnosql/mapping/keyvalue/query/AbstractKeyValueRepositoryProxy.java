@@ -30,7 +30,7 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
 
     protected abstract KeyValueTemplate getTemplate();
 
-    protected abstract Class<T> getEntityClass();
+    protected abstract Class<T> getType();
 
 
     @Override
@@ -43,7 +43,7 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
             case OBJECT_METHOD:
                 return method.invoke(this, args);
             case JNOSQL_QUERY:
-                Class<?> typeClass = getEntityClass();
+                Class<?> typeClass = getType();
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)
                         .withMethod(method)

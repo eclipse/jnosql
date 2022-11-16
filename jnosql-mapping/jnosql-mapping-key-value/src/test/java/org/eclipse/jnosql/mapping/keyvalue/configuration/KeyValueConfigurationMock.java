@@ -30,13 +30,9 @@ import java.util.Set;
 
 public class KeyValueConfigurationMock implements KeyValueConfiguration {
 
-    @Override
-    public BucketManagerFactory get() {
-        return new BucketManagerFactoryMock(Settings.builder().build());
-    }
 
     @Override
-    public BucketManagerFactory get(Settings settings) {
+    public BucketManagerFactory apply(Settings settings) {
         return new BucketManagerFactoryMock(settings);
     }
 
@@ -54,7 +50,7 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
         }
 
         @Override
-        public BucketManagerMock getBucketManager(String bucketName) {
+        public BucketManagerMock apply(String bucketName) {
             return new BucketManagerMock(bucketName);
         }
 
@@ -93,6 +89,11 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
         }
 
         public String getBucketName() {
+            return bucketName;
+        }
+
+        @Override
+        public String getName() {
             return bucketName;
         }
 

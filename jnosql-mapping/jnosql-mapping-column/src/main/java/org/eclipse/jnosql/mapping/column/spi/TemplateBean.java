@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.column.spi;
 
 
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateProducer;
@@ -57,12 +57,12 @@ class TemplateBean extends AbstractBean<ColumnTemplate> {
     public ColumnTemplate create(CreationalContext<ColumnTemplate> context) {
 
         ColumnTemplateProducer producer = getInstance(ColumnTemplateProducer.class);
-        ColumnFamilyManager columnFamilyManager = getColumnFamilyManager();
-        return producer.get(columnFamilyManager);
+        ColumnManager manager = getColumnManager();
+        return producer.get(manager);
     }
 
-    private ColumnFamilyManager getColumnFamilyManager() {
-        return getInstance(ColumnFamilyManager.class, DatabaseQualifier.ofColumn(provider));
+    private ColumnManager getColumnManager() {
+        return getInstance(ColumnManager.class, DatabaseQualifier.ofColumn(provider));
     }
 
     @Override

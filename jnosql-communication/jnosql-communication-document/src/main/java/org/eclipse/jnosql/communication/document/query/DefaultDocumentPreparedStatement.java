@@ -19,7 +19,7 @@ package org.eclipse.jnosql.communication.document.query;
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentPreparedStatement;
@@ -50,7 +50,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
 
     private final Duration duration;
 
-    private final DocumentCollectionManager manager;
+    private final DocumentManager manager;
 
     private DefaultDocumentPreparedStatement(DocumentEntity entity,
                                              DocumentQuery documentQuery,
@@ -60,7 +60,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
                                              String query,
                                              List<String> paramsLeft,
                                              Duration duration,
-                                             DocumentCollectionManager manager) {
+                                             DocumentManager manager) {
         this.entity = entity;
         this.documentQuery = documentQuery;
         this.documentDeleteQuery = documentDeleteQuery;
@@ -135,7 +135,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
             DocumentQuery documentQuery,
             Params params,
             String query,
-            DocumentCollectionManager manager) {
+            DocumentManager manager) {
         return new DefaultDocumentPreparedStatement(null, documentQuery,
                 null, PreparedStatementType.SELECT, params, query,
                 params.getParametersNames(), null, manager);
@@ -145,7 +145,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
     static DocumentPreparedStatement delete(DocumentDeleteQuery documentDeleteQuery,
                                             Params params,
                                             String query,
-                                            DocumentCollectionManager manager) {
+                                            DocumentManager manager) {
 
         return new DefaultDocumentPreparedStatement(null, null,
                 documentDeleteQuery, PreparedStatementType.DELETE, params, query,
@@ -157,7 +157,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
                                             Params params,
                                             String query,
                                             Duration duration,
-                                            DocumentCollectionManager manager) {
+                                            DocumentManager manager) {
         return new DefaultDocumentPreparedStatement(entity, null,
                 null, PreparedStatementType.INSERT, params, query,
                 params.getParametersNames(), duration, manager);
@@ -167,7 +167,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
     static DocumentPreparedStatement update(DocumentEntity entity,
                                             Params params,
                                             String query,
-                                            DocumentCollectionManager manager) {
+                                            DocumentManager manager) {
         return new DefaultDocumentPreparedStatement(entity, null,
                 null, PreparedStatementType.UPDATE, params, query,
                 params.getParametersNames(), null, manager);

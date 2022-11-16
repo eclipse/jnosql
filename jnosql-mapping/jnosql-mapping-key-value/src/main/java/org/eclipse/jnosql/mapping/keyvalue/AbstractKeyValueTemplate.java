@@ -21,6 +21,7 @@ import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
+import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 
@@ -45,8 +46,8 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
 
     protected abstract BucketManager getManager();
 
-
     protected abstract KeyValueWorkflow getFlow();
+    protected abstract KeyValueEventPersistManager getEventManager();
 
     @Override
     public <T> T put(T entity) {
@@ -104,24 +105,27 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     }
 
     @Override
-    public <K, T> Optional<T> get(K key, Class<T> entityClass) {
+    public <K, T> Optional<T> get(K key, Class<T> type) {
         requireNonNull(key, "key is required");
-        requireNonNull(entityClass, "entity class is required");
+        requireNonNull(type, "entity class is required");
 
         Optional<Value> value = getManager().get(key);
-        return value.map(v -> getConverter().toEntity(entityClass, KeyValueEntity.of(key, v)))
-                .filter(Objects::nonNull);
+        return value.map(v -> getConverter().toEntity(type, KeyValueEntity.of(key, v)))
+                .filter(Objects::nonNull).map(e -> {
+                    getEventManager().firePostEntity(e);
+                    return e;
+                });
     }
 
     @Override
-    public <K, T> Iterable<T> get(Iterable<K> keys, Class<T> entityClass) {
+    public <K, T> Iterable<T> get(Iterable<K> keys, Class<T> type) {
         requireNonNull(keys, "keys is required");
-        requireNonNull(entityClass, "entity class is required");
+        requireNonNull(type, "type class is required");
         return StreamSupport.stream(keys.spliterator(), false)
                 .map(k -> getManager().get(k)
                         .map(v -> KeyValueEntity.of(k, v)))
                 .filter(Optional::isPresent)
-                .map(e -> getConverter().toEntity(entityClass, e.get()))
+                .map(e -> getConverter().toEntity(type, e.get()))
                 .collect(Collectors.toList());
     }
 
@@ -138,19 +142,19 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     }
 
     @Override
-    public <T> Stream<T> query(String query, Class<T> entityClass) {
+    public <T> Stream<T> query(String query, Class<T> type) {
         requireNonNull(query, "query is required");
-        requireNonNull(entityClass, "entityClass is required");
+        requireNonNull(type, "type is required");
         Stream<Value> values = getManager().query(query);
-        return values.map(v -> v.get(entityClass));
+        return values.map(v -> v.get(type));
     }
 
     @Override
-    public <T> Optional<T> getSingleResult(String query, Class<T> entityClass) {
+    public <T> Optional<T> getSingleResult(String query, Class<T> type) {
         requireNonNull(query, "query is required");
-        requireNonNull(entityClass, "entityClass is required");
+        requireNonNull(type, "type is required");
 
-        Stream<T> entities = query(query, entityClass);
+        Stream<T> entities = query(query, type);
         final Iterator<T> iterator = entities.iterator();
         if (!iterator.hasNext()) {
             return Optional.empty();
@@ -169,18 +173,19 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     }
 
     @Override
-    public <T> PreparedStatement prepare(String query, Class<T> entityClass) {
+    public <T> PreparedStatement prepare(String query, Class<T> type) {
         requireNonNull(query, "query is required");
-        return new KeyValuePreparedStatement(getManager().prepare(query), entityClass);
+        requireNonNull(type, "type is required");
+        return new KeyValuePreparedStatement(getManager().prepare(query), type);
     }
 
     @Override
-    public <T, K> Optional<T> find(Class<T> entityClass, K id) {
-        return this.get(id, entityClass);
+    public <T, K> Optional<T> find(Class<T> type, K id) {
+        return this.get(id, type);
     }
 
     @Override
-    public <T, K> void delete(Class<T> entityClass, K id) {
+    public <T, K> void delete(Class<T> type, K id) {
         this.delete(id);
     }
 }

@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.column.configuration;
 
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.mapping.MappingException;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
@@ -43,9 +43,9 @@ class ColumnManagerSupplierTest {
     public void shouldGetManager() {
         System.setProperty(COLUMN_PROVIDER.get(), ColumnConfigurationMock.class.getName());
         System.setProperty(COLUMN_DATABASE.get(), "database");
-        ColumnFamilyManager manager = supplier.get();
+        ColumnManager manager = supplier.get();
         Assertions.assertNotNull(manager);
-        assertThat(manager).isInstanceOf(ColumnConfigurationMock.ColumnFamilyManagerMock.class);
+        assertThat(manager).isInstanceOf(ColumnConfigurationMock.ColumnManagerMock.class);
     }
 
 
@@ -53,17 +53,17 @@ class ColumnManagerSupplierTest {
     public void shouldUseDefaultConfigurationWhenProviderIsWrong() {
         System.setProperty(COLUMN_PROVIDER.get(), Integer.class.getName());
         System.setProperty(COLUMN_DATABASE.get(), "database");
-        ColumnFamilyManager manager = supplier.get();
+        ColumnManager manager = supplier.get();
         Assertions.assertNotNull(manager);
-        assertThat(manager).isInstanceOf(ColumnConfigurationMock2.ColumnFamilyManagerMock.class);
+        assertThat(manager).isInstanceOf(ColumnConfigurationMock2.ColumnManagerMock.class);
     }
 
     @Test
     public void shouldUseDefaultConfiguration() {
         System.setProperty(COLUMN_DATABASE.get(), "database");
-        ColumnFamilyManager manager = supplier.get();
+        ColumnManager manager = supplier.get();
         Assertions.assertNotNull(manager);
-        assertThat(manager).isInstanceOf(ColumnConfigurationMock2.ColumnFamilyManagerMock.class);
+        assertThat(manager).isInstanceOf(ColumnConfigurationMock2.ColumnManagerMock.class);
     }
 
     @Test

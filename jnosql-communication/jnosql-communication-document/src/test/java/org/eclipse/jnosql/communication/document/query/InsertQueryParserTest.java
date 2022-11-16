@@ -19,7 +19,7 @@ package org.eclipse.jnosql.communication.document.query;
 import jakarta.nosql.QueryException;
 import jakarta.nosql.TypeReference;
 import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
@@ -40,7 +40,7 @@ class InsertQueryParserTest {
 
     private final InsertQueryParser parser = new InsertQueryParser();
 
-    private final DocumentCollectionManager manager = Mockito.mock(DocumentCollectionManager.class);
+    private final DocumentManager manager = Mockito.mock(DocumentManager.class);
 
     private final DocumentObserverParser observer = new DocumentObserverParser() {
     };

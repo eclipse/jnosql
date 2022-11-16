@@ -28,7 +28,7 @@ import java.util.function.UnaryOperator;
  */
 public abstract class AbstractDocumentWorkflow implements DocumentWorkflow {
 
-    protected abstract DocumentEventPersistManager getDocumentEventPersistManager();
+    protected abstract DocumentEventPersistManager getEventManager();
 
 
     protected abstract DocumentEntityConverter getConverter();
@@ -47,12 +47,12 @@ public abstract class AbstractDocumentWorkflow implements DocumentWorkflow {
         UnaryOperator<T> validation = t -> Objects.requireNonNull(t, "entity is required");
 
         UnaryOperator<T> firePreEntity = t -> {
-            getDocumentEventPersistManager().firePreEntity(t);
+            getEventManager().firePreEntity(t);
             return t;
         };
 
         UnaryOperator<T> firePreDocumentEntity = t -> {
-            getDocumentEventPersistManager().firePreDocumentEntity(t);
+            getEventManager().firePreDocumentEntity(t);
             return t;
         };
 
@@ -60,24 +60,24 @@ public abstract class AbstractDocumentWorkflow implements DocumentWorkflow {
         Function<T, DocumentEntity> converterDocument = t -> getConverter().toDocument(t);
 
         UnaryOperator<DocumentEntity> firePreDocument = t -> {
-            getDocumentEventPersistManager().firePreDocument(t);
+            getEventManager().firePreDocument(t);
             return t;
         };
 
         UnaryOperator<DocumentEntity> firePostDocument = t -> {
-            getDocumentEventPersistManager().firePostDocument(t);
+            getEventManager().firePostDocument(t);
             return t;
         };
 
         Function<DocumentEntity, T> converterEntity = t -> getConverter().toEntity(entity, t);
 
         UnaryOperator<T> firePostEntity = t -> {
-            getDocumentEventPersistManager().firePostEntity(t);
+            getEventManager().firePostEntity(t);
             return t;
         };
 
         UnaryOperator<T> firePostDocumentEntity = t -> {
-            getDocumentEventPersistManager().firePostDocumentEntity(t);
+            getEventManager().firePostDocumentEntity(t);
             return t;
         };
 

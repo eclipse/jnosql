@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentObserverParser;
@@ -62,11 +62,11 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     protected abstract DocumentEntityConverter getConverter();
 
-    protected abstract DocumentCollectionManager getManager();
+    protected abstract DocumentManager getManager();
 
     protected abstract DocumentWorkflow getWorkflow();
 
-    protected abstract DocumentEventPersistManager getPersistManager();
+    protected abstract DocumentEventPersistManager getEventManager();
 
     protected abstract EntitiesMetadata getEntities();
 
@@ -132,7 +132,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     @Override
     public void delete(DocumentDeleteQuery query) {
         requireNonNull(query, "query is required");
-        getPersistManager().firePreDeleteQuery(query);
+        getEventManager().firePreDeleteQuery(query);
         getManager().delete(query);
     }
 
@@ -166,12 +166,12 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     }
 
     @Override
-    public <T, K> Optional<T> find(Class<T> entityClass, K id) {
-        requireNonNull(entityClass, "entityClass is required");
+    public <T, K> Optional<T> find(Class<T> type, K id) {
+        requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(type);
         FieldMapping idField = entityMetadata.getId()
-                .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
+                .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
         DocumentQuery query = DocumentQuery.select().from(entityMetadata.getName())
@@ -181,13 +181,13 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     }
 
     @Override
-    public <T, K> void delete(Class<T> entityClass, K id) {
-        requireNonNull(entityClass, "entityClass is required");
+    public <T, K> void delete(Class<T> type, K id) {
+        requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
 
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(type);
         FieldMapping idField = entityMetadata.getId()
-                .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
+                .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
         DocumentDeleteQuery query = DocumentDeleteQuery.delete().from(entityMetadata.getName())
@@ -228,18 +228,18 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return getManager().count(documentCollection);
     }
 
-    public <T> long count(Class<T> entityClass) {
-        requireNonNull(entityClass, "entityClass is required");
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+    public <T> long count(Class<T> type) {
+        requireNonNull(type, "type is required");
+        EntityMetadata entityMetadata = getEntities().get(type);
         return getManager().count(entityMetadata.getName());
     }
 
     private <T> Stream<T> executeQuery(DocumentQuery query) {
         requireNonNull(query, "query is required");
-        getPersistManager().firePreQuery(query);
+        getEventManager().firePreQuery(query);
         Stream<DocumentEntity> entities = getManager().select(query);
         Function<DocumentEntity, T> function = e -> getConverter().toEntity(e);
-        return entities.map(function);
+        return entities.map(function).peek(getEventManager()::firePostEntity);
     }
 
 

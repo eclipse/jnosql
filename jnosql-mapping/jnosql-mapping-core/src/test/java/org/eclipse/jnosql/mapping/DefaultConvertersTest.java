@@ -27,8 +27,6 @@ class DefaultConvertersTest {
 
     @Inject
     private Converters converters;
-
-
     @Test
     public void shouldReturnNPEWhenClassIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> converters.get(null));

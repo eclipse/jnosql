@@ -29,7 +29,7 @@ import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
-public class DocumentRepositoryValidationTest {
+public class DocumentTemplateValidationTest {
 
     @Inject
     private DocumentTemplate template;

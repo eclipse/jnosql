@@ -28,6 +28,8 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.CDI;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_DATABASE;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_PROVIDER;
@@ -35,6 +37,7 @@ import static org.eclipse.jnosql.mapping.config.MappingConfigurations.KEY_VALUE_
 @ApplicationScoped
 class BucketManagerSupplier implements Supplier<BucketManager> {
 
+    private static final Logger LOGGER = Logger.getLogger(BucketManagerSupplier.class.getName());
 
     @Override
     @Produces
@@ -44,22 +47,27 @@ class BucketManagerSupplier implements Supplier<BucketManager> {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         KeyValueConfiguration configuration = settings.get(KEY_VALUE_PROVIDER, Class.class)
-                .filter(c -> KeyValueConfiguration.class.isAssignableFrom(c))
+                .filter(KeyValueConfiguration.class::isAssignableFrom)
                 .map(c -> {
                     final Reflections reflections = CDI.current().select(Reflections.class).get();
                     return (KeyValueConfiguration) reflections.newInstance(c);
-                }).orElseGet(() -> KeyValueConfiguration.getConfiguration());
+                }).orElseGet(KeyValueConfiguration::getConfiguration);
 
-        BucketManagerFactory managerFactory = configuration.get(settings);
+        BucketManagerFactory managerFactory = configuration.apply(settings);
 
         Optional<String> database = settings.get(KEY_VALUE_DATABASE, String.class);
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
                 + KEY_VALUE_DATABASE));
-        BucketManager manager = managerFactory.getBucketManager(db);
+        BucketManager manager = managerFactory.apply(db);
+
+        LOGGER.log(Level.FINEST, "Starting  a BucketManager instance using Eclipse MicroProfile Config," +
+                " database name: " + db);
+
         return manager;
     }
 
     public void close(@Disposes BucketManager manager) {
+        LOGGER.log(Level.FINEST, "Closing BucketManager resource, database name: " + manager.getName());
         manager.close();
     }
 }

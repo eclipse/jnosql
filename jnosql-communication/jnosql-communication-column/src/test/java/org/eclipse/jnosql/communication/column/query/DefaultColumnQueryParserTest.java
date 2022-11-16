@@ -23,7 +23,7 @@ import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnFamilyManager;
+import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
 import jakarta.nosql.column.ColumnQuery;
@@ -48,7 +48,7 @@ public class DefaultColumnQueryParserTest {
     private final ColumnQueryParser parser = new DefaultColumnQueryParser();
 
 
-    private final ColumnFamilyManager manager = mock(ColumnFamilyManager.class);
+    private final ColumnManager manager = mock(ColumnManager.class);
 
     @Test
     public void shouldReturnNPEWhenThereIsNullParameter() {

@@ -16,7 +16,7 @@
  */
 package org.eclipse.jnosql.communication.document.query;
 
-import jakarta.nosql.document.DocumentCollectionManager;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentDeleteQuery.DocumentDelete;
 import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteFrom;
@@ -137,7 +137,7 @@ class DefaultFluentDeleteQueryBuilder extends BaseQueryBuilder implements Docume
     }
 
     @Override
-    public void delete(DocumentCollectionManager manager) {
+    public void delete(DocumentManager manager) {
         requireNonNull(manager, "manager is required");
         manager.delete(this.build());
     }
