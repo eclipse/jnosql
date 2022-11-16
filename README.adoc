@@ -192,6 +192,34 @@ public class ManagerSupplier implements Supplier<BucketManager> {
 }
 ----
 
+You can work with several key-value database instances through CDI qualifier. To identify each database instance, make a `BucketManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseA")
+private KeyValueTemplate templateA;
+
+@Inject
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseB")
+private KeyValueTemplate templateB;
+
+// producers methods
+@Produces
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseA")
+public BucketManager getManagerA() {
+    DocumentCollectionManager manager = // instance;
+    return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseB")
+public DocumentCollectionManager getManagerB() {
+    BucketManager manager = // instance;
+    return manager;
+}
+----
+
 === Column Family
 
 Jakarta NoSQL provides a Column Family template to explore the specific behavior of this NoSQL type.
@@ -257,6 +285,32 @@ public class ManagerSupplier implements Supplier<ColumnManager> {
         ColumnManagerFactory factory = configuration.apply(settings);
         return factory.apply("database");
     }
+}
+----
+
+You can work with several column database instances through CDI qualifier. To identify each database instance, make a `ColumnManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.COLUMN, provider = "databaseA")
+private ColumnTemplate templateA;
+
+@Inject
+@Database(value = DatabaseType.COLUMN, provider = "databaseB")
+private ColumnTemplate templateB;
+
+// producers methods
+@Produces
+@Database(value = DatabaseType.COLUMN, provider = "databaseA")
+public ColumnManager getManagerA() {
+    return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.COLUMN, provider = "databaseB")
+public ColumnManager getManagerB() {
+    return manager;
 }
 ----
 
@@ -328,6 +382,32 @@ public class ManagerSupplier implements Supplier<DocumentManager> {
 }
 ----
 
+You can work with several document database instances through CDI qualifier. To identify each database instance, make a `DocumentManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseA")
+private DocumentTemplate templateA;
+
+@Inject
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseB")
+private DocumentTemplate templateB;
+
+// producers methods
+@Produces
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseA")
+public DocumentManager getManagerA() {
+    return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseB")
+public DocumentManager getManagerB() {
+    return manager;
+}
+----
+
 === Graph
 
 Jakarta NoSQL provides a Graph template to explore the specific behavior of this NoSQL type.
@@ -388,6 +468,33 @@ public class ManagerSupplier implements Supplier<Graph> {
     }
 }
 ----
+
+You can work with several document database instances through CDI qualifier. To identify each database instance, make a `Graph` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.GRAPH, provider = "databaseA")
+private GraphTemplate templateA;
+
+@Inject
+@Database(value = DatabaseType.GRAPH, provider = "databaseB")
+private GraphTemplate templateB;
+
+// producers methods
+@Produces
+@Database(value = DatabaseType.GRAPH, provider = "databaseA")
+public Graph getManagerA() {
+    return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.GRAPH, provider = "databaseB")
+public Graph getManagerB() {
+    return manager;
+}
+----
+
 
 Eclipse JNoSQL does not provide https://mvnrepository.com/artifact/org.apache.tinkerpop/gremlin-core[Apache Tinkerpop 3 dependency]; check if the provider does; otherwise, do it manually.
 
