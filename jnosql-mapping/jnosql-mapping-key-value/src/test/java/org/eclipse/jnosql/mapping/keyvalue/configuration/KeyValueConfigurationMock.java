@@ -93,6 +93,11 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
         }
 
         @Override
+        public String getName() {
+            return bucketName;
+        }
+
+        @Override
         public <K, V> void put(K key, V value) {
 
         }

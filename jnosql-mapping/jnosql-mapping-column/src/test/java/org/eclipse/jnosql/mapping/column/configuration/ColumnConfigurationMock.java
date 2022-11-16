@@ -70,6 +70,11 @@ class ColumnConfigurationMock implements ColumnConfiguration {
         }
 
         @Override
+        public String getName() {
+            return database;
+        }
+
+        @Override
         public ColumnEntity insert(ColumnEntity entity) {
             return null;
         }

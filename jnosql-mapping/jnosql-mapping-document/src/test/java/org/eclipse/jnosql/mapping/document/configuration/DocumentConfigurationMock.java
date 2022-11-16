@@ -69,6 +69,11 @@ class DocumentConfigurationMock implements DocumentConfiguration {
         }
 
         @Override
+        public String getName() {
+            return database;
+        }
+
+        @Override
         public DocumentEntity insert(DocumentEntity entity) {
             return null;
         }
