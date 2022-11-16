@@ -389,7 +389,21 @@ public class ManagerSupplier implements Supplier<Graph> {
 }
 ----
 
+Eclipse JNoSQL does not provide https://mvnrepository.com/artifact/org.apache.tinkerpop/gremlin-core[Apache Tinkerpop 3 dependency]; check if the provider does; otherwise, do it manually.
 
+[source,xml]
+----
+<dependency>
+    <groupId>org.apache.tinkerpop</groupId>
+    <artifactId>gremlin-core</artifactId>
+    <version>${tinkerpop.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.tinkerpop</groupId>
+    <artifactId>gremlin-groovy</artifactId>
+    <version>${tinkerpop.version}</version>
+</dependency>
+----
 === Bean Validation
 
 Eclipse JNoSQL provide support for bean validation. It will validate before inserting/updating and constructing an entity.
@@ -444,7 +458,7 @@ template.insert(new Car()); // invalid car
 
 === More Information
 
-Check the https://www.jnosql.org/spec/[reference documentation] and https://www.jnosql.org/javadoc/[JavDocs] to learn more.
+Check the https://www.jnosql.org/spec/[reference documentation] and https://www.jnosql.org/javadoc/[JavaDocs] to learn more.
 
 == Code of Conduct
 
