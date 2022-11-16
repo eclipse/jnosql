@@ -383,7 +383,7 @@ public class ManagerSupplier implements Supplier<Graph> {
 
     @Produces
     public Graph get() {
-        Graph graph = ...;
+        Graph graph = ...;//from a provider
         return graph;
     }
 }
