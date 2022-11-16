@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.keyvalue;
 
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
+import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -31,11 +32,17 @@ class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {
 
     private KeyValueWorkflow flow;
 
+    private KeyValueEventPersistManager eventManager;
+
     @Inject
-    DefaultKeyValueTemplate(KeyValueEntityConverter converter, Instance<BucketManager> manager, KeyValueWorkflow flow) {
+    DefaultKeyValueTemplate(KeyValueEntityConverter converter,
+                            Instance<BucketManager> manager,
+                            KeyValueWorkflow flow,
+                            KeyValueEventPersistManager eventManager) {
         this.converter = converter;
         this.manager = manager;
         this.flow = flow;
+        this.eventManager = eventManager;
     }
 
     DefaultKeyValueTemplate() {
@@ -54,6 +61,11 @@ class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {
     @Override
     protected KeyValueWorkflow getFlow() {
         return flow;
+    }
+
+    @Override
+    protected KeyValueEventPersistManager getEventManager() {
+        return eventManager;
     }
 
 }

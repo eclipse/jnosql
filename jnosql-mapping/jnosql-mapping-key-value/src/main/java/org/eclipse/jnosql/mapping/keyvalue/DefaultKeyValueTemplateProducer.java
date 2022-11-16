@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.keyvalue;
 
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
+import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
@@ -34,10 +35,13 @@ class DefaultKeyValueTemplateProducer implements KeyValueTemplateProducer {
     @Inject
     private KeyValueWorkflow flow;
 
+    @Inject
+    private KeyValueEventPersistManager eventManager;
+
     @Override
     public KeyValueTemplate get(BucketManager manager) {
         Objects.requireNonNull(manager, "manager is required");
-        return new ProducerKeyValueTemplate(converter, flow, manager);
+        return new ProducerKeyValueTemplate(converter, flow, manager, eventManager);
     }
 
     @Vetoed
@@ -49,10 +53,14 @@ class DefaultKeyValueTemplateProducer implements KeyValueTemplateProducer {
 
         private BucketManager manager;
 
-        ProducerKeyValueTemplate(KeyValueEntityConverter converter, KeyValueWorkflow flow, BucketManager manager) {
+        private KeyValueEventPersistManager eventManager;
+
+        ProducerKeyValueTemplate(KeyValueEntityConverter converter, KeyValueWorkflow flow,
+                                 BucketManager manager, KeyValueEventPersistManager eventManager) {
             this.converter = converter;
             this.flow = flow;
             this.manager = manager;
+            this.eventManager = eventManager;
         }
 
         ProducerKeyValueTemplate() {
@@ -71,6 +79,11 @@ class DefaultKeyValueTemplateProducer implements KeyValueTemplateProducer {
         @Override
         protected KeyValueWorkflow getFlow() {
             return flow;
+        }
+
+        @Override
+        protected KeyValueEventPersistManager getEventManager() {
+            return eventManager;
         }
     }
 }
