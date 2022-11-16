@@ -28,12 +28,16 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.CDI;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_DATABASE;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_PROVIDER;
 
 @ApplicationScoped
 class ColumnManagerSupplier implements Supplier<ColumnManager> {
+
+    private static final Logger LOGGER = Logger.getLogger(ColumnManagerSupplier.class.getName());
 
     @Override
     @Produces
@@ -54,10 +58,14 @@ class ColumnManagerSupplier implements Supplier<ColumnManager> {
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
                 + COLUMN_DATABASE));
         ColumnManager manager = managerFactory.apply(db);
+
+        LOGGER.log(Level.FINEST, "Starting  a ColumnManager instance using Eclipse MicroProfile Config," +
+                " database name: " + db);
         return manager;
     }
 
     public void close(@Disposes ColumnManager manager) {
+        LOGGER.log(Level.FINEST, "Closing ColumnManager resource, database name: " + manager.getName());
         manager.close();
     }
 }

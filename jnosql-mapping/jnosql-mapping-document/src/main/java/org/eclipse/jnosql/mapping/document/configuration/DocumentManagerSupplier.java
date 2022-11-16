@@ -28,12 +28,16 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.CDI;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_DATABASE;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_PROVIDER;
 
 @ApplicationScoped
 class DocumentManagerSupplier implements Supplier<DocumentManager> {
+
+    private static final Logger LOGGER = Logger.getLogger(DocumentManagerSupplier.class.getName());
 
     @Override
     @Produces
@@ -54,10 +58,14 @@ class DocumentManagerSupplier implements Supplier<DocumentManager> {
         String db = database.orElseThrow(() -> new MappingException("Please, inform the database filling up the property "
                 + DOCUMENT_DATABASE));
         DocumentManager manager = managerFactory.apply(db);
+
+        LOGGER.log(Level.FINEST, "Starting  a DocumentManager instance using Eclipse MicroProfile Config," +
+                " database name: " + db);
         return manager;
     }
 
     public void close(@Disposes DocumentManager manager) {
+        LOGGER.log(Level.FINEST, "Closing DocumentManager resource, database name: " + manager.getName());
         manager.close();
     }
 }
