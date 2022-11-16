@@ -34,14 +34,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class MicroProfileSettingsTest {
     @BeforeEach
     public void beforeEach() {
-        System.clearProperty("key");
-        System.clearProperty("host");
-        System.clearProperty("host.1");
-        System.clearProperty("host.2");
-        System.clearProperty("host.3");
-        System.clearProperty("server");
-        System.clearProperty("server.1");
-        System.clearProperty("server.2");
+        System.clearProperty("jnosql.jnosql.key");
+        System.clearProperty("jnosql.jnosql.host");
+        System.clearProperty("jnosql.host.1");
+        System.clearProperty("jnosql.host.2");
+        System.clearProperty("jnosql.host.3");
+        System.clearProperty("jnosql.server");
+        System.clearProperty("jnosql.server.1");
+        System.clearProperty("jnosql.server.2");
     }
 
     @Test
@@ -64,24 +64,24 @@ class MicroProfileSettingsTest {
 
     @Test
     public void shouldContainsKeys() {
-        setProperty(singletonMap("key", "value"));
+        setProperty(singletonMap("jnosql.key", "value"));
         Settings settings = MicroProfileSettings.INSTANCE;
-        assertTrue(settings.containsKey("key"));
+        assertTrue(settings.containsKey("jnosql.key"));
         assertFalse(settings.containsKey("key2"));
     }
 
 
     @Test
     public void shouldGetKeys() {
-        setProperty(singletonMap("key", "value"));
+        setProperty(singletonMap("key.jnosql", "value"));
         Settings settings = MicroProfileSettings.INSTANCE;
-        assertThat(settings.keySet()).contains("key");
+        assertThat(settings.keySet()).contains("jnosql.key");
     }
 
 
     @Test
     public void shouldSize() {
-        Settings settings = Settings.of(singletonMap("key", "value"));
+        Settings settings = Settings.of(singletonMap("jnosql.key", "value"));
         assertTrue(settings.size() >= 1);
 
     }
@@ -94,25 +94,25 @@ class MicroProfileSettingsTest {
 
     @Test
     public void shouldGet() {
-        setProperty(singletonMap("key", "12"));
+        setProperty(singletonMap("jnosql.key", "12"));
         Settings settings = MicroProfileSettings.INSTANCE;
-        Optional<Object> value = settings.get("key");
+        Optional<Object> value = settings.get("jnosql.key");
         Assertions.assertNotNull(value);
         Assertions.assertEquals("12", value.get());
     }
 
     @Test
     public void shouldGetSupplier() {
-        setProperty(singletonMap("key", "12"));
+        setProperty(singletonMap("jnosql.key", "12"));
         Settings settings = MicroProfileSettings.INSTANCE;
-        Optional<Object> value = settings.get(() -> "key");
+        Optional<Object> value = settings.get(() -> "jnosql.key");
         Assertions.assertNotNull(value);
         Assertions.assertEquals("12", value.get());
     }
 
     @Test
     public void shouldNPEGet() {
-        setProperty(singletonMap("key", "12"));
+        setProperty(singletonMap("jnosql.key", "12"));
         Settings settings = MicroProfileSettings.INSTANCE;
         Assertions.assertThrows(NullPointerException.class, () -> settings.get((String) null));
         Assertions.assertThrows(NullPointerException.class, () -> settings.get((Supplier<String>) null));
@@ -120,25 +120,25 @@ class MicroProfileSettingsTest {
 
     @Test
     public void shouldGetIterable() {
-        setProperty(singletonMap("key", "12"));
+        setProperty(singletonMap("jnosql.key", "12"));
         Settings settings = MicroProfileSettings.INSTANCE;
-        Optional<Object> value = settings.get(Collections.singleton("key"));
+        Optional<Object> value = settings.get(Collections.singleton("jnosql.key"));
         Assertions.assertNotNull(value);
         Assertions.assertEquals("12", value.get());
     }
 
     @Test
     public void shouldGetIterableSupplier() {
-        setProperty(singletonMap("key", "12"));
+        setProperty(singletonMap("jnosql.key", "12"));
         Settings settings = MicroProfileSettings.INSTANCE;
-        Optional<Object> value = settings.getSupplier(Collections.singleton(() -> "key"));
+        Optional<Object> value = settings.getSupplier(Collections.singleton(() -> "jnosql.key"));
         Assertions.assertNotNull(value);
         Assertions.assertEquals("12", value.get());
     }
 
     @Test
     public void shouldNPEGetIterable() {
-        setProperty(singletonMap("key", "12"));
+        setProperty(singletonMap("jnosql.key", "12"));
         Settings settings = MicroProfileSettings.INSTANCE;
         Assertions.assertThrows(NullPointerException.class, () -> settings.get((Iterable<String>) null));
         Assertions.assertThrows(NullPointerException.class, () -> settings.getSupplier(null));
@@ -146,37 +146,37 @@ class MicroProfileSettingsTest {
 
     @Test
     public void shouldGetValueClass() {
-        setProperty(singletonMap("key", "12"));
+        setProperty(singletonMap("jnosql.key", "12"));
         Settings settings = MicroProfileSettings.INSTANCE;
 
-        Integer value = settings.get("key", Integer.class).get();
+        Integer value = settings.get("jnosql.key", Integer.class).get();
         assertEquals(Integer.valueOf(12), value);
-        assertFalse(settings.get("key2", Integer.class).isPresent());
+        assertFalse(settings.get("jnosql.key2", Integer.class).isPresent());
     }
 
     @Test
     public void shouldGetValueClassSupplier() {
-        setProperty(singletonMap("key", "12"));
+        setProperty(singletonMap("jnosql.key", "12"));
         Settings settings = MicroProfileSettings.INSTANCE;
 
-        Integer value = settings.get(() -> "key", Integer.class).get();
+        Integer value = settings.get(() -> "jnosql.key", Integer.class).get();
         assertEquals(Integer.valueOf(12), value);
         assertFalse(settings.get(() -> "key2", Integer.class).isPresent());
     }
 
     @Test
     public void shouldGetOrDefault() {
-        setProperty(singletonMap("key", "12"));
+        setProperty(singletonMap("jnosql.key", "12"));
         Settings settings = MicroProfileSettings.INSTANCE;
-        assertEquals("12", settings.getOrDefault("key", "13"));
+        assertEquals("12", settings.getOrDefault("jnosql.key", "13"));
         assertEquals("13", settings.getOrDefault("key-1", "13"));
     }
 
     @Test
     public void shouldGetOrDefaultSupplier() {
-        setProperty(singletonMap("key", "12"));
+        setProperty(singletonMap("jnosql.key", "12"));
         Settings settings = MicroProfileSettings.INSTANCE;
-        assertEquals("12", settings.getOrDefault(() -> "key", "13"));
+        assertEquals("12", settings.getOrDefault(() -> "jnosql.key", "13"));
         assertEquals("13", settings.getOrDefault(() -> "key-1", "13"));
     }
 
@@ -184,10 +184,10 @@ class MicroProfileSettingsTest {
     public void shouldReturnErrorWhenPrefixIsNull() {
 
         Map<String, Object> params = Map.of(
-                "host", "host",
-                "host.1", "host-1",
-                "host.2", "host-2",
-                "host.3", "host-3");
+                "jnosql.host", "host",
+                "jnosql.host.1", "host-1",
+                "jnosql.host.2", "host-2",
+                "jnosql.host.3", "host-3");
         setProperty(params);
         Settings settings = MicroProfileSettings.INSTANCE;
 
@@ -197,14 +197,14 @@ class MicroProfileSettingsTest {
     @Test
     public void shouldFindPrefix() {
         Map<String, Object> params = Map.of(
-                "host", "host",
-                "host.1", "host-1",
-                "host.2", "host-2",
-                "host.3", "host-3");
+                "jnosql.host", "host",
+                "jnosql.host.1", "host-1",
+                "jnosql.host.2", "host-2",
+                "jnosql.host.3", "host-3");
         setProperty(params);
         Settings settings = MicroProfileSettings.INSTANCE;
 
-        List<Object> hosts = settings.prefix("host");
+        List<Object> hosts = settings.prefix("jnosql.host");
         assertThat(hosts)
                 .hasSize(4)
                 .contains("host", "host-1", "host-2", "host-3");
@@ -213,14 +213,14 @@ class MicroProfileSettingsTest {
     @Test
     public void shouldFindPrefixSupplier() {
         Map<String, Object> params = Map.of(
-                "host", "host",
-                "host.1", "host-1",
-                "host.2", "host-2",
-                "host.3", "host-3");
+                "jnosql.host", "host",
+                "jnosql.host.1", "host-1",
+                "jnosql.host.2", "host-2",
+                "jnosql.host.3", "host-3");
         setProperty(params);
         Settings settings = MicroProfileSettings.INSTANCE;
 
-        List<Object> hosts = settings.prefix(() -> "host");
+        List<Object> hosts = settings.prefix(() -> "jnosql.host");
         assertThat(hosts)
                 .hasSize(4)
                 .contains("host", "host-1", "host-2", "host-3");
@@ -229,13 +229,13 @@ class MicroProfileSettingsTest {
     @Test
     public void shouldFindPrefixWithOrder() {
         Map<String, Object> params = Map.of(
-                "host", "host",
-                "host.1", "host-1",
-                "host.2", "host-2",
-                "host.3", "host-3");
+                "jnosql.host", "host",
+                "jnosql.host.1", "host-1",
+                "jnosql.host.2", "host-2",
+                "jnosql.host.3", "host-3");
         setProperty(params);
         Settings settings = MicroProfileSettings.INSTANCE;
-        List<Object> hosts = settings.prefix("host");
+        List<Object> hosts = settings.prefix("jnosql.host");
         assertThat(hosts).hasSize(4).contains("host", "host-1", "host-2", "host-3");
     }
 
@@ -243,10 +243,10 @@ class MicroProfileSettingsTest {
     @Test
     public void shouldReturnErrorWhenPrefixesIsNull() {
         Map<String, Object> params = Map.of(
-                "host", "host",
-                "host.1", "host-1",
-                "host.2", "host-2",
-                "host.3", "host-3");
+                "jnosql.host", "host",
+                "jnosql.host.1", "host-1",
+                "jnosql.host.2", "host-2",
+                "jnosql.host.3", "host-3");
         setProperty(params);
         Settings settings = MicroProfileSettings.INSTANCE;
         assertThrows(NullPointerException.class, () -> settings.prefix((Collection<String>) null));
@@ -257,43 +257,43 @@ class MicroProfileSettingsTest {
     public void shouldFindPrefixes() {
 
         Map<String, Object> params = Map.of(
-                "host", "host",
-                "host.1", "host-1",
-                "server", "server",
-                "server.1", "server-1");
+                "jnosql.host", "host",
+                "jnosql.host.1", "host-1",
+                "jnosql.server", "server",
+                "jnosql.server.1", "server-1");
         setProperty(params);
         Settings settings = MicroProfileSettings.INSTANCE;
 
-        List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
+        List<Object> hosts = settings.prefix(Arrays.asList("jnosql.host", "jnosql.server"));
         assertThat(hosts).hasSize(4).contains("host", "host-1", "server", "server-1");
     }
 
     @Test
     public void shouldFindPrefixesSupplier() {
         Map<String, Object> params = Map.of(
-                "host", "host",
-                "host.1", "host-1",
-                "server", "server",
-                "server.1", "server-1");
+                "jnosql.host", "host",
+                "jnosql.host.1", "host-1",
+                "jnosql.server", "server",
+                "jnosql.server.1", "server-1");
         setProperty(params);
 
         Settings settings = MicroProfileSettings.INSTANCE;
-        List<Object> hosts = settings.prefixSupplier(Arrays.asList(() -> "host", () -> "server"));
+        List<Object> hosts = settings.prefixSupplier(Arrays.asList(() -> "jnosql.host", () -> "jnosql.server"));
         assertThat(hosts).hasSize(4).contains("host", "host-1", "server", "server-1");
     }
 
     @Test
     public void shouldFindPrefixesSort() {
         Map<String, Object> params = Map.of(
-                "host", "host",
-                "host.1", "host-1",
-                "server", "server",
-                "server.1", "server-1");
+                "jnosql.host", "host",
+                "jnosql.host.1", "host-1",
+                "jnosql.server", "server",
+                "jnosql.server.1", "server-1");
         setProperty(params);
 
         Settings settings = MicroProfileSettings.INSTANCE;
 
-        List<Object> hosts = settings.prefix(Arrays.asList("host", "server"));
+        List<Object> hosts = settings.prefix(Arrays.asList("jnosql.host", "jnosql.server"));
         assertThat(hosts).hasSize(4).contains("host", "host-1", "server", "server-1");
     }
 
