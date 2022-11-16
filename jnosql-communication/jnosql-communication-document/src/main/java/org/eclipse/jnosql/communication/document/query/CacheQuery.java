@@ -38,8 +38,7 @@ final class CacheQuery<V> {
     public V get(String key, DocumentObserverParser observer) {
         V value = this.store.get(key);
         if (Objects.isNull(value)) {
-
-            synchronized (key) {
+            synchronized (this) {
                 value = supplier.apply(key, observer);
                 put(key, value);
             }

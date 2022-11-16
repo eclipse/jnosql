@@ -31,7 +31,7 @@ final class CacheQuery<V> {
     public V get(String key) {
         V value = this.store.get(key);
         if (Objects.isNull(value)) {
-            synchronized (key) {
+            synchronized (this) {
                 value = supplier.apply(key);
                 put(key, value);
             }
