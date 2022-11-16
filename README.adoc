@@ -167,8 +167,9 @@ You can define the database settings using Eclipse MicroProfile Config, so you c
 ----
 jnosql.keyvalue.database=<DATABASE>
 jnosql.keyvalue.provider=<CLASS-DRIVER>
-jnosql.redis.host=HOST
-jnosql.redis.password=PASSWORD
+jnosql.provider.host=HOST
+jnosql.provider.user=USER
+jnosql.provider.password=PASSWORD
 ----
 
 TIP: The `jnosql.keyvalue.provider` property is necessary when you have more than one driver in the classpath; otherwise, it will take the first one.
@@ -179,7 +180,7 @@ The config settings are the default behavior; nevertheless, there is an option t
 ----
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
-public class BucketSupplier implements Supplier<BucketManager> {
+public class ManagerSupplier implements Supplier<BucketManager> {
 
     @Produces
     public BucketManager get() {
@@ -227,6 +228,37 @@ Optional<Car> result = template.singleResult("select * from Car where _id = 1");
 ----
 
 Column Family is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
+
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.column.database=<DATABASE>
+jnosql.column.provider=<CLASS-DRIVER>
+jnosql.provider.host=HOST
+jnosql.provider.user=USER
+jnosql.provider.password=PASSWORD
+----
+
+TIP: The `jnosql.column.provider` property is necessary when you have more than one driver in the classpath; otherwise, it will take the first one.
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<ColumnManager>` and then defines it as an `@Alternative` and the `Priority`.
+
+[source,java]
+----
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<ColumnManager> {
+
+    @Produces
+    public ColumnManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        ColumnConfiguration configuration = new NoSQLColumnProvider();
+        ColumnManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
+    }
+}
+----
 
 === Document
 
