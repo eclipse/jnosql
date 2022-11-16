@@ -66,7 +66,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     protected abstract DocumentWorkflow getWorkflow();
 
-    protected abstract DocumentEventPersistManager getPersistManager();
+    protected abstract DocumentEventPersistManager getEventManager();
 
     protected abstract EntitiesMetadata getEntities();
 
@@ -132,7 +132,7 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     @Override
     public void delete(DocumentDeleteQuery query) {
         requireNonNull(query, "query is required");
-        getPersistManager().firePreDeleteQuery(query);
+        getEventManager().firePreDeleteQuery(query);
         getManager().delete(query);
     }
 
@@ -236,10 +236,10 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
 
     private <T> Stream<T> executeQuery(DocumentQuery query) {
         requireNonNull(query, "query is required");
-        getPersistManager().firePreQuery(query);
+        getEventManager().firePreQuery(query);
         Stream<DocumentEntity> entities = getManager().select(query);
         Function<DocumentEntity, T> function = e -> getConverter().toEntity(e);
-        return entities.map(function);
+        return entities.map(function).peek(getEventManager()::firePostEntity);
     }
 
 

@@ -45,7 +45,6 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
 
     protected abstract BucketManager getManager();
 
-
     protected abstract KeyValueWorkflow getFlow();
 
     @Override

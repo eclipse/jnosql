@@ -104,7 +104,7 @@ class DefaultDocumentTemplateProducer implements DocumentTemplateProducer {
         }
 
         @Override
-        protected DocumentEventPersistManager getPersistManager() {
+        protected DocumentEventPersistManager getEventManager() {
             return persistManager;
         }
 

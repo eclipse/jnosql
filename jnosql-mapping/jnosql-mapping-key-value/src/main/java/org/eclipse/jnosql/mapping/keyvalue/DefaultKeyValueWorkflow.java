@@ -42,7 +42,7 @@ class DefaultKeyValueWorkflow extends AbstractKeyValueWorkflow {
     }
 
     @Override
-    protected KeyValueEventPersistManager getEventPersistManager() {
+    protected KeyValueEventPersistManager getEventManager() {
         return eventPersistManager;
     }
 

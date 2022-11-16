@@ -43,7 +43,7 @@ class DefaultDocumentWorkflow extends AbstractDocumentWorkflow {
 
 
     @Override
-    protected DocumentEventPersistManager getDocumentEventPersistManager() {
+    protected DocumentEventPersistManager getEventManager() {
         return documentEventPersistManager;
     }
 

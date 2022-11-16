@@ -75,7 +75,7 @@ class DefaultDocumentTemplate extends AbstractDocumentTemplate {
     }
 
     @Override
-    protected DocumentEventPersistManager getPersistManager() {
+    protected DocumentEventPersistManager getEventManager() {
         return persistManager;
     }
 
