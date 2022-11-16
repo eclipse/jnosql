@@ -75,6 +75,4 @@ public class KeyValueConfigurationMock implements KeyValueConfiguration {
             return null;
         }
     }
-
-
 }
