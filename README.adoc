@@ -195,12 +195,11 @@ Car ferrari = Car.id(1L).name("ferrari").city("Rome").type(CarType.SPORT);
 template.insert(ferrari);
 Optional<Car> car = template.find(Car.class, 1L);
 
-DocumentDeleteQuery deleteQuery = delete().from("Car")
-                    .where("_id").eq(1L).build();
+DocumentDeleteQuery deleteQuery = delete().from("Car").where("_id").eq(1L).build();
+
 template.delete(deleteQuery);
 
-DocumentDeleteQuery query = select().from("Car")
-                    .where("_id").eq(1L).build();
+DocumentDeleteQuery query = select().from("Car").where("_id").eq(1L).build();
 
 Optional<Car> result = template.singleResult("select * from Car where _id = 1");
 ----
