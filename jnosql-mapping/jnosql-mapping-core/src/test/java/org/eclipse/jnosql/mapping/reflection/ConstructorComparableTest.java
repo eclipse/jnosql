@@ -37,8 +37,7 @@ class ConstructorComparableTest {
     @Test
     public void shouldReturnDefault() {
         Constructor<?> constructor = Stream.of(Animal.class.getDeclaredConstructors())
-                .sorted(ConstructorComparable.INSTANCE)
-                .findFirst().orElseThrow();
+                .min(ConstructorComparable.INSTANCE).orElseThrow();
 
         Assertions.assertNotNull(constructor);
         assertEquals(0, constructor.getParameterCount());
