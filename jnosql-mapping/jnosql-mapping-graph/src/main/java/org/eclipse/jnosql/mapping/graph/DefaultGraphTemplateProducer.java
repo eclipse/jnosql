@@ -43,6 +43,9 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
     @Inject
     private GraphEventPersistManager persistManager;
 
+    @Inject
+    private GraphEventPersistManager eventManager;
+
 
     @Override
     public GraphTemplate get(Graph graph) {
@@ -51,8 +54,7 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         SingleInstance<Graph> instance = new SingleInstance<>(graph);
 
         GraphConverter converter = new DefaultGraphConverter(entities,
-                converters,
-                instance);
+                converters,instance, eventManager);
         GraphWorkflow workflow = new DefaultGraphWorkflow(persistManager, converter);
         return new DefaultGraphTemplate(instance, entities, converter, workflow, converters);
     }
@@ -64,8 +66,7 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         SingleInstance<GraphTraversalSourceSupplier> instance = new SingleInstance<>(supplier);
 
         GraphConverter converter = new DefaultGraphTraversalSourceConverter(entities,
-                converters,
-                instance);
+                converters, instance, eventManager);
         GraphWorkflow workflow = new DefaultGraphWorkflow(persistManager, converter);
         return new DefaultGraphTraversalSourceTemplate(instance, entities, converter, workflow, converters);
     }

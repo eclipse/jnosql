@@ -53,6 +53,8 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
     protected abstract Converters getConverters();
 
+    protected abstract GraphEventPersistManager getEventManager();
+
     protected abstract Graph getGraph();
 
     @Override
@@ -119,6 +121,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
                 entity = toEntity((Class<T>) mapping.getType(), properties);
             }
             feedId(vertex, entity);
+            getEventManager().firePostEntity(entity);
             return entity;
         } else {
             return convertEntityByConstructor(vertex, mapping);
@@ -133,6 +136,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         List<Property> properties = vertex.keys().stream().map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
         T entity = toEntity(type, properties);
         feedId(vertex, entity);
+        getEventManager().firePostEntity(entity);
         return entity;
     }
 
