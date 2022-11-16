@@ -36,15 +36,38 @@ public class Car {
 
 Theses annotations from the Mapping API will look familiar to the Jakarta Persistence/JPA developer:
 
-* Entity
-* Id
-* Column
-* Embeddable
-* Convert
-* DiscriminatorColumn
-* DiscriminatorValue
-* Inheritance
-* MappedSuperclass
+[cols="Annotation description"]
+|===
+|Annotation|Description
+
+|Entity
+|
+
+|Id
+|
+
+|Column
+|
+
+|Embeddable
+|
+
+|Convert
+|
+
+|DiscriminatorColumn
+|
+
+|DiscriminatorValue
+|
+
+|Inheritance
+|
+
+|MappedSuperclass
+|
+
+|===
 
 IMPORTANT: Although similar to JPA, Jakarta NoSQL defines persistable fields with either the ```@Id``` or ```@Column``` annotation.
 
