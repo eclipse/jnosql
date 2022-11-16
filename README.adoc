@@ -297,6 +297,37 @@ Optional<Car> result = template.singleResult("select * from Car where _id = 1");
 
 Document is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
 
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.document.database=<DATABASE>
+jnosql.document.provider=<CLASS-DRIVER>
+jnosql.provider.host=HOST
+jnosql.provider.user=USER
+jnosql.provider.password=PASSWORD
+----
+
+TIP: The `jnosql.document.provider` property is necessary when you have more than one driver in the classpath; otherwise, it will take the first one.
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<DocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
+
+[source,java]
+----
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<DocumentManager> {
+
+    @Produces
+    public DocumentManager get() {
+        Settings settings = Settings.builder().put("credential", "value").build();
+        DocumentConfiguration configuration = new NoSQLDocumentProvider();
+        DocumentManagerFactory factory = configuration.apply(settings);
+        return factory.apply("database");
+    }
+}
+----
+
 === Graph
 
 Jakarta NoSQL provides a Graph template to explore the specific behavior of this NoSQL type.
