@@ -361,6 +361,35 @@ Stream<Book> books = template.getTraversalVertex().hasLabel("Category").has("nam
 
 Apache TinkerPop is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
 
+You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+
+[source,properties]
+----
+jnosql.graph.provider=<CLASS-DRIVER>
+jnosql.provider.host=HOST
+jnosql.provider.user=USER
+jnosql.provider.password=PASSWORD
+----
+
+TIP: The `jnosql.graph.provider` property is necessary when you have more than one driver in the classpath; otherwise, it will take the first one.
+
+The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<Graph>` and then defines it as an `@Alternative` and the `Priority`.
+
+[source,java]
+----
+@Alternative
+@Priority(Interceptor.Priority.APPLICATION)
+public class ManagerSupplier implements Supplier<Graph> {
+
+    @Produces
+    public Graph get() {
+        Graph graph = ...;
+        return graph;
+    }
+}
+----
+
+
 === Bean Validation
 
 Eclipse JNoSQL provide support for bean validation. It will validate before inserting/updating and constructing an entity.
