@@ -241,7 +241,7 @@ public interface GraphTemplate extends Template {
     Transaction getTransaction();
 
     /**
-     * Executes a Gremlin gremlin then bring the result as a {@link List}
+     * Executes a Gremlin then bring the result as a {@link List}
      *
      * @param gremlin the query gremlin
      * @param <T>     the entity type

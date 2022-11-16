@@ -129,7 +129,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
 
         final Optional<Vertex> vertex = getTraversal().V(value).hasLabel(entityMetadata.getName()).tryNext();
-        return (Optional<T>) vertex.map(getConverter()::toEntity);
+        return vertex.map(getConverter()::toEntity);
     }
 
     @Override
