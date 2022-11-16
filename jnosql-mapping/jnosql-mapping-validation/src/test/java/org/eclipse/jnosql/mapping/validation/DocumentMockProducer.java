@@ -42,7 +42,7 @@ class DocumentMockProducer implements Supplier<DocumentManager> {
 
         DocumentEntity entity = DocumentEntity.of("person");
         entity.add(Document.of("name", "Ada"));
-        entity.add(Document.of("age", 10));
+        entity.add(Document.of("age", 30));
         entity.add(Document.of("salary", BigDecimal.TEN));
         entity.add(Document.of("phones", singletonList("22342342")));
 

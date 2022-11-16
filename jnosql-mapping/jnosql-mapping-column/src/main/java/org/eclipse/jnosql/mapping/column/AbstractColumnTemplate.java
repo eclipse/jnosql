@@ -245,6 +245,7 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
         getEventManager().firePreQuery(query);
         Stream<ColumnEntity> entities = getManager().select(query);
         Function<ColumnEntity, T> function = e -> getConverter().toEntity(e);
+
         return entities.map(function);
     }
 }

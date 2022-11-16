@@ -42,7 +42,7 @@ class ColumnMockProducer implements Supplier<ColumnManager> {
 
         ColumnEntity entity = ColumnEntity.of("person");
         entity.add(Column.of("name", "Ada"));
-        entity.add(Column.of("age", 10));
+        entity.add(Column.of("age", 30));
         entity.add(Column.of("salary", BigDecimal.TEN));
         entity.add(Column.of("phones", singletonList("22342342")));
         when(manager.insert(Mockito.any(ColumnEntity.class))).thenReturn(entity);
