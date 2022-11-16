@@ -21,6 +21,7 @@ import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
+import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 import jakarta.nosql.tck.entities.User;
@@ -67,6 +68,9 @@ public class DefaultKeyValueTemplateTest {
     @Inject
     private KeyValueWorkflow flow;
 
+    @Inject
+    private KeyValueEventPersistManager eventManager;
+
     @Mock
     private BucketManager manager;
 
@@ -80,7 +84,7 @@ public class DefaultKeyValueTemplateTest {
     public void setUp() {
         Instance<BucketManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        this.subject = new DefaultKeyValueTemplate(converter, instance, flow);
+        this.subject = new DefaultKeyValueTemplate(converter, instance, flow, eventManager);
     }
 
     @Test
