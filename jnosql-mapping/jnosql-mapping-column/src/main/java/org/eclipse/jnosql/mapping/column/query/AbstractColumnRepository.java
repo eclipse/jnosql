@@ -64,7 +64,7 @@ public abstract class AbstractColumnRepository<T, K> implements Repository<T, K>
     @Override
     public void deleteById(K id) {
         requireNonNull(id, "is is required");
-        getTemplate().delete(getEntityClass(), id);
+        getTemplate().delete(getType(), id);
     }
 
     @Override
@@ -77,15 +77,15 @@ public abstract class AbstractColumnRepository<T, K> implements Repository<T, K>
     public Optional<T> findById(K id) {
         requireNonNull(id, "id is required");
 
-        return getTemplate().find(getEntityClass(), id);
+        return getTemplate().find(getType(), id);
     }
 
     @Override
     public long count() {
-        return getTemplate().count(getEntityClass());
+        return getTemplate().count(getType());
     }
 
-    private Class<T> getEntityClass() {
+    private Class<T> getType() {
         return (Class<T>) getEntityMetadata().getType();
     }
 

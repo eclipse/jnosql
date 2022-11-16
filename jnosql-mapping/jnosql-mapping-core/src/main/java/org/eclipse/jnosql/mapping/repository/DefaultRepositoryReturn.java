@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.repository;
 class DefaultRepositoryReturn implements RepositoryReturn {
 
     @Override
-    public boolean isCompatible(Class<?> entityClass, Class<?> returnType) {
+    public boolean isCompatible(Class<?> entity, Class<?> returnType) {
         return true;
     }
 

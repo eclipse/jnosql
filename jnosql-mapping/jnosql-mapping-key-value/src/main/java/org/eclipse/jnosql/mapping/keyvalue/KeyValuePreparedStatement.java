@@ -26,11 +26,11 @@ final class KeyValuePreparedStatement implements PreparedStatement {
 
     private final jakarta.nosql.keyvalue.KeyValuePreparedStatement preparedStatement;
 
-    private final Class<?> entityClass;
+    private final Class<?> type;
 
-    KeyValuePreparedStatement(jakarta.nosql.keyvalue.KeyValuePreparedStatement preparedStatement, Class<?> entityClass) {
+    KeyValuePreparedStatement(jakarta.nosql.keyvalue.KeyValuePreparedStatement preparedStatement, Class<?> type) {
         this.preparedStatement = preparedStatement;
-        this.entityClass = entityClass;
+        this.type = type;
     }
 
     @Override
@@ -42,16 +42,16 @@ final class KeyValuePreparedStatement implements PreparedStatement {
     @Override
     public <T> Stream<T> getResult() {
         Stream<Value> values = preparedStatement.getResult();
-        requireNonNull(entityClass, "entityClass is required when the command returns value");
-        return values.map(v -> v.get((Class<T>) entityClass));
+        requireNonNull(type, "type is required when the command returns value");
+        return values.map(v -> v.get((Class<T>) type));
     }
 
     @Override
     public <T> Optional<T> getSingleResult() {
         Optional<Value> singleResult = preparedStatement.getSingleResult();
         if (singleResult.isPresent()) {
-            requireNonNull(entityClass, "entityClass is required when the command returns value");
-            return singleResult.map(v -> v.get((Class<T>) entityClass));
+            requireNonNull(type, "type is required when the command returns value");
+            return singleResult.map(v -> v.get((Class<T>) type));
         }
         return Optional.empty();
     }

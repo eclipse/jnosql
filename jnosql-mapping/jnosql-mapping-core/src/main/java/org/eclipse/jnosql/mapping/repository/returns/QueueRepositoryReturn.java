@@ -28,7 +28,7 @@ public class QueueRepositoryReturn extends AbstractRepositoryReturn {
     }
 
     @Override
-    public boolean isCompatible(Class<?> entityClass, Class<?> returnType) {
+    public boolean isCompatible(Class<?> entity, Class<?> returnType) {
         return Deque.class.equals(returnType)
                 || Queue.class.equals(returnType);
     }

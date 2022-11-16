@@ -170,12 +170,12 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     }
 
     @Override
-    public <T, K> Optional<T> find(Class<T> entityClass, K id) {
-        requireNonNull(entityClass, "entityClass is required");
+    public <T, K> Optional<T> find(Class<T> type, K id) {
+        requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(type);
         FieldMapping idField = entityMetadata.getId()
-                .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
+                .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
         ColumnQuery query = ColumnQuery.select().from(entityMetadata.getName())
@@ -185,13 +185,13 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     }
 
     @Override
-    public <T, K> void delete(Class<T> entityClass, K id) {
-        requireNonNull(entityClass, "entityClass is required");
+    public <T, K> void delete(Class<T> type, K id) {
+        requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
 
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(type);
         FieldMapping idField = entityMetadata.getId()
-                .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
+                .orElseThrow(() -> IdNotFoundException.newInstance(type));
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
 
         ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(entityMetadata.getName())
@@ -234,9 +234,9 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
 
 
     @Override
-    public <T> long count(Class<T> entityClass) {
-        requireNonNull(entityClass, "entity class is required");
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+    public <T> long count(Class<T> type) {
+        requireNonNull(type, "entity class is required");
+        EntityMetadata entityMetadata = getEntities().get(type);
         return getManager().count(entityMetadata.getName());
     }
 

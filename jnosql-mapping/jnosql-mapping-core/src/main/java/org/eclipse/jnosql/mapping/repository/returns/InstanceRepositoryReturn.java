@@ -22,8 +22,8 @@ import java.util.Optional;
 public class InstanceRepositoryReturn implements RepositoryReturn {
 
     @Override
-    public boolean isCompatible(Class<?> entityClass, Class<?> returnType) {
-        return entityClass.equals(returnType);
+    public boolean isCompatible(Class<?> entity, Class<?> returnType) {
+        return entity.equals(returnType);
     }
 
     @Override

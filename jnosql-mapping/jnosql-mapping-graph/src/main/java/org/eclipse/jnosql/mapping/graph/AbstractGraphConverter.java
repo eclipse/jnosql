@@ -127,7 +127,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
 
     @Override
     public <T> T toEntity(Class<T> type, Vertex vertex) {
-        requireNonNull(type, "entityClass is required");
+        requireNonNull(type, "type is required");
         requireNonNull(vertex, "vertex is required");
 
         List<Property> properties = vertex.keys().stream().map(k -> DefaultProperty.of(k, vertex.value(k))).collect(toList());
@@ -209,8 +209,8 @@ abstract class AbstractGraphConverter implements GraphConverter {
         }
     }
 
-    private <T> T toEntity(Class<T> entityClass, List<Property> properties) {
-        EntityMetadata mapping = getEntities().get(entityClass);
+    private <T> T toEntity(Class<T> type, List<Property> properties) {
+        EntityMetadata mapping = getEntities().get(type);
         T instance = mapping.newInstance();
         return convertEntity(properties, mapping, instance);
     }
@@ -271,10 +271,10 @@ abstract class AbstractGraphConverter implements GraphConverter {
     }
 
     private <T> T mapInheritanceEntity(Vertex vertex,
-                                       List<Property> properties, Class<?> entityClass) {
+                                       List<Property> properties, Class<?> type) {
 
         Map<String, InheritanceMetadata> group = getEntities()
-                .findByParentGroupByDiscriminatorValue(entityClass);
+                .findByParentGroupByDiscriminatorValue(type);
 
         if (group.isEmpty()) {
             throw new MappingException("There is no discriminator inheritance to the vertex "

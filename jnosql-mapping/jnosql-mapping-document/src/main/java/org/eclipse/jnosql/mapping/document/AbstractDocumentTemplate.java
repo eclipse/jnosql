@@ -166,12 +166,12 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     }
 
     @Override
-    public <T, K> Optional<T> find(Class<T> entityClass, K id) {
-        requireNonNull(entityClass, "entityClass is required");
+    public <T, K> Optional<T> find(Class<T> type, K id) {
+        requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(type);
         FieldMapping idField = entityMetadata.getId()
-                .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
+                .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
         DocumentQuery query = DocumentQuery.select().from(entityMetadata.getName())
@@ -181,13 +181,13 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     }
 
     @Override
-    public <T, K> void delete(Class<T> entityClass, K id) {
-        requireNonNull(entityClass, "entityClass is required");
+    public <T, K> void delete(Class<T> type, K id) {
+        requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
 
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+        EntityMetadata entityMetadata = getEntities().get(type);
         FieldMapping idField = entityMetadata.getId()
-                .orElseThrow(() -> IdNotFoundException.newInstance(entityClass));
+                .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
         DocumentDeleteQuery query = DocumentDeleteQuery.delete().from(entityMetadata.getName())
@@ -228,9 +228,9 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return getManager().count(documentCollection);
     }
 
-    public <T> long count(Class<T> entityClass) {
-        requireNonNull(entityClass, "entityClass is required");
-        EntityMetadata entityMetadata = getEntities().get(entityClass);
+    public <T> long count(Class<T> type) {
+        requireNonNull(type, "type is required");
+        EntityMetadata entityMetadata = getEntities().get(type);
         return getManager().count(entityMetadata.getName());
     }
 

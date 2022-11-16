@@ -57,9 +57,9 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
         classes.putAll(extension.getClasses());
         mappings.putAll(extension.getMappings());
         mappings.values().forEach(r -> {
-            Class<?> entityClass = r.getType();
-            findBySimpleName.put(entityClass.getSimpleName(), r);
-            findByClassName.put(entityClass.getName(), r);
+            Class<?> type = r.getType();
+            findBySimpleName.put(type.getSimpleName(), r);
+            findByClassName.put(type.getName(), r);
         });
     }
 

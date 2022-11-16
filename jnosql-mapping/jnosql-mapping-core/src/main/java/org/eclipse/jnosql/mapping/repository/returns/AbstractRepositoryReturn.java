@@ -25,7 +25,7 @@ abstract class AbstractRepositoryReturn implements RepositoryReturn {
     }
 
     @Override
-    public boolean isCompatible(Class<?> entityClass, Class<?> returnType) {
+    public boolean isCompatible(Class<?> entity, Class<?> returnType) {
         return typeClass.equals(returnType);
     }
 

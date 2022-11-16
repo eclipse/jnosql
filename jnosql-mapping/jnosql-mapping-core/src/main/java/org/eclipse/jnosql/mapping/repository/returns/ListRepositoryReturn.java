@@ -27,7 +27,7 @@ public class ListRepositoryReturn extends AbstractRepositoryReturn {
     }
 
     @Override
-    public boolean isCompatible(Class<?> entityClass, Class<?> returnType) {
+    public boolean isCompatible(Class<?> entity, Class<?> returnType) {
         return List.class.equals(returnType)
                 || Iterable.class.equals(returnType)
                 || Collection.class.equals(returnType);
