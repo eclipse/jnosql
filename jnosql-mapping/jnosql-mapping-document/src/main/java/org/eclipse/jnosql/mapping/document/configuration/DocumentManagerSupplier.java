@@ -46,11 +46,11 @@ class DocumentManagerSupplier implements Supplier<DocumentManager> {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         DocumentConfiguration configuration = settings.get(DOCUMENT_PROVIDER, Class.class)
-                .filter(c -> DocumentConfiguration.class.isAssignableFrom(c))
+                .filter(DocumentConfiguration.class::isAssignableFrom)
                 .map(c -> {
                     final Reflections reflections = CDI.current().select(Reflections.class).get();
                     return (DocumentConfiguration) reflections.newInstance(c);
-                }).orElseGet(() -> DocumentConfiguration.getConfiguration());
+                }).orElseGet(DocumentConfiguration::getConfiguration);
 
         DocumentManagerFactory managerFactory = configuration.apply(settings);
 

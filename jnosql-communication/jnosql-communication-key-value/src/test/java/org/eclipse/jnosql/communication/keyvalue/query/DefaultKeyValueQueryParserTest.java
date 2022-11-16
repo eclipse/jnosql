@@ -185,6 +185,6 @@ class DefaultKeyValueQueryParserTest {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         prepare.bind("id2", 11);
-        Assertions.assertThrows(NonUniqueResultException.class, () -> prepare.getSingleResult());
+        Assertions.assertThrows(NonUniqueResultException.class, prepare::getSingleResult);
     }
 }

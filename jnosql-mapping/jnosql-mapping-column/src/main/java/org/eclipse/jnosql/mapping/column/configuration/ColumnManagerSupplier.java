@@ -46,11 +46,11 @@ class ColumnManagerSupplier implements Supplier<ColumnManager> {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         ColumnConfiguration configuration = settings.get(COLUMN_PROVIDER, Class.class)
-                .filter(c -> ColumnConfiguration.class.isAssignableFrom(c))
+                .filter(ColumnConfiguration.class::isAssignableFrom)
                 .map(c -> {
                     final Reflections reflections = CDI.current().select(Reflections.class).get();
                     return (ColumnConfiguration) reflections.newInstance(c);
-                }).orElseGet(() -> ColumnConfiguration.getConfiguration());
+                }).orElseGet(ColumnConfiguration::getConfiguration);
 
         ColumnManagerFactory managerFactory = configuration.apply(settings);
 

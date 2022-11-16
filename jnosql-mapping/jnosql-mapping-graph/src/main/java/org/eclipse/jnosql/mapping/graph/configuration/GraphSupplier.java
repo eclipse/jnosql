@@ -38,11 +38,11 @@ class GraphSupplier implements Supplier<Graph> {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         GraphConfiguration configuration = settings.get(GRAPH_PROVIDER, Class.class)
-                .filter(c -> GraphConfiguration.class.isAssignableFrom(c))
+                .filter(GraphConfiguration.class::isAssignableFrom)
                 .map(c -> {
                     final Reflections reflections = CDI.current().select(Reflections.class).get();
                     return (GraphConfiguration) reflections.newInstance(c);
-                }).orElseGet(() -> GraphConfiguration.getConfiguration());
+                }).orElseGet(GraphConfiguration::getConfiguration);
 
         Graph graph = configuration.apply(settings);
         return graph;

@@ -47,11 +47,11 @@ class BucketManagerSupplier implements Supplier<BucketManager> {
         Settings settings = MicroProfileSettings.INSTANCE;
 
         KeyValueConfiguration configuration = settings.get(KEY_VALUE_PROVIDER, Class.class)
-                .filter(c -> KeyValueConfiguration.class.isAssignableFrom(c))
+                .filter(KeyValueConfiguration.class::isAssignableFrom)
                 .map(c -> {
                     final Reflections reflections = CDI.current().select(Reflections.class).get();
                     return (KeyValueConfiguration) reflections.newInstance(c);
-                }).orElseGet(() -> KeyValueConfiguration.getConfiguration());
+                }).orElseGet(KeyValueConfiguration::getConfiguration);
 
         BucketManagerFactory managerFactory = configuration.apply(settings);
 
