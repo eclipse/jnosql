@@ -34,6 +34,7 @@ class GraphSupplier implements Supplier<Graph> {
 
     @Override
     @Produces
+    @ApplicationScoped
     public Graph get(){
         Settings settings = MicroProfileSettings.INSTANCE;
 
