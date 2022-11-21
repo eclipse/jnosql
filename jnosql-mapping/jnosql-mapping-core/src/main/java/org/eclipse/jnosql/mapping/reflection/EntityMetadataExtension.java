@@ -15,17 +15,19 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfoList;
+import io.github.classgraph.ScanResult;
 import jakarta.nosql.mapping.Embeddable;
 import jakarta.nosql.mapping.Entity;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AnnotatedType;
+import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.enterprise.inject.spi.WithAnnotations;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 /**
  * This class is a CDI extension to load all class that has {@link Entity} annotation.
@@ -35,42 +37,37 @@ import java.util.concurrent.ConcurrentHashMap;
 @ApplicationScoped
 public class EntityMetadataExtension implements Extension {
 
+    private static final Logger LOGGER = Logger.getLogger(EntityMetadataExtension.class.getName());
     private final Map<String, EntityMetadata> mappings = new ConcurrentHashMap<>();
 
     private final Map<Class<?>, EntityMetadata> classes = new ConcurrentHashMap<>();
 
-    private final ClassConverter classConverter;
+    private final ClassConverter converter;
 
     {
-        classConverter = new ClassConverter(ClassOperationFactory.INSTANCE.getReflections());
+        converter = new ClassConverter(ClassOperationFactory.INSTANCE.getReflections());
     }
 
-    /**
-     * Event observer
-     *
-     * @param target the target
-     * @param <T>    the type
-     */
-    public <T> void loadEntity(@Observes @WithAnnotations({Entity.class, Embeddable.class}) final ProcessAnnotatedType<T> target) {
 
-        AnnotatedType<T> annotatedType = target.getAnnotatedType();
-        if (annotatedType.isAnnotationPresent(Entity.class)) {
-            Class<T> javaClass = target.getAnnotatedType().getJavaClass();
-            EntityMetadata entityMetadata = classConverter.create(javaClass);
-            if (entityMetadata.hasEntityName()) {
-                mappings.put(entityMetadata.getName(), entityMetadata);
+    public void afterBeanDiscovery(@Observes BeforeBeanDiscovery event) {
+        LOGGER.fine("Starting the scanning process for Entity and Embeddable annotations: ");
+
+        try (ScanResult result = new ClassGraph().enableAllInfo().scan()) {
+            ClassInfoList entities = result.getClassesWithAnnotation(Entity.class);
+            for (Class<?> entity : entities.loadClasses()) {
+                EntityMetadata entityMetadata = converter.create(entity);
+                if (entityMetadata.hasEntityName()) {
+                    mappings.put(entityMetadata.getName(), entityMetadata);
+                }
+                classes.put(entity, entityMetadata);
             }
-            classes.put(javaClass, entityMetadata);
-        } else if (isSubElement(annotatedType)) {
-            Class<T> javaClass = target.getAnnotatedType().getJavaClass();
-            EntityMetadata entityMetadata = classConverter.create(javaClass);
-            classes.put(javaClass, entityMetadata);
+            ClassInfoList embeddables = result.getClassesWithAnnotation(Embeddable.class);
+            for (Class<?> embeddable : embeddables.loadClasses()) {
+                EntityMetadata entityMetadata = converter.create(embeddable);
+                classes.put(embeddable, entityMetadata);
+            }
         }
-
-    }
-
-    private <T> boolean isSubElement(AnnotatedType<T> annotatedType) {
-        return annotatedType.isAnnotationPresent(Embeddable.class);
+        LOGGER.fine("Finishing the scanning with total of " + classes.size() + " scanned.");
     }
 
 
@@ -94,7 +91,7 @@ public class EntityMetadataExtension implements Extension {
 
     @Override
     public String toString() {
-        return "EntityMetadataExtension{" + "classConverter=" + classConverter +
+        return "EntityMetadataExtension{" + "classConverter=" + converter +
                 ", mappings-size=" + mappings.size() +
                 ", classes=" + classes +
                 '}';
