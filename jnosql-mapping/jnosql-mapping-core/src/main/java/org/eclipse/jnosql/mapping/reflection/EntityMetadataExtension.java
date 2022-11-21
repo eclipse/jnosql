@@ -20,12 +20,15 @@ import jakarta.nosql.mapping.Entity;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.spi.AfterBeanDiscovery;
 import javax.enterprise.inject.spi.AnnotatedType;
+import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.WithAnnotations;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 /**
  * This class is a CDI extension to load all class that has {@link Entity} annotation.
@@ -35,6 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ApplicationScoped
 public class EntityMetadataExtension implements Extension {
 
+    private static final Logger LOGGER = Logger.getLogger(EntityMetadataExtension.class.getName());
     private final Map<String, EntityMetadata> mappings = new ConcurrentHashMap<>();
 
     private final Map<Class<?>, EntityMetadata> classes = new ConcurrentHashMap<>();
@@ -66,6 +70,11 @@ public class EntityMetadataExtension implements Extension {
             EntityMetadata entityMetadata = classConverter.create(javaClass);
             classes.put(javaClass, entityMetadata);
         }
+
+    }
+
+    public void afterBeanDiscovery(@Observes BeforeBeanDiscovery event) {
+        LOGGER.fine("Starting the scanning process for Entity and Embeddable annotations: ");
 
     }
 
