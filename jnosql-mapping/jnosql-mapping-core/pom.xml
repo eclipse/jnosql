@@ -28,6 +28,7 @@
     <packaging>jar</packaging>
 
     <properties>
+        <classgraph.version>4.8.151</classgraph.version>
     </properties>
 
     <dependencies>
@@ -45,6 +46,11 @@
             <groupId>jakarta.nosql.mapping</groupId>
             <artifactId>mapping-core</artifactId>
             <version>${jakarta.nosql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>${classgraph.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.nosql.tck.mapping</groupId>
