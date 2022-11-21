@@ -15,7 +15,8 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 === Changed
 - Move the default documentation to ASCIIDOC
-= Replace Hamcrest by AsseJ
+- Replace Hamcrest by AsseJ
+- Scan entities classes using classgraph project
 
 ==== Removed
 
