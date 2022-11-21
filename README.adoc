@@ -1,19 +1,21 @@
 = Eclipse JNoSQL
 :toc: auto
 
+== Introduction
+
 Eclipse JNoSQL is a compatible implementation of the https://jakarta.ee/specifications/nosql/[Jakarta NoSQL] specification, a Java framework that streamlines the integration of Java applications with NoSQL databases.
 
 == Goals
 
-* Increase productivity performing common NoSQL operations.
-* Rich Object Mapping integrated with CDI
+* Increase productivity performing common NoSQL operations
+* Rich Object Mapping integrated with Contexts and Dependency Injection (CDI)
 * Java-based Query and Fluent-API
 * Persistence lifecycle events
-* Low-level mapping using Standard NoSQL APIs.
-* Specific template API to each NoSQL category.
-* Annotation-oriented using JPA-like naming when it makes sense.
+* Low-level mapping using Standard NoSQL APIs
+* Specific template API to each NoSQL category
+* Annotation-oriented using JPA-like naming when it makes sense
 * Extensible to explore the particular behavior of a NoSQL database
-* Explore the popularity of Apache TinkerPop in Graph API.
+* Explore the popularity of Apache TinkerPop in Graph API
 
 == One Mapping API to Multiples NoSQL Databases
 
@@ -40,7 +42,7 @@ Theses annotations from the Mapping API will look familiar to the Jakarta Persis
 |===
 |Annotation|Description
 
-|Entity
+|@Entity
 |Specifies that the class is an entity. This annotation is applied to the entity class.
 
 |@Id
@@ -70,9 +72,9 @@ Theses annotations from the Mapping API will look familiar to the Jakarta Persis
 
 |===
 
-IMPORTANT: Although similar to JPA, Jakarta NoSQL defines persistable fields with either the `@Id` or `@Column` annotation.
+IMPORTANT: Although similar to JPA, Jakarta NoSQL defines persistable fields with either the ``@Id``` or ```@Column``` annotation.
 
-After mapping an entity, you can explore the advantage of using a `Template` interface, which can increase productivity on NoSQL operations.
+After mapping an entity, you can explore the advantage of using a ```Template``` interface, which can increase productivity on NoSQL operations.
 
 [source,java]
 ----
@@ -80,16 +82,18 @@ After mapping an entity, you can explore the advantage of using a `Template` int
 Template template;
 ...
 
-Car ferrari = Car.id(1L).name("Ferrari").type(CarType.SPORT);
-template.insert(ferrari);
+Car ferrari = Car.id(1L)
+        .name("Ferrari")
+        .type(CarType.SPORT);
 
+template.insert(ferrari);
 Optional<Car> car = template.find(Car.class, 1L);
 template.delete(Car.class, 1L);
 ----
 
-This template has specialization to take the benefits of a particular NoSQL database type.
+This template has specialization to take advantage of a particular NoSQL database type.
 
-A `Repository` interface is also provided for exploring the Domain-Driven Design (DDD) pattern for a higher abstraction.
+A ``Repository`` interface is also provided for exploring the Domain-Driven Design (DDD) pattern for a higher abstraction.
 
 [source,java]
 ----
@@ -103,7 +107,10 @@ public interface CarRepository extends Repository<Car, String> {
 CarRepository repository;
 ...
 
-Car ferrari = Car.id(1L).name("Ferrari").type(CarType.SPORT);
+Car ferrari = Car.id(1L)
+        .name("Ferrari")
+        .type(CarType.SPORT);
+
 repository.save(ferrari);
 Optional<Car> idResult = repository.findById(1L);
 Optional<Car> nameResult = repository.findByName("Ferrari");
@@ -122,9 +129,9 @@ Eclipse JNoSQL requires these minimum requirements:
 
 === NoSQL Database Types
 
-Eclipse JNoSQL has in common the annotations; thus, the same annotation will work on Column, Document, and so on.; furthermore, the `Template` and the `Repository` are interfaces in common.
+Eclipse JNoSQL provides common annotations and interfaces. Thus, the same annotations and interfaces, ```Template``` and ```Repository```, will work on the four NoSQL database types.
 
-Jakarta NoSQL also provides particular behavior to each type; currently, it has support for four NoSQL types:
+Jakarta NoSQL also provides particular behavior to each database type. Currently, there is support for four NoSQL database types:
 
 * Key-Value
 * Column Family
@@ -161,20 +168,20 @@ template.delete(1L);
 
 Key-Value is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
 
-You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+You can define the database settings using the https://microprofile.io/microprofile-config/[MicroProfile Config] specification, so you can add properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
 
 [source,properties]
 ----
 jnosql.keyvalue.database=<DATABASE>
 jnosql.keyvalue.provider=<CLASS-DRIVER>
-jnosql.provider.host=HOST
-jnosql.provider.user=USER
-jnosql.provider.password=PASSWORD
+jnosql.provider.host=<HOST>
+jnosql.provider.user=<USER>
+jnosql.provider.password=<PASSWORD>
 ----
 
-TIP: The `jnosql.keyvalue.provider` property is necessary when you have more than one driver in the classpath; otherwise, it will take the first one.
+TIP: The ```jnosql.keyvalue.provider``` property is necessary when you have more than one driver in the classpath. Otherwise, it will take the first one.
 
-The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<BucketManager>` and then defines it as an `@Alternative` and the `Priority`.
+These configuration settings are the default behavior. Nevertheless, there is an option to programmatically configure these settings. Create a class that implements the ```Supplier<BucketManager>``` interface and then define it using the ```@Alternative``` and ```@Priority``` annotations.
 
 [source,java]
 ----
@@ -185,7 +192,9 @@ public class ManagerSupplier implements Supplier<BucketManager> {
 
     @Produces
     public BucketManager get() {
-        Settings settings = Settings.builder().put("credential", "value").build();
+        Settings settings = Settings.builder()
+                .put("credential", "value")
+                .build();
         KeyValueConfiguration configuration = new NoSQLKeyValueProvider();
         BucketManagerFactory factory = configuration.apply(settings);
         return factory.apply("database");
@@ -193,7 +202,7 @@ public class ManagerSupplier implements Supplier<BucketManager> {
 }
 ----
 
-You can work with several key-value database instances through CDI qualifier. To identify each database instance, make a `BucketManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+You can work with several Key-Value database instances through the CDI qualifier. To identify each database instance, make a ```BucketManager``` visible for CDI by adding the ```@Produces``` and the ```@Database``` annotations in the method.
 
 [source,java]
 ----
@@ -242,47 +251,59 @@ Furthermore, check for a Column Family communications driver. You can find some 
 ColumnTemplate template;
 ...
 
-Car ferrari = Car.id(1L).name("ferrari").city("Rome").type(CarType.SPORT);
+Car ferrari = Car.id(1L)
+        .name("ferrari").city("Rome")
+        .type(CarType.SPORT);
 
 template.insert(ferrari);
 Optional<Car> car = template.find(Car.class, 1L);
 
-ColumnDeleteQuery deleteQuery = delete().from("Car").where("_id").eq(1L).build();
+ColumnDeleteQuery deleteQuery = delete()
+        .from("Car")
+        .where("_id")
+        .eq(1L)
+        .build();
 
 template.delete(deleteQuery);
 
-ColumnDeleteQuery query = select().from("Car").where("_id").eq(1L).build();
+ColumnDeleteQuery query = select()
+        .from("Car")
+        .where("_id")
+        .eq(1L)
+        .build();
 
 Optional<Car> result = template.singleResult("select * from Car where _id = 1");
 ----
 
 Column Family is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
 
-You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+You can define the database settings using the https://microprofile.io/microprofile-config/[MicroProfile Config] specification, so you can add properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
 
 [source,properties]
 ----
 jnosql.column.database=<DATABASE>
 jnosql.column.provider=<CLASS-DRIVER>
-jnosql.provider.host=HOST
-jnosql.provider.user=USER
-jnosql.provider.password=PASSWORD
+jnosql.provider.host=<HOST>
+jnosql.provider.user=<USER>
+jnosql.provider.password=<PASSWORD>
 ----
 
-TIP: The `jnosql.column.provider` property is necessary when you have more than one driver in the classpath; otherwise, it will take the first one.
+TIP: The ```jnosql.column.provider``` property is necessary when you have more than one driver in the classpath. Otherwise, it will take the first one.
 
-The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<ColumnManager>` and then defines it as an `@Alternative` and the `Priority`.
+These configuration settings are the default behavior. Nevertheless, there is an option to programmatically configure these settings. Create a class that implements the ```Supplier<ColumnManager>``` interface, then define it using the ```@Alternative``` and ```@Priority``` annotations.
 
 [source,java]
 ----
 @Alternative
-@Priority(Interceptor.Priority.APPLICATION)
+@Priority(Interceptor.Priority.APPLICrATION)
 @ApplicationScoped
 public class ManagerSupplier implements Supplier<ColumnManager> {
 
     @Produces
     public ColumnManager get() {
-        Settings settings = Settings.builder().put("credential", "value").build();
+        Settings settings = Settings.builder()
+                .put("credential", "value")
+                .build();
         ColumnConfiguration configuration = new NoSQLColumnProvider();
         ColumnManagerFactory factory = configuration.apply(settings);
         return factory.apply("database");
@@ -290,7 +311,7 @@ public class ManagerSupplier implements Supplier<ColumnManager> {
 }
 ----
 
-You can work with several column database instances through CDI qualifier. To identify each database instance, make a `ColumnManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+You can work with several column database instances through CDI qualifier. To identify each database instance, make a ``ColumnManager`` visible for CDI by putting the ```@Produces``` and the ```@Database``` annotations in the method.
 
 [source,java]
 ----
@@ -337,36 +358,47 @@ Furthermore, check for a Document communications driver. You can find some imple
 DocumentTemplate template;
 ...
 
-Car ferrari = Car.id(1L).name("ferrari").city("Rome").type(CarType.SPORT);
+Car ferrari = Car.id(1L)
+        .name("ferrari")
+        .city("Rome")
+        .type(CarType.SPORT);
 
 template.insert(ferrari);
 Optional<Car> car = template.find(Car.class, 1L);
 
-DocumentDeleteQuery deleteQuery = delete().from("Car").where("_id").eq(1L).build();
+DocumentDeleteQuery deleteQuery = delete()
+        .from("Car")
+        .where("_id")
+        .eq(1L)
+        .build();
 
 template.delete(deleteQuery);
 
-DocumentDeleteQuery query = select().from("Car").where("_id").eq(1L).build();
+DocumentDeleteQuery query = select()
+        .from("Car")
+        .where("_id")
+        .eq(1L)
+        .build();
 
 Optional<Car> result = template.singleResult("select * from Car where _id = 1");
 ----
 
 Document is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
 
-You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+You can define the database settings using the https://microprofile.io/microprofile-config/[MicroProfile Config] specification, so you can add properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
 
 [source,properties]
 ----
 jnosql.document.database=<DATABASE>
 jnosql.document.provider=<CLASS-DRIVER>
-jnosql.provider.host=HOST
-jnosql.provider.user=USER
-jnosql.provider.password=PASSWORD
+jnosql.provider.host=<HOST>
+jnosql.provider.user=<USER>
+jnosql.provider.password=<PASSWORD>
 ----
 
-TIP: The `jnosql.document.provider` property is necessary when you have more than one driver in the classpath; otherwise, it will take the first one.
+TIP: The ```jnosql.document.provider``` property is necessary when you have more than one driver in the classpath. Otherwise, it will take the first one.
 
-The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<DocumentManager>` and then defines it as an `@Alternative` and the `Priority`.
+These configuration settings are the default behavior. Nevertheless, there is an option to programmatically configure these settings. Create a class that implements the ```Supplier<DocumentManager>```, then define it using the ```@Alternative``` and ```@Priority``` annotations.
 
 [source,java]
 ----
@@ -377,7 +409,9 @@ public class ManagerSupplier implements Supplier<DocumentManager> {
 
     @Produces
     public DocumentManager get() {
-        Settings settings = Settings.builder().put("credential", "value").build();
+        Settings settings = Settings.builder()
+                .put("credential", "value")
+                .build();
         DocumentConfiguration configuration = new NoSQLDocumentProvider();
         DocumentManagerFactory factory = configuration.apply(settings);
         return factory.apply("database");
@@ -385,7 +419,7 @@ public class ManagerSupplier implements Supplier<DocumentManager> {
 }
 ----
 
-You can work with several document database instances through CDI qualifier. To identify each database instance, make a `DocumentManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+You can work with several document database instances through CDI qualifier. To identify each database instance, make a ```DocumentManager``` visible for CDI by putting the ```@Produces``` and the ```@Database``` annotations in the method.
 
 [source,java]
 ----
@@ -424,7 +458,7 @@ Jakarta NoSQL provides a Graph template to explore the specific behavior of this
 </dependency>
 ----
 
-Despite the other three Jakarta NoSQL types, Graph does *not* provide a communication layer from Jakarta NoSQL API. Instead, it integrates with https://tinkerpop.apache.org/[Apache Tinkerpop 3x.].
+Despite the other three Jakarta NoSQL types, Graph does *not* provide a communication layer from Jakarta NoSQL API. Instead, it integrates with https://tinkerpop.apache.org/[Apache Tinkerpop 3.x].
 
 [source,java]
 ----
@@ -439,24 +473,29 @@ template.insert(java);
 template.insert(effectiveJava);
 EdgeEntity edge = template.edge(java, "is", software);
 
-Stream<Book> books = template.getTraversalVertex().hasLabel("Category").has("name", "Java").in("is").hasLabel("Book").getResult();
+Stream<Book> books = template.getTraversalVertex()
+        .hasLabel("Category")
+        .has("name", "Java")
+        .in("is")
+        .hasLabel("Book")
+        .getResult();
 ----
 
 Apache TinkerPop is database agnostic. Thus, you can change the database in your application with no or minimal impact on source code.
 
-You can define the database settings using Eclipse MicroProfile Config, so you can put it in the properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
+You can define the database settings using the https://microprofile.io/microprofile-config/[MicroProfile Config] specification, so you can add properties and overwrite it in the environment following the https://12factor.net/config[Twelve-Factor App].
 
 [source,properties]
 ----
 jnosql.graph.provider=<CLASS-DRIVER>
-jnosql.provider.host=HOST
-jnosql.provider.user=USER
-jnosql.provider.password=PASSWORD
+jnosql.provider.host=<HOST>
+jnosql.provider.user=<USER>
+jnosql.provider.password=<PASSWORD>
 ----
 
-TIP: The `jnosql.graph.provider` property is necessary when you have more than one driver in the classpath; otherwise, it will take the first one.
+TIP: The ```jnosql.graph.provider``` property is necessary when you have more than one driver in the classpath. Otherwise, it will take the first one.
 
-The config settings are the default behavior; nevertheless, there is an option to do it programmatically. Create a class that implements the `Supplier<Graph>` and then defines it as an `@Alternative` and the `Priority`.
+These configuration settings are the default behavior. Nevertheless, there is an option to programmatically configure these settings. Create a class that implements the ```Supplier<Graph>```, then define it using the ```@Alternative``` and ```@Priority``` annotations.
 
 [source,java]
 ----
@@ -466,13 +505,13 @@ public class ManagerSupplier implements Supplier<Graph> {
 
     @Produces
     public Graph get() {
-        Graph graph = ...;//from a provider
+        Graph graph = ...; // from a provider
         return graph;
     }
 }
 ----
 
-You can work with several document database instances through CDI qualifier. To identify each database instance, make a `Graph` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+You can work with several document database instances through CDI qualifier. To identify each database instance, make a `Graph` visible for CDI by putting the ```@Produces``` and the ```@Database``` annotations in the method.
 
 [source,java]
 ----
@@ -499,7 +538,7 @@ public Graph getManagerB() {
 ----
 
 
-Eclipse JNoSQL does not provide https://mvnrepository.com/artifact/org.apache.tinkerpop/gremlin-core[Apache Tinkerpop 3 dependency]; check if the provider does; otherwise, do it manually.
+Eclipse JNoSQL does not provide https://mvnrepository.com/artifact/org.apache.tinkerpop/gremlin-core[Apache Tinkerpop 3 dependency]; check if the provider does. Otherwise, do it manually.
 
 [source,xml]
 ----
@@ -514,6 +553,7 @@ Eclipse JNoSQL does not provide https://mvnrepository.com/artifact/org.apache.ti
     <version>${tinkerpop.version}</version>
 </dependency>
 ----
+
 === Bean Validation
 
 Eclipse JNoSQL provide support for bean validation. It will validate before inserting/updating and constructing an entity.
@@ -572,17 +612,17 @@ Check the https://www.jnosql.org/spec/[reference documentation] and https://www.
 
 == Code of Conduct
 
-This project is governed by the Eclipse Foundation Code of Conduct. By participating, you are expected to uphold this code of conduct. Please report unacceptable behavior to codeofconduct@eclipse.org.
+This project is governed by the Eclipse Foundation Code of Conduct. By participating, you are expected to uphold this code of conduct. Please report unacceptable behavior to mailto:codeofconduct@eclipse.org[codeofconduct@eclipse.org].
 
 == Getting Help
 
 Having trouble with Eclipse JNoSQL? We’d love to help!
 
-Report bugs with Eclipse JNoSQL at https://github.com/eclipse/jnosql.
+Please report any bugs, concerns or questions with Eclispe JNoSQL to https://github.com/eclipse/jnosql[https://github.com/eclipse/jnosql].
 
 == Building from Source
 
-You don’t need to build from source to use the project, but if you want to try, you can make it using Maven and Java 11 or higher.
+You don’t need to build from source to use the project, but should you be interested in doing so, you can build it using Maven and Java 11 or higher.
 
 [source, Bash]
 ----
