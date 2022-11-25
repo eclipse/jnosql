@@ -218,13 +218,13 @@ private KeyValueTemplate templateB;
 @Produces
 @Database(value = DatabaseType.KEY_VALUE, provider = "databaseA")
 public BucketManager getManagerA() {
-    DocumentCollectionManager manager = // instance;
+    BucketManager manager = // instance;
     return manager;
 }
 
 @Produces
 @Database(value = DatabaseType.KEY_VALUE, provider = "databaseB")
-public DocumentCollectionManager getManagerB() {
+public BucketManager getManagerB() {
     BucketManager manager = // instance;
     return manager;
 }
