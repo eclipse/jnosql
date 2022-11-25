@@ -146,7 +146,7 @@ Jakarta NoSQL provides a Key-Value template to explore the specific behavior of 
 ----
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
-    <artifactId>mapping-key-value</artifactId>
+    <artifactId>jnosql-mapping-key-value</artifactId>
     <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -238,7 +238,7 @@ Jakarta NoSQL provides a Column Family template to explore the specific behavior
 ----
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
-    <artifactId>mapping-column</artifactId>
+    <artifactId>jnosql-mapping-column</artifactId>
     <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -345,7 +345,7 @@ Jakarta NoSQL provides a Document template to explore the specific behavior of t
 ----
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
-    <artifactId>mapping-document</artifactId>
+    <artifactId>jnosql-mapping-document</artifactId>
     <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -453,7 +453,7 @@ Jakarta NoSQL provides a Graph template to explore the specific behavior of this
 ----
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
-    <artifactId>mapping-graph</artifactId>
+    <artifactId>jnosql-mapping-graph</artifactId>
     <version>1.0.0-b4</version>
 </dependency>
 ----
@@ -544,12 +544,12 @@ Eclipse JNoSQL does not provide https://mvnrepository.com/artifact/org.apache.ti
 ----
 <dependency>
     <groupId>org.apache.tinkerpop</groupId>
-    <artifactId>gremlin-core</artifactId>
+    <artifactId>jnosql-gremlin-core</artifactId>
     <version>${tinkerpop.version}</version>
 </dependency>
 <dependency>
     <groupId>org.apache.tinkerpop</groupId>
-    <artifactId>gremlin-groovy</artifactId>
+    <artifactId>jnosql-gremlin-groovy</artifactId>
     <version>${tinkerpop.version}</version>
 </dependency>
 ----
@@ -562,7 +562,7 @@ Eclipse JNoSQL provide support for bean validation. It will validate before inse
 ----
 <dependency>
     <groupId>org.eclipse.jnosql.mapping</groupId>
-    <artifactId>mapping-validation</artifactId>
+    <artifactId>jnosql-mapping-validation</artifactId>
     <version>1.0.0-b4</version>
 </dependency>
 ----
