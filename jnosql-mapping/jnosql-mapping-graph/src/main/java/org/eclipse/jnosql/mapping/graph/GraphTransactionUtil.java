@@ -14,10 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_TRANSACTION_AUTOMATIC;
 
@@ -26,7 +28,7 @@ import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_TRAN
  */
 final class GraphTransactionUtil {
 
-
+    private static final Logger LOGGER = Logger.getLogger(GraphTransactionUtil.class.getName());
     private static final ThreadLocal<Transaction> THREAD_LOCAL = new ThreadLocal<>();
 
     private GraphTransactionUtil() {
@@ -52,11 +54,20 @@ final class GraphTransactionUtil {
      * Checks if possible to {@link Transaction#commit()},
      * if checks it the {@link Transaction} holds and if it is defined as an automatic transaction.
      *
-     * @param transaction the transaction
+     * @param graph the graph
      */
-    static void transaction(Transaction transaction) {
-        if (isAutomatic() && isNotLock() && Objects.nonNull(transaction)) {
-            transaction.commit();
+    static void transaction(Graph graph) {
+        if (isAutomatic() && isNotLock() && Objects.nonNull(graph)) {
+            try {
+                Transaction transaction = graph.tx();
+                if (transaction != null) {
+                    transaction.commit();
+                }
+            } catch (Exception exception) {
+                LOGGER.info("Unable to do transaction automatically in the graph, reason: " +
+                        exception.getMessage());
+            }
+
         }
     }
 

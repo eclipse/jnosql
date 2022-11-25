@@ -84,7 +84,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(entity, "entity is required");
         checkId(entity);
         UnaryOperator<Vertex> save = v -> {
-            GraphTransactionUtil.transaction(getGraph().tx());
+            GraphTransactionUtil.transaction(getGraph());
             return v;
         };
 
@@ -112,7 +112,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
         UnaryOperator<Vertex> update = e -> {
             final Vertex vertex = getConverter().toVertex(entity);
-            GraphTransactionUtil.transaction(getGraph().tx());
+            GraphTransactionUtil.transaction(getGraph());
             return vertex;
         };
         return getFlow().flow(entity, update);
@@ -227,7 +227,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     private Edge getEdge(String label, Vertex outVertex, Vertex inVertex) {
         final Edge edge = outVertex.addEdge(label, inVertex);
-        GraphTransactionUtil.transaction(getGraph().tx());
+        GraphTransactionUtil.transaction(getGraph());
         return edge;
     }
 
