@@ -24,6 +24,7 @@ import jakarta.nosql.tck.entities.User;
 import org.mockito.Mockito;
 
 import javax.annotation.Priority;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
 import javax.interceptor.Interceptor;
@@ -34,6 +35,7 @@ import static org.mockito.Mockito.when;
 
 @Alternative
 @Priority(Interceptor.Priority.APPLICATION)
+@ApplicationScoped
 public class MockProducer implements Supplier<BucketManager> {
 
     @Produces

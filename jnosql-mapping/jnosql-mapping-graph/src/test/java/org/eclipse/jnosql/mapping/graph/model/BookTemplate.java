@@ -17,8 +17,10 @@ package org.eclipse.jnosql.mapping.graph.model;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.Transactional;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+@ApplicationScoped
 public class BookTemplate {
 
     @Inject

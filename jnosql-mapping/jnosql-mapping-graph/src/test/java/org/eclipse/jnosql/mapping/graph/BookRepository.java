@@ -18,5 +18,8 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.graph.model.Book;
 
+import javax.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
 public interface BookRepository extends Repository<Book, String> {
 }

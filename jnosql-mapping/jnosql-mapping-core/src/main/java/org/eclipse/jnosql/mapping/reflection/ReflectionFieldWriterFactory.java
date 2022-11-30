@@ -14,9 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.lang.reflect.Field;
 
+@ApplicationScoped
 class ReflectionFieldWriterFactory implements FieldWriterFactory {
 
 

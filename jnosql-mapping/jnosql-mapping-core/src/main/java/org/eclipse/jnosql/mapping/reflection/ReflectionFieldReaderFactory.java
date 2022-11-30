@@ -14,10 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+@ApplicationScoped
 class ReflectionFieldReaderFactory implements FieldReaderFactory {
 
     private Reflections reflections;

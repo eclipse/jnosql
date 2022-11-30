@@ -12,27 +12,13 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.reflection;
+package org.eclipse.jnosql.mapping.keyvalue.spi;
+
+import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.tck.entities.User;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import java.lang.reflect.Constructor;
 
 @ApplicationScoped
-class ReflectionInstanceSupplierFactory implements InstanceSupplierFactory {
-
-    private Reflections reflections;
-
-    @Inject
-    ReflectionInstanceSupplierFactory(Reflections reflections) {
-        this.reflections = reflections;
-    }
-
-    ReflectionInstanceSupplierFactory() {
-    }
-
-    @Override
-    public InstanceSupplier apply(Constructor<?> constructor) {
-        return () -> reflections.newInstance(constructor);
-    }
+public interface UserRepository extends Repository<User, String> {
 }
