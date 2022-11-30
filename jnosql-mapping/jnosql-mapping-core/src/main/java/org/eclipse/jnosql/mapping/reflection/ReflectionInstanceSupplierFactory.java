@@ -14,9 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.lang.reflect.Constructor;
 
+@ApplicationScoped
 class ReflectionInstanceSupplierFactory implements InstanceSupplierFactory {
 
     private Reflections reflections;
