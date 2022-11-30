@@ -19,7 +19,6 @@ import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.User;
-import jakarta.nosql.tck.entities.UserRepository;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
