@@ -44,13 +44,15 @@ import static java.util.stream.Collectors.toList;
 @ApplicationScoped
 public class DefaultReflections implements Reflections {
 
+    private static final Logger LOGGER = Logger.getLogger(Reflections.class.getName());
+
     @Override
     public Object getValue(Object object, Field field) {
 
         try {
             return field.get(object);
         } catch (Exception exception) {
-            Logger.getLogger(Reflections.class.getName()).log(Level.SEVERE, null, exception);
+            LOGGER.log(Level.FINEST, "There is an issue with returning value from this field.", exception);
         }
         return null;
     }
@@ -62,7 +64,7 @@ public class DefaultReflections implements Reflections {
             field.set(object, value);
 
         } catch (Exception exception) {
-            Logger.getLogger(Reflections.class.getName()).log(Level.SEVERE, null, exception);
+            LOGGER.log(Level.FINEST, "There is an issue with setting value from this field.", exception);
             return false;
         }
         return true;
@@ -73,11 +75,10 @@ public class DefaultReflections implements Reflections {
         try {
             return constructor.newInstance();
         } catch (Exception exception) {
-            Logger.getLogger(Reflections.class.getName()).log(Level.SEVERE, null, exception);
+            LOGGER.log(Level.FINEST, "There is an issue to creating an entity from this constructor", exception);
             return null;
         }
     }
-
 
     @Override
     public <T> T newInstance(Class<T> type) {
@@ -85,7 +86,7 @@ public class DefaultReflections implements Reflections {
             Constructor<T> constructor = getConstructor(type);
             return newInstance(constructor);
         } catch (Exception exception) {
-            Logger.getLogger(Reflections.class.getName()).log(Level.SEVERE, null, exception);
+            LOGGER.log(Level.FINEST, "There is an issue to creating an entity from this constructor", exception);
             return null;
         }
     }
@@ -130,7 +131,7 @@ public class DefaultReflections implements Reflections {
         final Predicate<Constructor<?>> defaultConstructorPredicate = c -> c.getParameterCount() == 0;
         final Predicate<Constructor<?>> customConstructorPredicate = c -> {
             for (Parameter parameter : c.getParameters()) {
-                if(parameter.getAnnotation(Id.class) != null || parameter.getAnnotation(Column.class) != null) {
+                if (parameter.getAnnotation(Id.class) != null || parameter.getAnnotation(Column.class) != null) {
                     return true;
                 }
             }
@@ -224,13 +225,13 @@ public class DefaultReflections implements Reflections {
     @Override
     public Optional<InheritanceMetadata> getInheritance(Class<?> type) {
         Objects.requireNonNull(type, "entity is required");
-        if(isInheritance(type)) {
+        if (isInheritance(type)) {
             Class<?> parent = type.getSuperclass();
             String discriminatorColumn = getDiscriminatorColumn(parent);
             String discriminatorValue = getDiscriminatorValue(type);
             return Optional.of(new InheritanceMetadata(discriminatorValue, discriminatorColumn,
                     parent, type));
-        } else if(type.getAnnotation(Inheritance.class) != null) {
+        } else if (type.getAnnotation(Inheritance.class) != null) {
             String discriminatorColumn = getDiscriminatorColumn(type);
             String discriminatorValue = getDiscriminatorValue(type);
             return Optional.of(new InheritanceMetadata(discriminatorValue, discriminatorColumn,
@@ -259,6 +260,7 @@ public class DefaultReflections implements Reflections {
                 .map(DiscriminatorValue::value)
                 .orElse(entity.getSimpleName());
     }
+
     private String readEntity(Class<?> entity) {
         return Optional.ofNullable((Entity) entity.getAnnotation(Entity.class))
                 .map(Entity::value)
@@ -266,7 +268,7 @@ public class DefaultReflections implements Reflections {
                 .orElse(entity.getSimpleName());
     }
 
-    private boolean isInheritance(Class<?> entity){
+    private boolean isInheritance(Class<?> entity) {
         Class<?> superclass = entity.getSuperclass();
         return superclass.getAnnotation(Inheritance.class) != null;
     }
