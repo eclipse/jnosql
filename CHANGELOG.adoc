@@ -19,11 +19,11 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Scan entities classes using classgraph project
 - move the bean-discovery-mode to annotated instead of all
 
-==== Removed
+=== Removed
 
 - Remove Eclipse MicroProfile Config converts
 
-==== Fixed
+=== Fixed
 - Fix param binder when bind for In query condition
 
 == [1.0.0-b4] - 2022-08-04
