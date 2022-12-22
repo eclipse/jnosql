@@ -76,8 +76,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>mapping-test</artifactId>
+            <groupId>jakarta.nosql.tck.mapping</groupId>
+            <artifactId>mapping-tck-test</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
