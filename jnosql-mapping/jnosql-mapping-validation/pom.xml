@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.eclipse.jnosql.mapping</groupId>
         <artifactId>jnosql-mapping-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0-b5</version>
     </parent>
 
     <artifactId>jnosql-mapping-validation</artifactId>
@@ -76,8 +76,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>mapping-test</artifactId>
+            <groupId>jakarta.nosql.tck.mapping</groupId>
+            <artifactId>mapping-tck-test</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
