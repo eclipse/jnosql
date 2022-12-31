@@ -110,6 +110,16 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
         }
 
         @Override
+        public Handle<T> getHandle() {
+            throw new UnsupportedOperationException("this method is not support");
+        }
+
+        @Override
+        public Iterable<? extends Handle<T>> handles() {
+            throw new UnsupportedOperationException("this method is not support");
+        }
+
+        @Override
         public Iterator<T> iterator() {
          return Collections.singletonList(instance).iterator();
         }
