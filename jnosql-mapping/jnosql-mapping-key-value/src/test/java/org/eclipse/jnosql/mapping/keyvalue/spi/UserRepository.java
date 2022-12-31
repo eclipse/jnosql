@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.keyvalue.spi;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.tck.entities.User;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public interface UserRepository extends Repository<User, String> {

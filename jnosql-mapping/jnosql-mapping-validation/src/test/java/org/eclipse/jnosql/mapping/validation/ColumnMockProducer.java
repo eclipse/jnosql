@@ -20,9 +20,9 @@ import jakarta.nosql.column.ColumnManager;
 import org.mockito.Mockito;
 
 import javax.annotation.Priority;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.enterprise.inject.Produces;
 import javax.interceptor.Interceptor;
 import java.math.BigDecimal;
 import java.util.function.Supplier;

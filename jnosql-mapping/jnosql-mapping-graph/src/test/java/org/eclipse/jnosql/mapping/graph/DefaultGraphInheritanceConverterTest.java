@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @CDIExtension
 class DefaultGraphInheritanceConverterTest extends AbstractGraphInheritanceConverterTest {

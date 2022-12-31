@@ -16,8 +16,8 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.mapping.Convert;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;

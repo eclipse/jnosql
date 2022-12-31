@@ -18,7 +18,7 @@ package org.eclipse.jnosql.mapping;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;
 
-import javax.enterprise.util.AnnotationLiteral;
+import jakarta.enterprise.util.AnnotationLiteral;
 import java.util.Objects;
 
 import static jakarta.nosql.mapping.DatabaseType.COLUMN;
