@@ -65,10 +65,10 @@
     <properties>
         <checkstyle.excludes>**/communication/query/**</checkstyle.excludes>
         <owb.version>2.0.3</owb.version>
-        <weld.se.core.version>3.1.9.Final</weld.se.core.version>
-        <yasson.version>1.0.11</yasson.version>
-        <microprofile.config.version>2.0.1</microprofile.config.version>
-        <smallrye.config.version>2.12.1</smallrye.config.version>
+        <weld.se.core.version>5.1.0.Final</weld.se.core.version>
+        <yasson.version>3.0.2</yasson.version>
+        <microprofile.config.version>3.0.2</microprofile.config.version>
+        <smallrye.config.version>3.1.1</smallrye.config.version>
     </properties>
 
     <dependencies>
