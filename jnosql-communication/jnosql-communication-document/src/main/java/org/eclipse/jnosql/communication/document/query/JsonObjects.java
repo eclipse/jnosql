@@ -20,9 +20,9 @@ package org.eclipse.jnosql.communication.document.query;
 import jakarta.nosql.document.Document;
 import org.eclipse.jnosql.communication.document.Documents;
 
-import javax.json.JsonObject;
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 import java.util.List;
 import java.util.Map;
 

@@ -19,9 +19,9 @@ package org.eclipse.jnosql.communication.column.query;
 import jakarta.nosql.column.Column;
 import org.eclipse.jnosql.communication.column.Columns;
 
-import javax.json.JsonObject;
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 import java.util.List;
 import java.util.Map;
 
