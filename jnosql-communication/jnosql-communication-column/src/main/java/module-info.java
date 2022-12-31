@@ -23,8 +23,8 @@ module org.eclipse.jnosql.communication.column {
     requires jakarta.nosql.communication.core;
     requires org.eclipse.jnosql.communication.core;
     requires jakarta.nosql.communication.query;
-    requires java.json.bind;
-    requires java.json;
+    requires jakarta.json.bind;
+    requires jakarta.json;
 
     opens org.eclipse.jnosql.communication.column.query;
 
