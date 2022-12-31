@@ -19,7 +19,7 @@ import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnManager;
 import org.mockito.Mockito;
 
-import javax.annotation.Priority;
+import jakarta.annotation.Priority;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Produces;

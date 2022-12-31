@@ -22,8 +22,8 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.graph.GraphTraversalSourceSupplier;
 import org.mockito.Mockito;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Priority;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Priority;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Disposes;
