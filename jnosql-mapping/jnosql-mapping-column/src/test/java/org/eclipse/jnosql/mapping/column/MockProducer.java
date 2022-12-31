@@ -26,7 +26,7 @@ import jakarta.annotation.Priority;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Produces;
-import javax.interceptor.Interceptor;
+import jakarta.interceptor.Interceptor;
 
 import java.util.function.Supplier;
 

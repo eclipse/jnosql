@@ -28,7 +28,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;
-import javax.interceptor.Interceptor;
+import jakarta.interceptor.Interceptor;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
