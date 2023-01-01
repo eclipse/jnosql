@@ -47,6 +47,10 @@ public abstract class AbstractBean<T> implements Bean<T>, PassivationCapable {
         return Collections.emptySet();
     }
 
+    public boolean isNullable() {
+        return false;
+    }
+
     @Override
     public Class<? extends Annotation> getScope() {
         return ApplicationScoped.class;
