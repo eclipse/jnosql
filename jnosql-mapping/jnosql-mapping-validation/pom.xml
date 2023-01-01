@@ -29,7 +29,7 @@
 
     <properties>
         <hibernate.validator.version>8.0.0.Final</hibernate.validator.version>
-        <el.impl.version>2.2.1-b05</el.impl.version>
+        <el.impl.version>5.0.0-M1</el.impl.version>
     </properties>
 
     <dependencies>
@@ -70,11 +70,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>el-impl</artifactId>
+            <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.el</artifactId>
             <version>${el.impl.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>jakarta.nosql.tck.mapping</groupId>
             <artifactId>mapping-tck-test</artifactId>
