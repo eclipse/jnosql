@@ -18,8 +18,8 @@ package org.eclipse.jnosql.mapping.column;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 class DefaultColumnWorkflow extends AbstractColumnWorkflow{

@@ -22,8 +22,8 @@ import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.mapping.column.ColumnTemplateProducer;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.util.Objects;
 

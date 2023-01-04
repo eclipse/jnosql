@@ -17,15 +17,15 @@ package org.eclipse.jnosql.mapping.validation;
 
 import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.validation.executable.ExecutableValidator;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.executable.ExecutableValidator;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

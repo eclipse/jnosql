@@ -19,9 +19,9 @@ import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {

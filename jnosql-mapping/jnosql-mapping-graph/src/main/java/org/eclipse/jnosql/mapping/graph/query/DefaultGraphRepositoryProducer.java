@@ -23,8 +23,8 @@ import org.eclipse.jnosql.mapping.graph.GraphTemplateProducer;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.util.Objects;
 

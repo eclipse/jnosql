@@ -17,10 +17,10 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.mapping.MappingException;
 
-import javax.enterprise.event.Event;
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.spi.CDI;
-import javax.enterprise.util.TypeLiteral;
+import jakarta.enterprise.event.Event;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.enterprise.util.TypeLiteral;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

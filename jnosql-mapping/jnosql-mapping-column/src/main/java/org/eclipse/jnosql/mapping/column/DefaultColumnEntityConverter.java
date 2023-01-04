@@ -19,8 +19,8 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 /**
  * The default implementation to {@link ColumnEntityConverter}

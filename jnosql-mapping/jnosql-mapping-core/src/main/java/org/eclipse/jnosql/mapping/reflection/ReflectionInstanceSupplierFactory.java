@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.lang.reflect.Constructor;
 
 @ApplicationScoped

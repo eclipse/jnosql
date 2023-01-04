@@ -21,11 +21,11 @@ import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;
 import org.eclipse.jnosql.mapping.keyvalue.query.RepositoryKeyValueBean;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.enterprise.inject.spi.ProcessProducer;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
+import jakarta.enterprise.inject.spi.Extension;
+import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
+import jakarta.enterprise.inject.spi.ProcessProducer;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,7 +37,7 @@ import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
 
 /**
  * Extension to start up {@link jakarta.nosql.mapping.keyvalue.KeyValueTemplate} and {@link jakarta.nosql.mapping.Repository}
- * from the {@link javax.enterprise.inject.Default} and {@link jakarta.nosql.mapping.Database} qualifier
+ * from the {@link jakarta.enterprise.inject.Default} and {@link jakarta.nosql.mapping.Database} qualifier
  */
 public class KeyValueExtension implements Extension {
 

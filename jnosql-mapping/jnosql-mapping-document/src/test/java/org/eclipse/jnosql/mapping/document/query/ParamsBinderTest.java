@@ -34,7 +34,7 @@ import org.eclipse.jnosql.mapping.util.ParamsBinder;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.ServiceLoader;

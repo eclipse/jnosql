@@ -23,7 +23,7 @@ import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -29,7 +29,7 @@ public interface MappingValidator {
      * @param entity the entity to be validated
      * @param <T>    the type
      * @throws NullPointerException                          when entity is null
-     * @throws javax.validation.ConstraintViolationException when {@link javax.validation.Validator#validate(Object, Class[])}
+     * @throws jakarta.validation.ConstraintViolationException when {@link jakarta.validation.Validator#validate(Object, Class[])}
      *                                                       returns a non-empty collection
      */
     <T> void validate(T entity);
@@ -40,7 +40,7 @@ public interface MappingValidator {
      *
      * @param event the event
      * @throws NullPointerException                          when entity is null
-     * @throws javax.validation.ConstraintViolationException when {@link javax.validation.Validator#validate(Object, Class[])}
+     * @throws jakarta.validation.ConstraintViolationException when {@link jakarta.validation.Validator#validate(Object, Class[])}
      *                                                       returns a non-empty collection
      */
     void validate(ConstructorEvent event);

@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import jakarta.nosql.tck.test.CDIExtension;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @CDIExtension
 class DefaultGraphTraversalSourceTemplateTest extends AbstractGraphTemplateTest {

@@ -20,10 +20,10 @@ import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
 import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Disposes;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.CDI;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Disposes;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.CDI;
 import java.util.function.Supplier;
 
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.GRAPH_PROVIDER;

@@ -21,11 +21,11 @@ import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;
 import org.eclipse.jnosql.mapping.document.query.RepositoryDocumentBean;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.enterprise.inject.spi.ProcessProducer;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
+import jakarta.enterprise.inject.spi.Extension;
+import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
+import jakarta.enterprise.inject.spi.ProcessProducer;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
