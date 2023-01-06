@@ -25,31 +25,32 @@ import java.util.Objects;
 @Entity
 public class BookRelease {
 
-    @Id
-    private final String id;
-    @Column("name")
-    private final String name;
+    @Id("isbn")
+    private final String isbn;
+    @Column("title")
+    private final String title;
     @Column("author")
     private final String author;
     @Column("year")
     private final Year year;
 
-    public BookRelease(@Id String id, @Column("name") String name,
+    public BookRelease(@Id("isbn") String isbn,
+                       @Column("title") String title,
                        @Column("author") String author,
                        @Column("year") Year year) {
-        this.id = id;
-        this.name = name;
+        this.isbn = isbn;
+        this.title = title;
         this.author = author;
         this.year = year;
     }
 
 
-    public String getId() {
-        return id;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public String getAuthor() {
@@ -70,19 +71,19 @@ public class BookRelease {
             return false;
         }
         BookRelease that = (BookRelease) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(isbn, that.isbn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(isbn);
     }
 
     @Override
     public String toString() {
         return "BookRelease{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+                "isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", year=" + year +
                 '}';
