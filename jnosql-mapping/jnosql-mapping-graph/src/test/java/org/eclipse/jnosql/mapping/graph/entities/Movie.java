@@ -12,54 +12,47 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.model.inheritance;
+package org.eclipse.jnosql.mapping.graph.entities;
+
 
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Entity;
-import jakarta.nosql.mapping.Id;
-import jakarta.nosql.mapping.Inheritance;
 
-import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
-@Entity
-@Inheritance
-public abstract class Notification {
-
-    @Id
-    protected Long id;
+@Entity("movie")
+public class Movie {
 
     @Column
-    protected String name;
+    private String title;
+
+    @Column("movie_year")
+    private long year;
 
     @Column
-    protected LocalDate createdOn;
+    private Set<String> actors;
 
-    public Long getId() {
-        return id;
+    Movie() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Movie(String title, long year, Set<String> actors) {
+        this.title = title;
+        this.year = year;
+        this.actors = actors;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public long getYear() {
+        return year;
     }
 
-    public LocalDate getCreatedOn() {
-        return createdOn;
+    public Set<String> getActors() {
+        return actors;
     }
-
-    public void setCreatedOn(LocalDate createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public abstract String send();
 
     @Override
     public boolean equals(Object o) {
@@ -69,21 +62,23 @@ public abstract class Notification {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Notification that = (Notification) o;
-        return Objects.equals(id, that.id);
+        Movie movie = (Movie) o;
+        return year == movie.year &&
+                Objects.equals(title, movie.title) &&
+                Objects.equals(actors, movie.actors);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(title, year, actors);
     }
 
     @Override
     public String toString() {
-        return "Notification{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", createdOn=" + createdOn +
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", year=" + year +
+                ", actors=" + actors +
                 '}';
     }
 }

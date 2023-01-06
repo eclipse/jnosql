@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.graph;
 
 
 import jakarta.nosql.mapping.Repository;
-import org.eclipse.jnosql.mapping.graph.model.Book;
+import org.eclipse.jnosql.mapping.graph.entities.Book;
 
 import jakarta.enterprise.context.ApplicationScoped;
 

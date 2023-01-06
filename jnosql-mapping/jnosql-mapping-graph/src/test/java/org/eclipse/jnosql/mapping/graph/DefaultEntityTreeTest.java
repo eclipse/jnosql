@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.graph.model.Animal;
+import org.eclipse.jnosql.mapping.graph.entities.Animal;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

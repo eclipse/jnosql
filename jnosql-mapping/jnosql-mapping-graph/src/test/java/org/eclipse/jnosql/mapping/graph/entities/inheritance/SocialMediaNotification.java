@@ -12,21 +12,27 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.model;
+package org.eclipse.jnosql.mapping.graph.entities.inheritance;
 
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.Entity;
 
-import jakarta.nosql.mapping.AttributeConverter;
+@Entity
+public class SocialMediaNotification extends Notification {
 
-public class MoneyConverter implements AttributeConverter<Money, String> {
+    @Column
+    private String nickname;
 
+    public String getNickname() {
+        return nickname;
+    }
 
-    @Override
-    public String convertToDatabaseColumn(Money attribute) {
-        return attribute.toString();
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     @Override
-    public Money convertToEntityAttribute(String dbData) {
-        return Money.parse(dbData);
+    public String send() {
+        return "Sending message to via social media to the nickname: " + nickname;
     }
 }

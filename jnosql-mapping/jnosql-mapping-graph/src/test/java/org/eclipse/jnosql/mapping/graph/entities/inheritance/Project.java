@@ -12,23 +12,41 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.model;
+package org.eclipse.jnosql.mapping.graph.entities.inheritance;
+
+import jakarta.nosql.mapping.Column;
+import jakarta.nosql.mapping.DiscriminatorColumn;
+import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.mapping.Id;
+import jakarta.nosql.mapping.Inheritance;
 
 import java.util.Objects;
 
-public class WrongEntity {
+@Entity
+@Inheritance
+@DiscriminatorColumn("size")
+public class Project {
 
-    private String name;
+    @Id
+    private Long id;
 
-    WrongEntity() {
-    }
-
-    public WrongEntity(String name) {
-        this.name = name;
-    }
+    @Column
+    protected String name;
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
@@ -39,18 +57,19 @@ public class WrongEntity {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        WrongEntity animal = (WrongEntity) o;
-        return Objects.equals(name, animal.name);
+        Project project = (Project) o;
+        return Objects.equals(name, project.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hashCode(name);
     }
 
     @Override
     public String toString() {
-        return  "Animal{" + "name='" + name + '\'' +
+        return "Project{" +
+                "name='" + name + '\'' +
                 '}';
     }
 }

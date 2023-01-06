@@ -12,37 +12,37 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.model;
-
+package org.eclipse.jnosql.mapping.graph.entities;
 
 import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.Embeddable;
+import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.mapping.Id;
 
 import java.util.Objects;
 
-@Embeddable
-public class Job {
+@Entity
+public class Animal {
+
+
+    @Id
+    private Long id;
 
     @Column
-    private String description;
+    private String name;
 
-    @Column
-    private String city;
-
-    public String getDescription() {
-        return description;
+    Animal() {
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public Animal(String name) {
+        this.name = name;
     }
 
-    public String getCity() {
-        return city;
+    public Long getId() {
+        return id;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -50,15 +50,22 @@ public class Job {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Animal)) {
             return false;
         }
-        Job job = (Job) o;
-        return Objects.equals(description, job.description);
+        Animal animal = (Animal) o;
+        return Objects.equals(id, animal.id) &&
+                Objects.equals(name, animal.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(description);
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return  "Animal{" + "name='" + name + '\'' +
+                '}';
     }
 }

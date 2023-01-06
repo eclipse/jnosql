@@ -12,30 +12,29 @@
  *
  *   Otavio Santana
  */
-
-package org.eclipse.jnosql.mapping.graph.model.inheritance;
+package org.eclipse.jnosql.mapping.graph.entities.inheritance;
 
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.DiscriminatorValue;
 import jakarta.nosql.mapping.Entity;
 
 @Entity
-@DiscriminatorValue("Email")
-public class EmailNotification extends Notification {
+@DiscriminatorValue("SMS")
+public class SmsNotification extends Notification {
 
     @Column
-    private String email;
+    private String phone;
 
-    public String getEmail() {
-        return email;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override
     public String send() {
-        return "Sending message to email sms to the email: " + email;
+        return "Sending message to via sms to the phone: " + phone;
     }
 }

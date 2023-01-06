@@ -25,9 +25,12 @@ import jakarta.nosql.tck.entities.constructor.BookUser;
 import jakarta.nosql.tck.entities.constructor.Computer;
 import jakarta.nosql.tck.entities.constructor.PetOwner;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.column.entities.BookRelease;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
+
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -122,5 +125,52 @@ class DefaultColumnEntityConverterConstructorTest {
         List<String> names = bookUser.getBooks().stream().map(Book::getName).collect(Collectors.toUnmodifiableList());
         assertThat(names).contains("Effective Java", "Clean Code");
 
+    }
+
+    @Test
+    public void shouldConverterFieldsOnEntityComputer() {
+        ColumnEntity communication = ColumnEntity.of("Computer");
+        communication.add("_id", "10");
+        communication.add("name", "Dell");
+        communication.add("age", "2020");
+        communication.add("model", "Dell 2020");
+        communication.add("price", "USD 20");
+        Computer computer = this.converter.toEntity(communication);
+        assertNotNull(computer);
+        assertEquals(10L, computer.getId());
+        assertEquals("Dell", computer.getName());
+        assertEquals(2020, computer.getAge());
+        assertEquals("Dell 2020", computer.getModel());
+        assertEquals(Money.parse("USD 20"), computer.getPrice());
+    }
+
+    @Test
+    public void shouldConverterEntityBookRelease() {
+        ColumnEntity communication = ColumnEntity.of("BookRelease");
+        communication.add("isbn", "9780132345286");
+        communication.add("title", "Effective Java");
+        communication.add("author", "Joshua Bloch");
+        communication.add("year", Year.of(2001));
+        BookRelease book = this.converter.toEntity(communication);
+        assertNotNull(book);
+        assertEquals("9780132345286", book.getIsbn());
+        assertEquals("Effective Java", book.getTitle());
+        assertEquals("Joshua Bloch", book.getAuthor());
+        assertEquals(Year.of(2001), book.getYear());
+    }
+
+    @Test
+    public void shouldConverterEntityBookReleaseOnStringYear() {
+        ColumnEntity communication = ColumnEntity.of("BookRelease");
+        communication.add("isbn", "9780132345286");
+        communication.add("title", "Effective Java");
+        communication.add("author", "Joshua Bloch");
+        communication.add("year", "2001");
+        BookRelease book = this.converter.toEntity(communication);
+        assertNotNull(book);
+        assertEquals("9780132345286", book.getIsbn());
+        assertEquals("Effective Java", book.getTitle());
+        assertEquals("Joshua Bloch", book.getAuthor());
+        assertEquals(Year.of(2001), book.getYear());
     }
 }

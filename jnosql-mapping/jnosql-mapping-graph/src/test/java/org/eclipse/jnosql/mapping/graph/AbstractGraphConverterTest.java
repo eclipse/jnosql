@@ -19,16 +19,18 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.graph.model.Computer;
-import org.eclipse.jnosql.mapping.graph.model.Job;
-import org.eclipse.jnosql.mapping.graph.model.Money;
-import org.eclipse.jnosql.mapping.graph.model.Movie;
-import org.eclipse.jnosql.mapping.graph.model.Person;
-import org.eclipse.jnosql.mapping.graph.model.Worker;
+import org.eclipse.jnosql.mapping.graph.entities.BookRelease;
+import org.eclipse.jnosql.mapping.graph.entities.Computer;
+import org.eclipse.jnosql.mapping.graph.entities.Job;
+import org.eclipse.jnosql.mapping.graph.entities.Money;
+import org.eclipse.jnosql.mapping.graph.entities.Movie;
+import org.eclipse.jnosql.mapping.graph.entities.Person;
+import org.eclipse.jnosql.mapping.graph.entities.Worker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.Year;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -279,4 +281,50 @@ abstract class AbstractGraphConverterTest {
         assertEquals("Dell 2020", computer.getModel());
         assertEquals(Money.parse("USD 20"), computer.getPrice());
     }
+
+    @Test
+    public void shouldCreateByConstructorUsingValueConverter() {
+        Vertex vertex = getGraph().addVertex(T.label, "Computer",
+                "name", "Dell", "age", "2020", "model", "Dell 2020", "price", "USD 20");
+
+        Computer computer = this.getConverter().toEntity(vertex);
+        assertNotNull(computer);
+        assertEquals("Dell", computer.getName());
+        assertEquals(2020, computer.getAge());
+        assertEquals("Dell 2020", computer.getModel());
+        assertEquals(Money.parse("USD 20"), computer.getPrice());
+    }
+
+    @Test
+    public void shouldCreateByConstructorBookReleaseEntity() {
+        Vertex vertex = getGraph().addVertex(T.label, "BookRelease",
+                "isbn", "9780132345286",
+                "title", "Effective Java",
+                "author", "Joshua Bloch",
+                "year", 2001);
+
+        BookRelease book = this.getConverter().toEntity(vertex);
+        assertNotNull(book);
+        assertEquals("9780132345286", book.getIsbn());
+        assertEquals("Effective Java", book.getTitle());
+        assertEquals("Joshua Bloch", book.getAuthor());
+        assertEquals(Year.of(2001), book.getYear());
+    }
+
+    @Test
+    public void shouldCreateByConstructorBookReleaseEntityUsingConverter() {
+        Vertex vertex = getGraph().addVertex(T.label, "BookRelease",
+                "isbn", "9780132345286",
+                "title", "Effective Java",
+                "author", "Joshua Bloch",
+                "year", "2001");
+
+        BookRelease book = this.getConverter().toEntity(vertex);
+        assertNotNull(book);
+        assertEquals("9780132345286", book.getIsbn());
+        assertEquals("Effective Java", book.getTitle());
+        assertEquals("Joshua Bloch", book.getAuthor());
+        assertEquals(Year.of(2001), book.getYear());
+    }
+
 }

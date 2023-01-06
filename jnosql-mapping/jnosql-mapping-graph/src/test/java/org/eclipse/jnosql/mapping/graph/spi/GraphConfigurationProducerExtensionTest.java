@@ -17,8 +17,8 @@ package org.eclipse.jnosql.mapping.graph.spi;
 import jakarta.nosql.mapping.Database;
 import org.eclipse.jnosql.mapping.graph.BookRepository;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import org.eclipse.jnosql.mapping.graph.model.Book;
-import org.eclipse.jnosql.mapping.graph.model.Person;
+import org.eclipse.jnosql.mapping.graph.entities.Book;
+import org.eclipse.jnosql.mapping.graph.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 

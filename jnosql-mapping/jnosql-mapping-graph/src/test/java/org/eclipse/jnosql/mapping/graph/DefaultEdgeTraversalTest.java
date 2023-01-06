@@ -17,10 +17,9 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.nosql.NonUniqueResultException;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.T;
-import org.assertj.core.api.Assertions;
-import org.eclipse.jnosql.mapping.graph.model.Animal;
-import org.eclipse.jnosql.mapping.graph.model.Book;
-import org.eclipse.jnosql.mapping.graph.model.Person;
+import org.eclipse.jnosql.mapping.graph.entities.Animal;
+import org.eclipse.jnosql.mapping.graph.entities.Book;
+import org.eclipse.jnosql.mapping.graph.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 

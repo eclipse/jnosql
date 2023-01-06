@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.model;
+package org.eclipse.jnosql.mapping.graph.entities;
 
 import java.util.List;
 

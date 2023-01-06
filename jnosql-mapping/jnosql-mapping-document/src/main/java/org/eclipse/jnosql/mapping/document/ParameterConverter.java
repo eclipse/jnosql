@@ -31,18 +31,18 @@ enum ParameterConverter {
         @Override
         void convert(AbstractDocumentEntityConverter converter,
                      Document document,
-                     ParameterMetaData parameterMetaData,
+                     ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
-            parameterMetaData.getConverter().ifPresentOrElse(c -> {
+            metaData.getConverter().ifPresentOrElse(c -> {
                 Object value = converter.getConverters().get(c).convertToEntityAttribute(document.get());
                 builder.add(value);
-            }, () -> builder.add(document.get()));
+            }, () -> builder.add(document.get(metaData.getType())));
 
         }
     }, ENTITY {
         @Override
-        void convert(AbstractDocumentEntityConverter converter, Document document, ParameterMetaData parameterMetaData,
+        void convert(AbstractDocumentEntityConverter converter, Document document, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
             Object value = document.get();
@@ -54,22 +54,22 @@ enum ParameterConverter {
                     documents.add(Document.of(entry.getKey().toString(), entry.getValue()));
                 }
 
-                Object entity = converter.toEntity(parameterMetaData.getType(), documents);
+                Object entity = converter.toEntity(metaData.getType(), documents);
                 builder.add(entity);
 
             } else {
                 List<Document> documents = document.get(new TypeReference<>() {
                 });
-                Object entity = converter.toEntity(parameterMetaData.getType(), documents);
+                Object entity = converter.toEntity(metaData.getType(), documents);
                 builder.add(entity);
             }
         }
     }, COLLECTION {
         @Override
-        void convert(AbstractDocumentEntityConverter converter, Document document, ParameterMetaData parameterMetaData,
+        void convert(AbstractDocumentEntityConverter converter, Document document, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
-            GenericParameterMetaData genericParameter = (GenericParameterMetaData) parameterMetaData;
+            GenericParameterMetaData genericParameter = (GenericParameterMetaData) metaData;
             Collection elements = genericParameter.getCollectionInstance();
             List<List<Document>> embeddable = (List<List<Document>>) document.get();
             for (List<Document> columnList : embeddable) {
@@ -83,7 +83,7 @@ enum ParameterConverter {
     };
 
     abstract void convert(AbstractDocumentEntityConverter converter,
-                          Document document, ParameterMetaData parameterMetaData,
+                          Document document, ParameterMetaData metaData,
                           ConstructorBuilder builder);
 
     static ParameterConverter of(ParameterMetaData parameter) {

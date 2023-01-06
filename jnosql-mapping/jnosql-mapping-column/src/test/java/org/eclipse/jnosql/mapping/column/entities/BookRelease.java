@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -12,47 +12,55 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.model;
+package org.eclipse.jnosql.mapping.column.entities;
 
 
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.mapping.Id;
 
+import java.time.Year;
 import java.util.Objects;
-import java.util.Set;
 
-@Entity("movie")
-public class Movie {
+@Entity
+public class BookRelease {
 
-    @Column
-    private String title;
+    @Id("isbn")
+    private final String isbn;
+    @Column("title")
+    private final String title;
+    @Column("author")
+    private final String author;
+    @Column("year")
+    private final Year year;
 
-    @Column("movie_year")
-    private long year;
-
-    @Column
-    private Set<String> actors;
-
-    Movie() {
+    public BookRelease(@Id("isbn") String isbn,
+                       @Column("title") String title,
+                       @Column("author") String author,
+                       @Column("year") Year year) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.year = year;
     }
 
-    public Movie(String title, long year, Set<String> actors) {
-        this.title = title;
-        this.year = year;
-        this.actors = actors;
+
+    public String getIsbn() {
+        return isbn;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public long getYear() {
+    public String getAuthor() {
+        return author;
+    }
+
+    public Year getYear() {
         return year;
     }
 
-    public Set<String> getActors() {
-        return actors;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -62,23 +70,22 @@ public class Movie {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Movie movie = (Movie) o;
-        return year == movie.year &&
-                Objects.equals(title, movie.title) &&
-                Objects.equals(actors, movie.actors);
+        BookRelease that = (BookRelease) o;
+        return Objects.equals(isbn, that.isbn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, year, actors);
+        return Objects.hashCode(isbn);
     }
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "title='" + title + '\'' +
+        return "BookRelease{" +
+                "isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
                 ", year=" + year +
-                ", actors=" + actors +
                 '}';
     }
 }

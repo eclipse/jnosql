@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.model;
+package org.eclipse.jnosql.mapping.graph.entities;
 
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Entity;
@@ -21,8 +21,7 @@ import jakarta.nosql.mapping.Id;
 import java.util.Objects;
 
 @Entity
-public class Animal {
-
+public class Book {
 
     @Id
     private Long id;
@@ -30,11 +29,17 @@ public class Animal {
     @Column
     private String name;
 
-    Animal() {
+    @Column
+    private Integer age;
+
+
+    Book() {
     }
 
-    public Animal(String name) {
+    Book(Long id, String name, Integer age) {
+        this.id = id;
         this.name = name;
+        this.age = age;
     }
 
     public Long getId() {
@@ -45,27 +50,65 @@ public class Animal {
         return name;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Animal)) {
+        if (!(o instanceof Book)) {
             return false;
         }
-        Animal animal = (Animal) o;
-        return Objects.equals(id, animal.id) &&
-                Objects.equals(name, animal.name);
+        Book book = (Book) o;
+        return Objects.equals(id, book.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hashCode(id);
     }
 
     @Override
     public String toString() {
-        return  "Animal{" + "name='" + name + '\'' +
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
                 '}';
+    }
+
+    public static BookBuilder builder() {
+        return new BookBuilder();
+    }
+
+    public static class BookBuilder {
+        private String name;
+        private Integer age;
+        private Long id;
+
+        private BookBuilder() {
+        }
+
+        public BookBuilder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public BookBuilder withAge(Integer age) {
+            this.age = age;
+            return this;
+        }
+
+        public BookBuilder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Book build() {
+            return new Book(id, name, age);
+        }
     }
 }
