@@ -301,7 +301,7 @@ abstract class AbstractGraphConverterTest {
                 "isbn", "9780132345286",
                 "title", "Effective Java",
                 "author", "Joshua Bloch",
-                "year", Year.of(20010);
+                "year", 2001);
 
         BookRelease book = this.getConverter().toEntity(vertex);
         assertNotNull(book);
@@ -326,4 +326,5 @@ abstract class AbstractGraphConverterTest {
         assertEquals("Joshua Bloch", book.getAuthor());
         assertEquals(Year.of(2001), book.getYear());
     }
+
 }
