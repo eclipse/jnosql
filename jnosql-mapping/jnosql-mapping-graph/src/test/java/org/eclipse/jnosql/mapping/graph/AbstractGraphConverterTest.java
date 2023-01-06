@@ -281,7 +281,7 @@ abstract class AbstractGraphConverterTest {
     }
 
     @Test
-    public void shouldCreateByConstructorUsingConverter() {
+    public void shouldCreateByConstructorUsingValueConverter() {
         Vertex vertex = getGraph().addVertex(T.label, "Computer",
                 "name", "Dell", "age", "2020", "model", "Dell 2020", "price", "USD 20");
 
