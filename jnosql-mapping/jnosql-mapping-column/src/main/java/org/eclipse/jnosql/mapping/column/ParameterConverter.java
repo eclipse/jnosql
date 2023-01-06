@@ -37,7 +37,7 @@ enum ParameterConverter {
             metaData.getConverter().ifPresentOrElse(c -> {
                 Object value = converter.getConverters().get(c).convertToEntityAttribute(column.get());
                 builder.add(value);
-            }, () -> builder.add(column.get()));
+            }, () -> builder.add(column.get(metaData.getType())));
 
         }
     }, ENTITY {
