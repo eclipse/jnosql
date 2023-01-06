@@ -16,8 +16,8 @@ package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.nosql.Value;
 import jakarta.nosql.mapping.EntityNotFoundException;
-import org.eclipse.jnosql.mapping.graph.model.Book;
-import org.eclipse.jnosql.mapping.graph.model.Person;
+import org.eclipse.jnosql.mapping.graph.entities.Book;
+import org.eclipse.jnosql.mapping.graph.entities.Person;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

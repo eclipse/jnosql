@@ -12,41 +12,29 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.model.inheritance;
+package org.eclipse.jnosql.mapping.graph.entities;
 
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.DiscriminatorColumn;
-import jakarta.nosql.mapping.Entity;
-import jakarta.nosql.mapping.Id;
-import jakarta.nosql.mapping.Inheritance;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
-@Entity
-@Inheritance
-@DiscriminatorColumn("size")
-public class Project {
+public class Money {
 
-    @Id
-    private Long id;
+    private final String currency;
 
-    @Column
-    protected String name;
+    private final BigDecimal value;
 
-    public String getName() {
-        return name;
+    public Money(String currency, BigDecimal value) {
+        this.currency = currency;
+        this.value = value;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getCurrency() {
+        return currency;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public BigDecimal getValue() {
+        return value;
     }
 
     @Override
@@ -57,19 +45,26 @@ public class Project {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Project project = (Project) o;
-        return Objects.equals(name, project.name);
+        Money money = (Money) o;
+        return Objects.equals(currency, money.currency) &&
+                Objects.equals(value.doubleValue(), money.value.doubleValue());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name);
+        return Objects.hash(currency, value.doubleValue());
     }
 
     @Override
     public String toString() {
-        return "Project{" +
-                "name='" + name + '\'' +
-                '}';
+        return currency + " " + value.toString();
+    }
+
+    public static Money parse(String dbData) {
+        String[] values = dbData.split(" ");
+        String currency = values[0];
+        BigDecimal value = BigDecimal.valueOf(Double.parseDouble(values[1]));
+        return new Money(currency, value);
     }
 }
+

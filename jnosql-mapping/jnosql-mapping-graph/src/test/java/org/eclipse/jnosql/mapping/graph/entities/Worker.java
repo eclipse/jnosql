@@ -12,29 +12,49 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.model.inheritance;
+package org.eclipse.jnosql.mapping.graph.entities;
+
 
 import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.DiscriminatorValue;
+import jakarta.nosql.mapping.Convert;
 import jakarta.nosql.mapping.Entity;
 
 @Entity
-@DiscriminatorValue("SMS")
-public class SmsNotification extends Notification {
+public class Worker {
 
     @Column
-    private String phone;
+    private String name;
 
-    public String getPhone() {
-        return phone;
+    @Column
+    private Job job;
+
+    @Column("money")
+    @Convert(MoneyConverter.class)
+    private Money salary;
+
+    public String getName() {
+        return name;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public String send() {
-        return "Sending message to via sms to the phone: " + phone;
+    public Job getJob() {
+        return job;
     }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    public Money getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Money salary) {
+        this.salary = salary;
+    }
+
+
 }

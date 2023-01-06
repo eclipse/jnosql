@@ -12,25 +12,24 @@
  *
  *   Otavio Santana
  */
-
-package org.eclipse.jnosql.mapping.graph.model.inheritance;
+package org.eclipse.jnosql.mapping.graph.entities.inheritance;
 
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.DiscriminatorValue;
 import jakarta.nosql.mapping.Entity;
 
 @Entity
-@DiscriminatorValue("Large")
-public class LargeProject extends Project {
+@DiscriminatorValue("Small")
+public class SmallProject extends Project {
 
     @Column
-    private Double budget;
+    private String investor;
 
-    public void setBudget(Double budget) {
-        this.budget = budget;
+    public String getInvestor() {
+        return investor;
     }
 
-    public Double getBudget() {
-        return budget;
+    public void setInvestor(String investor) {
+        this.investor = investor;
     }
 }

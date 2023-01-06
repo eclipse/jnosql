@@ -12,29 +12,23 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.model;
+package org.eclipse.jnosql.mapping.graph.entities;
 
-
-import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Money {
+public class WrongEntity {
 
-    private final String currency;
+    private String name;
 
-    private final BigDecimal value;
-
-    public Money(String currency, BigDecimal value) {
-        this.currency = currency;
-        this.value = value;
+    WrongEntity() {
     }
 
-    public String getCurrency() {
-        return currency;
+    public WrongEntity(String name) {
+        this.name = name;
     }
 
-    public BigDecimal getValue() {
-        return value;
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -45,26 +39,18 @@ public class Money {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Money money = (Money) o;
-        return Objects.equals(currency, money.currency) &&
-                Objects.equals(value.doubleValue(), money.value.doubleValue());
+        WrongEntity animal = (WrongEntity) o;
+        return Objects.equals(name, animal.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(currency, value.doubleValue());
+        return Objects.hash(name);
     }
 
     @Override
     public String toString() {
-        return currency + " " + value.toString();
-    }
-
-    public static Money parse(String dbData) {
-        String[] values = dbData.split(" ");
-        String currency = values[0];
-        BigDecimal value = BigDecimal.valueOf(Double.parseDouble(values[1]));
-        return new Money(currency, value);
+        return  "Animal{" + "name='" + name + '\'' +
+                '}';
     }
 }
-

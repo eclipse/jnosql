@@ -12,58 +12,65 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.model;
+package org.eclipse.jnosql.mapping.graph.entities.inheritance;
 
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Id;
+import jakarta.nosql.mapping.Inheritance;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-public class Book {
+@Inheritance
+public abstract class Notification {
 
     @Id
-    private Long id;
+    protected Long id;
 
     @Column
-    private String name;
+    protected String name;
 
     @Column
-    private Integer age;
-
-
-    Book() {
-    }
-
-    Book(Long id, String name, Integer age) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-    }
+    protected LocalDate createdOn;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public Integer getAge() {
-        return age;
+    public void setName(String name) {
+        this.name = name;
     }
+
+    public LocalDate getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDate createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public abstract String send();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Book)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Book book = (Book) o;
-        return Objects.equals(id, book.id);
+        Notification that = (Notification) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
@@ -73,42 +80,10 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
+        return "Notification{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", age=" + age +
+                ", createdOn=" + createdOn +
                 '}';
-    }
-
-    public static BookBuilder builder() {
-        return new BookBuilder();
-    }
-
-    public static class BookBuilder {
-        private String name;
-        private Integer age;
-        private Long id;
-
-        private BookBuilder() {
-        }
-
-        public BookBuilder withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public BookBuilder withAge(Integer age) {
-            this.age = age;
-            return this;
-        }
-
-        public BookBuilder withId(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public Book build() {
-            return new Book(id, name, age);
-        }
     }
 }

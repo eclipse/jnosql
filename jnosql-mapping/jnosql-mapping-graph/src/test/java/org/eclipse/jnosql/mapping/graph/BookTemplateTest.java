@@ -17,8 +17,8 @@ package org.eclipse.jnosql.mapping.graph;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Transaction.Status;
-import org.eclipse.jnosql.mapping.graph.model.Book;
-import org.eclipse.jnosql.mapping.graph.model.BookTemplate;
+import org.eclipse.jnosql.mapping.graph.entities.Book;
+import org.eclipse.jnosql.mapping.graph.entities.BookTemplate;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 
