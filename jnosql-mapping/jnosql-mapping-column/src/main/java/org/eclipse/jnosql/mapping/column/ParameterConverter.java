@@ -31,10 +31,10 @@ enum ParameterConverter {
         @Override
         void convert(AbstractColumnEntityConverter converter,
                      Column column,
-                     ParameterMetaData parameterMetaData,
+                     ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
-            parameterMetaData.getConverter().ifPresentOrElse(c -> {
+            metaData.getConverter().ifPresentOrElse(c -> {
                 Object value = converter.getConverters().get(c).convertToEntityAttribute(column.get());
                 builder.add(value);
             }, () -> builder.add(column.get()));
@@ -42,7 +42,7 @@ enum ParameterConverter {
         }
     }, ENTITY {
         @Override
-        void convert(AbstractColumnEntityConverter converter, Column column, ParameterMetaData parameterMetaData,
+        void convert(AbstractColumnEntityConverter converter, Column column, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
             Object value = column.get();
@@ -54,21 +54,21 @@ enum ParameterConverter {
                     columns.add(Column.of(entry.getKey().toString(), entry.getValue()));
                 }
 
-                Object entity = converter.toEntity(parameterMetaData.getType(), columns);
+                Object entity = converter.toEntity(metaData.getType(), columns);
                 builder.add(entity);
 
             } else {
                 List<Column> columns = column.get(new TypeReference<>() {});
-                Object entity = converter.toEntity(parameterMetaData.getType(), columns);
+                Object entity = converter.toEntity(metaData.getType(), columns);
                 builder.add(entity);
             }
         }
     }, COLLECTION {
         @Override
-        void convert(AbstractColumnEntityConverter converter, Column column, ParameterMetaData parameterMetaData,
+        void convert(AbstractColumnEntityConverter converter, Column column, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
-            GenericParameterMetaData genericParameter = (GenericParameterMetaData) parameterMetaData;
+            GenericParameterMetaData genericParameter = (GenericParameterMetaData) metaData;
             Collection elements = genericParameter.getCollectionInstance();
             List<List<Column>> embeddable = (List<List<Column>>) column.get();
             for (List<Column> columnList : embeddable) {
@@ -82,7 +82,7 @@ enum ParameterConverter {
     };
 
     abstract void convert(AbstractColumnEntityConverter converter,
-                          Column column, ParameterMetaData parameterMetaData,
+                          Column column, ParameterMetaData metaData,
                           ConstructorBuilder builder);
 
     static ParameterConverter of(ParameterMetaData parameter) {
