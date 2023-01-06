@@ -25,6 +25,7 @@ import jakarta.nosql.tck.entities.constructor.BookUser;
 import jakarta.nosql.tck.entities.constructor.Computer;
 import jakarta.nosql.tck.entities.constructor.PetOwner;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.column.entities.BookRelease;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
@@ -128,7 +129,7 @@ class DefaultColumnEntityConverterConstructorTest {
 
     @Test
     public void shouldConverterFieldsOnEntityComputer() {
-        DocumentEntity communication = DocumentEntity.of("Computer");
+        ColumnEntity communication = ColumnEntity.of("Computer");
         communication.add("_id", "10");
         communication.add("name", "Dell");
         communication.add("age", "2020");
@@ -145,7 +146,7 @@ class DefaultColumnEntityConverterConstructorTest {
 
     @Test
     public void shouldConverterEntityBookRelease() {
-        DocumentEntity communication = DocumentEntity.of("BookRelease");
+        ColumnEntity communication = ColumnEntity.of("BookRelease");
         communication.add("isbn", "9780132345286");
         communication.add("title", "Effective Java");
         communication.add("author", "Joshua Bloch");
@@ -160,7 +161,7 @@ class DefaultColumnEntityConverterConstructorTest {
 
     @Test
     public void shouldConverterEntityBookReleaseOnStringYear() {
-        DocumentEntity communication = DocumentEntity.of("BookRelease");
+        ColumnEntity communication = ColumnEntity.of("BookRelease");
         communication.add("isbn", "9780132345286");
         communication.add("title", "Effective Java");
         communication.add("author", "Joshua Bloch");
