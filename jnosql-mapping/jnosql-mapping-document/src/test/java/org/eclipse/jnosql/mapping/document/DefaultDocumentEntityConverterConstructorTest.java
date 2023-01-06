@@ -120,5 +120,22 @@ public class DefaultDocumentEntityConverterConstructorTest {
 
     }
 
+    @Test
+    public void shouldConverterFieldsOnEntityComputer() {
+        DocumentEntity communication = DocumentEntity.of("Computer");
+        communication.add("_id", "10");
+        communication.add("name", "Dell");
+        communication.add("age", "2020");
+        communication.add("model", "Dell 2020");
+        communication.add("price", "USD 20");
+        Computer computer = this.converter.toEntity(communication);
+        assertNotNull(computer);
+        assertEquals(10L, computer.getId());
+        assertEquals("Dell", computer.getName());
+        assertEquals(2020, computer.getAge());
+        assertEquals("Dell 2020", computer.getModel());
+        assertEquals(Money.parse("USD 20"), computer.getPrice());
+    }
+
 
 }
