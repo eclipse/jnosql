@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.document.query;
+package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.Sort;
 import jakarta.nosql.document.DocumentCondition;
@@ -23,14 +23,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-class MappingDocumentQuery implements DocumentQuery {
+public final class MappingDocumentQuery implements DocumentQuery {
     private final List<Sort> sorts;
     private final long limit;
     private final long skip;
     private final DocumentCondition condition;
     private final String documentCollection;
 
-    MappingDocumentQuery(List<Sort> sorts, long limit, long skip, DocumentCondition condition, String documentCollection) {
+    public MappingDocumentQuery(List<Sort> sorts, long limit, long skip, DocumentCondition condition,
+                                String documentCollection) {
+
         this.sorts = sorts;
         this.limit = limit;
         this.skip = skip;
@@ -91,7 +93,7 @@ class MappingDocumentQuery implements DocumentQuery {
 
     @Override
     public String toString() {
-        return "ArtemisDocumentQuery{" + "limit=" + limit +
+        return "DocumentQuery{" + "limit=" + limit +
                 ", skip=" + skip +
                 ", documentCollection='" + documentCollection + '\'' +
                 ", condition=" + condition +

@@ -27,6 +27,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.QueryMapper;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
@@ -39,6 +40,7 @@ import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
 import java.time.Duration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ServiceLoader;
@@ -242,5 +244,17 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return entities.map(function).peek(getEventManager()::firePostEntity);
     }
 
+    @Override
+    public <T> QueryMapper.MapperFrom select(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        return new DocumentMapperSelect()
+    }
+
+    @Override
+    public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        return null;
+    }
 
 }
