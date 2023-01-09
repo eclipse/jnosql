@@ -18,31 +18,25 @@ import jakarta.nosql.Sort;
 import jakarta.nosql.SortType;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperFrom;
-import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperLimit;
-import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperNameCondition;
-import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperNameOrder;
-import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperNotCondition;
-import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperOrder;
-import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperSkip;
-import jakarta.nosql.mapping.document.DocumentQueryMapper.DocumentMapperWhere;
-import jakarta.nosql.mapping.document.DocumentQueryPagination;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.mapping.QueryMapper.MapperFrom;
+import jakarta.nosql.mapping.QueryMapper.MapperLimit;
+import jakarta.nosql.mapping.QueryMapper.MapperNameCondition;
+import jakarta.nosql.mapping.QueryMapper.MapperNameOrder;
+import jakarta.nosql.mapping.QueryMapper.MapperNotCondition;
+import jakarta.nosql.mapping.QueryMapper.MapperOrder;
+import jakarta.nosql.mapping.QueryMapper.MapperSkip;
+import jakarta.nosql.mapping.QueryMapper.MapperWhere;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements DocumentMapperFrom, DocumentMapperLimit,
-        DocumentMapperSkip, DocumentMapperOrder, DocumentMapperNameCondition,
-        DocumentMapperNotCondition, DocumentMapperNameOrder, DocumentMapperWhere {
+class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements MapperFrom, MapperLimit,
+        MapperSkip, MapperOrder, MapperNameCondition,
+        MapperNotCondition, MapperNameOrder, MapperWhere {
 
     private final List<Sort> sorts = new ArrayList<>();
 
@@ -53,7 +47,7 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
 
 
     @Override
-    public DocumentMapperNameCondition and(String name) {
+    public MapperNameCondition and(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = true;
@@ -61,7 +55,7 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
     }
 
     @Override
-    public DocumentMapperNameCondition or(String name) {
+    public MapperNameCondition or(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = false;
@@ -69,141 +63,115 @@ class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements 
     }
 
     @Override
-    public DocumentMapperNameCondition where(String name) {
+    public MapperNameCondition where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
     }
 
     @Override
-    public DocumentMapperSkip skip(long start) {
+    public MapperSkip skip(long start) {
         this.start = start;
         return this;
     }
 
     @Override
-    public DocumentMapperLimit limit(long limit) {
+    public MapperLimit limit(long limit) {
         this.limit = limit;
         return this;
     }
 
     @Override
-    public DocumentMapperOrder orderBy(String name) {
+    public MapperOrder orderBy(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
     }
 
     @Override
-    public DocumentMapperNotCondition not() {
+    public MapperNotCondition not() {
         this.negate = true;
         return this;
     }
 
     @Override
-    public <T> DocumentMapperWhere eq(T value) {
+    public <T> MapperWhere eq(T value) {
         eqImpl(value);
         return this;
     }
 
 
     @Override
-    public DocumentMapperWhere like(String value) {
+    public MapperWhere like(String value) {
         likeImpl(value);
         return this;
     }
 
     @Override
-    public <T> DocumentMapperWhere gt(T value) {
+    public <T> MapperWhere gt(T value) {
         gtImpl(value);
         return this;
     }
 
     @Override
-    public <T> DocumentMapperWhere gte(T value) {
+    public <T> MapperWhere gte(T value) {
         gteImpl(value);
         return this;
     }
 
     @Override
-    public <T> DocumentMapperWhere lt(T value) {
+    public <T> MapperWhere lt(T value) {
         ltImpl(value);
         return this;
     }
 
 
     @Override
-    public <T> DocumentMapperWhere lte(T value) {
+    public <T> MapperWhere lte(T value) {
         lteImpl(value);
         return this;
     }
 
     @Override
-    public <T> DocumentMapperWhere between(T valueA, T valueB) {
+    public <T> MapperWhere between(T valueA, T valueB) {
         betweenImpl(valueA, valueB);
         return this;
     }
 
     @Override
-    public <T> DocumentMapperWhere in(Iterable<T> values) {
+    public <T> MapperWhere in(Iterable<T> values) {
         inImpl(values);
         return this;
     }
 
     @Override
-    public DocumentMapperNameOrder asc() {
+    public MapperNameOrder asc() {
         this.sorts.add(Sort.of(mapping.getColumnField(name), SortType.ASC));
         return this;
     }
 
     @Override
-    public DocumentMapperNameOrder desc() {
+    public MapperNameOrder desc() {
         this.sorts.add(Sort.of(mapping.getColumnField(name), SortType.DESC));
         return this;
     }
 
-    @Override
-    public DocumentQuery build() {
+    private DocumentQuery build() {
         return new MappingDocumentQuery(sorts, limit, start, condition, documentCollection);
     }
 
     @Override
-    public DocumentQuery build(Pagination pagination) {
-        requireNonNull(pagination, "pagination is required");
-        return DocumentQueryPagination.of(build(), pagination);
+    public <T> List<T> getResult() {
+        return null;
     }
 
     @Override
-    public <T> Stream<T> getResult(DocumentTemplate template) {
-        Objects.requireNonNull(template, "template is required");
-        return template.select(this.build());
+    public <T> List<T> stream() {
+        return null;
     }
 
     @Override
-    public <T> Optional<T> getSingleResult(DocumentTemplate template) {
-        Objects.requireNonNull(template, "template is required");
-        return template.singleResult(this.build());
+    public <T> Optional<T> getSingleResult() {
+        return Optional.empty();
     }
-
-    @Override
-    public <T> Stream<T> getResult(DocumentTemplate template, Pagination pagination) {
-        requireNonNull(template, "template is required");
-        requireNonNull(pagination, "pagination is required");
-        return template.select(this.build(pagination));
-    }
-
-    @Override
-    public <T> Optional<T> getSingleResult(DocumentTemplate template, Pagination pagination) {
-        requireNonNull(template, "template is required");
-        requireNonNull(pagination, "pagination is required");
-        return template.singleResult(this.build(pagination));
-    }
-
-    @Override
-    public <T> Page<T> page(DocumentTemplate template, Pagination pagination) {
-        requireNonNull(pagination, "pagination is required");
-        requireNonNull(template, "template is required");
-        return template.select(DocumentQueryPagination.of(build(), pagination));
-    }
-
 }
