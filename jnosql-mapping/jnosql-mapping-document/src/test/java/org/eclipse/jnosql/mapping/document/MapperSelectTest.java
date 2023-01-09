@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import jakarta.nosql.document.DocumentEntity;
 import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Converters;
@@ -34,8 +35,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static jakarta.nosql.document.DocumentQuery.select;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -54,7 +59,6 @@ public class MapperSelectTest {
     private DocumentManager managerMock;
 
     private DefaultDocumentTemplate template;
-
 
     private ArgumentCaptor<DocumentQuery> captor;
 
@@ -117,7 +121,6 @@ public class MapperSelectTest {
     }
 
 
-
     @Test
     public void shouldSelectWhereNameEq() {
         template.select(Person.class).where("name").eq("Ada").result();
@@ -159,7 +162,6 @@ public class MapperSelectTest {
     }
 
 
-
     @Test
     public void shouldSelectWhereNameLt() {
         template.select(Person.class).where("id").lt(10).result();
@@ -182,7 +184,7 @@ public class MapperSelectTest {
 
     @Test
     public void shouldSelectWhereNameBetween() {
-       template.select(Person.class).where("id")
+        template.select(Person.class).where("id")
                 .between(10, 20).result();
         DocumentQuery queryExpected = select().from("Person").where("_id")
                 .between(10L, 20L).build();
@@ -280,6 +282,47 @@ public class MapperSelectTest {
     }
 
 
+    @Test
+    public void shouldResult() {
+        DocumentQuery query = select().from("Person").build();
+        DocumentEntity entity = DocumentEntity.of("Person");
+        entity.add("_id", 1L);
+        entity.add("name", "Ada");
+        entity.add("age", 20);
+        Mockito.when(managerMock.select(Mockito.eq(query))).thenReturn(Stream.of(entity));
+        List<Person> result = template.select(Person.class).result();
+        Assertions.assertNotNull(result);
+        assertThat(result).hasSize(1)
+                .map(Person::getName).contains("Ada");
+    }
+
+
+    @Test
+    public void shouldStream() {
+
+        DocumentQuery query = select().from("Person").build();
+        DocumentEntity entity = DocumentEntity.of("Person");
+        entity.add("_id", 1L);
+        entity.add("name", "Ada");
+        entity.add("age", 20);
+        Mockito.when(managerMock.select(Mockito.eq(query))).thenReturn(Stream.of(entity));
+        Stream<Person> result = template.select(Person.class).stream();
+        Assertions.assertNotNull(result);
+    }
+
+    @Test
+    public void shouldSingleResult() {
+
+        DocumentQuery query = select().from("Person").build();
+        DocumentEntity entity = DocumentEntity.of("Person");
+        entity.add("_id", 1L);
+        entity.add("name", "Ada");
+        entity.add("age", 20);
+        Mockito.when(managerMock.select(Mockito.eq(query))).thenReturn(Stream.of(entity));
+        Optional<Person> result = template.select(Person.class).singleResult();
+        Assertions.assertNotNull(result);
+        Assertions.assertTrue(result.isPresent());
+    }
 
     @Test
     public void shouldReturnErrorSelectWhenOrderIsNull() {
