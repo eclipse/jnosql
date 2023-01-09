@@ -34,14 +34,14 @@ import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultDocumentMapperSelectBuilder extends AbstractMapperQuery implements MapperFrom, MapperLimit,
+class DocumentMapperSelect extends AbstractMapperQuery implements MapperFrom, MapperLimit,
         MapperSkip, MapperOrder, MapperNameCondition,
         MapperNotCondition, MapperNameOrder, MapperWhere {
 
     private final List<Sort> sorts = new ArrayList<>();
 
 
-    DefaultDocumentMapperSelectBuilder(EntityMetadata mapping, Converters converters) {
+    DocumentMapperSelect(EntityMetadata mapping, Converters converters) {
         super(mapping, converters);
     }
 

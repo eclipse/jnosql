@@ -40,7 +40,7 @@ import static jakarta.nosql.document.DocumentQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
-public class DefaultDocumentMapperSelectBuilderTest {
+public class DocumentMapperSelectTest {
 
     @Inject
     private DocumentQueryMapper mapperBuilder;
