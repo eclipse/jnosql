@@ -248,13 +248,14 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
     public <T> QueryMapper.MapperFrom select(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        return new DocumentMapperSelect()
+        return new DocumentMapperSelect(metadata, getConverters(), this);
     }
 
     @Override
     public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
-        return null;
+        EntityMetadata metadata = getEntities().get(type);
+        return new DocumentMapperDelete(metadata, getConverters(), this);
     }
 
 }
