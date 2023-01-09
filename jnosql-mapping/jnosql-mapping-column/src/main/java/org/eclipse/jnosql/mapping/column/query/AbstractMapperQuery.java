@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.column.query;
 import jakarta.nosql.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
@@ -40,19 +41,22 @@ abstract class AbstractMapperQuery {
 
     protected String name;
 
-    protected final EntityMetadata mapping;
+    protected transient final EntityMetadata mapping;
 
-    protected final Converters converters;
+    protected transient final Converters converters;
+
+    protected transient final ColumnTemplate template;
 
     protected long start;
 
     protected long limit;
 
 
-    AbstractMapperQuery(EntityMetadata mapping, Converters converters) {
+    AbstractMapperQuery(EntityMetadata mapping, Converters converters, ColumnTemplate template) {
         this.mapping = mapping;
         this.converters = converters;
         this.columnFamily = mapping.getName();
+        this.template = template;
     }
 
     protected void appendCondition(ColumnCondition newCondition) {
