@@ -32,6 +32,8 @@ import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -163,12 +165,15 @@ final class DocumentMapperSelect extends AbstractMapperQuery implements MapperFr
 
     @Override
     public <T> List<T> getResult() {
-        return null;
+        DocumentQuery query = build();
+        return this.template.<T>select(query)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
-    public <T> List<T> stream() {
-        return null;
+    public <T> Stream<T> stream() {
+        DocumentQuery query = build();
+        return this.template.select(query);
     }
 
     @Override
