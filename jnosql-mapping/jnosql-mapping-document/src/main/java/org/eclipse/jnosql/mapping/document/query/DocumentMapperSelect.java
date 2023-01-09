@@ -178,6 +178,7 @@ final class DocumentMapperSelect extends AbstractMapperQuery implements MapperFr
 
     @Override
     public <T> Optional<T> getSingleResult() {
-        return Optional.empty();
+        DocumentQuery query = build();
+        return this.template.singleResult(query);
     }
 }
