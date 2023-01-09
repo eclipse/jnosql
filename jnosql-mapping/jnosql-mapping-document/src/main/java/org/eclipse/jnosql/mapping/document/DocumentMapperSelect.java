@@ -164,7 +164,7 @@ final class DocumentMapperSelect extends AbstractMapperQuery implements MapperFr
     }
 
     @Override
-    public <T> List<T> getResult() {
+    public <T> List<T> result() {
         DocumentQuery query = build();
         return this.template.<T>select(query)
                 .collect(Collectors.toUnmodifiableList());
@@ -177,7 +177,7 @@ final class DocumentMapperSelect extends AbstractMapperQuery implements MapperFr
     }
 
     @Override
-    public <T> Optional<T> getSingleResult() {
+    public <T> Optional<T> singleResult() {
         DocumentQuery query = build();
         return this.template.singleResult(query);
     }

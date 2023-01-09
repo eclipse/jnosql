@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.document;
 import jakarta.nosql.tck.test.CDIExtension;
 
 @CDIExtension
-public class DocumentMapperDeleteTest {
+public class MapperDeleteTest {
 
 
 
