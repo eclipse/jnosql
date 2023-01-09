@@ -18,8 +18,6 @@ import jakarta.nosql.Sort;
 import jakarta.nosql.SortType;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.QueryMapper.MapperFrom;
 import jakarta.nosql.mapping.QueryMapper.MapperLimit;
 import jakarta.nosql.mapping.QueryMapper.MapperNameCondition;
@@ -28,7 +26,6 @@ import jakarta.nosql.mapping.QueryMapper.MapperNotCondition;
 import jakarta.nosql.mapping.QueryMapper.MapperOrder;
 import jakarta.nosql.mapping.QueryMapper.MapperSkip;
 import jakarta.nosql.mapping.QueryMapper.MapperWhere;
-import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
@@ -40,13 +37,13 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements MapperFrom, MapperLimit,
+class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom, MapperLimit,
         MapperSkip, MapperOrder, MapperNameCondition,
         MapperNotCondition, MapperNameOrder, MapperWhere {
 
     private final List<Sort> sorts = new ArrayList<>();
 
-    DefaultColumnMapperSelectBuilder(EntityMetadata mapping, Converters converters, ColumnTemplate template) {
+    ColumnMapperSelect(EntityMetadata mapping, Converters converters, ColumnTemplate template) {
         super(mapping, converters, template);
     }
 

@@ -38,7 +38,7 @@ import static jakarta.nosql.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
-public class DefaultColumnMapperSelectBuilderTest {
+public class ColumnMapperSelectTest {
 
     @Inject
     private ColumnQueryMapper mapperBuilder;

@@ -38,7 +38,7 @@ class DefaultColumnQueryMapperBuilder implements ColumnQueryMapper {
     public <T> ColumnMapperFrom selectFrom(Class<T> type) {
         requireNonNull(type, "entity is required");
         EntityMetadata mapping = mappings.get().get(type);
-        return new DefaultColumnMapperSelectBuilder(mapping, converters.get());
+        return new ColumnMapperSelect(mapping, converters.get());
     }
 
     @Override
