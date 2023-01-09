@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * The mapping implementation of {@link DocumentQuery}
+ */
 public final class MappingDocumentQuery implements DocumentQuery {
     private final List<Sort> sorts;
     private final long limit;
