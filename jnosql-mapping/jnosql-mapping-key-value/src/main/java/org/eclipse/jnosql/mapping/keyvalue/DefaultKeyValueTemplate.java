@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 import jakarta.nosql.keyvalue.BucketManager;
+import jakarta.nosql.mapping.QueryMapper;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
