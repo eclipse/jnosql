@@ -45,6 +45,6 @@ class DefaultColumnQueryMapperBuilder implements ColumnQueryMapper {
     public <T> ColumnMapperDeleteFrom deleteFrom(Class<T> type) {
         requireNonNull(type, "entity is required");
         EntityMetadata mapping = mappings.get().get(type);
-        return new DefaultColumnMapperDeleteBuilder(mapping, converters.get());
+        return new ColumnMapperDelete(mapping, converters.get());
     }
 }

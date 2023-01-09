@@ -16,25 +16,25 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteFrom;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteNameCondition;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteNotCondition;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperDeleteWhere;
+import jakarta.nosql.mapping.QueryMapper.MapperDeleteFrom;
+import jakarta.nosql.mapping.QueryMapper.MapperDeleteNameCondition;
+import jakarta.nosql.mapping.QueryMapper.MapperDeleteNotCondition;
+import jakarta.nosql.mapping.QueryMapper.MapperDeleteWhere;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultColumnMapperDeleteBuilder extends AbstractMapperQuery implements ColumnMapperDeleteFrom,
-        ColumnMapperDeleteWhere, ColumnMapperDeleteNameCondition, ColumnMapperDeleteNotCondition {
+class ColumnMapperDelete extends AbstractMapperQuery implements MapperDeleteFrom,
+        MapperDeleteWhere, MapperDeleteNameCondition, MapperDeleteNotCondition  {
 
 
-    DefaultColumnMapperDeleteBuilder(EntityMetadata mapping, Converters converters) {
-        super(mapping, converters);
+    ColumnMapperDelete(EntityMetadata mapping, Converters converters, ColumnTemplate template) {
+        super(mapping, converters, template);
     }
 
     @Override
-    public ColumnMapperDeleteNameCondition where(String name) {
+    public MapperDeleteNameCondition where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
@@ -42,7 +42,7 @@ class DefaultColumnMapperDeleteBuilder extends AbstractMapperQuery implements Co
 
 
     @Override
-    public ColumnMapperDeleteNameCondition and(String name) {
+    public MapperDeleteNameCondition and(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = true;
@@ -50,7 +50,7 @@ class DefaultColumnMapperDeleteBuilder extends AbstractMapperQuery implements Co
     }
 
     @Override
-    public ColumnMapperDeleteNameCondition or(String name) {
+    public MapperDeleteNameCondition or(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = false;
@@ -59,70 +59,68 @@ class DefaultColumnMapperDeleteBuilder extends AbstractMapperQuery implements Co
 
 
     @Override
-    public ColumnMapperDeleteNotCondition not() {
+    public MapperDeleteNotCondition not() {
         this.negate = true;
         return this;
     }
 
     @Override
-    public <T> ColumnMapperDeleteWhere eq(T value) {
+    public <T> MapperDeleteWhere eq(T value) {
         eqImpl(value);
         return this;
     }
 
     @Override
-    public ColumnMapperDeleteWhere like(String value) {
+    public MapperDeleteWhere like(String value) {
         likeImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnMapperDeleteWhere gt(T value) {
+    public <T> MapperDeleteWhere gt(T value) {
         gtImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnMapperDeleteWhere gte(T value) {
+    public <T> MapperDeleteWhere gte(T value) {
         gteImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnMapperDeleteWhere lt(T value) {
+    public <T> MapperDeleteWhere lt(T value) {
         ltImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnMapperDeleteWhere lte(T value) {
+    public <T> MapperDeleteWhere lte(T value) {
         lteImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnMapperDeleteWhere between(T valueA, T valueB) {
+    public <T> MapperDeleteWhere between(T valueA, T valueB) {
         betweenImpl(valueA, valueB);
         return this;
     }
 
-
     @Override
-    public <T> ColumnMapperDeleteWhere in(Iterable<T> values) {
+    public <T> MapperDeleteWhere in(Iterable<T> values) {
         inImpl(values);
         return this;
     }
 
 
-    @Override
-    public ColumnDeleteQuery build() {
+    private ColumnDeleteQuery build() {
         return new MappingColumnDeleteQuery(columnFamily, condition);
     }
 
     @Override
-    public void delete(ColumnTemplate template) {
-        requireNonNull(template, "template is required");
-        template.delete(this.build());
+    public void execute() {
+        ColumnDeleteQuery query = build();
+        this.template.delete(query);
     }
 
 }

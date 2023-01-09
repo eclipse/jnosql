@@ -33,7 +33,7 @@ import static jakarta.nosql.column.ColumnDeleteQuery.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
-public class DefaultColumnMapperDeleteBuilderTest {
+public class ColumnMapperDeleteTest {
 
     @Inject
     private ColumnQueryMapper mapperBuilder;
