@@ -20,14 +20,14 @@ import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperFrom;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperLimit;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperNameCondition;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperNameOrder;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperNotCondition;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperOrder;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperSkip;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperWhere;
+import jakarta.nosql.mapping.QueryMapper.MapperFrom;
+import jakarta.nosql.mapping.QueryMapper.MapperLimit;
+import jakarta.nosql.mapping.QueryMapper.MapperNameCondition;
+import jakarta.nosql.mapping.QueryMapper.MapperNameOrder;
+import jakarta.nosql.mapping.QueryMapper.MapperNotCondition;
+import jakarta.nosql.mapping.QueryMapper.MapperOrder;
+import jakarta.nosql.mapping.QueryMapper.MapperSkip;
+import jakarta.nosql.mapping.QueryMapper.MapperWhere;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
 import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
@@ -35,24 +35,23 @@ import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements ColumnMapperFrom,
-        ColumnMapperLimit, ColumnMapperSkip,
-        ColumnMapperOrder, ColumnMapperNameCondition,
-        ColumnMapperNotCondition, ColumnMapperNameOrder,
-        ColumnMapperWhere {
+class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements MapperFrom, MapperLimit,
+        MapperSkip, MapperOrder, MapperNameCondition,
+        MapperNotCondition, MapperNameOrder, MapperWhere {
 
     private final List<Sort> sorts = new ArrayList<>();
 
-    DefaultColumnMapperSelectBuilder(EntityMetadata mapping, Converters converters) {
-        super(mapping, converters);
+    DefaultColumnMapperSelectBuilder(EntityMetadata mapping, Converters converters, ColumnTemplate template) {
+        super(mapping, converters, template);
     }
 
     @Override
-    public ColumnMapperNameCondition and(String name) {
+    public MapperNameCondition and(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = true;
@@ -60,7 +59,7 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
     }
 
     @Override
-    public ColumnMapperNameCondition or(String name) {
+    public MapperNameCondition or(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         this.and = false;
@@ -68,146 +67,119 @@ class DefaultColumnMapperSelectBuilder extends AbstractMapperQuery implements Co
     }
 
     @Override
-    public ColumnMapperNameCondition where(String name) {
+    public MapperNameCondition where(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
     }
 
     @Override
-    public ColumnMapperSkip skip(long skip) {
-        this.start = skip;
+    public MapperSkip skip(long start) {
+        this.start = start;
         return this;
     }
 
     @Override
-    public ColumnMapperLimit limit(long limit) {
+    public MapperLimit limit(long limit) {
         this.limit = limit;
         return this;
     }
 
     @Override
-    public ColumnMapperOrder orderBy(String name) {
+    public MapperOrder orderBy(String name) {
         requireNonNull(name, "name is required");
         this.name = name;
         return this;
     }
 
-
     @Override
-    public ColumnMapperNotCondition not() {
+    public MapperNotCondition not() {
         this.negate = true;
         return this;
     }
 
     @Override
-    public <T> ColumnMapperWhere eq(T value) {
+    public <T> MapperWhere eq(T value) {
         eqImpl(value);
         return this;
     }
 
 
     @Override
-    public ColumnMapperWhere like(String value) {
+    public MapperWhere like(String value) {
         likeImpl(value);
         return this;
     }
 
-
     @Override
-    public <T> ColumnMapperWhere gt(T value) {
+    public <T> MapperWhere gt(T value) {
         gtImpl(value);
         return this;
     }
 
-
     @Override
-    public <T> ColumnMapperWhere gte(T value) {
+    public <T> MapperWhere gte(T value) {
         gteImpl(value);
         return this;
     }
 
     @Override
-    public <T> ColumnMapperWhere lt(T value) {
+    public <T> MapperWhere lt(T value) {
         ltImpl(value);
         return this;
     }
 
 
     @Override
-    public <T> ColumnMapperWhere lte(T value) {
+    public <T> MapperWhere lte(T value) {
         lteImpl(value);
         return this;
     }
 
-
     @Override
-    public <T> ColumnMapperWhere between(T valueA, T valueB) {
+    public <T> MapperWhere between(T valueA, T valueB) {
         betweenImpl(valueA, valueB);
         return this;
     }
 
     @Override
-    public <T> ColumnMapperWhere in(Iterable<T> values) {
+    public <T> MapperWhere in(Iterable<T> values) {
         inImpl(values);
         return this;
     }
 
     @Override
-    public ColumnMapperNameOrder asc() {
+    public MapperNameOrder asc() {
         this.sorts.add(Sort.of(mapping.getColumnField(name), SortType.ASC));
         return this;
     }
 
     @Override
-    public ColumnMapperNameOrder desc() {
+    public MapperNameOrder desc() {
         this.sorts.add(Sort.of(mapping.getColumnField(name), SortType.DESC));
         return this;
     }
-
-
-    @Override
-    public ColumnQuery build() {
+    private ColumnQuery build() {
         return new MappingColumnQuery(sorts, limit, start, condition, columnFamily);
     }
 
     @Override
-    public ColumnQuery build(Pagination pagination) {
-        requireNonNull(pagination, "pagination is required");
-        return ColumnQueryPagination.of(build(), pagination);
+    public <T> List<T> result() {
+        ColumnQuery query = build();
+        return this.template.<T>select(query)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
-    public <T> Stream<T> getResult(ColumnTemplate template) {
-        requireNonNull(template, "template is required");
-        return template.select(this.build());
+    public <T> Stream<T> stream() {
+        ColumnQuery query = build();
+        return this.template.select(query);
     }
 
     @Override
-    public <T> Optional<T> getSingleResult(ColumnTemplate template) {
-        requireNonNull(template, "template is required");
-        return template.singleResult(this.build());
-    }
-
-    @Override
-    public <T> Stream<T> getResult(ColumnTemplate template, Pagination pagination) {
-        requireNonNull(template, "template is required");
-        requireNonNull(pagination, "pagination is required");
-        return template.select(this.build(pagination));
-    }
-
-    @Override
-    public <T> Optional<T> getSingleResult(ColumnTemplate template, Pagination pagination) {
-        requireNonNull(template, "template is required");
-        requireNonNull(pagination, "pagination is required");
-        return template.singleResult(this.build(pagination));
-    }
-
-    @Override
-    public <T> Page<T> page(ColumnTemplate template, Pagination pagination) {
-        requireNonNull(pagination, "pagination is required");
-        requireNonNull(template, "template is required");
-        return template.select(ColumnQueryPagination.of(build(), pagination));
+    public <T> Optional<T> singleResult() {
+        ColumnQuery query = build();
+        return this.template.singleResult(query);
     }
 
 }
