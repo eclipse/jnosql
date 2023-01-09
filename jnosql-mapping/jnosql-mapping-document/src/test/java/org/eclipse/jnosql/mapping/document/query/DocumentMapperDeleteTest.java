@@ -34,7 +34,7 @@ import static jakarta.nosql.document.DocumentDeleteQuery.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
-public class DefaultDocumentMapperDeleteBuilderTest {
+public class DocumentMapperDeleteTest {
 
     @Inject
     private DocumentQueryMapper mapperBuilder;

@@ -35,7 +35,7 @@ import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
-class DocumentMapperSelect extends AbstractMapperQuery implements MapperFrom, MapperLimit,
+final class DocumentMapperSelect extends AbstractMapperQuery implements MapperFrom, MapperLimit,
         MapperSkip, MapperOrder, MapperNameCondition,
         MapperNotCondition, MapperNameOrder, MapperWhere {
 

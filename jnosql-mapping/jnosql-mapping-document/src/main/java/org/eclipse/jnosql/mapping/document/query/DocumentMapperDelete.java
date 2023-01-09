@@ -25,11 +25,11 @@ import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultDocumentMapperDeleteBuilder extends AbstractMapperQuery implements MapperDeleteFrom,
+final class DocumentMapperDelete extends AbstractMapperQuery implements MapperDeleteFrom,
         MapperDeleteWhere, MapperDeleteNameCondition, MapperDeleteNotCondition {
 
 
-    DefaultDocumentMapperDeleteBuilder(EntityMetadata mapping, Converters converters, DocumentTemplate template) {
+    DocumentMapperDelete(EntityMetadata mapping, Converters converters, DocumentTemplate template) {
         super(mapping, converters, template);
     }
 
