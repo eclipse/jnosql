@@ -25,7 +25,7 @@ import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import static java.util.Objects.requireNonNull;
 
-class ColumnMapperDelete extends AbstractMapperQuery implements MapperDeleteFrom,
+final class ColumnMapperDelete extends AbstractMapperQuery implements MapperDeleteFrom,
         MapperDeleteWhere, MapperDeleteNameCondition, MapperDeleteNotCondition  {
 
 

@@ -37,7 +37,7 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom, MapperLimit,
+final class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom, MapperLimit,
         MapperSkip, MapperOrder, MapperNameCondition,
         MapperNotCondition, MapperNameOrder, MapperWhere {
 
