@@ -24,9 +24,9 @@ import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
 import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
+import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.User;
 import jakarta.nosql.tck.test.CDIExtension;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,6 +59,7 @@ import static org.mockito.Mockito.when;
 
 @CDIExtension
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class DefaultKeyValueTemplateTest {
 
     private static final String KEY = "otaviojava";
@@ -77,20 +78,20 @@ public class DefaultKeyValueTemplateTest {
     @Captor
     private ArgumentCaptor<KeyValueEntity> captor;
 
-    private KeyValueTemplate subject;
+    private KeyValueTemplate template;
 
 
     @BeforeEach
     public void setUp() {
         Instance<BucketManager> instance = Mockito.mock(Instance.class);
         when(instance.get()).thenReturn(manager);
-        this.subject = new DefaultKeyValueTemplate(converter, instance, flow, eventManager);
+        this.template = new DefaultKeyValueTemplate(converter, instance, flow, eventManager);
     }
 
     @Test
     public void shouldPut() {
         User user = new User(KEY, "otavio", 27);
-        subject.put(user);
+        template.put(user);
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
         assertEquals(KEY, entity.getKey());
@@ -101,14 +102,14 @@ public class DefaultKeyValueTemplateTest {
     @Test
     public void shouldMergeOnPut() {
         User user = new User(KEY, "otavio", 27);
-        User result = subject.put(user);
+        User result = template.put(user);
         assertSame(user, result);
     }
 
     @Test
     public void shouldPutIterable() {
         User user = new User(KEY, "otavio", 27);
-        subject.put(singletonList(user));
+        template.put(singletonList(user));
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
         assertEquals(KEY, entity.getKey());
@@ -120,7 +121,7 @@ public class DefaultKeyValueTemplateTest {
 
         Duration duration = Duration.ofSeconds(2L);
         User user = new User(KEY, "otavio", 27);
-        subject.put(user, duration);
+        template.put(user, duration);
 
         Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
         KeyValueEntity entity = captor.getValue();
@@ -133,7 +134,7 @@ public class DefaultKeyValueTemplateTest {
 
         Duration duration = Duration.ofSeconds(2L);
         User user = new User(KEY, "otavio", 27);
-        subject.put(singletonList(user), duration);
+        template.put(singletonList(user), duration);
 
         Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
         KeyValueEntity entity = captor.getValue();
@@ -144,7 +145,7 @@ public class DefaultKeyValueTemplateTest {
     @Test
     public void shouldInsert() {
         User user = new User(KEY, "otavio", 27);
-        subject.insert(user);
+        template.insert(user);
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
         assertEquals(KEY, entity.getKey());
@@ -154,7 +155,7 @@ public class DefaultKeyValueTemplateTest {
     @Test
     public void shouldInsertIterable() {
         User user = new User(KEY, "otavio", 27);
-        subject.insert(singletonList(user));
+        template.insert(singletonList(user));
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
         assertEquals(KEY, entity.getKey());
@@ -166,7 +167,7 @@ public class DefaultKeyValueTemplateTest {
 
         Duration duration = Duration.ofSeconds(2L);
         User user = new User(KEY, "otavio", 27);
-        subject.insert(user, duration);
+        template.insert(user, duration);
 
         Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
         KeyValueEntity entity = captor.getValue();
@@ -179,7 +180,7 @@ public class DefaultKeyValueTemplateTest {
 
         Duration duration = Duration.ofSeconds(2L);
         User user = new User(KEY, "otavio", 27);
-        subject.insert(singletonList(user), duration);
+        template.insert(singletonList(user), duration);
 
         Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
         KeyValueEntity entity = captor.getValue();
@@ -190,7 +191,7 @@ public class DefaultKeyValueTemplateTest {
     @Test
     public void shouldUpdate() {
         User user = new User(KEY, "otavio", 27);
-        subject.update(user);
+        template.update(user);
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
         assertEquals(KEY, entity.getKey());
@@ -200,7 +201,7 @@ public class DefaultKeyValueTemplateTest {
     @Test
     public void shouldUpdateIterable() {
         User user = new User(KEY, "otavio", 27);
-        subject.update(singletonList(user));
+        template.update(singletonList(user));
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
         assertEquals(KEY, entity.getKey());
@@ -212,7 +213,7 @@ public class DefaultKeyValueTemplateTest {
         User user = new User(KEY, "otavio", 27);
 
         when(manager.get(KEY)).thenReturn(Optional.of(Value.of(user)));
-        Optional<User> userOptional = subject.get(KEY, User.class);
+        Optional<User> userOptional = template.get(KEY, User.class);
 
         assertTrue(userOptional.isPresent());
         assertEquals(user, userOptional.get());
@@ -222,7 +223,7 @@ public class DefaultKeyValueTemplateTest {
     public void shouldFindById() {
         User user = new User(KEY, "otavio", 27);
         when(manager.get(KEY)).thenReturn(Optional.of(Value.of(user)));
-        Optional<User> userOptional = subject.find(User.class, KEY);
+        Optional<User> userOptional = template.find(User.class, KEY);
 
         assertTrue(userOptional.isPresent());
         assertEquals(user, userOptional.get());
@@ -233,7 +234,7 @@ public class DefaultKeyValueTemplateTest {
         User user = new User(KEY, "otavio", 27);
 
         when(manager.get(KEY)).thenReturn(Optional.of(Value.of(user)));
-        List<User> userOptional = stream(subject.get(singletonList(KEY), User.class).spliterator(), false)
+        List<User> userOptional = stream(template.get(singletonList(KEY), User.class).spliterator(), false)
                 .collect(toList());
 
         assertFalse(userOptional.isEmpty());
@@ -245,7 +246,7 @@ public class DefaultKeyValueTemplateTest {
         User user = new User(KEY, "otavio", 27);
 
         when(manager.get(KEY)).thenReturn(Optional.empty());
-        List<User> userOptional = stream(subject.get(singletonList(KEY), User.class).spliterator(), false)
+        List<User> userOptional = stream(template.get(singletonList(KEY), User.class).spliterator(), false)
                 .collect(toList());
 
         assertTrue(userOptional.isEmpty());
@@ -253,38 +254,38 @@ public class DefaultKeyValueTemplateTest {
 
     @Test
     public void shouldRemove() {
-        subject.delete(KEY);
+        template.delete(KEY);
         Mockito.verify(manager).delete(KEY);
     }
 
     @Test
     public void shouldRemoveById() {
-        subject.delete(User.class, KEY);
+        template.delete(User.class, KEY);
         Mockito.verify(manager).delete(KEY);
     }
 
     @Test
     public void shouldRemoveIterable() {
-        subject.delete(singletonList(KEY));
+        template.delete(singletonList(KEY));
         Mockito.verify(manager).delete(singletonList(KEY));
     }
 
     @Test
     public void shouldExecuteClass() {
-        subject.query("remove id");
+        template.query("remove id");
         Mockito.verify(manager).query("remove id");
     }
 
     @Test
     @MockitoSettings(strictness = Strictness.LENIENT)
     public void shouldReturnErrorWhenQueryIsNull() {
-        assertThrows(NullPointerException.class, () -> subject.query(null));
-        assertThrows(NullPointerException.class, () -> subject.query(null, String.class));
+        assertThrows(NullPointerException.class, () -> template.query(null));
+        assertThrows(NullPointerException.class, () -> template.query(null, String.class));
     }
 
     @Test
     public void shouldExecuteClassNotClass() {
-        subject.query("remove id");
+        template.query("remove id");
         Mockito.verify(manager).query("remove id");
     }
 
@@ -293,7 +294,7 @@ public class DefaultKeyValueTemplateTest {
         when(manager.query("get id"))
                 .thenReturn(Stream.of(Value.of("12")));
 
-        List<Integer> ids = subject.query("get id", Integer.class).collect(toList());
+        List<Integer> ids = template.query("get id", Integer.class).collect(toList());
         assertThat(ids).contains(12);
     }
 
@@ -302,7 +303,7 @@ public class DefaultKeyValueTemplateTest {
         when(manager.query("get id"))
                 .thenReturn(Stream.of(Value.of("12")));
 
-        Optional<Integer> id = subject.getSingleResult("get id", Integer.class);
+        Optional<Integer> id = template.getSingleResult("get id", Integer.class);
         assertTrue(id.isPresent());
     }
 
@@ -312,14 +313,14 @@ public class DefaultKeyValueTemplateTest {
         when(manager.query("get id2"))
                 .thenReturn(Stream.empty());
 
-        assertFalse(subject.getSingleResult("get id2", Integer.class).isPresent());
+        assertFalse(template.getSingleResult("get id2", Integer.class).isPresent());
     }
 
     @Test
     public void shouldReturnSingleResult3() {
         when(manager.query("get id3"))
                 .thenReturn(Stream.of(Value.of("12"), Value.of("15")));
-        assertThrows(NonUniqueResultException.class, () -> subject.getSingleResult("get id3", Integer.class));
+        assertThrows(NonUniqueResultException.class, () -> template.getSingleResult("get id3", Integer.class));
     }
 
     @Test
@@ -329,7 +330,7 @@ public class DefaultKeyValueTemplateTest {
         when(prepare.getSingleResult()).thenReturn(Optional.of(Value.of("12")));
         when(manager.prepare("get @id")).thenReturn(prepare);
 
-        PreparedStatement statement = subject.prepare("get @id", Integer.class);
+        PreparedStatement statement = template.prepare("get @id", Integer.class);
         statement.bind("id", 12);
         List<Integer> resultList = statement.<Integer>getResult().collect(toList());
         assertThat(resultList).contains(12);
@@ -338,5 +339,13 @@ public class DefaultKeyValueTemplateTest {
         assertEquals(12, singleResult.get());
     }
 
+    @Test
+    public void shouldUnsupportedExceptionOnSelect() {
+        assertThrows(UnsupportedOperationException.class, ()-> template.select(Person.class));
+    }
 
+    @Test
+    public void shouldUnsupportedExceptionOnDelete() {
+        assertThrows(UnsupportedOperationException.class, ()-> template.delete(Person.class));
+    }
 }
