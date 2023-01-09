@@ -26,6 +26,7 @@ import jakarta.nosql.mapping.QueryMapper.MapperNotCondition;
 import jakarta.nosql.mapping.QueryMapper.MapperOrder;
 import jakarta.nosql.mapping.QueryMapper.MapperSkip;
 import jakarta.nosql.mapping.QueryMapper.MapperWhere;
+import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.util.ArrayList;
@@ -41,8 +42,8 @@ class DocumentMapperSelect extends AbstractMapperQuery implements MapperFrom, Ma
     private final List<Sort> sorts = new ArrayList<>();
 
 
-    DocumentMapperSelect(EntityMetadata mapping, Converters converters) {
-        super(mapping, converters);
+    DocumentMapperSelect(EntityMetadata mapping, Converters converters, DocumentTemplate template) {
+        super(mapping, converters, template);
     }
 
 

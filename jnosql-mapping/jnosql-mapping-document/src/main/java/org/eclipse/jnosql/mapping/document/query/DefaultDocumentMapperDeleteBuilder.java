@@ -20,6 +20,7 @@ import jakarta.nosql.mapping.QueryMapper.MapperDeleteFrom;
 import jakarta.nosql.mapping.QueryMapper.MapperDeleteNameCondition;
 import jakarta.nosql.mapping.QueryMapper.MapperDeleteNotCondition;
 import jakarta.nosql.mapping.QueryMapper.MapperDeleteWhere;
+import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import static java.util.Objects.requireNonNull;
@@ -28,8 +29,8 @@ class DefaultDocumentMapperDeleteBuilder extends AbstractMapperQuery implements 
         MapperDeleteWhere, MapperDeleteNameCondition, MapperDeleteNotCondition {
 
 
-    DefaultDocumentMapperDeleteBuilder(EntityMetadata mapping, Converters converters) {
-        super(mapping, converters);
+    DefaultDocumentMapperDeleteBuilder(EntityMetadata mapping, Converters converters, DocumentTemplate template) {
+        super(mapping, converters, template);
     }
 
     @Override
@@ -119,6 +120,7 @@ class DefaultDocumentMapperDeleteBuilder extends AbstractMapperQuery implements 
 
     @Override
     public void execute() {
-
+        DocumentDeleteQuery query = build();
+        this.template.delete(query);
     }
 }
