@@ -73,7 +73,6 @@ public class MapperSelectTest {
 
 
     @Test
-    @DisplayName("Should execute 'select * from Person'")
     public void shouldExecuteSelectFrom() {
         template.select(Person.class).result();
         DocumentQuery queryExpected = select().from("Person").build();
@@ -83,7 +82,6 @@ public class MapperSelectTest {
     }
 
     @Test
-    @DisplayName("Should execute 'select * from Worker order by salary asc'")
     public void shouldSelectOrderAsc() {
         template.select(Worker.class).orderBy("salary").asc().result();
         Mockito.verify(managerMock).select(captor.capture());
@@ -93,7 +91,6 @@ public class MapperSelectTest {
     }
 
     @Test
-    @DisplayName("Should execute 'select * from Worker order by salary desc'")
     public void shouldSelectOrderDesc() {
         template.select(Worker.class).orderBy("salary").desc().result();
         DocumentQuery queryExpected = select().from("Worker").orderBy("money").desc().build();
@@ -103,7 +100,6 @@ public class MapperSelectTest {
     }
 
     @Test
-    @DisplayName("Should execute 'select * from Worker limit 10'")
     public void shouldSelectLimit() {
         template.select(Worker.class).limit(10).result();
         DocumentQuery queryExpected = select().from("Worker").limit(10L).build();
@@ -113,7 +109,6 @@ public class MapperSelectTest {
     }
 
     @Test
-    @DisplayName("Should execute 'select * from Worker skip 10'")
     public void shouldSelectStart() {
         template.select(Worker.class).skip(10).result();
         DocumentQuery queryExpected = select().from("Worker").skip(10L).build();
