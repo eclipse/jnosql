@@ -17,9 +17,9 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.document.DocumentQueryParser;
@@ -33,14 +33,13 @@ import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
 import java.time.Duration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ServiceLoader;

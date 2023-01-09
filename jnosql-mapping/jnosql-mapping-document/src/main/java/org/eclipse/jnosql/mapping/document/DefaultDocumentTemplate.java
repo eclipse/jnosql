@@ -14,17 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.QueryMapper;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 
 /**
  * The default implementation of {@link jakarta.nosql.mapping.document.DocumentTemplate}
