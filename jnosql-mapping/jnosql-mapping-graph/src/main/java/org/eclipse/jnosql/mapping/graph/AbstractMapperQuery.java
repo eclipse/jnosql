@@ -19,16 +19,20 @@ import jakarta.nosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
+import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
+import static org.apache.tinkerpop.gremlin.structure.T.id;
 
 class AbstractMapperQuery {
 
@@ -58,33 +62,57 @@ class AbstractMapperQuery {
 
     protected <T> void eqImpl(T value) {
         requireNonNull(value, "value is required");
-        appendCondition(__.has(mapping.getColumnField(name), P.eq(getValue(value))));
+        if (isKey(name)) {
+            appendCondition(__.has(id, P.eq(getValue(value))));
+        } else {
+            appendCondition(__.has(mapping.getColumnField(name), P.eq(getValue(value))));
+        }
     }
 
     protected <T> void gtImpl(T value) {
         requireNonNull(value, "value is required");
-        appendCondition(__.has(mapping.getColumnField(name), P.gt(getValue(value))));
+        if (isKey(name)) {
+            appendCondition(__.has(id, P.gt(getValue(value))));
+        } else {
+            appendCondition(__.has(mapping.getColumnField(name), P.gt(getValue(value))));
+        }
     }
 
     protected <T> void gteImpl(T value) {
         requireNonNull(value, "value is required");
-        appendCondition(__.has(mapping.getColumnField(name), P.gte(getValue(value))));
+        if (isKey(name)) {
+            appendCondition(__.has(id, P.gte(getValue(value))));
+        } else {
+            appendCondition(__.has(mapping.getColumnField(name), P.gte(getValue(value))));
+        }
     }
 
     protected <T> void ltImpl(T value) {
         requireNonNull(value, "value is required");
-        appendCondition(__.has(mapping.getColumnField(name), P.lt(getValue(value))));
+        if (isKey(name)) {
+            appendCondition(__.has(id, P.lt(getValue(value))));
+        } else {
+            appendCondition(__.has(mapping.getColumnField(name), P.lt(getValue(value))));
+        }
     }
 
     protected <T> void lteImpl(T value) {
         requireNonNull(value, "value is required");
-        appendCondition(__.has(mapping.getColumnField(name), P.lte(getValue(value))));
+        if (isKey(name)) {
+            appendCondition(__.has(id, P.lte(getValue(value))));
+        } else {
+            appendCondition(__.has(mapping.getColumnField(name), P.lte(getValue(value))));
+        }
     }
 
     protected <T> void betweenImpl(T valueA, T valueB) {
         requireNonNull(valueA, "valueA is required");
         requireNonNull(valueB, "valueB is required");
-        appendCondition(__.has(mapping.getColumnField(name), P.between(getValue(valueA), getValue(valueB))));
+        if (isKey(name)) {
+            appendCondition(__.has(id, P.between(getValue(valueA), getValue(valueB))));
+        } else {
+            appendCondition(__.has(mapping.getColumnField(name), P.between(getValue(valueA), getValue(valueB))));
+        }
     }
 
     protected <T> void inImpl(Iterable<T> values) {
@@ -92,7 +120,11 @@ class AbstractMapperQuery {
         requireNonNull(values, "values is required");
         List<Object> convertedValues = StreamSupport.stream(values.spliterator(), false)
                 .map(this::getValue).collect(toList());
-        appendCondition(__.has(mapping.getColumnField(name), P.within(convertedValues)));
+        if (isKey(name)) {
+            appendCondition(__.has(id, P.within(convertedValues)));
+        } else {
+            appendCondition(__.has(mapping.getColumnField(name), P.within(convertedValues)));
+        }
     }
 
     protected void likeImpl(String value) {
@@ -103,7 +135,12 @@ class AbstractMapperQuery {
         return ConverterUtil.getValue(value, mapping, name, converters);
     }
 
-    protected void appendCondition(GraphTraversal<Object, Object> newCondition) {
+    private boolean isKey(String name) {
+        Optional<FieldMapping> field = mapping.getFieldMapping(name);
+        return field.map(FieldMapping::isId).orElse(false);
+    }
+
+    private void appendCondition(GraphTraversal<Object, Object> newCondition) {
         if (nonNull(condition)) {
             if (and) {
                 this.condition = __.and(condition, checkNegation(newCondition));

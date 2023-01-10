@@ -215,6 +215,15 @@ public class MapperSelectTest {
     }
 
     @Test
+    public void shouldFindByIdUsingQuery() {
+        Optional<Person> person = template.select(Person.class).where("id").eq(poliana.getId()).singleResult();
+
+        Assertions.assertNotNull(person);
+        Assertions.assertTrue(person.isPresent());
+        assertEquals(person.map(Person::getName).orElse(""), poliana.getName());
+    }
+
+    @Test
     public void shouldResult() {
         List<Person> people = template.select(Person.class).result();
         Assertions.assertNotNull(people);
@@ -243,6 +252,7 @@ public class MapperSelectTest {
         person = template.select(Person.class).where("name").eq("Otavio").singleResult();
         Assertions.assertNotNull(person);
         Assertions.assertTrue(person.isPresent());
-
     }
+
+
 }
