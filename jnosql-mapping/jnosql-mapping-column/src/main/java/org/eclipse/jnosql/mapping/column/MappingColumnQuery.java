@@ -24,7 +24,10 @@ import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 
-class MappingColumnQuery implements ColumnQuery {
+/**
+ * A mapping implementation of {@link ColumnQuery}
+ */
+public final class MappingColumnQuery implements ColumnQuery {
 
     private final List<Sort> sorts;
     private final long limit;
@@ -32,7 +35,7 @@ class MappingColumnQuery implements ColumnQuery {
     private final ColumnCondition condition;
     private final String columnFamily;
 
-    MappingColumnQuery(List<Sort> sorts, long limit, long skip, ColumnCondition condition, String columnFamily) {
+    public MappingColumnQuery(List<Sort> sorts, long limit, long skip, ColumnCondition condition, String columnFamily) {
         this.sorts = sorts;
         this.limit = limit;
         this.skip = skip;
