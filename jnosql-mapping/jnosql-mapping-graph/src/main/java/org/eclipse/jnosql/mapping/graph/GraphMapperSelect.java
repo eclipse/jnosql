@@ -32,6 +32,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
+import static org.apache.tinkerpop.gremlin.process.traversal.Order.asc;
+import static org.apache.tinkerpop.gremlin.process.traversal.Order.desc;
 
 final class GraphMapperSelect extends AbstractMapperQuery
         implements MapperFrom, MapperLimit,
@@ -136,17 +138,20 @@ final class GraphMapperSelect extends AbstractMapperQuery
 
     @Override
     public MapperNotCondition not() {
-        return null;
+        this.negate = true;
+        return this;
     }
 
     @Override
     public MapperNameOrder asc() {
-        return null;
+        traversal.order().by(mapping.getColumnField(mapping.getColumnField(name)), asc);
+        return this;
     }
 
     @Override
     public MapperNameOrder desc() {
-        return null;
+        traversal.order().by(mapping.getColumnField(mapping.getColumnField(name)), desc);
+        return this;
     }
 
     @Override
