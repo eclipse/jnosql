@@ -15,18 +15,13 @@
 package org.eclipse.jnosql.mapping.column;
 
 import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import jakarta.nosql.mapping.column.ColumnQueryMapper;
-import jakarta.nosql.mapping.column.ColumnQueryMapper.ColumnMapperFrom;
-import jakarta.nosql.mapping.column.ColumnQueryPagination;
-import jakarta.nosql.mapping.column.ColumnTemplate;
 import jakarta.nosql.tck.entities.Address;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.Person;
@@ -39,7 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
