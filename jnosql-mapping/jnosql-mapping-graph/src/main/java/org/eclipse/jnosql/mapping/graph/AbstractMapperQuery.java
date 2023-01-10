@@ -33,8 +33,6 @@ class AbstractMapperQuery {
 
     protected boolean negate;
 
-    protected Condition condition;
-
     protected boolean and;
 
     protected String name;
