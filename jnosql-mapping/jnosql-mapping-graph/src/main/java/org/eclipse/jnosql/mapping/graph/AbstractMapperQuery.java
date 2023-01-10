@@ -26,6 +26,7 @@ import org.eclipse.jnosql.mapping.util.ConverterUtil;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
@@ -45,6 +46,8 @@ class AbstractMapperQuery {
 
     protected transient final GraphConverter converter;
 
+    protected transient GraphTraversal<Object, Object> condition;
+
     AbstractMapperQuery(EntityMetadata mapping, Converters converters,
                         GraphTraversal<Vertex, Vertex> traversal, GraphConverter converter) {
         this.mapping = mapping;
@@ -55,33 +58,33 @@ class AbstractMapperQuery {
 
     protected <T> void eqImpl(T value) {
         requireNonNull(value, "value is required");
-        traversal.filter(__.has(mapping.getColumnField(name), P.eq(getValue(value))));
+        appendCondition(__.has(mapping.getColumnField(name), P.eq(getValue(value))));
     }
 
     protected <T> void gtImpl(T value) {
         requireNonNull(value, "value is required");
-        traversal.filter(__.has(mapping.getColumnField(name), P.gt(getValue(value))));
+        appendCondition(__.has(mapping.getColumnField(name), P.gt(getValue(value))));
     }
 
     protected <T> void gteImpl(T value) {
         requireNonNull(value, "value is required");
-        traversal.filter(__.has(mapping.getColumnField(name), P.gte(getValue(value))));
+        appendCondition(__.has(mapping.getColumnField(name), P.gte(getValue(value))));
     }
 
     protected <T> void ltImpl(T value) {
         requireNonNull(value, "value is required");
-        traversal.filter(__.has(mapping.getColumnField(name), P.lt(getValue(value))));
+        appendCondition(__.has(mapping.getColumnField(name), P.lt(getValue(value))));
     }
 
     protected <T> void lteImpl(T value) {
         requireNonNull(value, "value is required");
-        traversal.filter(__.has(mapping.getColumnField(name), P.lte(getValue(value))));
+        appendCondition(__.has(mapping.getColumnField(name), P.lte(getValue(value))));
     }
 
     protected <T> void betweenImpl(T valueA, T valueB) {
         requireNonNull(valueA, "valueA is required");
         requireNonNull(valueB, "valueB is required");
-        traversal.filter(__.has(mapping.getColumnField(name), P.between(getValue(valueA), getValue(valueB))));
+        appendCondition(__.has(mapping.getColumnField(name), P.between(getValue(valueA), getValue(valueB))));
     }
 
     protected <T> void inImpl(Iterable<T> values) {
@@ -89,15 +92,35 @@ class AbstractMapperQuery {
         requireNonNull(values, "values is required");
         List<Object> convertedValues = StreamSupport.stream(values.spliterator(), false)
                 .map(this::getValue).collect(toList());
-        traversal.filter(__.has(mapping.getColumnField(name), P.within(convertedValues)));
+        appendCondition(__.has(mapping.getColumnField(name), P.within(convertedValues)));
     }
 
     protected void likeImpl(String value) {
-      throw new UnsupportedOperationException("The Graph database/Apache Tinkerpop does not have support to like operation");
+        throw new UnsupportedOperationException("The Graph database/Apache Tinkerpop does not have support to like operation");
     }
 
     protected Object getValue(Object value) {
         return ConverterUtil.getValue(value, mapping, name, converters);
     }
 
+    protected void appendCondition(GraphTraversal<Object, Object> newCondition) {
+        if (nonNull(condition)) {
+            if (and) {
+                this.condition = condition.and(checkNegation(newCondition));
+            } else {
+                this.condition = condition.or(checkNegation(newCondition));
+            }
+        } else {
+            this.condition = checkNegation(newCondition);
+        }
+        this.negate = false;
+        this.name = null;
+    }
+
+    private GraphTraversal<Object, Object> checkNegation(GraphTraversal<Object, Object> condition) {
+        if (negate) {
+            return __.not(condition);
+        }
+        return condition;
+    }
 }

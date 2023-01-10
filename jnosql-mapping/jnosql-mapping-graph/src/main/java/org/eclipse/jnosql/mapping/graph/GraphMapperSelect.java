@@ -164,6 +164,9 @@ final class GraphMapperSelect extends AbstractMapperQuery
 
     @Override
     public <T> Stream<T> stream() {
+        if(condition != null) {
+            traversal.filter(condition);
+        }
         return traversal.toStream().map(converter::toEntity);
     }
 
