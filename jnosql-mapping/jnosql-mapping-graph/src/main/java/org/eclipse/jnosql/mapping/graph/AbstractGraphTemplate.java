@@ -19,6 +19,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.EntityNotFoundException;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.QueryMapper;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
@@ -27,8 +28,8 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
@@ -346,6 +347,22 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> long count(Class<T> type) {
         Objects.requireNonNull(type, "entity class is required");
         return count(getEntities().get(type).getName());
+    }
+
+    @Override
+    public <T> QueryMapper.MapperFrom select(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        GraphTraversal<Vertex, Vertex> traversal = getTraversal().V().hasLabel(metadata.getName());
+        return new GraphMapperSelect(metadata,getConverters(), traversal, getConverter());
+    }
+
+    @Override
+    public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        GraphTraversal<Vertex, Vertex> traversal = getTraversal().V().hasLabel(metadata.getName());
+        return new GraphMapperDelete(metadata,getConverters(), traversal, getConverter());
     }
 
     private <K> Collection<EdgeEntity> getEdgesByIdImpl(K id, Direction direction, String... labels) {
