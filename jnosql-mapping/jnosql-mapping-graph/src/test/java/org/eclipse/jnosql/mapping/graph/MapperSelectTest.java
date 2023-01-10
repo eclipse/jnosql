@@ -112,7 +112,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameEq() {
+    public void shouldSelectWhereEq() {
         Optional<Person> person = template.select(Person.class)
                 .where("name").eq("Otavio").singleResult();
 
@@ -122,7 +122,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGt() {
+    public void shouldSelectWhereGt() {
         List<Person> people = template.select(Person.class).where("age")
                 .gt(30).result();
         assertThat(people).hasSize(1).map(Person::getName)
@@ -130,7 +130,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGte() {
+    public void shouldSelectWhereGte() {
         List<Person> people = template.select(Person.class).where("age")
                 .gte(30).result();
         assertThat(people).hasSize(2).map(Person::getName)
@@ -138,7 +138,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLt() {
+    public void shouldSelectWhereLt() {
         List<Person> people = template.select(Person.class).where("age")
                 .lt(30).result();
         assertThat(people).hasSize(1).map(Person::getName)
@@ -146,7 +146,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLte() {
+    public void shouldSelectWhereLte() {
         List<Person> people = template.select(Person.class).where("age")
                 .lte(30).result();
         assertThat(people).hasSize(2).map(Person::getName)
@@ -154,7 +154,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameBetween() {
+    public void shouldSelectWhereBetween() {
         List<Person> people = template.select(Person.class).where("age")
                 .between(30, 40).result();
         assertThat(people).hasSize(2).map(Person::getName)
@@ -162,7 +162,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameNot() {
+    public void shouldSelectWhereNot() {
         List<Person> people = template.select(Person.class).where("name")
                 .not().eq("Otavio").result();
         assertThat(people).hasSize(2).map(Person::getName)
@@ -170,7 +170,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameAnd() {
+    public void shouldSelectWhereAnd() {
         List<Person> people = template.select(Person.class).where("name")
                 .not().eq("Otavio").and("age").lt(30).result();
         assertThat(people).hasSize(1).map(Person::getName)
@@ -178,7 +178,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameOr() {
+    public void shouldSelectWhereOr() {
         List<Person> people = template.select(Person.class).where("name")
                 .not().eq("Otavio").or("age").lt(30).result();
         assertThat(people).hasSize(2).map(Person::getName)
