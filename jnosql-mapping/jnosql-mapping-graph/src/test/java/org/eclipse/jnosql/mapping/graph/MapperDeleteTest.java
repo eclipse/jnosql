@@ -22,6 +22,10 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
 public class MapperDeleteTest {
@@ -50,5 +54,53 @@ public class MapperDeleteTest {
                 .withAge(12).build());
         poliana = template.insert(Person.builder().withName("Poliana")
                 .withAge(30).build());
+    }
+
+    @Test
+    public void shouldReturnDeleteFrom() {}
+
+    @Test
+    public void shouldSelectWhereNameEq() {
+    }
+
+    @Test
+    public void shouldSelectWhereNameLike() {
+    }
+
+    @Test
+    public void shouldSelectWhereNameGt() {
+    }
+
+    @Test
+    public void shouldSelectWhereNameGte() {
+    }
+
+    @Test
+    public void shouldSelectWhereNameLt() {
+    }
+
+    @Test
+    public void shouldSelectWhereNameLte() {
+    }
+
+    @Test
+    public void shouldSelectWhereNameBetween() {
+    }
+
+    @Test
+    public void shouldSelectWhereNameNot() {
+    }
+
+
+    @Test
+    public void shouldSelectWhereNameAnd() {
+    }
+
+    @Test
+    public void shouldSelectWhereNameOr() {
+    }
+
+    @Test
+    public void shouldConvertField() {
     }
 }
