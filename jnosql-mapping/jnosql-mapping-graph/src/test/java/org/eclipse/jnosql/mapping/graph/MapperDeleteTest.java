@@ -21,11 +21,16 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @CDIExtension
 public class MapperDeleteTest {
@@ -57,47 +62,100 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldReturnDeleteFrom() {}
-
-    @Test
-    public void shouldSelectWhereNameEq() {
+    public void shouldReturnDeleteFrom() {
+        template.delete(Person.class).execute();
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).isEmpty();
     }
 
     @Test
-    public void shouldSelectWhereNameLike() {
+    public void shouldDeleteWhereNameEq() {
+        template.delete(Person.class).where("name").eq(otavio.getName()).execute();
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains(ada.getName(), poliana.getName());
     }
 
     @Test
-    public void shouldSelectWhereNameGt() {
+    public void shouldThrownAnExceptionWhenDeleteWhereNameLike() {
+        assertThrows(UnsupportedOperationException.class, () ->
+                template.delete(Person.class).where("name").like("test"));
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).hasSize(3).map(Person::getName)
+                .contains(ada.getName(), poliana.getName(), otavio.getName());
     }
 
     @Test
-    public void shouldSelectWhereNameGte() {
+    public void shouldDeleteWhereGt() {
+        template.delete(Person.class).where("age").gt(30).execute();
+
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains(ada.getName(), poliana.getName());
     }
 
     @Test
-    public void shouldSelectWhereNameLt() {
+    public void shouldDeleteWhereGte() {
+        template.delete(Person.class).where("age").gte(30).execute();
+
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).hasSize(1).map(Person::getName)
+                .contains(ada.getName());
+
     }
 
     @Test
-    public void shouldSelectWhereNameLte() {
+    public void shouldDeleteWhereLt() {
+        template.delete(Person.class).where("age").lt(30).execute();
+
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains(otavio.getName(), poliana.getName());
     }
 
     @Test
-    public void shouldSelectWhereNameBetween() {
+    public void shouldDeleteWhereLte() {
+
+        template.delete(Person.class).where("age").lte(30).execute();
+
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).hasSize(1).map(Person::getName)
+                .contains(otavio.getName());
     }
 
     @Test
-    public void shouldSelectWhereNameNot() {
+    public void shouldDeleteWhereBetween() {
+        template.delete(Person.class).where("age").between(29, 40).execute();
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).hasSize(1).map(Person::getName)
+                .contains(ada.getName());
+    }
+
+    @Test
+    public void shouldDeleteWhereNot() {
+        template.delete(Person.class).where("name").not().eq(otavio.getName()).execute();
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).hasSize(1).map(Person::getName)
+                .contains(otavio.getName());
     }
 
 
     @Test
-    public void shouldSelectWhereNameAnd() {
+    public void shouldDeleteWhereAnd() {
+        template.delete(Person.class).where("name").eq(otavio.getName())
+                .and("age").gte(20).execute();
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains(ada.getName(), poliana.getName());
     }
 
     @Test
-    public void shouldSelectWhereNameOr() {
+    public void shouldDeleteWhereOr() {
+        template.delete(Person.class).where("name").eq(otavio.getName())
+                .or("age").gte(20).execute();
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).hasSize(1).map(Person::getName)
+                .contains(ada.getName());
     }
 
     @Test
