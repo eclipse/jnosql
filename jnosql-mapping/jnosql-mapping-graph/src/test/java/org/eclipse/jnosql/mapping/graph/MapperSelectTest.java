@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.inject.Inject;
+import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -32,6 +33,7 @@ import org.mockito.Mockito;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withinPercentage;
@@ -214,12 +216,33 @@ public class MapperSelectTest {
 
     @Test
     public void shouldResult() {
-
+        List<Person> people = template.select(Person.class).result();
+        Assertions.assertNotNull(people);
+        assertThat(people).hasSize(3).map(Person::getName)
+                .contains(otavio.getName(), ada.getName(), poliana.getName());
     }
 
     @Test
-    public void shouldStream() {}
+    public void shouldStream() {
+        Stream<Person> people = template.select(Person.class).stream();
+        Assertions.assertNotNull(people);
+
+
+        assertThat(people).hasSize(3).map(Person::getName)
+                .contains(otavio.getName(), ada.getName(), poliana.getName());
+    }
 
     @Test
-    public void shouldSingleResult() {}
+    public void shouldSingleResult() {
+        Assertions.assertThrows(NonUniqueResultException.class, () -> template.select(Person.class).singleResult());
+
+        Optional<Person> person = template.select(Person.class).where("name").eq("Jono").singleResult();
+        Assertions.assertNotNull(person);
+        Assertions.assertTrue(person.isEmpty());
+
+        person = template.select(Person.class).where("name").eq("Otavio").singleResult();
+        Assertions.assertNotNull(person);
+        Assertions.assertTrue(person.isPresent());
+
+    }
 }
