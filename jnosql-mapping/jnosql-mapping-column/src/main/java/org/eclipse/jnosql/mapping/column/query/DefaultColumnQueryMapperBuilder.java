@@ -16,6 +16,8 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnQueryMapper;
+import org.eclipse.jnosql.mapping.column.ColumnMapperDelete;
+import org.eclipse.jnosql.mapping.column.ColumnMapperSelect;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 

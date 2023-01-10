@@ -12,7 +12,7 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.column.query;
+package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.Sort;
 import jakarta.nosql.column.ColumnCondition;
