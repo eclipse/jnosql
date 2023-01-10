@@ -106,9 +106,9 @@ class AbstractMapperQuery {
     protected void appendCondition(GraphTraversal<Object, Object> newCondition) {
         if (nonNull(condition)) {
             if (and) {
-                this.condition = condition.and(checkNegation(newCondition));
+                this.condition = __.and(condition, checkNegation(newCondition));
             } else {
-                this.condition = condition.or(checkNegation(newCondition));
+                this.condition = __.or(condition, checkNegation(newCondition));
             }
         } else {
             this.condition = checkNegation(newCondition);
