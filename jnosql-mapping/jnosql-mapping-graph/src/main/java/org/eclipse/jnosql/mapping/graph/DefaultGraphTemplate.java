@@ -14,13 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.mapping.Converters;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import jakarta.nosql.mapping.Converters;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 /**
  * The default {@link GraphTemplate}
