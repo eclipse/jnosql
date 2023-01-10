@@ -19,14 +19,19 @@ import jakarta.nosql.tck.test.CDIExtension;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.graph.entities.Job;
+import org.eclipse.jnosql.mapping.graph.entities.Money;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
+import org.eclipse.jnosql.mapping.graph.entities.Worker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -160,5 +165,20 @@ public class MapperDeleteTest {
 
     @Test
     public void shouldConvertField() {
+
+        Job job = new Job();
+        job.setCity("Salvador");
+        job.setDescription("Java Developer");
+        Money salary = new Money("BRL", BigDecimal.TEN);
+
+        Worker worker = new Worker();
+        worker.setName("Otavio");
+        worker.setJob(job);
+        worker.setSalary(salary);
+        template.insert(worker);
+        template.delete(Worker.class).where("salary").eq(salary).execute();
+
+        List<Worker> result = template.select(Worker.class).result();
+        assertThat(result).isEmpty();
     }
 }
