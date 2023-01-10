@@ -19,17 +19,22 @@ import jakarta.nosql.tck.test.CDIExtension;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.graph.entities.Job;
+import org.eclipse.jnosql.mapping.graph.entities.Money;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.entities.Worker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.withinPercentage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
@@ -42,20 +47,28 @@ public class MapperSelectTest {
     @Inject
     private Graph graph;
 
+    private Person otavio;
+    private Person ada;
+    private Person poliana;
+
     @AfterEach
     public void after() {
         graph.traversal().V().toList().forEach(Vertex::remove);
         graph.traversal().E().toList().forEach(Edge::remove);
     }
 
+    @BeforeEach
+    public void before() {
+        otavio = template.insert(Person.builder().withName("Otavio")
+                .withAge(35).build());
+        ada = template.insert(Person.builder().withName("Ada")
+                .withAge(12).build());
+        poliana = template.insert(Person.builder().withName("Poliana")
+                .withAge(30).build());
+    }
+
     @Test
     public void shouldExecuteSelectFrom() {
-        Person otavio = template.insert(Person.builder().withName("Otavio")
-                .withAge(35).build());
-        Person ada = template.insert(Person.builder().withName("Ada")
-                .withAge(12).build());
-        Person poliana = template.insert(Person.builder().withName("Poliana")
-                .withAge(30).build());
 
         List<Person> people = template.select(Person.class).result();
 
@@ -68,12 +81,6 @@ public class MapperSelectTest {
 
     @Test
     public void shouldSelectOrderAsc() {
-        Person otavio = template.insert(Person.builder().withName("Otavio")
-                .withAge(35).build());
-        Person ada = template.insert(Person.builder().withName("Ada")
-                .withAge(12).build());
-        Person poliana = template.insert(Person.builder().withName("Poliana")
-                .withAge(30).build());
 
         List<Person> people = template.select(Person.class).orderBy("name").asc().result();
         assertThat(people).hasSize(3).map(Person::getName)
@@ -82,12 +89,6 @@ public class MapperSelectTest {
 
     @Test
     public void shouldSelectOrderDesc() {
-        Person otavio = template.insert(Person.builder().withName("Otavio")
-                .withAge(35).build());
-        Person ada = template.insert(Person.builder().withName("Ada")
-                .withAge(12).build());
-        Person poliana = template.insert(Person.builder().withName("Poliana")
-                .withAge(30).build());
 
         List<Person> people = template.select(Person.class).orderBy("name").desc().result();
         assertThat(people).hasSize(3).map(Person::getName)
@@ -96,13 +97,6 @@ public class MapperSelectTest {
 
     @Test
     public void shouldSelectLimit() {
-        Person otavio = template.insert(Person.builder().withName("Otavio")
-                .withAge(35).build());
-        Person ada = template.insert(Person.builder().withName("Ada")
-                .withAge(12).build());
-        Person poliana = template.insert(Person.builder().withName("Poliana")
-                .withAge(30).build());
-
         List<Person> people = template.select(Person.class).orderBy("name").desc().limit(2).result();
 
         assertThat(people).hasSize(2).map(Person::getName)
@@ -111,13 +105,6 @@ public class MapperSelectTest {
 
     @Test
     public void shouldSelectStart() {
-        Person otavio = template.insert(Person.builder().withName("Otavio")
-                .withAge(35).build());
-        Person ada = template.insert(Person.builder().withName("Ada")
-                .withAge(12).build());
-        Person poliana = template.insert(Person.builder().withName("Poliana")
-                .withAge(30).build());
-
         List<Person> people = template.select(Person.class).orderBy("name").desc().skip(1).result();
 
         assertThat(people).hasSize(2).map(Person::getName)
@@ -126,13 +113,6 @@ public class MapperSelectTest {
 
     @Test
     public void shouldSelectWhereNameEq() {
-        Person otavio = template.insert(Person.builder().withName("Otavio")
-                .withAge(35).build());
-        Person ada = template.insert(Person.builder().withName("Ada")
-                .withAge(12).build());
-        Person poliana = template.insert(Person.builder().withName("Poliana")
-                .withAge(30).build());
-
         Optional<Person> person = template.select(Person.class)
                 .where("name").eq("Otavio").singleResult();
 
@@ -142,37 +122,100 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGt() {}
+    public void shouldSelectWhereNameGt() {
+        List<Person> people = template.select(Person.class).where("age")
+                .gt(30).result();
+        assertThat(people).hasSize(1).map(Person::getName)
+                .contains(otavio.getName());
+    }
 
     @Test
-    public void shouldSelectWhereNameGte() {}
+    public void shouldSelectWhereNameGte() {
+        List<Person> people = template.select(Person.class).where("age")
+                .gte(30).result();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains(otavio.getName(), poliana.getName());
+    }
 
     @Test
-    public void shouldSelectWhereNameLt() {}
+    public void shouldSelectWhereNameLt() {
+        List<Person> people = template.select(Person.class).where("age")
+                .lt(30).result();
+        assertThat(people).hasSize(1).map(Person::getName)
+                .contains(ada.getName());
+    }
 
     @Test
-    public void shouldSelectWhereNameLte() {}
+    public void shouldSelectWhereNameLte() {
+        List<Person> people = template.select(Person.class).where("age")
+                .lte(30).result();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains(ada.getName(), poliana.getName());
+    }
 
     @Test
-    public void shouldSelectWhereNameBetween() {}
+    public void shouldSelectWhereNameBetween() {
+        List<Person> people = template.select(Person.class).where("age")
+                .between(30, 40).result();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains(otavio.getName(), poliana.getName());
+    }
 
     @Test
-    public void shouldSelectWhereNameNot() {}
+    public void shouldSelectWhereNameNot() {
+        List<Person> people = template.select(Person.class).where("name")
+                .not().eq("Otavio").result();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains(ada.getName(), poliana.getName());
+    }
 
     @Test
-    public void shouldSelectWhereNameAnd() {}
+    public void shouldSelectWhereNameAnd() {
+        List<Person> people = template.select(Person.class).where("name")
+                .not().eq("Otavio").and("age").lt(30).result();
+        assertThat(people).hasSize(1).map(Person::getName)
+                .contains(ada.getName());
+    }
 
     @Test
-    public void shouldSelectWhereNameOr() {}
+    public void shouldSelectWhereNameOr() {
+        List<Person> people = template.select(Person.class).where("name")
+                .not().eq("Otavio").or("age").lt(30).result();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains(ada.getName(), poliana.getName());
+    }
 
     @Test
-    public void shouldConvertField() {}
+    public void shouldConvertField() {
+        List<Person> people = template.select(Person.class).where("name")
+                .not().eq("Otavio").or("age").lt("30").result();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains(ada.getName(), poliana.getName());
+    }
 
     @Test
-    public void shouldUseAttributeConverter() {}
+    public void shouldUseAttributeConverter() {
+        Job job = new Job();
+        job.setCity("Salvador");
+        job.setDescription("Java Developer");
+        Money salary = new Money("BRL", BigDecimal.TEN);
+
+        Worker worker = new Worker();
+        worker.setName("Otavio");
+        worker.setJob(job);
+        worker.setSalary(salary);
+        template.insert(worker);
+        Optional<Worker> otavio = template.select(Worker.class).where("salary").eq(salary).singleResult();
+
+        Assertions.assertNotNull(otavio);
+        Assertions.assertTrue(otavio.isPresent());
+        assertEquals(otavio.map(Worker::getName).orElse(""), worker.getName());
+    }
 
     @Test
-    public void shouldResult() {}
+    public void shouldResult() {
+
+    }
 
     @Test
     public void shouldStream() {}
