@@ -27,6 +27,7 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.QueryMapper;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.mapping.column.ColumnQueryPagination;
@@ -247,4 +248,19 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
         Function<ColumnEntity, T> function = e -> getConverter().toEntity(e);
         return entities.map(function).peek(getEventManager()::firePostEntity);
     }
+
+    @Override
+    public <T> QueryMapper.MapperFrom select(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        return new ColumnMapperSelect(metadata, getConverters(), this);
+    }
+
+    @Override
+    public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        return new ColumnMapperDelete(metadata, getConverters(), this);
+    }
+
 }
