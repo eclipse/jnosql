@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.QueryMapper.MapperFrom;
 import jakarta.nosql.mapping.QueryMapper.MapperLimit;
@@ -29,6 +30,7 @@ import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -156,16 +158,24 @@ final class GraphMapperSelect extends AbstractMapperQuery
 
     @Override
     public <T> List<T> result() {
-        return null;
+        Stream<T> stream = stream();
+        return stream.collect(Collectors.toUnmodifiableList());
     }
 
     @Override
     public <T> Stream<T> stream() {
-        return null;
+        return traversal.toStream().map(converter::toEntity);
     }
 
     @Override
     public <T> Optional<T> singleResult() {
-        return Optional.empty();
+        List<T> result = result();
+        if (result.isEmpty()) {
+            return Optional.empty();
+        }
+        if (result.size() == 1) {
+            return Optional.ofNullable(result.get(0));
+        }
+        throw new NonUniqueResultException("The query returns more than one result. Elements: " + result.size());
     }
 }
