@@ -165,7 +165,16 @@ public class MapperDeleteTest {
 
     @Test
     public void shouldConvertField() {
+         template.delete(Person.class).where("name")
+                .not().eq("Otavio").or("age").lt("30").execute();
 
+        List<Person> people = template.select(Person.class).result();
+        assertThat(people).hasSize(1).map(Person::getName)
+                .contains(otavio.getName());
+    }
+
+    @Test
+    public void shouldUseAttributeConverter() {
         Job job = new Job();
         job.setCity("Salvador");
         job.setDescription("Java Developer");
