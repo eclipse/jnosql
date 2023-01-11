@@ -27,7 +27,7 @@ enum ClassOperationFactory implements Supplier<ClassOperation> {
 
     private static final Logger LOGGER = Logger.getLogger(ClassOperationFactory.class.getName());
 
-    private final Reflections reflections = new DefaultReflections();
+    private final Reflections reflections = new Reflections();
 
     private final ClassOperation reflection = new ReflectionClassOperation(reflections);
 
@@ -52,7 +52,6 @@ enum ClassOperationFactory implements Supplier<ClassOperation> {
             LOGGER.info("ClassOperation does not found, using the default implementation");
             return reflection;
         }
-
 
     }
 }
