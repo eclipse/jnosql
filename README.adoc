@@ -89,6 +89,9 @@ Car ferrari = Car.id(1L)
 template.insert(ferrari);
 Optional<Car> car = template.find(Car.class, 1L);
 template.delete(Car.class, 1L);
+
+List<Car> cars = template.select(Car.class).where("name").eq("Ferrari").result();
+template.delete(Car.class).execute();
 ----
 
 This template has specialization to take advantage of a particular NoSQL database type.
