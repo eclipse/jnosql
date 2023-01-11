@@ -122,7 +122,7 @@ public class MapperSelectTest {
 
 
     @Test
-    public void shouldSelectWhereNameEq() {
+    public void shouldSelectWhereEq() {
         template.select(Person.class).where("name").eq("Ada").result();
         ColumnQuery queryExpected = select().from("Person").where("name")
                 .eq("Ada").build();
@@ -132,7 +132,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLike() {
+    public void shouldSelectWhereLike() {
         template.select(Person.class).where("name").like("Ada").result();
         ColumnQuery queryExpected = select().from("Person").where("name")
                 .like("Ada").build();
@@ -142,7 +142,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGt() {
+    public void shouldSelectWhereGt() {
         template.select(Person.class).where("id").gt(10).result();
         ColumnQuery queryExpected = select().from("Person").where("_id")
                 .gt(10L).build();
@@ -152,7 +152,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGte() {
+    public void shouldSelectWhereGte() {
         template.select(Person.class).where("id").gte(10).result();
         ColumnQuery queryExpected = select().from("Person").where("_id")
                 .gte(10L).build();
@@ -163,7 +163,7 @@ public class MapperSelectTest {
 
 
     @Test
-    public void shouldSelectWhereNameLt() {
+    public void shouldSelectWhereLt() {
         template.select(Person.class).where("id").lt(10).result();
         ColumnQuery queryExpected = select().from("Person").where("_id")
                 .lt(10L).build();
@@ -173,7 +173,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLte() {
+    public void shouldSelectWhereLte() {
         template.select(Person.class).where("id").lte(10).result();
         ColumnQuery queryExpected = select().from("Person").where("_id")
                 .lte(10L).build();
@@ -183,7 +183,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameBetween() {
+    public void shouldSelectWhereBetween() {
         template.select(Person.class).where("id")
                 .between(10, 20).result();
         ColumnQuery queryExpected = select().from("Person").where("_id")
@@ -194,7 +194,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameNot() {
+    public void shouldSelectWhereNot() {
         template.select(Person.class).where("name").not().like("Ada").result();
         ColumnQuery queryExpected = select().from("Person").where("name")
                 .not().like("Ada").build();
@@ -205,7 +205,7 @@ public class MapperSelectTest {
 
 
     @Test
-    public void shouldSelectWhereNameAnd() {
+    public void shouldSelectWhereAnd() {
         template.select(Person.class).where("age").between(10, 20)
                 .and("name").eq("Ada").result();
         ColumnQuery queryExpected = select().from("Person").where("age")
@@ -218,7 +218,7 @@ public class MapperSelectTest {
     }
 
     @Test
-    public void shouldSelectWhereNameOr() {
+    public void shouldSelectWhereOr() {
         template.select(Person.class).where("id").between(10, 20)
                 .or("name").eq("Ada").result();
         ColumnQuery queryExpected = select().from("Person").where("_id")

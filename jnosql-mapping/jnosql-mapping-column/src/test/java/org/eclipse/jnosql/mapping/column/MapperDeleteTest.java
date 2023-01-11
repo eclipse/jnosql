@@ -80,7 +80,7 @@ public class MapperDeleteTest {
 
 
     @Test
-    public void shouldSelectWhereNameEq() {
+    public void shouldDeleteWhereEq() {
         template.delete(Person.class).where("name").eq("Ada").execute();
         Mockito.verify(managerMock).delete(captor.capture());
         ColumnDeleteQuery query = captor.getValue();
@@ -91,7 +91,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLike() {
+    public void shouldDeleteWhereLike() {
         template.delete(Person.class).where("name").like("Ada").execute();
         Mockito.verify(managerMock).delete(captor.capture());
         ColumnDeleteQuery query = captor.getValue();
@@ -101,7 +101,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGt() {
+    public void shouldDeleteWhereGt() {
         template.delete(Person.class).where("id").gt(10).execute();
         Mockito.verify(managerMock).delete(captor.capture());
         ColumnDeleteQuery query = captor.getValue();
@@ -110,7 +110,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldSelectWhereNameGte() {
+    public void shouldDeleteWhereGte() {
         template.delete(Person.class).where("id").gte(10).execute();
         Mockito.verify(managerMock).delete(captor.capture());
         ColumnDeleteQuery query = captor.getValue();
@@ -120,7 +120,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLt() {
+    public void shouldDeleteWhereLt() {
         template.delete(Person.class).where("id").lt(10).execute();
         Mockito.verify(managerMock).delete(captor.capture());
         ColumnDeleteQuery query = captor.getValue();
@@ -129,7 +129,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldSelectWhereNameLte() {
+    public void shouldDeleteWhereLte() {
         template.delete(Person.class).where("id").lte(10).execute();
         Mockito.verify(managerMock).delete(captor.capture());
         ColumnDeleteQuery query = captor.getValue();
@@ -138,7 +138,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldSelectWhereNameBetween() {
+    public void shouldDeleteWhereBetween() {
         template.delete(Person.class).where("id")
                 .between(10, 20).execute();
         Mockito.verify(managerMock).delete(captor.capture());
@@ -149,7 +149,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldSelectWhereNameNot() {
+    public void shouldDeleteWhereNot() {
         template.delete(Person.class).where("name").not().like("Ada").execute();
         Mockito.verify(managerMock).delete(captor.capture());
         ColumnDeleteQuery query = captor.getValue();
@@ -159,7 +159,7 @@ public class MapperDeleteTest {
 
 
     @Test
-    public void shouldSelectWhereNameAnd() {
+    public void shouldDeleteWhereAnd() {
         template.delete(Person.class).where("age").between(10, 20)
                 .and("name").eq("Ada").execute();
         Mockito.verify(managerMock).delete(captor.capture());
@@ -172,7 +172,7 @@ public class MapperDeleteTest {
     }
 
     @Test
-    public void shouldSelectWhereNameOr() {
+    public void shouldDeleteWhereOr() {
         template.delete(Person.class).where("id").between(10, 20)
                 .or("name").eq("Ada").execute();
         Mockito.verify(managerMock).delete(captor.capture());
