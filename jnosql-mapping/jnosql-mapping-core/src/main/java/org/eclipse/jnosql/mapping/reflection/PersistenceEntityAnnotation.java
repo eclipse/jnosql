@@ -14,9 +14,38 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import java.util.Objects;
+import java.util.Optional;
+import java.util.ServiceLoader;
 import java.util.function.Predicate;
 
+/**
+ *This instance represents the reader for entity.
+ */
 public interface PersistenceEntityAnnotation extends Predicate<Class<?>> {
 
+
+    /**
+     * Return the PersistenceEntityAnnotation from the type
+     *
+     * @param type the type
+     * @return a ColumnExtension of {@link Optional#empty()}
+     */
     String name(Class<?> type);
+
+    /**
+     * Return the IdExtension from the field
+     *
+     * @param type the entity class
+     * @return a ColumnExtension of {@link Optional#empty()}
+     */
+    static Optional<PersistenceEntityAnnotation> of(Class<?> type) {
+        Objects.requireNonNull(type, "type is required");
+        for (PersistenceEntityAnnotation extension : ServiceLoader.load(PersistenceEntityAnnotation.class)) {
+            if (extension.test(type)) {
+                return Optional.of(extension);
+            }
+        }
+        return Optional.empty();
+    }
 }
