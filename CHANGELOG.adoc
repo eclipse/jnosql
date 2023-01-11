@@ -12,6 +12,15 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Update Jakarta API to after the Big-bang
 
+=== Added
+
+- Implements new methods that explore fluent-API for Graph, Document, Key-value and Document
+
+=== Removed
+
+- Remove ColumnQueryMapper implementation
+- Remove DocumentQueryMapper implementation
+
 === Fixed
 
 - Enhance constructor converter allowing simple translating supported by Value implementation.
