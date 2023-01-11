@@ -109,15 +109,6 @@ public class DefaultReflections implements Reflections {
     }
 
     @Override
-    public Reflections.KeyValueClass getGenericKeyValue(Field field) {
-        ParameterizedType genericType = (ParameterizedType) field.getGenericType();
-        Class<?> keyClass = (Class<?>) genericType.getActualTypeArguments()[0];
-        Class<?> valueClass = (Class<?>) genericType.getActualTypeArguments()[1];
-        return new Reflections.KeyValueClass(keyClass, valueClass);
-    }
-
-
-    @Override
     public void makeAccessible(Field field) {
         if ((!Modifier.isPublic(field.getModifiers()) || !Modifier
                 .isPublic(field.getDeclaringClass().getModifiers()))

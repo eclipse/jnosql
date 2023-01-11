@@ -84,15 +84,6 @@ public interface Reflections {
     Class<?> getGenericType(Field field);
 
     /**
-     * return the key and value of field.
-     *
-     * @param field the field
-     * @return the types of the type
-     */
-    KeyValueClass getGenericKeyValue(Field field);
-
-
-    /**
      * Make the given field accessible, explicitly setting it accessible
      * if necessary. The setAccessible(true) method is only
      * called when actually necessary, to avoid unnecessary
@@ -193,29 +184,6 @@ public interface Reflections {
      */
     boolean hasInheritanceAnnotation(Class<?> entity);
 
-    /**
-     * data structured to store key and value class to map collection.
-     *
-     * @author otaviojava
-     */
-    class KeyValueClass {
-        private final Class<?> keyClass;
-        private final Class<?> valueClass;
-
-        public KeyValueClass(Class<?> keyClass, Class<?> valueClass) {
-            this.keyClass = keyClass;
-            this.valueClass = valueClass;
-        }
-
-        public Class<?> getKeyClass() {
-            return keyClass;
-        }
-
-        public Class<?> getValueClass() {
-            return valueClass;
-        }
-
-    }
 
 
 }
