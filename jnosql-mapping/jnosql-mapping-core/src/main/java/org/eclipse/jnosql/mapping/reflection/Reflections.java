@@ -28,7 +28,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -135,18 +134,6 @@ public class Reflections {
             }
         }
         return null;
-    }
-
-    /**
-     * returns the generic type of field.
-     *
-     * @param field the field
-     * @return a generic type
-     */
-    public Class<?> getGenericType(Field field) {
-        ParameterizedType genericType = (ParameterizedType) field.getGenericType();
-        return (Class<?>) genericType.getActualTypeArguments()[0];
-
     }
 
     /**
