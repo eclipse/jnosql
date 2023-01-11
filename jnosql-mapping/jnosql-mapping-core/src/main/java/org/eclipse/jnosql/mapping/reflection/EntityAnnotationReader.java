@@ -14,27 +14,36 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ServiceLoader;
+import java.util.function.Predicate;
 
 /**
- * A specialization of a persistence field that indicates this field is an ID.
+ *This instance represents the reader for entity.
  */
-public interface PersistenceIdAnnotation extends PersistenceColumnAnnotation {
+public interface EntityAnnotationReader extends Predicate<Class<?>> {
+
+
+    /**
+     * Return the PersistenceEntityAnnotation from the type
+     *
+     * @param type the type
+     * @return a ColumnExtension of {@link Optional#empty()}
+     */
+    String name(Class<?> type);
 
     /**
      * Return the IdExtension from the field
      *
-     * @param field the field
+     * @param type the entity class
      * @return a ColumnExtension of {@link Optional#empty()}
      */
-    static Optional<PersistenceIdAnnotation> of(Field field) {
-        Objects.requireNonNull(field, "field is required");
-        for (PersistenceIdAnnotation extension : ServiceLoader.load(PersistenceIdAnnotation.class)) {
-            if (extension.test(field)) {
-                return Optional.of(extension);
+    static Optional<EntityAnnotationReader> of(Class<?> type) {
+        Objects.requireNonNull(type, "type is required");
+        for (EntityAnnotationReader reader : ServiceLoader.load(EntityAnnotationReader.class)) {
+            if (reader.test(type)) {
+                return Optional.of(reader);
             }
         }
         return Optional.empty();

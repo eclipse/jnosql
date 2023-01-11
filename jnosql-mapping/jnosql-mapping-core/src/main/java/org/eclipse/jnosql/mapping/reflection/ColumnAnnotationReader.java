@@ -25,7 +25,7 @@ import java.util.function.Predicate;
 /**
  * This instance represents a persistence field on the entity. It loads from SPI to allow extensions of annotations.
  */
-public interface PersistenceColumnAnnotation extends Predicate<Field> {
+public interface ColumnAnnotationReader extends Predicate<Field> {
 
 
     /**
@@ -49,11 +49,11 @@ public interface PersistenceColumnAnnotation extends Predicate<Field> {
      * @param field the field
      * @return a ColumnExtension of {@link Optional#empty()}
      */
-    static Optional<PersistenceColumnAnnotation> of(Field field) {
+    static Optional<ColumnAnnotationReader> of(Field field) {
         Objects.requireNonNull(field, "field is required");
-        for (PersistenceColumnAnnotation extension : ServiceLoader.load(PersistenceColumnAnnotation.class)) {
-            if (extension.test(field)) {
-                return Optional.of(extension);
+        for (ColumnAnnotationReader reader : ServiceLoader.load(ColumnAnnotationReader.class)) {
+            if (reader.test(field)) {
+                return Optional.of(reader);
             }
         }
         return Optional.empty();
