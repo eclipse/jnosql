@@ -55,7 +55,7 @@ public class Reflections {
      * @param field  the field to return object
      * @return - the field value in Object
      */
-    public Object getValue(Object object, Field field) {
+    Object getValue(Object object, Field field) {
 
         try {
             return field.get(object);
@@ -74,7 +74,7 @@ public class Reflections {
      * @param value  the value to object
      * @return - if the operation was execute with success
      */
-    public boolean setValue(Object object, Field field, Object value) {
+    boolean setValue(Object object, Field field, Object value) {
         try {
 
             field.set(object, value);
@@ -120,21 +120,6 @@ public class Reflections {
         }
     }
 
-    /**
-     * Find the Column from the name field.
-     *
-     * @param string the name of field
-     * @param type  the class
-     * @return the field from the name
-     */
-    public Field getField(String string, Class<?> type) {
-        for (Field field : type.getDeclaredFields()) {
-            if (field.getName().equals(string)) {
-                return field;
-            }
-        }
-        return null;
-    }
 
     /**
      * Make the given field accessible, explicitly setting it accessible
@@ -144,7 +129,7 @@ public class Reflections {
      *
      * @param field field the field to make accessible
      */
-    public void makeAccessible(Field field) {
+    void makeAccessible(Field field) {
         if ((!Modifier.isPublic(field.getModifiers()) || !Modifier
                 .isPublic(field.getDeclaringClass().getModifiers()))
                 && !field.isAccessible()) {
@@ -223,7 +208,7 @@ public class Reflections {
      * {@link Id}
      * @throws NullPointerException when class entity is null
      */
-    public List<Field> getFields(Class<?> type) {
+    List<Field> getFields(Class<?> type) {
         requireNonNull(type, "class entity is required");
 
         List<Field> fields = new ArrayList<>();
@@ -248,7 +233,7 @@ public class Reflections {
      * @return if the class is annotated
      * @throws NullPointerException when type is null
      */
-    public boolean isMappedSuperclass(Class<?> type) {
+    boolean isMappedSuperclass(Class<?> type) {
         requireNonNull(type, "class entity is required");
         Class<?> superclass = type.getSuperclass();
         return superclass.getAnnotation(MappedSuperclass.class) != null
@@ -262,7 +247,7 @@ public class Reflections {
      * @return if the field is annotated with {@link Column}
      * @throws NullPointerException when the field is null
      */
-    public boolean isIdField(Field field) {
+    boolean isIdField(Field field) {
         requireNonNull(field, "field is required");
         return field.getAnnotation(Id.class) != null;
     }
@@ -275,7 +260,7 @@ public class Reflections {
      * @return the column name
      * @throws NullPointerException when the field is null
      */
-    public String getColumnName(Field field) {
+    String getColumnName(Field field) {
         requireNonNull(field, "field is required");
         return Optional.ofNullable(field.getAnnotation(Column.class))
                 .map(Column::value)
@@ -290,7 +275,7 @@ public class Reflections {
      * @return the column name
      * @throws NullPointerException when the field is null
      */
-    public String getIdName(Field field) {
+    String getIdName(Field field) {
         requireNonNull(field, "field is required");
         return Optional.ofNullable(field.getAnnotation(Id.class))
                 .map(Id::value)
@@ -308,7 +293,7 @@ public class Reflections {
      * @return the {@link InheritanceMetadata} or {@link Optional#empty()}
      * @throws NullPointerException when type is null
      */
-    public Optional<InheritanceMetadata> getInheritance(Class<?> type) {
+    Optional<InheritanceMetadata> getInheritance(Class<?> type) {
         Objects.requireNonNull(type, "entity is required");
         if (isInheritance(type)) {
             Class<?> parent = type.getSuperclass();
@@ -331,7 +316,7 @@ public class Reflections {
      * @param entity the entity
      * @return true if it has the {@link jakarta.nosql.mapping.Inheritance} annotation
      */
-    public boolean hasInheritanceAnnotation(Class<?> entity) {
+    boolean hasInheritanceAnnotation(Class<?> entity) {
         Objects.requireNonNull(entity, "entity is required");
         return entity.getAnnotation(Inheritance.class) != null;
     }
