@@ -15,12 +15,9 @@
 package org.eclipse.jnosql.mapping.reflection.metadatas;
 
 import jakarta.nosql.mapping.Entity;
-import org.eclipse.jnosql.mapping.reflection.EntityAnnotationReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class JakartaNoSQLEntityReaderTest {
 
