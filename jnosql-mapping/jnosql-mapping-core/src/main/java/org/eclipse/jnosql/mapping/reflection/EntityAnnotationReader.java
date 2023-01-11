@@ -14,15 +14,17 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import java.lang.annotation.Annotation;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * This instance represents the reader for entity exploring an annotation.
  */
-public interface EntityAnnotationReader extends Predicate<Class<?>> {
+public interface EntityAnnotationReader extends Predicate<Class<?>>, Supplier<Class<? extends Annotation>> {
 
 
     /**

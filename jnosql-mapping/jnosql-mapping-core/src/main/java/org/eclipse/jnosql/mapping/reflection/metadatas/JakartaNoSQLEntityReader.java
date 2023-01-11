@@ -18,6 +18,7 @@ import jakarta.nosql.mapping.Entity;
 import org.eclipse.jnosql.mapping.reflection.EntityAnnotationReader;
 import org.eclipse.jnosql.mapping.util.StringUtils;
 
+import java.lang.annotation.Annotation;
 import java.util.Optional;
 
 /**
@@ -36,5 +37,10 @@ public final class JakartaNoSQLEntityReader implements EntityAnnotationReader {
     @Override
     public boolean test(Class<?> type) {
         return type.getAnnotation(Entity.class) != null;
+    }
+
+    @Override
+    public Class<? extends Annotation> get() {
+        return Entity.class;
     }
 }

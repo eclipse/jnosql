@@ -18,7 +18,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.DiscriminatorColumn;
 import jakarta.nosql.mapping.DiscriminatorValue;
-import jakarta.nosql.mapping.Entity;
 import jakarta.nosql.mapping.Id;
 import jakarta.nosql.mapping.Inheritance;
 import jakarta.nosql.mapping.MappedSuperclass;
@@ -183,14 +182,6 @@ public class Reflections {
         return (Constructor<T>) constructor;
     }
 
-    /**
-     * Returns the name of the entity. So it tries to read the {@link Entity} otherwise
-     * {@link Class#getSimpleName()}
-     *
-     * @param entity the class to read
-     * @return the {@link Entity} when is not blank otherwise {@link Class#getSimpleName()}
-     * @throws NullPointerException when entity is null
-     */
     String getEntityName(Class<?> entity) {
         requireNonNull(entity, "class entity is required");
 
