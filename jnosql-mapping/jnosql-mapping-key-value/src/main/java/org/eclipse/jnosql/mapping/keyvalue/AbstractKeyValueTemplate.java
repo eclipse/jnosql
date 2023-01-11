@@ -20,6 +20,7 @@ import jakarta.nosql.Value;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.QueryMapper;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
@@ -187,5 +188,15 @@ public abstract class AbstractKeyValueTemplate implements KeyValueTemplate {
     @Override
     public <T, K> void delete(Class<T> type, K id) {
         this.delete(id);
+    }
+
+    @Override
+    public <T> QueryMapper.MapperFrom select(Class<T> type) {
+        throw new UnsupportedOperationException("Key value database type does not have support for mapping query");
+    }
+
+    @Override
+    public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
+        throw new UnsupportedOperationException("Key value database type does not have support for mapping query");
     }
 }

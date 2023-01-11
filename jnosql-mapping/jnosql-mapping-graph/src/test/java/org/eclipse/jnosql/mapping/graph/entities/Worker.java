@@ -18,9 +18,13 @@ package org.eclipse.jnosql.mapping.graph.entities;
 import jakarta.nosql.mapping.Column;
 import jakarta.nosql.mapping.Convert;
 import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.mapping.Id;
 
 @Entity
 public class Worker {
+
+    @Id
+    private Long id;
 
     @Column
     private String name;
@@ -56,5 +60,12 @@ public class Worker {
         this.salary = salary;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public Worker id(Long id) {
+        this.id = id;
+        return this;
+    }
 }

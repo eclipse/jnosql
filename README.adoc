@@ -89,6 +89,9 @@ Car ferrari = Car.id(1L)
 template.insert(ferrari);
 Optional<Car> car = template.find(Car.class, 1L);
 template.delete(Car.class, 1L);
+
+List<Car> cars = template.select(Car.class).where("name").eq("Ferrari").result();
+template.delete(Car.class).execute();
 ----
 
 This template has specialization to take advantage of a particular NoSQL database type.
@@ -258,19 +261,7 @@ Car ferrari = Car.id(1L)
 template.insert(ferrari);
 Optional<Car> car = template.find(Car.class, 1L);
 
-ColumnDeleteQuery deleteQuery = delete()
-        .from("Car")
-        .where("_id")
-        .eq(1L)
-        .build();
-
-template.delete(deleteQuery);
-
-ColumnDeleteQuery query = select()
-        .from("Car")
-        .where("_id")
-        .eq(1L)
-        .build();
+template.delete(Car.class).where("id").eq(1L).execute();
 
 Optional<Car> result = template.singleResult("select * from Car where _id = 1");
 ----
@@ -366,19 +357,7 @@ Car ferrari = Car.id(1L)
 template.insert(ferrari);
 Optional<Car> car = template.find(Car.class, 1L);
 
-DocumentDeleteQuery deleteQuery = delete()
-        .from("Car")
-        .where("_id")
-        .eq(1L)
-        .build();
-
-template.delete(deleteQuery);
-
-DocumentDeleteQuery query = select()
-        .from("Car")
-        .where("_id")
-        .eq(1L)
-        .build();
+template.delete(Car.class).where("id").eq(1L).execute();
 
 Optional<Car> result = template.singleResult("select * from Car where _id = 1");
 ----

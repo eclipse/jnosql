@@ -12,32 +12,35 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.column.query;
+package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnQuery;
+import jakarta.nosql.document.DocumentCondition;
+import jakarta.nosql.document.DocumentQuery;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static java.util.Collections.emptyList;
-
-class MappingColumnQuery implements ColumnQuery {
-
+/**
+ * The mapping implementation of {@link DocumentQuery}
+ */
+public final class MappingDocumentQuery implements DocumentQuery {
     private final List<Sort> sorts;
     private final long limit;
     private final long skip;
-    private final ColumnCondition condition;
-    private final String columnFamily;
+    private final DocumentCondition condition;
+    private final String documentCollection;
 
-    MappingColumnQuery(List<Sort> sorts, long limit, long skip, ColumnCondition condition, String columnFamily) {
+    public MappingDocumentQuery(List<Sort> sorts, long limit, long skip, DocumentCondition condition,
+                                String documentCollection) {
+
         this.sorts = sorts;
         this.limit = limit;
         this.skip = skip;
         this.condition = condition;
-        this.columnFamily = columnFamily;
+        this.documentCollection = documentCollection;
     }
 
     @Override
@@ -51,18 +54,13 @@ class MappingColumnQuery implements ColumnQuery {
     }
 
     @Override
-    public String getColumnFamily() {
-        return columnFamily;
+    public String getDocumentCollection() {
+        return documentCollection;
     }
 
     @Override
-    public Optional<ColumnCondition> getCondition() {
+    public Optional<DocumentCondition> getCondition() {
         return Optional.ofNullable(condition);
-    }
-
-    @Override
-    public List<String> getColumns() {
-        return emptyList();
     }
 
     @Override
@@ -70,36 +68,41 @@ class MappingColumnQuery implements ColumnQuery {
         return sorts;
     }
 
+    @Override
+    public List<String> getDocuments() {
+        return Collections.emptyList();
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ColumnQuery)) {
+        if (!(o instanceof DocumentQuery)) {
             return false;
         }
-        ColumnQuery that = (ColumnQuery) o;
-        return limit == that.getLimit()
-                && skip == that.getSkip()
-                && Objects.equals(sorts, that.getSorts())
-                && Objects.equals(condition, that.getCondition().orElse(null))
-                && Objects.equals(columnFamily, that.getColumnFamily());
+        DocumentQuery that = (DocumentQuery) o;
+        return limit == that.getLimit() &&
+                skip == that.getSkip() &&
+                Objects.equals(sorts, that.getSorts()) &&
+                Objects.equals(condition, that.getCondition().orElse(null)) &&
+                Objects.equals(documentCollection, that.getDocumentCollection());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(limit, skip, columnFamily, emptyList(), sorts, condition);
+        return Objects.hash(limit, skip, documentCollection, condition, sorts, Collections.emptyList());
     }
 
     @Override
     public String toString() {
-        return  "ArtemisColumnQuery{" + "limit=" + limit +
+        return "DocumentQuery{" + "limit=" + limit +
                 ", skip=" + skip +
-                ", columnFamily='" + columnFamily + '\'' +
-                ", columns=" + emptyList() +
-                ", sorts=" + sorts +
+                ", documentCollection='" + documentCollection + '\'' +
                 ", condition=" + condition +
+                ", sorts=" + sorts +
+                ", documents=" + Collections.emptyList() +
                 '}';
     }
 }
+

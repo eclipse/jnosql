@@ -17,9 +17,9 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentDeleteQuery;
 import jakarta.nosql.document.DocumentEntity;
+import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.document.DocumentQueryParser;
@@ -27,13 +27,14 @@ import jakarta.nosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.mapping.QueryMapper;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;
 import jakarta.nosql.mapping.document.DocumentTemplate;
 import jakarta.nosql.mapping.document.DocumentWorkflow;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
@@ -242,5 +243,18 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return entities.map(function).peek(getEventManager()::firePostEntity);
     }
 
+    @Override
+    public <T> QueryMapper.MapperFrom select(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        return new DocumentMapperSelect(metadata, getConverters(), this);
+    }
+
+    @Override
+    public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        return new DocumentMapperDelete(metadata, getConverters(), this);
+    }
 
 }

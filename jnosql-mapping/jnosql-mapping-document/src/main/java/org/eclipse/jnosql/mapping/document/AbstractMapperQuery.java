@@ -12,11 +12,12 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.column.query;
+package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
+import jakarta.nosql.document.Document;
+import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.mapping.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
@@ -30,41 +31,45 @@ import static java.util.stream.Collectors.toList;
 
 abstract class AbstractMapperQuery {
 
-    protected final String columnFamily;
+    protected final String documentCollection;
 
     protected boolean negate;
 
-    protected ColumnCondition condition;
+    protected DocumentCondition condition;
 
     protected boolean and;
 
     protected String name;
 
-    protected final EntityMetadata mapping;
+    protected transient final EntityMetadata mapping;
 
-    protected final Converters converters;
+    protected transient final Converters converters;
+
+    protected transient final DocumentTemplate template;
 
     protected long start;
 
     protected long limit;
 
 
-    AbstractMapperQuery(EntityMetadata mapping, Converters converters) {
+    AbstractMapperQuery(EntityMetadata mapping, Converters converters, DocumentTemplate template) {
         this.mapping = mapping;
         this.converters = converters;
-        this.columnFamily = mapping.getName();
+        this.documentCollection = mapping.getName();
+        this.template = template;
     }
 
-    protected void appendCondition(ColumnCondition newCondition) {
-        ColumnCondition columnCondition = getColumnCondition(newCondition);
+    protected void appendCondition(DocumentCondition newCondition) {
+        DocumentCondition documentCondition = getDocumentCondition(newCondition);
+
         if (nonNull(condition)) {
             if (and) {
-                this.condition = condition.and(columnCondition);
+                this.condition = condition.and(documentCondition);
             } else {
-                this.condition = condition.or(columnCondition);
+                this.condition = condition.or(documentCondition);
             }
         } else {
-            this.condition = columnCondition;
+            this.condition = documentCondition;
         }
         this.negate = false;
         this.name = null;
@@ -73,8 +78,8 @@ abstract class AbstractMapperQuery {
     protected <T> void betweenImpl(T valueA, T valueB) {
         requireNonNull(valueA, "valueA is required");
         requireNonNull(valueB, "valueB is required");
-        ColumnCondition newCondition = ColumnCondition
-                .between(Column.of(mapping.getColumnField(name), asList(getValue(valueA), getValue(valueB))));
+        DocumentCondition newCondition = DocumentCondition
+                .between(Document.of(mapping.getColumnField(name), asList(getValue(valueA), getValue(valueB))));
         appendCondition(newCondition);
     }
 
@@ -84,59 +89,60 @@ abstract class AbstractMapperQuery {
         requireNonNull(values, "values is required");
         List<Object> convertedValues = StreamSupport.stream(values.spliterator(), false)
                 .map(this::getValue).collect(toList());
-        ColumnCondition newCondition = ColumnCondition
-                .in(Column.of(mapping.getColumnField(name), convertedValues));
+        DocumentCondition newCondition = DocumentCondition
+                .in(Document.of(mapping.getColumnField(name), convertedValues));
         appendCondition(newCondition);
     }
 
     protected <T> void eqImpl(T value) {
         requireNonNull(value, "value is required");
 
-        ColumnCondition newCondition = ColumnCondition
-                .eq(Column.of(mapping.getColumnField(name), getValue(value)));
+        DocumentCondition newCondition = DocumentCondition
+                .eq(Document.of(mapping.getColumnField(name), getValue(value)));
         appendCondition(newCondition);
     }
 
     protected void likeImpl(String value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition
-                .like(Column.of(mapping.getColumnField(name), getValue(value)));
+        DocumentCondition newCondition = DocumentCondition
+                .like(Document.of(mapping.getColumnField(name), getValue(value)));
         appendCondition(newCondition);
     }
 
     protected <T> void gteImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition
-                .gte(Column.of(mapping.getColumnField(name), getValue(value)));
+        DocumentCondition newCondition = DocumentCondition
+                .gte(Document.of(mapping.getColumnField(name), getValue(value)));
         appendCondition(newCondition);
     }
 
     protected <T> void gtImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition
-                .gt(Column.of(mapping.getColumnField(name), getValue(value)));
+        DocumentCondition newCondition = DocumentCondition
+                .gt(Document.of(mapping.getColumnField(name), getValue(value)));
         appendCondition(newCondition);
     }
 
     protected <T> void ltImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition
-                .lt(Column.of(mapping.getColumnField(name), getValue(value)));
+        DocumentCondition newCondition = DocumentCondition
+                .lt(Document.of(mapping.getColumnField(name), getValue(value)));
         appendCondition(newCondition);
     }
 
     protected <T> void lteImpl(T value) {
         requireNonNull(value, "value is required");
-        ColumnCondition newCondition = ColumnCondition
-                .lte(Column.of(mapping.getColumnField(name), getValue(value)));
+        DocumentCondition newCondition = DocumentCondition
+                .lte(Document.of(mapping.getColumnField(name), getValue(value)));
         appendCondition(newCondition);
     }
+
 
     protected Object getValue(Object value) {
         return ConverterUtil.getValue(value, mapping, name, converters);
     }
 
-    private ColumnCondition getColumnCondition(ColumnCondition newCondition) {
+    private DocumentCondition getDocumentCondition(DocumentCondition newCondition) {
         if (negate) {
             return newCondition.negate();
         } else {
