@@ -20,7 +20,7 @@ import java.util.ServiceLoader;
 import java.util.function.Predicate;
 
 /**
- *This instance represents the reader for entity.
+ * This instance represents the reader for entity exploring an annotation.
  */
 public interface EntityAnnotationReader extends Predicate<Class<?>> {
 

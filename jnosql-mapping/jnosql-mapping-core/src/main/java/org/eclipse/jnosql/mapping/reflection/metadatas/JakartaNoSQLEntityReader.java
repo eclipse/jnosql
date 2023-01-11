@@ -21,7 +21,7 @@ import org.eclipse.jnosql.mapping.util.StringUtils;
 import java.util.Optional;
 
 /**
- * an implementation that reads from {@link Entity}
+ * an implementation that reads an entity classs from {@link Entity}
  */
 public final class JakartaNoSQLEntityReader implements EntityAnnotationReader {
 
