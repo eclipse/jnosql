@@ -18,9 +18,24 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 import java.util.function.Predicate;
 
+
+/**
+ * This instance represents a persistence field on the entity. It loads from SPI to allow extensions of annotations.
+ */
 public interface ColumnExtension extends Predicate<Field> {
 
+
+    /**
+     * Reads {@link Field} and return the name from the annotation
+     * @param field the field
+     * @return the name from annotation or {@link Field#getName()}
+     */
     String name(Field field);
 
+    /**
+     *Reads from constructor parameter and return the name
+     * @param parameter the parameter from constructor
+     * @return the name from the annotation or {@link Parameter#getName()}
+     */
     String name(Parameter parameter);
 }
