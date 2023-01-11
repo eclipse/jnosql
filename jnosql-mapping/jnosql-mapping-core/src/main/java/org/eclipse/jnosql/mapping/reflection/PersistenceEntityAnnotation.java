@@ -14,6 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-public interface IdExtension extends ColumnExtension {
+import java.util.function.Predicate;
 
+public interface PersistenceEntityAnnotation extends Predicate<Class<?>> {
+
+    String name(Class<?> type);
 }
