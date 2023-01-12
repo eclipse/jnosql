@@ -18,6 +18,7 @@ package org.eclipse.jnosql.communication.document.query;
 
 import jakarta.nosql.Sort;
 import jakarta.nosql.document.DocumentQuery;
+import org.eclipse.jnosql.communication.document.DefaultDocumentQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DefaultDocumentQueryTest {
 
 
-    private DocumentQuery query;
+    private DefaultDocumentQuery query;
 
 
     @BeforeEach

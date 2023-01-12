@@ -14,8 +14,27 @@
  *   Otavio Santana
  *
  */
+package org.eclipse.jnosql.communication.document;
+
+
+import org.eclipse.jnosql.communication.query.JSONQueryValue;
+import org.eclipse.jnosql.communication.query.QueryCondition;
+
+import java.util.List;
+import java.util.Optional;
+
 /**
- * This package has the DSL domain to create both {@link jakarta.nosql.document.DocumentQuery}
- * and {@link jakarta.nosql.document.DocumentDeleteQuery}
+ * A base supplier to {@link org.eclipse.jnosql.communication.query.InsertQuery} and
+ * {@link org.eclipse.jnosql.communication.query.UpdateQuery}
  */
-package org.eclipse.jnosql.communication.document.query;
+interface ConditionQuerySupplier {
+
+    List<QueryCondition> conditions();
+
+    Optional<JSONQueryValue> value();
+
+    default boolean useJSONCondition() {
+        return conditions().isEmpty() && value().isPresent();
+    }
+
+}

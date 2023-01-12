@@ -28,6 +28,7 @@ import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentPreparedStatement;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.document.DocumentQueryParser;
+import org.eclipse.jnosql.communication.document.DefaultDocumentQuery;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -67,10 +68,10 @@ class DefaultDocumentQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God"})
     public void shouldReturnParserQuery(String query) {
-        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        ArgumentCaptor<DefaultDocumentQuery> captor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
         parser.query(query, manager, DocumentObserverParser.EMPTY);
         Mockito.verify(manager).select(captor.capture());
-        DocumentQuery documentQuery = captor.getValue();
+        DefaultDocumentQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.getDocuments().isEmpty());
         assertTrue(documentQuery.getSorts().isEmpty());
@@ -156,13 +157,13 @@ class DefaultDocumentQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
     public void shouldExecutePrepareStatement2(String query) {
-        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        ArgumentCaptor<DefaultDocumentQuery> captor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
 
         DocumentPreparedStatement prepare = parser.prepare(query, manager, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
         prepare.getResult();
         Mockito.verify(manager).select(captor.capture());
-        DocumentQuery documentQuery = captor.getValue();
+        DefaultDocumentQuery documentQuery = captor.getValue();
         DocumentCondition documentCondition = documentQuery.getCondition().get();
         Document document = documentCondition.getDocument();
         assertEquals(Condition.EQUALS, documentCondition.getCondition());
@@ -187,16 +188,16 @@ class DefaultDocumentQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
     public void shouldSingleResult(String query) {
-        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        ArgumentCaptor<DefaultDocumentQuery> captor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
 
-        Mockito.when(manager.select(Mockito.any(DocumentQuery.class)))
+        Mockito.when(manager.select(Mockito.any(DefaultDocumentQuery.class)))
                 .thenReturn(Stream.of(mock(DocumentEntity.class)));
 
         DocumentPreparedStatement prepare = parser.prepare(query, manager, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
         final Optional<DocumentEntity> result = prepare.getSingleResult();
         Mockito.verify(manager).select(captor.capture());
-        DocumentQuery columnQuery = captor.getValue();
+        DefaultDocumentQuery columnQuery = captor.getValue();
         DocumentCondition columnCondition = columnQuery.getCondition().get();
         Document column = columnCondition.getDocument();
         assertEquals(Condition.EQUALS, columnCondition.getCondition());
@@ -208,16 +209,16 @@ class DefaultDocumentQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
     public void shouldReturnEmptySingleResult(String query) {
-        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        ArgumentCaptor<DefaultDocumentQuery> captor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
 
-        Mockito.when(manager.select(Mockito.any(DocumentQuery.class)))
+        Mockito.when(manager.select(Mockito.any(DefaultDocumentQuery.class)))
                 .thenReturn(Stream.empty());
 
         DocumentPreparedStatement prepare = parser.prepare(query, manager, DocumentObserverParser.EMPTY);
         prepare.bind("age", 12);
         final Optional<DocumentEntity> result = prepare.getSingleResult();
         Mockito.verify(manager).select(captor.capture());
-        DocumentQuery columnQuery = captor.getValue();
+        DefaultDocumentQuery columnQuery = captor.getValue();
         DocumentCondition columnCondition = columnQuery.getCondition().get();
         Document column = columnCondition.getDocument();
         assertEquals(Condition.EQUALS, columnCondition.getCondition());
@@ -229,9 +230,9 @@ class DefaultDocumentQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
     public void shouldReturnErrorSingleResult(String query) {
-        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        ArgumentCaptor<DefaultDocumentQuery> captor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
 
-        Mockito.when(manager.select(Mockito.any(DocumentQuery.class)))
+        Mockito.when(manager.select(Mockito.any(DefaultDocumentQuery.class)))
                 .thenReturn(Stream.of(mock(DocumentEntity.class), mock(DocumentEntity.class)));
 
         DocumentPreparedStatement prepare = parser.prepare(query, manager, DocumentObserverParser.EMPTY);

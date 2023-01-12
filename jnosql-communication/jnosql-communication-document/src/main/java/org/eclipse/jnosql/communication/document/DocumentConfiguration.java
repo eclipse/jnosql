@@ -1,23 +1,24 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v. 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0.
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *   All rights reserved. This program and the accompanying materials
+ *   are made available under the terms of the Eclipse Public License v1.0
+ *   and Apache License v2.0 which accompanies this distribution.
+ *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
  *
- * This Source Code may also be made available under the following Secondary
- * Licenses when the conditions for such availability set forth in the Eclipse
- * Public License v. 2.0 are satisfied: GNU General Public License, version 2
- * with the GNU Classpath Exception which is available at
- * https://www.gnu.org/software/classpath/license.html.
+ *   You may elect to redistribute this code under either of these licenses.
  *
- * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+ *   Contributors:
+ *
+ *   Otavio Santana
+ *
  */
-
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.Settings;
+
+import org.eclipse.jnosql.communication.CommunicationException;
+import org.eclipse.jnosql.communication.Settings;
 
 import java.util.ServiceLoader;
 import java.util.function.Function;
@@ -36,12 +37,12 @@ public interface DocumentConfiguration extends Function<Settings, DocumentManage
      *
      * @param <T> the configuration type
      * @return {@link DocumentConfiguration} instance
-     * @throws jakarta.nosql.ProviderNotFoundException when the provider is not found
-     * @throws jakarta.nosql.NonUniqueResultException  when there is more than one KeyValueConfiguration
      */
     static <T extends DocumentConfiguration> T getConfiguration() {
-        return (T) ServiceLoaderProvider.getUnique(DocumentConfiguration.class, () ->
-                ServiceLoader.load(DocumentConfiguration.class));
+        return (T) ServiceLoader.load(DocumentConfiguration.class)
+                .stream()
+                .map(ServiceLoader.Provider::get)
+                .findFirst().orElseThrow(() -> new CommunicationException("It does not find DocumentConfiguration"));
 
     }
 
@@ -50,13 +51,14 @@ public interface DocumentConfiguration extends Function<Settings, DocumentManage
      * for a particular provider implementation.
      *
      * @param <T>     the configuration type
-     * @param service the particular provider
+     * @param type the particular provider
      * @return {@link DocumentConfiguration} instance
-     * @throws jakarta.nosql.ProviderNotFoundException when the provider is not found
-     * @throws jakarta.nosql.NonUniqueResultException  when there is more than one KeyValueConfiguration
      */
-    static <T extends DocumentConfiguration> T getConfiguration(Class<T> service) {
-        return ServiceLoaderProvider.getUnique(DocumentConfiguration.class,
-                () -> ServiceLoader.load(DocumentConfiguration.class), service);
+    static <T extends DocumentConfiguration> T getConfiguration(Class<T> type) {
+        return (T) ServiceLoader.load(DocumentConfiguration.class)
+                .stream()
+                .map(ServiceLoader.Provider::get)
+                .filter(type::isInstance)
+                .findFirst().orElseThrow(() -> new CommunicationException("It does not find KeyValueConfiguration"));
     }
 }

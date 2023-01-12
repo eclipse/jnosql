@@ -14,24 +14,21 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.document.DocumentQuery.DocumentFrom;
-import jakarta.nosql.document.DocumentQuery.DocumentLimit;
-import jakarta.nosql.document.DocumentQuery.DocumentNameCondition;
-import jakarta.nosql.document.DocumentQuery.DocumentNameOrder;
-import jakarta.nosql.document.DocumentQuery.DocumentNotCondition;
-import jakarta.nosql.document.DocumentQuery.DocumentOrder;
-import jakarta.nosql.document.DocumentQuery.DocumentQueryBuild;
-import jakarta.nosql.document.DocumentQuery.DocumentSelect;
-import jakarta.nosql.document.DocumentQuery.DocumentSkip;
-import jakarta.nosql.document.DocumentQuery.DocumentWhere;
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.SortType;
+import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentFrom;
+import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentLimit;
+import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentNameCondition;
+import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentNameOrder;
+import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentNotCondition;
+import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentOrder;
+import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentQueryBuild;
+import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentSelect;
+import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentSkip;
+import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentWhere;
 
 import java.util.ArrayList;
 import java.util.List;

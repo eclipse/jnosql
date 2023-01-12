@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
@@ -59,7 +59,7 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
                                       DocumentObserverParser observer) {
         Params params = Params.newParams();
         DocumentDeleteQuery documentQuery = getQuery(query, params, observer);
-        return DefaultDocumentPreparedStatement.delete(documentQuery, params, query, collectionManager);
+        return DocumentPreparedStatement.delete(documentQuery, params, query, collectionManager);
     }
 
 
@@ -70,7 +70,7 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
         Objects.requireNonNull(observer, "observer is required");
         Params params = Params.newParams();
         DocumentDeleteQuery query = getQuery(params, observer, deleteQuery);
-        return new DefaultDocumentDeleteQueryParams(query, params);
+        return new DocumentDeleteQueryParams(query, params);
     }
 
     private DocumentDeleteQuery getQuery(String query, Params params, DocumentObserverParser observer) {

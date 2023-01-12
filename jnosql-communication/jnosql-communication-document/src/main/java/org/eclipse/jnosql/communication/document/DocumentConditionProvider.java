@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -16,38 +16,31 @@
  */
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentCondition.DocumentConditionProvider;
+
+import org.eclipse.jnosql.communication.Condition;
 
 /**
  * The default implementation of {@link DocumentConditionProvider}
  */
-public final class DefaultDocumentConditionProvider implements DocumentConditionProvider {
+public final class DocumentConditionProvider {
 
-    @Override
     public DocumentCondition between(Document document) {
-        return DefaultDocumentCondition.between(document);
+        return DocumentCondition.between(document);
     }
 
-    @Override
     public DocumentCondition and(DocumentCondition... conditions) {
-        return DefaultDocumentCondition.and(conditions);
+        return DocumentCondition.and(conditions);
     }
 
-    @Override
     public DocumentCondition or(DocumentCondition... conditions) {
-        return DefaultDocumentCondition.or(conditions);
+        return DocumentCondition.or(conditions);
     }
 
-    @Override
     public DocumentCondition in(Document document) {
-        return DefaultDocumentCondition.in(document);
+        return DocumentCondition.in(document);
     }
 
-    @Override
     public DocumentCondition apply(Document document, Condition condition) {
-        return DefaultDocumentCondition.of(document, condition);
+        return DocumentCondition.of(document, condition);
     }
 }

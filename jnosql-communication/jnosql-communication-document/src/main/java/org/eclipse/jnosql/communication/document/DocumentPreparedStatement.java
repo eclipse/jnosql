@@ -14,16 +14,12 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.document.DocumentQuery;
+
+import org.eclipse.jnosql.communication.NonUniqueResultException;
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
 
 import java.time.Duration;
 import java.util.Iterator;
@@ -32,7 +28,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-final class DefaultDocumentPreparedStatement implements DocumentPreparedStatement {
+
+/**
+ * An object that represents a precompiled Query statement.
+ */
+public final class DocumentPreparedStatement {
 
     private final DocumentEntity entity;
 
@@ -52,15 +52,15 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
 
     private final DocumentManager manager;
 
-    private DefaultDocumentPreparedStatement(DocumentEntity entity,
-                                             DocumentQuery documentQuery,
-                                             DocumentDeleteQuery documentDeleteQuery,
-                                             PreparedStatementType type,
-                                             Params params,
-                                             String query,
-                                             List<String> paramsLeft,
-                                             Duration duration,
-                                             DocumentManager manager) {
+    private DocumentPreparedStatement(DocumentEntity entity,
+                                      DocumentQuery documentQuery,
+                                      DocumentDeleteQuery documentDeleteQuery,
+                                      PreparedStatementType type,
+                                      Params params,
+                                      String query,
+                                      List<String> paramsLeft,
+                                      Duration duration,
+                                      DocumentManager manager) {
         this.entity = entity;
         this.documentQuery = documentQuery;
         this.documentDeleteQuery = documentDeleteQuery;
@@ -72,7 +72,14 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
         this.duration = duration;
     }
 
-    @Override
+    /**
+     * Binds an argument to a positional parameter.
+     *
+     * @param name  the parameter name
+     * @param value the parameter value
+     * @return the same query instance
+     * @throws NullPointerException     when there is null parameter
+     */
     public DocumentPreparedStatement bind(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
@@ -82,8 +89,12 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
         return this;
     }
 
-    @Override
-    public Stream<DocumentEntity> getResult() {
+    /**
+     * Executes a query and return the result as {@link Stream}
+     *
+     * @return The result stream, if delete it will return an empty list
+     */
+    public Stream<DocumentEntity> result() {
         if (!paramsLeft.isEmpty()) {
             throw new QueryException("Check all the parameters before execute the query, params left: " + paramsLeft);
         }
@@ -107,9 +118,13 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
         }
     }
 
-    @Override
-    public Optional<DocumentEntity> getSingleResult() {
-        Stream<DocumentEntity> entities = getResult();
+    /**
+     * Returns the result as a single element otherwise it will return an {@link Optional#empty()}
+     *
+     * @return the single result
+     */
+    public Optional<DocumentEntity> singleResult() {
+        Stream<DocumentEntity> entities = result();
         final Iterator<DocumentEntity> iterator = entities.iterator();
         if (!iterator.hasNext()) {
             return Optional.empty();
@@ -136,7 +151,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
             Params params,
             String query,
             DocumentManager manager) {
-        return new DefaultDocumentPreparedStatement(null, documentQuery,
+        return new DocumentPreparedStatement(null, documentQuery,
                 null, PreparedStatementType.SELECT, params, query,
                 params.getParametersNames(), null, manager);
 
@@ -147,7 +162,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
                                             String query,
                                             DocumentManager manager) {
 
-        return new DefaultDocumentPreparedStatement(null, null,
+        return new DocumentPreparedStatement(null, null,
                 documentDeleteQuery, PreparedStatementType.DELETE, params, query,
                 params.getParametersNames(), null, manager);
 
@@ -158,7 +173,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
                                             String query,
                                             Duration duration,
                                             DocumentManager manager) {
-        return new DefaultDocumentPreparedStatement(entity, null,
+        return new DocumentPreparedStatement(entity, null,
                 null, PreparedStatementType.INSERT, params, query,
                 params.getParametersNames(), duration, manager);
 
@@ -168,7 +183,7 @@ final class DefaultDocumentPreparedStatement implements DocumentPreparedStatemen
                                             Params params,
                                             String query,
                                             DocumentManager manager) {
-        return new DefaultDocumentPreparedStatement(entity, null,
+        return new DocumentPreparedStatement(entity, null,
                 null, PreparedStatementType.UPDATE, params, query,
                 params.getParametersNames(), null, manager);
 

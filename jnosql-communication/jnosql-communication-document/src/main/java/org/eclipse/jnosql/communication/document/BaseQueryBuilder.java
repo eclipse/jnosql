@@ -14,10 +14,8 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCondition;
 
 import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;

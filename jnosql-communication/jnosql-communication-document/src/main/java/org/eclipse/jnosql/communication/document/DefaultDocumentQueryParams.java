@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
 import jakarta.nosql.Params;
 import jakarta.nosql.document.DocumentQuery;

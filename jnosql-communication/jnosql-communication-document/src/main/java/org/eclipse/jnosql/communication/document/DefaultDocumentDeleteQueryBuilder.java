@@ -14,13 +14,10 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteQueryBuilder;
+
+import org.eclipse.jnosql.communication.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +27,7 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
+final class DefaultDocumentDeleteQueryBuilder implements DocumentDeleteQuery.DocumentDeleteQueryBuilder {
 
     private final List<String> documents = new ArrayList<>();
 
@@ -42,14 +39,14 @@ class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
 
 
     @Override
-    public DocumentDeleteQueryBuilder delete(String document) {
+    public DefaultDocumentDeleteQueryBuilder delete(String document) {
         Objects.requireNonNull(document, "document is required");
         this.documents.add(document);
         return this;
     }
 
     @Override
-    public DocumentDeleteQueryBuilder delete(String... documents) {
+    public DefaultDocumentDeleteQueryBuilder delete(String... documents) {
         Consumer<String> validNull = d -> requireNonNull(d, "there is null document in the query");
         Consumer<String> consume = this.documents::add;
         Stream.of(documents).forEach(validNull.andThen(consume));
@@ -57,14 +54,14 @@ class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
     }
 
     @Override
-    public DocumentDeleteQueryBuilder from(String documentCollection) {
+    public DefaultDocumentDeleteQueryBuilder from(String documentCollection) {
         Objects.requireNonNull(documentCollection, "documentCollection is required");
         this.documentCollection = documentCollection;
         return this;
     }
 
     @Override
-    public DocumentDeleteQueryBuilder where(DocumentCondition condition) {
+    public DefaultDocumentDeleteQueryBuilder where(DocumentCondition condition) {
         Objects.requireNonNull(condition, "condition is required");
         this.condition = condition;
         return this;
@@ -92,7 +89,7 @@ class DefaultDeleteQueryBuilder implements DocumentDeleteQueryBuilder {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultDeleteQueryBuilder that = (DefaultDeleteQueryBuilder) o;
+        DefaultDocumentDeleteQueryBuilder that = (DefaultDocumentDeleteQueryBuilder) o;
         return Objects.equals(documents, that.documents)
                 && Objects.equals(sorts, that.sorts)
                 && Objects.equals(documentCollection, that.documentCollection)

@@ -14,13 +14,9 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentQuery;
-import org.eclipse.jnosql.communication.document.DefaultDocumentCondition;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,39 +25,21 @@ import java.util.Optional;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Optional.ofNullable;
 
-class DefaultDocumentQuery implements DocumentQuery {
-
-    private final long limit;
-
-    private final long skip;
+/**
+ * The default implementation of {@link DocumentDeleteQuery}
+ */
+final class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
 
     private final String documentCollection;
 
     private final DocumentCondition condition;
 
-    private final List<Sort> sorts;
-
     private final List<String> documents;
 
-    DefaultDocumentQuery(long limit, long skip, String documentCollection,
-                         List<String> documents, List<Sort> sorts, DocumentCondition condition) {
-
-        this.limit = limit;
-        this.skip = skip;
+    DefaultDocumentDeleteQuery(String documentCollection, DocumentCondition condition, List<String> documents) {
         this.documentCollection = documentCollection;
-        this.condition = ofNullable(condition).map(DefaultDocumentCondition::readOnly).orElse(null);
-        this.sorts = sorts;
+        this.condition = ofNullable(condition).map(DocumentCondition::readOnly).orElse(null);
         this.documents = documents;
-    }
-
-    @Override
-    public long getLimit() {
-        return limit;
-    }
-
-    @Override
-    public long getSkip() {
-        return skip;
     }
 
     @Override
@@ -75,11 +53,6 @@ class DefaultDocumentQuery implements DocumentQuery {
     }
 
     @Override
-    public List<Sort> getSorts() {
-        return unmodifiableList(sorts);
-    }
-
-    @Override
     public List<String> getDocuments() {
         return unmodifiableList(documents);
     }
@@ -89,30 +62,24 @@ class DefaultDocumentQuery implements DocumentQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DocumentQuery)) {
+        if (!(o instanceof DocumentDeleteQuery)) {
             return false;
         }
-        DocumentQuery that = (DocumentQuery) o;
-        return limit == that.getLimit() &&
-                skip == that.getSkip() &&
-                Objects.equals(documentCollection, that.getDocumentCollection()) &&
+        DocumentDeleteQuery that = (DocumentDeleteQuery) o;
+        return Objects.equals(documentCollection, that.getDocumentCollection()) &&
                 Objects.equals(condition, that.getCondition().orElse(null)) &&
-                Objects.equals(sorts, that.getSorts()) &&
                 Objects.equals(documents, that.getDocuments());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(limit, skip, documentCollection, condition, sorts, documents);
+        return Objects.hash(documentCollection, condition, documents);
     }
 
     @Override
     public String toString() {
-        return  "DefaultDocumentQuery{" + "maxResult=" + limit +
-                ", firstResult=" + skip +
-                ", documentCollection='" + documentCollection + '\'' +
+        return  "DefaultDocumentDeleteQuery{" + "documentCollection='" + documentCollection + '\'' +
                 ", condition=" + condition +
-                ", sorts=" + sorts +
                 ", documents=" + documents +
                 '}';
     }

@@ -10,24 +10,11 @@
  *  Otavio Santana
  */
 module org.eclipse.jnosql.communication.document {
-    requires jakarta.nosql.communication.core;
     requires org.eclipse.jnosql.communication.core;
-    requires jakarta.nosql.communication.document;
-    requires jakarta.nosql.communication.query;
+    requires org.eclipse.jnosql.communication.query;
     requires jakarta.json.bind;
     requires jakarta.json;
-
-    opens org.eclipse.jnosql.communication.document.query;
-
-    provides jakarta.nosql.document.DeleteQueryConverter with org.eclipse.jnosql.communication.document.query.DeleteQueryParser;
-    provides jakarta.nosql.document.Document.DocumentProvider with org.eclipse.jnosql.communication.document.DefaultDocumentProvider;
-    provides jakarta.nosql.document.DocumentCondition.DocumentConditionProvider with org.eclipse.jnosql.communication.document.DefaultDocumentConditionProvider;
-    provides jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteProvider with org.eclipse.jnosql.communication.document.query.DefaultDocumentDeleteProvider;
-    provides jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteQueryBuilderProvider with org.eclipse.jnosql.communication.document.query.DefaultDocumentDeleteQueryBuilderProvider;
-    provides jakarta.nosql.document.DocumentEntity.DocumentEntityProvider with org.eclipse.jnosql.communication.document.DefaultDocumentEntityProvider;
-    provides jakarta.nosql.document.DocumentQuery.DocumentQueryBuilderProvider with org.eclipse.jnosql.communication.document.query.DefaultDocumentQueryBuilderProvider;
-    provides jakarta.nosql.document.DocumentQuery.DocumentSelectProvider with org.eclipse.jnosql.communication.document.query.DefaultDocumentSelectProvider;
-    provides jakarta.nosql.document.DocumentQueryParser with org.eclipse.jnosql.communication.document.query.DefaultDocumentQueryParser;
-    provides jakarta.nosql.document.SelectQueryConverter with org.eclipse.jnosql.communication.document.query.SelectQueryParser;
-
+    exports org.eclipse.jnosql.communication.document;
+    opens org.eclipse.jnosql.communication.document;
+    uses org.eclipse.jnosql.communication.document.DocumentConfiguration;
 }

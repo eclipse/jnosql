@@ -14,17 +14,19 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.Function;
-import jakarta.nosql.query.FunctionQueryValue;
-import jakarta.nosql.query.JSONQueryValue;
-import jakarta.nosql.query.ParamQueryValue;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.ValueType;
+
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.query.ArrayQueryValue;
+import org.eclipse.jnosql.communication.query.Function;
+import org.eclipse.jnosql.communication.query.FunctionQueryValue;
+import org.eclipse.jnosql.communication.query.JSONQueryValue;
+import org.eclipse.jnosql.communication.query.ParamQueryValue;
+import org.eclipse.jnosql.communication.query.QueryValue;
+import org.eclipse.jnosql.communication.query.ValueType;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -38,7 +40,7 @@ final class Values {
 
     static Object get(QueryValue<?> value, Params parameters) {
 
-        ValueType type = value.getType();
+        ValueType type = value.type();
         switch (type) {
             case NUMBER:
             case STRING:
@@ -51,10 +53,10 @@ final class Values {
                         .collect(toList());
             case FUNCTION:
                 Function function = FunctionQueryValue.class.cast(value).get();
-                String name = function.getName();
-                Object[] params = function.getParams();
+                String name = function.name();
+                Object[] params = function.params();
                 if ("convert".equals(name)) {
-                    return jakarta.nosql.Value.of(get(QueryValue.class.cast(params[0]), parameters))
+                    return Value.of(get(QueryValue.class.cast(params[0]), parameters))
                             .get((Class<?>) params[1]);
                 }
                 String message = String.format("There is not support to the function: %s with parameters %s", name,

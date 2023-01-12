@@ -14,32 +14,41 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentDeleteQueryParams;
+import org.eclipse.jnosql.communication.Params;
 
 import java.util.Objects;
 
-final class DefaultDocumentDeleteQueryParams implements DocumentDeleteQueryParams {
+/**
+ * The result of {@link DocumentDeleteQueryParams} that has {@link DocumentDeleteQuery} and {@link Params}.
+ */
+public final class DocumentDeleteQueryParams  {
 
     private final DocumentDeleteQuery query;
 
     private final Params params;
 
-    DefaultDocumentDeleteQueryParams(DocumentDeleteQuery query, Params params) {
+    DocumentDeleteQueryParams(DocumentDeleteQuery query, Params params) {
         this.query = query;
         this.params = params;
     }
 
-    @Override
-    public DocumentDeleteQuery getQuery() {
+    /**
+     * The {@link DocumentDeleteQuery}
+     *
+     * @return a {@link DocumentDeleteQuery} instance
+     */
+    public DocumentDeleteQuery query() {
         return query;
     }
 
-    @Override
-    public Params getParams() {
+    /**
+     * The {@link Params}
+     *
+     * @return a {@link Params} instance
+     */
+    public Params params() {
         return params;
     }
 
@@ -51,7 +60,7 @@ final class DefaultDocumentDeleteQueryParams implements DocumentDeleteQueryParam
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultDocumentDeleteQueryParams that = (DefaultDocumentDeleteQueryParams) o;
+        DocumentDeleteQueryParams that = (DocumentDeleteQueryParams) o;
         return Objects.equals(query, that.query) &&
                 Objects.equals(params, that.params);
     }

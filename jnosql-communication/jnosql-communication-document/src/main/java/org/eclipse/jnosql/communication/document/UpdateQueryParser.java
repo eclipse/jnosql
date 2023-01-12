@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
 import jakarta.nosql.Params;
 import jakarta.nosql.QueryException;
@@ -61,7 +61,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
         UpdateQuery updateQuery = supplier.apply(query);
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
-        return DefaultDocumentPreparedStatement.update(entity, params, query, collectionManager);
+        return DocumentPreparedStatement.update(entity, params, query, collectionManager);
     }
 
     private DocumentEntity getEntity(Params params, UpdateQuery updateQuery, DocumentObserverParser observer) {
@@ -77,12 +77,12 @@ final class UpdateQueryParser extends ConditionQueryParser {
         }
 
         @Override
-        public List<Condition> getConditions() {
+        public List<Condition> conditions() {
             return query.getConditions();
         }
 
         @Override
-        public Optional<JSONQueryValue> getValue() {
+        public Optional<JSONQueryValue> value() {
             return query.getValue();
         }
     }

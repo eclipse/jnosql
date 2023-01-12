@@ -14,13 +14,10 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentQuery;
+
+import org.eclipse.jnosql.communication.Sort;
 
 import java.util.ArrayList;
 import java.util.List;

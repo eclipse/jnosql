@@ -14,15 +14,13 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDelete;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteFrom;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteNameCondition;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteNotCondition;
-import jakarta.nosql.document.DocumentDeleteQuery.DocumentDeleteWhere;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery.DocumentDelete;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery.DocumentDeleteFrom;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery.DocumentDeleteNameCondition;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery.DocumentDeleteNotCondition;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery.DocumentDeleteWhere;
 
 import java.util.List;
 

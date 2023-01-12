@@ -14,15 +14,12 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.query.JSONQueryValue;
+
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.query.JSONQueryValue;
 
 import java.util.List;
 
@@ -37,17 +34,17 @@ abstract class ConditionQueryParser {
         DocumentEntity entity = DocumentEntity.of(collection);
 
         if (query.useJSONCondition()) {
-            JSONQueryValue jsonValue = query.getValue().orElseThrow(() -> new QueryException("It is an invalid state of" +
+            JSONQueryValue jsonValue = query.value().orElseThrow(() -> new QueryException("It is an invalid state of" +
                     " either Update or Insert."));
             List<Document> documents = JsonObjects.getDocuments(jsonValue.get());
             entity.addAll(documents);
             return entity;
         }
 
-        query.getConditions()
+        query.conditions()
                 .stream()
                 .map(c -> Conditions.getCondition(c, params, observer, collection))
-                .map(DocumentCondition::getDocument)
+                .map(DocumentCondition::document)
                 .forEach(entity::add);
         return entity;
     }
