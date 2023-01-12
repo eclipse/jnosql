@@ -74,4 +74,14 @@ public final class Params {
     }
 
 
+
+    /**
+     * It returns a new Params instance
+     *
+     * @return a new {@link Params} instance
+     */
+    public static Params newParams() {
+        return new Params();
+    }
+
 }

@@ -37,11 +37,11 @@ class SortTest {
         Sort asc = Sort.of("name", SortType.ASC);
         Sort desc = Sort.of("name", SortType.DESC);
 
-        Assertions.assertEquals("name", asc.getName());
-        Assertions.assertEquals("name", desc.getName());
+        Assertions.assertEquals("name", asc.name());
+        Assertions.assertEquals("name", desc.name());
 
-        Assertions.assertEquals(SortType.ASC, asc.getType());
-        Assertions.assertEquals(SortType.DESC, desc.getType());
+        Assertions.assertEquals(SortType.ASC, asc.type());
+        Assertions.assertEquals(SortType.DESC, desc.type());
     }
 
     @Test

@@ -11,9 +11,6 @@
  */
 package org.eclipse.jnosql.communication;
 
-import org.eclipse.jnosql.communication.Params;
-import org.eclipse.jnosql.communication.QueryException;
-import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
