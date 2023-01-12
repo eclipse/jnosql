@@ -14,11 +14,12 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.keyvalue.query;
+package org.eclipse.jnosql.communication.keyvalue;
 
 import jakarta.nosql.QueryException;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
+import org.eclipse.jnosql.communication.keyvalue.DelQueryParser;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;

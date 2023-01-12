@@ -1,25 +1,24 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
  *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v. 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0.
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *   All rights reserved. This program and the accompanying materials
+ *   are made available under the terms of the Eclipse Public License v1.0
+ *   and Apache License v2.0 which accompanies this distribution.
+ *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
  *
- * This Source Code may also be made available under the following Secondary
- * Licenses when the conditions for such availability set forth in the Eclipse
- * Public License v. 2.0 are satisfied: GNU General Public License, version 2
- * with the GNU Classpath Exception which is available at
- * https://www.gnu.org/software/classpath/license.html.
+ *   You may elect to redistribute this code under either of these licenses.
  *
- * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+ *   Contributors:
+ *
+ *   Otavio Santana
+ *
  */
-
 package org.eclipse.jnosql.communication.keyvalue;
 
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.Value;
+
+import org.eclipse.jnosql.communication.Value;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -139,8 +138,7 @@ public interface BucketManager extends AutoCloseable {
      */
     default Stream<Value> query(String query) {
         Objects.requireNonNull(query, "query is required");
-        KeyValueQueryParser parser = ServiceLoaderProvider.get(KeyValueQueryParser.class,
-                () -> ServiceLoader.load(KeyValueQueryParser.class));
+        KeyValueQueryParser parser = new KeyValueQueryParser();
         return parser.query(query, this);
     }
 
@@ -157,8 +155,7 @@ public interface BucketManager extends AutoCloseable {
      */
     default KeyValuePreparedStatement prepare(String query) {
         Objects.requireNonNull(query, "query is required");
-        KeyValueQueryParser parser = ServiceLoaderProvider.get(KeyValueQueryParser.class
-                , () -> ServiceLoader.load(KeyValueQueryParser.class));
+        KeyValueQueryParser parser = new KeyValueQueryParser();
         return parser.prepare(query, this);
     }
 

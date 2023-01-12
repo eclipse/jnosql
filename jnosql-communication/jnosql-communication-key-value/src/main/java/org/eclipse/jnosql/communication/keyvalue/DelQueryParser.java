@@ -14,15 +14,14 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.keyvalue.query;
+package org.eclipse.jnosql.communication.keyvalue;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import jakarta.nosql.query.DelQuery;
-import jakarta.nosql.query.DelQuery.DelQueryProvider;
+
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.query.DelQuery;
+import org.eclipse.jnosql.communication.query.DelQueryProvider;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -34,14 +33,14 @@ final class DelQueryParser {
     private final DelQueryProvider provider;
 
     DelQueryParser() {
-        this.provider = DelQuery.getProvider();
+        this.provider = new DelQueryProvider();
     }
 
     Stream<Value> query(String query, BucketManager manager) {
 
         DelQuery delQuery = provider.apply(query);
         Params params = Params.newParams();
-        List<Value> values = delQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
+        List<Value> values = delQuery.keys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
@@ -54,7 +53,7 @@ final class DelQueryParser {
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
         DelQuery delQuery = provider.apply(query);
         Params params = Params.newParams();
-        List<Value> values = delQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
+        List<Value> values = delQuery.keys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         return DefaultKeyValuePreparedStatement.del(values, manager, params, query);
     }
 }

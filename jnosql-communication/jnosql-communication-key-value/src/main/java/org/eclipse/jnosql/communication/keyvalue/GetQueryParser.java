@@ -14,16 +14,15 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.keyvalue.query;
+package org.eclipse.jnosql.communication.keyvalue;
 
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import jakarta.nosql.query.GetQuery;
-import jakarta.nosql.query.GetQuery.GetQueryProvider;
+
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.query.GetQuery;
+import org.eclipse.jnosql.communication.query.GetQueryProvider;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,14 +35,14 @@ final class GetQueryParser {
     private final GetQueryProvider provider;
 
     GetQueryParser() {
-        this.provider = GetQuery.getProvider();
+        this.provider = new GetQueryProvider();
     }
 
     Stream<Value> query(String query, BucketManager manager) {
 
         GetQuery getQuery = provider.apply(query);
         Params params = Params.newParams();
-        List<Value> values = getQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
+        List<Value> values = getQuery.keys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
@@ -56,7 +55,7 @@ final class GetQueryParser {
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
         GetQuery getQuery = provider.apply(query);
         Params params = Params.newParams();
-        List<Value> values = getQuery.getKeys().stream().map(k -> Values.getValue(k, params)).collect(toList());
+        List<Value> values = getQuery.keys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         return DefaultKeyValuePreparedStatement.get(values, manager, params, query);
     }
 }

@@ -14,16 +14,14 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.keyvalue.query;
+package org.eclipse.jnosql.communication.keyvalue;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import jakarta.nosql.query.PutQuery;
-import jakarta.nosql.query.PutQuery.PutQueryProvider;
+
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.query.PutQuery;
+import org.eclipse.jnosql.communication.query.PutQueryProvider;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -34,16 +32,16 @@ final class PutQueryParser {
     private final PutQueryProvider provider;
 
     PutQueryParser() {
-        this.provider = PutQuery.getProvider();
+        this.provider = new PutQueryProvider();
     }
 
     Stream<Value> query(String query, BucketManager manager) {
 
         PutQuery putQuery = provider.apply(query);
         Params params = Params.newParams();
-        Value key = Values.getValue(putQuery.getKey(), params);
-        Value value = Values.getValue(putQuery.getValue(), params);
-        Optional<Duration> ttl = putQuery.getTtl();
+        Value key = Values.getValue(putQuery.key(), params);
+        Value value = Values.getValue(putQuery.value(), params);
+        Optional<Duration> ttl = putQuery.ttl();
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
@@ -61,9 +59,9 @@ final class PutQueryParser {
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
         PutQuery putQuery = provider.apply(query);
         Params params = Params.newParams();
-        Value key = Values.getValue(putQuery.getKey(), params);
-        Value value = Values.getValue(putQuery.getValue(), params);
-        Optional<Duration> ttl = putQuery.getTtl();
+        Value key = Values.getValue(putQuery.key(), params);
+        Value value = Values.getValue(putQuery.value(), params);
+        Optional<Duration> ttl = putQuery.ttl();
 
         return DefaultKeyValuePreparedStatement.put(key, value, manager, params, ttl.orElse(null), query);
     }

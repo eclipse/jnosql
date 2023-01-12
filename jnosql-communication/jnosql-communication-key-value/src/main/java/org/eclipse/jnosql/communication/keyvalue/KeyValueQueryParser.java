@@ -14,24 +14,38 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.keyvalue.query;
+package org.eclipse.jnosql.communication.keyvalue;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import jakarta.nosql.keyvalue.KeyValueQueryParser;
+
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Value;
 
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class DefaultKeyValueQueryParser implements KeyValueQueryParser {
+
+
+
+/**
+ * A query parser to key-value database type, this class will convert a String to an operation in {@link BucketManager}.
+ */
+final class KeyValueQueryParser {
 
     private final PutQueryParser putQueryParser = new PutQueryParser();
     private final GetQueryParser getQueryParser = new GetQueryParser();
     private final DelQueryParser delQueryParser = new DelQueryParser();
 
-    @Override
+    /**
+     * Executes a query and returns the result, when the operations are <b>put</b>, <b>get</b> and <b>del</b>
+     * command it will return the result of the operation when the command is either <b>put</b> or <b>del</b> it will return an empty collection.
+     *
+     * @param query             the query as {@link String}
+     * @param manager the manager
+     * @return the result of the operation if delete it will always return an empty list
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalArgumentException        when the query has value parameters
+     * @throws QueryException when there is error in the syntax
+     */
     public Stream<Value> query(String query, BucketManager manager) {
         validation(query, manager);
         String command = query.substring(0, 3);
@@ -48,7 +62,17 @@ public class DefaultKeyValueQueryParser implements KeyValueQueryParser {
     }
 
 
-    @Override
+    /**
+     * Executes a query and returns a {@link KeyValuePreparedStatement}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>del</b> it will return an empty collection.
+     *
+     * @param query             the query as {@link String}
+     * @param manager the manager
+     * @return a {@link KeyValuePreparedStatement} instance
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalArgumentException        when the query has value parameters
+     * @throws QueryException when there is error in the syntax
+     */
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
         validation(query, manager);
         String command = query.substring(0, 3);

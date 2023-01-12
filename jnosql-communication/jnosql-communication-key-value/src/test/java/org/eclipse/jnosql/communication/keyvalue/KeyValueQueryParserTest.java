@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.keyvalue.query;
+package org.eclipse.jnosql.communication.keyvalue;
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Value;
@@ -22,6 +22,7 @@ import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.keyvalue.KeyValueEntity;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
 import jakarta.nosql.keyvalue.KeyValueQueryParser;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueQueryParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -38,9 +39,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class DefaultKeyValueQueryParserTest {
+class KeyValueQueryParserTest {
 
-    private final KeyValueQueryParser parser = new DefaultKeyValueQueryParser();
+    private final KeyValueQueryParser parser = new KeyValueQueryParser();
 
     private final BucketManager manager = Mockito.mock(BucketManager.class);
 

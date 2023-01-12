@@ -14,16 +14,14 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.keyvalue.query;
+package org.eclipse.jnosql.communication.keyvalue;
 
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
+
+import org.eclipse.jnosql.communication.NonUniqueResultException;
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Value;
 
 import java.time.Duration;
 import java.util.Iterator;
@@ -76,7 +74,7 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
     }
 
     @Override
-    public Stream<Value> getResult() {
+    public Stream<Value> result() {
         if (!paramsLeft.isEmpty()) {
             throw new QueryException("Check all the parameters before execute the query, params left: "
                     + paramsLeft);
@@ -104,8 +102,8 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
     }
 
     @Override
-    public Optional<Value> getSingleResult() {
-        Stream<Value> entities = getResult();
+    public Optional<Value> singleResult() {
+        Stream<Value> entities = result();
         final Iterator<Value> iterator = entities.iterator();
 
         if (!iterator.hasNext()) {
