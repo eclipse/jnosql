@@ -12,7 +12,6 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.JSONQueryValue;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -20,17 +19,30 @@ import jakarta.json.JsonReader;
 import java.io.StringReader;
 import java.util.Objects;
 
-final class DefaultJSONQueryValue implements JSONQueryValue {
+
+/**
+ * JavaScript Object Notation is a lightweight data-interchange format.
+ */
+public final class JSONQueryValue implements QueryValue<JsonObject> {
 
     private final JsonObject value;
 
-    private DefaultJSONQueryValue(JsonObject value) {
+    private JSONQueryValue(JsonObject value) {
         this.value = value;
     }
 
-    @Override
     public JsonObject get() {
         return value;
+    }
+
+    @Override
+    public ValueType getType() {
+        return ValueType.JSON;
+    }
+
+    public static JSONQueryValue of(QueryParser.JsonContext context) {
+        JsonReader jsonReader = Json.createReader(new StringReader(context.getText()));
+        return new JSONQueryValue(jsonReader.readObject());
     }
 
     @Override
@@ -38,10 +50,10 @@ final class DefaultJSONQueryValue implements JSONQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultJSONQueryValue)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultJSONQueryValue that = (DefaultJSONQueryValue) o;
+        JSONQueryValue that = (JSONQueryValue) o;
         return Objects.equals(value, that.value);
     }
 
@@ -52,13 +64,8 @@ final class DefaultJSONQueryValue implements JSONQueryValue {
 
     @Override
     public String toString() {
-        return value.toString();
+        return "JSONQueryValue{" +
+                "value=" + value +
+                '}';
     }
-
-    public static JSONQueryValue of(QueryParser.JsonContext context) {
-        JsonReader jsonReader = Json.createReader(new StringReader(context.getText()));
-        return new DefaultJSONQueryValue(jsonReader.readObject());
-    }
-
-
 }

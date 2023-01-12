@@ -35,7 +35,7 @@ final class ValueConverter {
         }
 
         if (Objects.nonNull(context.json())) {
-            return DefaultJSONQueryValue.of(context.json());
+            return JSONQueryValue.of(context.json());
         }
 
         if (Objects.nonNull(context.parameter())) {

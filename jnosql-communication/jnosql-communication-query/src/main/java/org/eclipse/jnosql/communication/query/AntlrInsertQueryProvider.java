@@ -57,7 +57,7 @@ public final class AntlrInsertQueryProvider extends AbstractSupplier implements 
 
     @Override
     public void enterJson(QueryParser.JsonContext ctx) {
-        this.value = DefaultJSONQueryValue.of(ctx);
+        this.value = JSONQueryValue.of(ctx);
     }
 
     private Condition getCondition(QueryParser.ChangeContext changeContext) {
