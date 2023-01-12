@@ -11,6 +11,9 @@
  */
 package org.eclipse.jnosql.communication;
 
+/**
+ * The root communication exception
+ */
 public class CommunicationException extends RuntimeException {
 
 
