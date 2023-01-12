@@ -41,7 +41,7 @@ final class ValueConverter {
         }
 
         if (Objects.nonNull(context.function())) {
-            return DefaultFunctionQueryValue.of(context.function());
+            return FunctionQueryValue.of(context.function());
         }
         if (Objects.nonNull(context.array())) {
             QueryValue<?>[] elements = context.array().element().stream()

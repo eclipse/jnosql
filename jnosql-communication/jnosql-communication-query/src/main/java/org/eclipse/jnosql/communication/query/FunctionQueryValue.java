@@ -12,18 +12,19 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.query.Function;
-import jakarta.nosql.query.FunctionQueryValue;
-import jakarta.nosql.query.QueryValue;
+
+import org.eclipse.jnosql.communication.QueryException;
 
 import java.util.Objects;
 
-final class DefaultFunctionQueryValue implements QueryValue<Function> {
+/**
+ * A {@link Function} as {@link QueryValue}
+ */
+public final class FunctionQueryValue implements QueryValue<Function> {
 
     private final Function function;
 
-    private DefaultFunctionQueryValue(Function function) {
+    private FunctionQueryValue(Function function) {
         this.function = function;
     }
 
@@ -37,10 +38,10 @@ final class DefaultFunctionQueryValue implements QueryValue<Function> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultFunctionQueryValue)) {
+        if (!(o instanceof FunctionQueryValue)) {
             return false;
         }
-        DefaultFunctionQueryValue that = (DefaultFunctionQueryValue) o;
+        FunctionQueryValue that = (FunctionQueryValue) o;
         return Objects.equals(function, that.function);
     }
 
@@ -52,6 +53,11 @@ final class DefaultFunctionQueryValue implements QueryValue<Function> {
     @Override
     public String toString() {
         return function.toString();
+    }
+
+    @Override
+    public ValueType getType() {
+        return ValueType.FUNCTION;
     }
 
     static FunctionQueryValue of(QueryParser.FunctionContext context) {
@@ -68,11 +74,12 @@ final class DefaultFunctionQueryValue implements QueryValue<Function> {
         try {
             Object[] params = new Object[]{value, Class.forName(text)};
             Function function1 = DefaultFunction.of("convert", params);
-            return new DefaultFunctionQueryValue(function1);
+            return new FunctionQueryValue(function1);
         } catch (ClassNotFoundException e) {
             throw new QueryException("Class does not found the converter function argument: " + text, e);
         }
     }
+
 
 
 }
