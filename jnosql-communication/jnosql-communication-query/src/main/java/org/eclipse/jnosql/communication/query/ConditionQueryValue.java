@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  and Apache License v2.0 which accompanies this distribution.
@@ -12,60 +12,17 @@
 
 package org.eclipse.jnosql.communication.query;
 
-
 import java.util.List;
-import java.util.Objects;
-
-import static java.util.Collections.unmodifiableList;
 
 /**
  * The QueryValue type that has a list of values, it will be used when the condition is composed such as
  * and ({@link org.eclipse.jnosql.communication.Condition#AND}), or ({@link org.eclipse.jnosql.communication.Condition#OR})
  * and negation ({@link org.eclipse.jnosql.communication.Condition#NOT}).
  */
-public final class ConditionQueryValue implements QueryValue<List<DefaultQueryCondition>> {
-
-    private final List<DefaultQueryCondition> conditions;
-
-    private ConditionQueryValue(List<DefaultQueryCondition> conditions) {
-        this.conditions = conditions;
-    }
+public interface ConditionQueryValue  extends QueryValue<List<QueryCondition>> {
 
     @Override
-    public List<DefaultQueryCondition> get() {
-        return unmodifiableList(conditions);
-    }
-
-    @Override
-    public ValueType type() {
+    default ValueType type() {
         return ValueType.CONDITION;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ConditionQueryValue)) {
-            return false;
-        }
-        ConditionQueryValue that = (ConditionQueryValue) o;
-        return Objects.equals(conditions, that.conditions);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(conditions);
-    }
-
-    @Override
-    public String toString() {
-        return conditions.toString();
-    }
-
-    static ConditionQueryValue of(List<DefaultQueryCondition> conditions) {
-        return new ConditionQueryValue(conditions);
-    }
-
-
 }

@@ -310,8 +310,8 @@ class DeleteQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.NOT, condition.getOperator());
         assertEquals("_NOT", condition.getName());
-        assertTrue(value instanceof ConditionQueryValue);
-        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof DefaultConditionQueryValue);
+        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(1, conditions.size());
         condition = conditions.get(0);
         value = condition.getValue();
@@ -333,8 +333,8 @@ class DeleteQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
         assertEquals("_AND", condition.getName());
-        assertTrue(value instanceof ConditionQueryValue);
-        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof DefaultConditionQueryValue);
+        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
         condition = conditions.get(0);
         value = condition.getValue();
@@ -372,8 +372,8 @@ class DeleteQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.OR, condition.getOperator());
         assertEquals("_OR", condition.getName());
-        assertTrue(value instanceof ConditionQueryValue);
-        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof DefaultConditionQueryValue);
+        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
         condition = conditions.get(0);
         value = condition.getValue();
@@ -412,8 +412,8 @@ class DeleteQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
         assertEquals("_AND", condition.getName());
-        assertTrue(value instanceof ConditionQueryValue);
-        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof DefaultConditionQueryValue);
+        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
 
         condition = conditions.get(0);
@@ -434,7 +434,7 @@ class DeleteQueryProviderTest {
         value = condition.getValue();
         Assertions.assertEquals(Operator.OR, condition.getOperator());
 
-        conditions = ConditionQueryValue.class.cast(condition.getValue()).get();
+        conditions = DefaultConditionQueryValue.class.cast(condition.getValue()).get();
         assertEquals(1, conditions.size());
 
         condition = conditions.get(0);
@@ -463,8 +463,8 @@ class DeleteQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
         assertEquals("_AND", condition.getName());
-        assertTrue(value instanceof ConditionQueryValue);
-        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof DefaultConditionQueryValue);
+        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
 
         condition = conditions.get(0);
@@ -484,7 +484,7 @@ class DeleteQueryProviderTest {
         condition = conditions.get(2);
         Assertions.assertEquals(Operator.OR, condition.getOperator());
 
-        conditions = ConditionQueryValue.class.cast(condition.getValue()).get();
+        conditions = DefaultConditionQueryValue.class.cast(condition.getValue()).get();
         assertEquals(2, conditions.size());
 
         condition = conditions.get(0);
@@ -526,8 +526,8 @@ class DeleteQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
         assertEquals("_AND", condition.getName());
-        assertTrue(value instanceof ConditionQueryValue);
-        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof DefaultConditionQueryValue);
+        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(4, conditions.size());
 
         condition = conditions.get(0);
@@ -547,9 +547,9 @@ class DeleteQueryProviderTest {
         condition = conditions.get(2);
         Assertions.assertEquals(Operator.OR, condition.getOperator());
 
-        assertEquals(1, ConditionQueryValue.class.cast(condition.getValue()).get().size());
+        assertEquals(1, DefaultConditionQueryValue.class.cast(condition.getValue()).get().size());
 
-        QueryCondition c = ConditionQueryValue.class.cast(condition.getValue()).get().get(0);
+        QueryCondition c = DefaultConditionQueryValue.class.cast(condition.getValue()).get().get(0);
         value = c.getValue();
         Assertions.assertEquals(Operator.EQUALS, c.getOperator());
 

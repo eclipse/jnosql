@@ -18,8 +18,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ArrayQueryValue;
+import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.ParamQueryValue;
-import org.eclipse.jnosql.communication.query.DefaultQueryCondition;
+import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryErrorListener;
 import org.eclipse.jnosql.communication.query.Where;
 
@@ -50,7 +51,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     private static final String SUB_ENTITY_FLAG = "_";
     protected Where where;
 
-    protected DefaultQueryCondition condition;
+    protected QueryCondition condition;
 
     protected boolean and = true;
 
@@ -70,7 +71,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
         walker.walk(this, tree);
 
         if (Objects.nonNull(condition)) {
-            this.where = new MethodWhere(condition);
+            this.where = Where.of(condition);
         }
     }
 
@@ -157,8 +158,8 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     }
 
 
-    private void checkCondition(Condition condition, boolean hasNot) {
-        Condition newCondition = checkNotCondition(condition, hasNot);
+    private void checkCondition(QueryCondition condition, boolean hasNot) {
+        QueryCondition newCondition = checkNotCondition(condition, hasNot);
         if (Objects.isNull(this.condition)) {
             this.condition = newCondition;
             return;
@@ -189,15 +190,15 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     }
 
 
-    private boolean isAppendable(Condition condition) {
-        return (AND.equals(condition.getOperator()) || OR.equals(condition.getOperator()));
+    private boolean isAppendable(QueryCondition condition) {
+        return (AND.equals(condition.condition()) || OR.equals(condition.condition()));
     }
 
     private boolean isNotAppendable() {
         return !isAppendable(this.condition);
     }
 
-    private Condition checkNotCondition(Condition condition, boolean hasNot) {
+    private QueryCondition checkNotCondition(QueryCondition condition, boolean hasNot) {
         if (hasNot) {
             ConditionQueryValue conditions = MethodConditionValue.of(Collections.singletonList(condition));
             return new MethodCondition("_NOT", NOT, conditions);
@@ -206,38 +207,38 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
         }
     }
 
-    private void appendCondition(Operator operator, Condition newCondition) {
+    private void appendCondition(Condition operator, QueryCondition newCondition) {
 
-        if (operator.equals(this.condition.getOperator())) {
-            ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.getValue());
-            List<Condition> conditions = new ArrayList<>(conditionValue.get());
+        if (operator.equals(this.condition.condition())) {
+            ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.value());
+            List<QueryCondition> conditions = new ArrayList<>(conditionValue.get());
             conditions.add(newCondition);
             this.condition = new MethodCondition(SUB_ENTITY_FLAG + operator.name(), operator, MethodConditionValue.of(conditions));
         } else if (isNotAppendable()) {
-            List<Condition> conditions = Arrays.asList(this.condition, newCondition);
+            List<QueryCondition> conditions = Arrays.asList(this.condition, newCondition);
             this.condition = new MethodCondition(SUB_ENTITY_FLAG + operator.name(), operator, MethodConditionValue.of(conditions));
         } else {
-            List<Condition> conditions = ConditionQueryValue.class.cast(this.condition.getValue()).get();
-            Condition lastCondition = conditions.get(conditions.size() - 1);
+            List<QueryCondition> conditions = ConditionQueryValue.class.cast(this.condition.value()).get();
+            QueryCondition lastCondition = conditions.get(conditions.size() - 1);
 
-            if (isAppendable(lastCondition) && operator.equals(lastCondition.getOperator())) {
-                List<Condition> lastConditions = new ArrayList<>(ConditionQueryValue.class.cast(lastCondition.getValue()).get());
+            if (isAppendable(lastCondition) && operator.equals(lastCondition.condition())) {
+                List<QueryCondition> lastConditions = new ArrayList<>(ConditionQueryValue.class.cast(lastCondition.value()).get());
                 lastConditions.add(newCondition);
 
-                Condition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
+                QueryCondition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
                         operator, MethodConditionValue.of(lastConditions));
 
-                List<Condition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
+                List<QueryCondition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
                 newConditions.add(newAppendable);
-                this.condition = new MethodCondition(this.condition.getName(), this.condition.getOperator(),
+                this.condition = new MethodCondition(this.condition.name(), this.condition.condition(),
                         MethodConditionValue.of(newConditions));
             } else {
-                Condition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
+                QueryCondition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
                         operator, MethodConditionValue.of(Collections.singletonList(newCondition)));
 
-                List<Condition> newConditions = new ArrayList<>(conditions);
+                List<QueryCondition> newConditions = new ArrayList<>(conditions);
                 newConditions.add(newAppendable);
-                this.condition = new MethodCondition(this.condition.getName(), this.condition.getOperator(),
+                this.condition = new MethodCondition(this.condition.name(), this.condition.condition(),
                         MethodConditionValue.of(newConditions));
             }
 

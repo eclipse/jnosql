@@ -9,21 +9,23 @@
  *  Contributors:
  *  Otavio Santana
  */
-package org.eclipse.jnosql.communication.query.method;
 
-import org.eclipse.jnosql.communication.query.ConditionQueryValue;
-import org.eclipse.jnosql.communication.query.QueryCondition;
+package org.eclipse.jnosql.communication.query;
+
 
 import java.util.List;
 import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 
-final class MethodConditionValue implements ConditionQueryValue {
+/**
+ * Default implementation of {@link ConditionQueryValue}
+ */
+final class DefaultConditionQueryValue implements ConditionQueryValue {
 
     private final List<QueryCondition> conditions;
 
-    private MethodConditionValue(List<QueryCondition> conditions) {
+    private DefaultConditionQueryValue(List<QueryCondition> conditions) {
         this.conditions = conditions;
     }
 
@@ -33,14 +35,19 @@ final class MethodConditionValue implements ConditionQueryValue {
     }
 
     @Override
+    public ValueType type() {
+        return ValueType.CONDITION;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof MethodConditionValue)) {
+        if (!(o instanceof DefaultConditionQueryValue)) {
             return false;
         }
-        MethodConditionValue that = (MethodConditionValue) o;
+        DefaultConditionQueryValue that = (DefaultConditionQueryValue) o;
         return Objects.equals(conditions, that.conditions);
     }
 
@@ -54,7 +61,9 @@ final class MethodConditionValue implements ConditionQueryValue {
         return conditions.toString();
     }
 
-    public static ConditionQueryValue of(List<QueryCondition> conditions) {
-        return new MethodConditionValue(conditions);
+    static DefaultConditionQueryValue of(List<QueryCondition> conditions) {
+        return new DefaultConditionQueryValue(conditions);
     }
+
+
 }

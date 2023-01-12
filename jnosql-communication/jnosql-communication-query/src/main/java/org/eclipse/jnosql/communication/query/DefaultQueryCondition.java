@@ -17,18 +17,9 @@ import org.eclipse.jnosql.communication.Condition;
 import java.util.Objects;
 
 /**
- * Condition performs different computations or actions depending on whether a boolean query
- * condition evaluates to true or false.
- * The conditions are composed of three elements.
- * The condition's name
- * The Operator
- * The Value
- *
- * @see DefaultQueryCondition#name()
- * @see DefaultQueryCondition#condition()
- * @see DefaultQueryCondition#value()
+ * The default implementation of {@link QueryCondition}
  */
-final class DefaultQueryCondition implements QueryCondition{
+final class DefaultQueryCondition implements QueryCondition {
 
     private final String name;
 
@@ -47,12 +38,12 @@ final class DefaultQueryCondition implements QueryCondition{
         return name;
     }
 
-   @Override
+    @Override
     public Condition condition() {
         return condition;
     }
 
-   @Override
+    @Override
     public QueryValue<?> value() {
         return value;
     }
