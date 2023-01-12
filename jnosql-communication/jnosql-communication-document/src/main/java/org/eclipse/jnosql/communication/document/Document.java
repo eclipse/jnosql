@@ -24,8 +24,6 @@ import org.eclipse.jnosql.communication.Value;
 
 import java.util.Objects;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * A Document is a tuple (pair) that consists of the name and its respective value.
  * A {@link DocumentEntity} has one or more Documents.
