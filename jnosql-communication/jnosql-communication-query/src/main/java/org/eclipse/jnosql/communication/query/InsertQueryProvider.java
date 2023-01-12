@@ -11,13 +11,8 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.InsertQuery;
-import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
-import jakarta.nosql.query.JSONQueryValue;
-import jakarta.nosql.query.Operator;
-import jakarta.nosql.query.QueryValue;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.eclipse.jnosql.communication.Condition;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -28,13 +23,13 @@ import static java.util.stream.Collectors.toList;
 
 
 /**
- * The {@link InsertQueryProvider} implementation that uses Antlr4
+ * A provider to {@link InsertQuery}, this provider converts text into {@link InsertQuery}
  */
-public final class AntlrInsertQueryProvider extends AbstractSupplier implements InsertQueryProvider {
+public final class InsertQueryProvider extends AbstractSupplier implements Function<String, InsertQuery> {
 
     private String entity;
 
-    private List<Condition> conditions = Collections.emptyList();
+    private List<QueryCondition> conditions = Collections.emptyList();
 
     private Duration duration;
 
@@ -60,10 +55,10 @@ public final class AntlrInsertQueryProvider extends AbstractSupplier implements 
         this.value = JSONQueryValue.of(ctx);
     }
 
-    private Condition getCondition(QueryParser.ChangeContext changeContext) {
+    private QueryCondition getCondition(QueryParser.ChangeContext changeContext) {
         String name = changeContext.name().getText();
         QueryValue<?> queryValue = ValueConverter.get(changeContext.value());
-        return new QueryCondition(name, Operator.EQUALS, queryValue);
+        return new QueryCondition(name, Condition.EQUALS, queryValue);
     }
 
     @Override
@@ -75,6 +70,6 @@ public final class AntlrInsertQueryProvider extends AbstractSupplier implements 
     @Override
     public InsertQuery apply(String query) {
         runQuery(query);
-        return new DefaultInsertQuery(entity, duration, conditions, value);
+        return new InsertQuery(entity, duration, conditions, value);
     }
 }

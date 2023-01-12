@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InsertQueryProviderTest {
 
-    private final InsertQueryProvider insertQueryProvider = new AntlrInsertQueryProvider();
+    private final InsertQueryProvider insertQueryProvider = new InsertQueryProvider();
 
 
     @Test
@@ -52,7 +52,7 @@ public class InsertQueryProviderTest {
     @ValueSource(strings = {"insert God (name = \"Diana\")"})
     public void shouldReturnParserQuery(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.getConditions();
+        List<Condition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         Condition condition = conditions.get(0);
         assertEquals("name", condition.getName());
@@ -60,14 +60,14 @@ public class InsertQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Diana", StringQueryValue.class.cast(value).get());
-        assertFalse(insertQuery.getTtl().isPresent());
+        assertFalse(insertQuery.ttl().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (age = 30)"})
     public void shouldReturnParserQuery1(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.getConditions();
+        List<Condition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         Condition condition = conditions.get(0);
         assertEquals("age", condition.getName());
@@ -75,14 +75,14 @@ public class InsertQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(30L, NumberQueryValue.class.cast(value).get());
-        assertFalse(insertQuery.getTtl().isPresent());
+        assertFalse(insertQuery.ttl().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (stamina = 32.23)"})
     public void shouldReturnParserQuery2(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.getConditions();
+        List<Condition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         Condition condition = conditions.get(0);
         assertEquals("stamina", condition.getName());
@@ -90,14 +90,14 @@ public class InsertQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(32.23, NumberQueryValue.class.cast(value).get());
-        assertFalse(insertQuery.getTtl().isPresent());
+        assertFalse(insertQuery.ttl().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (siblings = {\"Apollo\": \"Brother\", \"Zeus\": \"Father\"})"})
     public void shouldReturnParserQuery3(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.getConditions();
+        List<Condition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         Condition condition = conditions.get(0);
         assertEquals("siblings", condition.getName());
@@ -107,14 +107,14 @@ public class InsertQueryProviderTest {
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("Apollo"));
         assertEquals("Father", jsonObject.getString("Zeus"));
-        assertFalse(insertQuery.getTtl().isPresent());
+        assertFalse(insertQuery.ttl().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (age = @age)"})
     public void shouldReturnParserQuery4(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.getConditions();
+        List<Condition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         Condition condition = conditions.get(0);
         assertEquals("age", condition.getName());
@@ -122,14 +122,14 @@ public class InsertQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         assertTrue(value instanceof ParamQueryValue);
         assertEquals("age", ParamQueryValue.class.cast(value).get());
-        assertFalse(insertQuery.getTtl().isPresent());
+        assertFalse(insertQuery.ttl().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (birthday = convert(\"1988-01-01\", java.time.LocalDate))"})
     public void shouldReturnParserQuery5(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.getConditions();
+        List<Condition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         Condition condition = conditions.get(0);
         assertEquals("birthday", condition.getName());
@@ -142,14 +142,14 @@ public class InsertQueryProviderTest {
         assertEquals(2, params.length);
         assertEquals("1988-01-01", StringQueryValue.class.cast(params[0]).get());
         assertEquals(LocalDate.class, params[1]);
-        assertFalse(insertQuery.getTtl().isPresent());
+        assertFalse(insertQuery.ttl().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert God (age = 30, name = \"Artemis\")"})
     public void shouldReturnParserQuery6(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.getConditions();
+        List<Condition> conditions = insertQuery.conditions();
         assertEquals(2, conditions.size());
         Condition condition = conditions.get(0);
         assertEquals("age", condition.getName());
@@ -164,7 +164,7 @@ public class InsertQueryProviderTest {
         value = condition.getValue();
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Artemis", StringQueryValue.class.cast(value).get());
-        assertFalse(insertQuery.getTtl().isPresent());
+        assertFalse(insertQuery.ttl().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -222,10 +222,10 @@ public class InsertQueryProviderTest {
     @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"}"})
     public void shouldReturnParserQuery14(String query) {
         InsertQuery insertQuery = insertQueryProvider.apply(query);
-        assertEquals("Person", insertQuery.getEntity());
-        Assertions.assertTrue(insertQuery.getConditions().isEmpty());
-        Assertions.assertTrue(insertQuery.getValue().isPresent());
-        JSONQueryValue JSONQueryValue = insertQuery.getValue().get();
+        assertEquals("Person", insertQuery.entity());
+        Assertions.assertTrue(insertQuery.conditions().isEmpty());
+        Assertions.assertTrue(insertQuery.value().isPresent());
+        JSONQueryValue JSONQueryValue = insertQuery.value().get();
         JsonObject jsonObject = JSONQueryValue.get();
         assertEquals("Ada Lovelace", jsonObject.getString("name"));
     }
@@ -276,10 +276,10 @@ public class InsertQueryProviderTest {
             " \"address\":{\"country\": \"United Kingdom\", \"city\": \"London\"}}"})
     public void shouldReturnParserQuery21(String query) {
         InsertQuery insertQuery = insertQueryProvider.apply(query);
-        assertEquals("Person", insertQuery.getEntity());
-        Assertions.assertTrue(insertQuery.getConditions().isEmpty());
-        Assertions.assertTrue(insertQuery.getValue().isPresent());
-        JSONQueryValue JSONQueryValue = insertQuery.getValue().get();
+        assertEquals("Person", insertQuery.entity());
+        Assertions.assertTrue(insertQuery.conditions().isEmpty());
+        Assertions.assertTrue(insertQuery.value().isPresent());
+        JSONQueryValue JSONQueryValue = insertQuery.value().get();
         JsonObject jsonObject = JSONQueryValue.get();
         JsonArray sibling = jsonObject.getJsonArray("sibling");
         JsonObject address = jsonObject.getJsonObject("address");
@@ -294,18 +294,18 @@ public class InsertQueryProviderTest {
 
     private void checkJSONInsertQuery(String query, Duration duration) {
         InsertQuery insertQuery = insertQueryProvider.apply(query);
-        assertEquals("Person", insertQuery.getEntity());
-        Assertions.assertTrue(insertQuery.getConditions().isEmpty());
-        Assertions.assertTrue(insertQuery.getValue().isPresent());
-        JSONQueryValue JSONQueryValue = insertQuery.getValue().get();
+        assertEquals("Person", insertQuery.entity());
+        Assertions.assertTrue(insertQuery.conditions().isEmpty());
+        Assertions.assertTrue(insertQuery.value().isPresent());
+        JSONQueryValue JSONQueryValue = insertQuery.value().get();
         JsonObject jsonObject = JSONQueryValue.get();
         assertEquals("Ada Lovelace", jsonObject.getString("name"));
-        assertEquals(duration, insertQuery.getTtl().get());
+        assertEquals(duration, insertQuery.ttl().get());
     }
 
 
     private void checkTTL(InsertQuery insertQuery, Duration duration) {
-        List<Condition> conditions = insertQuery.getConditions();
+        List<Condition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         Condition condition = conditions.get(0);
         assertEquals("name", condition.getName());
@@ -314,7 +314,7 @@ public class InsertQueryProviderTest {
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Diana", StringQueryValue.class.cast(value).get());
 
-        Optional<Duration> ttl = insertQuery.getTtl();
+        Optional<Duration> ttl = insertQuery.ttl();
         assertTrue(ttl.isPresent());
         assertEquals(duration, ttl.get());
     }
@@ -322,7 +322,7 @@ public class InsertQueryProviderTest {
 
     private InsertQuery checkInsertFromStart(String query) {
         InsertQuery insertQuery = insertQueryProvider.apply(query);
-        assertEquals("God", insertQuery.getEntity());
+        assertEquals("God", insertQuery.entity());
         return insertQuery;
     }
 
