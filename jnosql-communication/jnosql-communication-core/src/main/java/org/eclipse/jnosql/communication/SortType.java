@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -16,13 +16,18 @@
  */
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.Sort.SortProvider;
-import jakarta.nosql.SortType;
-
-public final class DefaultSortProvider implements SortProvider {
-    @Override
-    public Sort apply(String name, SortType sortType) {
-        return DefaultSort.of(name, sortType);
-    }
+/**
+ * The way to be sorted.
+ *
+ * @see Sort
+ */
+public enum SortType {
+    /**
+     * The ascending way
+     */
+    ASC,
+    /**
+     * The descending way
+     */
+    DESC
 }

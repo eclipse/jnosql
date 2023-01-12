@@ -81,8 +81,7 @@ public interface Value {
      */
     static Value of(Object value) {
         Objects.requireNonNull(value, "value is required");
-        return ServiceLoaderProvider.get(ValueProvider.class,
-                () -> ServiceLoader.load(ValueProvider.class)).apply(value);
+        return new DefaultValue(value);
     }
 
     /**

@@ -16,8 +16,6 @@
  */
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.Settings.SettingsBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,13 +25,21 @@ import java.util.function.Supplier;
 import static java.util.Objects.requireNonNull;
 
 /**
- * The default implementation of {@link SettingsBuilder}
+ * The default {@link Settings} builder
  */
-final class DefaultSettingsBuilder implements SettingsBuilder {
+public final class SettingsBuilder {
 
     private final Map<String, Object> settings = new HashMap<>();
 
-    @Override
+
+    /**
+     * Adds a new element in the builder
+     *
+     * @param key   the key to the settings
+     * @param value the value from the respective settings
+     * @return the settings builder with a new element
+     * @throws NullPointerException when either key or value are null
+     */
     public SettingsBuilder put(String key, Object value) {
         requireNonNull(key, "key is required");
         requireNonNull(value, "value is required");
@@ -41,21 +47,38 @@ final class DefaultSettingsBuilder implements SettingsBuilder {
         return this;
     }
 
-    @Override
+    /**
+     * Adds a new element in the builder
+     *
+     * @param supplier the key to the settings
+     * @param value    the value from the respective settings
+     * @return the settings builder with a new element
+     * @throws NullPointerException when either key or value are null
+     */
     public SettingsBuilder put(Supplier<String> supplier, Object value) {
         requireNonNull(supplier, "supplier is required");
         requireNonNull(value, "value is required");
         return put(supplier.get(), value);
     }
 
-    @Override
+    /**
+     * Adds all elements in the builder
+     *
+     * @param settings the map with all elements
+     * @return the settings builder with a new element
+     * @throws NullPointerException when either the settings or the key or the value are null
+     */
     public SettingsBuilder putAll(Map<String, Object> settings) {
         requireNonNull(settings, "settings is required");
         settings.entrySet().forEach(this::put);
         return this;
     }
 
-    @Override
+    /**
+     * Creates a {@link Settings} from the builder
+     *
+     * @return a {@link Settings} instance
+     */
     public Settings build() {
         return DefaultSettings.of(settings);
     }
@@ -74,7 +97,7 @@ final class DefaultSettingsBuilder implements SettingsBuilder {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultSettingsBuilder that = (DefaultSettingsBuilder) o;
+        SettingsBuilder that = (SettingsBuilder) o;
         return Objects.equals(settings, that.settings);
     }
 

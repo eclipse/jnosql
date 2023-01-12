@@ -16,8 +16,6 @@
  */
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.Value;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,6 +32,8 @@ import java.util.stream.StreamSupport;
 import static java.util.Collections.unmodifiableMap;
 
 final class DefaultSettings implements Settings {
+
+    static final Settings EMPTY = new DefaultSettings(Collections.emptyMap());
 
     private final Map<String, Object> configurations;
 
