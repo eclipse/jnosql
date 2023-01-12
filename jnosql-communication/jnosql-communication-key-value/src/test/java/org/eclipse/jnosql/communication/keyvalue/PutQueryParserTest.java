@@ -16,11 +16,7 @@
  */
 package org.eclipse.jnosql.communication.keyvalue;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import org.eclipse.jnosql.communication.keyvalue.PutQueryParser;
+import org.eclipse.jnosql.communication.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -48,8 +44,8 @@ class PutQueryParserTest {
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
 
-        assertEquals("Diana", entity.getKey());
-        assertEquals("Hunt", entity.getValue());
+        assertEquals("Diana", entity.key());
+        assertEquals("Hunt", entity.value());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -66,8 +62,8 @@ class PutQueryParserTest {
         Duration ttl = durationCaptor.getValue();
 
         assertEquals(Duration.ofHours(10), ttl);
-        assertEquals("Diana", entity.getKey());
-        assertEquals("goddess of hunt", entity.getValue());
+        assertEquals("Diana", entity.key());
+        assertEquals("goddess of hunt", entity.value());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -81,7 +77,7 @@ class PutQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        assertThrows(QueryException.class, prepare::getResult);
+        assertThrows(QueryException.class, prepare::result);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -89,13 +85,13 @@ class PutQueryParserTest {
     public void shouldExecutePrepareStatement(String query) {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("value", "Hunt");
-        prepare.getResult();
+        prepare.result();
         ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
 
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
 
-        assertEquals("Diana", entity.getKey());
-        assertEquals("Hunt", entity.getValue());
+        assertEquals("Diana", entity.key());
+        assertEquals("Hunt", entity.value());
     }
 }

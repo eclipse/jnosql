@@ -16,10 +16,9 @@
  */
 package org.eclipse.jnosql.communication.keyvalue;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.KeyValueEntity;
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,10 +53,10 @@ class ParamsTest {
         KeyValueEntity entity = KeyValueEntity.of("name", name);
         params.bind("name", "Ada Lovelace");
 
-        assertEquals("Ada Lovelace", entity.getValue());
+        assertEquals("Ada Lovelace", entity.value());
 
         params.bind("name", "Diana");
-        assertEquals("Diana", entity.getValue());
+        assertEquals("Diana", entity.value());
     }
 
 }

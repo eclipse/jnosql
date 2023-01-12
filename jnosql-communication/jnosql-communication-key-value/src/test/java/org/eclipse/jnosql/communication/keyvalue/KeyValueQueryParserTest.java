@@ -16,13 +16,8 @@
  */
 package org.eclipse.jnosql.communication.keyvalue;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import jakarta.nosql.keyvalue.KeyValueQueryParser;
-import org.eclipse.jnosql.communication.keyvalue.KeyValueQueryParser;
+import org.eclipse.jnosql.communication.NonUniqueResultException;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -71,8 +66,8 @@ class KeyValueQueryParserTest {
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
 
-        assertEquals("Diana", entity.getKey());
-        assertEquals("Hunt", entity.getValue());
+        assertEquals("Diana", entity.key());
+        assertEquals("Hunt", entity.value());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -97,7 +92,7 @@ class KeyValueQueryParserTest {
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
-        prepare.getResult();
+        prepare.result();
 
         Mockito.verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
@@ -112,14 +107,14 @@ class KeyValueQueryParserTest {
     public void shouldExecutePrepareStatement1(String query) {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("value", "Hunt");
-        prepare.getResult();
+        prepare.result();
         ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
 
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
 
-        assertEquals("Diana", entity.getKey());
-        assertEquals("Hunt", entity.getValue());
+        assertEquals("Diana", entity.key());
+        assertEquals("Hunt", entity.value());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -127,7 +122,7 @@ class KeyValueQueryParserTest {
     public void shouldExecutePrepareStatement2(String query) {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("value", "Hunt");
-        prepare.getResult();
+        prepare.result();
         ArgumentCaptor<KeyValueEntity> captor = ArgumentCaptor.forClass(KeyValueEntity.class);
         ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
 
@@ -135,8 +130,8 @@ class KeyValueQueryParserTest {
         KeyValueEntity entity = captor.getValue();
         final Duration duration = durationCaptor.getValue();
 
-        assertEquals("Diana", entity.getKey());
-        assertEquals("Hunt", entity.getValue());
+        assertEquals("Diana", entity.key());
+        assertEquals("Hunt", entity.value());
         assertEquals(Duration.ofSeconds(10L), duration);
     }
 
@@ -148,7 +143,7 @@ class KeyValueQueryParserTest {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
-        final Optional<Value> result = prepare.getSingleResult();
+        final Optional<Value> result = prepare.singleResult();
 
         Mockito.verify(manager).get(captor.capture());
         List<Object> value = captor.getAllValues();
@@ -166,7 +161,7 @@ class KeyValueQueryParserTest {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
-        final Optional<Value> result = prepare.getSingleResult();
+        final Optional<Value> result = prepare.singleResult();
 
         Mockito.verify(manager).get(captor.capture());
         List<Object> value = captor.getAllValues();
@@ -186,6 +181,6 @@ class KeyValueQueryParserTest {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         prepare.bind("id2", 11);
-        Assertions.assertThrows(NonUniqueResultException.class, prepare::getSingleResult);
+        Assertions.assertThrows(NonUniqueResultException.class, prepare::singleResult);
     }
 }

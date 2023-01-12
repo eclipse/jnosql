@@ -17,13 +17,11 @@
 package org.eclipse.jnosql.communication.keyvalue;
 
 
-
 import org.eclipse.jnosql.communication.Value;
 
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
 /**

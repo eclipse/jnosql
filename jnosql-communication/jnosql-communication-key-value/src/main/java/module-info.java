@@ -13,7 +13,6 @@ module org.eclipse.jnosql.communication.key.value {
     requires jakarta.json;
     requires org.eclipse.jnosql.communication.core;
     requires org.eclipse.jnosql.communication.query;
-    opens org.eclipse.jnosql.communication.keyvalue.query;
     opens org.eclipse.jnosql.communication.keyvalue;
 
 }
