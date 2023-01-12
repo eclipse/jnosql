@@ -23,16 +23,16 @@ import static java.util.Collections.unmodifiableList;
  * and ({@link org.eclipse.jnosql.communication.Condition#AND}), or ({@link org.eclipse.jnosql.communication.Condition#OR})
  * and negation ({@link org.eclipse.jnosql.communication.Condition#NOT}).
  */
-public final class ConditionQueryValue implements QueryValue<List<QueryCondition>> {
+public final class ConditionQueryValue implements QueryValue<List<DefaultQueryCondition>> {
 
-    private final List<QueryCondition> conditions;
+    private final List<DefaultQueryCondition> conditions;
 
-    private ConditionQueryValue(List<QueryCondition> conditions) {
+    private ConditionQueryValue(List<DefaultQueryCondition> conditions) {
         this.conditions = conditions;
     }
 
     @Override
-    public List<QueryCondition> get() {
+    public List<DefaultQueryCondition> get() {
         return unmodifiableList(conditions);
     }
 
@@ -63,7 +63,7 @@ public final class ConditionQueryValue implements QueryValue<List<QueryCondition
         return conditions.toString();
     }
 
-    static ConditionQueryValue of(List<QueryCondition> conditions) {
+    static ConditionQueryValue of(List<DefaultQueryCondition> conditions) {
         return new ConditionQueryValue(conditions);
     }
 

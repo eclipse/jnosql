@@ -52,9 +52,9 @@ public class InsertQueryProviderTest {
     @ValueSource(strings = {"insert God (name = \"Diana\")"})
     public void shouldReturnParserQuery(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.conditions();
+        List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("name", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -67,9 +67,9 @@ public class InsertQueryProviderTest {
     @ValueSource(strings = {"insert God (age = 30)"})
     public void shouldReturnParserQuery1(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.conditions();
+        List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -82,9 +82,9 @@ public class InsertQueryProviderTest {
     @ValueSource(strings = {"insert God (stamina = 32.23)"})
     public void shouldReturnParserQuery2(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.conditions();
+        List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("stamina", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -97,9 +97,9 @@ public class InsertQueryProviderTest {
     @ValueSource(strings = {"insert God (siblings = {\"Apollo\": \"Brother\", \"Zeus\": \"Father\"})"})
     public void shouldReturnParserQuery3(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.conditions();
+        List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("siblings", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -114,9 +114,9 @@ public class InsertQueryProviderTest {
     @ValueSource(strings = {"insert God (age = @age)"})
     public void shouldReturnParserQuery4(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.conditions();
+        List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -129,9 +129,9 @@ public class InsertQueryProviderTest {
     @ValueSource(strings = {"insert God (birthday = convert(\"1988-01-01\", java.time.LocalDate))"})
     public void shouldReturnParserQuery5(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.conditions();
+        List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("birthday", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -149,9 +149,9 @@ public class InsertQueryProviderTest {
     @ValueSource(strings = {"insert God (age = 30, name = \"Artemis\")"})
     public void shouldReturnParserQuery6(String query) {
         InsertQuery insertQuery = checkInsertFromStart(query);
-        List<Condition> conditions = insertQuery.conditions();
+        List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(2, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -305,9 +305,9 @@ public class InsertQueryProviderTest {
 
 
     private void checkTTL(InsertQuery insertQuery, Duration duration) {
-        List<Condition> conditions = insertQuery.conditions();
+        List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("name", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();

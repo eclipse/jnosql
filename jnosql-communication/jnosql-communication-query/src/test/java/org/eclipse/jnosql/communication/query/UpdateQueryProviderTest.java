@@ -48,9 +48,9 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (name = \"Diana\")"})
     public void shouldReturnParserQuery(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<Condition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.getConditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("name", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -62,9 +62,9 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (age = 30)"})
     public void shouldReturnParserQuery1(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<Condition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.getConditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -76,9 +76,9 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (stamina = 32.23)"})
     public void shouldReturnParserQuery2(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<Condition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.getConditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("stamina", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -90,9 +90,9 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (siblings = {\"Apollo\": \"Brother\", \"Zeus\": \"Father\"})"})
     public void shouldReturnParserQuery3(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<Condition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.getConditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("siblings", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -106,9 +106,9 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (age = @age)"})
     public void shouldReturnParserQuery4(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<Condition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.getConditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -120,9 +120,9 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (birthday = convert(\"1988-01-01\", java.time.LocalDate))"})
     public void shouldReturnParserQuery5(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<Condition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.getConditions();
         assertEquals(1, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("birthday", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
@@ -139,9 +139,9 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (age = 30, name = \"Artemis\")"})
     public void shouldReturnParserQuery6(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<Condition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.getConditions();
         assertEquals(2, conditions.size());
-        Condition condition = conditions.get(0);
+        QueryCondition condition = conditions.get(0);
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();

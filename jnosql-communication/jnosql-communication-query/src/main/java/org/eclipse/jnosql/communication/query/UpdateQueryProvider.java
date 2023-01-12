@@ -27,7 +27,7 @@ public final class UpdateQueryProvider extends AbstractSupplier implements Funct
 
     private String entity;
 
-    private List<QueryCondition> conditions = Collections.emptyList();
+    private List<DefaultQueryCondition> conditions = Collections.emptyList();
 
     private JSONQueryValue value;
 
@@ -51,10 +51,10 @@ public final class UpdateQueryProvider extends AbstractSupplier implements Funct
         this.value = JSONQueryValue.of(ctx);
     }
 
-    private QueryCondition getCondition(QueryParser.ChangeContext changeContext) {
+    private DefaultQueryCondition getCondition(QueryParser.ChangeContext changeContext) {
         String name = changeContext.name().getText();
         QueryValue<?> queryValue = ValueConverter.get(changeContext.value());
-        return new QueryCondition(name, Condition.EQUALS, queryValue);
+        return new DefaultQueryCondition(name, Condition.EQUALS, queryValue);
     }
 
 

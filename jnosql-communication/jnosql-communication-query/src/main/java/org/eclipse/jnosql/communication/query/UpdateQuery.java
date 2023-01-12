@@ -25,11 +25,11 @@ public final class UpdateQuery implements Query {
 
     private final String entity;
 
-    private final List<QueryCondition> conditions;
+    private final List<DefaultQueryCondition> conditions;
 
     private final JSONQueryValue value;
 
-    UpdateQuery(String entity, List<QueryCondition> conditions, JSONQueryValue value) {
+    UpdateQuery(String entity, List<DefaultQueryCondition> conditions, JSONQueryValue value) {
         this.entity = entity;
         this.conditions = conditions;
         this.value = value;
@@ -48,7 +48,7 @@ public final class UpdateQuery implements Query {
      *  e.g., name = "any name"
      * @return the conditions
      */
-    public List<QueryCondition> conditions() {
+    public List<DefaultQueryCondition> conditions() {
         return Collections.unmodifiableList(conditions);
     }
 

@@ -27,11 +27,11 @@ public final class InsertQuery implements Query {
 
     private final Duration duration;
 
-    private final List<QueryCondition> conditions;
+    private final List<DefaultQueryCondition> conditions;
 
     private final JSONQueryValue value;
 
-    InsertQuery(String entity, Duration duration, List<QueryCondition> conditions, JSONQueryValue value) {
+    InsertQuery(String entity, Duration duration, List<DefaultQueryCondition> conditions, JSONQueryValue value) {
         this.entity = entity;
         this.duration = duration;
         this.conditions = conditions;
@@ -62,7 +62,7 @@ public final class InsertQuery implements Query {
      *
      * @return the conditions
      */
-    public List<QueryCondition> conditions() {
+    public List<DefaultQueryCondition> conditions() {
         return unmodifiableList(conditions);
     }
 

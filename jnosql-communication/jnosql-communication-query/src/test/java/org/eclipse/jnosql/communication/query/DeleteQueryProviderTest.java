@@ -78,7 +78,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("age", condition.getName());
@@ -93,7 +93,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.GREATER_THAN, condition.getOperator());
         assertEquals("stamina", condition.getName());
@@ -108,7 +108,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.GREATER_EQUALS_THAN, condition.getOperator());
         assertEquals("stamina", condition.getName());
@@ -123,7 +123,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.LESSER_EQUALS_THAN, condition.getOperator());
         assertEquals("stamina", condition.getName());
@@ -138,7 +138,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.LESSER_THAN, condition.getOperator());
         assertEquals("stamina", condition.getName());
@@ -154,7 +154,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.BETWEEN, condition.getOperator());
         assertEquals("age", condition.getName());
@@ -172,7 +172,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
@@ -187,7 +187,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
@@ -204,7 +204,7 @@ class DeleteQueryProviderTest {
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
@@ -221,7 +221,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("siblings", condition.getName());
@@ -239,7 +239,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
@@ -254,7 +254,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("age", condition.getName());
@@ -274,7 +274,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.IN, condition.getOperator());
         assertEquals("name", condition.getName());
@@ -291,7 +291,7 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.LIKE, condition.getOperator());
         assertEquals("name", condition.getName());
@@ -306,12 +306,12 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.NOT, condition.getOperator());
         assertEquals("_NOT", condition.getName());
         assertTrue(value instanceof ConditionQueryValue);
-        List<Condition> conditions = ConditionQueryValue.class.cast(value).get();
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(1, conditions.size());
         condition = conditions.get(0);
         value = condition.getValue();
@@ -329,12 +329,12 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
         assertEquals("_AND", condition.getName());
         assertTrue(value instanceof ConditionQueryValue);
-        List<Condition> conditions = ConditionQueryValue.class.cast(value).get();
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
         condition = conditions.get(0);
         value = condition.getValue();
@@ -368,12 +368,12 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.OR, condition.getOperator());
         assertEquals("_OR", condition.getName());
         assertTrue(value instanceof ConditionQueryValue);
-        List<Condition> conditions = ConditionQueryValue.class.cast(value).get();
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
         condition = conditions.get(0);
         value = condition.getValue();
@@ -408,12 +408,12 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
         assertEquals("_AND", condition.getName());
         assertTrue(value instanceof ConditionQueryValue);
-        List<Condition> conditions = ConditionQueryValue.class.cast(value).get();
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
 
         condition = conditions.get(0);
@@ -459,12 +459,12 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
         assertEquals("_AND", condition.getName());
         assertTrue(value instanceof ConditionQueryValue);
-        List<Condition> conditions = ConditionQueryValue.class.cast(value).get();
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
 
         condition = conditions.get(0);
@@ -522,12 +522,12 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.getWhere().isPresent());
 
         Where where = deleteQuery.getWhere().get();
-        Condition condition = where.getCondition();
+        QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
         assertEquals("_AND", condition.getName());
         assertTrue(value instanceof ConditionQueryValue);
-        List<Condition> conditions = ConditionQueryValue.class.cast(value).get();
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(4, conditions.size());
 
         condition = conditions.get(0);
@@ -549,7 +549,7 @@ class DeleteQueryProviderTest {
 
         assertEquals(1, ConditionQueryValue.class.cast(condition.getValue()).get().size());
 
-        Condition c = ConditionQueryValue.class.cast(condition.getValue()).get().get(0);
+        QueryCondition c = ConditionQueryValue.class.cast(condition.getValue()).get().get(0);
         value = c.getValue();
         Assertions.assertEquals(Operator.EQUALS, c.getOperator());
 

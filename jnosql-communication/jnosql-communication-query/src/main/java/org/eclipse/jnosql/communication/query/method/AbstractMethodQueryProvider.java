@@ -19,7 +19,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ArrayQueryValue;
 import org.eclipse.jnosql.communication.query.ParamQueryValue;
-import org.eclipse.jnosql.communication.query.QueryCondition;
+import org.eclipse.jnosql.communication.query.DefaultQueryCondition;
 import org.eclipse.jnosql.communication.query.QueryErrorListener;
 import org.eclipse.jnosql.communication.query.Where;
 
@@ -50,7 +50,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     private static final String SUB_ENTITY_FLAG = "_";
     protected Where where;
 
-    protected QueryCondition condition;
+    protected DefaultQueryCondition condition;
 
     protected boolean and = true;
 

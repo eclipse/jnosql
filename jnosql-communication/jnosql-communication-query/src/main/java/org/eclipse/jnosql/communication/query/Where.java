@@ -22,9 +22,9 @@ import java.util.Objects;
  */
 public final class Where {
 
-    private final QueryCondition condition;
+    private final DefaultQueryCondition condition;
 
-    Where(QueryCondition condition) {
+    Where(DefaultQueryCondition condition) {
         this.condition = condition;
     }
 
@@ -32,7 +32,7 @@ public final class Where {
      * The condition
      * @return the condition
      */
-    public QueryCondition condition() {
+    public DefaultQueryCondition condition() {
         return condition;
     }
 
