@@ -11,9 +11,11 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.query.DeleteQuery;
+
+import org.eclipse.jnosql.communication.query.DeleteQuery;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
@@ -23,15 +25,14 @@ import java.util.function.BiFunction;
  * - The entity name
  * - The DeleteQuery from both Method and entity name
  */
-public interface DeleteMethodProvider extends BiFunction<Method, String, DeleteQuery> {
+enum DeleteMethodProvider implements BiFunction<Method, String, DeleteQuery> {
+    INSTANCE;
 
-    /**
-     * Returns a default implementation of
-     *
-     * @return a {@link} DeleteMethodProvider from SPI.
-     */
-    static DeleteMethodProvider get() {
-        return DefaultDeleteMethodProvider.INSTANCE;
+    @Override
+    public DeleteQuery apply(Method method, String entity) {
+        Objects.requireNonNull(method, "method is required");
+        Objects.requireNonNull(entity, "entity is required");
+        DeleteByMethodQueryProvider supplier = new DeleteByMethodQueryProvider();
+        return supplier.apply(method.getName(), entity);
     }
-
 }

@@ -11,8 +11,8 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.query.DeleteQuery;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.eclipse.jnosql.communication.query.DeleteQuery;
 
 import java.util.Objects;
 import java.util.function.BiFunction;

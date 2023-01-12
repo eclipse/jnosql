@@ -55,18 +55,18 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God"})
     public void shouldReturnParserQuery(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertFalse(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertFalse(deleteQuery.where().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete name, address from God"})
     public void shouldReturnParserQuery2(String query) {
-        DeleteQuery deleteQuery = selectProvider.apply(query);
-        assertEquals("God", deleteQuery.getEntity());
-        assertFalse(deleteQuery.getFields().isEmpty());
-        assertThat(deleteQuery.getFields()).contains("name", "address");
-        assertFalse(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = selectProvider.apply(query);
+        assertEquals("God", deleteQuery.entity());
+        assertFalse(deleteQuery.fields().isEmpty());
+        assertThat(deleteQuery.fields()).contains("name", "address");
+        assertFalse(deleteQuery.where().isPresent());
     }
 
 
@@ -74,10 +74,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = 10"})
     public void shouldReturnParserQuery3(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
@@ -89,10 +89,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where stamina > 10.23"})
     public void shouldReturnParserQuery4(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.GREATER_THAN, condition.getOperator());
@@ -104,10 +104,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where stamina >= 10.23"})
     public void shouldReturnParserQuery5(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.GREATER_EQUALS_THAN, condition.getOperator());
@@ -119,10 +119,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where stamina <= 10.23"})
     public void shouldReturnParserQuery6(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.LESSER_EQUALS_THAN, condition.getOperator());
@@ -134,10 +134,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where stamina < 10.23"})
     public void shouldReturnParserQuery7(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.LESSER_THAN, condition.getOperator());
@@ -150,10 +150,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age between 10 and 30"})
     public void shouldReturnParserQuery8(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.BETWEEN, condition.getOperator());
@@ -168,10 +168,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name = \"diana\""})
     public void shouldReturnParserQuery9(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
@@ -183,10 +183,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name = {\"diana\"}"})
     public void shouldReturnParserQuery10(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
@@ -200,10 +200,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name = {\"diana\", 17, 20.21}"})
     public void shouldReturnParserQuery11(String query) {
-        DeleteQuery selectQuery = checkDeleteFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        DefaultDeleteQuery selectQuery = checkDeleteFromStart(query);
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
+        Where where = selectQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
@@ -217,10 +217,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery12(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
@@ -234,11 +234,11 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name = @name"})
     public void shouldReturnParserQuery13(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
 
-        assertTrue(deleteQuery.getWhere().isPresent());
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
@@ -250,10 +250,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where age = convert(12, java.lang.Integer)"})
     public void shouldReturnParserQuery14(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
@@ -270,10 +270,10 @@ class DeleteQueryProviderTest {
     @ValueSource(strings = {"delete from God where name in (\"Ada\", \"Apollo\")"})
     public void shouldReturnParserQuery15(String query) {
 
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.IN, condition.getOperator());
@@ -287,10 +287,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name like \"Ada\""})
     public void shouldReturnParserQuery16(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.LIKE, condition.getOperator());
@@ -302,10 +302,10 @@ class DeleteQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"delete from God where name not like \"Ada\""})
     public void shouldReturnParserQuery17(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.NOT, condition.getOperator());
@@ -325,10 +325,10 @@ class DeleteQueryProviderTest {
     @ValueSource(strings = {"delete from God where name = \"Ada\" and age = 20 and" +
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery18(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
@@ -364,10 +364,10 @@ class DeleteQueryProviderTest {
     @ValueSource(strings = {"delete from God where name = \"Ada\" or age = 20 or" +
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery19(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.OR, condition.getOperator());
@@ -404,10 +404,10 @@ class DeleteQueryProviderTest {
     @ValueSource(strings = {"delete from God where name = \"Ada\" and age = 20 or" +
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery20(String query) {
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
@@ -455,10 +455,10 @@ class DeleteQueryProviderTest {
             " convert(\"2007-12-03\", java.time.LocalDate)"})
     public void shouldReturnParserQuery21(String query) {
 
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
@@ -518,10 +518,10 @@ class DeleteQueryProviderTest {
             " convert(\"2007-12-03\", java.time.LocalDate)"})
     public void shouldReturnParserQuery22(String query) {
 
-        DeleteQuery deleteQuery = checkDeleteFromStart(query);
-        assertTrue(deleteQuery.getWhere().isPresent());
+        DefaultDeleteQuery deleteQuery = checkDeleteFromStart(query);
+        assertTrue(deleteQuery.where().isPresent());
 
-        Where where = deleteQuery.getWhere().get();
+        Where where = deleteQuery.where().get();
         QueryCondition condition = where.getCondition();
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.AND, condition.getOperator());
@@ -574,10 +574,10 @@ class DeleteQueryProviderTest {
     }
 
 
-    private DeleteQuery checkDeleteFromStart(String query) {
-        DeleteQuery deleteQuery = selectProvider.apply(query);
-        assertEquals("God", deleteQuery.getEntity());
-        assertTrue(deleteQuery.getFields().isEmpty());
+    private DefaultDeleteQuery checkDeleteFromStart(String query) {
+        DefaultDeleteQuery deleteQuery = selectProvider.apply(query);
+        assertEquals("God", deleteQuery.entity());
+        assertTrue(deleteQuery.fields().isEmpty());
         return deleteQuery;
     }
 

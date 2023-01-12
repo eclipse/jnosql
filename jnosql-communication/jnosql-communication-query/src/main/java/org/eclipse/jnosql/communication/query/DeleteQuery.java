@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  and Apache License v2.0 which accompanies this distribution.
@@ -11,81 +11,32 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+
 
 /**
  * Deleting either an entity or fields uses the <b>DELETE</b> statement
  */
-public final class DeleteQuery {
-
-    private final String entity;
-
-    private final List<String> fields;
-
-    private final Where where;
-
-    DeleteQuery(String entity, List<String> fields, Where where) {
-        this.entity = entity;
-        this.fields = fields;
-        this.where = where;
-    }
-
+public interface DeleteQuery extends Query  {
     /**
      * The fields that will delete in this query, if this fields is empty, this query will remove the whole entity.
      *
      * @return the fields list
      */
-    public List<String> getFields() {
-        return Collections.unmodifiableList(fields);
-    }
+    List<String> fields();
 
     /**
      * The entity name
      *
      * @return the entity name
      */
-    public String getEntity() {
-        return entity;
-    }
+    String entity();
 
     /**
-     * The condition at this {@link DeleteQuery}, if the Where is empty that means will delete the whole entities.
+     * The condition at this {@link DefaultDeleteQuery}, if the Where is empty that means will delete the whole entities.
      *
      * @return the {@link Where} entity otherwise {@link Optional#empty()}
      */
-    public Optional<Where> getWhere() {
-        return Optional.ofNullable(where);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DeleteQuery)) {
-            return false;
-        }
-        DeleteQuery that = (DeleteQuery) o;
-        return Objects.equals(entity, that.entity) &&
-                Objects.equals(fields, that.fields) &&
-                Objects.equals(where, that.where);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(entity, fields, where);
-    }
-
-    @Override
-    public String toString() {
-        return "DeleteQuery{" +
-                "entity='" + entity + '\'' +
-                ", fields=" + fields +
-                ", where=" + where +
-                '}';
-    }
+    Optional<Where> where();
 }

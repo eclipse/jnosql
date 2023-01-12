@@ -9,31 +9,34 @@
  *  Contributors:
  *  Otavio Santana
  */
-package org.eclipse.jnosql.communication.query.method;
+package org.eclipse.jnosql.communication.query;
 
-
-import org.eclipse.jnosql.communication.query.DeleteQuery;
-import org.eclipse.jnosql.communication.query.Where;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-final class MethodDeleteQuery implements DeleteQuery {
+/**
+ * The default implementation of {@index DeleteQuery}
+ */
+final class DefaultDeleteQuery implements DeleteQuery {
 
     private final String entity;
 
+    private final List<String> fields;
+
     private final Where where;
 
-    MethodDeleteQuery(String entity, Where where) {
+    DefaultDeleteQuery(String entity, List<String> fields, Where where) {
         this.entity = entity;
+        this.fields = fields;
         this.where = where;
     }
 
     @Override
     public List<String> fields() {
-        return Collections.emptyList();
+        return Collections.unmodifiableList(fields);
     }
 
     @Override
@@ -51,21 +54,26 @@ final class MethodDeleteQuery implements DeleteQuery {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof DefaultDeleteQuery)) {
             return false;
         }
-        MethodDeleteQuery that = (MethodDeleteQuery) o;
+        DefaultDeleteQuery that = (DefaultDeleteQuery) o;
         return Objects.equals(entity, that.entity) &&
+                Objects.equals(fields, that.fields) &&
                 Objects.equals(where, that.where);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(entity, where);
+        return Objects.hash(entity, fields, where);
     }
 
     @Override
     public String toString() {
-        return entity + " where " + where;
+        return "DeleteQuery{" +
+                "entity='" + entity + '\'' +
+                ", fields=" + fields +
+                ", where=" + where +
+                '}';
     }
 }

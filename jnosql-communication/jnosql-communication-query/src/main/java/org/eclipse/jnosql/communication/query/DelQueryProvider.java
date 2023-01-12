@@ -21,7 +21,7 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 /**
- * A provider to {@link DelQuery}, this provider converts text into {@link DeleteQuery}
+ * A provider to {@link DelQuery}, this provider converts text into {@link DefaultDeleteQuery}
  */
 public final class DelQueryProvider extends AbstractSupplier implements Function<String, DelQuery> {
 
