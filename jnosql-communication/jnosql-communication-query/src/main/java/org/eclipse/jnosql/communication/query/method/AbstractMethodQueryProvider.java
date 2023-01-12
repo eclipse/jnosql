@@ -18,6 +18,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ArrayQueryValue;
+import org.eclipse.jnosql.communication.query.ParamQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryErrorListener;
 import org.eclipse.jnosql.communication.query.Where;
@@ -150,7 +151,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
         this.and = false;
     }
 
-    private void appendCondition(boolean hasNot, String variable, Operator operator) {
+    private void appendCondition(boolean hasNot, String variable, Condition operator) {
         ParamQueryValue queryValue = new MethodParamQueryValue(variable);
         checkCondition(new MethodCondition(variable, operator, queryValue), hasNot);
     }

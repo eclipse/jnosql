@@ -11,8 +11,9 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.QueryValue;
+
+import org.eclipse.jnosql.communication.query.ArrayQueryValue;
+import org.eclipse.jnosql.communication.query.QueryValue;
 
 import java.util.Arrays;
 

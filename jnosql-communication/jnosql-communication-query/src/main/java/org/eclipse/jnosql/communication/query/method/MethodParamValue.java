@@ -11,7 +11,8 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.query.ParamQueryValue;
+
+import org.eclipse.jnosql.communication.query.ParamQueryValue;
 
 import java.util.Objects;
 

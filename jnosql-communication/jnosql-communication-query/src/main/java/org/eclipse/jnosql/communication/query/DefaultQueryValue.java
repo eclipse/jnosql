@@ -14,7 +14,7 @@ package org.eclipse.jnosql.communication.query;
 import java.util.Objects;
 
 /**
- * The parameter is a dynamic value, which means, it does not define the query, it'll replace in the execution time.
+ * The default implementation of {@link ParamQueryValue}
  */
 final class DefaultQueryValue implements ParamQueryValue {
 
