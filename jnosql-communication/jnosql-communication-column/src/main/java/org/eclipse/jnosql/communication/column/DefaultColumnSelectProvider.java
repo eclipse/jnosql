@@ -14,27 +14,26 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.column.query;
+package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.column.ColumnDeleteQuery.ColumnDelete;
-import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteProvider;
+import jakarta.nosql.column.ColumnQuery.ColumnSelect;
+import jakarta.nosql.column.ColumnQuery.ColumnSelectProvider;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
 
-public final class DefaultColumnDeleteProvider implements ColumnDeleteProvider {
-
+public final class DefaultColumnSelectProvider implements ColumnSelectProvider {
     @Override
-    public ColumnDelete apply(String[] columns) {
+    public ColumnSelect apply(String[] columns) {
         Stream.of(columns).forEach(d -> requireNonNull(d, "there is null column in the query"));
-        return new DefaultFluentDeleteQueryBuilder(asList(columns));
+        return new DefaultFluentColumnQueryBuilder(Arrays.asList(columns));
     }
 
     @Override
-    public ColumnDelete get() {
-        return new DefaultFluentDeleteQueryBuilder(emptyList());
+    public ColumnSelect get() {
+        return new DefaultFluentColumnQueryBuilder(emptyList());
     }
 }

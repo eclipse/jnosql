@@ -20,29 +20,32 @@ import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.Value;
 import jakarta.nosql.column.Column;
 import org.eclipse.jnosql.communication.Entry;
+import org.eclipse.jnosql.communication.Value;
 
 import java.util.Objects;
 
 /**
  * The default implementation of {@link Column}
  */
-final class DefaultColumn implements Column, Entry {
+public final class Column implements Entry {
 
     private final String name;
 
     private final Value value;
 
-    DefaultColumn(String name, Value value) {
+    Column(String name, Value value) {
         this.name = name;
         this.value = value;
     }
 
 
-    public String getName() {
+    @Override
+    public String name() {
         return name;
     }
 
-    public Value getValue() {
+    @Override
+    public Value value() {
         return value;
     }
 

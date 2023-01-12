@@ -14,27 +14,27 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.column.query;
+package org.eclipse.jnosql.communication.column;
 
 import jakarta.nosql.Params;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.column.ColumnQueryParams;
+import jakarta.nosql.column.ColumnDeleteQuery;
+import jakarta.nosql.column.ColumnDeleteQueryParams;
 
 import java.util.Objects;
 
-final class DefaultColumnQueryParams implements ColumnQueryParams {
+final class DefaultColumnDeleteQueryParams implements ColumnDeleteQueryParams {
 
-    private final ColumnQuery query;
+    private final ColumnDeleteQuery query;
 
     private final Params params;
 
-    public DefaultColumnQueryParams(ColumnQuery query, Params params) {
+    public DefaultColumnDeleteQueryParams(ColumnDeleteQuery query, Params params) {
         this.query = query;
         this.params = params;
     }
 
     @Override
-    public ColumnQuery getQuery() {
+    public ColumnDeleteQuery getQuery() {
         return query;
     }
 
@@ -51,7 +51,7 @@ final class DefaultColumnQueryParams implements ColumnQueryParams {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultColumnQueryParams that = (DefaultColumnQueryParams) o;
+        DefaultColumnDeleteQueryParams that = (DefaultColumnDeleteQueryParams) o;
         return Objects.equals(query, that.query) &&
                 Objects.equals(params, that.params);
     }

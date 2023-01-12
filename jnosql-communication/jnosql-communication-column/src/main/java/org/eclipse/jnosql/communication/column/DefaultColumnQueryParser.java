@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.column.query;
+package org.eclipse.jnosql.communication.column;
 
 import jakarta.nosql.QueryException;
 import jakarta.nosql.column.ColumnEntity;

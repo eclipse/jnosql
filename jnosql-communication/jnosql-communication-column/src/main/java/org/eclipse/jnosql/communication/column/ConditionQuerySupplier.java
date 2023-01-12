@@ -14,8 +14,26 @@
  *   Otavio Santana
  *
  */
+package org.eclipse.jnosql.communication.column;
+
+import jakarta.nosql.query.Condition;
+import jakarta.nosql.query.JSONQueryValue;
+
+import java.util.List;
+import java.util.Optional;
+
 /**
- * This package has the DSL domain to create both {@link jakarta.nosql.column.ColumnQuery} and
- * {@link jakarta.nosql.column.ColumnDeleteQuery}
+ * A base supplier to {@link jakarta.nosql.query.InsertQuery} and
+ * {@link jakarta.nosql.query.UpdateQuery}
  */
-package org.eclipse.jnosql.communication.column.query;
+interface ConditionQuerySupplier {
+
+    List<Condition> getConditions();
+
+    Optional<JSONQueryValue> getValue();
+
+    default boolean useJSONCondition() {
+        return getConditions().isEmpty() && getValue().isPresent();
+    }
+
+}
