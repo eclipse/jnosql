@@ -12,9 +12,6 @@
 package org.eclipse.jnosql.communication.query;
 
 
-import jakarta.nosql.query.GetQuery;
-import jakarta.nosql.query.GetQuery.GetQueryProvider;
-import jakarta.nosql.query.QueryValue;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.Collections;
@@ -24,9 +21,9 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The {@link GetQueryProvider} implementation that uses Antlr4
+ * A provider to {@link GetQuery}, this provider converts text into {@link GetQuery}
  */
-public final class AntlrGetQueryProvider extends AbstractSupplier implements GetQueryProvider {
+public final class GetQueryProvider extends AbstractSupplier implements Function<String, GetQuery> {
 
     private List<QueryValue<?>> keys = Collections.emptyList();
 
@@ -43,7 +40,7 @@ public final class AntlrGetQueryProvider extends AbstractSupplier implements Get
     @Override
     public GetQuery apply(String query) {
         runQuery(query);
-        return new DefaultGetQuery(keys);
+        return new GetQuery(keys);
     }
 
 }

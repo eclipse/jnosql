@@ -18,19 +18,20 @@ import static java.util.Collections.unmodifiableList;
 
 
 /**
- * To delete one or more entities use the <b>DEL</b> statement.
+ * To retrieve one or more entities use the <b>GET</b> statement.
  * This query is particular to a key-value database.
  */
-public final class DefaultGetQuery implements Query {
+public final class GetQuery implements Query {
 
     private final List<QueryValue<?>> keys;
 
-    DefaultGetQuery(List<QueryValue<?>> keys) {
+    GetQuery(List<QueryValue<?>> keys) {
         this.keys = keys;
     }
 
     /**
-     * The keys to being removed from the query
+     * The keys to being retrieved from the query
+     *
      * @return the keys
      */
     public List<QueryValue<?>> keys() {
@@ -42,10 +43,10 @@ public final class DefaultGetQuery implements Query {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultGetQuery)) {
+        if (!(o instanceof GetQuery)) {
             return false;
         }
-        DefaultGetQuery that = (DefaultGetQuery) o;
+        GetQuery that = (GetQuery) o;
         return Objects.equals(keys, that.keys);
     }
 
@@ -57,5 +58,17 @@ public final class DefaultGetQuery implements Query {
     @Override
     public String toString() {
         return this.keys.toString();
+    }
+
+    /**
+     * Obtains an instance of {@link GetQuery} from a text string.
+     *
+     * @param query the query
+     * @return {@link GetQuery} instance
+     * @throws NullPointerException                    when the query is null
+     */
+    public static GetQuery parse(String query) {
+        Objects.requireNonNull(query, "query is required");
+        return new GetQueryProvider().apply(query);
     }
 }
