@@ -82,10 +82,4 @@ public interface Value {
         Objects.requireNonNull(value, "value is required");
         return new DefaultValue(value);
     }
-
-    /**
-     * A provider that creates a {@link Value} instance from an object
-     */
-    interface ValueProvider extends Function<Object, Value> {
-    }
 }
