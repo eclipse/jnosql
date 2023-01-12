@@ -16,45 +16,32 @@
  */
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Sort;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.document.DocumentQueryParams;
-import jakarta.nosql.document.SelectQueryConverter;
-import jakarta.nosql.query.SelectQuery;
-import jakarta.nosql.query.SelectQuery.SelectQueryProvider;
-import org.eclipse.jnosql.communication.document.query.DocumentQuery;
+
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.query.SelectQuery;
+import org.eclipse.jnosql.communication.query.SelectQueryProvider;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
-/**
- * The default implementation of {@link SelectQueryConverter}
- */
-public final class SelectQueryParser implements SelectQueryConverter {
+public final class SelectQueryParser implements BiFunction<SelectQuery, DocumentObserverParser, DocumentQueryParams> {
 
     private final SelectQueryProvider selectQueryProvider;
-    private final CacheQuery<org.eclipse.jnosql.communication.document.query.DocumentQuery> cache;
 
     public SelectQueryParser() {
-        this.selectQueryProvider = SelectQuery.getProvider();
-        this.cache = new CacheQuery<>(this::getDocumentQuery);
+        this.selectQueryProvider = new SelectQueryProvider();
     }
 
-    Stream<DocumentEntity> query(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
-
-        org.eclipse.jnosql.communication.document.query.DocumentQuery documentQuery = cache.get(query, observer);
-        return collectionManager.select(documentQuery);
+    Stream<DocumentEntity> query(String query, DocumentManager manager, DocumentObserverParser observer) {
+        DocumentQuery documentQuery = getDocumentQuery(query, observer);
+        return manager.select(documentQuery);
     }
 
 
@@ -64,7 +51,7 @@ public final class SelectQueryParser implements SelectQueryConverter {
 
         SelectQuery selectQuery = selectQueryProvider.apply(query);
 
-        org.eclipse.jnosql.communication.document.query.DocumentQuery documentQuery = getDocumentQuery(params, selectQuery, observer);
+        DocumentQuery documentQuery = getDocumentQuery(params, selectQuery, observer);
         return DocumentPreparedStatement.select(documentQuery, params, query, collectionManager);
     }
 
@@ -74,53 +61,53 @@ public final class SelectQueryParser implements SelectQueryConverter {
         Objects.requireNonNull(selectQuery, "selectQuery is required");
         Objects.requireNonNull(observer, "observer is required");
         Params params = Params.newParams();
-        org.eclipse.jnosql.communication.document.query.DocumentQuery columnQuery = getDocumentQuery(params, selectQuery, observer);
-        return new DefaultDocumentQueryParams(columnQuery, params);
+        DocumentQuery columnQuery = getDocumentQuery(params, selectQuery, observer);
+        return new DocumentQueryParams(columnQuery, params);
     }
 
-    private org.eclipse.jnosql.communication.document.query.DocumentQuery getDocumentQuery(String query, DocumentObserverParser observer) {
+    private DocumentQuery getDocumentQuery(String query, DocumentObserverParser observer) {
 
         SelectQuery selectQuery = selectQueryProvider.apply(query);
-        String collection = observer.fireEntity(selectQuery.getEntity());
-        long limit = selectQuery.getLimit();
-        long skip = selectQuery.getSkip();
-        List<String> documents = selectQuery.getFields().stream()
+        String collection = observer.fireEntity(selectQuery.entity());
+        long limit = selectQuery.limit();
+        long skip = selectQuery.skip();
+        List<String> documents = selectQuery.fields().stream()
                 .map(f -> observer.fireField(collection, f))
                 .collect(Collectors.toList());
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, collection))
+        List<Sort> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, collection))
                 .collect(toList());
         DocumentCondition condition = null;
         Params params = Params.newParams();
-        if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
+        if (selectQuery.where().isPresent()) {
+            condition = selectQuery.where().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
         }
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
-        return new org.eclipse.jnosql.communication.document.query.DocumentQuery(limit, skip, collection, documents, sorts, condition);
+        return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
-    private org.eclipse.jnosql.communication.document.query.DocumentQuery getDocumentQuery(Params params, SelectQuery selectQuery, DocumentObserverParser observer) {
+    private DocumentQuery getDocumentQuery(Params params, SelectQuery selectQuery, DocumentObserverParser observer) {
 
-        String collection = observer.fireEntity(selectQuery.getEntity());
-        long limit = selectQuery.getLimit();
-        long skip = selectQuery.getSkip();
-        List<String> documents = selectQuery.getFields().stream()
+        String collection = observer.fireEntity(selectQuery.entity());
+        long limit = selectQuery.limit();
+        long skip = selectQuery.skip();
+        List<String> documents = selectQuery.fields().stream()
                 .map(f -> observer.fireField(collection, f))
                 .collect(Collectors.toList());
 
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, collection)).collect(toList());
+        List<Sort> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, collection)).collect(toList());
         DocumentCondition condition = null;
-        if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
+        if (selectQuery.where().isPresent()) {
+            condition = selectQuery.where().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
         }
 
-        return new org.eclipse.jnosql.communication.document.query.DocumentQuery(limit, skip, collection, documents, sorts, condition);
+        return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }
 
     private Sort toSort(Sort sort, DocumentObserverParser observer, String entity) {
-        return Sort.of(observer.fireField(entity, sort.getName()), sort.getType());
+        return Sort.of(observer.fireField(entity, sort.name()), sort.type());
     }
 
 

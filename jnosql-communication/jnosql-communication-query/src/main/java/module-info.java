@@ -15,6 +15,7 @@ module org.eclipse.jnosql.communication.query {
     requires org.eclipse.jnosql.communication.core;
 
     exports org.eclipse.jnosql.communication.query.method;
+    exports org.eclipse.jnosql.communication.query;
 
     opens org.eclipse.jnosql.communication.query;
     opens org.eclipse.jnosql.communication.query.method;

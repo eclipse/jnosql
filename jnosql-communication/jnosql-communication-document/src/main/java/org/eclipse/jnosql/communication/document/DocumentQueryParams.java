@@ -16,31 +16,38 @@
  */
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.document.DocumentQueryParams;
+
+import org.eclipse.jnosql.communication.Params;
 
 import java.util.Objects;
 
-final class DefaultDocumentQueryParams implements DocumentQueryParams {
+public final class DocumentQueryParams {
 
     private final DocumentQuery query;
 
     private final Params params;
 
 
-    DefaultDocumentQueryParams(DocumentQuery query, Params params) {
+    DocumentQueryParams(DocumentQuery query, Params params) {
         this.query = query;
         this.params = params;
     }
 
-    @Override
-    public DocumentQuery getQuery() {
+    /**
+     * The {@link DocumentQuery}
+     *
+     * @return a {@link DocumentQuery} instance
+     */
+    public DocumentQuery query() {
         return query;
     }
 
-    @Override
-    public Params getParams() {
+    /**
+     * The {@link Params}
+     *
+     * @return a {@link Params} instance
+     */
+    public Params params() {
         return params;
     }
 
@@ -52,7 +59,7 @@ final class DefaultDocumentQueryParams implements DocumentQueryParams {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultDocumentQueryParams that = (DefaultDocumentQueryParams) o;
+        DocumentQueryParams that = (DocumentQueryParams) o;
         return Objects.equals(query, that.query) &&
                 Objects.equals(params, that.params);
     }

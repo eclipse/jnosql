@@ -17,15 +17,12 @@
 package org.eclipse.jnosql.communication.document;
 
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.ServiceLoaderProvider;
+import org.eclipse.jnosql.communication.NonUniqueResultException;
 
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
 /**
@@ -133,13 +130,10 @@ public interface DocumentManager extends AutoCloseable {
      * @return the result of the operation if delete it will always return an empty list
      * @throws NullPointerException     when there is parameter null
      * @throws IllegalArgumentException when the query has value parameters
-     * @throws IllegalStateException    when there is not {@link DocumentQueryParser}
-     * @throws QueryException           when there is error in the syntax
      */
     default Stream<DocumentEntity> query(String query) {
         Objects.requireNonNull(query, "query is required");
-        DocumentQueryParser parser = ServiceLoaderProvider.get(DocumentQueryParser.class,
-                () -> ServiceLoader.load(DocumentQueryParser.class));
+        DocumentQueryParser parser = new DocumentQueryParser();
         return parser.query(query, this, DocumentObserverParser.EMPTY);
     }
 
@@ -151,12 +145,10 @@ public interface DocumentManager extends AutoCloseable {
      * @return a {@link DocumentPreparedStatement} instance
      * @throws NullPointerException  when there is parameter null
      * @throws IllegalStateException when there is not {@link DocumentQueryParser}
-     * @throws QueryException        when there is error in the syntax
      */
     default DocumentPreparedStatement prepare(String query) {
         Objects.requireNonNull(query, "query is required");
-        DocumentQueryParser parser = ServiceLoaderProvider.get(DocumentQueryParser.class,
-                () -> ServiceLoader.load(DocumentQueryParser.class));
+        DocumentQueryParser parser = new DocumentQueryParser();
         return parser.prepare(query, this, DocumentObserverParser.EMPTY);
     }
 
@@ -165,7 +157,6 @@ public interface DocumentManager extends AutoCloseable {
      *
      * @param query - select to figure out entities
      * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
-     * @throws NonUniqueResultException      when the result has more than 1 entity
      * @throws NullPointerException          when select is null
      * @throws UnsupportedOperationException if the implementation does not support any operation that a query has.
      */

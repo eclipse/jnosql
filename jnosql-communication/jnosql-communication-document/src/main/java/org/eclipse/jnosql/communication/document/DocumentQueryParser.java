@@ -16,24 +16,35 @@
  */
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.document.DocumentQueryParser;
+
+import org.eclipse.jnosql.communication.QueryException;
 
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public final class DefaultDocumentQueryParser implements DocumentQueryParser {
+
+/**
+ * A query parser to document database type, this class will convert a String to an operation in {@link DocumentManager}.
+ */
+public final class DocumentQueryParser {
 
     private final SelectQueryParser select = new SelectQueryParser();
     private final DeleteQueryParser delete = new DeleteQueryParser();
     private final InsertQueryParser insert = new InsertQueryParser();
     private final UpdateQueryParser update = new UpdateQueryParser();
 
-    @Override
+    /**
+     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param query             the query as {@link String}
+     * @param collectionManager the collection manager
+     * @param observer          the observer
+     * @return the result of the operation if delete it will always return an empty list
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalArgumentException        when the query has value parameters
+     * @throws QueryException when there is error in the syntax
+     */
     public Stream<DocumentEntity> query(String query, DocumentManager collectionManager,
                                         DocumentObserverParser observer) {
         validation(query, collectionManager, observer);
@@ -52,7 +63,18 @@ public final class DefaultDocumentQueryParser implements DocumentQueryParser {
         }
     }
 
-    @Override
+    /**
+     * Executes a query and returns a {@link DocumentPreparedStatement}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param query             the query as {@link String}
+     * @param collectionManager the collection manager
+     * @param observer          the observer
+     * @return a {@link DocumentPreparedStatement} instance
+     * @throws NullPointerException            when there is parameter null
+     * @throws IllegalArgumentException        when the query has value parameters
+     * @throws QueryException when there is error in the syntax
+     */
     public DocumentPreparedStatement prepare(String query, DocumentManager collectionManager,
                                              DocumentObserverParser observer) {
 
