@@ -16,10 +16,7 @@
  */
 package org.eclipse.jnosql.communication.keyvalue;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import org.eclipse.jnosql.communication.keyvalue.DelQueryParser;
+import org.eclipse.jnosql.communication.QueryException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -110,7 +107,7 @@ class DelQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        assertThrows(QueryException.class, prepare::getResult);
+        assertThrows(QueryException.class, prepare::result);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -120,7 +117,7 @@ class DelQueryParserTest {
         ArgumentCaptor<List<Object>> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
-        prepare.getResult();
+        prepare.result();
 
         Mockito.verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();
@@ -139,7 +136,7 @@ class DelQueryParserTest {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         prepare.bind("id2", 11);
-        prepare.getResult();
+        prepare.result();
 
         Mockito.verify(manager).delete(captor.capture());
         List<Object> value = captor.getValue();

@@ -16,11 +16,8 @@
  */
 package org.eclipse.jnosql.communication.keyvalue;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import org.eclipse.jnosql.communication.keyvalue.GetQueryParser;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -122,7 +119,7 @@ class GetQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
-        assertThrows(QueryException.class, prepare::getResult);
+        assertThrows(QueryException.class, prepare::result);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -132,7 +129,7 @@ class GetQueryParserTest {
         ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
-        prepare.getResult().collect(Collectors.toList());
+        prepare.result().collect(Collectors.toList());
 
         verify(manager).get(captor.capture());
         List<Object> value = captor.getAllValues();
@@ -150,7 +147,7 @@ class GetQueryParserTest {
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         prepare.bind("id2", 11);
-        final Stream<Value> stream = prepare.getResult();
+        final Stream<Value> stream = prepare.result();
         stream.collect(Collectors.toList());
         verify(manager, Mockito.times(2)).get(captor.capture());
         List<Object> value = captor.getAllValues();
