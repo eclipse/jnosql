@@ -12,15 +12,16 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.ParamQueryValue;
-
 import java.util.Objects;
 
-final class DefaultParamQueryValue implements ParamQueryValue {
+/**
+ * The parameter is a dynamic value, which means, it does not define the query, it'll replace in the execution time.
+ */
+public final class ParamQueryValue implements QueryValue<String> {
 
     private final String value;
 
-    DefaultParamQueryValue(String value) {
+    ParamQueryValue(String value) {
         this.value = value;
     }
 
@@ -34,10 +35,10 @@ final class DefaultParamQueryValue implements ParamQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultParamQueryValue)) {
+        if (!(o instanceof ParamQueryValue)) {
             return false;
         }
-        DefaultParamQueryValue that = (DefaultParamQueryValue) o;
+        ParamQueryValue that = (ParamQueryValue) o;
         return Objects.equals(value, that.value);
     }
 
@@ -51,8 +52,13 @@ final class DefaultParamQueryValue implements ParamQueryValue {
         return "@" + value;
     }
 
+    @Override
+    public ValueType getType() {
+        return ValueType.PARAMETER;
+    }
+
     public static ParamQueryValue of(QueryParser.ParameterContext parameter) {
-        return new DefaultParamQueryValue(parameter.getText().substring(1));
+        return new ParamQueryValue(parameter.getText().substring(1));
     }
 
 }

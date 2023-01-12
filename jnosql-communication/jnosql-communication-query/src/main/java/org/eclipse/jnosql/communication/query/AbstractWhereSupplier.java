@@ -95,7 +95,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         QueryValue<?>[] values = ctx.value().stream()
                 .map(ValueConverter::get)
                 .toArray(QueryValue[]::new);
-        ArrayQueryValue value = DefaultArrayValue.of(values);
+        ArrayQueryValue value = ArrayQueryValue.of(values);
         checkCondition(new QueryCondition(name, IN, value), hasNot);
     }
 
@@ -104,7 +104,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
     public void exitLike(QueryParser.LikeContext ctx) {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
-        StringQueryValue value = DefaultStringQueryValue.of(ctx.string());
+        StringQueryValue value = StringQueryValue.of(ctx.string());
         checkCondition(new QueryCondition(name, LIKE, value), hasNot);
     }
 
@@ -113,7 +113,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?>[] values = ctx.value().stream().map(ValueConverter::get).toArray(QueryValue[]::new);
-        checkCondition(new QueryCondition(name, BETWEEN, DefaultArrayValue.of(values)), hasNot);
+        checkCondition(new QueryCondition(name, BETWEEN, ArrayQueryValue.of(values)), hasNot);
     }
 
     @Override

@@ -12,15 +12,16 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.StringQueryValue;
-
 import java.util.Objects;
 
-final class DefaultStringQueryValue implements StringQueryValue {
+/**
+ *The {@link String} as value
+ */
+public final class StringQueryValue implements QueryValue<String> {
 
     private final String value;
 
-    DefaultStringQueryValue(String value) {
+    StringQueryValue(String value) {
         this.value = value;
     }
 
@@ -34,10 +35,10 @@ final class DefaultStringQueryValue implements StringQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultStringQueryValue)) {
+        if (!(o instanceof StringQueryValue)) {
             return false;
         }
-        DefaultStringQueryValue that = (DefaultStringQueryValue) o;
+        StringQueryValue that = (StringQueryValue) o;
         return Objects.equals(value, that.value);
     }
 
@@ -51,10 +52,16 @@ final class DefaultStringQueryValue implements StringQueryValue {
         return "'" + value + "'";
     }
 
-    public static StringQueryValue of(QueryParser.StringContext context) {
-        String text = context.STRING().getText();
-        return new DefaultStringQueryValue(text.substring(1, text.length() - 1));
+    @Override
+    public ValueType getType() {
+        return ValueType.STRING;
     }
+
+    static StringQueryValue of(QueryParser.StringContext context) {
+        String text = context.STRING().getText();
+        return new StringQueryValue(text.substring(1, text.length() - 1));
+    }
+
 
 
 }

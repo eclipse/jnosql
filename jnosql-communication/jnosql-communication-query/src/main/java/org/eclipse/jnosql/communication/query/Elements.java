@@ -26,10 +26,10 @@ final class Elements {
 
     static QueryValue<?> getElement(QueryParser.ElementContext elementContext) {
         if (Objects.nonNull(elementContext.string())) {
-            return DefaultStringQueryValue.of(elementContext.string());
+            return StringQueryValue.of(elementContext.string());
         }
         if (Objects.nonNull(elementContext.number())) {
-            return DefaultNumberQueryValue.of(elementContext.number());
+            return NumberQueryValue.of(elementContext.number());
         }
         throw new QueryException(MESSAGE);
     }

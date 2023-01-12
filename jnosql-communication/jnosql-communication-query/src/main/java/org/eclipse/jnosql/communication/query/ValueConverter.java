@@ -25,11 +25,11 @@ final class ValueConverter {
     static QueryValue<?> get(QueryParser.ValueContext context) {
 
         if (Objects.nonNull(context.number())) {
-            return DefaultNumberQueryValue.of(context.number());
+            return NumberQueryValue.of(context.number());
         }
 
         if (Objects.nonNull(context.string())) {
-            return DefaultStringQueryValue.of(context.string());
+            return StringQueryValue.of(context.string());
         }
 
         if (Objects.nonNull(context.json())) {
@@ -37,7 +37,7 @@ final class ValueConverter {
         }
 
         if (Objects.nonNull(context.parameter())) {
-            return DefaultParamQueryValue.of(context.parameter());
+            return ParamQueryValue.of(context.parameter());
         }
 
         if (Objects.nonNull(context.function())) {
@@ -47,7 +47,7 @@ final class ValueConverter {
             QueryValue<?>[] elements = context.array().element().stream()
                     .map(Elements::getElement)
                     .toArray(QueryValue[]::new);
-            return DefaultArrayValue.of(elements);
+            return ArrayQueryValue.of(elements);
         }
         throw new QueryException(MESSAGE);
     }

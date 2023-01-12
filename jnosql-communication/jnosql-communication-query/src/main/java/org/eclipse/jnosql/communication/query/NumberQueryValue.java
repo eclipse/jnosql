@@ -12,15 +12,18 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.NumberQueryValue;
 
 import java.util.Objects;
 
-class DefaultNumberQueryValue implements NumberQueryValue {
+/**
+ * A number is a mathematical object used to count, measure and also label where if it is a decimal, will become
+ * {@link Double}, otherwise, {@link Long}
+ */
+public final class NumberQueryValue implements QueryValue<Number> {
 
     private final Number number;
 
-    DefaultNumberQueryValue(Number number) {
+    NumberQueryValue(Number number) {
         this.number = number;
     }
 
@@ -34,10 +37,10 @@ class DefaultNumberQueryValue implements NumberQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultNumberQueryValue)) {
+        if (!(o instanceof NumberQueryValue)) {
             return false;
         }
-        DefaultNumberQueryValue that = (DefaultNumberQueryValue) o;
+        NumberQueryValue that = (NumberQueryValue) o;
         return Objects.equals(number, that.number);
     }
 
@@ -51,13 +54,19 @@ class DefaultNumberQueryValue implements NumberQueryValue {
         return number.toString();
     }
 
-    public static NumberQueryValue of(QueryParser.NumberContext context) {
+    @Override
+    public ValueType getType() {
+        return ValueType.NUMBER;
+    }
+
+    static NumberQueryValue of(QueryParser.NumberContext context) {
         String value = context.getText();
         if (value.contains(".")) {
-            return new DefaultNumberQueryValue(Double.valueOf(value));
+            return new NumberQueryValue(Double.valueOf(value));
         }
-        return new DefaultNumberQueryValue(Long.valueOf(value));
+        return new NumberQueryValue(Long.valueOf(value));
     }
+
 
 
 }

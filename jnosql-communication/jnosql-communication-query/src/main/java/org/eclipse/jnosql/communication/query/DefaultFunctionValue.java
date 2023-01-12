@@ -19,7 +19,7 @@ import jakarta.nosql.query.QueryValue;
 
 import java.util.Objects;
 
-final class DefaultFunctionQueryValue implements FunctionQueryValue {
+final class DefaultFunctionQueryValue implements QueryValue<Function> {
 
     private final Function function;
 

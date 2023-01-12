@@ -12,16 +12,16 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.QueryValue;
-
 import java.util.Arrays;
 
-final class DefaultArrayValue implements ArrayQueryValue {
+/**
+ * A sequence of elements that can be either {@link NumberQueryValue} or {@link StringQueryValue}
+ */
+public final class ArrayQueryValue implements  QueryValue<QueryValue<?>[]>{
 
     private final QueryValue<?>[] values;
 
-    private DefaultArrayValue(QueryValue<?>[] values) {
+    private ArrayQueryValue(QueryValue<?>[] values) {
         this.values = values;
     }
 
@@ -35,10 +35,10 @@ final class DefaultArrayValue implements ArrayQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultArrayValue)) {
+        if (!(o instanceof ArrayQueryValue)) {
             return false;
         }
-        DefaultArrayValue that = (DefaultArrayValue) o;
+        ArrayQueryValue that = (ArrayQueryValue) o;
         return Arrays.equals(values, that.values);
     }
 
@@ -52,7 +52,12 @@ final class DefaultArrayValue implements ArrayQueryValue {
         return Arrays.toString(values);
     }
 
-    static DefaultArrayValue of(QueryValue<?>[] values) {
-        return new DefaultArrayValue(values);
+    @Override
+    public ValueType getType() {
+        return ValueType.ARRAY;
+    }
+
+    static ArrayQueryValue of(QueryValue<?>[] values) {
+        return new ArrayQueryValue(values);
     }
 }
