@@ -12,18 +12,15 @@
 package org.eclipse.jnosql.communication.query;
 
 
-import jakarta.nosql.query.PutQuery;
-import jakarta.nosql.query.PutQuery.PutQueryProvider;
-import jakarta.nosql.query.QueryValue;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.time.Duration;
 import java.util.function.Function;
 
 /**
- * The {@link PutQueryProvider} implementation that uses Antlr4
+ * A provider to {@link PutQuery}, this provider converts text into {@link PutQuery}
  */
-public final class AntlrPutQueryProvider extends AbstractSupplier implements PutQueryProvider {
+public final class PutQueryProvider extends AbstractSupplier implements Function<String, PutQuery> {
 
 
     private QueryValue<?> key;
@@ -55,7 +52,7 @@ public final class AntlrPutQueryProvider extends AbstractSupplier implements Put
     @Override
     public PutQuery apply(String query) {
         runQuery(query);
-        return new DefaultPutQuery(key, value, ttl);
+        return new PutQuery(key, value, ttl);
     }
 
 }

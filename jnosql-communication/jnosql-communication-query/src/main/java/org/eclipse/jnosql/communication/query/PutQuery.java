@@ -11,13 +11,13 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.PutQuery;
-import jakarta.nosql.query.QueryValue;
-
 import java.time.Duration;
 import java.util.Optional;
 
-final class DefaultPutQuery implements PutQuery {
+/**
+ * To either insert or overrides values from a key-value database use the <b>PUT</b> statement.
+ */
+public final class PutQuery implements Query {
 
     private final QueryValue<?> key;
 
@@ -25,24 +25,33 @@ final class DefaultPutQuery implements PutQuery {
 
     private final Duration ttl;
 
-    DefaultPutQuery(QueryValue<?> key, QueryValue<?> value, Duration ttl) {
+    PutQuery(QueryValue<?> key, QueryValue<?> value, Duration ttl) {
         this.key = key;
         this.value = value;
         this.ttl = ttl;
     }
 
-    @Override
-    public QueryValue<?> getKey() {
+    /**
+     * The key
+     * @return the key
+     */
+    public QueryValue<?> key() {
         return key;
     }
 
-    @Override
-    public QueryValue<?> getValue() {
+    /**
+     * This duration set a time for data in an entity to expire. It defines the time to live of an object in a database.
+     * @return the TTL otherwise {@link Optional#empty()}
+     */
+    public QueryValue<?> value() {
         return value;
     }
 
-    @Override
-    public Optional<Duration> getTtl() {
+    /**
+     * This duration set a time for data in an entity to expire. It defines the time to live of an object in a database.
+     * @return the TTL otherwise {@link Optional#empty()}
+     */
+    public Optional<Duration> ttl() {
         return Optional.ofNullable(ttl);
     }
 

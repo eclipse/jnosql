@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PutProviderTest {
 
-    private final PutQueryProvider provider = new AntlrPutQueryProvider();
+    private final PutQueryProvider provider = new PutQueryProvider();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {
