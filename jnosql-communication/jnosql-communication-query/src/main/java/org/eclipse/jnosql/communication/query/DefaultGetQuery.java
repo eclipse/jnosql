@@ -11,15 +11,17 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.GetQuery;
-import jakarta.nosql.query.QueryValue;
-
 import java.util.List;
 import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 
-final class DefaultGetQuery implements GetQuery {
+
+/**
+ * To delete one or more entities use the <b>DEL</b> statement.
+ * This query is particular to a key-value database.
+ */
+public final class DefaultGetQuery implements Query {
 
     private final List<QueryValue<?>> keys;
 
@@ -27,8 +29,11 @@ final class DefaultGetQuery implements GetQuery {
         this.keys = keys;
     }
 
-    @Override
-    public List<QueryValue<?>> getKeys() {
+    /**
+     * The keys to being removed from the query
+     * @return the keys
+     */
+    public List<QueryValue<?>> keys() {
         return unmodifiableList(keys);
     }
 

@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RemoveProviderTest {
 
-    private final DelQuery.DelQueryProvider provider = new AntlrDelQueryProvider();
+    private final DelQuery.DelQueryProvider provider = new DelQueryProvider();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {

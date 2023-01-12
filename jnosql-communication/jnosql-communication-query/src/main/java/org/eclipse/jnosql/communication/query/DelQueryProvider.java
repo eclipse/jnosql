@@ -12,9 +12,6 @@
 package org.eclipse.jnosql.communication.query;
 
 
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.DelQuery;
-import jakarta.nosql.query.DelQuery.DelQueryProvider;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.Collections;
@@ -24,9 +21,9 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The {@link DelQueryProvider} implementation that uses Antlr4
+ * A provider to {@link DelQuery}, this provider converts text into {@link DeleteQuery}
  */
-public final class AntlrDelQueryProvider extends AbstractSupplier implements DelQueryProvider {
+public final class DelQueryProvider extends AbstractSupplier implements Function<String, DelQuery> {
 
     private List<QueryValue<?>> keys = Collections.emptyList();
 
@@ -43,7 +40,7 @@ public final class AntlrDelQueryProvider extends AbstractSupplier implements Del
     @Override
     public DelQuery apply(String query) {
         runQuery(query);
-        return new DefaultRemoveQuery(keys);
+        return new DelQuery(keys);
     }
 
 }

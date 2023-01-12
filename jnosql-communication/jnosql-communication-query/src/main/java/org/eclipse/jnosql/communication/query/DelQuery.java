@@ -11,24 +11,28 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.DelQuery;
-import jakarta.nosql.query.QueryValue;
-
 import java.util.List;
 import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 
-final class DefaultRemoveQuery implements DelQuery {
+/**
+ * To delete one or more entities use the <b>DEL</b> statement.
+ * This query is particular to a key-value database.
+ */
+public final class DelQuery implements Query {
 
     private final List<QueryValue<?>> keys;
 
-    DefaultRemoveQuery(List<QueryValue<?>> keys) {
+    DelQuery(List<QueryValue<?>> keys) {
         this.keys = keys;
     }
 
-    @Override
-    public List<QueryValue<?>> getKeys() {
+    /**
+     * The keys to being removed from the query
+     * @return the keys
+     */
+    public List<QueryValue<?>> keys() {
         return unmodifiableList(keys);
     }
 
@@ -37,11 +41,11 @@ final class DefaultRemoveQuery implements DelQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultRemoveQuery)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultRemoveQuery that = (DefaultRemoveQuery) o;
-        return Objects.equals(keys, that.keys);
+        DelQuery delQuery = (DelQuery) o;
+        return Objects.equals(keys, delQuery.keys);
     }
 
     @Override
@@ -51,6 +55,20 @@ final class DefaultRemoveQuery implements DelQuery {
 
     @Override
     public String toString() {
-        return this.keys.toString();
+        return "DelQuery{" +
+                "keys=" + keys +
+                '}';
+    }
+
+    /**
+     * Obtains an instance of {@link DelQuery} from a text string.
+     *
+     * @param query the query
+     * @return {@link DelQuery} instance
+     * @throws NullPointerException                    when the query is null
+     */
+    public static DelQuery parse(String query) {
+        Objects.requireNonNull(query, "query is required");
+        return new DelQueryProvider().apply(query);
     }
 }
