@@ -26,12 +26,12 @@ public interface Entry {
      *
      * @return name
      */
-    String getName();
+    String name();
 
     /**
      * the column's value
      *
      * @return {@link Value}
      */
-    Value getValue();
+    Value value();
 }

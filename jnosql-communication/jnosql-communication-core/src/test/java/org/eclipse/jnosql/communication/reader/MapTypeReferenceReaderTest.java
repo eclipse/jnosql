@@ -123,12 +123,12 @@ public class MapTypeReferenceReaderTest {
         }
 
         @Override
-        public String getName() {
+        public String name() {
             return name;
         }
 
         @Override
-        public Value getValue() {
+        public Value value() {
             return value;
         }
     }
