@@ -15,10 +15,8 @@
  *
  */
 
-package org.eclipse.jnosql.communication.writer;
+package org.eclipse.jnosql.communication;
 
-
-import org.eclipse.jnosql.communication.ValueWriter;
 
 import java.util.ArrayList;
 import java.util.List;

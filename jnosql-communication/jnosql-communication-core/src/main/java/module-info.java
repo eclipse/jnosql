@@ -16,10 +16,7 @@
  */
 module org.eclipse.jnosql.communication.core {
     requires microprofile.config.api;
-
     exports org.eclipse.jnosql.communication;
-    exports org.eclipse.jnosql.communication.reader;
-    exports org.eclipse.jnosql.communication.writer;
     opens org.eclipse.jnosql.communication;
     opens org.eclipse.jnosql.communication.reader;
     opens org.eclipse.jnosql.communication.writer;
