@@ -23,7 +23,9 @@ module org.eclipse.jnosql.communication.core {
     opens org.eclipse.jnosql.communication;
     opens org.eclipse.jnosql.communication.reader;
     opens org.eclipse.jnosql.communication.writer;
-
+    uses org.eclipse.jnosql.communication.TypeReferenceReader;
+    uses org.eclipse.jnosql.communication.ValueReader;
+    uses org.eclipse.jnosql.communication.ValueWriter;
     provides org.eclipse.jnosql.communication.TypeReferenceReader with org.eclipse.jnosql.communication.reader.ListTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.SetTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.MapTypeReferenceReader,

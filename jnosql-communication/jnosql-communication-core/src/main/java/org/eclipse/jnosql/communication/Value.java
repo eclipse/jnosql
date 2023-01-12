@@ -18,7 +18,6 @@ package org.eclipse.jnosql.communication;
 
 
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * It represents an information unit that is to/from a database.
