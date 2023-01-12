@@ -29,17 +29,6 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>jakarta.nosql.communication</groupId>
-            <artifactId>communication-core</artifactId>
-            <version>${jakarta.nosql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.nosql.tck.communication</groupId>
-            <artifactId>communication-tck-core</artifactId>
-            <version>${jakarta.nosql.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
