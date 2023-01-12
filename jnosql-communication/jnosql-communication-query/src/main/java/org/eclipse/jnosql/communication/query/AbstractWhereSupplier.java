@@ -35,7 +35,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
 
     protected Where where;
 
-    protected Condition condition;
+    protected QueryCondition condition;
 
     protected boolean and = true;
 
@@ -53,7 +53,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?> value = ValueConverter.get(ctx.value());
-        checkCondition(new DefaultCondition(name, EQUALS, value), hasNot);
+        checkCondition(new QueryCondition(name, EQUALS, value), hasNot);
     }
 
     @Override
@@ -61,7 +61,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?> value = ValueConverter.get(ctx.value());
-        checkCondition(new DefaultCondition(name, LESSER_THAN, value), hasNot);
+        checkCondition(new QueryCondition(name, LESSER_THAN, value), hasNot);
     }
 
     @Override
@@ -69,7 +69,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?> value = ValueConverter.get(ctx.value());
-        checkCondition(new DefaultCondition(name, LESSER_EQUALS_THAN, value), hasNot);
+        checkCondition(new QueryCondition(name, LESSER_EQUALS_THAN, value), hasNot);
     }
 
     @Override
@@ -77,7 +77,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?> value = ValueConverter.get(ctx.value());
-        checkCondition(new DefaultCondition(name, GREATER_THAN, value), hasNot);
+        checkCondition(new QueryCondition(name, GREATER_THAN, value), hasNot);
     }
 
     @Override
@@ -85,7 +85,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?> value = ValueConverter.get(ctx.value());
-        checkCondition(new DefaultCondition(name, GREATER_EQUALS_THAN, value), hasNot);
+        checkCondition(new QueryCondition(name, GREATER_EQUALS_THAN, value), hasNot);
     }
 
     @Override
@@ -96,7 +96,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
                 .map(ValueConverter::get)
                 .toArray(QueryValue[]::new);
         ArrayQueryValue value = DefaultArrayValue.of(values);
-        checkCondition(new DefaultCondition(name, IN, value), hasNot);
+        checkCondition(new QueryCondition(name, IN, value), hasNot);
     }
 
 
@@ -105,7 +105,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         StringQueryValue value = DefaultStringQueryValue.of(ctx.string());
-        checkCondition(new DefaultCondition(name, LIKE, value), hasNot);
+        checkCondition(new QueryCondition(name, LIKE, value), hasNot);
     }
 
     @Override
@@ -113,7 +113,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?>[] values = ctx.value().stream().map(ValueConverter::get).toArray(QueryValue[]::new);
-        checkCondition(new DefaultCondition(name, BETWEEN, DefaultArrayValue.of(values)), hasNot);
+        checkCondition(new QueryCondition(name, BETWEEN, DefaultArrayValue.of(values)), hasNot);
     }
 
     @Override
@@ -126,8 +126,8 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         this.and = false;
     }
 
-    private void checkCondition(Condition condition, boolean hasNot) {
-        Condition newCondition = checkNotCondition(condition, hasNot);
+    private void checkCondition(QueryCondition condition, boolean hasNot) {
+        QueryCondition newCondition = checkNotCondition(condition, hasNot);
         if (Objects.isNull(this.condition)) {
             this.condition = newCondition;
             return;
@@ -140,57 +140,57 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
 
     }
 
-    private void appendCondition(Operator operator, Condition newCondition) {
+    private void appendCondition(Condition operator, QueryCondition newCondition) {
 
-        if (operator.equals(this.condition.getOperator())) {
-            ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.getValue());
-            List<Condition> conditions = new ArrayList<>(conditionValue.get());
+        if (operator.equals(this.condition.condition())) {
+            ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.value());
+            List<QueryCondition> conditions = new ArrayList<>(conditionValue.get());
             conditions.add(newCondition);
-            this.condition = new DefaultCondition("_" + operator.name(), operator, DefaultConditionValue.of(conditions));
+            this.condition = new QueryCondition("_" + operator.name(), operator, ConditionQueryValue.of(conditions));
         } else if (isNotAppendable()) {
-            List<Condition> conditions = Arrays.asList(this.condition, newCondition);
-            this.condition = new DefaultCondition("_" + operator.name(), operator, DefaultConditionValue.of(conditions));
+            List<QueryCondition> conditions = Arrays.asList(this.condition, newCondition);
+            this.condition = new QueryCondition("_" + operator.name(), operator, ConditionQueryValue.of(conditions));
         } else {
-            List<Condition> conditions = ConditionQueryValue.class.cast(this.condition.getValue()).get();
-            Condition lastCondition = conditions.get(conditions.size() - 1);
+            List<QueryCondition> conditions = ConditionQueryValue.class.cast(this.condition.value()).get();
+            QueryCondition lastCondition = conditions.get(conditions.size() - 1);
 
-            if (isAppendable(lastCondition) && operator.equals(lastCondition.getOperator())) {
-                List<Condition> lastConditions = new ArrayList<>(ConditionQueryValue.class
-                        .cast(lastCondition.getValue()).get());
+            if (isAppendable(lastCondition) && operator.equals(lastCondition.condition())) {
+                List<QueryCondition> lastConditions = new ArrayList<>(ConditionQueryValue.class
+                        .cast(lastCondition.value()).get());
                 lastConditions.add(newCondition);
 
-                Condition newAppendable = new DefaultCondition("_" + operator.name(),
-                        operator, DefaultConditionValue.of(lastConditions));
+                QueryCondition newAppendable = new QueryCondition("_" + operator.name(),
+                        operator, ConditionQueryValue.of(lastConditions));
 
-                List<Condition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
+                List<QueryCondition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
                 newConditions.add(newAppendable);
-                this.condition = new DefaultCondition(this.condition.getName(), this.condition.getOperator(),
-                        DefaultConditionValue.of(newConditions));
+                this.condition = new QueryCondition(this.condition.name(), this.condition.condition(),
+                        ConditionQueryValue.of(newConditions));
             } else {
-                Condition newAppendable = new DefaultCondition("_" + operator.name(),
-                        operator, DefaultConditionValue.of(Collections.singletonList(newCondition)));
+                QueryCondition newAppendable = new QueryCondition("_" + operator.name(),
+                        operator, ConditionQueryValue.of(Collections.singletonList(newCondition)));
 
-                List<Condition> newConditions = new ArrayList<>(conditions);
+                List<QueryCondition> newConditions = new ArrayList<>(conditions);
                 newConditions.add(newAppendable);
-                this.condition = new DefaultCondition(this.condition.getName(), this.condition.getOperator(),
-                        DefaultConditionValue.of(newConditions));
+                this.condition = new QueryCondition(this.condition.name(), this.condition.condition(),
+                        ConditionQueryValue.of(newConditions));
             }
 
         }
     }
 
-    private boolean isAppendable(Condition condition) {
-        return (AND.equals(condition.getOperator()) || OR.equals(condition.getOperator()));
+    private boolean isAppendable(QueryCondition condition) {
+        return (AND.equals(condition.condition()) || OR.equals(condition.condition()));
     }
 
     private boolean isNotAppendable() {
         return !isAppendable(this.condition);
     }
 
-    private Condition checkNotCondition(Condition condition, boolean hasNot) {
+    private QueryCondition checkNotCondition(QueryCondition condition, boolean hasNot) {
         if (hasNot) {
-            ConditionQueryValue conditions = DefaultConditionValue.of(Collections.singletonList(condition));
-            return new DefaultCondition("_NOT", NOT, conditions);
+            ConditionQueryValue conditions = ConditionQueryValue.of(Collections.singletonList(condition));
+            return new QueryCondition("_NOT", NOT, conditions);
         } else {
             return condition;
         }

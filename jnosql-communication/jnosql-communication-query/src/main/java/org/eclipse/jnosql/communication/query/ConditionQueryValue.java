@@ -12,25 +12,33 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionQueryValue;
 
 import java.util.List;
 import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 
-final class DefaultConditionValue implements ConditionQueryValue {
+/**
+ * The QueryValue type that has a list of values, it will be used when the condition is composed such as
+ * and ({@link org.eclipse.jnosql.communication.Condition#AND}), or ({@link org.eclipse.jnosql.communication.Condition#OR})
+ * and negation ({@link org.eclipse.jnosql.communication.Condition#NOT}).
+ */
+public final class ConditionQueryValue implements QueryValue<List<QueryCondition>> {
 
-    private final List<Condition> conditions;
+    private final List<QueryCondition> conditions;
 
-    private DefaultConditionValue(List<Condition> conditions) {
+    private ConditionQueryValue(List<QueryCondition> conditions) {
         this.conditions = conditions;
     }
 
     @Override
-    public List<Condition> get() {
+    public List<QueryCondition> get() {
         return unmodifiableList(conditions);
+    }
+
+    @Override
+    public ValueType getType() {
+        return ValueType.CONDITION;
     }
 
     @Override
@@ -38,10 +46,10 @@ final class DefaultConditionValue implements ConditionQueryValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultConditionValue)) {
+        if (!(o instanceof ConditionQueryValue)) {
             return false;
         }
-        DefaultConditionValue that = (DefaultConditionValue) o;
+        ConditionQueryValue that = (ConditionQueryValue) o;
         return Objects.equals(conditions, that.conditions);
     }
 
@@ -55,7 +63,9 @@ final class DefaultConditionValue implements ConditionQueryValue {
         return conditions.toString();
     }
 
-    public static ConditionQueryValue of(List<Condition> conditions) {
-        return new DefaultConditionValue(conditions);
+    static ConditionQueryValue of(List<QueryCondition> conditions) {
+        return new ConditionQueryValue(conditions);
     }
+
+
 }
