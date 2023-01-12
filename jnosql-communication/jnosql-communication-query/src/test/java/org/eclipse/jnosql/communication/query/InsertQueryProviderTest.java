@@ -11,17 +11,7 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.Function;
-import jakarta.nosql.query.FunctionQueryValue;
-import jakarta.nosql.query.InsertQuery;
-import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
-import jakarta.nosql.query.JSONQueryValue;
-import jakarta.nosql.query.NumberQueryValue;
-import jakarta.nosql.query.Operator;
-import jakarta.nosql.query.ParamQueryValue;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.StringQueryValue;
+import org.eclipse.jnosql.communication.Condition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -55,9 +45,9 @@ public class InsertQueryProviderTest {
         List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("name", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("name", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Diana", StringQueryValue.class.cast(value).get());
         assertFalse(insertQuery.ttl().isPresent());
@@ -70,9 +60,9 @@ public class InsertQueryProviderTest {
         List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("age", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("age", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(30L, NumberQueryValue.class.cast(value).get());
         assertFalse(insertQuery.ttl().isPresent());
@@ -85,9 +75,9 @@ public class InsertQueryProviderTest {
         List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("stamina", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("stamina", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(32.23, NumberQueryValue.class.cast(value).get());
         assertFalse(insertQuery.ttl().isPresent());
@@ -100,9 +90,9 @@ public class InsertQueryProviderTest {
         List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("siblings", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("siblings", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("Apollo"));
@@ -117,9 +107,9 @@ public class InsertQueryProviderTest {
         List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("age", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("age", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof DefaultQueryValue);
         assertEquals("age", DefaultQueryValue.class.cast(value).get());
         assertFalse(insertQuery.ttl().isPresent());
@@ -132,13 +122,13 @@ public class InsertQueryProviderTest {
         List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("birthday", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("birthday", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof FunctionQueryValue);
         Function function = FunctionQueryValue.class.cast(value).get();
-        assertEquals("convert", function.getName());
-        Object[] params = function.getParams();
+        assertEquals("convert", function.name());
+        Object[] params = function.params();
         assertEquals(2, params.length);
         assertEquals("1988-01-01", StringQueryValue.class.cast(params[0]).get());
         assertEquals(LocalDate.class, params[1]);
@@ -152,16 +142,16 @@ public class InsertQueryProviderTest {
         List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(2, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("age", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("age", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(30L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        assertEquals("name", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        value = condition.getValue();
+        assertEquals("name", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        value = condition.value();
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Artemis", StringQueryValue.class.cast(value).get());
         assertFalse(insertQuery.ttl().isPresent());
@@ -308,9 +298,9 @@ public class InsertQueryProviderTest {
         List<QueryCondition> conditions = insertQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("name", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("name", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Diana", StringQueryValue.class.cast(value).get());
 

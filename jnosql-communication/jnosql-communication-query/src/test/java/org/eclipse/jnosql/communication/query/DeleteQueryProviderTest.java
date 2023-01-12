@@ -12,27 +12,13 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionQueryValue;
-import jakarta.nosql.query.DeleteQuery;
-import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
-
-import jakarta.nosql.query.Function;
-import jakarta.nosql.query.FunctionQueryValue;
-import jakarta.nosql.query.JSONQueryValue;
-import jakarta.nosql.query.NumberQueryValue;
-import jakarta.nosql.query.ParamQueryValue;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.StringQueryValue;
-import jakarta.nosql.query.Where;
-import jakarta.nosql.query.Operator;
+import jakarta.json.JsonObject;
+import org.eclipse.jnosql.communication.Condition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import jakarta.json.JsonObject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
@@ -78,10 +64,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(10L, value.get());
     }
@@ -93,10 +79,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.GREATER_THAN, condition.getOperator());
-        assertEquals("stamina", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.GREATER_THAN, condition.condition());
+        assertEquals("stamina", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(10.23, value.get());
     }
@@ -108,10 +94,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.GREATER_EQUALS_THAN, condition.getOperator());
-        assertEquals("stamina", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
+        assertEquals("stamina", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(10.23, value.get());
     }
@@ -123,10 +109,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.LESSER_EQUALS_THAN, condition.getOperator());
-        assertEquals("stamina", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
+        assertEquals("stamina", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(10.23, value.get());
     }
@@ -138,10 +124,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.LESSER_THAN, condition.getOperator());
-        assertEquals("stamina", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.LESSER_THAN, condition.condition());
+        assertEquals("stamina", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(10.23, value.get());
     }
@@ -154,10 +140,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.BETWEEN, condition.getOperator());
-        assertEquals("age", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.BETWEEN, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof DefaultArrayQueryValue);
         DefaultArrayQueryValue arrayValue = DefaultArrayQueryValue.class.cast(value);
         QueryValue<?>[] values = arrayValue.get();
@@ -172,10 +158,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("diana", value.get());
     }
@@ -187,10 +173,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof DefaultArrayQueryValue);
         List<Object> values = Stream.of(DefaultArrayQueryValue.class.cast(value).get()).map(QueryValue::get)
                 .collect(toList());
@@ -204,10 +190,10 @@ class DeleteQueryProviderTest {
         assertTrue(selectQuery.where().isPresent());
 
         Where where = selectQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof DefaultArrayQueryValue);
         List<Object> values = Stream.of(DefaultArrayQueryValue.class.cast(value).get()).map(QueryValue::get).collect(toList());
         assertThat(values).contains("diana", 17L, 20.21);
@@ -221,10 +207,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("siblings", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("siblings", condition.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -239,10 +225,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof DefaultQueryValue);
         assertEquals("name", DefaultQueryValue.class.cast(value).get());
     }
@@ -254,14 +240,14 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof FunctionQueryValue);
         Function function = FunctionQueryValue.class.cast(value).get();
-        assertEquals("convert", function.getName());
-        Object[] params = function.getParams();
+        assertEquals("convert", function.name());
+        Object[] params = function.params();
         assertEquals(12L, NumberQueryValue.class.cast(params[0]).get());
         assertEquals(Integer.class, params[1]);
     }
@@ -274,10 +260,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.IN, condition.getOperator());
-        assertEquals("name", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.IN, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof DefaultArrayQueryValue);
         List<Object> values = Stream.of(DefaultArrayQueryValue.class.cast(value).get())
                 .map(QueryValue::get).collect(toList());
@@ -291,10 +277,10 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.LIKE, condition.getOperator());
-        assertEquals("name", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.LIKE, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
     }
@@ -306,17 +292,17 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.NOT, condition.getOperator());
-        assertEquals("_NOT", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.NOT, condition.condition());
+        assertEquals("_NOT", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(1, conditions.size());
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.LIKE, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.LIKE, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
     }
@@ -329,31 +315,31 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.AND, condition.getOperator());
-        assertEquals("_AND", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.AND, condition.condition());
+        assertEquals("_AND", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(20L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(2);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("siblings", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("siblings", condition.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -368,31 +354,31 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.OR, condition.getOperator());
-        assertEquals("_OR", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.OR, condition.condition());
+        assertEquals("_OR", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(20L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(2);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("siblings", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("siblings", condition.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -408,40 +394,40 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.AND, condition.getOperator());
-        assertEquals("_AND", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.AND, condition.condition());
+        assertEquals("_AND", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
 
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(20L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(2);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.OR, condition.getOperator());
+        value = condition.value();
+        Assertions.assertEquals(Condition.OR, condition.condition());
 
-        conditions = DefaultConditionQueryValue.class.cast(condition.getValue()).get();
+        conditions = DefaultConditionQueryValue.class.cast(condition.value()).get();
         assertEquals(1, conditions.size());
 
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
 
-        assertEquals("siblings", condition.getName());
+        assertEquals("siblings", condition.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -459,39 +445,39 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.AND, condition.getOperator());
-        assertEquals("_AND", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.AND, condition.condition());
+        assertEquals("_AND", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
 
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(20L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(2);
-        Assertions.assertEquals(Operator.OR, condition.getOperator());
+        Assertions.assertEquals(Condition.OR, condition.condition());
 
-        conditions = DefaultConditionQueryValue.class.cast(condition.getValue()).get();
+        conditions = DefaultConditionQueryValue.class.cast(condition.value()).get();
         assertEquals(2, conditions.size());
 
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
 
-        assertEquals("siblings", condition.getName());
+        assertEquals("siblings", condition.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -499,14 +485,14 @@ class DeleteQueryProviderTest {
 
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
 
-        assertEquals("birthday", condition.getName());
+        assertEquals("birthday", condition.name());
         assertTrue(value instanceof FunctionQueryValue);
         Function function = FunctionQueryValue.class.cast(value).get();
-        assertEquals("convert", function.getName());
-        Object[] params = function.getParams();
+        assertEquals("convert", function.name());
+        Object[] params = function.params();
         assertEquals("2007-12-03", StringQueryValue.class.cast(params[0]).get());
         assertEquals(LocalDate.class, params[1]);
     }
@@ -522,38 +508,38 @@ class DeleteQueryProviderTest {
         assertTrue(deleteQuery.where().isPresent());
 
         Where where = deleteQuery.where().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.AND, condition.getOperator());
-        assertEquals("_AND", condition.getName());
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.AND, condition.condition());
+        assertEquals("_AND", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(4, conditions.size());
 
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(20L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(2);
-        Assertions.assertEquals(Operator.OR, condition.getOperator());
+        Assertions.assertEquals(Condition.OR, condition.condition());
 
-        assertEquals(1, DefaultConditionQueryValue.class.cast(condition.getValue()).get().size());
+        assertEquals(1, DefaultConditionQueryValue.class.cast(condition.value()).get().size());
 
-        QueryCondition c = DefaultConditionQueryValue.class.cast(condition.getValue()).get().get(0);
-        value = c.getValue();
-        Assertions.assertEquals(Operator.EQUALS, c.getOperator());
+        QueryCondition c = DefaultConditionQueryValue.class.cast(condition.value()).get().get(0);
+        value = c.value();
+        Assertions.assertEquals(Condition.EQUALS, c.condition());
 
-        assertEquals("siblings", c.getName());
+        assertEquals("siblings", c.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -561,14 +547,14 @@ class DeleteQueryProviderTest {
 
 
         condition = conditions.get(3);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
 
-        assertEquals("birthday", condition.getName());
+        assertEquals("birthday", condition.name());
         assertTrue(value instanceof FunctionQueryValue);
         Function function = FunctionQueryValue.class.cast(value).get();
-        assertEquals("convert", function.getName());
-        Object[] params = function.getParams();
+        assertEquals("convert", function.name());
+        Object[] params = function.params();
         assertEquals("2007-12-03", StringQueryValue.class.cast(params[0]).get());
         assertEquals(LocalDate.class, params[1]);
     }

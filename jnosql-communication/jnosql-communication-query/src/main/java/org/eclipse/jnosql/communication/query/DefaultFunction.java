@@ -27,12 +27,12 @@ final class DefaultFunction implements Function {
     }
 
     @Override
-    public String getName() {
+    public String name() {
         return name;
     }
 
     @Override
-    public Object[] getParams() {
+    public Object[] params() {
         return args;
     }
 

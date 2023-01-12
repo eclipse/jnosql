@@ -12,22 +12,9 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionQueryValue;
-import jakarta.nosql.query.Function;
-import jakarta.nosql.query.FunctionQueryValue;
-import jakarta.nosql.query.JSONQueryValue;
-import jakarta.nosql.query.NumberQueryValue;
-import jakarta.nosql.query.Operator;
-import jakarta.nosql.query.ParamQueryValue;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.SelectQuery;
-import jakarta.nosql.query.SelectQuery.SelectQueryProvider;
-import jakarta.nosql.query.StringQueryValue;
-import jakarta.nosql.query.Where;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.SortType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -57,102 +44,102 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select * from God"})
     public void shouldReturnParserQuery(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertFalse(selectQuery.getWhere().isPresent());
+        assertFalse(selectQuery.where().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God"})
     public void shouldReturnParserQuery2(String query) {
         DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
-        assertEquals("God", selectQuery.getEntity());
-        assertFalse(selectQuery.getFields().isEmpty());
-        assertThat(selectQuery.getFields()).contains("name", "address");
-        assertTrue(selectQuery.getOrderBy().isEmpty());
-        assertEquals(0, selectQuery.getLimit());
-        assertEquals(0, selectQuery.getSkip());
-        assertFalse(selectQuery.getWhere().isPresent());
+        assertEquals("God", selectQuery.entity());
+        assertFalse(selectQuery.fields().isEmpty());
+        assertThat(selectQuery.fields()).contains("name", "address");
+        assertTrue(selectQuery.orderBy().isEmpty());
+        assertEquals(0, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
+        assertFalse(selectQuery.where().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God order by name"})
     public void shouldReturnParserQuery3(String query) {
         DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
-        assertEquals("God", selectQuery.getEntity());
-        assertFalse(selectQuery.getFields().isEmpty());
-        assertThat(selectQuery.getFields()).contains("name", "address");
-        assertFalse(selectQuery.getOrderBy().isEmpty());
-        assertThat(selectQuery.getOrderBy().stream().map(Sort::getName).collect(toList())).contains("name");
-        assertThat(selectQuery.getOrderBy().stream().map(Sort::getType).collect(toList())).contains(SortType.ASC);
-        assertEquals(0, selectQuery.getLimit());
-        assertEquals(0, selectQuery.getSkip());
-        assertFalse(selectQuery.getWhere().isPresent());
+        assertEquals("God", selectQuery.entity());
+        assertFalse(selectQuery.fields().isEmpty());
+        assertThat(selectQuery.fields()).contains("name", "address");
+        assertFalse(selectQuery.orderBy().isEmpty());
+        assertThat(selectQuery.orderBy().stream().map(Sort::name).collect(toList())).contains("name");
+        assertThat(selectQuery.orderBy().stream().map(Sort::type).collect(toList())).contains(SortType.ASC);
+        assertEquals(0, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
+        assertFalse(selectQuery.where().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God order by name desc"})
     public void shouldReturnParserQuery4(String query) {
         DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
-        assertEquals("God", selectQuery.getEntity());
-        assertFalse(selectQuery.getFields().isEmpty());
-        assertThat(selectQuery.getFields()).contains("name", "address");
-        assertFalse(selectQuery.getOrderBy().isEmpty());
-        assertThat(selectQuery.getOrderBy().stream().map(Sort::getName).collect(toList())).contains("name");
-        assertThat(selectQuery.getOrderBy().stream().map(Sort::getType).collect(toList())).contains(SortType.DESC);
-        assertEquals(0, selectQuery.getLimit());
-        assertEquals(0, selectQuery.getSkip());
-        assertFalse(selectQuery.getWhere().isPresent());
+        assertEquals("God", selectQuery.entity());
+        assertFalse(selectQuery.fields().isEmpty());
+        assertThat(selectQuery.fields()).contains("name", "address");
+        assertFalse(selectQuery.orderBy().isEmpty());
+        assertThat(selectQuery.orderBy().stream().map(Sort::name).collect(toList())).contains("name");
+        assertThat(selectQuery.orderBy().stream().map(Sort::type).collect(toList())).contains(SortType.DESC);
+        assertEquals(0, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
+        assertFalse(selectQuery.where().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God order by name desc age asc"})
     public void shouldReturnParserQuery5(String query) {
         DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
-        assertEquals("God", selectQuery.getEntity());
-        assertFalse(selectQuery.getFields().isEmpty());
-        assertThat(selectQuery.getFields()).contains("name", "address");
-        assertFalse(selectQuery.getOrderBy().isEmpty());
-        assertThat(selectQuery.getOrderBy().stream().map(Sort::getName).collect(toList())).contains("name", "age");
-        assertThat(selectQuery.getOrderBy().stream().map(Sort::getType).collect(toList())).
+        assertEquals("God", selectQuery.entity());
+        assertFalse(selectQuery.fields().isEmpty());
+        assertThat(selectQuery.fields()).contains("name", "address");
+        assertFalse(selectQuery.orderBy().isEmpty());
+        assertThat(selectQuery.orderBy().stream().map(Sort::name).collect(toList())).contains("name", "age");
+        assertThat(selectQuery.orderBy().stream().map(Sort::type).collect(toList())).
                 contains(SortType.DESC, SortType.ASC);
-        assertEquals(0, selectQuery.getLimit());
-        assertEquals(0, selectQuery.getSkip());
-        assertFalse(selectQuery.getWhere().isPresent());
+        assertEquals(0, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
+        assertFalse(selectQuery.where().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God skip 12"})
     public void shouldReturnParserQuery6(String query) {
         DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
-        assertEquals("God", selectQuery.getEntity());
-        assertTrue(selectQuery.getFields().isEmpty());
-        assertTrue(selectQuery.getOrderBy().isEmpty());
-        assertEquals(0, selectQuery.getLimit());
-        assertEquals(12, selectQuery.getSkip());
-        assertFalse(selectQuery.getWhere().isPresent());
+        assertEquals("God", selectQuery.entity());
+        assertTrue(selectQuery.fields().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
+        assertEquals(0, selectQuery.limit());
+        assertEquals(12, selectQuery.skip());
+        assertFalse(selectQuery.where().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God limit 12"})
     public void shouldReturnParserQuery7(String query) {
         DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
-        assertEquals("God", selectQuery.getEntity());
-        assertTrue(selectQuery.getFields().isEmpty());
-        assertTrue(selectQuery.getOrderBy().isEmpty());
-        assertEquals(12, selectQuery.getLimit());
-        assertEquals(0, selectQuery.getSkip());
-        assertFalse(selectQuery.getWhere().isPresent());
+        assertEquals("God", selectQuery.entity());
+        assertTrue(selectQuery.fields().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
+        assertEquals(12, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
+        assertFalse(selectQuery.where().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God skip 10 limit 12"})
     public void shouldReturnParserQuery8(String query) {
         DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
-        assertEquals("God", selectQuery.getEntity());
-        assertTrue(selectQuery.getFields().isEmpty());
-        assertTrue(selectQuery.getOrderBy().isEmpty());
-        assertEquals(12, selectQuery.getLimit());
-        assertEquals(10, selectQuery.getSkip());
-        assertFalse(selectQuery.getWhere().isPresent());
+        assertEquals("God", selectQuery.entity());
+        assertTrue(selectQuery.fields().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
+        assertEquals(12, selectQuery.limit());
+        assertEquals(10, selectQuery.skip());
+        assertFalse(selectQuery.where().isPresent());
     }
 
 
@@ -160,13 +147,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where age = 10"})
     public void shouldReturnParserQuery9(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(10L, value.get());
     }
@@ -175,13 +162,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where stamina > 10.23"})
     public void shouldReturnParserQuery10(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.GREATER_THAN, condition.getOperator());
-        assertEquals("stamina", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.GREATER_THAN, condition.condition());
+        assertEquals("stamina", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(10.23, value.get());
     }
@@ -190,13 +177,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where stamina >= 10.23"})
     public void shouldReturnParserQuery11(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.GREATER_EQUALS_THAN, condition.getOperator());
-        assertEquals("stamina", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
+        assertEquals("stamina", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(10.23, value.get());
     }
@@ -205,13 +192,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where stamina <= 10.23"})
     public void shouldReturnParserQuery12(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.LESSER_EQUALS_THAN, condition.getOperator());
-        assertEquals("stamina", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
+        assertEquals("stamina", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(10.23, value.get());
     }
@@ -220,13 +207,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where stamina < 10.23"})
     public void shouldReturnParserQuery13(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.LESSER_THAN, condition.getOperator());
-        assertEquals("stamina", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.LESSER_THAN, condition.condition());
+        assertEquals("stamina", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(10.23, value.get());
     }
@@ -236,13 +223,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where age between 10 and 30"})
     public void shouldReturnParserQuery14(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.BETWEEN, condition.getOperator());
-        assertEquals("age", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.BETWEEN, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof DefaultArrayQueryValue);
         DefaultArrayQueryValue arrayValue = DefaultArrayQueryValue.class.cast(value);
         QueryValue<?>[] values = arrayValue.get();
@@ -254,13 +241,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where name = \"diana\""})
     public void shouldReturnParserQuery15(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("diana", value.get());
     }
@@ -269,13 +256,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where name = 'diana'"})
     public void shouldReturnParserQuery16(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("diana", value.get());
     }
@@ -284,13 +271,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where name = {\"diana\"}"})
     public void shouldReturnParserQuery17(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof DefaultArrayQueryValue);
         List<String> values = Stream.of(DefaultArrayQueryValue.class.cast(value).get()).map(QueryValue::get)
                 .map(String.class::cast)
@@ -302,13 +289,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where name = {\"diana\", 17, 20.21}"})
     public void shouldReturnParserQuery18(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof DefaultArrayQueryValue);
         List<Object> values = Stream.of(DefaultArrayQueryValue.class.cast(value).get())
                 .map(QueryValue::get)
@@ -321,13 +308,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery19(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("siblings", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("siblings", condition.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -338,13 +325,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where name = @name"})
     public void shouldReturnParserQuery20(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof DefaultQueryValue);
         assertEquals("name", DefaultQueryValue.class.cast(value).get());
     }
@@ -353,17 +340,17 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where age = convert(12, java.lang.Integer)"})
     public void shouldReturnParserQuery21(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof FunctionQueryValue);
         Function function = FunctionQueryValue.class.cast(value).get();
-        assertEquals("convert", function.getName());
-        Object[] params = function.getParams();
+        assertEquals("convert", function.name());
+        Object[] params = function.params();
         assertEquals(12L, NumberQueryValue.class.cast(params[0]).get());
         assertEquals(Integer.class, params[1]);
     }
@@ -372,13 +359,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where name in (\"Ada\", \"Apollo\")"})
     public void shouldReturnParserQuery22(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.IN, condition.getOperator());
-        assertEquals("name", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.IN, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof DefaultArrayQueryValue);
         List<String> values = Stream.of(DefaultArrayQueryValue.class.cast(value).get())
                 .map(QueryValue::get).map(String.class::cast).collect(toList());
@@ -389,13 +376,13 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select * from God where name like \"Ada\""})
     public void shouldReturnParserQuery23(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.LIKE, condition.getOperator());
-        assertEquals("name", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.LIKE, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
     }
@@ -404,20 +391,20 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select * from God where name not like \"Ada\""})
     public void shouldReturnParserQuery24(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.NOT, condition.getOperator());
-        assertEquals("_NOT", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.NOT, condition.condition());
+        assertEquals("_NOT", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(1, conditions.size());
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.LIKE, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.LIKE, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
     }
@@ -427,34 +414,34 @@ class SelectQueryProviderTest {
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery25(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.AND, condition.getOperator());
-        assertEquals("_AND", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.AND, condition.condition());
+        assertEquals("_AND", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(20L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(2);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("siblings", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("siblings", condition.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -466,34 +453,34 @@ class SelectQueryProviderTest {
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery26(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.OR, condition.getOperator());
-        assertEquals("_OR", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.OR, condition.condition());
+        assertEquals("_OR", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(20L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(2);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("siblings", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("siblings", condition.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -506,43 +493,43 @@ class SelectQueryProviderTest {
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery27(String query) {
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.AND, condition.getOperator());
-        assertEquals("_AND", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.AND, condition.condition());
+        assertEquals("_AND", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
 
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(20L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(2);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.OR, condition.getOperator());
+        value = condition.value();
+        Assertions.assertEquals(Condition.OR, condition.condition());
 
-        conditions = DefaultConditionQueryValue.class.cast(condition.getValue()).get();
+        conditions = DefaultConditionQueryValue.class.cast(condition.value()).get();
         assertEquals(1, conditions.size());
 
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
 
-        assertEquals("siblings", condition.getName());
+        assertEquals("siblings", condition.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -557,42 +544,42 @@ class SelectQueryProviderTest {
     public void shouldReturnParserQuery28(String query) {
 
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.AND, condition.getOperator());
-        assertEquals("_AND", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.AND, condition.condition());
+        assertEquals("_AND", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
 
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(20L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(2);
-        Assertions.assertEquals(Operator.OR, condition.getOperator());
+        Assertions.assertEquals(Condition.OR, condition.condition());
 
-        conditions = DefaultConditionQueryValue.class.cast(condition.getValue()).get();
+        conditions = DefaultConditionQueryValue.class.cast(condition.value()).get();
         assertEquals(2, conditions.size());
 
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
 
-        assertEquals("siblings", condition.getName());
+        assertEquals("siblings", condition.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -600,14 +587,14 @@ class SelectQueryProviderTest {
 
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
 
-        assertEquals("birthday", condition.getName());
+        assertEquals("birthday", condition.name());
         assertTrue(value instanceof FunctionQueryValue);
         Function function = FunctionQueryValue.class.cast(value).get();
-        assertEquals("convert", function.getName());
-        Object[] params = function.getParams();
+        assertEquals("convert", function.name());
+        Object[] params = function.params();
         assertEquals("2007-12-03", StringQueryValue.class.cast(params[0]).get());
         assertEquals(LocalDate.class, params[1]);
     }
@@ -620,41 +607,41 @@ class SelectQueryProviderTest {
     public void shouldReturnParserQuery29(String query) {
 
         DefaultSelectQuery selectQuery = checkSelectFromStart(query);
-        assertTrue(selectQuery.getWhere().isPresent());
+        assertTrue(selectQuery.where().isPresent());
 
-        Where where = selectQuery.getWhere().get();
-        QueryCondition condition = where.getCondition();
-        QueryValue<?> value = condition.getValue();
-        Assertions.assertEquals(Operator.AND, condition.getOperator());
-        assertEquals("_AND", condition.getName());
+        Where where = selectQuery.where().get();
+        QueryCondition condition = where.condition();
+        QueryValue<?> value = condition.value();
+        Assertions.assertEquals(Condition.AND, condition.condition());
+        assertEquals("_AND", condition.name());
         assertTrue(value instanceof DefaultConditionQueryValue);
         List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
         assertEquals(4, conditions.size());
 
         condition = conditions.get(0);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("name", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", condition.name());
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
-        assertEquals("age", condition.getName());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", condition.name());
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(20L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(2);
-        Assertions.assertEquals(Operator.OR, condition.getOperator());
+        Assertions.assertEquals(Condition.OR, condition.condition());
 
-        assertEquals(1, DefaultConditionQueryValue.class.cast(condition.getValue()).get().size());
+        assertEquals(1, DefaultConditionQueryValue.class.cast(condition.value()).get().size());
 
-        QueryCondition c = DefaultConditionQueryValue.class.cast(condition.getValue()).get().get(0);
-        value = c.getValue();
-        Assertions.assertEquals(Operator.EQUALS, c.getOperator());
+        QueryCondition c = DefaultConditionQueryValue.class.cast(condition.value()).get().get(0);
+        value = c.value();
+        Assertions.assertEquals(Condition.EQUALS, c.condition());
 
-        assertEquals("siblings", c.getName());
+        assertEquals("siblings", c.name());
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("apollo"));
@@ -662,14 +649,14 @@ class SelectQueryProviderTest {
 
 
         condition = conditions.get(3);
-        value = condition.getValue();
-        Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
+        value = condition.value();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
 
-        assertEquals("birthday", condition.getName());
+        assertEquals("birthday", condition.name());
         assertTrue(value instanceof FunctionQueryValue);
         Function function = FunctionQueryValue.class.cast(value).get();
-        assertEquals("convert", function.getName());
-        Object[] params = function.getParams();
+        assertEquals("convert", function.name());
+        Object[] params = function.params();
         assertEquals("2007-12-03", StringQueryValue.class.cast(params[0]).get());
         assertEquals(LocalDate.class, params[1]);
     }
@@ -678,11 +665,11 @@ class SelectQueryProviderTest {
 
     private DefaultSelectQuery checkSelectFromStart(String query) {
         DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
-        assertEquals("God", selectQuery.getEntity());
-        assertTrue(selectQuery.getFields().isEmpty());
-        assertTrue(selectQuery.getOrderBy().isEmpty());
-        assertEquals(0, selectQuery.getLimit());
-        assertEquals(0, selectQuery.getSkip());
+        assertEquals("God", selectQuery.entity());
+        assertTrue(selectQuery.fields().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
+        assertEquals(0, selectQuery.limit());
+        assertEquals(0, selectQuery.skip());
         return selectQuery;
     }
 

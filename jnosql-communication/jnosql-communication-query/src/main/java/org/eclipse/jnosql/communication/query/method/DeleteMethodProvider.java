@@ -33,6 +33,6 @@ enum DeleteMethodProvider implements BiFunction<Method, String, DeleteQuery> {
         Objects.requireNonNull(method, "method is required");
         Objects.requireNonNull(entity, "entity is required");
         DeleteByMethodQueryProvider supplier = new DeleteByMethodQueryProvider();
-        return supplier.apply(method.getName(), entity);
+        return supplier.apply(method.name(), entity);
     }
 }

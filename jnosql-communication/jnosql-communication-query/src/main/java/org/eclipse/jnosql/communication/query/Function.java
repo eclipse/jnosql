@@ -21,11 +21,11 @@ public interface Function {
      * The function name
      * @return the name
      */
-    String getName();
+    String name();
 
     /**
      * The params of this function
      * @return the params
      */
-    Object[] getParams();
+    Object[] params();
 }

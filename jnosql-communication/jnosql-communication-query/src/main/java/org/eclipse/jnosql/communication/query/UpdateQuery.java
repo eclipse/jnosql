@@ -11,8 +11,6 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.Condition;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -48,7 +46,7 @@ public final class UpdateQuery implements Query {
      *  e.g., name = "any name"
      * @return the conditions
      */
-    public List<DefaultQueryCondition> conditions() {
+    public List<QueryCondition> conditions() {
         return Collections.unmodifiableList(conditions);
     }
 

@@ -11,24 +11,14 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.Function;
-import jakarta.nosql.query.FunctionQueryValue;
-import jakarta.nosql.query.JSONQueryValue;
-import jakarta.nosql.query.NumberQueryValue;
-import jakarta.nosql.query.Operator;
-import jakarta.nosql.query.ParamQueryValue;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.StringQueryValue;
-import jakarta.nosql.query.UpdateQuery;
-import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import org.eclipse.jnosql.communication.Condition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import jakarta.json.JsonArray;
-import jakarta.json.JsonObject;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -48,12 +38,12 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (name = \"Diana\")"})
     public void shouldReturnParserQuery(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<QueryCondition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("name", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("name", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Diana", StringQueryValue.class.cast(value).get());
     }
@@ -62,12 +52,12 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (age = 30)"})
     public void shouldReturnParserQuery1(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<QueryCondition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("age", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("age", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(30L, NumberQueryValue.class.cast(value).get());
     }
@@ -76,12 +66,12 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (stamina = 32.23)"})
     public void shouldReturnParserQuery2(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<QueryCondition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("stamina", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("stamina", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(32.23, NumberQueryValue.class.cast(value).get());
     }
@@ -90,12 +80,12 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (siblings = {\"Apollo\": \"Brother\", \"Zeus\": \"Father\"})"})
     public void shouldReturnParserQuery3(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<QueryCondition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("siblings", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("siblings", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof JSONQueryValue);
         JsonObject jsonObject = JSONQueryValue.class.cast(value).get();
         assertEquals("Brother", jsonObject.getString("Apollo"));
@@ -106,12 +96,12 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (age = @age)"})
     public void shouldReturnParserQuery4(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<QueryCondition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("age", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("age", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof DefaultQueryValue);
         assertEquals("age", DefaultQueryValue.class.cast(value).get());
     }
@@ -120,16 +110,16 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (birthday = convert(\"1988-01-01\", java.time.LocalDate))"})
     public void shouldReturnParserQuery5(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<QueryCondition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(1, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("birthday", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("birthday", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof FunctionQueryValue);
         Function function = FunctionQueryValue.class.cast(value).get();
-        assertEquals("convert", function.getName());
-        Object[] params = function.getParams();
+        assertEquals("convert", function.name());
+        Object[] params = function.params();
         assertEquals(2, params.length);
         assertEquals("1988-01-01", StringQueryValue.class.cast(params[0]).get());
         assertEquals(LocalDate.class, params[1]);
@@ -139,19 +129,19 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update God (age = 30, name = \"Artemis\")"})
     public void shouldReturnParserQuery6(String query) {
         UpdateQuery updateQuery = checkUpdateFromStart(query);
-        List<QueryCondition> conditions = updateQuery.getConditions();
+        List<QueryCondition> conditions = updateQuery.conditions();
         assertEquals(2, conditions.size());
         QueryCondition condition = conditions.get(0);
-        assertEquals("age", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        QueryValue<?> value = condition.getValue();
+        assertEquals("age", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        QueryValue<?> value = condition.value();
         assertTrue(value instanceof NumberQueryValue);
         assertEquals(30L, NumberQueryValue.class.cast(value).get());
 
         condition = conditions.get(1);
-        assertEquals("name", condition.getName());
-        assertEquals(Operator.EQUALS, condition.getOperator());
-        value = condition.getValue();
+        assertEquals("name", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        value = condition.value();
         assertTrue(value instanceof StringQueryValue);
         assertEquals("Artemis", StringQueryValue.class.cast(value).get());
     }
@@ -160,10 +150,10 @@ public class UpdateQueryProviderTest {
     @ValueSource(strings = {"update Person {\"name\":\"Ada Lovelace\"}"})
     public void shouldReturnParserQuery7(String query) {
         UpdateQuery updateQuery = update.apply(query);
-        assertEquals("Person", updateQuery.getEntity());
-        Assertions.assertTrue(updateQuery.getConditions().isEmpty());
-        Assertions.assertTrue(updateQuery.getValue().isPresent());
-        JSONQueryValue JSONQueryValue = updateQuery.getValue().get();
+        assertEquals("Person", updateQuery.entity());
+        Assertions.assertTrue(updateQuery.conditions().isEmpty());
+        Assertions.assertTrue(updateQuery.value().isPresent());
+        JSONQueryValue JSONQueryValue = updateQuery.value().get();
         JsonObject jsonObject = JSONQueryValue.get();
         assertEquals("Ada Lovelace", jsonObject.getString("name"));
     }
@@ -175,10 +165,10 @@ public class UpdateQueryProviderTest {
             " \"address\":{\"country\": \"United Kingdom\", \"city\": \"London\"}}"})
     public void shouldReturnParserQuery8(String query) {
         UpdateQuery updateQuery = update.apply(query);
-        assertEquals("Person", updateQuery.getEntity());
-        Assertions.assertTrue(updateQuery.getConditions().isEmpty());
-        Assertions.assertTrue(updateQuery.getValue().isPresent());
-        JSONQueryValue JSONQueryValue = updateQuery.getValue().get();
+        assertEquals("Person", updateQuery.entity());
+        Assertions.assertTrue(updateQuery.conditions().isEmpty());
+        Assertions.assertTrue(updateQuery.value().isPresent());
+        JSONQueryValue JSONQueryValue = updateQuery.value().get();
         JsonObject jsonObject = JSONQueryValue.get();
         JsonArray sibling = jsonObject.getJsonArray("sibling");
         JsonObject address = jsonObject.getJsonObject("address");
@@ -192,7 +182,7 @@ public class UpdateQueryProviderTest {
 
     private UpdateQuery checkUpdateFromStart(String query) {
         UpdateQuery updateQuery = update.apply(query);
-        assertEquals("God", updateQuery.getEntity());
+        assertEquals("God", updateQuery.entity());
         return updateQuery;
     }
 

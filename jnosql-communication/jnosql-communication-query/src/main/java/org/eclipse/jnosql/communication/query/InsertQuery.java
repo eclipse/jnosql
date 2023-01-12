@@ -62,7 +62,7 @@ public final class InsertQuery implements Query {
      *
      * @return the conditions
      */
-    public List<DefaultQueryCondition> conditions() {
+    public List<QueryCondition> conditions() {
         return unmodifiableList(conditions);
     }
 

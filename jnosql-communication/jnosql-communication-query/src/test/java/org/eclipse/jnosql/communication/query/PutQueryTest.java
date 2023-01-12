@@ -12,7 +12,7 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.QueryException;
+import org.eclipse.jnosql.communication.QueryException;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;

@@ -142,7 +142,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
 
     private void appendCondition(Condition operator, DefaultQueryCondition newCondition) {
 
-        if (operator.equals(this.condition.condition())) {
+        if (Condition.EQUALS(this.condition.condition())) {
             ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.value());
             List<QueryCondition> conditions = new ArrayList<>(conditionValue.get());
             conditions.add(newCondition);
@@ -154,7 +154,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
             List<QueryCondition> conditions = ConditionQueryValue.class.cast(this.condition.value()).get();
             QueryCondition lastCondition = conditions.get(conditions.size() - 1);
 
-            if (isAppendable(lastCondition) && operator.equals(lastCondition.condition())) {
+            if (isAppendable(lastCondition) && Condition.EQUALS(lastCondition.condition())) {
                 List<QueryCondition> lastConditions = new ArrayList<>(DefaultConditionQueryValue.class
                         .cast(lastCondition.value()).get());
                 lastConditions.add(newCondition);

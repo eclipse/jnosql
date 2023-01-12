@@ -45,7 +45,7 @@ class GetProviderTest {
     @ValueSource(strings = {"get \"Diana\""})
     public void shouldReturnParserQuery(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof StringQueryValue);
@@ -56,7 +56,7 @@ class GetProviderTest {
     @ValueSource(strings = {"get 12"})
     public void shouldReturnParserQuery1(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -67,7 +67,7 @@ class GetProviderTest {
     @ValueSource(strings = {"get 12.12"})
     public void shouldReturnParserQuery2(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -78,7 +78,7 @@ class GetProviderTest {
     @ValueSource(strings = {"get -12"})
     public void shouldReturnParserQuery3(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -89,7 +89,7 @@ class GetProviderTest {
     @ValueSource(strings = {"get -12.12"})
     public void shouldReturnParserQuery4(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -101,7 +101,7 @@ class GetProviderTest {
     @ValueSource(strings = {"get {1,12}"})
     public void shouldReturnParserQuery5(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof DefaultArrayQueryValue);
