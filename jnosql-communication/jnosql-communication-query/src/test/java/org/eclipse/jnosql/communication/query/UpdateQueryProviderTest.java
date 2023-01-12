@@ -112,8 +112,8 @@ public class UpdateQueryProviderTest {
         assertEquals("age", condition.getName());
         assertEquals(Operator.EQUALS, condition.getOperator());
         QueryValue<?> value = condition.getValue();
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("age", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("age", DefaultQueryValue.class.cast(value).get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

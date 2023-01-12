@@ -99,11 +99,11 @@ class PutProviderTest {
         QueryValue<?> value = putQuery.getValue();
         Optional<Duration> ttl = putQuery.getTtl();
 
-        assertTrue(key instanceof ParamQueryValue);
-        assertEquals("name", ParamQueryValue.class.cast(key).get());
+        assertTrue(key instanceof DefaultQueryValue);
+        assertEquals("name", DefaultQueryValue.class.cast(key).get());
 
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("value", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("value", DefaultQueryValue.class.cast(value).get());
         assertTrue(ttl.isPresent());
         assertEquals(Duration.ofHours(10L), ttl.get());
     }
@@ -116,11 +116,11 @@ class PutProviderTest {
         QueryValue<?> value = putQuery.getValue();
         Optional<Duration> ttl = putQuery.getTtl();
 
-        assertTrue(key instanceof ParamQueryValue);
-        assertEquals("name", ParamQueryValue.class.cast(key).get());
+        assertTrue(key instanceof DefaultQueryValue);
+        assertEquals("name", DefaultQueryValue.class.cast(key).get());
 
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("value", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("value", DefaultQueryValue.class.cast(value).get());
         assertTrue(ttl.isPresent());
         assertEquals(Duration.ofMinutes(10L), ttl.get());
     }
@@ -133,11 +133,11 @@ class PutProviderTest {
         QueryValue<?> value = putQuery.getValue();
         Optional<Duration> ttl = putQuery.getTtl();
 
-        assertTrue(key instanceof ParamQueryValue);
-        assertEquals("name", ParamQueryValue.class.cast(key).get());
+        assertTrue(key instanceof DefaultQueryValue);
+        assertEquals("name", DefaultQueryValue.class.cast(key).get());
 
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("value", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("value", DefaultQueryValue.class.cast(value).get());
         assertTrue(ttl.isPresent());
         assertEquals(Duration.ofSeconds(10L), ttl.get());
     }
@@ -150,11 +150,11 @@ class PutProviderTest {
         QueryValue<?> value = putQuery.getValue();
         Optional<Duration> ttl = putQuery.getTtl();
 
-        assertTrue(key instanceof ParamQueryValue);
-        assertEquals("name", ParamQueryValue.class.cast(key).get());
+        assertTrue(key instanceof DefaultQueryValue);
+        assertEquals("name", DefaultQueryValue.class.cast(key).get());
 
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("value", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("value", DefaultQueryValue.class.cast(value).get());
         assertTrue(ttl.isPresent());
         assertEquals(Duration.ofMillis(10L), ttl.get());
     }
@@ -167,11 +167,11 @@ class PutProviderTest {
         QueryValue<?> value = putQuery.getValue();
         Optional<Duration> ttl = putQuery.getTtl();
 
-        assertTrue(key instanceof ParamQueryValue);
-        assertEquals("name", ParamQueryValue.class.cast(key).get());
+        assertTrue(key instanceof DefaultQueryValue);
+        assertEquals("name", DefaultQueryValue.class.cast(key).get());
 
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("value", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("value", DefaultQueryValue.class.cast(value).get());
         assertTrue(ttl.isPresent());
         assertEquals(Duration.ofNanos(10L), ttl.get());
     }

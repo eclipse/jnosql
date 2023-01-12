@@ -345,8 +345,8 @@ class SelectQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("name", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("name", DefaultQueryValue.class.cast(value).get());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")

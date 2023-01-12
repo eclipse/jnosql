@@ -39,7 +39,7 @@ final class ValueConverter {
         }
 
         if (Objects.nonNull(context.parameter())) {
-            return ParamQueryValue.of(context.parameter());
+            return DefaultQueryValue.of(context.parameter());
         }
 
         if (Objects.nonNull(context.function())) {
