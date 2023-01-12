@@ -12,8 +12,6 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.Function;
-
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -61,7 +59,7 @@ final class DefaultFunction implements Function {
         return name + "(" + Arrays.toString(args) + ")";
     }
 
-    public static Function of(String name, Object[] args) {
+    static Function of(String name, Object[] args) {
         return new DefaultFunction(name, args);
     }
 }
