@@ -18,7 +18,7 @@
 package org.eclipse.jnosql.communication.reader;
 
 
-import jakarta.nosql.ValueReader;
+import org.eclipse.jnosql.communication.ValueReader;
 
 import java.util.concurrent.atomic.AtomicLong;
 

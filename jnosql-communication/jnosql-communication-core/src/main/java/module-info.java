@@ -24,16 +24,14 @@ module org.eclipse.jnosql.communication.core {
     opens org.eclipse.jnosql.communication.reader;
     opens org.eclipse.jnosql.communication.writer;
 
-    provides jakarta.nosql.Params.ParamsProvider with org.eclipse.jnosql.communication.DefaultParamsProvider;
-    provides jakarta.nosql.Settings.SettingsBuilderProvider with org.eclipse.jnosql.communication.DefaultSettingsBuilderProvider;
-    provides jakarta.nosql.TypeReferenceReader with org.eclipse.jnosql.communication.reader.ListTypeReferenceReader,
+    provides org.eclipse.jnosql.communication.TypeReferenceReader with org.eclipse.jnosql.communication.reader.ListTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.SetTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.MapTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.StreamTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.OptionalTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.QueueTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.NavigableSetTypeReferenceReader;
-    provides jakarta.nosql.ValueReader with org.eclipse.jnosql.communication.reader.AtomicIntegerReader,
+    provides org.eclipse.jnosql.communication.ValueReader with org.eclipse.jnosql.communication.reader.AtomicIntegerReader,
             org.eclipse.jnosql.communication.reader.AtomicLongReader,
             org.eclipse.jnosql.communication.reader.BigDecimalReader,
             org.eclipse.jnosql.communication.reader.BigIntegerReader,
@@ -58,7 +56,7 @@ module org.eclipse.jnosql.communication.core {
             org.eclipse.jnosql.communication.reader.LocalTimeReader,
             org.eclipse.jnosql.communication.reader.OffsetDateTimeReader,
             org.eclipse.jnosql.communication.reader.OffsetTimeReader;
-    provides jakarta.nosql.ValueWriter with org.eclipse.jnosql.communication.writer.EnumValueWriter,
+    provides org.eclipse.jnosql.communication.ValueWriter with org.eclipse.jnosql.communication.writer.EnumValueWriter,
             org.eclipse.jnosql.communication.writer.OptionalValueWriter,
             org.eclipse.jnosql.communication.writer.TemporalValueWriter;
 

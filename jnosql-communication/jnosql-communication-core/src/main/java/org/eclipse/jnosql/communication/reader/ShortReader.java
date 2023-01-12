@@ -18,7 +18,7 @@
 package org.eclipse.jnosql.communication.reader;
 
 
-import jakarta.nosql.ValueReader;
+import org.eclipse.jnosql.communication.ValueReader;
 
 /**
  * Class to reads and converts to {@link Short}, first it verify if is Double if yes return itself then verifies if is

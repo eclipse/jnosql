@@ -17,16 +17,16 @@
 package org.eclipse.jnosql.communication;
 
 
-import jakarta.nosql.Condition;
+import org.eclipse.jnosql.communication.Condition;
 import org.junit.jupiter.api.Test;
 
-import static jakarta.nosql.Condition.AND;
-import static jakarta.nosql.Condition.EQUALS;
-import static jakarta.nosql.Condition.GREATER_EQUALS_THAN;
-import static jakarta.nosql.Condition.IN;
-import static jakarta.nosql.Condition.LESSER_THAN;
-import static jakarta.nosql.Condition.NOT;
-import static jakarta.nosql.Condition.OR;
+import static org.eclipse.jnosql.communication.Condition.AND;
+import static org.eclipse.jnosql.communication.Condition.EQUALS;
+import static org.eclipse.jnosql.communication.Condition.GREATER_EQUALS_THAN;
+import static org.eclipse.jnosql.communication.Condition.IN;
+import static org.eclipse.jnosql.communication.Condition.LESSER_THAN;
+import static org.eclipse.jnosql.communication.Condition.NOT;
+import static org.eclipse.jnosql.communication.Condition.OR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 

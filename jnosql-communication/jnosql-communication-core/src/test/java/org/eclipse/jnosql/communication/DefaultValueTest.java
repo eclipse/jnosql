@@ -18,8 +18,8 @@
 package org.eclipse.jnosql.communication;
 
 
-import jakarta.nosql.Value;
-import jakarta.nosql.TypeReference;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

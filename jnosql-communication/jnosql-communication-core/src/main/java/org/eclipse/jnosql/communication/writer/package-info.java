@@ -17,6 +17,6 @@
 
 /**
  * This package contains all ValueWriter supported by API by default.
- *@see jakarta.nosql.ValueWriter
+ *@see org.eclipse.jnosql.communication.ValueWriter
  */
 package org.eclipse.jnosql.communication.writer;

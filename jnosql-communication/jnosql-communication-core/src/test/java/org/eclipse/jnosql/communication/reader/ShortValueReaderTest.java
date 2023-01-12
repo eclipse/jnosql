@@ -16,7 +16,7 @@
  */
 package org.eclipse.jnosql.communication.reader;
 
-import jakarta.nosql.ValueReader;
+import org.eclipse.jnosql.communication.ValueReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

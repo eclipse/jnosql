@@ -17,7 +17,7 @@
 
 package org.eclipse.jnosql.communication.writer;
 
-import jakarta.nosql.ValueWriter;
+import org.eclipse.jnosql.communication.ValueWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -11,9 +11,9 @@
  */
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Value;
-import jakarta.nosql.TypeSupplier;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.TypeSupplier;
 
 import java.util.Objects;
 

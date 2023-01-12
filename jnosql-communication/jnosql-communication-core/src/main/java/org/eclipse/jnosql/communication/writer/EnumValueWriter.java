@@ -16,7 +16,7 @@
  */
 package org.eclipse.jnosql.communication.writer;
 
-import jakarta.nosql.ValueWriter;
+import org.eclipse.jnosql.communication.ValueWriter;
 
 /**
  * Value writer to {@link Enum}.

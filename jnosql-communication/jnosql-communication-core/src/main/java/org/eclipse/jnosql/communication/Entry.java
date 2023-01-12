@@ -16,7 +16,7 @@
  */
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.Value;
 
 /**
  * It is a tuple (pair) that consists of a key-value pair, where the key is mapped to a value.

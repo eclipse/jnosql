@@ -19,7 +19,7 @@ package org.eclipse.jnosql.communication.reader;
 
 import java.time.YearMonth;
 
-import jakarta.nosql.ValueReader;
+import org.eclipse.jnosql.communication.ValueReader;
 
 /**
  * Class to reads and converts to {@link YearMonth}, first it verify if is YearMonth if yes return itself

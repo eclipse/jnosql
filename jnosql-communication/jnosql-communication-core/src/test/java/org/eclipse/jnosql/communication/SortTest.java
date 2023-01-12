@@ -16,8 +16,8 @@
  */
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.SortType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

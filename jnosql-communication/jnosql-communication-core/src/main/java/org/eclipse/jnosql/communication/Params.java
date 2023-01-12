@@ -16,8 +16,6 @@
  */
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,24 +23,47 @@ import java.util.List;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
-final class DefaultParams implements Params {
 
+/**
+ * A group of params to a dynamic query
+ */
+public final class Params {
 
     private final List<ParamValue> parameters = new ArrayList<>();
 
-    @Override
+
+    /**
+     * @return if the params list is not empty
+     */
     public boolean isNotEmpty() {
         return !parameters.isEmpty();
     }
 
-    @Override
+    /**
+     * Adds a new value at the params
+     *
+     * @param param the param
+     * @return the {@link Value}
+     */
     public Value add(String param) {
         ParamValue value = new ParamValue(param);
         parameters.add(value);
         return value;
     }
 
-    @Override
+    /**
+     * set the value from the class
+     *
+     * @param name  the name
+     * @param value the value
+     */
+    public void bind(String name, Object value) {
+        parameters.stream().filter(p -> p.getName().equals(name)).forEach(p -> p.setValue(value));
+    }
+
+    /**
+     * @return the parameters name at the params
+     */
     public List<String> getParametersNames() {
         return parameters.stream().map(ParamValue::getName).collect(toList());
     }
@@ -52,8 +73,5 @@ final class DefaultParams implements Params {
         return parameters.stream().map(ParamValue::getName).collect(joining(","));
     }
 
-    @Override
-    public void bind(String name, Object value) {
-        parameters.stream().filter(p -> p.getName().equals(name)).forEach(p -> p.setValue(value));
-    }
+
 }

@@ -17,7 +17,7 @@
 
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.ValueReaderDecorator;
+import org.eclipse.jnosql.communication.ValueReaderDecorator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
