@@ -40,32 +40,5 @@
             <artifactId>jnosql-communication-query</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>jakarta.nosql.communication</groupId>
-            <artifactId>communication-key-value</artifactId>
-            <version>${jakarta.nosql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.nosql.tck.communication</groupId>
-            <artifactId>communication-tck-key-value</artifactId>
-            <version>${jakarta.nosql.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.plugin.version}</version>
-                <configuration>
-                    <dependenciesToScan>
-                        <dependency>jakarta.nosql.tck.communication:communication-tck-key-value</dependency>
-                    </dependenciesToScan>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
