@@ -134,7 +134,6 @@ public interface BucketManager extends AutoCloseable {
      * @throws NullPointerException     when there is parameter null
      * @throws IllegalArgumentException when the query has value parameters
      * @throws IllegalStateException    when there is not {@link KeyValueQueryParser}
-     * @throws QueryException           when there is error in the syntax
      */
     default Stream<Value> query(String query) {
         Objects.requireNonNull(query, "query is required");
@@ -151,7 +150,6 @@ public interface BucketManager extends AutoCloseable {
      * @return a {@link KeyValuePreparedStatement} instance
      * @throws NullPointerException  when there is parameter null
      * @throws IllegalStateException when there is not {@link KeyValuePreparedStatement}
-     * @throws QueryException        when there is error in the syntax
      */
     default KeyValuePreparedStatement prepare(String query) {
         Objects.requireNonNull(query, "query is required");
