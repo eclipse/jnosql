@@ -32,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
 
 class DocumentQueryParserTest {
@@ -220,7 +219,7 @@ class DocumentQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = @age"})
     public void shouldReturnErrorSingleResult(String query) {
-        ArgumentCaptor<DefaultDocumentQuery> captor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
 
         Mockito.when(manager.select(Mockito.any(DefaultDocumentQuery.class)))
                 .thenReturn(Stream.of(Mockito.mock(DocumentEntity.class), Mockito.mock(DocumentEntity.class)));

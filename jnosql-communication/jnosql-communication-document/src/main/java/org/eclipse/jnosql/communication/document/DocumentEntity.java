@@ -49,7 +49,7 @@ import static java.util.stream.Collectors.toList;
  * @see DocumentEntity#documents()
  * @see DocumentEntity#name()
  */
-public final class DocumentEntity {
+public class DocumentEntity {
 
     private final Map<String, Document> documents = new HashMap<>();
 

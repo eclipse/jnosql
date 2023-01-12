@@ -68,6 +68,7 @@ public interface DocumentDeleteQuery {
      * @throws NullPointerException when there is a null element
      */
     static DocumentDelete delete(String... documents) {
+        Stream.of(documents).forEach(d -> requireNonNull(d, "there is null document in the query"));
         return new DefaultFluentDeleteQueryBuilder(Arrays.asList(documents));
     }
 
