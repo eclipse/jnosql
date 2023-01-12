@@ -11,10 +11,6 @@
  */
 package org.eclipse.jnosql.communication;
 
-import org.eclipse.jnosql.communication.QueryException;
-import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.communication.TypeSupplier;
-
 import java.util.Objects;
 
 /**
