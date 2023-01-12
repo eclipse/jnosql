@@ -86,7 +86,7 @@ public final class Sort {
      * @return a sort instance
      * @throws NullPointerException when there are null parameters
      */
-    static Sort of(String name, SortType type) {
+    public static Sort of(String name, SortType type) {
         requireNonNull(name, "name is required");
         requireNonNull(type, "type is required");
         return new Sort(name, type);
@@ -99,7 +99,7 @@ public final class Sort {
      * @return a sort instance
      * @throws NullPointerException when name is null
      */
-    static Sort asc(String name) {
+    public static Sort asc(String name) {
         return of(name, SortType.ASC);
     }
 
@@ -110,7 +110,7 @@ public final class Sort {
      * @return a sort instance
      * @throws NullPointerException when name is null
      */
-    static Sort desc(String name) {
+    public static Sort desc(String name) {
         return of(name, SortType.DESC);
     }
 

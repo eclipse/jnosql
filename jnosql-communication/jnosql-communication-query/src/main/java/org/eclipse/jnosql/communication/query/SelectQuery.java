@@ -12,15 +12,20 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.query.SelectQuery;
-import jakarta.nosql.query.Where;
+
+import org.eclipse.jnosql.communication.Sort;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-final class DefaultSelectQuery implements SelectQuery {
+
+/**
+ * The select statement reads one or more fields for one or more entities.
+ * It returns a result-set of the entities matching the request, where each entity contains the fields
+ * for corresponding to the query.
+ */
+public final  class SelectQuery implements Query {
 
     private final String entity;
 
@@ -34,7 +39,7 @@ final class DefaultSelectQuery implements SelectQuery {
 
     private final Where where;
 
-    DefaultSelectQuery(String entity, List<String> fields, List<Sort> sorts, long skip, long limit, Where where) {
+    SelectQuery(String entity, List<String> fields, List<Sort> sorts, long skip, long limit, Where where) {
         this.entity = entity;
         this.fields = fields;
         this.sorts = sorts;
@@ -43,33 +48,57 @@ final class DefaultSelectQuery implements SelectQuery {
         this.where = where;
     }
 
-    @Override
-    public List<String> getFields() {
+    /**
+     * The fields that will retrieve in this query, if this fields is empty, this query will retrieve the whole entity.
+     *
+     * @return the fields list
+     */
+    public List<String> fields() {
         return fields;
     }
 
-    @Override
-    public String getEntity() {
+    /**
+     * The entity name
+     *
+     * @return the entity name
+     */
+    public String entity() {
         return entity;
     }
 
-    @Override
-    public Optional<Where> getWhere() {
+    /**
+     * The condition at this {@link SelectQuery}, if the Where is empty that means may retrieve the whole entities.
+     *
+     * @return the {@link Where} entity otherwise {@link Optional#empty()}
+     */
+    public Optional<Where> where() {
         return Optional.ofNullable(where);
     }
 
-    @Override
-    public long getSkip() {
+    /**
+     * Statement defines where the query should start
+     *
+     * @return the number to skip, otherwise either negative value or zero
+     */
+    public long skip() {
         return skip;
     }
 
-    @Override
-    public long getLimit() {
+    /**
+     * Statement limits the number of rows returned by a query,
+     *
+     * @return the maximum of result, otherwise either negative value or zero
+     */
+    public long limit() {
         return limit;
     }
 
-    @Override
-    public List<Sort> getOrderBy() {
+    /**
+     * The list of orders, it is used to sort the result-set in ascending or descending order.
+     *
+     * @return the order list
+     */
+    public List<Sort> orderBy() {
         return sorts;
     }
 
@@ -78,10 +107,10 @@ final class DefaultSelectQuery implements SelectQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultSelectQuery)) {
+        if (!(o instanceof SelectQuery)) {
             return false;
         }
-        DefaultSelectQuery that = (DefaultSelectQuery) o;
+        SelectQuery that = (SelectQuery) o;
         return skip == that.skip &&
                 limit == that.limit &&
                 Objects.equals(entity, that.entity) &&

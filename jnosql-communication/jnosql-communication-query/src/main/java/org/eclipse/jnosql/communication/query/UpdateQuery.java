@@ -12,40 +12,54 @@
 package org.eclipse.jnosql.communication.query;
 
 import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.JSONQueryValue;
-import jakarta.nosql.query.UpdateQuery;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-final class DefaultUpdateQuery implements UpdateQuery {
+/**
+ * Updating an entity is done using an <b>UPDATE</b> statement.
+ */
+public final class UpdateQuery implements Query {
 
     private final String entity;
 
-    private final List<Condition> conditions;
+    private final List<QueryCondition> conditions;
 
     private final JSONQueryValue value;
 
-    DefaultUpdateQuery(String entity, List<Condition> conditions, JSONQueryValue value) {
+    UpdateQuery(String entity, List<QueryCondition> conditions, JSONQueryValue value) {
         this.entity = entity;
         this.conditions = conditions;
         this.value = value;
     }
 
-    @Override
-    public String getEntity() {
+    /**
+     * The entity name
+     * @return the entity name
+     */
+    public String entity() {
         return entity;
     }
 
-    @Override
-    public List<Condition> getConditions() {
+    /**
+     * The list of changes as conditions. Each condition will use the equals operator, {@link org.eclipse.jnosql.communication.Condition#EQUALS},
+     *  e.g., name = "any name"
+     * @return the conditions
+     */
+    public List<QueryCondition> conditions() {
         return Collections.unmodifiableList(conditions);
     }
 
-    @Override
-    public Optional<JSONQueryValue> getValue() {
+    /**
+     * Returns the value to update when the query uses JSON value instead of Conditions.
+     * In an insert, an operation is not able to use both: {@link UpdateQuery#conditions()} and
+     * {@link UpdateQuery#value()}.
+     * Therefore, execution will use just one operation type.
+     * @return a {@link JSONQueryValue} or {@link Optional#empty()} when it uses {@link UpdateQuery#conditions()}
+     */
+    public Optional<JSONQueryValue> value() {
         return Optional.ofNullable(value);
     }
 
@@ -54,10 +68,10 @@ final class DefaultUpdateQuery implements UpdateQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultUpdateQuery)) {
+        if (!(o instanceof UpdateQuery)) {
             return false;
         }
-        DefaultUpdateQuery that = (DefaultUpdateQuery) o;
+        UpdateQuery that = (UpdateQuery) o;
         return Objects.equals(entity, that.entity) &&
                 Objects.equals(conditions, that.conditions);
     }
