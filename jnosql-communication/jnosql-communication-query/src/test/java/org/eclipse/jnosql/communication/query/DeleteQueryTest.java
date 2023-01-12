@@ -18,8 +18,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jnosql.communication.QueryException;
-import org.eclipse.jnosql.communication.query.provider.DeleteQueryArgumentProvider;
-import org.eclipse.jnosql.communication.query.provider.WrongDeleteQueryArgumentProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

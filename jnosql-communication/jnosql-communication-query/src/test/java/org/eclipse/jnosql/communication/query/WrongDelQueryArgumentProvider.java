@@ -10,13 +10,12 @@
  *  Otavio Santana
  */
 
-package org.eclipse.jnosql.communication.query.provider;
+package org.eclipse.jnosql.communication.query;
 
-public class SelectQueryArgumentProvider extends AbstractArgumentProvider {
+public class WrongDelQueryArgumentProvider extends AbstractArgumentProvider{
 
     @Override
     protected String getFile() {
-        return "/select_jnosql.nosql";
+        return "/del_error.nosql";
     }
-
 }

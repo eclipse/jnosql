@@ -10,12 +10,12 @@
  *  Otavio Santana
  */
 
-package org.eclipse.jnosql.communication.query.provider;
+package org.eclipse.jnosql.communication.query;
 
-public class WrongDeleteQueryArgumentProvider extends AbstractArgumentProvider{
+public class WrongInsertQueryArgumentProvider extends AbstractArgumentProvider{
 
     @Override
     protected String getFile() {
-        return "/delete_error.nosql";
+        return "/insert_error.nosql";
     }
 }

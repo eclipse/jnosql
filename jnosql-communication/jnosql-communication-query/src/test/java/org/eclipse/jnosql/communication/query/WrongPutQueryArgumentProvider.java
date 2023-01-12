@@ -10,13 +10,12 @@
  *  Otavio Santana
  */
 
-package org.eclipse.jnosql.communication.query.provider;
+package org.eclipse.jnosql.communication.query;
 
-public class UpdateQueryArgumentProvider extends AbstractArgumentProvider {
+public class WrongPutQueryArgumentProvider extends AbstractArgumentProvider{
 
     @Override
     protected String getFile() {
-        return "/update_jnosql.nosql";
+        return "/put_error.nosql";
     }
-
 }

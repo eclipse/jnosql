@@ -10,7 +10,7 @@
  *  Otavio Santana
  */
 
-package org.eclipse.jnosql.communication.query.provider;
+package org.eclipse.jnosql.communication.query;
 
 public class DeleteQueryArgumentProvider extends AbstractArgumentProvider {
 

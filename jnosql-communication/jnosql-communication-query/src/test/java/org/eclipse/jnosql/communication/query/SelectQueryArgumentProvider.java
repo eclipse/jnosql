@@ -10,12 +10,13 @@
  *  Otavio Santana
  */
 
-package org.eclipse.jnosql.communication.query.provider;
+package org.eclipse.jnosql.communication.query;
 
-public class WrongInsertQueryArgumentProvider extends AbstractArgumentProvider{
+public class SelectQueryArgumentProvider extends AbstractArgumentProvider {
 
     @Override
     protected String getFile() {
-        return "/insert_error.nosql";
+        return "/select_jnosql.nosql";
     }
+
 }
