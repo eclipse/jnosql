@@ -16,43 +16,31 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.column.ColumnQueryParams;
-import jakarta.nosql.column.SelectQueryConverter;
-import jakarta.nosql.query.SelectQuery;
-import jakarta.nosql.query.SelectQuery.SelectQueryProvider;
+
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.query.QueryCondition;
+import org.eclipse.jnosql.communication.query.SelectQuery;
+import org.eclipse.jnosql.communication.query.SelectQueryProvider;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
-/**
- * The default implementation of {@link SelectQueryConverter}
- */
-public final class SelectQueryParser implements SelectQueryConverter {
+public final class SelectQueryParser implements BiFunction<SelectQuery, ColumnObserverParser, ColumnQueryParams> {
 
     private final SelectQueryProvider selectQueryProvider;
-    private final CacheQuery<ColumnQuery> cache;
 
     public SelectQueryParser() {
-        this.selectQueryProvider = SelectQuery.getProvider();
-        this.cache = new CacheQuery<>(this::getColumnQuery);
+        this.selectQueryProvider = new SelectQueryProvider();
     }
 
     Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
 
-        ColumnQuery columnQuery = cache.get(query, observer);
+        ColumnQuery columnQuery = getColumnQuery(query, observer);
         return manager.select(columnQuery);
     }
 
@@ -64,7 +52,7 @@ public final class SelectQueryParser implements SelectQueryConverter {
         SelectQuery selectQuery = selectQueryProvider.apply(query);
 
         ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
-        return DefaultColumnPreparedStatement.select(columnQuery, params, query, manager);
+        return ColumnPreparedStatement.select(columnQuery, params, query, manager);
     }
 
 
@@ -75,7 +63,7 @@ public final class SelectQueryParser implements SelectQueryConverter {
 
         Params params = Params.newParams();
         ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
-        return new DefaultColumnQueryParams(columnQuery, params);
+        return new ColumnQueryParams(columnQuery, params);
     }
 
 

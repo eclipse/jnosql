@@ -16,8 +16,6 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.column.Column;
-import org.eclipse.jnosql.communication.column.Columns;
 
 import jakarta.json.JsonObject;
 import jakarta.json.bind.Jsonb;

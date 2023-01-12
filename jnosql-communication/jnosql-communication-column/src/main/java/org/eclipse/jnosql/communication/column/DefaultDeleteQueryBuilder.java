@@ -16,11 +16,8 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteQueryBuilder;
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery.ColumnDeleteQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

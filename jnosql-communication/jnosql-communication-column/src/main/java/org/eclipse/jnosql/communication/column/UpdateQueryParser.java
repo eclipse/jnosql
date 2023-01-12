@@ -62,7 +62,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
 
-        return DefaultColumnPreparedStatement.update(entity, params, query, manager);
+        return ColumnPreparedStatement.update(entity, params, query, manager);
     }
 
 
@@ -81,12 +81,12 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
 
         @Override
-        public List<Condition> getConditions() {
+        public List<Condition> conditions() {
             return query.getConditions();
         }
 
         @Override
-        public Optional<JSONQueryValue> getValue() {
+        public Optional<JSONQueryValue> value() {
             return query.getValue();
         }
     }

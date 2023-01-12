@@ -16,27 +16,33 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnQueryParser;
+import org.eclipse.jnosql.communication.QueryException;
 
 import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
- * The default implementation of {@link ColumnQueryParser}
+ * A query parser to column database type, this class will convert a String to an operation in {@link ColumnManager}.
  */
-public final class DefaultColumnQueryParser implements ColumnQueryParser {
+public final class ColumnQueryParser {
 
     private final SelectQueryParser select = new SelectQueryParser();
     private final DeleteQueryParser delete = new DeleteQueryParser();
     private final InsertQueryParser insert = new InsertQueryParser();
     private final UpdateQueryParser update = new UpdateQueryParser();
 
-    @Override
+    /**
+     * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param query    the query as {@link String}
+     * @param manager  the manager
+     * @param observer the observer
+     * @return the result of the operation if delete it will always return an empty list
+     * @throws NullPointerException     when there is parameter null
+     * @throws IllegalArgumentException when the query has value parameters
+     * @throws QueryException           when there is error in the syntax
+     */
     public Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
@@ -54,7 +60,18 @@ public final class DefaultColumnQueryParser implements ColumnQueryParser {
         }
     }
 
-    @Override
+    /**
+     * Executes a query and returns a {@link ColumnPreparedStatement}, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
+     * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
+     *
+     * @param query    the query as {@link String}
+     * @param manager  the manager
+     * @param observer the observer
+     * @return a {@link ColumnPreparedStatement} instance
+     * @throws NullPointerException     when there is parameter null
+     * @throws IllegalArgumentException when the query has value parameters
+     * @throws QueryException           when there is error in the syntax
+     */
     public ColumnPreparedStatement prepare(String query, ColumnManager manager, ColumnObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);

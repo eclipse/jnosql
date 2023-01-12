@@ -16,42 +16,31 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnDeleteQueryParams;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.DeleteQueryConverter;
-import jakarta.nosql.query.DeleteQuery;
-import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
+
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.query.DeleteQuery;
+import org.eclipse.jnosql.communication.query.DeleteQueryProvider;
 
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-/**
- * The default implementation of {@link DeleteQueryConverter}
- */
-public final class DeleteQueryParser implements DeleteQueryConverter {
+public final class DeleteQueryParser implements BiFunction<DeleteQuery, ColumnObserverParser, ColumnDeleteQueryParams> {
 
     private final DeleteQueryProvider deleteQueryProvider;
-    private final CacheQuery<ColumnDeleteQuery> cache;
 
     public DeleteQueryParser() {
-        this.deleteQueryProvider = DeleteQuery.getProvider();
-        cache = new CacheQuery<>(this::getQuery);
+        this.deleteQueryProvider = new DeleteQueryProvider();
     }
 
     Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
 
-        ColumnDeleteQuery columnDeleteQuery = cache.get(query, observer);
-        manager.delete(columnDeleteQuery);
+        ColumnDeleteQuery deleteQuery = getQuery(query, observer);
+        manager.delete(deleteQuery);
         return Stream.empty();
     }
 
@@ -60,7 +49,7 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
                                     ColumnObserverParser observer) {
         Params params = Params.newParams();
         ColumnDeleteQuery columnDeleteQuery = getQuery(query, params, observer);
-        return DefaultColumnPreparedStatement.delete(columnDeleteQuery, params, query, manager);
+        return ColumnPreparedStatement.delete(columnDeleteQuery, params, query, manager);
     }
 
 
@@ -73,7 +62,7 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
         requireNonNull(columnObserverParser, "columnObserverParser is required");
         Params params = Params.newParams();
         ColumnDeleteQuery query = getQuery(params, columnObserverParser, deleteQuery);
-        return new DefaultColumnDeleteQueryParams(query, params);
+        return new ColumnDeleteQueryParams(query, params);
     }
 
     private ColumnDeleteQuery getQuery(String query, Params params, ColumnObserverParser observer) {
@@ -83,14 +72,14 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
     }
 
     private ColumnDeleteQuery getQuery(Params params, ColumnObserverParser observer, DeleteQuery deleteQuery) {
-        String columnFamily = observer.fireEntity(deleteQuery.getEntity());
-        List<String> columns = deleteQuery.getFields().stream()
+        String columnFamily = observer.fireEntity(deleteQuery.entity());
+        List<String> columns = deleteQuery.fields().stream()
                 .map(f -> observer.fireField(columnFamily, f))
                 .collect(Collectors.toList());
         ColumnCondition condition = null;
 
-        if (deleteQuery.getWhere().isPresent()) {
-            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
+        if (deleteQuery.where().isPresent()) {
+            condition = deleteQuery.where().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
         }
 
         return new DefaultColumnDeleteQuery(columnFamily, condition, columns);
@@ -99,15 +88,15 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
     private ColumnDeleteQuery getQuery(String query, ColumnObserverParser observer) {
         DeleteQuery deleteQuery = deleteQueryProvider.apply(query);
 
-        String columnFamily = observer.fireEntity(deleteQuery.getEntity());
-        List<String> columns = deleteQuery.getFields().stream()
+        String columnFamily = observer.fireEntity(deleteQuery.entity());
+        List<String> columns = deleteQuery.fields().stream()
                 .map(f -> observer.fireField(columnFamily, f))
                 .collect(Collectors.toList());
         ColumnCondition condition = null;
         Params params = Params.newParams();
 
-        if (deleteQuery.getWhere().isPresent()) {
-            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
+        if (deleteQuery.where().isPresent()) {
+            condition = deleteQuery.where().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
         }
 
         if (params.isNotEmpty()) {

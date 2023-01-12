@@ -17,21 +17,18 @@
 package org.eclipse.jnosql.communication.column;
 
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.column.ColumnQuery.ColumnFrom;
-import jakarta.nosql.column.ColumnQuery.ColumnLimit;
-import jakarta.nosql.column.ColumnQuery.ColumnNameCondition;
-import jakarta.nosql.column.ColumnQuery.ColumnNameOrder;
-import jakarta.nosql.column.ColumnQuery.ColumnNotCondition;
-import jakarta.nosql.column.ColumnQuery.ColumnOrder;
-import jakarta.nosql.column.ColumnQuery.ColumnQueryBuild;
-import jakarta.nosql.column.ColumnQuery.ColumnSelect;
-import jakarta.nosql.column.ColumnQuery.ColumnSkip;
-import jakarta.nosql.column.ColumnQuery.ColumnWhere;
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.SortType;
+import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnFrom;
+import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnLimit;
+import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnNameCondition;
+import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnNameOrder;
+import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnNotCondition;
+import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnOrder;
+import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnQueryBuild;
+import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnSelect;
+import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnSkip;
+import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnWhere;
 
 import java.util.ArrayList;
 import java.util.List;

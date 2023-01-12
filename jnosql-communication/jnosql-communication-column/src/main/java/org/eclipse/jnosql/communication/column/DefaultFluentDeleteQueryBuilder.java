@@ -17,12 +17,10 @@
 package org.eclipse.jnosql.communication.column;
 
 
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnDeleteQuery.ColumnDelete;
-import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteFrom;
-import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteNotCondition;
-import jakarta.nosql.column.ColumnDeleteQuery.ColumnDeleteWhere;
-import jakarta.nosql.column.ColumnManager;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery.ColumnDelete;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery.ColumnDeleteFrom;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery.ColumnDeleteNotCondition;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery.ColumnDeleteWhere;
 
 import java.util.List;
 

@@ -16,11 +16,8 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnQuery;
+
+import org.eclipse.jnosql.communication.Sort;
 
 import java.util.ArrayList;
 import java.util.List;

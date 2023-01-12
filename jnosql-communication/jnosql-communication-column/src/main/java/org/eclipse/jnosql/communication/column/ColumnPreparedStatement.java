@@ -16,14 +16,10 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnQuery;
+
+import org.eclipse.jnosql.communication.NonUniqueResultException;
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
 
 import java.time.Duration;
 import java.util.Iterator;
@@ -32,7 +28,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
+
+/**
+ * An object that represents a precompiled Query statement.
+ */
+public final class ColumnPreparedStatement {
 
     private final ColumnEntity entity;
 
@@ -52,15 +52,15 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
 
     private final ColumnManager manager;
 
-    private DefaultColumnPreparedStatement(ColumnEntity entity,
-                                           ColumnQuery columnQuery,
-                                           ColumnDeleteQuery columnDeleteQuery,
-                                           PreparedStatementType type,
-                                           Params params,
-                                           String query,
-                                           List<String> paramsLeft,
-                                           Duration duration,
-                                           ColumnManager manager) {
+    private ColumnPreparedStatement(ColumnEntity entity,
+                                    ColumnQuery columnQuery,
+                                    ColumnDeleteQuery columnDeleteQuery,
+                                    PreparedStatementType type,
+                                    Params params,
+                                    String query,
+                                    List<String> paramsLeft,
+                                    Duration duration,
+                                    ColumnManager manager) {
         this.entity = entity;
         this.columnQuery = columnQuery;
         this.columnDeleteQuery = columnDeleteQuery;
@@ -72,7 +72,14 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
         this.duration = duration;
     }
 
-    @Override
+    /**
+     * Binds an argument to a positional parameter.
+     *
+     * @param name  the parameter name
+     * @param value the parameter value
+     * @return the same query instance
+     * @throws NullPointerException     when there is null parameter
+     */
     public ColumnPreparedStatement bind(String name, Object value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
@@ -82,8 +89,12 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
         return this;
     }
 
-    @Override
-    public Stream<ColumnEntity> getResult() {
+    /**
+     * Returns the result as a single element otherwise it will return an {@link Optional#empty()}
+     *
+     * @return the single result
+     */
+    public Stream<ColumnEntity> result() {
         if (!paramsLeft.isEmpty()) {
             throw new QueryException("Check all the parameters before execute the query, params left: " + paramsLeft);
         }
@@ -107,9 +118,8 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
         }
     }
 
-    @Override
-    public Optional<ColumnEntity> getSingleResult() {
-        Stream<ColumnEntity> entities = getResult();
+    public Optional<ColumnEntity> singleResult() {
+        Stream<ColumnEntity> entities = result();
         final Iterator<ColumnEntity> iterator = entities.iterator();
 
         if (!iterator.hasNext()) {
@@ -138,7 +148,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
             Params params,
             String query,
             ColumnManager manager) {
-        return new DefaultColumnPreparedStatement(null, columnQuery,
+        return new ColumnPreparedStatement(null, columnQuery,
                 null, PreparedStatementType.SELECT, params, query,
                 params.getParametersNames(), null, manager);
 
@@ -149,7 +159,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
                                           String query,
                                           ColumnManager manager) {
 
-        return new DefaultColumnPreparedStatement(null, null,
+        return new ColumnPreparedStatement(null, null,
                 columnDeleteQuery, PreparedStatementType.DELETE, params, query,
                 params.getParametersNames(), null, manager);
 
@@ -160,7 +170,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
                                           String query,
                                           Duration duration,
                                           ColumnManager manager) {
-        return new DefaultColumnPreparedStatement(entity, null,
+        return new ColumnPreparedStatement(entity, null,
                 null, PreparedStatementType.INSERT, params, query,
                 params.getParametersNames(), duration, manager);
 
@@ -170,7 +180,7 @@ final class DefaultColumnPreparedStatement implements ColumnPreparedStatement {
                                           Params params,
                                           String query,
                                           ColumnManager manager) {
-        return new DefaultColumnPreparedStatement(entity, null,
+        return new ColumnPreparedStatement(entity, null,
                 null, PreparedStatementType.UPDATE, params, query,
                 params.getParametersNames(), null, manager);
 

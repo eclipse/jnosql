@@ -17,10 +17,8 @@
 package org.eclipse.jnosql.communication.column;
 
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnQuery;
-import org.eclipse.jnosql.communication.column.DefaultColumnCondition;
+
+import org.eclipse.jnosql.communication.Sort;
 
 import java.util.List;
 import java.util.Objects;
@@ -53,36 +51,36 @@ class DefaultColumnQuery implements ColumnQuery {
         this.columnFamily = columnFamily;
         this.columns = columns;
         this.sorts = sorts;
-        this.condition = ofNullable(condition).map(DefaultColumnCondition::readOnly).orElse(null);
+        this.condition = ofNullable(condition).map(ColumnCondition::readOnly).orElse(null);
     }
 
     @Override
-    public long getLimit() {
+    public long limit() {
         return maxResults;
     }
 
     @Override
-    public long getSkip() {
+    public long skip() {
         return firstResult;
     }
 
     @Override
-    public String getColumnFamily() {
+    public String columnFamily() {
         return columnFamily;
     }
 
     @Override
-    public Optional<ColumnCondition> getCondition() {
+    public Optional<ColumnCondition> condition() {
         return ofNullable(condition);
     }
 
     @Override
-    public List<String> getColumns() {
+    public List<String> columns() {
         return unmodifiableList(columns);
     }
 
     @Override
-    public List<Sort> getSorts() {
+    public List<Sort> sorts() {
         return unmodifiableList(sorts);
     }
 
@@ -95,12 +93,12 @@ class DefaultColumnQuery implements ColumnQuery {
             return false;
         }
         ColumnQuery that = (ColumnQuery) o;
-        return maxResults == that.getLimit() &&
-                firstResult == that.getSkip() &&
-                Objects.equals(columnFamily, that.getColumnFamily()) &&
-                Objects.equals(columns, that.getColumns()) &&
-                Objects.equals(sorts, that.getSorts()) &&
-                Objects.equals(condition, that.getCondition().orElse(null));
+        return maxResults == that.limit() &&
+                firstResult == that.skip() &&
+                Objects.equals(columnFamily, that.columnFamily()) &&
+                Objects.equals(columns, that.columns()) &&
+                Objects.equals(sorts, that.sorts()) &&
+                Objects.equals(condition, that.condition().orElse(null));
     }
 
     @Override

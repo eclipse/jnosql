@@ -16,13 +16,10 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.query.JSONQueryValue;
+
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.query.JSONQueryValue;
 
 import java.util.List;
 
@@ -37,7 +34,7 @@ abstract class ConditionQueryParser {
         ColumnEntity entity = ColumnEntity.of(columnFamily);
 
         if (query.useJSONCondition()) {
-            JSONQueryValue jsonValue = query.getValue()
+            JSONQueryValue jsonValue = query.value()
                     .orElseThrow(() -> new QueryException("It is an invalid state of" +
                     " either Update or Insert."));
             List<Column> columns = JsonObjects.getColumns(jsonValue.get());
@@ -45,10 +42,10 @@ abstract class ConditionQueryParser {
             return entity;
         }
 
-        query.getConditions()
+        query.conditions()
                 .stream()
                 .map(c -> Conditions.getCondition(c, params, observer, columnFamily))
-                .map(ColumnCondition::getColumn)
+                .map(ColumnCondition::column)
                 .forEach(entity::add);
         return entity;
     }

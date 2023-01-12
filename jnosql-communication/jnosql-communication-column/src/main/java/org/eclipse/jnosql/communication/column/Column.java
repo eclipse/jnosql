@@ -16,10 +16,8 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
 import org.eclipse.jnosql.communication.Entry;
+import org.eclipse.jnosql.communication.TypeSupplier;
 import org.eclipse.jnosql.communication.Value;
 
 import java.util.Objects;
@@ -49,19 +47,39 @@ public final class Column implements Entry {
         return value;
     }
 
-    @Override
+    /**
+     * Alias to {@link Value#get(Class)}
+     *
+     * @param type the type class
+     * @param <T>  the instance type
+     * @return {@link Value#get(Class)}
+     * @throws NullPointerException          see {@link Value#get(Class)}
+     * @throws UnsupportedOperationException see {@link Value#get(Class)}
+     */
     public <T> T get(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         return value.get(type);
     }
 
-    @Override
+    /**
+     * Alias to {@link Value#get(TypeSupplier)}
+     *
+     * @param supplier {@link Value#get(Class)}
+     * @param <T>      {@link Value#get(Class)}
+     * @return {@link Value#get(TypeSupplier)}
+     * @throws NullPointerException          see {@link Value#get(Class)}
+     * @throws UnsupportedOperationException see {@link Value#get(Class)}
+     */
     public <T> T get(TypeSupplier<T> supplier) {
         Objects.requireNonNull(supplier, "supplier is required");
         return value.get(supplier);
     }
 
-    @Override
+    /**
+     * Alias to {@link Value#get()}
+     *
+     * @return {@link Value#get()}
+     */
     public Object get() {
         return value.get();
     }
@@ -77,8 +95,8 @@ public final class Column implements Entry {
         }
 
         Column that = (Column) o;
-        return Objects.equals(name, that.getName()) &&
-                Objects.equals(value, that.getValue());
+        return Objects.equals(name, that.name()) &&
+                Objects.equals(value, that.value());
     }
 
     @Override
@@ -91,5 +109,29 @@ public final class Column implements Entry {
         return "DefaultColumn{" + "name='" + name + '\'' +
                 ", value=" + value +
                 '}';
+    }
+
+    /**
+     * Creates a column instance
+     *
+     * @param name  - column's name
+     * @param value - column's value
+     * @param <V>   the value type
+     * @return a column instance
+     * @throws NullPointerException when there is any null parameter
+     * @see Columns
+     */
+    public static <V> Column of(String name, V value) {
+        Objects.requireNonNull(name, "name is required");
+        Objects.requireNonNull(value, "value is required");
+        return new Column(name, getValue(value));
+    }
+
+    private static Value getValue(Object value) {
+        if (value instanceof Value) {
+            return Value.class.cast(value);
+        } else {
+            return Value.of(value);
+        }
     }
 }

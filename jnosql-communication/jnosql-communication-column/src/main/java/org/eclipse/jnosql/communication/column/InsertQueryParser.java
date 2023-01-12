@@ -16,16 +16,13 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.InsertQuery;
-import jakarta.nosql.query.InsertQuery.InsertQueryProvider;
-import jakarta.nosql.query.JSONQueryValue;
+
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.query.InsertQuery;
+import org.eclipse.jnosql.communication.query.InsertQueryProvider;
+import org.eclipse.jnosql.communication.query.JSONQueryValue;
+import org.eclipse.jnosql.communication.query.QueryCondition;
 
 import java.time.Duration;
 import java.util.List;
@@ -37,19 +34,19 @@ final class InsertQueryParser extends ConditionQueryParser {
     private final InsertQueryProvider insertQueryProvider;
 
     InsertQueryParser() {
-        this.insertQueryProvider = InsertQuery.getProvider();
+        this.insertQueryProvider = new InsertQueryProvider();
     }
 
     Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
 
         InsertQuery insertQuery = insertQueryProvider.apply(query);
 
-        String columnFamily = insertQuery.getEntity();
+        String columnFamily = insertQuery.entity();
         Params params = Params.newParams();
 
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
 
-        Optional<Duration> ttl = insertQuery.getTtl();
+        Optional<Duration> ttl = insertQuery.ttl();
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
         }
@@ -65,13 +62,13 @@ final class InsertQueryParser extends ConditionQueryParser {
                                     ColumnObserverParser observer) {
         InsertQuery insertQuery = insertQueryProvider.apply(query);
 
-        String columnFamily = observer.fireEntity(insertQuery.getEntity());
+        String columnFamily = observer.fireEntity(insertQuery.entity());
         Params params = Params.newParams();
 
-        Optional<Duration> ttl = insertQuery.getTtl();
+        Optional<Duration> ttl = insertQuery.ttl();
         ColumnEntity entity = getEntity(insertQuery, columnFamily, params, observer);
 
-        return DefaultColumnPreparedStatement.insert(entity, params, query, ttl.orElse(null), manager);
+        return ColumnPreparedStatement.insert(entity, params, query, ttl.orElse(null), manager);
 
     }
 
@@ -89,13 +86,13 @@ final class InsertQueryParser extends ConditionQueryParser {
         }
 
         @Override
-        public List<Condition> getConditions() {
-            return query.getConditions();
+        public List<QueryCondition> conditions() {
+            return query.conditions();
         }
 
         @Override
-        public Optional<JSONQueryValue> getValue() {
-            return query.getValue();
+        public Optional<JSONQueryValue> value() {
+            return query.value();
         }
     }
 

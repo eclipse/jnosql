@@ -23,6 +23,7 @@ import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
+import org.eclipse.jnosql.communication.column.UpdateQueryParser;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;

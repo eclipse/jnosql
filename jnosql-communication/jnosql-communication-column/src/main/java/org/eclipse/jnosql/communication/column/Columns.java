@@ -14,12 +14,11 @@
  *   Otavio Santana
  *
  */
-
 package org.eclipse.jnosql.communication.column;
 
 
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
+
+import org.eclipse.jnosql.communication.Value;
 
 import java.util.List;
 import java.util.Map;

@@ -17,9 +17,6 @@
 package org.eclipse.jnosql.communication.column;
 
 
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.communication.column.DefaultColumnCondition;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,22 +38,22 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
 
     DefaultColumnDeleteQuery(String columnFamily, ColumnCondition condition, List<String> columns) {
         this.columnFamily = columnFamily;
-        this.condition = ofNullable(condition).map(DefaultColumnCondition::readOnly).orElse(null);
+        this.condition = ofNullable(condition).map(ColumnCondition::readOnly).orElse(null);
         this.columns = columns;
     }
 
     @Override
-    public String getColumnFamily() {
+    public String columnFamily() {
         return columnFamily;
     }
 
     @Override
-    public Optional<ColumnCondition> getCondition() {
+    public Optional<ColumnCondition> condition() {
         return ofNullable(condition);
     }
 
     @Override
-    public List<String> getColumns() {
+    public List<String> columns() {
         return unmodifiableList(columns);
     }
 
@@ -69,9 +66,9 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
             return false;
         }
         ColumnDeleteQuery that = (ColumnDeleteQuery) o;
-        return Objects.equals(columnFamily, that.getColumnFamily()) &&
-                Objects.equals(condition, that.getCondition().orElse(null)) &&
-                Objects.equals(columns, that.getColumns());
+        return Objects.equals(columnFamily, that.columnFamily()) &&
+                Objects.equals(condition, that.condition().orElse(null)) &&
+                Objects.equals(columns, that.columns());
     }
 
     @Override

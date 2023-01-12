@@ -16,30 +16,41 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.column.ColumnQueryParams;
+
+import org.eclipse.jnosql.communication.Params;
 
 import java.util.Objects;
 
-final class DefaultColumnQueryParams implements ColumnQueryParams {
+
+/**
+ * The result of {@link SelectQueryConverter} that has {@link ColumnQuery} and {@link Params}.
+ */
+public final class ColumnQueryParams {
 
     private final ColumnQuery query;
 
     private final Params params;
 
-    public DefaultColumnQueryParams(ColumnQuery query, Params params) {
+    public ColumnQueryParams(ColumnQuery query, Params params) {
         this.query = query;
         this.params = params;
     }
 
-    @Override
-    public ColumnQuery getQuery() {
+    /**
+     * The {@link ColumnQuery}
+     *
+     * @return a {@link ColumnQuery} instance
+     */
+    public ColumnQuery query() {
         return query;
     }
 
-    @Override
-    public Params getParams() {
+    /**
+     * The {@link Params}
+     *
+     * @return a {@link Params} instance
+     */
+    public Params params() {
         return params;
     }
 
@@ -51,7 +62,7 @@ final class DefaultColumnQueryParams implements ColumnQueryParams {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultColumnQueryParams that = (DefaultColumnQueryParams) o;
+        ColumnQueryParams that = (ColumnQueryParams) o;
         return Objects.equals(query, that.query) &&
                 Objects.equals(params, that.params);
     }

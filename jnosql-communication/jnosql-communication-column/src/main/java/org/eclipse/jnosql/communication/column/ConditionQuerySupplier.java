@@ -16,24 +16,25 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.JSONQueryValue;
+
+import org.eclipse.jnosql.communication.query.JSONQueryValue;
+import org.eclipse.jnosql.communication.query.QueryCondition;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * A base supplier to {@link jakarta.nosql.query.InsertQuery} and
- * {@link jakarta.nosql.query.UpdateQuery}
+ * A base supplier to {@link org.eclipse.jnosql.communication.query.InsertQuery} and
+ * {@link org.eclipse.jnosql.communication.query.UpdateQuery}
  */
 interface ConditionQuerySupplier {
 
-    List<Condition> getConditions();
+    List<QueryCondition> conditions();
 
-    Optional<JSONQueryValue> getValue();
+    Optional<JSONQueryValue> value();
 
     default boolean useJSONCondition() {
-        return getConditions().isEmpty() && getValue().isPresent();
+        return conditions().isEmpty() && value().isPresent();
     }
 
 }

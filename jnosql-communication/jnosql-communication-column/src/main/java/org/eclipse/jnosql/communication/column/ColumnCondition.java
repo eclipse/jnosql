@@ -14,12 +14,11 @@
  *   Otavio Santana
  *
  */
-
 package org.eclipse.jnosql.communication.column;
 
 
-
 import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 
 import java.util.ArrayList;
@@ -110,7 +109,13 @@ public final class ColumnCondition {
 
     }
 
-    @Override
+    /**
+     * Creates a new {@link ColumnCondition} using the {@link Condition#OR}
+     *
+     * @param condition the condition to be aggregated
+     * @return the conditions joined as AND
+     * @throws NullPointerException when the condition is null
+     */
     public ColumnCondition or(ColumnCondition condition) {
         validateReadOnly();
         requireNonNull(condition, "Condition is required");
@@ -163,35 +168,297 @@ public final class ColumnCondition {
         requireNonNull(condition, "condition is required");
         return new ColumnCondition(condition.column(), condition.condition(), true);
     }
+
     static ColumnCondition of(Column column, Condition condition) {
         return new ColumnCondition(requireNonNull(column, "Column is required"), condition);
     }
 
-    static ColumnCondition and(ColumnCondition... conditions) {
-        requireNonNull(conditions, "condition is required");
-        Column column = Column.of(Condition.AND.getNameField(), asList(conditions));
-        return ColumnCondition.of(column, Condition.AND);
+
+    /**
+     * Creates a {@link ColumnCondition} that has a {@link Condition#EQUALS}, it means a select will scanning to a
+     * column family that has the same name and equals value informed in this column.
+     *
+     * @param column a column instance
+     * @return a {@link ColumnCondition} with {@link Condition#EQUALS}
+     * @throws NullPointerException when column is null
+     */
+    public static ColumnCondition eq(Column column) {
+         return new ColumnCondition(column, Condition.EQUALS);
     }
 
-
-    static ColumnCondition or(ColumnCondition... conditions) {
-        requireNonNull(conditions, "condition is required");
-        Column column = Column.of(Condition.OR.getNameField(), asList(conditions));
-        return ColumnCondition.of(column, Condition.OR);
+    /**
+     * an alias method to {@link ColumnCondition#eq(Column)} where it will create a {@link Column}
+     * instance first and then apply te condition.
+     *
+     * @param name  the name of the column
+     * @param value the column information
+     * @return a {@link ColumnCondition} with {@link Condition#EQUALS}
+     * @throws NullPointerException when either name or value is null
+     */
+    public static ColumnCondition eq(String name, Object value) {
+        Objects.requireNonNull(name, "name is required");
+        Objects.requireNonNull(value, "value is required");
+        return eq(Column.of(name, value));
     }
 
+    /**
+     * Creates a {@link ColumnCondition} that has a {@link Condition#GREATER_THAN}, it means a select will scanning to a
+     * column family that has the same name and the value  greater than informed in this column.
+     *
+     * @param column a column instance
+     * @return a {@link ColumnCondition} with {@link Condition#GREATER_THAN}
+     * @throws NullPointerException when column is null
+     */
+    public static ColumnCondition gt(Column column) {
+         return new ColumnCondition(column, Condition.GREATER_THAN);
+    }
 
-    static ColumnCondition between(Column column) {
+    /**
+     * an alias method to {@link ColumnCondition#gt(Column)} where it will create a {@link Column}
+     * instance first and then apply te condition.
+     *
+     * @param name  the name of the column
+     * @param value the column information
+     * @return a {@link ColumnCondition} with {@link Condition#GREATER_THAN}
+     * @throws NullPointerException when either name or value is null
+     */
+    public static ColumnCondition gt(String name, Object value) {
+        Objects.requireNonNull(name, "name is required");
+        Objects.requireNonNull(value, "value is required");
+        return gt(Column.of(name, value));
+    }
+
+    /**
+     * Creates a {@link ColumnCondition} that has a {@link Condition#GREATER_EQUALS_THAN},
+     * it means a select will scanning to a column family that has the same name and the value
+     * greater or equals than informed in this column.
+     *
+     * @param column a column instance
+     * @return a {@link ColumnCondition} with {@link Condition#GREATER_EQUALS_THAN}
+     * @throws NullPointerException when column is null
+     */
+    public static ColumnCondition gte(Column column) {
+         return new ColumnCondition(column, Condition.GREATER_EQUALS_THAN);
+    }
+
+    /**
+     * an alias method to {@link ColumnCondition#gte(Column)} where it will create a {@link Column}
+     * instance first and then apply te condition.
+     *
+     * @param name  the name of the column
+     * @param value the column information
+     * @return a {@link ColumnCondition} with {@link Condition#GREATER_EQUALS_THAN}
+     * @throws NullPointerException when either name or value is null
+     */
+    public static ColumnCondition gte(String name, Object value) {
+        Objects.requireNonNull(name, "name is required");
+        Objects.requireNonNull(value, "value is required");
+        return gte(Column.of(name, value));
+    }
+
+    /**
+     * Creates a {@link ColumnCondition} that has a {@link Condition#LESSER_THAN}, it means a select will scanning to a
+     * column family that has the same name and the value  lesser than informed in this column.
+     *
+     * @param column a column instance
+     * @return a {@link ColumnCondition} with {@link Condition#LESSER_THAN}
+     * @throws NullPointerException when column is null
+     */
+    public static ColumnCondition lt(Column column) {
+        return new ColumnCondition(column, Condition.LESSER_THAN);
+    }
+
+    /**
+     * an alias method to {@link ColumnCondition#lt(Column)} where it will create a {@link Column}
+     * instance first and then apply te condition.
+     *
+     * @param name  the name of the column
+     * @param value the column information
+     * @return a {@link ColumnCondition} with {@link Condition#LESSER_THAN}
+     * @throws NullPointerException when either name or value is null
+     */
+    public static ColumnCondition lt(String name, Object value) {
+        Objects.requireNonNull(name, "name is required");
+        Objects.requireNonNull(value, "value is required");
+        return lt(Column.of(name, value));
+    }
+
+    /**
+     * Creates a {@link ColumnCondition} that has a {@link Condition#LESSER_EQUALS_THAN},
+     * it means a select will scanning to a column family that has the same name and the value
+     * lesser or equals than informed in this column.
+     *
+     * @param column a column instance
+     * @return a {@link ColumnCondition} with {@link Condition#LESSER_EQUALS_THAN}
+     * @throws NullPointerException when column is null
+     */
+    public static ColumnCondition lte(Column column) {
+        return new ColumnCondition(column, Condition.LESSER_EQUALS_THAN);
+    }
+
+    /**
+     * an alias method to {@link ColumnCondition#lte(Column)} where it will create a {@link Column}
+     * instance first and then apply te condition.
+     *
+     * @param name  the name of the column
+     * @param value the column information
+     * @return a {@link ColumnCondition} with {@link Condition#LESSER_EQUALS_THAN}
+     * @throws NullPointerException when either name or value is null
+     */
+    public static ColumnCondition lte(String name, Object value) {
+        Objects.requireNonNull(name, "name is required");
+        Objects.requireNonNull(value, "value is required");
+        return lte(Column.of(name, value));
+    }
+
+    /**
+     * Creates a {@link ColumnCondition} that has a {@link Condition#IN}, it means a select will scanning to a
+     * column family that has the same name and the value is within informed in this column.
+     *
+     * @param column a column instance
+     * @return a {@link ColumnCondition} with {@link Condition#IN}
+     * @throws NullPointerException     when column is null
+     * @throws IllegalArgumentException when the {@link Column#get()} in not an iterable implementation
+     */
+    public static ColumnCondition in(Column column) {
+        Objects.requireNonNull(column, "column is required");
+        checkInClause(column.value());
+        return new ColumnCondition(column, Condition.IN);
+    }
+
+    /**
+     * an alias method to {@link ColumnCondition#in(Column)} where it will create a {@link Column}
+     * instance first and then apply te condition.
+     *
+     * @param name  the name of the column
+     * @param value the column information
+     * @return a {@link ColumnCondition} with {@link Condition#IN}
+     * @throws NullPointerException when either name or value is null
+     */
+    public static ColumnCondition in(String name, Object value) {
+        Objects.requireNonNull(name, "name is required");
+        Objects.requireNonNull(value, "value is required");
+        return in(Column.of(name, value));
+    }
+
+    /**
+     * Creates a {@link ColumnCondition} that has a {@link Condition#LIKE}, it means a select will scanning to a
+     * column family that has the same name and the value  is like than informed in this column.
+     *
+     * @param column a column instance
+     * @return a {@link ColumnCondition} with {@link Condition#LIKE}
+     * @throws NullPointerException when column is null
+     */
+    public static ColumnCondition like(Column column) {
+        return new ColumnCondition(column, Condition.LIKE);
+    }
+
+    /**
+     * an alias method to {@link ColumnCondition#like(Column)} where it will create a {@link Column}
+     * instance first and then apply te condition.
+     *
+     * @param name  the name of the column
+     * @param value the column information
+     * @return a {@link ColumnCondition} with {@link Condition#LIKE}
+     * @throws NullPointerException when either name or value is null
+     */
+    public static ColumnCondition like(String name, Object value) {
+        Objects.requireNonNull(name, "name is required");
+        Objects.requireNonNull(value, "value is required");
+        return like(Column.of(name, value));
+    }
+
+    /**
+     * Creates a {@link ColumnCondition} that has a {@link Condition#BETWEEN},
+     * it means a select will scanning to a column family that is between two values informed
+     * on a column name.
+     * The column must have a {@link Column#get()} an {@link Iterable} implementation
+     * with just two elements.
+     *
+     * @param column a column instance
+     * @return The between condition
+     * @throws NullPointerException     when column is null
+     * @throws IllegalArgumentException When the column neither has an Iterable instance or two elements on
+     *                                  an Iterable.
+     */
+    public static ColumnCondition between(Column column) {
         Objects.requireNonNull(column, "column is required");
         checkBetweenClause(column.get());
         return new ColumnCondition(column, Condition.BETWEEN);
     }
 
-    static ColumnCondition in(Column column) {
-        Objects.requireNonNull(column, "column is required");
-        checkInClause(column.getValue());
-        return new ColumnCondition(column, Condition.IN);
+    /**
+     * an alias method to {@link ColumnCondition#between(Column)} (Column) where it will create a {@link Column}
+     * instance first and then apply te condition.
+     *
+     * @param name  the name of the column
+     * @param value the column information
+     * @return a {@link ColumnCondition} with {@link Condition#BETWEEN}
+     * @throws NullPointerException when either name or value is null
+     */
+    public static ColumnCondition between(String name, Object value) {
+        Objects.requireNonNull(name, "name is required");
+        Objects.requireNonNull(value, "value is required");
+        return between(Column.of(name, value));
     }
+
+    /**
+     * Returns a predicate that is the negation of the supplied predicate.
+     * This is accomplished by returning result of the calling target.negate().
+     *
+     * @param condition
+     * @return a condition that negates the results of the supplied predicate
+     * @throws NullPointerException when condition is null
+     */
+    public static ColumnCondition not(ColumnCondition condition) {
+        Objects.requireNonNull(condition, "condition is required");
+        return condition.negate();
+    }
+
+    /**
+     * Returns a new {@link ColumnCondition} aggregating ,as "AND", all the conditions as just one condition.
+     * The {@link Column} will storage the {@link Condition#getNameField()} as key and the value gonna be
+     * the {@link java.util.List} of all conditions, in other words.
+     * <p>Given:</p>
+     * {@code
+     * Column age = Column.of("age", 26);
+     * Column name = Column.of("name", "otavio");
+     * ColumnCondition condition = ColumnCondition.eq(name).and(ColumnCondition.gte(age));
+     * }
+     * The {@link ColumnCondition#column()} will have "_AND" as key and the list of condition as value.
+     *
+     * @param conditions the conditions to be aggregated
+     * @return the new {@link ColumnCondition} instance
+     * @throws NullPointerException when the conditions is null
+     */
+    public static ColumnCondition and(ColumnCondition... conditions) {
+        requireNonNull(conditions, "condition is required");
+        Column column = Column.of(Condition.AND.getNameField(), asList(conditions));
+        return ColumnCondition.of(column, Condition.AND);
+    }
+
+    /**
+     * Returns a new {@link ColumnCondition} aggregating ,as "OR", all the conditions as just one condition.
+     * The {@link Column} will storage the {@link Condition#getNameField()} as key and the value gonna be
+     * the {@link java.util.List} of all conditions, in other words.
+     * <p>Given:</p>
+     * {@code
+     * Column age = Column.of("age", 26);
+     * Column name = Column.of("name", "otavio");
+     * ColumnCondition condition = ColumnCondition.eq(name).or(ColumnCondition.gte(age));
+     * }
+     * The {@link ColumnCondition#column()} will have "_OR" as key and the list of condition as value.
+     *
+     * @param conditions the conditions to be aggregated
+     * @return the new {@link ColumnCondition} instance
+     * @throws NullPointerException when the condition is null
+     */
+    public static ColumnCondition or(ColumnCondition... conditions) {
+        requireNonNull(conditions, "condition is required");
+        Column column = Column.of(Condition.OR.getNameField(), asList(conditions));
+        return ColumnCondition.of(column, Condition.OR);
+    }
+
 
     private static void checkInClause(Value value) {
         if (!value.isInstanceOf(Iterable.class)) {
