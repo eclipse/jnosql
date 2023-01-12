@@ -47,7 +47,8 @@ public interface ValueWriter<T, S> extends Predicate<Class<?>> {
      * @return the stream of writers
      */
     static <T, S> Stream<ValueWriter<T, S>> getWriters() {
-       return ServiceLoader.load(ValueWriter.class)
-               .stream().map(ValueWriter.class::cast);
+        return ServiceLoader.load(ValueWriter.class)
+                .stream()
+                .map(ServiceLoader.Provider::get);
     }
 }

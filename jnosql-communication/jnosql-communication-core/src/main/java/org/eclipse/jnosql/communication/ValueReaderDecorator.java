@@ -34,7 +34,7 @@ public final class ValueReaderDecorator implements ValueReader {
 
     {
         ServiceLoader.load(ValueReader.class).stream()
-                .map(ValueReader.class::cast)
+                .map(ServiceLoader.Provider::get)
                 .forEach(readers::add);
     }
 

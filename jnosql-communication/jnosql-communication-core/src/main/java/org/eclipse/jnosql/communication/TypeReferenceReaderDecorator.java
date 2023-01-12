@@ -34,7 +34,7 @@ public final class TypeReferenceReaderDecorator implements TypeReferenceReader {
 
     {
         ServiceLoader.load(TypeReferenceReader.class).stream()
-                .map(TypeReferenceReader.class::cast)
+                .map(ServiceLoader.Provider::get)
                 .forEach(readers::add);
     }
 
