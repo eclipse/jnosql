@@ -17,7 +17,7 @@ import java.util.Arrays;
 /**
  * A sequence of elements that can be either {@link NumberQueryValue} or {@link StringQueryValue}
  */
-public final class ArrayQueryValue implements  QueryValue<QueryValue<?>[]>{
+public final class ArrayQueryValue implements QueryValue<QueryValue<?>[]> {
 
     private final QueryValue<?>[] values;
 
@@ -53,7 +53,7 @@ public final class ArrayQueryValue implements  QueryValue<QueryValue<?>[]>{
     }
 
     @Override
-    public ValueType getType() {
+    public ValueType type() {
         return ValueType.ARRAY;
     }
 

@@ -26,5 +26,5 @@ public interface QueryValue<T> extends Supplier<T> {
      *
      * @return a value type
      */
-    ValueType getType();
+    ValueType type();
 }

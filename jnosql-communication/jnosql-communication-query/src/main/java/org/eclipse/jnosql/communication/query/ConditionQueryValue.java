@@ -37,7 +37,7 @@ public final class ConditionQueryValue implements QueryValue<List<QueryCondition
     }
 
     @Override
-    public ValueType getType() {
+    public ValueType type() {
         return ValueType.CONDITION;
     }
 

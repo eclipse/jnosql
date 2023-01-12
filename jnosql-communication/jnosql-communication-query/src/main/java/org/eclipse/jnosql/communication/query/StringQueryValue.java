@@ -53,7 +53,7 @@ public final class StringQueryValue implements QueryValue<String> {
     }
 
     @Override
-    public ValueType getType() {
+    public ValueType type() {
         return ValueType.STRING;
     }
 

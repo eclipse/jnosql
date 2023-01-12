@@ -36,7 +36,7 @@ public final class JSONQueryValue implements QueryValue<JsonObject> {
     }
 
     @Override
-    public ValueType getType() {
+    public ValueType type() {
         return ValueType.JSON;
     }
 

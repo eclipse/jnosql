@@ -55,7 +55,7 @@ public final class NumberQueryValue implements QueryValue<Number> {
     }
 
     @Override
-    public ValueType getType() {
+    public ValueType type() {
         return ValueType.NUMBER;
     }
 

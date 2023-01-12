@@ -56,7 +56,7 @@ public final class FunctionQueryValue implements QueryValue<Function> {
     }
 
     @Override
-    public ValueType getType() {
+    public ValueType type() {
         return ValueType.FUNCTION;
     }
 
