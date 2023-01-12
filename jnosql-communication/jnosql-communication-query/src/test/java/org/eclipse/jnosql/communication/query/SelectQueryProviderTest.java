@@ -56,14 +56,14 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God"})
     public void shouldReturnParserQuery(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertFalse(selectQuery.getWhere().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God"})
     public void shouldReturnParserQuery2(String query) {
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertFalse(selectQuery.getFields().isEmpty());
         assertThat(selectQuery.getFields()).contains("name", "address");
@@ -76,7 +76,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God order by name"})
     public void shouldReturnParserQuery3(String query) {
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertFalse(selectQuery.getFields().isEmpty());
         assertThat(selectQuery.getFields()).contains("name", "address");
@@ -91,7 +91,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God order by name desc"})
     public void shouldReturnParserQuery4(String query) {
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertFalse(selectQuery.getFields().isEmpty());
         assertThat(selectQuery.getFields()).contains("name", "address");
@@ -106,7 +106,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God order by name desc age asc"})
     public void shouldReturnParserQuery5(String query) {
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertFalse(selectQuery.getFields().isEmpty());
         assertThat(selectQuery.getFields()).contains("name", "address");
@@ -122,7 +122,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God skip 12"})
     public void shouldReturnParserQuery6(String query) {
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertTrue(selectQuery.getFields().isEmpty());
         assertTrue(selectQuery.getOrderBy().isEmpty());
@@ -134,7 +134,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God limit 12"})
     public void shouldReturnParserQuery7(String query) {
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertTrue(selectQuery.getFields().isEmpty());
         assertTrue(selectQuery.getOrderBy().isEmpty());
@@ -146,7 +146,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God skip 10 limit 12"})
     public void shouldReturnParserQuery8(String query) {
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertTrue(selectQuery.getFields().isEmpty());
         assertTrue(selectQuery.getOrderBy().isEmpty());
@@ -159,7 +159,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = 10"})
     public void shouldReturnParserQuery9(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -174,7 +174,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where stamina > 10.23"})
     public void shouldReturnParserQuery10(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -189,7 +189,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where stamina >= 10.23"})
     public void shouldReturnParserQuery11(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -204,7 +204,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where stamina <= 10.23"})
     public void shouldReturnParserQuery12(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -219,7 +219,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where stamina < 10.23"})
     public void shouldReturnParserQuery13(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -235,7 +235,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age between 10 and 30"})
     public void shouldReturnParserQuery14(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -253,7 +253,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where name = \"diana\""})
     public void shouldReturnParserQuery15(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -268,7 +268,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where name = 'diana'"})
     public void shouldReturnParserQuery16(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -283,7 +283,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where name = {\"diana\"}"})
     public void shouldReturnParserQuery17(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -301,7 +301,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where name = {\"diana\", 17, 20.21}"})
     public void shouldReturnParserQuery18(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -320,7 +320,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery19(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -337,7 +337,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where name = @name"})
     public void shouldReturnParserQuery20(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -352,7 +352,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where age = convert(12, java.lang.Integer)"})
     public void shouldReturnParserQuery21(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -371,7 +371,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select  * from God where name in (\"Ada\", \"Apollo\")"})
     public void shouldReturnParserQuery22(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -388,7 +388,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God where name like \"Ada\""})
     public void shouldReturnParserQuery23(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -403,7 +403,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God where name not like \"Ada\""})
     public void shouldReturnParserQuery24(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -426,7 +426,7 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where name = \"Ada\" and age = 20 and" +
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery25(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -465,7 +465,7 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where name = \"Ada\" or age = 20 or" +
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery26(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -505,7 +505,7 @@ class SelectQueryProviderTest {
     @ValueSource(strings = {"select  * from God where name = \"Ada\" and age = 20 or" +
             " siblings = {\"apollo\": \"Brother\", \"Zeus\": \"Father\"}"})
     public void shouldReturnParserQuery27(String query) {
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -556,7 +556,7 @@ class SelectQueryProviderTest {
             " convert(\"2007-12-03\", java.time.LocalDate)"})
     public void shouldReturnParserQuery28(String query) {
 
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -619,7 +619,7 @@ class SelectQueryProviderTest {
             " convert(\"2007-12-03\", java.time.LocalDate)"})
     public void shouldReturnParserQuery29(String query) {
 
-        SelectQuery selectQuery = checkSelectFromStart(query);
+        DefaultSelectQuery selectQuery = checkSelectFromStart(query);
         assertTrue(selectQuery.getWhere().isPresent());
 
         Where where = selectQuery.getWhere().get();
@@ -676,8 +676,8 @@ class SelectQueryProviderTest {
 
 
 
-    private SelectQuery checkSelectFromStart(String query) {
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+    private DefaultSelectQuery checkSelectFromStart(String query) {
+        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
         assertEquals("God", selectQuery.getEntity());
         assertTrue(selectQuery.getFields().isEmpty());
         assertTrue(selectQuery.getOrderBy().isEmpty());

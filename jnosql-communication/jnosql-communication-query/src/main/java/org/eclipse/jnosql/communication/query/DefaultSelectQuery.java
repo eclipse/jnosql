@@ -9,36 +9,46 @@
  *  Contributors:
  *  Otavio Santana
  */
-package org.eclipse.jnosql.communication.query.method;
+
+package org.eclipse.jnosql.communication.query;
 
 
 import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.query.SelectQuery;
-import org.eclipse.jnosql.communication.query.Where;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-final class MethodSelectQuery  implements SelectQuery {
+
+/**
+ * The default implementation of {@link SelectQuery}
+ */
+final class DefaultSelectQuery implements SelectQuery {
 
     private final String entity;
 
-    private final Where where;
+    private final List<String> fields;
 
     private final List<Sort> sorts;
 
-    MethodSelectQuery(String entity, List<Sort> sorts, Where where) {
+    private final long skip;
+
+    private final long limit;
+
+    private final Where where;
+
+    DefaultSelectQuery(String entity, List<String> fields, List<Sort> sorts, long skip, long limit, Where where) {
         this.entity = entity;
+        this.fields = fields;
         this.sorts = sorts;
+        this.skip = skip;
+        this.limit = limit;
         this.where = where;
     }
 
-
     @Override
     public List<String> fields() {
-        return Collections.emptyList();
+        return fields;
     }
 
     @Override
@@ -51,39 +61,54 @@ final class MethodSelectQuery  implements SelectQuery {
         return Optional.ofNullable(where);
     }
 
+    @Override
     public long skip() {
-        return 0;
+        return skip;
     }
 
     @Override
     public long limit() {
-        return 0;
+        return limit;
     }
 
     @Override
     public List<Sort> orderBy() {
-        return Collections.unmodifiableList(sorts);
+        return sorts;
     }
 
+
+    /**
+     * Obtains an instance of {@link DefaultSelectQuery} from a text string.
+     *
+     * @param query the query
+     * @return {@link DefaultSelectQuery} instance
+     * @throws NullPointerException when the query is null
+     */
+    static DefaultSelectQuery parse(String query) {
+        Objects.requireNonNull(query, "query is required");
+        return new SelectQueryProvider().apply(query);
+    }
+
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof DefaultSelectQuery)) {
             return false;
         }
-        MethodSelectQuery that = (MethodSelectQuery) o;
-        return Objects.equals(entity, that.entity) &&
+        DefaultSelectQuery that = (DefaultSelectQuery) o;
+        return skip == that.skip &&
+                limit == that.limit &&
+                Objects.equals(entity, that.entity) &&
+                Objects.equals(fields, that.fields) &&
+                Objects.equals(sorts, that.sorts) &&
                 Objects.equals(where, that.where);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(entity, where);
-    }
-
-    @Override
-    public String toString() {
-        return entity + " where " + where + " orderBy " + sorts;
+        return Objects.hash(entity, fields, sorts, skip, limit, where);
     }
 }

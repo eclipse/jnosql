@@ -24,9 +24,9 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
- * A provider to {@link SelectQuery}, this provider converts text into {@link SelectQuery}
+ * A provider to {@link DefaultSelectQuery}, this provider converts text into {@link DefaultSelectQuery}
  */
-public final class SelectQueryProvider extends AbstractWhereSupplier implements Function<String, SelectQuery> {
+public final class SelectQueryProvider extends AbstractWhereSupplier implements Function<String, DefaultSelectQuery> {
 
     private String entity;
 
@@ -66,9 +66,9 @@ public final class SelectQueryProvider extends AbstractWhereSupplier implements 
 
 
     @Override
-    public SelectQuery apply(String query) {
+    public DefaultSelectQuery apply(String query) {
         runQuery(query);
-        return new SelectQuery(entity, fields, sorts, skip, limit, where);
+        return new DefaultSelectQuery(entity, fields, sorts, skip, limit, where);
     }
 
     @Override
