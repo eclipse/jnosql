@@ -18,6 +18,8 @@ package org.eclipse.jnosql.communication.column;
 
 
 
+import org.eclipse.jnosql.communication.NonUniqueResultException;
+
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.Objects;
@@ -131,12 +133,10 @@ public interface ColumnManager extends AutoCloseable {
      * @throws NullPointerException     when there is parameter null
      * @throws IllegalArgumentException when the query has value parameters
      * @throws IllegalStateException    when there is not {@link ColumnQueryParser}
-     * @throws QueryException           when there is error in the syntax
      */
     default Stream<ColumnEntity> query(String query) {
         Objects.requireNonNull(query, "query is required");
-        ColumnQueryParser parser = ServiceLoaderProvider.get(ColumnQueryParser.class,
-                () -> ServiceLoader.load(ColumnQueryParser.class));
+        ColumnQueryParser parser = new ColumnQueryParser();
         return parser.query(query, this, ColumnObserverParser.EMPTY);
     }
 
@@ -148,12 +148,10 @@ public interface ColumnManager extends AutoCloseable {
      * @return a {@link ColumnPreparedStatement} instance
      * @throws NullPointerException  when there is parameter null
      * @throws IllegalStateException when there is not {@link ColumnQueryParser}
-     * @throws QueryException        when there is error in the syntax
      */
     default ColumnPreparedStatement prepare(String query) {
         Objects.requireNonNull(query, "query is required");
-        ColumnQueryParser parser = ServiceLoaderProvider.get(ColumnQueryParser.class
-                , () -> ServiceLoader.load(ColumnQueryParser.class));
+        ColumnQueryParser parser = new ColumnQueryParser();
         return parser.prepare(query, this, ColumnObserverParser.EMPTY);
     }
 

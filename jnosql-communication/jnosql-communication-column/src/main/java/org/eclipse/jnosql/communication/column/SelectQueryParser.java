@@ -18,7 +18,8 @@ package org.eclipse.jnosql.communication.column;
 
 
 import org.eclipse.jnosql.communication.Params;
-import org.eclipse.jnosql.communication.query.QueryCondition;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Sort;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.SelectQueryProvider;
 
@@ -70,18 +71,18 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, ColumnOb
     private ColumnQuery getColumnQuery(String query, ColumnObserverParser observer) {
 
         SelectQuery selectQuery = selectQueryProvider.apply(query);
-        String columnFamily = observer.fireEntity(selectQuery.getEntity());
-        long limit = selectQuery.getLimit();
-        long skip = selectQuery.getSkip();
-        List<String> columns = selectQuery.getFields().stream()
+        String columnFamily = observer.fireEntity(selectQuery.entity());
+        long limit = selectQuery.limit();
+        long skip = selectQuery.skip();
+        List<String> columns = selectQuery.fields().stream()
                 .map(f -> observer.fireField(columnFamily, f))
                 .collect(Collectors.toList());
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, columnFamily))
+        List<Sort> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, columnFamily))
                 .collect(toList());
         ColumnCondition condition = null;
         Params params = Params.newParams();
-        if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
+        if (selectQuery.where().isPresent()) {
+            condition = selectQuery.where().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
         }
 
         if (params.isNotEmpty()) {
@@ -92,24 +93,24 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, ColumnOb
 
     private ColumnQuery getColumnQuery(Params params, SelectQuery selectQuery, ColumnObserverParser observer) {
 
-        String columnFamily = observer.fireEntity(selectQuery.getEntity());
-        long limit = selectQuery.getLimit();
-        long skip = selectQuery.getSkip();
-        List<String> columns = selectQuery.getFields().stream()
+        String columnFamily = observer.fireEntity(selectQuery.entity());
+        long limit = selectQuery.limit();
+        long skip = selectQuery.skip();
+        List<String> columns = selectQuery.fields().stream()
                 .map(f -> observer.fireField(columnFamily, f))
                 .collect(Collectors.toList());
 
-        List<Sort> sorts = selectQuery.getOrderBy().stream().map(s -> toSort(s, observer, columnFamily)).collect(toList());
+        List<Sort> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, columnFamily)).collect(toList());
         ColumnCondition condition = null;
-        if (selectQuery.getWhere().isPresent()) {
-            condition = selectQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
+        if (selectQuery.where().isPresent()) {
+            condition = selectQuery.where().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
         }
 
         return new DefaultColumnQuery(limit, skip, columnFamily, columns, sorts, condition);
     }
 
     private Sort toSort(Sort sort, ColumnObserverParser observer, String entity) {
-        return Sort.of(observer.fireField(entity, sort.getName()), sort.getType());
+        return Sort.of(observer.fireField(entity, sort.name()), sort.type());
     }
 
 
