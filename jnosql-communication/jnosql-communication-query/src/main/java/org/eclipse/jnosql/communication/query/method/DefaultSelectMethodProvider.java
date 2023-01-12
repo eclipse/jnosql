@@ -11,7 +11,8 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.query.SelectQuery;
+
+import org.eclipse.jnosql.communication.query.SelectQuery;
 
 import java.lang.reflect.Method;
 import java.util.Objects;

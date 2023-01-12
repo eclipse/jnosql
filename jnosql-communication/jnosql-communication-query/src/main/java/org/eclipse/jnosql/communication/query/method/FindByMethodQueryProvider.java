@@ -11,10 +11,10 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
-import jakarta.nosql.query.SelectQuery;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.SortType;
+import org.eclipse.jnosql.communication.query.SelectQuery;
 
 import java.util.ArrayList;
 import java.util.List;
