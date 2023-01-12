@@ -11,16 +11,16 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.query.SelectQuery;
-import jakarta.nosql.query.Where;
+
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.query.Where;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-final class MethodSelectQuery implements SelectQuery {
+final class MethodSelectQuery  {
 
     private final String entity;
 
@@ -35,37 +35,30 @@ final class MethodSelectQuery implements SelectQuery {
     }
 
 
-    @Override
-    public List<String> getFields() {
+    public List<String> fields() {
         return Collections.emptyList();
     }
 
-    @Override
-    public String getEntity() {
+    public String entity() {
         return entity;
     }
 
-    @Override
-    public Optional<Where> getWhere() {
+    public Optional<Where> where() {
         return Optional.ofNullable(where);
     }
 
-    @Override
-    public long getSkip() {
+    public long skip() {
         return 0;
     }
 
-    @Override
-    public long getLimit() {
+    public long limit() {
         return 0;
     }
 
-    @Override
-    public List<Sort> getOrderBy() {
+    public List<Sort> orderBy() {
         return Collections.unmodifiableList(sorts);
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
