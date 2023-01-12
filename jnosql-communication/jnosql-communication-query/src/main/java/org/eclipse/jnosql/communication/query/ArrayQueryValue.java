@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  and Apache License v2.0 which accompanies this distribution.
@@ -12,52 +12,14 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import java.util.Arrays;
 
 /**
  * A sequence of elements that can be either {@link NumberQueryValue} or {@link StringQueryValue}
  */
-public final class ArrayQueryValue implements QueryValue<QueryValue<?>[]> {
-
-    private final QueryValue<?>[] values;
-
-    private ArrayQueryValue(QueryValue<?>[] values) {
-        this.values = values;
-    }
+public interface ArrayQueryValue extends QueryValue<QueryValue<?>[]> {
 
     @Override
-    public QueryValue<?>[] get() {
-        return values;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ArrayQueryValue)) {
-            return false;
-        }
-        ArrayQueryValue that = (ArrayQueryValue) o;
-        return Arrays.equals(values, that.values);
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(values);
-    }
-
-    @Override
-    public String toString() {
-        return Arrays.toString(values);
-    }
-
-    @Override
-    public ValueType type() {
+    default ValueType type() {
         return ValueType.ARRAY;
-    }
-
-    static ArrayQueryValue of(QueryValue<?>[] values) {
-        return new ArrayQueryValue(values);
     }
 }

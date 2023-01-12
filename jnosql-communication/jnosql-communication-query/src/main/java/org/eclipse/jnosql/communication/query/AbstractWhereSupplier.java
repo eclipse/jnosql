@@ -95,7 +95,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         QueryValue<?>[] values = ctx.value().stream()
                 .map(ValueConverter::get)
                 .toArray(QueryValue[]::new);
-        ArrayQueryValue value = ArrayQueryValue.of(values);
+        DefaultArrayQueryValue value = DefaultArrayQueryValue.of(values);
         checkCondition(new QueryCondition(name, IN, value), hasNot);
     }
 
@@ -113,7 +113,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?>[] values = ctx.value().stream().map(ValueConverter::get).toArray(QueryValue[]::new);
-        checkCondition(new QueryCondition(name, BETWEEN, ArrayQueryValue.of(values)), hasNot);
+        checkCondition(new QueryCondition(name, BETWEEN, DefaultArrayQueryValue.of(values)), hasNot);
     }
 
     @Override

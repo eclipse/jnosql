@@ -243,8 +243,8 @@ class SelectQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.BETWEEN, condition.getOperator());
         assertEquals("age", condition.getName());
-        assertTrue(value instanceof ArrayQueryValue);
-        ArrayQueryValue arrayValue = ArrayQueryValue.class.cast(value);
+        assertTrue(value instanceof DefaultArrayQueryValue);
+        DefaultArrayQueryValue arrayValue = DefaultArrayQueryValue.class.cast(value);
         QueryValue<?>[] values = arrayValue.get();
         List<Long> ages = Stream.of(values).map(QueryValue::get).map(Long.class::cast).collect(toList());
         assertThat(ages).hasSize(2).containsExactly(10L, 30L);
@@ -291,8 +291,8 @@ class SelectQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
-        assertTrue(value instanceof ArrayQueryValue);
-        List<String> values = Stream.of(ArrayQueryValue.class.cast(value).get()).map(QueryValue::get)
+        assertTrue(value instanceof DefaultArrayQueryValue);
+        List<String> values = Stream.of(DefaultArrayQueryValue.class.cast(value).get()).map(QueryValue::get)
                 .map(String.class::cast)
                 .collect(toList());
         assertThat(values).contains("diana");
@@ -309,8 +309,8 @@ class SelectQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.EQUALS, condition.getOperator());
         assertEquals("name", condition.getName());
-        assertTrue(value instanceof ArrayQueryValue);
-        List<Object> values = Stream.of(ArrayQueryValue.class.cast(value).get())
+        assertTrue(value instanceof DefaultArrayQueryValue);
+        List<Object> values = Stream.of(DefaultArrayQueryValue.class.cast(value).get())
                 .map(QueryValue::get)
                 .collect(toList());
         assertThat(values).contains("diana", 17L, 20.21);
@@ -379,8 +379,8 @@ class SelectQueryProviderTest {
         QueryValue<?> value = condition.getValue();
         Assertions.assertEquals(Operator.IN, condition.getOperator());
         assertEquals("name", condition.getName());
-        assertTrue(value instanceof ArrayQueryValue);
-        List<String> values = Stream.of(ArrayQueryValue.class.cast(value).get())
+        assertTrue(value instanceof DefaultArrayQueryValue);
+        List<String> values = Stream.of(DefaultArrayQueryValue.class.cast(value).get())
                 .map(QueryValue::get).map(String.class::cast).collect(toList());
         assertThat(values).contains("Ada", "Apollo");
     }

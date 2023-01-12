@@ -49,7 +49,7 @@ final class ValueConverter {
             QueryValue<?>[] elements = context.array().element().stream()
                     .map(Elements::getElement)
                     .toArray(QueryValue[]::new);
-            return ArrayQueryValue.of(elements);
+            return DefaultArrayQueryValue.of(elements);
         }
         throw new QueryException(MESSAGE);
     }

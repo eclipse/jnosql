@@ -104,8 +104,8 @@ class GetProviderTest {
         List<QueryValue<?>> keys = getQuery.getKeys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
-        assertTrue(key instanceof ArrayQueryValue);
-        QueryValue<?>[] values = ArrayQueryValue.class.cast(key).get();
+        assertTrue(key instanceof DefaultArrayQueryValue);
+        QueryValue<?>[] values = DefaultArrayQueryValue.class.cast(key).get();
         List<Object> ids = Arrays.stream(values).map(QueryValue::get)
                 .collect(Collectors.toList());
         assertThat(ids).contains(1L, 12L);
