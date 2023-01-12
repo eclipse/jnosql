@@ -18,10 +18,6 @@
 package org.eclipse.jnosql.communication.document;
 
 
-import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +40,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * A default implementation of {@link DocumentEntity}
  */
-final class DefaultDocumentEntity implements DocumentEntity {
+final class DefaultDocumentEntity {
 
     private final Map<String, Document> documents = new HashMap<>();
 

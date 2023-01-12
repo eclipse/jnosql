@@ -18,9 +18,6 @@
 package org.eclipse.jnosql.communication.document;
 
 
-import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
 import org.eclipse.jnosql.communication.Entry;
 
 import java.util.Objects;

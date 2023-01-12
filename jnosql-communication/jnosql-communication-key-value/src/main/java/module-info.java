@@ -14,5 +14,6 @@ module org.eclipse.jnosql.communication.key.value {
     requires org.eclipse.jnosql.communication.core;
     requires org.eclipse.jnosql.communication.query;
     opens org.eclipse.jnosql.communication.keyvalue;
+    uses org.eclipse.jnosql.communication.keyvalue.KeyValueConfiguration;
 
 }
