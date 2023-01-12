@@ -16,9 +16,6 @@
  */
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.TypeReferenceReader;
-import jakarta.nosql.TypeReferenceReaderDecorator;
-import jakarta.nosql.ValueReaderDecorator;
 
 import java.util.Objects;
 
