@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.column.query;
+package org.eclipse.jnosql.communication.column;
 
 import jakarta.nosql.Condition;
 import jakarta.nosql.Sort;
@@ -297,7 +297,7 @@ class DefaultColumnQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions).contains(eq(Column.of("name", name)),
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10)));
     }
 
@@ -315,7 +315,7 @@ class DefaultColumnQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions).contains(eq(Column.of("name", name)),
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10)));
     }
 
@@ -334,7 +334,7 @@ class DefaultColumnQueryBuilderTest {
         });
 
         assertEquals(Condition.NOT, condition.getCondition());
-        assertThat(conditions).contains(eq(Column.of("name", "Lucas")));
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Column.of("name", "Lucas")));
 
     }
 

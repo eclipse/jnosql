@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.column.query;
+package org.eclipse.jnosql.communication.column;
 
 import jakarta.nosql.QueryException;
 import jakarta.nosql.TypeReference;
@@ -23,6 +23,7 @@ import jakarta.nosql.column.ColumnEntity;
 import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.column.UpdateQueryParser;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -111,7 +112,7 @@ class UpdateQueryParserTest {
         assertEquals(Column.of("name", "Ada Lovelace"), entity.find("name").get());
         assertEquals(Column.of("age", BigDecimal.valueOf(12)), entity.find("age").get());
         assertThat(siblings).contains("Ana", "Maria");
-        assertThat(address).contains(
+        Assertions.assertThat(address).contains(
                 Column.of("country", "United Kingdom"),
                 Column.of("city", "London"));
     }

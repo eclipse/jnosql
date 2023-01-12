@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.column.query;
+package org.eclipse.jnosql.communication.column;
 
 import jakarta.nosql.Condition;
 import jakarta.nosql.QueryException;
@@ -26,6 +26,7 @@ import jakarta.nosql.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnObserverParser;
 import jakarta.nosql.column.ColumnPreparedStatement;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -189,7 +190,7 @@ class DeleteQueryParserTest {
         Column column = condition.getColumn();
         List<Column> columns = column.get(new TypeReference<>() {
         });
-        assertThat(columns).contains(Column.of("apollo", "Brother"),
+        Assertions.assertThat(columns).contains(Column.of("apollo", "Brother"),
                 Column.of("Zeus", "Father"));
         assertEquals("siblings", column.getName());
     }
@@ -284,7 +285,7 @@ class DeleteQueryParserTest {
         assertEquals(Condition.AND, condition.getCondition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
-        assertThat(conditions).contains(eq(Column.of("name", "Ada")),
+        Assertions.assertThat(conditions).contains(eq(Column.of("name", "Ada")),
                 eq(Column.of("age", 20L)));
     }
 
@@ -303,7 +304,7 @@ class DeleteQueryParserTest {
         assertEquals(Condition.OR, condition.getCondition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
-        assertThat(conditions).contains(eq(Column.of("name", "Ada")),
+        Assertions.assertThat(conditions).contains(eq(Column.of("name", "Ada")),
                 eq(Column.of("age", 20L)));
     }
 

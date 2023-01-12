@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.column.query;
+package org.eclipse.jnosql.communication.column;
 
 import jakarta.nosql.Condition;
 import jakarta.nosql.NonUniqueResultException;
@@ -48,7 +48,7 @@ public class DefaultColumnQueryParserTest {
     private final ColumnQueryParser parser = new DefaultColumnQueryParser();
 
 
-    private final ColumnManager manager = mock(ColumnManager.class);
+    private final ColumnManager manager = Mockito.mock(ColumnManager.class);
 
     @Test
     public void shouldReturnNPEWhenThereIsNullParameter() {
@@ -188,7 +188,7 @@ public class DefaultColumnQueryParserTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
         Mockito.when(manager.select(Mockito.any(ColumnQuery.class)))
-                .thenReturn(Stream.of(mock(ColumnEntity.class)));
+                .thenReturn(Stream.of(Mockito.mock(ColumnEntity.class)));
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);
@@ -230,7 +230,7 @@ public class DefaultColumnQueryParserTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
 
         Mockito.when(manager.select(Mockito.any(ColumnQuery.class)))
-                .thenReturn(Stream.of(mock(ColumnEntity.class), mock(ColumnEntity.class)));
+                .thenReturn(Stream.of(Mockito.mock(ColumnEntity.class), Mockito.mock(ColumnEntity.class)));
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);

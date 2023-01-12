@@ -14,7 +14,7 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.column.query;
+package org.eclipse.jnosql.communication.column;
 
 
 import jakarta.nosql.column.ColumnDeleteQuery;
@@ -26,6 +26,7 @@ import jakarta.nosql.column.ColumnCondition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.util.List;
 
@@ -214,7 +215,7 @@ public class DefaultDeleteQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions).contains(ColumnCondition.eq(Column.of("name", name)),
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(ColumnCondition.eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10)));
     }
 
@@ -229,7 +230,7 @@ public class DefaultDeleteQueryBuilderTest {
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions).contains(ColumnCondition.eq(Column.of("name", name)),
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(ColumnCondition.eq(Column.of("name", name)),
                 ColumnCondition.gt(Column.of("age", 10)));
     }
 
@@ -246,7 +247,7 @@ public class DefaultDeleteQueryBuilderTest {
         });
 
         assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions).contains(eq(Column.of("city", "Assis")).negate(),
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Column.of("city", "Assis")).negate(),
                 eq(Column.of("name", "Lucas")).negate());
 
 
@@ -255,7 +256,7 @@ public class DefaultDeleteQueryBuilderTest {
     @Test
     public void shouldExecuteDelete() {
         String columnFamily = "columnFamily";
-        ColumnManager manager = mock(ColumnManager.class);
+        ColumnManager manager = Mockito.mock(ColumnManager.class);
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         delete().from(columnFamily).delete(manager);
         verify(manager).delete(queryCaptor.capture());
