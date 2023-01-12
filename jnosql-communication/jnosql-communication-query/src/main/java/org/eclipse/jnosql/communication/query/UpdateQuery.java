@@ -89,4 +89,16 @@ public final class UpdateQuery implements Query {
             return "update " + entity + " (" + conditions + ") ";
         }
     }
+
+    /**
+     * Obtains an instance of {@link UpdateQuery} from a text string.
+     *
+     * @param query the query
+     * @return {@link UpdateQuery} instance
+     * @throws NullPointerException                    when the query is null
+     */
+   public static UpdateQuery parse(String query) {
+        Objects.requireNonNull(query, "query is required");
+        return new UpdateQueryProvider().apply(query);
+    }
 }

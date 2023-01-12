@@ -12,11 +12,9 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
-import jakarta.nosql.query.SelectQuery;
-import jakarta.nosql.query.SelectQuery.SelectQueryProvider;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.SortType;
 
 import java.util.List;
 import java.util.function.Function;
@@ -26,9 +24,9 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The {@link SelectQueryProvider} implementation that uses Antlr4
+ * A provider to {@link SelectQuery}, this provider converts text into {@link SelectQuery}
  */
-public final class AntlrSelectQueryProvider extends AbstractWhereSupplier implements SelectQueryProvider {
+public final class SelectQueryProvider extends AbstractWhereSupplier implements Function<String, SelectQuery> {
 
     private String entity;
 
@@ -70,7 +68,7 @@ public final class AntlrSelectQueryProvider extends AbstractWhereSupplier implem
     @Override
     public SelectQuery apply(String query) {
         runQuery(query);
-        return new DefaultSelectQuery(entity, fields, sorts, skip, limit, where);
+        return new SelectQuery(entity, fields, sorts, skip, limit, where);
     }
 
     @Override

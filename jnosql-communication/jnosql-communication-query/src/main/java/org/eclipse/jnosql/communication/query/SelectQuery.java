@@ -25,7 +25,7 @@ import java.util.Optional;
  * It returns a result-set of the entities matching the request, where each entity contains the fields
  * for corresponding to the query.
  */
-public final  class SelectQuery implements Query {
+public final class SelectQuery implements Query {
 
     private final String entity;
 
@@ -101,6 +101,20 @@ public final  class SelectQuery implements Query {
     public List<Sort> orderBy() {
         return sorts;
     }
+
+
+    /**
+     * Obtains an instance of {@link SelectQuery} from a text string.
+     *
+     * @param query the query
+     * @return {@link SelectQuery} instance
+     * @throws NullPointerException when the query is null
+     */
+    static SelectQuery parse(String query) {
+        Objects.requireNonNull(query, "query is required");
+        return new SelectQueryProvider().apply(query);
+    }
+
 
     @Override
     public boolean equals(Object o) {

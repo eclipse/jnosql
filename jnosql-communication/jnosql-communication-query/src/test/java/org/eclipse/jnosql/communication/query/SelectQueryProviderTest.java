@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SelectQueryProviderTest {
 
-    private final SelectQueryProvider selectQueryProvider = new AntlrSelectQueryProvider();
+    private final SelectQueryProvider selectQueryProvider = new SelectQueryProvider();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {

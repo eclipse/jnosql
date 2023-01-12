@@ -11,13 +11,8 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.JSONQueryValue;
-import jakarta.nosql.query.Operator;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.UpdateQuery;
-import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.eclipse.jnosql.communication.Condition;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,13 +21,13 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The {@link UpdateQueryProvider} implementation that uses Antlr4
+ * A provider to {@link UpdateQuery}, this provider converts text into {@link UpdateQuery}
  */
-public final class AntlrUpdateQueryProvider extends AbstractSupplier implements UpdateQueryProvider {
+public final class UpdateQueryProvider extends AbstractSupplier implements Function<String, UpdateQuery>  {
 
     private String entity;
 
-    private List<Condition> conditions = Collections.emptyList();
+    private List<QueryCondition> conditions = Collections.emptyList();
 
     private JSONQueryValue value;
 
@@ -56,16 +51,16 @@ public final class AntlrUpdateQueryProvider extends AbstractSupplier implements 
         this.value = JSONQueryValue.of(ctx);
     }
 
-    private Condition getCondition(QueryParser.ChangeContext changeContext) {
+    private QueryCondition getCondition(QueryParser.ChangeContext changeContext) {
         String name = changeContext.name().getText();
         QueryValue<?> queryValue = ValueConverter.get(changeContext.value());
-        return new QueryCondition(name, Operator.EQUALS, queryValue);
+        return new QueryCondition(name, Condition.EQUALS, queryValue);
     }
 
 
     @Override
     public UpdateQuery apply(String query) {
         runQuery(query);
-        return new DefaultUpdateQuery(entity, conditions, value);
+        return new UpdateQuery(entity, conditions, value);
     }
 }
