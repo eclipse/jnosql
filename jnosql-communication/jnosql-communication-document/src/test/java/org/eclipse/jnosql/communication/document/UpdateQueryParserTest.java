@@ -14,16 +14,11 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.document.DocumentPreparedStatement;
-import org.eclipse.jnosql.communication.document.UpdateQueryParser;
+import org.assertj.core.api.Assertions;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -54,7 +49,7 @@ class UpdateQueryParserTest {
         DocumentEntity entity = captor.getValue();
 
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
     }
 
@@ -66,7 +61,7 @@ class UpdateQueryParserTest {
         Mockito.verify(manager).update(captor.capture());
         DocumentEntity entity = captor.getValue();
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Artemis"), entity.find("name").get());
         assertEquals(Document.of("age", 30L), entity.find("age").get());
     }
@@ -89,7 +84,7 @@ class UpdateQueryParserTest {
         Mockito.verify(manager).update(captor.capture());
         DocumentEntity entity = captor.getValue();
 
-        assertEquals("Person", entity.getName());
+        assertEquals("Person", entity.name());
         assertEquals(Document.of("name", "Ada Lovelace"), entity.find("name").get());
     }
 
@@ -109,11 +104,11 @@ class UpdateQueryParserTest {
         });
         List<Document> address = entity.find("address").get().get(new TypeReference<>() {
         });
-        assertEquals("Person", entity.getName());
+        assertEquals("Person", entity.name());
         assertEquals(Document.of("name", "Ada Lovelace"), entity.find("name").get());
         assertEquals(Document.of("age", BigDecimal.valueOf(12)), entity.find("age").get());
         assertThat(siblings).contains("Ana", "Maria");
-        assertThat(address).contains(
+        Assertions.assertThat(address).contains(
                 Document.of("country", "United Kingdom"),
                 Document.of("city", "London"));
     }
@@ -123,7 +118,7 @@ class UpdateQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
         DocumentPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, prepare::getResult);
+        assertThrows(QueryException.class, prepare::result);
     }
 
 
@@ -133,10 +128,10 @@ class UpdateQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("name", "Diana");
-        prepare.getResult();
+        prepare.result();
         Mockito.verify(manager).update(captor.capture());
         DocumentEntity entity = captor.getValue();
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
 
     }

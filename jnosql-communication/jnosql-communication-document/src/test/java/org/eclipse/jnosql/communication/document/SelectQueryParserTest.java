@@ -14,22 +14,15 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.document.DocumentQuery;
-import org.eclipse.jnosql.communication.document.DefaultDocumentQuery;
-import org.eclipse.jnosql.communication.document.SelectQueryParser;
+import org.assertj.core.api.Assertions;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.SortType;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -38,8 +31,8 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
-import static jakarta.nosql.document.DocumentCondition.eq;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.communication.document.DocumentCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -63,12 +56,12 @@ public class SelectQueryParserTest {
         Mockito.verify(documentCollection).select(captor.capture());
         DefaultDocumentQuery documentQuery = captor.getValue();
 
-        assertThat(documentQuery.getDocuments()).contains("name", "address");
-        assertTrue(documentQuery.getSorts().isEmpty());
+        assertThat(documentQuery.documents()).contains("name", "address");
+        assertTrue(documentQuery.sorts().isEmpty());
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
-        assertFalse(documentQuery.getCondition().isPresent());
+        assertFalse(documentQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -79,12 +72,12 @@ public class SelectQueryParserTest {
         Mockito.verify(documentCollection).select(captor.capture());
         DefaultDocumentQuery documentQuery = captor.getValue();
 
-        assertTrue(documentQuery.getDocuments().isEmpty());
-        assertThat(documentQuery.getSorts()).contains(Sort.of("name", SortType.ASC));
+        assertTrue(documentQuery.documents().isEmpty());
+        assertThat(documentQuery.sorts()).contains(Sort.of("name", SortType.ASC));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
-        assertFalse(documentQuery.getCondition().isPresent());
+        assertFalse(documentQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -97,12 +90,12 @@ public class SelectQueryParserTest {
         Mockito.verify(documentCollection).select(captor.capture());
         DefaultDocumentQuery documentQuery = captor.getValue();
 
-        assertTrue(documentQuery.getDocuments().isEmpty());
-        assertThat(documentQuery.getSorts()).contains(Sort.of("name", SortType.ASC));
+        assertTrue(documentQuery.documents().isEmpty());
+        assertThat(documentQuery.sorts()).contains(Sort.of("name", SortType.ASC));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
-        assertFalse(documentQuery.getCondition().isPresent());
+        assertFalse(documentQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -113,12 +106,12 @@ public class SelectQueryParserTest {
         Mockito.verify(documentCollection).select(captor.capture());
         DefaultDocumentQuery documentQuery = captor.getValue();
 
-        assertTrue(documentQuery.getDocuments().isEmpty());
-        assertThat(documentQuery.getSorts()).contains(Sort.of("name", SortType.DESC));
+        assertTrue(documentQuery.documents().isEmpty());
+        assertThat(documentQuery.sorts()).contains(Sort.of("name", SortType.DESC));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
-        assertFalse(documentQuery.getCondition().isPresent());
+        assertFalse(documentQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -130,13 +123,13 @@ public class SelectQueryParserTest {
         Mockito.verify(documentCollection).select(captor.capture());
         DefaultDocumentQuery documentQuery = captor.getValue();
 
-        assertTrue(documentQuery.getDocuments().isEmpty());
-        assertThat(documentQuery.getSorts()).contains(Sort.of("name", SortType.DESC),
+        assertTrue(documentQuery.documents().isEmpty());
+        assertThat(documentQuery.sorts()).contains(Sort.of("name", SortType.DESC),
                 Sort.of("age", SortType.ASC));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
-        assertFalse(documentQuery.getCondition().isPresent());
+        assertFalse(documentQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -148,7 +141,7 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 12L);
-        assertFalse(documentQuery.getCondition().isPresent());
+        assertFalse(documentQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -162,7 +155,7 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 12L, 0L);
-        assertFalse(documentQuery.getCondition().isPresent());
+        assertFalse(documentQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -173,12 +166,12 @@ public class SelectQueryParserTest {
         Mockito.verify(documentCollection).select(captor.capture());
         DefaultDocumentQuery documentQuery = captor.getValue();
 
-        assertTrue(documentQuery.getDocuments().isEmpty());
-        assertTrue(documentQuery.getSorts().isEmpty());
+        assertTrue(documentQuery.documents().isEmpty());
+        assertTrue(documentQuery.sorts().isEmpty());
         assertEquals(12L, documentQuery.getLimit());
         assertEquals(10L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
-        assertFalse(documentQuery.getCondition().isPresent());
+        assertFalse(documentQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -190,11 +183,11 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
 
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals(Document.of("age", 10L), condition.getDocument());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(Document.of("age", 10L), condition.document());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -206,11 +199,11 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
 
-        assertEquals(Condition.GREATER_THAN, condition.getCondition());
-        assertEquals(Document.of("stamina", 10.23), condition.getDocument());
+        assertEquals(Condition.GREATER_THAN, condition.condition());
+        assertEquals(Document.of("stamina", 10.23), condition.document());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -224,11 +217,11 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
 
-        assertEquals(Condition.GREATER_EQUALS_THAN, condition.getCondition());
-        assertEquals(Document.of("stamina", -10.23), condition.getDocument());
+        assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
+        assertEquals(Document.of("stamina", -10.23), condition.document());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -240,11 +233,11 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
 
-        assertEquals(Condition.LESSER_EQUALS_THAN, condition.getCondition());
-        assertEquals(Document.of("stamina", -10.23), condition.getDocument());
+        assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
+        assertEquals(Document.of("stamina", -10.23), condition.document());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -256,11 +249,11 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
 
-        assertEquals(Condition.LESSER_THAN, condition.getCondition());
-        assertEquals(Document.of("stamina", -10.23), condition.getDocument());
+        assertEquals(Condition.LESSER_THAN, condition.condition());
+        assertEquals(Document.of("stamina", -10.23), condition.document());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -272,11 +265,11 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
 
-        assertEquals(Condition.BETWEEN, condition.getCondition());
-        assertEquals(Document.of("age", Arrays.asList(10L, 30L)), condition.getDocument());
+        assertEquals(Condition.BETWEEN, condition.condition());
+        assertEquals(Document.of("age", Arrays.asList(10L, 30L)), condition.document());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -288,11 +281,11 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
 
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals(Document.of("name", "diana"), condition.getDocument());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(Document.of("name", "diana"), condition.document());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -304,16 +297,16 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
 
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        Document document = condition.getDocument();
+        assertEquals(Condition.EQUALS, condition.condition());
+        Document document = condition.document();
         List<Document> documents = document.get(new TypeReference<>() {
         });
-        assertThat(documents).contains(Document.of("apollo", "Brother"),
+        Assertions.assertThat(documents).contains(Document.of("apollo", "Brother"),
                 Document.of("Zeus", "Father"));
-        assertEquals("siblings", document.getName());
+        assertEquals("siblings", document.name());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -325,12 +318,12 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
-        Document document = condition.getDocument();
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals("age", document.getName());
-        assertEquals(Value.of(12), document.getValue());
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
+        Document document = condition.document();
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", document.name());
+        assertEquals(Value.of(12), document.value());
 
 
     }
@@ -344,11 +337,11 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
-        Document document = condition.getDocument();
-        assertEquals(Condition.IN, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
+        Document document = condition.document();
+        assertEquals(Condition.IN, condition.condition());
+        assertEquals("name", document.name());
         List<String> values = document.get(new TypeReference<>() {
         });
         assertThat(values).contains("Ada", "Apollo");
@@ -363,11 +356,11 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
-        Document document = condition.getDocument();
-        assertEquals(Condition.LIKE, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
+        Document document = condition.document();
+        assertEquals(Condition.LIKE, condition.condition());
+        assertEquals("name", document.name());
         assertEquals("Ada", document.get());
     }
 
@@ -380,15 +373,15 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
-        Document document = condition.getDocument();
-        assertEquals(Condition.NOT, condition.getCondition());
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
+        Document document = condition.document();
+        assertEquals(Condition.NOT, condition.condition());
         List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
         DocumentCondition documentCondition = conditions.get(0);
-        assertEquals(Condition.LIKE, documentCondition.getCondition());
-        assertEquals(Document.of("name", "Ada"), documentCondition.getDocument());
+        assertEquals(Condition.LIKE, documentCondition.condition());
+        assertEquals(Document.of("name", "Ada"), documentCondition.document());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -400,13 +393,13 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
-        Document document = condition.getDocument();
-        assertEquals(Condition.AND, condition.getCondition());
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
+        Document document = condition.document();
+        assertEquals(Condition.AND, condition.condition());
         List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
-        assertThat(conditions).contains(eq(Document.of("name", "Ada")),
+        Assertions.assertThat(conditions).contains(eq(Document.of("name", "Ada")),
                 eq(Document.of("age", 20L)));
     }
 
@@ -419,13 +412,13 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
-        Document document = condition.getDocument();
-        assertEquals(Condition.OR, condition.getCondition());
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
+        Document document = condition.document();
+        assertEquals(Condition.OR, condition.condition());
         List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
-        assertThat(conditions).contains(eq(Document.of("name", "Ada")),
+        Assertions.assertThat(conditions).contains(eq(Document.of("name", "Ada")),
                 eq(Document.of("age", 20L)));
     }
 
@@ -440,15 +433,15 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
-        Document document = condition.getDocument();
-        assertEquals(Condition.AND, condition.getCondition());
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
+        Document document = condition.document();
+        assertEquals(Condition.AND, condition.condition());
         List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
-        assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
-        assertEquals(Condition.EQUALS, conditions.get(1).getCondition());
-        assertEquals(Condition.OR, conditions.get(2).getCondition());
+        assertEquals(Condition.EQUALS, conditions.get(0).condition());
+        assertEquals(Condition.EQUALS, conditions.get(1).condition());
+        assertEquals(Condition.OR, conditions.get(2).condition());
 
     }
 
@@ -463,16 +456,16 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         checkBaseQuery(documentQuery, 0L, 0L);
-        assertTrue(documentQuery.getCondition().isPresent());
-        DocumentCondition condition = documentQuery.getCondition().get();
-        Document document = condition.getDocument();
-        assertEquals(Condition.AND, condition.getCondition());
+        assertTrue(documentQuery.condition().isPresent());
+        DocumentCondition condition = documentQuery.condition().get();
+        Document document = condition.document();
+        assertEquals(Condition.AND, condition.condition());
         List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
-        assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
-        assertEquals(Condition.EQUALS, conditions.get(1).getCondition());
-        assertEquals(Condition.OR, conditions.get(2).getCondition());
-        assertEquals(Condition.EQUALS, conditions.get(3).getCondition());
+        assertEquals(Condition.EQUALS, conditions.get(0).condition());
+        assertEquals(Condition.EQUALS, conditions.get(1).condition());
+        assertEquals(Condition.OR, conditions.get(2).condition());
+        assertEquals(Condition.EQUALS, conditions.get(3).condition());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -490,7 +483,7 @@ public class SelectQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
-        assertThrows(QueryException.class, prepare::getResult);
+        assertThrows(QueryException.class, prepare::result);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -500,19 +493,19 @@ public class SelectQueryParserTest {
 
         DocumentPreparedStatement prepare = parser.prepare(query, documentCollection, observer);
         prepare.bind("age", 12);
-        prepare.getResult();
+        prepare.result();
         Mockito.verify(documentCollection).select(captor.capture());
         DefaultDocumentQuery documentQuery = captor.getValue();
-        DocumentCondition documentCondition = documentQuery.getCondition().get();
-        Document document = documentCondition.getDocument();
-        assertEquals(Condition.EQUALS, documentCondition.getCondition());
-        assertEquals("age", document.getName());
+        DocumentCondition documentCondition = documentQuery.condition().get();
+        Document document = documentCondition.document();
+        assertEquals(Condition.EQUALS, documentCondition.condition());
+        assertEquals("age", document.name());
         assertEquals(12, document.get());
     }
 
     private void checkBaseQuery(DefaultDocumentQuery documentQuery, long limit, long skip) {
-        assertTrue(documentQuery.getDocuments().isEmpty());
-        assertTrue(documentQuery.getSorts().isEmpty());
+        assertTrue(documentQuery.documents().isEmpty());
+        assertTrue(documentQuery.sorts().isEmpty());
         assertEquals(limit, documentQuery.getLimit());
         assertEquals(skip, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());

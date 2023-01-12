@@ -16,16 +16,12 @@
  */
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.JSONQueryValue;
-import jakarta.nosql.query.UpdateQuery;
-import jakarta.nosql.query.UpdateQuery.UpdateQueryProvider;
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.query.JSONQueryValue;
+import org.eclipse.jnosql.communication.query.QueryCondition;
+import org.eclipse.jnosql.communication.query.UpdateQuery;
+import org.eclipse.jnosql.communication.query.UpdateQueryProvider;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +32,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
     private final UpdateQueryProvider supplier;
 
     UpdateQueryParser() {
-        this.supplier = UpdateQuery.getProvider();
+        this.supplier = new UpdateQueryProvider();
     }
 
     Stream<DocumentEntity> query(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
@@ -65,7 +61,7 @@ final class UpdateQueryParser extends ConditionQueryParser {
     }
 
     private DocumentEntity getEntity(Params params, UpdateQuery updateQuery, DocumentObserverParser observer) {
-        String collection = observer.fireEntity(updateQuery.getEntity());
+        String collection = observer.fireEntity(updateQuery.entity());
         return getEntity(new UpdateQueryConditioinSupplier(updateQuery), collection, params, observer);
     }
 
@@ -77,13 +73,13 @@ final class UpdateQueryParser extends ConditionQueryParser {
         }
 
         @Override
-        public List<Condition> conditions() {
-            return query.getConditions();
+        public List<QueryCondition> conditions() {
+            return query.conditions();
         }
 
         @Override
         public Optional<JSONQueryValue> value() {
-            return query.getValue();
+            return query.value();
         }
     }
 

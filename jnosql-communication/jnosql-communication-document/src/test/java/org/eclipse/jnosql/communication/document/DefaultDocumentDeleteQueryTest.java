@@ -14,10 +14,9 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
 
-import jakarta.nosql.document.DocumentDeleteQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +39,7 @@ public class DefaultDocumentDeleteQueryTest {
     @Test
     public void shouldNotEditColumns() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            List<String> documents = query.getDocuments();
+            List<String> documents = query.documents();
             assertTrue(documents.isEmpty());
             documents.clear();
         });

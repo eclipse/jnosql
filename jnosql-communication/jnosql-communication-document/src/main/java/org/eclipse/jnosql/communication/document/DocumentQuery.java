@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -67,7 +66,7 @@ public interface DocumentQuery {
      *
      * @return the conditions
      */
-    Optional<DocumentCondition> getCondition();
+    Optional<DocumentCondition> condition();
 
     /**
      * The sorts that contains in this {@link DocumentQuery}
@@ -75,7 +74,7 @@ public interface DocumentQuery {
      *
      * @return the sorts
      */
-    List<Sort> getSorts();
+    List<Sort> sorts();
 
     /**
      * Returns the documents to returns in that query if empty will return all elements in the query.
@@ -83,7 +82,7 @@ public interface DocumentQuery {
      *
      * @return the documents
      */
-    List<String> getDocuments();
+    List<String> documents();
 
     /**
      * It starts the first step of {@link DocumentQuery} creation using a fluent-API way.

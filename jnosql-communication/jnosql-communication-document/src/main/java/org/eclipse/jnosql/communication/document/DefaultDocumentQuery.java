@@ -67,17 +67,17 @@ class DefaultDocumentQuery implements DocumentQuery {
     }
 
     @Override
-    public Optional<DocumentCondition> getCondition() {
+    public Optional<DocumentCondition> condition() {
         return ofNullable(condition);
     }
 
     @Override
-    public List<Sort> getSorts() {
+    public List<Sort> sorts() {
         return unmodifiableList(sorts);
     }
 
     @Override
-    public List<String> getDocuments() {
+    public List<String> documents() {
         return unmodifiableList(documents);
     }
 
@@ -93,9 +93,9 @@ class DefaultDocumentQuery implements DocumentQuery {
         return limit == that.getLimit() &&
                 skip == that.getSkip() &&
                 Objects.equals(documentCollection, that.getDocumentCollection()) &&
-                Objects.equals(condition, that.getCondition().orElse(null)) &&
-                Objects.equals(sorts, that.getSorts()) &&
-                Objects.equals(documents, that.getDocuments());
+                Objects.equals(condition, that.condition().orElse(null)) &&
+                Objects.equals(sorts, that.sorts()) &&
+                Objects.equals(documents, that.documents());
     }
 
     @Override

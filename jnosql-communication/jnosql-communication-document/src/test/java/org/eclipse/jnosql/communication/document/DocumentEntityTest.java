@@ -17,10 +17,8 @@
 
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -109,7 +107,7 @@ public class DocumentEntityTest {
         Map<String, Object> result = entity.toMap();
         assertFalse(result.isEmpty());
         assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));
-        assertEquals(document.getName(), result.keySet().stream().findAny().get());
+        assertEquals(document.name(), result.keySet().stream().findAny().get());
 
     }
 

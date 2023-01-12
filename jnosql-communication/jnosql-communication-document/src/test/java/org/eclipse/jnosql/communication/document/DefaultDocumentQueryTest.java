@@ -14,25 +14,23 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.document.DocumentQuery;
-import org.eclipse.jnosql.communication.document.DefaultDocumentQuery;
+import org.eclipse.jnosql.communication.Sort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static jakarta.nosql.document.DocumentQuery.select;
+import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class DefaultDocumentQueryTest {
 
 
-    private DefaultDocumentQuery query;
+    private DocumentQuery query;
 
 
     @BeforeEach
@@ -44,7 +42,7 @@ public class DefaultDocumentQueryTest {
     @Test
     public void shouldNotRemoveColumns() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            List<String> columns = query.getDocuments();
+            List<String> columns = query.documents();
             assertTrue(columns.isEmpty());
             columns.clear();
         });
@@ -54,7 +52,7 @@ public class DefaultDocumentQueryTest {
     @Test
     public void shouldNotRemoveSort() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            List<Sort> sorts = query.getSorts();
+            List<Sort> sorts = query.sorts();
             assertTrue(sorts.isEmpty());
             sorts.clear();
         });

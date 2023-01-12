@@ -17,10 +17,8 @@
 
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCondition;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -58,8 +56,8 @@ public class DocumentConditionTest {
         DocumentCondition negate = condition.negate();
         Document negateDocument = negate.document();
         assertEquals(Condition.NOT, negate.condition());
-        assertEquals(Condition.NOT.getNameField(), negateDocument.getName());
-        assertEquals(DocumentCondition.of(age, Condition.GREATER_THAN), negateDocument.getValue().get());
+        assertEquals(Condition.NOT.getNameField(), negateDocument.name());
+        assertEquals(DocumentCondition.of(age, Condition.GREATER_THAN), negateDocument.value().get());
     }
 
     @Test
@@ -80,8 +78,8 @@ public class DocumentConditionTest {
         DocumentCondition and = condition1.and(condition2);
         Document andDocument = and.document();
         assertEquals(Condition.AND, and.condition());
-        assertEquals(Condition.AND.getNameField(), andDocument.getName());
-        assertThat(andDocument.getValue().get(new TypeReference<List<DocumentCondition>>() {
+        assertEquals(Condition.AND.getNameField(), andDocument.name());
+        assertThat(andDocument.value().get(new TypeReference<List<DocumentCondition>>() {
                 })).contains(condition1, condition2);
 
     }
@@ -96,8 +94,8 @@ public class DocumentConditionTest {
         DocumentCondition and = condition1.or(condition2);
         Document andDocument = and.document();
         assertEquals(Condition.OR, and.condition());
-        assertEquals(Condition.OR.getNameField(), andDocument.getName());
-        assertThat(andDocument.getValue().get(new TypeReference<List<DocumentCondition>>() {
+        assertEquals(Condition.OR.getNameField(), andDocument.name());
+        assertThat(andDocument.value().get(new TypeReference<List<DocumentCondition>>() {
                 })).contains(condition1, condition2);
 
     }

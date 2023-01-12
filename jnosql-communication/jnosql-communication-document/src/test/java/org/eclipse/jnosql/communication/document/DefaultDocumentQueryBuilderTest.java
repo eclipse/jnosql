@@ -14,18 +14,12 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentQuery;
-import org.eclipse.jnosql.communication.document.DefaultDocumentQuery;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.SortType;
+import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -36,9 +30,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static jakarta.nosql.document.DocumentCondition.eq;
-import static jakarta.nosql.document.DocumentQuery.builder;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.communication.document.DocumentCondition.eq;
+import static org.eclipse.jnosql.communication.document.DocumentQuery.builder;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DefaultDocumentQueryBuilderTest {
@@ -50,18 +44,18 @@ class DefaultDocumentQueryBuilderTest {
     @Test
     public void shouldBuilder() {
         String documentCollection = "documentCollection";
-        DefaultDocumentQuery query = builder().from(documentCollection).build();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
+        DocumentQuery query = builder().from(documentCollection).build();
+        assertTrue(query.documents().isEmpty());
+        assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
     }
 
     @Test
     public void shouldSelectDocument() {
         String documentCollection = "documentCollection";
-        DefaultDocumentQuery query = builder("document", "document2").from(documentCollection).build();
-        assertThat(query.getDocuments()).contains("document", "document2");
-        assertFalse(query.getCondition().isPresent());
+        DocumentQuery query = builder("document", "document2").from(documentCollection).build();
+        assertThat(query.documents()).contains("document", "document2");
+        assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
     }
 
@@ -74,21 +68,21 @@ class DefaultDocumentQueryBuilderTest {
     @Test
     public void shouldSelectOrderAsc() {
         String documentCollection = "documentCollection";
-        DefaultDocumentQuery query = builder().from(documentCollection).sort(Sort.asc("name")).build();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
+        DocumentQuery query = builder().from(documentCollection).sort(Sort.asc("name")).build();
+        assertTrue(query.documents().isEmpty());
+        assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.getSorts()).contains(Sort.of("name", SortType.ASC));
+        assertThat(query.sorts()).contains(Sort.of("name", SortType.ASC));
     }
 
     @Test
     public void shouldSelectOrderDesc() {
         String documentCollection = "documentCollection";
-        DefaultDocumentQuery query = builder().from(documentCollection).sort(Sort.desc("name")).build();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
+        DocumentQuery query = builder().from(documentCollection).sort(Sort.desc("name")).build();
+        assertTrue(query.documents().isEmpty());
+        assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.getSorts()).contains(Sort.of("name", SortType.DESC));
+        assertThat(query.sorts()).contains(Sort.of("name", SortType.DESC));
     }
 
 
@@ -103,9 +97,9 @@ class DefaultDocumentQueryBuilderTest {
     @Test
     public void shouldSelectLimit() {
         String documentCollection = "documentCollection";
-        DefaultDocumentQuery query = builder().from(documentCollection).limit(10).build();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
+        DocumentQuery query = builder().from(documentCollection).limit(10).build();
+        assertTrue(query.documents().isEmpty());
+        assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
         assertEquals(10L, query.getLimit());
     }
@@ -119,9 +113,9 @@ class DefaultDocumentQueryBuilderTest {
     @Test
     public void shouldSelectSkip() {
         String documentCollection = "documentCollection";
-        DefaultDocumentQuery query = builder().from(documentCollection).skip(10).build();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
+        DocumentQuery query = builder().from(documentCollection).skip(10).build();
+        assertTrue(query.documents().isEmpty());
+        assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
         assertEquals(10L, query.getSkip());
     }
@@ -137,17 +131,17 @@ class DefaultDocumentQueryBuilderTest {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
 
-        DefaultDocumentQuery query = builder().from(documentCollection)
-                .where(DocumentCondition.eq("name", name))
+        DocumentQuery query = builder().from(documentCollection)
+                .where(eq("name", name))
                 .build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
+        assertTrue(query.documents().isEmpty());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(name, document.get());
 
     }
@@ -156,17 +150,17 @@ class DefaultDocumentQueryBuilderTest {
     public void shouldSelectWhereNameLike() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
-        DefaultDocumentQuery query = builder().from(documentCollection)
+        DocumentQuery query = builder().from(documentCollection)
                 .where(DocumentCondition.like("name", name))
                 .build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
+        assertTrue(query.documents().isEmpty());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.LIKE, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertEquals(Condition.LIKE, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(name, document.get());
     }
 
@@ -175,17 +169,17 @@ class DefaultDocumentQueryBuilderTest {
         String documentCollection = "documentCollection";
         Number value = 10;
 
-        DefaultDocumentQuery query = builder().from(documentCollection).where(DocumentCondition.gt("name", 10))
+        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.gt("name", 10))
                 .build();
 
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
+        assertTrue(query.documents().isEmpty());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.GREATER_THAN, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertEquals(Condition.GREATER_THAN, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(value, document.get());
     }
 
@@ -194,15 +188,15 @@ class DefaultDocumentQueryBuilderTest {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentCondition gteName = DocumentCondition.gte("name", value);
-        DefaultDocumentQuery query = builder().from(documentCollection).where(gteName).build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentQuery query = builder().from(documentCollection).where(gteName).build();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
+        assertTrue(query.documents().isEmpty());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.GREATER_EQUALS_THAN, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(value, document.get());
     }
 
@@ -211,16 +205,16 @@ class DefaultDocumentQueryBuilderTest {
         String documentCollection = "documentCollection";
         Number value = 10;
 
-        DefaultDocumentQuery query = builder().from(documentCollection).where(DocumentCondition.lt("name", value))
+        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.lt("name", value))
                 .build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
+        assertTrue(query.documents().isEmpty());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.LESSER_THAN, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertEquals(Condition.LESSER_THAN, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(value, document.get());
     }
 
@@ -228,16 +222,16 @@ class DefaultDocumentQueryBuilderTest {
     public void shouldSelectWhereNameLte() {
         String documentCollection = "documentCollection";
         Number value = 10;
-        DefaultDocumentQuery query = builder().from(documentCollection).where(DocumentCondition.lte("name", value))
+        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.lte("name", value))
                 .build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
+        assertTrue(query.documents().isEmpty());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.LESSER_EQUALS_THAN, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(value, document.get());
     }
 
@@ -247,17 +241,17 @@ class DefaultDocumentQueryBuilderTest {
         Number valueA = 10;
         Number valueB = 20;
 
-        DefaultDocumentQuery query = builder().from(documentCollection)
+        DocumentQuery query = builder().from(documentCollection)
                 .where(DocumentCondition.between("name", Arrays.asList(valueA, valueB)))
                 .build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
+        assertTrue(query.documents().isEmpty());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.BETWEEN, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertEquals(Condition.BETWEEN, condition.condition());
+        assertEquals("name", document.name());
         assertThat(document.get(new TypeReference<List<Number>>() {
         })).contains(10, 20);
     }
@@ -267,18 +261,18 @@ class DefaultDocumentQueryBuilderTest {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
 
-        DefaultDocumentQuery query = builder().from(documentCollection).where(DocumentCondition.eq("name", name).negate())
+        DocumentQuery query = builder().from(documentCollection).where(eq("name", name).negate())
                 .build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document column = condition.getDocument();
+        Document column = condition.document();
         DocumentCondition negate = column.get(DocumentCondition.class);
-        assertTrue(query.getDocuments().isEmpty());
+        assertTrue(query.documents().isEmpty());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.NOT, condition.getCondition());
-        assertEquals(Condition.EQUALS, negate.getCondition());
-        assertEquals("name", negate.getDocument().getName());
-        assertEquals(name, negate.getDocument().get());
+        assertEquals(Condition.NOT, condition.condition());
+        assertEquals(Condition.EQUALS, negate.condition());
+        assertEquals("name", negate.document().name());
+        assertEquals(name, negate.document().get());
     }
 
 
@@ -286,18 +280,18 @@ class DefaultDocumentQueryBuilderTest {
     public void shouldSelectWhereNameAnd() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
-        DocumentCondition nameEqualsAda = DocumentCondition.eq("name", name);
+        DocumentCondition nameEqualsAda = eq("name", name);
         DocumentCondition ageOlderTen = DocumentCondition.gt("age", 10);
-        DefaultDocumentQuery query = builder().from(documentCollection)
+        DocumentQuery query = builder().from(documentCollection)
                 .where(DocumentCondition.and(nameEqualsAda, ageOlderTen))
                 .build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
         List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
-        assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions).contains(eq(Document.of("name", name)),
+        assertEquals(Condition.AND, condition.condition());
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Document.of("name", name)),
                 DocumentCondition.gt(Document.of("age", 10)));
     }
 
@@ -305,17 +299,17 @@ class DefaultDocumentQueryBuilderTest {
     public void shouldSelectWhereNameOr() {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
-        DocumentCondition nameEqualsAda = DocumentCondition.eq("name", name);
+        DocumentCondition nameEqualsAda = eq("name", name);
         DocumentCondition ageOlderTen = DocumentCondition.gt("age", 10);
-        DefaultDocumentQuery query = builder().from(documentCollection).where(DocumentCondition.or(nameEqualsAda, ageOlderTen))
+        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.or(nameEqualsAda, ageOlderTen))
                 .build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
         List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
-        assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions).contains(eq(Document.of("name", name)),
+        assertEquals(Condition.OR, condition.condition());
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Document.of("name", name)),
                 DocumentCondition.gt(Document.of("age", 10)));
     }
 
@@ -323,18 +317,18 @@ class DefaultDocumentQueryBuilderTest {
     @Test
     public void shouldSelectNegate() {
         String collection = "collection";
-        DocumentCondition nameNotEqualsLucas = DocumentCondition.eq("name", "Lucas").negate();
-        DefaultDocumentQuery query = builder().from(collection)
+        DocumentCondition nameNotEqualsLucas = eq("name", "Lucas").negate();
+        DocumentQuery query = builder().from(collection)
                 .where(nameNotEqualsLucas).build();
 
-        DocumentCondition condition = query.getCondition().orElseThrow(RuntimeException::new);
+        DocumentCondition condition = query.condition().orElseThrow(RuntimeException::new);
         assertEquals(collection, query.getDocumentCollection());
-        Document column = condition.getDocument();
+        Document column = condition.document();
         List<DocumentCondition> conditions = column.get(new TypeReference<>() {
         });
 
-        assertEquals(Condition.NOT, condition.getCondition());
-        assertThat(conditions).contains(eq(Document.of("name", "Lucas")));
+        assertEquals(Condition.NOT, condition.condition());
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Document.of("name", "Lucas")));
 
     }
 
@@ -360,9 +354,9 @@ class DefaultDocumentQueryBuilderTest {
     }
 
     private void checkQuery(ArgumentCaptor<DefaultDocumentQuery> queryCaptor, String collection) {
-        DefaultDocumentQuery query = queryCaptor.getValue();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
+        DocumentQuery query = queryCaptor.getValue();
+        assertTrue(query.documents().isEmpty());
+        assertFalse(query.condition().isPresent());
         assertEquals(collection, query.getDocumentCollection());
     }
 }

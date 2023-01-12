@@ -43,17 +43,17 @@ final class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
     }
 
     @Override
-    public String getDocumentCollection() {
+    public String documentCollection() {
         return documentCollection;
     }
 
     @Override
-    public Optional<DocumentCondition> getCondition() {
+    public Optional<DocumentCondition> condition() {
         return ofNullable(condition);
     }
 
     @Override
-    public List<String> getDocuments() {
+    public List<String> documents() {
         return unmodifiableList(documents);
     }
 
@@ -66,9 +66,9 @@ final class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
             return false;
         }
         DocumentDeleteQuery that = (DocumentDeleteQuery) o;
-        return Objects.equals(documentCollection, that.getDocumentCollection()) &&
-                Objects.equals(condition, that.getCondition().orElse(null)) &&
-                Objects.equals(documents, that.getDocuments());
+        return Objects.equals(documentCollection, that.documentCollection()) &&
+                Objects.equals(condition, that.condition().orElse(null)) &&
+                Objects.equals(documents, that.documents());
     }
 
     @Override

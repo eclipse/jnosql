@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -42,14 +41,14 @@ public interface DocumentDeleteQuery {
      *
      * @return the collection name
      */
-    String getDocumentCollection();
+    String documentCollection();
 
     /**
      * getter the condition
      *
      * @return the condition
      */
-    Optional<DocumentCondition> getCondition();
+    Optional<DocumentCondition> condition();
 
     /**
      * Defines which columns will be removed, the database provider might use this information
@@ -57,7 +56,7 @@ public interface DocumentDeleteQuery {
      *
      * @return the columns
      */
-    List<String> getDocuments();
+    List<String> documents();
 
     /**
      * It starts the first step of {@link DocumentDelete} API using a fluent-API way.

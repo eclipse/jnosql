@@ -14,15 +14,11 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.document.DocumentPreparedStatement;
+import org.assertj.core.api.Assertions;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -55,7 +51,7 @@ class InsertQueryParserTest {
         DocumentEntity entity = captor.getValue();
 
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
     }
 
@@ -67,7 +63,7 @@ class InsertQueryParserTest {
         Mockito.verify(manager).insert(captor.capture());
         DocumentEntity entity = captor.getValue();
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Artemis"), entity.find("name").get());
         assertEquals(Document.of("age", 30L), entity.find("age").get());
     }
@@ -84,7 +80,7 @@ class InsertQueryParserTest {
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
         assertEquals(Duration.ofDays(10L), duration);
     }
@@ -101,7 +97,7 @@ class InsertQueryParserTest {
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
         assertEquals(Duration.ofHours(10L), duration);
     }
@@ -118,7 +114,7 @@ class InsertQueryParserTest {
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
         assertEquals(Duration.ofMinutes(10L), duration);
     }
@@ -135,7 +131,7 @@ class InsertQueryParserTest {
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
         assertEquals(Duration.ofSeconds(10L), duration);
     }
@@ -153,7 +149,7 @@ class InsertQueryParserTest {
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
         assertEquals(Duration.ofMillis(10L), duration);
     }
@@ -170,7 +166,7 @@ class InsertQueryParserTest {
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
         assertEquals(Duration.ofNanos(10L), duration);
     }
@@ -186,7 +182,7 @@ class InsertQueryParserTest {
         Mockito.verify(manager).insert(captor.capture());
         DocumentEntity entity = captor.getValue();
 
-        assertEquals("Person", entity.getName());
+        assertEquals("Person", entity.name());
         assertEquals(Document.of("name", "Ada Lovelace"), entity.find("name").get());
     }
 
@@ -201,7 +197,7 @@ class InsertQueryParserTest {
         DocumentEntity entity = captor.getValue();
         Duration duration = durationCaptor.getValue();
 
-        assertEquals("Person", entity.getName());
+        assertEquals("Person", entity.name());
         assertEquals(Document.of("name", "Ada Lovelace"), entity.find("name").get());
         assertEquals(Duration.ofNanos(10L), duration);
     }
@@ -221,11 +217,11 @@ class InsertQueryParserTest {
         });
         List<Document> address = entity.find("address").get().get(new TypeReference<>() {
         });
-        assertEquals("Person", entity.getName());
+        assertEquals("Person", entity.name());
         assertEquals(Document.of("name", "Ada Lovelace"), entity.find("name").get());
         assertEquals(Document.of("age", BigDecimal.valueOf(12)), entity.find("age").get());
         assertThat(siblings).contains("Ana", "Maria");
-        assertThat(address).contains(
+        Assertions.assertThat(address).contains(
                 Document.of("country", "United Kingdom"),
                 Document.of("city", "London"));
     }
@@ -243,7 +239,7 @@ class InsertQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
         DocumentPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, prepare::getResult);
+        assertThrows(QueryException.class, prepare::result);
     }
 
 
@@ -253,10 +249,10 @@ class InsertQueryParserTest {
         ArgumentCaptor<DocumentEntity> captor = ArgumentCaptor.forClass(DocumentEntity.class);
         DocumentPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("name", "Diana");
-        prepare.getResult();
+        prepare.result();
         Mockito.verify(manager).insert(captor.capture());
         DocumentEntity entity = captor.getValue();
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Document.of("name", "Diana"), entity.find("name").get());
 
     }

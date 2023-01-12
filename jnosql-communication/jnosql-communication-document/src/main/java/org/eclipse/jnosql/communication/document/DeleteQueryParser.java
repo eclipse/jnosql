@@ -16,41 +16,30 @@
  */
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.document.DeleteQueryConverter;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentDeleteQueryParams;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.document.DocumentPreparedStatement;
-import jakarta.nosql.query.DeleteQuery;
-import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
+
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.query.DeleteQuery;
+import org.eclipse.jnosql.communication.query.DeleteQueryProvider;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * The default implementation of {@link DeleteQueryConverter}
- */
-public final class DeleteQueryParser implements DeleteQueryConverter {
+public final class DeleteQueryParser implements BiFunction<DeleteQuery, DocumentObserverParser, DocumentDeleteQueryParams> {
 
     private final DeleteQueryProvider deleteQueryProvider;
-    private final CacheQuery<DocumentDeleteQuery> cache;
 
     public DeleteQueryParser() {
-        this.deleteQueryProvider = DeleteQuery.getProvider();
-        cache = new CacheQuery<>(this::getQuery);
+        this.deleteQueryProvider = new DeleteQueryProvider();
     }
 
-    Stream<DocumentEntity> query(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
+    Stream<DocumentEntity> query(String query, DocumentManager manager, DocumentObserverParser observer) {
 
-        DocumentDeleteQuery documentQuery = cache.get(query, observer);
-        collectionManager.delete(documentQuery);
+        DocumentDeleteQuery documentQuery = getQuery(query, observer);
+        manager.delete(documentQuery);
         return Stream.empty();
     }
 
@@ -81,14 +70,14 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
 
     private DocumentDeleteQuery getQuery(Params params, DocumentObserverParser observer,
                                          DeleteQuery deleteQuery) {
-        String collection = observer.fireEntity(deleteQuery.getEntity());
-        List<String> documents = deleteQuery.getFields().stream()
+        String collection = observer.fireEntity(deleteQuery.entity());
+        List<String> documents = deleteQuery.fields().stream()
                 .map(f -> observer.fireField(collection, f))
                 .collect(Collectors.toList());
         DocumentCondition condition = null;
 
-        if (deleteQuery.getWhere().isPresent()) {
-            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
+        if (deleteQuery.where().isPresent()) {
+            condition = deleteQuery.where().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
         }
 
         return new DefaultDocumentDeleteQuery(collection, condition, documents);
@@ -97,15 +86,15 @@ public final class DeleteQueryParser implements DeleteQueryConverter {
     private DocumentDeleteQuery getQuery(String query, DocumentObserverParser observer) {
         DeleteQuery deleteQuery = deleteQueryProvider.apply(query);
 
-        String collection = observer.fireEntity(deleteQuery.getEntity());
-        List<String> documents = deleteQuery.getFields().stream()
+        String collection = observer.fireEntity(deleteQuery.entity());
+        List<String> documents = deleteQuery.fields().stream()
                 .map(f -> observer.fireField(collection, f))
                 .collect(Collectors.toList());
         DocumentCondition condition = null;
         Params params = Params.newParams();
 
-        if (deleteQuery.getWhere().isPresent()) {
-            condition = deleteQuery.getWhere().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
+        if (deleteQuery.where().isPresent()) {
+            condition = deleteQuery.where().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
         }
 
         if (params.isNotEmpty()) {

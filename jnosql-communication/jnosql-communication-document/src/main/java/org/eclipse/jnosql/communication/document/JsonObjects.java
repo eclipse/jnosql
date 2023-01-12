@@ -17,8 +17,6 @@
 package org.eclipse.jnosql.communication.document;
 
 
-import jakarta.nosql.document.Document;
-import org.eclipse.jnosql.communication.document.Documents;
 
 import jakarta.json.JsonObject;
 import jakarta.json.bind.Jsonb;

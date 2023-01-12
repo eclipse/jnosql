@@ -14,24 +14,21 @@
  *   Otavio Santana
  *
  */
-package org.eclipse.jnosql.communication.document.query;
+package org.eclipse.jnosql.communication.document;
 
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentDeleteQuery;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.util.List;
 
-import static jakarta.nosql.document.DocumentCondition.eq;
-import static jakarta.nosql.document.DocumentDeleteQuery.delete;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.communication.document.DocumentCondition.eq;
+import static org.eclipse.jnosql.communication.document.DocumentDeleteQuery.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,18 +46,18 @@ public class DefaultFluentDeleteQueryBuilderTest {
     public void shouldDelete() {
         String documentCollection = "documentCollection";
         DocumentDeleteQuery query = delete().from(documentCollection).build();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(documentCollection, query.getDocumentCollection());
+        assertTrue(query.documents().isEmpty());
+        assertFalse(query.condition().isPresent());
+        assertEquals(documentCollection, query.documentCollection());
     }
 
     @Test
     public void shouldDeleteDocuments() {
         String documentCollection = "documentCollection";
         DocumentDeleteQuery query = delete("document", "document2").from(documentCollection).build();
-        assertThat(query.getDocuments()).contains("document", "document2");
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(documentCollection, query.getDocumentCollection());
+        assertThat(query.documents()).contains("document", "document2");
+        assertFalse(query.condition().isPresent());
+        assertEquals(documentCollection, query.documentCollection());
     }
 
 
@@ -74,14 +71,14 @@ public class DefaultFluentDeleteQueryBuilderTest {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").eq(name).build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertTrue(query.documents().isEmpty());
+        assertEquals(documentCollection, query.documentCollection());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(name, document.get());
 
     }
@@ -91,14 +88,14 @@ public class DefaultFluentDeleteQueryBuilderTest {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").like(name).build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.LIKE, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertTrue(query.documents().isEmpty());
+        assertEquals(documentCollection, query.documentCollection());
+        assertEquals(Condition.LIKE, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(name, document.get());
     }
 
@@ -107,14 +104,14 @@ public class DefaultFluentDeleteQueryBuilderTest {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").gt(value).build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.GREATER_THAN, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertTrue(query.documents().isEmpty());
+        assertEquals(documentCollection, query.documentCollection());
+        assertEquals(Condition.GREATER_THAN, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(value, document.get());
     }
 
@@ -123,14 +120,14 @@ public class DefaultFluentDeleteQueryBuilderTest {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").gte(value).build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.GREATER_EQUALS_THAN, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertTrue(query.documents().isEmpty());
+        assertEquals(documentCollection, query.documentCollection());
+        assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(value, document.get());
     }
 
@@ -139,14 +136,14 @@ public class DefaultFluentDeleteQueryBuilderTest {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").lt(value).build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.LESSER_THAN, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertTrue(query.documents().isEmpty());
+        assertEquals(documentCollection, query.documentCollection());
+        assertEquals(Condition.LESSER_THAN, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(value, document.get());
     }
 
@@ -155,14 +152,14 @@ public class DefaultFluentDeleteQueryBuilderTest {
         String documentCollection = "documentCollection";
         Number value = 10;
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").lte(value).build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.LESSER_EQUALS_THAN, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertTrue(query.documents().isEmpty());
+        assertEquals(documentCollection, query.documentCollection());
+        assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
+        assertEquals("name", document.name());
         assertEquals(value, document.get());
     }
 
@@ -172,14 +169,14 @@ public class DefaultFluentDeleteQueryBuilderTest {
         Number valueA = 10;
         Number valueB = 20;
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").between(valueA, valueB).build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
 
-        assertTrue(query.getDocuments().isEmpty());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.BETWEEN, condition.getCondition());
-        assertEquals("name", document.getName());
+        assertTrue(query.documents().isEmpty());
+        assertEquals(documentCollection, query.documentCollection());
+        assertEquals(Condition.BETWEEN, condition.condition());
+        assertEquals("name", document.name());
         assertThat(document.get(new TypeReference<List<Number>>() {})).contains(10, 20);
     }
 
@@ -188,16 +185,16 @@ public class DefaultFluentDeleteQueryBuilderTest {
         String documentCollection = "documentCollection";
         String name = "Ada Lovelace";
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").not().eq(name).build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document column = condition.getDocument();
+        Document column = condition.document();
         DocumentCondition negate = column.get(DocumentCondition.class);
-        assertTrue(query.getDocuments().isEmpty());
-        assertEquals(documentCollection, query.getDocumentCollection());
-        assertEquals(Condition.NOT, condition.getCondition());
-        assertEquals(Condition.EQUALS, negate.getCondition());
-        assertEquals("name", negate.getDocument().getName());
-        assertEquals(name, negate.getDocument().get());
+        assertTrue(query.documents().isEmpty());
+        assertEquals(documentCollection, query.documentCollection());
+        assertEquals(Condition.NOT, condition.condition());
+        assertEquals(Condition.EQUALS, negate.condition());
+        assertEquals("name", negate.document().name());
+        assertEquals(name, negate.document().get());
     }
 
 
@@ -207,13 +204,13 @@ public class DefaultFluentDeleteQueryBuilderTest {
         String name = "Ada Lovelace";
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").eq(name).and("age")
                 .gt(10).build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
         List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
-        assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions).contains(eq(Document.of("name", name)),
+        assertEquals(Condition.AND, condition.condition());
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Document.of("name", name)),
                 DocumentCondition.gt(Document.of("age", 10)));
     }
 
@@ -223,13 +220,13 @@ public class DefaultFluentDeleteQueryBuilderTest {
         String name = "Ada Lovelace";
         DocumentDeleteQuery query = delete().from(documentCollection).where("name").eq(name)
                 .or("age").gt(10).build();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        Document document = condition.getDocument();
+        Document document = condition.document();
         List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
-        assertEquals(Condition.OR, condition.getCondition());
-        assertThat(conditions).contains(eq(Document.of("name", name)),
+        assertEquals(Condition.OR, condition.condition());
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Document.of("name", name)),
                 DocumentCondition.gt(Document.of("age", 10)));
     }
 
@@ -241,14 +238,14 @@ public class DefaultFluentDeleteQueryBuilderTest {
         DocumentDeleteQuery query = delete().from(columnFamily).where("city").not().eq("Assis")
                 .and("name").not().eq("Lucas").build();
 
-        DocumentCondition condition = query.getCondition().orElseThrow(RuntimeException::new);
-        assertEquals(columnFamily, query.getDocumentCollection());
-        Document column = condition.getDocument();
+        DocumentCondition condition = query.condition().orElseThrow(RuntimeException::new);
+        assertEquals(columnFamily, query.documentCollection());
+        Document column = condition.document();
         List<DocumentCondition> conditions = column.get(new TypeReference<>() {
         });
 
-        assertEquals(Condition.AND, condition.getCondition());
-        assertThat(conditions).contains(eq(Document.of("city", "Assis")).negate(),
+        assertEquals(Condition.AND, condition.condition());
+        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Document.of("city", "Assis")).negate(),
                 eq(Document.of("name", "Lucas")).negate());
 
 
@@ -257,14 +254,14 @@ public class DefaultFluentDeleteQueryBuilderTest {
     @Test
     public void shouldExecuteDelete() {
         String collection = "collection";
-        DocumentManager manager = mock(DocumentManager.class);
+        DocumentManager manager = Mockito.mock(DocumentManager.class);
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
         delete().from(collection).delete(manager);
         verify(manager).delete(queryCaptor.capture());
 
         DocumentDeleteQuery query = queryCaptor.getValue();
-        assertTrue(query.getDocuments().isEmpty());
-        assertFalse(query.getCondition().isPresent());
-        assertEquals(collection, query.getDocumentCollection());
+        assertTrue(query.documents().isEmpty());
+        assertFalse(query.condition().isPresent());
+        assertEquals(collection, query.documentCollection());
     }
 }
