@@ -17,9 +17,9 @@
 package org.eclipse.jnosql.communication.reader;
 
 
-import org.eclipse.jnosql.communication.ValueReader;
 import org.eclipse.jnosql.communication.TypeReferenceReader;
 import org.eclipse.jnosql.communication.TypeSupplier;
+import org.eclipse.jnosql.communication.ValueReader;
 import org.eclipse.jnosql.communication.ValueReaderDecorator;
 
 import java.lang.reflect.ParameterizedType;

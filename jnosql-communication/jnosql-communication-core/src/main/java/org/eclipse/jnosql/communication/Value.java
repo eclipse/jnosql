@@ -18,7 +18,6 @@ package org.eclipse.jnosql.communication;
 
 
 import java.util.Objects;
-import java.util.ServiceLoader;
 import java.util.function.Function;
 
 /**

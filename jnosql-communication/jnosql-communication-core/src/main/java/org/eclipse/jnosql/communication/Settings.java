@@ -19,7 +19,6 @@ package org.eclipse.jnosql.communication;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;

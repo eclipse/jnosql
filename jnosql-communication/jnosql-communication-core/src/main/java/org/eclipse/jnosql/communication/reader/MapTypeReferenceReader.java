@@ -17,11 +17,11 @@
 package org.eclipse.jnosql.communication.reader;
 
 
-import org.eclipse.jnosql.communication.ValueReader;
+import org.eclipse.jnosql.communication.Entry;
 import org.eclipse.jnosql.communication.TypeReferenceReader;
 import org.eclipse.jnosql.communication.TypeSupplier;
+import org.eclipse.jnosql.communication.ValueReader;
 import org.eclipse.jnosql.communication.ValueReaderDecorator;
-import org.eclipse.jnosql.communication.Entry;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
