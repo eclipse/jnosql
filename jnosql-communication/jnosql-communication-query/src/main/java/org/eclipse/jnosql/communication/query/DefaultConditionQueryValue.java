@@ -61,7 +61,7 @@ final class DefaultConditionQueryValue implements ConditionQueryValue {
         return conditions.toString();
     }
 
-    static DefaultConditionQueryValue of(List<QueryCondition> conditions) {
+    static ConditionQueryValue of(List<QueryCondition> conditions) {
         return new DefaultConditionQueryValue(conditions);
     }
 

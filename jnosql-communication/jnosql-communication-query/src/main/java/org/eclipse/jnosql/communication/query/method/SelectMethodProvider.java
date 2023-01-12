@@ -28,6 +28,6 @@ enum SelectMethodProvider implements BiFunction<Method, String, SelectQuery> {
         Objects.requireNonNull(method, "method is required");
         Objects.requireNonNull(entity, "entity is required");
         FindByMethodQueryProvider supplier = new FindByMethodQueryProvider();
-        return supplier.apply(method.name(), entity);
+        return supplier.apply(method.getName(), entity);
     }
 }

@@ -18,7 +18,6 @@ module org.eclipse.jnosql.communication.query {
 
     opens org.eclipse.jnosql.communication.query;
     opens org.eclipse.jnosql.communication.query.method;
-    opens org.eclipse.jnosql.communication.query.cache;
 
 
 }

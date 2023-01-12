@@ -35,7 +35,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
 
     protected Where where;
 
-    protected DefaultQueryCondition condition;
+    protected QueryCondition condition;
 
     protected boolean and = true;
 
@@ -126,8 +126,8 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         this.and = false;
     }
 
-    private void checkCondition(DefaultQueryCondition condition, boolean hasNot) {
-        DefaultQueryCondition newCondition = checkNotCondition(condition, hasNot);
+    private void checkCondition(QueryCondition condition, boolean hasNot) {
+        QueryCondition newCondition = checkNotCondition(condition, hasNot);
         if (Objects.isNull(this.condition)) {
             this.condition = newCondition;
             return;
@@ -140,9 +140,9 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
 
     }
 
-    private void appendCondition(Condition operator, DefaultQueryCondition newCondition) {
+    private void appendCondition(Condition operator, QueryCondition newCondition) {
 
-        if (Condition.EQUALS(this.condition.condition())) {
+        if (operator.equals(this.condition.condition())) {
             ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.value());
             List<QueryCondition> conditions = new ArrayList<>(conditionValue.get());
             conditions.add(newCondition);
@@ -154,12 +154,12 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
             List<QueryCondition> conditions = ConditionQueryValue.class.cast(this.condition.value()).get();
             QueryCondition lastCondition = conditions.get(conditions.size() - 1);
 
-            if (isAppendable(lastCondition) && Condition.EQUALS(lastCondition.condition())) {
-                List<QueryCondition> lastConditions = new ArrayList<>(DefaultConditionQueryValue.class
+            if (isAppendable(lastCondition) && operator.equals(lastCondition.condition())) {
+                List<QueryCondition> lastConditions = new ArrayList<>(ConditionQueryValue.class
                         .cast(lastCondition.value()).get());
                 lastConditions.add(newCondition);
 
-                DefaultQueryCondition newAppendable = new DefaultQueryCondition("_" + operator.name(),
+                QueryCondition newAppendable = new DefaultQueryCondition("_" + operator.name(),
                         operator, DefaultConditionQueryValue.of(lastConditions));
 
                 List<QueryCondition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
@@ -167,7 +167,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
                 this.condition = new DefaultQueryCondition(this.condition.name(), this.condition.condition(),
                         DefaultConditionQueryValue.of(newConditions));
             } else {
-                DefaultQueryCondition newAppendable = new DefaultQueryCondition("_" + operator.name(),
+                QueryCondition newAppendable = new DefaultQueryCondition("_" + operator.name(),
                         operator, DefaultConditionQueryValue.of(Collections.singletonList(newCondition)));
 
                 List<QueryCondition> newConditions = new ArrayList<>(conditions);
@@ -187,9 +187,9 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         return !isAppendable(this.condition);
     }
 
-    private DefaultQueryCondition checkNotCondition(DefaultQueryCondition condition, boolean hasNot) {
+    private QueryCondition checkNotCondition(QueryCondition condition, boolean hasNot) {
         if (hasNot) {
-            DefaultConditionQueryValue conditions = DefaultConditionQueryValue.of(Collections.singletonList(condition));
+            ConditionQueryValue conditions = DefaultConditionQueryValue.of(Collections.singletonList(condition));
             return new DefaultQueryCondition("_NOT", NOT, conditions);
         } else {
             return condition;

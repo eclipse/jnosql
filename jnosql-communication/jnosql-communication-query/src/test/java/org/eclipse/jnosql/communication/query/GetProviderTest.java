@@ -12,12 +12,6 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.GetQuery;
-import jakarta.nosql.query.GetQuery.GetQueryProvider;
-import jakarta.nosql.query.NumberQueryValue;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.StringQueryValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
