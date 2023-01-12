@@ -12,6 +12,7 @@
 module org.eclipse.jnosql.communication.query {
     requires org.antlr.antlr4.runtime;
     requires jakarta.json;
+    requires org.eclipse.jnosql.communication.core;
 
     exports org.eclipse.jnosql.communication.query.method;
 

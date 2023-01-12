@@ -12,8 +12,6 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.DeleteQuery;
-import jakarta.nosql.query.DeleteQuery.DeleteQueryProvider;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.List;
@@ -23,9 +21,9 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
- * The {@link DeleteQueryProvider} implementation that uses Antlr4
+ * A provider of {@link DeleteQuery} from a {@link String}
  */
-public final class AntlrDeleteQueryProvider extends AbstractWhereSupplier implements DeleteQueryProvider {
+public final class DeleteQueryProvider extends AbstractWhereSupplier implements Function<String, DeleteQuery> {
 
     private String entity;
 
@@ -46,7 +44,7 @@ public final class AntlrDeleteQueryProvider extends AbstractWhereSupplier implem
     @Override
     public DeleteQuery apply(String query) {
         runQuery(query);
-        return new DefaultDeleteQuery(entity, fields, where);
+        return new DeleteQuery(entity, fields, where);
     }
 
     @Override

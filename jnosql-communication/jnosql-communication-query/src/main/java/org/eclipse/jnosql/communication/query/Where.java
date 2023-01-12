@@ -12,20 +12,26 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.Where;
+import org.eclipse.jnosql.communication.Condition;
 
 import java.util.Objects;
 
-final class DefaultWhere implements Where {
+/**
+ * The WHERE clause specifies a filter to the result. These filters are booleans operations that are composed of one or
+ * more conditions appended with the and ({@link Condition#AND}) and or ({@link Condition#OR}) operators.
+ */
+public final class Where {
 
     private final Condition condition;
 
-    public DefaultWhere(Condition condition) {
+    Where(Condition condition) {
         this.condition = condition;
     }
 
-    @Override
+    /**
+     * The condition
+     * @return the condition
+     */
     public Condition getCondition() {
         return condition;
     }
@@ -35,10 +41,10 @@ final class DefaultWhere implements Where {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultWhere)) {
+        if (!(o instanceof Where)) {
             return false;
         }
-        DefaultWhere that = (DefaultWhere) o;
+        Where that = (Where) o;
         return Objects.equals(condition, that.condition);
     }
 

@@ -45,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DeleteQueryProviderTest {
 
-    private final DeleteQueryProvider selectProvider = new AntlrDeleteQueryProvider();
+    private final DeleteQueryProvider selectProvider = new DeleteQueryProvider();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {

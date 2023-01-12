@@ -11,15 +11,16 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.DeleteQuery;
-import jakarta.nosql.query.Where;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-final class DefaultDeleteQuery implements DeleteQuery {
+/**
+ * Deleting either an entity or fields uses the <b>DELETE</b> statement
+ */
+public final class DeleteQuery {
 
     private final String entity;
 
@@ -27,23 +28,35 @@ final class DefaultDeleteQuery implements DeleteQuery {
 
     private final Where where;
 
-    DefaultDeleteQuery(String entity, List<String> fields, Where where) {
+    DeleteQuery(String entity, List<String> fields, Where where) {
         this.entity = entity;
         this.fields = fields;
         this.where = where;
     }
 
-    @Override
+    /**
+     * The fields that will delete in this query, if this fields is empty, this query will remove the whole entity.
+     *
+     * @return the fields list
+     */
     public List<String> getFields() {
         return Collections.unmodifiableList(fields);
     }
 
-    @Override
+    /**
+     * The entity name
+     *
+     * @return the entity name
+     */
     public String getEntity() {
         return entity;
     }
 
-    @Override
+    /**
+     * The condition at this {@link DeleteQuery}, if the Where is empty that means will delete the whole entities.
+     *
+     * @return the {@link Where} entity otherwise {@link Optional#empty()}
+     */
     public Optional<Where> getWhere() {
         return Optional.ofNullable(where);
     }
@@ -53,10 +66,10 @@ final class DefaultDeleteQuery implements DeleteQuery {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultDeleteQuery)) {
+        if (!(o instanceof DeleteQuery)) {
             return false;
         }
-        DefaultDeleteQuery that = (DefaultDeleteQuery) o;
+        DeleteQuery that = (DeleteQuery) o;
         return Objects.equals(entity, that.entity) &&
                 Objects.equals(fields, that.fields) &&
                 Objects.equals(where, that.where);
@@ -65,5 +78,14 @@ final class DefaultDeleteQuery implements DeleteQuery {
     @Override
     public int hashCode() {
         return Objects.hash(entity, fields, where);
+    }
+
+    @Override
+    public String toString() {
+        return "DeleteQuery{" +
+                "entity='" + entity + '\'' +
+                ", fields=" + fields +
+                ", where=" + where +
+                '}';
     }
 }

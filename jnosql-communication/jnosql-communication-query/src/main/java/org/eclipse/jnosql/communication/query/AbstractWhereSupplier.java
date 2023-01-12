@@ -11,13 +11,7 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionQueryValue;
-import jakarta.nosql.query.Operator;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.StringQueryValue;
-import jakarta.nosql.query.Where;
+import org.eclipse.jnosql.communication.Condition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,17 +19,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static jakarta.nosql.query.Operator.AND;
-import static jakarta.nosql.query.Operator.BETWEEN;
-import static jakarta.nosql.query.Operator.EQUALS;
-import static jakarta.nosql.query.Operator.GREATER_EQUALS_THAN;
-import static jakarta.nosql.query.Operator.GREATER_THAN;
-import static jakarta.nosql.query.Operator.IN;
-import static jakarta.nosql.query.Operator.LESSER_EQUALS_THAN;
-import static jakarta.nosql.query.Operator.LESSER_THAN;
-import static jakarta.nosql.query.Operator.LIKE;
-import static jakarta.nosql.query.Operator.NOT;
-import static jakarta.nosql.query.Operator.OR;
+import static org.eclipse.jnosql.communication.Condition.AND;
+import static org.eclipse.jnosql.communication.Condition.BETWEEN;
+import static org.eclipse.jnosql.communication.Condition.EQUALS;
+import static org.eclipse.jnosql.communication.Condition.GREATER_EQUALS_THAN;
+import static org.eclipse.jnosql.communication.Condition.GREATER_THAN;
+import static org.eclipse.jnosql.communication.Condition.IN;
+import static org.eclipse.jnosql.communication.Condition.LESSER_EQUALS_THAN;
+import static org.eclipse.jnosql.communication.Condition.LESSER_THAN;
+import static org.eclipse.jnosql.communication.Condition.LIKE;
+import static org.eclipse.jnosql.communication.Condition.NOT;
+import static org.eclipse.jnosql.communication.Condition.OR;
 
 abstract class AbstractWhereSupplier extends AbstractSupplier {
 
@@ -50,7 +44,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
     protected void runQuery(String query) {
         super.runQuery(query);
         if (Objects.nonNull(condition)) {
-            this.where = new DefaultWhere(condition);
+            this.where = new Where(condition);
         }
     }
 
