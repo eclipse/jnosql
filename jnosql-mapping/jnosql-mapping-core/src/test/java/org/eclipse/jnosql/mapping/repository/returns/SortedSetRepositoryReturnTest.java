@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.repository.returns;
 
-import jakarta.nosql.mapping.DynamicQueryException;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.DynamicQueryException;
+import jakarta.nosql.Page;
+import jakarta.nosql.Pagination;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.repository.RepositoryReturn;
 import org.junit.jupiter.api.Assertions;

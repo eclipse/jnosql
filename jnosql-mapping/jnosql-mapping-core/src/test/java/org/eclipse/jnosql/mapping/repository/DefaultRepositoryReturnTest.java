@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.repository;
 
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.Page;
+import jakarta.nosql.Pagination;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

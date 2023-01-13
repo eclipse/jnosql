@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping;
 
 import jakarta.nosql.Sort;
-import jakarta.nosql.mapping.Sorts;
+import jakarta.nosql.Sorts;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

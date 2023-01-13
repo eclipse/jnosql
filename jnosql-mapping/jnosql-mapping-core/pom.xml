@@ -43,8 +43,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>jakarta.nosql.mapping</groupId>
-            <artifactId>mapping-core</artifactId>
+            <groupId>jakarta.nosql</groupId>
+            <artifactId>nosql-core</artifactId>
             <version>${jakarta.nosql.version}</version>
         </dependency>
         <dependency>

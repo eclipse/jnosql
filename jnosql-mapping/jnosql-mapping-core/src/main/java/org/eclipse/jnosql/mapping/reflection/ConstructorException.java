@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.mapping.MappingException;
+import jakarta.nosql.MappingException;
 
 
 /**

@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.mapping.AttributeConverter;
+import jakarta.nosql.AttributeConverter;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;

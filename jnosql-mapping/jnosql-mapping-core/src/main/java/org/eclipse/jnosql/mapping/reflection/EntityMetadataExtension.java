@@ -18,8 +18,8 @@ package org.eclipse.jnosql.mapping.reflection;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
-import jakarta.nosql.mapping.Embeddable;
-import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.Embeddable;
+import jakarta.nosql.Entity;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;

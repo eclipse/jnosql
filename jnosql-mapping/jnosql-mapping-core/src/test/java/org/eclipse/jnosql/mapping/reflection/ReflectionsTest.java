@@ -34,7 +34,7 @@ import jakarta.inject.Inject;
 import java.lang.reflect.Field;
 import java.util.Optional;
 
-import static jakarta.nosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
+import static jakarta.nosql.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

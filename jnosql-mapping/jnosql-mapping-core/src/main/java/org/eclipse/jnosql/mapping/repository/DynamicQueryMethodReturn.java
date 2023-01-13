@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.repository;
 
 
-import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.PreparedStatement;
 import org.eclipse.jnosql.mapping.reflection.MethodDynamicExecutable;
 
 import java.lang.reflect.Method;
@@ -24,7 +24,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
- * This instance has the information to run the JNoSQL native query at {@link jakarta.nosql.mapping.Repository}
+ * This instance has the information to run the JNoSQL native query at {@link jakarta.nosql.Repository}
  */
 public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
 

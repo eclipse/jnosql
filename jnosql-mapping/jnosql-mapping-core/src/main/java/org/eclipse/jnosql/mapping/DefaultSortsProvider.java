@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import jakarta.nosql.mapping.Sorts;
-import jakarta.nosql.mapping.Sorts.SortsProvider;
+import jakarta.nosql.Sorts;
+import jakarta.nosql.Sorts.SortsProvider;
 
 public final class DefaultSortsProvider implements SortsProvider {
 

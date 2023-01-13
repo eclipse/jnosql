@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.mapping.InstanceProducer;
+import jakarta.nosql.InstanceProducer;
 import jakarta.nosql.tck.entities.ZipCode;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;

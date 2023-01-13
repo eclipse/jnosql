@@ -18,10 +18,10 @@ import org.eclipse.jnosql.mapping.DatabaseQualifier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static jakarta.nosql.mapping.DatabaseType.COLUMN;
-import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
-import static jakarta.nosql.mapping.DatabaseType.GRAPH;
-import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
+import static jakarta.nosql.DatabaseType.COLUMN;
+import static jakarta.nosql.DatabaseType.DOCUMENT;
+import static jakarta.nosql.DatabaseType.GRAPH;
+import static jakarta.nosql.DatabaseType.KEY_VALUE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 

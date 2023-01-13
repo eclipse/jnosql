@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.util;
 
 import jakarta.nosql.Params;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.DynamicQueryException;
+import jakarta.nosql.Converters;
+import jakarta.nosql.DynamicQueryException;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 

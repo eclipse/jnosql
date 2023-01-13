@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.util;
 
-import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.Converters;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;

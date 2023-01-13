@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import jakarta.nosql.mapping.MappingException;
+import jakarta.nosql.MappingException;
 
 /**
  * Exception when a class is not loaded to the cached way

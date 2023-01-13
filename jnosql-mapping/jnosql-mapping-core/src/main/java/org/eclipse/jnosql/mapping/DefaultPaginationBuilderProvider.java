@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import jakarta.nosql.mapping.Pagination.PaginationBuilder;
-import jakarta.nosql.mapping.Pagination.PaginationBuilderProvider;
+import jakarta.nosql.Pagination.PaginationBuilder;
+import jakarta.nosql.Pagination.PaginationBuilderProvider;
 
 import static java.util.Objects.requireNonNull;
 

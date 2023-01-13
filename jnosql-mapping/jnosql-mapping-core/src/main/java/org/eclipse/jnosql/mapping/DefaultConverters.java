@@ -15,9 +15,9 @@
 package org.eclipse.jnosql.mapping;
 
 
-import jakarta.nosql.mapping.AttributeConverter;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.InstanceProducer;
+import jakarta.nosql.AttributeConverter;
+import jakarta.nosql.Converters;
+import jakarta.nosql.InstanceProducer;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.spi.CreationalContext;

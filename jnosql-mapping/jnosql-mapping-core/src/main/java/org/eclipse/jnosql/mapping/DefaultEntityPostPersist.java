@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping;
 
 
-import jakarta.nosql.mapping.EntityPostPersist;
+import jakarta.nosql.EntityPostPersist;
 
 import java.util.Objects;
 

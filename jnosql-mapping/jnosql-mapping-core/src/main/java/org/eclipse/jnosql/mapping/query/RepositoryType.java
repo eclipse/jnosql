@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.query;
 
-import jakarta.nosql.mapping.Query;
-import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.Query;
+import jakarta.nosql.Repository;
 
 import java.lang.reflect.Method;
 import java.util.Objects;

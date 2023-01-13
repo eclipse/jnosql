@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.mapping.MappingException;
+import jakarta.nosql.MappingException;
 import jakarta.nosql.tck.entities.Actor;
 import jakarta.nosql.tck.entities.Director;
 import jakarta.nosql.tck.entities.Machine;
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static jakarta.nosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
+import static jakarta.nosql.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

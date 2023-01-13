@@ -16,8 +16,8 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.Pagination.PaginationBuilder;
+import jakarta.nosql.Pagination;
+import jakarta.nosql.Pagination.PaginationBuilder;
 
 /**
  * The builder of {@link Pagination}

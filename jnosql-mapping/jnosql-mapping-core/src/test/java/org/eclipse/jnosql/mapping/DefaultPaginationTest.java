@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import jakarta.nosql.mapping.Pagination;
+import jakarta.nosql.Pagination;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

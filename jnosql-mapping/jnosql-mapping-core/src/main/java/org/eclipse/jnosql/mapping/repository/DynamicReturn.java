@@ -16,9 +16,9 @@ package org.eclipse.jnosql.mapping.repository;
 
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.Sort;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.Sorts;
+import jakarta.nosql.Page;
+import jakarta.nosql.Pagination;
+import jakarta.nosql.Sorts;
 import org.eclipse.jnosql.mapping.reflection.MethodDynamicExecutable;
 
 import java.lang.reflect.Method;

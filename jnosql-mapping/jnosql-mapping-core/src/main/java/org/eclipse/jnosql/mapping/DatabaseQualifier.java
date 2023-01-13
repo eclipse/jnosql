@@ -15,16 +15,16 @@
 package org.eclipse.jnosql.mapping;
 
 
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
+import jakarta.nosql.Database;
+import jakarta.nosql.DatabaseType;
 
 import jakarta.enterprise.util.AnnotationLiteral;
 import java.util.Objects;
 
-import static jakarta.nosql.mapping.DatabaseType.COLUMN;
-import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
-import static jakarta.nosql.mapping.DatabaseType.GRAPH;
-import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
+import static jakarta.nosql.DatabaseType.COLUMN;
+import static jakarta.nosql.DatabaseType.DOCUMENT;
+import static jakarta.nosql.DatabaseType.GRAPH;
+import static jakarta.nosql.DatabaseType.KEY_VALUE;
 
 /**
  * Utilitarian class to select the {@link Database}

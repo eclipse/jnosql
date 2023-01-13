@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.mapping.AttributeConverter;
-import jakarta.nosql.mapping.Column;
+import jakarta.nosql.AttributeConverter;
+import jakarta.nosql.Column;
 import jakarta.nosql.tck.entities.Animal;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.MoneyConverter;

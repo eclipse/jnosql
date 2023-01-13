@@ -15,10 +15,10 @@
 package org.eclipse.jnosql.mapping.repository;
 
 import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.Param;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.Query;
-import jakarta.nosql.mapping.Repository;
+import jakarta.nosql.Param;
+import jakarta.nosql.PreparedStatement;
+import jakarta.nosql.Query;
+import jakarta.nosql.Repository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

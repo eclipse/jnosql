@@ -20,7 +20,7 @@ import java.util.Optional;
 
 /**
  * This class is the {@link EntityMetadata} repository.
- * So it contains entities that has the {@link jakarta.nosql.mapping.Entity} annotation.
+ * So it contains entities that has the {@link jakarta.nosql.Entity} annotation.
  */
 public interface EntitiesMetadata {
 
@@ -36,7 +36,7 @@ public interface EntitiesMetadata {
 
     /**
      * Find the {@link InheritanceMetadata} where the parameter is the parent parameter
-     * and it returns a map group by the {@link jakarta.nosql.mapping.DiscriminatorValue}
+     * and it returns a map group by the {@link jakarta.nosql.DiscriminatorValue}
      * @param parent the parent
      * @return a {@link Map}
      * @throws NullPointerException when parent is null
