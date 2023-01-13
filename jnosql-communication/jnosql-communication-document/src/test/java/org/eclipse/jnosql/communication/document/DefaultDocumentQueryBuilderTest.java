@@ -72,7 +72,7 @@ class DefaultDocumentQueryBuilderTest {
         assertTrue(query.documents().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.sorts()).contains(Sort.of("name", Direction.ASC));
+        assertThat(query.sorts()).contains(Sort.of("name", Direction.ASC, false));
     }
 
     @Test
@@ -82,7 +82,7 @@ class DefaultDocumentQueryBuilderTest {
         assertTrue(query.documents().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.sorts()).contains(Sort.of("name", Direction.DESC));
+        assertThat(query.sorts()).contains(Sort.of("name", Direction.DESC, false));
     }
 
 

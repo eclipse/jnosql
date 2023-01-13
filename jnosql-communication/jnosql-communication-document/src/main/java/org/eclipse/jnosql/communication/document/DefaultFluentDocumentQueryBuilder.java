@@ -176,13 +176,13 @@ class DefaultFluentDocumentQueryBuilder extends BaseQueryBuilder implements Docu
 
     @Override
     public DocumentNameOrder asc() {
-        this.sorts.add(Sort.of(name, Direction.ASC));
+        this.sorts.add(Sort.of(name, Direction.ASC, false));
         return this;
     }
 
     @Override
     public DocumentNameOrder desc() {
-        this.sorts.add(Sort.of(name, Direction.DESC));
+        this.sorts.add(Sort.of(name, Direction.DESC, false));
         return this;
     }
 
