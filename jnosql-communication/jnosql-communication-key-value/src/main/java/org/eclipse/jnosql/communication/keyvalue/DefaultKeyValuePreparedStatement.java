@@ -18,7 +18,7 @@ package org.eclipse.jnosql.communication.keyvalue;
 
 
 
-import org.eclipse.jnosql.communication.NonUniqueResultException;
+import jakarta.data.exceptions.NonUniqueResultException;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.Value;

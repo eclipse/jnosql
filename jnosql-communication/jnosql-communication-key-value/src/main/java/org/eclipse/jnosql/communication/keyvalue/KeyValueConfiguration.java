@@ -14,9 +14,7 @@ package org.eclipse.jnosql.communication.keyvalue;
 
 import org.eclipse.jnosql.communication.CommunicationException;
 import org.eclipse.jnosql.communication.Settings;
-import org.eclipse.jnosql.communication.ValueWriter;
 
-import java.security.Provider;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.function.Function;

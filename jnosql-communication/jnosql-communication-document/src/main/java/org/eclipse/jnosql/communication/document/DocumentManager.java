@@ -17,7 +17,7 @@
 package org.eclipse.jnosql.communication.document;
 
 
-import org.eclipse.jnosql.communication.NonUniqueResultException;
+import jakarta.data.exceptions.NonUniqueResultException;
 
 import java.time.Duration;
 import java.util.Iterator;

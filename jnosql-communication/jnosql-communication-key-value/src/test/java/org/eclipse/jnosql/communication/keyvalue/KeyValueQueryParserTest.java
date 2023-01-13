@@ -16,7 +16,7 @@
  */
 package org.eclipse.jnosql.communication.keyvalue;
 
-import org.eclipse.jnosql.communication.NonUniqueResultException;
+import jakarta.data.exceptions.NonUniqueResultException;
 import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;

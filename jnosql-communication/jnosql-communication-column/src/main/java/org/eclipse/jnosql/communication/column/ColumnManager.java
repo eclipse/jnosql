@@ -17,14 +17,12 @@
 package org.eclipse.jnosql.communication.column;
 
 
-
-import org.eclipse.jnosql.communication.NonUniqueResultException;
+import jakarta.data.exceptions.NonUniqueResultException;
 
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
 /**

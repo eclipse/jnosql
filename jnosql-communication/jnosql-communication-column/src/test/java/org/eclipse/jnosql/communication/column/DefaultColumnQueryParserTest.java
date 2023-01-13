@@ -17,7 +17,7 @@
 package org.eclipse.jnosql.communication.column;
 
 import org.eclipse.jnosql.communication.Condition;
-import org.eclipse.jnosql.communication.NonUniqueResultException;
+import jakarta.data.exceptions.NonUniqueResultException;
 import org.eclipse.jnosql.communication.QueryException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
