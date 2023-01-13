@@ -16,201 +16,194 @@
   ~
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>jakarta.nosql</groupId>
-        <artifactId>jakarta-nosql-parent</artifactId>
-        <version>1.0.0-b6-SNAPSHOT</version>
-    </parent>
-
-    <groupId>org.eclipse.jnosql</groupId>
-    <artifactId>jnosql-parent</artifactId>
-
-    <packaging>pom</packaging>
-
-    <description>The Eclipse JNoSQL is a framework to help developers create enterprise-grade applications using Java
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>jakarta.nosql</groupId>
+		<artifactId>jakarta-nosql-parent</artifactId>
+		<version>1.0.0-b6-SNAPSHOT</version>
+	</parent>
+	<groupId>org.eclipse.jnosql</groupId>
+	<artifactId>jnosql-parent</artifactId>
+	<packaging>pom</packaging>
+	<description>The Eclipse JNoSQL is a framework to help developers create enterprise-grade applications using Java
         and NoSQL technologies.
     </description>
-    <url>http://jnosql.org/</url>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-        <license>
-            <name>The Eclipse Public License v1.0</name>
-            <url>http://www.eclipse.org/legal/epl-v10.html</url>
-        </license>
-    </licenses>
-
-    <scm>
-        <connection>scm:git:git://github.com/eclipse/jnosql.git</connection>
-        <developerConnection>scm:git:ssh://github.com:eclipse/jnosql.git</developerConnection>
-        <url>https://github.com/eclipse/jnosql</url>
-    </scm>
-
-    <developers>
-        <developer>
-            <name>JNoSQL Developers</name>
-            <email>jnosql-dev@eclipse.org</email>
-            <organization>Eclipse JNoSQL</organization>
-            <organizationUrl>https://dev.eclipse.org/mailman/listinfo/jnosql-dev</organizationUrl>
-        </developer>
-    </developers>
-
-    <properties>
-        <checkstyle.excludes>**/communication/query/**</checkstyle.excludes>
-        <owb.version>2.0.3</owb.version>
-        <weld.se.core.version>5.1.0.Final</weld.se.core.version>
-        <yasson.version>3.0.2</yasson.version>
-        <microprofile.config.version>3.0.2</microprofile.config.version>
-        <smallrye.config.version>3.1.1</smallrye.config.version>
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.eclipse.microprofile.config</groupId>
-            <artifactId>microprofile-config-api</artifactId>
-            <version>${microprofile.config.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse</groupId>
-            <artifactId>yasson</artifactId>
-            <version>${yasson.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.smallrye.config</groupId>
-            <artifactId>smallrye-config</artifactId>
-            <version>${smallrye.config.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-
-            <plugin>
-                <groupId>org.apache.rat</groupId>
-                <artifactId>apache-rat-plugin</artifactId>
-                <version>0.13</version>
-                <configuration>
-                    <includes>
-                        <include>src/**/*.java</include>
-                        <include>src/**/*.xml</include>
-                        <include>pom.xml</include>
-                    </includes>
-                    <excludes>
-                    </excludes>
-                    <licenses>
-                        <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
-                            <licenseFamilyCategory>AL20-EPL10</licenseFamilyCategory>
-                            <licenseFamilyName>Apache License, 2.0 and Eclipse Public License, 1.0</licenseFamilyName>
-                            <patterns>
-                                <pattern>Apache License v2.0</pattern>
-                                <pattern>Eclipse Public License v1.0</pattern>
-                            </patterns>
-                        </license>
-                    </licenses>
-                    <licenseFamilies>
-                        <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
-                            <familyName>Apache License, 2.0 and Eclipse Public License, 1.0</familyName>
-                        </licenseFamily>
-                    </licenseFamilies>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <modules>
-        <module>jnosql-communication</module>
-        <module>jnosql-mapping</module>
-    </modules>
-
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.3</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <serverId>ossrh</serverId>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                                <configuration>
-                                    <gpgArguments>
-                                        <arg>--pinentry-mode</arg>
-                                        <arg>loopback</arg>
-                                    </gpgArguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-    <repositories>
-        <repository>
-            <id>jakarta.sonatype.org-snapshot</id>
-            <url>https://jakarta.oss.sonatype.org/content/repositories/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>oss.sonatype.org-snapshot</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+	<url>http://jnosql.org/</url>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+		<license>
+			<name>The Eclipse Public License v1.0</name>
+			<url>http://www.eclipse.org/legal/epl-v10.html</url>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:git://github.com/eclipse/jnosql.git</connection>
+		<developerConnection>scm:git:ssh://github.com:eclipse/jnosql.git</developerConnection>
+		<url>https://github.com/eclipse/jnosql</url>
+	</scm>
+	<developers>
+		<developer>
+			<name>JNoSQL Developers</name>
+			<email>jnosql-dev@eclipse.org</email>
+			<organization>Eclipse JNoSQL</organization>
+			<organizationUrl>https://dev.eclipse.org/mailman/listinfo/jnosql-dev</organizationUrl>
+		</developer>
+	</developers>
+	<properties>
+		<checkstyle.excludes>**/communication/query/**</checkstyle.excludes>
+		<owb.version>2.0.3</owb.version>
+		<weld.se.core.version>5.1.0.Final</weld.se.core.version>
+		<yasson.version>3.0.2</yasson.version>
+		<microprofile.config.version>3.0.2</microprofile.config.version>
+		<smallrye.config.version>3.1.1</smallrye.config.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.microprofile.config</groupId>
+			<artifactId>microprofile-config-api</artifactId>
+			<version>${microprofile.config.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>yasson</artifactId>
+			<version>${yasson.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.smallrye.config</groupId>
+			<artifactId>smallrye-config</artifactId>
+			<version>${smallrye.config.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.rat</groupId>
+				<artifactId>apache-rat-plugin</artifactId>
+				<version>0.13</version>
+				<configuration>
+					<includes>
+						<include>src/**/*.java</include>
+						<include>src/**/*.xml</include>
+						<include>pom.xml</include>
+					</includes>
+					<excludes></excludes>
+					<licenses>
+						<license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+							<licenseFamilyCategory>AL20-EPL10</licenseFamilyCategory>
+							<licenseFamilyName>Apache License, 2.0 and Eclipse Public License, 1.0</licenseFamilyName>
+							<patterns>
+								<pattern>Apache License v2.0</pattern>
+								<pattern>Eclipse Public License v1.0</pattern>
+							</patterns>
+						</license>
+					</licenses>
+					<licenseFamilies>
+						<licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
+							<familyName>Apache License, 2.0 and Eclipse Public License, 1.0</familyName>
+						</licenseFamily>
+					</licenseFamilies>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<source>8</source>
+					<detectJavaApiLink>false</detectJavaApiLink>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<modules>
+		<module>jnosql-communication</module>
+		<module>jnosql-mapping</module>
+	</modules>
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.3</version>
+						<extensions>true</extensions>
+						<configuration>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<serverId>ossrh</serverId>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<configuration>
+									<gpgArguments>
+										<arg>--pinentry-mode</arg>
+										<arg>loopback</arg>
+									</gpgArguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>jakarta.sonatype.org-snapshot</id>
+			<url>https://jakarta.oss.sonatype.org/content/repositories/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>oss.sonatype.org-snapshot</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>
