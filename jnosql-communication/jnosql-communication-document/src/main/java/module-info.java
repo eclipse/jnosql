@@ -14,6 +14,7 @@ module org.eclipse.jnosql.communication.document {
     requires org.eclipse.jnosql.communication.query;
     requires jakarta.json.bind;
     requires jakarta.json;
+    requires jakarta.data.api;
     exports org.eclipse.jnosql.communication.document;
     opens org.eclipse.jnosql.communication.document;
     uses org.eclipse.jnosql.communication.document.DocumentConfiguration;
