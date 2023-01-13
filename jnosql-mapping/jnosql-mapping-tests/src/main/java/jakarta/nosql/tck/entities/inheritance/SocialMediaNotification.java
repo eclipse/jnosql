@@ -15,8 +15,8 @@
 
 package jakarta.nosql.tck.entities.inheritance;
 
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.Column;
+import jakarta.nosql.Entity;
 
 @Entity
 public class SocialMediaNotification extends Notification {

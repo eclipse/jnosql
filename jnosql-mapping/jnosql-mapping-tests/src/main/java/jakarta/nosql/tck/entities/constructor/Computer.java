@@ -14,10 +14,10 @@
  */
 package jakarta.nosql.tck.entities.constructor;
 
-import jakarta.nosql.mapping.Column;
+import jakarta.nosql.Column;
 import jakarta.nosql.mapping.Convert;
-import jakarta.nosql.mapping.Entity;
-import jakarta.nosql.mapping.Id;
+import jakarta.nosql.Entity;
+import jakarta.nosql.Id;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.MoneyConverter;
 

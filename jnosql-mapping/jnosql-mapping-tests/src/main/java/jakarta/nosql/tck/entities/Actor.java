@@ -16,6 +16,9 @@ package jakarta.nosql.tck.entities;
 
 
 
+import jakarta.nosql.Column;
+import jakarta.nosql.Entity;
+
 import java.util.List;
 import java.util.Map;
 

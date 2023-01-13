@@ -15,7 +15,7 @@
 package jakarta.nosql.tck.entities;
 
 
-import jakarta.nosql.mapping.Column;
+import jakarta.nosql.Column;
 
 public class Machine {
 

@@ -14,9 +14,9 @@
  */
 package jakarta.nosql.tck.entities.constructor;
 
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.Entity;
-import jakarta.nosql.mapping.Id;
+import jakarta.nosql.Column;
+import jakarta.nosql.Entity;
+import jakarta.nosql.Id;
 import jakarta.nosql.tck.entities.Animal;
 
 import java.util.Objects;

@@ -14,7 +14,7 @@
  */
 package jakarta.nosql.tck.entities;
 
-import jakarta.nosql.mapping.Column;
+import jakarta.nosql.Column;
 import jakarta.nosql.mapping.Embeddable;
 
 import java.util.Objects;
