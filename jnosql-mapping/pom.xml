@@ -41,6 +41,12 @@
     </modules>
 
     <dependencies>
+        <dependency>
+            <groupId>jakarta.nosql</groupId>
+            <artifactId>nosql-core</artifactId>
+            <version>${jakarta.nosql.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>
