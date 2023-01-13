@@ -16,9 +16,6 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.QueryException;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.NonUniqueResultException;
 import org.eclipse.jnosql.communication.QueryException;

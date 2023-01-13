@@ -47,7 +47,7 @@ import static java.util.stream.Collectors.toList;
  * @see ColumnEntity#columns()
  * @see ColumnEntity#name()
  */
-final class ColumnEntity {
+public class ColumnEntity {
 
     private final Map<String, Column> columns = new HashMap<>();
 
