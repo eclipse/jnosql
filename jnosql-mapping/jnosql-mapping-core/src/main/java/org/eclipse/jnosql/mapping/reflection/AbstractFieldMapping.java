@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.Value;
 import jakarta.nosql.AttributeConverter;
 
 import java.lang.reflect.Field;

@@ -15,8 +15,9 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import jakarta.nosql.Param;
-import jakarta.nosql.Query;
+
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

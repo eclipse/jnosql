@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import jakarta.nosql.MappingException;
 
+import jakarta.data.exceptions.MappingException;
 import jakarta.enterprise.event.Event;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;

@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.util;
 
-import jakarta.nosql.Converters;
 import jakarta.nosql.tck.entities.Money;
 import jakarta.nosql.tck.entities.Person;
 import jakarta.nosql.tck.entities.Worker;
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.junit.jupiter.api.Test;

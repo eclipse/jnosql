@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.repository;
 
-import jakarta.nosql.Page;
-import jakarta.nosql.Pagination;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,7 +53,7 @@ class DefaultRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).size(2))
+                .withPagination(Pageable.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
         Object person = repositoryReturn.convertPageable(dynamic);

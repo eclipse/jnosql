@@ -25,7 +25,7 @@ import java.util.Objects;
  * An instance producer from the Class
  */
 @ApplicationScoped
-class InstanceProducer {
+public class InstanceProducer {
 
     @Inject
     private Reflections reflections;

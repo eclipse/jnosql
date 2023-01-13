@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.MappingException;
+import jakarta.data.exceptions.MappingException;
 import jakarta.nosql.tck.entities.Actor;
 import jakarta.nosql.tck.entities.Director;
 import jakarta.nosql.tck.entities.Machine;
@@ -133,7 +133,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(SmallProject.class, entity.getType());
 
         InheritanceMetadata inheritance = entity.getInheritance()
-                .orElseThrow(MappingException::new);
+                .orElseThrow(RuntimeException::new);
 
         assertEquals("size", inheritance.getDiscriminatorColumn());
         assertEquals("Small", inheritance.getDiscriminatorValue());
@@ -147,7 +147,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(SocialMediaNotification.class, entity.getType());
 
         InheritanceMetadata inheritance = entity.getInheritance()
-                .orElseThrow(MappingException::new);
+                .orElseThrow(RuntimeException::new);
 
         assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
         assertEquals("SocialMediaNotification", inheritance.getDiscriminatorValue());
@@ -161,7 +161,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(EmailNotification.class, entity.getType());
 
         InheritanceMetadata inheritance = entity.getInheritance()
-                .orElseThrow(MappingException::new);
+                .orElseThrow(RuntimeException::new);
 
         assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
         assertEquals("Email", inheritance.getDiscriminatorValue());
@@ -175,7 +175,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(Project.class, entity.getType());
 
         InheritanceMetadata inheritance = entity.getInheritance()
-                .orElseThrow(MappingException::new);
+                .orElseThrow(RuntimeException::new);
 
         assertEquals("size", inheritance.getDiscriminatorColumn());
         assertEquals("Project", inheritance.getDiscriminatorValue());

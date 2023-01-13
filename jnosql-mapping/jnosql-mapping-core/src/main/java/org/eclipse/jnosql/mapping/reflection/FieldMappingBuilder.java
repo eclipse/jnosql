@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.TypeSupplier;
 import jakarta.nosql.AttributeConverter;
+import org.eclipse.jnosql.communication.TypeSupplier;
 
 import java.lang.reflect.Field;
 

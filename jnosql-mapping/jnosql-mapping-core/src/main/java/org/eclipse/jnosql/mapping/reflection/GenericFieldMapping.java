@@ -15,9 +15,8 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.TypeSupplier;
+import org.eclipse.jnosql.communication.Value;
 import jakarta.nosql.AttributeConverter;
 import jakarta.nosql.Embeddable;
 import jakarta.nosql.Entity;
@@ -100,8 +99,8 @@ public class GenericFieldMapping extends AbstractFieldMapping {
 
     public Collection<?> getCollectionInstance() {
         Class<?> type = getNativeField().getType();
-        final CollectionSupplier supplier = ServiceLoaderProvider.getSupplierStream(CollectionSupplier.class
-                , ()-> ServiceLoader.load(CollectionSupplier.class))
+        final CollectionSupplier supplier =  ServiceLoader.load(CollectionSupplier.class)
+                .stream()
                 .map(CollectionSupplier.class::cast)
                 .filter(c -> c.test(type))
                 .findFirst()

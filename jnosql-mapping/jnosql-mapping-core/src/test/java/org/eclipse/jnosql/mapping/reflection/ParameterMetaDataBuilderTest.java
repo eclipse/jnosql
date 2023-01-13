@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.TypeSupplier;
+import org.eclipse.jnosql.communication.TypeSupplier;
 import jakarta.nosql.AttributeConverter;
 import jakarta.nosql.Column;
 import jakarta.nosql.tck.entities.Animal;

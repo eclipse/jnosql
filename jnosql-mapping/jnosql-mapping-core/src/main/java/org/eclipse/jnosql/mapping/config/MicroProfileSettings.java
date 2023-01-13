@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.config;
 
-import jakarta.nosql.Settings;
+import org.eclipse.jnosql.communication.Settings;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
 

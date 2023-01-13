@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.repository;
 
-import jakarta.nosql.ServiceLoaderProvider;
 import jakarta.nosql.PreparedStatement;
 import org.eclipse.jnosql.mapping.reflection.RepositoryReflectionUtils;
 
@@ -48,9 +47,8 @@ enum DynamicReturnConverter {
         Class<?> typeClass = dynamic.typeClass();
         Class<?> returnType = method.getReturnType();
 
-        RepositoryReturn repositoryReturn = ServiceLoaderProvider
-                .getSupplierStream(RepositoryReturn.class,
-                        ()-> ServiceLoader.load(RepositoryReturn.class))
+        RepositoryReturn repositoryReturn = ServiceLoader.load(RepositoryReturn.class)
+                .stream()
                 .filter(RepositoryReturn.class::isInstance)
                 .map(RepositoryReturn.class::cast)
                 .filter(r -> r.isCompatible(typeClass, returnType))
@@ -64,7 +62,7 @@ enum DynamicReturnConverter {
     }
 
     /**
-     * Reads and execute JNoSQL query from the Method that has the {@link jakarta.nosql.Query} annotation
+     * Reads and execute JNoSQL query from the Method that has the {@link jakarta.data.repository.Query} annotation
      *
      * @return the result from the query annotation
      */
@@ -85,7 +83,7 @@ enum DynamicReturnConverter {
         } else {
             PreparedStatement prepare = prepareConverter.apply(value);
             params.forEach(prepare::bind);
-            entities = prepare.getResult();
+            entities = prepare.result();
         }
 
         Supplier<Stream<?>> streamSupplier = () -> entities;

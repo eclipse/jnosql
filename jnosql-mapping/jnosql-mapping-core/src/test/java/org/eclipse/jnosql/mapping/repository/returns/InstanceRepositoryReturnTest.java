@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.repository.returns;
 
-import jakarta.nosql.Page;
-import jakarta.nosql.Pagination;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.repository.RepositoryReturn;
 import org.junit.jupiter.api.Assertions;
@@ -57,7 +57,7 @@ class InstanceRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.of(ada))
                 .withStreamPagination(p -> Stream.empty())
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).size(2))
+                .withPagination(Pageable.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
         Person person = (Person) repositoryReturn.convertPageable(dynamic);
@@ -74,7 +74,7 @@ class InstanceRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.empty())
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).size(2))
+                .withPagination(Pageable.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
         Person person = (Person) repositoryReturn.convertPageable(dynamic);

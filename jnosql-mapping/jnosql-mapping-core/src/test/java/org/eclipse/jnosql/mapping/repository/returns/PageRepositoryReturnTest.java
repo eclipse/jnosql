@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.repository.returns;
 
-import jakarta.nosql.DynamicQueryException;
-import jakarta.nosql.Page;
-import jakarta.nosql.Pagination;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
+import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.repository.RepositoryReturn;
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +32,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -56,7 +55,7 @@ class PageRepositoryReturnTest {
 
         Person ada = new Person("Ada");
 
-        Mockito.when(page.getContent()).thenReturn(Stream.of(ada));
+        Mockito.when(page.content()).thenReturn(List.of(ada));
 
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
@@ -65,12 +64,12 @@ class PageRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).size(2))
+                .withPagination(Pageable.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
 
         Page<Person> personPage = (Page<Person>) repositoryReturn.convertPageable(dynamic);
-        List<Person> content = personPage.getContent().collect(toList());
+        List<Person> content = personPage.content();
 
         assertFalse(content.isEmpty());
         assertEquals(ada, content.get(0));

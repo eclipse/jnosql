@@ -14,13 +14,11 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import jakarta.nosql.Database;
-import jakarta.nosql.DatabaseType;
 
 import java.util.Objects;
 
 /**
- * This class is metadata to {@link jakarta.nosql.Database}
+ * This class is metadata to {@link Database}
  */
 public final class DatabaseMetadata {
 

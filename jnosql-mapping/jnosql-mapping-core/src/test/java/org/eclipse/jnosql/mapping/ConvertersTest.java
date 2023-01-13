@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping;
 
 import jakarta.nosql.AttributeConverter;
-import jakarta.nosql.Converters;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

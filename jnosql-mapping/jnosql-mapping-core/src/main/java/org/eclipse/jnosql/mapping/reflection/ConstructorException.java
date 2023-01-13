@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.MappingException;
 
+import jakarta.data.exceptions.MappingException;
 
 /**
  * Get the exception when a class has a no arg constructor either public or default

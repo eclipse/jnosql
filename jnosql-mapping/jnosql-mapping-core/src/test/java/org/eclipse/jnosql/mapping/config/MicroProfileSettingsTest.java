@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.config;
 
-import jakarta.nosql.Settings;
+import org.eclipse.jnosql.communication.Settings;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

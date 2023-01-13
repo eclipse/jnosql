@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.repository;
 
-import jakarta.nosql.Page;
-import jakarta.nosql.Pagination;
-import jakarta.nosql.Repository;
+import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,13 +45,13 @@ import static org.mockito.Mockito.when;
 class DynamicReturnPaginationTest {
 
     @Mock
-    private Function<Pagination, Stream<Person>> streamPagination;
+    private Function<Pageable, Stream<Person>> streamPagination;
 
     @Mock
-    private Function<Pagination, Optional<Person>> singlePagination;
+    private Function<Pageable, Optional<Person>> singlePagination;
 
     @Mock
-    private Function<Pagination, Page<Person>> page;
+    private Function<Pageable, Page<Person>> page;
 
     @Test
     public void shouldReturnEmptyOptional() throws NoSuchMethodException {
@@ -60,7 +60,7 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
 
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
 
         when(singlePagination.apply(pagination)).thenReturn(Optional.empty());
 
@@ -89,7 +89,7 @@ class DynamicReturnPaginationTest {
         Method method = getMethod(PersonRepository.class, "getOptional");
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
 
         when(singlePagination.apply(pagination)).thenReturn(Optional.of(new Person("Ada")));
 
@@ -118,7 +118,7 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
 
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         when(singlePagination.apply(pagination)).thenReturn(Optional.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
@@ -145,7 +145,7 @@ class DynamicReturnPaginationTest {
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
 
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         when(singlePagination.apply(pagination)).thenReturn(Optional.empty());
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
@@ -171,7 +171,7 @@ class DynamicReturnPaginationTest {
         Method method = getMethod(PersonRepository.class, "getList");
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
@@ -199,7 +199,7 @@ class DynamicReturnPaginationTest {
         Method method = getMethod(PersonRepository.class, "getIterable");
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
@@ -226,7 +226,7 @@ class DynamicReturnPaginationTest {
         Method method = getMethod(PersonRepository.class, "getCollection");
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
@@ -253,7 +253,7 @@ class DynamicReturnPaginationTest {
         Method method = getMethod(PersonRepository.class, "getSet");
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
@@ -280,7 +280,7 @@ class DynamicReturnPaginationTest {
         Method method = getMethod(PersonRepository.class, "getQueue");
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
@@ -308,7 +308,7 @@ class DynamicReturnPaginationTest {
         Method method = getMethod(PersonRepository.class, "getStream");
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
@@ -334,7 +334,7 @@ class DynamicReturnPaginationTest {
         Method method = getMethod(PersonRepository.class, "getSortedSet");
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
@@ -361,7 +361,7 @@ class DynamicReturnPaginationTest {
         Method method = getMethod(PersonRepository.class, "getNavigableSet");
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
@@ -389,7 +389,7 @@ class DynamicReturnPaginationTest {
         Method method = getMethod(PersonRepository.class, "getDeque");
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         when(streamPagination.apply(pagination)).thenReturn(Stream.of(new Person("Ada")));
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
@@ -415,7 +415,7 @@ class DynamicReturnPaginationTest {
         Method method = getMethod(PersonRepository.class, "getPage");
         Supplier<Stream<?>> stream = Stream::empty;
         Supplier<Optional<?>> singleResult = DynamicReturn.toSingleResult(method).apply(stream);
-        Pagination pagination = getPagination();
+        Pageable pagination = getPagination();
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(Person.class)
                 .withMethodSource(method).withResult(stream)
@@ -471,7 +471,7 @@ class DynamicReturnPaginationTest {
     }
 
 
-    private interface PersonRepository extends Repository<Person, String> {
+    private interface PersonRepository extends CrudRepository<Person, String> {
 
         Optional<Person> getOptional();
 
@@ -502,8 +502,8 @@ class DynamicReturnPaginationTest {
         return current().nextLong(1, 10);
     }
 
-    private Pagination getPagination() {
-        return Pagination.page(getRandomLong()).size(getRandomLong());
+    private Pageable getPagination() {
+       return Pageable.ofPage(getRandomLong()).size((int) getRandomLong());
     }
 
 }

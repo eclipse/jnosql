@@ -24,7 +24,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
- * This instance has the information to run the JNoSQL native query at {@link jakarta.nosql.Repository}
+ * This instance has the information to run the JNoSQL native query at {@link jakarta.data.repository.CrudRepository}
  */
 public final class DynamicQueryMethodReturn implements MethodDynamicExecutable {
 

@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.repository.returns;
 
-import jakarta.nosql.DynamicQueryException;
-import jakarta.nosql.Page;
+import jakarta.data.repository.Page;
+import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
 public class PageRepositoryReturn extends AbstractRepositoryReturn {
