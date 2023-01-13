@@ -16,8 +16,8 @@ package org.eclipse.jnosql.mapping.util;
 
 import jakarta.data.repository.CrudRepository;
 import org.eclipse.jnosql.communication.Params;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;

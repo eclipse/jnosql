@@ -14,16 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.Vendor;
-import jakarta.nosql.tck.entities.inheritance.EmailNotification;
-import jakarta.nosql.tck.entities.inheritance.LargeProject;
-import jakarta.nosql.tck.entities.inheritance.Notification;
-import jakarta.nosql.tck.entities.inheritance.Project;
-import jakarta.nosql.tck.entities.inheritance.SmallProject;
-import jakarta.nosql.tck.entities.inheritance.SmsNotification;
-import jakarta.nosql.tck.entities.inheritance.SocialMediaNotification;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.Vendor;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.EmailNotification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.LargeProject;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.Notification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.Project;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SmallProject;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SmsNotification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SocialMediaNotification;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

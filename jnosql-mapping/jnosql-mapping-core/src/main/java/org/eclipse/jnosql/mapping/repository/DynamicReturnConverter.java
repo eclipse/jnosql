@@ -49,6 +49,7 @@ enum DynamicReturnConverter {
 
         RepositoryReturn repositoryReturn = ServiceLoader.load(RepositoryReturn.class)
                 .stream()
+                .map(ServiceLoader.Provider::get)
                 .filter(RepositoryReturn.class::isInstance)
                 .map(RepositoryReturn.class::cast)
                 .filter(r -> r.isCompatible(typeClass, returnType))

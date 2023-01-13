@@ -14,25 +14,24 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.data.exceptions.MappingException;
-import jakarta.nosql.tck.entities.Actor;
-import jakarta.nosql.tck.entities.Director;
-import jakarta.nosql.tck.entities.Machine;
-import jakarta.nosql.tck.entities.NoConstructorEntity;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.User;
-import jakarta.nosql.tck.entities.Worker;
-import jakarta.nosql.tck.entities.constructor.Computer;
-import jakarta.nosql.tck.entities.inheritance.EmailNotification;
-import jakarta.nosql.tck.entities.inheritance.Notification;
-import jakarta.nosql.tck.entities.inheritance.Project;
-import jakarta.nosql.tck.entities.inheritance.SmallProject;
-import jakarta.nosql.tck.entities.inheritance.SocialMediaNotification;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.test.entities.Actor;
+import org.eclipse.jnosql.mapping.test.entities.Director;
+import org.eclipse.jnosql.mapping.test.entities.Machine;
+import org.eclipse.jnosql.mapping.test.entities.NoConstructorEntity;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.User;
+import org.eclipse.jnosql.mapping.test.entities.Worker;
+import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.EmailNotification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.Notification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.Project;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SmallProject;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SocialMediaNotification;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
