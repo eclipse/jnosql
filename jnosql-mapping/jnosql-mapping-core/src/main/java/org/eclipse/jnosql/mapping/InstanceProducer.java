@@ -12,24 +12,32 @@
  *
  *   Otavio Santana
  */
-package org.eclipse.jnosql.mapping.reflection;
+package org.eclipse.jnosql.mapping;
 
-import jakarta.nosql.InstanceProducer;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.reflection.Reflections;
+
 import java.util.Objects;
 
 /**
- * The default implementation of {@link InstanceProducer}
+ * An instance producer from the Class
  */
 @ApplicationScoped
-class DefaultInstanceProducer implements InstanceProducer {
+class InstanceProducer {
 
     @Inject
     private Reflections reflections;
 
-    @Override
+    /**
+     * Creates an instance from the class
+     *
+     * @param instanceType the instance class
+     * @param <T>          the instance type
+     * @return a new instance
+     * @throws NullPointerException when instanceType is null
+     */
     public <T> T create(Class<T> instanceType) {
         Objects.requireNonNull(instanceType, "instanceType is required");
         return reflections.newInstance(instanceType);

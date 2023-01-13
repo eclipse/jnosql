@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class DefaultSortsTest {
+class SortsTest {
 
     @Test
     public void shouldCreateNewSortInstance() {

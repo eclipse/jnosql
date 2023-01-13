@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import jakarta.inject.Inject;
 
 @CDIExtension
-class DefaultConvertersTest {
+class ConvertersTest {
 
     @Inject
     private Converters converters;

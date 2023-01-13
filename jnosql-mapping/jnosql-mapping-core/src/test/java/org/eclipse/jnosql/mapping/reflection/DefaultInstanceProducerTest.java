@@ -15,13 +15,14 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.DefaultInstanceProducer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
 
 @CDIExtension
-class DefaultInstanceProducerTest {
+class InstanceProducerTest {
 
     @Inject
     private DefaultInstanceProducer producer;

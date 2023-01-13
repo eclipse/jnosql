@@ -16,8 +16,6 @@ package org.eclipse.jnosql.mapping;
 
 
 import jakarta.nosql.AttributeConverter;
-import jakarta.nosql.Converters;
-import jakarta.nosql.InstanceProducer;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.spi.CreationalContext;
@@ -29,12 +27,12 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
- * The Default implementation to {@link Converters}
+ * The {@link jakarta.nosql.Convert} collection, this instance will generate/create an instance.
  */
 @ApplicationScoped
-class DefaultConverters implements Converters {
+public class Converters {
 
-    private static final Logger LOGGER = Logger.getLogger(DefaultConverters.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Converters.class.getName());
 
     @Inject
     private BeanManager beanManager;
@@ -42,7 +40,15 @@ class DefaultConverters implements Converters {
     @Inject
     private InstanceProducer instanceProducer;
 
-    @Override
+    /**
+     * Returns a converter instance where it might use scope from CDI.
+     *
+     * @param converterClass the converter class
+     * @param <X> the type of the entity attribute
+     * @param <Y> the type of the database column
+     * @return a converter instance
+     * @throws NullPointerException when converter is null
+     */
     public <X, Y> AttributeConverter<X, Y> get(Class<? extends AttributeConverter<X, Y>> converterClass) {
         Objects.requireNonNull(converterClass, "The converterClass is required");
         return getInstance(converterClass);

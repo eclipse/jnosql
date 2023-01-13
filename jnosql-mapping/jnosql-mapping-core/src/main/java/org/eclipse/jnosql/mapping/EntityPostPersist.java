@@ -15,23 +15,23 @@
 package org.eclipse.jnosql.mapping;
 
 
-import jakarta.nosql.EntityPrePersist;
-
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
- * The default implementation to {@link EntityPrePersist}
+ * When an entity is either saved or updated it's the first event to fire after the database action.
  */
-public final class DefaultEntityPrePersist implements EntityPrePersist {
+public final class EntityPostPersist implements Supplier<Object> {
 
     private final Object value;
 
-    public DefaultEntityPrePersist(Object value) {
+    EntityPostPersist(Object value) {
         this.value = value;
     }
 
+
     @Override
-    public Object getValue() {
+    public Object get() {
         return value;
     }
 
@@ -40,10 +40,10 @@ public final class DefaultEntityPrePersist implements EntityPrePersist {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultEntityPrePersist)) {
+        if (!(o instanceof EntityPostPersist)) {
             return false;
         }
-        DefaultEntityPrePersist that = (DefaultEntityPrePersist) o;
+        EntityPostPersist that = (EntityPostPersist) o;
         return Objects.equals(value, that.value);
     }
 
@@ -54,7 +54,14 @@ public final class DefaultEntityPrePersist implements EntityPrePersist {
 
     @Override
     public String toString() {
-        return  "DefaultEntityPrePersist{" + "value=" + value +
+        return "EntityPostPersist{" + "value=" + value +
                 '}';
     }
+
+    public static EntityPostPersist of(Object value) {
+        Objects.requireNonNull(value, "value is required");
+        return new EntityPostPersist(value);
+    }
+
+
 }
