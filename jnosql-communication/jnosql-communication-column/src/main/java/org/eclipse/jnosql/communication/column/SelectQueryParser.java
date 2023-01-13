@@ -17,6 +17,7 @@
 package org.eclipse.jnosql.communication.column;
 
 
+import jakarta.data.repository.Direction;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 import jakarta.data.repository.Sort;
@@ -110,7 +111,8 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, ColumnOb
     }
 
     private Sort toSort(Sort sort, ColumnObserverParser observer, String entity) {
-        return Sort.of(observer.fireField(entity, sort.name()), sort.type());
+        return Sort.of(observer.fireField(entity, sort.property()),
+                sort.isAscending()? Direction.ASC: Direction.DESC, false);
     }
 
 

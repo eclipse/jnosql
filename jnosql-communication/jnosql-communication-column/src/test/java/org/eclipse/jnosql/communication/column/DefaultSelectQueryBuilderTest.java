@@ -77,7 +77,7 @@ public class DefaultSelectQueryBuilderTest {
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(columnFamily, query.columnFamily());
-        assertThat(query.sorts()).contains(Sort.of("name", Direction.ASC));
+        assertThat(query.sorts()).contains(Sort.of("name", Direction.ASC, false));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class DefaultSelectQueryBuilderTest {
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(columnFamily, query.columnFamily());
-        assertThat(query.sorts()).contains(Sort.of("name", Direction.DESC));
+        assertThat(query.sorts()).contains(Sort.of("name", Direction.DESC, false));
     }
 
     @Test

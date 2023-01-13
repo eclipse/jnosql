@@ -73,7 +73,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.columns().isEmpty());
-        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.ASC));
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
         assertEquals("God", columnQuery.columnFamily());
@@ -89,7 +89,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.columns().isEmpty());
-        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.ASC));
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
         assertEquals("God", columnQuery.columnFamily());
@@ -105,7 +105,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.columns().isEmpty());
-        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.DESC));
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.DESC, false));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
         assertEquals("God", columnQuery.columnFamily());
@@ -122,8 +122,8 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.columns().isEmpty());
-        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.DESC), Sort.of("age",
-                Direction.ASC));
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.DESC, false), Sort.of("age",
+                Direction.ASC, false));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
         assertEquals("God", columnQuery.columnFamily());
