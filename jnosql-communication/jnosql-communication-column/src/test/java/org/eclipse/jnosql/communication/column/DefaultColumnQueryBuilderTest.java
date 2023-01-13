@@ -17,8 +17,8 @@
 package org.eclipse.jnosql.communication.column;
 
 import org.eclipse.jnosql.communication.Condition;
-import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.SortType;
+import jakarta.data.repository.Sort;
+import jakarta.data.repository.Direction;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -73,7 +73,7 @@ class DefaultColumnQueryBuilderTest {
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.columnFamily());
-        assertThat(query.sorts()).contains(Sort.of("name", SortType.ASC));
+        assertThat(query.sorts()).contains(Sort.asc("name"));
     }
 
     @Test
@@ -83,7 +83,7 @@ class DefaultColumnQueryBuilderTest {
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.columnFamily());
-        assertThat(query.sorts()).contains(Sort.of("name", SortType.DESC));
+        assertThat(query.sorts()).contains(Sort.desc("name"));
     }
 
 

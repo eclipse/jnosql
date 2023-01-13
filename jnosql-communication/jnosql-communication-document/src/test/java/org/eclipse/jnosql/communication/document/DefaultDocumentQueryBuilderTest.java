@@ -17,8 +17,8 @@
 package org.eclipse.jnosql.communication.document;
 
 import org.eclipse.jnosql.communication.Condition;
-import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.SortType;
+import jakarta.data.repository.Sort;
+import jakarta.data.repository.Direction;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -72,7 +72,7 @@ class DefaultDocumentQueryBuilderTest {
         assertTrue(query.documents().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.sorts()).contains(Sort.of("name", SortType.ASC));
+        assertThat(query.sorts()).contains(Sort.of("name", Direction.ASC));
     }
 
     @Test
@@ -82,7 +82,7 @@ class DefaultDocumentQueryBuilderTest {
         assertTrue(query.documents().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.sorts()).contains(Sort.of("name", SortType.DESC));
+        assertThat(query.sorts()).contains(Sort.of("name", Direction.DESC));
     }
 
 

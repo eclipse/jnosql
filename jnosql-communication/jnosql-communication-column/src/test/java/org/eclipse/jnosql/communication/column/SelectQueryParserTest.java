@@ -19,8 +19,8 @@ package org.eclipse.jnosql.communication.column;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.QueryException;
-import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.SortType;
+import jakarta.data.repository.Sort;
+import jakarta.data.repository.Direction;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -73,7 +73,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.columns().isEmpty());
-        assertThat(columnQuery.sorts()).contains(Sort.of("name", SortType.ASC));
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.ASC));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
         assertEquals("God", columnQuery.columnFamily());
@@ -89,7 +89,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.columns().isEmpty());
-        assertThat(columnQuery.sorts()).contains(Sort.of("name", SortType.ASC));
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.ASC));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
         assertEquals("God", columnQuery.columnFamily());
@@ -105,7 +105,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.columns().isEmpty());
-        assertThat(columnQuery.sorts()).contains(Sort.of("name", SortType.DESC));
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.DESC));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
         assertEquals("God", columnQuery.columnFamily());
@@ -122,8 +122,8 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.columns().isEmpty());
-        assertThat(columnQuery.sorts()).contains(Sort.of("name", SortType.DESC), Sort.of("age",
-                SortType.ASC));
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.DESC), Sort.of("age",
+                Direction.ASC));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
         assertEquals("God", columnQuery.columnFamily());

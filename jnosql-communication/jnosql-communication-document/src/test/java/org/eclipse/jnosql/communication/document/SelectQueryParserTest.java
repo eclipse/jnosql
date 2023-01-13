@@ -19,8 +19,8 @@ package org.eclipse.jnosql.communication.document;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.QueryException;
-import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.SortType;
+import jakarta.data.repository.Sort;
+import jakarta.data.repository.Direction;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -73,7 +73,7 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.documents().isEmpty());
-        assertThat(documentQuery.sorts()).contains(Sort.of("name", SortType.ASC));
+        assertThat(documentQuery.sorts()).contains(Sort.of("name", Direction.ASC));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
@@ -91,7 +91,7 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.documents().isEmpty());
-        assertThat(documentQuery.sorts()).contains(Sort.of("name", SortType.ASC));
+        assertThat(documentQuery.sorts()).contains(Sort.of("name", Direction.ASC));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
@@ -107,7 +107,7 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.documents().isEmpty());
-        assertThat(documentQuery.sorts()).contains(Sort.of("name", SortType.DESC));
+        assertThat(documentQuery.sorts()).contains(Sort.of("name", Direction.DESC));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());
@@ -124,8 +124,8 @@ public class SelectQueryParserTest {
         DefaultDocumentQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.documents().isEmpty());
-        assertThat(documentQuery.sorts()).contains(Sort.of("name", SortType.DESC),
-                Sort.of("age", SortType.ASC));
+        assertThat(documentQuery.sorts()).contains(Sort.of("name", Direction.DESC),
+                Sort.of("age", Direction.ASC));
         assertEquals(0L, documentQuery.getLimit());
         assertEquals(0L, documentQuery.getSkip());
         assertEquals("God", documentQuery.getDocumentCollection());

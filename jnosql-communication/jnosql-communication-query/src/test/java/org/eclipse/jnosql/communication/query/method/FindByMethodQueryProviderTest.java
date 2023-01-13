@@ -12,8 +12,8 @@
 package org.eclipse.jnosql.communication.query.method;
 
 import org.eclipse.jnosql.communication.Condition;
-import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.SortType;
+import jakarta.data.repository.Sort;
+import jakarta.data.repository.Direction;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.ParamQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
@@ -229,47 +229,47 @@ class FindByMethodQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByName"})
     public void shouldReturnParserQuery20(String query) {
-        checkOrderBy(query, SortType.ASC);
+        checkOrderBy(query, Direction.ASC);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameAsc"})
     public void shouldReturnParserQuery21(String query) {
-        SortType type = SortType.ASC;
+        Direction type = Direction.ASC;
         checkOrderBy(query, type);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameDesc"})
     public void shouldReturnParserQuery22(String query) {
-        checkOrderBy(query, SortType.DESC);
+        checkOrderBy(query, Direction.DESC);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameDescAgeAsc"})
     public void shouldReturnParserQuery23(String query) {
 
-        SortType type = SortType.DESC;
-        SortType type2 = SortType.ASC;
+        Direction type = Direction.DESC;
+        Direction type2 = Direction.ASC;
         checkOrderBy(query, type, type2);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameDescAge"})
     public void shouldReturnParserQuery24(String query) {
-        checkOrderBy(query, SortType.DESC, SortType.ASC);
+        checkOrderBy(query, Direction.DESC, Direction.ASC);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameDescAgeDesc"})
     public void shouldReturnParserQuery25(String query) {
-        checkOrderBy(query, SortType.DESC, SortType.DESC);
+        checkOrderBy(query, Direction.DESC, Direction.DESC);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByOrderByNameAscAgeAsc"})
     public void shouldReturnParserQuery26(String query) {
-        checkOrderBy(query, SortType.ASC, SortType.ASC);
+        checkOrderBy(query, Direction.ASC, Direction.ASC);
     }
 
 
@@ -406,11 +406,11 @@ class FindByMethodQueryProviderTest {
         assertEquals("salary.currency", condition.name());
 
         final Sort sort = selectQuery.orderBy().get(0);
-        Assertions.assertEquals("salary.value", sort.name());
+        Assertions.assertEquals("salary.value", sort.property());
     }
 
 
-    private void checkOrderBy(String query, SortType type, SortType type2) {
+    private void checkOrderBy(String query, Direction direction, Direction direction2) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -419,15 +419,16 @@ class FindByMethodQueryProviderTest {
 
         assertEquals(2, sorts.size());
         Sort sort = sorts.get(0);
-        assertEquals("name", sort.name());
-        assertEquals(type, sort.type());
+        assertEquals("name", sort.property());
+        assertEquals(direction, sort.isAscending() == true? Direction.ASC: Direction.DESC);
 
         Sort sort2 = sorts.get(1);
-        assertEquals("age", sort2.name());
-        assertEquals(type2, sort2.type());
+        assertEquals("age", sort2.property());
+
+        assertEquals(direction2, sort2.isAscending()? Direction.ASC: Direction.DESC);
     }
 
-    private void checkOrderBy(String query, SortType type) {
+    private void checkOrderBy(String query, Direction type) {
         String entity = "entity";
         SelectQuery selectQuery = queryProvider.apply(query, entity);
         assertNotNull(selectQuery);
@@ -436,8 +437,8 @@ class FindByMethodQueryProviderTest {
 
         assertEquals(1, sorts.size());
         Sort sort = sorts.get(0);
-        assertEquals("name", sort.name());
-        assertEquals(type, sort.type());
+        assertEquals("name", sort.property());
+        assertEquals(type, sort.isAscending() == true? Direction.ASC: Direction.DESC);
     }
 
 

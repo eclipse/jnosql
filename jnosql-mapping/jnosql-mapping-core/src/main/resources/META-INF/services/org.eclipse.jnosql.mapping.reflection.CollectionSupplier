@@ -1,4 +1,0 @@
-org.eclipse.jnosql.mapping.reflection.collection.DequeSupplier
-org.eclipse.jnosql.mapping.reflection.collection.ListSupplier
-org.eclipse.jnosql.mapping.reflection.collection.SetSupplier
-org.eclipse.jnosql.mapping.reflection.collection.TreeSetSupplier

@@ -12,8 +12,8 @@
 package org.eclipse.jnosql.communication.query.method;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.SortType;
+import jakarta.data.repository.Sort;
+import jakarta.data.repository.Direction;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public final class FindByMethodQueryProvider extends AbstractMethodQueryProvider
 
     private Sort sort(MethodParser.OrderNameContext context) {
         String text = context.variable().getText();
-        SortType type = context.desc() == null ? SortType.ASC : SortType.DESC;
-        return Sort.of(getFormatField(text), type);
+        Direction type = context.desc() == null ? Direction.ASC : Direction.DESC;
+        return Sort.of(getFormatField(text), type, false);
     }
 }

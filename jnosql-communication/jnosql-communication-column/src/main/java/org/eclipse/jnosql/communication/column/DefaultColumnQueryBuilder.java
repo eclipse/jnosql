@@ -17,7 +17,7 @@
 package org.eclipse.jnosql.communication.column;
 
 
-import org.eclipse.jnosql.communication.Sort;
+import jakarta.data.repository.Sort;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -13,8 +13,8 @@
 package org.eclipse.jnosql.communication.query;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.SortType;
+import jakarta.data.repository.Sort;
+import jakarta.data.repository.Direction;
 
 import java.util.List;
 import java.util.function.Function;
@@ -78,7 +78,7 @@ public final class SelectQueryProvider extends AbstractWhereSupplier implements 
 
     private Sort sort(QueryParser.OrderNameContext context) {
         String text = context.name().getText();
-        SortType type = context.desc() == null? SortType.ASC: SortType.DESC;
-        return Sort.of(text, type);
+        Direction type = context.desc() == null? Direction.ASC: Direction.DESC;
+        return Sort.of(text, type, false);
     }
 }

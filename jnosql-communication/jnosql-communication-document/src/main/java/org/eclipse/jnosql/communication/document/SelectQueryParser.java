@@ -19,7 +19,7 @@ package org.eclipse.jnosql.communication.document;
 
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
-import org.eclipse.jnosql.communication.Sort;
+import jakarta.data.repository.Sort;
 import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.SelectQueryProvider;
 

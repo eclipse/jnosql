@@ -17,8 +17,7 @@
 package org.eclipse.jnosql.communication.column;
 
 
-import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.SortType;
+import jakarta.data.repository.Sort;
 import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnFrom;
 import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnLimit;
 import org.eclipse.jnosql.communication.column.ColumnQuery.ColumnNameCondition;
@@ -177,13 +176,13 @@ class DefaultFluentColumnQueryBuilder extends BaseQueryBuilder implements
 
     @Override
     public ColumnNameOrder asc() {
-        this.sorts.add(Sort.of(name, SortType.ASC));
+        this.sorts.add(Sort.asc(name));
         return this;
     }
 
     @Override
     public ColumnNameOrder desc() {
-        this.sorts.add(Sort.of(name, SortType.DESC));
+        this.sorts.add(Sort.desc(name));
         return this;
     }
 

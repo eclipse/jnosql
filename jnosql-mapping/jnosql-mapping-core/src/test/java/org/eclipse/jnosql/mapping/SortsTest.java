@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import jakarta.nosql.Sort;
+import org.eclipse.jnosql.communication.Sort;
 import jakarta.nosql.Sorts;
 import org.junit.jupiter.api.Test;
 

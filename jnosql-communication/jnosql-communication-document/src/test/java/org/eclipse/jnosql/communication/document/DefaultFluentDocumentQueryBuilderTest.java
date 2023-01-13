@@ -18,8 +18,8 @@ package org.eclipse.jnosql.communication.document;
 
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.Condition;
-import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.SortType;
+import jakarta.data.repository.Sort;
+import jakarta.data.repository.Direction;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -77,7 +77,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
         assertTrue(query.documents().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.sorts()).contains(Sort.of("name", SortType.ASC));
+        assertThat(query.sorts()).contains(Sort.asc("name"));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class DefaultFluentDocumentQueryBuilderTest {
         assertTrue(query.documents().isEmpty());
         assertFalse(query.condition().isPresent());
         assertEquals(documentCollection, query.getDocumentCollection());
-        assertThat(query.sorts()).contains(Sort.of("name", SortType.DESC));
+        assertThat(query.sorts()).contains(Sort.desc("name"));
     }
 
 

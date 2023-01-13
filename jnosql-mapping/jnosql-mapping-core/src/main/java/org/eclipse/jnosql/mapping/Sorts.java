@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import jakarta.nosql.Sort;
 import jakarta.nosql.Sorts;
+import org.eclipse.jnosql.communication.Sort;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,7 +12,7 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import org.eclipse.jnosql.communication.Sort;
+import jakarta.data.repository.Sort;
 
 import java.util.List;
 import java.util.Optional;

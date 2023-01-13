@@ -13,8 +13,8 @@
 package org.eclipse.jnosql.communication.query;
 
 import org.eclipse.jnosql.communication.Condition;
-import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.SortType;
+import jakarta.data.repository.Sort;
+import jakarta.data.repository.Direction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -68,8 +68,8 @@ class SelectQueryProviderTest {
         assertFalse(selectQuery.fields().isEmpty());
         assertThat(selectQuery.fields()).contains("name", "address");
         assertFalse(selectQuery.orderBy().isEmpty());
-        assertThat(selectQuery.orderBy().stream().map(Sort::name).collect(toList())).contains("name");
-        assertThat(selectQuery.orderBy().stream().map(Sort::type).collect(toList())).contains(SortType.ASC);
+        assertThat(selectQuery.orderBy().stream().map(Sort::property).collect(toList())).contains("name");
+        assertThat(selectQuery.orderBy().stream().map(Sort::isAscending).collect(toList())).contains(true);
         assertEquals(0, selectQuery.limit());
         assertEquals(0, selectQuery.skip());
         assertFalse(selectQuery.where().isPresent());
@@ -83,8 +83,8 @@ class SelectQueryProviderTest {
         assertFalse(selectQuery.fields().isEmpty());
         assertThat(selectQuery.fields()).contains("name", "address");
         assertFalse(selectQuery.orderBy().isEmpty());
-        assertThat(selectQuery.orderBy().stream().map(Sort::name).collect(toList())).contains("name");
-        assertThat(selectQuery.orderBy().stream().map(Sort::type).collect(toList())).contains(SortType.DESC);
+        assertThat(selectQuery.orderBy().stream().map(Sort::property).collect(toList())).contains("name");
+        assertThat(selectQuery.orderBy().stream().map(Sort::isDescending).collect(toList())).contains(true);
         assertEquals(0, selectQuery.limit());
         assertEquals(0, selectQuery.skip());
         assertFalse(selectQuery.where().isPresent());
@@ -98,9 +98,9 @@ class SelectQueryProviderTest {
         assertFalse(selectQuery.fields().isEmpty());
         assertThat(selectQuery.fields()).contains("name", "address");
         assertFalse(selectQuery.orderBy().isEmpty());
-        assertThat(selectQuery.orderBy().stream().map(Sort::name).collect(toList())).contains("name", "age");
-        assertThat(selectQuery.orderBy().stream().map(Sort::type).collect(toList())).
-                contains(SortType.DESC, SortType.ASC);
+        assertThat(selectQuery.orderBy().stream().map(Sort::property).collect(toList())).contains("name", "age");
+        assertThat(selectQuery.orderBy().stream().map(Sort::isDescending).collect(toList())).
+                contains(false, true);
         assertEquals(0, selectQuery.limit());
         assertEquals(0, selectQuery.skip());
         assertFalse(selectQuery.where().isPresent());

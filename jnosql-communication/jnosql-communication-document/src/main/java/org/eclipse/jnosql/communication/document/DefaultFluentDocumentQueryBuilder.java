@@ -17,8 +17,8 @@
 package org.eclipse.jnosql.communication.document;
 
 
-import org.eclipse.jnosql.communication.Sort;
-import org.eclipse.jnosql.communication.SortType;
+import jakarta.data.repository.Sort;
+import jakarta.data.repository.Direction;
 import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentFrom;
 import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentLimit;
 import org.eclipse.jnosql.communication.document.DocumentQuery.DocumentNameCondition;
@@ -176,13 +176,13 @@ class DefaultFluentDocumentQueryBuilder extends BaseQueryBuilder implements Docu
 
     @Override
     public DocumentNameOrder asc() {
-        this.sorts.add(Sort.of(name, SortType.ASC));
+        this.sorts.add(Sort.of(name, Direction.ASC));
         return this;
     }
 
     @Override
     public DocumentNameOrder desc() {
-        this.sorts.add(Sort.of(name, SortType.DESC));
+        this.sorts.add(Sort.of(name, Direction.DESC));
         return this;
     }
 
