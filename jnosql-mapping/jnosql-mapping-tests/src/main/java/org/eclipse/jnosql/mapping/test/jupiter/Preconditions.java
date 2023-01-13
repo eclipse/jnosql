@@ -12,16 +12,24 @@
  *
  *    Otavio Santana
  */
-module org.eclipse.jnosql.mapping.test {
-    requires jakarta.nosql.core;
-    requires jakarta.data.api;
-    requires jakarta.cdi;
-    requires org.junit.jupiter.api;
-    exports org.eclipse.jnosql.mapping.test.jupiter;
-    exports org.eclipse.jnosql.mapping.test.entities;
-    exports org.eclipse.jnosql.mapping.test.entities.inheritance;
-    opens org.eclipse.jnosql.mapping.test.entities;
-    opens org.eclipse.jnosql.mapping.test.entities.inheritance;
-    exports org.eclipse.jnosql.mapping.test.entities.constructor;
-    opens org.eclipse.jnosql.mapping.test.jupiter;
+
+package org.eclipse.jnosql.mapping.test.jupiter;
+
+import org.junit.platform.commons.PreconditionViolationException;
+
+final class Preconditions {
+
+    private Preconditions() {
+    }
+
+    static <T> T notNull(T object, String message) throws PreconditionViolationException {
+        condition(object != null, message);
+        return object;
+    }
+
+    static void condition(boolean predicate, String message) throws PreconditionViolationException {
+        if (!predicate) {
+            throw new PreconditionViolationException(message);
+        }
+    }
 }
