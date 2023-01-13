@@ -16,17 +16,11 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnPreparedStatement;
 import org.assertj.core.api.Assertions;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -35,8 +29,8 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
-import static jakarta.nosql.column.ColumnCondition.eq;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.communication.column.ColumnCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -60,9 +54,9 @@ class DeleteQueryParserTest {
         Mockito.verify(manager).delete(captor.capture());
         ColumnDeleteQuery columnQuery = captor.getValue();
 
-        assertTrue(columnQuery.getColumns().isEmpty());
-        assertEquals("God", columnQuery.getColumnFamily());
-        assertFalse(columnQuery.getCondition().isPresent());
+        assertTrue(columnQuery.columns().isEmpty());
+        assertEquals("God", columnQuery.columnFamily());
+        assertFalse(columnQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -73,9 +67,9 @@ class DeleteQueryParserTest {
         Mockito.verify(manager).delete(captor.capture());
         ColumnDeleteQuery columnQuery = captor.getValue();
 
-        assertThat(columnQuery.getColumns()).contains("name", "address");
-        assertEquals("God", columnQuery.getColumnFamily());
-        assertFalse(columnQuery.getCondition().isPresent());
+        assertThat(columnQuery.columns()).contains("name", "address");
+        assertEquals("God", columnQuery.columnFamily());
+        assertFalse(columnQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -87,11 +81,11 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.GREATER_THAN, condition.getCondition());
-        assertEquals(Column.of("stamina", 10.23), condition.getColumn());
+        assertEquals(Condition.GREATER_THAN, condition.condition());
+        assertEquals(Column.of("stamina", 10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -103,11 +97,11 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.GREATER_EQUALS_THAN, condition.getCondition());
-        assertEquals(Column.of("stamina", -10.23), condition.getColumn());
+        assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
+        assertEquals(Column.of("stamina", -10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -119,11 +113,11 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.LESSER_EQUALS_THAN, condition.getCondition());
-        assertEquals(Column.of("stamina", -10.23), condition.getColumn());
+        assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
+        assertEquals(Column.of("stamina", -10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -135,11 +129,11 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.LESSER_THAN, condition.getCondition());
-        assertEquals(Column.of("stamina", -10.23), condition.getColumn());
+        assertEquals(Condition.LESSER_THAN, condition.condition());
+        assertEquals(Column.of("stamina", -10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -151,11 +145,11 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.BETWEEN, condition.getCondition());
-        assertEquals(Column.of("age", Arrays.asList(10L, 30L)), condition.getColumn());
+        assertEquals(Condition.BETWEEN, condition.condition());
+        assertEquals(Column.of("age", Arrays.asList(10L, 30L)), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -167,11 +161,11 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals(Column.of("name", "diana"), condition.getColumn());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(Column.of("name", "diana"), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -183,16 +177,16 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        Column column = condition.getColumn();
+        assertEquals(Condition.EQUALS, condition.condition());
+        Column column = condition.column();
         List<Column> columns = column.get(new TypeReference<>() {
         });
         Assertions.assertThat(columns).contains(Column.of("apollo", "Brother"),
                 Column.of("Zeus", "Father"));
-        assertEquals("siblings", column.getName());
+        assertEquals("siblings", column.name());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -204,12 +198,12 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals("age", column.getName());
-        assertEquals(Value.of(12), column.getValue());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", column.name());
+        assertEquals(Value.of(12), column.value());
 
 
     }
@@ -223,11 +217,11 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.IN, condition.getCondition());
-        assertEquals("name", column.getName());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.IN, condition.condition());
+        assertEquals("name", column.name());
         List<String> values = column.get(new TypeReference<>() {
         });
         assertThat(values).contains("Ada", "Apollo");
@@ -242,11 +236,11 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.LIKE, condition.getCondition());
-        assertEquals("name", column.getName());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.LIKE, condition.condition());
+        assertEquals("name", column.name());
         assertEquals("Ada", column.get());
     }
 
@@ -259,15 +253,15 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.NOT, condition.getCondition());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.NOT, condition.condition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         ColumnCondition columnCondition = conditions.get(0);
-        assertEquals(Condition.LIKE, columnCondition.getCondition());
-        assertEquals(Column.of("name", "Ada"), columnCondition.getColumn());
+        assertEquals(Condition.LIKE, columnCondition.condition());
+        assertEquals(Column.of("name", "Ada"), columnCondition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -279,10 +273,10 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.AND, condition.getCondition());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.AND, condition.condition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         Assertions.assertThat(conditions).contains(eq(Column.of("name", "Ada")),
@@ -298,10 +292,10 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.OR, condition.getCondition());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.OR, condition.condition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         Assertions.assertThat(conditions).contains(eq(Column.of("name", "Ada")),
@@ -319,15 +313,15 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.AND, condition.getCondition());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.AND, condition.condition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
-        assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
-        assertEquals(Condition.EQUALS, conditions.get(1).getCondition());
-        assertEquals(Condition.OR, conditions.get(2).getCondition());
+        assertEquals(Condition.EQUALS, conditions.get(0).condition());
+        assertEquals(Condition.EQUALS, conditions.get(1).condition());
+        assertEquals(Condition.OR, conditions.get(2).condition());
 
     }
 
@@ -342,16 +336,16 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.AND, condition.getCondition());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.AND, condition.condition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
-        assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
-        assertEquals(Condition.EQUALS, conditions.get(1).getCondition());
-        assertEquals(Condition.OR, conditions.get(2).getCondition());
-        assertEquals(Condition.EQUALS, conditions.get(3).getCondition());
+        assertEquals(Condition.EQUALS, conditions.get(0).condition());
+        assertEquals(Condition.EQUALS, conditions.get(1).condition());
+        assertEquals(Condition.OR, conditions.get(2).condition());
+        assertEquals(Condition.EQUALS, conditions.get(3).condition());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -386,18 +380,18 @@ class DeleteQueryParserTest {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("age", 12);
-        prepare.getResult();
+        prepare.result();
         Mockito.verify(manager).delete(captor.capture());
         ColumnDeleteQuery columnQuery = captor.getValue();
-        ColumnCondition columnCondition = columnQuery.getCondition().get();
-        Column column = columnCondition.getColumn();
-        assertEquals(Condition.EQUALS, columnCondition.getCondition());
-        assertEquals("age", column.getName());
+        ColumnCondition columnCondition = columnQuery.condition().get();
+        Column column = columnCondition.column();
+        assertEquals(Condition.EQUALS, columnCondition.condition());
+        assertEquals("age", column.name());
         assertEquals(12, column.get());
     }
 
     private void checkBaseQuery(ColumnDeleteQuery columnQuery) {
-        assertTrue(columnQuery.getColumns().isEmpty());
-        assertEquals("God", columnQuery.getColumnFamily());
+        assertTrue(columnQuery.columns().isEmpty());
+        assertEquals("God", columnQuery.columnFamily());
     }
 }

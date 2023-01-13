@@ -17,9 +17,8 @@
 package org.eclipse.jnosql.communication.column;
 
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -51,8 +50,8 @@ public class ColumnTest {
         String name = "name";
         Column column = Column.of(name, DEFAULT_VALUE);
         assertNotNull(column);
-        assertEquals(name, column.getName());
-        assertEquals(DEFAULT_VALUE, column.getValue());
+        assertEquals(name, column.name());
+        assertEquals(DEFAULT_VALUE, column.value());
     }
 
     @Test

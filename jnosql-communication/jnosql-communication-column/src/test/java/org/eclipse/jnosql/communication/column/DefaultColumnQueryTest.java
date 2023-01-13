@@ -16,15 +16,14 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnQuery;
+import org.eclipse.jnosql.communication.Sort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static jakarta.nosql.column.ColumnQuery.select;
+import static org.eclipse.jnosql.communication.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -40,7 +39,7 @@ public class DefaultColumnQueryTest {
     @Test
     public void shouldNotRemoveColumns() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            List<String> columns = query.getColumns();
+            List<String> columns = query.columns();
             assertTrue(columns.isEmpty());
             columns.clear();
         });
@@ -49,7 +48,7 @@ public class DefaultColumnQueryTest {
     @Test
     public void shouldNotRemoveSort() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            List<Sort> sorts = query.getSorts();
+            List<Sort> sorts = query.sorts();
             assertTrue(sorts.isEmpty());
             sorts.clear();
         });

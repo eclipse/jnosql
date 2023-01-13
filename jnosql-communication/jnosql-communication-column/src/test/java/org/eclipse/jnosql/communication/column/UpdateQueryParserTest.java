@@ -16,15 +16,9 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnPreparedStatement;
 import org.assertj.core.api.Assertions;
-import org.eclipse.jnosql.communication.column.UpdateQueryParser;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -55,7 +49,7 @@ class UpdateQueryParserTest {
         ColumnEntity entity = captor.getValue();
 
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Column.of("name", "Diana"), entity.find("name").get());
     }
 
@@ -67,7 +61,7 @@ class UpdateQueryParserTest {
         Mockito.verify(manager).update(captor.capture());
         ColumnEntity entity = captor.getValue();
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Column.of("name", "Artemis"), entity.find("name").get());
         assertEquals(Column.of("age", 30L), entity.find("age").get());
     }
@@ -88,7 +82,7 @@ class UpdateQueryParserTest {
         Mockito.verify(manager).update(captor.capture());
         ColumnEntity entity = captor.getValue();
 
-        assertEquals("Person", entity.getName());
+        assertEquals("Person", entity.name());
         assertEquals(Column.of("name", "Ada Lovelace"), entity.find("name").get());
     }
 
@@ -108,7 +102,7 @@ class UpdateQueryParserTest {
         });
         List<Column> address = entity.find("address").get().get(new TypeReference<>() {
         });
-        assertEquals("Person", entity.getName());
+        assertEquals("Person", entity.name());
         assertEquals(Column.of("name", "Ada Lovelace"), entity.find("name").get());
         assertEquals(Column.of("age", BigDecimal.valueOf(12)), entity.find("age").get());
         assertThat(siblings).contains("Ana", "Maria");
@@ -122,7 +116,7 @@ class UpdateQueryParserTest {
     public void shouldReturnErrorWhenDoesNotBindBeforeExecuteQuery(String query) {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, prepare::getResult);
+        assertThrows(QueryException.class, prepare::result);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -131,10 +125,10 @@ class UpdateQueryParserTest {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("name", "Diana");
-        prepare.getResult();
+        prepare.result();
         Mockito.verify(manager).update(captor.capture());
         ColumnEntity entity = captor.getValue();
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Column.of("name", "Diana"), entity.find("name").get());
 
     }

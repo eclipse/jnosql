@@ -16,7 +16,6 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.column.ColumnDeleteQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +38,7 @@ public class DefaultColumnDeleteQueryTest {
     @Test
     public void shouldNotEditColumns() {
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            List<String> columns = query.getColumns();
+            List<String> columns = query.columns();
             assertTrue(columns.isEmpty());
             columns.clear();
         });

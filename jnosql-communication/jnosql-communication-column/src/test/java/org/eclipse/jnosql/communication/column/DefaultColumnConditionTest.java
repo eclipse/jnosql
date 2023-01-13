@@ -16,10 +16,8 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -58,8 +56,8 @@ public class DefaultColumnConditionTest {
         ColumnCondition negate = condition.negate();
         Column negateColumn = negate.column();
         assertEquals(Condition.NOT, negate.condition());
-        assertEquals(Condition.NOT.getNameField(), negateColumn.getName());
-        assertEquals(ColumnCondition.of(age, Condition.GREATER_THAN), negateColumn.getValue().get());
+        assertEquals(Condition.NOT.getNameField(), negateColumn.name());
+        assertEquals(ColumnCondition.of(age, Condition.GREATER_THAN), negateColumn.value().get());
     }
 
     @Test
@@ -80,8 +78,8 @@ public class DefaultColumnConditionTest {
         ColumnCondition and = condition1.and(condition2);
         Column andColumn = and.column();
         assertEquals(Condition.AND, and.condition());
-        assertEquals(Condition.AND.getNameField(), andColumn.getName());
-        assertThat(andColumn.getValue().get(new TypeReference<List<ColumnCondition>>() {
+        assertEquals(Condition.AND.getNameField(), andColumn.name());
+        assertThat(andColumn.value().get(new TypeReference<List<ColumnCondition>>() {
                 })).contains(condition1, condition2);
 
     }
@@ -96,8 +94,8 @@ public class DefaultColumnConditionTest {
         ColumnCondition and = condition1.or(condition2);
         Column andColumn = and.column();
         assertEquals(Condition.OR, and.condition());
-        assertEquals(Condition.OR.getNameField(), andColumn.getName());
-        assertThat(andColumn.getValue().get(new TypeReference<List<ColumnCondition>>() {
+        assertEquals(Condition.OR.getNameField(), andColumn.name());
+        assertThat(andColumn.value().get(new TypeReference<List<ColumnCondition>>() {
                 })).contains(condition1, condition2);
 
     }

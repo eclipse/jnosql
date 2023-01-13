@@ -17,10 +17,8 @@
 
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnEntity;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -150,7 +148,7 @@ public class ColumnEntityTest {
         Map<String, Object> result = entity.toMap();
         assertFalse(result.isEmpty());
         assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));
-        assertEquals(column.getName(), result.keySet().stream().findAny().get());
+        assertEquals(column.name(), result.keySet().stream().findAny().get());
     }
 
     @Test

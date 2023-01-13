@@ -301,11 +301,15 @@ final class ColumnEntity {
                 '}';
     }
 
-    public static ColumnEntity of(String name, Column... columns) {
-        if (columns.length == 0) {
-            return new ColumnEntity(name);
-        }
-        return of(name, asList(columns));
+
+    /**
+     * Creates a column family instance
+     *
+     * @param name a name to column family
+     * @return a ColumnEntity instance
+     */
+    public static ColumnEntity of(String name) {
+        return new ColumnEntity(requireNonNull(name, "name is required"));
     }
 
     public static ColumnEntity of(String name, List<Column> columns) {

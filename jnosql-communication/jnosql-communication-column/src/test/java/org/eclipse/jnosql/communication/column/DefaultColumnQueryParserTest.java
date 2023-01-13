@@ -19,15 +19,9 @@ package org.eclipse.jnosql.communication.column;
 import jakarta.nosql.Condition;
 import jakarta.nosql.NonUniqueResultException;
 import jakarta.nosql.QueryException;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.column.ColumnQueryParser;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.NonUniqueResultException;
+import org.eclipse.jnosql.communication.QueryException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -41,11 +35,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
 public class DefaultColumnQueryParserTest {
     
-    private final ColumnQueryParser parser = new DefaultColumnQueryParser();
+    private final ColumnQueryParser parser = new ColumnQueryParser();
 
 
     private final ColumnManager manager = Mockito.mock(ColumnManager.class);
@@ -70,12 +63,12 @@ public class DefaultColumnQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
 
-        assertTrue(columnQuery.getColumns().isEmpty());
-        assertTrue(columnQuery.getSorts().isEmpty());
-        assertEquals(0L, columnQuery.getLimit());
-        assertEquals(0L, columnQuery.getSkip());
-        assertEquals("God", columnQuery.getColumnFamily());
-        assertFalse(columnQuery.getCondition().isPresent());
+        assertTrue(columnQuery.columns().isEmpty());
+        assertTrue(columnQuery.sorts().isEmpty());
+        assertEquals(0L, columnQuery.limit());
+        assertEquals(0L, columnQuery.skip());
+        assertEquals("God", columnQuery.columnFamily());
+        assertFalse(columnQuery.condition().isPresent());
 
     }
 
@@ -88,9 +81,9 @@ public class DefaultColumnQueryParserTest {
         Mockito.verify(manager).delete(captor.capture());
         ColumnDeleteQuery columnDeleteQuery = captor.getValue();
 
-        assertTrue(columnDeleteQuery.getColumns().isEmpty());
-        assertEquals("God", columnDeleteQuery.getColumnFamily());
-        assertFalse(columnDeleteQuery.getCondition().isPresent());
+        assertTrue(columnDeleteQuery.columns().isEmpty());
+        assertEquals("God", columnDeleteQuery.columnFamily());
+        assertFalse(columnDeleteQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -102,7 +95,7 @@ public class DefaultColumnQueryParserTest {
         ColumnEntity entity = captor.getValue();
 
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Column.of("name", "Diana"), entity.find("name").get());
     }
 
@@ -116,7 +109,7 @@ public class DefaultColumnQueryParserTest {
         ColumnEntity entity = captor.getValue();
 
 
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Column.of("name", "Diana"), entity.find("name").get());
     }
 
@@ -127,13 +120,13 @@ public class DefaultColumnQueryParserTest {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);
-        prepare.getResult();
+        prepare.result();
         Mockito.verify(manager).delete(captor.capture());
         ColumnDeleteQuery columnDeleteQuery = captor.getValue();
-        ColumnCondition columnCondition = columnDeleteQuery.getCondition().get();
-        Column column = columnCondition.getColumn();
-        assertEquals(Condition.EQUALS, columnCondition.getCondition());
-        assertEquals("age", column.getName());
+        ColumnCondition columnCondition = columnDeleteQuery.condition().get();
+        Column column = columnCondition.column();
+        assertEquals(Condition.EQUALS, columnCondition.condition());
+        assertEquals("age", column.name());
         assertEquals(12, column.get());
     }
 
@@ -143,10 +136,10 @@ public class DefaultColumnQueryParserTest {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("name", "Diana");
-        prepare.getResult();
+        prepare.result();
         Mockito.verify(manager).insert(captor.capture());
         ColumnEntity entity = captor.getValue();
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Column.of("name", "Diana"), entity.find("name").get());
 
     }
@@ -158,13 +151,13 @@ public class DefaultColumnQueryParserTest {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);
-        prepare.getResult();
+        prepare.result();
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
-        ColumnCondition columnCondition = columnQuery.getCondition().get();
-        Column column = columnCondition.getColumn();
-        assertEquals(Condition.EQUALS, columnCondition.getCondition());
-        assertEquals("age", column.getName());
+        ColumnCondition columnCondition = columnQuery.condition().get();
+        Column column = columnCondition.column();
+        assertEquals(Condition.EQUALS, columnCondition.condition());
+        assertEquals("age", column.name());
         assertEquals(12, column.get());
     }
 
@@ -175,10 +168,10 @@ public class DefaultColumnQueryParserTest {
         ArgumentCaptor<ColumnEntity> captor = ArgumentCaptor.forClass(ColumnEntity.class);
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("name", "Diana");
-        prepare.getResult();
+        prepare.result();
         Mockito.verify(manager).update(captor.capture());
         ColumnEntity entity = captor.getValue();
-        assertEquals("God", entity.getName());
+        assertEquals("God", entity.name());
         assertEquals(Column.of("name", "Diana"), entity.find("name").get());
     }
 
@@ -192,13 +185,13 @@ public class DefaultColumnQueryParserTest {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);
-        final Optional<ColumnEntity> result = prepare.getSingleResult();
+        final Optional<ColumnEntity> result = prepare.singleResult();
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
-        ColumnCondition columnCondition = columnQuery.getCondition().get();
-        Column column = columnCondition.getColumn();
-        assertEquals(Condition.EQUALS, columnCondition.getCondition());
-        assertEquals("age", column.getName());
+        ColumnCondition columnCondition = columnQuery.condition().get();
+        Column column = columnCondition.column();
+        assertEquals(Condition.EQUALS, columnCondition.condition());
+        assertEquals("age", column.name());
         assertEquals(12, column.get());
         assertTrue(result.isPresent());
     }
@@ -213,13 +206,13 @@ public class DefaultColumnQueryParserTest {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);
-        final Optional<ColumnEntity> result = prepare.getSingleResult();
+        final Optional<ColumnEntity> result = prepare.singleResult();
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
-        ColumnCondition columnCondition = columnQuery.getCondition().get();
-        Column column = columnCondition.getColumn();
-        assertEquals(Condition.EQUALS, columnCondition.getCondition());
-        assertEquals("age", column.getName());
+        ColumnCondition columnCondition = columnQuery.condition().get();
+        Column column = columnCondition.column();
+        assertEquals(Condition.EQUALS, columnCondition.condition());
+        assertEquals("age", column.name());
         assertEquals(12, column.get());
         assertFalse(result.isPresent());
     }
@@ -234,7 +227,7 @@ public class DefaultColumnQueryParserTest {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, ColumnObserverParser.EMPTY);
         prepare.bind("age", 12);
-       assertThrows(NonUniqueResultException.class, prepare::getSingleResult);
+       assertThrows(NonUniqueResultException.class, prepare::singleResult);
     }
 
 }

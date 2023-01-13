@@ -16,20 +16,13 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.QueryException;
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnPreparedStatement;
-import jakarta.nosql.column.ColumnQuery;
 import org.assertj.core.api.Assertions;
-import org.eclipse.jnosql.communication.column.SelectQueryParser;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.communication.Sort;
+import org.eclipse.jnosql.communication.SortType;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -38,8 +31,8 @@ import org.mockito.Mockito;
 import java.util.Arrays;
 import java.util.List;
 
-import static jakarta.nosql.column.ColumnCondition.eq;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.communication.column.ColumnCondition.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -63,12 +56,12 @@ public class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
 
-        assertThat(columnQuery.getColumns()).contains("name", "address");
-        assertTrue(columnQuery.getSorts().isEmpty());
-        assertEquals(0L, columnQuery.getLimit());
-        assertEquals(0L, columnQuery.getSkip());
-        assertEquals("God", columnQuery.getColumnFamily());
-        assertFalse(columnQuery.getCondition().isPresent());
+        assertThat(columnQuery.columns()).contains("name", "address");
+        assertTrue(columnQuery.sorts().isEmpty());
+        assertEquals(0L, columnQuery.limit());
+        assertEquals(0L, columnQuery.skip());
+        assertEquals("God", columnQuery.columnFamily());
+        assertFalse(columnQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -79,12 +72,12 @@ public class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
 
-        assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts()).contains(Sort.of("name", SortType.ASC));
-        assertEquals(0L, columnQuery.getLimit());
-        assertEquals(0L, columnQuery.getSkip());
-        assertEquals("God", columnQuery.getColumnFamily());
-        assertFalse(columnQuery.getCondition().isPresent());
+        assertTrue(columnQuery.columns().isEmpty());
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", SortType.ASC));
+        assertEquals(0L, columnQuery.limit());
+        assertEquals(0L, columnQuery.skip());
+        assertEquals("God", columnQuery.columnFamily());
+        assertFalse(columnQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -95,12 +88,12 @@ public class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
 
-        assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts()).contains(Sort.of("name", SortType.ASC));
-        assertEquals(0L, columnQuery.getLimit());
-        assertEquals(0L, columnQuery.getSkip());
-        assertEquals("God", columnQuery.getColumnFamily());
-        assertFalse(columnQuery.getCondition().isPresent());
+        assertTrue(columnQuery.columns().isEmpty());
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", SortType.ASC));
+        assertEquals(0L, columnQuery.limit());
+        assertEquals(0L, columnQuery.skip());
+        assertEquals("God", columnQuery.columnFamily());
+        assertFalse(columnQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -111,12 +104,12 @@ public class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
 
-        assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts()).contains(Sort.of("name", SortType.DESC));
-        assertEquals(0L, columnQuery.getLimit());
-        assertEquals(0L, columnQuery.getSkip());
-        assertEquals("God", columnQuery.getColumnFamily());
-        assertFalse(columnQuery.getCondition().isPresent());
+        assertTrue(columnQuery.columns().isEmpty());
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", SortType.DESC));
+        assertEquals(0L, columnQuery.limit());
+        assertEquals(0L, columnQuery.skip());
+        assertEquals("God", columnQuery.columnFamily());
+        assertFalse(columnQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -128,13 +121,13 @@ public class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
 
-        assertTrue(columnQuery.getColumns().isEmpty());
-        assertThat(columnQuery.getSorts()).contains(Sort.of("name", SortType.DESC), Sort.of("age",
+        assertTrue(columnQuery.columns().isEmpty());
+        assertThat(columnQuery.sorts()).contains(Sort.of("name", SortType.DESC), Sort.of("age",
                 SortType.ASC));
-        assertEquals(0L, columnQuery.getLimit());
-        assertEquals(0L, columnQuery.getSkip());
-        assertEquals("God", columnQuery.getColumnFamily());
-        assertFalse(columnQuery.getCondition().isPresent());
+        assertEquals(0L, columnQuery.limit());
+        assertEquals(0L, columnQuery.skip());
+        assertEquals("God", columnQuery.columnFamily());
+        assertFalse(columnQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -146,7 +139,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 12L);
-        assertFalse(columnQuery.getCondition().isPresent());
+        assertFalse(columnQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -158,7 +151,7 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 12L, 0L);
-        assertFalse(columnQuery.getCondition().isPresent());
+        assertFalse(columnQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -169,12 +162,12 @@ public class SelectQueryParserTest {
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
 
-        assertTrue(columnQuery.getColumns().isEmpty());
-        assertTrue(columnQuery.getSorts().isEmpty());
-        assertEquals(12L, columnQuery.getLimit());
-        assertEquals(10L, columnQuery.getSkip());
-        assertEquals("God", columnQuery.getColumnFamily());
-        assertFalse(columnQuery.getCondition().isPresent());
+        assertTrue(columnQuery.columns().isEmpty());
+        assertTrue(columnQuery.sorts().isEmpty());
+        assertEquals(12L, columnQuery.limit());
+        assertEquals(10L, columnQuery.skip());
+        assertEquals("God", columnQuery.columnFamily());
+        assertFalse(columnQuery.condition().isPresent());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -186,11 +179,11 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals(Column.of("age", 10L), condition.getColumn());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(Column.of("age", 10L), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -202,11 +195,11 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.GREATER_THAN, condition.getCondition());
-        assertEquals(Column.of("stamina", 10.23), condition.getColumn());
+        assertEquals(Condition.GREATER_THAN, condition.condition());
+        assertEquals(Column.of("stamina", 10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -219,11 +212,11 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.GREATER_EQUALS_THAN, condition.getCondition());
-        assertEquals(Column.of("stamina", -10.23), condition.getColumn());
+        assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
+        assertEquals(Column.of("stamina", -10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -235,11 +228,11 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.LESSER_EQUALS_THAN, condition.getCondition());
-        assertEquals(Column.of("stamina", -10.23), condition.getColumn());
+        assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
+        assertEquals(Column.of("stamina", -10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -251,11 +244,11 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.LESSER_THAN, condition.getCondition());
-        assertEquals(Column.of("stamina", -10.23), condition.getColumn());
+        assertEquals(Condition.LESSER_THAN, condition.condition());
+        assertEquals(Column.of("stamina", -10.23), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -267,11 +260,11 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.BETWEEN, condition.getCondition());
-        assertEquals(Column.of("age", Arrays.asList(10L, 30L)), condition.getColumn());
+        assertEquals(Condition.BETWEEN, condition.condition());
+        assertEquals(Column.of("age", Arrays.asList(10L, 30L)), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -283,11 +276,11 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals(Column.of("name", "diana"), condition.getColumn());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(Column.of("name", "diana"), condition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -299,16 +292,16 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
 
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        Column column = condition.getColumn();
+        assertEquals(Condition.EQUALS, condition.condition());
+        Column column = condition.column();
         List<Column> columns = column.get(new TypeReference<>() {
         });
         Assertions.assertThat(columns).contains(Column.of("apollo", "Brother"),
                 Column.of("Zeus", "Father"));
-        assertEquals("siblings", column.getName());
+        assertEquals("siblings", column.name());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -320,12 +313,12 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals("age", column.getName());
-        assertEquals(Value.of(12), column.getValue());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals("age", column.name());
+        assertEquals(Value.of(12), column.value());
 
 
     }
@@ -339,11 +332,11 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.IN, condition.getCondition());
-        assertEquals("name", column.getName());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.IN, condition.condition());
+        assertEquals("name", column.name());
         List<String> values = column.get(new TypeReference<>() {
         });
         assertThat(values).contains("Ada", "Apollo");
@@ -358,11 +351,11 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.LIKE, condition.getCondition());
-        assertEquals("name", column.getName());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.LIKE, condition.condition());
+        assertEquals("name", column.name());
         assertEquals("Ada", column.get());
     }
 
@@ -375,15 +368,15 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.NOT, condition.getCondition());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.NOT, condition.condition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         ColumnCondition columnCondition = conditions.get(0);
-        assertEquals(Condition.LIKE, columnCondition.getCondition());
-        assertEquals(Column.of("name", "Ada"), columnCondition.getColumn());
+        assertEquals(Condition.LIKE, columnCondition.condition());
+        assertEquals(Column.of("name", "Ada"), columnCondition.column());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -395,10 +388,10 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.AND, condition.getCondition());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.AND, condition.condition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         Assertions.assertThat(conditions).contains(eq(Column.of("name", "Ada")),
@@ -414,10 +407,10 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.OR, condition.getCondition());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.OR, condition.condition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
         Assertions.assertThat(conditions).contains(eq(Column.of("name", "Ada")),
@@ -435,15 +428,15 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.AND, condition.getCondition());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.AND, condition.condition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
-        assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
-        assertEquals(Condition.EQUALS, conditions.get(1).getCondition());
-        assertEquals(Condition.OR, conditions.get(2).getCondition());
+        assertEquals(Condition.EQUALS, conditions.get(0).condition());
+        assertEquals(Condition.EQUALS, conditions.get(1).condition());
+        assertEquals(Condition.OR, conditions.get(2).condition());
 
     }
 
@@ -458,16 +451,16 @@ public class SelectQueryParserTest {
         ColumnQuery columnQuery = captor.getValue();
 
         checkBaseQuery(columnQuery, 0L, 0L);
-        assertTrue(columnQuery.getCondition().isPresent());
-        ColumnCondition condition = columnQuery.getCondition().get();
-        Column column = condition.getColumn();
-        assertEquals(Condition.AND, condition.getCondition());
+        assertTrue(columnQuery.condition().isPresent());
+        ColumnCondition condition = columnQuery.condition().get();
+        Column column = condition.column();
+        assertEquals(Condition.AND, condition.condition());
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
-        assertEquals(Condition.EQUALS, conditions.get(0).getCondition());
-        assertEquals(Condition.EQUALS, conditions.get(1).getCondition());
-        assertEquals(Condition.OR, conditions.get(2).getCondition());
-        assertEquals(Condition.EQUALS, conditions.get(3).getCondition());
+        assertEquals(Condition.EQUALS, conditions.get(0).condition());
+        assertEquals(Condition.EQUALS, conditions.get(1).condition());
+        assertEquals(Condition.OR, conditions.get(2).condition());
+        assertEquals(Condition.EQUALS, conditions.get(3).condition());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -485,7 +478,7 @@ public class SelectQueryParserTest {
     public void shouldReturnErrorWhenDontBindParameters(String query) {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
-        assertThrows(QueryException.class, prepare::getResult);
+        assertThrows(QueryException.class, prepare::result);
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -495,21 +488,21 @@ public class SelectQueryParserTest {
 
         ColumnPreparedStatement prepare = parser.prepare(query, manager, observer);
         prepare.bind("age", 12);
-        prepare.getResult();
+        prepare.result();
         Mockito.verify(manager).select(captor.capture());
         ColumnQuery columnQuery = captor.getValue();
-        ColumnCondition columnCondition = columnQuery.getCondition().get();
-        Column column = columnCondition.getColumn();
-        assertEquals(Condition.EQUALS, columnCondition.getCondition());
-        assertEquals("age", column.getName());
+        ColumnCondition columnCondition = columnQuery.condition().get();
+        Column column = columnCondition.column();
+        assertEquals(Condition.EQUALS, columnCondition.condition());
+        assertEquals("age", column.name());
         assertEquals(12, column.get());
     }
 
     private void checkBaseQuery(ColumnQuery columnQuery, long limit, long skip) {
-        assertTrue(columnQuery.getColumns().isEmpty());
-        assertTrue(columnQuery.getSorts().isEmpty());
-        assertEquals(limit, columnQuery.getLimit());
-        assertEquals(skip, columnQuery.getSkip());
-        assertEquals("God", columnQuery.getColumnFamily());
+        assertTrue(columnQuery.columns().isEmpty());
+        assertTrue(columnQuery.sorts().isEmpty());
+        assertEquals(limit, columnQuery.limit());
+        assertEquals(skip, columnQuery.skip());
+        assertEquals("God", columnQuery.columnFamily());
     }
 }
