@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.test.entities;
 
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.PageableRepository;
 
-public interface IgnoreRepository<T, K> extends Repository<T, K> {
+public interface IgnoreRepository<T, K> extends PageableRepository<T, K> {
 }

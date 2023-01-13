@@ -14,6 +14,7 @@
  */
 module org.eclipse.jnosql.mapping.test {
     requires jakarta.nosql.core;
+    requires jakarta.data.api;
     exports org.eclipse.jnosql.mapping.test.entities;
     exports org.eclipse.jnosql.mapping.test.entities.inheritance;
     opens org.eclipse.jnosql.mapping.test.entities;

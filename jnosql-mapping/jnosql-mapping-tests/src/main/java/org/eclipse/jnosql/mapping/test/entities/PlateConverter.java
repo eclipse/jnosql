@@ -14,7 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.test.entities;
 
-import jakarta.nosql.mapping.AttributeConverter;
+
+import jakarta.nosql.AttributeConverter;
 
 public class PlateConverter implements AttributeConverter<Plate, String> {
 

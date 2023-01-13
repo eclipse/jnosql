@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.test.entities.constructor;
 
 import jakarta.nosql.Column;
-import jakarta.nosql.mapping.Convert;
+import jakarta.nosql.Convert;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 import org.eclipse.jnosql.mapping.test.entities.Money;

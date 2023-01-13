@@ -14,5 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.test.entities;
 
+
+import jakarta.data.repository.Repository;
+
 public interface PersonIgnoreRepository extends IgnoreRepository<Person, Long>{
 }
