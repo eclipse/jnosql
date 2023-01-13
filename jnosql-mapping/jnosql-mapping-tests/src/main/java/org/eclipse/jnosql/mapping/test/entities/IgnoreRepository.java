@@ -12,11 +12,10 @@
  *
  *    Otavio Santana
  */
-module org.eclipse.jnosql.mapping.test {
-    requires jakarta.nosql.core;
-    exports org.eclipse.jnosql.mapping.test.entities;
-    exports org.eclipse.jnosql.mapping.test.entities.inheritance;
-    opens org.eclipse.jnosql.mapping.test.entities;
-    opens org.eclipse.jnosql.mapping.test.entities.inheritance;
-    exports org.eclipse.jnosql.mapping.test.entities.constructor;
+package org.eclipse.jnosql.mapping.test.entities;
+
+
+import jakarta.nosql.mapping.Repository;
+
+public interface IgnoreRepository<T, K> extends Repository<T, K> {
 }

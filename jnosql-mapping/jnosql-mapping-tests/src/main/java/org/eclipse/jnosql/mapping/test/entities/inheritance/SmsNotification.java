@@ -12,11 +12,30 @@
  *
  *    Otavio Santana
  */
-module org.eclipse.jnosql.mapping.test {
-    requires jakarta.nosql.core;
-    exports org.eclipse.jnosql.mapping.test.entities;
-    exports org.eclipse.jnosql.mapping.test.entities.inheritance;
-    opens org.eclipse.jnosql.mapping.test.entities;
-    opens org.eclipse.jnosql.mapping.test.entities.inheritance;
-    exports org.eclipse.jnosql.mapping.test.entities.constructor;
+
+package org.eclipse.jnosql.mapping.test.entities.inheritance;
+
+import jakarta.nosql.Column;
+import jakarta.nosql.mapping.DiscriminatorValue;
+import jakarta.nosql.Entity;
+
+@Entity
+@DiscriminatorValue("SMS")
+public class SmsNotification extends Notification {
+
+    @Column
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    @Override
+    public String send() {
+        return "Sending message to via sms to the phone: " + phone;
+    }
 }

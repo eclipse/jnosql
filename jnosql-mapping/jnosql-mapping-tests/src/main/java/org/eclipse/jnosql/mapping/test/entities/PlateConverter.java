@@ -12,11 +12,19 @@
  *
  *    Otavio Santana
  */
-module org.eclipse.jnosql.mapping.test {
-    requires jakarta.nosql.core;
-    exports org.eclipse.jnosql.mapping.test.entities;
-    exports org.eclipse.jnosql.mapping.test.entities.inheritance;
-    opens org.eclipse.jnosql.mapping.test.entities;
-    opens org.eclipse.jnosql.mapping.test.entities.inheritance;
-    exports org.eclipse.jnosql.mapping.test.entities.constructor;
+package org.eclipse.jnosql.mapping.test.entities;
+
+import jakarta.nosql.mapping.AttributeConverter;
+
+public class PlateConverter implements AttributeConverter<Plate, String> {
+
+    @Override
+    public String convertToDatabaseColumn(Plate attribute) {
+        return attribute.toString();
+    }
+
+    @Override
+    public Plate convertToEntityAttribute(String dbData) {
+        return Plate.of(dbData);
+    }
 }
