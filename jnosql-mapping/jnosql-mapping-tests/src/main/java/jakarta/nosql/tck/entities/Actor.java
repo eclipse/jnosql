@@ -15,13 +15,11 @@
 package jakarta.nosql.tck.entities;
 
 
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.Entity;
 
 import java.util.List;
 import java.util.Map;
 
-@Entity
+
 public class Actor extends Person {
 
     @Column
