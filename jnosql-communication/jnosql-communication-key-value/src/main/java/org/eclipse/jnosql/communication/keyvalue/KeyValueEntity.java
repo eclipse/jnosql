@@ -24,7 +24,7 @@ import java.util.Objects;
 /**
  * A bucket unit, it's a tuple that contains key its respective value.
  */
-public final class KeyValueEntity {
+public class KeyValueEntity {
 
     private final Object key;
 
