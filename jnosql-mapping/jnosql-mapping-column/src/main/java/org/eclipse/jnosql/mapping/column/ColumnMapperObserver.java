@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.ColumnObserverParser;
+import org.eclipse.jnosql.communication.column.ColumnObserverParser;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 

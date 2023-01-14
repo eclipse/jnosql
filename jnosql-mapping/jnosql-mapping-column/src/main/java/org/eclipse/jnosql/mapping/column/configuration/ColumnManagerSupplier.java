@@ -18,7 +18,7 @@ import jakarta.nosql.Settings;
 import jakarta.nosql.column.ColumnConfiguration;
 import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnManagerFactory;
-import jakarta.nosql.mapping.MappingException;
+import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 

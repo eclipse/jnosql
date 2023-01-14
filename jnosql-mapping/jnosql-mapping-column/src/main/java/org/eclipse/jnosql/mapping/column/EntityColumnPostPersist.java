@@ -15,20 +15,23 @@
 package org.eclipse.jnosql.mapping.column;
 
 
-import jakarta.nosql.mapping.column.EntityColumnPostPersist;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
-class DefaultEntityColumnPostPersist implements EntityColumnPostPersist {
+/**
+ * When an entity is either saved or updated it's the first event to fire
+ */
+public final class EntityColumnPostPersist implements Supplier<Object> {
 
     private final Object value;
 
-    DefaultEntityColumnPostPersist(Object value) {
+    EntityColumnPostPersist(Object value) {
         this.value = value;
     }
 
     @Override
-    public Object getValue() {
+    public Object get() {
         return value;
     }
 
@@ -37,10 +40,10 @@ class DefaultEntityColumnPostPersist implements EntityColumnPostPersist {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultEntityColumnPostPersist)) {
+        if (!(o instanceof EntityColumnPostPersist)) {
             return false;
         }
-        DefaultEntityColumnPostPersist that = (DefaultEntityColumnPostPersist) o;
+        EntityColumnPostPersist that = (EntityColumnPostPersist) o;
         return Objects.equals(value, that.value);
     }
 
@@ -51,7 +54,7 @@ class DefaultEntityColumnPostPersist implements EntityColumnPostPersist {
 
     @Override
     public String toString() {
-        return  "DefaultEntityColumnPostPersist{" + "value=" + value +
+        return  "EntityColumnPostPersist{" + "value=" + value +
                 '}';
     }
 }

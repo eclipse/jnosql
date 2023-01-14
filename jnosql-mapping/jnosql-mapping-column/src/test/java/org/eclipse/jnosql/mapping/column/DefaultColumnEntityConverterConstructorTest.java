@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.TypeReference;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnEntity;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.tck.entities.Animal;
 import jakarta.nosql.tck.entities.Book;

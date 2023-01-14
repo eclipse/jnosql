@@ -15,24 +15,24 @@
 package org.eclipse.jnosql.mapping.column;
 
 
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.mapping.column.ColumnEntityPrePersist;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
- * The default implementation to represents {@link ColumnEntityPrePersist}
+ * The interface represents the model when the {@link ColumnEntity} be saved that  event will fire.
  */
-class DefaultColumnEntityPrePersist implements ColumnEntityPrePersist {
+public final class ColumnEntityPostPersist implements Supplier<ColumnEntity> {
 
     private final ColumnEntity entity;
 
-    DefaultColumnEntityPrePersist(ColumnEntity entity) {
+    ColumnEntityPostPersist(ColumnEntity entity) {
         this.entity = Objects.requireNonNull(entity, "entity is required");
     }
 
     @Override
-    public ColumnEntity getEntity() {
+    public ColumnEntity get() {
         return entity;
     }
 
@@ -41,10 +41,10 @@ class DefaultColumnEntityPrePersist implements ColumnEntityPrePersist {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultColumnEntityPrePersist)) {
+        if (!(o instanceof ColumnEntityPostPersist)) {
             return false;
         }
-        DefaultColumnEntityPrePersist that = (DefaultColumnEntityPrePersist) o;
+        ColumnEntityPostPersist that = (ColumnEntityPostPersist) o;
         return Objects.equals(entity, that.entity);
     }
 
@@ -55,7 +55,7 @@ class DefaultColumnEntityPrePersist implements ColumnEntityPrePersist {
 
     @Override
     public String toString() {
-        return "DefaultColumnEntityPrePersist{" + "entity=" + entity +
+        return  "ColumnEntityPostPersist{" + "entity=" + entity +
                 '}';
     }
 }

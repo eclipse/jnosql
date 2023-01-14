@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnEntity;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
 import jakarta.nosql.column.ColumnQuery;
 import jakarta.nosql.mapping.EntityPostPersist;
 import jakarta.nosql.mapping.EntityPrePersist;
@@ -40,11 +40,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultColumnEventPersistManagerTest {
+public class ColumnEventPersistManagerTest {
 
 
     @InjectMocks
-    private DefaultColumnEventPersistManager subject;
+    private ColumnEventPersistManager subject;
 
     @Mock
     private Event<ColumnEntityPrePersist> columnEntityPrePersistEvent;
@@ -79,7 +79,7 @@ public class DefaultColumnEventPersistManagerTest {
         verify(columnEntityPrePersistEvent).fire(captor.capture());
 
         ColumnEntityPrePersist captorValue = captor.getValue();
-        assertEquals(entity, captorValue.getEntity());
+        assertEquals(entity, captorValue.get());
     }
 
 
@@ -91,7 +91,7 @@ public class DefaultColumnEventPersistManagerTest {
         verify(columnEntityPostPersistEvent).fire(captor.capture());
 
         ColumnEntityPostPersist captorValue = captor.getValue();
-        assertEquals(entity, captorValue.getEntity());
+        assertEquals(entity, captorValue.get());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class DefaultColumnEventPersistManagerTest {
         ArgumentCaptor<EntityColumnPrePersist> captor = ArgumentCaptor.forClass(EntityColumnPrePersist.class);
         verify(entityColumnPrePersist).fire(captor.capture());
         EntityColumnPrePersist value = captor.getValue();
-        assertEquals(jedi, value.getValue());
+        assertEquals(jedi, value.get());
     }
 
     @Test
@@ -135,7 +135,7 @@ public class DefaultColumnEventPersistManagerTest {
         ArgumentCaptor<EntityColumnPostPersist> captor = ArgumentCaptor.forClass(EntityColumnPostPersist.class);
         verify(entityColumnPostPersist).fire(captor.capture());
         EntityColumnPostPersist value = captor.getValue();
-        assertEquals(jedi, value.getValue());
+        assertEquals(jedi, value.get());
     }
 
     @Test
@@ -145,7 +145,7 @@ public class DefaultColumnEventPersistManagerTest {
         subject.firePreQuery(query);
         ArgumentCaptor<ColumnQueryExecute> captor = ArgumentCaptor.forClass(ColumnQueryExecute.class);
         verify(columnQueryExecute).fire(captor.capture());
-        assertEquals(query, captor.getValue().getQuery());
+        assertEquals(query, captor.getValue().get());
     }
 
     @Test
@@ -155,7 +155,7 @@ public class DefaultColumnEventPersistManagerTest {
         subject.firePreDeleteQuery(query);
         ArgumentCaptor<ColumnDeleteQueryExecute> captor = ArgumentCaptor.forClass(ColumnDeleteQueryExecute.class);
         verify(columnDeleteQueryExecute).fire(captor.capture());
-        assertEquals(query, captor.getValue().getQuery());
+        assertEquals(query, captor.getValue().get());
     }
 
 

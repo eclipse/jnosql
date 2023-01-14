@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.ColumnEntity;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.tck.entities.Person;

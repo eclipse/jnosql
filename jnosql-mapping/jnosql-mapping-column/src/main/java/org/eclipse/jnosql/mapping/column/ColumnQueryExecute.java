@@ -15,20 +15,26 @@
 package org.eclipse.jnosql.mapping.column;
 
 
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.column.ColumnQueryExecute;
+
+import org.eclipse.jnosql.communication.column.ColumnQuery;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
-class DefaultColumnQueryExecute implements ColumnQueryExecute {
+
+/**
+ * When a column query is executed this event if fired
+ */
+public final class ColumnQueryExecute implements Supplier<ColumnQuery> {
 
     private final ColumnQuery query;
 
-    DefaultColumnQueryExecute(ColumnQuery query) {
+    ColumnQueryExecute(ColumnQuery query) {
         this.query = Objects.requireNonNull(query, "query is required");
     }
 
-    public ColumnQuery getQuery() {
+    @Override
+    public ColumnQuery get() {
         return query;
     }
 
@@ -41,7 +47,7 @@ class DefaultColumnQueryExecute implements ColumnQueryExecute {
             return false;
         }
         ColumnQueryExecute that = (ColumnQueryExecute) o;
-        return Objects.equals(query, that.getQuery());
+        return Objects.equals(query, that.get());
     }
 
     @Override
@@ -51,7 +57,7 @@ class DefaultColumnQueryExecute implements ColumnQueryExecute {
 
     @Override
     public String toString() {
-        return  "DefaultColumnQueryExecute{" + "query=" + query +
+        return  "ColumnQueryExecute{" + "query=" + query +
                 '}';
     }
 }

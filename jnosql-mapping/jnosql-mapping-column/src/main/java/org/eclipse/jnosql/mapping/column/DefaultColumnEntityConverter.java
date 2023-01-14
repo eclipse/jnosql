@@ -15,8 +15,7 @@
 package org.eclipse.jnosql.mapping.column;
 
 
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -26,7 +25,7 @@ import jakarta.inject.Inject;
  * The default implementation to {@link ColumnEntityConverter}
  */
 @ApplicationScoped
-class DefaultColumnEntityConverter extends AbstractColumnEntityConverter implements ColumnEntityConverter {
+class DefaultColumnEntityConverter extends ColumnEntityConverter {
 
     @Inject
     private EntitiesMetadata entities;

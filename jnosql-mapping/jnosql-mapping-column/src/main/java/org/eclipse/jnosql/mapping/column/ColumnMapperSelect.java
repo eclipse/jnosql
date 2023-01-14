@@ -14,19 +14,19 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.QueryMapper.MapperFrom;
-import jakarta.nosql.mapping.QueryMapper.MapperLimit;
-import jakarta.nosql.mapping.QueryMapper.MapperNameCondition;
-import jakarta.nosql.mapping.QueryMapper.MapperNameOrder;
-import jakarta.nosql.mapping.QueryMapper.MapperNotCondition;
-import jakarta.nosql.mapping.QueryMapper.MapperOrder;
-import jakarta.nosql.mapping.QueryMapper.MapperSkip;
-import jakarta.nosql.mapping.QueryMapper.MapperWhere;
-import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.data.repository.Direction;
+import jakarta.data.repository.Sort;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.Converters;
+import jakarta.nosql.QueryMapper.MapperFrom;
+import jakarta.nosql.QueryMapper.MapperLimit;
+import jakarta.nosql.QueryMapper.MapperNameCondition;
+import jakarta.nosql.QueryMapper.MapperNameOrder;
+import jakarta.nosql.QueryMapper.MapperNotCondition;
+import jakarta.nosql.QueryMapper.MapperOrder;
+import jakarta.nosql.QueryMapper.MapperSkip;
+import jakarta.nosql.QueryMapper.MapperWhere;
+import jakarta.nosql.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.util.ArrayList;
@@ -147,13 +147,13 @@ final class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom
 
     @Override
     public MapperNameOrder asc() {
-        this.sorts.add(Sort.of(mapping.getColumnField(name), SortType.ASC));
+        this.sorts.add(Sort.of(mapping.getColumnField(name), Direction.ASC, false));
         return this;
     }
 
     @Override
     public MapperNameOrder desc() {
-        this.sorts.add(Sort.of(mapping.getColumnField(name), SortType.DESC));
+        this.sorts.add(Sort.of(mapping.getColumnField(name), Direction.DESC, false));
         return this;
     }
     private ColumnQuery build() {

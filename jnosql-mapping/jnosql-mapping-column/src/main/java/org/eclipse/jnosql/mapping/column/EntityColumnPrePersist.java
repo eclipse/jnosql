@@ -15,25 +15,26 @@
 package org.eclipse.jnosql.mapping.column;
 
 
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.mapping.column.ColumnEntityPostPersist;
+
 
 import java.util.Objects;
+import java.util.function.Supplier;
+
 
 /**
- * The default implementation to represents either {@link ColumnEntityPostPersist}
+ * When an entity is either saved or updated it's the first event to fire
  */
-class DefaultColumnEntityPostPersist implements ColumnEntityPostPersist {
+public final class EntityColumnPrePersist implements Supplier<Object> {
 
-    private final ColumnEntity entity;
+    private final Object value;
 
-    DefaultColumnEntityPostPersist(ColumnEntity entity) {
-        this.entity = Objects.requireNonNull(entity, "entity is required");
+    EntityColumnPrePersist(Object value) {
+        this.value = value;
     }
 
     @Override
-    public ColumnEntity getEntity() {
-        return entity;
+    public Object get() {
+        return value;
     }
 
     @Override
@@ -41,21 +42,21 @@ class DefaultColumnEntityPostPersist implements ColumnEntityPostPersist {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultColumnEntityPostPersist)) {
+        if (!(o instanceof EntityColumnPrePersist)) {
             return false;
         }
-        DefaultColumnEntityPostPersist that = (DefaultColumnEntityPostPersist) o;
-        return Objects.equals(entity, that.entity);
+        EntityColumnPrePersist that = (EntityColumnPrePersist) o;
+        return Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(entity);
+        return Objects.hashCode(value);
     }
 
     @Override
     public String toString() {
-        return  "DefaultColumnEntityPostPersist{" + "entity=" + entity +
+        return  "EntityColumnPrePersist{" + "value=" + value +
                 '}';
     }
 }

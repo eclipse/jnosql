@@ -16,10 +16,10 @@ package org.eclipse.jnosql.mapping.column;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.nosql.column.ColumnEntity;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
 import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.mapping.column.ColumnEventPersistManager;
 import jakarta.nosql.tck.entities.Address;

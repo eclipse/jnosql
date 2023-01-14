@@ -16,8 +16,8 @@ package org.eclipse.jnosql.mapping.column.configuration;
 
 import jakarta.nosql.Settings;
 import jakarta.nosql.column.ColumnConfiguration;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnEntity;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
 import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnManagerFactory;
 import jakarta.nosql.column.ColumnQuery;

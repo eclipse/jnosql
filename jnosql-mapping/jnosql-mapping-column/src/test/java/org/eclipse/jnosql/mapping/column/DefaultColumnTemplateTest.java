@@ -15,13 +15,13 @@
 package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.column.Column;
+import org.eclipse.jnosql.communication.column.Column;
 import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnEntity;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
 import jakarta.nosql.column.ColumnManager;
 import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;

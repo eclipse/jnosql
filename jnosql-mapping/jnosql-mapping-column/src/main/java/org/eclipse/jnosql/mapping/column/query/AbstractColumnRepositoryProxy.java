@@ -15,9 +15,9 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
-import jakarta.nosql.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;

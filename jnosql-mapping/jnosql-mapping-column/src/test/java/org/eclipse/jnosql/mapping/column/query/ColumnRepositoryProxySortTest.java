@@ -16,10 +16,10 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.nosql.Condition;
 import jakarta.nosql.Sort;
-import jakarta.nosql.column.Column;
+import org.eclipse.jnosql.communication.column.Column;
 import jakarta.nosql.column.ColumnCondition;
 import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.Sorts;

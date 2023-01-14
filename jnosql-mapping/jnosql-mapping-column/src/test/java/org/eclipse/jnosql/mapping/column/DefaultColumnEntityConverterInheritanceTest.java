@@ -15,9 +15,9 @@
 package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.TypeReference;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.mapping.MappingException;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
+import jakarta.data.exceptions.MappingException;
 import jakarta.nosql.mapping.column.ColumnEntityConverter;
 import jakarta.nosql.tck.entities.inheritance.EmailNotification;
 import jakarta.nosql.tck.entities.inheritance.LargeProject;

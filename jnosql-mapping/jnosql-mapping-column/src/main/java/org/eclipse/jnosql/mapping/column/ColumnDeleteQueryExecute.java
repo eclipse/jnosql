@@ -14,25 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.mapping.column.ColumnDeleteQueryExecute;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
 
 /**
- * The default implementation of {@link ColumnDeleteQueryExecute}
+ * When a column delete query is executed this event if fired
  */
-class DefaultColumnDeleteQueryExecute implements ColumnDeleteQueryExecute {
+public final class ColumnDeleteQueryExecute implements Supplier<ColumnDeleteQuery> {
 
     private final ColumnDeleteQuery query;
 
-    public DefaultColumnDeleteQueryExecute(ColumnDeleteQuery query) {
+    public ColumnDeleteQueryExecute(ColumnDeleteQuery query) {
         this.query = Objects.requireNonNull(query, "query is required");
     }
 
     @Override
-    public ColumnDeleteQuery getQuery() {
+    public ColumnDeleteQuery get() {
         return query;
     }
 
@@ -45,7 +45,7 @@ class DefaultColumnDeleteQueryExecute implements ColumnDeleteQueryExecute {
             return false;
         }
         ColumnDeleteQueryExecute that = (ColumnDeleteQueryExecute) o;
-        return Objects.equals(query, that.getQuery());
+        return Objects.equals(query, that.get());
     }
 
     @Override
@@ -55,7 +55,7 @@ class DefaultColumnDeleteQueryExecute implements ColumnDeleteQueryExecute {
 
     @Override
     public String toString() {
-        return  "DefaultColumnDeleteQueryExecute{" + "query=" + query +
+        return  "ColumnDeleteQueryExecute{" + "query=" + query +
                 '}';
     }
 }

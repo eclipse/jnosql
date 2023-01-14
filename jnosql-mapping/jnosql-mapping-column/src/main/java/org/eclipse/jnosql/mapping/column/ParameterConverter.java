@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.column.Column;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.reflection.GenericParameterMetaData;
 import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
@@ -29,7 +29,7 @@ enum ParameterConverter {
 
     DEFAULT {
         @Override
-        void convert(AbstractColumnEntityConverter converter,
+        void convert(ColumnEntityConverter converter,
                      Column column,
                      ParameterMetaData metaData,
                      ConstructorBuilder builder) {
@@ -42,7 +42,7 @@ enum ParameterConverter {
         }
     }, ENTITY {
         @Override
-        void convert(AbstractColumnEntityConverter converter, Column column, ParameterMetaData metaData,
+        void convert(ColumnEntityConverter converter, Column column, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
             Object value = column.get();
@@ -65,7 +65,7 @@ enum ParameterConverter {
         }
     }, COLLECTION {
         @Override
-        void convert(AbstractColumnEntityConverter converter, Column column, ParameterMetaData metaData,
+        void convert(ColumnEntityConverter converter, Column column, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
             GenericParameterMetaData genericParameter = (GenericParameterMetaData) metaData;
@@ -81,7 +81,7 @@ enum ParameterConverter {
 
     };
 
-    abstract void convert(AbstractColumnEntityConverter converter,
+    abstract void convert(ColumnEntityConverter converter,
                           Column column, ParameterMetaData metaData,
                           ConstructorBuilder builder);
 

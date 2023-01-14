@@ -14,13 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteFrom;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteNameCondition;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteNotCondition;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteWhere;
-import jakarta.nosql.mapping.column.ColumnTemplate;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.mapping.Converters;
+import jakarta.nosql.QueryMapper.MapperDeleteFrom;
+import jakarta.nosql.QueryMapper.MapperDeleteNameCondition;
+import jakarta.nosql.QueryMapper.MapperDeleteNotCondition;
+import jakarta.nosql.QueryMapper.MapperDeleteWhere;
+import jakarta.nosql.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import static java.util.Objects.requireNonNull;
