@@ -48,7 +48,7 @@ public class DefaultDeleteQueryBuilderTest {
         ColumnDeleteQuery query = delete().from(columnFamily).build();
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class DefaultDeleteQueryBuilderTest {
         ColumnDeleteQuery query = delete("column", "column2").from(columnFamily).build();
         assertThat(query.columns()).contains("column", "column2");
         assertFalse(query.condition().isPresent());
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
     }
 
 
@@ -77,7 +77,7 @@ public class DefaultDeleteQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals("name", column.name());
         assertEquals(name, column.get());
@@ -94,7 +94,7 @@ public class DefaultDeleteQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
         assertEquals(Condition.LIKE, condition.condition());
         assertEquals("name", column.name());
         assertEquals(name, column.get());
@@ -110,7 +110,7 @@ public class DefaultDeleteQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
         assertEquals(Condition.GREATER_THAN, condition.condition());
         assertEquals("name", column.name());
         assertEquals(value, column.get());
@@ -126,7 +126,7 @@ public class DefaultDeleteQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
         assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
         assertEquals("name", column.name());
         assertEquals(value, column.get());
@@ -142,7 +142,7 @@ public class DefaultDeleteQueryBuilderTest {
         Column column = columnCondition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
         assertEquals(Condition.LESSER_THAN, columnCondition.condition());
         assertEquals("name", column.name());
         assertEquals(value, column.get());
@@ -158,7 +158,7 @@ public class DefaultDeleteQueryBuilderTest {
         Column column = columnCondition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
         assertEquals(Condition.LESSER_EQUALS_THAN, columnCondition.condition());
         assertEquals("name", column.name());
         assertEquals(value, column.get());
@@ -175,7 +175,7 @@ public class DefaultDeleteQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
         assertEquals(Condition.BETWEEN, condition.condition());
         assertEquals("name", column.name());
         assertThat(column.get(new TypeReference<List<Number>>() {
@@ -192,7 +192,7 @@ public class DefaultDeleteQueryBuilderTest {
         Column column = condition.column();
         ColumnCondition negate = column.get(ColumnCondition.class);
         assertTrue(query.columns().isEmpty());
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
         assertEquals(Condition.NOT, condition.condition());
         assertEquals(Condition.EQUALS, negate.condition());
         assertEquals("name", negate.column().name());
@@ -237,7 +237,7 @@ public class DefaultDeleteQueryBuilderTest {
                 .and("name").not().eq("Lucas").build();
 
         ColumnCondition condition = query.condition().orElseThrow(RuntimeException::new);
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
         Column column = condition.column();
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
@@ -260,7 +260,7 @@ public class DefaultDeleteQueryBuilderTest {
         ColumnDeleteQuery query = queryCaptor.getValue();
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
     }
 
 }

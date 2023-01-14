@@ -35,7 +35,7 @@ class MappingColumnDeleteQuery implements ColumnDeleteQuery {
 
 
     @Override
-    public String columnFamily() {
+    public String name() {
         return columnFamily;
     }
 
@@ -58,7 +58,7 @@ class MappingColumnDeleteQuery implements ColumnDeleteQuery {
             return false;
         }
         ColumnDeleteQuery that = (ColumnDeleteQuery) o;
-        return Objects.equals(columnFamily, that.columnFamily())
+        return Objects.equals(columnFamily, that.name())
                 && Objects.equals(condition, that.condition().orElse(null))
                 && Objects.equals(Collections.emptyList(), that.columns());
     }

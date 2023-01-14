@@ -66,7 +66,7 @@ class DocumentQueryParserTest {
         assertTrue(documentQuery.sorts().isEmpty());
         assertEquals(0L, documentQuery.limit());
         assertEquals(0L, documentQuery.skip());
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
         assertFalse(documentQuery.condition().isPresent());
 
     }
@@ -81,7 +81,7 @@ class DocumentQueryParserTest {
         DocumentDeleteQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.documents().isEmpty());
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
         assertFalse(documentQuery.condition().isPresent());
     }
 

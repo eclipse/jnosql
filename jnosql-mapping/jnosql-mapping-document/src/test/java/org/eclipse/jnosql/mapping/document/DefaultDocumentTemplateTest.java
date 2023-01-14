@@ -337,7 +337,7 @@ public class DefaultDocumentTemplateTest {
         DocumentQuery query = queryCaptor.getValue();
         DocumentCondition condition = query.condition().get();
 
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals(DocumentCondition.eq(Document.of("_id", 10L)), condition);
 
     }
@@ -350,7 +350,7 @@ public class DefaultDocumentTemplateTest {
         DocumentDeleteQuery query = queryCaptor.getValue();
         DocumentCondition condition = query.condition().get();
 
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals(DocumentCondition.eq(Document.of("_id", 10L)), condition);
 
     }
@@ -361,7 +361,7 @@ public class DefaultDocumentTemplateTest {
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
     }
 
     @Test
@@ -370,7 +370,7 @@ public class DefaultDocumentTemplateTest {
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
-        assertEquals("movie", query.documentCollection());
+        assertEquals("movie", query.name());
     }
 
     @Test
@@ -381,7 +381,7 @@ public class DefaultDocumentTemplateTest {
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
     }
 
     @Test

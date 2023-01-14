@@ -55,7 +55,7 @@ class DeleteQueryParserTest {
         DocumentDeleteQuery documentQuery = captor.getValue();
 
         assertTrue(documentQuery.documents().isEmpty());
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
         assertFalse(documentQuery.condition().isPresent());
     }
 
@@ -68,7 +68,7 @@ class DeleteQueryParserTest {
         DocumentDeleteQuery documentQuery = captor.getValue();
 
         assertThat(documentQuery.documents()).contains("name", "address");
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
         assertFalse(documentQuery.condition().isPresent());
     }
 
@@ -393,6 +393,6 @@ class DeleteQueryParserTest {
 
     private void checkBaseQuery(DocumentDeleteQuery documentQuery) {
         assertTrue(documentQuery.documents().isEmpty());
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
     }
 }

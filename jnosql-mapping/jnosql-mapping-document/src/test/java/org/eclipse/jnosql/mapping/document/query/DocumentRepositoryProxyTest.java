@@ -175,7 +175,7 @@ public class DocumentRepositoryProxyTest {
         verify(template).singleResult(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals(Document.of("name", "name"), condition.document());
 
@@ -255,7 +255,7 @@ public class DocumentRepositoryProxyTest {
         verify(template).delete(captor.capture());
         DocumentDeleteQuery deleteQuery = captor.getValue();
         DocumentCondition condition = deleteQuery.condition().get();
-        assertEquals("Person", deleteQuery.documentCollection());
+        assertEquals("Person", deleteQuery.name());
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals(Document.of("name", "Ada"), condition.document());
 
@@ -363,7 +363,7 @@ public class DocumentRepositoryProxyTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals(AND, condition.condition());
         List<DocumentCondition> conditions = condition.document().get(new TypeReference<>() {
         });
@@ -393,7 +393,7 @@ public class DocumentRepositoryProxyTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals(GREATER_THAN, condition.condition());
         assertEquals(Document.of("age", 33), condition.document());
 
@@ -412,7 +412,7 @@ public class DocumentRepositoryProxyTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals(LESSER_EQUALS_THAN, condition.condition());
         assertEquals(Document.of("age", 33), condition.document());
 
@@ -431,7 +431,7 @@ public class DocumentRepositoryProxyTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals(LESSER_THAN, condition.condition());
         assertEquals(Document.of("age", 33), condition.document());
 
@@ -451,7 +451,7 @@ public class DocumentRepositoryProxyTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals(BETWEEN, condition.condition());
         List<Value> values = condition.document().get(new TypeReference<>() {
         });
@@ -474,7 +474,7 @@ public class DocumentRepositoryProxyTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals(LIKE, condition.condition());
         assertEquals(Document.of("name", "Ada"), condition.document());
     }
@@ -493,7 +493,7 @@ public class DocumentRepositoryProxyTest {
         verify(template).singleResult(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("vendors", query.documentCollection());
+        assertEquals("vendors", query.name());
         assertEquals(EQUALS, condition.condition());
         assertEquals(Document.of("prefixes", "prefix"), condition.document());
 
@@ -513,7 +513,7 @@ public class DocumentRepositoryProxyTest {
         verify(template).singleResult(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("vendors", query.documentCollection());
+        assertEquals("vendors", query.name());
         assertEquals(IN, condition.condition());
 
     }
@@ -532,7 +532,7 @@ public class DocumentRepositoryProxyTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());
         assertEquals(Document.of("age", 120), condition.document());
     }
@@ -565,7 +565,7 @@ public class DocumentRepositoryProxyTest {
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
         final Document document = condition.document();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals("salary.currency", document.name());
 
     }
@@ -586,7 +586,7 @@ public class DocumentRepositoryProxyTest {
         });
         final List<String> names = conditions.stream().map(DocumentCondition::document)
                 .map(Document::name).collect(Collectors.toList());
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertThat(names).contains("salary.currency", "salary.value");
 
     }
@@ -606,7 +606,7 @@ public class DocumentRepositoryProxyTest {
         DocumentCondition condition = query.condition().get();
         final Sort sort = query.sorts().get(0);
         final Document document = condition.document();
-        assertEquals("Person", query.documentCollection());
+        assertEquals("Person", query.name());
         assertEquals("salary.currency", document.name());
         assertEquals("currency.name", sort.property());
 

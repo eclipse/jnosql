@@ -41,7 +41,7 @@ public interface DocumentDeleteQuery {
      *
      * @return the collection name
      */
-    String documentCollection();
+    String name();
 
     /**
      * getter the condition

@@ -65,7 +65,7 @@ class DefaultColumnQuery implements ColumnQuery {
     }
 
     @Override
-    public String columnFamily() {
+    public String name() {
         return columnFamily;
     }
 
@@ -95,7 +95,7 @@ class DefaultColumnQuery implements ColumnQuery {
         ColumnQuery that = (ColumnQuery) o;
         return maxResults == that.limit() &&
                 firstResult == that.skip() &&
-                Objects.equals(columnFamily, that.columnFamily()) &&
+                Objects.equals(columnFamily, that.name()) &&
                 Objects.equals(columns, that.columns()) &&
                 Objects.equals(sorts, that.sorts()) &&
                 Objects.equals(condition, that.condition().orElse(null));

@@ -330,7 +330,7 @@ public class DefaultColumnTemplateTest {
         ColumnQuery query = queryCaptor.getValue();
         ColumnCondition condition = query.condition().get();
 
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), condition);
     }
 
@@ -344,7 +344,7 @@ public class DefaultColumnTemplateTest {
 
         ColumnCondition condition = query.condition().get();
 
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), condition);
     }
 
@@ -355,7 +355,7 @@ public class DefaultColumnTemplateTest {
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
     }
 
     @Test
@@ -364,7 +364,7 @@ public class DefaultColumnTemplateTest {
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        assertEquals("movie", query.columnFamily());
+        assertEquals("movie", query.name());
     }
 
     @Test
@@ -375,7 +375,7 @@ public class DefaultColumnTemplateTest {
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
     }
 
     @Test

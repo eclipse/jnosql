@@ -57,7 +57,7 @@ public interface ColumnQuery {
      *
      * @return the column family name
      */
-    String columnFamily();
+    String name();
 
     /**
      * The conditions that contains in this {@link ColumnQuery}

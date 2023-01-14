@@ -40,7 +40,7 @@ public interface ColumnDeleteQuery {
      *
      * @return the columnFamily name
      */
-    String columnFamily();
+    String name();
 
     /**
      * getter the condition

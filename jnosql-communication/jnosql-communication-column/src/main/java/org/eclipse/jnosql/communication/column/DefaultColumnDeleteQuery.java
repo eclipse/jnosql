@@ -43,7 +43,7 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
     }
 
     @Override
-    public String columnFamily() {
+    public String name() {
         return columnFamily;
     }
 
@@ -66,7 +66,7 @@ class DefaultColumnDeleteQuery implements ColumnDeleteQuery {
             return false;
         }
         ColumnDeleteQuery that = (ColumnDeleteQuery) o;
-        return Objects.equals(columnFamily, that.columnFamily()) &&
+        return Objects.equals(columnFamily, that.name()) &&
                 Objects.equals(condition, that.condition().orElse(null)) &&
                 Objects.equals(columns, that.columns());
     }

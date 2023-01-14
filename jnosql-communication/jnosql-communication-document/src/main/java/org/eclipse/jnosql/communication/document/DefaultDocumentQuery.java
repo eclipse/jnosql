@@ -62,7 +62,7 @@ class DefaultDocumentQuery implements DocumentQuery {
     }
 
     @Override
-    public String documentCollection() {
+    public String name() {
         return documentCollection;
     }
 
@@ -92,7 +92,7 @@ class DefaultDocumentQuery implements DocumentQuery {
         DocumentQuery that = (DocumentQuery) o;
         return limit == that.limit() &&
                 skip == that.skip() &&
-                Objects.equals(documentCollection, that.documentCollection()) &&
+                Objects.equals(documentCollection, that.name()) &&
                 Objects.equals(condition, that.condition().orElse(null)) &&
                 Objects.equals(sorts, that.sorts()) &&
                 Objects.equals(documents, that.documents());

@@ -54,7 +54,7 @@ public final class MappingDocumentQuery implements DocumentQuery {
     }
 
     @Override
-    public String documentCollection() {
+    public String name() {
         return documentCollection;
     }
 
@@ -86,7 +86,7 @@ public final class MappingDocumentQuery implements DocumentQuery {
                 skip == that.skip() &&
                 Objects.equals(sorts, that.sorts()) &&
                 Objects.equals(condition, that.condition().orElse(null)) &&
-                Objects.equals(documentCollection, that.documentCollection());
+                Objects.equals(documentCollection, that.name());
     }
 
     @Override

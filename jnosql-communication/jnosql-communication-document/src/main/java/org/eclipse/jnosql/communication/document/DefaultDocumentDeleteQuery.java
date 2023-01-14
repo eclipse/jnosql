@@ -43,7 +43,7 @@ final class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
     }
 
     @Override
-    public String documentCollection() {
+    public String name() {
         return documentCollection;
     }
 
@@ -66,7 +66,7 @@ final class DefaultDocumentDeleteQuery implements DocumentDeleteQuery {
             return false;
         }
         DocumentDeleteQuery that = (DocumentDeleteQuery) o;
-        return Objects.equals(documentCollection, that.documentCollection()) &&
+        return Objects.equals(documentCollection, that.name()) &&
                 Objects.equals(condition, that.condition().orElse(null)) &&
                 Objects.equals(documents, that.documents());
     }

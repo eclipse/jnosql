@@ -58,7 +58,7 @@ public interface DocumentQuery {
      *
      * @return the document collection name
      */
-    String documentCollection();
+    String name();
 
     /**
      * The conditions that contains in this {@link DocumentQuery}

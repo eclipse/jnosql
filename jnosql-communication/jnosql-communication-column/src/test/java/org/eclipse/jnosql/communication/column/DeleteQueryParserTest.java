@@ -55,7 +55,7 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         assertTrue(columnQuery.columns().isEmpty());
-        assertEquals("God", columnQuery.columnFamily());
+        assertEquals("God", columnQuery.name());
         assertFalse(columnQuery.condition().isPresent());
     }
 
@@ -68,7 +68,7 @@ class DeleteQueryParserTest {
         ColumnDeleteQuery columnQuery = captor.getValue();
 
         assertThat(columnQuery.columns()).contains("name", "address");
-        assertEquals("God", columnQuery.columnFamily());
+        assertEquals("God", columnQuery.name());
         assertFalse(columnQuery.condition().isPresent());
     }
 
@@ -392,6 +392,6 @@ class DeleteQueryParserTest {
 
     private void checkBaseQuery(ColumnDeleteQuery columnQuery) {
         assertTrue(columnQuery.columns().isEmpty());
-        assertEquals("God", columnQuery.columnFamily());
+        assertEquals("God", columnQuery.name());
     }
 }

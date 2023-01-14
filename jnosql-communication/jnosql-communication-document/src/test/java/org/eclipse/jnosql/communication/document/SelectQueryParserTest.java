@@ -60,7 +60,7 @@ public class SelectQueryParserTest {
         assertTrue(documentQuery.sorts().isEmpty());
         assertEquals(0L, documentQuery.limit());
         assertEquals(0L, documentQuery.skip());
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
         assertFalse(documentQuery.condition().isPresent());
     }
 
@@ -76,7 +76,7 @@ public class SelectQueryParserTest {
         assertThat(documentQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
         assertEquals(0L, documentQuery.limit());
         assertEquals(0L, documentQuery.skip());
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
         assertFalse(documentQuery.condition().isPresent());
     }
 
@@ -94,7 +94,7 @@ public class SelectQueryParserTest {
         assertThat(documentQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
         assertEquals(0L, documentQuery.limit());
         assertEquals(0L, documentQuery.skip());
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
         assertFalse(documentQuery.condition().isPresent());
     }
 
@@ -110,7 +110,7 @@ public class SelectQueryParserTest {
         assertThat(documentQuery.sorts()).contains(Sort.of("name", Direction.DESC, false));
         assertEquals(0L, documentQuery.limit());
         assertEquals(0L, documentQuery.skip());
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
         assertFalse(documentQuery.condition().isPresent());
     }
 
@@ -128,7 +128,7 @@ public class SelectQueryParserTest {
                 Sort.of("age", Direction.ASC, false));
         assertEquals(0L, documentQuery.limit());
         assertEquals(0L, documentQuery.skip());
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
         assertFalse(documentQuery.condition().isPresent());
     }
 
@@ -170,7 +170,7 @@ public class SelectQueryParserTest {
         assertTrue(documentQuery.sorts().isEmpty());
         assertEquals(12L, documentQuery.limit());
         assertEquals(10L, documentQuery.skip());
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
         assertFalse(documentQuery.condition().isPresent());
     }
 
@@ -508,6 +508,6 @@ public class SelectQueryParserTest {
         assertTrue(documentQuery.sorts().isEmpty());
         assertEquals(limit, documentQuery.limit());
         assertEquals(skip, documentQuery.skip());
-        assertEquals("God", documentQuery.documentCollection());
+        assertEquals("God", documentQuery.name());
     }
 }

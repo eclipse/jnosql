@@ -171,7 +171,7 @@ public class ColumnRepositoryProxyTest {
         verify(template).singleResult(captor.capture());
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals(Column.of("name", "name"), condition.column());
 
@@ -251,7 +251,7 @@ public class ColumnRepositoryProxyTest {
         verify(template).delete(captor.capture());
         ColumnDeleteQuery deleteQuery = captor.getValue();
         ColumnCondition condition = deleteQuery.condition().get();
-        assertEquals("Person", deleteQuery.columnFamily());
+        assertEquals("Person", deleteQuery.name());
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals(Column.of("name", "Ada"), condition.column());
 
@@ -355,7 +355,7 @@ public class ColumnRepositoryProxyTest {
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals(AND, condition.condition());
         List<ColumnCondition> conditions = condition.column().get(new TypeReference<>() {
         });
@@ -384,7 +384,7 @@ public class ColumnRepositoryProxyTest {
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals(GREATER_THAN, condition.condition());
         assertEquals(Column.of("age", 33), condition.column());
 
@@ -403,7 +403,7 @@ public class ColumnRepositoryProxyTest {
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals(LESSER_EQUALS_THAN, condition.condition());
         assertEquals(Column.of("age", 33), condition.column());
 
@@ -422,7 +422,7 @@ public class ColumnRepositoryProxyTest {
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals(LESSER_THAN, condition.condition());
         assertEquals(Column.of("age", 33), condition.column());
 
@@ -441,7 +441,7 @@ public class ColumnRepositoryProxyTest {
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals(BETWEEN, condition.condition());
         List<Value> values = condition.column().get(new TypeReference<>() {
         });
@@ -463,7 +463,7 @@ public class ColumnRepositoryProxyTest {
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals(LIKE, condition.condition());
         assertEquals(Column.of("name", "Ada"), condition.column());
 
@@ -484,7 +484,7 @@ public class ColumnRepositoryProxyTest {
         verify(template).singleResult(captor.capture());
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
-        assertEquals("vendors", query.columnFamily());
+        assertEquals("vendors", query.name());
         assertEquals(EQUALS, condition.condition());
         assertEquals(Column.of("prefixes", "prefix"), condition.column());
 
@@ -504,7 +504,7 @@ public class ColumnRepositoryProxyTest {
         verify(template).singleResult(captor.capture());
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
-        assertEquals("vendors", query.columnFamily());
+        assertEquals("vendors", query.name());
         assertEquals(IN, condition.condition());
 
     }
@@ -523,7 +523,7 @@ public class ColumnRepositoryProxyTest {
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals(EQUALS, condition.condition());
         assertEquals(Column.of("age", 120), condition.column());
     }
@@ -557,7 +557,7 @@ public class ColumnRepositoryProxyTest {
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
         final Column column = condition.column();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals("salary.currency", column.name());
 
     }
@@ -578,7 +578,7 @@ public class ColumnRepositoryProxyTest {
         });
         final List<String> names = conditions.stream().map(ColumnCondition::column)
                 .map(Column::name).collect(Collectors.toList());
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertThat(names).contains("salary.currency", "salary.value");
 
     }
@@ -598,7 +598,7 @@ public class ColumnRepositoryProxyTest {
         ColumnCondition condition = query.condition().get();
         final Sort sort = query.sorts().get(0);
         final Column document = condition.column();
-        assertEquals("Person", query.columnFamily());
+        assertEquals("Person", query.name());
         assertEquals("salary.currency", document.name());
         assertEquals("currency.name", sort.property());
 

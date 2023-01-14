@@ -64,7 +64,7 @@ public class DefaultColumnQueryParserTest {
         assertTrue(columnQuery.sorts().isEmpty());
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
-        assertEquals("God", columnQuery.columnFamily());
+        assertEquals("God", columnQuery.name());
         assertFalse(columnQuery.condition().isPresent());
 
     }
@@ -79,7 +79,7 @@ public class DefaultColumnQueryParserTest {
         ColumnDeleteQuery columnDeleteQuery = captor.getValue();
 
         assertTrue(columnDeleteQuery.columns().isEmpty());
-        assertEquals("God", columnDeleteQuery.columnFamily());
+        assertEquals("God", columnDeleteQuery.name());
         assertFalse(columnDeleteQuery.condition().isPresent());
     }
 

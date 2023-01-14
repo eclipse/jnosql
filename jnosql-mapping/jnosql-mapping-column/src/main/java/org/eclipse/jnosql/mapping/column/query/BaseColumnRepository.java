@@ -142,7 +142,7 @@ public abstract class BaseColumnRepository<T> {
                 sorts.addAll(p.sorts());
             }
             return new MappingColumnQuery(sorts, size, skip,
-                    query.condition().orElse(null), query.columnFamily());
+                    query.condition().orElse(null), query.name());
         }).orElse(query);
     }
 

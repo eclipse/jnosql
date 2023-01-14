@@ -34,7 +34,7 @@ class MappingDocumentDeleteQuery implements DocumentDeleteQuery {
     }
 
     @Override
-    public String documentCollection() {
+    public String name() {
         return documentCollection;
     }
 
@@ -57,7 +57,7 @@ class MappingDocumentDeleteQuery implements DocumentDeleteQuery {
             return false;
         }
         DocumentDeleteQuery that = (DocumentDeleteQuery) o;
-        return Objects.equals(documentCollection, that.documentCollection()) &&
+        return Objects.equals(documentCollection, that.name()) &&
                 Objects.equals(condition, that.condition().orElse(null)) && Objects.equals(Collections.emptyList(),
                 that.documents());
     }

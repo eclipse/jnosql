@@ -98,7 +98,7 @@ public abstract class BaseDocumentRepository<T> {
                 sorts.addAll(p.sorts());
             }
             return new MappingDocumentQuery(sorts, size, skip,
-                    query.condition().orElse(null), query.documentCollection());
+                    query.condition().orElse(null), query.name());
         }).orElse(query);
 
     }

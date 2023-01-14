@@ -60,7 +60,7 @@ public class SelectQueryParserTest {
         assertTrue(columnQuery.sorts().isEmpty());
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
-        assertEquals("God", columnQuery.columnFamily());
+        assertEquals("God", columnQuery.name());
         assertFalse(columnQuery.condition().isPresent());
     }
 
@@ -76,7 +76,7 @@ public class SelectQueryParserTest {
         assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
-        assertEquals("God", columnQuery.columnFamily());
+        assertEquals("God", columnQuery.name());
         assertFalse(columnQuery.condition().isPresent());
     }
 
@@ -92,7 +92,7 @@ public class SelectQueryParserTest {
         assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.ASC, false));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
-        assertEquals("God", columnQuery.columnFamily());
+        assertEquals("God", columnQuery.name());
         assertFalse(columnQuery.condition().isPresent());
     }
 
@@ -108,7 +108,7 @@ public class SelectQueryParserTest {
         assertThat(columnQuery.sorts()).contains(Sort.of("name", Direction.DESC, false));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
-        assertEquals("God", columnQuery.columnFamily());
+        assertEquals("God", columnQuery.name());
         assertFalse(columnQuery.condition().isPresent());
     }
 
@@ -126,7 +126,7 @@ public class SelectQueryParserTest {
                 Direction.ASC, false));
         assertEquals(0L, columnQuery.limit());
         assertEquals(0L, columnQuery.skip());
-        assertEquals("God", columnQuery.columnFamily());
+        assertEquals("God", columnQuery.name());
         assertFalse(columnQuery.condition().isPresent());
     }
 
@@ -166,7 +166,7 @@ public class SelectQueryParserTest {
         assertTrue(columnQuery.sorts().isEmpty());
         assertEquals(12L, columnQuery.limit());
         assertEquals(10L, columnQuery.skip());
-        assertEquals("God", columnQuery.columnFamily());
+        assertEquals("God", columnQuery.name());
         assertFalse(columnQuery.condition().isPresent());
     }
 
@@ -503,6 +503,6 @@ public class SelectQueryParserTest {
         assertTrue(columnQuery.sorts().isEmpty());
         assertEquals(limit, columnQuery.limit());
         assertEquals(skip, columnQuery.skip());
-        assertEquals("God", columnQuery.columnFamily());
+        assertEquals("God", columnQuery.name());
     }
 }

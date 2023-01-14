@@ -55,7 +55,7 @@ public final class MappingColumnQuery implements ColumnQuery {
     }
 
     @Override
-    public String columnFamily() {
+    public String name() {
         return columnFamily;
     }
 
@@ -88,7 +88,7 @@ public final class MappingColumnQuery implements ColumnQuery {
                 && skip == that.skip()
                 && Objects.equals(sorts, that.sorts())
                 && Objects.equals(condition, that.condition().orElse(null))
-                && Objects.equals(columnFamily, that.columnFamily());
+                && Objects.equals(columnFamily, that.name());
     }
 
     @Override

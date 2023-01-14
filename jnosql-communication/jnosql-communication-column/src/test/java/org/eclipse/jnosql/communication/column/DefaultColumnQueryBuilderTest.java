@@ -18,7 +18,6 @@ package org.eclipse.jnosql.communication.column;
 
 import org.eclipse.jnosql.communication.Condition;
 import jakarta.data.repository.Sort;
-import jakarta.data.repository.Direction;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -48,7 +47,7 @@ class DefaultColumnQueryBuilderTest {
         ColumnQuery query = builder().from(documentCollection).build();
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
     }
 
     @Test
@@ -57,7 +56,7 @@ class DefaultColumnQueryBuilderTest {
         ColumnQuery query = builder("document", "document2").from(documentCollection).build();
         assertThat(query.columns()).contains("document", "document2");
         assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
     }
 
     @Test
@@ -72,7 +71,7 @@ class DefaultColumnQueryBuilderTest {
         ColumnQuery query = builder().from(documentCollection).sort(Sort.asc("name")).build();
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertThat(query.sorts()).contains(Sort.asc("name"));
     }
 
@@ -82,7 +81,7 @@ class DefaultColumnQueryBuilderTest {
         ColumnQuery query = builder().from(documentCollection).sort(Sort.desc("name")).build();
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertThat(query.sorts()).contains(Sort.desc("name"));
     }
 
@@ -101,7 +100,7 @@ class DefaultColumnQueryBuilderTest {
         ColumnQuery query = builder().from(documentCollection).limit(10).build();
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertEquals(10L, query.limit());
     }
 
@@ -117,7 +116,7 @@ class DefaultColumnQueryBuilderTest {
         ColumnQuery query = builder().from(documentCollection).skip(10).build();
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertEquals(10L, query.skip());
     }
 
@@ -140,7 +139,7 @@ class DefaultColumnQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertEquals(Condition.EQUALS, condition.condition());
         assertEquals("name", column.name());
         assertEquals(name, column.get());
@@ -159,7 +158,7 @@ class DefaultColumnQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertEquals(Condition.LIKE, condition.condition());
         assertEquals("name", column.name());
         assertEquals(name, column.get());
@@ -178,7 +177,7 @@ class DefaultColumnQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertEquals(Condition.GREATER_THAN, condition.condition());
         assertEquals("name", column.name());
         assertEquals(value, column.get());
@@ -195,7 +194,7 @@ class DefaultColumnQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
         assertEquals("name", column.name());
         assertEquals(value, column.get());
@@ -213,7 +212,7 @@ class DefaultColumnQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertEquals(Condition.LESSER_THAN, condition.condition());
         assertEquals("name", column.name());
         assertEquals(value, column.get());
@@ -230,7 +229,7 @@ class DefaultColumnQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
         assertEquals("name", column.name());
         assertEquals(value, column.get());
@@ -250,7 +249,7 @@ class DefaultColumnQueryBuilderTest {
         Column column = condition.column();
 
         assertTrue(query.columns().isEmpty());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertEquals(Condition.BETWEEN, condition.condition());
         assertEquals("name", column.name());
         assertThat(column.get(new TypeReference<List<Number>>() {
@@ -269,7 +268,7 @@ class DefaultColumnQueryBuilderTest {
         Column column = condition.column();
         ColumnCondition negate = column.get(ColumnCondition.class);
         assertTrue(query.columns().isEmpty());
-        assertEquals(documentCollection, query.columnFamily());
+        assertEquals(documentCollection, query.name());
         assertEquals(Condition.NOT, condition.condition());
         assertEquals(Condition.EQUALS, negate.condition());
         assertEquals("name", negate.column().name());
@@ -323,7 +322,7 @@ class DefaultColumnQueryBuilderTest {
                 .where(nameNotEqualsLucas).build();
 
         ColumnCondition condition = query.condition().orElseThrow(RuntimeException::new);
-        assertEquals(columnFamily, query.columnFamily());
+        assertEquals(columnFamily, query.name());
         Column column = condition.column();
         List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
@@ -358,6 +357,6 @@ class DefaultColumnQueryBuilderTest {
         ColumnQuery query = queryCaptor.getValue();
         assertTrue(query.columns().isEmpty());
         assertFalse(query.condition().isPresent());
-        assertEquals(collection, query.columnFamily());
+        assertEquals(collection, query.name());
     }
 }
