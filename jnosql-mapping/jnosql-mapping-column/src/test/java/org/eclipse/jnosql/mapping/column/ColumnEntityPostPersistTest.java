@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.column;
 
 import org.eclipse.jnosql.communication.column.ColumnEntity;
-import jakarta.nosql.column.ColumnEntityPostPersist;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

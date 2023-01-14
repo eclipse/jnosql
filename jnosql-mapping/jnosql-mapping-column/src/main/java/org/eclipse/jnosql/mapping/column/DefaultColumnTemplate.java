@@ -16,9 +16,6 @@ package org.eclipse.jnosql.mapping.column;
 
 import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.column.ColumnEntityConverter;
-import jakarta.nosql.column.ColumnEventPersistManager;
-import jakarta.nosql.column.ColumnWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -26,7 +23,7 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 /**
- * The default implementation of {@link jakarta.nosql.mapping.column.ColumnTemplate}
+ * The default implementation of {@link JNoSQLColumnTemplate}
  */
 @ApplicationScoped
 class DefaultColumnTemplate extends AbstractColumnTemplate {

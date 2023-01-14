@@ -43,8 +43,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static jakarta.nosql.column.ColumnDeleteQuery.delete;
-import static jakarta.nosql.column.ColumnQuery.select;
 import static org.eclipse.jnosql.communication.column.ColumnDeleteQuery.delete;
 import static org.eclipse.jnosql.communication.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.column.Column;
 import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
@@ -99,7 +99,7 @@ enum FieldConverter {
         public <X, Y, T> void convert(T instance, List<Column> columns, Column column,
                                       FieldMapping field, ColumnEntityConverter converter) {
             if (Objects.nonNull(column)) {
-                Value value = column.getValue();
+                Value value = column.value();
                 Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.getConverter();
                 if (optionalConverter.isPresent()) {
                     AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(optionalConverter.get());
