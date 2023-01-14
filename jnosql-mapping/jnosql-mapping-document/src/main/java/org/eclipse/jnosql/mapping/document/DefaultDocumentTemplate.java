@@ -21,10 +21,8 @@ import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
-import java.util.stream.Stream;
-
 /**
- * The default implementation of {@link jakarta.nosql.mapping.document.DocumentTemplate}
+ * The default implementation of DocumentTemplate
  */
 @SuppressWarnings("unchecked")
 @ApplicationScoped
