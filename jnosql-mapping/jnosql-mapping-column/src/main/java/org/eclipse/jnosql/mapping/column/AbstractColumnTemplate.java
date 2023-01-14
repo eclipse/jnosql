@@ -15,24 +15,18 @@
 package org.eclipse.jnosql.mapping.column;
 
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.ServiceLoaderProvider;
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.nosql.PreparedStatement;
+import jakarta.nosql.QueryMapper;
+import jakarta.nosql.column.ColumnTemplate;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.column.ColumnQueryParser;
+import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.column.ColumnObserverParser;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.column.ColumnQueryParser;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.QueryMapper;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import jakarta.nosql.mapping.column.ColumnQueryPagination;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.column.ColumnWorkflow;
+import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
@@ -42,7 +36,6 @@ import java.time.Duration;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -54,11 +47,10 @@ import static java.util.Objects.requireNonNull;
 /**
  * The template method to {@link ColumnTemplate}
  */
-public abstract class AbstractColumnTemplate implements ColumnTemplate {
+public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
 
 
-    private static final ColumnQueryParser PARSER = ServiceLoaderProvider.get(ColumnQueryParser.class,
-            ()-> ServiceLoader.load(ColumnQueryParser.class));
+    private static final ColumnQueryParser PARSER = new ColumnQueryParser();
 
     protected abstract ColumnEntityConverter getConverter();
 
@@ -145,12 +137,6 @@ public abstract class AbstractColumnTemplate implements ColumnTemplate {
     }
 
 
-    @Override
-    public <T> Page<T> select(ColumnQueryPagination query) {
-        requireNonNull(query, "query is required");
-        Stream<T> entities = executeQuery(query);
-        return new ColumnPage<>(this, entities, query);
-    }
 
     @Override
     public <T> Optional<T> singleResult(ColumnQuery query) {
