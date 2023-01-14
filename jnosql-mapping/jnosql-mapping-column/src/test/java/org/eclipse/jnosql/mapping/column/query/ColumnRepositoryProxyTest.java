@@ -39,6 +39,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import jakarta.inject.Inject;
+
 import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -269,10 +270,10 @@ public class ColumnRepositoryProxyTest {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
-        personRepository.findAllById(singletonList(10L));
+        personRepository.findAllById(singletonList(10L)).collect(Collectors.toUnmodifiableList());
         verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
 
-        personRepository.findAllById(asList(1L, 2L, 3L));
+        personRepository.findAllById(asList(1L, 2L, 3L)).collect(Collectors.toUnmodifiableList());
         verify(template, times(4)).find(Mockito.eq(Person.class), Mockito.any(Long.class));
     }
 
@@ -311,12 +312,19 @@ public class ColumnRepositoryProxyTest {
         when(template.select(any(ColumnQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        List<Person> persons = personRepository.findAll().collect(Collectors.toUnmodifiableList());
-        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        verify(template).select(captor.capture());
-        ColumnQuery query = captor.getValue();
-        assertFalse(query.condition().isPresent());
-        assertEquals("Person", query.columnFamily());
+        personRepository.findAll().collect(Collectors.toUnmodifiableList());
+        ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
+        verify(template).findAll(captor.capture());
+        assertEquals(captor.getValue(), Person.class);
+
+    }
+
+    @Test
+    public void shouldDeleteAll() {
+        personRepository.deleteAll();
+        ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
+        verify(template).deleteAll(captor.capture());
+        assertEquals(captor.getValue(), Person.class);
 
     }
 
@@ -430,7 +438,7 @@ public class ColumnRepositoryProxyTest {
         when(template.select(any(ColumnQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        personRepository.findByAgeBetween(10,15);
+        personRepository.findByAgeBetween(10, 15);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
