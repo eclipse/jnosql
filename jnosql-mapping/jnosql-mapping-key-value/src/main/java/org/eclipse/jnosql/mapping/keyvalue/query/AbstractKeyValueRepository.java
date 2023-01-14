@@ -30,13 +30,13 @@ import java.util.stream.StreamSupport;
 public abstract class AbstractKeyValueRepository<T> implements PageableRepository {
 
 
-    private final Class<T> typeClass;
+    private final Class<T> type;
 
 
     protected abstract KeyValueTemplate getTemplate();
 
-    public AbstractKeyValueRepository(Class<T> typeClass) {
-        this.typeClass = typeClass;
+    public AbstractKeyValueRepository(Class<T> type) {
+        this.type = type;
     }
 
 
@@ -62,17 +62,17 @@ public abstract class AbstractKeyValueRepository<T> implements PageableRepositor
 
     @Override
     public Optional findById(Object key) {
-        return getTemplate().get(key, typeClass);
+        return getTemplate().get(key, type);
     }
 
     @Override
     public Stream findAllById(Iterable keys) {
-        return StreamSupport.stream(getTemplate().get(keys, typeClass).spliterator(), false);
+        return StreamSupport.stream(getTemplate().get(keys, type).spliterator(), false);
     }
 
     @Override
     public boolean existsById(Object key) {
-        return getTemplate().get(key, typeClass).isPresent();
+        return getTemplate().get(key, type).isPresent();
     }
 
     @Override
