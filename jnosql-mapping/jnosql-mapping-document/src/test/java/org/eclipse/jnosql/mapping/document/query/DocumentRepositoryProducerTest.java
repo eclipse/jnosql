@@ -27,7 +27,7 @@ import jakarta.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @CDIExtension
-class DefaultDocumentRepositoryProducerTest {
+class DocumentRepositoryProducerTest {
 
     @Inject
     private DocumentRepositoryProducer producer;
