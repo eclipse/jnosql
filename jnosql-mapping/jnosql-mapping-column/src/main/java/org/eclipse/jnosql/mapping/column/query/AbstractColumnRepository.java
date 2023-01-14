@@ -121,7 +121,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
 
     @Override
     public Stream findAll() {
-        throw new UnsupportedOperationException("The JNoSQL Column has not support for it yet");
+        return getTemplate().findAll(getType());
     }
 
     @Override
@@ -136,7 +136,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
 
     @Override
     public void deleteAll() {
-        throw new UnsupportedOperationException("The JNoSQL Column has not support for it yet");
+        getTemplate().deleteAll(getType());
     }
 
 }
