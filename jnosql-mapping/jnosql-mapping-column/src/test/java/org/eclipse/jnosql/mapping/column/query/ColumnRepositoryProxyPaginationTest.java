@@ -104,8 +104,6 @@ public class ColumnRepositoryProxyPaginationTest {
     }
 
 
-
-
     @Test
     public void shouldFindByNameInstance() {
 
@@ -152,7 +150,7 @@ public class ColumnRepositoryProxyPaginationTest {
         ColumnQuery query = captor.getValue();
         assertEquals("Person", query.columnFamily());
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -172,7 +170,7 @@ public class ColumnRepositoryProxyPaginationTest {
         ColumnQuery query = captor.getValue();
         assertEquals("Person", query.columnFamily());
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -193,7 +191,7 @@ public class ColumnRepositoryProxyPaginationTest {
         ColumnQuery query = captor.getValue();
         assertEquals("Person", query.columnFamily());
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -213,7 +211,7 @@ public class ColumnRepositoryProxyPaginationTest {
         ColumnQuery query = captor.getValue();
         assertEquals("Person", query.columnFamily());
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
 
     }
@@ -236,7 +234,7 @@ public class ColumnRepositoryProxyPaginationTest {
         assertFalse(query.condition().isPresent());
         assertEquals("Person", query.columnFamily());
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
     }
 
 
@@ -269,7 +267,7 @@ public class ColumnRepositoryProxyPaginationTest {
         assertEquals(33, columnCondition2.column().get());
         assertEquals("age", columnCondition2.column().name());
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
     }
 
     @Test
@@ -290,7 +288,7 @@ public class ColumnRepositoryProxyPaginationTest {
         assertEquals(GREATER_THAN, condition.condition());
         assertEquals(Column.of("age", 33), condition.column());
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -347,7 +345,7 @@ public class ColumnRepositoryProxyPaginationTest {
                 .thenReturn(Stream.of(ada));
 
         Pageable pagination = getPagination();
-        personRepository.findByAgeBetween(10,15, pagination);
+        personRepository.findByAgeBetween(10, 15, pagination);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
@@ -359,7 +357,7 @@ public class ColumnRepositoryProxyPaginationTest {
         assertEquals(Arrays.asList(10, 15), values.stream().map(Value::get).collect(Collectors.toList()));
         assertTrue(condition.column().name().contains("age"));
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
     }
 
 
@@ -381,7 +379,7 @@ public class ColumnRepositoryProxyPaginationTest {
         assertEquals(LIKE, condition.condition());
         assertEquals(Column.of("name", "Ada"), condition.column());
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -405,7 +403,7 @@ public class ColumnRepositoryProxyPaginationTest {
         assertEquals(EQUALS, condition.condition());
         assertEquals(Column.of("prefixes", "prefix"), condition.column());
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -427,7 +425,7 @@ public class ColumnRepositoryProxyPaginationTest {
         assertEquals("vendors", query.columnFamily());
         assertEquals(IN, condition.condition());
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -449,12 +447,13 @@ public class ColumnRepositoryProxyPaginationTest {
         assertEquals(EQUALS, condition.condition());
         assertEquals(Column.of("age", 120), condition.column());
         assertEquals(NoSQLPage.limit(pagination), query.limit());
-         assertEquals(pagination.size(), query.limit());
+        assertEquals(pagination.size(), query.limit());
     }
 
     private Pageable getPagination() {
         return Pageable.ofPage(2).size(6);
     }
+
     interface PersonRepository extends PageableRepository<Person, Long> {
 
         Person findByName(String name, Pageable pagination);

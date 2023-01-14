@@ -50,6 +50,10 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 
 public abstract class BaseColumnRepository<T> {
 
+    private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
+
+    private static final DeleteQueryParser DELETE_PARSER = new DeleteQueryParser();
+
     protected abstract Converters getConverters();
 
     protected abstract EntityMetadata getEntityMetadata();
@@ -61,13 +65,11 @@ public abstract class BaseColumnRepository<T> {
     private ParamsBinder paramsBinder;
 
 
-    private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
 
-    private static final DeleteQueryParser DELETE_PARSER = new DeleteQueryParser();
 
     protected ColumnQuery getQuery(Method method, Object[] args) {
-        SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
-        SelectQuery selectQuery = selectMethodFactory.apply(method, getEntityMetadata().getName());
+        SelectMethodProvider provider = SelectMethodProvider.INSTANCE;
+        SelectQuery selectQuery = provider.apply(method, getEntityMetadata().getName());
         ColumnQueryParams queryParams = SELECT_PARSER.apply(selectQuery, getParser());
         ColumnQuery query = queryParams.query();
         Params params = queryParams.params();
@@ -122,15 +124,11 @@ public abstract class BaseColumnRepository<T> {
     }
 
     protected Function<Pageable, Optional<T>> getSingleResult(ColumnQuery query) {
-        return p -> {
-            return getTemplate().singleResult(query);
-        };
+        return p -> getTemplate().singleResult(query);
     }
 
     protected Function<Pageable, Stream<T>> streamPagination(ColumnQuery query) {
-        return p -> {
-            return getTemplate().select(query);
-        };
+        return p ->getTemplate().select(query);
     }
 
 

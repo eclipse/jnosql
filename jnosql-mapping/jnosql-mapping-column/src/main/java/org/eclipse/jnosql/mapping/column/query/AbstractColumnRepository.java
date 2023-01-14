@@ -107,13 +107,6 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
         return getEntityMetadata().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
-    private Function optionalToStream() {
-        return id -> {
-            Optional entity = this.findById((K) id);
-            return entity.isPresent() ? Stream.of(entity.get()) : Stream.empty();
-        };
-    }
-
     @Override
     public boolean existsById(K id) {
         return findById(id).isPresent();
@@ -150,5 +143,13 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
     public void deleteAll() {
         getTemplate().deleteAll(getType());
     }
+
+    private Function optionalToStream() {
+        return id -> {
+            Optional entity = this.findById((K) id);
+            return entity.isPresent() ? Stream.of(entity.get()) : Stream.empty();
+        };
+    }
+
 
 }
