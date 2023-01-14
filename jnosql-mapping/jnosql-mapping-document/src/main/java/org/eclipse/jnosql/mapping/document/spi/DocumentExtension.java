@@ -15,17 +15,19 @@
 package org.eclipse.jnosql.mapping.document.spi;
 
 
-import org.eclipse.jnosql.communication.document.DocumentManager;
-import jakarta.nosql.mapping.Repository;
-import org.eclipse.jnosql.mapping.DatabaseMetadata;
-import org.eclipse.jnosql.mapping.Databases;
-import org.eclipse.jnosql.mapping.document.query.RepositoryDocumentBean;
-
+import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.PageableRepository;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
 import jakarta.enterprise.inject.spi.ProcessProducer;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.mapping.DatabaseMetadata;
+import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.Databases;
+import org.eclipse.jnosql.mapping.document.query.RepositoryDocumentBean;
+
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,11 +35,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
-
 /**
  * Extension to start up the DocumentTemplate and Repository
- * from the {@link jakarta.nosql.mapping.Database} qualifier
+ * from the {@link org.eclipse.jnosql.mapping.Database} qualifier
  */
 public class DocumentExtension implements Extension {
 
@@ -47,22 +47,28 @@ public class DocumentExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends CrudRepository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-        if (Repository.class.equals(javaClass)) {
+        if (CrudRepository.class.equals(javaClass) || PageableRepository.class.equals(javaClass)) {
             return;
         }
 
 
-        if (Arrays.asList(javaClass.getInterfaces()).contains(Repository.class)
+        if (isRepositoryType(javaClass)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudTypes.add(javaClass);
         }
     }
 
+    private <T> boolean isRepositoryType(Class<T> type) {
+        return Arrays.asList(type.getInterfaces()).contains(CrudRepository.class)
+                ||
+                Arrays.asList(type.getInterfaces()).contains(PageableRepository.class);
+    }
+
 
     <T, X extends DocumentManager> void observes(@Observes final ProcessProducer<T, X> pp) {
-        Databases.addDatabase(pp, DOCUMENT, databases);
+        Databases.addDatabase(pp, DatabaseType.DOCUMENT, databases);
     }
 
 
