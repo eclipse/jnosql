@@ -117,7 +117,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
         Objects.requireNonNull(pageable, "pageable is required");
         EntityMetadata metadata = getEntityMetadata();
         ColumnQuery query = new MappingColumnQuery(pageable.sorts(),
-                pageable.size(), NoSQLPage.limit(pageable)
+                pageable.size(), NoSQLPage.skip(pageable)
                 , null ,metadata.getName());
 
         List<Object> entities = getTemplate().select(query).collect(Collectors.toUnmodifiableList());

@@ -116,7 +116,13 @@ public class NoSQLPage<T> implements Page<T> {
         return new NoSQLPage<>(entities, pageable);
     }
 
-    public static long limit(Pageable pageable) {
+    /**
+     * Create skip formula from pageable instance
+     * @param pageable the pageable
+     * @return the skip
+     * @throws NullPointerException when parameter is null
+     */
+    public static long skip(Pageable pageable) {
         Objects.requireNonNull(pageable, "pageable is required");
         return pageable.size() * (pageable.page() - 1);
     }

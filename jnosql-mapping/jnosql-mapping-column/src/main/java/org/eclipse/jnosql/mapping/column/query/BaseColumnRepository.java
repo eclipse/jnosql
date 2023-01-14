@@ -65,8 +65,6 @@ public abstract class BaseColumnRepository<T> {
     private ParamsBinder paramsBinder;
 
 
-
-
     protected ColumnQuery getQuery(Method method, Object[] args) {
         SelectMethodProvider provider = SelectMethodProvider.INSTANCE;
         SelectQuery selectQuery = provider.apply(method, getEntityMetadata().getName());
@@ -137,7 +135,7 @@ public abstract class BaseColumnRepository<T> {
 
         return pageable.<ColumnQuery>map(p -> {
             long size = p.size();
-            long skip = NoSQLPage.limit(p);
+            long skip = NoSQLPage.skip(p);
             List<Sort> sorts = query.sorts();
             if (!p.sorts().isEmpty()) {
                 sorts = new ArrayList<>(query.sorts());

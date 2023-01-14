@@ -58,8 +58,8 @@ public interface JNoSQLColumnTemplate extends ColumnTemplate {
     <T> Optional<T> singleResult(ColumnQuery query);
 
     /**
-     * Returns all elements from column family
-     * @param type the entity type
+     * Returns all entities on the database
+     * @param type the entity type filter
      * @return the {@link Stream}
      * @param <T> the entity type
      * @throws NullPointerException when type is null
@@ -67,8 +67,8 @@ public interface JNoSQLColumnTemplate extends ColumnTemplate {
     <T> Stream<T> findAll(Class<T> type);
 
     /**
-     * delete elements from column family
-     * @param type the entity type
+     * delete all entities from the database
+     * @param type the entity type filter
      * @param <T> the entity type
      * @throws NullPointerException when type is null
      */

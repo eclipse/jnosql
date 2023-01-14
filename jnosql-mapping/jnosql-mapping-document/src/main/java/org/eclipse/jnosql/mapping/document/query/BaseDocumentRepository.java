@@ -91,7 +91,7 @@ public abstract class BaseDocumentRepository<T> {
 
         return pageable.<DocumentQuery>map(p -> {
             long size = p.size();
-            long skip = NoSQLPage.limit(p);
+            long skip = NoSQLPage.skip(p);
             List<Sort> sorts = query.sorts();
             if (!p.sorts().isEmpty()) {
                 sorts = new ArrayList<>(query.sorts());

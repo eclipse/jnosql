@@ -32,7 +32,6 @@ import java.lang.reflect.ParameterizedType;
  */
 class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
 
-
     private final JNoSQLColumnTemplate template;
 
     private final ColumnRepository repository;

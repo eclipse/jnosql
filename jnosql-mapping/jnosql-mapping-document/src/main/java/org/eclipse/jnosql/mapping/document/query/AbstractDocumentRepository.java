@@ -112,7 +112,7 @@ public abstract class AbstractDocumentRepository<T, K> implements PageableReposi
         Objects.requireNonNull(pageable, "pageable is required");
         EntityMetadata metadata = getEntityMetadata();
         DocumentQuery query = new MappingDocumentQuery(pageable.sorts(),
-                pageable.size(), NoSQLPage.limit(pageable)
+                pageable.size(), NoSQLPage.skip(pageable)
                 , null ,metadata.getName());
 
         List<Object> entities = getTemplate().select(query).collect(Collectors.toUnmodifiableList());

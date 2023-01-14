@@ -14,7 +14,7 @@
  */
 
 /**
- * This package has the implementation to dynamic query to {@link jakarta.nosql.mapping.Repository}
+ * This package has the implementation to dynamic query to Repository
  *  on Column database.
  */
 package org.eclipse.jnosql.mapping.column.query;
