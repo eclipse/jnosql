@@ -63,16 +63,6 @@ class DefaultGraphWorkflow implements GraphWorkflow {
 
         Function<T, Vertex> converterGraph = t -> converter.toVertex(t);
 
-        UnaryOperator<Vertex> firePreGraph = t -> {
-            graphEventPersistManager.firePreGraph(t);
-            return t;
-        };
-
-        UnaryOperator<Vertex> firePostGraph = t -> {
-            graphEventPersistManager.firePostGraph(t);
-            return t;
-        };
-
         Function<Vertex, T> converterEntity = t -> converter.toEntity(entity, t);
 
         UnaryOperator<T> firePostEntity = t -> {
@@ -89,9 +79,7 @@ class DefaultGraphWorkflow implements GraphWorkflow {
                 .andThen(firePreEntity)
                 .andThen(firePreGraphEntity)
                 .andThen(converterGraph)
-                .andThen(firePreGraph)
                 .andThen(action)
-                .andThen(firePostGraph)
                 .andThen(converterEntity)
                 .andThen(firePostEntity)
                 .andThen(firePostGraphEntity);

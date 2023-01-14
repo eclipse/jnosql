@@ -63,8 +63,6 @@ public class DefaultGraphWorkflowTest {
         UnaryOperator<Vertex> action = t -> t;
         subject.flow(Person.builder().withId(1L).withAge().withName("Ada").build(), action);
 
-        verify(graphEventPersistManager).firePreGraph(any());
-        verify(graphEventPersistManager).firePostGraph(any());
         verify(graphEventPersistManager).firePreEntity(any());
         verify(graphEventPersistManager).firePostEntity(any());
 

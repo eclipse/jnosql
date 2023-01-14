@@ -30,19 +30,6 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
  */
 public interface GraphEventPersistManager {
 
-    /**
-     * Fire an event after the conversion of the entity to communication API model.
-     *
-     * @param entity the entity
-     */
-    void firePreGraph(Vertex entity);
-
-    /**
-     * Fire an event after the response from communication layer
-     *
-     * @param entity the entity
-     */
-    void firePostGraph(Vertex entity);
 
     /**
      * Fire an event once the method is called

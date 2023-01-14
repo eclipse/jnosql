@@ -36,12 +36,6 @@ public class DefaultGraphEventPersistManagerTest {
     private DefaultGraphEventPersistManager subject;
 
     @Mock
-    private Event<GraphEntityPrePersist> graphEntityPrePersistEvent;
-
-    @Mock
-    private Event<GraphEntityPostPersist> graphEntityPostPersistEvent;
-
-    @Mock
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Mock
@@ -55,31 +49,6 @@ public class DefaultGraphEventPersistManagerTest {
 
     @Mock
     private Vertex vertex;
-
-    @Test
-    public void shouldFirePreGraph() {
-        subject.firePreGraph(vertex);
-
-        ArgumentCaptor<GraphEntityPrePersist> captor = ArgumentCaptor.forClass(GraphEntityPrePersist.class);
-
-        verify(graphEntityPrePersistEvent).fire(captor.capture());
-
-        GraphEntityPrePersist captorValue = captor.getValue();
-        assertEquals(vertex, captorValue.getVertex());
-    }
-
-
-    @Test
-    public void shouldFirePostGraph() {
-
-        subject.firePostGraph(vertex);
-
-        ArgumentCaptor<GraphEntityPostPersist> captor = ArgumentCaptor.forClass(GraphEntityPostPersist.class);
-        verify(graphEntityPostPersistEvent).fire(captor.capture());
-
-        GraphEntityPostPersist captorValue = captor.getValue();
-        assertEquals(vertex, captorValue.getVertex());
-    }
 
     @Test
     public void shouldFirePreEntity() {
