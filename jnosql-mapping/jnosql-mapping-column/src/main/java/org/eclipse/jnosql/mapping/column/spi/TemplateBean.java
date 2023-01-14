@@ -15,21 +15,23 @@
 package org.eclipse.jnosql.mapping.column.spi;
 
 
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.column.ColumnTemplateProducer;
+import jakarta.enterprise.context.spi.CreationalContext;
+import jakarta.nosql.column.ColumnTemplate;
+import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
+import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.column.ColumnTemplateProducer;
+import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
-import jakarta.enterprise.context.spi.CreationalContext;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class TemplateBean extends AbstractBean<ColumnTemplate> {
+class TemplateBean extends AbstractBean<JNoSQLColumnTemplate> {
 
+    private static final Set<Type> TYPES = Set.of(ColumnTemplate.class, JNoSQLColumnTemplate.class);
     private final Set<Type> types;
 
     private final String provider;
@@ -42,7 +44,7 @@ class TemplateBean extends AbstractBean<ColumnTemplate> {
      * @param provider    the provider name, that must be a
      */
     public TemplateBean(String provider) {
-        this.types = Collections.singleton(ColumnTemplate.class);
+        this.types = TYPES;
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofColumn(provider));
     }
@@ -54,11 +56,11 @@ class TemplateBean extends AbstractBean<ColumnTemplate> {
 
 
     @Override
-    public ColumnTemplate create(CreationalContext<ColumnTemplate> context) {
+    public JNoSQLColumnTemplate create(CreationalContext<JNoSQLColumnTemplate> context) {
 
         ColumnTemplateProducer producer = getInstance(ColumnTemplateProducer.class);
         ColumnManager manager = getColumnManager();
-        return producer.get(manager);
+        return producer.apply(manager);
     }
 
     private ColumnManager getColumnManager() {

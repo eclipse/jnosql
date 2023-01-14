@@ -15,8 +15,9 @@
 package org.eclipse.jnosql.mapping.column.spi;
 
 
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.PageableRepository;
+import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;
 import org.eclipse.jnosql.mapping.column.query.RepositoryColumnBean;
@@ -33,11 +34,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import static jakarta.nosql.mapping.DatabaseType.COLUMN;
+import static org.eclipse.jnosql.mapping.DatabaseType.COLUMN;
+
 
 /**
  * Extension to start up the ColumnTemplate and Repository
- * from the {@link jakarta.nosql.mapping.Database} qualifier
+ * from the {@link org.eclipse.jnosql.mapping.Database} qualifier
  */
 public class ColumnExtension implements Extension {
 
@@ -47,17 +49,22 @@ public class ColumnExtension implements Extension {
 
     private final Collection<Class<?>> crudTypes = new HashSet<>();
 
-    <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
+    <T extends CrudRepository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
         Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-        if (Repository.class.equals(javaClass)) {
+        if (CrudRepository.class.equals(javaClass) || PageableRepository.class.equals(javaClass)) {
             return;
         }
-        if (Arrays.asList(javaClass.getInterfaces()).contains(Repository.class)
+        if (isRepositoryType(javaClass)
                 && Modifier.isInterface(javaClass.getModifiers())) {
             crudTypes.add(javaClass);
         }
     }
 
+    private <T> boolean isRepositoryType(Class<T> type) {
+        return Arrays.asList(type.getInterfaces()).contains(CrudRepository.class)
+                ||
+                Arrays.asList(type.getInterfaces()).contains(PageableRepository.class);
+    }
 
     <T, X extends ColumnManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, COLUMN, databases);

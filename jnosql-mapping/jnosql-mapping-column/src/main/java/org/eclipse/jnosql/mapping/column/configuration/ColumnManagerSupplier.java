@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.column.configuration;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.column.ColumnConfiguration;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnManagerFactory;
 import jakarta.data.exceptions.MappingException;
+import org.eclipse.jnosql.communication.Settings;
+import org.eclipse.jnosql.communication.column.ColumnConfiguration;
+import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.column.ColumnManagerFactory;
 import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 

@@ -15,10 +15,10 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnQuery;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
 
@@ -27,14 +27,14 @@ import java.lang.reflect.Method;
 
 
 /**
- * Template method to {@link Repository} proxy on column
+ * Template method to Repository proxy on column
  *
  * @param <T>  the entity type
  * @param <K> the K entity
  */
 public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRepository implements InvocationHandler {
 
-    protected abstract Repository getRepository();
+    protected abstract PageableRepository getRepository();
 
     protected abstract Converters getConverters();
 

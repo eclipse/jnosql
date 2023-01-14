@@ -30,7 +30,7 @@ import java.util.function.Function;
  * The producer of {@link ColumnTemplate}
  */
 @ApplicationScoped
-public class DefaultColumnTemplateProducer implements Function<ColumnManager, ColumnTemplate> {
+public class ColumnTemplateProducer implements Function<ColumnManager, JNoSQLColumnTemplate> {
 
 
     @Inject
@@ -49,7 +49,7 @@ public class DefaultColumnTemplateProducer implements Function<ColumnManager, Co
     private Converters converters;
 
     @Override
-    public ColumnTemplate apply(ColumnManager manager) {
+    public JNoSQLColumnTemplate apply(ColumnManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return new ProducerColumnTemplate(converter, columnWorkflow, manager,
                 eventManager, entities, converters);

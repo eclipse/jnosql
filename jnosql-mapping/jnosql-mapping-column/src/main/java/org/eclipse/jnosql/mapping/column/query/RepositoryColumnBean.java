@@ -14,16 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
+import jakarta.data.repository.CrudRepository;
+import jakarta.enterprise.context.spi.CreationalContext;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
+import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
 
-import jakarta.enterprise.context.spi.CreationalContext;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -32,9 +32,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Artemis discoveryBean to CDI extension to register {@link Repository}
+ * Artemis discoveryBean to CDI extension to register Repository
  */
-public class RepositoryColumnBean extends AbstractBean<Repository> {
+public class RepositoryColumnBean<T extends CrudRepository> extends AbstractBean<T> {
 
     private final Class type;
 
@@ -70,15 +70,15 @@ public class RepositoryColumnBean extends AbstractBean<Repository> {
     }
 
     @Override
-    public Repository create(CreationalContext<Repository> creationalContext) {
+    public T create(CreationalContext<T> creationalContext) {
         EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
-        ColumnTemplate template = provider.isEmpty() ? getInstance(ColumnTemplate.class) :
-                getInstance(ColumnTemplate.class, DatabaseQualifier.ofColumn(provider));
+        JNoSQLColumnTemplate template = provider.isEmpty() ? getInstance(JNoSQLColumnTemplate.class) :
+                getInstance(JNoSQLColumnTemplate.class, DatabaseQualifier.ofColumn(provider));
         Converters converters = getInstance(Converters.class);
 
         ColumnRepositoryProxy handler = new ColumnRepositoryProxy(template,
                 entities, type, converters);
-        return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
+        return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }

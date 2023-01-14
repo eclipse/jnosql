@@ -14,21 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.nosql.column.ColumnManager;
+import jakarta.data.repository.PageableRepository;
+import jakarta.nosql.column.ColumnTemplate;
+import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.column.ColumnTemplateProducer;
+import org.eclipse.jnosql.mapping.column.ColumnTemplateProducer;
+import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
 import java.lang.reflect.Proxy;
 import java.util.Objects;
 
+/**
+ * The producer of Repository
+ */
 @ApplicationScoped
-class DefaultColumnRepositoryProducer implements ColumnRepositoryProducer {
+class ColumnRepositoryProducer {
 
     @Inject
     private EntitiesMetadata entities;
@@ -39,16 +43,36 @@ class DefaultColumnRepositoryProducer implements ColumnRepositoryProducer {
     @Inject
     private ColumnTemplateProducer producer;
 
-    @Override
-    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, ColumnManager manager) {
+    /**
+     * Produces a Repository class from repository class and {@link ColumnManager}
+     *
+     * @param repositoryClass the repository class
+     * @param manager         the manager
+     * @param <T>             the entity of repository
+     * @param <K>             the K of the entity
+     * @param <R>             the repository type
+     * @return a Repository interface
+     * @throws NullPointerException when there is null parameter
+     */
+    public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, ColumnManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
-        ColumnTemplate template = producer.get(manager);
+        JNoSQLColumnTemplate template = producer.apply(manager);
         return get(repositoryClass, template);
     }
 
-    @Override
-    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, ColumnTemplate template) {
+    /**
+     * Produces a Repository class from repository class and {@link ColumnTemplate}
+     *
+     * @param repositoryClass the repository class
+     * @param template        the template
+     * @param <T>             the entity of repository
+     * @param <K>             the K of the entity
+     * @param <R>             the repository type
+     * @return a Repository interface
+     * @throws NullPointerException when there is null parameter
+     */
+    public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, JNoSQLColumnTemplate template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 

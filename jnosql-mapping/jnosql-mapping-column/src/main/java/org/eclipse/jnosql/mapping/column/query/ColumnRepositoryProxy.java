@@ -15,17 +15,20 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.column.ColumnTemplate;
+import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.stream.Stream;
 
 
 /**
- * Proxy handle to generate {@link Repository}
+ * Proxy handle to generate {@link jakarta.data.repository.PageableRepository}
  *
  * @param <T>  the type
  * @param <K> the K type
@@ -33,7 +36,7 @@ import java.lang.reflect.ParameterizedType;
 class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
 
 
-    private final ColumnTemplate template;
+    private final JNoSQLColumnTemplate template;
 
     private final ColumnRepository repository;
 
@@ -42,7 +45,7 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
     private final Converters converters;
 
 
-    ColumnRepositoryProxy(ColumnTemplate template, EntitiesMetadata entities, Class<?> repositoryType,
+    ColumnRepositoryProxy(JNoSQLColumnTemplate template, EntitiesMetadata entities, Class<?> repositoryType,
                           Converters converters) {
         this.template = template;
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
@@ -53,7 +56,7 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
     }
 
     @Override
-    protected Repository getRepository() {
+    protected PageableRepository getRepository() {
         return repository;
     }
 
@@ -63,7 +66,7 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
     }
 
     @Override
-    protected ColumnTemplate getTemplate() {
+    protected JNoSQLColumnTemplate getTemplate() {
         return template;
     }
 
@@ -73,19 +76,19 @@ class ColumnRepositoryProxy<T, K> extends AbstractColumnRepositoryProxy {
     }
 
 
-    static class ColumnRepository extends AbstractColumnRepository implements Repository {
+    static class ColumnRepository extends AbstractColumnRepository implements PageableRepository {
 
-        private final ColumnTemplate template;
+        private final JNoSQLColumnTemplate template;
 
         private final EntityMetadata entityMetadata;
 
-        ColumnRepository(ColumnTemplate template, EntityMetadata entityMetadata) {
+        ColumnRepository(JNoSQLColumnTemplate template, EntityMetadata entityMetadata) {
             this.template = template;
             this.entityMetadata = entityMetadata;
         }
 
         @Override
-        protected ColumnTemplate getTemplate() {
+        protected JNoSQLColumnTemplate getTemplate() {
             return template;
         }
 
