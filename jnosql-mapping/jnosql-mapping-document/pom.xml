@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>jakarta.nosql</groupId>
-            <artifactId>nosql-column</artifactId>
+            <artifactId>nosql-document</artifactId>
             <version>${jakarta.nosql.version}</version>
         </dependency>
         <dependency>

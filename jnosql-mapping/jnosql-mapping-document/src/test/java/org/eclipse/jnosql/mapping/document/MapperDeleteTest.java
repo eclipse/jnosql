@@ -16,16 +16,16 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
+import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
-import jakarta.nosql.tck.entities.Address;
-import jakarta.nosql.tck.entities.Money;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.Worker;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.entities.Address;
+import org.eclipse.jnosql.mapping.test.entities.Money;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.Worker;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 
-import static jakarta.nosql.document.DocumentDeleteQuery.delete;
+import static org.eclipse.jnosql.communication.document.DocumentDeleteQuery.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 

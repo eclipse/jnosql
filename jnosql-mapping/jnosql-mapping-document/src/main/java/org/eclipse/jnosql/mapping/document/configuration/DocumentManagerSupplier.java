@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document.configuration;
 
 import jakarta.nosql.Settings;
-import jakarta.nosql.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentManager;
 import jakarta.nosql.document.DocumentManagerFactory;
 import jakarta.nosql.document.DocumentConfiguration;
 import jakarta.nosql.mapping.MappingException;

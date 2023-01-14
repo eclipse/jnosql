@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentQuery;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
@@ -24,7 +24,7 @@ import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import static jakarta.nosql.document.DocumentQuery.select;
+import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 
 
 /**

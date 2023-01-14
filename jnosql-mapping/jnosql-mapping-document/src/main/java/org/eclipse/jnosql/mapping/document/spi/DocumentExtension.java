@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document.spi;
 
 
-import jakarta.nosql.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentManager;
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;

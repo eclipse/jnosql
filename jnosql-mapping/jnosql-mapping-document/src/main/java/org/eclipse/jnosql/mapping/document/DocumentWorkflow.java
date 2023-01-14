@@ -40,8 +40,15 @@ public abstract class DocumentWorkflow {
 
     protected abstract DocumentEntityConverter getConverter();
 
+    /**
+     * Executes the workflow to do an interaction on a database document collection.
+     *
+     * @param entity the entity to be saved
+     * @param action the alteration to be executed on database
+     * @param <T>    the entity type
+     * @return after the workflow the entity response
+     */
 
-    @Override
     public <T> T flow(T entity, UnaryOperator<DocumentEntity> action) {
 
         Function<T, T> flow = getFlow(entity, action);

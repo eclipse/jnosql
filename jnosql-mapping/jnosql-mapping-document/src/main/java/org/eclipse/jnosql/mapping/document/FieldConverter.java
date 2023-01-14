@@ -14,10 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
+import jakarta.nosql.AttributeConverter;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.document.Document;
-import jakarta.nosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
@@ -103,7 +103,7 @@ enum FieldConverter {
 
 
             if (Objects.nonNull(document)) {
-                Value value = document.getValue();
+                Value value = document.value();
                 Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.getConverter();
                 if (optionalConverter.isPresent()) {
                     AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(optionalConverter.get());
