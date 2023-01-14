@@ -14,7 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.mapping.MappingException;
+
+import jakarta.data.exceptions.MappingException;
 
 /**
  * An exception that provides information when executing Gremlin in the database.

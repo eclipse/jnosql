@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
 import jakarta.inject.Inject;

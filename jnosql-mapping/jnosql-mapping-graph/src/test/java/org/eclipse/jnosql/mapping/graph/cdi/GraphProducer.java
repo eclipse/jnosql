@@ -14,14 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.graph.cdi;
 
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
-import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.graph.GraphTraversalSourceSupplier;
-import org.mockito.Mockito;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -29,6 +21,14 @@ import jakarta.enterprise.inject.Alternative;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;
 import jakarta.interceptor.Interceptor;
+import org.apache.tinkerpop.gremlin.neo4j.structure.Neo4jGraph;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.graph.GraphTraversalSourceSupplier;
+import org.mockito.Mockito;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;

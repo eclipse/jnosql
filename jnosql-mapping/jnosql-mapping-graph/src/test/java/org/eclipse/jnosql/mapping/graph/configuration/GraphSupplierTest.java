@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.graph.configuration;
 
 import jakarta.nosql.mapping.MappingException;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

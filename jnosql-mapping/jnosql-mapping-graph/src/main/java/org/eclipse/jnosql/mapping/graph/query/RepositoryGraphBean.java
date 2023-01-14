@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.DatabaseType;
 import jakarta.nosql.mapping.Repository;
 import org.apache.tinkerpop.gremlin.structure.Graph;

@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.mapping.AttributeConverter;
-import jakarta.nosql.mapping.Converters;
+import jakarta.nosql.AttributeConverter;
 import org.apache.tinkerpop.gremlin.structure.Property;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
 import java.util.List;

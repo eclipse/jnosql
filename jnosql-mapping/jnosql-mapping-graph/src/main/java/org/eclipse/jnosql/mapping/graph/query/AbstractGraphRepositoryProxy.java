@@ -14,11 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.nosql.mapping.Converters;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
+import jakarta.data.repository.PageableRepository;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.DynamicQueryException;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
+import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
@@ -38,7 +42,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * Template method to {@link Repository} proxy on Graph
+ * Template method to {@link PageableRepository} proxy on Graph
  *
  * @param <T> the entity type
  * @param <K> the K entity
@@ -48,7 +52,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
     protected abstract EntityMetadata getEntityMetadata();
 
-    protected abstract Repository getRepository();
+    protected abstract PageableRepository getRepository();
 
     protected abstract Graph getGraph();
 
@@ -97,8 +101,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
             GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V().hasLabel(getEntityMetadata().getName());
 
-            SelectQueryConverter.setSort(args, traversal);
-            SelectQueryConverter.setPagination(args, traversal);
+            SelectQueryConverter.setPagination(args, traversal, getEntityMetadata());
             return traversal.toStream()
                     .map(getConverter()::toEntity);
         };
@@ -127,7 +130,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
         Supplier<Optional<?>> singleSupplier =
                 DynamicReturn.toSingleResult(method).apply(querySupplier);
 
-        Function<Pagination, Page<?>> pageFunction = p -> {
+        Function<Pageable, Page<?>> pageFunction = p -> {
             throw new DynamicQueryException("Graph database repository does not support Page as return Type");
         };
 
@@ -136,7 +139,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 .withMethodSource(method)
                 .withResult(querySupplier)
                 .withSingleResult(singleSupplier)
-                .withPagination(DynamicReturn.findPagination(args))
+                .withPagination(DynamicReturn.findPagination(args).orElse(null))
                 .withStreamPagination(p -> querySupplier.get())
                 .withSingleResultPagination(p -> singleSupplier.get())
                 .withPage(pageFunction)

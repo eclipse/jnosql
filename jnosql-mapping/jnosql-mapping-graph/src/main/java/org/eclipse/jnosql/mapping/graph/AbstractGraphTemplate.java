@@ -14,12 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.EntityNotFoundException;
-import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.QueryMapper;
+import jakarta.data.exceptions.EmptyResultException;
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.nosql.PreparedStatement;
+import jakarta.nosql.QueryMapper;
+import org.eclipse.jnosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
@@ -28,6 +27,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
@@ -109,7 +109,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         if (isIdNull(entity)) {
             throw new IllegalStateException("to update a graph id cannot be null");
         }
-        getVertex(entity).orElseThrow(() -> new EntityNotFoundException("Entity does not find in the update"));
+        getVertex(entity).orElseThrow(() -> new EmptyResultException("Entity does not find in the update"));
 
         UnaryOperator<Vertex> update = e -> {
             final Vertex vertex = getConverter().toVertex(entity);
@@ -210,8 +210,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
             throw new IllegalStateException("incoming Id field is required");
         }
 
-        Vertex outVertex = getVertex(outgoing).orElseThrow(() -> new EntityNotFoundException("Outgoing entity does not found"));
-        Vertex inVertex = getVertex(incoming).orElseThrow(() -> new EntityNotFoundException("Incoming entity does not found"));
+        Vertex outVertex = getVertex(outgoing).orElseThrow(() -> new  EmptyResultException("Outgoing entity does not found"));
+        Vertex inVertex = getVertex(incoming).orElseThrow(() -> new  EmptyResultException("Incoming entity does not found"));
 
         final Predicate<Traverser<Edge>> predicate = t -> {
             Edge e = t.get();

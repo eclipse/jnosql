@@ -14,15 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionQueryValue;
-import jakarta.nosql.query.Operator;
-import jakarta.nosql.query.Where;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.query.ConditionQueryValue;
+import org.eclipse.jnosql.communication.query.QueryCondition;
+import org.eclipse.jnosql.communication.query.Where;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -30,10 +30,10 @@ import java.util.function.Supplier;
 abstract class AbstractQueryConvert {
 
 
-    protected GraphTraversal<Vertex, Vertex> getPredicate(GraphQueryMethod graphQuery, Condition condition,
+    protected GraphTraversal<Vertex, Vertex> getPredicate(GraphQueryMethod graphQuery, QueryCondition condition,
                                                         EntityMetadata mapping) {
-        Operator operator = condition.getOperator();
-        String name = condition.getName();
+        Condition operator = condition.condition();
+        String name = condition.name();
         String nativeName = mapping.getColumnField(name);
         switch (operator) {
             case EQUALS:
@@ -51,14 +51,14 @@ abstract class AbstractQueryConvert {
             case IN:
                 return __.has(nativeName, P.within(graphQuery.getInValue(name)));
             case NOT:
-                Condition notCondition = ((ConditionQueryValue) condition.getValue()).get().get(0);
+                QueryCondition notCondition = ((ConditionQueryValue) condition.value()).get().get(0);
                 return __.not(getPredicate(graphQuery, notCondition, mapping));
             case AND:
-                return ((ConditionQueryValue) condition.getValue()).get().stream()
+                return ((ConditionQueryValue) condition.value()).get().stream()
                         .map(c -> getPredicate(graphQuery, c, mapping)).reduce(GraphTraversal::and)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the AND operator"));
             case OR:
-                return ((ConditionQueryValue) condition.getValue()).get().stream()
+                return ((ConditionQueryValue) condition.value()).get().stream()
                         .map(c -> getPredicate(graphQuery, c, mapping)).reduce(GraphTraversal::or)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the OR operator"));
             default:
@@ -78,7 +78,7 @@ abstract class AbstractQueryConvert {
         if (whereOptional.isPresent()) {
             Where where = whereOptional.get();
 
-            Condition condition = where.getCondition();
+            QueryCondition condition = where.condition();
             traversal.filter(getPredicate(graphQuery, condition, mapping));
         }
         return traversal;

@@ -37,9 +37,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>jakarta.nosql</groupId>
-            <artifactId>nosql-column</artifactId>
-            <version>${jakarta.nosql.version}</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jnosql-mapping-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

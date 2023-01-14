@@ -14,9 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.Template;
+import jakarta.nosql.PreparedStatement;
+import jakarta.nosql.Template;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 
@@ -74,7 +73,6 @@ public interface GraphTemplate extends Template {
      * @param <T>      the instance type
      * @return the entity saved
      * @throws IllegalStateException                     when document is null
-     * @throws jakarta.nosql.mapping.IdNotFoundException when an entity is null
      */
     <T> Iterable<T> update(Iterable<T> entities);
 
@@ -108,8 +106,6 @@ public interface GraphTemplate extends Template {
      * @param <O>      the outgoing type
      * @return the {@link EdgeEntity} of these two entities
      * @throws NullPointerException                          Either when any elements are null or the entity is null
-     * @throws jakarta.nosql.mapping.IdNotFoundException     when {@link jakarta.nosql.mapping.Id} annotation is missing in the entities
-     * @throws jakarta.nosql.mapping.EntityNotFoundException when neither outgoing or incoming is found
      */
     <O, I> EdgeEntity edge(O outgoing, String label, I incoming);
 
@@ -125,8 +121,6 @@ public interface GraphTemplate extends Template {
      * @param <O>      the outgoing type
      * @return the {@link EdgeEntity} of these two entities
      * @throws NullPointerException                          Either when any elements are null or the entity is null
-     * @throws jakarta.nosql.mapping.IdNotFoundException     when {@link jakarta.nosql.mapping.Id} annotation is missing in the entities
-     * @throws jakarta.nosql.mapping.EntityNotFoundException when neither outgoing or incoming is found
      */
     default <O, I> EdgeEntity edge(O outgoing, Supplier<String> label, I incoming) {
         Objects.requireNonNull(label, "supplier is required");
@@ -257,7 +251,6 @@ public interface GraphTemplate extends Template {
      * @param <T>     the entity type
      * @return the result as {@link List}
      * @throws NullPointerException     when the query is null
-     * @throws NonUniqueResultException if returns more than one result
      */
     <T> Optional<T> singleResult(String gremlin);
 
@@ -290,4 +283,24 @@ public interface GraphTemplate extends Template {
      * @throws UnsupportedOperationException when the database dot not have support
      */
     <T> long count(Class<T> type);
+
+
+    /**
+     * Returns all entities on the database
+     * @param type the entity type filter
+     * @return the {@link Stream}
+     * @param <T> the entity type
+     * @throws NullPointerException when type is null
+     */
+    <T> Stream<T> findAll(Class<T> type);
+
+    /**
+     * delete all entities from the database
+     * @param type the entity type filter
+     * @param <T> the entity type
+     * @throws NullPointerException when type is null
+     */
+    <T> void deleteAll(Class<T> type);
+
+
 }

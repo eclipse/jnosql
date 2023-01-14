@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.graph.spi;
 
-import jakarta.nosql.mapping.DatabaseType;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
+import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.GraphTemplateProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;

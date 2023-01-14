@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
@@ -25,7 +25,7 @@ import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

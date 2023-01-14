@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.graph.query;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.eclipse.jnosql.mapping.graph.GraphRepositoryProducer;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -25,7 +25,7 @@ import jakarta.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @CDIExtension
-class DefaultGraphRepositoryProducerTest {
+class GraphRepositoryProducerTest {
 
 
     @Inject

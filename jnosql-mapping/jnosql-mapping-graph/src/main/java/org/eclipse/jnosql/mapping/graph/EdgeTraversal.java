@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.NonUniqueResultException;
 import org.apache.tinkerpop.gremlin.process.traversal.step.filter.DedupGlobalStep;
 
 import java.util.Optional;
@@ -73,7 +72,6 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
     /**
      * Concludes the traversal that returns a single {@link EdgeEntity} result
      * @return the EdgeEntity result otherwise {@link Optional#empty()}
-     * @throws NonUniqueResultException when there is more than one result
      */
     Optional<EdgeEntity> getSingleResult();
 

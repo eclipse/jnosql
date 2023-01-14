@@ -19,7 +19,7 @@ import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Transaction.Status;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.BookTemplate;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;

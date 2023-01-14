@@ -14,14 +14,14 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteFrom;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteNameCondition;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteNotCondition;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteWhere;
+import jakarta.nosql.QueryMapper.MapperDeleteFrom;
+import jakarta.nosql.QueryMapper.MapperDeleteNameCondition;
+import jakarta.nosql.QueryMapper.MapperDeleteNotCondition;
+import jakarta.nosql.QueryMapper.MapperDeleteWhere;
 
 import static java.util.Objects.requireNonNull;
 

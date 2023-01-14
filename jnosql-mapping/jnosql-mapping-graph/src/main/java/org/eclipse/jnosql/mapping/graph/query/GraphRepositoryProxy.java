@@ -14,18 +14,18 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.PageableRepository;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.lang.reflect.ParameterizedType;
 
 /**
- * Proxy handle to generate {@link Repository}
+ * Proxy handle to generate {@link jakarta.data.repository.PageableRepository}
  *
  * @param <T>  the type
  * @param <K> the K type
@@ -69,7 +69,7 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
     }
 
     @Override
-    protected Repository getRepository() {
+    protected PageableRepository getRepository() {
         return repository;
     }
 
@@ -94,7 +94,7 @@ class GraphRepositoryProxy<T, K> extends AbstractGraphRepositoryProxy<T, K> {
     }
 
 
-    static class GraphRepository extends AbstractGraphRepository implements Repository {
+    static class GraphRepository extends AbstractGraphRepository implements PageableRepository {
 
         private final GraphTemplate template;
 

@@ -14,10 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.Entity;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.nosql.Entity;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.Traverser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
@@ -144,6 +142,11 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     }
 
     @Override
+    public VertexTraversal skip(long skip) {
+        return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.skip(skip)), converter);
+    }
+
+    @Override
     public VertexTraversal range(long start, long end) {
         return new DefaultVertexTraversal(supplier, flow.andThen(g -> g.range(start, end)), converter);
     }
@@ -209,15 +212,6 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
             return Optional.of(entity);
         }
         throw new NonUniqueResultException("The Vertex traversal query returns more than one result");
-    }
-
-    @Override
-    public <T> Page<T> page(Pagination pagination) {
-        requireNonNull(pagination, "pagination is required");
-
-        GraphTraversal<?, ?> graphTraversal = flow.apply(supplier.get());
-        graphTraversal.skip(pagination.getSkip());
-        return GraphPage.of(pagination, converter, graphTraversal);
     }
 
     @Override

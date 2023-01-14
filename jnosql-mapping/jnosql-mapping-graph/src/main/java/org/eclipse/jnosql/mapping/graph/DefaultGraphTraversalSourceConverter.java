@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.EntityNotFoundException;
+import jakarta.data.exceptions.EmptyResultException;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
@@ -27,6 +27,7 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -129,7 +130,7 @@ class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
         if (edges.hasNext()) {
             return edges.next();
         }
-        throw new EntityNotFoundException("Edge does not found in the database with id: " + id);
+        throw new EmptyResultException("Edge does not found in the database with id: " + id);
     }
 
     private GraphTraversalSource getTraversalSource() {

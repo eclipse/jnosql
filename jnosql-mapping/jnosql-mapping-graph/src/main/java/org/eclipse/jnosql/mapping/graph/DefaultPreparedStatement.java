@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.nosql.PreparedStatement;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 
 import java.util.HashMap;
@@ -52,13 +52,13 @@ final class DefaultPreparedStatement implements PreparedStatement {
     }
 
     @Override
-    public <T> Stream<T> getResult() {
+    public <T> Stream<T> result() {
         return executor.executeGremlin(traversalSource, gremlin, params);
     }
 
     @Override
-    public <T> Optional<T> getSingleResult() {
-        Stream<T> entities = getResult();
+    public <T> Optional<T> singleResult() {
+        Stream<T> entities = result();
         final Iterator<T> iterator = entities.iterator();
         if (!iterator.hasNext()) {
             return Optional.empty();

@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.EntityNotFoundException;
+import jakarta.nosql.mapping. EmptyResultException;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
 import org.apache.tinkerpop.gremlin.structure.Direction;
@@ -137,7 +137,7 @@ public abstract class AbstractGraphTemplateTest {
 
     @Test
     public void shouldGetErrorWhenEntityIsNotSavedYet() {
-        assertThrows(EntityNotFoundException.class, () -> {
+        assertThrows( EmptyResultException.class, () -> {
             Person person = Person.builder().withAge()
                     .withId(10L)
                     .withName("Otavio").build();

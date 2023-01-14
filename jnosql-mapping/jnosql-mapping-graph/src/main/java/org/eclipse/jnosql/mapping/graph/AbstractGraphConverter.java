@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.Value;
-import jakarta.nosql.mapping.AttributeConverter;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.EntityNotFoundException;
-import jakarta.nosql.mapping.MappingException;
+import jakarta.data.exceptions.EmptyResultException;
+import jakarta.data.exceptions.MappingException;
+import org.eclipse.jnosql.communication.Value;
+import jakarta.nosql.AttributeConverter;
+import org.eclipse.jnosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
@@ -172,7 +172,7 @@ abstract class AbstractGraphConverter implements GraphConverter {
         if (edges.hasNext()) {
             return edges.next();
         }
-        throw new EntityNotFoundException("Edge does not found in the database with id: " + id);
+        throw new EmptyResultException("Edge does not found in the database with id: " + id);
     }
 
     private <T> T convertEntityByConstructor(Vertex vertex, EntityMetadata mapping) {

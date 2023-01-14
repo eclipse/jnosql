@@ -14,8 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.NonUniqueResultException;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,7 +52,6 @@ public interface ValueMapTraversal {
      * Concludes the traversal that returns a single result
      *
      * @return the entity result otherwise {@link Optional#empty()}
-     * @throws NonUniqueResultException when there is more than one result
      */
     Optional<Map<String, Object>> getSingleResult();
 
