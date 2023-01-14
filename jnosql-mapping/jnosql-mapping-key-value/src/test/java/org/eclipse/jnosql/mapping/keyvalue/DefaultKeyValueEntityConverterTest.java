@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.KeyValueEntity;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.tck.entities.Car;

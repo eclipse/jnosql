@@ -15,9 +15,9 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.Value;
 import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValueEntity;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
@@ -326,8 +326,8 @@ public class DefaultKeyValueTemplateTest {
     @Test
     public void shouldExecutePrepare() {
         KeyValuePreparedStatement prepare = Mockito.mock(KeyValuePreparedStatement.class);
-        when(prepare.getResult()).thenReturn(Stream.of(Value.of("12")));
-        when(prepare.getSingleResult()).thenReturn(Optional.of(Value.of("12")));
+        when(prepare.result()).thenReturn(Stream.of(Value.of("12")));
+        when(prepare.singleResult()).thenReturn(Optional.of(Value.of("12")));
         when(manager.prepare("get @id")).thenReturn(prepare);
 
         PreparedStatement statement = template.prepare("get @id", Integer.class);

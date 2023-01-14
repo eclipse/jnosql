@@ -14,33 +14,31 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.keyvalue.KeyValueRepositoryProducer;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
 
+import jakarta.data.repository.PageableRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplateProducer;
+
 import java.lang.reflect.Proxy;
 import java.util.Objects;
 
 @ApplicationScoped
-class DefaultKeyValueRepositoryProducer implements KeyValueRepositoryProducer {
+class KeyValueRepositoryProducer {
 
     @Inject
     private KeyValueTemplateProducer producer;
 
-    @Override
-    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, BucketManager manager) {
+    public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, BucketManager manager) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(manager, "manager class is required");
-        KeyValueTemplate template = producer.get(manager);
+        KeyValueTemplate template = producer.apply(manager);
         return get(repositoryClass, template);
     }
 
-    @Override
-    public <T, K, R extends Repository<T, K>> R get(Class<R> repositoryClass, KeyValueTemplate template) {
+    public <T, K, R extends PageableRepository<T, K>> R get(Class<R> repositoryClass, KeyValueTemplate template) {
         Objects.requireNonNull(repositoryClass, "repository class is required");
         Objects.requireNonNull(template, "template class is required");
 

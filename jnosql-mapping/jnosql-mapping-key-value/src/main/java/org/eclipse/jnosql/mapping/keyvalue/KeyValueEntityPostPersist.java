@@ -14,21 +14,24 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityPostPersist;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
-class DefaultKeyValueEntityPostPersist implements KeyValueEntityPostPersist {
+/**
+ * The interface represents the model when the KeyValueEntity be saved that event will fire.
+ */
+public final class KeyValueEntityPostPersist implements Supplier<KeyValueEntity> {
 
     private final KeyValueEntity entity;
 
-    DefaultKeyValueEntityPostPersist(KeyValueEntity entity) {
+    KeyValueEntityPostPersist(KeyValueEntity entity) {
         this.entity = entity;
     }
 
     @Override
-    public KeyValueEntity getEntity() {
+    public KeyValueEntity get() {
         return entity;
     }
 
@@ -40,7 +43,7 @@ class DefaultKeyValueEntityPostPersist implements KeyValueEntityPostPersist {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultKeyValueEntityPostPersist that = (DefaultKeyValueEntityPostPersist) o;
+        KeyValueEntityPostPersist that = (KeyValueEntityPostPersist) o;
         return Objects.equals(entity, that.entity);
     }
 
@@ -51,7 +54,7 @@ class DefaultKeyValueEntityPostPersist implements KeyValueEntityPostPersist {
 
     @Override
     public String toString() {
-        return  "DefaultKeyValueEntityPostPersist{" + "entity=" + entity +
+        return  "KeyValueEntityPostPersist{" + "entity=" + entity +
                 '}';
     }
 }

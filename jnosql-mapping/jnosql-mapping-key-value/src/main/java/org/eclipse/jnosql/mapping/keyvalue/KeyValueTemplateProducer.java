@@ -15,20 +15,22 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
-import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
-import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
-import java.util.Objects;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 
+import java.util.Objects;
+import java.util.function.Function;
+
+
+/**
+ * The producer of {@link KeyValueTemplate}
+ */
 @ApplicationScoped
-class DefaultKeyValueTemplateProducer implements KeyValueTemplateProducer {
+public class KeyValueTemplateProducer implements Function<BucketManager, KeyValueTemplate> {
 
     @Inject
     private KeyValueEntityConverter converter;
@@ -39,7 +41,7 @@ class DefaultKeyValueTemplateProducer implements KeyValueTemplateProducer {
     private KeyValueEventPersistManager eventManager;
 
     @Override
-    public KeyValueTemplate get(BucketManager manager) {
+    public KeyValueTemplate apply(BucketManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return new ProducerKeyValueTemplate(converter, flow, manager, eventManager);
     }

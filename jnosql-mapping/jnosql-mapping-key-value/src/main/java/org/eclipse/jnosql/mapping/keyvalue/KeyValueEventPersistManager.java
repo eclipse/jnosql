@@ -15,23 +15,16 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.mapping.EntityPostPersist;
-import jakarta.nosql.mapping.EntityPrePersist;
-import jakarta.nosql.mapping.keyvalue.EntityKeyValuePostPersist;
-import jakarta.nosql.mapping.keyvalue.EntityKeyValuePrePersist;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityPostPersist;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityPrePersist;
-import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
-import org.eclipse.jnosql.mapping.DefaultEntityPostPersist;
-import org.eclipse.jnosql.mapping.DefaultEntityPrePersist;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.EntityPostPersist;
+import org.eclipse.jnosql.mapping.EntityPrePersist;
 
 @ApplicationScoped
-class DefaultKeyValueEventPersistManager implements KeyValueEventPersistManager {
+public class KeyValueEventPersistManager {
 
     @Inject
     private Event<KeyValueEntityPrePersist> keyValueEntityPrePersistEvent;
@@ -52,33 +45,61 @@ class DefaultKeyValueEventPersistManager implements KeyValueEventPersistManager 
     private Event<EntityKeyValuePostPersist> entityKeyValuePostPersist;
 
 
-    @Override
+    /**
+     * Fire an event after the conversion of the entity to communication API model.
+     *
+     * @param entity the entity
+     */
     public void firePreKeyValue(KeyValueEntity entity) {
-        keyValueEntityPrePersistEvent.fire(new DefaultKeyValueEntityPrePersist(entity));
+        keyValueEntityPrePersistEvent.fire(new KeyValueEntityPrePersist(entity));
     }
 
-    @Override
+    /**
+     * Fire an event after the response from communication layer
+     *
+     * @param entity the entity
+     */
     public void firePostKeyValue(KeyValueEntity entity) {
-        keyValueEntityPostPersistEvent.fire(new DefaultKeyValueEntityPostPersist(entity));
+        keyValueEntityPostPersistEvent.fire(new KeyValueEntityPostPersist(entity));
     }
 
-    @Override
+    /**
+     * Fire an event once the method is called
+     *
+     * @param entity the entity
+     * @param <T>    the entity type
+     */
     public <T> void firePreEntity(T entity) {
-        entityPrePersistEvent.fire(new DefaultEntityPrePersist(entity));
+        entityPrePersistEvent.fire(EntityPrePersist.of(entity));
     }
 
-    @Override
+    /**
+     * Fire an event after convert the {@link KeyValueEntity},
+     * from database response, to Entity.
+     *
+     * @param entity the entity
+     * @param <T>    the entity kind
+     */
     public <T> void firePostEntity(T entity) {
-        entityPostPersistEvent.fire(new DefaultEntityPostPersist(entity));
+        entityPostPersistEvent.fire(EntityPostPersist.of(entity));
     }
 
-    @Override
+    /**
+     * fire an event after the firePostEntity
+     *
+     * @param entity the entity
+     * @param <T>    the entity type
+     */
     public <T> void firePreKeyValueEntity(T entity) {
-        entityKeyValuePrePersist.fire(new DefaultEntityKeyValuePrePersist(entity));
+        entityKeyValuePrePersist.fire(new EntityKeyValuePrePersist(entity));
     }
-
-    @Override
+    /**
+     * Fire the last event
+     *
+     * @param entity the entity
+     * @param <T>    the entity kind
+     */
     public <T> void firePostKeyValueEntity(T entity) {
-        entityKeyValuePostPersist.fire(new DefaultEntityKeyValuePostPersist(entity));
+        entityKeyValuePostPersist.fire(new EntityKeyValuePostPersist(entity));
     }
 }

@@ -14,22 +14,23 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.mapping.keyvalue.EntityKeyValuePrePersist;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
-
-public class DefaultEntityKeyValuePrePersist implements EntityKeyValuePrePersist {
-
+/**
+ * When an entity is either saved or updated it's the first event to fire
+ */
+public final class EntityKeyValuePostPersist implements Supplier<Object> {
 
     private final Object value;
 
-    public DefaultEntityKeyValuePrePersist(Object value) {
+    public EntityKeyValuePostPersist(Object value) {
         this.value = value;
     }
 
     @Override
-    public Object getValue() {
+    public Object get() {
         return value;
     }
 
@@ -38,10 +39,10 @@ public class DefaultEntityKeyValuePrePersist implements EntityKeyValuePrePersist
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultEntityKeyValuePrePersist)) {
+        if (!(o instanceof EntityKeyValuePostPersist)) {
             return false;
         }
-        DefaultEntityKeyValuePrePersist that = (DefaultEntityKeyValuePrePersist) o;
+        EntityKeyValuePostPersist that = (EntityKeyValuePostPersist) o;
         return Objects.equals(value, that.value);
     }
 
@@ -52,7 +53,7 @@ public class DefaultEntityKeyValuePrePersist implements EntityKeyValuePrePersist
 
     @Override
     public String toString() {
-        return  "DefaultEntityKeyValuePrePersist{" + "value=" + value +
+        return  "EntityKeyValuePostPersist{" + "value=" + value +
                 '}';
     }
 }

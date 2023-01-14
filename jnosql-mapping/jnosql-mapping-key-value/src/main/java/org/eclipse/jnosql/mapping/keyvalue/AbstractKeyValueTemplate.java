@@ -15,16 +15,14 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.QueryMapper;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
-import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
+
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.nosql.PreparedStatement;
+import jakarta.nosql.QueryMapper;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 
 import java.time.Duration;
 import java.util.Iterator;

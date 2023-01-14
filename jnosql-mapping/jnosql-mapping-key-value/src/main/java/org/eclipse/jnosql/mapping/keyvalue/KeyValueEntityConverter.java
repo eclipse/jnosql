@@ -14,12 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.mapping.AttributeConverter;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
+import jakarta.nosql.AttributeConverter;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
@@ -29,15 +28,21 @@ import java.util.Objects;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Template method to {@link KeyValueEntityConverter}
+ * This interface represents the converter between an entity and the {@link KeyValueEntity}
  */
-public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityConverter {
+public abstract class KeyValueEntityConverter {
 
     protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();
 
-    @Override
+    /**
+     * Converts the instance entity to {@link KeyValueEntity}
+     *
+     * @param entity the instance
+     * @return a {@link KeyValueEntity} instance
+     * @throws NullPointerException when the entity is null
+     */
     public KeyValueEntity toKeyValue(Object entity) {
         requireNonNull(entity, "entity is required");
         Class<?> type = entity.getClass();
@@ -49,16 +54,24 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
         return KeyValueEntity.of(getKey(value, type, false), entity);
     }
 
-    @Override
+    /**
+     * Converts a {@link KeyValueEntity} to entity
+     *
+     * @param type   the entity class
+     * @param entity the {@link KeyValueEntity} to be converted
+     * @param <T>    the entity type
+     * @return the instance from {@link KeyValueEntity}
+     * @throws NullPointerException when the entityInstance is null
+     */
     public <T> T toEntity(Class<T> type, KeyValueEntity entity) {
         requireNonNull(type, "type is required");
         requireNonNull(entity, "entity is required");
-        T bean = entity.getValue(type);
+        T bean = entity.value(type);
         if (Objects.isNull(bean)) {
             return null;
         }
 
-        Object key = getKey(entity.getKey(), type, true);
+        Object key = getKey(entity.key(), type, true);
         FieldMapping id = getId(type);
         id.write(bean, key);
         return bean;
@@ -68,7 +81,7 @@ public abstract class AbstractKeyValueEntityConverter implements KeyValueEntityC
         FieldMapping id = getId(type);
         if (id.getConverter().isPresent()) {
             AttributeConverter attributeConverter = getConverters().get(id.getConverter().get());
-            if(toEntity) {
+            if (toEntity) {
                 return attributeConverter.convertToEntityAttribute(key);
             } else {
                 return attributeConverter.convertToDatabaseColumn(key);

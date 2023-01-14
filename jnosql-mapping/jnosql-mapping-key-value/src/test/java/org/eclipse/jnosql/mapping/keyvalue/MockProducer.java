@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.Value;
 import jakarta.nosql.keyvalue.BucketManager;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;

@@ -14,16 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
-import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
-import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-public abstract class AbstractKeyValueWorkflow implements KeyValueWorkflow {
+/**
+ * This implementation defines the workflow to insert an Entity on {@link jakarta.nosql.keyvalue.KeyValueTemplate}.
+ * The default implementation follows:
+ *  <p>{@link KeyValueEventPersistManager#firePreEntity(Object)}</p>
+ *  <p>{@link KeyValueEventPersistManager#firePreKeyValueEntity(Object)}</p>
+ *  <p>{@link KeyValueEntityConverter#toKeyValue(Object)}</p>
+ *  <p>{@link KeyValueEventPersistManager#firePreKeyValue(KeyValueEntity)}</p>
+ *  <p>Database alteration</p>
+ *  <p>{@link KeyValueEventPersistManager#firePostKeyValue(KeyValueEntity)}</p>
+ *  <p>{@link KeyValueEventPersistManager#firePostEntity(Object)}</p>
+ *  <p>{@link KeyValueEventPersistManager#firePostKeyValueEntity(Object)}</p>
+ */
+public abstract class KeyValueWorkflow {
 
     protected abstract KeyValueEventPersistManager getEventManager();
 
@@ -31,7 +40,16 @@ public abstract class AbstractKeyValueWorkflow implements KeyValueWorkflow {
     protected abstract KeyValueEntityConverter getConverter();
 
 
-    @Override
+    /**
+     * Executes the workflow to do an interaction on a database key-value.
+     *
+     * @param entity the entity to be saved
+     * @param action the alteration to be executed on database
+     * @param <T>    the entity type
+     * @return after the workflow the entity response
+     * @see jakarta.nosql.keyvalue.KeyValueTemplate#put(Object, java.time.Duration)  {@link jakarta.nosql.keyvalue.KeyValueTemplate#put(Object)}
+     * DocumentTemplate#update(Object)
+     */
     public <T> T flow(T entity, UnaryOperator<KeyValueEntity> action) {
 
         Function<T, T> flow = getFlow(entity, action);

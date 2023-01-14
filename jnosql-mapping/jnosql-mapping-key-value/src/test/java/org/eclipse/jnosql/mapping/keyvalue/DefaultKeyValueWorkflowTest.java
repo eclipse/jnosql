@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.keyvalue.KeyValueEntity;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
 import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
 import org.junit.jupiter.api.BeforeEach;

@@ -14,10 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+import jakarta.data.repository.PageableRepository;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
+import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
 
@@ -32,7 +32,7 @@ import java.util.Set;
 /**
  * Artemis discoveryBean to CDI extension to register {@link KeyValueTemplate}
  */
-public class RepositoryKeyValueBean extends AbstractBean<Repository> {
+public class RepositoryKeyValueBean extends AbstractBean<PageableRepository> {
 
     private final Class type;
 
@@ -70,11 +70,11 @@ public class RepositoryKeyValueBean extends AbstractBean<Repository> {
 
 
     @Override
-    public Repository create(CreationalContext<Repository> creationalContext) {
+    public PageableRepository create(CreationalContext<PageableRepository> creationalContext) {
         KeyValueTemplate repository = provider.isEmpty() ? getInstance(KeyValueTemplate.class) :
                 getInstance(KeyValueTemplate.class, DatabaseQualifier.ofKeyValue(provider));
         KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(type, repository);
-        return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
+        return (PageableRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }

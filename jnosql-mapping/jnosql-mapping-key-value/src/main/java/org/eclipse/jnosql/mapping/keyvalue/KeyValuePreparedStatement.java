@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.Value;
-import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.nosql.PreparedStatement;
+import org.eclipse.jnosql.communication.Value;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -24,11 +24,11 @@ import static java.util.Objects.requireNonNull;
 
 final class KeyValuePreparedStatement implements PreparedStatement {
 
-    private final jakarta.nosql.keyvalue.KeyValuePreparedStatement preparedStatement;
+    private final org.eclipse.jnosql.communication.keyvalue.KeyValuePreparedStatement preparedStatement;
 
     private final Class<?> type;
 
-    KeyValuePreparedStatement(jakarta.nosql.keyvalue.KeyValuePreparedStatement preparedStatement, Class<?> type) {
+    KeyValuePreparedStatement(org.eclipse.jnosql.communication.keyvalue.KeyValuePreparedStatement preparedStatement, Class<?> type) {
         this.preparedStatement = preparedStatement;
         this.type = type;
     }
@@ -40,15 +40,15 @@ final class KeyValuePreparedStatement implements PreparedStatement {
     }
 
     @Override
-    public <T> Stream<T> getResult() {
-        Stream<Value> values = preparedStatement.getResult();
+    public <T> Stream<T> result() {
+        Stream<Value> values = preparedStatement.result();
         requireNonNull(type, "type is required when the command returns value");
         return values.map(v -> v.get((Class<T>) type));
     }
 
     @Override
-    public <T> Optional<T> getSingleResult() {
-        Optional<Value> singleResult = preparedStatement.getSingleResult();
+    public <T> Optional<T> singleResult() {
+        Optional<Value> singleResult = preparedStatement.singleResult();
         if (singleResult.isPresent()) {
             requireNonNull(type, "type is required when the command returns value");
             return singleResult.map(v -> v.get((Class<T>) type));

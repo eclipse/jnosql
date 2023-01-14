@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.keyvalue.KeyValueEntity;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 import jakarta.nosql.mapping.EntityPostPersist;
 import jakarta.nosql.mapping.EntityPrePersist;
 import jakarta.nosql.mapping.keyvalue.EntityKeyValuePostPersist;
@@ -35,10 +35,10 @@ import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultKeyValueEventPersistManagerTest {
+public class KeyValueEventPersistManagerTest {
 
     @InjectMocks
-    private DefaultKeyValueEventPersistManager subject;
+    private KeyValueEventPersistManager subject;
 
     @Mock
     private Event<KeyValueEntityPrePersist> keyValueEntityPrePersistEvent;
@@ -66,7 +66,7 @@ public class DefaultKeyValueEventPersistManagerTest {
         verify(keyValueEntityPrePersistEvent).fire(captor.capture());
 
         KeyValueEntityPrePersist captorValue = captor.getValue();
-        assertEquals(entity, captorValue.getEntity());
+        assertEquals(entity, captorValue.get());
     }
 
 
@@ -78,7 +78,7 @@ public class DefaultKeyValueEventPersistManagerTest {
         verify(keyValueEntityPostPersistEvent).fire(captor.capture());
 
         KeyValueEntityPostPersist captorValue = captor.getValue();
-        assertEquals(entity, captorValue.getEntity());
+        assertEquals(entity, captorValue.get());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class DefaultKeyValueEventPersistManagerTest {
         ArgumentCaptor<EntityKeyValuePrePersist> captor = ArgumentCaptor.forClass(EntityKeyValuePrePersist.class);
         verify(entityKeyValuePrePersist).fire(captor.capture());
         EntityKeyValuePrePersist value = captor.getValue();
-        assertEquals(actor, value.getValue());
+        assertEquals(actor, value.get());
     }
 
     @Test
@@ -122,7 +122,7 @@ public class DefaultKeyValueEventPersistManagerTest {
         ArgumentCaptor<EntityKeyValuePostPersist> captor = ArgumentCaptor.forClass(EntityKeyValuePostPersist.class);
         verify(entityKeyValuePostPersist).fire(captor.capture());
         EntityKeyValuePostPersist value = captor.getValue();
-        assertEquals(actor, value.getValue());
+        assertEquals(actor, value.get());
     }
 
     static class Actor {

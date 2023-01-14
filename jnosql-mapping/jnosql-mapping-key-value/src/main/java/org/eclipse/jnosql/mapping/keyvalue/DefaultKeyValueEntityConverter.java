@@ -14,8 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -25,7 +24,7 @@ import jakarta.inject.Inject;
  * The default implementation of {@link KeyValueEntityConverter}
  */
 @ApplicationScoped
-class DefaultKeyValueEntityConverter extends AbstractKeyValueEntityConverter implements KeyValueEntityConverter {
+class DefaultKeyValueEntityConverter extends KeyValueEntityConverter  {
 
     @Inject
     private EntitiesMetadata entities;

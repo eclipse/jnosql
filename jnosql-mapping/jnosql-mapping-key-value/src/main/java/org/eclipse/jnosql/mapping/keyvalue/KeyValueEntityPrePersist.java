@@ -14,21 +14,26 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityPrePersist;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
-class DefaultKeyValueEntityPrePersist implements KeyValueEntityPrePersist {
+
+
+/**
+ * The interface represents the model before the KeyValueEntity be saved that  event will fire.
+ */
+public final class KeyValueEntityPrePersist implements Supplier<KeyValueEntity> {
 
     private final KeyValueEntity entity;
 
-    DefaultKeyValueEntityPrePersist(KeyValueEntity entity) {
+    KeyValueEntityPrePersist(KeyValueEntity entity) {
         this.entity = entity;
     }
 
     @Override
-    public KeyValueEntity getEntity() {
+    public KeyValueEntity get() {
         return entity;
     }
 
@@ -40,7 +45,7 @@ class DefaultKeyValueEntityPrePersist implements KeyValueEntityPrePersist {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DefaultKeyValueEntityPrePersist that = (DefaultKeyValueEntityPrePersist) o;
+        KeyValueEntityPrePersist that = (KeyValueEntityPrePersist) o;
         return Objects.equals(entity, that.entity);
     }
 
@@ -51,7 +56,7 @@ class DefaultKeyValueEntityPrePersist implements KeyValueEntityPrePersist {
 
     @Override
     public String toString() {
-        return  "DefaultKeyValueEntityPrePersist{" + "entity=" + entity +
+        return  "KeyValueEntityPrePersist{" + "entity=" + entity +
                 '}';
     }
 }

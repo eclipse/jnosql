@@ -17,10 +17,7 @@ package org.eclipse.jnosql.mapping.keyvalue;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
-import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
-import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 
 @ApplicationScoped
 class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {
