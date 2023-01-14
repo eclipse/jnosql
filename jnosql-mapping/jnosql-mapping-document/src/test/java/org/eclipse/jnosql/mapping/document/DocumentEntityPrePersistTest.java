@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document;
 
 import org.eclipse.jnosql.communication.document.DocumentEntity;
-import jakarta.nosql.mapping.document.DocumentEntityPrePersist;
+import jakarta.nosql.document.DocumentEntityPrePersist;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

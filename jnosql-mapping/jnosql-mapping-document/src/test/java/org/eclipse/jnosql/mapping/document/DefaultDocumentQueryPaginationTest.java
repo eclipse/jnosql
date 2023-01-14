@@ -17,8 +17,8 @@
 package org.eclipse.jnosql.mapping.document;
 
 import org.eclipse.jnosql.communication.document.DocumentQuery;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.document.DocumentQueryPagination;
+import jakarta.nosql.Pagination;
+import jakarta.nosql.document.DocumentQueryPagination;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

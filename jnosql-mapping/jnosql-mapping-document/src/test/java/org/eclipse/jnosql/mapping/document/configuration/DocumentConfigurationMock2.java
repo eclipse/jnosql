@@ -14,12 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.document.configuration;
 
-import jakarta.nosql.Settings;
+import org.eclipse.jnosql.communication.Settings;
+import org.eclipse.jnosql.communication.document.DocumentConfiguration;
 import org.eclipse.jnosql.communication.document.DocumentManager;
-import jakarta.nosql.document.DocumentManagerFactory;
-import jakarta.nosql.document.DocumentConfiguration;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentManagerFactory;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
 
 import java.time.Duration;

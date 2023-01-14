@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.document.spi;
 
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.document.DocumentTemplate;
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;

@@ -19,8 +19,8 @@ import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
+import jakarta.nosql.Database;
+import jakarta.nosql.DatabaseType;
 import org.mockito.Mockito;
 
 import jakarta.annotation.Priority;

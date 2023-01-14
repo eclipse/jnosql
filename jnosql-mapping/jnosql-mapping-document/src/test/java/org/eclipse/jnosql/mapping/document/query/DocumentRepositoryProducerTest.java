@@ -15,8 +15,8 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 import org.eclipse.jnosql.communication.document.DocumentManager;
-import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.document.DocumentTemplate;
+import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ class DocumentRepositoryProducerTest {
 
     @Test
     public void shouldCreateFromTemplate() {
-        DocumentTemplate template= Mockito.mock(DocumentTemplate.class);
+        JNoSQLDocumentTemplate template= Mockito.mock(JNoSQLDocumentTemplate.class);
         PersonRepository personRepository = producer.get(PersonRepository.class, template);
         assertNotNull(personRepository);
     }
