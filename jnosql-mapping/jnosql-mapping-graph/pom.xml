@@ -32,18 +32,18 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jnosql.mapping</groupId>
-            <artifactId>jnosql-mapping-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.eclipse.jnosql.communication</groupId>
             <artifactId>jnosql-communication-query</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>jakarta.nosql.tck.mapping</groupId>
-            <artifactId>mapping-tck-test</artifactId>
+            <groupId>jakarta.nosql</groupId>
+            <artifactId>nosql-column</artifactId>
+            <version>${jakarta.nosql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jnosql-mapping-tests</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
