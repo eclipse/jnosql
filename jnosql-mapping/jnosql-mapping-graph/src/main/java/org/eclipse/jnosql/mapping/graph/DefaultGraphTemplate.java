@@ -21,6 +21,8 @@ import org.eclipse.jnosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
+import java.util.stream.Stream;
+
 /**
  * The default {@link GraphTemplate}
  */
@@ -75,4 +77,5 @@ class DefaultGraphTemplate extends AbstractGraphTemplate {
     protected Converters getConverters() {
         return converters;
     }
+
 }

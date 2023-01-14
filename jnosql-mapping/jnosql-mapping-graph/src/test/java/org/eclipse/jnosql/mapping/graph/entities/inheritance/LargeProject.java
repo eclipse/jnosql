@@ -15,9 +15,9 @@
 
 package org.eclipse.jnosql.mapping.graph.entities.inheritance;
 
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.DiscriminatorValue;
-import jakarta.nosql.mapping.Entity;
+import jakarta.nosql.Column;
+import jakarta.nosql.DiscriminatorValue;
+import jakarta.nosql.Entity;
 
 @Entity
 @DiscriminatorValue("Large")

@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.mapping.DynamicQueryException;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.DynamicQueryException;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
 import java.lang.reflect.Method;

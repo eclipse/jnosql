@@ -14,15 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.mapping.EntityPostPersist;
-import jakarta.nosql.mapping.EntityPrePersist;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.DefaultEntityPostPersist;
-import org.eclipse.jnosql.mapping.DefaultEntityPrePersist;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.EntityPostPersist;
+import org.eclipse.jnosql.mapping.EntityPrePersist;
 
 @ApplicationScoped
 class DefaultGraphEventPersistManager implements GraphEventPersistManager {
@@ -58,12 +55,12 @@ class DefaultGraphEventPersistManager implements GraphEventPersistManager {
 
     @Override
     public <T> void firePreEntity(T entity) {
-        entityPrePersistEvent.fire(new DefaultEntityPrePersist(entity));
+        entityPrePersistEvent.fire(EntityPrePersist.of(entity));
     }
 
     @Override
     public <T> void firePostEntity(T entity) {
-        entityPostPersistEvent.fire(new DefaultEntityPostPersist(entity));
+        entityPostPersistEvent.fire(EntityPostPersist.of(entity));
     }
 
     @Override

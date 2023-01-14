@@ -14,13 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.graph.configuration;
 
-import jakarta.nosql.Settings;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.tinkerpop.gremlin.process.computer.GraphComputer;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.communication.Settings;
 import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 
 import java.util.Iterator;

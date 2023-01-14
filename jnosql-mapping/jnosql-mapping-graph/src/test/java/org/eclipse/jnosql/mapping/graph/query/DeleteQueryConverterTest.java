@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
@@ -244,7 +244,7 @@ class DeleteQueryConverterTest {
     }
 
 
-    interface PersonRepository extends Repository<Person, String> {
+    interface PersonRepository extends PageableRepository<Person, String> {
 
         List<Person> deleteByName(String name);
 

@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.graph.entities.inheritance;
 
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.DiscriminatorColumn;
-import jakarta.nosql.mapping.Entity;
-import jakarta.nosql.mapping.Id;
-import jakarta.nosql.mapping.Inheritance;
+import jakarta.nosql.Column;
+import jakarta.nosql.DiscriminatorColumn;
+import jakarta.nosql.Entity;
+import jakarta.nosql.Id;
+import jakarta.nosql.Inheritance;
 
 import java.util.Objects;
 

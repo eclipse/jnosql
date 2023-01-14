@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.graph.producer;
 
-import jakarta.nosql.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.communication.Settings;
 import org.eclipse.jnosql.mapping.graph.GraphConfiguration;
 
 public class GraphConfigurationB implements GraphConfiguration {

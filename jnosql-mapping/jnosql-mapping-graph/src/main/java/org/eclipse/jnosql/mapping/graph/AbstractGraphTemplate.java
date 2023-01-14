@@ -365,6 +365,21 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return new GraphMapperDelete(metadata,getConverters(), traversal, getConverter());
     }
 
+    @Override
+    public <T> Stream<T> findAll(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        return getTraversal().V().hasLabel(metadata.getName())
+                .toStream().map(getConverter()::toEntity);
+    }
+
+    @Override
+    public <T> void deleteAll(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        getTraversal().V().hasLabel(metadata.getName()).toStream().forEach(Vertex::remove);
+    }
+
     private <K> Collection<EdgeEntity> getEdgesByIdImpl(K id, Direction direction, String... labels) {
 
         requireNonNull(id, "id is required");

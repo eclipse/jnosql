@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.spi;
 
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.graph.BookRepository;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
@@ -22,9 +23,7 @@ import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
-
-import static jakarta.nosql.mapping.DatabaseType.GRAPH;
+import static org.eclipse.jnosql.mapping.DatabaseType.GRAPH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

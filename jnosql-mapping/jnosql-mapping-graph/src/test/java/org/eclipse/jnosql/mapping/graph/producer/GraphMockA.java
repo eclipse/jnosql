@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.producer;
 
-import jakarta.nosql.Settings;
+import org.eclipse.jnosql.communication.Settings;
 
 public class GraphMockA extends AbstractGraphMock {
 

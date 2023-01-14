@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import jakarta.data.exceptions.EmptyResultException;
 import org.eclipse.jnosql.communication.Value;
-import jakarta.nosql.mapping. EmptyResultException;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;

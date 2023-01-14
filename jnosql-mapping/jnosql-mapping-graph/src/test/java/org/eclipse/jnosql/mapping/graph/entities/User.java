@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.entities;
 
-import jakarta.nosql.mapping.Id;
+import jakarta.nosql.Id;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;

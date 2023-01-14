@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
+import jakarta.data.repository.Pageable;
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.Repository;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Edge;
@@ -100,7 +100,7 @@ public class GraphRepositoryProxyPaginationTest {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
-        List<Person> people = personRepository.findByNameAndAge("name", 20, Pagination.page(1).size(2));
+        List<Person> people = personRepository.findByNameAndAge("name", 20, Pageable.ofPage(1).size(2));
         assertEquals(2, people.size());
 
     }
@@ -113,7 +113,7 @@ public class GraphRepositoryProxyPaginationTest {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
 
-        Set<Person> people = personRepository.findByAgeAndName(20, "name", Pagination.page(1).size(3));
+        Set<Person> people = personRepository.findByAgeAndName(20, "name", Pageable.ofPage(1).size(3));
         assertEquals(3, people.size());
 
     }
@@ -122,7 +122,7 @@ public class GraphRepositoryProxyPaginationTest {
     public void shouldFindByAge() {
 
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        Optional<Person> person = personRepository.findByAge(20, Pagination.page(1).size(2));
+        Optional<Person> person = personRepository.findByAge(20, Pageable.ofPage(1).size(2));
         assertTrue(person.isPresent());
     }
 
@@ -131,26 +131,24 @@ public class GraphRepositoryProxyPaginationTest {
     public void shouldFindAll() {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        List<Person> people = personRepository.findAll(Pagination.page(2).size(1));
+        List<Person> people = personRepository.findAll(Pageable.ofPage(2).size(1)).content();
         assertFalse(people.isEmpty());
         assertEquals(1, people.size());
     }
 
     @Test
     public void shouldReturnEmptyAtFindAll() {
-        List<Person> people = personRepository.findAll(Pagination.page(1).size(2));
+        List<Person> people = personRepository.findAll(Pageable.ofPage(1).size(2)).content();
         assertTrue(people.isEmpty());
     }
 
-    interface PersonRepository extends Repository<Person, Long> {
+    interface PersonRepository extends PageableRepository<Person, Long> {
 
-        List<Person> findAll(Pagination pagination);
+        Optional<Person> findByAge(Integer age, Pageable pagination);
 
-        Optional<Person> findByAge(Integer age, Pagination pagination);
+        List<Person> findByNameAndAge(String name, Integer age, Pageable pagination);
 
-        List<Person> findByNameAndAge(String name, Integer age, Pagination pagination);
-
-        Set<Person> findByAgeAndName(Integer age, String name, Pagination pagination);
+        Set<Person> findByAgeAndName(Integer age, String name, Pageable pagination);
 
     }
 
