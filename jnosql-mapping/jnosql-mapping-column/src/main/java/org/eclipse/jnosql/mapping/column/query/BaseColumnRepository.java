@@ -39,7 +39,6 @@ import org.eclipse.jnosql.mapping.util.ParamsBinder;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -70,7 +69,7 @@ public abstract class BaseColumnRepository<T> {
         ColumnQuery query = queryParams.query();
         Params params = queryParams.params();
         getParamsBinder().bind(params, args, method);
-        return getQuerySorts(args, query);
+        return updateQueryDynamically(args, query);
     }
 
     protected ColumnDeleteQuery getDeleteQuery(Method method, Object[] args) {
@@ -104,7 +103,7 @@ public abstract class BaseColumnRepository<T> {
                 .withMethodSource(method)
                 .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findPagination(args))
+                .withPagination(DynamicReturn.findPagination(args).orElse(null))
                 .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
@@ -118,20 +117,18 @@ public abstract class BaseColumnRepository<T> {
 
     protected Function<Pageable, Optional<T>> getSingleResult(ColumnQuery query) {
         return p -> {
-            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
-            return getTemplate().singleResult(queryPagination);
+            return getTemplate().singleResult(query);
         };
     }
 
     protected Function<Pageable, Stream<T>> streamPagination(ColumnQuery query) {
         return p -> {
-            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
-            return getTemplate().select(queryPagination);
+            return getTemplate().select(query);
         };
     }
 
 
-    protected ColumnQuery getQuerySorts(Object[] args, ColumnQuery query) {
+    protected ColumnQuery updateQueryDynamically(Object[] args, ColumnQuery query) {
         Optional<Pageable> pageable = DynamicReturn.findPagination(args);
 
         return pageable.<ColumnQuery>map(p -> {
