@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.query;
 
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Query;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,12 +27,13 @@ class RepositoryTypeTest {
 
 
     @Test
-    public void shouldReturnDefaultSync() throws NoSuchMethodException {
+    public void shouldReturnDefault() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "save")));
         Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "deleteById")));
         Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "findById")));
         Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "existsById")));
         Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "count")));
+        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(PageableRepository.class, "findAll")));
     }
 
 
