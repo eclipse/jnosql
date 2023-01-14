@@ -75,7 +75,6 @@
             <version>${el.impl.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>jakarta.nosql.tck.mapping</groupId>
             <artifactId>mapping-tck-test</artifactId>

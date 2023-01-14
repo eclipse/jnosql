@@ -36,7 +36,7 @@ import java.util.Set;
  * Validates bean instances. Implementations of this interface must be thread-safe.
  */
 @ApplicationScoped
-class MappingValidator {
+public class MappingValidator {
 
     @Inject
     private Instance<ValidatorFactory> validatorFactories;
