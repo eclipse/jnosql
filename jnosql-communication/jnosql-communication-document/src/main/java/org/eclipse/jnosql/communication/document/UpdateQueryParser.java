@@ -21,7 +21,7 @@ import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.query.JSONQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.UpdateQuery;
-import org.eclipse.jnosql.communication.query.UpdateQueryProvider;
+import org.eclipse.jnosql.communication.query.UpdateQueryConverter;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,15 +29,11 @@ import java.util.stream.Stream;
 
 final class UpdateQueryParser extends ConditionQueryParser {
 
-    private final UpdateQueryProvider supplier;
-
-    UpdateQueryParser() {
-        this.supplier = new UpdateQueryProvider();
-    }
 
     Stream<DocumentEntity> query(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
 
-        UpdateQuery updateQuery = supplier.apply(query);
+        UpdateQueryConverter converter= new UpdateQueryConverter();
+        UpdateQuery updateQuery = converter.apply(query);
 
         Params params = Params.newParams();
 
@@ -54,7 +50,8 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
         Params params = Params.newParams();
 
-        UpdateQuery updateQuery = supplier.apply(query);
+        UpdateQueryConverter converter= new UpdateQueryConverter();
+        UpdateQuery updateQuery = converter.apply(query);
 
         DocumentEntity entity = getEntity(params, updateQuery, observer);
         return DocumentPreparedStatement.update(entity, params, query, collectionManager);

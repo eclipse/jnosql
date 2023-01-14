@@ -20,7 +20,7 @@ package org.eclipse.jnosql.communication.column;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.query.DeleteQuery;
-import org.eclipse.jnosql.communication.query.DeleteQueryProvider;
+import org.eclipse.jnosql.communication.query.DeleteQueryConverter;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -31,11 +31,7 @@ import static java.util.Objects.requireNonNull;
 
 public final class DeleteQueryParser implements BiFunction<DeleteQuery, ColumnObserverParser, ColumnDeleteQueryParams> {
 
-    private final DeleteQueryProvider deleteQueryProvider;
 
-    public DeleteQueryParser() {
-        this.deleteQueryProvider = new DeleteQueryProvider();
-    }
 
     Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
 
@@ -66,7 +62,8 @@ public final class DeleteQueryParser implements BiFunction<DeleteQuery, ColumnOb
     }
 
     private ColumnDeleteQuery getQuery(String query, Params params, ColumnObserverParser observer) {
-        DeleteQuery deleteQuery = deleteQueryProvider.apply(query);
+        DeleteQueryConverter converter = new DeleteQueryConverter();
+        DeleteQuery deleteQuery = converter.apply(query);
 
         return getQuery(params, observer, deleteQuery);
     }
@@ -86,7 +83,9 @@ public final class DeleteQueryParser implements BiFunction<DeleteQuery, ColumnOb
     }
 
     private ColumnDeleteQuery getQuery(String query, ColumnObserverParser observer) {
-        DeleteQuery deleteQuery = deleteQueryProvider.apply(query);
+
+        DeleteQueryConverter converter = new DeleteQueryConverter();
+        DeleteQuery deleteQuery = converter.apply(query);
 
         String columnFamily = observer.fireEntity(deleteQuery.entity());
         List<String> columns = deleteQuery.fields().stream()

@@ -21,7 +21,7 @@ import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.query.DelQuery;
-import org.eclipse.jnosql.communication.query.DelQueryProvider;
+import org.eclipse.jnosql.communication.query.DelQueryConverter;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -30,15 +30,12 @@ import static java.util.stream.Collectors.toList;
 
 final class DelQueryParser {
 
-    private final DelQueryProvider provider;
 
-    DelQueryParser() {
-        this.provider = new DelQueryProvider();
-    }
 
     Stream<Value> query(String query, BucketManager manager) {
 
-        DelQuery delQuery = provider.apply(query);
+        DelQueryConverter converter = new DelQueryConverter();
+        DelQuery delQuery = converter.apply(query);
         Params params = Params.newParams();
         List<Value> values = delQuery.keys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         if (params.isNotEmpty()) {
@@ -51,7 +48,9 @@ final class DelQueryParser {
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
-        DelQuery delQuery = provider.apply(query);
+
+        DelQueryConverter converter = new DelQueryConverter();
+        DelQuery delQuery = converter.apply(query);
         Params params = Params.newParams();
         List<Value> values = delQuery.keys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         return DefaultKeyValuePreparedStatement.del(values, manager, params, query);

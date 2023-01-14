@@ -22,7 +22,7 @@ import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 import jakarta.data.repository.Sort;
 import org.eclipse.jnosql.communication.query.SelectQuery;
-import org.eclipse.jnosql.communication.query.SelectQueryProvider;
+import org.eclipse.jnosql.communication.query.SelectQueryConverter;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,12 +34,6 @@ import static java.util.stream.Collectors.toList;
 
 public final class SelectQueryParser implements BiFunction<SelectQuery, DocumentObserverParser, DocumentQueryParams> {
 
-    private final SelectQueryProvider selectQueryProvider;
-
-    public SelectQueryParser() {
-        this.selectQueryProvider = new SelectQueryProvider();
-    }
-
     Stream<DocumentEntity> query(String query, DocumentManager manager, DocumentObserverParser observer) {
         DocumentQuery documentQuery = getDocumentQuery(query, observer);
         return manager.select(documentQuery);
@@ -50,7 +44,8 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, Document
 
         Params params = Params.newParams();
 
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+        SelectQueryConverter converter = new SelectQueryConverter();
+        SelectQuery selectQuery = converter.apply(query);
 
         DocumentQuery documentQuery = getDocumentQuery(params, selectQuery, observer);
         return DocumentPreparedStatement.select(documentQuery, params, query, collectionManager);
@@ -68,7 +63,8 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, Document
 
     private DocumentQuery getDocumentQuery(String query, DocumentObserverParser observer) {
 
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+        SelectQueryConverter converter = new SelectQueryConverter();
+        SelectQuery selectQuery = converter.apply(query);
         String collection = observer.fireEntity(selectQuery.entity());
         long limit = selectQuery.limit();
         long skip = selectQuery.skip();

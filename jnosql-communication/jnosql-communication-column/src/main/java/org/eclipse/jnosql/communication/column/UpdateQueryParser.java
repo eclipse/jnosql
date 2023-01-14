@@ -22,7 +22,7 @@ import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.query.JSONQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.UpdateQuery;
-import org.eclipse.jnosql.communication.query.UpdateQueryProvider;
+import org.eclipse.jnosql.communication.query.UpdateQueryConverter;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,15 +30,12 @@ import java.util.stream.Stream;
 
 final class UpdateQueryParser extends ConditionQueryParser {
 
-    private final UpdateQueryProvider updateQueryProvider;
 
-    UpdateQueryParser() {
-        this.updateQueryProvider = new UpdateQueryProvider();
-    }
 
     Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
 
-        UpdateQuery updateQuery = updateQueryProvider.apply(query);
+        UpdateQueryConverter converter = new UpdateQueryConverter();
+        UpdateQuery updateQuery = converter.apply(query);
 
         Params params = Params.newParams();
 
@@ -55,7 +52,8 @@ final class UpdateQueryParser extends ConditionQueryParser {
 
         Params params = Params.newParams();
 
-        UpdateQuery updateQuery = updateQueryProvider.apply(query);
+        UpdateQueryConverter converter = new UpdateQueryConverter();
+        UpdateQuery updateQuery = converter.apply(query);
 
         ColumnEntity entity = getEntity(params, updateQuery, observer);
 

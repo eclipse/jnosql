@@ -18,11 +18,11 @@ package org.eclipse.jnosql.communication.column;
 
 
 import jakarta.data.repository.Direction;
+import jakarta.data.repository.Sort;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
-import jakarta.data.repository.Sort;
 import org.eclipse.jnosql.communication.query.SelectQuery;
-import org.eclipse.jnosql.communication.query.SelectQueryProvider;
+import org.eclipse.jnosql.communication.query.SelectQueryConverter;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,10 +34,8 @@ import static java.util.stream.Collectors.toList;
 
 public final class SelectQueryParser implements BiFunction<SelectQuery, ColumnObserverParser, ColumnQueryParams> {
 
-    private final SelectQueryProvider selectQueryProvider;
 
     public SelectQueryParser() {
-        this.selectQueryProvider = new SelectQueryProvider();
     }
 
     Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
@@ -50,8 +48,8 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, ColumnOb
     ColumnPreparedStatement prepare(String query, ColumnManager manager, ColumnObserverParser observer) {
 
         Params params = Params.newParams();
-
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+        SelectQueryConverter converter = new SelectQueryConverter();
+        SelectQuery selectQuery = converter.apply(query);
 
         ColumnQuery columnQuery = getColumnQuery(params, selectQuery, observer);
         return ColumnPreparedStatement.select(columnQuery, params, query, manager);
@@ -71,7 +69,8 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, ColumnOb
 
     private ColumnQuery getColumnQuery(String query, ColumnObserverParser observer) {
 
-        SelectQuery selectQuery = selectQueryProvider.apply(query);
+        SelectQueryConverter converter = new SelectQueryConverter();
+        SelectQuery selectQuery = converter.apply(query);
         String columnFamily = observer.fireEntity(selectQuery.entity());
         long limit = selectQuery.limit();
         long skip = selectQuery.skip();

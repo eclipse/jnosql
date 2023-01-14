@@ -20,7 +20,7 @@ package org.eclipse.jnosql.communication.document;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.query.DeleteQuery;
-import org.eclipse.jnosql.communication.query.DeleteQueryProvider;
+import org.eclipse.jnosql.communication.query.DeleteQueryConverter;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,12 +29,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class DeleteQueryParser implements BiFunction<DeleteQuery, DocumentObserverParser, DocumentDeleteQueryParams> {
-
-    private final DeleteQueryProvider deleteQueryProvider;
-
-    public DeleteQueryParser() {
-        this.deleteQueryProvider = new DeleteQueryProvider();
-    }
 
     Stream<DocumentEntity> query(String query, DocumentManager manager, DocumentObserverParser observer) {
 
@@ -63,7 +57,8 @@ public final class DeleteQueryParser implements BiFunction<DeleteQuery, Document
     }
 
     private DocumentDeleteQuery getQuery(String query, Params params, DocumentObserverParser observer) {
-        DeleteQuery deleteQuery = deleteQueryProvider.apply(query);
+        DeleteQueryConverter converter = new DeleteQueryConverter();
+        DeleteQuery deleteQuery = converter.apply(query);
 
         return getQuery(params, observer, deleteQuery);
     }
@@ -84,7 +79,8 @@ public final class DeleteQueryParser implements BiFunction<DeleteQuery, Document
     }
 
     private DocumentDeleteQuery getQuery(String query, DocumentObserverParser observer) {
-        DeleteQuery deleteQuery = deleteQueryProvider.apply(query);
+        DeleteQueryConverter converter = new DeleteQueryConverter();
+        DeleteQuery deleteQuery = converter.apply(query);
 
         String collection = observer.fireEntity(deleteQuery.entity());
         List<String> documents = deleteQuery.fields().stream()

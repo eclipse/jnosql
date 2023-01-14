@@ -21,7 +21,7 @@ import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.query.PutQuery;
-import org.eclipse.jnosql.communication.query.PutQueryProvider;
+import org.eclipse.jnosql.communication.query.PutQueryConverter;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -29,15 +29,12 @@ import java.util.stream.Stream;
 
 final class PutQueryParser {
 
-    private final PutQueryProvider provider;
 
-    PutQueryParser() {
-        this.provider = new PutQueryProvider();
-    }
 
     Stream<Value> query(String query, BucketManager manager) {
 
-        PutQuery putQuery = provider.apply(query);
+        PutQueryConverter converter = new PutQueryConverter();
+        PutQuery putQuery = converter.apply(query);
         Params params = Params.newParams();
         Value key = Values.getValue(putQuery.key(), params);
         Value value = Values.getValue(putQuery.value(), params);
@@ -57,7 +54,8 @@ final class PutQueryParser {
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
-        PutQuery putQuery = provider.apply(query);
+        PutQueryConverter converter = new PutQueryConverter();
+        PutQuery putQuery = converter.apply(query);
         Params params = Params.newParams();
         Value key = Values.getValue(putQuery.key(), params);
         Value value = Values.getValue(putQuery.value(), params);

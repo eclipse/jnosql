@@ -20,7 +20,7 @@ package org.eclipse.jnosql.communication.column;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.query.InsertQuery;
-import org.eclipse.jnosql.communication.query.InsertQueryProvider;
+import org.eclipse.jnosql.communication.query.InsertQueryConverter;
 import org.eclipse.jnosql.communication.query.JSONQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 
@@ -31,15 +31,12 @@ import java.util.stream.Stream;
 
 final class InsertQueryParser extends ConditionQueryParser {
 
-    private final InsertQueryProvider insertQueryProvider;
 
-    InsertQueryParser() {
-        this.insertQueryProvider = new InsertQueryProvider();
-    }
 
     Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
 
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
+        InsertQueryConverter converter = new InsertQueryConverter();
+        InsertQuery insertQuery = converter.apply(query);
 
         String columnFamily = insertQuery.entity();
         Params params = Params.newParams();
@@ -60,7 +57,9 @@ final class InsertQueryParser extends ConditionQueryParser {
 
     ColumnPreparedStatement prepare(String query, ColumnManager manager,
                                     ColumnObserverParser observer) {
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
+
+        InsertQueryConverter converter = new InsertQueryConverter();
+        InsertQuery insertQuery = converter.apply(query);
 
         String columnFamily = observer.fireEntity(insertQuery.entity());
         Params params = Params.newParams();

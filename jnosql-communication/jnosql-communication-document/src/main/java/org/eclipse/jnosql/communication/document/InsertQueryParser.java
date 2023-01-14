@@ -20,7 +20,7 @@ package org.eclipse.jnosql.communication.document;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.query.InsertQuery;
-import org.eclipse.jnosql.communication.query.InsertQueryProvider;
+import org.eclipse.jnosql.communication.query.InsertQueryConverter;
 import org.eclipse.jnosql.communication.query.JSONQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 
@@ -31,15 +31,11 @@ import java.util.stream.Stream;
 
 final class InsertQueryParser extends ConditionQueryParser {
 
-    private final InsertQueryProvider insertQueryProvider;
-
-    InsertQueryParser() {
-        this.insertQueryProvider = new InsertQueryProvider();
-    }
 
     Stream<DocumentEntity> query(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
 
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
+        InsertQueryConverter converter = new InsertQueryConverter();
+        InsertQuery insertQuery = converter.apply(query);
 
         String collection = insertQuery.entity();
         Params params = Params.newParams();
@@ -59,7 +55,9 @@ final class InsertQueryParser extends ConditionQueryParser {
 
 
     DocumentPreparedStatement prepare(String query, DocumentManager collectionManager, DocumentObserverParser observer) {
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
+
+        InsertQueryConverter converter = new InsertQueryConverter();
+        InsertQuery insertQuery = converter.apply(query);
 
         String collection = observer.fireEntity(insertQuery.entity());
         Params params = Params.newParams();

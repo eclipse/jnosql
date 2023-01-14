@@ -22,7 +22,7 @@ import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.query.GetQuery;
-import org.eclipse.jnosql.communication.query.GetQueryProvider;
+import org.eclipse.jnosql.communication.query.GetQueryConverter;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,15 +32,12 @@ import static java.util.stream.Collectors.toList;
 
 final class GetQueryParser {
 
-    private final GetQueryProvider provider;
 
-    GetQueryParser() {
-        this.provider = new GetQueryProvider();
-    }
 
     Stream<Value> query(String query, BucketManager manager) {
 
-        GetQuery getQuery = provider.apply(query);
+        GetQueryConverter converter  = new GetQueryConverter();
+        GetQuery getQuery = converter.apply(query);
         Params params = Params.newParams();
         List<Value> values = getQuery.keys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         if (params.isNotEmpty()) {
@@ -53,7 +50,8 @@ final class GetQueryParser {
     }
 
     public KeyValuePreparedStatement prepare(String query, BucketManager manager) {
-        GetQuery getQuery = provider.apply(query);
+        GetQueryConverter converter  = new GetQueryConverter();
+        GetQuery getQuery = converter.apply(query);
         Params params = Params.newParams();
         List<Value> values = getQuery.keys().stream().map(k -> Values.getValue(k, params)).collect(toList());
         return DefaultKeyValuePreparedStatement.get(values, manager, params, query);
