@@ -80,7 +80,7 @@ public class DefaultGraphEventPersistManagerTest {
         ArgumentCaptor<EntityGraphPrePersist> captor = ArgumentCaptor.forClass(EntityGraphPrePersist.class);
         verify(entityGraphPrePersist).fire(captor.capture());
         EntityGraphPrePersist value = captor.getValue();
-        assertEquals(jedi, value.getValue());
+        assertEquals(jedi, value.get());
     }
 
     @Test
@@ -92,7 +92,7 @@ public class DefaultGraphEventPersistManagerTest {
         ArgumentCaptor<EntityGraphPostPersist> captor = ArgumentCaptor.forClass(EntityGraphPostPersist.class);
         verify(entityGraphPostPersist).fire(captor.capture());
         EntityGraphPostPersist value = captor.getValue();
-        assertEquals(jedi, value.getValue());
+        assertEquals(jedi, value.get());
     }
 
 
