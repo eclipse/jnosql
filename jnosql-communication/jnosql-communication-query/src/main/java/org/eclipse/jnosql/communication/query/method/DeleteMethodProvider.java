@@ -25,7 +25,7 @@ import java.util.function.BiFunction;
  * - The entity name
  * - The DeleteQuery from both Method and entity name
  */
-enum DeleteMethodProvider implements BiFunction<Method, String, DeleteQuery> {
+public enum DeleteMethodProvider implements BiFunction<Method, String, DeleteQuery> {
     INSTANCE;
 
     @Override

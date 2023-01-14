@@ -29,9 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class DeleteQueryProviderTest {
+class DeleteQueryConverterTest {
 
-    private final DeleteQueryProvider selectProvider = new DeleteQueryProvider();
+    private final DeleteQueryConverter selectProvider = new DeleteQueryConverter();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {

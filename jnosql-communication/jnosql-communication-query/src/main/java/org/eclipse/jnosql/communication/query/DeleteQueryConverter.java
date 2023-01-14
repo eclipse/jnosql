@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * A provider of {@link DefaultDeleteQuery} from a {@link String}
  */
-public final class DeleteQueryProvider extends AbstractWhereSupplier implements Function<String, DefaultDeleteQuery> {
+public final class DeleteQueryConverter extends AbstractWhereSupplier implements Function<String, DefaultDeleteQuery> {
 
     private String entity;
 

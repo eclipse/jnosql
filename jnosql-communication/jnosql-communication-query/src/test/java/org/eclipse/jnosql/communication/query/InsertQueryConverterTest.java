@@ -28,14 +28,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class InsertQueryProviderTest {
+public class InsertQueryConverterTest {
 
-    private final InsertQueryProvider insertQueryProvider = new InsertQueryProvider();
+    private final InsertQueryConverter insertQueryConverter = new InsertQueryConverter();
 
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> insertQueryProvider.apply(null));
+        Assertions.assertThrows(NullPointerException.class, () -> insertQueryConverter.apply(null));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -211,7 +211,7 @@ public class InsertQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"insert Person {\"name\":\"Ada Lovelace\"}"})
     public void shouldReturnParserQuery14(String query) {
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
+        InsertQuery insertQuery = insertQueryConverter.apply(query);
         assertEquals("Person", insertQuery.entity());
         Assertions.assertTrue(insertQuery.conditions().isEmpty());
         Assertions.assertTrue(insertQuery.value().isPresent());
@@ -265,7 +265,7 @@ public class InsertQueryProviderTest {
             " [\"Ana\" ,\"Maria\"]," +
             " \"address\":{\"country\": \"United Kingdom\", \"city\": \"London\"}}"})
     public void shouldReturnParserQuery21(String query) {
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
+        InsertQuery insertQuery = insertQueryConverter.apply(query);
         assertEquals("Person", insertQuery.entity());
         Assertions.assertTrue(insertQuery.conditions().isEmpty());
         Assertions.assertTrue(insertQuery.value().isPresent());
@@ -283,7 +283,7 @@ public class InsertQueryProviderTest {
 
 
     private void checkJSONInsertQuery(String query, Duration duration) {
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
+        InsertQuery insertQuery = insertQueryConverter.apply(query);
         assertEquals("Person", insertQuery.entity());
         Assertions.assertTrue(insertQuery.conditions().isEmpty());
         Assertions.assertTrue(insertQuery.value().isPresent());
@@ -311,7 +311,7 @@ public class InsertQueryProviderTest {
 
 
     private InsertQuery checkInsertFromStart(String query) {
-        InsertQuery insertQuery = insertQueryProvider.apply(query);
+        InsertQuery insertQuery = insertQueryConverter.apply(query);
         assertEquals("God", insertQuery.entity());
         return insertQuery;
     }

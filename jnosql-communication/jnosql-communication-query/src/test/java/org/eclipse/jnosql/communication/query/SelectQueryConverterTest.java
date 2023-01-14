@@ -14,7 +14,6 @@ package org.eclipse.jnosql.communication.query;
 
 import org.eclipse.jnosql.communication.Condition;
 import jakarta.data.repository.Sort;
-import jakarta.data.repository.Direction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,13 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SelectQueryProviderTest {
+class SelectQueryConverterTest {
 
-    private final SelectQueryProvider selectQueryProvider = new SelectQueryProvider();
+    private final SelectQueryConverter selectQueryConverter = new SelectQueryConverter();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> selectQueryProvider.apply(null));
+        Assertions.assertThrows(NullPointerException.class, () -> selectQueryConverter.apply(null));
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -50,7 +49,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God"})
     public void shouldReturnParserQuery2(String query) {
-        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryConverter.apply(query);
         assertEquals("God", selectQuery.entity());
         assertFalse(selectQuery.fields().isEmpty());
         assertThat(selectQuery.fields()).contains("name", "address");
@@ -63,7 +62,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God order by name"})
     public void shouldReturnParserQuery3(String query) {
-        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryConverter.apply(query);
         assertEquals("God", selectQuery.entity());
         assertFalse(selectQuery.fields().isEmpty());
         assertThat(selectQuery.fields()).contains("name", "address");
@@ -78,7 +77,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God order by name desc"})
     public void shouldReturnParserQuery4(String query) {
-        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryConverter.apply(query);
         assertEquals("God", selectQuery.entity());
         assertFalse(selectQuery.fields().isEmpty());
         assertThat(selectQuery.fields()).contains("name", "address");
@@ -93,7 +92,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select name, address from God order by name desc age asc"})
     public void shouldReturnParserQuery5(String query) {
-        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryConverter.apply(query);
         assertEquals("God", selectQuery.entity());
         assertFalse(selectQuery.fields().isEmpty());
         assertThat(selectQuery.fields()).contains("name", "address");
@@ -109,7 +108,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God skip 12"})
     public void shouldReturnParserQuery6(String query) {
-        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryConverter.apply(query);
         assertEquals("God", selectQuery.entity());
         assertTrue(selectQuery.fields().isEmpty());
         assertTrue(selectQuery.orderBy().isEmpty());
@@ -121,7 +120,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God limit 12"})
     public void shouldReturnParserQuery7(String query) {
-        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryConverter.apply(query);
         assertEquals("God", selectQuery.entity());
         assertTrue(selectQuery.fields().isEmpty());
         assertTrue(selectQuery.orderBy().isEmpty());
@@ -133,7 +132,7 @@ class SelectQueryProviderTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"select * from God skip 10 limit 12"})
     public void shouldReturnParserQuery8(String query) {
-        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryConverter.apply(query);
         assertEquals("God", selectQuery.entity());
         assertTrue(selectQuery.fields().isEmpty());
         assertTrue(selectQuery.orderBy().isEmpty());
@@ -664,7 +663,7 @@ class SelectQueryProviderTest {
 
 
     private DefaultSelectQuery checkSelectFromStart(String query) {
-        DefaultSelectQuery selectQuery = selectQueryProvider.apply(query);
+        DefaultSelectQuery selectQuery = selectQueryConverter.apply(query);
         assertEquals("God", selectQuery.entity());
         assertTrue(selectQuery.fields().isEmpty());
         assertTrue(selectQuery.orderBy().isEmpty());

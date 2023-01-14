@@ -97,6 +97,6 @@ public final class UpdateQuery implements Query {
      */
    public static UpdateQuery parse(String query) {
         Objects.requireNonNull(query, "query is required");
-        return new UpdateQueryProvider().apply(query);
+        return new UpdateQueryConverter().apply(query);
     }
 }

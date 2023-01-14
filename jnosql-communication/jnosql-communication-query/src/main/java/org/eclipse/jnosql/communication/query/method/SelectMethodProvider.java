@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-enum SelectMethodProvider implements BiFunction<Method, String, SelectQuery> {
+public enum SelectMethodProvider implements BiFunction<Method, String, SelectQuery> {
 
     INSTANCE;
 

@@ -25,9 +25,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UpdateQueryProviderTest {
+public class UpdateQueryConverterTest {
 
-    private final UpdateQueryProvider update = new UpdateQueryProvider();
+    private final UpdateQueryConverter update = new UpdateQueryConverter();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {

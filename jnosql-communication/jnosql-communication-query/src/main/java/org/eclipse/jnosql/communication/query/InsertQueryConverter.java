@@ -25,7 +25,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * A provider to {@link InsertQuery}, this provider converts text into {@link InsertQuery}
  */
-public final class InsertQueryProvider extends AbstractSupplier implements Function<String, InsertQuery> {
+public final class InsertQueryConverter extends AbstractSupplier implements Function<String, InsertQuery> {
 
     private String entity;
 

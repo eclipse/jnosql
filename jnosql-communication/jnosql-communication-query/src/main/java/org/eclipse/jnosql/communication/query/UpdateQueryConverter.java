@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * A provider to {@link UpdateQuery}, this provider converts text into {@link UpdateQuery}
  */
-public final class UpdateQueryProvider extends AbstractSupplier implements Function<String, UpdateQuery>  {
+public final class UpdateQueryConverter extends AbstractSupplier implements Function<String, UpdateQuery>  {
 
     private String entity;
 

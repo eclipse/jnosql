@@ -86,7 +86,7 @@ final class DefaultSelectQuery implements SelectQuery {
      */
     static DefaultSelectQuery parse(String query) {
         Objects.requireNonNull(query, "query is required");
-        return new SelectQueryProvider().apply(query);
+        return new SelectQueryConverter().apply(query);
     }
 
 

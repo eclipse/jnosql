@@ -107,14 +107,14 @@ public final class InsertQuery implements Query {
     }
 
     /**
-     * Obtains an instance of {@link InsertQueryProvider} from a text string.
+     * Obtains an instance of {@link InsertQueryConverter} from a text string.
      *
      * @param query the query
-     * @return {@link InsertQueryProvider} instance
+     * @return {@link InsertQueryConverter} instance
      * @throws NullPointerException when the query is null
      */
     public static InsertQuery parse(String query) {
         Objects.requireNonNull(query, "query is required");
-        return new InsertQueryProvider().apply(query);
+        return new InsertQueryConverter().apply(query);
     }
 }

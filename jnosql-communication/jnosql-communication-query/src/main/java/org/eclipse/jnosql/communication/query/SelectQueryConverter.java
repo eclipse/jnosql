@@ -26,7 +26,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * A provider to {@link DefaultSelectQuery}, this provider converts text into {@link DefaultSelectQuery}
  */
-public final class SelectQueryProvider extends AbstractWhereSupplier implements Function<String, DefaultSelectQuery> {
+public final class SelectQueryConverter extends AbstractWhereSupplier implements Function<String, DefaultSelectQuery> {
 
     private String entity;
 
