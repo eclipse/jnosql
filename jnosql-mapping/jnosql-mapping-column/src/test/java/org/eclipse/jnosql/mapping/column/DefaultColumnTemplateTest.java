@@ -389,4 +389,17 @@ public class DefaultColumnTemplateTest {
         template.count(Person.class);
         verify(managerMock).count("Person");
     }
+
+
+    @Test
+    public void shouldFindAll(){
+        template.findAll(Person.class);
+        verify(managerMock).select(select().from("Person").build());
+    }
+
+    @Test
+    public void shouldDeleteAll(){
+        template.deleteAll(Person.class);
+        verify(managerMock).delete(delete().from("Person").build());
+    }
 }
