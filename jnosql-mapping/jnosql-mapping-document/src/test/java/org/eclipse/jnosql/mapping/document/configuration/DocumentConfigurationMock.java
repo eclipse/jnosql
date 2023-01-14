@@ -19,7 +19,7 @@ import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentManagerFactory;
 import jakarta.nosql.document.DocumentConfiguration;
 import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 
 import java.time.Duration;

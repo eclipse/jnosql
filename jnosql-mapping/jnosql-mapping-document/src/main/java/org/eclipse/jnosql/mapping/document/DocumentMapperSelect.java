@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.document;
 import jakarta.nosql.Sort;
 import jakarta.nosql.SortType;
 import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.QueryMapper.MapperFrom;
 import jakarta.nosql.mapping.QueryMapper.MapperLimit;
 import jakarta.nosql.mapping.QueryMapper.MapperNameCondition;

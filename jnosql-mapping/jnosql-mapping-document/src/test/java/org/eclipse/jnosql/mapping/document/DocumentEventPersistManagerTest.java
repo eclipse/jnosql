@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.EntityPostPersist;
 import jakarta.nosql.mapping.EntityPrePersist;
@@ -38,10 +38,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultDocumentEventPersistManagerTest {
+public class DocumentEventPersistManagerTest {
 
     @InjectMocks
-    private DefaultDocumentEventPersistManager subject;
+    private DocumentEventPersistManager subject;
 
     @Mock
     private Event<DocumentEntityPrePersist> documentEntityPrePersistEvent;
@@ -121,7 +121,7 @@ public class DefaultDocumentEventPersistManagerTest {
         ArgumentCaptor<EntityDocumentPrePersist> captor = ArgumentCaptor.forClass(EntityDocumentPrePersist.class);
         verify(entityDocumentPrePersist).fire(captor.capture());
         EntityDocumentPrePersist value = captor.getValue();
-        assertEquals(jedi, value.getValue());
+        assertEquals(jedi, value.get());
     }
 
     @Test
@@ -132,7 +132,7 @@ public class DefaultDocumentEventPersistManagerTest {
         ArgumentCaptor<EntityDocumentPostPersist> captor = ArgumentCaptor.forClass(EntityDocumentPostPersist.class);
         verify(entityDocumentPostPersist).fire(captor.capture());
         EntityDocumentPostPersist value = captor.getValue();
-        assertEquals(jedi, value.getValue());
+        assertEquals(jedi, value.get());
     }
 
     @Test

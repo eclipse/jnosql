@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 

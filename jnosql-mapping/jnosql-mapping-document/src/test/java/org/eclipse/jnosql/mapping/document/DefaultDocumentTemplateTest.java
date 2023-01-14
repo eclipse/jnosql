@@ -15,13 +15,13 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.document.Document;
+import org.eclipse.jnosql.communication.document.Document;
 import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentCondition;
 import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.IdNotFoundException;
 import jakarta.nosql.mapping.PreparedStatement;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;

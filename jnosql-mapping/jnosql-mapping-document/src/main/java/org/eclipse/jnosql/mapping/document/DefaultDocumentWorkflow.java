@@ -25,7 +25,7 @@ import jakarta.inject.Inject;
  * The default implementation of {@link jakarta.nosql.mapping.document.DocumentWorkflow}
  */
 @ApplicationScoped
-class DefaultDocumentWorkflow extends AbstractDocumentWorkflow {
+class DefaultDocumentWorkflow extends DocumentWorkflow {
 
     private DocumentEventPersistManager documentEventPersistManager;
 

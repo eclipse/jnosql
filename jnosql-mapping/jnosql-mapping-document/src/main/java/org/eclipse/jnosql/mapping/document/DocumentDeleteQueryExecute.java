@@ -15,21 +15,25 @@
 package org.eclipse.jnosql.mapping.document;
 
 
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.document.DocumentQueryExecute;
+
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
-class DefaultDocumentQueryExecute implements DocumentQueryExecute {
+/**
+ * When a document delete query is executed this event if fired
+ */
+public final class DocumentDeleteQueryExecute implements Supplier<DocumentDeleteQuery> {
 
-    private final DocumentQuery query;
+    private final DocumentDeleteQuery query;
 
-    DefaultDocumentQueryExecute(DocumentQuery query) {
+    DocumentDeleteQueryExecute(DocumentDeleteQuery query) {
         this.query = Objects.requireNonNull(query, "query is required");
     }
 
     @Override
-    public DocumentQuery getQuery() {
+    public DocumentDeleteQuery get() {
         return query;
     }
 
@@ -38,21 +42,21 @@ class DefaultDocumentQueryExecute implements DocumentQueryExecute {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultDocumentQueryExecute)) {
+        if (!(o instanceof DocumentDeleteQueryExecute)) {
             return false;
         }
-        DefaultDocumentQueryExecute that = (DefaultDocumentQueryExecute) o;
+        DocumentDeleteQueryExecute that = (DocumentDeleteQueryExecute) o;
         return Objects.equals(query, that.query);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(query);
+        return Objects.hashCode(query);
     }
 
     @Override
     public String toString() {
-        return  "DefaultDocumentQueryExecute{" + "query=" + query +
+        return  "DocumentDeleteQueryExecute{" + "query=" + query +
                 '}';
     }
 }

@@ -15,21 +15,26 @@
 package org.eclipse.jnosql.mapping.document;
 
 
-import jakarta.nosql.mapping.document.EntityDocumentPrePersist;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
-class DefaultEntityDocumentPrePersist implements EntityDocumentPrePersist {
 
-    private final Object value;
+/**
+ * When a document query is executed this event if fired
+ */
+public final class DocumentQueryExecute implements Supplier<DocumentQuery> {
 
-    DefaultEntityDocumentPrePersist(Object value) {
-        this.value = value;
+    private final DocumentQuery query;
+
+    DocumentQueryExecute(DocumentQuery query) {
+        this.query = Objects.requireNonNull(query, "query is required");
     }
 
     @Override
-    public Object getValue() {
-        return value;
+    public DocumentQuery get() {
+        return query;
     }
 
     @Override
@@ -37,21 +42,21 @@ class DefaultEntityDocumentPrePersist implements EntityDocumentPrePersist {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultEntityDocumentPrePersist)) {
+        if (!(o instanceof DocumentQueryExecute)) {
             return false;
         }
-        DefaultEntityDocumentPrePersist that = (DefaultEntityDocumentPrePersist) o;
-        return Objects.equals(value, that.value);
+        DocumentQueryExecute that = (DocumentQueryExecute) o;
+        return Objects.equals(query, that.query);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(value);
+        return Objects.hash(query);
     }
 
     @Override
     public String toString() {
-        return  "DefaultEntityDocumentPrePersist{" + "value=" + value +
+        return  "DocumentQueryExecute{" + "query=" + query +
                 '}';
     }
 }

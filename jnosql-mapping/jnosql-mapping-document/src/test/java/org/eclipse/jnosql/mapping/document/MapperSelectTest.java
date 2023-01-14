@@ -16,10 +16,10 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
 import jakarta.nosql.document.DocumentManager;
 import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import jakarta.nosql.mapping.document.DocumentEventPersistManager;
 import jakarta.nosql.tck.entities.Address;

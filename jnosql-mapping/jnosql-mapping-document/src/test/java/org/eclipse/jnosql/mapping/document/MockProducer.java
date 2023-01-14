@@ -15,9 +15,9 @@
 package org.eclipse.jnosql.mapping.document;
 
 
-import jakarta.nosql.document.Document;
+import org.eclipse.jnosql.communication.document.Document;
 import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.mapping.Database;
 import jakarta.nosql.mapping.DatabaseType;

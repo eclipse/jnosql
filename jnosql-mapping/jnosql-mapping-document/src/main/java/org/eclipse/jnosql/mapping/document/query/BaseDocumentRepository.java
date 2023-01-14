@@ -24,7 +24,7 @@ import jakarta.nosql.document.DocumentObserverParser;
 import jakarta.nosql.document.DocumentQuery;
 import jakarta.nosql.document.DocumentQueryParams;
 import jakarta.nosql.document.SelectQueryConverter;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.document.DocumentQueryPagination;

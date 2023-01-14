@@ -15,22 +15,25 @@
 package org.eclipse.jnosql.mapping.document;
 
 
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.mapping.document.DocumentDeleteQueryExecute;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
-class DefaultDocumentDeleteQueryExecute implements DocumentDeleteQueryExecute {
+/**
+ * The interface represents the model before the DocumentCollectionEntity be saved that  event will fire.
+ */
+public final class DocumentEntityPrePersist implements Supplier<DocumentEntity> {
 
-    private final DocumentDeleteQuery query;
+    private final DocumentEntity entity;
 
-    DefaultDocumentDeleteQueryExecute(DocumentDeleteQuery query) {
-        this.query = Objects.requireNonNull(query, "query is required");
+    DocumentEntityPrePersist(DocumentEntity entity) {
+        this.entity = Objects.requireNonNull(entity, "entity is required");
     }
 
     @Override
-    public DocumentDeleteQuery getQuery() {
-        return query;
+    public DocumentEntity get() {
+        return entity;
     }
 
     @Override
@@ -38,21 +41,21 @@ class DefaultDocumentDeleteQueryExecute implements DocumentDeleteQueryExecute {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultDocumentDeleteQueryExecute)) {
+        if (!(o instanceof DocumentEntityPrePersist)) {
             return false;
         }
-        DefaultDocumentDeleteQueryExecute that = (DefaultDocumentDeleteQueryExecute) o;
-        return Objects.equals(query, that.query);
+        DocumentEntityPrePersist that = (DocumentEntityPrePersist) o;
+        return Objects.equals(entity, that.entity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(query);
+        return Objects.hashCode(entity);
     }
 
     @Override
     public String toString() {
-        return  "DefaultDocumentDeleteQueryExecute{" + "query=" + query +
+        return  "DocumentEntityPrePersist{" + "entity=" + entity +
                 '}';
     }
 }

@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.QueryMapper.MapperDeleteFrom;
 import jakarta.nosql.mapping.QueryMapper.MapperDeleteNameCondition;
 import jakarta.nosql.mapping.QueryMapper.MapperDeleteNotCondition;

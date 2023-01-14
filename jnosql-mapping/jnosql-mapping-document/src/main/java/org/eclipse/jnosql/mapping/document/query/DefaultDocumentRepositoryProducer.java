@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.Repository;
 import jakarta.nosql.mapping.document.DocumentRepositoryProducer;
 import jakarta.nosql.mapping.document.DocumentTemplate;

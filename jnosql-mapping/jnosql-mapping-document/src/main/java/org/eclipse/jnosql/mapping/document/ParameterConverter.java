@@ -15,7 +15,7 @@
 package org.eclipse.jnosql.mapping.document;
 
 import jakarta.nosql.TypeReference;
-import jakarta.nosql.document.Document;
+import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.reflection.GenericParameterMetaData;
 import org.eclipse.jnosql.mapping.reflection.ParameterMetaData;
@@ -29,7 +29,7 @@ enum ParameterConverter {
 
     DEFAULT {
         @Override
-        void convert(AbstractDocumentEntityConverter converter,
+        void convert(DocumentEntityConverter converter,
                      Document document,
                      ParameterMetaData metaData,
                      ConstructorBuilder builder) {
@@ -42,7 +42,7 @@ enum ParameterConverter {
         }
     }, ENTITY {
         @Override
-        void convert(AbstractDocumentEntityConverter converter, Document document, ParameterMetaData metaData,
+        void convert(DocumentEntityConverter converter, Document document, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
             Object value = document.get();
@@ -66,7 +66,7 @@ enum ParameterConverter {
         }
     }, COLLECTION {
         @Override
-        void convert(AbstractDocumentEntityConverter converter, Document document, ParameterMetaData metaData,
+        void convert(DocumentEntityConverter converter, Document document, ParameterMetaData metaData,
                      ConstructorBuilder builder) {
 
             GenericParameterMetaData genericParameter = (GenericParameterMetaData) metaData;
@@ -82,7 +82,7 @@ enum ParameterConverter {
 
     };
 
-    abstract void convert(AbstractDocumentEntityConverter converter,
+    abstract void convert(DocumentEntityConverter converter,
                           Document document, ParameterMetaData metaData,
                           ConstructorBuilder builder);
 

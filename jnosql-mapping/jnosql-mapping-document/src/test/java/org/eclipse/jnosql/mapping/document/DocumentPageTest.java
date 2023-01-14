@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.document.Document;
+import org.eclipse.jnosql.communication.document.Document;
 import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
 import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.Page;
 import jakarta.nosql.mapping.Pagination;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;

@@ -15,25 +15,24 @@
 package org.eclipse.jnosql.mapping.document;
 
 
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.mapping.document.DocumentEntityPostPersist;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
- * The default implementation to represents {@link DocumentEntityPostPersist}
+ * When an entity is either saved or updated it's the first event to fire
  */
-class DefaultDocumentEntityPostPersist implements DocumentEntityPostPersist {
+class EntityDocumentPrePersist implements Supplier<Object> {
 
-    private final DocumentEntity entity;
+    private final Object value;
 
-    DefaultDocumentEntityPostPersist(DocumentEntity entity) {
-        this.entity = Objects.requireNonNull(entity, "entity is required");
+    EntityDocumentPrePersist(Object value) {
+        this.value = value;
     }
 
     @Override
-    public DocumentEntity getEntity() {
-        return entity;
+    public Object get() {
+        return value;
     }
 
     @Override
@@ -41,21 +40,21 @@ class DefaultDocumentEntityPostPersist implements DocumentEntityPostPersist {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultDocumentEntityPostPersist)) {
+        if (!(o instanceof EntityDocumentPrePersist)) {
             return false;
         }
-        DefaultDocumentEntityPostPersist that = (DefaultDocumentEntityPostPersist) o;
-        return Objects.equals(entity, that.entity);
+        EntityDocumentPrePersist that = (EntityDocumentPrePersist) o;
+        return Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(entity);
+        return Objects.hashCode(value);
     }
 
     @Override
     public String toString() {
-        return  "DefaultDocumentEntityPostPersist{" + "entity=" + entity +
+        return  "DefaultEntityDocumentPrePersist{" + "value=" + value +
                 '}';
     }
 }

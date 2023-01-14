@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.mapping.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
@@ -25,7 +25,7 @@ import jakarta.inject.Inject;
  * The default implementation of {@link DocumentEntityConverter}
  */
 @ApplicationScoped
-class DefaultDocumentEntityConverter extends AbstractDocumentEntityConverter implements DocumentEntityConverter {
+class DefaultDocumentEntityConverter extends DocumentEntityConverter implements DocumentEntityConverter {
 
     @Inject
     private EntitiesMetadata entities;

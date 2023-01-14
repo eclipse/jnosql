@@ -14,11 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.MappingException;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import jakarta.data.exceptions.MappingException;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.ConstructorBuilder;
 import org.eclipse.jnosql.mapping.reflection.ConstructorMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
@@ -42,15 +41,21 @@ import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
 import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
 
 /**
- * Template method to {@link DocumentEntityConverter}
+ * This interface represents the converter between an entity and the {@link DocumentEntity}
  */
-public abstract class AbstractDocumentEntityConverter implements DocumentEntityConverter {
+public abstract class DocumentEntityConverter {
 
     protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();
 
-    @Override
+    /**
+     * Converts the instance entity to {@link DocumentEntity}
+     *
+     * @param entity the instance
+     * @return a {@link DocumentEntity} instance
+     * @throws NullPointerException when entity is null
+     */
     public DocumentEntity toDocument(Object entity) {
         requireNonNull(entity, "entity is required");
         EntityMetadata mapping = getEntities().get(entity.getClass());
@@ -67,22 +72,64 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
 
     }
 
-    @Override
+    /**
+     * Converts a {@link DocumentEntity} to entity
+     *
+     * @param type the entity class
+     * @param entity      the {@link DocumentEntity} to be converted
+     * @param <T>         the entity type
+     * @return the instance from {@link DocumentEntity}
+     * @throws NullPointerException when either type or entity are null
+     */
     public <T> T toEntity(Class<T> type, DocumentEntity entity) {
         requireNonNull(entity, "entity is required");
         requireNonNull(type, "type is required");
-        return toEntity(type, entity.getDocuments());
+        return toEntity(type, entity.documents());
 
     }
 
-    @Override
+    /**
+     * Converts a {@link DocumentEntity} to entity
+     * Instead of creating a new object is uses the instance used in this parameters
+     *
+     * @param type the entity class
+     * @param entity         the {@link DocumentEntity} to be converted
+     * @param <T>            the entity type
+     * @return the instance from {@link DocumentEntity}
+     * @throws NullPointerException when either type or entity are null
+     */
     public <T> T toEntity(T type, DocumentEntity entity) {
         requireNonNull(entity, "entity is required");
         requireNonNull(type, "type is required");
         EntityMetadata mapping = getEntities().get(type.getClass());
-        return convertEntity(entity.getDocuments(), mapping, type);
+        return convertEntity(entity.documents(), mapping, type);
     }
 
+    @SuppressWarnings("unchecked")
+    /**
+     * Similar to {@link DocumentEntityConverter#toEntity(Class, DocumentEntity)}, but
+     * search the instance type from {@link DocumentEntity#getName()}
+     *
+     * @param entity the {@link DocumentEntity} to be converted
+     * @param <T>    the entity type
+     * @return the instance from {@link DocumentEntity}
+     * @throws NullPointerException when entity is null
+     */
+    public <T> T toEntity(DocumentEntity entity) {
+        requireNonNull(entity, "entity is required");
+        EntityMetadata mapping = getEntities().findByName(entity.name());
+        if (mapping.isInheritance()) {
+            return mapInheritanceEntity(entity, mapping.getType());
+        }
+        ConstructorMetadata constructor = mapping.getConstructor();
+        if (constructor.isDefault()) {
+            T instance = mapping.newInstance();
+            return convertEntity(entity.documents(), mapping, instance);
+        } else {
+            return convertEntityByConstructor(entity.documents(), mapping);
+        }
+    }
+    
     protected <T> T toEntity(Class<T> type, List<Document> documents) {
         EntityMetadata mapping = getEntities().get(type);
         if (mapping.isInheritance()) {
@@ -99,26 +146,11 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
     }
 
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T toEntity(DocumentEntity entity) {
-        requireNonNull(entity, "entity is required");
-        EntityMetadata mapping = getEntities().findByName(entity.getName());
-        if (mapping.isInheritance()) {
-            return mapInheritanceEntity(entity, mapping.getType());
-        }
-        ConstructorMetadata constructor = mapping.getConstructor();
-        if (constructor.isDefault()) {
-            T instance = mapping.newInstance();
-            return convertEntity(entity.getDocuments(), mapping, instance);
-        } else {
-            return convertEntityByConstructor(entity.getDocuments(), mapping);
-        }
-    }
+  
 
     protected <T> Consumer<String> feedObject(T entity, List<Document> documents, Map<String, FieldMapping> fieldsGroupByName) {
         return k -> {
-            Optional<Document> document = documents.stream().filter(c -> c.getName().equals(k)).findFirst();
+            Optional<Document> document = documents.stream().filter(c -> c.name().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
             FieldConverter fieldConverter = FieldConverter.get(field);
             if (ENTITY.equals(field.getType())) {
@@ -134,7 +166,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         ConstructorBuilder builder = ConstructorBuilder.of(mapping.getConstructor());
         for (ParameterMetaData parameter : builder.getParameters()) {
             Optional<Document> document = documents.stream()
-                    .filter(c -> c.getName().equals(parameter.getName()))
+                    .filter(c -> c.name().equals(parameter.getName()))
                     .findFirst();
             document.ifPresentOrElse(c -> {
                 ParameterConverter converter = ParameterConverter.of(parameter);
@@ -150,7 +182,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
 
         if (group.isEmpty()) {
             throw new MappingException("There is no discriminator inheritance to the document collection "
-                    + entity.getName());
+                    + entity.name());
         }
         String column = group.values()
                 .stream()
@@ -171,15 +203,15 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
         ConstructorMetadata constructor = mapping.getConstructor();
         if (constructor.isDefault()) {
             T instance = mapping.newInstance();
-            return convertEntity(entity.getDocuments(), mapping, instance);
+            return convertEntity(entity.documents(), mapping, instance);
         } else {
-            return convertEntityByConstructor(entity.getDocuments(), mapping);
+            return convertEntityByConstructor(entity.documents(), mapping);
         }
     }
 
     private <T> T convertEntity(List<Document> documents, EntityMetadata mapping, T instance) {
         final Map<String, FieldMapping> fieldsGroupByName = mapping.getFieldsGroupByName();
-        final List<String> names = documents.stream().map(Document::getName).sorted().collect(Collectors.toList());
+        final List<String> names = documents.stream().map(Document::name).sorted().collect(Collectors.toList());
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
             MappingType type = fieldsGroupByName.get(k).getType();
@@ -209,7 +241,7 @@ public abstract class AbstractDocumentEntityConverter implements DocumentEntityC
                 .orElseThrow();
 
         String discriminator = documents.stream()
-                .filter(d -> d.getName().equals(column))
+                .filter(d -> d.name().equals(column))
                 .findFirst()
                 .map(d -> d.get(String.class))
                 .orElseThrow(

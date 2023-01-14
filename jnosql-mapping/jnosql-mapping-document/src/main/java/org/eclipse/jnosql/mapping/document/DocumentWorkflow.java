@@ -14,19 +14,26 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import jakarta.nosql.mapping.document.DocumentEventPersistManager;
-import jakarta.nosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+
 
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
- * The template method to {@link DocumentWorkflow}
+ * This implementation defines the workflow to insert an Entity on DocumentTemplate.
+ * The default implementation follows:
+ *  <p>{@link DocumentEventPersistManager#firePreEntity(Object)}</p>
+ *  <p>{@link DocumentEventPersistManager#firePreDocumentEntity(Object)}</p>
+ *  <p>{@link DocumentEntityConverter#toDocument(Object)}</p>
+ *  <p>{@link DocumentEventPersistManager#firePreDocument(DocumentEntity)}}</p>
+ *  <p>Database alteration</p>
+ *  <p>{@link DocumentEventPersistManager#firePostDocument(DocumentEntity)}</p>
+ *  <p>{@link DocumentEventPersistManager#firePostEntity(Object)}</p>
+ *  <p>{@link DocumentEventPersistManager#firePostDocumentEntity(Object)}</p>
  */
-public abstract class AbstractDocumentWorkflow implements DocumentWorkflow {
+public abstract class DocumentWorkflow {
 
     protected abstract DocumentEventPersistManager getEventManager();
 
