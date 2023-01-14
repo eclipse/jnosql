@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RemoveProviderTest {
 
-    private final DelQueryProvider provider = new DelQueryProvider();
+    private final DelQueryConverter provider = new DelQueryConverter();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {

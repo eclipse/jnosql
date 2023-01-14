@@ -21,9 +21,9 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 /**
- * A provider to {@link DelQuery}, this provider converts text into {@link DefaultDeleteQuery}
+ * A provider to {@link GetQuery}, this provider converts text into {@link GetQuery}
  */
-public final class DelQueryProvider extends AbstractSupplier implements Function<String, DelQuery> {
+public final class GetQueryConverter extends AbstractSupplier implements Function<String, GetQuery> {
 
     private List<QueryValue<?>> keys = Collections.emptyList();
 
@@ -34,13 +34,13 @@ public final class DelQueryProvider extends AbstractSupplier implements Function
 
     @Override
     Function<QueryParser, ParseTree> getParserTree() {
-        return QueryParser::del;
+        return QueryParser::get;
     }
 
     @Override
-    public DelQuery apply(String query) {
+    public GetQuery apply(String query) {
         runQuery(query);
-        return new DelQuery(keys);
+        return new GetQuery(keys);
     }
 
 }

@@ -69,6 +69,6 @@ public final class GetQuery implements Query {
      */
     public static GetQuery parse(String query) {
         Objects.requireNonNull(query, "query is required");
-        return new GetQueryProvider().apply(query);
+        return new GetQueryConverter().apply(query);
     }
 }

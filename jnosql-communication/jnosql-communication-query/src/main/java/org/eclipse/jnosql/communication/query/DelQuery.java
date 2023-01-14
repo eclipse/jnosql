@@ -69,6 +69,6 @@ public final class DelQuery implements Query {
      */
     public static DelQuery parse(String query) {
         Objects.requireNonNull(query, "query is required");
-        return new DelQueryProvider().apply(query);
+        return new DelQueryConverter().apply(query);
     }
 }

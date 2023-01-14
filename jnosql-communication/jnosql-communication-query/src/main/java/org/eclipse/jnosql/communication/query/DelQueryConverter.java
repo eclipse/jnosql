@@ -14,45 +14,33 @@ package org.eclipse.jnosql.communication.query;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 
+import static java.util.stream.Collectors.toList;
+
 /**
- * A provider to {@link PutQuery}, this provider converts text into {@link PutQuery}
+ * A provider to {@link DelQuery}, this provider converts text into {@link DefaultDeleteQuery}
  */
-public final class PutQueryProvider extends AbstractSupplier implements Function<String, PutQuery> {
+public final class DelQueryConverter extends AbstractSupplier implements Function<String, DelQuery> {
 
-
-    private QueryValue<?> key;
-
-    private QueryValue<?> value;
-
-    private Duration ttl;
+    private List<QueryValue<?>> keys = Collections.emptyList();
 
     @Override
-    public void exitKey(QueryParser.KeyContext ctx) {
-        this.key = ValueConverter.get(ctx.value());
-    }
-
-    @Override
-    public void exitValue(QueryParser.ValueContext ctx) {
-        this.value = ValueConverter.get(ctx);
-    }
-
-    @Override
-    public void exitTtl(QueryParser.TtlContext ctx) {
-        this.ttl = Durations.get(ctx);
+    public void exitKeys(QueryParser.KeysContext ctx) {
+        this.keys =  ctx.value().stream().map(ValueConverter::get).collect(toList());
     }
 
     @Override
     Function<QueryParser, ParseTree> getParserTree() {
-        return QueryParser::put;
+        return QueryParser::del;
     }
 
     @Override
-    public PutQuery apply(String query) {
+    public DelQuery apply(String query) {
         runQuery(query);
-        return new PutQuery(key, value, ttl);
+        return new DelQuery(keys);
     }
 
 }

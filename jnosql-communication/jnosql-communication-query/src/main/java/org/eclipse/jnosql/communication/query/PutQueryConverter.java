@@ -14,33 +14,45 @@ package org.eclipse.jnosql.communication.query;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.util.Collections;
-import java.util.List;
+import java.time.Duration;
 import java.util.function.Function;
 
-import static java.util.stream.Collectors.toList;
-
 /**
- * A provider to {@link GetQuery}, this provider converts text into {@link GetQuery}
+ * A provider to {@link PutQuery}, this provider converts text into {@link PutQuery}
  */
-public final class GetQueryProvider extends AbstractSupplier implements Function<String, GetQuery> {
+public final class PutQueryConverter extends AbstractSupplier implements Function<String, PutQuery> {
 
-    private List<QueryValue<?>> keys = Collections.emptyList();
+
+    private QueryValue<?> key;
+
+    private QueryValue<?> value;
+
+    private Duration ttl;
 
     @Override
-    public void exitKeys(QueryParser.KeysContext ctx) {
-        this.keys =  ctx.value().stream().map(ValueConverter::get).collect(toList());
+    public void exitKey(QueryParser.KeyContext ctx) {
+        this.key = ValueConverter.get(ctx.value());
+    }
+
+    @Override
+    public void exitValue(QueryParser.ValueContext ctx) {
+        this.value = ValueConverter.get(ctx);
+    }
+
+    @Override
+    public void exitTtl(QueryParser.TtlContext ctx) {
+        this.ttl = Durations.get(ctx);
     }
 
     @Override
     Function<QueryParser, ParseTree> getParserTree() {
-        return QueryParser::get;
+        return QueryParser::put;
     }
 
     @Override
-    public GetQuery apply(String query) {
+    public PutQuery apply(String query) {
         runQuery(query);
-        return new GetQuery(keys);
+        return new PutQuery(key, value, ttl);
     }
 
 }

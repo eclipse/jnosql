@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GetProviderTest {
 
-    private final GetQueryProvider queryProvider = new GetQueryProvider();
+    private final GetQueryConverter queryProvider = new GetQueryConverter();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {
