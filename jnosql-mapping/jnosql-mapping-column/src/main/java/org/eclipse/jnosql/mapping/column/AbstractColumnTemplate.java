@@ -248,4 +248,20 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         return new ColumnMapperDelete(metadata, getConverters(), this);
     }
 
+    @Override
+    public <T> Stream<T> findAll(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        ColumnQuery query = ColumnQuery.select().from(metadata.getName()).build();
+        return select(query);
+    }
+
+    @Override
+    public <T> void deleteAll(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(metadata.getName()).build();
+        delete(query);
+    }
+
 }

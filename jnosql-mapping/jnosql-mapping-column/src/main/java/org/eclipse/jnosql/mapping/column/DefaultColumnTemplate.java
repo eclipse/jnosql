@@ -22,6 +22,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
+import java.util.stream.Stream;
+
 /**
  * The default implementation of {@link JNoSQLColumnTemplate}
  */

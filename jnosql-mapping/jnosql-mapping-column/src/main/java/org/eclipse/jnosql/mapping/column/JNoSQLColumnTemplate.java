@@ -69,10 +69,9 @@ public interface JNoSQLColumnTemplate extends ColumnTemplate {
     /**
      * delete elements from column family
      * @param type the entity type
-     * @return the {@link Stream}
      * @param <T> the entity type
      * @throws NullPointerException when type is null
      */
-    <T> Stream<T> deleteAll(Class<T> type);
+    <T> void deleteAll(Class<T> type);
 
 }
