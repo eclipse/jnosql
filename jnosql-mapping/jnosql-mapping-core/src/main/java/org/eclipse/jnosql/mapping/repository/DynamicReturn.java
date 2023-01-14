@@ -59,14 +59,14 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      * @param params the params
      * @return a {@link Pageable} or null
      */
-    public static Pageable findPagination(Object[] params) {
+    public static Optional<Pageable> findPagination(Object[] params) {
         if (params == null || params.length == 0) {
             return null;
         }
         return Stream.of(params)
                 .filter(IS_PAGINATION)
                 .map(Pageable.class::cast)
-                .findFirst().orElse(null);
+                .findFirst();
     }
 
 

@@ -15,25 +15,22 @@
 package org.eclipse.jnosql.mapping.column;
 
 
-import jakarta.nosql.column.ColumnManager;
-import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.column.ColumnTemplateProducer;
-import jakarta.nosql.mapping.column.ColumnWorkflow;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Vetoed;
 import jakarta.inject.Inject;
+import jakarta.nosql.column.ColumnTemplate;
+import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
- * The default implementation of {@link ColumnTemplateProducer}
+ * The producer of {@link ColumnTemplate}
  */
 @ApplicationScoped
-class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
+public class DefaultColumnTemplateProducer implements Function<ColumnManager, ColumnTemplate> {
 
 
     @Inject
@@ -52,7 +49,7 @@ class DefaultColumnTemplateProducer implements ColumnTemplateProducer {
     private Converters converters;
 
     @Override
-    public ColumnTemplate get(ColumnManager manager) {
+    public ColumnTemplate apply(ColumnManager manager) {
         Objects.requireNonNull(manager, "manager is required");
         return new ProducerColumnTemplate(converter, columnWorkflow, manager,
                 eventManager, entities, converters);
