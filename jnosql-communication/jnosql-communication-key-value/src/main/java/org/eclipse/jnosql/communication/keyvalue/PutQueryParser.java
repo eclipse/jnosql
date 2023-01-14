@@ -29,8 +29,6 @@ import java.util.stream.Stream;
 
 final class PutQueryParser {
 
-
-
     Stream<Value> query(String query, BucketManager manager) {
 
         PutQueryConverter converter = new PutQueryConverter();

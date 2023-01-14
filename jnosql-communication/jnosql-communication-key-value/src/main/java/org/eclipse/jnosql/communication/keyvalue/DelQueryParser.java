@@ -30,8 +30,6 @@ import static java.util.stream.Collectors.toList;
 
 final class DelQueryParser {
 
-
-
     Stream<Value> query(String query, BucketManager manager) {
 
         DelQueryConverter converter = new DelQueryConverter();

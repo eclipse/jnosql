@@ -32,8 +32,6 @@ import static java.util.stream.Collectors.toList;
 
 final class GetQueryParser {
 
-
-
     Stream<Value> query(String query, BucketManager manager) {
 
         GetQueryConverter converter  = new GetQueryConverter();
