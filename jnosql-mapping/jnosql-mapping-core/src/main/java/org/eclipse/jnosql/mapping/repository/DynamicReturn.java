@@ -61,7 +61,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      */
     public static Optional<Pageable> findPagination(Object[] params) {
         if (params == null || params.length == 0) {
-            return null;
+            return Optional.empty();
         }
         return Stream.of(params)
                 .filter(IS_PAGINATION)
