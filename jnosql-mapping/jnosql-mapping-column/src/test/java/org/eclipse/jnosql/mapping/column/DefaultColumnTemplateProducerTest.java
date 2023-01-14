@@ -16,7 +16,6 @@ package org.eclipse.jnosql.mapping.column;
 
 import org.eclipse.jnosql.communication.column.ColumnManager;
 import jakarta.nosql.column.ColumnTemplate;
-import jakarta.nosql.column.ColumnTemplateProducer;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,13 +34,13 @@ public class DefaultColumnTemplateProducerTest {
 
     @Test
     public void shouldReturnErrorWhenColumnManagerNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> producer.get(null));
+        Assertions.assertThrows(NullPointerException.class, () -> producer.apply(null));
     }
 
     @Test
     public void shouldReturn() {
         ColumnManager manager = Mockito.mock(ColumnManager.class);
-        ColumnTemplate columnTemplate = producer.get(manager);
+        ColumnTemplate columnTemplate = producer.apply(manager);
         assertNotNull(columnTemplate);
     }
 }

@@ -14,18 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.NonUniqueResultException;
+import jakarta.data.exceptions.NonUniqueResultException;
 import org.eclipse.jnosql.communication.column.Column;
-import jakarta.nosql.column.ColumnCondition;
+import org.eclipse.jnosql.communication.column.ColumnCondition;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.eclipse.jnosql.communication.column.ColumnManager;
-import jakarta.nosql.column.ColumnQuery;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.IdNotFoundException;
 import jakarta.nosql.PreparedStatement;
-import jakarta.nosql.column.ColumnEntityConverter;
-import jakarta.nosql.column.ColumnEventPersistManager;
+import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.test.entities.Job;
 import org.eclipse.jnosql.mapping.test.entities.Movie;
@@ -47,6 +45,8 @@ import java.util.stream.Stream;
 
 import static jakarta.nosql.column.ColumnDeleteQuery.delete;
 import static jakarta.nosql.column.ColumnQuery.select;
+import static org.eclipse.jnosql.communication.column.ColumnDeleteQuery.delete;
+import static org.eclipse.jnosql.communication.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -117,8 +117,8 @@ public class DefaultColumnTemplateTest {
         verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
         verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
         ColumnEntity value = captor.getValue();
-        assertEquals("Person", value.getName());
-        assertEquals(4, value.getColumns().size());
+        assertEquals("Person", value.name());
+        assertEquals(4, value.columns().size());
     }
 
 
@@ -163,8 +163,8 @@ public class DefaultColumnTemplateTest {
         verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
         verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
         ColumnEntity value = captor.getValue();
-        assertEquals("Person", value.getName());
-        assertEquals(4, value.getColumns().size());
+        assertEquals("Person", value.name());
+        assertEquals(4, value.columns().size());
     }
 
     @Test
@@ -183,8 +183,8 @@ public class DefaultColumnTemplateTest {
         verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
         verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
         ColumnEntity value = captor.getValue();
-        assertEquals("Person", value.getName());
-        assertEquals(4, value.getColumns().size());
+        assertEquals("Person", value.name());
+        assertEquals(4, value.columns().size());
     }
 
     @Test
@@ -330,9 +330,9 @@ public class DefaultColumnTemplateTest {
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        ColumnCondition condition = query.getCondition().get();
+        ColumnCondition condition = query.condition().get();
 
-        assertEquals("Person", query.getColumnFamily());
+        assertEquals("Person", query.columnFamily());
         assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), condition);
     }
 
@@ -344,9 +344,9 @@ public class DefaultColumnTemplateTest {
 
         ColumnDeleteQuery query = queryCaptor.getValue();
 
-        ColumnCondition condition = query.getCondition().get();
+        ColumnCondition condition = query.condition().get();
 
-        assertEquals("Person", query.getColumnFamily());
+        assertEquals("Person", query.columnFamily());
         assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), condition);
     }
 
@@ -357,7 +357,7 @@ public class DefaultColumnTemplateTest {
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        assertEquals("Person", query.getColumnFamily());
+        assertEquals("Person", query.columnFamily());
     }
 
     @Test
@@ -366,18 +366,18 @@ public class DefaultColumnTemplateTest {
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        assertEquals("movie", query.getColumnFamily());
+        assertEquals("movie", query.columnFamily());
     }
 
     @Test
     public void shouldPreparedStatement() {
         PreparedStatement preparedStatement = subject.prepare("select * from Person where name = @name");
         preparedStatement.bind("name", "Ada");
-        preparedStatement.getResult();
+        preparedStatement.result();
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        assertEquals("Person", query.getColumnFamily());
+        assertEquals("Person", query.columnFamily());
     }
 
     @Test

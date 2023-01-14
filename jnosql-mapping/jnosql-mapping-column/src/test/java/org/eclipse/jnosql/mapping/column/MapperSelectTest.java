@@ -18,10 +18,8 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.eclipse.jnosql.communication.column.ColumnManager;
-import jakarta.nosql.column.ColumnQuery;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.column.ColumnEntityConverter;
-import jakarta.nosql.column.ColumnEventPersistManager;
 import org.eclipse.jnosql.mapping.test.entities.Address;
 import org.eclipse.jnosql.mapping.test.entities.Money;
 import org.eclipse.jnosql.mapping.test.entities.Person;
@@ -39,8 +37,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static jakarta.nosql.column.ColumnQuery.select;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.communication.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 

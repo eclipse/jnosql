@@ -18,8 +18,8 @@ package org.eclipse.jnosql.mapping.column;
 import org.eclipse.jnosql.communication.column.Column;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.eclipse.jnosql.communication.column.ColumnManager;
-import jakarta.nosql.Database;
-import jakarta.nosql.DatabaseType;
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseType;
 import org.mockito.Mockito;
 
 import jakarta.annotation.Priority;
