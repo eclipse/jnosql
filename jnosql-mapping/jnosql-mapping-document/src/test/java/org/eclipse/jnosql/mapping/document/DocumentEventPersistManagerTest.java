@@ -17,14 +17,8 @@ package org.eclipse.jnosql.mapping.document;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
-import jakarta.nosql.EntityPostPersist;
-import jakarta.nosql.EntityPrePersist;
-import jakarta.nosql.document.DocumentDeleteQueryExecute;
-import jakarta.nosql.document.DocumentEntityPostPersist;
-import jakarta.nosql.document.DocumentEntityPrePersist;
-import jakarta.nosql.document.DocumentQueryExecute;
-import jakarta.nosql.document.EntityDocumentPostPersist;
-import jakarta.nosql.document.EntityDocumentPrePersist;
+import org.eclipse.jnosql.mapping.EntityPostPersist;
+import org.eclipse.jnosql.mapping.EntityPrePersist;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -75,7 +69,7 @@ public class DocumentEventPersistManagerTest {
         verify(documentEntityPrePersistEvent).fire(captor.capture());
 
         DocumentEntityPrePersist captorValue = captor.getValue();
-        assertEquals(entity, captorValue.getEntity());
+        assertEquals(entity, captorValue.get());
     }
 
 
@@ -87,7 +81,7 @@ public class DocumentEventPersistManagerTest {
         verify(documentEntityPostPersistEvent).fire(captor.capture());
 
         DocumentEntityPostPersist captorValue = captor.getValue();
-        assertEquals(entity, captorValue.getEntity());
+        assertEquals(entity, captorValue.get());
     }
 
     @Test
@@ -98,7 +92,7 @@ public class DocumentEventPersistManagerTest {
         ArgumentCaptor<EntityPrePersist> captor = ArgumentCaptor.forClass(EntityPrePersist.class);
         verify(entityPrePersistEvent).fire(captor.capture());
         EntityPrePersist value = captor.getValue();
-        assertEquals(jedi, value.getValue());
+        assertEquals(jedi, value.get());
     }
 
     @Test
@@ -109,7 +103,7 @@ public class DocumentEventPersistManagerTest {
         ArgumentCaptor<EntityPostPersist> captor = ArgumentCaptor.forClass(EntityPostPersist.class);
         verify(entityPostPersistEvent).fire(captor.capture());
         EntityPostPersist value = captor.getValue();
-        assertEquals(jedi, value.getValue());
+        assertEquals(jedi, value.get());
     }
     //
 
@@ -142,7 +136,7 @@ public class DocumentEventPersistManagerTest {
         subject.firePreQuery(query);
         ArgumentCaptor<DocumentQueryExecute> captor = ArgumentCaptor.forClass(DocumentQueryExecute.class);
         verify(documentQueryExecute).fire(captor.capture());
-        assertEquals(query, captor.getValue().getQuery());
+        assertEquals(query, captor.getValue().get());
     }
 
     @Test
@@ -151,7 +145,7 @@ public class DocumentEventPersistManagerTest {
         subject.firePreDeleteQuery(query);
         ArgumentCaptor<DocumentDeleteQueryExecute> captor = ArgumentCaptor.forClass(DocumentDeleteQueryExecute.class);
         verify(documentDeleteQueryExecute).fire(captor.capture());
-        assertEquals(query, captor.getValue().getQuery());
+        assertEquals(query, captor.getValue().get());
     }
 
 

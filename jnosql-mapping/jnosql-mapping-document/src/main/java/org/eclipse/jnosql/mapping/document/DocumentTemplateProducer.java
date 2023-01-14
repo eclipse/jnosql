@@ -17,11 +17,7 @@ package org.eclipse.jnosql.mapping.document;
 
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.document.DocumentEntityConverter;
-import jakarta.nosql.document.DocumentEventPersistManager;
 import jakarta.nosql.document.DocumentTemplate;
-import jakarta.nosql.document.DocumentTemplateProducer;
-import jakarta.nosql.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import jakarta.enterprise.context.ApplicationScoped;

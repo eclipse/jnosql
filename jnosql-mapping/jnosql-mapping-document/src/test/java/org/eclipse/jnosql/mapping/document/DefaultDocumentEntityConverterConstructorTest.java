@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.document;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
-import jakarta.nosql.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.test.entities.Animal;
 import org.eclipse.jnosql.mapping.test.entities.Money;
 import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;

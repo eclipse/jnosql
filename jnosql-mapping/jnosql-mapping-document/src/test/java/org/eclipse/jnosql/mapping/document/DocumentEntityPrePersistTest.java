@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.document;
 
 import org.eclipse.jnosql.communication.document.DocumentEntity;
-import jakarta.nosql.document.DocumentEntityPrePersist;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +32,6 @@ public class DocumentEntityPrePersistTest {
     public void shouldReturnInstance() {
         DocumentEntity entity = DocumentEntity.of("collection");
         DocumentEntityPrePersist prePersist = new DocumentEntityPrePersist(entity);
-        assertEquals(entity, prePersist.getEntity());
+        assertEquals(entity, prePersist.get());
     }
 }

@@ -14,10 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.Settings;
+import org.eclipse.jnosql.communication.Settings;
+import org.eclipse.jnosql.communication.document.DocumentConfiguration;
 import org.eclipse.jnosql.communication.document.DocumentManager;
-import jakarta.nosql.document.DocumentManagerFactory;
-import jakarta.nosql.document.DocumentConfiguration;
+import org.eclipse.jnosql.communication.document.DocumentManagerFactory;
 import org.mockito.Mockito;
 
 public class DocumentManagerMock implements DocumentConfiguration {

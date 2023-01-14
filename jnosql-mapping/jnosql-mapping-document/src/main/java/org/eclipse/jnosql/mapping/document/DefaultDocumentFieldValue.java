@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.document;
 import org.eclipse.jnosql.communication.document.Document;
 import jakarta.nosql.AttributeConverter;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.document.DocumentEntityConverter;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
