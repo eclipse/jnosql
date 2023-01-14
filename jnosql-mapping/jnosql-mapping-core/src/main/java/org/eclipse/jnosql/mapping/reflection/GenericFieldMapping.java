@@ -101,6 +101,7 @@ public class GenericFieldMapping extends AbstractFieldMapping {
         Class<?> type = getNativeField().getType();
         final CollectionSupplier supplier =  ServiceLoader.load(CollectionSupplier.class)
                 .stream()
+                .map(ServiceLoader.Provider::get)
                 .map(CollectionSupplier.class::cast)
                 .filter(c -> c.test(type))
                 .findFirst()

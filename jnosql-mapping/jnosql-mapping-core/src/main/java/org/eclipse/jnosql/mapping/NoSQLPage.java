@@ -115,4 +115,9 @@ public class NoSQLPage<T> implements Page<T> {
         Objects.requireNonNull(pageable, "pageable is required");
         return new NoSQLPage<>(entities, pageable);
     }
+
+    public static long limit(Pageable pageable) {
+        Objects.requireNonNull(pageable, "pageable is required");
+        return pageable.size() * (pageable.page() - 1);
+    }
 }

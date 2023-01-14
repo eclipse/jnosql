@@ -44,6 +44,7 @@ public final class GenericParameterMetaData extends DefaultParameterMetaData imp
         Class<?> type =  getType();
         final CollectionSupplier supplier = ServiceLoader.load(CollectionSupplier.class)
                 .stream()
+                .map(ServiceLoader.Provider::get)
                 .map(CollectionSupplier.class::cast)
                 .filter(c -> c.test(type))
                 .findFirst()
