@@ -47,6 +47,9 @@ import static org.mockito.Mockito.when;
 public class GraphRepositoryProxyPaginationTest {
 
     private GraphTemplate template;
+
+    @Inject
+    private GraphTemplate graphTemplate;
     @Inject
     private EntitiesMetadata entities;
 
@@ -78,6 +81,7 @@ public class GraphRepositoryProxyPaginationTest {
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
 
+        when(template.getTraversalVertex()).thenReturn(graphTemplate.getTraversalVertex());
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
                 personHandler);

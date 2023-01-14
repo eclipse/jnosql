@@ -13,7 +13,7 @@
  *    Otavio Santana
  */
 
-package org.eclipse.jnosql.mapping.graph.org.eclipse.jnosql.mapping.test.jupiter;
+package org.eclipse.jnosql.mapping.test.jupiter;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;

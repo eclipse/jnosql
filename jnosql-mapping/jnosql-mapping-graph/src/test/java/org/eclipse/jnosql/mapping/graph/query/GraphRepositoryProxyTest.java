@@ -243,10 +243,10 @@ public class GraphRepositoryProxyTest {
 
         when(template.find(any(Object.class))).thenReturn(Optional.empty());
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        personRepository.findAllById(singletonList(10L));
+        personRepository.findAllById(singletonList(10L)).collect(Collectors.toUnmodifiableList());
         verify(template).find(captor.capture());
 
-        personRepository.findAllById(asList(1L, 2L, 3L));
+        personRepository.findAllById(asList(1L, 2L, 3L)).collect(Collectors.toUnmodifiableList());
         verify(template, times(4)).find(any(Long.class));
     }
 
@@ -283,21 +283,15 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         List<Person> people = personRepository.findAll().collect(Collectors.toUnmodifiableList());
-        assertFalse(people.isEmpty());
+        verify(template).findAll(Person.class);
     }
 
 
     @Test
     public void shouldDeleteAll() {
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         personRepository.deleteAll();
-        List<Person> people = personRepository.findAll().collect(Collectors.toUnmodifiableList());
-        assertTrue(people.isEmpty());
-
+        verify(template).deleteAll(Person.class);
     }
 
     @Test

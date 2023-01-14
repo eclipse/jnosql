@@ -12,14 +12,13 @@
  *
  *    Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.org.eclipse.jnosql.mapping.test.jupiter;
+package org.eclipse.jnosql.mapping.test.jupiter;
 
 import jakarta.enterprise.context.spi.CreationalContext;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.spi.AnnotatedType;
 import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.enterprise.inject.spi.InjectionTarget;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;

@@ -12,11 +12,10 @@
  *
  *    Otavio Santana
  */
-package org.eclipse.jnosql.mapping.graph.org.eclipse.jnosql.mapping.test.jupiter;
+package org.eclipse.jnosql.mapping.test.jupiter;
 
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 
 import java.util.function.Supplier;
 import java.util.stream.Stream;
