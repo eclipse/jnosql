@@ -41,6 +41,12 @@
             <artifactId>nosql-column</artifactId>
             <version>${jakarta.nosql.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jnosql-mapping-tests</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

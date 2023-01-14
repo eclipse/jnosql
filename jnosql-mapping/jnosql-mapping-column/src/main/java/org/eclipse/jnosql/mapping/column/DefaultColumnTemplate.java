@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.ColumnManager;
+import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import jakarta.nosql.mapping.column.ColumnWorkflow;
+import jakarta.nosql.column.ColumnEntityConverter;
+import jakarta.nosql.column.ColumnEventPersistManager;
+import jakarta.nosql.column.ColumnWorkflow;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 import jakarta.enterprise.context.ApplicationScoped;

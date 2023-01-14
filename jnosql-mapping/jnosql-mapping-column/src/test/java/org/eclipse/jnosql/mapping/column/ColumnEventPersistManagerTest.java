@@ -16,15 +16,9 @@ package org.eclipse.jnosql.mapping.column;
 
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.EntityPostPersist;
-import jakarta.nosql.mapping.EntityPrePersist;
-import jakarta.nosql.mapping.column.ColumnDeleteQueryExecute;
-import jakarta.nosql.mapping.column.ColumnEntityPostPersist;
-import jakarta.nosql.mapping.column.ColumnEntityPrePersist;
-import jakarta.nosql.mapping.column.ColumnQueryExecute;
-import jakarta.nosql.mapping.column.EntityColumnPostPersist;
-import jakarta.nosql.mapping.column.EntityColumnPrePersist;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.EntityPostPersist;
+import org.eclipse.jnosql.mapping.EntityPrePersist;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -34,8 +28,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import jakarta.enterprise.event.Event;
 
-import static jakarta.nosql.column.ColumnDeleteQuery.delete;
-import static jakarta.nosql.column.ColumnQuery.select;
+import static org.eclipse.jnosql.communication.column.ColumnDeleteQuery.delete;
+import static org.eclipse.jnosql.communication.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
@@ -102,7 +96,7 @@ public class ColumnEventPersistManagerTest {
         ArgumentCaptor<EntityPrePersist> captor = ArgumentCaptor.forClass(EntityPrePersist.class);
         verify(entityPrePersistEvent).fire(captor.capture());
         EntityPrePersist value = captor.getValue();
-        assertEquals(jedi, value.getValue());
+        assertEquals(jedi, value.get());
     }
 
     @Test
@@ -113,7 +107,7 @@ public class ColumnEventPersistManagerTest {
         ArgumentCaptor<EntityPostPersist> captor = ArgumentCaptor.forClass(EntityPostPersist.class);
         verify(entityPostPersistEvent).fire(captor.capture());
         EntityPostPersist value = captor.getValue();
-        assertEquals(jedi, value.getValue());
+        assertEquals(jedi, value.get());
     }
 
     @Test

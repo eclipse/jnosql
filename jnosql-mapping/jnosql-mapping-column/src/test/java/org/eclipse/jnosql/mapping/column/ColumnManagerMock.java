@@ -14,10 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.column.ColumnConfiguration;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnManagerFactory;
+import org.eclipse.jnosql.communication.Settings;
+import org.eclipse.jnosql.communication.column.ColumnConfiguration;
+import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.column.ColumnManagerFactory;
 import org.mockito.Mockito;
 
 import java.util.Collections;

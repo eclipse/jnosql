@@ -17,8 +17,8 @@
 package org.eclipse.jnosql.mapping.column;
 
 import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.column.ColumnQueryPagination;
+import jakarta.nosql.Pagination;
+import jakarta.nosql.column.ColumnQueryPagination;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -31,6 +31,7 @@ import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.DeleteMethodProvider;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.column.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
@@ -43,7 +44,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toUnmodifiableList;
 
 public abstract class BaseColumnRepository<T> {
 
@@ -112,7 +116,10 @@ public abstract class BaseColumnRepository<T> {
     }
 
     protected Function<Pageable, Page<T>> getPage(ColumnQuery query) {
-        return p -> getTemplate().select(ColumnQueryPagination.of(query, p));
+        return p -> {
+            Stream<T> entities = getTemplate().select(query);
+            return NoSQLPage.of(entities.collect(toUnmodifiableList()), p);
+        };
     }
 
     protected Function<Pageable, Optional<T>> getSingleResult(ColumnQuery query) {
@@ -133,7 +140,7 @@ public abstract class BaseColumnRepository<T> {
 
         return pageable.<ColumnQuery>map(p -> {
             long size = p.size();
-            long skip = size * (p.page() - 1);
+            long skip = NoSQLPage.limit(p);
             List<Sort> sorts = query.sorts();
             if (!p.sorts().isEmpty()) {
                 sorts = new ArrayList<>(query.sorts());
@@ -143,5 +150,6 @@ public abstract class BaseColumnRepository<T> {
                     query.condition().orElse(null), query.columnFamily());
         }).orElse(query);
     }
+
 
 }

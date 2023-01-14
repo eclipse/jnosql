@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.mapping.column.ColumnRepositoryProducer;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.tck.entities.PersonRepository;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.communication.column.ColumnManager;
+import jakarta.nosql.column.ColumnTemplate;
+import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -43,7 +43,7 @@ class DefaultColumnRepositoryProducerTest {
 
     @Test
     public void shouldCreateFromTemplate() {
-        ColumnTemplate template= Mockito.mock(ColumnTemplate.class);
+        JNoSQLColumnTemplate template= Mockito.mock(JNoSQLColumnTemplate.class);
         PersonRepository personRepository = producer.get(PersonRepository.class, template);
         assertNotNull(personRepository);
     }

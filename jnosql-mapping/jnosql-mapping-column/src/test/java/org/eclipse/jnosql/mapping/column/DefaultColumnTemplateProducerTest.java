@@ -14,10 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.mapping.column.ColumnTemplateProducer;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.communication.column.ColumnManager;
+import jakarta.nosql.column.ColumnTemplate;
+import jakarta.nosql.column.ColumnTemplateProducer;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

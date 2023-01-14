@@ -14,24 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.Sort;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
+import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
+import jakarta.data.repository.Sort;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.column.Column;
-import jakarta.nosql.column.ColumnCondition;
+import org.eclipse.jnosql.communication.column.ColumnCondition;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnQuery;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.Converters;
-import jakarta.nosql.mapping.Param;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.Query;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.PreparedStatement;
+import jakarta.nosql.column.ColumnTemplate;
+import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.Vendor;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.Vendor;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -50,14 +51,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static jakarta.nosql.Condition.AND;
-import static jakarta.nosql.Condition.BETWEEN;
-import static jakarta.nosql.Condition.EQUALS;
-import static jakarta.nosql.Condition.GREATER_THAN;
-import static jakarta.nosql.Condition.IN;
-import static jakarta.nosql.Condition.LESSER_EQUALS_THAN;
-import static jakarta.nosql.Condition.LESSER_THAN;
-import static jakarta.nosql.Condition.LIKE;
+import static org.eclipse.jnosql.communication.Condition.AND;
+import static org.eclipse.jnosql.communication.Condition.BETWEEN;
+import static org.eclipse.jnosql.communication.Condition.EQUALS;
+import static org.eclipse.jnosql.communication.Condition.GREATER_THAN;
+import static org.eclipse.jnosql.communication.Condition.IN;
+import static org.eclipse.jnosql.communication.Condition.LESSER_EQUALS_THAN;
+import static org.eclipse.jnosql.communication.Condition.LESSER_THAN;
+import static org.eclipse.jnosql.communication.Condition.LIKE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,7 +75,7 @@ import static org.mockito.Mockito.when;
 @CDIExtension
 public class ColumnRepositoryProxyTest {
 
-    private ColumnTemplate template;
+    private JNoSQLColumnTemplate template;
 
     @Inject
     private EntitiesMetadata entities;
@@ -89,7 +90,7 @@ public class ColumnRepositoryProxyTest {
 
     @BeforeEach
     public void setUp() {
-        this.template = Mockito.mock(ColumnTemplate.class);
+        this.template = Mockito.mock(JNoSQLColumnTemplate.class);
 
         ColumnRepositoryProxy personHandler = new ColumnRepositoryProxy(template,
                 entities, PersonRepository.class, converters);
@@ -152,7 +153,7 @@ public class ColumnRepositoryProxyTest {
                 .withPhones(singletonList("123123"))
                 .build();
 
-        personRepository.save(singletonList(person));
+        personRepository.saveAll(singletonList(person));
         verify(template).insert(captor.capture());
         Person personCapture = captor.getValue();
         assertEquals(person, personCapture);
@@ -170,10 +171,10 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).singleResult(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals(Column.of("name", "name"), condition.getColumn());
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.columnFamily());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(Column.of("name", "name"), condition.column());
 
         assertNotNull(personRepository.findByName("name"));
         when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
@@ -250,10 +251,10 @@ public class ColumnRepositoryProxyTest {
         personRepository.deleteByName("Ada");
         verify(template).delete(captor.capture());
         ColumnDeleteQuery deleteQuery = captor.getValue();
-        ColumnCondition condition = deleteQuery.getCondition().get();
-        assertEquals("Person", deleteQuery.getColumnFamily());
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals(Column.of("name", "Ada"), condition.getColumn());
+        ColumnCondition condition = deleteQuery.condition().get();
+        assertEquals("Person", deleteQuery.columnFamily());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(Column.of("name", "Ada"), condition.column());
 
     }
 
@@ -268,10 +269,10 @@ public class ColumnRepositoryProxyTest {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
-        personRepository.findById(singletonList(10L));
+        personRepository.findAllById(singletonList(10L));
         verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
 
-        personRepository.findById(asList(1L, 2L, 3L));
+        personRepository.findAllById(asList(1L, 2L, 3L));
         verify(template, times(4)).find(Mockito.eq(Person.class), Mockito.any(Long.class));
     }
 
@@ -285,7 +286,7 @@ public class ColumnRepositoryProxyTest {
     @Test
     public void shouldDeleteByIds() {
         ArgumentCaptor<ColumnDeleteQuery> captor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
-        personRepository.deleteById(singletonList(10L));
+        personRepository.deleteAllById(singletonList(10L));
         verify(template).delete(Person.class, 10L);
     }
 
@@ -310,12 +311,12 @@ public class ColumnRepositoryProxyTest {
         when(template.select(any(ColumnQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        List<Person> persons = personRepository.findAll();
+        List<Person> persons = personRepository.findAll().collect(Collectors.toUnmodifiableList());
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
-        assertFalse(query.getCondition().isPresent());
-        assertEquals("Person", query.getColumnFamily());
+        assertFalse(query.condition().isPresent());
+        assertEquals("Person", query.columnFamily());
 
     }
 
@@ -347,21 +348,21 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(AND, condition.getCondition());
-        List<ColumnCondition> conditions = condition.getColumn().get(new TypeReference<>() {
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.columnFamily());
+        assertEquals(AND, condition.condition());
+        List<ColumnCondition> conditions = condition.column().get(new TypeReference<>() {
         });
         ColumnCondition columnCondition = conditions.get(0);
         ColumnCondition columnCondition2 = conditions.get(1);
 
-        assertEquals(Condition.EQUALS, columnCondition.getCondition());
-        assertEquals("Ada", columnCondition.getColumn().get());
-        assertEquals("name", columnCondition.getColumn().getName());
+        assertEquals(Condition.EQUALS, columnCondition.condition());
+        assertEquals("Ada", columnCondition.column().get());
+        assertEquals("name", columnCondition.column().name());
 
-        assertEquals(Condition.GREATER_EQUALS_THAN, columnCondition2.getCondition());
-        assertEquals(33, columnCondition2.getColumn().get());
-        assertEquals("age", columnCondition2.getColumn().getName());
+        assertEquals(Condition.GREATER_EQUALS_THAN, columnCondition2.condition());
+        assertEquals(33, columnCondition2.column().get());
+        assertEquals("age", columnCondition2.column().name());
     }
 
     @Test
@@ -376,10 +377,10 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(GREATER_THAN, condition.getCondition());
-        assertEquals(Column.of("age", 33), condition.getColumn());
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.columnFamily());
+        assertEquals(GREATER_THAN, condition.condition());
+        assertEquals(Column.of("age", 33), condition.column());
 
     }
 
@@ -395,10 +396,10 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(LESSER_EQUALS_THAN, condition.getCondition());
-        assertEquals(Column.of("age", 33), condition.getColumn());
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.columnFamily());
+        assertEquals(LESSER_EQUALS_THAN, condition.condition());
+        assertEquals(Column.of("age", 33), condition.column());
 
     }
 
@@ -414,10 +415,10 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(LESSER_THAN, condition.getCondition());
-        assertEquals(Column.of("age", 33), condition.getColumn());
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.columnFamily());
+        assertEquals(LESSER_THAN, condition.condition());
+        assertEquals(Column.of("age", 33), condition.column());
 
     }
 
@@ -433,13 +434,13 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(BETWEEN, condition.getCondition());
-        List<Value> values = condition.getColumn().get(new TypeReference<>() {
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.columnFamily());
+        assertEquals(BETWEEN, condition.condition());
+        List<Value> values = condition.column().get(new TypeReference<>() {
         });
         assertEquals(Arrays.asList(10, 15), values.stream().map(Value::get).collect(Collectors.toList()));
-        assertTrue(condition.getColumn().getName().contains("age"));
+        assertTrue(condition.column().name().contains("age"));
     }
 
 
@@ -455,10 +456,10 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(LIKE, condition.getCondition());
-        assertEquals(Column.of("name", "Ada"), condition.getColumn());
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.columnFamily());
+        assertEquals(LIKE, condition.condition());
+        assertEquals(Column.of("name", "Ada"), condition.column());
 
     }
 
@@ -476,10 +477,10 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).singleResult(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        assertEquals("vendors", query.getColumnFamily());
-        assertEquals(EQUALS, condition.getCondition());
-        assertEquals(Column.of("prefixes", "prefix"), condition.getColumn());
+        ColumnCondition condition = query.condition().get();
+        assertEquals("vendors", query.columnFamily());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Column.of("prefixes", "prefix"), condition.column());
 
     }
 
@@ -496,9 +497,9 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).singleResult(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        assertEquals("vendors", query.getColumnFamily());
-        assertEquals(IN, condition.getCondition());
+        ColumnCondition condition = query.condition().get();
+        assertEquals("vendors", query.columnFamily());
+        assertEquals(IN, condition.condition());
 
     }
 
@@ -515,10 +516,10 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals(EQUALS, condition.getCondition());
-        assertEquals(Column.of("age", 120), condition.getColumn());
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.columnFamily());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Column.of("age", 120), condition.column());
     }
 
 
@@ -548,10 +549,10 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        final Column column = condition.getColumn();
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals("salary.currency", column.getName());
+        ColumnCondition condition = query.condition().get();
+        final Column column = condition.column();
+        assertEquals("Person", query.columnFamily());
+        assertEquals("salary.currency", column.name());
 
     }
 
@@ -565,13 +566,13 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        final Column column = condition.getColumn();
+        ColumnCondition condition = query.condition().get();
+        final Column column = condition.column();
         final List<ColumnCondition> conditions = column.get(new TypeReference<>() {
         });
-        final List<String> names = conditions.stream().map(ColumnCondition::getColumn)
-                .map(Column::getName).collect(Collectors.toList());
-        assertEquals("Person", query.getColumnFamily());
+        final List<String> names = conditions.stream().map(ColumnCondition::column)
+                .map(Column::name).collect(Collectors.toList());
+        assertEquals("Person", query.columnFamily());
         assertThat(names).contains("salary.currency", "salary.value");
 
     }
@@ -588,24 +589,22 @@ public class ColumnRepositoryProxyTest {
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
-        ColumnCondition condition = query.getCondition().get();
-        final Sort sort = query.getSorts().get(0);
-        final Column document = condition.getColumn();
-        assertEquals("Person", query.getColumnFamily());
-        assertEquals("salary.currency", document.getName());
-        assertEquals("currency.name", sort.getName());
+        ColumnCondition condition = query.condition().get();
+        final Sort sort = query.sorts().get(0);
+        final Column document = condition.column();
+        assertEquals("Person", query.columnFamily());
+        assertEquals("salary.currency", document.name());
+        assertEquals("currency.name", sort.property());
 
     }
 
-    interface PersonRepository extends Repository<Person, Long> {
+    interface PersonRepository extends PageableRepository<Person, Long> {
 
         List<Person> findBySalary_Currency(String currency);
 
         List<Person> findBySalary_CurrencyAndSalary_Value(String currency, BigDecimal value);
 
         List<Person> findBySalary_CurrencyOrderByCurrency_Name(String currency);
-
-        List<Person> findAll();
 
         Person findByName(String name);
 
@@ -640,7 +639,7 @@ public class ColumnRepositoryProxyTest {
         Optional<Person> findByQuery(@Param("id") String id);
     }
 
-    public interface VendorRepository extends Repository<Vendor, String> {
+    public interface VendorRepository extends PageableRepository<Vendor, String> {
 
         Vendor findByPrefixes(String prefix);
 
