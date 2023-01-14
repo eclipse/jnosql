@@ -30,10 +30,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultGraphEventPersistManagerTest {
+public class GraphEventPersistManagerTest {
 
     @InjectMocks
-    private DefaultGraphEventPersistManager subject;
+    private GraphEventPersistManager subject;
 
     @Mock
     private Event<EntityPrePersist> entityPrePersistEvent;
