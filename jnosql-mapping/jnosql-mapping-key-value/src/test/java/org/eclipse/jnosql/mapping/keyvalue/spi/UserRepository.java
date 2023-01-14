@@ -14,11 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.spi;
 
-import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.PageableRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.jnosql.mapping.test.entities.User;
 
-import jakarta.enterprise.context.ApplicationScoped;
-
 @ApplicationScoped
-public interface UserRepository extends CrudRepository<User, String> {
+public interface UserRepository extends PageableRepository<User, String> {
 }

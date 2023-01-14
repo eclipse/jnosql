@@ -71,9 +71,9 @@ public class RepositoryKeyValueBean extends AbstractBean<PageableRepository> {
 
     @Override
     public PageableRepository create(CreationalContext<PageableRepository> creationalContext) {
-        KeyValueTemplate repository = provider.isEmpty() ? getInstance(KeyValueTemplate.class) :
+        KeyValueTemplate template = provider.isEmpty() ? getInstance(KeyValueTemplate.class) :
                 getInstance(KeyValueTemplate.class, DatabaseQualifier.ofKeyValue(provider));
-        KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(type, repository);
+        KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(type, template);
         return (PageableRepository) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
