@@ -44,13 +44,13 @@ public interface DocumentQuery {
      * @return The maximum number of results the select object was set to retrieve.
      * The implementation might ignore this option.
      */
-    long getLimit();
+    long limit();
 
     /**
      * @return The position of the first result the select object was set to retrieve.
      * The implementation might ignore this option.
      */
-    long getSkip();
+    long skip();
 
 
     /**
@@ -58,7 +58,7 @@ public interface DocumentQuery {
      *
      * @return the document collection name
      */
-    String getDocumentCollection();
+    String documentCollection();
 
     /**
      * The conditions that contains in this {@link DocumentQuery}

@@ -117,10 +117,10 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).singleResult(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.documentCollection());
         assertEquals(EQUALS, condition.condition());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
         assertEquals(Document.of("name", "name"), condition.document());
 
@@ -148,9 +148,9 @@ class DocumentRepositoryProxyPageableTest {
         assertThat(persons).contains(ada);
 
         DocumentQuery query = captor.getValue();
-        assertEquals("Person", query.getDocumentCollection());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+        assertEquals("Person", query.documentCollection());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -168,9 +168,9 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).select(captor.capture());
         assertThat(persons).contains(ada);
         DocumentQuery query = captor.getValue();
-        assertEquals("Person", query.getDocumentCollection());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+        assertEquals("Person", query.documentCollection());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -189,9 +189,9 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).select(captor.capture());
         assertThat(persons.collect(Collectors.toList())).contains(ada);
         DocumentQuery query = captor.getValue();
-        assertEquals("Person", query.getDocumentCollection());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+        assertEquals("Person", query.documentCollection());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -209,9 +209,9 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).select(captor.capture());
         assertThat(persons).contains(ada);
         DocumentQuery query = captor.getValue();
-        assertEquals("Person", query.getDocumentCollection());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+        assertEquals("Person", query.documentCollection());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
 
     }
@@ -232,9 +232,9 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         assertFalse(query.condition().isPresent());
-        assertEquals("Person", query.getDocumentCollection());
-        assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+        assertEquals("Person", query.documentCollection());
+        assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
     }
 
 
@@ -252,7 +252,7 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.documentCollection());
         assertEquals(AND, condition.condition());
         List<DocumentCondition> conditions = condition.document().get(new TypeReference<>() {
         });
@@ -266,8 +266,8 @@ class DocumentRepositoryProxyPageableTest {
         assertEquals(Condition.GREATER_EQUALS_THAN, columnCondition2.condition());
         assertEquals(33, columnCondition2.document().get());
         assertEquals("age", columnCondition2.document().name());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
     }
 
     @Test
@@ -284,11 +284,11 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.documentCollection());
         assertEquals(GREATER_THAN, condition.condition());
         assertEquals(Document.of("age", 33), condition.document());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -306,11 +306,11 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.documentCollection());
         assertEquals(LESSER_EQUALS_THAN, condition.condition());
         assertEquals(Document.of("age", 33), condition.document());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -328,11 +328,11 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.documentCollection());
         assertEquals(LESSER_THAN, condition.condition());
         assertEquals(Document.of("age", 33), condition.document());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -350,14 +350,14 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.documentCollection());
         assertEquals(BETWEEN, condition.condition());
         List<Value> values = condition.document().get(new TypeReference<>() {
         });
         assertEquals(Arrays.asList(10, 15), values.stream().map(Value::get).collect(Collectors.toList()));
         assertTrue(condition.document().name().contains("age"));
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
     }
 
 
@@ -375,11 +375,11 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.documentCollection());
         assertEquals(LIKE, condition.condition());
         assertEquals(Document.of("name", "Ada"), condition.document());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -399,11 +399,11 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).singleResult(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("vendors", query.getDocumentCollection());
+        assertEquals("vendors", query.documentCollection());
         assertEquals(EQUALS, condition.condition());
         assertEquals(Document.of("prefixes", "prefix"), condition.document());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -422,10 +422,10 @@ class DocumentRepositoryProxyPageableTest {
         verify(template).singleResult(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
-        assertEquals("vendors", query.getDocumentCollection());
+        assertEquals("vendors", query.documentCollection());
         assertEquals(IN, condition.condition());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
 
     }
 
@@ -445,11 +445,11 @@ class DocumentRepositoryProxyPageableTest {
         DocumentQuery query = captor.getValue();
         
         DocumentCondition condition = query.condition().get();
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.documentCollection());
         assertEquals(EQUALS, condition.condition());
         assertEquals(Document.of("age", 120), condition.document());
-         assertEquals(NoSQLPage.skip(pagination), query.getLimit());
-        assertEquals(pagination.size(), query.getLimit());
+         assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
     }
 
     private Pageable getPageable() {

@@ -64,9 +64,9 @@ class DocumentQueryParserTest {
 
         assertTrue(documentQuery.documents().isEmpty());
         assertTrue(documentQuery.sorts().isEmpty());
-        assertEquals(0L, documentQuery.getLimit());
-        assertEquals(0L, documentQuery.getSkip());
-        assertEquals("God", documentQuery.getDocumentCollection());
+        assertEquals(0L, documentQuery.limit());
+        assertEquals(0L, documentQuery.skip());
+        assertEquals("God", documentQuery.documentCollection());
         assertFalse(documentQuery.condition().isPresent());
 
     }

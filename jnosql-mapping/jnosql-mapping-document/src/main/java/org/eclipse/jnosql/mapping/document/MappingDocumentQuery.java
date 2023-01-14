@@ -44,17 +44,17 @@ public final class MappingDocumentQuery implements DocumentQuery {
     }
 
     @Override
-    public long getLimit() {
+    public long limit() {
         return limit;
     }
 
     @Override
-    public long getSkip() {
+    public long skip() {
         return skip;
     }
 
     @Override
-    public String getDocumentCollection() {
+    public String documentCollection() {
         return documentCollection;
     }
 
@@ -82,11 +82,11 @@ public final class MappingDocumentQuery implements DocumentQuery {
             return false;
         }
         DocumentQuery that = (DocumentQuery) o;
-        return limit == that.getLimit() &&
-                skip == that.getSkip() &&
+        return limit == that.limit() &&
+                skip == that.skip() &&
                 Objects.equals(sorts, that.sorts()) &&
                 Objects.equals(condition, that.condition().orElse(null)) &&
-                Objects.equals(documentCollection, that.getDocumentCollection());
+                Objects.equals(documentCollection, that.documentCollection());
     }
 
     @Override
