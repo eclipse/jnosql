@@ -14,15 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import org.eclipse.jnosql.communication.column.ColumnManager;
-import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-
-import java.util.stream.Stream;
+import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 /**
  * The default implementation of {@link JNoSQLColumnTemplate}

@@ -15,16 +15,13 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.stream.Stream;
 
 
 /**

@@ -17,13 +17,18 @@ package org.eclipse.jnosql.mapping.column.query;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.column.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -116,7 +121,14 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
 
     @Override
     public Page findAll(Pageable pageable) {
-        throw new UnsupportedOperationException("The JNoSQL Column has not support for it yet");
+        Objects.requireNonNull(pageable, "pageable is required");
+        EntityMetadata metadata = getEntityMetadata();
+        ColumnQuery query = new MappingColumnQuery(pageable.sorts(),
+                pageable.size(), NoSQLPage.limit(pageable)
+                , null ,metadata.getName());
+
+        List<Object> entities = getTemplate().select(query).collect(Collectors.toUnmodifiableList());
+        return NoSQLPage.of(entities, pageable);
     }
 
     @Override

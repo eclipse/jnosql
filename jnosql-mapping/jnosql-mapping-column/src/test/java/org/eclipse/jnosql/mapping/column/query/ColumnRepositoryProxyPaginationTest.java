@@ -224,7 +224,7 @@ public class ColumnRepositoryProxyPaginationTest {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
 
-        when(template.select(any(ColumnQuery.class)))
+        when(template.findAll(Person.class))
                 .thenReturn(Stream.of(ada));
 
         Pageable pagination = getPagination();
@@ -453,7 +453,7 @@ public class ColumnRepositoryProxyPaginationTest {
     }
 
     private Pageable getPagination() {
-        return Pageable.ofPage(current().nextLong(1, 10)).size(current().nextInt(1, 10));
+        return Pageable.ofPage(2).size(6);
     }
     interface PersonRepository extends PageableRepository<Person, Long> {
 
