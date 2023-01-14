@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.validation;
 
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.mockito.Mockito;
 
 import jakarta.annotation.Priority;

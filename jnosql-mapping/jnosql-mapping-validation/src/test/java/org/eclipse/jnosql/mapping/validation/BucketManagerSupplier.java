@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.validation;
 
-import jakarta.nosql.keyvalue.BucketManager;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.mockito.Mockito;
 
 import jakarta.annotation.Priority;
