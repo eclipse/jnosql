@@ -14,11 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.mapping.keyvalue.KeyValueRepositoryProducer;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.tck.entities.PersonRepository;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
+import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

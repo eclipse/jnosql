@@ -15,12 +15,8 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
-import jakarta.nosql.mapping.EntityPostPersist;
-import jakarta.nosql.mapping.EntityPrePersist;
-import jakarta.nosql.mapping.keyvalue.EntityKeyValuePostPersist;
-import jakarta.nosql.mapping.keyvalue.EntityKeyValuePrePersist;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityPostPersist;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityPrePersist;
+import org.eclipse.jnosql.mapping.EntityPostPersist;
+import org.eclipse.jnosql.mapping.EntityPrePersist;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -89,7 +85,7 @@ public class KeyValueEventPersistManagerTest {
         ArgumentCaptor<EntityPrePersist> captor = ArgumentCaptor.forClass(EntityPrePersist.class);
         verify(entityPrePersistEvent).fire(captor.capture());
         EntityPrePersist value = captor.getValue();
-        assertEquals(actor, value.getValue());
+        assertEquals(actor, value.get());
     }
 
     @Test
@@ -100,7 +96,7 @@ public class KeyValueEventPersistManagerTest {
         ArgumentCaptor<EntityPostPersist> captor = ArgumentCaptor.forClass(EntityPostPersist.class);
         verify(entityPostPersistEvent).fire(captor.capture());
         EntityPostPersist value = captor.getValue();
-        assertEquals(actor, value.getValue());
+        assertEquals(actor, value.get());
     }
 
     @Test

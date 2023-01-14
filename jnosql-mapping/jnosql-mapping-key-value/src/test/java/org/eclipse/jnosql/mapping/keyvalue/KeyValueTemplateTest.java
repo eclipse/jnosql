@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.mapping.Template;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.nosql.Template;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

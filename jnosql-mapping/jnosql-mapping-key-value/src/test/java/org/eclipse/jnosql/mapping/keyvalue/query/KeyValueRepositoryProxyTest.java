@@ -14,13 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
-import jakarta.nosql.mapping.DynamicQueryException;
-import jakarta.nosql.mapping.Param;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.Query;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.tck.entities.User;
+import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
+import jakarta.nosql.PreparedStatement;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.DynamicQueryException;
+import org.eclipse.jnosql.mapping.test.entities.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,7 +77,7 @@ public class KeyValueRepositoryProxyTest {
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
 
         User user = new User("ada", "Ada", 10);
-        userRepository.save(Collections.singleton(user));
+        userRepository.saveAll(Collections.singleton(user));
         Mockito.verify(repository).put(captor.capture());
         User value = (User) captor.getValue().iterator().next();
         assertEquals(user, value);
@@ -94,7 +94,7 @@ public class KeyValueRepositoryProxyTest {
 
     @Test
     public void shouldDeleteIterable() {
-        userRepository.deleteById(Collections.singletonList("key"));
+        userRepository.deleteAllById(Collections.singletonList("key"));
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
         Mockito.verify(repository).delete(captor.capture());
         assertEquals("key", captor.getValue().iterator().next());
@@ -117,7 +117,7 @@ public class KeyValueRepositoryProxyTest {
         when(repository.get(keys, User.class)).thenReturn(
                 Arrays.asList(user, user2));
 
-        assertThat(userRepository.findById(keys)).contains(user, user2);
+        assertThat(userRepository.findAllById(keys)).contains(user, user2);
     }
 
     @Test
@@ -163,7 +163,7 @@ public class KeyValueRepositoryProxyTest {
         assertNotNull(userRepository.equals(userRepository));
     }
 
-    interface UserRepository extends Repository<User, String> {
+    interface UserRepository extends PageableRepository<User, String> {
 
         Optional<User> findByName(String name);
 
