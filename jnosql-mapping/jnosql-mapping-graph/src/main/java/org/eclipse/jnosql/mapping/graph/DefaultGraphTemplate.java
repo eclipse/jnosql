@@ -17,11 +17,9 @@ package org.eclipse.jnosql.mapping.graph;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-
-import java.util.stream.Stream;
 
 /**
  * The default {@link GraphTemplate}
