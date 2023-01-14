@@ -46,7 +46,6 @@ import static org.eclipse.jnosql.mapping.reflection.MappingType.ENTITY;
  */
 public abstract class ColumnEntityConverter {
 
-
     protected abstract EntitiesMetadata getEntities();
 
     protected abstract Converters getConverters();

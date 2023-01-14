@@ -26,7 +26,6 @@ import jakarta.nosql.QueryMapper.MapperNotCondition;
 import jakarta.nosql.QueryMapper.MapperOrder;
 import jakarta.nosql.QueryMapper.MapperSkip;
 import jakarta.nosql.QueryMapper.MapperWhere;
-import jakarta.nosql.column.ColumnTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ final class ColumnMapperSelect extends AbstractMapperQuery implements MapperFrom
 
     private final List<Sort> sorts = new ArrayList<>();
 
-    ColumnMapperSelect(EntityMetadata mapping, Converters converters, ColumnTemplate template) {
+    ColumnMapperSelect(EntityMetadata mapping, Converters converters, JNoSQLColumnTemplate template) {
         super(mapping, converters, template);
     }
 

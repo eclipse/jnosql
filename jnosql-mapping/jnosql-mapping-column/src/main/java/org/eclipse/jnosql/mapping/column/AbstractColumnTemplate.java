@@ -49,7 +49,6 @@ import static java.util.Objects.requireNonNull;
  */
 public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
 
-
     private static final ColumnQueryParser PARSER = new ColumnQueryParser();
 
     protected abstract ColumnEntityConverter getConverter();

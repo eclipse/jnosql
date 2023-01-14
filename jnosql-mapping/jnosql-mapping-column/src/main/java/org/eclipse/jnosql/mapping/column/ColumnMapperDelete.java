@@ -14,13 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.QueryMapper.MapperDeleteFrom;
 import jakarta.nosql.QueryMapper.MapperDeleteNameCondition;
 import jakarta.nosql.QueryMapper.MapperDeleteNotCondition;
 import jakarta.nosql.QueryMapper.MapperDeleteWhere;
-import jakarta.nosql.column.ColumnTemplate;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import static java.util.Objects.requireNonNull;
@@ -29,7 +28,7 @@ final class ColumnMapperDelete extends AbstractMapperQuery implements MapperDele
         MapperDeleteWhere, MapperDeleteNameCondition, MapperDeleteNotCondition  {
 
 
-    ColumnMapperDelete(EntityMetadata mapping, Converters converters, ColumnTemplate template) {
+    ColumnMapperDelete(EntityMetadata mapping, Converters converters, JNoSQLColumnTemplate template) {
         super(mapping, converters, template);
     }
 
