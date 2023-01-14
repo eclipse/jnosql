@@ -59,6 +59,6 @@ public interface DocumentConfiguration extends Function<Settings, DocumentManage
                 .stream()
                 .map(ServiceLoader.Provider::get)
                 .filter(type::isInstance)
-                .findFirst().orElseThrow(() -> new CommunicationException("It does not find KeyValueConfiguration"));
+                .findFirst().orElseThrow(() -> new CommunicationException("It does not find DocumentConfiguration"));
     }
 }
