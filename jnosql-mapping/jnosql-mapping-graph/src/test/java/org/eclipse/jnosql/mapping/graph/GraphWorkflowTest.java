@@ -29,11 +29,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultGraphWorkflowTest {
+public class GraphWorkflowTest {
 
 
     @InjectMocks
-    private DefaultGraphWorkflow subject;
+    private GraphWorkflow subject;
 
     @Mock
     private GraphEventPersistManager graphEventPersistManager;

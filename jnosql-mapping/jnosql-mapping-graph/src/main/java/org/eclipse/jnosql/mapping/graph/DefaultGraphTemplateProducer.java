@@ -55,7 +55,7 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
 
         GraphConverter converter = new DefaultGraphConverter(entities,
                 converters,instance, eventManager);
-        GraphWorkflow workflow = new DefaultGraphWorkflow(persistManager, converter);
+        GraphWorkflow workflow = new GraphWorkflow(persistManager, converter);
         return new DefaultGraphTemplate(instance, entities, converter, workflow, converters);
     }
 
@@ -67,7 +67,7 @@ class DefaultGraphTemplateProducer implements GraphTemplateProducer {
 
         GraphConverter converter = new DefaultGraphTraversalSourceConverter(entities,
                 converters, instance, eventManager);
-        GraphWorkflow workflow = new DefaultGraphWorkflow(persistManager, converter);
+        GraphWorkflow workflow = new GraphWorkflow(persistManager, converter);
         return new DefaultGraphTraversalSourceTemplate(instance, entities, converter, workflow, converters);
     }
 

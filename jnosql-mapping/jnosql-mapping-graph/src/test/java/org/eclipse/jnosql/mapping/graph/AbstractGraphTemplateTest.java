@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
@@ -506,6 +507,32 @@ public abstract class AbstractGraphTemplateTest {
         assertEquals(otavio.getName(), person.map(Person::getName).get());
     }
 
+    @Test
+    public void shouldFindAll() {
+        final Person otavio = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+        List<Person> people = getGraphTemplate().findAll(Person.class).collect(Collectors.toUnmodifiableList());
+
+        assertThat(people).hasSize(1)
+                .map(Person::getName)
+                .contains("Otavio");
+    }
+
+    @Test
+    public void shouldDeleteAll() {
+        final Person otavio = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+        List<Person> people = getGraphTemplate().findAll(Person.class).collect(Collectors.toUnmodifiableList());
+
+        assertThat(people).hasSize(1)
+                .map(Person::getName)
+                .contains("Otavio");
+
+        getGraphTemplate().deleteAll(Person.class);
+        people = getGraphTemplate().findAll(Person.class).collect(Collectors.toUnmodifiableList());
+
+        assertThat(people).isEmpty();
+    }
 
     @Test
     public void shouldReturnEmptyWhenFindByIdNotFound() {
