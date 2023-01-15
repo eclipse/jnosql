@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
+import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Sort;
@@ -31,6 +32,7 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Vendor;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -488,10 +490,12 @@ class DocumentRepositoryProxyPageableTest {
                 .of(Person.builder().build()));
 
         Pageable pagination = getPageable().sortBy(Sort.asc("name"));
-        personRepository.findByNameOrderByAge("name", pagination);
+        Page<Person> page = personRepository.findByNameOrderByAge("name", pagination);
+
+        Assertions.assertNotNull(page);
 
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        verify(template).singleResult(captor.capture());
+        verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
         assertEquals("Person", query.name());
@@ -518,7 +522,7 @@ class DocumentRepositoryProxyPageableTest {
 
         Person findByName(String name, Pageable Pageable);
 
-        Person findByNameOrderByAge(String name, Pageable Pageable);
+        Page<Person> findByNameOrderByAge(String name, Pageable Pageable);
 
         List<Person> findByAge(String age, Pageable Pageable);
 
