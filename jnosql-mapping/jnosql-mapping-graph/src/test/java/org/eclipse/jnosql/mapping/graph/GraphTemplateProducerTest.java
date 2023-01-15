@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @CDIExtension
-public class DefaultGraphTemplateProducerTest {
+public class GraphTemplateProducerTest {
 
     @Inject
     private GraphTemplateProducer producer;
