@@ -28,26 +28,8 @@ import java.util.Objects;
  * A Document is a tuple (pair) that consists of the name and its respective value.
  * A {@link DocumentEntity} has one or more Documents.
  */
-public class Document implements Entry {
+public interface Document extends Entry {
 
-    private final String name;
-
-    private final Value value;
-
-    Document(String name, Value value) {
-        this.name = name;
-        this.value = value;
-    }
-
-    @Override
-    public String name() {
-        return name;
-    }
-
-    @Override
-    public Value value() {
-        return value;
-    }
 
     /**
      * Alias to {@link Value#get(Class)}
@@ -58,10 +40,7 @@ public class Document implements Entry {
      * @throws NullPointerException          see {@link Value#get(Class)}
      * @throws UnsupportedOperationException see {@link Value#get(Class)}
      */
-    public <T> T get(Class<T> type) {
-        Objects.requireNonNull(type, "type is required");
-        return value.get(type);
-    }
+    <T> T get(Class<T> type) ;
 
     /**
      * Alias to {@link Value#get(TypeSupplier)}
@@ -72,10 +51,7 @@ public class Document implements Entry {
      * @throws NullPointerException          see {@link Value#get(TypeSupplier)}
      * @throws UnsupportedOperationException see {@link Value#get(TypeSupplier)}
      */
-    public <T> T get(TypeSupplier<T> supplier) {
-        Objects.requireNonNull(supplier, "supplier is required");
-        return value.get(supplier);
-    }
+    <T> T get(TypeSupplier<T> supplier);
 
 
     /**
@@ -83,34 +59,7 @@ public class Document implements Entry {
      *
      * @return {@link Value#get()}
      */
-    public Object get() {
-        return value.get();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Document)) {
-            return false;
-        }
-        Document that = (Document) o;
-        return Objects.equals(name, that.name()) &&
-                Objects.equals(value, that.value());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, value);
-    }
-
-    @Override
-    public String toString() {
-        return "Document{" + "name='" + name + '\'' +
-                ", value=" + value +
-                '}';
-    }
+    Object get();
 
     /**
      * Creates a document instance
@@ -122,10 +71,10 @@ public class Document implements Entry {
      * @throws NullPointerException when there is any null parameter
      * @see Documents
      */
-    public static <V> Document of(String name, V value) {
+    static <V> Document of(String name, V value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
-        return new Document(name, getValue(value));
+        return new DefaultDocument(name, getValue(value));
     }
 
     private static Value getValue(Object value) {
