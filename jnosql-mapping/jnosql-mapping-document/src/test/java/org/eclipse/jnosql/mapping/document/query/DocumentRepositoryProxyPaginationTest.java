@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.Sort;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
@@ -452,6 +453,62 @@ class DocumentRepositoryProxyPageableTest {
         assertEquals(pagination.size(), query.limit());
     }
 
+    @Test
+    public void shouldFindByNameOrderName() {
+
+        when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
+                .of(Person.builder().build()));
+
+        Pageable pagination = getPageable().sortBy(Sort.asc("name"));
+        personRepository.findByName("name", pagination);
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).singleResult(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
+        assertThat(query.sorts()).hasSize(1)
+                .contains(Sort.asc("name"));
+
+        assertEquals(Document.of("name", "name"), condition.document());
+
+        assertNotNull(personRepository.findByName("name", pagination));
+        when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
+                .empty());
+        assertNull(personRepository.findByName("name", pagination));
+    }
+
+    @Test
+    public void shouldFindByNameOrderName2() {
+
+        when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
+                .of(Person.builder().build()));
+
+        Pageable pagination = getPageable().sortBy(Sort.asc("name"));
+        personRepository.findByNameOrderByAge("name", pagination);
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).singleResult(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(NoSQLPage.skip(pagination), query.limit());
+        assertEquals(pagination.size(), query.limit());
+        assertThat(query.sorts()).hasSize(2)
+                .containsExactly(Sort.asc("age"), Sort.asc("name"));
+
+        assertEquals(Document.of("name", "name"), condition.document());
+
+        assertNotNull(personRepository.findByName("name", pagination));
+        when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
+                .empty());
+        assertNull(personRepository.findByName("name", pagination));
+    }
+
     private Pageable getPageable() {
         return Pageable.ofPage(2).size(6);
     }
@@ -460,6 +517,8 @@ class DocumentRepositoryProxyPageableTest {
 
 
         Person findByName(String name, Pageable Pageable);
+
+        Person findByNameOrderByAge(String name, Pageable Pageable);
 
         List<Person> findByAge(String age, Pageable Pageable);
 
