@@ -21,10 +21,13 @@ import jakarta.data.repository.Repository;
 import jakarta.nosql.Entity;
 import org.eclipse.jnosql.mapping.Embeddable;
 
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import static java.util.Collections.unmodifiableSet;
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
 /**
  * Scanner classes that will load entities with both Entity and Embeddable
@@ -70,14 +73,14 @@ public enum ScanClass {
      * @return classes with {@link Entity} annotation
      */
     public Set<Class<?>> entities() {
-        return Collections.unmodifiableSet(entities);
+        return unmodifiableSet(entities);
     }
     /**
      * Returns repositories: interfaces that extend DataRepository and has the Repository annotation.
      * @return the repositories items
      */
     public Set<Class<?>> reepositores() {
-        return Collections.unmodifiableSet(repositores);
+        return unmodifiableSet(repositores);
     }
 
 
@@ -86,6 +89,16 @@ public enum ScanClass {
      * @return embeddables items
      */
     public Set<Class<?>> embeddables() {
-        return Collections.unmodifiableSet(embeddables);
+        return unmodifiableSet(embeddables);
+    }
+
+    /**
+     * Returns repositories {@link Class#isAssignableFrom(Class)} the parameter
+     * @param filter the repository filter
+     * @return the list
+     */
+    public Set<Class<?>> reepositores(Class<? extends DataRepository> filter) {
+        Objects.requireNonNull(filter, "filter is required");
+        return repositores.stream().filter(c -> filter.isAssignableFrom(c)).collect(toUnmodifiableSet());
     }
 }
