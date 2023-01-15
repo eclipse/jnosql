@@ -15,15 +15,11 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfoList;
-import io.github.classgraph.ScanResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.BeforeBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.nosql.Entity;
-import org.eclipse.jnosql.mapping.Embeddable;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,21 +48,18 @@ public class EntityMetadataExtension implements Extension {
     public void afterBeanDiscovery(@Observes BeforeBeanDiscovery event) {
         LOGGER.fine("Starting the scanning process for Entity and Embeddable annotations: ");
 
-        try (ScanResult result = new ClassGraph().enableAllInfo().scan()) {
-            ClassInfoList entities = result.getClassesWithAnnotation(Entity.class);
-            for (Class<?> entity : entities.loadClasses()) {
+        ClassScanner scanner = ClassScanner.INSTANCE;
+        for (Class<?> entity : scanner.entities()) {
                 EntityMetadata entityMetadata = converter.create(entity);
                 if (entityMetadata.hasEntityName()) {
                     mappings.put(entityMetadata.getName(), entityMetadata);
                 }
                 classes.put(entity, entityMetadata);
             }
-            ClassInfoList embeddables = result.getClassesWithAnnotation(Embeddable.class);
-            for (Class<?> embeddable : embeddables.loadClasses()) {
+            for (Class<?> embeddable : scanner.embeddables()) {
                 EntityMetadata entityMetadata = converter.create(embeddable);
                 classes.put(embeddable, entityMetadata);
             }
-        }
         LOGGER.fine("Finishing the scanning with total of " + classes.size() + " scanned.");
     }
 

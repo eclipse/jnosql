@@ -14,9 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.data.repository.DataRepository;
-import jakarta.data.repository.PageableRepository;
-import org.assertj.core.api.Condition;
 import org.eclipse.jnosql.mapping.test.entities.AnimalRepository;
 import org.eclipse.jnosql.mapping.test.entities.Contact;
 import org.eclipse.jnosql.mapping.test.entities.Job;
@@ -28,18 +25,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
-import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-class ScanClassTest {
+class ClassScannerTest {
 
-    private ScanClass scanClass = ScanClass.INSTANCE;
+    private ClassScanner classScanner = ClassScanner.INSTANCE;
 
     @Test
     public void shouldReturnEntities() {
-        Set<Class<?>> entities = scanClass.entities();
+        Set<Class<?>> entities = classScanner.entities();
         Assertions.assertNotNull(entities);
         assertThat(entities).hasSize(24)
                 .contains(Person.class);
@@ -47,7 +42,7 @@ class ScanClassTest {
 
     @Test
     public void shouldReturnEmbeddables() {
-        Set<Class<?>> embeddables = scanClass.embeddables();
+        Set<Class<?>> embeddables = classScanner.embeddables();
         Assertions.assertNotNull(embeddables);
         assertThat(embeddables).hasSize(4)
                 .contains(Job.class, Contact.class);
@@ -56,7 +51,7 @@ class ScanClassTest {
 
     @Test
     public void shouldReturnRepositories() {
-        Set<Class<?>> reepositores = scanClass.reepositores();
+        Set<Class<?>> reepositores = classScanner.reepositores();
         Assertions.assertNotNull(reepositores);
 
         assertThat(reepositores).hasSize(3)
@@ -67,7 +62,7 @@ class ScanClassTest {
 
     @Test
     public void shouldFilterRepositories() {
-        Set<Class<?>> reepositores = scanClass.reepositores(NoSQLVendor.class);
+        Set<Class<?>> reepositores = classScanner.reepositores(NoSQLVendor.class);
         Assertions.assertNotNull(reepositores);
 
         assertThat(reepositores).hasSize(1)

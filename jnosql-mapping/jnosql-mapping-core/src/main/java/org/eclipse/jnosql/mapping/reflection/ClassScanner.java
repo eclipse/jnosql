@@ -34,7 +34,7 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
  * annotations and repositories: interfaces that extend DataRepository
  * and has the Repository annotation.
  */
-public enum ScanClass {
+public enum ClassScanner {
 
     INSTANCE;
 
@@ -43,12 +43,12 @@ public enum ScanClass {
     private final Set<Class<?>> embeddables;
 
 
-    ScanClass() {
+    ClassScanner() {
         entities = new HashSet<>();
         embeddables = new HashSet<>();
         repositores = new HashSet<>();
 
-        Logger logger = Logger.getLogger(ScanClass.class.getName());
+        Logger logger = Logger.getLogger(ClassScanner.class.getName());
         logger.fine("Starting scan class to find entities, embeddable and repositories.");
         try (ScanResult result = new ClassGraph().enableAllInfo().scan()) {
             for (Class<?> entity : result.getClassesWithAnnotation(Entity.class).loadClasses()) {
