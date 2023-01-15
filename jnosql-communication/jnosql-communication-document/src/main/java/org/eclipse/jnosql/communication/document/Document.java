@@ -28,7 +28,7 @@ import java.util.Objects;
  * A Document is a tuple (pair) that consists of the name and its respective value.
  * A {@link DocumentEntity} has one or more Documents.
  */
-public final class Document implements Entry {
+public class Document implements Entry {
 
     private final String name;
 

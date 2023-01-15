@@ -23,29 +23,12 @@ import org.eclipse.jnosql.communication.Value;
 import java.util.Objects;
 
 /**
- * The default implementation of {@link Column}
+ * A Column is a tuple (pair) that consists of the name and its respective value.
+ * A {@link ColumnEntity} has one or more Columns.
  */
-public final class Column implements Entry {
-
-    private final String name;
-
-    private final Value value;
-
-    Column(String name, Value value) {
-        this.name = name;
-        this.value = value;
-    }
+public interface Column extends Entry {
 
 
-    @Override
-    public String name() {
-        return name;
-    }
-
-    @Override
-    public Value value() {
-        return value;
-    }
 
     /**
      * Alias to {@link Value#get(Class)}
@@ -56,10 +39,7 @@ public final class Column implements Entry {
      * @throws NullPointerException          see {@link Value#get(Class)}
      * @throws UnsupportedOperationException see {@link Value#get(Class)}
      */
-    public <T> T get(Class<T> type) {
-        Objects.requireNonNull(type, "type is required");
-        return value.get(type);
-    }
+    <T> T get(Class<T> type) ;
 
     /**
      * Alias to {@link Value#get(TypeSupplier)}
@@ -70,46 +50,15 @@ public final class Column implements Entry {
      * @throws NullPointerException          see {@link Value#get(Class)}
      * @throws UnsupportedOperationException see {@link Value#get(Class)}
      */
-    public <T> T get(TypeSupplier<T> supplier) {
-        Objects.requireNonNull(supplier, "supplier is required");
-        return value.get(supplier);
-    }
+    <T> T get(TypeSupplier<T> supplier);
 
     /**
      * Alias to {@link Value#get()}
      *
      * @return {@link Value#get()}
      */
-    public Object get() {
-        return value.get();
-    }
+    Object get();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof Column)) {
-            return false;
-        }
-
-        Column that = (Column) o;
-        return Objects.equals(name, that.name()) &&
-                Objects.equals(value, that.value());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, value);
-    }
-
-    @Override
-    public String toString() {
-        return "DefaultColumn{" + "name='" + name + '\'' +
-                ", value=" + value +
-                '}';
-    }
 
     /**
      * Creates a column instance
@@ -124,7 +73,7 @@ public final class Column implements Entry {
     public static <V> Column of(String name, V value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
-        return new Column(name, getValue(value));
+        return new DefaultColumn(name, getValue(value));
     }
 
     private static Value getValue(Object value) {
