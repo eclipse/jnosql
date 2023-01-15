@@ -47,7 +47,7 @@ import static java.util.stream.Collectors.toList;
 import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
 
 
-abstract class GraphConverter {
+public abstract class GraphConverter {
 
 
     protected abstract EntitiesMetadata getEntities();

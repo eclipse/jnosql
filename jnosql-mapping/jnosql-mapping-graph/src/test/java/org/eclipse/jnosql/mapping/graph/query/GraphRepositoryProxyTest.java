@@ -19,6 +19,7 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.nosql.PreparedStatement;
 import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Edge;

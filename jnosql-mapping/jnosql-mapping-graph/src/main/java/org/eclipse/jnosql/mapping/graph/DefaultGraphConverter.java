@@ -23,7 +23,7 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
-class DefaultGraphConverter extends GraphConverter implements GraphConverter {
+class DefaultGraphConverter extends GraphConverter  {
 
     private EntitiesMetadata entities;
 

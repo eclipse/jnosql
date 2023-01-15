@@ -54,7 +54,7 @@ public final class EntityGraphPostPersist implements Supplier<Object> {
 
     @Override
     public String toString() {
-        return  "DefaultEntityGraphPostPersist{" + "value=" + value +
+        return  "EntityGraphPostPersist{" + "value=" + value +
                 '}';
     }
 
@@ -62,5 +62,4 @@ public final class EntityGraphPostPersist implements Supplier<Object> {
         Objects.requireNonNull(value, "value is required");
         return new EntityGraphPostPersist(value);
     }
-}
 }
