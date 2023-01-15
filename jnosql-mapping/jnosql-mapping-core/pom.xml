@@ -52,5 +52,10 @@
             <artifactId>classgraph</artifactId>
             <version>${classgraph.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jnosql-jupiter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
