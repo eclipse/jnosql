@@ -17,7 +17,6 @@ module org.eclipse.jnosql.mapping.test {
     requires jakarta.data.api;
     requires jakarta.cdi;
     requires org.junit.jupiter.api;
-    exports org.eclipse.jnosql.mapping.test.jupiter;
     exports org.eclipse.jnosql.mapping.test.entities;
     exports org.eclipse.jnosql.mapping.test.entities.inheritance;
     opens org.eclipse.jnosql.mapping.test.entities;
