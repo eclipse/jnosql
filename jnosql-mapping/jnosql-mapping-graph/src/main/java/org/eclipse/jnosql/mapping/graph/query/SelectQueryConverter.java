@@ -24,6 +24,7 @@ import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -48,7 +49,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
         GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, query::where, mapping);
 
         query.orderBy().forEach(getSort(traversal, mapping));
-        setPagination(params, traversal, query,mapping);
+        setPagination(params, traversal, query, mapping);
         traversal.hasLabel(mapping.getName());
         return traversal.toStream();
     }
@@ -71,14 +72,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
 
 
     private static void setPagination(Object[] args, GraphTraversal<Vertex, Vertex> traversal, SelectQuery query, EntityMetadata mapping) {
-        Pageable pagination = DynamicReturn.findPagination(args).orElse(null);
-        if (pagination != null) {
-            traversal.skip(NoSQLPage.skip(pagination))
-                    .limit(pagination.size());
-
-            pagination.sorts().forEach(getSort(traversal, mapping));
-            return;
-        }
+        Optional<Pageable> pageable = DynamicReturn.findPagination(args);
 
         if (query != null) {
             if (query.skip() > 0) {
@@ -89,6 +83,10 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
                 traversal.next((int) query.limit());
             }
         }
+        pageable.ifPresent(p -> {
+            p.sorts().forEach(getSort(traversal, mapping));
+            traversal.skip(NoSQLPage.skip(p)).limit(p.size());
+        });
 
     }
 

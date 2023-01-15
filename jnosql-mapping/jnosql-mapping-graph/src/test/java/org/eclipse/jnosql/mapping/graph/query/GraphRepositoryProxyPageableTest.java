@@ -16,6 +16,8 @@ package org.eclipse.jnosql.mapping.graph.query;
 
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.Sort;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
@@ -32,6 +34,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import jakarta.inject.Inject;
+
 import java.lang.reflect.Proxy;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +47,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @CDIExtension
-public class GraphRepositoryProxyPaginationTest {
+public class GraphRepositoryProxyPageableTest {
 
     private GraphTemplate template;
 
@@ -74,8 +77,7 @@ public class GraphRepositoryProxyPaginationTest {
         this.template = Mockito.mock(GraphTemplate.class);
 
         GraphRepositoryProxy personHandler = new GraphRepositoryProxy(template,
-                entities, PersonRepository.class,graph, converter, converters);
-
+                entities, PersonRepository.class, graph, converter, converters);
 
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
@@ -146,7 +148,23 @@ public class GraphRepositoryProxyPaginationTest {
         assertTrue(people.isEmpty());
     }
 
+    @Test
+    public void shouldFindByName() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
+        List<Person> people = personRepository.findByName("Otavio", Pageable.ofPage(2).size(1)
+                .sortBy(Sort.asc("age")));
+        assertFalse(people.isEmpty());
+        assertEquals(1, people.size());
+        Assertions.assertThat(people).hasSize(1).map(Person::getAge)
+                .contains(30);
+    }
+
     interface PersonRepository extends PageableRepository<Person, Long> {
+
+        List<Person> findByName(String name, Pageable Pageable);
+
+        List<Person> findByNameOrderByAge(String name, Pageable Pageable);
 
         Optional<Person> findByAge(Integer age, Pageable pagination);
 
