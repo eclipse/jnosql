@@ -78,6 +78,31 @@ class PageRepositoryReturnTest {
     }
 
     @Test
+    public void shouldReturnSlice() {
+
+        Person ada = new Person("Ada");
+
+        Mockito.when(page.content()).thenReturn(List.of(ada));
+
+        DynamicReturn<Person> dynamic = DynamicReturn.builder()
+                .withClassSource(Person.class)
+                .withSingleResult(Optional::empty)
+                .withResult(Collections::emptyList)
+                .withSingleResultPagination(p -> Optional.empty())
+                .withStreamPagination(p -> Stream.of(ada))
+                .withMethodSource(Person.class.getDeclaredMethods()[0])
+                .withPagination(Pageable.ofPage(2).size(2))
+                .withPage(p -> page)
+                .build();
+
+        Slice<Person> personPage = (Slice<Person>) repositoryReturn.convertPageable(dynamic);
+        List<Person> content = personPage.content();
+
+        assertFalse(content.isEmpty());
+        assertEquals(ada, content.get(0));
+    }
+
+    @Test
     public void shouldReturnErrorWhenUsePage() {
 
         Person ada = new Person("Ada");
