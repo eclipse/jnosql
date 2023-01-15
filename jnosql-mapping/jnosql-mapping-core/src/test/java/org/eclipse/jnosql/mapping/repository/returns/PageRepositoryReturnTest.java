@@ -16,6 +16,7 @@ package org.eclipse.jnosql.mapping.repository.returns;
 
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
+import jakarta.data.repository.Slice;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.repository.RepositoryReturn;
@@ -46,6 +47,7 @@ class PageRepositoryReturnTest {
     @Test
     public void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Page.class));
+        Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Slice.class));
         assertFalse(repositoryReturn.isCompatible(Object.class, Person.class));
         assertFalse(repositoryReturn.isCompatible(Person.class, Object.class));
     }
