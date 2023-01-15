@@ -59,7 +59,7 @@ public enum ScanClass {
                 this.repositores.add(repositories);
             }
         }
-        logger.fine(String.format("Finished the class scan with entities %i, embeddables %i and repositories: %i"
+        logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
                 , entities.size(), embeddables.size(), repositores.size()));
 
     }

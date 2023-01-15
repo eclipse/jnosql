@@ -16,16 +16,47 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.PageableRepository;
+import org.assertj.core.api.Condition;
+import org.eclipse.jnosql.mapping.test.entities.Contact;
+import org.eclipse.jnosql.mapping.test.entities.Job;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+import java.util.function.Predicate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ScanClassTest {
 
+    private ScanClass scanClass = ScanClass.INSTANCE;
 
     @Test
-    public void test() {
-        boolean a = DataRepository.class.isAssignableFrom(PageableRepository.class);
-        System.out.println(a);
+    public void shouldReturnEntities() {
+        Set<Class<?>> entities = scanClass.entities();
+        Assertions.assertNotNull(entities);
+        assertThat(entities).hasSize(24)
+                .contains(Person.class);
     }
+
+    @Test
+    public void shouldReturnEmbeddables() {
+        Set<Class<?>> embeddables = scanClass.embeddables();
+        Assertions.assertNotNull(embeddables);
+        assertThat(embeddables).hasSize(4)
+                .contains(Job.class, Contact.class);
+    }
+
+    public void shouldReturnRepositories() {
+
+    }
+
+    @Test
+    public void shouldFilterRepositories() {
+
+    }
+    //return repositories
+    //filter classes repositories
 }

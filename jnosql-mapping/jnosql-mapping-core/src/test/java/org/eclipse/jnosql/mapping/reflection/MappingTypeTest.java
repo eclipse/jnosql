@@ -72,12 +72,6 @@ class MappingTypeTest {
         assertEquals(MappingType.ENTITY, MappingType.of(field));
     }
 
-    //parameter default
-    //parameter collection
-    //parameter  map
-    //parameter entity
-    //parameter EMBEDDED
-
     @Test
     public void shouldReturnParameterDefault() throws NoSuchMethodException {
         Constructor<BookUser> constructor = (Constructor<BookUser>) BookUser.class.getDeclaredConstructors()[0];
