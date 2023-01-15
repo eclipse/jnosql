@@ -42,31 +42,31 @@ Theses annotations from the Mapping API will look familiar to the Jakarta Persis
 |===
 |Annotation|Description
 
-|@Entity
+|`@jakarta.nosql.Entity`
 |Specifies that the class is an entity. This annotation is applied to the entity class.
 
-|@Id
+|`@jakarta.nosql.Id`
 |Specifies the primary key of an entity.
 
-|@Column
+|`@jakarta.nosql.Column`
 |Specify the mapped column for a persistent property or field.
 
-|@Embeddable
+|`@org.eclipse.jnosql.mapping.Embeddable`
 |Specifies a class whose instances are stored as an intrinsic part of an owning entity and share the entity's identity.
 
-|@Convert
+|`@org.eclipse.jnosql.mapping.Convert`
 |Specifies the conversion of a Basic field or property.
 
-|@MappedSuperclass
+|`@org.eclipse.jnosql.mapping.MappedSuperclass`
 |Designates a class whose mapping information is applied to the entities that inherit from it. A mapped superclass has no separate table defined for it.
 
-|@Inheritance
+|`@org.eclipse.jnosql.mapping.Inheritance`
 |Specifies the inheritance strategy to be used for an entity class hierarchy.
 
-|@DiscriminatorColumn
+|`@org.eclipse.jnosql.mapping.DiscriminatorColumn`
 |Specifies the discriminator column for the mapping strategy.
 
-|@DiscriminatorValue
+|`@org.eclipse.jnosql.mapping.DiscriminatorValue`
 |Specifies the value of the discriminator column for entities of the given type.
 
 
@@ -100,7 +100,7 @@ A ``Repository`` interface is also provided for exploring the Domain-Driven Desi
 
 [source,java]
 ----
-public interface CarRepository extends Repository<Car, String> {
+public interface CarRepository extends PageableRepository<Car, String> {
 
     Optional<Car> findByName(String name);
 
