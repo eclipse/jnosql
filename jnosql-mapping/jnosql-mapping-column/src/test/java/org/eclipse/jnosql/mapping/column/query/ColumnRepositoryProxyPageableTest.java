@@ -494,7 +494,7 @@ public class ColumnRepositoryProxyPageableTest {
         Assertions.assertNotNull(page);
 
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
-        verify(template).singleResult(captor.capture());
+        verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
         ColumnCondition condition = query.condition().get();
         assertEquals("Person", query.name());
