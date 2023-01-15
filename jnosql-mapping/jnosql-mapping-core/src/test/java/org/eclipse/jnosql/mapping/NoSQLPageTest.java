@@ -67,7 +67,7 @@ class NoSQLPageTest {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
 
-        Assertions.assertEquals(1, 1);
+        Assertions.assertEquals(1, page.numberOfElements());
     }
 
     @Test
