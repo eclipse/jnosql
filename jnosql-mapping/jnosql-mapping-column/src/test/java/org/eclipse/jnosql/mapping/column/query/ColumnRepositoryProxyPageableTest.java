@@ -67,7 +67,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @CDIExtension
-public class ColumnRepositoryProxyPaginationTest {
+public class ColumnRepositoryProxyPageableTest {
 
     private JNoSQLColumnTemplate template;
 
