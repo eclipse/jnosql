@@ -26,7 +26,7 @@ import java.lang.reflect.Proxy;
 import java.util.Objects;
 
 @ApplicationScoped
-class KeyValueRepositoryProducer {
+public class KeyValueRepositoryProducer {
 
     @Inject
     private KeyValueTemplateProducer producer;
