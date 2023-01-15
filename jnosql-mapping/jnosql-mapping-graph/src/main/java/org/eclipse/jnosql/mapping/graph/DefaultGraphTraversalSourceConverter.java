@@ -41,7 +41,7 @@ import static java.util.stream.Collectors.toList;
  */
 @GraphTraversalSourceOperation
 @ApplicationScoped
-class DefaultGraphTraversalSourceConverter extends AbstractGraphConverter {
+class DefaultGraphTraversalSourceConverter extends GraphConverter {
 
 
     private EntitiesMetadata entities;

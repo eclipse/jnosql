@@ -21,7 +21,7 @@ import jakarta.inject.Inject;
 
 
 @CDIExtension
-class DefaultGraphConverterTest extends AbstractGraphConverterTest{
+class DefaultGraphConverterTest extends GraphConverterTest {
 
     @Inject
     private GraphConverter converter;

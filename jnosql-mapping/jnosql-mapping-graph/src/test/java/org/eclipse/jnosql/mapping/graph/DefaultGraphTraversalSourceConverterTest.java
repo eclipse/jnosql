@@ -20,7 +20,7 @@ import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import jakarta.inject.Inject;
 
 @CDIExtension
-class DefaultGraphTraversalSourceConverterTest extends AbstractGraphConverterTest {
+class DefaultGraphTraversalSourceConverterTest extends GraphConverterTest {
 
     @Inject
     @GraphTraversalSourceOperation
