@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.column.query;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.Slice;
 import jakarta.data.repository.Sort;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Condition;
@@ -440,7 +441,8 @@ public class ColumnRepositoryProxyPageableTest {
                 .thenReturn(Stream.of(ada));
 
         Pageable pagination = getPageable();
-        personRepository.findByAge("120", pagination);
+        Slice<Person> slice = personRepository.findByAge("120", pagination);
+        Assertions.assertNotNull(slice);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).select(captor.capture());
         ColumnQuery query = captor.getValue();
@@ -521,7 +523,7 @@ public class ColumnRepositoryProxyPageableTest {
 
         Page<Person> findByNameOrderByAge(String name, Pageable Pageable);
 
-        List<Person> findByAge(String age, Pageable pagination);
+        Slice<Person> findByAge(String age, Pageable pagination);
 
         List<Person> findByNameAndAge(String name, Integer age, Pageable pagination);
 
