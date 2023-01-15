@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.graph.query;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.Slice;
 import jakarta.data.repository.Sort;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.Converters;
@@ -41,8 +42,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -157,7 +160,7 @@ public class GraphRepositoryProxyPageableTest {
                 .sortBy(Sort.asc("age")));
         assertFalse(people.isEmpty());
         assertEquals(1, people.size());
-        Assertions.assertThat(people).hasSize(1).map(Person::getAge)
+        assertThat(people).hasSize(1).map(Person::getAge)
                 .contains(30);
     }
 
@@ -167,20 +170,34 @@ public class GraphRepositoryProxyPageableTest {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
         Page<Person> page = personRepository.findByNameOrderByAge("Otavio", Pageable.ofPage(1).size(1));
 
-        Assertions.assertThat(page.content()).hasSize(1).map(Person::getAge)
+        assertThat(page.content()).hasSize(1).map(Person::getAge)
                 .contains(20);
         Pageable next = page.nextPageable();
 
         page = personRepository.findByNameOrderByAge("Otavio", next);
-        Assertions.assertThat(page.content()).hasSize(1).map(Person::getAge)
+        assertThat(page.content()).hasSize(1).map(Person::getAge)
                 .contains(30);
     }
+
+    @Test
+    public void shouldFindByAgeOrderByName() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
+        Slice<Person> slice = personRepository.findByAgeOrderByName(20, Pageable.ofPage(1).size(1));
+        assertNotNull(slice);
+
+        assertThat(slice.content()).hasSize(1).map(Person::getAge)
+                .contains(20);
+    }
+
 
     interface PersonRepository extends PageableRepository<Person, Long> {
 
         List<Person> findByName(String name, Pageable Pageable);
 
         Page<Person> findByNameOrderByAge(String name, Pageable Pageable);
+
+        Slice<Person> findByAgeOrderByName(Integer age, Pageable Pageable);
 
         Optional<Person> findByAge(Integer age, Pageable pagination);
 
