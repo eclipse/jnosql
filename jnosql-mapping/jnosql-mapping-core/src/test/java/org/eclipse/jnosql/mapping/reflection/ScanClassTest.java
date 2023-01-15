@@ -17,9 +17,13 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.PageableRepository;
 import org.assertj.core.api.Condition;
+import org.eclipse.jnosql.mapping.test.entities.AnimalRepository;
 import org.eclipse.jnosql.mapping.test.entities.Contact;
 import org.eclipse.jnosql.mapping.test.entities.Job;
+import org.eclipse.jnosql.mapping.test.entities.MovieRepository;
+import org.eclipse.jnosql.mapping.test.entities.NoSQLVendor;
 import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -49,14 +53,24 @@ class ScanClassTest {
                 .contains(Job.class, Contact.class);
     }
 
-    public void shouldReturnRepositories() {
 
+    @Test
+    public void shouldReturnRepositories() {
+        Set<Class<?>> reepositores = scanClass.reepositores();
+        Assertions.assertNotNull(reepositores);
+
+        assertThat(reepositores).hasSize(3)
+                .contains(AnimalRepository.class,
+                        PersonRepository.class,
+                        MovieRepository.class);
     }
 
     @Test
     public void shouldFilterRepositories() {
+        Set<Class<?>> reepositores = scanClass.reepositores(NoSQLVendor.class);
+        Assertions.assertNotNull(reepositores);
 
+        assertThat(reepositores).hasSize(1)
+                .contains(AnimalRepository.class);
     }
-    //return repositories
-    //filter classes repositories
 }
