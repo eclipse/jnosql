@@ -1,0 +1,54 @@
+= Jakarta NoSQL Specification
+:toc: auto
+
+This module contains AsciiDoc sources and configuration to generate Jakarta NoSQL documentation in HTML and PDF formats for both Apache License 2 and Jakarta Eclipse Foundation Specification Process.
+
+== Generating the Documentation
+
+=== Prerequisites:
+
+* JDK 11+
+* Maven 3.0.5+
+
+=== Execute the full build:
+
+From the `spec` directory, execute `mvn install`
+
+Maven will generate the final documentation in HTML and PDF format in `target` directory with the default license (ASL2).
+
+The HTML version of the document may be found in:
+- `target/generated-docs/jakarta-nosql-1.0.0-<version>.html`
+
+The PDF version of the document may be found in:
+- `target/generated-docs/jakarta-nosql-1.0.0-<version>.pdf`
+
+== License in Documentation
+
+The documentation can be generated for 2 licenses : Apache License v 2.0 (by default) and EFSL license.
+To generate doc with the final EFSL license, change the `license-file` property to `final`. Use `asl` or
+specify nothing for the Apache V2 License.
+
+For instance `mvn -Dlicense-file=final` will generate documentation with the link:https://www.eclipse.org/legal/efsl.php[EFSL] final license.
+
+== Working on the Specification
+
+This specification is split among different AsciiDoc files located in `src/main/asciidoc`
+The master document (entry point) is `jakarta_nosql_spec.adoc` that includes all the specification documents.
+
+To work with the specification documents, you may want to install an AsciiDoc plugin in your preferred IDE. You can also use a good text editor that provides an AsciiDoc plugin. The best candidate are:
+
+=== Atom
+* https://atom.io/[Atom]
+* https://atom.io/packages/asciidoc-preview[AsciiDoc Preview for Atom]
+* https://atom.io/packages/language-asciidoc[AsciiDoc language support for Atom]
+
+=== Brackets
+
+* http://brackets.io/[Brackets]
+* https://github.com/asciidoctor/brackets-asciidoc-preview[AsciiDoc Preview for Brackets]
+
+=== AsciiDocFX
+
+* http://www.asciidocfx.com/[AsciiDocFX]
+* Download the latest https://github.com/rahmanusta/AsciidocFX/releases[AsciidocFX.zip] and extract it
+* Execute `bin/asciidocfx.bat` or `bin/asciidocfx.sh`

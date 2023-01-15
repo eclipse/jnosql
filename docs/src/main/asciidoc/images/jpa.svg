@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Generato da Microsoft Visio 11.0, SVG Export, v1.0 jpa.svg Pagina 1 -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:v="http://schemas.microsoft.com/visio/2003/SVGExtensions/" width="4.15386in"
+		height="4.6263in" viewBox="0 0 299.078 333.094" xml:space="preserve" color-interpolation-filters="sRGB" class="st16">
+	<v:documentProperties v:langID="1040" v:metric="true" v:viewMarkup="false">
+		<v:userDefs>
+			<v:ud v:nameU="MBSAAddinOutlineVisible" v:prompt="" v:val="VT0(1):26"/>
+		</v:userDefs>
+	</v:documentProperties>
+
+	<style type="text/css">
+	<![CDATA[
+		.st1 {fill:#ffffff;stroke:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72}
+		.st2 {fill:#3475cd;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72}
+		.st3 {fill:none;stroke:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72}
+		.st4 {fill:#000000;font-family:Arial;font-size:1.5em}
+		.st5 {fill:#737373;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72}
+		.st6 {fill:#d9d9d9;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72}
+		.st7 {fill:#000000;font-family:Arial;font-size:0.666664em}
+		.st8 {fill:#f8b57e;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72}
+		.st9 {fill:#7395bf;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72}
+		.st10 {fill:#da9792;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72}
+		.st11 {fill:#b5cb85;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72}
+		.st12 {fill:#ffffff;stroke:none;stroke-linecap:butt;stroke-width:0.75}
+		.st13 {fill:#ffc000;stroke:none;stroke-linecap:butt;stroke-width:0.75}
+		.st14 {fill:#000000;font-family:Arial;font-size:0.666664em;font-weight:bold}
+		.st15 {stroke:#000000;stroke-dasharray:0.72,1.44;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72}
+		.st16 {fill:none;fill-rule:evenodd;font-size:12;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
+	]]>
+	</style>
+
+	<g v:mID="0" v:index="1" v:groupContext="foregroundPage">
+		<title>Pagina 1</title>
+		<v:pageProperties v:drawingScale="0.0393701" v:pageScale="0.0393701" v:drawingUnits="24" v:shadowOffsetX="8.50394"
+				v:shadowOffsetY="-8.50394"/>
+		<v:layer v:name="symbols" v:index="0"/>
+		<g id="shape5-1" v:mID="5" v:groupContext="shape" transform="translate(0.72,-0.72)">
+			<title>Foglio.5</title>
+			<rect x="0" y="1.44" width="297.638" height="331.654" class="st1"/>
+		</g>
+		<g id="shape1-3" v:mID="1" v:groupContext="shape" transform="translate(88.594,-255.838)">
+			<title>Foglio.1</title>
+			<rect x="0" y="267.897" width="116.22" height="65.1969" rx="8.50394" ry="8.50394" class="st2"/>
+		</g>
+		<g id="shape3-5" v:mID="3" v:groupContext="shape" transform="translate(88.594,-281.35)">
+			<title>Foglio.3</title>
+			<desc>DAO</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="51.0236" cy="321.755" width="102.05" height="22.6772"/>
+			<rect x="0" y="310.416" width="102.047" height="22.6772" class="st3"/>
+			<text x="31.52" y="327.15" class="st4" v:langID="1040"><v:paragraph v:horizAlign="1"/><v:tabList/>DAO</text>		</g>
+		<g id="shape10-8" v:mID="10" v:groupContext="shape" transform="translate(6.38929,-165.129)">
+			<title>Foglio.10</title>
+			<path d="M85.04 333.09 L0 333.09 L42.52 290.57 L85.04 333.09 Z" class="st5"/>
+		</g>
+		<g id="shape13-10" v:mID="13" v:groupContext="shape" transform="translate(91.4287,503.892) rotate(180)">
+			<title>Foglio.13</title>
+			<path d="M85.04 333.09 L0 333.09 L42.52 290.57 L85.04 333.09 Z" class="st6"/>
+		</g>
+		<g id="shape14-12" v:mID="14" v:groupContext="shape" transform="translate(19.2314,-165.129)">
+			<title>Foglio.14</title>
+			<desc>JPA</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="24.76" cy="321.755" width="49.53" height="22.6772"/>
+			<rect x="0" y="310.416" width="49.5201" height="22.6772" class="st3"/>
+			<text x="17.42" y="324.16" class="st7" v:langID="1040"><v:paragraph v:horizAlign="1"/><v:tabList/>JPA</text>		</g>
+		<g id="shape15-15" v:mID="15" v:groupContext="shape" transform="translate(16.3968,-142.452)">
+			<title>Foglio.15</title>
+			<desc>JDBC</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="24.76" cy="321.755" width="49.53" height="22.6772"/>
+			<rect x="0" y="310.416" width="49.5201" height="22.6772" class="st3"/>
+			<text x="14.31" y="324.16" class="st7" v:langID="1040"><v:paragraph v:horizAlign="1"/><v:tabList/>JDBC</text>		</g>
+		<g id="shape16-18" v:mID="16" v:groupContext="shape" transform="translate(102.767,-165.129)">
+			<title>Foglio.16</title>
+			<path d="M85.04 333.09 L0 333.09 L42.52 290.57 L85.04 333.09 Z" class="st8"/>
+		</g>
+		<g id="shape17-20" v:mID="17" v:groupContext="shape" transform="translate(187.807,503.892) rotate(180)">
+			<title>Foglio.17</title>
+			<path d="M85.04 333.09 L0 333.09 L42.52 290.57 L85.04 333.09 Z" class="st9"/>
+		</g>
+		<g id="shape18-22" v:mID="18" v:groupContext="shape" transform="translate(115.609,-165.129)">
+			<title>Foglio.18</title>
+			<desc>JPA</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="24.76" cy="321.755" width="49.53" height="22.6772"/>
+			<rect x="0" y="310.416" width="49.5201" height="22.6772" class="st3"/>
+			<text x="17.42" y="324.16" class="st7" v:langID="1040"><v:paragraph v:horizAlign="1"/><v:tabList/>JPA</text>		</g>
+		<g id="shape19-25" v:mID="19" v:groupContext="shape" transform="translate(112.775,-142.452)">
+			<title>Foglio.19</title>
+			<desc>JDBC</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="24.76" cy="321.755" width="49.53" height="22.6772"/>
+			<rect x="0" y="310.416" width="49.5201" height="22.6772" class="st3"/>
+			<text x="14.31" y="324.16" class="st7" v:langID="1040"><v:paragraph v:horizAlign="1"/><v:tabList/>JDBC</text>		</g>
+		<g id="shape20-28" v:mID="20" v:groupContext="shape" transform="translate(201.98,-165.129)">
+			<title>Foglio.20</title>
+			<path d="M85.04 333.09 L0 333.09 L42.52 290.57 L85.04 333.09 Z" class="st10"/>
+		</g>
+		<g id="shape21-30" v:mID="21" v:groupContext="shape" transform="translate(287.019,503.892) rotate(180)">
+			<title>Foglio.21</title>
+			<path d="M85.04 333.09 L0 333.09 L42.52 290.57 L85.04 333.09 Z" class="st11"/>
+		</g>
+		<g id="shape22-32" v:mID="22" v:groupContext="shape" transform="translate(214.822,-165.129)">
+			<title>Foglio.22</title>
+			<desc>JPA</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="24.76" cy="321.755" width="49.53" height="22.6772"/>
+			<rect x="0" y="310.416" width="49.5201" height="22.6772" class="st3"/>
+			<text x="17.42" y="324.16" class="st7" v:langID="1040"><v:paragraph v:horizAlign="1"/><v:tabList/>JPA</text>		</g>
+		<g id="shape23-35" v:mID="23" v:groupContext="shape" transform="translate(211.987,-142.452)">
+			<title>Foglio.23</title>
+			<desc>JDBC</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="24.76" cy="321.755" width="49.53" height="22.6772"/>
+			<rect x="0" y="310.416" width="49.5201" height="22.6772" class="st3"/>
+			<text x="14.31" y="324.16" class="st7" v:langID="1040"><v:paragraph v:horizAlign="1"/><v:tabList/>JDBC</text>		</g>
+		<g id="group2-38" transform="translate(108.437,-23.3972)" v:mID="2" v:groupContext="group" v:layerMember="0">
+			<title>Database, mini 3 - blue</title>
+			<g id="group4-39" v:mID="4" v:groupContext="group" v:layerMember="0">
+				<title>Foglio.4</title>
+				<g id="shape6-40" v:mID="6" v:groupContext="shape" v:layerMember="0">
+					<title>Foglio.6</title>
+					<path d="M76.6 270.05 L76.6 268.21 C76.6 261.5 57.38 258.55 38.3 258.55 C19.22 258.55 0 261.5 0 268.21 L0 270.05
+								 L0 320.3 L0 322.23 L0 322.33 C1.3 331.71 24.57 333.09 38.3 333.09 C52.03 333.09 75.3 331.71 76.6
+								 322.33 L76.6 322.23 L76.6 320.21 L76.6 270.05 Z" class="st12"/>
+				</g>
+				<g id="shape7-42" v:mID="7" v:groupContext="shape" v:layerMember="0" transform="translate(4.33587,-2.76083)">
+					<title>Foglio.7</title>
+					<path d="M33.96 317.45 C20.38 317.45 6.79 315.98 0 312.66 L0 322.97 L0 324.81 C1.01 332.45 25.44 333.09 33.96
+								 333.09 C42.49 333.09 66.77 332.45 67.93 324.81 L67.93 322.97 L67.93 312.66 C61.14 315.88 47.55 317.45
+								 33.96 317.45 Z" class="st13"/>
+				</g>
+				<g id="shape8-44" v:mID="8" v:groupContext="shape" v:layerMember="0" transform="translate(4.33587,-21.1664)">
+					<title>Foglio.8</title>
+					<path d="M33.96 317.45 C20.38 317.45 6.79 315.98 0 312.66 L0 322.97 L0 324.81 C1.01 332.45 25.44 333.09 33.96
+								 333.09 C42.49 333.09 66.77 332.45 67.93 324.81 L67.93 322.97 L67.93 312.66 C61.14 315.88 47.55 317.45
+								 33.96 317.45 Z" class="st13"/>
+				</g>
+				<g id="shape9-46" v:mID="9" v:groupContext="shape" v:layerMember="0" transform="translate(4.33587,-39.5719)">
+					<title>Foglio.9</title>
+					<path d="M33.96 317.45 C20.38 317.45 6.79 315.98 0 312.66 L0 322.97 L0 324.81 C1.01 332.45 25.44 333.09 33.96
+								 333.09 C42.49 333.09 66.77 332.45 67.93 324.81 L67.93 322.97 L67.93 312.66 C61.14 315.88 47.55 317.45
+								 33.96 317.45 Z" class="st13"/>
+				</g>
+				<g id="shape11-48" v:mID="11" v:groupContext="shape" v:layerMember="0" transform="translate(4.33587,-57.9775)">
+					<title>Foglio.11</title>
+					<ellipse cx="33.9643" cy="326.191" rx="33.9643" ry="6.90208" class="st13"/>
+				</g>
+			</g>
+		</g>
+		<g id="shape12-50" v:mID="12" v:groupContext="shape" transform="translate(104.185,-6.38929)">
+			<title>Foglio.12</title>
+			<desc>Data Tier</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="38.2677" cy="321.755" width="76.54" height="22.6772"/>
+			<rect x="0" y="310.416" width="76.5354" height="22.6772" class="st3"/>
+			<text x="21.15" y="324.16" class="st14" v:langID="1040"><v:paragraph v:horizAlign="1"/><v:tabList/>Data Tier</text>		</g>
+		<g id="shape25-53" v:mID="25" v:groupContext="shape" transform="translate(101.001,420.883) rotate(-154.093)">
+			<title>Foglio.25</title>
+			<path d="M0 328.44 C5.13 328.74 10.78 331.5 16.18 332.56 C28.29 334.93 39.2 328.78 49.71 326.99 C69.45 323.63 87.79 335.67
+						 110.3 328.44" class="st15"/>
+		</g>
+		<g id="shape24-56" v:mID="24" v:groupContext="shape" transform="translate(478.38,77.2554) rotate(90)">
+			<title>Foglio.24</title>
+			<path d="M0 333.09 C15.17 332.42 33.45 328.27 48.19 333.09" class="st15"/>
+		</g>
+		<g id="shape26-59" v:mID="26" v:groupContext="shape" transform="translate(292.881,372.444) rotate(153.435)">
+			<title>Foglio.26</title>
+			<path d="M0 330.03 C1.89 330.51 3.89 330.39 5.83 330.41 C13.36 330.49 19.82 332.71 26.37 333.07 C32.91 333.44 39.55 331.95
+						 46.14 331.55 C51.21 331.25 56.24 331.58 61.36 331.55 C67.25 331.51 73.24 330.98 78.98 331.17 C89.49 331.51
+						 99.12 334.27 107.75 330.03" class="st15"/>
+		</g>
+	</g>
+</svg>

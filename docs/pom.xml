@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2019 Otavio Santana and others
+  ~
+  ~ This program and the accompanying materials are made available under the
+  ~ terms of the Eclipse Public License v. 2.0 which is available at
+  ~ http://www.eclipse.org/legal/epl-2.0.
+  ~
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.eclipse.jnosql</groupId>
+        <artifactId>jnosql-parent</artifactId>
+        <version>1.0.0-b6-SNAPSHOT</version>
+    </parent>
+    
+<artifactId>docs</artifactId>
+
+<properties>
+    <asciidoctor-maven.version>2.2.2</asciidoctor-maven.version>
+    <asciidoctorj-pdf.version>2.3.4</asciidoctorj-pdf.version>
+    <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
+    <revisiondate>${maven.build.timestamp}</revisiondate>
+    <revremark>Draft</revremark>
+    <gen-doc-dir>${project.build.directory}/generated-docs</gen-doc-dir>
+</properties>
+
+<dependencies>
+</dependencies>
+
+<build>
+    <defaultGoal>clean package</defaultGoal>
+    <plugins>
+        <plugin>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctor-maven-plugin</artifactId>
+            <version>${asciidoctor-maven.version}</version>
+            <dependencies>
+                <dependency>
+                    <groupId>org.asciidoctor</groupId>
+                    <artifactId>asciidoctorj-pdf</artifactId>
+                    <version>${asciidoctorj-pdf.version}</version>
+                </dependency>
+            </dependencies>
+            <executions>
+                <execution>
+                    <id>generate-pdf-doc</id>
+                    <phase>generate-resources</phase>
+                    <goals>
+                        <goal>process-asciidoc</goal>
+                    </goals>
+                    <configuration>
+                        <backend>pdf</backend>
+                        <outputFile>${gen-doc-dir}/jakarta-nosql-${project.version}.pdf</outputFile>
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>output-html</id>
+                    <phase>generate-resources</phase>
+                    <goals>
+                        <goal>process-asciidoc</goal>
+                    </goals>
+                    <configuration>
+                        <backend>html5</backend>
+                        <outputFile>${gen-doc-dir}/jakarta-nosql-${project.version}.html</outputFile>
+                    </configuration>
+                </execution>
+            </executions>
+            <configuration>
+                <sourceDirectory>src/main/asciidoc</sourceDirectory>
+                <sourceDocumentName>jakarta_nosql_spec.adoc</sourceDocumentName>
+                <sourceHighlighter>coderay</sourceHighlighter>
+                <embedAssets>true</embedAssets>
+                <attributes>
+                    <license>Apache License v2.0</license>
+                    <revnumber>${project.version}</revnumber>
+                    <revremark>${revremark}</revremark>
+                    <revdate>${revisiondate}</revdate>
+                    <doctitle>Jakarta NoSQL</doctitle>
+                </attributes>
+            </configuration>
+        </plugin>
+    </plugins>
+    <pluginManagement>
+    	<plugins>
+    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+    		<plugin>
+    			<groupId>org.eclipse.m2e</groupId>
+    			<artifactId>lifecycle-mapping</artifactId>
+    			<version>1.0.0</version>
+    			<configuration>
+    				<lifecycleMappingMetadata>
+    					<pluginExecutions>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>org.asciidoctor</groupId>
+    								<artifactId>
+    									asciidoctor-maven-plugin
+    								</artifactId>
+    								<versionRange>
+    									[1.5.6,)
+    								</versionRange>
+    								<goals>
+    									<goal>process-asciidoc</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore></ignore>
+    							</action>
+    						</pluginExecution>
+    					</pluginExecutions>
+    				</lifecycleMappingMetadata>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </pluginManagement>
+</build>
+</project>

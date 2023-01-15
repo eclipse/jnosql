@@ -138,7 +138,7 @@
     <modules>
         <module>jnosql-communication</module>
         <module>jnosql-mapping</module>
-        <module>doc</module>
+        <module>docs</module>
     </modules>
 
     <profiles>
