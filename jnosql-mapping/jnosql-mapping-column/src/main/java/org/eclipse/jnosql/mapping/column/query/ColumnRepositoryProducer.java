@@ -32,7 +32,7 @@ import java.util.Objects;
  * The producer of Repository
  */
 @ApplicationScoped
-class ColumnRepositoryProducer {
+public class ColumnRepositoryProducer {
 
     @Inject
     private EntitiesMetadata entities;
