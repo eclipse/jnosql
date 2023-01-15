@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.AttributeConverter;
+import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 import org.eclipse.jnosql.mapping.Converters;

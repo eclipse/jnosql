@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static jakarta.nosql.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
+import static org.eclipse.jnosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -69,8 +69,9 @@ public class ClassConverterTest {
 
         assertEquals("Actor", entityMetadata.getName());
         assertEquals(Actor.class, entityMetadata.getType());
-        assertEquals(6, entityMetadata.getFields().size());
+
         assertThat(entityMetadata.getFieldsName())
+                .hasSize(6)
                 .contains("_id", "name", "age", "phones", "movieCharacter", "movieRating");
 
     }

@@ -18,7 +18,7 @@ package org.eclipse.jnosql.mapping.test.entities.inheritance;
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import jakarta.nosql.Inheritance;
+import org.eclipse.jnosql.mapping.Inheritance;
 
 import java.time.LocalDate;
 import java.util.Objects;

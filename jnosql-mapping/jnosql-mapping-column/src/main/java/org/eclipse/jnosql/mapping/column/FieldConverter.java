@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.column;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.column.Column;
-import jakarta.nosql.AttributeConverter;
+import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;

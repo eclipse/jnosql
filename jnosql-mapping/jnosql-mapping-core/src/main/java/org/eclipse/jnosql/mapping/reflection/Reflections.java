@@ -16,12 +16,12 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.nosql.Column;
-import jakarta.nosql.DiscriminatorColumn;
-import jakarta.nosql.DiscriminatorValue;
+import org.eclipse.jnosql.mapping.DiscriminatorColumn;
+import org.eclipse.jnosql.mapping.DiscriminatorValue;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import jakarta.nosql.Inheritance;
-import jakarta.nosql.MappedSuperclass;
+import org.eclipse.jnosql.mapping.Inheritance;
+import org.eclipse.jnosql.mapping.MappedSuperclass;
 import org.eclipse.jnosql.mapping.util.StringUtils;
 
 import java.lang.reflect.Constructor;
@@ -226,8 +226,8 @@ public class Reflections {
     }
 
     /**
-     * Checks if the class is annotated with {@link jakarta.nosql.MappedSuperclass} or
-     * {@link jakarta.nosql.Inheritance}
+     * Checks if the class is annotated with {@link MappedSuperclass} or
+     * {@link Inheritance}
      *
      * @param type the entity class
      * @return if the class is annotated
@@ -285,7 +285,7 @@ public class Reflections {
 
     /**
      * Reads the type annotation and checks if the inheritance has an
-     * {@link jakarta.nosql.Inheritance} annotation.
+     * {@link Inheritance} annotation.
      * If it has, it will return the {@link InheritanceMetadata} otherwise it will return
      * {@link Optional#empty()}
      *
@@ -311,10 +311,10 @@ public class Reflections {
     }
 
     /**
-     * Check if the entity has the {@link jakarta.nosql.Inheritance} annotation
+     * Check if the entity has the {@link Inheritance} annotation
      *
      * @param entity the entity
-     * @return true if it has the {@link jakarta.nosql.Inheritance} annotation
+     * @return true if it has the {@link Inheritance} annotation
      */
     boolean hasInheritanceAnnotation(Class<?> entity) {
         Objects.requireNonNull(entity, "entity is required");

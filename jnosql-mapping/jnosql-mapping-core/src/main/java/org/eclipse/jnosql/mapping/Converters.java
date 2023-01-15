@@ -15,13 +15,12 @@
 package org.eclipse.jnosql.mapping;
 
 
-import jakarta.nosql.AttributeConverter;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.spi.CreationalContext;
 import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
+
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.logging.Logger;

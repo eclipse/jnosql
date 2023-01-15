@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.test.entities;
 
-import jakarta.nosql.Convert;
+import org.eclipse.jnosql.mapping.Convert;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 

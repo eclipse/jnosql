@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.Convert;
+import org.eclipse.jnosql.mapping.Convert;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
