@@ -56,6 +56,7 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>jnosql-jupiter</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
