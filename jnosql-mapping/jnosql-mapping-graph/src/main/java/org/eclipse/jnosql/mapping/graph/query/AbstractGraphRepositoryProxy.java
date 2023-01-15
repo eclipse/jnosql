@@ -22,6 +22,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
+import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -127,7 +129,8 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 DynamicReturn.toSingleResult(method).apply(querySupplier);
 
         Function<Pageable, Page<?>> pageFunction = p -> {
-            throw new DynamicQueryException("Graph database repository does not support Page as return Type");
+            List<?> entities = querySupplier.get().collect(Collectors.toUnmodifiableList());
+            return NoSQLPage.of(entities, p);
         };
 
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()

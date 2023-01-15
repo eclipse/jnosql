@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
+import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Sort;
@@ -160,11 +161,26 @@ public class GraphRepositoryProxyPageableTest {
                 .contains(30);
     }
 
+    @Test
+    public void shouldFindByNameOrderByAge() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
+        Page<Person> page = personRepository.findByNameOrderByAge("Otavio", Pageable.ofPage(1).size(1));
+
+        Assertions.assertThat(page.content()).hasSize(1).map(Person::getAge)
+                .contains(20);
+        Pageable next = page.nextPageable();
+
+        page = personRepository.findByNameOrderByAge("Otavio", next);
+        Assertions.assertThat(page.content()).hasSize(1).map(Person::getAge)
+                .contains(30);
+    }
+
     interface PersonRepository extends PageableRepository<Person, Long> {
 
         List<Person> findByName(String name, Pageable Pageable);
 
-        List<Person> findByNameOrderByAge(String name, Pageable Pageable);
+        Page<Person> findByNameOrderByAge(String name, Pageable Pageable);
 
         Optional<Person> findByAge(Integer age, Pageable pagination);
 
