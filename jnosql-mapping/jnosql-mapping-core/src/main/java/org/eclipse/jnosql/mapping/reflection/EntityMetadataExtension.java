@@ -18,13 +18,13 @@ package org.eclipse.jnosql.mapping.reflection;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
-import org.eclipse.jnosql.mapping.Embeddable;
-import jakarta.nosql.Entity;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.BeforeBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
+import jakarta.nosql.Entity;
+import org.eclipse.jnosql.mapping.Embeddable;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;

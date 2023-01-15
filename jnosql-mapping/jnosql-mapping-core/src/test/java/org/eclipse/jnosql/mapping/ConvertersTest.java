@@ -14,12 +14,10 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import org.eclipse.jnosql.mapping.AttributeConverter;
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import jakarta.inject.Inject;
 
 @CDIExtension
 class ConvertersTest {

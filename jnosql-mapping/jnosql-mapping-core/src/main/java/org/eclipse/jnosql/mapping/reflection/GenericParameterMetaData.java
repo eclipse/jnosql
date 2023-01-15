@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.communication.TypeSupplier;
+import org.eclipse.jnosql.mapping.AttributeConverter;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;

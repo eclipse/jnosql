@@ -15,14 +15,14 @@
 package org.eclipse.jnosql.mapping;
 
 
-
 import jakarta.enterprise.util.AnnotationLiteral;
+
 import java.util.Objects;
 
 import static org.eclipse.jnosql.mapping.DatabaseType.COLUMN;
 import static org.eclipse.jnosql.mapping.DatabaseType.DOCUMENT;
-import static org.eclipse.jnosql.mapping.DatabaseType.KEY_VALUE;
 import static org.eclipse.jnosql.mapping.DatabaseType.GRAPH;
+import static org.eclipse.jnosql.mapping.DatabaseType.KEY_VALUE;
 
 
 /**

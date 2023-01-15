@@ -15,11 +15,11 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
+import jakarta.nosql.Entity;
 import org.eclipse.jnosql.communication.TypeSupplier;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.AttributeConverter;
 import org.eclipse.jnosql.mapping.Embeddable;
-import jakarta.nosql.Entity;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
