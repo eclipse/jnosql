@@ -16,15 +16,20 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Repository;
 import jakarta.nosql.Entity;
 import org.eclipse.jnosql.mapping.Embeddable;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.toUnmodifiableSet;
@@ -70,22 +75,26 @@ public enum ClassScanner {
 
     /**
      * Returns the classes that that has the {@link Entity} annotation
+     *
      * @return classes with {@link Entity} annotation
      */
     public Set<Class<?>> entities() {
         return unmodifiableSet(entities);
     }
+
     /**
      * Returns repositories: interfaces that extend DataRepository and has the Repository annotation.
+     *
      * @return the repositories items
      */
-    public Set<Class<?>> reepositores() {
+    public Set<Class<?>> repositories() {
         return unmodifiableSet(repositores);
     }
 
 
     /**
      * Returns the classes that that has the {@link Embeddable} annotation
+     *
      * @return embeddables items
      */
     public Set<Class<?>> embeddables() {
@@ -94,11 +103,27 @@ public enum ClassScanner {
 
     /**
      * Returns repositories {@link Class#isAssignableFrom(Class)} the parameter
+     *
      * @param filter the repository filter
      * @return the list
      */
-    public Set<Class<?>> reepositores(Class<? extends DataRepository> filter) {
+    public Set<Class<?>> repositories(Class<? extends DataRepository> filter) {
         Objects.requireNonNull(filter, "filter is required");
-        return repositores.stream().filter(c -> filter.isAssignableFrom(c)).collect(toUnmodifiableSet());
+        return repositores.stream().filter(c -> filter.isAssignableFrom(c))
+                .filter(c -> Arrays.asList(c.getInterfaces()).contains(filter))
+                .collect(toUnmodifiableSet());
+    }
+
+
+    /**
+     * Returns the repositories that extends directly from {@link PageableRepository} and {@link CrudRepository}
+     * @return the standard repositories
+     */
+    public Set<Class<?>> repositoriesStandard() {
+        return repositores.stream()
+                .filter(c -> {
+                    List<Class<?>> interfaces = Arrays.asList(c.getInterfaces());
+                    return interfaces.contains(CrudRepository.class) || interfaces.contains(PageableRepository.class)
+                }).collect(Collectors.toUnmodifiableSet());
     }
 }

@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.test.entities.AnimalRepository;
 import org.eclipse.jnosql.mapping.test.entities.Contact;
 import org.eclipse.jnosql.mapping.test.entities.Job;
@@ -51,7 +53,7 @@ class ClassScannerTest {
 
     @Test
     public void shouldReturnRepositories() {
-        Set<Class<?>> reepositores = classScanner.reepositores();
+        Set<Class<?>> reepositores = classScanner.repositories();
         Assertions.assertNotNull(reepositores);
 
         assertThat(reepositores).hasSize(3)
@@ -62,10 +64,33 @@ class ClassScannerTest {
 
     @Test
     public void shouldFilterRepositories() {
-        Set<Class<?>> reepositores = classScanner.reepositores(NoSQLVendor.class);
-        Assertions.assertNotNull(reepositores);
+        Set<Class<?>> repositories = classScanner.repositories(NoSQLVendor.class);
+        Assertions.assertNotNull(repositories);
 
-        assertThat(reepositores).hasSize(1)
+        assertThat(repositories).hasSize(1)
                 .contains(AnimalRepository.class);
+    }
+
+    @Test
+    public void shouldFieldByCrudRepository() {
+        Set<Class<?>> repositories = classScanner.repositories(CrudRepository.class);
+        Assertions.assertNotNull(repositories);
+
+        assertThat(repositories).hasSize(1)
+                .contains(MovieRepository.class);
+    }
+
+    @Test
+    public void shouldFieldByPageable() {
+        Set<Class<?>> repositories = classScanner.repositories(PageableRepository.class);
+        Assertions.assertNotNull(repositories);
+
+        assertThat(repositories).hasSize(1)
+                .contains(PersonRepository.class);
+    }
+
+    @Test
+    public void shouldReturnStandardRepositories() {
+
     }
 }
