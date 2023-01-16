@@ -15,22 +15,16 @@
 package org.eclipse.jnosql.mapping.keyvalue.spi;
 
 
-import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.PageableRepository;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
+import jakarta.enterprise.inject.spi.Extension;
+import jakarta.enterprise.inject.spi.ProcessProducer;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;
 import org.eclipse.jnosql.mapping.keyvalue.query.RepositoryKeyValueBean;
+import org.eclipse.jnosql.mapping.reflection.ClassScanner;
 
-import jakarta.enterprise.event.Observes;
-import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
-import jakarta.enterprise.inject.spi.Extension;
-import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
-import jakarta.enterprise.inject.spi.ProcessProducer;
-
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -44,32 +38,15 @@ public class KeyValueExtension implements Extension {
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
-    private final Collection<Class<?>> crudTypes = new HashSet<>();
-
     <T, X extends BucketManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, KEY_VALUE, databases);
     }
 
-    <T extends CrudRepository> void observes(@Observes final ProcessAnnotatedType<T> type) {
-        Class<T> javaClass = type.getAnnotatedType().getJavaClass();
-
-        if (CrudRepository.class.equals(javaClass) || PageableRepository.class.equals(javaClass)) {
-            return;
-        }
-
-        if (isRepositoryType(javaClass)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudTypes.add(type.getAnnotatedType().getJavaClass());
-        }
-    }
-
-    private <T> boolean isRepositoryType(Class<T> type) {
-        return Arrays.asList(type.getInterfaces()).contains(CrudRepository.class)
-                ||
-                Arrays.asList(type.getInterfaces()).contains(PageableRepository.class);
-    }
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
+
+        ClassScanner scanner = ClassScanner.INSTANCE;
+        Set<Class<?>> crudTypes = scanner.repositoriesStandard();
         LOGGER.info(String.format("Processing Key-Value extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a Key-Value implementation: " + crudTypes);
