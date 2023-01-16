@@ -16,9 +16,9 @@ package org.eclipse.jnosql.mapping.graph;
 
 
 import jakarta.data.repository.PageableRepository;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.data.repository.Repository;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 
-@ApplicationScoped
+@Repository
 public interface BookRepository extends PageableRepository<Book, String> {
 }
