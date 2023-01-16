@@ -15,21 +15,16 @@
 package org.eclipse.jnosql.mapping.column.spi;
 
 
-import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.PageableRepository;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
+import jakarta.enterprise.inject.spi.Extension;
+import jakarta.enterprise.inject.spi.ProcessProducer;
 import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;
 import org.eclipse.jnosql.mapping.column.query.RepositoryColumnBean;
+import org.eclipse.jnosql.mapping.reflection.ClassScanner;
 
-import jakarta.enterprise.event.Observes;
-import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
-import jakarta.enterprise.inject.spi.Extension;
-import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
-import jakarta.enterprise.inject.spi.ProcessProducer;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -47,32 +42,15 @@ public class ColumnExtension implements Extension {
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
-    private final Collection<Class<?>> crudTypes = new HashSet<>();
-
-    <T extends CrudRepository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-        if (CrudRepository.class.equals(javaClass) || PageableRepository.class.equals(javaClass)) {
-            return;
-        }
-        if (isRepositoryType(javaClass)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudTypes.add(javaClass);
-        }
-    }
-
-    private <T> boolean isRepositoryType(Class<T> type) {
-        return Arrays.asList(type.getInterfaces()).contains(CrudRepository.class)
-                ||
-                Arrays.asList(type.getInterfaces()).contains(PageableRepository.class);
-    }
 
     <T, X extends ColumnManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, COLUMN, databases);
     }
 
-
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
 
+        ClassScanner scanner = ClassScanner.INSTANCE;
+        Set<Class<?>> crudTypes = scanner.repositoriesStandard();
         LOGGER.info(String.format("Processing Column extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a Column implementation: " + crudTypes);
