@@ -91,6 +91,8 @@ class ClassScannerTest {
 
     @Test
     public void shouldReturnStandardRepositories() {
-
+        Set<Class<?>> repositories = classScanner.repositoriesStandard();
+        assertThat(repositories).hasSize(2)
+                .contains(PersonRepository.class, MovieRepository.class);
     }
 }

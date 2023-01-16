@@ -123,7 +123,7 @@ public enum ClassScanner {
         return repositores.stream()
                 .filter(c -> {
                     List<Class<?>> interfaces = Arrays.asList(c.getInterfaces());
-                    return interfaces.contains(CrudRepository.class) || interfaces.contains(PageableRepository.class)
+                    return interfaces.contains(CrudRepository.class) || interfaces.contains(PageableRepository.class);
                 }).collect(Collectors.toUnmodifiableSet());
     }
 }
