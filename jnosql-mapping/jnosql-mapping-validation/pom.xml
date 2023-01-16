@@ -36,7 +36,6 @@
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
-            <version>${jakarta.validation.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -78,7 +77,6 @@
         <dependency>
             <groupId>jakarta.nosql.tck.mapping</groupId>
             <artifactId>mapping-tck-test</artifactId>
-            <version>${jakarta.nosql.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
