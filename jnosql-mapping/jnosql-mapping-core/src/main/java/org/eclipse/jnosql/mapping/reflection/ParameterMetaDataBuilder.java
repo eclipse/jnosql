@@ -25,7 +25,6 @@ class ParameterMetaDataBuilder {
 
     private final Parameter parameter;
 
-
     private ParameterMetaDataBuilder(Parameter parameter) {
         this.parameter = parameter;
     }
@@ -37,7 +36,7 @@ class ParameterMetaDataBuilder {
         Class<?> type = parameter.getType();
         String name = Optional.ofNullable(id)
                 .map(Id::value)
-                .orElseGet(column::value);
+                .orElseGet(() -> column.value());
         MappingType mappingType = MappingType.of(parameter);
         switch (mappingType) {
             case COLLECTION:
