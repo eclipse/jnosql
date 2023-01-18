@@ -109,7 +109,7 @@ public enum ClassScanner {
      */
     public Set<Class<?>> repositories(Class<? extends DataRepository> filter) {
         Objects.requireNonNull(filter, "filter is required");
-        return repositores.stream().filter(c -> filter.isAssignableFrom(c))
+        return repositores.stream().filter(filter::isAssignableFrom)
                 .filter(c -> Arrays.asList(c.getInterfaces()).contains(filter))
                 .collect(toUnmodifiableSet());
     }

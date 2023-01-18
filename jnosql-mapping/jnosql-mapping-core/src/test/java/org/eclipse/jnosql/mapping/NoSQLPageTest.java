@@ -42,11 +42,9 @@ class NoSQLPageTest {
         Page<Person> page = NoSQLPage.of(Collections.singletonList(Person.builder().withName("Otavio").build()),
                 Pageable.ofPage(2));
 
-        Assertions.assertThrows(UnsupportedOperationException.class, () ->
-                page.totalPages());
+        Assertions.assertThrows(UnsupportedOperationException.class, page::totalPages);
 
-        Assertions.assertThrows(UnsupportedOperationException.class, () ->
-                page.totalElements());
+        Assertions.assertThrows(UnsupportedOperationException.class, page::totalElements);
     }
 
     @Test
