@@ -42,33 +42,33 @@ class DefaultEdgeEntity<O, I> implements EdgeEntity {
     }
 
     @Override
-    public Object getId() {
+    public Object id() {
         return edge.id();
     }
 
     @Override
-    public <T> T getId(Class<T> type) {
+    public <T> T id(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         return Value.of(edge.id()).get(type);
     }
 
     @Override
-    public String getLabel() {
+    public String label() {
         return edge.label();
     }
 
     @Override
-    public I getIncoming() {
+    public I incoming() {
         return incoming;
     }
 
     @Override
-    public O getOutgoing() {
+    public O outgoing() {
         return outgoing;
     }
 
     @Override
-    public List<Property> getProperties() {
+    public List<Property> properties() {
         return edge.keys()
                 .stream()
                 .map(k -> DefaultProperty.of(k, edge.value(k)))

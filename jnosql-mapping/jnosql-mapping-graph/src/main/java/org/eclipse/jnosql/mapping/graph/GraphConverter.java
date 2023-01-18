@@ -218,7 +218,7 @@ public abstract class GraphConverter {
      */
     public Edge toEdge(EdgeEntity edge) {
         requireNonNull(edge, "vertex is required");
-        Object id = edge.getId();
+        Object id = edge.id();
         Iterator<Edge> edges = getGraph().edges(id);
         if (edges.hasNext()) {
             return edges.next();

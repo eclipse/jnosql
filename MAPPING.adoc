@@ -382,8 +382,8 @@ Person poliana = // instance;
 Book shack = // instance;
 EdgeEntity edge = graphTemplate.edge(poliana, "reads", shack);
 reads.add("where", "Brazil");
-Person out = edge.getOutgoing();
-Book in = edge.getIncoming();
+Person out = edge.uutgoing();
+Book in = edge.incoming();
 ----
 
 ===== Querying with Traversal
@@ -512,12 +512,12 @@ PreparedStatement preparedStatement = documentTemplate
 
 preparedStatement.bind("name", "Ada");
 
-Stream<Person> adas = preparedStatement.getResult();
+Stream<Person> adas = preparedStatement.result();
 
 // Keep using gremlin for Graph databases
 PreparedStatement prepare = graphTemplate().prepare("g.V().hasLabel(param)");
 
 prepare.bind("param", "Person");
 
-Stream<Person> people = preparedStatement.getResult();
+Stream<Person> people = preparedStatement.result();
 ----

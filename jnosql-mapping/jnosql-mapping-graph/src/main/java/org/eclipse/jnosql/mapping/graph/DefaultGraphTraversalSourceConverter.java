@@ -125,7 +125,7 @@ class DefaultGraphTraversalSourceConverter extends GraphConverter {
     @Override
     public Edge toEdge(EdgeEntity edge) {
         requireNonNull(edge, "vertex is required");
-        Object id = edge.getId();
+        Object id = edge.id();
         final Iterator<Edge> edges = getTraversalSource().E(id);
         if (edges.hasNext()) {
             return edges.next();

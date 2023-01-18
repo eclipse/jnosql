@@ -111,11 +111,11 @@ public class EdgeEntityTest {
         Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
         EdgeEntity edge = graphTemplate.edge(person, "reads", book);
 
-        assertEquals("reads", edge.getLabel());
-        assertEquals(person, edge.getOutgoing());
-        assertEquals(book, edge.getIncoming());
+        assertEquals("reads", edge.label());
+        assertEquals(person, edge.outgoing());
+        assertEquals(book, edge.incoming());
         assertTrue(edge.isEmpty());
-        assertNotNull(edge.getId());
+        assertNotNull(edge.id());
     }
 
     @Test
@@ -124,15 +124,15 @@ public class EdgeEntityTest {
         Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
         EdgeEntity edge = graphTemplate.edge(person, "reads", book);
 
-        assertEquals("reads", edge.getLabel());
-        assertEquals(person, edge.getOutgoing());
-        assertEquals(book, edge.getIncoming());
+        assertEquals("reads", edge.label());
+        assertEquals(person, edge.outgoing());
+        assertEquals(book, edge.incoming());
         assertTrue(edge.isEmpty());
-        assertNotNull(edge.getId());
-        final Long id = edge.getId(Long.class);
+        assertNotNull(edge.id());
+        final Long id = edge.id(Long.class);
         assertNotNull(id);
 
-        assertEquals(id, edge.getId(Integer.class).longValue());
+        assertEquals(id, edge.id(Integer.class).longValue());
 
     }
 
@@ -142,11 +142,11 @@ public class EdgeEntityTest {
         Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
         EdgeEntity edge = graphTemplate.edge(person, () -> "reads", book);
 
-        assertEquals("reads", edge.getLabel());
-        assertEquals(person, edge.getOutgoing());
-        assertEquals(book, edge.getIncoming());
+        assertEquals("reads", edge.label());
+        assertEquals(person, edge.outgoing());
+        assertEquals(book, edge.incoming());
         assertTrue(edge.isEmpty());
-        assertNotNull(edge.getId());
+        assertNotNull(edge.id());
     }
 
     @Test
@@ -157,7 +157,7 @@ public class EdgeEntityTest {
 
         EdgeEntity sameEdge = graphTemplate.edge(person, "reads", book);
 
-        assertEquals(edge.getId(), sameEdge.getId());
+        assertEquals(edge.id(), sameEdge.id());
         assertEquals(edge, sameEdge);
     }
 
@@ -173,10 +173,10 @@ public class EdgeEntityTest {
         EdgeEntity sameEdge = graphTemplate.edge(poliana, "reads", book);
         EdgeEntity sameEdge1 = graphTemplate.edge(nilzete, "reads", book);
 
-        assertEquals(edge.getId(), sameEdge.getId());
+        assertEquals(edge.id(), sameEdge.id());
         assertEquals(edge, sameEdge);
 
-        assertEquals(edge1.getId(), sameEdge1.getId());
+        assertEquals(edge1.id(), sameEdge1.id());
         assertEquals(edge1, sameEdge1);
 
     }
@@ -193,10 +193,10 @@ public class EdgeEntityTest {
         EdgeEntity sameEdge = graphTemplate.edge(poliana, "reads", book);
         EdgeEntity sameEdge1 = graphTemplate.edge(nilzete, "reads", book);
 
-        assertNotEquals(edge.getId(), edge1.getId());
-        assertNotEquals(edge.getId(), sameEdge1.getId());
+        assertNotEquals(edge.id(), edge1.id());
+        assertNotEquals(edge.id(), sameEdge1.id());
 
-        assertNotEquals(sameEdge1.getId(), sameEdge.getId());
+        assertNotEquals(sameEdge1.id(), sameEdge.id());
     }
 
     @Test
@@ -229,7 +229,7 @@ public class EdgeEntityTest {
 
         assertFalse(edge.isEmpty());
         assertEquals(1, edge.size());
-        assertThat(edge.getProperties()).contains(DefaultProperty.of("where", "Brazil"));
+        assertThat(edge.properties()).contains(DefaultProperty.of("where", "Brazil"));
     }
 
     @Test
@@ -241,7 +241,7 @@ public class EdgeEntityTest {
 
         assertFalse(edge.isEmpty());
         assertEquals(1, edge.size());
-        assertThat(edge.getProperties()).contains(DefaultProperty.of("where", "Brazil"));
+        assertThat(edge.properties()).contains(DefaultProperty.of("where", "Brazil"));
     }
 
 
@@ -294,9 +294,9 @@ public class EdgeEntityTest {
         edge.delete();
 
         EdgeEntity newEdge = graphTemplate.edge(person, "reads", book);
-        assertNotEquals(edge.getId(), newEdge.getId());
+        assertNotEquals(edge.id(), newEdge.id());
 
-        graphTemplate.deleteEdge(newEdge.getId());
+        graphTemplate.deleteEdge(newEdge.id());
     }
 
     @Test
@@ -311,10 +311,10 @@ public class EdgeEntityTest {
 
         EdgeEntity edge = graphTemplate.edge(person, "reads", book);
 
-        graphTemplate.deleteEdge(edge.getId());
+        graphTemplate.deleteEdge(edge.id());
 
         EdgeEntity newEdge = graphTemplate.edge(person, "reads", book);
-        assertNotEquals(edge.getId(), newEdge.getId());
+        assertNotEquals(edge.id(), newEdge.id());
     }
 
 
@@ -330,12 +330,12 @@ public class EdgeEntityTest {
         Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
         EdgeEntity edge = graphTemplate.edge(person, "reads", book);
 
-        Optional<EdgeEntity> newEdge = graphTemplate.edge(edge.getId());
+        Optional<EdgeEntity> newEdge = graphTemplate.edge(edge.id());
 
         assertTrue(newEdge.isPresent());
-        assertEquals(edge.getId(), newEdge.get().getId());
+        assertEquals(edge.id(), newEdge.get().id());
 
-        graphTemplate.deleteEdge(edge.getId());
+        graphTemplate.deleteEdge(edge.id());
     }
 
     @Test

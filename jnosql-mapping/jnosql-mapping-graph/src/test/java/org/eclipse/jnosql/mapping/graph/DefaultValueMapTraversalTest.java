@@ -37,7 +37,7 @@ class DefaultValueMapTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldCount() {
-        long count = graphTemplate.getTraversalVertex()
+        long count = graphTemplate.traversalVertex()
                 .hasLabel(Person.class).valueMap("name").count();
         assertEquals(3L, count);
     }
@@ -45,7 +45,7 @@ class DefaultValueMapTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnMapValues() {
-        List<String> names = graphTemplate.getTraversalVertex()
+        List<String> names = graphTemplate.traversalVertex()
                 .hasLabel(Person.class).valueMap("name")
                 .stream()
                 .map(m -> m.getOrDefault("name", "").toString()).collect(Collectors.toList());
@@ -56,7 +56,7 @@ class DefaultValueMapTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnStream() {
-        Stream<Map<String, Object>> stream = graphTemplate.getTraversalVertex()
+        Stream<Map<String, Object>> stream = graphTemplate.traversalVertex()
                 .hasLabel(Person.class).valueMap("name")
                 .stream();
         assertNotNull(stream);
@@ -66,7 +66,7 @@ class DefaultValueMapTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnResultAsList() {
-        List<Map<String, Object>> maps = graphTemplate.getTraversalVertex()
+        List<Map<String, Object>> maps = graphTemplate.traversalVertex()
                 .hasLabel(Person.class).valueMap("name")
                 .getResultList();
         assertEquals(3, maps.size());
@@ -74,14 +74,14 @@ class DefaultValueMapTraversalTest extends AbstractTraversalTest {
 
     @Test
     public void shouldReturnErrorWhenThereAreMoreThanOneInGetSingleResult() {
-        assertThrows(NonUniqueResultException.class, () -> graphTemplate.getTraversalVertex()
+        assertThrows(NonUniqueResultException.class, () -> graphTemplate.traversalVertex()
                 .hasLabel(Person.class).valueMap("name")
                 .getSingleResult());
     }
 
     @Test
     public void shouldReturnOptionalEmptyWhenThereIsNotResultInSingleResult() {
-        Optional<Map<String, Object>> entity =   graphTemplate.getTraversalVertex()
+        Optional<Map<String, Object>> entity =   graphTemplate.traversalVertex()
                 .hasLabel("not_found").valueMap("name").getSingleResult();
         assertFalse(entity.isPresent());
     }
@@ -89,7 +89,7 @@ class DefaultValueMapTraversalTest extends AbstractTraversalTest {
     @Test
     public void shouldReturnSingleResult() {
         String name = "Poliana";
-        Optional<Map<String, Object>> poliana = graphTemplate.getTraversalVertex().hasLabel("Person").
+        Optional<Map<String, Object>> poliana = graphTemplate.traversalVertex().hasLabel("Person").
                 has("name", name).valueMap("name").getSingleResult();
         assertEquals(name, poliana.map(m -> ((List) m.get("name")).get(0)).orElse(""));
     }

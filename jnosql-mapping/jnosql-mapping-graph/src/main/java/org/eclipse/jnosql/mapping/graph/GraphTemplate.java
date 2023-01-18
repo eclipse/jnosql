@@ -137,7 +137,7 @@ public interface GraphTemplate extends Template {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction, String... labels);
+    <K> Collection<EdgeEntity> edgesById(K id, Direction direction, String... labels);
 
     /**
      * returns the edges of from a vertex id
@@ -149,7 +149,7 @@ public interface GraphTemplate extends Template {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction, Supplier<String>... labels);
+    <K> Collection<EdgeEntity> edgesById(K id, Direction direction, Supplier<String>... labels);
 
     /**
      * returns the edges of from a vertex id
@@ -160,7 +160,7 @@ public interface GraphTemplate extends Template {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction);
+    <K> Collection<EdgeEntity> edgesById(K id, Direction direction);
 
     /**
      * returns the edges of from an entity
@@ -172,7 +172,7 @@ public interface GraphTemplate extends Template {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, String... labels);
+    <T> Collection<EdgeEntity> edges(T entity, Direction direction, String... labels);
 
     /**
      * returns the edges of from an entity
@@ -184,7 +184,7 @@ public interface GraphTemplate extends Template {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels);
+    <T> Collection<EdgeEntity> edges(T entity, Direction direction, Supplier<String>... labels);
 
     /**
      * returns the edges of from an entity
@@ -195,7 +195,7 @@ public interface GraphTemplate extends Template {
      * @return the Edges
      * @throws NullPointerException where there is any parameter null
      */
-    <T> Collection<EdgeEntity> getEdges(T entity, Direction direction);
+    <T> Collection<EdgeEntity> edges(T entity, Direction direction);
 
     /**
      * Finds an {@link EdgeEntity} from the Edge Id
@@ -215,7 +215,7 @@ public interface GraphTemplate extends Template {
      * @return a {@link VertexTraversal} instance
      * @throws IllegalStateException if any id element is null
      */
-    VertexTraversal getTraversalVertex(Object... vertexIds);
+    VertexTraversal traversalVertex(Object... vertexIds);
 
 
     /**
@@ -225,14 +225,14 @@ public interface GraphTemplate extends Template {
      * @return a {@link VertexTraversal} instance
      * @throws IllegalStateException if any id element is null
      */
-    EdgeTraversal getTraversalEdge(Object... edgeIds);
+    EdgeTraversal traversalEdge(Object... edgeIds);
 
     /**
      * Gets the current transaction
      *
      * @return the current {@link Transaction}
      */
-    Transaction getTransaction();
+    Transaction transaction();
 
     /**
      * Executes a Gremlin then bring the result as a {@link List}

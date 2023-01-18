@@ -35,7 +35,7 @@ public interface EdgeEntity {
      *
      * @return the id
      */
-    Object getId();
+    Object id();
 
     /**
      * Returns an id from {@link org.eclipse.jnosql.communication.Value#get(Class)}
@@ -44,14 +44,14 @@ public interface EdgeEntity {
      * @param <T>  the type
      * @return an id converted
      */
-    <T> T getId(Class<T> type);
+    <T> T id(Class<T> type);
 
     /**
      * Returns the label of the vertex
      *
      * @return the label
      */
-    String getLabel();
+    String label();
 
     /**
      * Gets the incoming entity
@@ -59,7 +59,7 @@ public interface EdgeEntity {
      * @param <T> the type
      * @return the incoming entity
      */
-    <T> T getIncoming();
+    <T> T incoming();
 
     /**
      * Gets the outgoing entity
@@ -67,14 +67,14 @@ public interface EdgeEntity {
      * @param <T> the type
      * @return the outgoing entity
      */
-    <T> T getOutgoing();
+    <T> T outgoing();
 
     /**
      * Returns the properties of this vertex
      *
      * @return the properties
      */
-    List<Property> getProperties();
+    List<Property> properties();
 
 
     /**

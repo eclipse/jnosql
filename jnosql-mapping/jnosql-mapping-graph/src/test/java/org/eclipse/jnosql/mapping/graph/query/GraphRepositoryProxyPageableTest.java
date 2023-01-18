@@ -19,7 +19,6 @@ import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Slice;
 import jakarta.data.repository.Sort;
-import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
@@ -87,7 +86,7 @@ public class GraphRepositoryProxyPageableTest {
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
 
-        when(template.getTraversalVertex()).thenReturn(graphTemplate.getTraversalVertex());
+        when(template.traversalVertex()).thenReturn(graphTemplate.traversalVertex());
         personRepository = (PersonRepository) Proxy.newProxyInstance(PersonRepository.class.getClassLoader(),
                 new Class[]{PersonRepository.class},
                 personHandler);

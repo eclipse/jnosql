@@ -67,7 +67,7 @@ public class DefaultEntityTreeTest {
 
     @Test
     public void shouldCreateLeaf() {
-        EntityTree tree = graphTemplate.getTraversalVertex()
+        EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .in("eats")
                 .tree();
@@ -86,7 +86,7 @@ public class DefaultEntityTreeTest {
 
     @Test
     public void shouldGetLeafTrees() {
-        EntityTree tree = graphTemplate.getTraversalVertex()
+        EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .in("eats")
                 .in("eats")
@@ -109,7 +109,7 @@ public class DefaultEntityTreeTest {
 
     @Test
     public void shouldGetParents() {
-        EntityTree tree = graphTemplate.getTraversalVertex()
+        EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .in("eats")
                 .in("eats")
@@ -130,7 +130,7 @@ public class DefaultEntityTreeTest {
 
     @Test
     public void shouldGetParentId() {
-        EntityTree tree = graphTemplate.getTraversalVertex()
+        EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .out("eats")
                 .out("eats")
@@ -153,7 +153,7 @@ public class DefaultEntityTreeTest {
 
     @Test
     public void shouldIsLeaf() {
-        EntityTree tree = graphTemplate.getTraversalVertex()
+        EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .out("eats")
                 .tree();
@@ -166,7 +166,7 @@ public class DefaultEntityTreeTest {
 
     @Test
     public void shouldGetTreesAtDepth() {
-        EntityTree tree = graphTemplate.getTraversalVertex()
+        EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .out("eats")
                 .out("eats")
@@ -179,7 +179,7 @@ public class DefaultEntityTreeTest {
 
     @Test
     public void shouldGetLeafsAtDepth() {
-        EntityTree tree = graphTemplate.getTraversalVertex()
+        EntityTree tree = graphTemplate.traversalVertex()
                 .hasLabel(Animal.class)
                 .out("eats")
                 .out("eats")

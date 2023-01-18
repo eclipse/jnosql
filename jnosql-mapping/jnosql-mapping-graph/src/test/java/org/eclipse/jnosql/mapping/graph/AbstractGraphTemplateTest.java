@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
@@ -279,17 +278,17 @@ public abstract class AbstractGraphTemplateTest {
 
     @Test
     public void shouldReturnErrorWhenGetEdgesIdHasNullId() {
-        assertThrows(NullPointerException.class, () -> getGraphTemplate().getEdgesById(null, Direction.BOTH));
+        assertThrows(NullPointerException.class, () -> getGraphTemplate().edgesById(null, Direction.BOTH));
     }
 
     @Test
     public void shouldReturnErrorWhenGetEdgesIdHasNullDirection() {
-        assertThrows(NullPointerException.class, () -> getGraphTemplate().getEdgesById(10, null));
+        assertThrows(NullPointerException.class, () -> getGraphTemplate().edgesById(10, null));
     }
 
     @Test
     public void shouldReturnEmptyWhenVertexDoesNotExist() {
-        Collection<EdgeEntity> edges = getGraphTemplate().getEdgesById(10, Direction.BOTH);
+        Collection<EdgeEntity> edges = getGraphTemplate().edgesById(10, Direction.BOTH);
         assertTrue(edges.isEmpty());
     }
 
@@ -304,11 +303,11 @@ public abstract class AbstractGraphTemplateTest {
         EdgeEntity likes = getGraphTemplate().edge(otavio, "likes", dog);
         EdgeEntity reads = getGraphTemplate().edge(otavio, "reads", cleanCode);
 
-        Collection<EdgeEntity> edgesById = getGraphTemplate().getEdgesById(otavio.getId(), Direction.BOTH);
-        Collection<EdgeEntity> edgesById1 = getGraphTemplate().getEdgesById(otavio.getId(), Direction.BOTH, "reads");
-        Collection<EdgeEntity> edgesById2 = getGraphTemplate().getEdgesById(otavio.getId(), Direction.BOTH, () -> "likes");
-        Collection<EdgeEntity> edgesById3 = getGraphTemplate().getEdgesById(otavio.getId(), Direction.OUT);
-        Collection<EdgeEntity> edgesById4 = getGraphTemplate().getEdgesById(cleanCode.getId(), Direction.IN);
+        Collection<EdgeEntity> edgesById = getGraphTemplate().edgesById(otavio.getId(), Direction.BOTH);
+        Collection<EdgeEntity> edgesById1 = getGraphTemplate().edgesById(otavio.getId(), Direction.BOTH, "reads");
+        Collection<EdgeEntity> edgesById2 = getGraphTemplate().edgesById(otavio.getId(), Direction.BOTH, () -> "likes");
+        Collection<EdgeEntity> edgesById3 = getGraphTemplate().edgesById(otavio.getId(), Direction.OUT);
+        Collection<EdgeEntity> edgesById4 = getGraphTemplate().edgesById(cleanCode.getId(), Direction.IN);
 
         assertEquals(edgesById, edgesById3);
         assertThat(edgesById).contains(likes, reads);
@@ -326,11 +325,11 @@ public abstract class AbstractGraphTemplateTest {
 
         EdgeEntity likes = getGraphTemplate().edge(otavio, "likes", dog);
 
-        final Optional<EdgeEntity> edge = getGraphTemplate().edge(likes.getId());
+        final Optional<EdgeEntity> edge = getGraphTemplate().edge(likes.id());
         Assertions.assertTrue(edge.isPresent());
 
-        getGraphTemplate().deleteEdge(likes.getId());
-        assertFalse(getGraphTemplate().edge(likes.getId()).isPresent());
+        getGraphTemplate().deleteEdge(likes.id());
+        assertFalse(getGraphTemplate().edge(likes.id()).isPresent());
     }
 
     @Test
@@ -343,24 +342,24 @@ public abstract class AbstractGraphTemplateTest {
         EdgeEntity likes = getGraphTemplate().edge(otavio, "likes", dog);
         EdgeEntity reads = getGraphTemplate().edge(otavio, "reads", cleanCode);
 
-        final Optional<EdgeEntity> edge = getGraphTemplate().edge(likes.getId());
+        final Optional<EdgeEntity> edge = getGraphTemplate().edge(likes.id());
         Assertions.assertTrue(edge.isPresent());
 
-        getGraphTemplate().deleteEdge(Arrays.asList(likes.getId(), reads.getId()));
-        assertFalse(getGraphTemplate().edge(likes.getId()).isPresent());
-        assertFalse(getGraphTemplate().edge(reads.getId()).isPresent());
+        getGraphTemplate().deleteEdge(Arrays.asList(likes.id(), reads.id()));
+        assertFalse(getGraphTemplate().edge(likes.id()).isPresent());
+        assertFalse(getGraphTemplate().edge(reads.id()).isPresent());
     }
 
     @Test
     public void shouldReturnErrorWhenGetEdgesHasNullId() {
-        assertThrows(NullPointerException.class, () -> getGraphTemplate().getEdges(null, Direction.BOTH));
+        assertThrows(NullPointerException.class, () -> getGraphTemplate().edges(null, Direction.BOTH));
     }
 
     @Test
     public void shouldReturnErrorWhenGetEdgesHasNullId2() {
         assertThrows(IllegalStateException.class, () -> {
             Person otavio = Person.builder().withAge().withName("Otavio").build();
-            getGraphTemplate().getEdges(otavio, Direction.BOTH);
+            getGraphTemplate().edges(otavio, Direction.BOTH);
         });
     }
 
@@ -369,14 +368,14 @@ public abstract class AbstractGraphTemplateTest {
         assertThrows(NullPointerException.class, () -> {
             Person otavio = getGraphTemplate().insert(Person.builder().withAge()
                     .withName("Otavio").build());
-            getGraphTemplate().getEdges(otavio, null);
+            getGraphTemplate().edges(otavio, null);
         });
     }
 
     @Test
     public void shouldReturnEmptyWhenEntityDoesNotExist() {
         Person otavio = Person.builder().withAge().withName("Otavio").withId(10L).build();
-        Collection<EdgeEntity> edges = getGraphTemplate().getEdges(otavio, Direction.BOTH);
+        Collection<EdgeEntity> edges = getGraphTemplate().edges(otavio, Direction.BOTH);
         assertTrue(edges.isEmpty());
     }
 
@@ -392,11 +391,11 @@ public abstract class AbstractGraphTemplateTest {
         EdgeEntity likes = getGraphTemplate().edge(otavio, "likes", dog);
         EdgeEntity reads = getGraphTemplate().edge(otavio, "reads", cleanCode);
 
-        Collection<EdgeEntity> edgesById = getGraphTemplate().getEdges(otavio, Direction.BOTH);
-        Collection<EdgeEntity> edgesById1 = getGraphTemplate().getEdges(otavio, Direction.BOTH, "reads");
-        Collection<EdgeEntity> edgesById2 = getGraphTemplate().getEdges(otavio, Direction.BOTH, () -> "likes");
-        Collection<EdgeEntity> edgesById3 = getGraphTemplate().getEdges(otavio, Direction.OUT);
-        Collection<EdgeEntity> edgesById4 = getGraphTemplate().getEdges(cleanCode, Direction.IN);
+        Collection<EdgeEntity> edgesById = getGraphTemplate().edges(otavio, Direction.BOTH);
+        Collection<EdgeEntity> edgesById1 = getGraphTemplate().edges(otavio, Direction.BOTH, "reads");
+        Collection<EdgeEntity> edgesById2 = getGraphTemplate().edges(otavio, Direction.BOTH, () -> "likes");
+        Collection<EdgeEntity> edgesById3 = getGraphTemplate().edges(otavio, Direction.OUT);
+        Collection<EdgeEntity> edgesById4 = getGraphTemplate().edges(cleanCode, Direction.IN);
 
         assertEquals(edgesById, edgesById3);
         assertThat(edgesById).contains(likes, reads);
@@ -408,7 +407,7 @@ public abstract class AbstractGraphTemplateTest {
 
     @Test
     public void shouldGetTransaction() {
-        Transaction transaction = getGraphTemplate().getTransaction();
+        Transaction transaction = getGraphTemplate().transaction();
         assertNotNull(transaction);
     }
 

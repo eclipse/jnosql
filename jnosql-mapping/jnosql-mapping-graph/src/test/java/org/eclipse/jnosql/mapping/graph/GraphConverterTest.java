@@ -195,13 +195,13 @@ abstract class GraphConverterTest {
         edge.property("feel", "like");
 
         EdgeEntity edgeEntity = getConverter().toEdgeEntity(edge);
-        Person ada = edgeEntity.getOutgoing();
-        Movie matrix = edgeEntity.getIncoming();
+        Person ada = edgeEntity.outgoing();
+        Movie matrix = edgeEntity.incoming();
 
         assertNotNull(edgeEntity);
-        assertEquals("watch", edgeEntity.getLabel());
-        assertNotNull(edgeEntity.getId());
-        assertEquals(edge.id(), edgeEntity.getId());
+        assertEquals("watch", edgeEntity.label());
+        assertNotNull(edgeEntity.id());
+        assertEquals(edge.id(), edgeEntity.id());
 
         assertEquals("Ada", ada.getName());
         assertEquals(22, ada.getAge());

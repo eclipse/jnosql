@@ -63,9 +63,9 @@ class GremlinExecutorTest {
                 .collect(toList());
         assertFalse(edges.isEmpty());
         EdgeEntity edgeEntity = edges.get(0);
-        Person person = edgeEntity.getIncoming();
-        Person person2 = edgeEntity.getOutgoing();
-        assertEquals("loves", edgeEntity.getLabel());
+        Person person = edgeEntity.incoming();
+        Person person2 = edgeEntity.outgoing();
+        assertEquals("loves", edgeEntity.label());
         assertEquals("Bruce Banner", person2.getName());
         assertEquals("Natasha Romanoff", person.getName());
 
@@ -78,9 +78,9 @@ class GremlinExecutorTest {
                 .collect(toList());
         assertFalse(edges.isEmpty());
         EdgeEntity edgeEntity = edges.get(0);
-        Person person = edgeEntity.getIncoming();
-        Person person2 = edgeEntity.getOutgoing();
-        assertEquals("loves", edgeEntity.getLabel());
+        Person person = edgeEntity.incoming();
+        Person person2 = edgeEntity.outgoing();
+        assertEquals("loves", edgeEntity.label());
         assertEquals("Bruce Banner", person2.getName());
         assertEquals("Natasha Romanoff", person.getName());
 

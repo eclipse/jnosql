@@ -109,7 +109,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         if (isIdNull(entity)) {
             throw new IllegalStateException("to update a graph id cannot be null");
         }
-        getVertex(entity).orElseThrow(() -> new EmptyResultException("Entity does not find in the update"));
+        vertex(entity).orElseThrow(() -> new EmptyResultException("Entity does not find in the update"));
 
         UnaryOperator<Vertex> update = e -> {
             final Vertex vertex = getConverter().toVertex(entity);
@@ -129,14 +129,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
         Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
 
-        final Optional<Vertex> vertex = getTraversal().V(value).hasLabel(entityMetadata.getName()).tryNext();
+        final Optional<Vertex> vertex = traversal().V(value).hasLabel(entityMetadata.getName()).tryNext();
         return vertex.map(getConverter()::toEntity);
     }
 
     @Override
     public <T> void delete(T idValue) {
         requireNonNull(idValue, "id is required");
-        getTraversal().V(idValue).toStream().forEach(Vertex::remove);
+        traversal().V(idValue).toStream().forEach(Vertex::remove);
     }
 
     @Override
@@ -144,7 +144,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
         EntityMetadata mapping = getEntities().get(type);
-        getTraversal()
+        traversal()
                 .V(id)
                 .hasLabel(mapping.getName())
                 .toStream()
@@ -154,13 +154,13 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <T> void deleteEdge(T idEdge) {
         requireNonNull(idEdge, "idEdge is required");
-        getTraversal().E(idEdge).toStream().forEach(Edge::remove);
+        traversal().E(idEdge).toStream().forEach(Edge::remove);
     }
 
     @Override
     public <T, K> Optional<T> find(K idValue) {
         requireNonNull(idValue, "id is required");
-        Optional<Vertex> vertex = getTraversal().V(idValue).tryNext();
+        Optional<Vertex> vertex = traversal().V(idValue).tryNext();
         return vertex.map(getConverter()::toEntity);
     }
 
@@ -182,14 +182,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> void delete(Iterable<T> ids) {
         requireNonNull(ids, "ids is required");
         final Object[] vertexIds = StreamSupport.stream(ids.spliterator(), false).toArray(Object[]::new);
-        getTraversal().V(vertexIds).toStream().forEach(Vertex::remove);
+        traversal().V(vertexIds).toStream().forEach(Vertex::remove);
     }
 
     @Override
     public <T> void deleteEdge(Iterable<T> ids) {
         requireNonNull(ids, "ids is required");
         final Object[] edgeIds = StreamSupport.stream(ids.spliterator(), false).toArray(Object[]::new);
-        getTraversal().E(edgeIds).toStream().forEach(Edge::remove);
+        traversal().E(edgeIds).toStream().forEach(Edge::remove);
     }
 
     @Override
@@ -210,8 +210,8 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
             throw new IllegalStateException("incoming Id field is required");
         }
 
-        Vertex outVertex = getVertex(outgoing).orElseThrow(() -> new  EmptyResultException("Outgoing entity does not found"));
-        Vertex inVertex = getVertex(incoming).orElseThrow(() -> new  EmptyResultException("Incoming entity does not found"));
+        Vertex outVertex = vertex(outgoing).orElseThrow(() -> new  EmptyResultException("Outgoing entity does not found"));
+        Vertex inVertex = vertex(incoming).orElseThrow(() -> new  EmptyResultException("Incoming entity does not found"));
 
         final Predicate<Traverser<Edge>> predicate = t -> {
             Edge e = t.get();
@@ -219,7 +219,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
                     && e.outVertex().id().equals(outVertex.id());
         };
 
-        Optional<Edge> edge = getTraversal().V(outVertex.id())
+        Optional<Edge> edge = traversal().V(outVertex.id())
                 .out(label).has(id, inVertex.id()).inE(label).filter(predicate).tryNext();
 
         return edge.<EdgeEntity>map(edge1 -> new DefaultEdgeEntity<>(edge1, incoming, outgoing))
@@ -236,7 +236,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <E> Optional<EdgeEntity> edge(E edgeId) {
         requireNonNull(edgeId, "edgeId is required");
 
-        Optional<Edge> edgeOptional = getTraversal().E(edgeId).tryNext();
+        Optional<Edge> edgeOptional = traversal().E(edgeId).tryNext();
 
         if (edgeOptional.isPresent()) {
             Edge edge = edgeOptional.get();
@@ -247,57 +247,57 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     }
 
     @Override
-    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction) {
-        return getEdgesImpl(entity, direction);
+    public <T> Collection<EdgeEntity> edges(T entity, Direction direction) {
+        return edgesImpl(entity, direction);
     }
 
     @Override
-    public <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, String... labels) {
-        return getEdgesImpl(entity, direction, labels);
-    }
-
-    @SafeVarargs
-    @Override
-    public final <T> Collection<EdgeEntity> getEdges(T entity, Direction direction, Supplier<String>... labels) {
-        checkLabelsSupplier(labels);
-        return getEdgesImpl(entity, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
-    }
-
-    @Override
-    public <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction, String... labels) {
-        return getEdgesByIdImpl(id, direction, labels);
-    }
-
-    @Override
-    public <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction) {
-        return getEdgesByIdImpl(id, direction);
+    public <T> Collection<EdgeEntity> edges(T entity, Direction direction, String... labels) {
+        return edgesImpl(entity, direction, labels);
     }
 
     @SafeVarargs
     @Override
-    public final <K> Collection<EdgeEntity> getEdgesById(K id, Direction direction, Supplier<String>... labels) {
+    public final <T> Collection<EdgeEntity> edges(T entity, Direction direction, Supplier<String>... labels) {
         checkLabelsSupplier(labels);
-        return getEdgesByIdImpl(id, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
+        return edgesImpl(entity, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
     }
 
     @Override
-    public VertexTraversal getTraversalVertex(Object... vertexIds) {
+    public <K> Collection<EdgeEntity> edgesById(K id, Direction direction, String... labels) {
+        return edgesByIdImpl(id, direction, labels);
+    }
+
+    @Override
+    public <K> Collection<EdgeEntity> edgesById(K id, Direction direction) {
+        return edgesByIdImpl(id, direction);
+    }
+
+    @SafeVarargs
+    @Override
+    public final <K> Collection<EdgeEntity> edgesById(K id, Direction direction, Supplier<String>... labels) {
+        checkLabelsSupplier(labels);
+        return edgesByIdImpl(id, direction, Stream.of(labels).map(Supplier::get).toArray(String[]::new));
+    }
+
+    @Override
+    public VertexTraversal traversalVertex(Object... vertexIds) {
         if (Stream.of(vertexIds).anyMatch(Objects::isNull)) {
             throw new IllegalStateException("No one vertexId element cannot be null");
         }
-        return new DefaultVertexTraversal(() -> getTraversal().V(vertexIds), INITIAL_VERTEX, getConverter());
+        return new DefaultVertexTraversal(() -> traversal().V(vertexIds), INITIAL_VERTEX, getConverter());
     }
 
     @Override
-    public EdgeTraversal getTraversalEdge(Object... edgeIds) {
+    public EdgeTraversal traversalEdge(Object... edgeIds) {
         if (Stream.of(edgeIds).anyMatch(Objects::isNull)) {
             throw new IllegalStateException("No one edgeId element cannot be null");
         }
-        return new DefaultEdgeTraversal(() -> getTraversal().E(edgeIds), INITIAL_EDGE, getConverter());
+        return new DefaultEdgeTraversal(() -> traversal().E(edgeIds), INITIAL_EDGE, getConverter());
     }
 
     @Override
-    public Transaction getTransaction() {
+    public Transaction transaction() {
         return getGraph().tx();
     }
 
@@ -305,7 +305,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <T> Stream<T> query(String gremlin) {
         requireNonNull(gremlin, "query is required");
-        return getExecutor().executeGremlin(getTraversal(), gremlin);
+        return getExecutor().executeGremlin(traversal(), gremlin);
     }
 
     @Override
@@ -325,21 +325,21 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public PreparedStatement prepare(String gremlin) {
         requireNonNull(gremlin, "query is required");
-        return new DefaultPreparedStatement(getExecutor(), gremlin, getTraversal());
+        return new DefaultPreparedStatement(getExecutor(), gremlin, traversal());
     }
 
-    protected GraphTraversalSource getTraversal() {
+    protected GraphTraversalSource traversal() {
         return getGraph().traversal();
     }
 
-    protected Iterator<Vertex> getVertices(Object id) {
+    protected Iterator<Vertex> vertices(Object id) {
         return getGraph().vertices(id);
     }
 
     @Override
     public long count(String label) {
         Objects.requireNonNull(label, "label is required");
-        return getTraversal().V().hasLabel(label).count().tryNext().orElse(0L);
+        return traversal().V().hasLabel(label).count().tryNext().orElse(0L);
     }
 
 
@@ -353,7 +353,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> QueryMapper.MapperFrom select(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        GraphTraversal<Vertex, Vertex> traversal = getTraversal().V().hasLabel(metadata.getName());
+        GraphTraversal<Vertex, Vertex> traversal = traversal().V().hasLabel(metadata.getName());
         return new GraphMapperSelect(metadata,getConverters(), traversal, getConverter());
     }
 
@@ -361,7 +361,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        GraphTraversal<Vertex, Vertex> traversal = getTraversal().V().hasLabel(metadata.getName());
+        GraphTraversal<Vertex, Vertex> traversal = traversal().V().hasLabel(metadata.getName());
         return new GraphMapperDelete(metadata,getConverters(), traversal, getConverter());
     }
 
@@ -369,7 +369,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> Stream<T> findAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        return getTraversal().V().hasLabel(metadata.getName())
+        return traversal().V().hasLabel(metadata.getName())
                 .toStream().map(getConverter()::toEntity);
     }
 
@@ -377,15 +377,15 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> void deleteAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        getTraversal().V().hasLabel(metadata.getName()).toStream().forEach(Vertex::remove);
+        traversal().V().hasLabel(metadata.getName()).toStream().forEach(Vertex::remove);
     }
 
-    private <K> Collection<EdgeEntity> getEdgesByIdImpl(K id, Direction direction, String... labels) {
+    private <K> Collection<EdgeEntity> edgesByIdImpl(K id, Direction direction, String... labels) {
 
         requireNonNull(id, "id is required");
         requireNonNull(direction, "direction is required");
 
-        Iterator<Vertex> vertices = getVertices(id);
+        Iterator<Vertex> vertices = vertices(id);
         if (vertices.hasNext()) {
             List<Edge> edges = new ArrayList<>();
             vertices.next().edges(direction, labels).forEachRemaining(edges::add);
@@ -394,29 +394,29 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         return Collections.emptyList();
     }
 
-    private <T> Optional<Vertex> getVertex(T entity) {
+    private <T> Optional<Vertex> vertex(T entity) {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
         FieldMapping field = entityMetadata.getId().get();
         Object id = field.read(entity);
-        Iterator<Vertex> vertices = getVertices(id);
+        Iterator<Vertex> vertices = vertices(id);
         if (vertices.hasNext()) {
             return Optional.of(vertices.next());
         }
         return Optional.empty();
     }
 
-    private <T> Collection<EdgeEntity> getEdgesImpl(T entity, Direction direction, String... labels) {
+    private <T> Collection<EdgeEntity> edgesImpl(T entity, Direction direction, String... labels) {
         requireNonNull(entity, "entity is required");
 
         if (isIdNull(entity)) {
             throw new IllegalStateException("Entity id is required");
         }
 
-        if (getVertex(entity).isEmpty()) {
+        if (vertex(entity).isEmpty()) {
             return Collections.emptyList();
         }
         Object id = getConverter().toVertex(entity).id();
-        return getEdgesByIdImpl(id, direction, labels);
+        return edgesByIdImpl(id, direction, labels);
     }
 
     private void checkLabelsSupplier(Supplier<String>[] labels) {
