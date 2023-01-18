@@ -56,16 +56,10 @@ public enum ClassScanner {
         Logger logger = Logger.getLogger(ClassScanner.class.getName());
         logger.fine("Starting scan class to find entities, embeddable and repositories.");
         try (ScanResult result = new ClassGraph().enableAllInfo().scan()) {
-            for (Class<?> entity : result.getClassesWithAnnotation(Entity.class).loadClasses()) {
-                this.entities.add(entity);
-            }
-            for (Class<?> embeddable : result.getClassesWithAnnotation(Embeddable.class).loadClasses()) {
-                embeddables.add(embeddable);
-            }
-            for (Class<?> repositories : result.getClassesWithAnnotation(Repository.class)
-                    .getInterfaces().loadClasses(DataRepository.class)) {
-                this.repositores.add(repositories);
-            }
+            this.entities.addAll(result.getClassesWithAnnotation(Entity.class).loadClasses());
+            embeddables.addAll(result.getClassesWithAnnotation(Embeddable.class).loadClasses());
+            this.repositores.addAll(result.getClassesWithAnnotation(Repository.class)
+                    .getInterfaces().loadClasses(DataRepository.class));
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
                 , entities.size(), embeddables.size(), repositores.size()));
