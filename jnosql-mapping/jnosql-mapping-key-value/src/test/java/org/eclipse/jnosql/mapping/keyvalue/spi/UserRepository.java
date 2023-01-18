@@ -14,11 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.spi;
 
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.tck.entities.User;
+import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.Repository;
+import org.eclipse.jnosql.mapping.test.entities.User;
 
-import jakarta.enterprise.context.ApplicationScoped;
-
-@ApplicationScoped
-public interface UserRepository extends Repository<User, String> {
+@Repository
+public interface UserRepository extends CrudRepository<User, String> {
 }

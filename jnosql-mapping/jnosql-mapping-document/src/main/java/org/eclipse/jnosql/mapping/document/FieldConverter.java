@@ -14,10 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.mapping.AttributeConverter;
+import org.eclipse.jnosql.mapping.AttributeConverter;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.GenericFieldMapping;
@@ -36,7 +36,7 @@ enum FieldConverter {
     EMBEDDED {
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
-                                      FieldMapping field, AbstractDocumentEntityConverter converter) {
+                                      FieldMapping field, DocumentEntityConverter converter) {
 
             Field nativeField = field.getNativeField();
             Object subEntity = converter.toEntity(nativeField.getType(), documents);
@@ -53,7 +53,7 @@ enum FieldConverter {
     }, ENTITY {
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
-                                      FieldMapping field, AbstractDocumentEntityConverter converter) {
+                                      FieldMapping field, DocumentEntityConverter converter) {
 
             if (Objects.nonNull(document)) {
                 converterSubDocument(instance, document, field, converter);
@@ -63,7 +63,7 @@ enum FieldConverter {
         }
 
         private <T> void converterSubDocument(T instance, Document sudDocument, FieldMapping field,
-                                              AbstractDocumentEntityConverter converter) {
+                                              DocumentEntityConverter converter) {
             Object value = sudDocument.get();
             if (value instanceof Map) {
                 Map map = (Map) value;
@@ -83,7 +83,7 @@ enum FieldConverter {
     }, COLLECTION {
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
-                                      FieldMapping field, AbstractDocumentEntityConverter converter) {
+                                      FieldMapping field, DocumentEntityConverter converter) {
 
             if (Objects.nonNull(document)) {
                 GenericFieldMapping genericField = (GenericFieldMapping) field;
@@ -99,11 +99,11 @@ enum FieldConverter {
     }, DEFAULT {
         @Override
         public <X, Y, T> void convert(T instance, List<Document> documents, Document document,
-                                      FieldMapping field, AbstractDocumentEntityConverter converter) {
+                                      FieldMapping field, DocumentEntityConverter converter) {
 
 
             if (Objects.nonNull(document)) {
-                Value value = document.getValue();
+                Value value = document.value();
                 Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.getConverter();
                 if (optionalConverter.isPresent()) {
                     AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(optionalConverter.get());
@@ -118,10 +118,10 @@ enum FieldConverter {
 
 
     abstract <X, Y, T> void convert(T instance, List<Document> documents, Document document, FieldMapping field,
-                                    AbstractDocumentEntityConverter converter);
+                                    DocumentEntityConverter converter);
 
     <X, Y, T> void convert(T instance, Document document, FieldMapping field,
-                           AbstractDocumentEntityConverter converter) {
+                           DocumentEntityConverter converter) {
         convert(instance, null, document, field, converter);
     }
 

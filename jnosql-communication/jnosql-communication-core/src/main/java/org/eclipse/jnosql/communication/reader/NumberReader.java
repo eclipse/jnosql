@@ -18,7 +18,7 @@
 package org.eclipse.jnosql.communication.reader;
 
 
-import jakarta.nosql.ValueReader;
+import org.eclipse.jnosql.communication.ValueReader;
 
 /**
  * Class reader for {@link Number}, this converter first verify if the object is a Number instance,

@@ -14,25 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.tck.entities.Actor;
-import jakarta.nosql.tck.entities.Address;
-import jakarta.nosql.tck.entities.AppointmentBook;
-import jakarta.nosql.tck.entities.Contact;
-import jakarta.nosql.tck.entities.ContactType;
-import jakarta.nosql.tck.entities.Director;
-import jakarta.nosql.tck.entities.Download;
-import jakarta.nosql.tck.entities.Job;
-import jakarta.nosql.tck.entities.Money;
-import jakarta.nosql.tck.entities.Movie;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.Vendor;
-import jakarta.nosql.tck.entities.Worker;
-import jakarta.nosql.tck.entities.ZipCode;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
+import org.eclipse.jnosql.mapping.test.entities.Actor;
+import org.eclipse.jnosql.mapping.test.entities.Address;
+import org.eclipse.jnosql.mapping.test.entities.AppointmentBook;
+import org.eclipse.jnosql.mapping.test.entities.Contact;
+import org.eclipse.jnosql.mapping.test.entities.ContactType;
+import org.eclipse.jnosql.mapping.test.entities.Director;
+import org.eclipse.jnosql.mapping.test.entities.Download;
+import org.eclipse.jnosql.mapping.test.entities.Job;
+import org.eclipse.jnosql.mapping.test.entities.Money;
+import org.eclipse.jnosql.mapping.test.entities.Movie;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.Vendor;
+import org.eclipse.jnosql.mapping.test.entities.Worker;
+import org.eclipse.jnosql.mapping.test.entities.ZipCode;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.mapping.column.entities.Citizen;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,9 +95,9 @@ public class DefaultColumnEntityConverterTest {
                 .withPhones(asList("234", "2342")).build();
 
         ColumnEntity entity = converter.toColumn(person);
-        assertEquals("Person", entity.getName());
+        assertEquals("Person", entity.name());
         assertEquals(4, entity.size());
-        assertThat(entity.getColumns()).contains(Column.of("_id", 12L),
+        assertThat(entity.columns()).contains(Column.of("_id", 12L),
                 Column.of("age", 10), Column.of("name", "Otavio"),
                 Column.of("phones", Arrays.asList("234", "2342")));
 
@@ -107,10 +107,10 @@ public class DefaultColumnEntityConverterTest {
     public void shouldConvertColumnEntityFromEntity() {
 
         ColumnEntity entity = converter.toColumn(actor);
-        assertEquals("Actor", entity.getName());
+        assertEquals("Actor", entity.name());
         assertEquals(6, entity.size());
 
-        assertThat(entity.getColumns()).contains(columns);
+        assertThat(entity.columns()).contains(columns);
     }
 
     @Test
@@ -191,10 +191,10 @@ public class DefaultColumnEntityConverterTest {
         });
 
         assertEquals(3, columns.size());
-        assertEquals("movie", subColumn.getName());
-        assertEquals(movie.getTitle(), columns.stream().filter(c -> "title".equals(c.getName())).findFirst().get().get());
-        assertEquals(movie.getYear(), columns.stream().filter(c -> "year".equals(c.getName())).findFirst().get().get());
-        assertEquals(movie.getActors(), columns.stream().filter(c -> "actors".equals(c.getName())).findFirst().get().get());
+        assertEquals("movie", subColumn.name());
+        assertEquals(movie.getTitle(), columns.stream().filter(c -> "title".equals(c.name())).findFirst().get().get());
+        assertEquals(movie.getYear(), columns.stream().filter(c -> "year".equals(c.name())).findFirst().get().get());
+        assertEquals(movie.getActors(), columns.stream().filter(c -> "actors".equals(c.name())).findFirst().get().get());
 
 
     }
@@ -270,7 +270,7 @@ public class DefaultColumnEntityConverterTest {
         worker.setSalary(new Money("BRL", BigDecimal.TEN));
         worker.setJob(job);
         ColumnEntity entity = converter.toColumn(worker);
-        assertEquals("Worker", entity.getName());
+        assertEquals("Worker", entity.name());
         assertEquals("Bob", entity.find("name").get().get());
         assertEquals("Sao Paulo", entity.find("city").get().get());
         assertEquals("Java Developer", entity.find("description").get().get());
@@ -323,7 +323,7 @@ public class DefaultColumnEntityConverterTest {
         List<List<Column>> columns = (List<List<Column>>) contacts.get();
 
         assertEquals(3L, columns.stream().flatMap(Collection::stream)
-                .filter(c -> c.getName().equals("contact_name"))
+                .filter(c -> c.name().equals("contact_name"))
                 .count());
     }
 
@@ -366,8 +366,8 @@ public class DefaultColumnEntityConverterTest {
         address.setZipCode(zipcode);
 
         ColumnEntity columnEntity = converter.toColumn(address);
-        List<Column> columns = columnEntity.getColumns();
-        assertEquals("Address", columnEntity.getName());
+        List<Column> columns = columnEntity.columns();
+        assertEquals("Address", columnEntity.name());
         assertEquals(4, columns.size());
         List<Column> zip = columnEntity.find("zipCode").map(d -> d.get(new TypeReference<List<Column>>() {
         })).orElse(Collections.emptyList());
@@ -375,8 +375,8 @@ public class DefaultColumnEntityConverterTest {
         assertEquals("Rua Engenheiro Jose Anasoh", getValue(columnEntity.find("street")));
         assertEquals("Salvador", getValue(columnEntity.find("city")));
         assertEquals("Bahia", getValue(columnEntity.find("state")));
-        assertEquals("12321", getValue(zip.stream().filter(d -> d.getName().equals("zip")).findFirst()));
-        assertEquals("1234", getValue(zip.stream().filter(d -> d.getName().equals("plusFour")).findFirst()));
+        assertEquals("12321", getValue(zip.stream().filter(d -> d.name().equals("zip")).findFirst()));
+        assertEquals("1234", getValue(zip.stream().filter(d -> d.name().equals("plusFour")).findFirst()));
     }
 
     @Test
@@ -501,7 +501,7 @@ public class DefaultColumnEntityConverterTest {
     }
 
     private Object getValue(Optional<Column> column) {
-        return column.map(Column::getValue).map(Value::get).orElse(null);
+        return column.map(Column::value).map(Value::get).orElse(null);
     }
 
 }

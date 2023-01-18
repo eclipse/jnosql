@@ -14,17 +14,17 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.SortType;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.query.SelectQuery;
+import jakarta.data.repository.Pageable;
+import jakarta.data.repository.Sort;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -42,63 +42,53 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
     @Override
     public Stream<Vertex> apply(GraphQueryMethod graphQuery, Object[] params) {
 
-        SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
+        SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
         SelectQuery query = selectMethodFactory.apply(graphQuery.getMethod(), graphQuery.getEntityName());
         EntityMetadata mapping = graphQuery.getMapping();
 
-        GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, query::getWhere, mapping);
+        GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, query::where, mapping);
 
-        query.getOrderBy().forEach(getSort(traversal, mapping));
-        setSort(params, traversal);
-        setPagination(params, traversal, query);
+        query.orderBy().forEach(getSort(traversal, mapping));
+        setPagination(params, traversal, query, mapping);
         traversal.hasLabel(mapping.getName());
         return traversal.toStream();
     }
 
 
-    private Consumer<Sort> getSort(GraphTraversal<Vertex, Vertex> traversal, EntityMetadata mapping) {
+    private static Consumer<Sort> getSort(GraphTraversal<Vertex, Vertex> traversal, EntityMetadata mapping) {
         return o -> {
-            if (SortType.ASC.equals(o.getType())) {
-                traversal.order().by(mapping.getColumnField(o.getName()), asc);
+            if (o.isAscending()) {
+                traversal.order().by(mapping.getColumnField(o.property()), asc);
             } else {
-                traversal.order().by(mapping.getColumnField(o.getName()), desc);
+                traversal.order().by(mapping.getColumnField(o.property()), desc);
             }
         };
     }
 
 
-    static void setPagination(Object[] args, GraphTraversal<Vertex, Vertex> traversal) {
-        setPagination(args, traversal, null);
+    static void setPagination(Object[] args, GraphTraversal<Vertex, Vertex> traversal, EntityMetadata mapping) {
+        setPagination(args, traversal, null, mapping);
     }
 
 
-    private static void setPagination(Object[] args, GraphTraversal<Vertex, Vertex> traversal, SelectQuery query) {
-        Pagination pagination = DynamicReturn.findPagination(args);
-        if (pagination != null) {
-            traversal.skip(pagination.getSkip())
-                    .limit(pagination.getLimit());
-            return;
-        }
+    private static void setPagination(Object[] args, GraphTraversal<Vertex, Vertex> traversal, SelectQuery query, EntityMetadata mapping) {
+        Optional<Pageable> pageable = DynamicReturn.findPagination(args);
 
         if (query != null) {
-            if (query.getSkip() > 0) {
-                traversal.skip(query.getSkip());
+            if (query.skip() > 0) {
+                traversal.skip(query.skip());
             }
 
-            if (query.getLimit() > 0) {
-                traversal.next((int) query.getLimit());
+            if (query.limit() > 0) {
+                traversal.next((int) query.limit());
             }
         }
+        pageable.ifPresent(p -> {
+            p.sorts().forEach(getSort(traversal, mapping));
+            traversal.skip(NoSQLPage.skip(p)).limit(p.size());
+        });
 
     }
 
-    static void setSort(Object[] args, GraphTraversal<Vertex, Vertex> traversal) {
-        List<Sort> sorts = DynamicReturn.findSorts(args);
-        if (!sorts.isEmpty()) {
-            for (Sort sort : sorts) {
-                traversal.order().by(sort.getName(), sort.getType() == SortType.ASC ? asc : desc);
-            }
-        }
-    }
 
 }

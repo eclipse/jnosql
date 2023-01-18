@@ -16,9 +16,9 @@
  */
 package org.eclipse.jnosql.communication.reader;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.TypeReferenceReader;
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.TypeReferenceReader;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.Entry;
 import org.junit.jupiter.api.Test;
 
@@ -123,12 +123,12 @@ public class MapTypeReferenceReaderTest {
         }
 
         @Override
-        public String getName() {
+        public String name() {
             return name;
         }
 
         @Override
-        public Value getValue() {
+        public Value value() {
             return value;
         }
     }

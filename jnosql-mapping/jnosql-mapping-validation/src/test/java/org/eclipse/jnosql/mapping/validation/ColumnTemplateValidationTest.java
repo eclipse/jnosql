@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.validation;
 
-import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.nosql.column.ColumnTemplate;
 import jakarta.nosql.tck.test.CDIExtension;
 import org.junit.jupiter.api.Test;
 

@@ -14,8 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.mapping.document.DocumentEntityPrePersist;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -26,13 +25,13 @@ public class DocumentEntityPrePersistTest {
 
     @Test
     public void shouldReturnNPEWhenEntityIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> new DefaultDocumentEntityPrePersist(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new DocumentEntityPrePersist(null));
     }
 
     @Test
     public void shouldReturnInstance() {
         DocumentEntity entity = DocumentEntity.of("collection");
-        DocumentEntityPrePersist prePersist = new DefaultDocumentEntityPrePersist(entity);
-        assertEquals(entity, prePersist.getEntity());
+        DocumentEntityPrePersist prePersist = new DocumentEntityPrePersist(entity);
+        assertEquals(entity, prePersist.get());
     }
 }

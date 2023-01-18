@@ -15,12 +15,12 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import jakarta.nosql.mapping.MappingException;
-
+import jakarta.data.exceptions.MappingException;
 import jakarta.enterprise.event.Event;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.enterprise.util.TypeLiteral;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

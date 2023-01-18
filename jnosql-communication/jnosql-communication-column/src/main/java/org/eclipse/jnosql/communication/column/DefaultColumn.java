@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -16,17 +16,15 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
-import org.eclipse.jnosql.communication.Entry;
+import org.eclipse.jnosql.communication.TypeSupplier;
+import org.eclipse.jnosql.communication.Value;
 
 import java.util.Objects;
 
 /**
- * The default implementation of {@link Column}
+ * Default implementation of {@link Column}
  */
-final class DefaultColumn implements Column, Entry {
+final class DefaultColumn implements Column {
 
     private final String name;
 
@@ -37,14 +35,16 @@ final class DefaultColumn implements Column, Entry {
         this.value = value;
     }
 
-
-    public String getName() {
+    @Override
+    public String name() {
         return name;
     }
 
-    public Value getValue() {
+    @Override
+    public Value value() {
         return value;
     }
+
 
     @Override
     public <T> T get(Class<T> type) {
@@ -74,8 +74,8 @@ final class DefaultColumn implements Column, Entry {
         }
 
         Column that = (Column) o;
-        return Objects.equals(name, that.getName()) &&
-                Objects.equals(value, that.getValue());
+        return Objects.equals(name, that.name()) &&
+                Objects.equals(value, that.value());
     }
 
     @Override
@@ -85,7 +85,7 @@ final class DefaultColumn implements Column, Entry {
 
     @Override
     public String toString() {
-        return "DefaultColumn{" + "name='" + name + '\'' +
+        return "Column{" + "name='" + name + '\'' +
                 ", value=" + value +
                 '}';
     }

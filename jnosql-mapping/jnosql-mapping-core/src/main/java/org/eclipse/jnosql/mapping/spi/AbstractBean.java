@@ -21,6 +21,7 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.enterprise.inject.spi.PassivationCapable;
+
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.Set;

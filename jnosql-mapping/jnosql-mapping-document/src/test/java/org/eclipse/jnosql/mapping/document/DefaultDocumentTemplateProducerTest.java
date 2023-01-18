@@ -14,10 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.mapping.document.DocumentTemplateProducer;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import jakarta.nosql.document.DocumentTemplate;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

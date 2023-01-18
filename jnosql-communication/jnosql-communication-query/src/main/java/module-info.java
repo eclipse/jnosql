@@ -11,22 +11,15 @@
  */
 module org.eclipse.jnosql.communication.query {
     requires org.antlr.antlr4.runtime;
-    requires jakarta.nosql.communication.core;
-    requires jakarta.nosql.communication.query;
     requires jakarta.json;
+    requires org.eclipse.jnosql.communication.core;
+    requires jakarta.data.api;
 
     exports org.eclipse.jnosql.communication.query.method;
+    exports org.eclipse.jnosql.communication.query;
 
     opens org.eclipse.jnosql.communication.query;
     opens org.eclipse.jnosql.communication.query.method;
-    opens org.eclipse.jnosql.communication.query.cache;
 
-    provides jakarta.nosql.query.DeleteQuery.DeleteQueryProvider with org.eclipse.jnosql.communication.query.cache.CachedDeleteQueryProvider;
-    provides jakarta.nosql.query.DelQuery.DelQueryProvider with org.eclipse.jnosql.communication.query.cache.CachedDelQueryProvider;
-    provides jakarta.nosql.query.GetQuery.GetQueryProvider with org.eclipse.jnosql.communication.query.cache.CachedGetQueryProvider;
-    provides jakarta.nosql.query.InsertQuery.InsertQueryProvider with org.eclipse.jnosql.communication.query.cache.CachedInsertQueryProvider;
-    provides jakarta.nosql.query.PutQuery.PutQueryProvider with org.eclipse.jnosql.communication.query.cache.CachedPutQueryProvider;
-    provides jakarta.nosql.query.SelectQuery.SelectQueryProvider with org.eclipse.jnosql.communication.query.cache.CachedSelectQueryProvider;
-    provides jakarta.nosql.query.UpdateQuery.UpdateQueryProvider with org.eclipse.jnosql.communication.query.cache.CachedUpdateQueryProvider;
 
 }

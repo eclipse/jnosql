@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.Convert;
-import jakarta.nosql.mapping.Id;
+import jakarta.nosql.Column;
+import jakarta.nosql.Id;
+import org.eclipse.jnosql.mapping.Convert;
 
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -24,7 +24,6 @@ import java.util.Optional;
 class ParameterMetaDataBuilder {
 
     private final Parameter parameter;
-
 
     private ParameterMetaDataBuilder(Parameter parameter) {
         this.parameter = parameter;

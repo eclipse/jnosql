@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.repository.returns;
 
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.repository.RepositoryReturn;
 import org.junit.jupiter.api.Assertions;
@@ -61,7 +61,7 @@ class QueueRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).size(2))
+                .withPagination(Pageable.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
         LinkedList<Person> person = (LinkedList<Person>) repositoryReturn.convertPageable(dynamic);

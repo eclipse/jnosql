@@ -14,25 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.tck.entities.Actor;
-import jakarta.nosql.tck.entities.Address;
-import jakarta.nosql.tck.entities.AppointmentBook;
-import jakarta.nosql.tck.entities.Contact;
-import jakarta.nosql.tck.entities.ContactType;
-import jakarta.nosql.tck.entities.Director;
-import jakarta.nosql.tck.entities.Download;
-import jakarta.nosql.tck.entities.Job;
-import jakarta.nosql.tck.entities.Money;
-import jakarta.nosql.tck.entities.Movie;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.Vendor;
-import jakarta.nosql.tck.entities.Worker;
-import jakarta.nosql.tck.entities.ZipCode;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.mapping.test.entities.Actor;
+import org.eclipse.jnosql.mapping.test.entities.Address;
+import org.eclipse.jnosql.mapping.test.entities.AppointmentBook;
+import org.eclipse.jnosql.mapping.test.entities.Contact;
+import org.eclipse.jnosql.mapping.test.entities.ContactType;
+import org.eclipse.jnosql.mapping.test.entities.Director;
+import org.eclipse.jnosql.mapping.test.entities.Download;
+import org.eclipse.jnosql.mapping.test.entities.Job;
+import org.eclipse.jnosql.mapping.test.entities.Money;
+import org.eclipse.jnosql.mapping.test.entities.Movie;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.Vendor;
+import org.eclipse.jnosql.mapping.test.entities.Worker;
+import org.eclipse.jnosql.mapping.test.entities.ZipCode;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.mapping.document.entities.Citizen;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,9 +93,9 @@ public class DefaultDocumentEntityConverterTest {
                 .withPhones(Arrays.asList("234", "2342")).build();
 
         DocumentEntity entity = converter.toDocument(person);
-        assertEquals("Person", entity.getName());
+        assertEquals("Person", entity.name());
         assertEquals(4, entity.size());
-        assertThat(entity.getDocuments()).contains(Document.of("_id", 12L),
+        assertThat(entity.documents()).contains(Document.of("_id", 12L),
                 Document.of("age", 10), Document.of("name", "Otavio"),
                 Document.of("phones", Arrays.asList("234", "2342")));
 
@@ -106,11 +106,11 @@ public class DefaultDocumentEntityConverterTest {
 
 
         DocumentEntity entity = converter.toDocument(actor);
-        assertEquals("Actor", entity.getName());
+        assertEquals("Actor", entity.name());
         assertEquals(6, entity.size());
 
 
-        assertThat(entity.getDocuments()).contains(documents);
+        assertThat(entity.documents()).contains(documents);
     }
 
     @Test
@@ -189,11 +189,11 @@ public class DefaultDocumentEntityConverterTest {
         List<Document> documents = subdocument.get(new TypeReference<>() {
         });
         assertEquals(3, documents.size());
-        assertEquals("movie", subdocument.getName());
+        assertEquals("movie", subdocument.name());
 
-        assertEquals(movie.getTitle(), getValue(documents.stream().filter(d -> "title".equals(d.getName())).findFirst()));
-        assertEquals(movie.getYear(), getValue(documents.stream().filter(d -> "year".equals(d.getName())).findFirst()));
-        assertEquals(movie.getActors(), getValue(documents.stream().filter(d -> "actors".equals(d.getName())).findFirst()));
+        assertEquals(movie.getTitle(), getValue(documents.stream().filter(d -> "title".equals(d.name())).findFirst()));
+        assertEquals(movie.getYear(), getValue(documents.stream().filter(d -> "year".equals(d.name())).findFirst()));
+        assertEquals(movie.getActors(), getValue(documents.stream().filter(d -> "actors".equals(d.name())).findFirst()));
 
 
     }
@@ -273,7 +273,7 @@ public class DefaultDocumentEntityConverterTest {
         worker.setSalary(new Money("BRL", BigDecimal.TEN));
         worker.setJob(job);
         DocumentEntity entity = converter.toDocument(worker);
-        assertEquals("Worker", entity.getName());
+        assertEquals("Worker", entity.name());
         assertEquals("Bob", entity.find("name").get().get());
         assertEquals("Sao Paulo", entity.find("city").get().get());
         assertEquals("Java Developer", entity.find("description").get().get());
@@ -325,7 +325,7 @@ public class DefaultDocumentEntityConverterTest {
         List<List<Document>> documents = (List<List<Document>>) contacts.get();
 
         assertEquals(3L, documents.stream().flatMap(Collection::stream)
-                .filter(c -> c.getName().equals("contact_name"))
+                .filter(c -> c.name().equals("contact_name"))
                 .count());
     }
 
@@ -368,16 +368,16 @@ public class DefaultDocumentEntityConverterTest {
         address.setZipCode(zipcode);
 
         DocumentEntity documentEntity = converter.toDocument(address);
-        List<Document> documents = documentEntity.getDocuments();
-        assertEquals("Address", documentEntity.getName());
+        List<Document> documents = documentEntity.documents();
+        assertEquals("Address", documentEntity.name());
         assertEquals(4, documents.size());
         List<Document> zip = documentEntity.find("zipCode").map(d -> d.get(new TypeReference<List<Document>>() {
         })).orElse(Collections.emptyList());
         assertEquals("Rua Engenheiro Jose Anasoh", getValue(documentEntity.find("street")));
         assertEquals("Salvador", getValue(documentEntity.find("city")));
         assertEquals("Bahia", getValue(documentEntity.find("state")));
-        assertEquals("12321", getValue(zip.stream().filter(d -> d.getName().equals("zip")).findFirst()));
-        assertEquals("1234", getValue(zip.stream().filter(d -> d.getName().equals("plusFour")).findFirst()));
+        assertEquals("12321", getValue(zip.stream().filter(d -> d.name().equals("zip")).findFirst()));
+        assertEquals("1234", getValue(zip.stream().filter(d -> d.name().equals("plusFour")).findFirst()));
     }
 
     @Test
@@ -496,7 +496,7 @@ public class DefaultDocumentEntityConverterTest {
     }
 
     private Object getValue(Optional<Document> document) {
-        return document.map(Document::getValue).map(Value::get).orElse(null);
+        return document.map(Document::value).map(Value::get).orElse(null);
     }
 
     @Test

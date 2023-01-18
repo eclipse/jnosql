@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentDeleteQuery;
+import org.eclipse.jnosql.communication.document.DocumentCondition;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,17 +34,17 @@ class MappingDocumentDeleteQuery implements DocumentDeleteQuery {
     }
 
     @Override
-    public String getDocumentCollection() {
+    public String name() {
         return documentCollection;
     }
 
     @Override
-    public Optional<DocumentCondition> getCondition() {
+    public Optional<DocumentCondition> condition() {
         return Optional.ofNullable(condition);
     }
 
     @Override
-    public List<String> getDocuments() {
+    public List<String> documents() {
         return Collections.emptyList();
     }
 
@@ -57,8 +57,9 @@ class MappingDocumentDeleteQuery implements DocumentDeleteQuery {
             return false;
         }
         DocumentDeleteQuery that = (DocumentDeleteQuery) o;
-        return Objects.equals(documentCollection, that.getDocumentCollection()) &&
-                Objects.equals(condition, that.getCondition().orElse(null)) && Objects.equals(Collections.emptyList(), that.getDocuments());
+        return Objects.equals(documentCollection, that.name()) &&
+                Objects.equals(condition, that.condition().orElse(null)) && Objects.equals(Collections.emptyList(),
+                that.documents());
     }
 
     @Override

@@ -18,6 +18,7 @@ package org.eclipse.jnosql.mapping.reflection;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;

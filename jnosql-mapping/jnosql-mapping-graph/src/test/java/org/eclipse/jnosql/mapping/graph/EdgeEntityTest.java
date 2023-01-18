@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.Value;
-import jakarta.nosql.mapping.EntityNotFoundException;
+import jakarta.data.exceptions.EmptyResultException;
+import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -89,7 +89,7 @@ public class EdgeEntityTest {
 
     @Test
     public void shouldReturnEntityNotFoundWhenOutBoundDidNotFound() {
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+        Assertions.assertThrows( EmptyResultException.class, () -> {
             Person person = Person.builder().withId(-10L).withName("Poliana").withAge().build();
             Book book = graphTemplate.insert(Book.builder().withAge(2007).withName("The Shack").build());
             graphTemplate.edge(person, "reads", book);
@@ -98,7 +98,7 @@ public class EdgeEntityTest {
 
     @Test
     public void shouldReturnEntityNotFoundWhenInBoundDidNotFound() {
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+        Assertions.assertThrows( EmptyResultException.class, () -> {
             Person person = graphTemplate.insert(Person.builder().withName("Poliana").withAge().build());
             Book book = Book.builder().withId(10L).withAge(2007).withName("The Shack").build();
             graphTemplate.edge(person, "reads", book);

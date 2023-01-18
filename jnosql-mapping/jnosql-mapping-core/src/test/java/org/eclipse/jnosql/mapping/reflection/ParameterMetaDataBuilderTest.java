@@ -14,15 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.mapping.AttributeConverter;
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.tck.entities.Animal;
-import jakarta.nosql.tck.entities.Money;
-import jakarta.nosql.tck.entities.MoneyConverter;
-import jakarta.nosql.tck.entities.constructor.Computer;
-import jakarta.nosql.tck.entities.constructor.PetOwner;
-import jakarta.nosql.tck.entities.constructor.BookUser;
+import org.eclipse.jnosql.communication.TypeSupplier;
+import org.eclipse.jnosql.mapping.AttributeConverter;
+import jakarta.nosql.Column;
+import org.eclipse.jnosql.mapping.test.entities.Animal;
+import org.eclipse.jnosql.mapping.test.entities.Money;
+import org.eclipse.jnosql.mapping.test.entities.MoneyConverter;
+import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
+import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

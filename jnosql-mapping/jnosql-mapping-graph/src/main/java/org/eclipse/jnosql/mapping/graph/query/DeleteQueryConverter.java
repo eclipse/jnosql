@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.nosql.query.DeleteQuery;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.communication.query.DeleteQuery;
 import org.eclipse.jnosql.communication.query.method.DeleteMethodProvider;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
@@ -32,10 +32,10 @@ final class DeleteQueryConverter extends AbstractQueryConvert implements Functio
 
     @Override
     public List<Vertex> apply(GraphQueryMethod graphQuery) {
-        DeleteMethodProvider provider = DeleteMethodProvider.get();
+        DeleteMethodProvider provider = DeleteMethodProvider.INSTANCE;
         DeleteQuery deleteQuery = provider.apply(graphQuery.getMethod(), graphQuery.getEntityName());
         EntityMetadata mapping = graphQuery.getMapping();
-        GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, deleteQuery::getWhere, mapping);
+        GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, deleteQuery::where, mapping);
         traversal.hasLabel(mapping.getName());
         return traversal.toList();
     }

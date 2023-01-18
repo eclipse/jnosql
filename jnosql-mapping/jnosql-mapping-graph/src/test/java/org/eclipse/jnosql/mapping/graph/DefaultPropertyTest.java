@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.Value;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.junit.jupiter.api.Test;
 

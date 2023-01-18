@@ -14,8 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.EntityPostPersist;
+import org.eclipse.jnosql.mapping.EntityPrePersist;
+
 
 /**
  * This interface represent the manager of events. When an entity be either saved or updated an event will be fired. This order gonna be:
@@ -28,21 +33,21 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
  *
  * @see GraphWorkflow
  */
-public interface GraphEventPersistManager {
+@ApplicationScoped
+class GraphEventPersistManager {
 
-    /**
-     * Fire an event after the conversion of the entity to communication API model.
-     *
-     * @param entity the entity
-     */
-    void firePreGraph(Vertex entity);
 
-    /**
-     * Fire an event after the response from communication layer
-     *
-     * @param entity the entity
-     */
-    void firePostGraph(Vertex entity);
+    @Inject
+    private Event<EntityPrePersist> entityPrePersistEvent;
+
+    @Inject
+    private Event<EntityPostPersist> entityPostPersistEvent;
+
+    @Inject
+    private Event<EntityGraphPrePersist> entityGraphPrePersist;
+
+    @Inject
+    private Event<EntityGraphPostPersist> entityGraphPostPersist;
 
     /**
      * Fire an event once the method is called
@@ -50,7 +55,9 @@ public interface GraphEventPersistManager {
      * @param entity the entity
      * @param <T>    the entity type
      */
-    <T> void firePreEntity(T entity);
+    public <T> void firePreEntity(T entity) {
+        entityPrePersistEvent.fire(EntityPrePersist.of(entity));
+    }
 
     /**
      * Fire an event after convert the {@link Vertex},
@@ -59,8 +66,9 @@ public interface GraphEventPersistManager {
      * @param entity the entity
      * @param <T>    the entity kind
      */
-    <T> void firePostEntity(T entity);
-
+    public <T> void firePostEntity(T entity) {
+        entityPostPersistEvent.fire(EntityPostPersist.of(entity));
+    }
 
     /**
      * Fire an event once the method is called after firePreEntity
@@ -68,7 +76,9 @@ public interface GraphEventPersistManager {
      * @param entity the entity
      * @param <T>    the entity type
      */
-    <T> void firePreGraphEntity(T entity);
+    public <T> void firePreGraphEntity(T entity) {
+        entityGraphPrePersist.fire(EntityGraphPrePersist.of(entity));
+    }
 
     /**
      * Fire an event after firePostEntity
@@ -76,5 +86,7 @@ public interface GraphEventPersistManager {
      * @param entity the entity
      * @param <T>    the entity kind
      */
-    <T> void firePostGraphEntity(T entity);
+    public <T> void firePostGraphEntity(T entity) {
+        entityGraphPostPersist.fire(EntityGraphPostPersist.of(entity));
+    }
 }

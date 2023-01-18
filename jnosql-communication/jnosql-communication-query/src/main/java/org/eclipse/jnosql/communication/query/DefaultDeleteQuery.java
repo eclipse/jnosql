@@ -11,14 +11,15 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.DeleteQuery;
-import jakarta.nosql.query.Where;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * The default implementation of {@index DeleteQuery}
+ */
 final class DefaultDeleteQuery implements DeleteQuery {
 
     private final String entity;
@@ -34,17 +35,17 @@ final class DefaultDeleteQuery implements DeleteQuery {
     }
 
     @Override
-    public List<String> getFields() {
+    public List<String> fields() {
         return Collections.unmodifiableList(fields);
     }
 
     @Override
-    public String getEntity() {
+    public String entity() {
         return entity;
     }
 
     @Override
-    public Optional<Where> getWhere() {
+    public Optional<Where> where() {
         return Optional.ofNullable(where);
     }
 
@@ -65,5 +66,14 @@ final class DefaultDeleteQuery implements DeleteQuery {
     @Override
     public int hashCode() {
         return Objects.hash(entity, fields, where);
+    }
+
+    @Override
+    public String toString() {
+        return "DeleteQuery{" +
+                "entity='" + entity + '\'' +
+                ", fields=" + fields +
+                ", where=" + where +
+                '}';
     }
 }

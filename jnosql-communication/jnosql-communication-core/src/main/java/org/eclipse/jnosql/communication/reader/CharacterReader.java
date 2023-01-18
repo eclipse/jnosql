@@ -18,7 +18,7 @@
 package org.eclipse.jnosql.communication.reader;
 
 
-import jakarta.nosql.ValueReader;
+import org.eclipse.jnosql.communication.ValueReader;
 
 import static java.lang.Character.MIN_VALUE;
 

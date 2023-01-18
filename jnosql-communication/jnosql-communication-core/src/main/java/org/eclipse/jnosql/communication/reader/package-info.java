@@ -16,8 +16,8 @@
  */
 
 /**
- * The {@link jakarta.nosql.ValueReader} has the goal read a information from Value by Class informed
- * from {@link jakarta.nosql.Value#get(java.lang.Class)}.
+ * The {@link org.eclipse.jnosql.communication.ValueReader} has the goal read a information from Value by Class informed
+ * from {@link org.eclipse.jnosql.communication.Value#get(java.lang.Class)}.
  * This package has all implementations supported by default in Diana Project
  */
 package org.eclipse.jnosql.communication.reader;

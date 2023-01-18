@@ -15,57 +15,38 @@
 package org.eclipse.jnosql.mapping.keyvalue.spi;
 
 
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.mapping.Repository;
-import org.eclipse.jnosql.mapping.DatabaseMetadata;
-import org.eclipse.jnosql.mapping.Databases;
-import org.eclipse.jnosql.mapping.keyvalue.query.RepositoryKeyValueBean;
-
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
-import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
 import jakarta.enterprise.inject.spi.ProcessProducer;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
+import org.eclipse.jnosql.mapping.DatabaseMetadata;
+import org.eclipse.jnosql.mapping.Databases;
+import org.eclipse.jnosql.mapping.keyvalue.query.RepositoryKeyValueBean;
+import org.eclipse.jnosql.mapping.reflection.ClassScanner;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import static jakarta.nosql.mapping.DatabaseType.KEY_VALUE;
+import static org.eclipse.jnosql.mapping.DatabaseType.KEY_VALUE;
 
-/**
- * Extension to start up {@link jakarta.nosql.mapping.keyvalue.KeyValueTemplate} and {@link jakarta.nosql.mapping.Repository}
- * from the {@link jakarta.enterprise.inject.Default} and {@link jakarta.nosql.mapping.Database} qualifier
- */
+
 public class KeyValueExtension implements Extension {
 
     private static final Logger LOGGER = Logger.getLogger(KeyValueExtension.class.getName());
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
-    private final Collection<Class<?>> crudTypes = new HashSet<>();
-
     <T, X extends BucketManager> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, KEY_VALUE, databases);
     }
 
-    <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-
-        if (Repository.class.equals(javaClass)) {
-            return;
-        }
-
-        if (Arrays.asList(javaClass.getInterfaces()).contains(Repository.class)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudTypes.add(repo.getAnnotatedType().getJavaClass());
-        }
-    }
-
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
+
+        ClassScanner scanner = ClassScanner.INSTANCE;
+        Set<Class<?>> crudTypes = scanner.repositoriesStandard();
         LOGGER.info(String.format("Processing Key-Value extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a Key-Value implementation: " + crudTypes);

@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
-import jakarta.nosql.mapping.DynamicQueryException;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+import jakarta.data.repository.PageableRepository;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
 
@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
 public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHandler {
 
 
-    protected abstract Repository getRepository();
+    protected abstract PageableRepository getRepository();
 
     protected abstract KeyValueTemplate getTemplate();
 

@@ -17,8 +17,8 @@
 
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
+
+import org.eclipse.jnosql.communication.Value;
 
 import java.util.List;
 import java.util.Map;

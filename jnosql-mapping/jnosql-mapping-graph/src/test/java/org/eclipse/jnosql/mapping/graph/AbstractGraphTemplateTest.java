@@ -14,15 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.EntityNotFoundException;
-import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.PreparedStatement;
+import jakarta.data.exceptions.EmptyResultException;
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.nosql.PreparedStatement;
 import org.apache.tinkerpop.gremlin.structure.Direction;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.graph.entities.Animal;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
@@ -137,7 +138,7 @@ public abstract class AbstractGraphTemplateTest {
 
     @Test
     public void shouldGetErrorWhenEntityIsNotSavedYet() {
-        assertThrows(EntityNotFoundException.class, () -> {
+        assertThrows(EmptyResultException.class, () -> {
             Person person = Person.builder().withAge()
                     .withId(10L)
                     .withName("Otavio").build();
@@ -450,7 +451,7 @@ public abstract class AbstractGraphTemplateTest {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(param)");
         prepare.bind("param", "Person");
-        List<Person> people = prepare.<Person>getResult().collect(Collectors.toList());
+        List<Person> people = prepare.<Person>result().collect(Collectors.toList());
         assertThat(people.stream().map(Person::getName).collect(toList())).contains("Otavio");
     }
 
@@ -459,7 +460,7 @@ public abstract class AbstractGraphTemplateTest {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(param)");
         prepare.bind("param", "Person");
-        Optional<Person> otavio = prepare.getSingleResult();
+        Optional<Person> otavio = prepare.singleResult();
         assertTrue(otavio.isPresent());
     }
 
@@ -467,7 +468,7 @@ public abstract class AbstractGraphTemplateTest {
     public void shouldExecutePrepareStatementSingletonEmpty() {
         PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(param)");
         prepare.bind("param", "Person");
-        Optional<Person> otavio = prepare.getSingleResult();
+        Optional<Person> otavio = prepare.singleResult();
         assertFalse(otavio.isPresent());
     }
 
@@ -477,7 +478,7 @@ public abstract class AbstractGraphTemplateTest {
         getGraphTemplate().insert(Person.builder().withAge().withName("Poliana").build());
         PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(param)");
         prepare.bind("param", "Person");
-        assertThrows(NonUniqueResultException.class, prepare::getSingleResult);
+        assertThrows(NonUniqueResultException.class, prepare::singleResult);
     }
 
     @Test
@@ -506,6 +507,32 @@ public abstract class AbstractGraphTemplateTest {
         assertEquals(otavio.getName(), person.map(Person::getName).get());
     }
 
+    @Test
+    public void shouldFindAll() {
+        final Person otavio = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+        List<Person> people = getGraphTemplate().findAll(Person.class).collect(Collectors.toUnmodifiableList());
+
+        assertThat(people).hasSize(1)
+                .map(Person::getName)
+                .contains("Otavio");
+    }
+
+    @Test
+    public void shouldDeleteAll() {
+        final Person otavio = getGraphTemplate().insert(Person.builder().withAge()
+                .withName("Otavio").build());
+        List<Person> people = getGraphTemplate().findAll(Person.class).collect(Collectors.toUnmodifiableList());
+
+        assertThat(people).hasSize(1)
+                .map(Person::getName)
+                .contains("Otavio");
+
+        getGraphTemplate().deleteAll(Person.class);
+        people = getGraphTemplate().findAll(Person.class).collect(Collectors.toUnmodifiableList());
+
+        assertThat(people).isEmpty();
+    }
 
     @Test
     public void shouldReturnEmptyWhenFindByIdNotFound() {

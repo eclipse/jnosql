@@ -17,15 +17,12 @@ package org.eclipse.jnosql.mapping.document;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import jakarta.nosql.mapping.document.DocumentEventPersistManager;
-import jakarta.nosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 /**
- * The default implementation of {@link jakarta.nosql.mapping.document.DocumentTemplate}
+ * The default implementation of DocumentTemplate
  */
 @SuppressWarnings("unchecked")
 @ApplicationScoped
@@ -87,5 +84,6 @@ class DefaultDocumentTemplate extends AbstractDocumentTemplate {
     protected Converters getConverters() {
         return converters;
     }
+
 
 }

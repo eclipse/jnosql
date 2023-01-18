@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.repository.returns;
 
-import jakarta.nosql.mapping.DynamicQueryException;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
+import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.repository.RepositoryReturn;
 import org.junit.jupiter.api.Assertions;
@@ -63,7 +63,7 @@ class SortedSetRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).size(2))
+                .withPagination(Pageable.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
         TreeSet<Person> person = (TreeSet<Person>) repositoryReturn.convertPageable(dynamic);
@@ -97,7 +97,7 @@ class SortedSetRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(animal))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).size(2))
+                .withPagination(Pageable.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
         Assertions.assertThrows(DynamicQueryException.class, () -> repositoryReturn.convertPageable(dynamic));
@@ -113,7 +113,7 @@ class SortedSetRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(animal))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).size(2))
+                .withPagination(Pageable.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
         Assertions.assertThrows(DynamicQueryException.class, () -> repositoryReturn.convert(dynamic));

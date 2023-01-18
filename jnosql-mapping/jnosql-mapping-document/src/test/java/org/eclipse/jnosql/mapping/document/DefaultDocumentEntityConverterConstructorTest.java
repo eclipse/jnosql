@@ -14,16 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import jakarta.nosql.tck.entities.Animal;
-import jakarta.nosql.tck.entities.Money;
-import jakarta.nosql.tck.entities.constructor.BookUser;
-import jakarta.nosql.tck.entities.constructor.Computer;
-import jakarta.nosql.tck.entities.constructor.PetOwner;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.mapping.test.entities.Animal;
+import org.eclipse.jnosql.mapping.test.entities.Money;
+import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
+import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.mapping.document.entities.BookRelease;
 import org.junit.jupiter.api.Test;
 

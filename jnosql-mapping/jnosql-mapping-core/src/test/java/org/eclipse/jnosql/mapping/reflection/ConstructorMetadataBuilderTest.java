@@ -14,12 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.Worker;
-import jakarta.nosql.tck.entities.constructor.Computer;
-import jakarta.nosql.tck.entities.constructor.BookUser;
-import jakarta.nosql.tck.entities.constructor.PetOwner;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.Worker;
+import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
+import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

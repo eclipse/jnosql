@@ -17,11 +17,11 @@
 package org.eclipse.jnosql.communication.reader;
 
 
-import jakarta.nosql.ValueReader;
-import jakarta.nosql.TypeReferenceReader;
-import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.ValueReaderDecorator;
 import org.eclipse.jnosql.communication.Entry;
+import org.eclipse.jnosql.communication.TypeReferenceReader;
+import org.eclipse.jnosql.communication.TypeSupplier;
+import org.eclipse.jnosql.communication.ValueReader;
+import org.eclipse.jnosql.communication.ValueReaderDecorator;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -96,14 +96,14 @@ public class MapTypeReferenceReader implements TypeReferenceReader {
 
     private void convertEntryToMap(Object value, Map<String, Object> map) {
         Entry entry = Entry.class.cast(value);
-        Object entryValue = entry.getValue().get();
+        Object entryValue = entry.value().get();
         if (entryValue instanceof Entry) {
             Map<String, Object> subMap = new HashMap<>();
             Entry subEntry = Entry.class.cast(entryValue);
             convertEntryToMap(subEntry, subMap);
-            map.put(entry.getName(), subMap);
+            map.put(entry.name(), subMap);
         } else {
-            map.put(entry.getName(), entryValue);
+            map.put(entry.name(), entryValue);
         }
     }
 

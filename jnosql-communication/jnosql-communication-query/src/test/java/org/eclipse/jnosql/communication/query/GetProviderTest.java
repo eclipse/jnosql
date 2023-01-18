@@ -12,12 +12,6 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.GetQuery;
-import jakarta.nosql.query.GetQuery.GetQueryProvider;
-import jakarta.nosql.query.NumberQueryValue;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.StringQueryValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GetProviderTest {
 
-    private final GetQueryProvider queryProvider = new AntlrGetQueryProvider();
+    private final GetQueryConverter queryProvider = new GetQueryConverter();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {
@@ -45,7 +39,7 @@ class GetProviderTest {
     @ValueSource(strings = {"get \"Diana\""})
     public void shouldReturnParserQuery(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof StringQueryValue);
@@ -56,7 +50,7 @@ class GetProviderTest {
     @ValueSource(strings = {"get 12"})
     public void shouldReturnParserQuery1(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -67,7 +61,7 @@ class GetProviderTest {
     @ValueSource(strings = {"get 12.12"})
     public void shouldReturnParserQuery2(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -78,7 +72,7 @@ class GetProviderTest {
     @ValueSource(strings = {"get -12"})
     public void shouldReturnParserQuery3(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -89,7 +83,7 @@ class GetProviderTest {
     @ValueSource(strings = {"get -12.12"})
     public void shouldReturnParserQuery4(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -101,11 +95,11 @@ class GetProviderTest {
     @ValueSource(strings = {"get {1,12}"})
     public void shouldReturnParserQuery5(String query) {
         GetQuery getQuery = queryProvider.apply(query);
-        List<QueryValue<?>> keys = getQuery.getKeys();
+        List<QueryValue<?>> keys = getQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
-        assertTrue(key instanceof ArrayQueryValue);
-        QueryValue<?>[] values = ArrayQueryValue.class.cast(key).get();
+        assertTrue(key instanceof DefaultArrayQueryValue);
+        QueryValue<?>[] values = DefaultArrayQueryValue.class.cast(key).get();
         List<Object> ids = Arrays.stream(values).map(QueryValue::get)
                 .collect(Collectors.toList());
         assertThat(ids).contains(1L, 12L);

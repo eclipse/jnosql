@@ -1,11 +1,3 @@
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.column.ColumnQueryParser;
-import jakarta.nosql.column.DeleteQueryConverter;
-import jakarta.nosql.column.SelectQueryConverter;
 
 /*
  *  Copyright (c) 2022 Contributors to the Eclipse Foundation
@@ -19,23 +11,12 @@ import jakarta.nosql.column.SelectQueryConverter;
  *  Otavio Santana
  */
 module org.eclipse.jnosql.communication.column {
-    requires jakarta.nosql.communication.column;
-    requires jakarta.nosql.communication.core;
     requires org.eclipse.jnosql.communication.core;
-    requires jakarta.nosql.communication.query;
+    requires org.eclipse.jnosql.communication.query;
     requires jakarta.json.bind;
     requires jakarta.json;
+    requires jakarta.data.api;
 
-    opens org.eclipse.jnosql.communication.column.query;
+    opens org.eclipse.jnosql.communication.column;
 
-    provides Column.ColumnProvider with org.eclipse.jnosql.communication.column.DefaultColumnProvider;
-    provides ColumnCondition.ColumnConditionProvider with org.eclipse.jnosql.communication.column.DefaultColumnConditionProvider;
-    provides ColumnDeleteQuery.ColumnDeleteProvider with org.eclipse.jnosql.communication.column.query.DefaultColumnDeleteProvider;
-    provides ColumnDeleteQuery.ColumnDeleteQueryBuilderProvider with org.eclipse.jnosql.communication.column.query.DefaultColumnDeleteQueryBuilderProvider;
-    provides ColumnEntity.ColumnEntityProvider with org.eclipse.jnosql.communication.column.DefaultColumnEntityProvider;
-    provides ColumnQuery.ColumnQueryBuilderProvider with org.eclipse.jnosql.communication.column.query.DefaultColumnQueryBuilderProvider;
-    provides ColumnQuery.ColumnSelectProvider with org.eclipse.jnosql.communication.column.query.DefaultColumnSelectProvider;
-    provides ColumnQueryParser with org.eclipse.jnosql.communication.column.query.DefaultColumnQueryParser;
-    provides DeleteQueryConverter with org.eclipse.jnosql.communication.column.query.DeleteQueryParser;
-    provides SelectQueryConverter with org.eclipse.jnosql.communication.column.query.SelectQueryParser;
 }

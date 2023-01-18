@@ -14,21 +14,20 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.mapping.MappingException;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import jakarta.nosql.tck.entities.inheritance.EmailNotification;
-import jakarta.nosql.tck.entities.inheritance.LargeProject;
-import jakarta.nosql.tck.entities.inheritance.Notification;
-import jakarta.nosql.tck.entities.inheritance.NotificationReader;
-import jakarta.nosql.tck.entities.inheritance.Project;
-import jakarta.nosql.tck.entities.inheritance.ProjectManager;
-import jakarta.nosql.tck.entities.inheritance.SmallProject;
-import jakarta.nosql.tck.entities.inheritance.SmsNotification;
-import jakarta.nosql.tck.entities.inheritance.SocialMediaNotification;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.data.exceptions.MappingException;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.EmailNotification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.LargeProject;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.Notification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.NotificationReader;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.Project;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.ProjectManager;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SmallProject;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SmsNotification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SocialMediaNotification;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -91,7 +90,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         project.setName("Large Project");
         DocumentEntity entity = this.converter.toDocument(project);
         assertNotNull(entity);
-        assertEquals("Project", entity.getName());
+        assertEquals("Project", entity.name());
         assertEquals(project.getName(), entity.find("_id", String.class).get());
         assertEquals("Project", entity.find("size", String.class).get());
     }
@@ -103,7 +102,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         project.setBudget(BigDecimal.TEN);
         DocumentEntity entity = this.converter.toDocument(project);
         assertNotNull(entity);
-        assertEquals("Project", entity.getName());
+        assertEquals("Project", entity.name());
         assertEquals(project.getName(), entity.find("_id", String.class).get());
         assertEquals(project.getBudget(), entity.find("budget", BigDecimal.class).get());
         assertEquals("Large", entity.find("size", String.class).get());
@@ -116,7 +115,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         project.setInvestor("Otavio Santana");
         DocumentEntity entity = this.converter.toDocument(project);
         assertNotNull(entity);
-        assertEquals("Project", entity.getName());
+        assertEquals("Project", entity.name());
         assertEquals(project.getName(), entity.find("_id", String.class).get());
         assertEquals(project.getInvestor(), entity.find("investor", String.class).get());
         assertEquals("Small", entity.find("size", String.class).get());
@@ -179,7 +178,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         notification.setNickname("otaviojava");
         DocumentEntity entity = this.converter.toDocument(notification);
         assertNotNull(entity);
-        assertEquals("Notification", entity.getName());
+        assertEquals("Notification", entity.name());
         assertEquals(notification.getId(), entity.find("_id", Long.class).get());
         assertEquals(notification.getName(), entity.find("name", String.class).get());
         assertEquals(notification.getNickname(), entity.find("nickname", String.class).get());
@@ -195,7 +194,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         notification.setPhone("+351123456987");
         DocumentEntity entity = this.converter.toDocument(notification);
         assertNotNull(entity);
-        assertEquals("Notification", entity.getName());
+        assertEquals("Notification", entity.name());
         assertEquals(notification.getId(), entity.find("_id", Long.class).get());
         assertEquals(notification.getName(), entity.find("name", String.class).get());
         assertEquals(notification.getPhone(), entity.find("phone", String.class).get());
@@ -211,7 +210,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         notification.setEmail("otavio@otavio.test.com");
         DocumentEntity entity = this.converter.toDocument(notification);
         assertNotNull(entity);
-        assertEquals("Notification", entity.getName());
+        assertEquals("Notification", entity.name());
         assertEquals(notification.getId(), entity.find("_id", Long.class).get());
         assertEquals(notification.getName(), entity.find("name", String.class).get());
         assertEquals(notification.getEmail(), entity.find("email", String.class).get());
@@ -330,7 +329,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         DocumentEntity entity = this.converter.toDocument(reader);
         assertNotNull(entity);
 
-        assertEquals("NotificationReader", entity.getName());
+        assertEquals("NotificationReader", entity.name());
         assertEquals("otavio", entity.find("_id", String.class).get());
         assertEquals("Otavio", entity.find("name", String.class).get());
         List<Document> documents = entity.find("notification", new TypeReference<List<Document>>() {
@@ -360,7 +359,7 @@ class DefaultDocumentEntityConverterInheritanceTest {
         DocumentEntity entity = this.converter.toDocument(manager);
         assertNotNull(entity);
 
-        assertEquals("ProjectManager", entity.getName());
+        assertEquals("ProjectManager", entity.name());
         assertEquals(10L, entity.find("_id", Long.class).get());
         assertEquals("manager", entity.find("name", String.class).get());
 

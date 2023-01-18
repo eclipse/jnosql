@@ -14,10 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnTemplate;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.communication.column.ColumnCondition;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
@@ -45,14 +44,14 @@ abstract class AbstractMapperQuery {
 
     protected transient final Converters converters;
 
-    protected transient final ColumnTemplate template;
+    protected transient final JNoSQLColumnTemplate template;
 
     protected long start;
 
     protected long limit;
 
 
-    AbstractMapperQuery(EntityMetadata mapping, Converters converters, ColumnTemplate template) {
+    AbstractMapperQuery(EntityMetadata mapping, Converters converters, JNoSQLColumnTemplate template) {
         this.mapping = mapping;
         this.converters = converters;
         this.columnFamily = mapping.getName();

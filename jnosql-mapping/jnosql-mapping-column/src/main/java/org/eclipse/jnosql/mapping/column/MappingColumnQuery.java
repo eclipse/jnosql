@@ -14,9 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnQuery;
+
+import jakarta.data.repository.Sort;
+import org.eclipse.jnosql.communication.column.ColumnCondition;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
 
 import java.util.List;
 import java.util.Objects;
@@ -44,32 +45,32 @@ public final class MappingColumnQuery implements ColumnQuery {
     }
 
     @Override
-    public long getLimit() {
+    public long limit() {
         return limit;
     }
 
     @Override
-    public long getSkip() {
+    public long skip() {
         return skip;
     }
 
     @Override
-    public String getColumnFamily() {
+    public String name() {
         return columnFamily;
     }
 
     @Override
-    public Optional<ColumnCondition> getCondition() {
+    public Optional<ColumnCondition> condition() {
         return Optional.ofNullable(condition);
     }
 
     @Override
-    public List<String> getColumns() {
+    public List<String> columns() {
         return emptyList();
     }
 
     @Override
-    public List<Sort> getSorts() {
+    public List<Sort> sorts() {
         return sorts;
     }
 
@@ -83,11 +84,11 @@ public final class MappingColumnQuery implements ColumnQuery {
             return false;
         }
         ColumnQuery that = (ColumnQuery) o;
-        return limit == that.getLimit()
-                && skip == that.getSkip()
-                && Objects.equals(sorts, that.getSorts())
-                && Objects.equals(condition, that.getCondition().orElse(null))
-                && Objects.equals(columnFamily, that.getColumnFamily());
+        return limit == that.limit()
+                && skip == that.skip()
+                && Objects.equals(sorts, that.sorts())
+                && Objects.equals(condition, that.condition().orElse(null))
+                && Objects.equals(columnFamily, that.name());
     }
 
     @Override

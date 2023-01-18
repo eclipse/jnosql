@@ -15,12 +15,12 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 
 import jakarta.inject.Inject;
 
 @CDIExtension
-class DefaultGraphTraversalSourceConverterTest extends AbstractGraphConverterTest {
+class DefaultGraphTraversalSourceConverterTest extends GraphConverterTest {
 
     @Inject
     @GraphTraversalSourceOperation

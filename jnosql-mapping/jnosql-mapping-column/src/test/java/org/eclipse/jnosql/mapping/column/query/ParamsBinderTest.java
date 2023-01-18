@@ -14,21 +14,20 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.column.ColumnQueryParams;
-import jakarta.nosql.column.SelectQueryConverter;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.communication.column.ColumnCondition;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.column.ColumnQueryParams;
+import org.eclipse.jnosql.communication.column.SelectQueryParser;
+import org.eclipse.jnosql.communication.query.SelectQuery;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import jakarta.nosql.query.SelectQuery;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.junit.jupiter.api.Test;
@@ -63,17 +62,16 @@ class ParamsBinderTest {
         RepositoryColumnObserverParser parser = new RepositoryColumnObserverParser(entityMetadata);
         paramsBinder = new ParamsBinder(entityMetadata, converters);
 
-        SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
+        SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
         SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.getName());
-        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class,
-                ()-> ServiceLoader.load(SelectQueryConverter.class));
-        ColumnQueryParams columnQueryParams = converter.apply(selectQuery, parser);
-        Params params = columnQueryParams.getParams();
+        SelectQueryParser queryParser = new SelectQueryParser();
+        ColumnQueryParams columnQueryParams = queryParser.apply(selectQuery, parser);
+        Params params = columnQueryParams.params();
         Object[] args = {10};
         paramsBinder.bind(params, args, method);
-        ColumnQuery query = columnQueryParams.getQuery();
-        ColumnCondition columnCondition = query.getCondition().get();
-        Value value = columnCondition.getColumn().getValue();
+        ColumnQuery query = columnQueryParams.query();
+        ColumnCondition columnCondition = query.condition().get();
+        Value value = columnCondition.column().value();
         assertEquals(10, value.get());
 
     }
@@ -87,19 +85,18 @@ class ParamsBinderTest {
         RepositoryColumnObserverParser parser = new RepositoryColumnObserverParser(entityMetadata);
         paramsBinder = new ParamsBinder(entityMetadata, converters);
 
-        SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
+        SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
         SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.getName());
-        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class,
-                ()-> ServiceLoader.load(SelectQueryConverter.class));
-        ColumnQueryParams queryParams = converter.apply(selectQuery, parser);
-        Params params = queryParams.getParams();
+        SelectQueryParser queryParser = new SelectQueryParser();
+        ColumnQueryParams queryParams = queryParser.apply(selectQuery, parser);
+        Params params = queryParams.params();
         paramsBinder.bind(params, new Object[]{10L, "Ada"}, method);
-        ColumnQuery query = queryParams.getQuery();
-        ColumnCondition columnCondition = query.getCondition().get();
-        List<ColumnCondition> conditions = columnCondition.getColumn().get(new TypeReference<>() {
+        ColumnQuery query = queryParams.query();
+        ColumnCondition columnCondition = query.condition().get();
+        List<ColumnCondition> conditions = columnCondition.column().get(new TypeReference<>() {
         });
-        List<Object> values = conditions.stream().map(ColumnCondition::getColumn)
-                .map(Column::getValue)
+        List<Object> values = conditions.stream().map(ColumnCondition::column)
+                .map(Column::value)
                 .map(Value::get).collect(Collectors.toList());
         assertEquals(10, values.get(0));
         assertEquals("Ada", values.get(1));

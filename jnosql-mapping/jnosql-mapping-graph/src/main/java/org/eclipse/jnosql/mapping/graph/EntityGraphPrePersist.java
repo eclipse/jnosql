@@ -14,31 +14,51 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * When an entity is either saved or updated it's the first event to fire
  */
-public interface EntityGraphPrePersist {
+public class EntityGraphPrePersist implements Supplier<Object> {
 
+    private final Object value;
 
-    /**
-     * Return the entity whose gonna be either saved or updated
-     *
-     * @return Return the entity whose gonna be either insert or update
-     */
-    Object getValue();
-
-    /**
-     * Created the default implementation of
-     *
-     * @param value the value
-     * @return the new instance of
-     * @throws NullPointerException when value is null
-     */
-    static EntityGraphPrePersist of(Object value) {
-        Objects.requireNonNull(value, "value is required");
-        return new DefaultEntityGraphPrePersist(value);
+    EntityGraphPrePersist(Object value) {
+        this.value = value;
     }
 
+    @Override
+    public Object get() {
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof EntityGraphPrePersist)) {
+            return false;
+        }
+        EntityGraphPrePersist that = (EntityGraphPrePersist) o;
+        return Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(value);
+    }
+
+    @Override
+    public String toString() {
+        return  "DefaultEntityGraphPrePersist{" + "value=" + value +
+                '}';
+    }
+
+    static EntityGraphPrePersist of(Object value) {
+        Objects.requireNonNull(value, "value is required");
+        return new EntityGraphPrePersist(value);
+    }
 }

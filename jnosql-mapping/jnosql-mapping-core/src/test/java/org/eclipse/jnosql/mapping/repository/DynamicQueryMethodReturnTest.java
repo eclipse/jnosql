@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.repository;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.Param;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.Query;
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
+import jakarta.nosql.PreparedStatement;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -228,7 +228,7 @@ class DynamicQueryMethodReturnTest {
     @Test
     public void shouldReturnFromPrepareStatement() throws NoSuchMethodException {
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
-        Mockito.when(preparedStatement.<Person>getResult())
+        Mockito.when(preparedStatement.<Person>result())
                 .thenReturn(Stream.of(new Person("Ada")));
 
         Method method = getMethod(PersonRepository.class, "query");
@@ -280,7 +280,7 @@ class DynamicQueryMethodReturnTest {
         }
     }
 
-    private interface PersonRepository extends Repository<Person, String> {
+    private interface PersonRepository extends CrudRepository<Person, String> {
 
         @Query("query")
         Optional<Person> getOptional();

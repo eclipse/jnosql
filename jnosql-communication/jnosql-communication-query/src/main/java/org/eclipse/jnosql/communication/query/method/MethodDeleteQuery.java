@@ -11,8 +11,9 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.query.DeleteQuery;
-import jakarta.nosql.query.Where;
+
+import org.eclipse.jnosql.communication.query.DeleteQuery;
+import org.eclipse.jnosql.communication.query.Where;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,17 +32,17 @@ final class MethodDeleteQuery implements DeleteQuery {
     }
 
     @Override
-    public List<String> getFields() {
+    public List<String> fields() {
         return Collections.emptyList();
     }
 
     @Override
-    public String getEntity() {
+    public String entity() {
         return entity;
     }
 
     @Override
-    public Optional<Where> getWhere() {
+    public Optional<Where> where() {
         return Optional.ofNullable(where);
     }
 

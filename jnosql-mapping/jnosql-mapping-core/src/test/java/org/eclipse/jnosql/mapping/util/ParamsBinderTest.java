@@ -14,13 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.util;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.Value;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.DynamicQueryException;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.data.repository.CrudRepository;
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.junit.jupiter.api.Assertions;
@@ -153,7 +153,7 @@ class ParamsBinderTest {
     }
 
 
-    interface PersonRepository extends Repository<Person, Long> {
+    interface PersonRepository extends CrudRepository<Person, Long> {
 
         Optional<Person> findByName(String name);
 

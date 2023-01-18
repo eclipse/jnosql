@@ -15,86 +15,73 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
-import jakarta.nosql.Params;
-import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.Sort;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnDeleteQueryParams;
-import jakarta.nosql.column.ColumnObserverParser;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.column.ColumnQueryParams;
-import jakarta.nosql.column.DeleteQueryConverter;
-import jakarta.nosql.column.SelectQueryConverter;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.column.ColumnQueryPagination;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import org.eclipse.jnosql.mapping.column.MappingColumnQuery;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import jakarta.nosql.query.DeleteQuery;
-import jakarta.nosql.query.SelectQuery;
-import org.eclipse.jnosql.mapping.repository.DynamicReturn;
-import org.eclipse.jnosql.mapping.util.ParamsBinder;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
+import jakarta.data.repository.Sort;
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQueryParams;
+import org.eclipse.jnosql.communication.column.ColumnObserverParser;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.communication.column.ColumnQueryParams;
+import org.eclipse.jnosql.communication.column.DeleteQueryParser;
+import org.eclipse.jnosql.communication.column.SelectQueryParser;
+import org.eclipse.jnosql.communication.query.DeleteQuery;
+import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.DeleteMethodProvider;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.NoSQLPage;
+import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.column.MappingColumnQuery;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.util.ParamsBinder;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toUnmodifiableList;
+
 public abstract class BaseColumnRepository<T> {
+
+    private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
+
+    private static final DeleteQueryParser DELETE_PARSER = new DeleteQueryParser();
 
     protected abstract Converters getConverters();
 
     protected abstract EntityMetadata getEntityMetadata();
 
-    protected abstract ColumnTemplate getTemplate();
+    protected abstract JNoSQLColumnTemplate getTemplate();
 
     private ColumnObserverParser parser;
 
     private ParamsBinder paramsBinder;
 
-    private static final SelectQueryConverter SELECT_CONVERTER = ServiceLoaderProvider.get(SelectQueryConverter.class,
-            ()-> ServiceLoader.load(SelectQueryConverter.class));
-
-    private static final DeleteQueryConverter DELETE_CONVERTER = ServiceLoaderProvider.get(DeleteQueryConverter.class,
-            ()-> ServiceLoader.load(DeleteQueryConverter.class));
 
     protected ColumnQuery getQuery(Method method, Object[] args) {
-        SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
-        SelectQuery selectQuery = selectMethodFactory.apply(method, getEntityMetadata().getName());
-        ColumnQueryParams queryParams = SELECT_CONVERTER.apply(selectQuery, getParser());
-        ColumnQuery query = queryParams.getQuery();
-        Params params = queryParams.getParams();
+        SelectMethodProvider provider = SelectMethodProvider.INSTANCE;
+        SelectQuery selectQuery = provider.apply(method, getEntityMetadata().getName());
+        ColumnQueryParams queryParams = SELECT_PARSER.apply(selectQuery, getParser());
+        ColumnQuery query = queryParams.query();
+        Params params = queryParams.params();
         getParamsBinder().bind(params, args, method);
-        return getQuerySorts(args, query);
+        return updateQueryDynamically(args, query);
     }
 
     protected ColumnDeleteQuery getDeleteQuery(Method method, Object[] args) {
-        DeleteMethodProvider deleteMethodFactory = DeleteMethodProvider.get();
+        DeleteMethodProvider deleteMethodFactory = DeleteMethodProvider.INSTANCE;
         DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getEntityMetadata().getName());
-        ColumnDeleteQueryParams queryParams = DELETE_CONVERTER.apply(deleteQuery, getParser());
-        ColumnDeleteQuery query = queryParams.getQuery();
-        Params params = queryParams.getParams();
+        ColumnDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, getParser());
+        ColumnDeleteQuery query = queryParams.query();
+        Params params = queryParams.params();
         getParamsBinder().bind(params, args, method);
-        return query;
-    }
-
-    protected ColumnQuery getQuerySorts(Object[] args, ColumnQuery query) {
-        List<Sort> sorts = DynamicReturn.findSorts(args);
-        if (!sorts.isEmpty()) {
-            List<Sort> newOrders = new ArrayList<>();
-            newOrders.addAll(query.getSorts());
-            newOrders.addAll(sorts);
-            return new MappingColumnQuery(newOrders, query.getLimit(), query.getSkip(),
-                    query.getCondition().orElse(null), query.getColumnFamily());
-        }
         return query;
     }
 
@@ -119,7 +106,7 @@ public abstract class BaseColumnRepository<T> {
                 .withMethodSource(method)
                 .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findPagination(args))
+                .withPagination(DynamicReturn.findPagination(args).orElse(null))
                 .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
@@ -127,21 +114,37 @@ public abstract class BaseColumnRepository<T> {
         return dynamicReturn.execute();
     }
 
-    protected Function<Pagination, Page<T>> getPage(ColumnQuery query) {
-        return p -> getTemplate().select(ColumnQueryPagination.of(query, p));
-    }
-
-    protected Function<Pagination, Optional<T>> getSingleResult(ColumnQuery query) {
+    protected Function<Pageable, Page<T>> getPage(ColumnQuery query) {
         return p -> {
-            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
-            return getTemplate().singleResult(queryPagination);
+            Stream<T> entities = getTemplate().select(query);
+            return NoSQLPage.of(entities.collect(toUnmodifiableList()), p);
         };
     }
 
-    protected Function<Pagination, Stream<T>> streamPagination(ColumnQuery query) {
-        return p -> {
-            ColumnQuery queryPagination = ColumnQueryPagination.of(query, p);
-            return getTemplate().select(queryPagination);
-        };
+    protected Function<Pageable, Optional<T>> getSingleResult(ColumnQuery query) {
+        return p -> getTemplate().singleResult(query);
     }
+
+    protected Function<Pageable, Stream<T>> streamPagination(ColumnQuery query) {
+        return p ->getTemplate().select(query);
+    }
+
+
+    protected ColumnQuery updateQueryDynamically(Object[] args, ColumnQuery query) {
+        Optional<Pageable> pageable = DynamicReturn.findPagination(args);
+
+        return pageable.<ColumnQuery>map(p -> {
+            long size = p.size();
+            long skip = NoSQLPage.skip(p);
+            List<Sort> sorts = query.sorts();
+            if (!p.sorts().isEmpty()) {
+                sorts = new ArrayList<>(query.sorts());
+                sorts.addAll(p.sorts());
+            }
+            return new MappingColumnQuery(sorts, size, skip,
+                    query.condition().orElse(null), query.name());
+        }).orElse(query);
+    }
+
+
 }

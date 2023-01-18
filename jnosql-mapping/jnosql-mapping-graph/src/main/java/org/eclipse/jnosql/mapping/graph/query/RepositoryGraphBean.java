@@ -14,18 +14,18 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.CrudRepository;
+import jakarta.enterprise.context.spi.CreationalContext;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
+import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
 
-import jakarta.enterprise.context.spi.CreationalContext;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -34,12 +34,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Artemis discoveryBean to CDI extension to register {@link Repository}
+ * Artemis discoveryBean to CDI extension to register Repository
  */
-public class RepositoryGraphBean extends AbstractBean<Repository>{
+public class RepositoryGraphBean<T extends CrudRepository> extends AbstractBean<T>{
 
     private final Class type;
-
 
     private final Set<Type> types;
 
@@ -73,7 +72,7 @@ public class RepositoryGraphBean extends AbstractBean<Repository>{
     }
 
     @Override
-    public Repository create(CreationalContext<Repository> creationalContext) {
+    public T create(CreationalContext<T> creationalContext) {
 
         EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
         GraphTemplate repository = provider.isEmpty() ? getInstance(GraphTemplate.class) :
@@ -85,7 +84,7 @@ public class RepositoryGraphBean extends AbstractBean<Repository>{
 
         GraphRepositoryProxy handler = new GraphRepositoryProxy(repository,
                 entities, type, graph, converter, converters);
-        return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
+        return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }

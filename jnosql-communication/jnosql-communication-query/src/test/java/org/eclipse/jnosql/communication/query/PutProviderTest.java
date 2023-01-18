@@ -12,12 +12,6 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.NumberQueryValue;
-import jakarta.nosql.query.ParamQueryValue;
-import jakarta.nosql.query.PutQuery;
-import jakarta.nosql.query.PutQuery.PutQueryProvider;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.StringQueryValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PutProviderTest {
 
-    private final PutQueryProvider provider = new AntlrPutQueryProvider();
+    private final PutQueryConverter provider = new PutQueryConverter();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {
@@ -44,9 +38,9 @@ class PutProviderTest {
     @ValueSource(strings = {"put {\"Ada\", \"Hunt\"}\n"})
     public void shouldReturnParserQuery(String query) {
         PutQuery putQuery = provider.apply(query);
-        QueryValue<?> key = putQuery.getKey();
-        QueryValue<?> value = putQuery.getValue();
-        Optional<Duration> ttl = putQuery.getTtl();
+        QueryValue<?> key = putQuery.key();
+        QueryValue<?> value = putQuery.value();
+        Optional<Duration> ttl = putQuery.ttl();
 
         assertTrue(key instanceof StringQueryValue);
         assertEquals("Ada", StringQueryValue.class.cast(key).get());
@@ -62,9 +56,9 @@ class PutProviderTest {
     @ValueSource(strings = {"put {12, \"Hunt\"}\n"})
     public void shouldReturnParserQuery1(String query) {
         PutQuery putQuery = provider.apply(query);
-        QueryValue<?> key = putQuery.getKey();
-        QueryValue<?> value = putQuery.getValue();
-        Optional<Duration> ttl = putQuery.getTtl();
+        QueryValue<?> key = putQuery.key();
+        QueryValue<?> value = putQuery.value();
+        Optional<Duration> ttl = putQuery.ttl();
 
         assertTrue(key instanceof NumberQueryValue);
         assertEquals(12L, NumberQueryValue.class.cast(key).get());
@@ -78,9 +72,9 @@ class PutProviderTest {
     @ValueSource(strings = {"put {12, 12.12}\n"})
     public void shouldReturnParserQuery2(String query) {
         PutQuery putQuery = provider.apply(query);
-        QueryValue<?> key = putQuery.getKey();
-        QueryValue<?> value = putQuery.getValue();
-        Optional<Duration> ttl = putQuery.getTtl();
+        QueryValue<?> key = putQuery.key();
+        QueryValue<?> value = putQuery.value();
+        Optional<Duration> ttl = putQuery.ttl();
 
         assertTrue(key instanceof NumberQueryValue);
         assertEquals(12L, NumberQueryValue.class.cast(key).get());
@@ -95,15 +89,15 @@ class PutProviderTest {
     @ValueSource(strings = {"put {@name, @value, 10 hour}\n"})
     public void shouldReturnParserQuery3(String query) {
         PutQuery putQuery = provider.apply(query);
-        QueryValue<?> key = putQuery.getKey();
-        QueryValue<?> value = putQuery.getValue();
-        Optional<Duration> ttl = putQuery.getTtl();
+        QueryValue<?> key = putQuery.key();
+        QueryValue<?> value = putQuery.value();
+        Optional<Duration> ttl = putQuery.ttl();
 
-        assertTrue(key instanceof ParamQueryValue);
-        assertEquals("name", ParamQueryValue.class.cast(key).get());
+        assertTrue(key instanceof DefaultQueryValue);
+        assertEquals("name", DefaultQueryValue.class.cast(key).get());
 
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("value", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("value", DefaultQueryValue.class.cast(value).get());
         assertTrue(ttl.isPresent());
         assertEquals(Duration.ofHours(10L), ttl.get());
     }
@@ -112,15 +106,15 @@ class PutProviderTest {
     @ValueSource(strings = {"put {@name, @value, 10 minute}\n"})
     public void shouldReturnParserQuery4(String query) {
         PutQuery putQuery = provider.apply(query);
-        QueryValue<?> key = putQuery.getKey();
-        QueryValue<?> value = putQuery.getValue();
-        Optional<Duration> ttl = putQuery.getTtl();
+        QueryValue<?> key = putQuery.key();
+        QueryValue<?> value = putQuery.value();
+        Optional<Duration> ttl = putQuery.ttl();
 
-        assertTrue(key instanceof ParamQueryValue);
-        assertEquals("name", ParamQueryValue.class.cast(key).get());
+        assertTrue(key instanceof DefaultQueryValue);
+        assertEquals("name", DefaultQueryValue.class.cast(key).get());
 
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("value", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("value", DefaultQueryValue.class.cast(value).get());
         assertTrue(ttl.isPresent());
         assertEquals(Duration.ofMinutes(10L), ttl.get());
     }
@@ -129,15 +123,15 @@ class PutProviderTest {
     @ValueSource(strings = {"put {@name, @value, 10 second}\n"})
     public void shouldReturnParserQuery5(String query) {
         PutQuery putQuery = provider.apply(query);
-        QueryValue<?> key = putQuery.getKey();
-        QueryValue<?> value = putQuery.getValue();
-        Optional<Duration> ttl = putQuery.getTtl();
+        QueryValue<?> key = putQuery.key();
+        QueryValue<?> value = putQuery.value();
+        Optional<Duration> ttl = putQuery.ttl();
 
-        assertTrue(key instanceof ParamQueryValue);
-        assertEquals("name", ParamQueryValue.class.cast(key).get());
+        assertTrue(key instanceof DefaultQueryValue);
+        assertEquals("name", DefaultQueryValue.class.cast(key).get());
 
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("value", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("value", DefaultQueryValue.class.cast(value).get());
         assertTrue(ttl.isPresent());
         assertEquals(Duration.ofSeconds(10L), ttl.get());
     }
@@ -146,15 +140,15 @@ class PutProviderTest {
     @ValueSource(strings = {"put {@name, @value, 10 millisecond}\n"})
     public void shouldReturnParserQuery6(String query) {
         PutQuery putQuery = provider.apply(query);
-        QueryValue<?> key = putQuery.getKey();
-        QueryValue<?> value = putQuery.getValue();
-        Optional<Duration> ttl = putQuery.getTtl();
+        QueryValue<?> key = putQuery.key();
+        QueryValue<?> value = putQuery.value();
+        Optional<Duration> ttl = putQuery.ttl();
 
-        assertTrue(key instanceof ParamQueryValue);
-        assertEquals("name", ParamQueryValue.class.cast(key).get());
+        assertTrue(key instanceof DefaultQueryValue);
+        assertEquals("name", DefaultQueryValue.class.cast(key).get());
 
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("value", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("value", DefaultQueryValue.class.cast(value).get());
         assertTrue(ttl.isPresent());
         assertEquals(Duration.ofMillis(10L), ttl.get());
     }
@@ -163,15 +157,15 @@ class PutProviderTest {
     @ValueSource(strings = {"put {@name, @value, 10 nanosecond}\n"})
     public void shouldReturnParserQuery7(String query) {
         PutQuery putQuery = provider.apply(query);
-        QueryValue<?> key = putQuery.getKey();
-        QueryValue<?> value = putQuery.getValue();
-        Optional<Duration> ttl = putQuery.getTtl();
+        QueryValue<?> key = putQuery.key();
+        QueryValue<?> value = putQuery.value();
+        Optional<Duration> ttl = putQuery.ttl();
 
-        assertTrue(key instanceof ParamQueryValue);
-        assertEquals("name", ParamQueryValue.class.cast(key).get());
+        assertTrue(key instanceof DefaultQueryValue);
+        assertEquals("name", DefaultQueryValue.class.cast(key).get());
 
-        assertTrue(value instanceof ParamQueryValue);
-        assertEquals("value", ParamQueryValue.class.cast(value).get());
+        assertTrue(value instanceof DefaultQueryValue);
+        assertEquals("value", DefaultQueryValue.class.cast(value).get());
         assertTrue(ttl.isPresent());
         assertEquals(Duration.ofNanos(10L), ttl.get());
     }

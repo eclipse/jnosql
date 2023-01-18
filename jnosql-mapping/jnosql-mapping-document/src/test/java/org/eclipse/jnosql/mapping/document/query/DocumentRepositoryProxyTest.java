@@ -14,30 +14,30 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.Sort;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Param;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.Query;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
+import jakarta.data.repository.Sort;
+import jakarta.inject.Inject;
+import jakarta.nosql.PreparedStatement;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentCondition;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.Vendor;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.Vendor;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import jakarta.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -50,17 +50,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static jakarta.nosql.Condition.AND;
-import static jakarta.nosql.Condition.BETWEEN;
-import static jakarta.nosql.Condition.EQUALS;
-import static jakarta.nosql.Condition.GREATER_THAN;
-import static jakarta.nosql.Condition.IN;
-import static jakarta.nosql.Condition.LESSER_EQUALS_THAN;
-import static jakarta.nosql.Condition.LESSER_THAN;
-import static jakarta.nosql.Condition.LIKE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.jnosql.communication.Condition.AND;
+import static org.eclipse.jnosql.communication.Condition.BETWEEN;
+import static org.eclipse.jnosql.communication.Condition.EQUALS;
+import static org.eclipse.jnosql.communication.Condition.GREATER_THAN;
+import static org.eclipse.jnosql.communication.Condition.IN;
+import static org.eclipse.jnosql.communication.Condition.LESSER_EQUALS_THAN;
+import static org.eclipse.jnosql.communication.Condition.LESSER_THAN;
+import static org.eclipse.jnosql.communication.Condition.LIKE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -74,7 +74,7 @@ import static org.mockito.Mockito.when;
 @CDIExtension
 public class DocumentRepositoryProxyTest {
 
-    private DocumentTemplate template;
+    private JNoSQLDocumentTemplate template;
 
     @Inject
     private EntitiesMetadata entities;
@@ -89,7 +89,7 @@ public class DocumentRepositoryProxyTest {
 
     @BeforeEach
     public void setUp() {
-        this.template = Mockito.mock(DocumentTemplate.class);
+        this.template = Mockito.mock(JNoSQLDocumentTemplate.class);
 
         DocumentRepositoryProxy personHandler = new DocumentRepositoryProxy(template,
                 entities, PersonRepository.class, converters);
@@ -155,7 +155,7 @@ public class DocumentRepositoryProxyTest {
                 .withId(10L)
                 .withPhones(singletonList("123123"))
                 .build();
-        personRepository.save(singletonList(person));
+        personRepository.saveAll(singletonList(person));
         verify(template).insert(captor.capture());
         verify(template).insert(captor.capture());
         Person personCapture = captor.getValue();
@@ -174,10 +174,10 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).singleResult(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getDocumentCollection());
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals(Document.of("name", "name"), condition.getDocument());
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(Document.of("name", "name"), condition.document());
 
         assertNotNull(personRepository.findByName("name"));
         when(template.singleResult(Mockito.any(DocumentQuery.class))).thenReturn(Optional
@@ -254,10 +254,10 @@ public class DocumentRepositoryProxyTest {
         personRepository.deleteByName("Ada");
         verify(template).delete(captor.capture());
         DocumentDeleteQuery deleteQuery = captor.getValue();
-        DocumentCondition condition = deleteQuery.getCondition().get();
-        assertEquals("Person", deleteQuery.getDocumentCollection());
-        assertEquals(Condition.EQUALS, condition.getCondition());
-        assertEquals(Document.of("name", "Ada"), condition.getDocument());
+        DocumentCondition condition = deleteQuery.condition().get();
+        assertEquals("Person", deleteQuery.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(Document.of("name", "Ada"), condition.document());
 
     }
 
@@ -272,9 +272,9 @@ public class DocumentRepositoryProxyTest {
         when(template.find(Mockito.eq(Person.class), Mockito.any(Long.class)))
                 .thenReturn(Optional.of(Person.builder().build()));
 
-        personRepository.findById(singletonList(10L));
+        personRepository.findAllById(singletonList(10L)).collect(Collectors.toUnmodifiableList());
         verify(template).find(Mockito.eq(Person.class), Mockito.eq(10L));
-        personRepository.findById(Arrays.asList(10L, 11L, 12L));
+        personRepository.findAllById(Arrays.asList(10L, 11L, 12L)).collect(Collectors.toUnmodifiableList());
         verify(template, times(4)).find(Mockito.eq(Person.class), any(Long.class));
     }
 
@@ -287,10 +287,10 @@ public class DocumentRepositoryProxyTest {
 
     @Test
     public void shouldDeleteByIds() {
-        personRepository.deleteById(singletonList(10L));
+        personRepository.deleteAllById(singletonList(10L));
         verify(template).delete(Person.class, 10L);
 
-        personRepository.deleteById(asList(1L, 2L, 3L));
+        personRepository.deleteAllById(asList(1L, 2L, 3L));
         verify(template, times(4)).delete(Mockito.eq(Person.class), any(Long.class));
     }
 
@@ -317,14 +317,22 @@ public class DocumentRepositoryProxyTest {
         when(template.select(any(DocumentQuery.class)))
                 .thenReturn(Stream.of(ada));
 
-        List<Person> persons = personRepository.findAll();
-        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        verify(template).select(captor.capture());
-        DocumentQuery query = captor.getValue();
-        assertFalse(query.getCondition().isPresent());
-        assertEquals("Person", query.getDocumentCollection());
+        personRepository.findAll().collect(Collectors.toUnmodifiableList());
+        ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
+        verify(template).findAll(captor.capture());
+        assertEquals(captor.getValue(), Person.class);
 
     }
+
+    @Test
+    public void shouldDeleteAll() {
+        personRepository.deleteAll();
+        ArgumentCaptor<Class<?>> captor = ArgumentCaptor.forClass(Class.class);
+        verify(template).deleteAll(captor.capture());
+        assertEquals(captor.getValue(), Person.class);
+
+    }
+
 
     @Test
     public void shouldReturnToString() {
@@ -354,21 +362,21 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getDocumentCollection());
-        assertEquals(AND, condition.getCondition());
-        List<DocumentCondition> conditions = condition.getDocument().get(new TypeReference<>() {
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(AND, condition.condition());
+        List<DocumentCondition> conditions = condition.document().get(new TypeReference<>() {
         });
         DocumentCondition columnCondition = conditions.get(0);
         DocumentCondition columnCondition2 = conditions.get(1);
 
-        assertEquals(Condition.EQUALS, columnCondition.getCondition());
-        assertEquals("Ada", columnCondition.getDocument().get());
-        assertTrue(columnCondition.getDocument().getName().contains("name"));
+        assertEquals(Condition.EQUALS, columnCondition.condition());
+        assertEquals("Ada", columnCondition.document().get());
+        assertTrue(columnCondition.document().name().contains("name"));
 
-        assertEquals(Condition.GREATER_EQUALS_THAN, columnCondition2.getCondition());
-        assertEquals(33, columnCondition2.getDocument().get());
-        assertTrue(columnCondition2.getDocument().getName().contains("age"));
+        assertEquals(Condition.GREATER_EQUALS_THAN, columnCondition2.condition());
+        assertEquals(33, columnCondition2.document().get());
+        assertTrue(columnCondition2.document().name().contains("age"));
 
     }
 
@@ -384,10 +392,10 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getDocumentCollection());
-        assertEquals(GREATER_THAN, condition.getCondition());
-        assertEquals(Document.of("age", 33), condition.getDocument());
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(GREATER_THAN, condition.condition());
+        assertEquals(Document.of("age", 33), condition.document());
 
     }
 
@@ -403,10 +411,10 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getDocumentCollection());
-        assertEquals(LESSER_EQUALS_THAN, condition.getCondition());
-        assertEquals(Document.of("age", 33), condition.getDocument());
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(LESSER_EQUALS_THAN, condition.condition());
+        assertEquals(Document.of("age", 33), condition.document());
 
     }
 
@@ -422,10 +430,10 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getDocumentCollection());
-        assertEquals(LESSER_THAN, condition.getCondition());
-        assertEquals(Document.of("age", 33), condition.getDocument());
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(LESSER_THAN, condition.condition());
+        assertEquals(Document.of("age", 33), condition.document());
 
     }
 
@@ -442,13 +450,13 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getDocumentCollection());
-        assertEquals(BETWEEN, condition.getCondition());
-        List<Value> values = condition.getDocument().get(new TypeReference<>() {
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(BETWEEN, condition.condition());
+        List<Value> values = condition.document().get(new TypeReference<>() {
         });
         assertEquals(Arrays.asList(10, 15), values.stream().map(Value::get).collect(Collectors.toList()));
-        assertTrue(condition.getDocument().getName().contains("age"));
+        assertTrue(condition.document().name().contains("age"));
 
     }
 
@@ -465,10 +473,10 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getDocumentCollection());
-        assertEquals(LIKE, condition.getCondition());
-        assertEquals(Document.of("name", "Ada"), condition.getDocument());
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(LIKE, condition.condition());
+        assertEquals(Document.of("name", "Ada"), condition.document());
     }
 
     @Test
@@ -484,10 +492,10 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).singleResult(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        assertEquals("vendors", query.getDocumentCollection());
-        assertEquals(EQUALS, condition.getCondition());
-        assertEquals(Document.of("prefixes", "prefix"), condition.getDocument());
+        DocumentCondition condition = query.condition().get();
+        assertEquals("vendors", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Document.of("prefixes", "prefix"), condition.document());
 
     }
 
@@ -504,9 +512,9 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).singleResult(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        assertEquals("vendors", query.getDocumentCollection());
-        assertEquals(IN, condition.getCondition());
+        DocumentCondition condition = query.condition().get();
+        assertEquals("vendors", query.name());
+        assertEquals(IN, condition.condition());
 
     }
 
@@ -523,10 +531,10 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        assertEquals("Person", query.getDocumentCollection());
-        assertEquals(EQUALS, condition.getCondition());
-        assertEquals(Document.of("age", 120), condition.getDocument());
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Document.of("age", 120), condition.document());
     }
 
     @Test
@@ -555,10 +563,10 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        final Document document = condition.getDocument();
-        assertEquals("Person", query.getDocumentCollection());
-        assertEquals("salary.currency", document.getName());
+        DocumentCondition condition = query.condition().get();
+        final Document document = condition.document();
+        assertEquals("Person", query.name());
+        assertEquals("salary.currency", document.name());
 
     }
 
@@ -572,13 +580,13 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        final Document document = condition.getDocument();
+        DocumentCondition condition = query.condition().get();
+        final Document document = condition.document();
         final List<DocumentCondition> conditions = document.get(new TypeReference<>() {
         });
-        final List<String> names = conditions.stream().map(DocumentCondition::getDocument)
-                .map(Document::getName).collect(Collectors.toList());
-        assertEquals("Person", query.getDocumentCollection());
+        final List<String> names = conditions.stream().map(DocumentCondition::document)
+                .map(Document::name).collect(Collectors.toList());
+        assertEquals("Person", query.name());
         assertThat(names).contains("salary.currency", "salary.value");
 
     }
@@ -595,24 +603,22 @@ public class DocumentRepositoryProxyTest {
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).select(captor.capture());
         DocumentQuery query = captor.getValue();
-        DocumentCondition condition = query.getCondition().get();
-        final Sort sort = query.getSorts().get(0);
-        final Document document = condition.getDocument();
-        assertEquals("Person", query.getDocumentCollection());
-        assertEquals("salary.currency", document.getName());
-        assertEquals("currency.name", sort.getName());
+        DocumentCondition condition = query.condition().get();
+        final Sort sort = query.sorts().get(0);
+        final Document document = condition.document();
+        assertEquals("Person", query.name());
+        assertEquals("salary.currency", document.name());
+        assertEquals("currency.name", sort.property());
 
     }
 
-    interface PersonRepository extends Repository<Person, Long> {
+    interface PersonRepository extends PageableRepository<Person, Long> {
 
         List<Person> findBySalary_Currency(String currency);
 
         List<Person> findBySalary_CurrencyAndSalary_Value(String currency, BigDecimal value);
 
         List<Person> findBySalary_CurrencyOrderByCurrency_Name(String currency);
-
-        List<Person> findAll();
 
         Person findByName(String name);
 
@@ -647,7 +653,7 @@ public class DocumentRepositoryProxyTest {
         Optional<Person> findByQuery(@Param("id") String id);
     }
 
-    public interface VendorRepository extends Repository<Vendor, String> {
+    public interface VendorRepository extends PageableRepository<Vendor, String> {
 
         Vendor findByPrefixes(String prefix);
 

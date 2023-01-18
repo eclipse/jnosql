@@ -11,15 +11,20 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 === Changed
 
 - Update Jakarta API to after the Big-bang
+- Add support for Jakarta Data
+- Add documentation repository
+- Move the communication API as JNoSQL implementation
 
 === Added
 
 - Implements new methods that explore fluent-API for Graph, Document, Key-value and Document
+- Create jnosql-jupiter module
 
 === Removed
 
 - Remove ColumnQueryMapper implementation
 - Remove DocumentQueryMapper implementation
+- Remove support for old Repository and Pagination (replaced by Jakarta Data)
 
 === Fixed
 

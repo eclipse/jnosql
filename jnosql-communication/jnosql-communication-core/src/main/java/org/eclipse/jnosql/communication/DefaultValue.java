@@ -16,12 +16,6 @@
  */
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.TypeReferenceReader;
-import jakarta.nosql.TypeReferenceReaderDecorator;
-import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.Value;
-import jakarta.nosql.ValueReader;
-import jakarta.nosql.ValueReaderDecorator;
 
 import java.util.Objects;
 
@@ -30,9 +24,9 @@ import java.util.Objects;
  */
 final class DefaultValue  implements Value {
 
-    private static final transient ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
+    private static final ValueReader SERVICE_PROVIDER = ValueReaderDecorator.getInstance();
 
-    private static final transient TypeReferenceReader REFERENCE_READER = TypeReferenceReaderDecorator.getInstance();
+    private static final  TypeReferenceReader REFERENCE_READER = TypeReferenceReaderDecorator.getInstance();
 
     private final Object value;
 

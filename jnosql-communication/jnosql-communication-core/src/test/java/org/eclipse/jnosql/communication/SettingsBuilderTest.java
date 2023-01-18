@@ -16,7 +16,7 @@
  */
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.Settings;
+import org.eclipse.jnosql.communication.Settings;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

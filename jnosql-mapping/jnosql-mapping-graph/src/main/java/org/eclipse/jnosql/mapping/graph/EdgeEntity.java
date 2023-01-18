@@ -14,7 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.Value;
+import org.eclipse.jnosql.communication.Value;
 import org.apache.tinkerpop.gremlin.structure.Property;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public interface EdgeEntity {
     Object getId();
 
     /**
-     * Returns an id from {@link jakarta.nosql.Value#get(Class)}
+     * Returns an id from {@link org.eclipse.jnosql.communication.Value#get(Class)}
      *
      * @param type the class type
      * @param <T>  the type

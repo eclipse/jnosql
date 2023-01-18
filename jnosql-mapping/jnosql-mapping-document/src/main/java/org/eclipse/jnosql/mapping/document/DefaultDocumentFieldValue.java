@@ -14,10 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.document.Document;
-import jakarta.nosql.mapping.AttributeConverter;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.mapping.AttributeConverter;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
@@ -55,9 +54,9 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     @Override
     public <X, Y> List<Document> toDocument(DocumentEntityConverter converter, Converters converters) {
         if (EMBEDDED.equals(getType())) {
-            return converter.toDocument(getValue()).getDocuments();
+            return converter.toDocument(getValue()).documents();
         }  else if (ENTITY.equals(getType())) {
-            return singletonList(Document.of(getName(), converter.toDocument(getValue()).getDocuments()));
+            return singletonList(Document.of(getName(), converter.toDocument(getValue()).documents()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Document.of(getName(), getDocuments(converter)));
         }
@@ -72,7 +71,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     private List<List<Document>> getDocuments(DocumentEntityConverter converter) {
         List<List<Document>> documents = new ArrayList<>();
         for (Object element : (Iterable) getValue()) {
-            documents.add(converter.toDocument(element).getDocuments());
+            documents.add(converter.toDocument(element).documents());
         }
         return documents;
     }

@@ -14,29 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.graph.spi;
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
+import jakarta.enterprise.inject.spi.Extension;
+import jakarta.enterprise.inject.spi.ProcessProducer;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.eclipse.jnosql.mapping.Databases;
 import org.eclipse.jnosql.mapping.graph.query.RepositoryGraphBean;
+import org.eclipse.jnosql.mapping.reflection.ClassScanner;
 
-import jakarta.enterprise.event.Observes;
-import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
-import jakarta.enterprise.inject.spi.Extension;
-import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
-import jakarta.enterprise.inject.spi.ProcessProducer;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import static jakarta.nosql.mapping.DatabaseType.GRAPH;
+import static org.eclipse.jnosql.mapping.DatabaseType.GRAPH;
 
 /**
  * Extension to start up the GraphTemplate, Repository
- * from the {@link jakarta.nosql.mapping.Database} qualifier
+ * from the {@link org.eclipse.jnosql.mapping.Database} qualifier
  */
 public class GraphExtension implements Extension {
 
@@ -44,31 +40,21 @@ public class GraphExtension implements Extension {
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
-    private final Collection<Class<?>> crudTypes = new HashSet<>();
-
-    <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-        if (Repository.class.equals(javaClass)) {
-            return;
-        }
-        if (Arrays.asList(javaClass.getInterfaces()).contains(Repository.class)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudTypes.add(javaClass);
-        }
-    }
-
-
     <T, X extends Graph> void observes(@Observes final ProcessProducer<T, X> pp) {
         Databases.addDatabase(pp, GRAPH, databases);
     }
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
+
+        ClassScanner scanner = ClassScanner.INSTANCE;
+        Set<Class<?>> crudTypes = scanner.repositoriesStandard();
+
         LOGGER.info(String.format("Processing graph extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a Graph implementation: " + crudTypes);
 
         databases.forEach(type -> {
-            final TemplateBean bean = new TemplateBean( type.getProvider());
+            final TemplateBean bean = new TemplateBean(type.getProvider());
             afterBeanDiscovery.addBean(bean);
         });
 
@@ -78,7 +64,7 @@ public class GraphExtension implements Extension {
                 afterBeanDiscovery.addBean(new RepositoryGraphBean(type, ""));
             }
             databases.forEach(database -> afterBeanDiscovery
-                    .addBean(new RepositoryGraphBean(type,  database.getProvider())));
+                    .addBean(new RepositoryGraphBean(type, database.getProvider())));
         });
     }
 }

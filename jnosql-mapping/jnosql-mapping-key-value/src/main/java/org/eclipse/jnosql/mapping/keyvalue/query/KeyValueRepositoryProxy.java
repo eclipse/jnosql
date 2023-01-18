@@ -15,8 +15,9 @@
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
 
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+
+import jakarta.data.repository.PageableRepository;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -35,7 +36,7 @@ class KeyValueRepositoryProxy<T> extends AbstractKeyValueRepositoryProxy<T> {
     }
 
     @Override
-    protected Repository getRepository() {
+    protected PageableRepository getRepository() {
         return repository;
     }
 

@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.reflection;
 import java.util.Objects;
 
 /**
- * The mapping information about {@link jakarta.nosql.mapping.Inheritance}
+ * The mapping information about {@link org.eclipse.jnosql.mapping.Inheritance}
  */
 public final class InheritanceMetadata {
 
@@ -38,20 +38,20 @@ public final class InheritanceMetadata {
     }
 
     /**
-     * Return the information from the class the annotation {@link jakarta.nosql.mapping.DiscriminatorValue}
+     * Return the information from the class the annotation {@link org.eclipse.jnosql.mapping.DiscriminatorValue}
      * or the {@link Class#getSimpleName()}.
      *
-     * @return the {@link jakarta.nosql.mapping.DiscriminatorValue} from entity
+     * @return the {@link org.eclipse.jnosql.mapping.DiscriminatorValue} from entity
      */
     public String getDiscriminatorValue() {
         return discriminatorValue;
     }
 
     /**
-     * Return the information parent from the annotation {@link jakarta.nosql.mapping.DiscriminatorColumn}
+     * Return the information parent from the annotation {@link org.eclipse.jnosql.mapping.DiscriminatorColumn}
      * or the "type".
      *
-     * @return the {@link jakarta.nosql.mapping.DiscriminatorValue} from entity
+     * @return the {@link org.eclipse.jnosql.mapping.DiscriminatorValue} from entity
      */
     public String getDiscriminatorColumn() {
         return discriminatorColumn;

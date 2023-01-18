@@ -14,31 +14,131 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import org.eclipse.jnosql.mapping.Converters;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.util.TypeLiteral;
+import jakarta.inject.Inject;
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.Iterator;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * The producer of {@link GraphTemplate}
  */
-public interface GraphTemplateProducer {
+@ApplicationScoped
+public class GraphTemplateProducer {
+
+    @Inject
+    private EntitiesMetadata entities;
+
+    @Inject
+    private Converters converters;
+
+    @Inject
+    private GraphEventPersistManager persistManager;
+
+    @Inject
+    private GraphEventPersistManager eventManager;
+
 
     /**
      * creates a {@link GraphTemplate}
      *
-     * @param <T>   the GraphTemplate instance
      * @param graph the graph
      * @return a new instance
      * @throws NullPointerException when collectionManager is null
      */
-    <T extends GraphTemplate> T get(Graph graph);
+    public GraphTemplate get(Graph graph) {
+        requireNonNull(graph, "graph is required");
 
+        SingleInstance<Graph> instance = new SingleInstance<>(graph);
+
+        GraphConverter converter = new DefaultGraphConverter(entities,
+                converters,instance, eventManager);
+        GraphWorkflow workflow = new GraphWorkflow(persistManager, converter);
+        return new DefaultGraphTemplate(instance, entities, converter, workflow, converters);
+    }
 
     /**
      * creates a {@link GraphTemplate}
      *
-     * @param <T>      the GraphTemplate instance
      * @param supplier the supplier
      * @return a new instance
      * @throws NullPointerException when supplier is null
      */
-    <T extends GraphTemplate> T get(GraphTraversalSourceSupplier supplier);
+    public GraphTemplate get(GraphTraversalSourceSupplier supplier) {
+        requireNonNull(supplier, "supplier is required");
+
+        SingleInstance<GraphTraversalSourceSupplier> instance = new SingleInstance<>(supplier);
+
+        GraphConverter converter = new DefaultGraphTraversalSourceConverter(entities,
+                converters, instance, eventManager);
+        GraphWorkflow workflow = new GraphWorkflow(persistManager, converter);
+        return new DefaultGraphTraversalSourceTemplate(instance, entities, converter, workflow, converters);
+    }
+
+    static class SingleInstance<T> implements Instance<T> {
+
+        private final T instance;
+
+        SingleInstance(T instance) {
+            this.instance = instance;
+        }
+
+
+        @Override
+        public Instance<T> select(Annotation... annotations) {
+           throw new UnsupportedOperationException("this method is not support");
+        }
+
+        @Override
+        public <U extends T> Instance<U> select(Class<U> aClass, Annotation... annotations) {
+            throw new UnsupportedOperationException("this method is not support");
+        }
+
+        @Override
+        public <U extends T> Instance<U> select(TypeLiteral<U> typeLiteral, Annotation... annotations) {
+            throw new UnsupportedOperationException("this method is not support");
+        }
+
+        @Override
+        public boolean isUnsatisfied() {
+            return false;
+        }
+
+        @Override
+        public boolean isAmbiguous() {
+            return false;
+        }
+
+        @Override
+        public void destroy(T t) {
+        }
+
+        @Override
+        public Handle<T> getHandle() {
+            throw new UnsupportedOperationException("this method is not support");
+        }
+
+        @Override
+        public Iterable<? extends Handle<T>> handles() {
+            throw new UnsupportedOperationException("this method is not support");
+        }
+
+        @Override
+        public Iterator<T> iterator() {
+         return Collections.singletonList(instance).iterator();
+        }
+
+        @Override
+        public T get() {
+            return instance;
+        }
+    }
 }

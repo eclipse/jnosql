@@ -15,9 +15,8 @@
 package org.eclipse.jnosql.mapping.column;
 
 
-import jakarta.nosql.column.Column;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
 
 import java.util.List;

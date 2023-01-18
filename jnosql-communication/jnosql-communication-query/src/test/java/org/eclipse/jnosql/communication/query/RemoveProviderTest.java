@@ -12,11 +12,6 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.DelQuery;
-import jakarta.nosql.query.NumberQueryValue;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.StringQueryValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RemoveProviderTest {
 
-    private final DelQuery.DelQueryProvider provider = new AntlrDelQueryProvider();
+    private final DelQueryConverter provider = new DelQueryConverter();
 
     @Test
     public void shouldReturnErrorWhenStringIsNull() {
@@ -44,7 +39,7 @@ class RemoveProviderTest {
     @ValueSource(strings = {"del \"Diana\""})
     public void shouldReturnParserQuery(String query) {
         DelQuery delQuery = provider.apply(query);
-        List<QueryValue<?>> keys = delQuery.getKeys();
+        List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof StringQueryValue);
@@ -55,7 +50,7 @@ class RemoveProviderTest {
     @ValueSource(strings = {"del 12"})
     public void shouldReturnParserQuery1(String query) {
         DelQuery delQuery = provider.apply(query);
-        List<QueryValue<?>> keys = delQuery.getKeys();
+        List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -66,7 +61,7 @@ class RemoveProviderTest {
     @ValueSource(strings = {"del 12.12"})
     public void shouldReturnParserQuery2(String query) {
         DelQuery delQuery = provider.apply(query);
-        List<QueryValue<?>> keys = delQuery.getKeys();
+        List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -77,7 +72,7 @@ class RemoveProviderTest {
     @ValueSource(strings = {"del -12"})
     public void shouldReturnParserQuery3(String query) {
         DelQuery delQuery = provider.apply(query);
-        List<QueryValue<?>> keys = delQuery.getKeys();
+        List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -88,7 +83,7 @@ class RemoveProviderTest {
     @ValueSource(strings = {"del -12.12"})
     public void shouldReturnParserQuery4(String query) {
         DelQuery delQuery = provider.apply(query);
-        List<QueryValue<?>> keys = delQuery.getKeys();
+        List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
         assertTrue(key instanceof NumberQueryValue);
@@ -100,11 +95,11 @@ class RemoveProviderTest {
     @ValueSource(strings = {"del {1,12}"})
     public void shouldReturnParserQuery5(String query) {
         DelQuery delQuery = provider.apply(query);
-        List<QueryValue<?>> keys = delQuery.getKeys();
+        List<QueryValue<?>> keys = delQuery.keys();
         assertEquals(1, keys.size());
         QueryValue<?> key = keys.get(0);
-        assertTrue(key instanceof ArrayQueryValue);
-        QueryValue<?>[] values = ArrayQueryValue.class.cast(key).get();
+        assertTrue(key instanceof DefaultArrayQueryValue);
+        QueryValue<?>[] values = DefaultArrayQueryValue.class.cast(key).get();
         List<Long> ids = stream(values).map(QueryValue::get)
                 .map(Long.class::cast)
                 .collect(toList());

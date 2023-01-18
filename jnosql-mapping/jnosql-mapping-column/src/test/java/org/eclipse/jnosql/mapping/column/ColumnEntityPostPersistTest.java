@@ -14,8 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.mapping.column.ColumnEntityPostPersist;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -27,13 +26,13 @@ public class ColumnEntityPostPersistTest {
 
     @Test
     public void shouldReturnNPEWhenEntityIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> new DefaultColumnEntityPostPersist(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new ColumnEntityPostPersist(null));
     }
 
     @Test
     public void shouldReturnInstance() {
         ColumnEntity entity = ColumnEntity.of("columnFamily");
-        ColumnEntityPostPersist postPersist = new DefaultColumnEntityPostPersist(entity);
-        assertEquals(entity, postPersist.getEntity());
+        ColumnEntityPostPersist postPersist = new ColumnEntityPostPersist(entity);
+        assertEquals(entity, postPersist.get());
     }
 }

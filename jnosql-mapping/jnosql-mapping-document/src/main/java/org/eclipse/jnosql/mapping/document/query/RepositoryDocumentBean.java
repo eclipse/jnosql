@@ -14,16 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.data.repository.CrudRepository;
+import jakarta.enterprise.context.spi.CreationalContext;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
+import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
 
-import jakarta.enterprise.context.spi.CreationalContext;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -32,9 +32,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Artemis discoveryBean to CDI extension to register {@link jakarta.nosql.mapping.Repository}
+ * Artemis discoveryBean to CDI extension to register Repository
  */
-public class RepositoryDocumentBean extends AbstractBean<Repository> {
+public class RepositoryDocumentBean<T extends CrudRepository> extends AbstractBean<T> {
 
     private final Class type;
 
@@ -70,16 +70,16 @@ public class RepositoryDocumentBean extends AbstractBean<Repository> {
     }
 
     @Override
-    public Repository create(CreationalContext<Repository> context) {
+    public T create(CreationalContext<T> context) {
         EntitiesMetadata entities = getInstance(EntitiesMetadata.class);
-        DocumentTemplate template = provider.isEmpty() ? getInstance(DocumentTemplate.class) :
-                getInstance(DocumentTemplate.class, DatabaseQualifier.ofDocument(provider));
+        JNoSQLDocumentTemplate template = provider.isEmpty() ? getInstance(JNoSQLDocumentTemplate.class) :
+                getInstance(JNoSQLDocumentTemplate.class, DatabaseQualifier.ofDocument(provider));
 
         Converters converters = getInstance(Converters.class);
 
         DocumentRepositoryProxy handler = new DocumentRepositoryProxy(template,
                 entities, type, converters);
-        return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
+        return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }

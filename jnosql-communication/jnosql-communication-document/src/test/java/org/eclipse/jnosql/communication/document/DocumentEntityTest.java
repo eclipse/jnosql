@@ -17,10 +17,8 @@
 
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentEntity;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -109,7 +107,7 @@ public class DocumentEntityTest {
         Map<String, Object> result = entity.toMap();
         assertFalse(result.isEmpty());
         assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));
-        assertEquals(document.getName(), result.keySet().stream().findAny().get());
+        assertEquals(document.name(), result.keySet().stream().findAny().get());
 
     }
 
@@ -164,27 +162,27 @@ public class DocumentEntityTest {
     @Test
     public void shouldShouldCreateANewInstance() {
         String name = "name";
-        DocumentEntity entity = new DefaultDocumentEntity(name);
-        assertEquals(name, entity.getName());
+        DocumentEntity entity = new DocumentEntity(name);
+        assertEquals(name, entity.name());
     }
 
     @Test
     public void shouldCreateAnEmptyEntity() {
-        DocumentEntity entity = new DefaultDocumentEntity("name");
+        DocumentEntity entity = new DocumentEntity("name");
         assertTrue(entity.isEmpty());
     }
 
     @Test
     public void shouldReturnAnErrorWhenAddANullDocument() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            DocumentEntity entity = new DefaultDocumentEntity("name");
+            DocumentEntity entity = new DocumentEntity("name");
             entity.add(null);
         });
     }
 
     @Test
     public void shouldAddANewDocument() {
-        DocumentEntity entity = new DefaultDocumentEntity("name");
+        DocumentEntity entity = new DocumentEntity("name");
         entity.add(Document.of("document", 12));
         assertFalse(entity.isEmpty());
         assertEquals(1, entity.size());
@@ -193,14 +191,14 @@ public class DocumentEntityTest {
     @Test
     public void shouldReturnErrorWhenAddAnNullIterable() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            DocumentEntity entity = new DefaultDocumentEntity("name");
+            DocumentEntity entity = new DocumentEntity("name");
             entity.addAll(null);
         });
     }
 
     @Test
     public void shouldAddAllDocuments() {
-        DocumentEntity entity = new DefaultDocumentEntity("name");
+        DocumentEntity entity = new DocumentEntity("name");
         entity.addAll(asList(Document.of("name", 12), Document.of("value", "value")));
         assertFalse(entity.isEmpty());
         assertEquals(2, entity.size());
@@ -209,7 +207,7 @@ public class DocumentEntityTest {
 
     @Test
     public void shouldNotFindDocument() {
-        DocumentEntity entity = new DefaultDocumentEntity("name");
+        DocumentEntity entity = new DocumentEntity("name");
         Optional<Document> document = entity.find("name");
         assertFalse(document.isPresent());
     }
@@ -256,7 +254,7 @@ public class DocumentEntityTest {
 
     @Test
     public void shouldRemoveByName() {
-        DocumentEntity entity = new DefaultDocumentEntity("name");
+        DocumentEntity entity = new DocumentEntity("name");
         entity.add(Document.of("value", 32D));
         assertTrue(entity.remove("value"));
         assertTrue(entity.isEmpty());
@@ -264,7 +262,7 @@ public class DocumentEntityTest {
 
     @Test
     public void shouldNotRemoveByName() {
-        DocumentEntity entity = new DefaultDocumentEntity("name");
+        DocumentEntity entity = new DocumentEntity("name");
         entity.add(Document.of("value", 32D));
 
         assertFalse(entity.remove("value1"));
@@ -274,7 +272,7 @@ public class DocumentEntityTest {
     @Test
     public void shouldReturnErrorWhenRemoveByNameIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            DocumentEntity entity = new DefaultDocumentEntity("name");
+            DocumentEntity entity = new DocumentEntity("name");
             entity.remove(null);
         });
     }
@@ -282,7 +280,7 @@ public class DocumentEntityTest {
 
     @Test
     public void shouldAddDocumentAsNameAndObject() {
-        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+        DocumentEntity entity = new DocumentEntity("documentCollection");
         entity.add("name", 10);
         assertEquals(1, entity.size());
         Optional<Document> name = entity.find("name");
@@ -292,7 +290,7 @@ public class DocumentEntityTest {
 
     @Test
     public void shouldAddDocumentAsNameAndValue() {
-        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+        DocumentEntity entity = new DocumentEntity("documentCollection");
         entity.add("name", Value.of(10));
         assertEquals(1, entity.size());
         Optional<Document> name = entity.find("name");
@@ -303,7 +301,7 @@ public class DocumentEntityTest {
     @Test
     public void shouldReturnErrorWhenAddDocumentsObjectWhenHasNullObject() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+            DocumentEntity entity = new DocumentEntity("documentCollection");
             entity.add("name", null);
         });
     }
@@ -311,7 +309,7 @@ public class DocumentEntityTest {
     @Test
     public void shouldReturnErrorWhenAddDocumentsObjectWhenHasNullDocumentName() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+            DocumentEntity entity = new DocumentEntity("documentCollection");
             entity.add(null, 10);
         });
     }
@@ -319,7 +317,7 @@ public class DocumentEntityTest {
     @Test
     public void shouldReturnErrorWhenAddDocumentsValueWhenHasNullDocumentName() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+            DocumentEntity entity = new DocumentEntity("documentCollection");
             entity.add(null, Value.of(12));
         });
     }
@@ -327,7 +325,7 @@ public class DocumentEntityTest {
 
     @Test
     public void shouldAvoidDuplicatedDocument() {
-        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+        DocumentEntity entity = new DocumentEntity("documentCollection");
         entity.add("name", 10);
         entity.add("name", 13);
         assertEquals(1, entity.size());
@@ -338,7 +336,7 @@ public class DocumentEntityTest {
     @Test
     public void shouldAvoidDuplicatedDocumentWhenAddList() {
         List<Document> documents = asList(Document.of("name", 10), Document.of("name", 13));
-        DocumentEntity entity = new DefaultDocumentEntity("documentCollection");
+        DocumentEntity entity = new DocumentEntity("documentCollection");
         entity.addAll(documents);
         assertEquals(1, entity.size());
         assertEquals(1, DocumentEntity.of("documentCollection", documents).size());

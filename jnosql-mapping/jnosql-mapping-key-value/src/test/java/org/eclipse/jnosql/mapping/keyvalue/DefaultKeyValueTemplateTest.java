@@ -14,19 +14,18 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.keyvalue.KeyValuePreparedStatement;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
-import jakarta.nosql.mapping.keyvalue.KeyValueEventPersistManager;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.mapping.keyvalue.KeyValueWorkflow;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.User;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+import jakarta.nosql.PreparedStatement;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.User;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
+import org.eclipse.jnosql.communication.keyvalue.KeyValuePreparedStatement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,8 +37,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
@@ -94,8 +91,8 @@ public class DefaultKeyValueTemplateTest {
         template.put(user);
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
-        assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue());
+        assertEquals(KEY, entity.key());
+        assertEquals(user, entity.value());
     }
 
 
@@ -112,8 +109,8 @@ public class DefaultKeyValueTemplateTest {
         template.put(singletonList(user));
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
-        assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue());
+        assertEquals(KEY, entity.key());
+        assertEquals(user, entity.value());
     }
 
     @Test
@@ -125,8 +122,8 @@ public class DefaultKeyValueTemplateTest {
 
         Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
         KeyValueEntity entity = captor.getValue();
-        assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue());
+        assertEquals(KEY, entity.key());
+        assertEquals(user, entity.value());
     }
 
     @Test
@@ -138,8 +135,8 @@ public class DefaultKeyValueTemplateTest {
 
         Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
         KeyValueEntity entity = captor.getValue();
-        assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue());
+        assertEquals(KEY, entity.key());
+        assertEquals(user, entity.value());
     }
 
     @Test
@@ -148,8 +145,8 @@ public class DefaultKeyValueTemplateTest {
         template.insert(user);
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
-        assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue());
+        assertEquals(KEY, entity.key());
+        assertEquals(user, entity.value());
     }
 
     @Test
@@ -158,8 +155,8 @@ public class DefaultKeyValueTemplateTest {
         template.insert(singletonList(user));
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
-        assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue());
+        assertEquals(KEY, entity.key());
+        assertEquals(user, entity.value());
     }
 
     @Test
@@ -171,8 +168,8 @@ public class DefaultKeyValueTemplateTest {
 
         Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
         KeyValueEntity entity = captor.getValue();
-        assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue());
+        assertEquals(KEY, entity.key());
+        assertEquals(user, entity.value());
     }
 
     @Test
@@ -184,8 +181,8 @@ public class DefaultKeyValueTemplateTest {
 
         Mockito.verify(manager).put(captor.capture(), Mockito.eq(duration));
         KeyValueEntity entity = captor.getValue();
-        assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue());
+        assertEquals(KEY, entity.key());
+        assertEquals(user, entity.value());
     }
 
     @Test
@@ -194,8 +191,8 @@ public class DefaultKeyValueTemplateTest {
         template.update(user);
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
-        assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue());
+        assertEquals(KEY, entity.key());
+        assertEquals(user, entity.value());
     }
 
     @Test
@@ -204,8 +201,8 @@ public class DefaultKeyValueTemplateTest {
         template.update(singletonList(user));
         Mockito.verify(manager).put(captor.capture());
         KeyValueEntity entity = captor.getValue();
-        assertEquals(KEY, entity.getKey());
-        assertEquals(user, entity.getValue());
+        assertEquals(KEY, entity.key());
+        assertEquals(user, entity.value());
     }
 
     @Test
@@ -325,16 +322,16 @@ public class DefaultKeyValueTemplateTest {
 
     @Test
     public void shouldExecutePrepare() {
-        KeyValuePreparedStatement prepare = Mockito.mock(KeyValuePreparedStatement.class);
-        when(prepare.getResult()).thenReturn(Stream.of(Value.of("12")));
-        when(prepare.getSingleResult()).thenReturn(Optional.of(Value.of("12")));
+        org.eclipse.jnosql.communication.keyvalue.KeyValuePreparedStatement prepare = Mockito.mock(KeyValuePreparedStatement.class);
+        when(prepare.result()).thenReturn(Stream.of(Value.of("12")));
+        when(prepare.singleResult()).thenReturn(Optional.of(Value.of("12")));
         when(manager.prepare("get @id")).thenReturn(prepare);
 
         PreparedStatement statement = template.prepare("get @id", Integer.class);
         statement.bind("id", 12);
-        List<Integer> resultList = statement.<Integer>getResult().collect(toList());
+        List<Integer> resultList = statement.<Integer>result().collect(toList());
         assertThat(resultList).contains(12);
-        Optional<Object> singleResult = statement.getSingleResult();
+        Optional<Object> singleResult = statement.singleResult();
         assertTrue(singleResult.isPresent());
         assertEquals(12, singleResult.get());
     }

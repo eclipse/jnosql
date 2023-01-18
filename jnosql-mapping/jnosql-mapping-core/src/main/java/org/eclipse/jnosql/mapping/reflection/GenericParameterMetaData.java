@@ -14,9 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.mapping.AttributeConverter;
+import org.eclipse.jnosql.communication.TypeSupplier;
+import org.eclipse.jnosql.mapping.AttributeConverter;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
@@ -43,8 +42,9 @@ public final class GenericParameterMetaData extends DefaultParameterMetaData imp
 
     public Collection<?> getCollectionInstance() {
         Class<?> type =  getType();
-        final CollectionSupplier supplier = ServiceLoaderProvider.getSupplierStream(CollectionSupplier.class
-                        , ()-> ServiceLoader.load(CollectionSupplier.class))
+        final CollectionSupplier supplier = ServiceLoader.load(CollectionSupplier.class)
+                .stream()
+                .map(ServiceLoader.Provider::get)
                 .map(CollectionSupplier.class::cast)
                 .filter(c -> c.test(type))
                 .findFirst()

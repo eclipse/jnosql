@@ -15,24 +15,17 @@
 package org.eclipse.jnosql.mapping.document;
 
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.document.DocumentQueryParser;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.QueryMapper;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import jakarta.nosql.mapping.document.DocumentEventPersistManager;
-import jakarta.nosql.mapping.document.DocumentQueryPagination;
-import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.mapping.document.DocumentWorkflow;
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.nosql.PreparedStatement;
+import jakarta.nosql.QueryMapper;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentObserverParser;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.communication.document.DocumentQueryParser;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
@@ -42,7 +35,6 @@ import java.time.Duration;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -52,14 +44,13 @@ import java.util.stream.StreamSupport;
 import static java.util.Objects.requireNonNull;
 
 /**
- * This class provides a skeletal implementation of the {@link DocumentTemplate} interface,
+ * This class provides a skeletal implementation of the {@link JNoSQLDocumentTemplate} interface,
  * to minimize the effort required to implement this interface.
  */
-public abstract class AbstractDocumentTemplate implements DocumentTemplate {
+public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate {
 
 
-    private static final DocumentQueryParser PARSER = ServiceLoaderProvider.get(
-            DocumentQueryParser.class, () -> ServiceLoader.load(DocumentQueryParser.class));
+    private static final DocumentQueryParser PARSER = new DocumentQueryParser();
 
     protected abstract DocumentEntityConverter getConverter();
 
@@ -143,12 +134,6 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         return executeQuery(query);
     }
 
-    @Override
-    public <T> Page<T> select(DocumentQueryPagination query) {
-        Objects.requireNonNull(query, "query is required");
-        Stream<T> entities = executeQuery(query);
-        return new DocumentPage<>(this, entities, query);
-    }
 
 
     @Override
@@ -256,5 +241,22 @@ public abstract class AbstractDocumentTemplate implements DocumentTemplate {
         EntityMetadata metadata = getEntities().get(type);
         return new DocumentMapperDelete(metadata, getConverters(), this);
     }
+
+    @Override
+    public <T> Stream<T> findAll(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        DocumentQuery query = DocumentQuery.select().from(metadata.getName()).build();
+        return select(query);
+    }
+
+    @Override
+    public <T> void deleteAll(Class<T> type) {
+        Objects.requireNonNull(type, "type is required");
+        EntityMetadata metadata = getEntities().get(type);
+        DocumentDeleteQuery query = DocumentDeleteQuery.delete().from(metadata.getName()).build();
+        delete(query);
+    }
+
 
 }

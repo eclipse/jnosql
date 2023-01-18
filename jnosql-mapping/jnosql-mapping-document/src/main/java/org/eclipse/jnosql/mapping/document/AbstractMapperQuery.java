@@ -14,10 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentCondition;
+
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.util.ConverterUtil;
 
@@ -45,14 +45,14 @@ abstract class AbstractMapperQuery {
 
     protected transient final Converters converters;
 
-    protected transient final DocumentTemplate template;
+    protected transient final JNoSQLDocumentTemplate template;
 
     protected long start;
 
     protected long limit;
 
 
-    AbstractMapperQuery(EntityMetadata mapping, Converters converters, DocumentTemplate template) {
+    AbstractMapperQuery(EntityMetadata mapping, Converters converters, JNoSQLDocumentTemplate template) {
         this.mapping = mapping;
         this.converters = converters;
         this.documentCollection = mapping.getName();

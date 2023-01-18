@@ -14,30 +14,29 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.mapping.MappingException;
-import jakarta.nosql.tck.entities.Actor;
-import jakarta.nosql.tck.entities.Director;
-import jakarta.nosql.tck.entities.Machine;
-import jakarta.nosql.tck.entities.NoConstructorEntity;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.User;
-import jakarta.nosql.tck.entities.Worker;
-import jakarta.nosql.tck.entities.constructor.Computer;
-import jakarta.nosql.tck.entities.inheritance.EmailNotification;
-import jakarta.nosql.tck.entities.inheritance.Notification;
-import jakarta.nosql.tck.entities.inheritance.Project;
-import jakarta.nosql.tck.entities.inheritance.SmallProject;
-import jakarta.nosql.tck.entities.inheritance.SocialMediaNotification;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.test.entities.Actor;
+import org.eclipse.jnosql.mapping.test.entities.Director;
+import org.eclipse.jnosql.mapping.test.entities.Machine;
+import org.eclipse.jnosql.mapping.test.entities.NoConstructorEntity;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.User;
+import org.eclipse.jnosql.mapping.test.entities.Worker;
+import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.EmailNotification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.Notification;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.Project;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SmallProject;
+import org.eclipse.jnosql.mapping.test.entities.inheritance.SocialMediaNotification;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static jakarta.nosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
+import static org.eclipse.jnosql.mapping.DiscriminatorColumn.DEFAULT_DISCRIMINATOR_COLUMN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -70,8 +69,9 @@ public class ClassConverterTest {
 
         assertEquals("Actor", entityMetadata.getName());
         assertEquals(Actor.class, entityMetadata.getType());
-        assertEquals(6, entityMetadata.getFields().size());
+
         assertThat(entityMetadata.getFieldsName())
+                .hasSize(6)
                 .contains("_id", "name", "age", "phones", "movieCharacter", "movieRating");
 
     }
@@ -133,7 +133,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(SmallProject.class, entity.getType());
 
         InheritanceMetadata inheritance = entity.getInheritance()
-                .orElseThrow(MappingException::new);
+                .orElseThrow(RuntimeException::new);
 
         assertEquals("size", inheritance.getDiscriminatorColumn());
         assertEquals("Small", inheritance.getDiscriminatorValue());
@@ -147,7 +147,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(SocialMediaNotification.class, entity.getType());
 
         InheritanceMetadata inheritance = entity.getInheritance()
-                .orElseThrow(MappingException::new);
+                .orElseThrow(RuntimeException::new);
 
         assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
         assertEquals("SocialMediaNotification", inheritance.getDiscriminatorValue());
@@ -161,7 +161,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(EmailNotification.class, entity.getType());
 
         InheritanceMetadata inheritance = entity.getInheritance()
-                .orElseThrow(MappingException::new);
+                .orElseThrow(RuntimeException::new);
 
         assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
         assertEquals("Email", inheritance.getDiscriminatorValue());
@@ -175,7 +175,7 @@ public class ClassConverterTest {
         Assertions.assertEquals(Project.class, entity.getType());
 
         InheritanceMetadata inheritance = entity.getInheritance()
-                .orElseThrow(MappingException::new);
+                .orElseThrow(RuntimeException::new);
 
         assertEquals("size", inheritance.getDiscriminatorColumn());
         assertEquals("Project", inheritance.getDiscriminatorValue());

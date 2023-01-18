@@ -14,23 +14,21 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnEntity;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.column.ColumnQuery;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.column.ColumnEventPersistManager;
+import jakarta.data.exceptions.NonUniqueResultException;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.communication.column.ColumnCondition;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.communication.column.ColumnEntity;
+import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.Converters;
+import jakarta.nosql.PreparedStatement;
+import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import jakarta.nosql.tck.entities.Job;
-import jakarta.nosql.tck.entities.Movie;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.entities.Job;
+import org.eclipse.jnosql.mapping.test.entities.Movie;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,8 +43,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static jakarta.nosql.column.ColumnDeleteQuery.delete;
-import static jakarta.nosql.column.ColumnQuery.select;
+import static org.eclipse.jnosql.communication.column.ColumnDeleteQuery.delete;
+import static org.eclipse.jnosql.communication.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -83,7 +81,7 @@ public class DefaultColumnTemplateTest {
 
     private ColumnManager managerMock;
 
-    private DefaultColumnTemplate subject;
+    private DefaultColumnTemplate template;
 
     private ArgumentCaptor<ColumnEntity> captor;
 
@@ -97,7 +95,7 @@ public class DefaultColumnTemplateTest {
         captor = ArgumentCaptor.forClass(ColumnEntity.class);
         Instance<ColumnManager> instance = Mockito.mock(Instance.class);
         Mockito.when(instance.get()).thenReturn(managerMock);
-        this.subject = new DefaultColumnTemplate(converter, instance, new DefaultColumnWorkflow(columnEventPersistManager, converter),
+        this.template = new DefaultColumnTemplate(converter, instance, new DefaultColumnWorkflow(columnEventPersistManager, converter),
                 columnEventPersistManager, entities, converters);
     }
 
@@ -110,15 +108,15 @@ public class DefaultColumnTemplateTest {
                 .insert(any(ColumnEntity.class)))
                 .thenReturn(columnEntity);
 
-        subject.insert(this.person);
+        template.insert(this.person);
         verify(managerMock).insert(captor.capture());
         verify(columnEventPersistManager).firePostEntity(any(Person.class));
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
         verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
         verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
         ColumnEntity value = captor.getValue();
-        assertEquals("Person", value.getName());
-        assertEquals(4, value.getColumns().size());
+        assertEquals("Person", value.name());
+        assertEquals(4, value.columns().size());
     }
 
 
@@ -132,7 +130,7 @@ public class DefaultColumnTemplateTest {
                 .thenReturn(columnEntity);
 
         Person person = Person.builder().build();
-        Person result = subject.insert(person);
+        Person result = template.insert(person);
         verify(managerMock).insert(captor.capture());
         verify(columnEventPersistManager).firePostEntity(any(Person.class));
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
@@ -156,15 +154,15 @@ public class DefaultColumnTemplateTest {
                         any(Duration.class)))
                 .thenReturn(columnEntity);
 
-        subject.insert(this.person, Duration.ofHours(2));
+        template.insert(this.person, Duration.ofHours(2));
         verify(managerMock).insert(captor.capture(), Mockito.eq(Duration.ofHours(2)));
         verify(columnEventPersistManager).firePostEntity(any(Person.class));
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
         verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
         verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
         ColumnEntity value = captor.getValue();
-        assertEquals("Person", value.getName());
-        assertEquals(4, value.getColumns().size());
+        assertEquals("Person", value.name());
+        assertEquals(4, value.columns().size());
     }
 
     @Test
@@ -176,15 +174,15 @@ public class DefaultColumnTemplateTest {
                 .update(any(ColumnEntity.class)))
                 .thenReturn(columnEntity);
 
-        subject.update(this.person);
+        template.update(this.person);
         verify(managerMock).update(captor.capture());
         verify(columnEventPersistManager).firePostEntity(any(Person.class));
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
         verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
         verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
         ColumnEntity value = captor.getValue();
-        assertEquals("Person", value.getName());
-        assertEquals(4, value.getColumns().size());
+        assertEquals("Person", value.name());
+        assertEquals(4, value.columns().size());
     }
 
     @Test
@@ -197,7 +195,7 @@ public class DefaultColumnTemplateTest {
                 .thenReturn(columnEntity);
 
         Person person = Person.builder().build();
-        Person result = subject.update(person);
+        Person result = template.update(person);
         verify(managerMock).update(captor.capture());
         verify(columnEventPersistManager).firePostEntity(any(Person.class));
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
@@ -220,7 +218,7 @@ public class DefaultColumnTemplateTest {
                 .insert(any(ColumnEntity.class), Mockito.eq(duration)))
                 .thenReturn(columnEntity);
 
-        subject.insert(Arrays.asList(person, person), duration);
+        template.insert(Arrays.asList(person, person), duration);
         verify(managerMock, times(2)).insert(any(ColumnEntity.class), any(Duration.class));
     }
 
@@ -233,7 +231,7 @@ public class DefaultColumnTemplateTest {
                 .insert(any(ColumnEntity.class)))
                 .thenReturn(columnEntity);
 
-        subject.insert(Arrays.asList(person, person));
+        template.insert(Arrays.asList(person, person));
         verify(managerMock, times(2)).insert(any(ColumnEntity.class));
     }
 
@@ -246,7 +244,7 @@ public class DefaultColumnTemplateTest {
                 .update(any(ColumnEntity.class)))
                 .thenReturn(columnEntity);
 
-        subject.update(Arrays.asList(person, person));
+        template.update(Arrays.asList(person, person));
         verify(managerMock, times(2)).update(any(ColumnEntity.class));
     }
 
@@ -254,14 +252,14 @@ public class DefaultColumnTemplateTest {
     public void shouldDelete() {
 
         ColumnDeleteQuery query = delete().from("delete").build();
-        subject.delete(query);
+        template.delete(query);
         verify(managerMock).delete(query);
     }
 
     @Test
     public void shouldSelect() {
         ColumnQuery query = select().from("person").build();
-        subject.select(query);
+        template.select(query);
         verify(managerMock).select(query);
     }
 
@@ -276,7 +274,7 @@ public class DefaultColumnTemplateTest {
 
         ColumnQuery query = select().from("person").build();
 
-        Optional<Person> result = subject.singleResult(query);
+        Optional<Person> result = template.singleResult(query);
         assertTrue(result.isPresent());
     }
 
@@ -288,7 +286,7 @@ public class DefaultColumnTemplateTest {
 
         ColumnQuery query = select().from("person").build();
 
-        Optional<Person> result = subject.singleResult(query);
+        Optional<Person> result = template.singleResult(query);
         assertFalse(result.isPresent());
     }
 
@@ -304,91 +302,104 @@ public class DefaultColumnTemplateTest {
 
             ColumnQuery query = select().from("person").build();
 
-            subject.singleResult(query);
+            template.singleResult(query);
         });
     }
 
 
     @Test
     public void shouldReturnErrorWhenFindIdHasIdNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> subject.find(Person.class, null));
+        Assertions.assertThrows(NullPointerException.class, () -> template.find(Person.class, null));
     }
 
     @Test
     public void shouldReturnErrorWhenFindIdHasClassNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> subject.find(null, "10"));
+        Assertions.assertThrows(NullPointerException.class, () -> template.find(null, "10"));
     }
 
     @Test
     public void shouldReturnErrorWhenThereIsNotIdInFind() {
-        Assertions.assertThrows(IdNotFoundException.class, () -> subject.find(Job.class, "10"));
+        Assertions.assertThrows(IdNotFoundException.class, () -> template.find(Job.class, "10"));
     }
 
     @Test
     public void shouldReturnFind() {
-        subject.find(Person.class, "10");
+        template.find(Person.class, "10");
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        ColumnCondition condition = query.getCondition().get();
+        ColumnCondition condition = query.condition().get();
 
-        assertEquals("Person", query.getColumnFamily());
+        assertEquals("Person", query.name());
         assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), condition);
     }
 
     @Test
     public void shouldDeleteEntity() {
-        subject.delete(Person.class, "10");
+        template.delete(Person.class, "10");
         ArgumentCaptor<ColumnDeleteQuery> queryCaptor = ArgumentCaptor.forClass(ColumnDeleteQuery.class);
         verify(managerMock).delete(queryCaptor.capture());
 
         ColumnDeleteQuery query = queryCaptor.getValue();
 
-        ColumnCondition condition = query.getCondition().get();
+        ColumnCondition condition = query.condition().get();
 
-        assertEquals("Person", query.getColumnFamily());
+        assertEquals("Person", query.name());
         assertEquals(ColumnCondition.eq(Column.of("_id", 10L)), condition);
     }
 
 
     @Test
     public void shouldExecuteQuery() {
-        Stream<Person> people = subject.query("select * from Person");
+        Stream<Person> people = template.query("select * from Person");
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        assertEquals("Person", query.getColumnFamily());
+        assertEquals("Person", query.name());
     }
 
     @Test
     public void shouldConvertEntity() {
-        Stream<Movie> movies = subject.query("select * from Movie");
+        Stream<Movie> movies = template.query("select * from Movie");
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        assertEquals("movie", query.getColumnFamily());
+        assertEquals("movie", query.name());
     }
 
     @Test
     public void shouldPreparedStatement() {
-        PreparedStatement preparedStatement = subject.prepare("select * from Person where name = @name");
+        PreparedStatement preparedStatement = template.prepare("select * from Person where name = @name");
         preparedStatement.bind("name", "Ada");
-        preparedStatement.getResult();
+        preparedStatement.result();
         ArgumentCaptor<ColumnQuery> queryCaptor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         ColumnQuery query = queryCaptor.getValue();
-        assertEquals("Person", query.getColumnFamily());
+        assertEquals("Person", query.name());
     }
 
     @Test
     public void shouldCount() {
-        subject.count("Person");
+        template.count("Person");
         verify(managerMock).count("Person");
     }
 
     @Test
     public void shouldCountFromEntityClass() {
-        subject.count(Person.class);
+        template.count(Person.class);
         verify(managerMock).count("Person");
+    }
+
+
+    @Test
+    public void shouldFindAll(){
+        template.findAll(Person.class);
+        verify(managerMock).select(select().from("Person").build());
+    }
+
+    @Test
+    public void shouldDeleteAll(){
+        template.deleteAll(Person.class);
+        verify(managerMock).delete(delete().from("Person").build());
     }
 }

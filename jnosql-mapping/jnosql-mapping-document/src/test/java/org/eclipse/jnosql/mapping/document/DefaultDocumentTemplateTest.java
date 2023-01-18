@@ -14,23 +14,23 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentEntity;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.document.DocumentEntityConverter;
-import jakarta.nosql.mapping.document.DocumentEventPersistManager;
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.nosql.PreparedStatement;
+import org.eclipse.jnosql.communication.document.Document;
+
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentCondition;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
+import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import jakarta.nosql.tck.entities.Job;
-import jakarta.nosql.tck.entities.Movie;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.entities.Job;
+import org.eclipse.jnosql.mapping.test.entities.Movie;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,8 +45,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static jakarta.nosql.document.DocumentDeleteQuery.delete;
-import static jakarta.nosql.document.DocumentQuery.select;
+import static org.eclipse.jnosql.communication.document.DocumentDeleteQuery.delete;
+import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -120,8 +120,8 @@ public class DefaultDocumentTemplateTest {
         verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
         verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
         DocumentEntity value = captor.getValue();
-        assertEquals("Person", value.getName());
-        assertEquals(4, value.getDocuments().size());
+        assertEquals("Person", value.name());
+        assertEquals(4, value.documents().size());
     }
 
     @Test
@@ -165,8 +165,8 @@ public class DefaultDocumentTemplateTest {
         verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
         verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
         DocumentEntity value = captor.getValue();
-        assertEquals("Person", value.getName());
-        assertEquals(4, value.getDocuments().size());
+        assertEquals("Person", value.name());
+        assertEquals(4, value.documents().size());
     }
 
 
@@ -186,8 +186,8 @@ public class DefaultDocumentTemplateTest {
         verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
         verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
         DocumentEntity value = captor.getValue();
-        assertEquals("Person", value.getName());
-        assertEquals(4, value.getDocuments().size());
+        assertEquals("Person", value.name());
+        assertEquals(4, value.documents().size());
     }
 
     @Test
@@ -335,9 +335,9 @@ public class DefaultDocumentTemplateTest {
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.name());
         assertEquals(DocumentCondition.eq(Document.of("_id", 10L)), condition);
 
     }
@@ -348,9 +348,9 @@ public class DefaultDocumentTemplateTest {
         ArgumentCaptor<DocumentDeleteQuery> queryCaptor = ArgumentCaptor.forClass(DocumentDeleteQuery.class);
         verify(managerMock).delete(queryCaptor.capture());
         DocumentDeleteQuery query = queryCaptor.getValue();
-        DocumentCondition condition = query.getCondition().get();
+        DocumentCondition condition = query.condition().get();
 
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.name());
         assertEquals(DocumentCondition.eq(Document.of("_id", 10L)), condition);
 
     }
@@ -361,7 +361,7 @@ public class DefaultDocumentTemplateTest {
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.name());
     }
 
     @Test
@@ -370,18 +370,18 @@ public class DefaultDocumentTemplateTest {
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
-        assertEquals("movie", query.getDocumentCollection());
+        assertEquals("movie", query.name());
     }
 
     @Test
     public void shouldPreparedStatement() {
         PreparedStatement preparedStatement = template.prepare("select * from Person where name = @name");
         preparedStatement.bind("name", "Ada");
-        preparedStatement.getResult();
+        preparedStatement.result();
         ArgumentCaptor<DocumentQuery> queryCaptor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(managerMock).select(queryCaptor.capture());
         DocumentQuery query = queryCaptor.getValue();
-        assertEquals("Person", query.getDocumentCollection());
+        assertEquals("Person", query.name());
     }
 
     @Test
@@ -394,6 +394,18 @@ public class DefaultDocumentTemplateTest {
     public void shouldCountFromEntityClass() {
         template.count(Person.class);
         verify(managerMock).count("Person");
+    }
+
+    @Test
+    public void shouldFindAll(){
+        template.findAll(Person.class);
+        verify(managerMock).select(select().from("Person").build());
+    }
+
+    @Test
+    public void shouldDeleteAll(){
+        template.deleteAll(Person.class);
+        verify(managerMock).delete(delete().from("Person").build());
     }
 
 

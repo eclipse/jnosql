@@ -14,16 +14,16 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.QueryMapper.MapperFrom;
-import jakarta.nosql.mapping.QueryMapper.MapperLimit;
-import jakarta.nosql.mapping.QueryMapper.MapperNameCondition;
-import jakarta.nosql.mapping.QueryMapper.MapperNameOrder;
-import jakarta.nosql.mapping.QueryMapper.MapperNotCondition;
-import jakarta.nosql.mapping.QueryMapper.MapperOrder;
-import jakarta.nosql.mapping.QueryMapper.MapperSkip;
-import jakarta.nosql.mapping.QueryMapper.MapperWhere;
+import jakarta.data.exceptions.NonUniqueResultException;
+import org.eclipse.jnosql.mapping.Converters;
+import jakarta.nosql.QueryMapper.MapperFrom;
+import jakarta.nosql.QueryMapper.MapperLimit;
+import jakarta.nosql.QueryMapper.MapperNameCondition;
+import jakarta.nosql.QueryMapper.MapperNameOrder;
+import jakarta.nosql.QueryMapper.MapperNotCondition;
+import jakarta.nosql.QueryMapper.MapperOrder;
+import jakarta.nosql.QueryMapper.MapperSkip;
+import jakarta.nosql.QueryMapper.MapperWhere;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;

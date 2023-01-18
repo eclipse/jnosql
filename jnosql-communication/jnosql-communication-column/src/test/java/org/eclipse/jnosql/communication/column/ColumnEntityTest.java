@@ -17,10 +17,8 @@
 
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnEntity;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -150,7 +148,7 @@ public class ColumnEntityTest {
         Map<String, Object> result = entity.toMap();
         assertFalse(result.isEmpty());
         assertEquals(Integer.valueOf(1), Integer.valueOf(result.size()));
-        assertEquals(column.getName(), result.keySet().stream().findAny().get());
+        assertEquals(column.name(), result.keySet().stream().findAny().get());
     }
 
     @Test
@@ -205,27 +203,27 @@ public class ColumnEntityTest {
     @Test
     public void shouldCreateANewInstance() {
         String name = "name";
-        ColumnEntity entity = new DefaultColumnEntity(name);
-        assertEquals(name, entity.getName());
+        ColumnEntity entity = new ColumnEntity(name);
+        assertEquals(name, entity.name());
     }
 
     @Test
     public void shouldCreateAnEmptyEntity() {
-        ColumnEntity entity = new DefaultColumnEntity("name");
+        ColumnEntity entity = new ColumnEntity("name");
         assertTrue(entity.isEmpty());
     }
 
     @Test
     public void shouldReturnAnErrorWhenAddANullColumn() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnEntity entity = new DefaultColumnEntity("name");
+            ColumnEntity entity = new ColumnEntity("name");
             entity.add(null);
         });
     }
 
     @Test
     public void shouldAddANewColumn() {
-        ColumnEntity entity = new DefaultColumnEntity("name");
+        ColumnEntity entity = new ColumnEntity("name");
         entity.add(Column.of("column", 12));
         assertFalse(entity.isEmpty());
         assertEquals(1, entity.size());
@@ -234,14 +232,14 @@ public class ColumnEntityTest {
     @Test
     public void shouldReturnErrorWhenAddAnNullIterable() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnEntity entity = new DefaultColumnEntity("name");
+            ColumnEntity entity = new ColumnEntity("name");
             entity.addAll(null);
         });
     }
 
     @Test
     public void shouldAddAllColumns() {
-        ColumnEntity entity = new DefaultColumnEntity("name");
+        ColumnEntity entity = new ColumnEntity("name");
         entity.addAll(Arrays.asList(Column.of("name", 12), Column.of("value", "value")));
         assertFalse(entity.isEmpty());
         assertEquals(2, entity.size());
@@ -250,14 +248,14 @@ public class ColumnEntityTest {
 
     @Test
     public void shouldNotFindColumn() {
-        ColumnEntity entity = new DefaultColumnEntity("name");
+        ColumnEntity entity = new ColumnEntity("name");
         Optional<Column> column = entity.find("name");
         assertFalse(column.isPresent());
     }
 
     @Test
     public void shouldRemoveByName() {
-        ColumnEntity entity = new DefaultColumnEntity("name");
+        ColumnEntity entity = new ColumnEntity("name");
         entity.add(Column.of("value", 32D));
         assertTrue(entity.remove("value"));
         assertTrue(entity.isEmpty());
@@ -266,14 +264,14 @@ public class ColumnEntityTest {
     @Test
     public void shouldReturnErrorWhenRemovedNameIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnEntity entity = new DefaultColumnEntity("name");
+            ColumnEntity entity = new ColumnEntity("name");
             entity.remove(null);
         });
     }
 
     @Test
     public void shouldNotRemoveByName() {
-        ColumnEntity entity = new DefaultColumnEntity("name");
+        ColumnEntity entity = new ColumnEntity("name");
         entity.add(Column.of("value", 32D));
 
         assertFalse(entity.remove("value1"));
@@ -284,7 +282,7 @@ public class ColumnEntityTest {
     @Test
     public void shouldReturnErrorWhenRemoveByNameIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnEntity entity = new DefaultColumnEntity("name");
+            ColumnEntity entity = new ColumnEntity("name");
             entity.remove(null);
         });
     }
@@ -292,7 +290,7 @@ public class ColumnEntityTest {
 
     @Test
     public void shouldAddColumnAsNameAndObject() {
-        ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+        ColumnEntity entity = new ColumnEntity("columnFamily");
         entity.add("name", 10);
         assertEquals(1, entity.size());
         Optional<Column> name = entity.find("name");
@@ -302,7 +300,7 @@ public class ColumnEntityTest {
 
     @Test
     public void shouldAddColumnAsNameAndValue() {
-        ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+        ColumnEntity entity = new ColumnEntity("columnFamily");
         entity.add("name", Value.of(10));
         assertEquals(1, entity.size());
         Optional<Column> name = entity.find("name");
@@ -313,7 +311,7 @@ public class ColumnEntityTest {
     @Test
     public void shouldReturnErrorWhenAddColumnsObjectWhenHasNullObject() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+            ColumnEntity entity = new ColumnEntity("columnFamily");
             entity.add("name", null);
         });
     }
@@ -321,7 +319,7 @@ public class ColumnEntityTest {
     @Test
     public void shouldReturnErrorWhenAddColumnsObjectWhenHasNullColumnName() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+            ColumnEntity entity = new ColumnEntity("columnFamily");
             entity.add(null, 10);
         });
     }
@@ -329,7 +327,7 @@ public class ColumnEntityTest {
     @Test
     public void shouldReturnErrorWhenAddColumnsValueWhenHasNullColumnName() {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+            ColumnEntity entity = new ColumnEntity("columnFamily");
             entity.add(null, Value.of(12));
         });
     }
@@ -337,7 +335,7 @@ public class ColumnEntityTest {
 
     @Test
     public void shouldAvoidDuplicatedColumn() {
-        ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+        ColumnEntity entity = new ColumnEntity("columnFamily");
         entity.add("name", 10);
         entity.add("name", 13);
         assertEquals(1, entity.size());
@@ -348,7 +346,7 @@ public class ColumnEntityTest {
     @Test
     public void shouldAvoidDuplicatedColumnWhenAddList() {
         List<Column> columns = asList(Column.of("name", 10), Column.of("name", 13));
-        ColumnEntity entity = new DefaultColumnEntity("columnFamily");
+        ColumnEntity entity = new ColumnEntity("columnFamily");
         entity.addAll(columns);
         assertEquals(1, entity.size());
         assertEquals(1, ColumnEntity.of("columnFamily", columns).size());
@@ -361,7 +359,7 @@ public class ColumnEntityTest {
                 Column.of("name5", 14), Column.of("name5", 16));
 
         ColumnEntity columnFamily = ColumnEntity.of("columnFamily", columns);
-        assertThat(columnFamily.getColumnNames())
+        assertThat(columnFamily.columnNames())
                 .hasSize(5)
                 .contains("name", "name2", "name3", "name4", "name5");
 
@@ -374,7 +372,7 @@ public class ColumnEntityTest {
                 Column.of("name5", 14), Column.of("name5", 16));
 
         ColumnEntity columnFamily = ColumnEntity.of("columnFamily", columns);
-        assertThat(columnFamily.getValues()).contains(Value.of(10), Value.of(11), Value.of(12),
+        assertThat(columnFamily.values()).contains(Value.of(10), Value.of(11), Value.of(12),
                 Value.of(13), Value.of(16));
     }
 

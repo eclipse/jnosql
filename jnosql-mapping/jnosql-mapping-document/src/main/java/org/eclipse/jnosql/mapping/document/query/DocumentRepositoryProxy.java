@@ -15,9 +15,9 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.data.repository.PageableRepository;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
@@ -25,13 +25,13 @@ import java.lang.reflect.ParameterizedType;
 
 
 /**
- * Proxy handle to generate {@link jakarta.nosql.mapping.Repository}
+ * Proxy handle to generate {@link PageableRepository}
  *
  * @param <T> the type
  */
 class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
 
-    private final DocumentTemplate template;
+    private final JNoSQLDocumentTemplate template;
 
     private final DocumentRepository repository;
 
@@ -40,7 +40,7 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
     private final Converters converters;
 
 
-    DocumentRepositoryProxy(DocumentTemplate template, EntitiesMetadata entities,
+    DocumentRepositoryProxy(JNoSQLDocumentTemplate template, EntitiesMetadata entities,
                             Class<?> repositoryType, Converters converters) {
         this.template = template;
         Class<T> typeClass = (Class) ((ParameterizedType) repositoryType.getGenericInterfaces()[0])
@@ -52,12 +52,12 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
 
 
     @Override
-    protected Repository getRepository() {
+    protected PageableRepository getRepository() {
         return repository;
     }
 
     @Override
-    protected DocumentTemplate getTemplate() {
+    protected JNoSQLDocumentTemplate getTemplate() {
         return template;
     }
 
@@ -72,19 +72,19 @@ class DocumentRepositoryProxy<T> extends AbstractDocumentRepositoryProxy<T> {
     }
 
 
-    static class DocumentRepository extends AbstractDocumentRepository implements Repository {
+    static class DocumentRepository extends AbstractDocumentRepository implements PageableRepository {
 
-        private final DocumentTemplate template;
+        private final JNoSQLDocumentTemplate template;
 
         private final EntityMetadata entityMetadata;
 
-        DocumentRepository(DocumentTemplate template, EntityMetadata entityMetadata) {
+        DocumentRepository(JNoSQLDocumentTemplate template, EntityMetadata entityMetadata) {
             this.template = template;
             this.entityMetadata = entityMetadata;
         }
 
         @Override
-        protected DocumentTemplate getTemplate() {
+        protected JNoSQLDocumentTemplate getTemplate() {
             return template;
         }
 

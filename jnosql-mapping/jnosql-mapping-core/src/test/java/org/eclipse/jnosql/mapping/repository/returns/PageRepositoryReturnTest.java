@@ -14,9 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.repository.returns;
 
-import jakarta.nosql.mapping.DynamicQueryException;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
+import jakarta.data.repository.Slice;
+import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
 import org.eclipse.jnosql.mapping.repository.RepositoryReturn;
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +33,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -47,6 +47,7 @@ class PageRepositoryReturnTest {
     @Test
     public void shouldReturnIsCompatible() {
         Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Page.class));
+        Assertions.assertTrue(repositoryReturn.isCompatible(Person.class, Slice.class));
         assertFalse(repositoryReturn.isCompatible(Object.class, Person.class));
         assertFalse(repositoryReturn.isCompatible(Person.class, Object.class));
     }
@@ -56,7 +57,7 @@ class PageRepositoryReturnTest {
 
         Person ada = new Person("Ada");
 
-        Mockito.when(page.getContent()).thenReturn(Stream.of(ada));
+        Mockito.when(page.content()).thenReturn(List.of(ada));
 
         DynamicReturn<Person> dynamic = DynamicReturn.builder()
                 .withClassSource(Person.class)
@@ -65,12 +66,37 @@ class PageRepositoryReturnTest {
                 .withSingleResultPagination(p -> Optional.empty())
                 .withStreamPagination(p -> Stream.of(ada))
                 .withMethodSource(Person.class.getDeclaredMethods()[0])
-                .withPagination(Pagination.page(2).size(2))
+                .withPagination(Pageable.ofPage(2).size(2))
                 .withPage(p -> page)
                 .build();
 
         Page<Person> personPage = (Page<Person>) repositoryReturn.convertPageable(dynamic);
-        List<Person> content = personPage.getContent().collect(toList());
+        List<Person> content = personPage.content();
+
+        assertFalse(content.isEmpty());
+        assertEquals(ada, content.get(0));
+    }
+
+    @Test
+    public void shouldReturnSlice() {
+
+        Person ada = new Person("Ada");
+
+        Mockito.when(page.content()).thenReturn(List.of(ada));
+
+        DynamicReturn<Person> dynamic = DynamicReturn.builder()
+                .withClassSource(Person.class)
+                .withSingleResult(Optional::empty)
+                .withResult(Collections::emptyList)
+                .withSingleResultPagination(p -> Optional.empty())
+                .withStreamPagination(p -> Stream.of(ada))
+                .withMethodSource(Person.class.getDeclaredMethods()[0])
+                .withPagination(Pageable.ofPage(2).size(2))
+                .withPage(p -> page)
+                .build();
+
+        Slice<Person> personPage = (Slice<Person>) repositoryReturn.convertPageable(dynamic);
+        List<Person> content = personPage.content();
 
         assertFalse(content.isEmpty());
         assertEquals(ada, content.get(0));

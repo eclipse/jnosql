@@ -14,46 +14,50 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
-import jakarta.nosql.Params;
-import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.Sort;
-import jakarta.nosql.document.DeleteQueryConverter;
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentDeleteQueryParams;
-import jakarta.nosql.document.DocumentObserverParser;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.document.DocumentQueryParams;
-import jakarta.nosql.document.SelectQueryConverter;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.document.DocumentQueryPagination;
-import jakarta.nosql.mapping.document.DocumentTemplate;
-import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import jakarta.nosql.query.DeleteQuery;
-import jakarta.nosql.query.SelectQuery;
-import org.eclipse.jnosql.mapping.repository.DynamicReturn;
-import org.eclipse.jnosql.mapping.util.ParamsBinder;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
+import jakarta.data.repository.Sort;
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.document.DeleteQueryParser;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQueryParams;
+import org.eclipse.jnosql.communication.document.DocumentObserverParser;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.communication.document.DocumentQueryParams;
+import org.eclipse.jnosql.communication.document.SelectQueryParser;
+import org.eclipse.jnosql.communication.query.DeleteQuery;
+import org.eclipse.jnosql.communication.query.SelectQuery;
 import org.eclipse.jnosql.communication.query.method.DeleteMethodProvider;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.NoSQLPage;
+import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
+import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.util.ParamsBinder;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toUnmodifiableList;
+
 public abstract class BaseDocumentRepository<T> {
+
+    private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
+
+    private static final DeleteQueryParser DELETE_PARSER = new DeleteQueryParser();
 
     protected abstract Converters getConverters();
 
     protected abstract EntityMetadata getEntityMetadata();
 
-    protected abstract DocumentTemplate getTemplate();
+    protected abstract JNoSQLDocumentTemplate getTemplate();
 
     private DocumentObserverParser parser;
 
@@ -61,42 +65,43 @@ public abstract class BaseDocumentRepository<T> {
 
 
     protected DocumentQuery getQuery(Method method, Object[] args) {
-        SelectMethodProvider methodProvider = SelectMethodProvider.get();
-        SelectQuery selectQuery = methodProvider.apply(method, getEntityMetadata().getName());
-        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class,
-                ()-> ServiceLoader.load(SelectQueryConverter.class));
-        DocumentQueryParams queryParams = converter.apply(selectQuery, getParser());
-        DocumentQuery query = queryParams.getQuery();
-        Params params = queryParams.getParams();
+        SelectMethodProvider provider = SelectMethodProvider.INSTANCE;
+        SelectQuery selectQuery = provider.apply(method, getEntityMetadata().getName());
+        DocumentQueryParams queryParams = SELECT_PARSER.apply(selectQuery, getParser());
+        DocumentQuery query = queryParams.query();
+        Params params = queryParams.params();
         getParamsBinder().bind(params, args, method);
-        return getQuerySorts(args, query);
+        return updateQueryDynamically(args, query);
     }
 
-    protected DocumentQuery getQuerySorts(Object[] args, DocumentQuery query) {
-        List<Sort> sorts = DynamicReturn.findSorts(args);
-        if (!sorts.isEmpty()) {
-            List<Sort> newOrders = new ArrayList<>();
-            newOrders.addAll(query.getSorts());
-            newOrders.addAll(sorts);
-            return new MappingDocumentQuery(newOrders, query.getLimit(), query.getSkip(),
-                    query.getCondition().orElse(null), query.getDocumentCollection());
-        }
-        return query;
-    }
 
     protected DocumentDeleteQuery getDeleteQuery(Method method, Object[] args) {
-        DeleteMethodProvider methodProvider = DeleteMethodProvider.get();
-        DeleteQuery deleteQuery = methodProvider.apply(method, getEntityMetadata().getName());
-        DeleteQueryConverter converter = ServiceLoaderProvider.get(DeleteQueryConverter.class,
-                ()-> ServiceLoader.load(DeleteQueryConverter.class));
-        DocumentDeleteQueryParams queryParams = converter.apply(deleteQuery, getParser());
-        DocumentDeleteQuery query = queryParams.getQuery();
-        Params params = queryParams.getParams();
+        DeleteMethodProvider deleteMethodFactory = DeleteMethodProvider.INSTANCE;
+        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getEntityMetadata().getName());
+        DocumentDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, getParser());
+        DocumentDeleteQuery query = queryParams.query();
+        Params params = queryParams.params();
         getParamsBinder().bind(params, args, method);
         return query;
     }
 
 
+    protected DocumentQuery updateQueryDynamically(Object[] args, DocumentQuery query) {
+        Optional<Pageable> pageable = DynamicReturn.findPagination(args);
+
+        return pageable.<DocumentQuery>map(p -> {
+            long size = p.size();
+            long skip = NoSQLPage.skip(p);
+            List<Sort> sorts = query.sorts();
+            if (!p.sorts().isEmpty()) {
+                sorts = new ArrayList<>(query.sorts());
+                sorts.addAll(p.sorts());
+            }
+            return new MappingDocumentQuery(sorts, size, skip,
+                    query.condition().orElse(null), query.name());
+        }).orElse(query);
+
+    }
     protected DocumentObserverParser getParser() {
         if (parser == null) {
             this.parser = new RepositoryDocumentObserverParser(getEntityMetadata());
@@ -117,30 +122,27 @@ public abstract class BaseDocumentRepository<T> {
                 .withMethodSource(method)
                 .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findPagination(args))
-                .withStreamPagination(listPagination(query))
+                .withPagination(DynamicReturn.findPagination(args).orElse(null))
+                .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
                 .build();
         return dynamicReturn.execute();
     }
 
-    protected Function<Pagination, Page<T>> getPage(DocumentQuery query) {
-        return p -> getTemplate().select(DocumentQueryPagination.of(query, p));
-    }
-
-    protected Function<Pagination, Optional<T>> getSingleResult(DocumentQuery query) {
+    protected Function<Pageable, Page<T>> getPage(DocumentQuery query) {
         return p -> {
-            DocumentQuery queryPagination = DocumentQueryPagination.of(query, p);
-            return getTemplate().singleResult(queryPagination);
+            Stream<T> entities = getTemplate().select(query);
+            return NoSQLPage.of(entities.collect(toUnmodifiableList()), p);
         };
     }
 
-    protected Function<Pagination, Stream<T>> listPagination(DocumentQuery query) {
-        return p -> {
-            DocumentQuery queryPagination = DocumentQueryPagination.of(query, p);
-            return getTemplate().select(queryPagination);
-        };
+    protected Function<Pageable, Optional<T>> getSingleResult(DocumentQuery query) {
+          return p -> getTemplate().singleResult(query);
+    }
+
+    protected Function<Pageable, Stream<T>> streamPagination(DocumentQuery query) {
+        return p ->getTemplate().select(query);
     }
 
 }

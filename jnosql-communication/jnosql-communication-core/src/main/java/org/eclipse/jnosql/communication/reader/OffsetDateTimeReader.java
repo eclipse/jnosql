@@ -16,7 +16,7 @@
  */
 package org.eclipse.jnosql.communication.reader;
 
-import jakarta.nosql.ValueReader;
+import org.eclipse.jnosql.communication.ValueReader;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;

@@ -12,47 +12,47 @@
 
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.Operator;
-import jakarta.nosql.query.QueryValue;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.query.QueryCondition;
+import org.eclipse.jnosql.communication.query.QueryValue;
 
-final class MethodCondition implements Condition {
+final class MethodCondition implements QueryCondition {
 
     private final String name;
 
-    private final Operator operator;
+    private final Condition condition;
 
     private final QueryValue<?> value;
 
-    MethodCondition(String name, Operator operator) {
+    MethodCondition(String name, Condition condition) {
         this.name = name;
-        this.operator = operator;
+        this.condition = condition;
         this.value = new MethodParamQueryValue(name);
     }
 
-    MethodCondition(String name, Operator operator, QueryValue<?> value) {
+    MethodCondition(String name, Condition condition, QueryValue<?> value) {
         this.name = name;
-        this.operator = operator;
+        this.condition = condition;
         this.value = value;
     }
 
     @Override
-    public String getName() {
+    public String name() {
         return name;
     }
 
     @Override
-    public Operator getOperator() {
-        return operator;
+    public Condition condition() {
+        return condition;
     }
 
     @Override
-    public QueryValue<?> getValue() {
+    public QueryValue<?> value() {
         return value;
     }
 
     @Override
     public String toString() {
-        return name + " " + operator + " " + value;
+        return name + " " + condition + " " + value;
     }
 }

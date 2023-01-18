@@ -17,7 +17,7 @@
 
 package org.eclipse.jnosql.communication.writer;
 
-import jakarta.nosql.ValueWriter;
+import org.eclipse.jnosql.communication.ValueWriter;
 
 import java.time.temporal.Temporal;
 

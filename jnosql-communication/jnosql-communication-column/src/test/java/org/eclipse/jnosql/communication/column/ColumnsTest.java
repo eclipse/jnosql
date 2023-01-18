@@ -17,7 +17,6 @@
 
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.column.Column;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class ColumnsTest {
     @Test
     public void shouldCreateColumn() {
         Column column = Columns.of("name", "Ada");
-        assertEquals("name", column.getName());
+        assertEquals("name", column.name());
         assertEquals("Ada", column.get());
     }
 
@@ -58,7 +57,7 @@ public class ColumnsTest {
         List<Column> columns = Columns.of(singletonMap("contact", list));
         assertEquals(1, columns.size());
         Column column = columns.get(0);
-        assertEquals("contact", column.getName());
+        assertEquals("contact", column.name());
         List<List<Column>> result = (List<List<Column>>) column.get();
         assertEquals(Column.of("mobile", "55 1234-4567"), result.get(0).get(0));
 

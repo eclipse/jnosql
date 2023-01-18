@@ -1,0 +1,14 @@
+=========================================================================
+==  NOTICE file corresponding to section 4(d) of the Apache License,   ==
+==  Version 2.0, in this case for Microprofile Metrics                 ==
+=========================================================================
+
+
+SPDXVersion: SPDX-2.1
+PackageName: Jakarta NoSQL
+PackageHomePage: https://jakarta.ee/specifications/nosql/
+PackageLicenseDeclared: Apache-2.0
+
+PackageCopyrightText: <text>
+Eclipse Foundation
+</text>

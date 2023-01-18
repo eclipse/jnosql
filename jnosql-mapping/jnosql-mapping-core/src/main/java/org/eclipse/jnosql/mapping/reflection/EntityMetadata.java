@@ -14,14 +14,14 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.mapping.Id;
+import jakarta.nosql.Id;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * This instance is the meta-info of a loaded class that has the  {@link jakarta.nosql.mapping.Entity} annotation.
+ * This instance is the meta-info of a loaded class that has the  {@link jakarta.nosql.Entity} annotation.
  * It represents the information of an entity on Jakarta NoSQL as metadata.
  */
 public interface EntityMetadata {
@@ -45,22 +45,22 @@ public interface EntityMetadata {
 
     /**
      * Return the parent class of this class mapping.
-     * It will check the parent class has the {@link jakarta.nosql.mapping.Inheritance} annotation.
+     * It will check the parent class has the {@link org.eclipse.jnosql.mapping.Inheritance} annotation.
      *
      * @return the parent annotation otherwise {@link  Optional#empty()}
      */
     Optional<InheritanceMetadata> getInheritance();
 
     /**
-     * A class that has a parent with {@link jakarta.nosql.mapping.Inheritance} annotation
+     * A class that has a parent with {@link org.eclipse.jnosql.mapping.Inheritance} annotation
      * won't use the name. It will use the parent name instead.
      *
-     * @return true if has not parent class with {@link jakarta.nosql.mapping.Inheritance} or is the parent itself
+     * @return true if has not parent class with {@link org.eclipse.jnosql.mapping.Inheritance} or is the parent itself
      */
     boolean hasEntityName();
 
     /**
-     * @return true if the entity class has the {@link jakarta.nosql.mapping.Inheritance} annotation
+     * @return true if the entity class has the {@link org.eclipse.jnosql.mapping.Inheritance} annotation
      */
     boolean isInheritance();
 

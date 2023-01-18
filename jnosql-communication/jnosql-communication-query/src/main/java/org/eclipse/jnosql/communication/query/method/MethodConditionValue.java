@@ -11,8 +11,8 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionQueryValue;
+import org.eclipse.jnosql.communication.query.ConditionQueryValue;
+import org.eclipse.jnosql.communication.query.QueryCondition;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,14 +21,14 @@ import static java.util.Collections.unmodifiableList;
 
 final class MethodConditionValue implements ConditionQueryValue {
 
-    private final List<Condition> conditions;
+    private final List<QueryCondition> conditions;
 
-    private MethodConditionValue(List<Condition> conditions) {
+    private MethodConditionValue(List<QueryCondition> conditions) {
         this.conditions = conditions;
     }
 
     @Override
-    public List<Condition> get() {
+    public List<QueryCondition> get() {
         return unmodifiableList(conditions);
     }
 
@@ -54,7 +54,7 @@ final class MethodConditionValue implements ConditionQueryValue {
         return conditions.toString();
     }
 
-    public static ConditionQueryValue of(List<Condition> conditions) {
+    public static ConditionQueryValue of(List<QueryCondition> conditions) {
         return new MethodConditionValue(conditions);
     }
 }

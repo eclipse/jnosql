@@ -12,8 +12,8 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.QueryException;
-import jakarta.nosql.query.QueryValue;
+
+import org.eclipse.jnosql.communication.QueryException;
 
 import java.util.Objects;
 
@@ -27,29 +27,29 @@ final class ValueConverter {
     static QueryValue<?> get(QueryParser.ValueContext context) {
 
         if (Objects.nonNull(context.number())) {
-            return DefaultNumberQueryValue.of(context.number());
+            return NumberQueryValue.of(context.number());
         }
 
         if (Objects.nonNull(context.string())) {
-            return DefaultStringQueryValue.of(context.string());
+            return StringQueryValue.of(context.string());
         }
 
         if (Objects.nonNull(context.json())) {
-            return DefaultJSONQueryValue.of(context.json());
+            return JSONQueryValue.of(context.json());
         }
 
         if (Objects.nonNull(context.parameter())) {
-            return DefaultParamQueryValue.of(context.parameter());
+            return DefaultQueryValue.of(context.parameter());
         }
 
         if (Objects.nonNull(context.function())) {
-            return DefaultFunctionQueryValue.of(context.function());
+            return FunctionQueryValue.of(context.function());
         }
         if (Objects.nonNull(context.array())) {
             QueryValue<?>[] elements = context.array().element().stream()
                     .map(Elements::getElement)
                     .toArray(QueryValue[]::new);
-            return DefaultArrayValue.of(elements);
+            return DefaultArrayQueryValue.of(elements);
         }
         throw new QueryException(MESSAGE);
     }

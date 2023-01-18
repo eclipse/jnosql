@@ -11,18 +11,18 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionQueryValue;
-import jakarta.nosql.query.Operator;
-import jakarta.nosql.query.ParamQueryValue;
-import jakarta.nosql.query.Where;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.query.ArrayQueryValue;
+import org.eclipse.jnosql.communication.query.ConditionQueryValue;
+import org.eclipse.jnosql.communication.query.ParamQueryValue;
+import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryErrorListener;
+import org.eclipse.jnosql.communication.query.Where;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,17 +33,17 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static jakarta.nosql.query.Operator.AND;
-import static jakarta.nosql.query.Operator.BETWEEN;
-import static jakarta.nosql.query.Operator.EQUALS;
-import static jakarta.nosql.query.Operator.GREATER_EQUALS_THAN;
-import static jakarta.nosql.query.Operator.GREATER_THAN;
-import static jakarta.nosql.query.Operator.IN;
-import static jakarta.nosql.query.Operator.LESSER_EQUALS_THAN;
-import static jakarta.nosql.query.Operator.LESSER_THAN;
-import static jakarta.nosql.query.Operator.LIKE;
-import static jakarta.nosql.query.Operator.NOT;
-import static jakarta.nosql.query.Operator.OR;
+import static org.eclipse.jnosql.communication.Condition.AND;
+import static org.eclipse.jnosql.communication.Condition.BETWEEN;
+import static org.eclipse.jnosql.communication.Condition.EQUALS;
+import static org.eclipse.jnosql.communication.Condition.GREATER_EQUALS_THAN;
+import static org.eclipse.jnosql.communication.Condition.GREATER_THAN;
+import static org.eclipse.jnosql.communication.Condition.IN;
+import static org.eclipse.jnosql.communication.Condition.LESSER_EQUALS_THAN;
+import static org.eclipse.jnosql.communication.Condition.LESSER_THAN;
+import static org.eclipse.jnosql.communication.Condition.LIKE;
+import static org.eclipse.jnosql.communication.Condition.NOT;
+import static org.eclipse.jnosql.communication.Condition.OR;
 import static java.util.stream.Collectors.joining;
 
 abstract class AbstractMethodQueryProvider extends MethodBaseListener {
@@ -51,7 +51,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     private static final String SUB_ENTITY_FLAG = "_";
     protected Where where;
 
-    protected Condition condition;
+    protected QueryCondition condition;
 
     protected boolean and = true;
 
@@ -71,7 +71,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
         walker.walk(this, tree);
 
         if (Objects.nonNull(condition)) {
-            this.where = new MethodWhere(condition);
+            this.where = Where.of(condition);
         }
     }
 
@@ -79,7 +79,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
 
     @Override
     public void exitEq(MethodParser.EqContext ctx) {
-        Operator operator = EQUALS;
+        Condition operator = EQUALS;
         boolean hasNot = Objects.nonNull(ctx.not());
         String variable = getVariable(ctx.variable());
         appendCondition(hasNot, variable, operator);
@@ -89,7 +89,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     public void exitGt(MethodParser.GtContext ctx) {
         boolean hasNot = Objects.nonNull(ctx.not());
         String variable = getVariable(ctx.variable());
-        Operator operator = GREATER_THAN;
+        Condition operator = GREATER_THAN;
         appendCondition(hasNot, variable, operator);
     }
 
@@ -97,7 +97,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     public void exitGte(MethodParser.GteContext ctx) {
         boolean hasNot = Objects.nonNull(ctx.not());
         String variable = getVariable(ctx.variable());
-        Operator operator = GREATER_EQUALS_THAN;
+        Condition operator = GREATER_EQUALS_THAN;
         appendCondition(hasNot, variable, operator);
     }
 
@@ -105,7 +105,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     public void exitLt(MethodParser.LtContext ctx) {
         boolean hasNot = Objects.nonNull(ctx.not());
         String variable = getVariable(ctx.variable());
-        Operator operator = LESSER_THAN;
+        Condition operator = LESSER_THAN;
         appendCondition(hasNot, variable, operator);
     }
 
@@ -113,7 +113,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     public void exitLte(MethodParser.LteContext ctx) {
         boolean hasNot = Objects.nonNull(ctx.not());
         String variable = getVariable(ctx.variable());
-        Operator operator = LESSER_EQUALS_THAN;
+        Condition operator = LESSER_EQUALS_THAN;
         appendCondition(hasNot, variable, operator);
     }
 
@@ -121,7 +121,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     public void exitLike(MethodParser.LikeContext ctx) {
         boolean hasNot = Objects.nonNull(ctx.not());
         String variable = getVariable(ctx.variable());
-        Operator operator = LIKE;
+        Condition operator = LIKE;
         appendCondition(hasNot, variable, operator);
     }
 
@@ -129,7 +129,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     public void exitIn(MethodParser.InContext ctx) {
         boolean hasNot = Objects.nonNull(ctx.not());
         String variable = getVariable(ctx.variable());
-        Operator operator = IN;
+        Condition operator = IN;
         appendCondition(hasNot, variable, operator);
     }
 
@@ -137,7 +137,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     public void exitBetween(MethodParser.BetweenContext ctx) {
         boolean hasNot = Objects.nonNull(ctx.not());
         String variable = getVariable(ctx.variable());
-        Operator operator = BETWEEN;
+        Condition operator = BETWEEN;
         ArrayQueryValue value = MethodArrayValue.of(variable);
         checkCondition(new MethodCondition(variable, operator, value), hasNot);
     }
@@ -152,14 +152,14 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
         this.and = false;
     }
 
-    private void appendCondition(boolean hasNot, String variable, Operator operator) {
+    private void appendCondition(boolean hasNot, String variable, Condition operator) {
         ParamQueryValue queryValue = new MethodParamQueryValue(variable);
         checkCondition(new MethodCondition(variable, operator, queryValue), hasNot);
     }
 
 
-    private void checkCondition(Condition condition, boolean hasNot) {
-        Condition newCondition = checkNotCondition(condition, hasNot);
+    private void checkCondition(QueryCondition condition, boolean hasNot) {
+        QueryCondition newCondition = checkNotCondition(condition, hasNot);
         if (Objects.isNull(this.condition)) {
             this.condition = newCondition;
             return;
@@ -190,15 +190,15 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     }
 
 
-    private boolean isAppendable(Condition condition) {
-        return (AND.equals(condition.getOperator()) || OR.equals(condition.getOperator()));
+    private boolean isAppendable(QueryCondition condition) {
+        return (AND.equals(condition.condition()) || OR.equals(condition.condition()));
     }
 
     private boolean isNotAppendable() {
         return !isAppendable(this.condition);
     }
 
-    private Condition checkNotCondition(Condition condition, boolean hasNot) {
+    private QueryCondition checkNotCondition(QueryCondition condition, boolean hasNot) {
         if (hasNot) {
             ConditionQueryValue conditions = MethodConditionValue.of(Collections.singletonList(condition));
             return new MethodCondition("_NOT", NOT, conditions);
@@ -207,38 +207,38 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
         }
     }
 
-    private void appendCondition(Operator operator, Condition newCondition) {
+    private void appendCondition(Condition operator, QueryCondition newCondition) {
 
-        if (operator.equals(this.condition.getOperator())) {
-            ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.getValue());
-            List<Condition> conditions = new ArrayList<>(conditionValue.get());
+        if (operator.equals(this.condition.condition())) {
+            ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.value());
+            List<QueryCondition> conditions = new ArrayList<>(conditionValue.get());
             conditions.add(newCondition);
             this.condition = new MethodCondition(SUB_ENTITY_FLAG + operator.name(), operator, MethodConditionValue.of(conditions));
         } else if (isNotAppendable()) {
-            List<Condition> conditions = Arrays.asList(this.condition, newCondition);
+            List<QueryCondition> conditions = Arrays.asList(this.condition, newCondition);
             this.condition = new MethodCondition(SUB_ENTITY_FLAG + operator.name(), operator, MethodConditionValue.of(conditions));
         } else {
-            List<Condition> conditions = ConditionQueryValue.class.cast(this.condition.getValue()).get();
-            Condition lastCondition = conditions.get(conditions.size() - 1);
+            List<QueryCondition> conditions = ConditionQueryValue.class.cast(this.condition.value()).get();
+            QueryCondition lastCondition = conditions.get(conditions.size() - 1);
 
-            if (isAppendable(lastCondition) && operator.equals(lastCondition.getOperator())) {
-                List<Condition> lastConditions = new ArrayList<>(ConditionQueryValue.class.cast(lastCondition.getValue()).get());
+            if (isAppendable(lastCondition) && Condition.EQUALS.equals(lastCondition.condition())) {
+                List<QueryCondition> lastConditions = new ArrayList<>(ConditionQueryValue.class.cast(lastCondition.value()).get());
                 lastConditions.add(newCondition);
 
-                Condition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
+                QueryCondition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
                         operator, MethodConditionValue.of(lastConditions));
 
-                List<Condition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
+                List<QueryCondition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
                 newConditions.add(newAppendable);
-                this.condition = new MethodCondition(this.condition.getName(), this.condition.getOperator(),
+                this.condition = new MethodCondition(this.condition.name(), this.condition.condition(),
                         MethodConditionValue.of(newConditions));
             } else {
-                Condition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
+                QueryCondition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
                         operator, MethodConditionValue.of(Collections.singletonList(newCondition)));
 
-                List<Condition> newConditions = new ArrayList<>(conditions);
+                List<QueryCondition> newConditions = new ArrayList<>(conditions);
                 newConditions.add(newAppendable);
-                this.condition = new MethodCondition(this.condition.getName(), this.condition.getOperator(),
+                this.condition = new MethodCondition(this.condition.name(), this.condition.condition(),
                         MethodConditionValue.of(newConditions));
             }
 

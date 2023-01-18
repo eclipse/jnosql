@@ -15,9 +15,9 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.Embeddable;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.nosql.Column;
+import org.eclipse.jnosql.mapping.Embeddable;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;

@@ -14,11 +14,11 @@
  */
 package org.eclipse.jnosql.mapping.document.configuration;
 
-import jakarta.nosql.Settings;
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.document.DocumentManagerFactory;
-import jakarta.nosql.document.DocumentConfiguration;
-import jakarta.nosql.mapping.MappingException;
+import jakarta.data.exceptions.MappingException;
+import org.eclipse.jnosql.communication.Settings;
+import org.eclipse.jnosql.communication.document.DocumentConfiguration;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.communication.document.DocumentManagerFactory;
 import org.eclipse.jnosql.mapping.config.MicroProfileSettings;
 import org.eclipse.jnosql.mapping.reflection.Reflections;
 

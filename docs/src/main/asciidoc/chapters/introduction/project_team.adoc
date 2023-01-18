@@ -1,0 +1,47 @@
+// Copyright (c) 2022 Contributors to the Eclipse Foundation
+//
+// This program and the accompanying materials are made available under the
+// terms of the Eclipse Public License v. 2.0 which is available at
+// http://www.eclipse.org/legal/epl-2.0.
+//
+// This Source Code may also be made available under the following Secondary
+// Licenses when the conditions for such availability set forth in the Eclipse
+// Public License v. 2.0 are satisfied: GNU General Public License, version 2
+// with the GNU Classpath Exception which is available at
+// https://www.gnu.org/software/classpath/license.html.
+//
+// SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+
+=== Jakarta NoSQL Project Team
+
+This specification is being developed as part of Jakarta NoSQL project under the
+Jakarta EE Specification Process. It is the result of the collaborative work
+of the project committers and various contributors.
+
+==== Project Lead
+
+* Otavio Santana
+
+==== Committers
+
+* Andres Galante
+* Fred Rowe
+* Gaurav Gupta
+* Ivan Junckes Filho
+* Jesse Gallagher
+* Nathan Rauh
+* Otavio Santana
+* Werner Keil
+* Michael Redlich
+
+==== Historical Committer
+
+* Leonardo Lima
+
+==== Mentor
+
+* Wayne Beaton
+
+==== Contributors
+
+The complete list of Jakarta NoSQL contributors may be found https://github.com/eclipse-ee4j/nosql/graphs/contributors[here].

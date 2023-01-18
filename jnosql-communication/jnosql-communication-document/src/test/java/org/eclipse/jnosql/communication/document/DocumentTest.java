@@ -16,9 +16,8 @@
  */
 package org.eclipse.jnosql.communication.document;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -50,8 +49,8 @@ public class DocumentTest {
         String name = "name";
         Document document = Document.of(name, DEFAULT_VALUE);
         assertNotNull(document);
-        assertEquals(name, document.getName());
-        assertEquals(DEFAULT_VALUE, document.getValue());
+        assertEquals(name, document.name());
+        assertEquals(DEFAULT_VALUE, document.value());
     }
 
     @Test

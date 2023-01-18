@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *   All rights reserved. This program and the accompanying materials
  *   are made available under the terms of the Eclipse Public License v1.0
  *   and Apache License v2.0 which accompanies this distribution.
@@ -14,21 +14,14 @@
  *   Otavio Santana
  *
  */
-
 package org.eclipse.jnosql.communication.document;
 
-
-import jakarta.nosql.TypeSupplier;
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
-import org.eclipse.jnosql.communication.Entry;
+import org.eclipse.jnosql.communication.TypeSupplier;
+import org.eclipse.jnosql.communication.Value;
 
 import java.util.Objects;
 
-/**
- * A default implementation {@link Document}
- */
-final class DefaultDocument implements Document, Entry {
+final class DefaultDocument implements Document {
 
     private final String name;
 
@@ -40,12 +33,12 @@ final class DefaultDocument implements Document, Entry {
     }
 
     @Override
-    public String getName() {
+    public String name() {
         return name;
     }
 
     @Override
-    public Value getValue() {
+    public Value value() {
         return value;
     }
 
@@ -61,6 +54,7 @@ final class DefaultDocument implements Document, Entry {
         return value.get(supplier);
     }
 
+
     @Override
     public Object get() {
         return value.get();
@@ -71,12 +65,12 @@ final class DefaultDocument implements Document, Entry {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DefaultDocument)) {
+        if (!(o instanceof Document)) {
             return false;
         }
         Document that = (Document) o;
-        return Objects.equals(name, that.getName()) &&
-                Objects.equals(value, that.getValue());
+        return Objects.equals(name, that.name()) &&
+                Objects.equals(value, that.value());
     }
 
     @Override

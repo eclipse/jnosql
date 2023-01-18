@@ -16,8 +16,6 @@
  */
 package org.eclipse.jnosql.communication;
 
-import jakarta.nosql.Value;
-
 /**
  * It is a tuple (pair) that consists of a key-value pair, where the key is mapped to a value.
  */
@@ -28,12 +26,12 @@ public interface Entry {
      *
      * @return name
      */
-    String getName();
+    String name();
 
     /**
      * the column's value
      *
      * @return {@link Value}
      */
-    Value getValue();
+    Value value();
 }

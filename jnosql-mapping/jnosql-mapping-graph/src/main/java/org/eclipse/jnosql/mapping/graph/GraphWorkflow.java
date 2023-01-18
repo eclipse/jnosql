@@ -14,9 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 /**
@@ -24,13 +27,26 @@ import java.util.function.UnaryOperator;
  * The default implementation follows:
  *  <p>{@link GraphEventPersistManager#firePreEntity(Object)}</p>
  *  <p>{@link GraphEventPersistManager#firePreGraphEntity(Object)}</p>
- *  <p>{@link GraphEventPersistManager#firePreGraph(Vertex)}</p>
  *  <p>Database alteration</p>
- *  <p>{@link GraphEventPersistManager#firePostGraph(Vertex)}</p>
  *  <p>{@link GraphEventPersistManager#firePostEntity(Object)}</p>
  *  <p>{@link GraphEventPersistManager#firePostGraphEntity(Object)}</p>
  */
-public interface GraphWorkflow {
+@ApplicationScoped
+class GraphWorkflow {
+
+    private GraphEventPersistManager graphEventPersistManager;
+
+    private GraphConverter converter;
+
+
+    GraphWorkflow() {
+    }
+
+    @Inject
+    GraphWorkflow(GraphEventPersistManager graphEventPersistManager, GraphConverter converter) {
+        this.graphEventPersistManager = graphEventPersistManager;
+        this.converter = converter;
+    }
 
     /**
      * Executes the workflow to do an interaction on a graph database.
@@ -40,5 +56,45 @@ public interface GraphWorkflow {
      * @param <T>    the entity type
      * @return after the workflow the the entity response
      */
-    <T> T flow(T entity, UnaryOperator<Vertex> action);
+    public <T> T flow(T entity, UnaryOperator<Vertex> action) {
+        Function<T, T> flow = getFlow(entity, action);
+        return flow.apply(entity);
+    }
+
+    private <T> Function<T, T> getFlow(T entity, UnaryOperator<Vertex> action) {
+        UnaryOperator<T> validation = t -> Objects.requireNonNull(t, "entity is required");
+
+        UnaryOperator<T> firePreEntity = t -> {
+            graphEventPersistManager.firePreEntity(t);
+            return t;
+        };
+
+        UnaryOperator<T> firePreGraphEntity = t -> {
+            graphEventPersistManager.firePreGraphEntity(t);
+            return t;
+        };
+
+        Function<T, Vertex> converterGraph = t -> converter.toVertex(t);
+
+        Function<Vertex, T> converterEntity = t -> converter.toEntity(entity, t);
+
+        UnaryOperator<T> firePostEntity = t -> {
+            graphEventPersistManager.firePostEntity(t);
+            return t;
+        };
+
+        UnaryOperator<T> firePostGraphEntity = t -> {
+            graphEventPersistManager.firePostGraphEntity(t);
+            return t;
+        };
+
+        return validation
+                .andThen(firePreEntity)
+                .andThen(firePreGraphEntity)
+                .andThen(converterGraph)
+                .andThen(action)
+                .andThen(converterEntity)
+                .andThen(firePostEntity)
+                .andThen(firePostGraphEntity);
+    }
 }

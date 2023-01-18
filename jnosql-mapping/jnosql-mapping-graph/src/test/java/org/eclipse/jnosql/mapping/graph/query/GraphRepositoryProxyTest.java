@@ -14,21 +14,21 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.Param;
-import jakarta.nosql.mapping.PreparedStatement;
-import jakarta.nosql.mapping.Query;
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
+import jakarta.nosql.PreparedStatement;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.graph.entities.Vendor;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
@@ -156,7 +157,7 @@ public class GraphRepositoryProxyTest {
                 .withPhones(singletonList("123123"))
                 .build();
 
-        personRepository.save(singletonList(person));
+        personRepository.saveAll(singletonList(person));
         verify(template).insert(captor.capture());
         Person personCapture = captor.getValue();
         assertEquals(person, personCapture);
@@ -242,10 +243,10 @@ public class GraphRepositoryProxyTest {
 
         when(template.find(any(Object.class))).thenReturn(Optional.empty());
         ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
-        personRepository.findById(singletonList(10L));
+        personRepository.findAllById(singletonList(10L)).collect(Collectors.toUnmodifiableList());
         verify(template).find(captor.capture());
 
-        personRepository.findById(asList(1L, 2L, 3L));
+        personRepository.findAllById(asList(1L, 2L, 3L)).collect(Collectors.toUnmodifiableList());
         verify(template, times(4)).find(any(Long.class));
     }
 
@@ -260,10 +261,10 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldDeleteByIds() {
-        personRepository.deleteById(singletonList(10L));
+        personRepository.deleteAllById(singletonList(10L));
         verify(template).delete(10L);
 
-        personRepository.deleteById(asList(1L, 2L, 3L));
+        personRepository.deleteAllById(asList(1L, 2L, 3L));
         verify(template, times(4)).delete(any(Long.class));
     }
 
@@ -282,15 +283,20 @@ public class GraphRepositoryProxyTest {
 
     @Test
     public void shouldFindAll() {
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        List<Person> people = personRepository.findAll();
-        assertFalse(people.isEmpty());
+        List<Person> people = personRepository.findAll().collect(Collectors.toUnmodifiableList());
+        verify(template).findAll(Person.class);
+    }
+
+
+    @Test
+    public void shouldDeleteAll() {
+        personRepository.deleteAll();
+        verify(template).deleteAll(Person.class);
     }
 
     @Test
     public void shouldReturnEmptyAtFindAll() {
-        List<Person> people = personRepository.findAll();
+        List<Person> people = personRepository.findAll().collect(Collectors.toUnmodifiableList());
         assertTrue(people.isEmpty());
     }
 
@@ -363,13 +369,11 @@ public class GraphRepositoryProxyTest {
     }
 
 
-    interface PersonRepository extends Repository<Person, Long> {
+    interface PersonRepository extends PageableRepository<Person, Long> {
 
         Person findByName(String name);
 
         void deleteByName(String name);
-
-        List<Person> findAll();
 
         Optional<Person> findByAge(Integer age);
 
@@ -387,7 +391,7 @@ public class GraphRepositoryProxyTest {
 
     }
 
-    public interface VendorRepository extends Repository<Vendor, String> {
+    public interface VendorRepository extends PageableRepository<Vendor, String> {
 
         Vendor findByPrefixes(String prefix);
 

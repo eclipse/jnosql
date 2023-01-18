@@ -15,26 +15,26 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.PageableRepository;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.mapping.query.RepositoryType;
 import org.eclipse.jnosql.mapping.repository.DynamicQueryMethodReturn;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import static jakarta.nosql.document.DocumentQuery.select;
+import static org.eclipse.jnosql.communication.document.DocumentQuery.select;
 
 
 /**
- * The template method to {@link jakarta.nosql.mapping.Repository} to Document
+ * The template method to {@link PageableRepository} to Document
  *
  * @param <T> the class type
  */
 public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRepository implements InvocationHandler {
 
-    protected abstract Repository getRepository();
+    protected abstract PageableRepository getRepository();
 
     @Override
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
@@ -50,7 +50,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 return executeQuery(method, args, typeClass, query);
             case FIND_ALL:
                 DocumentQuery queryFindAll = select().from(getEntityMetadata().getName()).build();
-                return executeQuery(method, args, typeClass, getQuerySorts(args, queryFindAll));
+                return executeQuery(method, args, typeClass, updateQueryDynamically(args, queryFindAll));
             case DELETE_BY:
                 DocumentDeleteQuery documentDeleteQuery = getDeleteQuery(method, args);
                 getTemplate().delete(documentDeleteQuery);

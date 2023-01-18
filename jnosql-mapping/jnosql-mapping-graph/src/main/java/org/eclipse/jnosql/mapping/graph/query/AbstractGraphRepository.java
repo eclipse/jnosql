@@ -14,25 +14,29 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
+import jakarta.data.repository.PageableRepository;
+import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
-
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static jakarta.nosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
+import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
-abstract class AbstractGraphRepository<T, K> implements Repository<T, K> {
+abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K> {
 
     protected abstract GraphTemplate getTemplate();
 
@@ -51,7 +55,7 @@ abstract class AbstractGraphRepository<T, K> implements Repository<T, K> {
     }
 
     @Override
-    public <S extends T> Iterable<S> save(Iterable<S> entities) {
+    public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
         requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(toList());
     }
@@ -63,7 +67,7 @@ abstract class AbstractGraphRepository<T, K> implements Repository<T, K> {
     }
 
     @Override
-    public void deleteById(Iterable<K> ids) {
+    public void deleteAllById(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         ids.forEach(this::deleteById);
     }
@@ -75,10 +79,10 @@ abstract class AbstractGraphRepository<T, K> implements Repository<T, K> {
     }
 
     @Override
-    public Iterable<T> findById(Iterable<K> ids) {
+    public Stream<T> findAllById(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
-        return (Iterable) stream(ids.spliterator(), false)
-                .flatMap(optionalToStream()).collect(toList());
+        return stream(ids.spliterator(), false)
+                .flatMap(optionalToStream());
     }
 
     @Override
@@ -89,6 +93,40 @@ abstract class AbstractGraphRepository<T, K> implements Repository<T, K> {
     @Override
     public long count() {
         return getTemplate().count(getEntityMetadata().getName());
+    }
+
+    @Override
+    public Page findAll(Pageable pageable) {
+        Objects.requireNonNull(pageable, "pageable is required");
+        EntityMetadata metadata = getEntityMetadata();
+
+        List<Object> entities = getTemplate().getTraversalVertex()
+                .hasLabel(metadata.getType())
+                .skip(NoSQLPage.skip(pageable))
+                .limit(pageable.size()).getResult()
+                .collect(Collectors.toUnmodifiableList());
+
+        return NoSQLPage.of(entities, pageable);
+    }
+
+    @Override
+    public Stream findAll() {
+        return getTemplate().findAll(getEntityMetadata().getType());
+    }
+
+    @Override
+    public void delete(Object entity) {
+        throw new UnsupportedOperationException("The JNoSQL Column has not support for it yet");
+    }
+
+    @Override
+    public void deleteAll(Iterable entities) {
+        throw new UnsupportedOperationException("The JNoSQL Column has not support for it yet");
+    }
+
+    @Override
+    public void deleteAll() {
+        getTemplate().deleteAll(getEntityMetadata().getType());
     }
 
     private FieldMapping getIdField() {

@@ -14,9 +14,6 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
-import org.eclipse.jnosql.mapping.DatabaseMetadata;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

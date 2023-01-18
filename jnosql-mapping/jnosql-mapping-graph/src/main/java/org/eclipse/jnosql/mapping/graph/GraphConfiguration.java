@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.Settings;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.eclipse.jnosql.communication.CommunicationException;
+import org.eclipse.jnosql.communication.Settings;
 
 import java.util.ServiceLoader;
 import java.util.function.Function;
@@ -32,11 +32,27 @@ public interface GraphConfiguration extends Function<Settings, Graph> {
      *
      * @param <T> the configuration type
      * @return {@link GraphConfiguration} instance
-     * @throws jakarta.nosql.ProviderNotFoundException when the provider is not found
-     * @throws jakarta.nosql.NonUniqueResultException  when there is more than one KeyValueConfiguration
      */
     static <T extends GraphConfiguration> T getConfiguration() {
-        return (T) ServiceLoaderProvider.getUnique(GraphConfiguration.class,
-                ()-> ServiceLoader.load(GraphConfiguration.class));
+        return (T) ServiceLoader.load(GraphConfiguration.class)
+                .stream()
+                .map(ServiceLoader.Provider::get)
+                .findFirst().orElseThrow(() -> new CommunicationException("It does not find GraphConfiguration"));
+    }
+
+    /**
+     * creates and returns a  {@link GraphConfiguration} instance from {@link ServiceLoader}
+     * for a particular provider implementation.
+     *
+     * @param <T>     the configuration type
+     * @param type the particular provider
+     * @return {@link GraphConfiguration} instance
+     */
+    static <T extends GraphConfiguration> T getConfiguration(Class<T> type) {
+        return (T) ServiceLoader.load(GraphConfiguration.class)
+                .stream()
+                .map(ServiceLoader.Provider::get)
+                .filter(type::isInstance)
+                .findFirst().orElseThrow(() -> new CommunicationException("It does not find GraphConfiguration"));
     }
 }

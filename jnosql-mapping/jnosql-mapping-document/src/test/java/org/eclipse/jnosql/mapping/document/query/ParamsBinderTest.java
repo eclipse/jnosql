@@ -15,21 +15,20 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 
-import jakarta.nosql.Params;
-import jakarta.nosql.ServiceLoaderProvider;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.Value;
-import jakarta.nosql.document.Document;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentQuery;
-import jakarta.nosql.document.DocumentQueryParams;
-import jakarta.nosql.document.SelectQueryConverter;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.communication.Params;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.document.Document;
+import org.eclipse.jnosql.communication.document.DocumentCondition;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.communication.document.DocumentQueryParams;
+import org.eclipse.jnosql.communication.document.SelectQueryParser;
+import org.eclipse.jnosql.communication.query.SelectQuery;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import jakarta.nosql.query.SelectQuery;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.junit.jupiter.api.Test;
@@ -64,17 +63,16 @@ class ParamsBinderTest {
         RepositoryDocumentObserverParser parser = new RepositoryDocumentObserverParser(entityMetadata);
         paramsBinder = new ParamsBinder(entityMetadata, converters);
 
-        SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
+        SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
         SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.getName());
-        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class,
-                ()-> ServiceLoader.load(SelectQueryConverter.class));
-        DocumentQueryParams columnQueryParams = converter.apply(selectQuery, parser);
-        Params params = columnQueryParams.getParams();
+        SelectQueryParser queryParser = new SelectQueryParser();
+        DocumentQueryParams documentQueryParams = queryParser.apply(selectQuery, parser);
+        Params params = documentQueryParams.params();
         Object[] args = {10};
         paramsBinder.bind(params, args, method);
-        DocumentQuery query = columnQueryParams.getQuery();
-        DocumentCondition columnCondition = query.getCondition().get();
-        Value value = columnCondition.getDocument().getValue();
+        DocumentQuery query = documentQueryParams.query();
+        DocumentCondition columnCondition = query.condition().get();
+        Value value = columnCondition.document().value();
         assertEquals(10, value.get());
 
     }
@@ -88,19 +86,18 @@ class ParamsBinderTest {
         RepositoryDocumentObserverParser parser = new RepositoryDocumentObserverParser(entityMetadata);
         paramsBinder = new ParamsBinder(entityMetadata, converters);
 
-        SelectMethodProvider selectMethodFactory = SelectMethodProvider.get();
+        SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
         SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.getName());
-        SelectQueryConverter converter = ServiceLoaderProvider.get(SelectQueryConverter.class,
-                ()-> ServiceLoader.load(SelectQueryConverter.class));
-        DocumentQueryParams queryParams = converter.apply(selectQuery, parser);
-        Params params = queryParams.getParams();
+        SelectQueryParser queryParser = new SelectQueryParser();
+        DocumentQueryParams queryParams = queryParser.apply(selectQuery, parser);
+        Params params = queryParams.params();
         paramsBinder.bind(params, new Object[]{10L, "Ada"}, method);
-        DocumentQuery query = queryParams.getQuery();
-        DocumentCondition columnCondition = query.getCondition().get();
-        List<DocumentCondition> conditions = columnCondition.getDocument().get(new TypeReference<>() {
+        DocumentQuery query = queryParams.query();
+        DocumentCondition columnCondition = query.condition().get();
+        List<DocumentCondition> conditions = columnCondition.document().get(new TypeReference<>() {
         });
-        List<Object> values = conditions.stream().map(DocumentCondition::getDocument)
-                .map(Document::getValue)
+        List<Object> values = conditions.stream().map(DocumentCondition::document)
+                .map(Document::value)
                 .map(Value::get).collect(Collectors.toList());
         assertEquals(10, values.get(0));
         assertEquals("Ada", values.get(1));

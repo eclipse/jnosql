@@ -10,14 +10,11 @@
  *  Otavio Santana
  */
 module org.eclipse.jnosql.communication.key.value {
-    requires jakarta.nosql.communication.query;
-    requires jakarta.nosql.communication.core;
-    requires jakarta.nosql.communication.key.value;
     requires jakarta.json;
-
-    opens org.eclipse.jnosql.communication.keyvalue.query;
+    requires org.eclipse.jnosql.communication.core;
+    requires org.eclipse.jnosql.communication.query;
+    requires jakarta.data.api;
     opens org.eclipse.jnosql.communication.keyvalue;
+    uses org.eclipse.jnosql.communication.keyvalue.KeyValueConfiguration;
 
-    provides jakarta.nosql.keyvalue.KeyValueEntity.KeyValueEntityProvider with org.eclipse.jnosql.communication.keyvalue.DefaultKeyValueEntityProvider;
-    provides jakarta.nosql.keyvalue.KeyValueQueryParser with org.eclipse.jnosql.communication.keyvalue.query.DefaultKeyValueQueryParser;
 }

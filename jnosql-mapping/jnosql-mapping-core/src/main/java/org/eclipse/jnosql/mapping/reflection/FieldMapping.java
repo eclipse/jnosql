@@ -15,10 +15,10 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import jakarta.nosql.Value;
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.Id;
-import jakarta.nosql.mapping.AttributeConverter;
+import jakarta.nosql.Column;
+import jakarta.nosql.Id;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.mapping.AttributeConverter;
 
 import java.lang.reflect.Field;
 import java.util.Optional;

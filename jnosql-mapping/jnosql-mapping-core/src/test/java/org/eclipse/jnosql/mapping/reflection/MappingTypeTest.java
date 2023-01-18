@@ -14,15 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.Embeddable;
-import jakarta.nosql.tck.entities.Actor;
-import jakarta.nosql.tck.entities.Address;
-import jakarta.nosql.tck.entities.Movie;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.Worker;
-import jakarta.nosql.tck.entities.constructor.BookUser;
-import jakarta.nosql.tck.entities.constructor.PetOwner;
+import jakarta.nosql.Column;
+import org.eclipse.jnosql.mapping.Embeddable;
+import org.eclipse.jnosql.mapping.test.entities.Actor;
+import org.eclipse.jnosql.mapping.test.entities.Address;
+import org.eclipse.jnosql.mapping.test.entities.Movie;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.Worker;
+import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
@@ -71,12 +71,6 @@ class MappingTypeTest {
         Field field = Address.class.getDeclaredField("zipCode");
         assertEquals(MappingType.ENTITY, MappingType.of(field));
     }
-
-    //parameter default
-    //parameter collection
-    //parameter  map
-    //parameter entity
-    //parameter EMBEDDED
 
     @Test
     public void shouldReturnParameterDefault() throws NoSuchMethodException {

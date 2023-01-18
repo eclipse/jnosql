@@ -15,11 +15,11 @@
 package org.eclipse.jnosql.mapping.keyvalue.spi;
 
 
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplateProducer;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
+import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplateProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
 import jakarta.enterprise.context.spi.CreationalContext;
@@ -56,7 +56,7 @@ class TemplateBean extends AbstractBean<KeyValueTemplate> {
 
         KeyValueTemplateProducer producer = getInstance(KeyValueTemplateProducer.class);
         BucketManager manager = getManager();
-        return producer.get(manager);
+        return producer.apply(manager);
     }
 
     private BucketManager getManager() {

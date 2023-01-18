@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.mapping.Converters;
+import org.eclipse.jnosql.communication.column.ColumnCondition;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 interface ColumnTokenProcessor {

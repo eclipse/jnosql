@@ -15,12 +15,12 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.BucketManager;
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.User;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.keyvalue.BucketManager;
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.User;
 import org.mockito.Mockito;
 
 import jakarta.annotation.Priority;

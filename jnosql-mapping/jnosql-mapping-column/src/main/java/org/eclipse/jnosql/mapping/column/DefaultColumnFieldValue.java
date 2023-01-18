@@ -14,10 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.Column;
-import jakarta.nosql.mapping.AttributeConverter;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
+import org.eclipse.jnosql.mapping.AttributeConverter;
+import org.eclipse.jnosql.communication.column.Column;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 import org.eclipse.jnosql.mapping.reflection.MappingType;
 import org.eclipse.jnosql.mapping.reflection.FieldValue;
@@ -60,9 +59,9 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     @Override
     public <X, Y> List<Column> toColumn(ColumnEntityConverter converter, Converters converters) {
         if (EMBEDDED.equals(getType())) {
-            return converter.toColumn(getValue()).getColumns();
+            return converter.toColumn(getValue()).columns();
         } else if (ENTITY.equals(getType())) {
-            return singletonList(Column.of(getName(), converter.toColumn(getValue()).getColumns()));
+            return singletonList(Column.of(getName(), converter.toColumn(getValue()).columns()));
         } else if (isEmbeddableCollection()) {
             return singletonList(Column.of(getName(), getColumns(converter)));
         }
@@ -77,7 +76,7 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     private List<List<Column>> getColumns(ColumnEntityConverter converter) {
         List<List<Column>> columns = new ArrayList<>();
         for (Object element : (Iterable) getValue()) {
-            columns.add(converter.toColumn(element).getColumns());
+            columns.add(converter.toColumn(element).columns());
         }
         return columns;
     }

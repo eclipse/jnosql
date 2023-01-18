@@ -14,8 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import jakarta.nosql.column.ColumnCondition;
-import jakarta.nosql.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.communication.column.ColumnCondition;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,17 +35,17 @@ class MappingColumnDeleteQuery implements ColumnDeleteQuery {
 
 
     @Override
-    public String getColumnFamily() {
+    public String name() {
         return columnFamily;
     }
 
     @Override
-    public Optional<ColumnCondition> getCondition() {
+    public Optional<ColumnCondition> condition() {
         return Optional.ofNullable(condition);
     }
 
     @Override
-    public List<String> getColumns() {
+    public List<String> columns() {
         return Collections.emptyList();
     }
 
@@ -58,9 +58,9 @@ class MappingColumnDeleteQuery implements ColumnDeleteQuery {
             return false;
         }
         ColumnDeleteQuery that = (ColumnDeleteQuery) o;
-        return Objects.equals(columnFamily, that.getColumnFamily())
-                && Objects.equals(condition, that.getCondition().orElse(null))
-                && Objects.equals(Collections.emptyList(), that.getColumns());
+        return Objects.equals(columnFamily, that.name())
+                && Objects.equals(condition, that.condition().orElse(null))
+                && Objects.equals(Collections.emptyList(), that.columns());
     }
 
     @Override

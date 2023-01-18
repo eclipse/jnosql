@@ -16,28 +16,50 @@ package org.eclipse.jnosql.mapping.graph;
 
 
 import java.util.Objects;
+import java.util.function.Supplier;
+
 
 /**
  * When an entity is either saved or updated it's the first event to fire
  */
-public interface EntityGraphPostPersist {
+public final class EntityGraphPostPersist implements Supplier<Object> {
 
-    /**
-     * Return the entity whose gonna be either saved or updated
-     *
-     * @return Return the entity whose gonna be either insert or update
-     */
-    Object getValue();
+    private final Object value;
 
-    /**
-     * Created the default implementation of
-     *
-     * @param value the value
-     * @return the new instance of
-     * @throws NullPointerException when value is null
-     */
+    EntityGraphPostPersist(Object value) {
+        this.value = value;
+    }
+
+    @Override
+    public Object get() {
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof EntityGraphPostPersist)) {
+            return false;
+        }
+        EntityGraphPostPersist that = (EntityGraphPostPersist) o;
+        return Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(value);
+    }
+
+    @Override
+    public String toString() {
+        return  "EntityGraphPostPersist{" + "value=" + value +
+                '}';
+    }
+
     static EntityGraphPostPersist of(Object value) {
         Objects.requireNonNull(value, "value is required");
-        return new DefaultEntityGraphPostPersist(value);
+        return new EntityGraphPostPersist(value);
     }
 }

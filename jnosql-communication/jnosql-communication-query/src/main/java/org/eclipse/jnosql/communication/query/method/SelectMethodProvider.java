@@ -11,26 +11,23 @@
  */
 package org.eclipse.jnosql.communication.query.method;
 
-import jakarta.nosql.query.SelectQuery;
+
+import org.eclipse.jnosql.communication.query.SelectQuery;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.function.BiFunction;
 
-/**
- * A {@link SelectQuery} factory from {@link Method}, this class create an instance of  SelectQuery from the {@link Method#getName()}
- * nomenclature convention. It extends a {@link BiFunction} where:
- * - The Method
- * - The entity name
- * - The SelectQuery from both Method and entity name
- */
-public interface SelectMethodProvider extends BiFunction<Method, String, SelectQuery> {
+public enum SelectMethodProvider implements BiFunction<Method, String, SelectQuery> {
 
-    /**
-     * Returns a default implementation of
-     *
-     * @return a  instance from SPI
-     */
-    static SelectMethodProvider get() {
-        return DefaultSelectMethodProvider.INSTANCE;
+    INSTANCE;
+
+
+    @Override
+    public SelectQuery apply(Method method, String entity) {
+        Objects.requireNonNull(method, "method is required");
+        Objects.requireNonNull(entity, "entity is required");
+        FindByMethodQueryProvider supplier = new FindByMethodQueryProvider();
+        return supplier.apply(method.getName(), entity);
     }
 }

@@ -14,12 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.column.spi;
 
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.column.ColumnTemplate;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.PersonRepository;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.nosql.column.ColumnTemplate;
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;

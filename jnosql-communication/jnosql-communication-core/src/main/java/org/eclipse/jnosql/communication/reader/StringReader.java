@@ -18,7 +18,7 @@
 package org.eclipse.jnosql.communication.reader;
 
 
-import jakarta.nosql.ValueReader;
+import org.eclipse.jnosql.communication.ValueReader;
 
 /**
  * Class to reads and converts to both {@link String} and {@link CharSequence}.

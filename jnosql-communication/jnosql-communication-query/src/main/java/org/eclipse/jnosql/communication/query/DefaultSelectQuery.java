@@ -12,14 +12,17 @@
 
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.query.SelectQuery;
-import jakarta.nosql.query.Where;
+
+import jakarta.data.repository.Sort;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+
+/**
+ * The default implementation of {@link SelectQuery}
+ */
 final class DefaultSelectQuery implements SelectQuery {
 
     private final String entity;
@@ -44,34 +47,48 @@ final class DefaultSelectQuery implements SelectQuery {
     }
 
     @Override
-    public List<String> getFields() {
+    public List<String> fields() {
         return fields;
     }
 
     @Override
-    public String getEntity() {
+    public String entity() {
         return entity;
     }
 
     @Override
-    public Optional<Where> getWhere() {
+    public Optional<Where> where() {
         return Optional.ofNullable(where);
     }
 
     @Override
-    public long getSkip() {
+    public long skip() {
         return skip;
     }
 
     @Override
-    public long getLimit() {
+    public long limit() {
         return limit;
     }
 
     @Override
-    public List<Sort> getOrderBy() {
+    public List<Sort> orderBy() {
         return sorts;
     }
+
+
+    /**
+     * Obtains an instance of {@link DefaultSelectQuery} from a text string.
+     *
+     * @param query the query
+     * @return {@link DefaultSelectQuery} instance
+     * @throws NullPointerException when the query is null
+     */
+    static DefaultSelectQuery parse(String query) {
+        Objects.requireNonNull(query, "query is required");
+        return new SelectQueryConverter().apply(query);
+    }
+
 
     @Override
     public boolean equals(Object o) {

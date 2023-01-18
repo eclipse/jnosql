@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.Sort;
-import jakarta.nosql.document.DocumentCondition;
-import jakarta.nosql.document.DocumentQuery;
+import jakarta.data.repository.Sort;
+import org.eclipse.jnosql.communication.document.DocumentCondition;
+import org.eclipse.jnosql.communication.document.DocumentQuery;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,32 +44,32 @@ public final class MappingDocumentQuery implements DocumentQuery {
     }
 
     @Override
-    public long getLimit() {
+    public long limit() {
         return limit;
     }
 
     @Override
-    public long getSkip() {
+    public long skip() {
         return skip;
     }
 
     @Override
-    public String getDocumentCollection() {
+    public String name() {
         return documentCollection;
     }
 
     @Override
-    public Optional<DocumentCondition> getCondition() {
+    public Optional<DocumentCondition> condition() {
         return Optional.ofNullable(condition);
     }
 
     @Override
-    public List<Sort> getSorts() {
+    public List<Sort> sorts() {
         return sorts;
     }
 
     @Override
-    public List<String> getDocuments() {
+    public List<String> documents() {
         return Collections.emptyList();
     }
 
@@ -82,11 +82,11 @@ public final class MappingDocumentQuery implements DocumentQuery {
             return false;
         }
         DocumentQuery that = (DocumentQuery) o;
-        return limit == that.getLimit() &&
-                skip == that.getSkip() &&
-                Objects.equals(sorts, that.getSorts()) &&
-                Objects.equals(condition, that.getCondition().orElse(null)) &&
-                Objects.equals(documentCollection, that.getDocumentCollection());
+        return limit == that.limit() &&
+                skip == that.skip() &&
+                Objects.equals(sorts, that.sorts()) &&
+                Objects.equals(condition, that.condition().orElse(null)) &&
+                Objects.equals(documentCollection, that.name());
     }
 
     @Override

@@ -14,29 +14,36 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.column.ColumnTemplate;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
+import jakarta.data.repository.PageableRepository;
+import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.NoSQLPage;
+import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
+import org.eclipse.jnosql.mapping.column.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static jakarta.nosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
+import static org.eclipse.jnosql.mapping.IdNotFoundException.KEY_NOT_FOUND_EXCEPTION_SUPPLIER;
 
 /**
- * The {@link Repository} template method
+ * The {@link PageableRepository} template method
  */
-public abstract class AbstractColumnRepository<T, K> implements Repository<T, K> {
+public abstract class AbstractColumnRepository<T, K> implements PageableRepository<T, K> {
 
-    protected abstract ColumnTemplate getTemplate();
+    protected abstract JNoSQLColumnTemplate getTemplate();
 
     protected abstract EntityMetadata getEntityMetadata();
 
@@ -55,7 +62,7 @@ public abstract class AbstractColumnRepository<T, K> implements Repository<T, K>
 
 
     @Override
-    public <S extends T> Iterable<S> save(Iterable<S> entities) {
+    public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
         requireNonNull(entities, "entities is required");
         return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(toList());
     }
@@ -68,7 +75,7 @@ public abstract class AbstractColumnRepository<T, K> implements Repository<T, K>
     }
 
     @Override
-    public void deleteById(Iterable<K> ids) {
+    public void deleteAllById(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
         ids.forEach(this::deleteById);
     }
@@ -90,14 +97,51 @@ public abstract class AbstractColumnRepository<T, K> implements Repository<T, K>
     }
 
     @Override
-    public Iterable<T> findById(Iterable<K> ids) {
+    public Stream<T> findAllById(Iterable<K> ids) {
         requireNonNull(ids, "ids is required");
-        return (Iterable) stream(ids.spliterator(), false)
-                .flatMap(optionalToStream()).collect(toList());
+        return stream(ids.spliterator(), false)
+                .flatMap(optionalToStream());
     }
 
     private FieldMapping getIdField() {
         return getEntityMetadata().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+    }
+
+    @Override
+    public boolean existsById(K id) {
+        return findById(id).isPresent();
+    }
+
+    @Override
+    public Page findAll(Pageable pageable) {
+        Objects.requireNonNull(pageable, "pageable is required");
+        EntityMetadata metadata = getEntityMetadata();
+        ColumnQuery query = new MappingColumnQuery(pageable.sorts(),
+                pageable.size(), NoSQLPage.skip(pageable)
+                , null ,metadata.getName());
+
+        List<Object> entities = getTemplate().select(query).collect(Collectors.toUnmodifiableList());
+        return NoSQLPage.of(entities, pageable);
+    }
+
+    @Override
+    public Stream findAll() {
+        return getTemplate().findAll(getType());
+    }
+
+    @Override
+    public void delete(Object entity) {
+        throw new UnsupportedOperationException("The JNoSQL Column has not support for it yet");
+    }
+
+    @Override
+    public void deleteAll(Iterable entities) {
+        throw new UnsupportedOperationException("The JNoSQL Column has not support for it yet");
+    }
+
+    @Override
+    public void deleteAll() {
+        getTemplate().deleteAll(getType());
     }
 
     private Function optionalToStream() {
@@ -107,9 +151,5 @@ public abstract class AbstractColumnRepository<T, K> implements Repository<T, K>
         };
     }
 
-    @Override
-    public boolean existsById(K id) {
-        return findById(id).isPresent();
-    }
 
 }

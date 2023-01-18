@@ -15,22 +15,25 @@
 package org.eclipse.jnosql.mapping.document.spi;
 
 
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.document.DocumentTemplate;
-import jakarta.nosql.mapping.document.DocumentTemplateProducer;
-import org.eclipse.jnosql.mapping.DatabaseQualifier;
-import org.eclipse.jnosql.mapping.spi.AbstractBean;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.spi.CreationalContext;
 import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.nosql.document.DocumentTemplate;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.mapping.DatabaseQualifier;
+import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.document.DocumentTemplateProducer;
+import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
+import org.eclipse.jnosql.mapping.spi.AbstractBean;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Set;
 
-class TemplateBean extends AbstractBean<DocumentTemplate> {
+class TemplateBean extends AbstractBean<JNoSQLDocumentTemplate> {
+
+    private static final Set<Type> TYPES = Set.of(DocumentTemplate.class, JNoSQLDocumentTemplate.class);
 
     private final Set<Type> types;
 
@@ -44,7 +47,7 @@ class TemplateBean extends AbstractBean<DocumentTemplate> {
      * @param provider    the provider name, that must be a
      */
     public TemplateBean( String provider) {
-        this.types = Collections.singleton(DocumentTemplate.class);
+        this.types = TYPES;
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));
     }
@@ -65,7 +68,7 @@ class TemplateBean extends AbstractBean<DocumentTemplate> {
     }
 
     @Override
-    public DocumentTemplate create(CreationalContext<DocumentTemplate> context) {
+    public JNoSQLDocumentTemplate create(CreationalContext<JNoSQLDocumentTemplate> context) {
 
         DocumentTemplateProducer producer = getInstance(DocumentTemplateProducer.class);
         DocumentManager manager = getManager();
@@ -77,7 +80,7 @@ class TemplateBean extends AbstractBean<DocumentTemplate> {
     }
 
     @Override
-    public void destroy(DocumentTemplate instance, CreationalContext<DocumentTemplate> creationalContext) {
+    public void destroy(JNoSQLDocumentTemplate instance, CreationalContext<JNoSQLDocumentTemplate> creationalContext) {
 
     }
 

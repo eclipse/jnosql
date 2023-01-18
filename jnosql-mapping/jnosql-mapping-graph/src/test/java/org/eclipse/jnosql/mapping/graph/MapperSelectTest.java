@@ -14,9 +14,10 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+
 import jakarta.inject.Inject;
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.data.exceptions.NonUniqueResultException;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;

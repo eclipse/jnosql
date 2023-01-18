@@ -14,13 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
-import jakarta.nosql.document.DocumentDeleteQuery;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteFrom;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteNameCondition;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteNotCondition;
-import jakarta.nosql.mapping.QueryMapper.MapperDeleteWhere;
-import jakarta.nosql.mapping.document.DocumentTemplate;
+import jakarta.nosql.QueryMapper.MapperDeleteFrom;
+import jakarta.nosql.QueryMapper.MapperDeleteNameCondition;
+import jakarta.nosql.QueryMapper.MapperDeleteNotCondition;
+import jakarta.nosql.QueryMapper.MapperDeleteWhere;
+import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
+import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
 import static java.util.Objects.requireNonNull;
@@ -29,7 +28,7 @@ final class DocumentMapperDelete extends AbstractMapperQuery implements MapperDe
         MapperDeleteWhere, MapperDeleteNameCondition, MapperDeleteNotCondition {
 
 
-    DocumentMapperDelete(EntityMetadata mapping, Converters converters, DocumentTemplate template) {
+    DocumentMapperDelete(EntityMetadata mapping, Converters converters, JNoSQLDocumentTemplate template) {
         super(mapping, converters, template);
     }
 

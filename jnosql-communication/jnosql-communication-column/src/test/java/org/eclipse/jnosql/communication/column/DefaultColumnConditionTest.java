@@ -16,10 +16,8 @@
  */
 package org.eclipse.jnosql.communication.column;
 
-import jakarta.nosql.Condition;
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.column.Column;
-import jakarta.nosql.column.ColumnCondition;
+import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -39,33 +37,33 @@ public class DefaultColumnConditionTest {
 
     @Test
     public void shouldReturnErrorWhenColumnIsNull() {
-        assertThrows(NullPointerException.class, () -> DefaultColumnCondition.of(null, Condition.AND));
+        assertThrows(NullPointerException.class, () -> ColumnCondition.of(null, Condition.AND));
     }
 
     @Test
     public void shouldCreateAnInstance() {
         Column name = Column.of("name", "Otavio");
-        ColumnCondition condition = DefaultColumnCondition.of(name, Condition.EQUALS);
+        ColumnCondition condition = ColumnCondition.of(name, Condition.EQUALS);
         assertNotNull(condition);
-        assertEquals(name, condition.getColumn());
-        assertEquals(Condition.EQUALS, condition.getCondition());
+        assertEquals(name, condition.column());
+        assertEquals(Condition.EQUALS, condition.condition());
     }
 
     @Test
     public void shouldCreateNegationCondition() {
         Column age = Column.of("age", 26);
-        ColumnCondition condition = DefaultColumnCondition.of(age, Condition.GREATER_THAN);
+        ColumnCondition condition = ColumnCondition.of(age, Condition.GREATER_THAN);
         ColumnCondition negate = condition.negate();
-        Column negateColumn = negate.getColumn();
-        assertEquals(Condition.NOT, negate.getCondition());
-        assertEquals(Condition.NOT.getNameField(), negateColumn.getName());
-        assertEquals(DefaultColumnCondition.of(age, Condition.GREATER_THAN), negateColumn.getValue().get());
+        Column negateColumn = negate.column();
+        assertEquals(Condition.NOT, negate.condition());
+        assertEquals(Condition.NOT.getNameField(), negateColumn.name());
+        assertEquals(ColumnCondition.of(age, Condition.GREATER_THAN), negateColumn.value().get());
     }
 
     @Test
     public void shouldReturnValidDoubleNegation() {
         Column age = Column.of("age", 26);
-        ColumnCondition condition = DefaultColumnCondition.of(age, Condition.GREATER_THAN);
+        ColumnCondition condition = ColumnCondition.of(age, Condition.GREATER_THAN);
         ColumnCondition affirmative = condition.negate().negate();
         Assertions.assertEquals(condition, affirmative);
     }
@@ -74,14 +72,14 @@ public class DefaultColumnConditionTest {
     public void shouldCreateAndCondition() {
         Column age = Column.of("age", 26);
         Column name = Column.of("name", "Otavio");
-        ColumnCondition condition1 = DefaultColumnCondition.of(name, Condition.EQUALS);
-        ColumnCondition condition2 = DefaultColumnCondition.of(age, Condition.GREATER_THAN);
+        ColumnCondition condition1 = ColumnCondition.of(name, Condition.EQUALS);
+        ColumnCondition condition2 = ColumnCondition.of(age, Condition.GREATER_THAN);
 
         ColumnCondition and = condition1.and(condition2);
-        Column andColumn = and.getColumn();
-        assertEquals(Condition.AND, and.getCondition());
-        assertEquals(Condition.AND.getNameField(), andColumn.getName());
-        assertThat(andColumn.getValue().get(new TypeReference<List<ColumnCondition>>() {
+        Column andColumn = and.column();
+        assertEquals(Condition.AND, and.condition());
+        assertEquals(Condition.AND.getNameField(), andColumn.name());
+        assertThat(andColumn.value().get(new TypeReference<List<ColumnCondition>>() {
                 })).contains(condition1, condition2);
 
     }
@@ -90,27 +88,27 @@ public class DefaultColumnConditionTest {
     public void shouldCreateOrCondition() {
         Column age = Column.of("age", 26);
         Column name = Column.of("name", "Otavio");
-        ColumnCondition condition1 = DefaultColumnCondition.of(name, Condition.EQUALS);
-        ColumnCondition condition2 = DefaultColumnCondition.of(age, Condition.GREATER_THAN);
+        ColumnCondition condition1 = ColumnCondition.of(name, Condition.EQUALS);
+        ColumnCondition condition2 = ColumnCondition.of(age, Condition.GREATER_THAN);
 
         ColumnCondition and = condition1.or(condition2);
-        Column andColumn = and.getColumn();
-        assertEquals(Condition.OR, and.getCondition());
-        assertEquals(Condition.OR.getNameField(), andColumn.getName());
-        assertThat(andColumn.getValue().get(new TypeReference<List<ColumnCondition>>() {
+        Column andColumn = and.column();
+        assertEquals(Condition.OR, and.condition());
+        assertEquals(Condition.OR.getNameField(), andColumn.name());
+        assertThat(andColumn.value().get(new TypeReference<List<ColumnCondition>>() {
                 })).contains(condition1, condition2);
 
     }
 
     @Test
     public void shouldReturnErrorWhenCreateAndWithNullValues() {
-        assertThrows(NullPointerException.class, () -> DefaultColumnCondition.and((ColumnCondition[]) null));
+        assertThrows(NullPointerException.class, () -> ColumnCondition.and((ColumnCondition[]) null));
     }
 
 
     @Test
     public void shouldReturnErrorWhenCreateOrWithNullValues() {
-        assertThrows(NullPointerException.class, () -> DefaultColumnCondition.or((ColumnCondition[]) null));
+        assertThrows(NullPointerException.class, () -> ColumnCondition.or((ColumnCondition[]) null));
     }
 
 
@@ -119,8 +117,8 @@ public class DefaultColumnConditionTest {
         ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
         ColumnCondition gt = ColumnCondition.gt(Column.of("age", 10));
         ColumnCondition and = ColumnCondition.and(eq, gt);
-        assertEquals(Condition.AND, and.getCondition());
-        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<>() {
+        assertEquals(Condition.AND, and.condition());
+        List<ColumnCondition> conditions = and.column().get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq, gt);
     }
@@ -130,8 +128,8 @@ public class DefaultColumnConditionTest {
         ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
         ColumnCondition gt = ColumnCondition.gt(Column.of("age", 10));
         ColumnCondition and = ColumnCondition.or(eq, gt);
-        assertEquals(Condition.OR, and.getCondition());
-        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<>() {
+        assertEquals(Condition.OR, and.condition());
+        List<ColumnCondition> conditions = and.column().get(new TypeReference<>() {
         });
         assertThat(conditions).contains(eq, gt);
     }
@@ -143,14 +141,14 @@ public class DefaultColumnConditionTest {
         ColumnCondition lte = ColumnCondition.lte(Column.of("salary", 10_000.00));
 
         ColumnCondition and = eq.and(gt);
-        List<ColumnCondition> conditions = and.getColumn().get(new TypeReference<>() {
+        List<ColumnCondition> conditions = and.column().get(new TypeReference<>() {
         });
-        assertEquals(Condition.AND, and.getCondition());
+        assertEquals(Condition.AND, and.condition());
         assertThat(conditions).contains(eq, gt);
         ColumnCondition result = and.and(lte);
 
-        assertEquals(Condition.AND, result.getCondition());
-        assertThat(result.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        assertEquals(Condition.AND, result.condition());
+        assertThat(result.column().get(new TypeReference<List<ColumnCondition>>() {
         })).contains(eq, gt, lte);
 
     }
@@ -162,14 +160,14 @@ public class DefaultColumnConditionTest {
         ColumnCondition lte = ColumnCondition.lte(Column.of("salary", 10_000.00));
 
         ColumnCondition or = eq.or(gt);
-        List<ColumnCondition> conditions = or.getColumn().get(new TypeReference<>() {
+        List<ColumnCondition> conditions = or.column().get(new TypeReference<>() {
         });
-        assertEquals(Condition.OR, or.getCondition());
+        assertEquals(Condition.OR, or.condition());
         assertThat(conditions).contains(eq, gt);
         ColumnCondition result = or.or(lte);
 
-        assertEquals(Condition.OR, result.getCondition());
-        assertThat(result.getColumn().get(new TypeReference<List<ColumnCondition>>() {
+        assertEquals(Condition.OR, result.condition());
+        assertThat(result.column().get(new TypeReference<List<ColumnCondition>>() {
         })).contains(eq, gt, lte);
 
     }
@@ -178,8 +176,8 @@ public class DefaultColumnConditionTest {
     public void shouldNegate() {
         ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
         ColumnCondition negate = eq.negate();
-        assertEquals(Condition.NOT, negate.getCondition());
-        ColumnCondition condition = negate.getColumn().get(ColumnCondition.class);
+        assertEquals(Condition.NOT, negate.condition());
+        ColumnCondition condition = negate.column().get(ColumnCondition.class);
         assertEquals(eq, condition);
     }
 
@@ -187,7 +185,7 @@ public class DefaultColumnConditionTest {
     public void shouldAffirmDoubleNegate() {
         ColumnCondition eq = ColumnCondition.eq(Column.of("name", "otavio"));
         ColumnCondition affirm = eq.negate().negate();
-        assertEquals(eq.getCondition(), affirm.getCondition());
+        assertEquals(eq.condition(), affirm.condition());
 
     }
 
@@ -224,8 +222,8 @@ public class DefaultColumnConditionTest {
     public void shouldReturnBetween() {
         Column column = Column.of("age", Arrays.asList(12, 13));
         ColumnCondition between = ColumnCondition.between(column);
-        assertEquals(Condition.BETWEEN, between.getCondition());
-        Iterable<Integer> integers = between.getColumn().get(new TypeReference<>() {
+        assertEquals(Condition.BETWEEN, between.condition());
+        Iterable<Integer> integers = between.column().get(new TypeReference<>() {
         });
         assertThat(integers).contains(12, 13);
     }
@@ -240,8 +238,8 @@ public class DefaultColumnConditionTest {
     public void shouldReturnInClause() {
         Column column = Column.of("age", Arrays.asList(12, 13));
         ColumnCondition in = ColumnCondition.in(column);
-        assertEquals(Condition.IN, in.getCondition());
-        Iterable<Integer> integers = in.getColumn().get(new TypeReference<>() {
+        assertEquals(Condition.IN, in.condition());
+        Iterable<Integer> integers = in.column().get(new TypeReference<>() {
         });
         assertThat(integers).contains(12, 13);
     }

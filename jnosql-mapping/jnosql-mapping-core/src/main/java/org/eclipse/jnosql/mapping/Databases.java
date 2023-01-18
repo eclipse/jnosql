@@ -14,10 +14,9 @@
  */
 package org.eclipse.jnosql.mapping;
 
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
 
 import jakarta.enterprise.inject.spi.ProcessProducer;
+
 import java.lang.annotation.Annotation;
 import java.util.Optional;
 import java.util.Set;

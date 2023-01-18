@@ -14,25 +14,26 @@
  */
 package org.eclipse.jnosql.mapping.query;
 
-import jakarta.nosql.mapping.Query;
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.Query;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.stream.Stream;
 
 class RepositoryTypeTest {
 
 
     @Test
-    public void shouldReturnDefaultSync() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(Repository.class, "save")));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(Repository.class, "deleteById")));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(Repository.class, "findById")));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(Repository.class, "existsById")));
-        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(Repository.class, "count")));
+    public void shouldReturnDefault() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "save")));
+        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "deleteById")));
+        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "findById")));
+        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "existsById")));
+        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(CrudRepository.class, "count")));
+        Assertions.assertEquals(RepositoryType.DEFAULT, RepositoryType.of(getMethod(PageableRepository.class, "findAll")));
     }
 
 
@@ -75,13 +76,13 @@ class RepositoryTypeTest {
 
     }
 
-    interface SyncRepository extends Repository {
+    interface SyncRepository extends CrudRepository {
 
         String findByName(String name);
 
         String deleteByName(String name);
 
-        List<String> findAll();
+        Stream<String> findAll();
 
         @Query("query")
         String query(String query);

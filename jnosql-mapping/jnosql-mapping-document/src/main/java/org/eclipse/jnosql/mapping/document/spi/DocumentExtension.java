@@ -15,29 +15,24 @@
 package org.eclipse.jnosql.mapping.document.spi;
 
 
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.mapping.Repository;
-import org.eclipse.jnosql.mapping.DatabaseMetadata;
-import org.eclipse.jnosql.mapping.Databases;
-import org.eclipse.jnosql.mapping.document.query.RepositoryDocumentBean;
-
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
-import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
 import jakarta.enterprise.inject.spi.ProcessProducer;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.mapping.DatabaseMetadata;
+import org.eclipse.jnosql.mapping.DatabaseType;
+import org.eclipse.jnosql.mapping.Databases;
+import org.eclipse.jnosql.mapping.document.query.RepositoryDocumentBean;
+import org.eclipse.jnosql.mapping.reflection.ClassScanner;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import static jakarta.nosql.mapping.DatabaseType.DOCUMENT;
-
 /**
  * Extension to start up the DocumentTemplate and Repository
- * from the {@link jakarta.nosql.mapping.Database} qualifier
+ * from the {@link org.eclipse.jnosql.mapping.Database} qualifier
  */
 public class DocumentExtension implements Extension {
 
@@ -45,28 +40,18 @@ public class DocumentExtension implements Extension {
 
     private final Set<DatabaseMetadata> databases = new HashSet<>();
 
-    private final Collection<Class<?>> crudTypes = new HashSet<>();
-
-    <T extends Repository> void observes(@Observes final ProcessAnnotatedType<T> repo) {
-        Class<T> javaClass = repo.getAnnotatedType().getJavaClass();
-        if (Repository.class.equals(javaClass)) {
-            return;
-        }
-
-
-        if (Arrays.asList(javaClass.getInterfaces()).contains(Repository.class)
-                && Modifier.isInterface(javaClass.getModifiers())) {
-            crudTypes.add(javaClass);
-        }
-    }
-
 
     <T, X extends DocumentManager> void observes(@Observes final ProcessProducer<T, X> pp) {
-        Databases.addDatabase(pp, DOCUMENT, databases);
+        Databases.addDatabase(pp, DatabaseType.DOCUMENT, databases);
     }
 
 
     void onAfterBeanDiscovery(@Observes final AfterBeanDiscovery afterBeanDiscovery) {
+
+        ClassScanner scanner = ClassScanner.INSTANCE;
+
+        Set<Class<?>> crudTypes = scanner.repositoriesStandard();
+
         LOGGER.info(String.format("Processing Document extension: %d databases crud %d found",
                 databases.size(), crudTypes.size()));
         LOGGER.info("Processing repositories as a Document implementation: " + crudTypes);

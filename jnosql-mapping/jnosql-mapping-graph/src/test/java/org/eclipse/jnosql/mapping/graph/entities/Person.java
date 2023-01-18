@@ -15,10 +15,10 @@
 package org.eclipse.jnosql.mapping.graph.entities;
 
 
-import jakarta.nosql.mapping.Column;
-import jakarta.nosql.mapping.Entity;
-import jakarta.nosql.mapping.Id;
-import jakarta.nosql.mapping.MappedSuperclass;
+import jakarta.nosql.Column;
+import jakarta.nosql.Entity;
+import jakarta.nosql.Id;
+import org.eclipse.jnosql.mapping.MappedSuperclass;
 
 import java.util.List;
 import java.util.Objects;

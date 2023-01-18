@@ -14,8 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.query;
 
-import jakarta.nosql.mapping.Query;
-import jakarta.nosql.mapping.Repository;
+import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.Query;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -28,7 +29,8 @@ public enum RepositoryType {
 
     DEFAULT, FIND_BY, DELETE_BY, UNKNOWN, OBJECT_METHOD, JNOSQL_QUERY, FIND_ALL;
 
-    private static final Predicate<Class<?>> IS_REPOSITORY_METHOD =  Predicate.<Class<?>>isEqual(Repository.class);
+    private static final Predicate<Class<?>> IS_REPOSITORY_METHOD =  Predicate.<Class<?>>isEqual(CrudRepository.class)
+            .or(Predicate.<Class<?>>isEqual(PageableRepository.class));
 
 
     /**

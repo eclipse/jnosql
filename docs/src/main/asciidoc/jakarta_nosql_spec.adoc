@@ -1,0 +1,43 @@
+// Copyright (c) 2022 Contributors to the Eclipse Foundation
+//
+// This program and the accompanying materials are made available under the
+// terms of the Eclipse Public License v. 2.0 which is available at
+// http://www.eclipse.org/legal/epl-2.0.
+//
+// This Source Code may also be made available under the following Secondary
+// Licenses when the conditions for such availability set forth in the Eclipse
+// Public License v. 2.0 are satisfied: GNU General Public License, version 2
+// with the GNU Classpath Exception which is available at
+// https://www.gnu.org/software/classpath/license.html.
+//
+// SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+
+= Jakarta NoSQL
+:authors: Contributors to Jakarta NoSQL Specification (https://github.com/eclipse-ee4j/nosql/graphs/contributors)
+:email: nosql-dev@eclipse.org
+:version-label!:
+:doctype: book
+:license: Apache License v2.0
+:source-highlighter: coderay
+:toc: left
+:toclevels: 3
+:sectnumlevels: 4
+:sectanchors:
+:stem:
+ifdef::backend-pdf[]
+:pagenums:
+:numbered:
+:title-logo-image: image:jakarta_ee_logo_schooner_color_stacked_default.png[pdfwidth=4.25in,align=right]
+endif::[]
+:icons: font
+ifndef::imagesdir[:imagesdir: images]
+ifndef::sourcedir[:sourcedir: ../../main/java]
+
+:sectnums!:
+include::chapters/license/license-alv2.asciidoc[]
+
+:sectnums:
+include::chapters/introduction/introduction.adoc[]
+include::chapters/communication/communication.adoc[]
+include::chapters/mapping/mapping.adoc[]
+include::chapters/references/references.adoc[]

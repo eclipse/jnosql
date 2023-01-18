@@ -14,9 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
 import org.apache.tinkerpop.gremlin.process.traversal.step.filter.DedupGlobalStep;
 
 import java.util.Optional;
@@ -132,9 +129,17 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * {@code n} objects are allowed as defined by the {@code limit} argument.
      *
      * @param limit the number at which to end the next
-     * @return a  with the limit
+     * @return a VertexTraversal with the limit
      */
     VertexTraversal limit(long limit);
+
+    /**
+     *  Filters out the first {@code n} objects in the traversal.
+     *
+     * @param skip the number of objects to skip
+     * @return  a VertexTraversal with skip
+     */
+    VertexTraversal skip(long skip);
 
     /**
      * Returns a VertexTraversal with range defined
@@ -167,7 +172,6 @@ public interface VertexTraversal extends VertexConditionTraversal {
      *
      * @param <T> the type
      * @return the entity result otherwise {@link Optional#empty()}
-     * @throws NonUniqueResultException when there is more than one result
      */
     <T> Optional<T> getSingleResult();
 
@@ -178,15 +182,6 @@ public interface VertexTraversal extends VertexConditionTraversal {
      */
     EntityTree tree();
 
-    /**
-     * creates a {@link Page} instance
-     *
-     * @param pagination the pagination
-     * @param <T>        the entity type
-     * @return a {@link Page} instance
-     * @throws NullPointerException when pagination is null
-     */
-    <T> Page<T> page(Pagination pagination);
 
     /**
      * Get the next n-number of results from the traversal.

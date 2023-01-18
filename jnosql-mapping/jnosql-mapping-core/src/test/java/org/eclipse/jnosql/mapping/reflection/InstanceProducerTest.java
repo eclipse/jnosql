@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import jakarta.nosql.mapping.InstanceProducer;
-import jakarta.nosql.tck.entities.ZipCode;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.entities.ZipCode;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.eclipse.jnosql.mapping.InstanceProducer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -27,14 +27,30 @@ import jakarta.inject.Inject;
 public class InstanceProducerTest {
 
     @Inject
-    private InstanceProducer instanceProducer;
+    private InstanceProducer producer;
 
     @Test
     public void shouldCreateNewInstance() {
 
-        ZipCode zipcode = instanceProducer.create(ZipCode.class);
+        ZipCode zipcode = producer.create(ZipCode.class);
         Assertions.assertNotNull(zipcode);
         Assertions.assertTrue(zipcode instanceof ZipCode);
+    }
+    @Test
+    public void shouldReturnNPEWhenParameterIsNull() {
+        Assertions.assertThrows(NullPointerException.class, () -> producer.create(null));
+    }
+
+
+    @Test
+    public void shouldCreateInstance() {
+        Instance instance = producer.create(Instance.class);
+        Assertions.assertNotNull(instance);
+    }
+
+
+    public static class Instance {
+
     }
 
 }

@@ -16,8 +16,8 @@
  */
 package org.eclipse.jnosql.communication.reader;
 
-import jakarta.nosql.TypeReference;
-import jakarta.nosql.TypeReferenceReader;
+import org.eclipse.jnosql.communication.TypeReference;
+import org.eclipse.jnosql.communication.TypeReferenceReader;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

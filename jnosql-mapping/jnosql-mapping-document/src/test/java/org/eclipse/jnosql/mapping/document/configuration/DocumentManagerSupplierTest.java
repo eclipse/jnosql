@@ -14,9 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.document.configuration;
 
-import jakarta.nosql.document.DocumentManager;
-import jakarta.nosql.mapping.MappingException;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.data.exceptions.MappingException;
+import org.eclipse.jnosql.communication.document.DocumentManager;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

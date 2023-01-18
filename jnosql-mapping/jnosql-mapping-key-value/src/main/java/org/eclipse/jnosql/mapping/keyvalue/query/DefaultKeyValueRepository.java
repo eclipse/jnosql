@@ -14,7 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+
+import jakarta.nosql.keyvalue.KeyValueTemplate;
 
 class DefaultKeyValueRepository<T>  extends AbstractKeyValueRepository<T> {
 
@@ -30,4 +31,5 @@ class DefaultKeyValueRepository<T>  extends AbstractKeyValueRepository<T> {
     protected KeyValueTemplate getTemplate() {
         return repository;
     }
+
 }

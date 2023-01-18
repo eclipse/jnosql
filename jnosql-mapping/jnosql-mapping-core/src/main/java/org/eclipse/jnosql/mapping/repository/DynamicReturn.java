@@ -14,16 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.repository;
 
-import jakarta.nosql.NonUniqueResultException;
-import jakarta.nosql.Sort;
-import jakarta.nosql.mapping.Page;
-import jakarta.nosql.mapping.Pagination;
-import jakarta.nosql.mapping.Sorts;
+import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
 import org.eclipse.jnosql.mapping.reflection.MethodDynamicExecutable;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -53,47 +49,26 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     }
 
     /**
-     * A predicate to check it the object is instance of {@link Pagination}
+     * A predicate to check it the object is instance of {@link Pageable}
      */
-    private static final Predicate<Object> IS_PAGINATION = Pagination.class::isInstance;
+    private static final Predicate<Object> IS_PAGINATION = Pageable.class::isInstance;
 
     /**
-     * Finds {@link Pagination} from array object
+     * Finds {@link Pageable} from array object
      *
      * @param params the params
-     * @return a {@link Pagination} or null
+     * @return a {@link Pageable} or null
      */
-    public static Pagination findPagination(Object[] params) {
+    public static Optional<Pageable> findPagination(Object[] params) {
         if (params == null || params.length == 0) {
-            return null;
+            return Optional.empty();
         }
         return Stream.of(params)
                 .filter(IS_PAGINATION)
-                .map(Pagination.class::cast)
-                .findFirst().orElse(null);
+                .map(Pageable.class::cast)
+                .findFirst();
     }
 
-    /**
-     * Finds {@link Sort} and {@link Sorts} at the parameter array
-     *
-     * @param params the params
-     * @return a list of {@link Sort} found
-     */
-    public static List<Sort> findSorts(Object[] params) {
-        if (params == null || params.length == 0) {
-            return Collections.emptyList();
-        }
-
-        List<Sort> sorts = new ArrayList<>();
-        for (Object param : params) {
-            if (param instanceof Sort) {
-                sorts.add((Sort) param);
-            } else if (param instanceof Sorts) {
-                sorts.addAll(((Sorts) param).getSorts());
-            }
-        }
-        return sorts;
-    }
 
     @Override
     public Object execute() {
@@ -134,20 +109,20 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     private final Supplier<Stream<T>> result;
 
-    private final Pagination pagination;
+    private final Pageable pagination;
 
-    private final Function<Pagination, Optional<T>> singleResultPagination;
+    private final Function<Pageable, Optional<T>> singleResultPagination;
 
-    private final Function<Pagination, Stream<T>> streamPagination;
+    private final Function<Pageable, Stream<T>> streamPagination;
 
-    private final Function<Pagination, Page<T>> page;
+    private final Function<Pageable, Page<T>> page;
 
     private DynamicReturn(Class<T> classSource, Method methodSource,
                           Supplier<Optional<T>> singleResult,
-                          Supplier<Stream<T>> result, Pagination pagination,
-                          Function<Pagination, Optional<T>> singleResultPagination,
-                          Function<Pagination, Stream<T>> streamPagination,
-                          Function<Pagination, Page<T>> page) {
+                          Supplier<Stream<T>> result, Pageable pagination,
+                          Function<Pageable, Optional<T>> singleResultPagination,
+                          Function<Pageable, Stream<T>> streamPagination,
+                          Function<Pageable, Page<T>> page) {
         this.classSource = classSource;
         this.methodSource = methodSource;
         this.singleResult = singleResult;
@@ -197,7 +172,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
     /**
      * @return the pagination
      */
-    Optional<Pagination> getPagination() {
+    Optional<Pageable> getPagination() {
         return Optional.ofNullable(pagination);
     }
 
@@ -252,13 +227,13 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
         private Supplier<Stream<T>> result;
 
-        private Pagination pagination;
+        private Pageable pagination;
 
-        private Function<Pagination, Optional<T>> singleResultPagination;
+        private Function<Pageable, Optional<T>> singleResultPagination;
 
-        private Function<Pagination, Stream<T>> streamPagination;
+        private Function<Pageable, Stream<T>> streamPagination;
 
-        private Function<Pagination, Page<T>> page;
+        private Function<Pageable, Page<T>> page;
 
         private DefaultDynamicReturnBuilder() {
         }
@@ -303,7 +278,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param pagination the pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withPagination(Pagination pagination) {
+        public DefaultDynamicReturnBuilder withPagination(Pageable pagination) {
             this.pagination = pagination;
             return this;
         }
@@ -312,7 +287,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param singleResultPagination the single result pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withSingleResultPagination(Function<Pagination, Optional<T>> singleResultPagination) {
+        public DefaultDynamicReturnBuilder withSingleResultPagination(Function<Pageable, Optional<T>> singleResultPagination) {
             this.singleResultPagination = singleResultPagination;
             return this;
         }
@@ -321,7 +296,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param listPagination the list pagination
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withStreamPagination(Function<Pagination, Stream<T>> listPagination) {
+        public DefaultDynamicReturnBuilder withStreamPagination(Function<Pageable, Stream<T>> listPagination) {
             this.streamPagination = listPagination;
             return this;
         }
@@ -330,7 +305,7 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
          * @param page the page
          * @return the builder instance
          */
-        public DefaultDynamicReturnBuilder withPage(Function<Pagination, Page<T>> page) {
+        public DefaultDynamicReturnBuilder withPage(Function<Pageable, Page<T>> page) {
             this.page = page;
             return this;
         }

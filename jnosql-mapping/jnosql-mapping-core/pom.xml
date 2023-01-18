@@ -43,8 +43,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>jakarta.nosql.mapping</groupId>
-            <artifactId>mapping-core</artifactId>
+            <groupId>jakarta.nosql</groupId>
+            <artifactId>nosql-core</artifactId>
             <version>${jakarta.nosql.version}</version>
         </dependency>
         <dependency>
@@ -53,27 +53,10 @@
             <version>${classgraph.version}</version>
         </dependency>
         <dependency>
-            <groupId>jakarta.nosql.tck.mapping</groupId>
-            <artifactId>mapping-tck-core</artifactId>
-            <version>${jakarta.nosql.version}</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jnosql-jupiter</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.plugin.version}</version>
-                <configuration>
-                    <dependenciesToScan>
-                        <dependency>jakarta.nosql.tck.mapping:mapping-tck-core</dependency>
-                    </dependenciesToScan>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

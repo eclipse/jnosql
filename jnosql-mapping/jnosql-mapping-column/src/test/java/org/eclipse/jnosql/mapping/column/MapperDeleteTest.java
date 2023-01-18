@@ -16,16 +16,15 @@ package org.eclipse.jnosql.mapping.column;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import jakarta.nosql.column.ColumnDeleteQuery;
-import jakarta.nosql.column.ColumnManager;
-import jakarta.nosql.mapping.Converters;
-import jakarta.nosql.mapping.column.ColumnEntityConverter;
-import jakarta.nosql.mapping.column.ColumnEventPersistManager;
-import jakarta.nosql.tck.entities.Address;
-import jakarta.nosql.tck.entities.Money;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.Worker;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
+import org.eclipse.jnosql.communication.column.ColumnManager;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.test.entities.Address;
+import org.eclipse.jnosql.mapping.test.entities.Money;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.Worker;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 
-import static jakarta.nosql.column.ColumnDeleteQuery.delete;
+import static org.eclipse.jnosql.communication.column.ColumnDeleteQuery.delete;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 

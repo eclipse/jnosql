@@ -14,12 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.spi;
 
-import jakarta.nosql.mapping.Database;
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.User;
-import jakarta.nosql.tck.test.CDIExtension;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.User;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseType;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;

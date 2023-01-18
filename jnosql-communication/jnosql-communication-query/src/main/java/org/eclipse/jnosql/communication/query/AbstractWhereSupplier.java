@@ -11,13 +11,7 @@
  */
 package org.eclipse.jnosql.communication.query;
 
-import jakarta.nosql.query.ArrayQueryValue;
-import jakarta.nosql.query.Condition;
-import jakarta.nosql.query.ConditionQueryValue;
-import jakarta.nosql.query.Operator;
-import jakarta.nosql.query.QueryValue;
-import jakarta.nosql.query.StringQueryValue;
-import jakarta.nosql.query.Where;
+import org.eclipse.jnosql.communication.Condition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,23 +19,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static jakarta.nosql.query.Operator.AND;
-import static jakarta.nosql.query.Operator.BETWEEN;
-import static jakarta.nosql.query.Operator.EQUALS;
-import static jakarta.nosql.query.Operator.GREATER_EQUALS_THAN;
-import static jakarta.nosql.query.Operator.GREATER_THAN;
-import static jakarta.nosql.query.Operator.IN;
-import static jakarta.nosql.query.Operator.LESSER_EQUALS_THAN;
-import static jakarta.nosql.query.Operator.LESSER_THAN;
-import static jakarta.nosql.query.Operator.LIKE;
-import static jakarta.nosql.query.Operator.NOT;
-import static jakarta.nosql.query.Operator.OR;
+import static org.eclipse.jnosql.communication.Condition.AND;
+import static org.eclipse.jnosql.communication.Condition.BETWEEN;
+import static org.eclipse.jnosql.communication.Condition.EQUALS;
+import static org.eclipse.jnosql.communication.Condition.GREATER_EQUALS_THAN;
+import static org.eclipse.jnosql.communication.Condition.GREATER_THAN;
+import static org.eclipse.jnosql.communication.Condition.IN;
+import static org.eclipse.jnosql.communication.Condition.LESSER_EQUALS_THAN;
+import static org.eclipse.jnosql.communication.Condition.LESSER_THAN;
+import static org.eclipse.jnosql.communication.Condition.LIKE;
+import static org.eclipse.jnosql.communication.Condition.NOT;
+import static org.eclipse.jnosql.communication.Condition.OR;
 
 abstract class AbstractWhereSupplier extends AbstractSupplier {
 
     protected Where where;
 
-    protected Condition condition;
+    protected QueryCondition condition;
 
     protected boolean and = true;
 
@@ -50,7 +44,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
     protected void runQuery(String query) {
         super.runQuery(query);
         if (Objects.nonNull(condition)) {
-            this.where = new DefaultWhere(condition);
+            this.where = new Where(condition);
         }
     }
 
@@ -59,7 +53,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?> value = ValueConverter.get(ctx.value());
-        checkCondition(new DefaultCondition(name, EQUALS, value), hasNot);
+        checkCondition(new DefaultQueryCondition(name, EQUALS, value), hasNot);
     }
 
     @Override
@@ -67,7 +61,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?> value = ValueConverter.get(ctx.value());
-        checkCondition(new DefaultCondition(name, LESSER_THAN, value), hasNot);
+        checkCondition(new DefaultQueryCondition(name, LESSER_THAN, value), hasNot);
     }
 
     @Override
@@ -75,7 +69,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?> value = ValueConverter.get(ctx.value());
-        checkCondition(new DefaultCondition(name, LESSER_EQUALS_THAN, value), hasNot);
+        checkCondition(new DefaultQueryCondition(name, LESSER_EQUALS_THAN, value), hasNot);
     }
 
     @Override
@@ -83,7 +77,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?> value = ValueConverter.get(ctx.value());
-        checkCondition(new DefaultCondition(name, GREATER_THAN, value), hasNot);
+        checkCondition(new DefaultQueryCondition(name, GREATER_THAN, value), hasNot);
     }
 
     @Override
@@ -91,7 +85,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?> value = ValueConverter.get(ctx.value());
-        checkCondition(new DefaultCondition(name, GREATER_EQUALS_THAN, value), hasNot);
+        checkCondition(new DefaultQueryCondition(name, GREATER_EQUALS_THAN, value), hasNot);
     }
 
     @Override
@@ -101,8 +95,8 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         QueryValue<?>[] values = ctx.value().stream()
                 .map(ValueConverter::get)
                 .toArray(QueryValue[]::new);
-        ArrayQueryValue value = DefaultArrayValue.of(values);
-        checkCondition(new DefaultCondition(name, IN, value), hasNot);
+        DefaultArrayQueryValue value = DefaultArrayQueryValue.of(values);
+        checkCondition(new DefaultQueryCondition(name, IN, value), hasNot);
     }
 
 
@@ -110,8 +104,8 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
     public void exitLike(QueryParser.LikeContext ctx) {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
-        StringQueryValue value = DefaultStringQueryValue.of(ctx.string());
-        checkCondition(new DefaultCondition(name, LIKE, value), hasNot);
+        StringQueryValue value = StringQueryValue.of(ctx.string());
+        checkCondition(new DefaultQueryCondition(name, LIKE, value), hasNot);
     }
 
     @Override
@@ -119,7 +113,7 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         boolean hasNot = Objects.nonNull(ctx.not());
         String name = ctx.name().getText();
         QueryValue<?>[] values = ctx.value().stream().map(ValueConverter::get).toArray(QueryValue[]::new);
-        checkCondition(new DefaultCondition(name, BETWEEN, DefaultArrayValue.of(values)), hasNot);
+        checkCondition(new DefaultQueryCondition(name, BETWEEN, DefaultArrayQueryValue.of(values)), hasNot);
     }
 
     @Override
@@ -132,8 +126,8 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
         this.and = false;
     }
 
-    private void checkCondition(Condition condition, boolean hasNot) {
-        Condition newCondition = checkNotCondition(condition, hasNot);
+    private void checkCondition(QueryCondition condition, boolean hasNot) {
+        QueryCondition newCondition = checkNotCondition(condition, hasNot);
         if (Objects.isNull(this.condition)) {
             this.condition = newCondition;
             return;
@@ -146,57 +140,57 @@ abstract class AbstractWhereSupplier extends AbstractSupplier {
 
     }
 
-    private void appendCondition(Operator operator, Condition newCondition) {
+    private void appendCondition(Condition operator, QueryCondition newCondition) {
 
-        if (operator.equals(this.condition.getOperator())) {
-            ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.getValue());
-            List<Condition> conditions = new ArrayList<>(conditionValue.get());
+        if (operator.equals(this.condition.condition())) {
+            ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.value());
+            List<QueryCondition> conditions = new ArrayList<>(conditionValue.get());
             conditions.add(newCondition);
-            this.condition = new DefaultCondition("_" + operator.name(), operator, DefaultConditionValue.of(conditions));
+            this.condition = new DefaultQueryCondition("_" + operator.name(), operator, DefaultConditionQueryValue.of(conditions));
         } else if (isNotAppendable()) {
-            List<Condition> conditions = Arrays.asList(this.condition, newCondition);
-            this.condition = new DefaultCondition("_" + operator.name(), operator, DefaultConditionValue.of(conditions));
+            List<QueryCondition> conditions = Arrays.asList(this.condition, newCondition);
+            this.condition = new DefaultQueryCondition("_" + operator.name(), operator, DefaultConditionQueryValue.of(conditions));
         } else {
-            List<Condition> conditions = ConditionQueryValue.class.cast(this.condition.getValue()).get();
-            Condition lastCondition = conditions.get(conditions.size() - 1);
+            List<QueryCondition> conditions = ConditionQueryValue.class.cast(this.condition.value()).get();
+            QueryCondition lastCondition = conditions.get(conditions.size() - 1);
 
-            if (isAppendable(lastCondition) && operator.equals(lastCondition.getOperator())) {
-                List<Condition> lastConditions = new ArrayList<>(ConditionQueryValue.class
-                        .cast(lastCondition.getValue()).get());
+            if (isAppendable(lastCondition) && operator.equals(lastCondition.condition())) {
+                List<QueryCondition> lastConditions = new ArrayList<>(ConditionQueryValue.class
+                        .cast(lastCondition.value()).get());
                 lastConditions.add(newCondition);
 
-                Condition newAppendable = new DefaultCondition("_" + operator.name(),
-                        operator, DefaultConditionValue.of(lastConditions));
+                QueryCondition newAppendable = new DefaultQueryCondition("_" + operator.name(),
+                        operator, DefaultConditionQueryValue.of(lastConditions));
 
-                List<Condition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
+                List<QueryCondition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
                 newConditions.add(newAppendable);
-                this.condition = new DefaultCondition(this.condition.getName(), this.condition.getOperator(),
-                        DefaultConditionValue.of(newConditions));
+                this.condition = new DefaultQueryCondition(this.condition.name(), this.condition.condition(),
+                        DefaultConditionQueryValue.of(newConditions));
             } else {
-                Condition newAppendable = new DefaultCondition("_" + operator.name(),
-                        operator, DefaultConditionValue.of(Collections.singletonList(newCondition)));
+                QueryCondition newAppendable = new DefaultQueryCondition("_" + operator.name(),
+                        operator, DefaultConditionQueryValue.of(Collections.singletonList(newCondition)));
 
-                List<Condition> newConditions = new ArrayList<>(conditions);
+                List<QueryCondition> newConditions = new ArrayList<>(conditions);
                 newConditions.add(newAppendable);
-                this.condition = new DefaultCondition(this.condition.getName(), this.condition.getOperator(),
-                        DefaultConditionValue.of(newConditions));
+                this.condition = new DefaultQueryCondition(this.condition.name(), this.condition.condition(),
+                        DefaultConditionQueryValue.of(newConditions));
             }
 
         }
     }
 
-    private boolean isAppendable(Condition condition) {
-        return (AND.equals(condition.getOperator()) || OR.equals(condition.getOperator()));
+    private boolean isAppendable(QueryCondition condition) {
+        return (AND.equals(condition.condition()) || OR.equals(condition.condition()));
     }
 
     private boolean isNotAppendable() {
         return !isAppendable(this.condition);
     }
 
-    private Condition checkNotCondition(Condition condition, boolean hasNot) {
+    private QueryCondition checkNotCondition(QueryCondition condition, boolean hasNot) {
         if (hasNot) {
-            ConditionQueryValue conditions = DefaultConditionValue.of(Collections.singletonList(condition));
-            return new DefaultCondition("_NOT", NOT, conditions);
+            ConditionQueryValue conditions = DefaultConditionQueryValue.of(Collections.singletonList(condition));
+            return new DefaultQueryCondition("_NOT", NOT, conditions);
         } else {
             return condition;
         }

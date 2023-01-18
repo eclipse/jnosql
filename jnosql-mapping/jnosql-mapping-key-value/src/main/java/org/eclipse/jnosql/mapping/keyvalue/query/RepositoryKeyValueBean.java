@@ -14,14 +14,14 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue.query;
 
-import jakarta.nosql.mapping.DatabaseType;
-import jakarta.nosql.mapping.Repository;
-import jakarta.nosql.mapping.keyvalue.KeyValueTemplate;
+import jakarta.data.repository.CrudRepository;
+import jakarta.enterprise.context.spi.CreationalContext;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
+import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 import org.eclipse.jnosql.mapping.util.AnnotationLiteralUtil;
 
-import jakarta.enterprise.context.spi.CreationalContext;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -32,9 +32,9 @@ import java.util.Set;
 /**
  * Artemis discoveryBean to CDI extension to register {@link KeyValueTemplate}
  */
-public class RepositoryKeyValueBean extends AbstractBean<Repository> {
+public class RepositoryKeyValueBean<T extends CrudRepository> extends AbstractBean<T> {
 
-    private final Class type;
+    private final Class<?> type;
 
     private final Set<Type> types;
 
@@ -70,11 +70,11 @@ public class RepositoryKeyValueBean extends AbstractBean<Repository> {
 
 
     @Override
-    public Repository create(CreationalContext<Repository> creationalContext) {
-        KeyValueTemplate repository = provider.isEmpty() ? getInstance(KeyValueTemplate.class) :
+    public T create(CreationalContext<T> creationalContext) {
+        KeyValueTemplate template = provider.isEmpty() ? getInstance(KeyValueTemplate.class) :
                 getInstance(KeyValueTemplate.class, DatabaseQualifier.ofKeyValue(provider));
-        KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(type, repository);
-        return (Repository) Proxy.newProxyInstance(type.getClassLoader(),
+        KeyValueRepositoryProxy handler = new KeyValueRepositoryProxy(type, template);
+        return (T) Proxy.newProxyInstance(type.getClassLoader(),
                 new Class[]{type},
                 handler);
     }

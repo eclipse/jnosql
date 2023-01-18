@@ -14,16 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import jakarta.nosql.Value;
-import jakarta.nosql.keyvalue.KeyValueEntity;
-import jakarta.nosql.mapping.IdNotFoundException;
-import jakarta.nosql.mapping.keyvalue.KeyValueEntityConverter;
-import jakarta.nosql.tck.entities.Car;
-import jakarta.nosql.tck.entities.Person;
-import jakarta.nosql.tck.entities.Plate;
-import jakarta.nosql.tck.entities.User;
-import jakarta.nosql.tck.entities.Worker;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
+import org.eclipse.jnosql.mapping.test.entities.Car;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.test.entities.Plate;
+import org.eclipse.jnosql.mapping.test.entities.User;
+import org.eclipse.jnosql.mapping.test.entities.Worker;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -59,8 +58,8 @@ public class DefaultKeyValueEntityConverterTest {
     public void shouldConvertToKeyValue() {
         User user = new User("nickname", "name", 24);
         KeyValueEntity keyValueEntity = converter.toKeyValue(user);
-        assertEquals("nickname", keyValueEntity.getKey());
-        assertEquals(user, keyValueEntity.getValue());
+        assertEquals("nickname", keyValueEntity.key());
+        assertEquals(user, keyValueEntity.value());
     }
 
     @Test
@@ -128,8 +127,8 @@ public class DefaultKeyValueEntityConverterTest {
         car.setName("Ferrari");
         KeyValueEntity entity = converter.toKeyValue(car);
 
-        Assertions.assertEquals("123-BRL", entity.getKey());
-        Assertions.assertEquals(car, entity.getValue());
+        Assertions.assertEquals("123-BRL", entity.key());
+        Assertions.assertEquals(car, entity.value());
     }
 
     @Test
@@ -146,7 +145,7 @@ public class DefaultKeyValueEntityConverterTest {
     public void shouldConvertToKeyWhenKeyTypeIsDifferent() {
         Person person = Person.builder().withId(123L).withName("Ada").build();
         KeyValueEntity entity = converter.toKeyValue(person);
-        Assertions.assertEquals(123L, entity.getKey());
+        Assertions.assertEquals(123L, entity.key());
     }
 
 }

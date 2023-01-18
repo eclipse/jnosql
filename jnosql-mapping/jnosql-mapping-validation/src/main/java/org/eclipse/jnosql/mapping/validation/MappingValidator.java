@@ -17,31 +17,83 @@ package org.eclipse.jnosql.mapping.validation;
 
 import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.executable.ExecutableValidator;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+
 /**
  * Validates bean instances. Implementations of this interface must be thread-safe.
  */
-public interface MappingValidator {
+@ApplicationScoped
+public class MappingValidator {
 
+    @Inject
+    private Instance<ValidatorFactory> validatorFactories;
+
+    @Inject
+    private Instance<Validator> validators;
 
     /**
      * Validate an entity using entity validation
      *
      * @param entity the entity to be validated
-     * @param <T>    the type
-     * @throws NullPointerException                          when entity is null
+     * @throws NullPointerException                            when entity is null
      * @throws jakarta.validation.ConstraintViolationException when {@link jakarta.validation.Validator#validate(Object, Class[])}
-     *                                                       returns a non-empty collection
+     *                                                         returns a non-empty collection
      */
-    <T> void validate(T entity);
+    public void validate(Object entity) {
+        Objects.requireNonNull(entity, "entity is required");
+        Validator validator = getValidator();
+        Set<ConstraintViolation<Object>> violations = validator.validate(entity);
 
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(new HashSet<>(violations));
+        }
+
+    }
 
     /**
      * Validate an entity using entity validation
      *
      * @param event the event
-     * @throws NullPointerException                          when entity is null
+     * @throws NullPointerException                            when entity is null
      * @throws jakarta.validation.ConstraintViolationException when {@link jakarta.validation.Validator#validate(Object, Class[])}
-     *                                                       returns a non-empty collection
+     *                                                         returns a non-empty collection
      */
-    void validate(ConstructorEvent event);
+    public void validate(ConstructorEvent event) {
+        Objects.requireNonNull(event, "event is required");
+        Validator validator = getValidator();
+        ExecutableValidator executableValidator = validator.forExecutables();
+        Set<? extends ConstraintViolation<?>> violations =
+                executableValidator.validateConstructorParameters(event.getConstructor(),
+                        event.getParams());
+
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(new HashSet<>(violations));
+        }
+    }
+
+    private Validator getValidator() {
+        if (!validators.isUnsatisfied()) {
+            return validators.get();
+        } else if (!validatorFactories.isUnsatisfied()) {
+            ValidatorFactory validatorFactory = validatorFactories.get();
+            return validatorFactory.getValidator();
+        } else {
+            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+            return factory.getValidator();
+        }
+    }
+
 }
