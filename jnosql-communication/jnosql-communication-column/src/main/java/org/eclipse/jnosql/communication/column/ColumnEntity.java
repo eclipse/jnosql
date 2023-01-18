@@ -178,6 +178,7 @@ public class ColumnEntity {
      * Find a column and converts to specific value from {@link Class}
      * It is an alias to {@link Value#get(Class)}
      *
+     * @param <T> the type class
      * @param columnName a name of a column
      * @param type       the type to convert the value
      * @return an {@link Optional} instance with the result
@@ -194,6 +195,7 @@ public class ColumnEntity {
      * Find a column and converts to specific value from {@link TypeSupplier}
      * It is an alias to {@link Value#get(TypeSupplier)}
      *
+     * @param <T> the type class
      * @param columnName a name of a column
      * @param type       the type to convert the value
      * @return an {@link Optional} instance with the result

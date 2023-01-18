@@ -446,14 +446,14 @@ public interface DocumentQuery {
     interface DocumentOrder {
 
         /**
-         * Defines the order as {@link org.eclipse.jnosql.communication.SortType#ASC}
+         * Defines the order as {@link jakarta.data.repository.Direction#ASC}
          *
          * @return the {@link DocumentNameOrder} instance
          */
         DocumentNameOrder asc();
 
         /**
-         * Defines the order as {@link org.eclipse.jnosql.communication.SortType#DESC}
+         * Defines the order as {@link jakarta.data.repository.Direction#DESC}
          *
          * @return the {@link DocumentNameOrder} instance
          */

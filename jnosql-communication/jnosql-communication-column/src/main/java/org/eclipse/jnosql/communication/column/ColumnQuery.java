@@ -244,19 +244,19 @@ public interface ColumnQuery {
     }
 
     /**
-     * The definition to either {@link org.eclipse.jnosql.communication.SortType}
+     * The definition to either {@link jakarta.data.repository.Direction}
      */
     interface ColumnOrder {
 
 
         /**
-         * Defines the order as {@link org.eclipse.jnosql.communication.SortType#ASC}
+         * Defines the order as {@link jakarta.data.repository.Direction#ASC}
          * @return the {@link ColumnNameOrder} instance
          */
         ColumnNameOrder asc();
 
         /**
-         * Defines the order as {@link org.eclipse.jnosql.communication.SortType#DESC}
+         * Defines the order as {@link jakarta.data.repository.Direction#DESC}
          * @return the {@link ColumnNameOrder} instance
          */
         ColumnNameOrder desc();

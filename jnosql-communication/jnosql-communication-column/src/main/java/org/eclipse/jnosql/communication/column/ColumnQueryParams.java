@@ -23,7 +23,7 @@ import java.util.Objects;
 
 
 /**
- * The result of {@link SelectQueryConverter} that has {@link ColumnQuery} and {@link Params}.
+ * The result of {@link org.eclipse.jnosql.communication.query.SelectQueryConverter} that has {@link ColumnQuery} and {@link Params}.
  */
 public final class ColumnQueryParams {
 
