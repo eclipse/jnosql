@@ -13,6 +13,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Update Jakarta API to after the Big-bang
 - Add support for Jakarta Data
 - Add documentation repository
+- Move the communication API as JNoSQL implementation
 
 === Added
 
