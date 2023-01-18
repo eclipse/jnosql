@@ -252,52 +252,6 @@
                 <artifactId>mapping-key-value</artifactId>
                 <version>${jakarta.nosql.version}</version>
             </dependency>
-            <!-- TCKs -->
-            <dependency>
-                <groupId>jakarta.nosql.tck.communication</groupId>
-                <artifactId>communication-tck-column</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.tck.communication</groupId>
-                <artifactId>communication-tck-core</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.tck.communication</groupId>
-                <artifactId>communication-tck-document</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.tck.communication</groupId>
-                <artifactId>communication-tck-key-value</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.tck.mapping</groupId>
-                <artifactId>mapping-tck-column</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.tck.mapping</groupId>
-                <artifactId>mapping-tck-core</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.tck.mapping</groupId>
-                <artifactId>mapping-tck-document</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.tck.mapping</groupId>
-                <artifactId>mapping-tck-test</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.tck.mapping</groupId>
-                <artifactId>mapping-tck-key-value</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
