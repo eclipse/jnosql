@@ -6,12 +6,10 @@ This level is in charge to perform integration among technologies such as Bean V
 
 To go straight and cover the four NoSQL types, this API has four domains:
 
-* `jakarta.nosql.mapping.column`
-* `jakarta.nosql.mapping.document`
-* `jakarta.nosql.mapping.graph`
-* `jakarta.nosql.mapping.keyvalue`
-
-IMPORTANT: The package name might change on the Jakarta EE process.
+* `org.eclipse.jnosql.communication.column`
+* `org.eclipse.jnosql.communication.document`
+* `org.eclipse.jnosql.communication.graph`
+* `org.eclipse.jnosql.communication.keyvalue`
 
 === The Mapping structure
 
@@ -487,7 +485,7 @@ TIP: The main difference to run using a template instead of in a manager instanc
 
 ===== Document Database Types
 
-The Document database allows for more complex queries, so with more complex entities within a Document database, a developer can more easily and naturally find from different fields. Also, there are Document databases that support an aggregations query. However, Jakarta NoSQL does not yet support this. From the Jakarta NoSQL API perspective, the Document and Column-Family types are pretty similar, but with the Document database type, a Java developer might initiate a query from a field that isn't a key, and neither returns an unsupported operation exception or adds a secondary index for this. So, given the same `Person` class as an entity with the Document database type, a developer can do more with queries, such as "person" between "age."
+The Document database allows for more complex queries, so with more complex entities within a Document database, a developer can more easily and naturally find from different fields. Also, there are Document databases that support an aggregations query. However, Eclipse JNoSQL does not yet support this. From the Eclipse JNoSQL API perspective, the Document and Column-Family types are pretty similar, but with the Document database type, a Java developer might initiate a query from a field that isn't a key, and neither returns an unsupported operation exception or adds a secondary index for this. So, given the same `Person` class as an entity with the Document database type, a developer can do more with queries, such as "person" between "age."
 
 [source,java]
 ----
@@ -499,7 +497,7 @@ TIP: The main difference to run using a template instead of in a manager instanc
 
 ===== Graph Database Types
 
-If an application needs a recommendation engine or a full detail about the relationship between two entities in your system, it requires a Graph database type. A graph database contains a vertex and an edge. The edge is an object that holds the relationship information about the edges and has direction and properties that make it perfect for maps or human relationship. For the Graph API, Jakarta NoSQL uses the Apache Tinkerpop. Likewise, the `GraphTemplate` is a wrapper to convert a Java entity to a `Vertex` in TinkerPop.
+If an application needs a recommendation engine or a full detail about the relationship between two entities in your system, it requires a Graph database type. A graph database contains a vertex and an edge. The edge is an object that holds the relationship information about the edges and has direction and properties that make it perfect for maps or human relationship. For the Graph API, Eclipse JNoSQL uses the Apache Tinkerpop. Likewise, the `GraphTemplate` is a wrapper to convert a Java entity to a `Vertex` in TinkerPop.
 
 [source,java]
 ----
