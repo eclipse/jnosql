@@ -26,7 +26,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
- * The {@link jakarta.nosql.Convert} collection, this instance will generate/create an instance.
+ * The {@link Convert} collection, this instance will generate/create an instance.
  */
 @ApplicationScoped
 public class Converters {

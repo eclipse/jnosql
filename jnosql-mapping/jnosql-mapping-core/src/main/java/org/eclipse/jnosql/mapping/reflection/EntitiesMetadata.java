@@ -36,7 +36,7 @@ public interface EntitiesMetadata {
 
     /**
      * Find the {@link InheritanceMetadata} where the parameter is the parent parameter
-     * and it returns a map group by the {@link jakarta.nosql.DiscriminatorValue}
+     * and it returns a map group by the {@link org.eclipse.jnosql.mapping.DiscriminatorValue}
      * @param parent the parent
      * @return a {@link Map}
      * @throws NullPointerException when parent is null

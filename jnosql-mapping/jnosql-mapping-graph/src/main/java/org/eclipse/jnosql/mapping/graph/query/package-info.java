@@ -14,7 +14,7 @@
  */
 
 /**
- * This package has the implementation to dynamic query to both {@link jakarta.mapping.Repository}
+ * This package has the implementation to dynamic query to repositories
  * on Graph database.
  */
 package org.eclipse.jnosql.mapping.graph.query;

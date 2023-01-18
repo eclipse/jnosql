@@ -447,7 +447,7 @@ public final class DocumentCondition {
      * Returns a predicate that is the negation of the supplied predicate.
      * This is accomplished by returning result of the calling target.negate().
      *
-     * @param condition
+     * @param condition the condition
      * @return a condition that negates the results of the supplied predicate
      * @throws NullPointerException when condition is null
      */

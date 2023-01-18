@@ -100,7 +100,7 @@ public abstract class GraphConverter {
 
 
     /**
-     *List the fields in the entity as property exclude fields annotated with {@link jakarta.mapping.Id}
+     *List the fields in the entity as property exclude fields annotated with {@link jakarta.nosql.Id}
      * @param entity the entity
      * @param <T> the entity type
      * @throws NullPointerException when entity is null

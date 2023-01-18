@@ -14,6 +14,6 @@
  */
 
 /**
- * This package has the implementation to dynamic query to {@link jakarta.nosql.mapping.Repository} on document database.
+ * This package has the implementation to dynamic query to repositories on document database.
  */
 package org.eclipse.jnosql.mapping.document.query;

@@ -50,7 +50,6 @@ public class GraphTemplateProducer {
     /**
      * creates a {@link GraphTemplate}
      *
-     * @param <T>   the GraphTemplate instance
      * @param graph the graph
      * @return a new instance
      * @throws NullPointerException when collectionManager is null
@@ -69,7 +68,6 @@ public class GraphTemplateProducer {
     /**
      * creates a {@link GraphTemplate}
      *
-     * @param <T>      the GraphTemplate instance
      * @param supplier the supplier
      * @return a new instance
      * @throws NullPointerException when supplier is null
