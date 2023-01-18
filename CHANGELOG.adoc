@@ -19,6 +19,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Implements new methods that explore fluent-API for Graph, Document, Key-value and Document
 - Create jnosql-jupiter module
+- Enhance readme, adding Mapping and communication details.
 
 === Removed
 
