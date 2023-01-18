@@ -597,7 +597,7 @@ This project is governed by the Eclipse Foundation Code of Conduct. By participa
 
 Having trouble with Eclipse JNoSQL? We’d love to help!
 
-Please report any bugs, concerns or questions with Eclispe JNoSQL to https://github.com/eclipse/jnosql[https://github.com/eclipse/jnosql].
+Please report any bugs, concerns or questions with Eclipse JNoSQL to https://github.com/eclipse/jnosql[https://github.com/eclipse/jnosql].
 
 == Building from Source
 
@@ -607,3 +607,10 @@ You don’t need to build from source to use the project, but should you be inte
 ----
 mvn clean install
 ----
+
+== For know more
+
+If you want to know more about both the communication and mapping layer, there are two complementary files for it each specific topic:
+
+* link:COMMUNICATION.adoc[Communication API]
+* link:MAPPING.adoc[Mapping API]
