@@ -1,0 +1,525 @@
+== Introduction to the Mapping API
+
+The mapping level, to put it differently, has the same goals as either the JPA or ORM. In the NoSQL world, the *OxM* then converts the entity object to a communication model.
+
+This level is in charge to perform integration among technologies such as Bean Validation. The Mapping API has annotations that make the Java developer’s life easier. As a communication project, it must be extensible and configurable to keep the diversity of NoSQL database.
+
+To go straight and cover the four NoSQL types, this API has four domains:
+
+* `jakarta.nosql.mapping.column`
+* `jakarta.nosql.mapping.document`
+* `jakarta.nosql.mapping.graph`
+* `jakarta.nosql.mapping.keyvalue`
+
+IMPORTANT: The package name might change on the Jakarta EE process.
+
+=== The Mapping structure
+
+The mapping API has five parts:
+
+* The *persistence-core*: The mapping common project where there are annotations commons among the NoSQL types APIs.
+* The *persistence-key-value*: The mapping to key-value NoSQL database.
+* The *persistence-column*: The mapping to column NoSQL database.
+* The *persistence-document*: The mapping to document NoSQL database.
+* The *persistence-graph*: The mapping to Graph NoSQL database.
+
+TIP: Each module works separately as a Communication API.
+
+IMPORTANT: Similar to the communication API, there is a support for database diversity. This project has extensions for each database types on the database mapping level.
+
+include::annotations.adoc[]
+
+=== Template classes
+
+The Template offers convenient creation, update, delete, and query operations for databases. The `Template` instance is the root implementation for all types. So, each database type will support this instance.
+
+[source,java]
+----
+@Inject
+Template template;
+
+
+Book book = Book.builder().id(id).title("Java Concurrency in Practice")
+.author("Brian Goetz").year(Year.of(2006)).edition(1).build();
+template.insert(book);
+Optional<Book> optional = template.find(Book.class, id);
+System.out.println("The result " + optional);
+template.delete(Book.class, id);
+----
+
+Furthermore, in the CRUD operation, Template has two queries, fluent-API for either select or delete entities; thus, Template offers the capability for search and remove beyond the ID attribute.
+
+[source,java]
+----
+@Inject
+Template template;
+
+List<Book> books = template.select(Book.class).where("author").eq("Joshua Bloch").and("edition").gt(3).result();
+
+template.select(Book.class).where("author").eq("Joshua Bloch").and("edition").gt(3).execute();
+----
+
+
+==== Key-Value Template
+
+This template has the responsibility to serve as the persistence of an entity in a key-value database.
+
+The `KeyValueTemplate` is the template for synchronous tasks.
+
+[source,java]
+----
+@Inject
+KeyValueTemplate template;
+...
+
+User user = new User();
+user.setNickname("ada");
+user.setAge(10);
+user.setName("Ada Lovelace");
+List<User> users = Collections.singletonList(user);
+
+template.put(user);
+template.put(users);
+
+Optional<Person> ada = template.get("ada", Person.class);
+Iterable<Person> usersFound = template.get(Collections.singletonList("ada"), Person.class);
+----
+
+WARNING: In key-value templates, both the `@Entity` and `@Id` annotations are required. The `@Id` identifies the key, and the whole entity will be the value. The API won't cover how the value persists this entity.
+
+To use a key-value template, just follow the CDI style and precede the field with the `@Inject` annotation.
+
+[source,java]
+----
+@Inject
+private KeyValueTemplate template;
+----
+
+You can work with several key-value database instances through CDI qualifier. To identify each database instance, make a `BucketManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseA")
+private KeyValueTemplate templateA;
+
+@Inject
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseB")
+private KeyValueTemplate templateB;
+
+// producers methods
+@Produces
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseA")
+public BucketManager getManagerA() {
+    BucketManager manager = // instance;
+    return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.KEY_VALUE, provider = "databaseB")
+public BucketManager getManagerB() {
+    BucketManager manager = // instance;
+    return manager;
+}
+----
+
+
+==== ColumnTemplate
+
+This template has the responsibility to serve as a bridge between the entity model and the communication to a column family NoSQL database type.
+
+The `ColumnTemplate` is the column template for the synchronous tasks.
+
+[source,java]
+----
+@Inject
+ColumnTemplate template;
+...
+Person person = new Person();
+person.setAddress("Olympus");
+person.setName("Artemis Good");
+person.setPhones(Arrays.asList("55 11 94320121", "55 11 94320121"));
+person.setNickname("artemis");
+
+List<Person> people = Collections.singletonList(person);
+
+Person personUpdated = template.insert(person);
+template.insert(people);
+template.insert(person, Duration.ofHours(1L));
+
+template.update(person);
+template.update(people);
+----
+
+For information removal and retrieval, there are `ColumnQuery` and `ColumnDeleteQuery` classes, respectively.
+
+[source,java]
+----
+ColumnQuery query = select().from("Person").where("address").eq("Olympus").build();
+
+Stream<Person> peopleWhoLiveOnOlympus = template.select(query);
+Optional<Person> artemis = template.singleResult(select().from("Person").where("nickname").eq("artemis").build());
+
+ColumnDeleteQuery deleteQuery = delete().from("Person").where("address").eq("Olympus").build();
+template.delete(deleteQuery);
+----
+
+
+[source,java]
+----
+@Entity
+public class Person {
+
+    @Id("native_id")
+    private long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private int age;
+}
+----
+
+[source,java]
+----
+@Inject
+ColumnTemplate template;
+...
+List<Person> people = template.select(Person.class).where("id").gte(10).result();
+// translating: select().from("Person").where("native_id").gte(10L).build();
+template.delete(Person.class).where("id").eq("20").execute();
+// translating: delete().from("Person").where("native_id").gte(10L).build();
+
+----
+
+To use a column template, just follow the CDI style and precede the field with the `@Inject` annotation.
+
+[source,java]
+----
+@Inject
+private ColumnTemplate template;
+----
+
+The next step is to produce a `ColumnManager`:
+
+[source,java]
+----
+@Produces
+public ColumnManager getManager() {
+    ColumnManager manager = // instance;
+    return manager;
+}
+----
+
+You can work with several column database instances through CDI qualifier. To identify each database instance, make a `ColumnManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.COLUMN, provider = "databaseA")
+private ColumnTemplate templateA;
+
+@Inject
+@Database(value = DatabaseType.COLUMN, provider = "databaseB")
+private ColumnTemplate templateB;
+
+// producers methods
+@Produces
+@Database(value = DatabaseType.COLUMN, provider = "databaseA")
+public ColumnManager getManagerA() {
+    return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.COLUMN, provider = "databaseB")
+public ColumnManager getManagerB() {
+    return manager;
+}
+----
+
+
+==== DocumentTemplate
+
+This template has the responsibility to serve as a bridge between the entity model and the communication to a column family NoSQL database type.
+
+
+The `DocumentTemplate` is the document template for the synchronous tasks.
+
+[source,java]
+----
+@Inject
+DocumentTemplate template;
+...
+
+Person person = new Person();
+person.setAddress("Olympus");
+person.setName("Artemis Good");
+person.setPhones(Arrays.asList("55 11 94320121", "55 11 94320121"));
+person.setNickname("artemis");
+
+List<Person> people = Collections.singletonList(person);
+
+Person personUpdated = template.insert(person);
+template.insert(people);
+template.insert(person, Duration.ofHours(1L));
+
+template.update(person);
+template.update(people);
+----
+
+To remove and retrieve information from document collection, there are `DocumentQuery` and `DocumentDeleteQuery` classes.
+
+[source,java]
+----
+DocumentQuery query = select().from("Person").where("address").eq("Olympus").build();
+
+Stream<Person> peopleWhoLiveOnOlympus = template.find(query);
+Optional<Person> artemis = template.singleResult(select().from("Person").where("nickname").eq("artemis").build());
+
+DocumentDeleteQuery deleteQuery = delete().from("Person").where("address").eq("Olympus").build();
+template.delete(deleteQuery);
+----
+
+
+[source,java]
+----
+@Entity
+public class Person {
+
+    @Id("native_id")
+    private long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private int age;
+}
+----
+
+[source,java]
+----
+@Inject
+private DocumentTemplate template;
+
+public void mapper() {
+List<Person> people = template.select(Person.class).where("id")
+                                     .gte(10).result();
+  // translating: select().from("Person").where("native_id").gte(10L).build();
+template.delete(Person.class).where("id").eq("20").execute();
+// translating: delete().from("Person").where("native_id").gte(10L).build();
+}
+----
+
+
+To use a document template, just follow the CDI style and place an `@Inject` annotation on the field.
+
+[source,java]
+----
+@Inject
+private DocumentTemplate template;
+----
+
+You can work with several document database instances through CDI qualifier. To identify each database instance, make a `DocumentManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseA")
+private DocumentTemplate templateA;
+
+@Inject
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseB")
+private DocumentTemplate templateB;
+
+// producers methods
+@Produces
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseA")
+public DocumentManager getManagerA() {
+    return manager;
+}
+
+@Produces
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseB")
+public DocumentManager getManagerB() {
+    return manager;
+}
+----
+
+
+==== Graph template
+
+This template has the responsibility to serve as the persistence of an entity in a Graph database using http://tinkerpop.apache.org/[Apache Tinkerpop].
+
+The `GraphTemplate` is the column template for synchronous tasks.
+
+[source,java]
+----
+
+@Inject
+GraphTemplate template;
+
+Person person = new Person();
+person.setAddress("Olympus");
+person.setName("Artemis Good");
+person.setPhones(Arrays.asList("55 11 94320121", "55 11 94320121"));
+person.setNickname("artemis");
+
+List<Person> people = Collections.singletonList(person);
+
+Person personUpdated = template.insert(person);
+template.insert(people);
+template.insert(person, Duration.ofHours(1L));
+
+template.update(person);
+template.update(people);
+----
+
+===== Create the Relationship Between Them (EdgeEntity)
+
+[source,java]
+----
+Person poliana = // instance;
+Book shack = // instance;
+EdgeEntity edge = graphTemplate.edge(poliana, "reads", shack);
+reads.add("where", "Brazil");
+Person out = edge.getOutgoing();
+Book in = edge.getIncoming();
+----
+
+===== Querying with Traversal
+
+Traversals in Gremlin are spawned from a `TraversalSource`. The `GraphTraversalSource` is the typical "graph-oriented" DSL used throughout the documentation and will most likely be the most used DSL in a TinkerPop application.
+
+To run a query in Graph with Gremlin, there are traversal interfaces. These interfaces are lazy; in other words, they just run after any finalizing method.
+
+For example, In this scenario, there is a marketing campaign, and the target is:
+
+* An engineer
+* The salary is higher than $3,000
+* The age is between 20 and 25 years old
+
+[source,java]
+----
+List<Person> developers = graph.getTraversalVertex()
+       .has("salary", gte(3_000D))
+       .has("age", between(20, 25))
+       .has("occupation", "Developer")
+       .<Person>stream().collect(toList());
+----
+
+
+The next step is to return the engineer's friends.
+
+[source,java]
+----
+List<Person> developers = graph.getTraversalVertex()
+        .has("salary", gte(3_000D))
+        .has("age", between(20, 25))
+        .has("occupation", "Developer")
+        .<Person>stream().out("knows").collect(toList());
+----
+
+
+To use a graph template, just follow the CDI style and precede the field with the `@Inject` annotation.
+
+[source,java]
+----
+@Inject
+private GraphTemplate template;
+----
+
+You can work with several graph database instances through CDI qualifier. To identify each database instance, make a `Graph` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.GRAPH, provider = "databaseA")
+private GraphTemplate templateA;
+
+@Inject
+@Database(value = DatabaseType.GRAPH, provider = "databaseB")
+private GraphTemplate templateB;
+
+// producers methods
+@Produces
+@Database(value = DatabaseType.GRAPH, provider = "databaseA")
+public Graph getManagerA() {
+    return graph;
+}
+
+@Produces
+@Database(value = DatabaseType.GRAPH, provider = "databaseB")
+public Graph getManagerB() {
+    return graph;
+}
+----
+
+
+====  Querying by Text with the Mapping API
+
+Similar to the Communication layer, the Mapping layer has query by text. Both Communication and Mapping have the `query` and `prepare` methods, however, the Mapping API will convert the fields and entities to native names from the Entity and Column annotations.
+
+===== Key-Value Database Types
+
+In the Key-Value database, a `KeyValueTemplate` is used in this NoSQL storage technology. Usually, all the operations are defined by the ID. Therefore, it has a smooth query.
+[source,java]
+----
+KeyValueTemplate template = // instance;
+Stream<User> users = template.query("get \"Diana\"");
+template.query("remove \"Diana\"");
+----
+
+
+===== Column-Family Database Types
+
+The Column-Family database has a more complex structure; however, a search from the key is still recommended. For example, both Cassandra and HBase have a secondary index, yet, neither have a guarantee about performance, and they usually recommend having a second table whose row key is the "secondary index" and is only being used to find the row key needed for the actual table. Given a `Person` class as an entity, we would like to operate from the field ID, which is the entity from the Entity.
+
+
+[source,java]
+----
+ColumnTemplate template = // instance;
+Stream<Person> result = template.query("select * from Person where id = 1");
+----
+
+TIP: The main difference to run using a template instead of in a manager instance as the template will be a mapper as *ColumnQueryMapperBuilder* does.
+
+===== Document Database Types
+
+The Document database allows for more complex queries, so with more complex entities within a Document database, a developer can more easily and naturally find from different fields. Also, there are Document databases that support an aggregations query. However, Jakarta NoSQL does not yet support this. From the Jakarta NoSQL API perspective, the Document and Column-Family types are pretty similar, but with the Document database type, a Java developer might initiate a query from a field that isn't a key, and neither returns an unsupported operation exception or adds a secondary index for this. So, given the same `Person` class as an entity with the Document database type, a developer can do more with queries, such as "person" between "age."
+
+[source,java]
+----
+DocumentTemplate template = // instance;
+Stream<Person> result = template.query("select * from Person where age > 10");
+----
+
+TIP: The main difference to run using a template instead of in a manager instance as the template will be a mapper as *DocumentQueryMapperBuilder* does.
+
+===== Graph Database Types
+
+If an application needs a recommendation engine or a full detail about the relationship between two entities in your system, it requires a Graph database type. A graph database contains a vertex and an edge. The edge is an object that holds the relationship information about the edges and has direction and properties that make it perfect for maps or human relationship. For the Graph API, Jakarta NoSQL uses the Apache Tinkerpop. Likewise, the `GraphTemplate` is a wrapper to convert a Java entity to a `Vertex` in TinkerPop.
+
+[source,java]
+----
+GraphTemplate template = // instance;
+Stream<City> cities = template.query("g.V().hasLabel('City')");
+----
+
+[source,java]
+----
+PreparedStatement preparedStatement = documentTemplate
+        .prepare("select * from Person where name = @name");
+
+preparedStatement.bind("name", "Ada");
+
+Stream<Person> adas = preparedStatement.getResult();
+
+// Keep using gremlin for Graph databases
+PreparedStatement prepare = graphTemplate().prepare("g.V().hasLabel(param)");
+
+prepare.bind("param", "Person");
+
+Stream<Person> people = preparedStatement.getResult();
+----
