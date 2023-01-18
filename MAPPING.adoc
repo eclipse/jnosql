@@ -400,7 +400,7 @@ For example, In this scenario, there is a marketing campaign, and the target is:
 
 [source,java]
 ----
-List<Person> developers = graph.getTraversalVertex()
+List<Person> developers = graph.traversalVertex()
        .has("salary", gte(3_000D))
        .has("age", between(20, 25))
        .has("occupation", "Developer")
@@ -412,7 +412,7 @@ The next step is to return the engineer's friends.
 
 [source,java]
 ----
-List<Person> developers = graph.getTraversalVertex()
+List<Person> developers = graph.traversalVertex()
         .has("salary", gte(3_000D))
         .has("age", between(20, 25))
         .has("occupation", "Developer")
