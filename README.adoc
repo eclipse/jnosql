@@ -597,7 +597,7 @@ This project is governed by the Eclipse Foundation Code of Conduct. By participa
 
 Having trouble with Eclipse JNoSQL? We’d love to help!
 
-Please report any bugs, concerns or questions with Eclispe JNoSQL to https://github.com/eclipse/jnosql[https://github.com/eclipse/jnosql].
+Please report any bugs, concerns or questions with Eclipse JNoSQL to https://github.com/eclipse/jnosql[https://github.com/eclipse/jnosql].
 
 == Building from Source
 
