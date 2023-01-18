@@ -40,8 +40,9 @@
             <artifactId>jnosql-communication-query</artifactId>
         </dependency>
         <dependency>
-            <groupId>jakarta.nosql.tck.mapping</groupId>
-            <artifactId>mapping-tck-test</artifactId>
+            <groupId>org.eclipse.jnosql.mapping</groupId>
+            <artifactId>jnosql-jupiter</artifactId>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
