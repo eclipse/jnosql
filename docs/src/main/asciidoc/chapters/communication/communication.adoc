@@ -276,15 +276,17 @@ Each file will have the qualifier of its respective implementation:
 
 The file `jakarta.nosql.ValueReader` will contain:
 
-```
+[source,java]
+----
 my.company.MoneyValueReader
-```
+----
 
 The file `jakarta.nosql.ValueWriter` will contain:
 
-```
+[source,java]
+----
 my.company.MoneyValueWriter
-```
+----
 
 [source,java]
 ----
