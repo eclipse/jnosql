@@ -4,9 +4,9 @@ With the strategy to divide and conquer on Jakarta NoSQL, the communication API 
 
 To cover the three of the four database types, this API includes three packages, one for each database.
 
-* `jakarta.nosql.column`
-* `jakarta.nosql.document`
-* `jakarta.nosql.keyvalue`
+* `org.eclipse.jnosql.communication.column`
+* `org.eclipse.jnosql.communication.document`
+* `org.eclipse.jnosql.communication.keyvalue`
 
 IMPORTANT: The package name might change on the Jakarta EE process.
 
@@ -300,9 +300,9 @@ The `Document` is a small piece of a Document entity. Each document has a tuple 
 ----
 Document document = Document.of("name", "value");
 
-Value value = document.getValue();
+Value value = document.value();
 
-String name = document.getName();
+String name = document.name();
 ----
 
 The document might have a nested document, that is, a sub-document.
@@ -335,9 +335,9 @@ The Column is a small piece of the Column Family entity. Each column has a tuple
 ----
 Column document = Column.of("name", "value");
 
-Value value = document.getValue();
+Value value = document.value();
 
-String name = document.getName();
+String name = document.name();
 ----
 
 With this interface, we may have a column inside a column.
@@ -399,7 +399,7 @@ The `DocumentEntity` is an entity to Document collection database type. It is co
 ----
 DocumentEntity entity = DocumentEntity.of("documentFamily");
 
-String name = entity.getName();
+String name = entity.name();
 
 entity.add("id", 10L);
 
@@ -424,9 +424,9 @@ KeyValueEntity<String> entity = KeyValueEntity.of("key", Value.of(123));
 
 KeyValueEntity<Integer> entity2 = KeyValueEntity.of(12, "Text");
 
-String key = entity.getKey();
+String key = entity.key();
 
-Value value = entity.getValue();
+Value value = entity.vaalue();
 
 Integer integer = entity.get(Integer.class);
 ----
