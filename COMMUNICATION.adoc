@@ -407,7 +407,7 @@ entity.add("name", "Diana");
 
 entity.add("options", Arrays.asList(1, 2, 3));
 
-List<Document> documents = entity.getDocuments();
+List<Document> documents = entity.documents();
 Optional<Document> id = entity.find("id");
 entity.remove("options");
 ----
@@ -1090,7 +1090,7 @@ Settings settings = Settings.builder()
     .put("key", "value")
     .build();
 DocumentConfiguration configuration = //instance;
-DocumentManagerFactory managerFactory = configuration.get(settings);
+DocumentManagerFactory managerFactory = configuration.apply(settings);
 ----
 
 ==== Column Configuration
@@ -1103,7 +1103,7 @@ Settings settings = Settings.builder()
     .put("key", "value")
     .build();
 ColumnConfiguration configuration = //instance;
-ColumnManagerFactory managerFactory = configuration.get(settings);
+ColumnManagerFactory managerFactory = configuration.apply(settings);
 ----
 
 ==== Key Value Configuration
@@ -1116,7 +1116,7 @@ Settings settings = Settings.builder()
     .put("key", "value")
     .build();
 KeyValueConfiguration configuration = //instance;
-BucketManagerFactory managerFactory = configuration.get();
+BucketManagerFactory managerFactory = configuration.apply(settings);
 ----
 
 
