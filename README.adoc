@@ -125,9 +125,9 @@ Optional<Car> nameResult = repository.findByName("Ferrari");
 Eclipse JNoSQL requires these minimum requirements:
 
 * Java 11 (or higher)
-* https://jakarta.ee/specifications/cdi/2.0/[Jakarta Contexts & Dependency Injection 2.0] (CDI)
-* https://jakarta.ee/specifications/jsonb/1.0/[Jakarta JSON Binding 1.0] (JSON-B)
-* https://jakarta.ee/specifications/jsonp/1.1/[Jakarta JSON Processing 1.1] (JSON-P)
+* https://jakarta.ee/specifications/cdi/3.0/[Jakarta Contexts & Dependency Injection 3.0] (CDI)
+* https://jakarta.ee/specifications/jsonb/2.0/[Jakarta JSON Binding 2.0] (JSON-B)
+* https://jakarta.ee/specifications/jsonp/2.2/[Jakarta JSON Processing 2.0] (JSON-P)
 * https://microprofile.io/microprofile-config/[MicroProfile Config]
 
 === NoSQL Database Types
