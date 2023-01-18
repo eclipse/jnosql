@@ -14,13 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.validation;
 
-import jakarta.nosql.column.ColumnTemplate;
-import jakarta.nosql.tck.test.CDIExtension;
-import org.junit.jupiter.api.Test;
-
 import jakarta.inject.Inject;
+import jakarta.nosql.column.ColumnTemplate;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.junit.jupiter.api.Test;
+
 import java.math.BigDecimal;
 import java.util.Set;
 

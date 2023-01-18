@@ -16,7 +16,7 @@ package org.eclipse.jnosql.mapping.validation;
 
 import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
-import jakarta.nosql.tck.test.CDIExtension;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
