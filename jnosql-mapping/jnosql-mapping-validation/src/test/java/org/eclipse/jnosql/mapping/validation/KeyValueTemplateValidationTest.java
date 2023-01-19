@@ -16,9 +16,9 @@ package org.eclipse.jnosql.mapping.validation;
 
 import jakarta.inject.Inject;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
-import jakarta.nosql.tck.test.CDIExtension;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
