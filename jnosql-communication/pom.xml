@@ -31,6 +31,11 @@
     <packaging>pom</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>jakarta.data</groupId>
+            <artifactId>jakarta-data-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <modules>
