@@ -48,6 +48,13 @@
             <version>${jakarta.nosql.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>jakarta.data</groupId>
+            <artifactId>jakarta-data-api</artifactId>
+            <version>${jakarta.data.api.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>

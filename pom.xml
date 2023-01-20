@@ -63,7 +63,7 @@
         <jakarta.enterprise.cdi.version>4.0.1</jakarta.enterprise.cdi.version>
         <jakarta.json.bind.version>3.0.0</jakarta.json.bind.version>
         <jakarta.json.version>2.1.1</jakarta.json.version>
-        <jakarta.data.api.versiom>1.0.0-b1</jakarta.data.api.versiom>
+        <jakarta.data.api.version>1.0.0-b1</jakarta.data.api.version>
         <jakarta.nosql.version>1.0.0-b6-SNAPSHOT</jakarta.nosql.version>
         <jakarta.validation.version>3.0.2</jakarta.validation.version>
         <junit.version>5.9.1</junit.version>
@@ -118,7 +118,7 @@
             <dependency>
                 <groupId>jakarta.data</groupId>
                 <artifactId>jakarta-data-api</artifactId>
-                <version>${jakarta.data.api.versiom}</version>
+                <version>${jakarta.data.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
