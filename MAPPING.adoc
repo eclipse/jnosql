@@ -505,6 +505,7 @@ public Graph getManagerB() {
 }
 ----
 
+==== JNoSQL templates
 
 ====  Querying by Text with the Mapping API
 
