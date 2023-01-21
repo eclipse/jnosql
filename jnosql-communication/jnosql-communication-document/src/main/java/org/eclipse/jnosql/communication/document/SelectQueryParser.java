@@ -94,10 +94,8 @@ public final class SelectQueryParser implements BiFunction<SelectQuery, Document
                 .collect(Collectors.toList());
 
         List<Sort> sorts = selectQuery.orderBy().stream().map(s -> toSort(s, observer, collection)).collect(toList());
-        DocumentCondition condition = null;
-        if (selectQuery.where().isPresent()) {
-            condition = selectQuery.where().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
-        }
+        DocumentCondition condition = selectQuery.where()
+                .map(c -> Conditions.getCondition(c, params, observer, collection)).orElse(null);
 
         return new DefaultDocumentQuery(limit, skip, collection, documents, sorts, condition);
     }

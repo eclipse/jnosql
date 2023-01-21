@@ -83,12 +83,11 @@ public final class DeleteQueryParser implements BiFunction<DeleteQuery, Document
         List<String> documents = deleteQuery.fields().stream()
                 .map(f -> observer.fireField(collection, f))
                 .collect(Collectors.toList());
-        DocumentCondition condition = null;
         Params params = Params.newParams();
 
-        if (deleteQuery.where().isPresent()) {
-            condition = deleteQuery.where().map(c -> Conditions.getCondition(c, params, observer, collection)).get();
-        }
+        DocumentCondition condition = deleteQuery.where()
+                .map(c -> Conditions.getCondition(c, params, observer, collection))
+                .orElse(null);
 
         if (params.isNotEmpty()) {
             throw new QueryException("To run a query with a parameter use a PrepareStatement instead.");
