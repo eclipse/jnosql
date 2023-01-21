@@ -73,11 +73,8 @@ public final class DeleteQueryParser implements BiFunction<DeleteQuery, ColumnOb
         List<String> columns = deleteQuery.fields().stream()
                 .map(f -> observer.fireField(columnFamily, f))
                 .collect(Collectors.toList());
-        ColumnCondition condition = null;
-
-        if (deleteQuery.where().isPresent()) {
-            condition = deleteQuery.where().map(c -> Conditions.getCondition(c, params, observer, columnFamily)).get();
-        }
+        ColumnCondition condition = deleteQuery.where().map(c -> Conditions.getCondition(c, params, observer, columnFamily))
+                .orElse(null);
 
         return new DefaultColumnDeleteQuery(columnFamily, condition, columns);
     }

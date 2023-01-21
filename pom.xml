@@ -176,81 +176,25 @@
                 <version>${smallrye.config.version}</version>
             </dependency>
 
-            <!-- SPEC -->
-            <dependency>
-                <groupId>jakarta.nosql.communication</groupId>
-                <artifactId>communication-column</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.communication</groupId>
-                <artifactId>communication-core</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.communication</groupId>
-                <artifactId>communication-document</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.communication</groupId>
-                <artifactId>communication-key-value</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.communication</groupId>
-                <artifactId>communication-query</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jnosql.communication</groupId>
-                <artifactId>jnosql-communication-column</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.mapping</groupId>
-                <artifactId>mapping-core</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.mapping</groupId>
-                <artifactId>mapping-column</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jnosql.communication</groupId>
-                <artifactId>jnosql-communication-core</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.eclipse.jnosql.communication</groupId>
                 <artifactId>jnosql-communication-query</artifactId>
-                <version>${jakarta.nosql.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jnosql.communication</groupId>
                 <artifactId>jnosql-communication-document</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.mapping</groupId>
-                <artifactId>mapping-document</artifactId>
-                <version>${jakarta.nosql.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jnosql.mapping</groupId>
                 <artifactId>jnosql-mapping-core</artifactId>
-                <version>${jakarta.nosql.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.jnosql.communication</groupId>
                 <artifactId>jnosql-communication-key-value</artifactId>
-                <version>${jakarta.nosql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.nosql.mapping</groupId>
-                <artifactId>mapping-key-value</artifactId>
-                <version>${jakarta.nosql.version}</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

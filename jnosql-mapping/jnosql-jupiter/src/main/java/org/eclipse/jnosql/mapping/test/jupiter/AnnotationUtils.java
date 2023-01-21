@@ -31,9 +31,9 @@ final class AnnotationUtils {
     }
 
     static <A extends Annotation> Optional<A> findAnnotation(Optional<? extends AnnotatedElement> element,
-                                                                    Class<A> annotationType) {
+                                                             Class<A> annotationType) {
 
-        if (element == null || !element.isPresent()) {
+        if (element.isEmpty()) {
             return Optional.empty();
         }
 

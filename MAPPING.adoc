@@ -25,7 +25,347 @@ TIP: Each module works separately as a Communication API.
 
 IMPORTANT: Similar to the communication API, there is a support for database diversity. This project has extensions for each database types on the database mapping level.
 
-include::annotations.adoc[]
+=== Models Annotation
+
+As previously mentioned, the Mapping API provides annotations that make the Java developer's life easier. These annotations can be categorized in two categories:
+
+* Annotation Models
+* Qualifier Annotation
+
+==== Annotation Models
+
+The annotation model converts the entity model into the entity on communication, the communication entity. Beyond the Jakarta NoSQL spec (Entity, ID, and Column annotations), Eclipse JNoSQL has those annotations:
+
+* Embeddable
+* Convert
+* MappedSuperclass
+* Inheritance
+* DiscriminatorColumn
+* DiscriminatorValue
+* Database
+
+Jakarta NoSQL Mapping does not require getter and setter methods to fields. However, the Entity class must have a non-private constructor with no parameters.
+
+===== @Embeddable
+
+This annotation defines a class whose instances are stored as an intrinsic part of an owning entity and share the identity of that object. The behaviour is similar to `@MappedSuperclass`, but this is used on composition instead of inheritance.
+
+[source,java]
+----
+@Entity
+public class Book {
+
+    @Column
+    private String title;
+
+    @Column
+    private Author author;
+}
+
+@Embeddable
+public class Author {
+
+    @Column
+    private String author;
+
+    @Column
+    private Integer age;
+}
+
+----
+
+In this example, there is a single instance in the database with columns `title`, `author` and `age`.
+
+[source,json]
+----
+{
+   "title":"Effective Java",
+   "author":"Joshua Bloch",
+   "age": 2019
+}
+----
+
+===== @Convert
+
+This annotation allows value conversions when mapping the value that came from the Communication API. This is useful for cases such as to cipher a field (String to String conversion), or to convert to a custom type. The Converter annotation has a single, mandatory parameter: a class that inherits from `AttributeConverter` that will be used to perform the conversion. The example below shows how to create a converter to a custom `Money` class.
+
+[source,java]
+----
+@Entity
+public class Employee {
+
+    @Column
+    private String name;
+
+    @Column
+    private Job job;
+
+    @Column("money")
+    @Convert(MoneyConverter.class)
+    private MonetaryAmount salary;
+}
+
+public class MoneyConverter implements AttributeConverter<MonetaryAmount, String> {
+
+    @Override
+    public String convertToDatabaseColumn(MonetaryAmount appValue) {
+        return appValue.toString();
+    }
+
+    @Override
+    public MonetaryAmount convertToEntityAttribute(String dbValue) {
+        return MonetaryAmount.parse(dbValue);
+    }
+}
+
+public class MonetaryAmount {
+    private final String currency;
+
+    private final BigDecimal value;
+
+    public String toString() {
+        // specific implementation
+    }
+
+    public static MonetaryAmount parse(String string) {
+        // specific implementation
+    }
+}
+----
+
+===== Collections
+
+The Mapping layer supports `java.util.Collection` (and subclasses as defined below) mapping to simple elements such as `String` and `Integer` (that will be sent to the communication API as-is), and mapping to `Entity` or `Embedded` entities.
+
+The following collections are supported:
+
+* `java.util.Deque`
+* `java.util.Queue`
+* `java.util.List`
+* `java.util.Iterable`
+* `java.util.NavigableSet`
+* `java.util.SortedSet`
+* `java.util.Collection`
+
+[source,java]
+----
+@Entity
+public class Person {
+
+    @Id
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private List<String> phones;
+
+    @Column
+    private List<Address> addresses;
+}
+
+@Embeddable
+public class Address {
+
+    @Column
+    private String street;
+
+    @Column
+    private String city;
+}
+----
+
+The above classes are mapped to:
+
+[source,json]
+----
+{
+   "_id":10,
+   "addresses":[
+      {
+         "city":"São Paulo",
+         "street":"Av Nove de Julho"
+      },
+      {
+         "city":"Salvador",
+         "street":"Rua Engenheiro Jose Anasoh"
+      }
+   ],
+   "name":"Name",
+   "phones":[
+      "234",
+      "432"
+   ]
+}
+----
+
+===== @MappedSuperclass
+
+The class with the `@MapperSuperclass` annotation will have all attributes considered as an extension of this subclass with an `@Entity` annotation. In this case, all attributes are going to be stored, even the attributes inside the super class.
+
+Using the MappedSuperclass strategy, inheritance is only evident in the class but not the entity model.
+
+This means, that this annotation causes fields annotated with `@Column` in a parent class to be persisted together with the child class' fields.
+
+
+[source,java]
+----
+@Entity
+public class Dog extends Animal {
+
+    @Column
+    private String name;
+}
+
+@MappedSuperclass
+public class Animal {
+
+    @Column
+    private String race;
+
+    @Column
+    private Integer age;
+}
+----
+
+Notice that the `Animal` doest not have an @Entity annotation, as it won't be persisted in the database by itself.
+
+On the example above, when saving a Dog instance, Animal class' fields are saved too: `name`, `race`, and `age` are saved in a single instance.
+
+===== @Inheritance
+
+The strategy to work with inheritance with NoSQL, you can active it by adding the @Inheritance annotation to the superclass.
+
+[source,java]
+----
+@Entity
+@Inheritance
+public abstract class Notification {
+    @Id
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private LocalDate createdOn;
+
+    public abstract void send();
+}
+----
+
+===== @DiscriminatorColumn
+
+This annotation specifies the discriminator column for the inheritance mapping strategy.
+The strategy and the discriminator column are only specified in the root of an entity class hierarchy.
+
+If the DiscriminatorColumn annotation is missing, and a discriminator column is required, the name of the discriminator column defaults is "type".
+
+[source,java]
+----
+@Entity
+@Inheritance
+@DiscriminatorColumn("type")
+public abstract class Notification {
+    @Id
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private LocalDate createdOn;
+
+    public abstract void send();
+}
+----
+
+===== @DiscriminatorValue
+
+This annotation specifies the value of the discriminator column for entities of the given type.
+
+The DiscriminatorValue annotation can only be specified on a concrete entity class.
+
+If the DiscriminatorValue annotation is not specified a provider-specific function will be used to generate a value
+representing the entity type, the discriminator value default is the `Class.getSimpleName()`.
+
+[source,java]
+----
+
+@Entity
+@DiscriminatorValue("SMS")
+public class SmsNotification extends Notification {
+
+    @Column
+    private String phoneNumber;
+
+    @Override
+    public void send() {
+        System.out.println("Sending message to sms: " + phoneNumber);
+    }
+}
+
+@Entity
+@DiscriminatorValue("Email")
+public class EmailNotification extends Notification {
+
+    @Column
+    private String phoneNumber;
+
+    @Override
+    public void send() {
+        System.out.println("Sending message to sms: " + phoneNumber);
+    }
+}
+
+@Entity
+// the discriminator value is SocialMediaNotification
+public class SocialMediaNotification extends Notification {
+    @Column
+    private String username;
+
+    @Override
+    public void send() {
+        System.out.println("Sending a post to: " + username);
+    }
+}
+----
+
+===== @Database
+
+This annotation allows programmers to specialize `@Inject` annotations to choose which specific resource should be injected.
+
+For example, when working with multiple `DocumentTemplate`, the following statement are ambiguous:
+
+[source,java]
+----
+@Inject
+DocumentTemplate templateA;
+
+@Inject
+DocumentTemplate templateB;
+----
+
+`@Database` has two attributes to help specify what resource should be injected:
+
+* *DatabaseType*: The database type (key-value, document, column, graph);
+* *provider*: The provider's database name
+
+Applying the annotation to the example above, the result is:
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseA")
+private DocumentTemplate templateA;
+
+@Inject
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseB")
+private DocumentTemplate templateB;
+----
+
+A producer method annotated with the same `@Database` values must exist as well.
 
 === Template classes
 
@@ -56,295 +396,6 @@ List<Book> books = template.select(Book.class).where("author").eq("Joshua Bloch"
 
 template.select(Book.class).where("author").eq("Joshua Bloch").and("edition").gt(3).execute();
 ----
-
-
-==== Key-Value Template
-
-This template has the responsibility to serve as the persistence of an entity in a key-value database.
-
-The `KeyValueTemplate` is the template for synchronous tasks.
-
-[source,java]
-----
-@Inject
-KeyValueTemplate template;
-...
-
-User user = new User();
-user.setNickname("ada");
-user.setAge(10);
-user.setName("Ada Lovelace");
-List<User> users = Collections.singletonList(user);
-
-template.put(user);
-template.put(users);
-
-Optional<Person> ada = template.get("ada", Person.class);
-Iterable<Person> usersFound = template.get(Collections.singletonList("ada"), Person.class);
-----
-
-WARNING: In key-value templates, both the `@Entity` and `@Id` annotations are required. The `@Id` identifies the key, and the whole entity will be the value. The API won't cover how the value persists this entity.
-
-To use a key-value template, just follow the CDI style and precede the field with the `@Inject` annotation.
-
-[source,java]
-----
-@Inject
-private KeyValueTemplate template;
-----
-
-You can work with several key-value database instances through CDI qualifier. To identify each database instance, make a `BucketManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
-
-[source,java]
-----
-@Inject
-@Database(value = DatabaseType.KEY_VALUE, provider = "databaseA")
-private KeyValueTemplate templateA;
-
-@Inject
-@Database(value = DatabaseType.KEY_VALUE, provider = "databaseB")
-private KeyValueTemplate templateB;
-
-// producers methods
-@Produces
-@Database(value = DatabaseType.KEY_VALUE, provider = "databaseA")
-public BucketManager getManagerA() {
-    BucketManager manager = // instance;
-    return manager;
-}
-
-@Produces
-@Database(value = DatabaseType.KEY_VALUE, provider = "databaseB")
-public BucketManager getManagerB() {
-    BucketManager manager = // instance;
-    return manager;
-}
-----
-
-
-==== ColumnTemplate
-
-This template has the responsibility to serve as a bridge between the entity model and the communication to a column family NoSQL database type.
-
-The `ColumnTemplate` is the column template for the synchronous tasks.
-
-[source,java]
-----
-@Inject
-ColumnTemplate template;
-...
-Person person = new Person();
-person.setAddress("Olympus");
-person.setName("Artemis Good");
-person.setPhones(Arrays.asList("55 11 94320121", "55 11 94320121"));
-person.setNickname("artemis");
-
-List<Person> people = Collections.singletonList(person);
-
-Person personUpdated = template.insert(person);
-template.insert(people);
-template.insert(person, Duration.ofHours(1L));
-
-template.update(person);
-template.update(people);
-----
-
-For information removal and retrieval, there are `ColumnQuery` and `ColumnDeleteQuery` classes, respectively.
-
-[source,java]
-----
-ColumnQuery query = select().from("Person").where("address").eq("Olympus").build();
-
-Stream<Person> peopleWhoLiveOnOlympus = template.select(query);
-Optional<Person> artemis = template.singleResult(select().from("Person").where("nickname").eq("artemis").build());
-
-ColumnDeleteQuery deleteQuery = delete().from("Person").where("address").eq("Olympus").build();
-template.delete(deleteQuery);
-----
-
-
-[source,java]
-----
-@Entity
-public class Person {
-
-    @Id("native_id")
-    private long id;
-
-    @Column
-    private String name;
-
-    @Column
-    private int age;
-}
-----
-
-[source,java]
-----
-@Inject
-ColumnTemplate template;
-...
-List<Person> people = template.select(Person.class).where("id").gte(10).result();
-// translating: select().from("Person").where("native_id").gte(10L).build();
-template.delete(Person.class).where("id").eq("20").execute();
-// translating: delete().from("Person").where("native_id").gte(10L).build();
-
-----
-
-To use a column template, just follow the CDI style and precede the field with the `@Inject` annotation.
-
-[source,java]
-----
-@Inject
-private ColumnTemplate template;
-----
-
-The next step is to produce a `ColumnManager`:
-
-[source,java]
-----
-@Produces
-public ColumnManager getManager() {
-    ColumnManager manager = // instance;
-    return manager;
-}
-----
-
-You can work with several column database instances through CDI qualifier. To identify each database instance, make a `ColumnManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
-
-[source,java]
-----
-@Inject
-@Database(value = DatabaseType.COLUMN, provider = "databaseA")
-private ColumnTemplate templateA;
-
-@Inject
-@Database(value = DatabaseType.COLUMN, provider = "databaseB")
-private ColumnTemplate templateB;
-
-// producers methods
-@Produces
-@Database(value = DatabaseType.COLUMN, provider = "databaseA")
-public ColumnManager getManagerA() {
-    return manager;
-}
-
-@Produces
-@Database(value = DatabaseType.COLUMN, provider = "databaseB")
-public ColumnManager getManagerB() {
-    return manager;
-}
-----
-
-
-==== DocumentTemplate
-
-This template has the responsibility to serve as a bridge between the entity model and the communication to a column family NoSQL database type.
-
-
-The `DocumentTemplate` is the document template for the synchronous tasks.
-
-[source,java]
-----
-@Inject
-DocumentTemplate template;
-...
-
-Person person = new Person();
-person.setAddress("Olympus");
-person.setName("Artemis Good");
-person.setPhones(Arrays.asList("55 11 94320121", "55 11 94320121"));
-person.setNickname("artemis");
-
-List<Person> people = Collections.singletonList(person);
-
-Person personUpdated = template.insert(person);
-template.insert(people);
-template.insert(person, Duration.ofHours(1L));
-
-template.update(person);
-template.update(people);
-----
-
-To remove and retrieve information from document collection, there are `DocumentQuery` and `DocumentDeleteQuery` classes.
-
-[source,java]
-----
-DocumentQuery query = select().from("Person").where("address").eq("Olympus").build();
-
-Stream<Person> peopleWhoLiveOnOlympus = template.find(query);
-Optional<Person> artemis = template.singleResult(select().from("Person").where("nickname").eq("artemis").build());
-
-DocumentDeleteQuery deleteQuery = delete().from("Person").where("address").eq("Olympus").build();
-template.delete(deleteQuery);
-----
-
-
-[source,java]
-----
-@Entity
-public class Person {
-
-    @Id("native_id")
-    private long id;
-
-    @Column
-    private String name;
-
-    @Column
-    private int age;
-}
-----
-
-[source,java]
-----
-@Inject
-private DocumentTemplate template;
-
-public void mapper() {
-List<Person> people = template.select(Person.class).where("id")
-                                     .gte(10).result();
-  // translating: select().from("Person").where("native_id").gte(10L).build();
-template.delete(Person.class).where("id").eq("20").execute();
-// translating: delete().from("Person").where("native_id").gte(10L).build();
-}
-----
-
-
-To use a document template, just follow the CDI style and place an `@Inject` annotation on the field.
-
-[source,java]
-----
-@Inject
-private DocumentTemplate template;
-----
-
-You can work with several document database instances through CDI qualifier. To identify each database instance, make a `DocumentManager` visible for CDI by putting the `@Produces` and the `@Database` annotations in the method.
-
-[source,java]
-----
-@Inject
-@Database(value = DatabaseType.DOCUMENT, provider = "databaseA")
-private DocumentTemplate templateA;
-
-@Inject
-@Database(value = DatabaseType.DOCUMENT, provider = "databaseB")
-private DocumentTemplate templateB;
-
-// producers methods
-@Produces
-@Database(value = DatabaseType.DOCUMENT, provider = "databaseA")
-public DocumentManager getManagerA() {
-    return manager;
-}
-
-@Produces
-@Database(value = DatabaseType.DOCUMENT, provider = "databaseB")
-public DocumentManager getManagerB() {
-    return manager;
-}
-----
-
 
 ==== Graph template
 
@@ -454,6 +505,33 @@ public Graph getManagerB() {
 }
 ----
 
+==== JNoSQL templates
+
+Beyond the `ColumnTemplate`and `DocumentTemplate` Eclipse JNoSQL has support for two specializations:  `JNoSQLColumnTemplate` and `JNoSQLDocumentTemplate`; those templates have more methods, such as operations exploring communication query, findAll, and deleteAll methods.
+
+[source,java]
+----
+@Inject
+JNoSQLColumnTemplate template;
+...
+Stream<Person> people = template.findAll(Person.class);
+template.deleteAll(Person.class);
+long count = template.count(Person.class);
+ColumnQuery query = select().from("Book").build();
+Stream<Book> books = template.select(query);
+----
+
+[source,java]
+----
+@Inject
+JNoSQLDocumentTemplate template;
+...
+Stream<Person> people = template.findAll(Person.class);
+template.deleteAll(Person.class);
+long count = template.count(Person.class);
+DocumentQuery query = select().from("Book").build();
+Stream<Book> books = template.select(query);
+----
 
 ====  Querying by Text with the Mapping API
 

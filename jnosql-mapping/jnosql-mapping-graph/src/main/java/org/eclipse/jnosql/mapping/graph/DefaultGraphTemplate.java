@@ -15,15 +15,21 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 
 /**
  * The default {@link GraphTemplate}
  */
+
+@Default
+@Database(DatabaseType.GRAPH)
 @ApplicationScoped
 class DefaultGraphTemplate extends AbstractGraphTemplate {
 

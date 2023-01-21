@@ -14,12 +14,14 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import jakarta.inject.Inject;
 import jakarta.nosql.Template;
+import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
+import static org.eclipse.jnosql.mapping.DatabaseType.GRAPH;
 
 @CDIExtension
 public class TemplateGraphTest {
@@ -27,8 +29,17 @@ public class TemplateGraphTest {
     @Inject
     private Template template;
 
+    @Inject
+    @Database(GRAPH)
+    private Template qualifier;
+
     @Test
     public void shouldInjectTemplate() {
         Assertions.assertNotNull(template);
+    }
+
+    @Test
+    public void shouldInjectQualifier() {
+        Assertions.assertNotNull(qualifier);
     }
 }

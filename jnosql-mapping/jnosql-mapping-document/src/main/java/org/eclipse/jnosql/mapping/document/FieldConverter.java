@@ -107,7 +107,8 @@ enum FieldConverter {
                 Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.getConverter();
                 if (optionalConverter.isPresent()) {
                     AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(optionalConverter.get());
-                    Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) value.get());
+                    Y attr = (Y)(value.isInstanceOf(List.class) ? document : value.get());
+                    Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) attr);
                     field.write(instance, field.getValue(Value.of(attributeConverted)));
                 } else {
                     field.write(instance, field.getValue(value));
