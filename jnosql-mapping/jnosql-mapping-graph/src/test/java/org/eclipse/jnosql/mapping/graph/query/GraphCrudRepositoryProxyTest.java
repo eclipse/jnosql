@@ -308,8 +308,12 @@ public class GraphCrudRepositoryProxyTest {
 
     @Test
     public void shouldReturnHasCode() {
-        assertNotNull(personRepository.hashCode());
         assertEquals(personRepository.hashCode(), personRepository.hashCode());
+    }
+
+    @Test
+    public void shouldReturnEquals() {
+        assertEquals(personRepository, personRepository);
     }
 
     @Test

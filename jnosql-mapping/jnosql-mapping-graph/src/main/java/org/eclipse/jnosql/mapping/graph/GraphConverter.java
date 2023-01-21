@@ -100,11 +100,12 @@ public abstract class GraphConverter {
 
 
     /**
-     *List the fields in the entity as property exclude fields annotated with {@link jakarta.nosql.Id}
+     * List the fields in the entity as property exclude fields annotated with {@link jakarta.nosql.Id}
+     *
      * @param entity the entity
-     * @param <T> the entity type
-     * @throws NullPointerException when entity is null
+     * @param <T>    the entity type
      * @return the properties of an entity
+     * @throws NullPointerException when entity is null
      */
     public <T> List<Property<?>> getProperties(T entity) {
         Objects.requireNonNull(entity, "entity is required");
@@ -153,9 +154,9 @@ public abstract class GraphConverter {
     /**
      * Converts vertex to an entity
      *
-     * @param type the entity class
-     * @param vertex      the vertex
-     * @param <T>         the entity type
+     * @param type   the entity class
+     * @param vertex the vertex
+     * @param <T>    the entity type
      * @return a entity instance
      * @throws NullPointerException when vertex or type is null
      */
@@ -174,9 +175,9 @@ public abstract class GraphConverter {
      * Converts vertex to an entity
      * Instead of creating a new object is uses the instance used in this parameters
      *
-     * @param type the entity class
-     * @param vertex         the vertex
-     * @param <T>            the entity type
+     * @param type   the entity class
+     * @param vertex the vertex
+     * @param <T>    the entity type
      * @return a entity instance
      * @throws NullPointerException when vertex or type is null
      */
@@ -254,16 +255,11 @@ public abstract class GraphConverter {
         Object vertexId = vertex.id();
         if (Objects.nonNull(vertexId) && id.isPresent()) {
             FieldMapping fieldMapping = id.get();
-
-            if (fieldMapping.getConverter().isPresent()) {
-                AttributeConverter attributeConverter = getConverters().get(fieldMapping.getConverter().get());
+            fieldMapping.getConverter().ifPresentOrElse(c -> {
+                AttributeConverter attributeConverter = getConverters().get(c);
                 Object attributeConverted = attributeConverter.convertToEntityAttribute(vertexId);
-
                 fieldMapping.write(entity, fieldMapping.getValue(Value.of(attributeConverted)));
-            } else {
-                fieldMapping.write(entity, fieldMapping.getValue(Value.of(vertexId)));
-            }
-
+            }, () -> fieldMapping.write(entity, fieldMapping.getValue(Value.of(vertexId))));
         }
     }
 

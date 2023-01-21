@@ -154,15 +154,13 @@ public class KeyValueRepositoryProxyTest {
 
     @Test
     public void shouldReturnHasCode() {
-        assertNotNull(userRepository.hashCode());
         assertEquals(userRepository.hashCode(), userRepository.hashCode());
     }
 
     @Test
     public void shouldReturnEquals() {
-        assertNotNull(userRepository.equals(userRepository));
+        assertEquals(userRepository, userRepository);
     }
-
     interface UserRepository extends PageableRepository<User, String> {
 
         Optional<User> findByName(String name);

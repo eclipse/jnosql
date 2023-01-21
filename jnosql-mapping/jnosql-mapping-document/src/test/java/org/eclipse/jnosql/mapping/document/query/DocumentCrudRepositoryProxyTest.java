@@ -342,13 +342,12 @@ public class DocumentCrudRepositoryProxyTest {
 
     @Test
     public void shouldReturnHasCode() {
-        assertNotNull(personRepository.hashCode());
         assertEquals(personRepository.hashCode(), personRepository.hashCode());
     }
 
     @Test
     public void shouldReturnEquals() {
-        assertNotNull(personRepository.equals(personRepository));
+        assertEquals(personRepository, personRepository);
     }
 
     @Test
