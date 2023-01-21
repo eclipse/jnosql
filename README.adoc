@@ -16,6 +16,7 @@ Eclipse JNoSQL is a compatible implementation of the https://jakarta.ee/specific
 * Annotation-oriented using JPA-like naming when it makes sense
 * Extensible to explore the particular behavior of a NoSQL database
 * Explore the popularity of Apache TinkerPop in Graph API
+* Jakarta NoSQL and Data implementations
 
 == One Mapping API to Multiples NoSQL Databases
 
