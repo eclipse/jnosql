@@ -16,6 +16,7 @@ package org.eclipse.jnosql.communication.query;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+
 import java.io.StringReader;
 import java.util.Objects;
 
@@ -41,8 +42,9 @@ public final class JSONQueryValue implements QueryValue<JsonObject> {
     }
 
     public static JSONQueryValue of(QueryParser.JsonContext context) {
-        JsonReader jsonReader = Json.createReader(new StringReader(context.getText()));
-        return new JSONQueryValue(jsonReader.readObject());
+        try (JsonReader jsonReader = Json.createReader(new StringReader(context.getText()))) {
+            return new JSONQueryValue(jsonReader.readObject());
+        }
     }
 
     @Override
