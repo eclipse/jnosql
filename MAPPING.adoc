@@ -25,7 +25,347 @@ TIP: Each module works separately as a Communication API.
 
 IMPORTANT: Similar to the communication API, there is a support for database diversity. This project has extensions for each database types on the database mapping level.
 
-include::annotations.adoc[]
+=== Models Annotation
+
+As previously mentioned, the Mapping API provides annotations that make the Java developer's life easier. These annotations can be categorized in two categories:
+
+* Annotation Models
+* Qualifier Annotation
+
+==== Annotation Models
+
+The annotation model converts the entity model into the entity on communication, the communication entity. Beyond the Jakarta NoSQL spec (Entity, ID, and Column annotations), Eclipse JNoSQL has those annotations:
+
+* Embeddable
+* Convert
+* MappedSuperclass
+* Inheritance
+* DiscriminatorColumn
+* DiscriminatorValue
+* Database
+
+Jakarta NoSQL Mapping does not require getter and setter methods to fields. However, the Entity class must have a non-private constructor with no parameters.
+
+===== @Embeddable
+
+This annotation defines a class whose instances are stored as an intrinsic part of an owning entity and share the identity of that object. The behaviour is similar to `@MappedSuperclass`, but this is used on composition instead of inheritance.
+
+[source,java]
+----
+@Entity
+public class Book {
+
+    @Column
+    private String title;
+
+    @Column
+    private Author author;
+}
+
+@Embeddable
+public class Author {
+
+    @Column
+    private String author;
+
+    @Column
+    private Integer age;
+}
+
+----
+
+In this example, there is a single instance in the database with columns `title`, `author` and `age`.
+
+[source,json]
+----
+{
+   "title":"Effective Java",
+   "author":"Joshua Bloch",
+   "age": 2019
+}
+----
+
+===== @Convert
+
+This annotation allows value conversions when mapping the value that came from the Communication API. This is useful for cases such as to cipher a field (String to String conversion), or to convert to a custom type. The Converter annotation has a single, mandatory parameter: a class that inherits from `AttributeConverter` that will be used to perform the conversion. The example below shows how to create a converter to a custom `Money` class.
+
+[source,java]
+----
+@Entity
+public class Employee {
+
+    @Column
+    private String name;
+
+    @Column
+    private Job job;
+
+    @Column("money")
+    @Convert(MoneyConverter.class)
+    private MonetaryAmount salary;
+}
+
+public class MoneyConverter implements AttributeConverter<MonetaryAmount, String> {
+
+    @Override
+    public String convertToDatabaseColumn(MonetaryAmount appValue) {
+        return appValue.toString();
+    }
+
+    @Override
+    public MonetaryAmount convertToEntityAttribute(String dbValue) {
+        return MonetaryAmount.parse(dbValue);
+    }
+}
+
+public class MonetaryAmount {
+    private final String currency;
+
+    private final BigDecimal value;
+
+    public String toString() {
+        // specific implementation
+    }
+
+    public static MonetaryAmount parse(String string) {
+        // specific implementation
+    }
+}
+----
+
+===== Collections
+
+The Mapping layer supports `java.util.Collection` (and subclasses as defined below) mapping to simple elements such as `String` and `Integer` (that will be sent to the communication API as-is), and mapping to `Entity` or `Embedded` entities.
+
+The following collections are supported:
+
+* `java.util.Deque`
+* `java.util.Queue`
+* `java.util.List`
+* `java.util.Iterable`
+* `java.util.NavigableSet`
+* `java.util.SortedSet`
+* `java.util.Collection`
+
+[source,java]
+----
+@Entity
+public class Person {
+
+    @Id
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private List<String> phones;
+
+    @Column
+    private List<Address> addresses;
+}
+
+@Embeddable
+public class Address {
+
+    @Column
+    private String street;
+
+    @Column
+    private String city;
+}
+----
+
+The above classes are mapped to:
+
+[source,json]
+----
+{
+   "_id":10,
+   "addresses":[
+      {
+         "city":"São Paulo",
+         "street":"Av Nove de Julho"
+      },
+      {
+         "city":"Salvador",
+         "street":"Rua Engenheiro Jose Anasoh"
+      }
+   ],
+   "name":"Name",
+   "phones":[
+      "234",
+      "432"
+   ]
+}
+----
+
+===== @MappedSuperclass
+
+The class with the `@MapperSuperclass` annotation will have all attributes considered as an extension of this subclass with an `@Entity` annotation. In this case, all attributes are going to be stored, even the attributes inside the super class.
+
+Using the MappedSuperclass strategy, inheritance is only evident in the class but not the entity model.
+
+This means, that this annotation causes fields annotated with `@Column` in a parent class to be persisted together with the child class' fields.
+
+
+[source,java]
+----
+@Entity
+public class Dog extends Animal {
+
+    @Column
+    private String name;
+}
+
+@MappedSuperclass
+public class Animal {
+
+    @Column
+    private String race;
+
+    @Column
+    private Integer age;
+}
+----
+
+Notice that the `Animal` doest not have an @Entity annotation, as it won't be persisted in the database by itself.
+
+On the example above, when saving a Dog instance, Animal class' fields are saved too: `name`, `race`, and `age` are saved in a single instance.
+
+===== @Inheritance
+
+The strategy to work with inheritance with NoSQL, you can active it by adding the @Inheritance annotation to the superclass.
+
+[source,java]
+----
+@Entity
+@Inheritance
+public abstract class Notification {
+    @Id
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private LocalDate createdOn;
+
+    public abstract void send();
+}
+----
+
+===== @DiscriminatorColumn
+
+This annotation specifies the discriminator column for the inheritance mapping strategy.
+The strategy and the discriminator column are only specified in the root of an entity class hierarchy.
+
+If the DiscriminatorColumn annotation is missing, and a discriminator column is required, the name of the discriminator column defaults is "type".
+
+[source,java]
+----
+@Entity
+@Inheritance
+@DiscriminatorColumn("type")
+public abstract class Notification {
+    @Id
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private LocalDate createdOn;
+
+    public abstract void send();
+}
+----
+
+===== @DiscriminatorValue
+
+This annotation specifies the value of the discriminator column for entities of the given type.
+
+The DiscriminatorValue annotation can only be specified on a concrete entity class.
+
+If the DiscriminatorValue annotation is not specified a provider-specific function will be used to generate a value
+representing the entity type, the discriminator value default is the `Class.getSimpleName()`.
+
+[source,java]
+----
+
+@Entity
+@DiscriminatorValue("SMS")
+public class SmsNotification extends Notification {
+
+    @Column
+    private String phoneNumber;
+
+    @Override
+    public void send() {
+        System.out.println("Sending message to sms: " + phoneNumber);
+    }
+}
+
+@Entity
+@DiscriminatorValue("Email")
+public class EmailNotification extends Notification {
+
+    @Column
+    private String phoneNumber;
+
+    @Override
+    public void send() {
+        System.out.println("Sending message to sms: " + phoneNumber);
+    }
+}
+
+@Entity
+// the discriminator value is SocialMediaNotification
+public class SocialMediaNotification extends Notification {
+    @Column
+    private String username;
+
+    @Override
+    public void send() {
+        System.out.println("Sending a post to: " + username);
+    }
+}
+----
+
+===== @Database
+
+This annotation allows programmers to specialize `@Inject` annotations to choose which specific resource should be injected.
+
+For example, when working with multiple `DocumentTemplate`, the following statement are ambiguous:
+
+[source,java]
+----
+@Inject
+DocumentTemplate templateA;
+
+@Inject
+DocumentTemplate templateB;
+----
+
+`@Database` has two attributes to help specify what resource should be injected:
+
+* *DatabaseType*: The database type (key-value, document, column, graph);
+* *provider*: The provider's database name
+
+Applying the annotation to the example above, the result is:
+
+[source,java]
+----
+@Inject
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseA")
+private DocumentTemplate templateA;
+
+@Inject
+@Database(value = DatabaseType.DOCUMENT, provider = "databaseB")
+private DocumentTemplate templateB;
+----
+
+A producer method annotated with the same `@Database` values must exist as well.
 
 === Template classes
 
