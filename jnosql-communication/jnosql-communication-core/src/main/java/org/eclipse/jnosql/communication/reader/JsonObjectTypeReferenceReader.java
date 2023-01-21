@@ -30,6 +30,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+/**
+ * A {@link TypeReferenceReader} that uses the return as {@link JsonObject}
+ * @author Dmitry Repchevsky
+ */
 public class JsonObjectTypeReferenceReader implements TypeReferenceReader {
 
     @Override
