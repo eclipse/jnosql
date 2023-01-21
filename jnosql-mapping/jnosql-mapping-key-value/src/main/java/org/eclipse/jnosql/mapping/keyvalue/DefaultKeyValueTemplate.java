@@ -15,10 +15,15 @@
 package org.eclipse.jnosql.mapping.keyvalue;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
+import org.eclipse.jnosql.mapping.Database;
+import org.eclipse.jnosql.mapping.DatabaseType;
 
+@Default
+@Database(DatabaseType.KEY_VALUE)
 @ApplicationScoped
 class DefaultKeyValueTemplate extends AbstractKeyValueTemplate {
 
