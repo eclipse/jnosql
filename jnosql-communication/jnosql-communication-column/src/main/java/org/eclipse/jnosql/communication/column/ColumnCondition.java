@@ -144,12 +144,12 @@ public final class ColumnCondition {
         if (this == o) {
             return true;
         }
-        if (o == null || !ColumnCondition.class.isAssignableFrom(o.getClass())) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         ColumnCondition that = (ColumnCondition) o;
-        return Objects.equals(column, that.column()) &&
-                condition == that.condition();
+        return Objects.equals(column, that.column)
+                && condition == that.condition;
     }
 
     @Override
@@ -159,7 +159,7 @@ public final class ColumnCondition {
 
     @Override
     public String toString() {
-        return "DefaultColumnCondition{" + "column=" + column +
+        return "ColumnCondition{" + "column=" + column +
                 ", condition=" + condition +
                 '}';
     }

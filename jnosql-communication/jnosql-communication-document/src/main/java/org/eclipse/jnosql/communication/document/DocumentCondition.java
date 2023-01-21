@@ -145,12 +145,11 @@ public final class DocumentCondition {
         if (this == o) {
             return true;
         }
-        if (o == null || !DocumentCondition.class.isAssignableFrom(o.getClass())) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         DocumentCondition that = (DocumentCondition) o;
-        return Objects.equals(document, that.document()) &&
-                condition == that.condition();
+        return Objects.equals(document, that.document) && condition == that.condition;
     }
 
     @Override
@@ -160,7 +159,7 @@ public final class DocumentCondition {
 
     @Override
     public String toString() {
-        return "DefaultDocumentCondition{" + "document=" + document +
+        return "DocumentCondition{" + "document=" + document +
                 ", condition=" + condition +
                 '}';
     }
