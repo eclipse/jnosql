@@ -5,3 +5,4 @@ org.eclipse.jnosql.communication.reader.StreamTypeReferenceReader
 org.eclipse.jnosql.communication.reader.OptionalTypeReferenceReader
 org.eclipse.jnosql.communication.reader.QueueTypeReferenceReader
 org.eclipse.jnosql.communication.reader.NavigableSetTypeReferenceReader
+org.eclipse.jnosql.communication.reader.JsonObjectTypeReferenceReader

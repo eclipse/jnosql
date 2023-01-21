@@ -30,7 +30,8 @@ module org.eclipse.jnosql.communication.core {
             org.eclipse.jnosql.communication.reader.StreamTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.OptionalTypeReferenceReader,
             org.eclipse.jnosql.communication.reader.QueueTypeReferenceReader,
-            org.eclipse.jnosql.communication.reader.NavigableSetTypeReferenceReader;
+            org.eclipse.jnosql.communication.reader.NavigableSetTypeReferenceReader,
+            org.eclipse.jnosql.communication.reader.JsonObjectTypeReferenceReader;
     provides org.eclipse.jnosql.communication.ValueReader with org.eclipse.jnosql.communication.reader.AtomicIntegerReader,
             org.eclipse.jnosql.communication.reader.AtomicLongReader,
             org.eclipse.jnosql.communication.reader.BigDecimalReader,
