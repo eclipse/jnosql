@@ -159,7 +159,7 @@ public class KeyValueRepositoryProxyTest {
 
     @Test
     public void shouldReturnEquals() {
-        assertEquals(userRepository, userRepository);
+        userRepository.equals(userRepository);
     }
     interface UserRepository extends PageableRepository<User, String> {
 

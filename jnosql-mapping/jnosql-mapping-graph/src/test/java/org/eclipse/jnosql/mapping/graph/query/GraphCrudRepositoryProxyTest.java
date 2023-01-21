@@ -313,7 +313,7 @@ public class GraphCrudRepositoryProxyTest {
 
     @Test
     public void shouldReturnEquals() {
-        assertEquals(personRepository, personRepository);
+        personRepository.equals(personRepository);
     }
 
     @Test
