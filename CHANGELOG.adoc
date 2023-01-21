@@ -30,6 +30,8 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 === Fixed
 
 - Enhance constructor converter allowing simple translating supported by Value implementation.
+- Define Qualifier on templates implementations (Graph, Key-value, Document and Column).
+
 
 == [1.0.0.4-b5] - 2022-12-22
 

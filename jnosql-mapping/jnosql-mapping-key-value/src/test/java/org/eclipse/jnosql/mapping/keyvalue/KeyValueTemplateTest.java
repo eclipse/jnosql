@@ -14,12 +14,14 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
+import jakarta.inject.Inject;
 import jakarta.nosql.Template;
+import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
+import static org.eclipse.jnosql.mapping.DatabaseType.KEY_VALUE;
 
 @CDIExtension
 class KeyValueTemplateTest {
@@ -27,9 +29,18 @@ class KeyValueTemplateTest {
     @Inject
     private Template template;
 
+    @Inject
+    @Database(KEY_VALUE)
+    private Template qualifier;
+
     @Test
     public void shouldInjectTemplate() {
         Assertions.assertNotNull(template);
+    }
+
+    @Test
+    public void shouldInjectQualifier() {
+        Assertions.assertNotNull(qualifier);
     }
 
 }
