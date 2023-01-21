@@ -14,7 +14,6 @@
  *   Otavio Santana
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 
