@@ -507,6 +507,32 @@ public Graph getManagerB() {
 
 ==== JNoSQL templates
 
+Beyond the `ColumnTemplate`and `DocumentTemplate` Eclipse JNoSQL has support for two specializations:  `JNoSQLColumnTemplate` and `JNoSQLDocumentTemplate`; those templates have more methods, such as operations exploring communication query, findAll, and deleteAll methods.
+
+[source,java]
+----
+@Inject
+JNoSQLColumnTemplate template;
+...
+Stream<Person> people = template.findAll(Person.class);
+template.deleteAll(Person.class);
+long count = template.count(Person.class);
+ColumnQuery query = select().from("Book").build();
+Stream<Book> books = template.select(query);
+----
+
+[source,java]
+----
+@Inject
+JNoSQLDocumentTemplate template;
+...
+Stream<Person> people = template.findAll(Person.class);
+template.deleteAll(Person.class);
+long count = template.count(Person.class);
+DocumentQuery query = select().from("Book").build();
+Stream<Book> books = template.select(query);
+----
+
 ====  Querying by Text with the Mapping API
 
 Similar to the Communication layer, the Mapping layer has query by text. Both Communication and Mapping have the `query` and `prepare` methods, however, the Mapping API will convert the fields and entities to native names from the Entity and Column annotations.
