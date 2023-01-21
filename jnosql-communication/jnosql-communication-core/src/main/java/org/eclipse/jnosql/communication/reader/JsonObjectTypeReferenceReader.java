@@ -28,6 +28,9 @@ import org.eclipse.jnosql.communication.TypeSupplier;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * The {@link JsonObject} extracted from Dmitry Repchevsky(redmitry) code
+ */
 public class JsonObjectTypeReferenceReader implements TypeReferenceReader {
 
     @Override
@@ -38,7 +41,7 @@ public class JsonObjectTypeReferenceReader implements TypeReferenceReader {
     @Override
     public <T> T convert(TypeSupplier<T> typeReference, Object obj) {
         if (Iterable.class.isInstance(obj)) {
-            return (T)convert(Iterable.class.cast(obj));
+            return (T) convert(Iterable.class.cast(obj));
         }
         return null;
     }
@@ -54,7 +57,7 @@ public class JsonObjectTypeReferenceReader implements TypeReferenceReader {
                 final List l = List.class.cast(value);
                 if (l.isEmpty()) {
                     builder.add(name, Json.createObjectBuilder().build());
-                } else if (l.stream().anyMatch(p -> p instanceof Entry)){
+                } else if (l.stream().anyMatch(p -> p instanceof Entry)) {
                     builder.add(name, convert(l));
                 } else {
                     final JsonArrayBuilder ab = Json.createArrayBuilder();
