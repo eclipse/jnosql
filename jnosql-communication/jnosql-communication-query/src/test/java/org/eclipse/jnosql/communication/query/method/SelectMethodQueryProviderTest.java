@@ -14,6 +14,7 @@ package org.eclipse.jnosql.communication.query.method;
 import org.eclipse.jnosql.communication.Condition;
 import jakarta.data.repository.Sort;
 import jakarta.data.repository.Direction;
+import org.eclipse.jnosql.communication.query.BooleanQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.ParamQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
@@ -418,7 +419,7 @@ class SelectMethodQueryProviderTest {
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.entity());
         assertTrue(selectQuery.fields().isEmpty());
-        assertFalse(selectQuery.orderBy().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
         assertEquals(0, selectQuery.limit());
         assertEquals(0, selectQuery.skip());
         Optional<Where> where = selectQuery.where();
@@ -426,7 +427,7 @@ class SelectMethodQueryProviderTest {
         QueryCondition condition = where.orElseThrow().condition();
         assertEquals("active", condition.name());
         assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals(Boolean.TRUE, condition.value());
+        assertEquals(BooleanQueryValue.TRUE, condition.value());
     }
 
     @ParameterizedTest(name = "Should parser the query {0}")
@@ -437,7 +438,7 @@ class SelectMethodQueryProviderTest {
         assertNotNull(selectQuery);
         assertEquals(entity, selectQuery.entity());
         assertTrue(selectQuery.fields().isEmpty());
-        assertFalse(selectQuery.orderBy().isEmpty());
+        assertTrue(selectQuery.orderBy().isEmpty());
         assertEquals(0, selectQuery.limit());
         assertEquals(0, selectQuery.skip());
         Optional<Where> where = selectQuery.where();
@@ -445,7 +446,7 @@ class SelectMethodQueryProviderTest {
         QueryCondition condition = where.orElseThrow().condition();
         assertEquals("active", condition.name());
         assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals(Boolean.FALSE, condition.value());
+        assertEquals(BooleanQueryValue.FALSE, condition.value());
     }
 
 
