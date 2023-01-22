@@ -515,6 +515,43 @@ class DocumentRepositoryProxyPageableTest {
         assertNull(personRepository.findByName("name", pagination));
     }
 
+    @Test
+    public void shouldFindByNameSort() {
+        when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
+                .of(Person.builder().build()));
+
+        Pageable pagination = getPageable().sortBy(Sort.desc("age"));
+        personRepository.findByName("name", Sort.asc("name"), pagination);
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertThat(query.sorts()).hasSize(2)
+                .containsExactly(Sort.asc("name"), Sort.desc("age"));
+        assertEquals(Document.of("name", "name"), condition.document());
+    }
+
+    @Test
+    public void shouldFindByNameSortPagination() {
+        when(template.singleResult(any(DocumentQuery.class))).thenReturn(Optional
+                .of(Person.builder().build()));
+
+        personRepository.findByName("name", Sort.asc("name"));
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertThat(query.sorts()).hasSize(1)
+                .containsExactly(Sort.asc("name"));
+        assertEquals(Document.of("name", "name"), condition.document());
+    }
+
     private Pageable getPageable() {
         return Pageable.ofPage(2).size(6);
     }
@@ -523,6 +560,10 @@ class DocumentRepositoryProxyPageableTest {
 
 
         Person findByName(String name, Pageable Pageable);
+
+        List<Person> findByName(String name, Sort sort);
+
+        List<Person> findByName(String name, Sort sort, Pageable pageable);
 
         Page<Person> findByNameOrderByAge(String name, Pageable Pageable);
 
