@@ -110,7 +110,7 @@ public abstract class BaseDocumentRepository<T> {
             List<Sort> sorts = query.sorts();
             if (!special.sorts().isEmpty()) {
                 sorts = new ArrayList<>(query.sorts());
-                sorts.addAll(p.sorts());
+                sorts.addAll(special.sorts());
             }
             return new MappingDocumentQuery(sorts, size, skip,
                     query.condition().orElse(null), query.name());

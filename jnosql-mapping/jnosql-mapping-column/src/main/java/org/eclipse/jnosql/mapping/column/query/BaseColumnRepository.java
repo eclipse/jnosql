@@ -36,6 +36,7 @@ import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.column.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.repository.SpecialParameters;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
 
 import java.lang.reflect.Method;
@@ -106,7 +107,7 @@ public abstract class BaseColumnRepository<T> {
                 .withMethodSource(method)
                 .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findSpecialParameters(args).orElse(null))
+                .withPagination(DynamicReturn.findPageable(args))
                 .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
@@ -131,15 +132,29 @@ public abstract class BaseColumnRepository<T> {
 
 
     protected ColumnQuery updateQueryDynamically(Object[] args, ColumnQuery query) {
-        Optional<Pageable> pageable = DynamicReturn.findSpecialParameters(args);
+        SpecialParameters special = DynamicReturn.findSpecialParameters(args);
 
-        return pageable.<ColumnQuery>map(p -> {
+        if (special.isEmpty()) {
+            return query;
+        }
+
+        if (special.hasOnlySort()) {
+            List<Sort> sorts = new ArrayList<>();
+            sorts.addAll(query.sorts());
+            sorts.addAll(special.sorts());
+            return new MappingColumnQuery(sorts, query.limit(),
+                    query.skip(),
+                    query.condition().orElse(null),
+                    query.name());
+        }
+
+        return special.pageable().<ColumnQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
             List<Sort> sorts = query.sorts();
-            if (!p.sorts().isEmpty()) {
+            if (!special.sorts().isEmpty()) {
                 sorts = new ArrayList<>(query.sorts());
-                sorts.addAll(p.sorts());
+                sorts.addAll(special.sorts());
             }
             return new MappingColumnQuery(sorts, size, skip,
                     query.condition().orElse(null), query.name());
