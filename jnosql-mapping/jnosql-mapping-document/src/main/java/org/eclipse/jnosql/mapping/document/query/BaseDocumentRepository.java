@@ -35,6 +35,7 @@ import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.repository.SpecialParameters;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
 
 import java.lang.reflect.Method;
@@ -87,13 +88,27 @@ public abstract class BaseDocumentRepository<T> {
 
 
     protected DocumentQuery updateQueryDynamically(Object[] args, DocumentQuery query) {
-        Optional<Pageable> pageable = DynamicReturn.findSpecialParameters(args);
+        SpecialParameters special = DynamicReturn.findSpecialParameters(args);
 
-        return pageable.<DocumentQuery>map(p -> {
+        if (special.isEmpty()) {
+            return query;
+        }
+
+        if (special.hasOnlySort()) {
+            List<Sort> sorts = new ArrayList<>();
+            sorts.addAll(query.sorts());
+            sorts.addAll(special.sorts());
+            return new MappingDocumentQuery(sorts, query.limit(),
+                    query.skip(),
+                    query.condition().orElse(null),
+                    query.name());
+        }
+
+        return special.pageable().<DocumentQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
             List<Sort> sorts = query.sorts();
-            if (!p.sorts().isEmpty()) {
+            if (!special.sorts().isEmpty()) {
                 sorts = new ArrayList<>(query.sorts());
                 sorts.addAll(p.sorts());
             }
@@ -102,6 +117,7 @@ public abstract class BaseDocumentRepository<T> {
         }).orElse(query);
 
     }
+
     protected DocumentObserverParser getParser() {
         if (parser == null) {
             this.parser = new RepositoryDocumentObserverParser(getEntityMetadata());
@@ -138,11 +154,11 @@ public abstract class BaseDocumentRepository<T> {
     }
 
     protected Function<Pageable, Optional<T>> getSingleResult(DocumentQuery query) {
-          return p -> getTemplate().singleResult(query);
+        return p -> getTemplate().singleResult(query);
     }
 
     protected Function<Pageable, Stream<T>> streamPagination(DocumentQuery query) {
-        return p ->getTemplate().select(query);
+        return p -> getTemplate().select(query);
     }
 
 }

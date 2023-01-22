@@ -45,7 +45,7 @@ public final class SpecialParameters {
      *
      * @return a {@link Pageable} or {@link Optional#empty()} when there is not Pageable instance
      */
-    public Optional<Pageable> getPageable() {
+    public Optional<Pageable> pageable() {
         return Optional.ofNullable(pageable);
     }
 
@@ -54,12 +54,12 @@ public final class SpecialParameters {
      *
      * @return the sorts as list
      */
-    public List<Sort> getSorts() {
+    public List<Sort> sorts() {
         return sorts;
     }
 
     /**
-     * Returns true when {@link SpecialParameters#getPageable()} is empty and
+     * Returns true when {@link SpecialParameters#pageable()} is empty and
      * {@link SpecialParameters#isSortEmpty()} is true
      *
      * @return when there is no sort and Pageable
