@@ -61,9 +61,6 @@ public enum RepositoryType {
         this.keyword = keyword;
     }
 
-    String getKeyword() {
-        return keyword;
-    }
 
     /**
      * Returns an operation type from the {@link Method}
@@ -87,9 +84,9 @@ public enum RepositoryType {
         String methodName = method.getName();
         if ("findAll".equals(methodName)) {
             return FIND_ALL;
-        } else if (methodName.startsWith("findBy")) {
+        } else if (methodName.startsWith(FIND_BY.keyword)) {
             return FIND_BY;
-        } else if (methodName.startsWith("deleteBy")) {
+        } else if (methodName.startsWith(DELETE_BY.keyword)) {
             return DELETE_BY;
         }
         return UNKNOWN;
