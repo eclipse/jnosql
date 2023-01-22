@@ -21,10 +21,11 @@ import java.util.regex.Pattern;
 public final class MethodQuery implements Supplier<String> {
 
     private final String value;
-    private static final Pattern PATTERN = Pattern.compile("findBy|deleteBy|OrderBy|And|Or(?!der)|Not|Equals|GreaterThanEqual|" +
+    private static final Pattern PATTERN = Pattern.compile("findBy|deleteBy|countBy|existsBy|"
+            + "OrderBy|"
+            + "And|Or(?!der)|Not|Equals|GreaterThanEqual|True|False|" +
             "LessThanEqual|GreaterThan|LessThan|Between|In|Like|Asc|Desc");
-    private static final Map<String, String> CACHE = Collections.synchronizedMap(new WeakHashMap<>());
-
+    private static final Map<String, String> CACHE = Collections.synchronizedMap(new WeakHashMap<>());t
     private MethodQuery(String value) {
         this.value = value;
     }
