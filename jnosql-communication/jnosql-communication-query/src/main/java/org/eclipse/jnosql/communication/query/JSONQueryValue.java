@@ -9,7 +9,6 @@
  *  Contributors:
  *  Otavio Santana
  */
-
 package org.eclipse.jnosql.communication.query;
 
 
