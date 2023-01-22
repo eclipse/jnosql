@@ -72,7 +72,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
 
 
     private static void setPagination(Object[] args, GraphTraversal<Vertex, Vertex> traversal, SelectQuery query, EntityMetadata mapping) {
-        Optional<Pageable> pageable = DynamicReturn.findPagination(args);
+        Optional<Pageable> pageable = DynamicReturn.findSpecialParameters(args);
 
         if (query != null) {
             if (query.skip() > 0) {

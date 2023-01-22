@@ -106,7 +106,7 @@ public abstract class BaseColumnRepository<T> {
                 .withMethodSource(method)
                 .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findPagination(args).orElse(null))
+                .withPagination(DynamicReturn.findSpecialParameters(args).orElse(null))
                 .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
@@ -131,7 +131,7 @@ public abstract class BaseColumnRepository<T> {
 
 
     protected ColumnQuery updateQueryDynamically(Object[] args, ColumnQuery query) {
-        Optional<Pageable> pageable = DynamicReturn.findPagination(args);
+        Optional<Pageable> pageable = DynamicReturn.findSpecialParameters(args);
 
         return pageable.<ColumnQuery>map(p -> {
             long size = p.size();

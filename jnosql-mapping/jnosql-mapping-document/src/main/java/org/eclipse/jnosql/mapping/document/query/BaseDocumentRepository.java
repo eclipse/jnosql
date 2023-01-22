@@ -87,7 +87,7 @@ public abstract class BaseDocumentRepository<T> {
 
 
     protected DocumentQuery updateQueryDynamically(Object[] args, DocumentQuery query) {
-        Optional<Pageable> pageable = DynamicReturn.findPagination(args);
+        Optional<Pageable> pageable = DynamicReturn.findSpecialParameters(args);
 
         return pageable.<DocumentQuery>map(p -> {
             long size = p.size();
@@ -122,7 +122,7 @@ public abstract class BaseDocumentRepository<T> {
                 .withMethodSource(method)
                 .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findPagination(args).orElse(null))
+                .withPagination(DynamicReturn.findSpecialParameters(args).orElse(null))
                 .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
