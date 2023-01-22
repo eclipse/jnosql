@@ -194,6 +194,10 @@ public class GraphRepositoryProxyPageableTest {
 
         List<Person> findByName(String name, Pageable Pageable);
 
+        List<Person> findByName(String name, Sort sort);
+
+        List<Person> findByName(String name, Sort sort, Pageable pageable);
+
         Page<Person> findByNameOrderByAge(String name, Pageable Pageable);
 
         Slice<Person> findByAgeOrderByName(Integer age, Pageable Pageable);
