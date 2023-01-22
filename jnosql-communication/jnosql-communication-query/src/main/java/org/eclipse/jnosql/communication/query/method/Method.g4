@@ -4,7 +4,7 @@ deleteBy: 'deleteBy' where? EOF;
 
 selectStart: 'findBy'| 'countBy'| 'existsBy';
 where: condition (and condition| or condition)* ;
-condition: eq | gt | gte | lt | lte | between | in | like | true| false;
+condition: eq | gt | gte | lt | lte | between | in | like | true | false;
 order: 'OrderBy' orderName (orderName)*;
 orderName: variable | variable asc | variable desc;
 and: 'And';
