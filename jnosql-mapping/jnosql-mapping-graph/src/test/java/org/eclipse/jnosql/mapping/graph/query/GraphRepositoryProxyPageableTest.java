@@ -207,7 +207,7 @@ public class GraphRepositoryProxyPageableTest {
         List<Person> people = personRepository.findByAgeGreaterThan(5, Sort.desc("age"),
                 Pageable.ofSize(10).sortBy(Sort.asc("name")));
         assertThat(people).hasSize(4).map(Person::getName)
-                .containsExactly("Ada", "Otavio", "Poliana", "Otavio");
+                .containsExactly("Ada", "Otavio", "Otavio", "Poliana");
     }
 
 
