@@ -25,7 +25,7 @@ public final class MethodQuery implements Supplier<String> {
             + "OrderBy|"
             + "And|Or(?!der)|Not|Equals|GreaterThanEqual|True|False|" +
             "LessThanEqual|GreaterThan|LessThan|Between|In|Like|Asc|Desc");
-    private static final Map<String, String> CACHE = Collections.synchronizedMap(new WeakHashMap<>());t
+    private static final Map<String, String> CACHE = Collections.synchronizedMap(new WeakHashMap<>());
     private MethodQuery(String value) {
         this.value = value;
     }
