@@ -46,27 +46,37 @@ class RepositoryTypeTest {
 
     @Test
     public void shouldReturnFindBy() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.FIND_BY, RepositoryType.of(getMethod(SyncRepository.class, "findByName")));
+        Assertions.assertEquals(RepositoryType.FIND_BY, RepositoryType.of(getMethod(DevRepository.class, "findByName")));
     }
 
     @Test
     public void shouldReturnDeleteBy() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.DELETE_BY, RepositoryType.of(getMethod(SyncRepository.class, "deleteByName")));
+        Assertions.assertEquals(RepositoryType.DELETE_BY, RepositoryType.of(getMethod(DevRepository.class, "deleteByName")));
     }
 
     @Test
     public void shouldReturnFindAllBy() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.FIND_ALL, RepositoryType.of(getMethod(SyncRepository.class, "findAll")));
+        Assertions.assertEquals(RepositoryType.FIND_ALL, RepositoryType.of(getMethod(DevRepository.class, "findAll")));
     }
 
     @Test
     public void shouldReturnJNoSQLQuery() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.JNOSQL_QUERY, RepositoryType.of(getMethod(SyncRepository.class, "query")));
+        Assertions.assertEquals(RepositoryType.JNOSQL_QUERY, RepositoryType.of(getMethod(DevRepository.class, "query")));
     }
 
     @Test
     public void shouldReturnUnknown() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.UNKNOWN, RepositoryType.of(getMethod(SyncRepository.class, "nope")));
+        Assertions.assertEquals(RepositoryType.UNKNOWN, RepositoryType.of(getMethod(DevRepository.class, "nope")));
+    }
+
+    @Test
+    public void shouldReturnCountBy() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.COUNT_BY, RepositoryType.of(getMethod(DevRepository.class, "countByName")));
+    }
+
+    @Test
+    public void shouldReturnExistsBy() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.EXISTS_BY, RepositoryType.of(getMethod(DevRepository.class, "existsByName")));
     }
 
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
@@ -76,7 +86,7 @@ class RepositoryTypeTest {
 
     }
 
-    interface SyncRepository extends CrudRepository {
+    interface DevRepository extends CrudRepository {
 
         String findByName(String name);
 
@@ -86,6 +96,10 @@ class RepositoryTypeTest {
 
         @Query("query")
         String query(String query);
+
+        Long countByName(String name);
+
+        Long existsByName(String name);
 
         void nope();
     }
