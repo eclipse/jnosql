@@ -19,22 +19,21 @@ import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Slice;
 import jakarta.data.repository.Sort;
-import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.graph.GraphConverter;
-import org.eclipse.jnosql.mapping.graph.entities.Person;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import jakarta.inject.Inject;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
+import org.eclipse.jnosql.mapping.graph.entities.Person;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import jakarta.inject.Inject;
 
 import java.lang.reflect.Proxy;
 import java.util.List;
@@ -189,6 +188,28 @@ public class GraphRepositoryProxyPageableTest {
                 .contains(20);
     }
 
+    @Test
+    public void shouldFindByNameSort() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
+        List<Person> people = personRepository.findByName("Otavio", Sort.desc("age"));
+        assertThat(people).hasSize(2).map(Person::getAge)
+                .containsExactly(30, 20);
+    }
+
+    @Test
+    public void shouldFindNameSortPageable() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15);
+
+        List<Person> people = personRepository.findByAgeGreaterThan(5, Sort.desc("age"),
+                Pageable.ofSize(10).sortBy(Sort.asc("name")));
+        assertThat(people).hasSize(4).map(Person::getName)
+                .containsExactly("Ada", "Otavio", "Poliana", "Otavio");
+    }
+
 
     interface PersonRepository extends PageableRepository<Person, Long> {
 
@@ -196,7 +217,7 @@ public class GraphRepositoryProxyPageableTest {
 
         List<Person> findByName(String name, Sort sort);
 
-        List<Person> findByName(String name, Sort sort, Pageable pageable);
+        List<Person> findByAgeGreaterThan(Integer age, Sort sort, Pageable pageable);
 
         Page<Person> findByNameOrderByAge(String name, Pageable Pageable);
 
