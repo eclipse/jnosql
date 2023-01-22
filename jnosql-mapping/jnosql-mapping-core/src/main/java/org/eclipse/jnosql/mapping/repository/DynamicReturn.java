@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -38,6 +39,11 @@ import static java.util.Objects.requireNonNull;
 public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
     /**
+     * A predicate to check it the object is instance of {@link Pageable}
+     */
+    private static final Predicate<Object> IS_PAGINATION = Pageable.class::isInstance;
+
+    /**
      * A wrapper function that convert a result as a list to a result as optional
      *
      * @param method the method source
@@ -49,16 +55,32 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
 
 
     /**
-     * Finds {@link Pageable} from array object
+     * Finds {@link SpecialParameters} from array object
      *
      * @param params the params
-     * @return a {@link Pageable} or null
+     * @return a {@link SpecialParameters} instance
      */
     public static SpecialParameters findSpecialParameters(Object[] params) {
         if (params == null || params.length == 0) {
             return SpecialParameters.EMPTY;
         }
         return SpecialParameters.of(params);
+    }
+
+    /**
+     * Finds {@link Pageable} from array object
+     *
+     * @param params the params
+     * @return a {@link Pageable} or null
+     */
+    public static Pageable findPageable(Object[] params) {
+        if (params == null || params.length == 0) {
+            return null;
+        }
+        return Stream.of(params)
+                .filter(IS_PAGINATION)
+                .map(Pageable.class::cast)
+                .findFirst().orElse(null);
     }
 
 

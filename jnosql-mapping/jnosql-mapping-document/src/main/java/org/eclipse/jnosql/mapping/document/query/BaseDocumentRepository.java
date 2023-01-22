@@ -138,7 +138,7 @@ public abstract class BaseDocumentRepository<T> {
                 .withMethodSource(method)
                 .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findSpecialParameters(args).orElse(null))
+                .withPagination(DynamicReturn.findPageable(args))
                 .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
