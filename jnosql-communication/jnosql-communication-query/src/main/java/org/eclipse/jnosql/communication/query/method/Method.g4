@@ -1,7 +1,8 @@
 grammar Method;
-findBy:'findBy' where? order? EOF;
+select: select_start where? order? EOF;
 deleteBy: 'deleteBy' where? EOF;
 
+select_start: 'findBy'| 'countBy'| 'existsBy';
 where: condition (and condition| or condition)* ;
 condition: eq | gt | gte | lt | lte | between | in | like;
 order: 'OrderBy' orderName (orderName)*;
