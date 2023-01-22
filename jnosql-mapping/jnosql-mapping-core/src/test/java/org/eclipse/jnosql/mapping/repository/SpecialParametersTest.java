@@ -31,22 +31,22 @@ class SpecialParametersTest {
     @Test
     public void shouldReturnEmpty() {
         SpecialParameters parameters = SpecialParameters.of(new Object[0]);
-        Assertions.assertTrue(parameters.isEmpty());
+        assertTrue(parameters.isEmpty());
     }
 
     @Test
     public void shouldReturnEmptyNonSpecialParameters() {
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio"});
-        Assertions.assertTrue(parameters.isEmpty());
+        assertTrue(parameters.isEmpty());
     }
 
     @Test
     public void shouldReturnPageable() {
         Pageable pageable = Pageable.ofPage(10);
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageable});
-        Assertions.assertFalse(parameters.isEmpty());
+        assertFalse(parameters.isEmpty());
         Assertions.assertEquals(pageable, parameters.getPageable().orElseThrow());
-        Assertions.assertTrue(parameters.isSortEmpty());
+        assertTrue(parameters.isSortEmpty());
     }
 
     @Test
@@ -54,9 +54,9 @@ class SpecialParametersTest {
         Pageable pageable = Pageable.ofPage(10).sortBy(Sort.asc("name"),
                 Sort.desc("age"));
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", pageable});
-        Assertions.assertFalse(parameters.isEmpty());
+        assertFalse(parameters.isEmpty());
         Assertions.assertEquals(pageable, parameters.getPageable().orElseThrow());
-        Assertions.assertFalse(parameters.isSortEmpty());
+        assertFalse(parameters.isSortEmpty());
         assertThat(parameters.getSorts()).hasSize(2)
                 .contains(Sort.asc("name"),
                         Sort.desc("age"));
@@ -66,9 +66,10 @@ class SpecialParametersTest {
     public void shouldReturnSort() {
         Sort sort = Sort.asc("name");
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", sort});
-        Assertions.assertFalse(parameters.isEmpty());
-        Assertions.assertTrue(parameters.getPageable().isEmpty());
-        Assertions.assertFalse(parameters.isSortEmpty());
+        assertFalse(parameters.isEmpty());
+        assertTrue(parameters.hasOnlySort());
+        assertTrue(parameters.getPageable().isEmpty());
+        assertFalse(parameters.isSortEmpty());
         assertThat(parameters.getSorts()).hasSize(1)
                 .contains(Sort.asc("name"));
     }
@@ -80,9 +81,10 @@ class SpecialParametersTest {
                 Sort.desc("age"));
 
         SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", sort, pageable});
-        Assertions.assertFalse(parameters.isEmpty());
+        assertFalse(parameters.isEmpty());
+        assertFalse(parameters.hasOnlySort());
         Assertions.assertEquals(pageable, parameters.getPageable().orElseThrow());
-        Assertions.assertFalse(parameters.isSortEmpty());
+        assertFalse(parameters.isSortEmpty());
         assertThat(parameters.getSorts()).hasSize(3)
                 .containsExactly(sort, Sort.asc("name"),
                         Sort.desc("age"));

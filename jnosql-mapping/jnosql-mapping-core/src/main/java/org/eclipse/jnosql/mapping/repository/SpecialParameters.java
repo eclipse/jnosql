@@ -77,6 +77,14 @@ public final class SpecialParameters {
         return this.sorts.isEmpty();
     }
 
+    /**
+     * Returns true if it only has sort and {@link Pageable} empty
+     * @return true if only have {@link Pageable}
+     */
+    public boolean hasOnlySort() {
+        return pageable == null && !sorts.isEmpty();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
