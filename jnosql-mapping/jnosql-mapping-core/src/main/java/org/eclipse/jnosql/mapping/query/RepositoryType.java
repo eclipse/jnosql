@@ -27,14 +27,46 @@ import java.util.function.Predicate;
  */
 public enum RepositoryType {
 
-    DEFAULT, FIND_BY, DELETE_BY, UNKNOWN, OBJECT_METHOD, JNOSQL_QUERY, FIND_ALL;
+    /**
+     * Methods from either {@link CrudRepository} or {@link  PageableRepository}
+     */
+    DEFAULT(""),
+    /**
+     * General query method returning the repository type.It starts with "findBy" key word
+     */
+    FIND_BY("findBy"),
+    /**
+     * Delete query method returning either no result (void) or the delete count. It starts with "deleteBy" key word
+     */
+    DELETE_BY("deleteBy"),
+    UNKNOWN(""),
+    /**
+     * Methods from {@link Object}
+     */
+    OBJECT_METHOD(""),
+    /**
+     * Method that has {@link Query} annotation
+     */
+    JNOSQL_QUERY(""),
+    /**
+     * Method that has the "FindAll" keyword
+     */
+    FIND_ALL("findAll");
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD =  Predicate.<Class<?>>isEqual(CrudRepository.class)
             .or(Predicate.<Class<?>>isEqual(PageableRepository.class));
+    private final String keyword;
 
+    RepositoryType(String keyword) {
+        this.keyword = keyword;
+    }
+
+    String getKeyword() {
+        return keyword;
+    }
 
     /**
-     * Returns a operation type from the {@link Method}
+     * Returns an operation type from the {@link Method}
      *
      * @param method the method
      * @return a repository type
