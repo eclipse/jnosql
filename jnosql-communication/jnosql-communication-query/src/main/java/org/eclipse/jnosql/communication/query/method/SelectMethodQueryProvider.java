@@ -41,7 +41,7 @@ public final class SelectMethodQueryProvider extends AbstractMethodQueryProvider
 
     @Override
     Function<MethodParser, ParseTree> getParserTree() {
-        return MethodParser::findBy;
+        return MethodParser::select;
     }
 
     private Sort sort(MethodParser.OrderNameContext context) {
