@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -48,10 +47,6 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
         return new SupplierConverter(method);
     }
 
-    /**
-     * A predicate to check it the object is instance of {@link Pageable}
-     */
-    private static final Predicate<Object> IS_PAGINATION = Pageable.class::isInstance;
 
     /**
      * Finds {@link Pageable} from array object
@@ -59,14 +54,11 @@ public final class DynamicReturn<T> implements MethodDynamicExecutable {
      * @param params the params
      * @return a {@link Pageable} or null
      */
-    public static Optional<Pageable> findSpecialParameters(Object[] params) {
+    public static SpecialParameters findSpecialParameters(Object[] params) {
         if (params == null || params.length == 0) {
-            return Optional.empty();
+            return SpecialParameters.EMPTY;
         }
-        return Stream.of(params)
-                .filter(IS_PAGINATION)
-                .map(Pageable.class::cast)
-                .findFirst();
+        return SpecialParameters.of(params);
     }
 
 

@@ -18,6 +18,7 @@ import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Sort;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,6 +28,8 @@ import java.util.Optional;
  * to apply pagination and sorting to your queries dynamically.
  */
 public final class SpecialParameters {
+
+    static final SpecialParameters EMPTY = new SpecialParameters(null, Collections.emptyList());
 
     private final Pageable pageable;
 
