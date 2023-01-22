@@ -17,6 +17,7 @@ package org.eclipse.jnosql.mapping.repository;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Sort;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,15 +36,42 @@ public final class SpecialParameters {
         this.sorts = sorts;
     }
 
+    /**
+     * Returns the pageable as optional.
+     * @return a {@link Pageable} or {@link Optional#empty()} when there is not Pageable instance
+     */
     public Optional<Pageable> getPageable() {
         return Optional.ofNullable(pageable);
     }
 
+    /**
+     * Returns the sorts including {@link Pageable#sorts()} appended
+     * @return the sorts as list
+     */
     public List<Sort> getSorts() {
         return sorts;
     }
 
+    /**
+     * Returns true when {@link SpecialParameters#getPageable()} is empty and
+     * {@link SpecialParameters#isSortEmpty()} is true
+     * @return when there is no sort and Pageable
+     */
     public boolean isEmpty() {
+        return this.sorts.isEmpty() && pageable == null;
+    }
+
+    /**
+     * Return true when there is no sorts
+     * @return the sort
+     */
+    public boolean isSortEmpty() {
         return this.sorts.isEmpty();
     }
+
+    static SpecialParameters of(Object[] parameters) {
+        return new SpecialParameters(null, Collections.emptyList());
+    }
+
+
 }
