@@ -17,8 +17,10 @@ package org.eclipse.jnosql.mapping.repository;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Sort;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -38,6 +40,7 @@ public final class SpecialParameters {
 
     /**
      * Returns the pageable as optional.
+     *
      * @return a {@link Pageable} or {@link Optional#empty()} when there is not Pageable instance
      */
     public Optional<Pageable> getPageable() {
@@ -46,6 +49,7 @@ public final class SpecialParameters {
 
     /**
      * Returns the sorts including {@link Pageable#sorts()} appended
+     *
      * @return the sorts as list
      */
     public List<Sort> getSorts() {
@@ -55,6 +59,7 @@ public final class SpecialParameters {
     /**
      * Returns true when {@link SpecialParameters#getPageable()} is empty and
      * {@link SpecialParameters#isSortEmpty()} is true
+     *
      * @return when there is no sort and Pageable
      */
     public boolean isEmpty() {
@@ -63,14 +68,50 @@ public final class SpecialParameters {
 
     /**
      * Return true when there is no sorts
+     *
      * @return the sort
      */
     public boolean isSortEmpty() {
         return this.sorts.isEmpty();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SpecialParameters that = (SpecialParameters) o;
+        return Objects.equals(pageable, that.pageable) && Objects.equals(sorts, that.sorts);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pageable, sorts);
+    }
+
+    @Override
+    public String toString() {
+        return "SpecialParameters{" +
+                "pageable=" + pageable +
+                ", sorts=" + sorts +
+                '}';
+    }
+
     static SpecialParameters of(Object[] parameters) {
-        return new SpecialParameters(null, Collections.emptyList());
+        List<Sort> sorts = new ArrayList<>();
+        Pageable pageable = null;
+        for (Object parameter : parameters) {
+            if (parameter instanceof Pageable) {
+                pageable = (Pageable) parameter;
+                sorts.addAll(pageable.sorts());
+            } else if (parameter instanceof Sort) {
+                sorts.add((Sort) parameter);
+            }
+        }
+        return new SpecialParameters(pageable, sorts);
     }
 
 
