@@ -14,10 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.repository;
 
+import jakarta.data.repository.Limit;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Sort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -88,5 +91,16 @@ class SpecialParametersTest {
         assertThat(parameters.sorts()).hasSize(3)
                 .containsExactly(sort, Sort.asc("name"),
                         Sort.desc("age"));
+    }
+
+    @Test
+    public void shouldReturnLimit() {
+        SpecialParameters parameters = SpecialParameters.of(new Object[]{10, "Otavio", Limit.of(10)});
+        assertFalse(parameters.isEmpty());
+        Optional<Limit> limit = parameters.limit();
+        assertTrue(limit.isPresent());
+        Limit limit1 = limit.orElseThrow();
+        assertEquals(1, limit1.startAt());
+        assertEquals(10, limit1.maxResults());
     }
 }

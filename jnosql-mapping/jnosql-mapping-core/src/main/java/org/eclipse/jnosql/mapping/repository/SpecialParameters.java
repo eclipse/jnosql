@@ -82,10 +82,20 @@ public final class SpecialParameters {
 
     /**
      * Returns true if it only has sort and {@link Pageable} empty
+     *
      * @return true if only have {@link Pageable}
      */
     public boolean hasOnlySort() {
         return pageable == null && !sorts.isEmpty();
+    }
+
+    /**
+     * Returns the Limit instance or {@link Optional#empty()}
+     *
+     * @return the Limit instance or {@link Optional#empty()}
+     */
+    public Optional<Limit> limit() {
+        return Optional.ofNullable(limit);
     }
 
     @Override
@@ -123,7 +133,7 @@ public final class SpecialParameters {
                 sorts.addAll(pageable.sorts());
             } else if (parameter instanceof Sort) {
                 sorts.add((Sort) parameter);
-            } else if( parameter  instanceof Limit) {
+            } else if (parameter instanceof Limit) {
                 limit = (Limit) parameter;
             }
         }
