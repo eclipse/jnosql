@@ -20,6 +20,7 @@ package org.eclipse.jnosql.communication.column;
 
 import jakarta.data.repository.Sort;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -116,5 +117,14 @@ class DefaultColumnQuery implements ColumnQuery {
                 ", sorts=" + sorts +
                 ", condition=" + condition +
                 '}';
+    }
+    static ColumnQuery countyBy(ColumnQuery query) {
+        return new DefaultColumnQuery(0, 0, query.name(), query.columns(),
+                Collections.emptyList(), query.condition().orElse(null));
+    }
+
+    static ColumnQuery existsBy(ColumnQuery query) {
+        return new DefaultColumnQuery(1, 0, query.name(), query.columns(),
+                Collections.emptyList(), query.condition().orElse(null));
     }
 }
