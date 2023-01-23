@@ -223,8 +223,8 @@ public class GraphRepositoryProxyPageableTest {
                 .contains("Ada", "Otavio");
 
         people = personRepository.findByAgeGreaterThanOrderByName(5, Limit.range(2, 3));
-        assertThat(people).hasSize(1).map(Person::getName)
-                .contains("Poliana");
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains("Otavio", "Poliana");
     }
 
     interface PersonRepository extends PageableRepository<Person, Long> {
