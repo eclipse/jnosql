@@ -77,6 +77,10 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 return executeDeleteMethod(method, args);
             case OBJECT_METHOD:
                 return method.invoke(this, args);
+            case COUNT_BY:
+                return countBy(method, args);
+            case EXISTS_BY:
+                return existsBy(method, args);
             case UNKNOWN:
             case JNOSQL_QUERY:
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
@@ -104,6 +108,23 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
         };
 
         return converter(method, typeClass, querySupplier, args);
+    }
+
+    private Object existsBy(Method method, Object[] args) {
+        Long countBy = (Long) countBy(method, args);
+        return countBy > 0;
+    }
+
+    private Object countBy(Method method, Object[] args) {
+
+        Supplier<Long> querySupplier = () -> {
+            GraphQueryMethod queryMethod = new GraphQueryMethod(getEntityMetadata(),
+                    getGraph().traversal().V(),
+                    getConverters(), method, args);
+            return CountQueryConverter.INSTANCE.apply(queryMethod, args);
+        };
+
+        return querySupplier.get();
     }
 
     private Object findBy(Method method, Object[] args, Class<?> typeClass) {
