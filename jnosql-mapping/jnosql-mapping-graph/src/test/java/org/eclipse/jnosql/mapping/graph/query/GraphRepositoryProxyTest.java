@@ -355,6 +355,39 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
+    public void shouldCountByActiveFalse() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15, "active", false);
+
+        Long count = personRepository.countByActiveTrue();
+        assertEquals(2, count);
+    }
+
+    @Test
+    public void shouldExistsByActiveFalse() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15, "active", false);
+
+        boolean count = personRepository.existsByActiveTrue();
+        assertTrue(count);
+    }
+
+    @Test
+    public void shouldExistsByActiveFalse2() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15, "active", false);
+
+        boolean count = personRepository.existsByActiveTrue();
+        assertFalse(count);
+    }
+
+    @Test
     public void shouldExecuteQuery2() {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
@@ -401,6 +434,10 @@ public class GraphRepositoryProxyTest {
         List<Person> findByActiveTrue();
 
         List<Person> findByActiveFalse();
+
+        Long countByActiveTrue();
+
+        boolean existsByActiveTrue();
 
         Person findByName(String name);
 
