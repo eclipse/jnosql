@@ -12,6 +12,7 @@
 package org.eclipse.jnosql.communication.query.method;
 
 import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.communication.query.BooleanQueryValue;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.DeleteQuery;
 import org.eclipse.jnosql.communication.query.ParamQueryValue;
@@ -315,6 +316,38 @@ class DeleteByMethodQueryProviderTest {
         assertEquals("salary.currency", condition1.name());
         assertEquals("name", condition2.name());
     }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"deleteByActiveTrue"})
+    public void shouldRunQuery32(String query) {
+        String entity = "entity";
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
+        assertNotNull(deleteQuery);
+        assertEquals(entity, deleteQuery.entity());
+        assertTrue(deleteQuery.fields().isEmpty());
+        Optional<Where> where = deleteQuery.where();
+        assertTrue(where.isPresent());
+        QueryCondition condition = where.orElseThrow().condition();
+        assertEquals("active", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(BooleanQueryValue.TRUE, condition.value());
+    }
+
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"deleteByActiveFalse"})
+    public void shouldRunQuery33(String query) {
+        String entity = "entity";
+        DeleteQuery deleteQuery = queryProvider.apply(query, entity);
+        assertNotNull(deleteQuery);
+        assertEquals(entity, deleteQuery.entity());
+        Optional<Where> where = deleteQuery.where();
+        assertTrue(where.isPresent());
+        QueryCondition condition = where.orElseThrow().condition();
+        assertEquals("active", condition.name());
+        assertEquals(Condition.EQUALS, condition.condition());
+        assertEquals(BooleanQueryValue.FALSE, condition.value());
+    }
+
 
     private void checkAppendCondition(String query, Condition operator, Condition operator2, String variable,
                                       String variable2, Condition operatorAppender) {
