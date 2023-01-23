@@ -98,7 +98,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
             GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V().hasLabel(getEntityMetadata().getName());
 
-            SelectQueryConverter.setPagination(args, traversal, getEntityMetadata());
+            SelectQueryConverter.updateDynamicParameter(args, traversal, getEntityMetadata());
             return traversal.toStream()
                     .map(getConverter()::toEntity);
         };

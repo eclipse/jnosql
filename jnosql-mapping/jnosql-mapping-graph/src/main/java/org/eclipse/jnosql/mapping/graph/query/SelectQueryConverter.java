@@ -46,10 +46,9 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
         EntityMetadata mapping = graphQuery.getMapping();
 
         GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, query::where, mapping);
-
-        query.orderBy().forEach(getSort(traversal, mapping));
-        setPagination(params, traversal, query, mapping);
         traversal.hasLabel(mapping.getName());
+        query.orderBy().forEach(getSort(traversal, mapping));
+        updateDynamicParameter(params, traversal, query, mapping);
         return traversal.toStream();
     }
 
@@ -65,12 +64,12 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
     }
 
 
-    static void setPagination(Object[] args, GraphTraversal<Vertex, Vertex> traversal, EntityMetadata mapping) {
-        setPagination(args, traversal, null, mapping);
+    static void updateDynamicParameter(Object[] args, GraphTraversal<Vertex, Vertex> traversal, EntityMetadata mapping) {
+        updateDynamicParameter(args, traversal, null, mapping);
     }
 
 
-    private static void setPagination(Object[] args, GraphTraversal<Vertex, Vertex> traversal, SelectQuery query, EntityMetadata mapping) {
+    private static void updateDynamicParameter(Object[] args, GraphTraversal<Vertex, Vertex> traversal, SelectQuery query, EntityMetadata mapping) {
         SpecialParameters special = DynamicReturn.findSpecialParameters(args);
 
         if (query != null) {
@@ -79,16 +78,24 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
             }
 
             if (query.limit() > 0) {
-                traversal.next((int) query.limit());
+                traversal.limit((int) query.limit());
             }
         }
         if (special.isEmpty()) {
             return;
         }
+
         if (special.hasOnlySort()) {
             special.sorts().forEach(getSort(traversal, mapping));
             return;
         }
+
+        special.limit().ifPresent(l -> {
+            if (l.startAt() > 1) {
+                traversal.skip(l.startAt() - 1);
+            }
+            traversal.limit((int) l.maxResults());
+        });
         special.pageable().ifPresent(p -> {
             special.sorts().forEach(getSort(traversal, mapping));
             traversal.skip(NoSQLPage.skip(p)).limit(p.size());

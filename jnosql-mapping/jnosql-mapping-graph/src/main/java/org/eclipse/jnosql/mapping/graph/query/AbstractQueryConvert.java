@@ -77,13 +77,10 @@ abstract class AbstractQueryConvert {
 
         GraphTraversal<Vertex, Vertex> traversal = graphQuery.getTraversal();
         Optional<Where> whereOptional = whereSupplier.get();
-
-        if (whereOptional.isPresent()) {
-            Where where = whereOptional.get();
-
-            QueryCondition condition = where.condition();
+        whereOptional.ifPresent(w -> {
+            QueryCondition condition = w.condition();
             traversal.filter(getPredicate(graphQuery, condition, mapping));
-        }
+        });
         return traversal;
     }
 }

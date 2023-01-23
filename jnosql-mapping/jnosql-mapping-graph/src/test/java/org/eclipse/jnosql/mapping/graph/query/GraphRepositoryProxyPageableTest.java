@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
+import jakarta.data.repository.Limit;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
@@ -210,10 +211,27 @@ public class GraphRepositoryProxyPageableTest {
                 .containsExactly("Ada", "Otavio", "Otavio", "Poliana");
     }
 
+    @Test
+    public void shouldFindNameLimit() {
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "Rafael", "age", 15);
+
+        List<Person> people = personRepository.findByAgeGreaterThanOrderByName(5, Limit.of(2));
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains("Ada", "Otavio");
+
+        people = personRepository.findByAgeGreaterThanOrderByName(5, Limit.range(2, 3));
+        assertThat(people).hasSize(1).map(Person::getName)
+                .contains("Poliana");
+    }
 
     interface PersonRepository extends PageableRepository<Person, Long> {
 
         List<Person> findByName(String name, Pageable Pageable);
+
+        List<Person> findByAgeGreaterThanOrderByName(Integer age, Limit limit);
 
         List<Person> findByName(String name, Sort sort);
 
