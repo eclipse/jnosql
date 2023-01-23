@@ -23,7 +23,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.eclipse.jnosql.communication.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,7 +62,7 @@ public class DefaultColumnQueryTest {
                 .where("name").eq("predicate")
                 .orderBy("name").asc().build();
 
-        ColumnQuery countQuery = DefaultColumnQuery.countyBy(query);
+        ColumnQuery countQuery = DefaultColumnQuery.countBy(query);
         Assertions.assertNotNull(countQuery);
         assertEquals("entity", countQuery.name());
         assertEquals(0, countQuery.limit());

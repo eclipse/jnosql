@@ -118,7 +118,7 @@ class DefaultColumnQuery implements ColumnQuery {
                 ", condition=" + condition +
                 '}';
     }
-    static ColumnQuery countyBy(ColumnQuery query) {
+    static ColumnQuery countBy(ColumnQuery query) {
         return new DefaultColumnQuery(0, 0, query.name(), query.columns(),
                 Collections.emptyList(), query.condition().orElse(null));
     }
