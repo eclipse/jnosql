@@ -135,7 +135,15 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         return executeQuery(query);
     }
 
+    @Override
+    public long count(ColumnQuery query) {
+        return getManager().count(query);
+    }
 
+    @Override
+    public boolean exists(ColumnQuery query) {
+        return getManager().exists(query);
+    }
 
     @Override
     public <T> Optional<T> singleResult(ColumnQuery query) {

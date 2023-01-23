@@ -206,8 +206,6 @@ public class DefaultColumnTemplateTest {
 
     }
 
-
-
     @Test
     public void shouldInsertEntitiesTTL() {
         ColumnEntity columnEntity = ColumnEntity.of("Person");
@@ -261,6 +259,20 @@ public class DefaultColumnTemplateTest {
         ColumnQuery query = select().from("person").build();
         template.select(query);
         verify(managerMock).select(query);
+    }
+
+    @Test
+    public void shouldCountBy() {
+        ColumnQuery query = select().from("person").build();
+        template.count(query);
+        verify(managerMock).count(query);
+    }
+
+    @Test
+    public void shouldExist() {
+        ColumnQuery query = select().from("person").build();
+        template.exists(query);
+        verify(managerMock).exists(query);
     }
 
     @Test
