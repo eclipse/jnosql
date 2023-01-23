@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.repository;
 
+import jakarta.data.repository.Limit;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Sort;
 
@@ -29,15 +30,17 @@ import java.util.Optional;
  */
 public final class SpecialParameters {
 
-    static final SpecialParameters EMPTY = new SpecialParameters(null, Collections.emptyList());
+    static final SpecialParameters EMPTY = new SpecialParameters(null, null, Collections.emptyList());
 
     private final Pageable pageable;
 
     private final List<Sort> sorts;
+    private final Limit limit;
 
-    private SpecialParameters(Pageable pageable, List<Sort> sorts) {
+    private SpecialParameters(Pageable pageable, Limit limit, List<Sort> sorts) {
         this.pageable = pageable;
         this.sorts = sorts;
+        this.limit = limit;
     }
 
     /**
@@ -65,7 +68,7 @@ public final class SpecialParameters {
      * @return when there is no sort and Pageable
      */
     public boolean isEmpty() {
-        return this.sorts.isEmpty() && pageable == null;
+        return this.sorts.isEmpty() && pageable == null && limit == null;
     }
 
     /**
@@ -113,15 +116,18 @@ public final class SpecialParameters {
     static SpecialParameters of(Object[] parameters) {
         List<Sort> sorts = new ArrayList<>();
         Pageable pageable = null;
+        Limit limit = null;
         for (Object parameter : parameters) {
             if (parameter instanceof Pageable) {
                 pageable = (Pageable) parameter;
                 sorts.addAll(pageable.sorts());
             } else if (parameter instanceof Sort) {
                 sorts.add((Sort) parameter);
+            } else if( parameter  instanceof Limit) {
+                limit = (Limit) parameter;
             }
         }
-        return new SpecialParameters(pageable, sorts);
+        return new SpecialParameters(pageable, limit, sorts);
     }
 
 
