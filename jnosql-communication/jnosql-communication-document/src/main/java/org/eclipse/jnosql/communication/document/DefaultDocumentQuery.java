@@ -19,6 +19,7 @@ package org.eclipse.jnosql.communication.document;
 
 import jakarta.data.repository.Sort;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -105,12 +106,21 @@ class DefaultDocumentQuery implements DocumentQuery {
 
     @Override
     public String toString() {
-        return "DefaultDocumentQuery{" + "maxResult=" + limit +
+        return "DocumentQuery{" + "maxResult=" + limit +
                 ", firstResult=" + skip +
                 ", documentCollection='" + documentCollection + '\'' +
                 ", condition=" + condition +
                 ", sorts=" + sorts +
                 ", documents=" + documents +
                 '}';
+    }
+
+    static DocumentQuery countBy(DocumentQuery query) {
+        return new DefaultDocumentQuery(0, 0, query.name(), query.documents(),
+                Collections.emptyList(), query.condition().orElse(null));
+    }
+    static DocumentQuery existsBy(DocumentQuery query) {
+        return new DefaultDocumentQuery(1, 0, query.name(), query.documents(),
+                Collections.emptyList(), query.condition().orElse(null));
     }
 }
