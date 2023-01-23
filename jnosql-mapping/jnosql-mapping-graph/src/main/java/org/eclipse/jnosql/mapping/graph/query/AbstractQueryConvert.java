@@ -21,6 +21,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.ConditionQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
+import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.Where;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 
@@ -34,31 +35,33 @@ abstract class AbstractQueryConvert {
                                                         EntityMetadata mapping) {
         Condition operator = condition.condition();
         String name = condition.name();
+        QueryValue<?> value = condition.value();
         String nativeName = mapping.getColumnField(name);
         switch (operator) {
             case EQUALS:
-                return __.has(nativeName, P.eq(graphQuery.getValue(name)));
+                return __.has(nativeName, P.eq(graphQuery.getValue(name, value)));
             case GREATER_THAN:
-                return __.has(nativeName, P.gt(graphQuery.getValue(name)));
+                return __.has(nativeName, P.gt(graphQuery.getValue(name, value)));
             case GREATER_EQUALS_THAN:
-                return __.has(nativeName, P.gte(graphQuery.getValue(name)));
+                return __.has(nativeName, P.gte(graphQuery.getValue(name, value)));
             case LESSER_THAN:
-                return __.has(nativeName, P.lt(graphQuery.getValue(name)));
+                return __.has(nativeName, P.lt(graphQuery.getValue(name, value)));
             case LESSER_EQUALS_THAN:
-                return __.has(nativeName, P.lte(graphQuery.getValue(name)));
+                return __.has(nativeName, P.lte(graphQuery.getValue(name, value)));
             case BETWEEN:
-                return __.has(nativeName, P.between(graphQuery.getValue(name), graphQuery.getValue(name)));
+                return __.has(nativeName, P.between(graphQuery.getValue(name, value),
+                        graphQuery.getValue(name, value)));
             case IN:
                 return __.has(nativeName, P.within(graphQuery.getInValue(name)));
             case NOT:
-                QueryCondition notCondition = ((ConditionQueryValue) condition.value()).get().get(0);
+                QueryCondition notCondition = ((ConditionQueryValue) value).get().get(0);
                 return __.not(getPredicate(graphQuery, notCondition, mapping));
             case AND:
-                return ((ConditionQueryValue) condition.value()).get().stream()
+                return ((ConditionQueryValue) value).get().stream()
                         .map(c -> getPredicate(graphQuery, c, mapping)).reduce(GraphTraversal::and)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the AND operator"));
             case OR:
-                return ((ConditionQueryValue) condition.value()).get().stream()
+                return ((ConditionQueryValue) value).get().stream()
                         .map(c -> getPredicate(graphQuery, c, mapping)).reduce(GraphTraversal::or)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the OR operator"));
             default:
