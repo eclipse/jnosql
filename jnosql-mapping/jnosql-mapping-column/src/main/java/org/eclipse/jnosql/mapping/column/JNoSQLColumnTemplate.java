@@ -48,6 +48,22 @@ public interface JNoSQLColumnTemplate extends ColumnTemplate {
     <T> Stream<T> select(ColumnQuery query);
 
     /**
+     * Returns the number of items in the column family that match a specified query.
+     * @param query the query
+     * @return the number of documents from query
+     * @throws NullPointerException when query is null
+     */
+    long count(ColumnQuery query);
+
+    /**
+     * Returns whether an entity that match a specified query.
+     * @param query the query
+     * @return true if an entity with the given query exists, false otherwise.
+     * @throws NullPointerException when query it null
+     */
+    boolean exists(ColumnQuery query);
+
+    /**
      * Returns a single entity from query
      *
      * @param query - query to figure out entities
