@@ -265,11 +265,25 @@ public class DefaultDocumentTemplateTest {
 
     @Test
     public void shouldSelect() {
-        DocumentQuery query = select().from("delete").build();
+        DocumentQuery query = select().from("Person").build();
         template.select(query);
         verify(managerMock).select(query);
     }
 
+    @Test
+    public void shouldCountBy() {
+        DocumentQuery query = select().from("Person").where("age").gt(10).build();
+        template.count(query);
+        verify(managerMock).count(query);
+    }
+
+    @Test
+    public void shouldGroupBy() {
+        DocumentQuery query = select().from("Person").where("age").gt(10)
+                .limit(1).build();
+        template.count(query);
+        verify(managerMock).count(query);
+    }
 
     @Test
     public void shouldReturnSingleResult() {
