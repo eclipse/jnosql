@@ -134,7 +134,15 @@ public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate
         return executeQuery(query);
     }
 
+    @Override
+    public boolean exists(DocumentQuery query) {
+        return getManager().exists(query);
+    }
 
+    @Override
+    public long count(DocumentQuery query) {
+        return getManager().count(query);
+    }
 
     @Override
     public <T> Optional<T> singleResult(DocumentQuery query) {
