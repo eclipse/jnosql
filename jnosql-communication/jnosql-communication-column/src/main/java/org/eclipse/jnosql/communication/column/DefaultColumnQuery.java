@@ -45,7 +45,8 @@ class DefaultColumnQuery implements ColumnQuery {
     private final ColumnCondition condition;
 
 
-    DefaultColumnQuery(long maxResults, long firstResult, String columnFamily, List<String> columns, List<Sort> sorts, ColumnCondition condition) {
+    DefaultColumnQuery(long maxResults, long firstResult, String columnFamily,
+                       List<String> columns, List<Sort> sorts, ColumnCondition condition) {
         this.maxResults = maxResults;
         this.firstResult = firstResult;
         this.columnFamily = columnFamily;
@@ -108,7 +109,7 @@ class DefaultColumnQuery implements ColumnQuery {
 
     @Override
     public String toString() {
-        return  "DefaultColumnQuery{" + "maxResults=" + maxResults +
+        return  "ColumnQuery{" + "maxResults=" + maxResults +
                 ", firstResult=" + firstResult +
                 ", columnFamily='" + columnFamily + '\'' +
                 ", columns=" + columns +
