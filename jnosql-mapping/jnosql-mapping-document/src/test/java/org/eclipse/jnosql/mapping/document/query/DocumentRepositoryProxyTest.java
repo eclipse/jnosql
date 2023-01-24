@@ -649,6 +649,22 @@ public class DocumentRepositoryProxyTest {
 
     }
 
+    @Test
+    public void shouldCountByName() {
+        when(template.count(any(DocumentQuery.class)))
+                .thenReturn(10L);
+
+        personRepository.countByName("Poliana");
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        final Document document = condition.document();
+        assertEquals("Person", query.name());
+        assertEquals("salary.currency", document.name());
+    }
+
     interface PersonRepository extends PageableRepository<Person, Long> {
 
 

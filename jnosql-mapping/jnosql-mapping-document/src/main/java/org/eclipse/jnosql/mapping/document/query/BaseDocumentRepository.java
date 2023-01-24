@@ -151,7 +151,15 @@ public abstract class BaseDocumentRepository<T> {
         return paramsBinder;
     }
 
-    protected Object executeQuery(Method method, Object[] args, Class<?> typeClass, DocumentQuery query) {
+    protected Long executeCountByQuery(DocumentQuery query) {
+       return getTemplate().count(query);
+    }
+
+    protected boolean executeExistsByQuery(DocumentQuery query) {
+        return getTemplate().exists(query);
+    }
+
+    protected Object executeFindByQuery(Method method, Object[] args, Class<?> typeClass, DocumentQuery query) {
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
