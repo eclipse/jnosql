@@ -53,6 +53,8 @@ public abstract class BaseDocumentRepository<T> {
     private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
 
     private static final DeleteQueryParser DELETE_PARSER = new DeleteQueryParser();
+    private static final Object[] EMPTY_PARAM = new Object[0];
+
 
     protected abstract Converters getConverters();
 
@@ -71,8 +73,8 @@ public abstract class BaseDocumentRepository<T> {
         DocumentQueryParams queryParams = SELECT_PARSER.apply(selectQuery, getParser());
         DocumentQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, args, method);
-        return updateQueryDynamically(args, query);
+        getParamsBinder().bind(params, getArgs(args), method);
+        return updateQueryDynamically(getArgs(args), query);
     }
 
 
@@ -82,8 +84,12 @@ public abstract class BaseDocumentRepository<T> {
         DocumentDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, getParser());
         DocumentDeleteQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, args, method);
+        getParamsBinder().bind(params, getArgs(args), method);
         return query;
+    }
+
+    private static Object[] getArgs(Object[] args) {
+        return args == null ? EMPTY_PARAM : args;
     }
 
 
