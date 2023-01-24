@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Sort;
@@ -610,6 +609,46 @@ public class DocumentCrudRepositoryProxyTest {
         assertEquals("salary.currency", document.name());
         assertEquals("currency.name", sort.property());
 
+    }
+
+    @Test
+    public void shouldFindByNameNotEquals() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findByNameNotEquals("Otavio");
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition negate = query.condition().get();
+        assertEquals(Condition.NOT, negate.condition());
+        DocumentCondition condition = negate.document().get(DocumentCondition.class);
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Document.of("name", "Otavio"), condition.document());
+    }
+
+    @Test
+    public void shouldFindByAgeNotGreaterThan() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findByAgeNotGreaterThan(10);
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition negate = query.condition().get();
+        assertEquals(Condition.NOT, negate.condition());
+        DocumentCondition condition = negate.document().get(DocumentCondition.class);
+        assertEquals(GREATER_THAN, condition.condition());
+        assertEquals(Document.of("age", 10), condition.document());
     }
 
     interface PersonRepository extends CrudRepository<Person, Long> {
