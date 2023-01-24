@@ -600,7 +600,7 @@ Eclipse JNoSQL as a Jakarta Data implementations supports the following list of 
 
 |Not
 |The logical NOT negates all the previous keywords, but True or False. It needs to include as a prefix "Not" to a keyword.
-|findByNameNot, findByAgeNotGreaterThan,
+|findByNameNot, findByAgeNotGreaterThan
 
 |OrderBy
 |Specify a static sorting order followed by the property path and direction of ascending.
