@@ -622,6 +622,10 @@ public class DocumentCrudRepositoryProxyTest {
 
         Person findByName(String name);
 
+        List<Person> findByNameNotEquals(String name);
+
+        List<Person> findByAgeNotGreaterThan(Integer age);
+
         List<Person> findByAge(String age);
 
         void deleteByName(String name);
