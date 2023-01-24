@@ -651,6 +651,11 @@ public class DocumentRepositoryProxyTest {
 
     interface PersonRepository extends PageableRepository<Person, Long> {
 
+
+        long countByName(String name);
+
+        boolean existsByName(String name);
+
         List<Person> findBySalary_Currency(String currency);
 
         List<Person> findBySalary_CurrencyAndSalary_Value(String currency, BigDecimal value);
