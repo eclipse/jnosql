@@ -54,6 +54,7 @@ public abstract class BaseColumnRepository<T> {
     private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
 
     private static final DeleteQueryParser DELETE_PARSER = new DeleteQueryParser();
+    private static final Object[] EMPTY_PARAM = new Object[0];
 
     protected abstract Converters getConverters();
 
@@ -72,8 +73,12 @@ public abstract class BaseColumnRepository<T> {
         ColumnQueryParams queryParams = SELECT_PARSER.apply(selectQuery, getParser());
         ColumnQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, args, method);
-        return updateQueryDynamically(args, query);
+        getParamsBinder().bind(params, getArgs(args), method);
+        return updateQueryDynamically(getArgs(args), query);
+    }
+
+    private static Object[] getArgs(Object[] args) {
+        return args == null ? EMPTY_PARAM : args;
     }
 
     protected ColumnDeleteQuery getDeleteQuery(Method method, Object[] args) {
