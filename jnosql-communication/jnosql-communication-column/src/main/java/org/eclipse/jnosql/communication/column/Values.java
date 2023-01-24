@@ -43,6 +43,7 @@ final class Values {
         switch (type) {
             case NUMBER:
             case STRING:
+            case BOOLEAN:
                 return value.get();
             case PARAMETER:
                 return parameters.add(ParamQueryValue.class.cast(value).get());
