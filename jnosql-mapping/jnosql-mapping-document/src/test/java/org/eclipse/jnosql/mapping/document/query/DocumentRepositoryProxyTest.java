@@ -538,6 +538,43 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
+    public void shouldFindByActiveTrue() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findByActiveTrue();
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Document.of("active", true),
+                condition.document());
+    }
+
+    @Test
+    public void shouldFindByActiveFalse() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findByActiveFalse();
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Document.of("active", false), condition.document());
+    }
+
+    @Test
     public void shouldExecuteJNoSQLQuery() {
         personRepository.findByQuery();
         verify(template).query("select * from Person");
@@ -651,6 +688,10 @@ public class DocumentRepositoryProxyTest {
 
         @Query("select * from Person where id = @id")
         Optional<Person> findByQuery(@Param("id") String id);
+
+        List<Person> findByActiveFalse();
+
+        List<Person> findByActiveTrue();
     }
 
     public interface VendorRepository extends PageableRepository<Vendor, String> {
