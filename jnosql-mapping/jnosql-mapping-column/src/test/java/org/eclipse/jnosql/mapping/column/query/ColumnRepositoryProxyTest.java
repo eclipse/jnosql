@@ -33,6 +33,7 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Vendor;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -637,7 +638,40 @@ public class ColumnRepositoryProxyTest {
         assertEquals("Person", query.name());
         assertEquals("salary.currency", document.name());
         assertEquals("currency.name", sort.property());
+    }
 
+    @Test
+    public void shouldCountByName() {
+        when(template.count(any(ColumnQuery.class)))
+                .thenReturn(10L);
+
+        var result = personRepository.countByName("Poliana");
+        Assertions.assertEquals(10L, result);
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).count(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.condition().get();
+        final Column column = condition.column();
+        assertEquals("Person", query.name());
+        assertEquals("name", column.name());
+        assertEquals("Poliana", column.get());
+    }
+
+    @Test
+    public void shouldExistsByName() {
+        when(template.exists(any(ColumnQuery.class)))
+                .thenReturn(true);
+
+        var result = personRepository.existsByName("Poliana");
+        Assertions.assertEquals(true, result);
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).exists(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.condition().get();
+        final Column column = condition.column();
+        assertEquals("Person", query.name());
+        assertEquals("name", column.name());
+        assertEquals("Poliana", column.get());
     }
 
     interface PersonRepository extends PageableRepository<Person, Long> {
@@ -682,6 +716,10 @@ public class ColumnRepositoryProxyTest {
 
         @Query("select * from Person where id = @id")
         Optional<Person> findByQuery(@Param("id") String id);
+
+        long countByName(String name);
+
+        boolean existsByName(String name);
     }
 
     public interface VendorRepository extends PageableRepository<Vendor, String> {
