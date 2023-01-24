@@ -441,6 +441,10 @@ public class GraphRepositoryProxyTest {
 
         Person findByName(String name);
 
+        List<Person> findByNameNotEquals(String name);
+
+        List<Person> findByAgeNotGreaterThan(Integer age);
+
         void deleteByName(String name);
 
         Optional<Person> findByAge(Integer age);
