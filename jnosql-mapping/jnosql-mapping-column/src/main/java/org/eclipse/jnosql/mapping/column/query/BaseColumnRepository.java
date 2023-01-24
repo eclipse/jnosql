@@ -87,7 +87,7 @@ public abstract class BaseColumnRepository<T> {
         ColumnDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, getParser());
         ColumnDeleteQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, args, method);
+        getParamsBinder().bind(params, getArgs(args), method);
         return query;
     }
 
