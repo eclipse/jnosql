@@ -3,7 +3,7 @@
 
 == Introduction
 
-Eclipse JNoSQL is a compatible implementation of the https://jakarta.ee/specifications/nosql/[Jakarta NoSQL] specification, a Java framework that streamlines the integration of Java applications with NoSQL databases.
+Eclipse JNoSQL is a compatible implementation of the https://jakarta.ee/specifications/nosql/[Jakarta NoSQL] and https://jakarta.ee/specifications/data/[Jakarta Data] specifications, a Java framework that streamlines the integration of Java applications with NoSQL databases.
 
 == Goals
 
@@ -533,6 +533,93 @@ Eclipse JNoSQL does not provide https://mvnrepository.com/artifact/org.apache.ti
     <version>${tinkerpop.version}</version>
 </dependency>
 ----
+
+=== Jakarta Data
+
+Eclipse JNoSQL as a Jakarta Data implementations supports the following list of predicate keywords on their repositories.
+
+
+|===
+|Keyword |Description | Method signature Sample
+
+|And
+|The ```and``` operator.
+|findByNameAndYear
+
+|Or
+|The ```or``` operator.
+|findByNameOrYear
+
+|Between
+|Find results where the property is between the given values
+|findByDateBetween
+
+|Empty
+|Find results where the property is an empty collection or has a null value.
+|deleteByPendingTasksEmpty
+
+|LessThan
+|Find results where the property is less than the given value
+|findByAgeLessThan
+
+|GreaterThan
+|Find results where the property is greater than the given value
+|findByAgeGreaterThan
+
+|LessThanEqual
+|Find results where the property is less than or equal to the given value
+|findByAgeLessThanEqual
+
+|GreaterThanEqual
+|Find results where the property is greater than or equal to the given value
+|findByAgeGreaterThanEqual
+
+|Like
+|Finds string values "like" the given expression
+|findByTitleLike
+
+|IgnoreCase
+|Requests that string values be compared independent of case for query conditions and ordering.
+|findByStreetNameIgnoreCaseLike
+
+|In
+|Find results where the property is one of the values that are contained within the given list
+|findByIdIn
+
+|Null
+|Finds results where the property has a null value.
+|findByYearRetiredNull
+
+|True
+|Finds results where the property has a boolean value of true.
+|findBySalariedTrue
+
+|False
+|Finds results where the property has a boolean value of false.
+|findByCompletedFalse
+
+|Not
+|The logical NOT (logical complement, negation) operator takes truth to falsity and vice versa
+|findByNameNot
+
+|OrderBy
+|Specify a static sorting order followed by the property path and direction of ascending.
+|findByNameOrderByAge
+
+|OrderBy____Desc
+|Specify a static sorting order followed by the property path and direction of descending.
+|findByNameOrderByAgeDesc
+
+|OrderBy____Asc
+|Specify a static sorting order followed by the property path and direction of ascending.
+|findByNameOrderByAgeAsc
+
+|OrderBy____(Asc\|Desc)*(Asc\|Desc)
+|Specify several static sorting orders
+|findByNameOrderByAgeAscNameDescYearAsc
+
+|===
+
 
 === Bean Validation
 
