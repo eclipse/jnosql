@@ -20,6 +20,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Implements new methods that explore fluent-API for Graph, Document, Key-value and Document
 - Create jnosql-jupiter module
 - Enhance readme, adding Mapping and communication details.
+- Add count and exist methods as default on DocumentManager and ColumnManager
 
 === Removed
 
@@ -31,6 +32,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Enhance constructor converter allowing simple translating supported by Value implementation.
 - Define Qualifier on templates implementations (Graph, Key-value, Document and Column).
+- Using the proper methods to skip on GraphRepository implementation
 
 
 == [1.0.0.4-b5] - 2022-12-22
