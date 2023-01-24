@@ -14,22 +14,21 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
-import jakarta.data.repository.Sort;
+import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
-import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.graph.GraphConverter;
-import org.eclipse.jnosql.mapping.graph.entities.Person;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
+import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.entities.Vendor;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -37,8 +36,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-
-import jakarta.inject.Inject;
 
 import java.lang.reflect.Proxy;
 import java.util.Collections;
