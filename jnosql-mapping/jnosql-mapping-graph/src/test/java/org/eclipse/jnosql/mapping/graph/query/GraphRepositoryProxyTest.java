@@ -355,6 +355,30 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
+    public void shouldFindByNameEquals() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15, "active", false);
+        List<Person> people = personRepository.findByNameNotEquals("Otavio");
+
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains("Poliana", "Ada");
+    }
+
+    @Test
+    public void shouldFindByAgeNotGreaterThan() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Rafa", "age", 15, "active", false);
+        List<Person> people = personRepository.findByAgeNotGreaterThan(20);
+
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains("Rafa", "Poliana");
+    }
+
+    @Test
     public void shouldCountByActiveFalse() {
         graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
         graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", true);
@@ -386,7 +410,6 @@ public class GraphRepositoryProxyTest {
         boolean count = personRepository.existsByActiveTrue();
         assertFalse(count);
     }
-
     @Test
     public void shouldExecuteQuery2() {
 
