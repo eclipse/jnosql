@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
+import jakarta.data.repository.Limit;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Sort;
@@ -132,7 +133,7 @@ public abstract class BaseColumnRepository<T> {
     }
 
     protected Function<Pageable, Stream<T>> streamPagination(ColumnQuery query) {
-        return p ->getTemplate().select(query);
+        return p -> getTemplate().select(query);
     }
 
 
@@ -142,13 +143,24 @@ public abstract class BaseColumnRepository<T> {
         if (special.isEmpty()) {
             return query;
         }
-
+        Optional<Limit> limit = special.limit();
         if (special.hasOnlySort()) {
             List<Sort> sorts = new ArrayList<>();
             sorts.addAll(query.sorts());
             sorts.addAll(special.sorts());
-            return new MappingColumnQuery(sorts, query.limit(),
-                    query.skip(),
+            long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
+            long max = limit.map(Limit::maxResults).orElse(query.limit());
+            return new MappingColumnQuery(sorts, max,
+                    skip,
+                    query.condition().orElse(null),
+                    query.name());
+        }
+
+        if (limit.isPresent()) {
+            long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
+            long max = limit.map(Limit::maxResults).orElse(query.limit());
+            return new MappingColumnQuery(query.sorts(), max,
+                    skip,
                     query.condition().orElse(null),
                     query.name());
         }

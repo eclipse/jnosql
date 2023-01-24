@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
+import jakarta.data.repository.Limit;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
@@ -549,6 +550,63 @@ public class ColumnRepositoryProxyPageableTest {
         assertEquals(Column.of("name", "name"), condition.column());
     }
 
+    @Test
+    public void shouldFindByNameLimit() {
+        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+                .of(Person.builder().build()));
+
+        personRepository.findByName("name", Limit.of(3), Sort.asc("name"));
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(0, query.skip());
+        assertEquals(3, query.limit());
+        assertEquals(EQUALS, condition.condition());
+        assertThat(query.sorts()).hasSize(1)
+                .containsExactly(Sort.asc("name"));
+        assertEquals(Column.of("name", "name"), condition.column());
+    }
+
+    @Test
+    public void shouldFindByNameLimit2() {
+        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+                .of(Person.builder().build()));
+
+        personRepository.findByName("name", Limit.range(1, 3), Sort.asc("name"));
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(0, query.skip());
+        assertEquals(3, query.limit());
+        assertEquals(EQUALS, condition.condition());
+        assertThat(query.sorts()).hasSize(1)
+                .containsExactly(Sort.asc("name"));
+        assertEquals(Column.of("name", "name"), condition.column());
+    }
+
+    @Test
+    public void shouldFindByNameLimit3() {
+        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+                .of(Person.builder().build()));
+
+        personRepository.findByName("name", Limit.range(2, 3), Sort.asc("name"));
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(1, query.skip());
+        assertEquals(2, query.limit());
+        assertEquals(EQUALS, condition.condition());
+        assertThat(query.sorts()).hasSize(1)
+                .containsExactly(Sort.asc("name"));
+        assertEquals(Column.of("name", "name"), condition.column());
+    }
+
 
     private Pageable getPageable() {
         return Pageable.ofPage(2).size(6);
@@ -557,7 +615,10 @@ public class ColumnRepositoryProxyPageableTest {
     interface PersonRepository extends PageableRepository<Person, Long> {
 
         Person findByName(String name, Pageable pagination);
+
         List<Person> findByName(String name, Sort sort);
+
+        List<Person> findByName(String name, Limit limit, Sort sort);
 
         List<Person> findByName(String name, Sort sort, Pageable pageable);
 
