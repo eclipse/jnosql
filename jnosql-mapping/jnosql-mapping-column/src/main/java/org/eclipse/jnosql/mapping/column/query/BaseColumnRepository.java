@@ -107,7 +107,7 @@ public abstract class BaseColumnRepository<T> {
         return paramsBinder;
     }
 
-    protected Object executeQuery(Method method, Object[] args, Class<?> typeClass, ColumnQuery query) {
+    protected Object executeFindByQuery(Method method, Object[] args, Class<?> typeClass, ColumnQuery query) {
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
@@ -120,6 +120,15 @@ public abstract class BaseColumnRepository<T> {
                 .build();
         return dynamicReturn.execute();
     }
+
+    protected Long executeCountByQuery(ColumnQuery query) {
+        return getTemplate().count(query);
+    }
+
+    protected boolean executeExistsByQuery(ColumnQuery query) {
+        return getTemplate().exists(query);
+    }
+
 
     protected Function<Pageable, Page<T>> getPage(ColumnQuery query) {
         return p -> {
