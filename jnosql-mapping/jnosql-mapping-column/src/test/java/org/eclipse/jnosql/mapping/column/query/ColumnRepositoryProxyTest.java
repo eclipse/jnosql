@@ -528,6 +528,42 @@ public class ColumnRepositoryProxyTest {
         assertEquals(Column.of("age", 120), condition.column());
     }
 
+    @Test
+    public void shouldFindByActiveTrue() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(ColumnQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findByActiveTrue();
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Column.of("active", true), condition.column());
+    }
+
+    @Test
+    public void shouldFindByActiveFalse() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(ColumnQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findByActiveFalse();
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Column.of("active", false), condition.column());
+    }
+
 
     @Test
     public void shouldExecuteJNoSQLQuery() {
@@ -606,6 +642,9 @@ public class ColumnRepositoryProxyTest {
 
     interface PersonRepository extends PageableRepository<Person, Long> {
 
+        List<Person> findByActiveTrue();
+
+        List<Person> findByActiveFalse();
         List<Person> findBySalary_Currency(String currency);
 
         List<Person> findBySalary_CurrencyAndSalary_Value(String currency, BigDecimal value);
