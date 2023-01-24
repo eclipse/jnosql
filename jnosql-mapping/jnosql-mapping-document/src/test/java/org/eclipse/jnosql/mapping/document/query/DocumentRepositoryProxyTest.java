@@ -33,6 +33,7 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Vendor;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -654,16 +655,35 @@ public class DocumentRepositoryProxyTest {
         when(template.count(any(DocumentQuery.class)))
                 .thenReturn(10L);
 
-        personRepository.countByName("Poliana");
-
+        var result = personRepository.countByName("Poliana");
+        Assertions.assertEquals(10L, result);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
-        verify(template).select(captor.capture());
+        verify(template).count(captor.capture());
         DocumentQuery query = captor.getValue();
         DocumentCondition condition = query.condition().get();
         final Document document = condition.document();
         assertEquals("Person", query.name());
-        assertEquals("salary.currency", document.name());
+        assertEquals("name", document.name());
+        assertEquals("Poliana", document.get());
     }
+
+    @Test
+    public void shouldExistsByName() {
+        when(template.exists(any(DocumentQuery.class)))
+                .thenReturn(true);
+
+        var result = personRepository.existsByName("Poliana");
+        Assertions.assertEquals(true, result);
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).exists(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        final Document document = condition.document();
+        assertEquals("Person", query.name());
+        assertEquals("name", document.name());
+        assertEquals("Poliana", document.get());
+    }
+
 
     interface PersonRepository extends PageableRepository<Person, Long> {
 
