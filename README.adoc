@@ -554,10 +554,6 @@ Eclipse JNoSQL as a Jakarta Data implementations supports the following list of 
 |Find results where the property is between the given values
 |findByDateBetween
 
-|Empty
-|Find results where the property is an empty collection or has a null value.
-|deleteByPendingTasksEmpty
-
 |LessThan
 |Find results where the property is less than the given value
 |findByAgeLessThan
@@ -578,17 +574,9 @@ Eclipse JNoSQL as a Jakarta Data implementations supports the following list of 
 |Finds string values "like" the given expression
 |findByTitleLike
 
-|IgnoreCase
-|Requests that string values be compared independent of case for query conditions and ordering.
-|findByStreetNameIgnoreCaseLike
-
 |In
 |Find results where the property is one of the values that are contained within the given list
 |findByIdIn
-
-|Null
-|Finds results where the property has a null value.
-|findByYearRetiredNull
 
 |True
 |Finds results where the property has a boolean value of true.
