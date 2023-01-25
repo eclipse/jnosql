@@ -17,17 +17,18 @@ package org.eclipse.jnosql.mapping.graph.query;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
+import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
-import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.graph.GraphConverter;
-import org.eclipse.jnosql.mapping.graph.entities.Person;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.graph.GraphConverter;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
+import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.graph.entities.Vendor;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -36,7 +37,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import jakarta.inject.Inject;
 import java.lang.reflect.Proxy;
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +47,7 @@ import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -90,10 +91,10 @@ public class GraphRepositoryProxyTest {
         this.template = Mockito.mock(GraphTemplate.class);
 
         GraphRepositoryProxy personHandler = new GraphRepositoryProxy(template,
-                entities, PersonRepository.class,graph, converter, converters);
+                entities, PersonRepository.class, graph, converter, converters);
 
         GraphRepositoryProxy vendorHandler = new GraphRepositoryProxy(template,
-                entities, VendorRepository.class,graph, converter, converters);
+                entities, VendorRepository.class, graph, converter, converters);
 
 
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
@@ -327,6 +328,86 @@ public class GraphRepositoryProxyTest {
     }
 
     @Test
+    public void shouldFindByActiveTrue() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15, "active", false);
+
+        List<Person> people = personRepository.findByActiveTrue();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains("Ada", "Poliana");
+    }
+
+    @Test
+    public void shouldFindByActiveFalse() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15, "active", false);
+
+        List<Person> people = personRepository.findByActiveFalse();
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains("Otavio", "Otavio");
+    }
+
+    @Test
+    public void shouldFindByNameEquals() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15, "active", false);
+        List<Person> people = personRepository.findByNameNotEquals("Otavio");
+
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains("Poliana", "Ada");
+    }
+
+    @Test
+    public void shouldFindByAgeNotGreaterThan() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Rafa", "age", 15, "active", false);
+        List<Person> people = personRepository.findByAgeNotGreaterThan(20);
+
+        assertThat(people).hasSize(2).map(Person::getName)
+                .contains("Rafa", "Poliana");
+    }
+
+    @Test
+    public void shouldCountByActiveFalse() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15, "active", false);
+
+        Long count = personRepository.countByActiveTrue();
+        assertEquals(2, count);
+    }
+
+    @Test
+    public void shouldExistsByActiveFalse() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", true);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15, "active", false);
+
+        boolean count = personRepository.existsByActiveTrue();
+        assertTrue(count);
+    }
+
+    @Test
+    public void shouldExistsByActiveFalse2() {
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Poliana", "age", 20, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Ada", "age", 30, "active", false);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 15, "active", false);
+
+        boolean count = personRepository.existsByActiveTrue();
+        assertFalse(count);
+    }
+    @Test
     public void shouldExecuteQuery2() {
 
         PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
@@ -362,7 +443,6 @@ public class GraphRepositoryProxyTest {
         graph.addVertex(T.label, "vendors", "name", "name", "prefixes", "prefix1");
         graph.addVertex(T.label, "vendors", "name", "name", "prefixes", "prefix2");
 
-
         Vendor prefix = vendorRepository.findByPrefixesIn(Collections.singletonList("prefix"));
         Assertions.assertNotNull(prefix);
 
@@ -371,7 +451,19 @@ public class GraphRepositoryProxyTest {
 
     interface PersonRepository extends PageableRepository<Person, Long> {
 
+        List<Person> findByActiveTrue();
+
+        List<Person> findByActiveFalse();
+
+        Long countByActiveTrue();
+
+        boolean existsByActiveTrue();
+
         Person findByName(String name);
+
+        List<Person> findByNameNotEquals(String name);
+
+        List<Person> findByAgeNotGreaterThan(Integer age);
 
         void deleteByName(String name);
 

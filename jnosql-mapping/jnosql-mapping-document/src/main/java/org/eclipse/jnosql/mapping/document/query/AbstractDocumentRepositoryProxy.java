@@ -46,11 +46,14 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
             case DEFAULT:
                 return method.invoke(getRepository(), args);
             case FIND_BY:
-                DocumentQuery query = getQuery(method, args);
-                return executeQuery(method, args, typeClass, query);
+                return executeFindByQuery(method, args, typeClass, getQuery(method, args));
+            case COUNT_BY:
+                return executeCountByQuery(getQuery(method, args));
+            case EXISTS_BY:
+                return executeExistsByQuery(getQuery(method, args));
             case FIND_ALL:
                 DocumentQuery queryFindAll = select().from(getEntityMetadata().getName()).build();
-                return executeQuery(method, args, typeClass, updateQueryDynamically(args, queryFindAll));
+                return executeFindByQuery(method, args, typeClass, updateQueryDynamically(args, queryFindAll));
             case DELETE_BY:
                 DocumentDeleteQuery documentDeleteQuery = getDeleteQuery(method, args);
                 getTemplate().delete(documentDeleteQuery);

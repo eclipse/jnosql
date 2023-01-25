@@ -123,6 +123,28 @@ public interface ColumnManager extends AutoCloseable {
     Stream<ColumnEntity> select(ColumnQuery query);
 
     /**
+     * Returns the number of items in the column family that match a specified query.
+     * @param query the query
+     * @return the number of documents from query
+     * @throws NullPointerException when query is null
+     */
+    default long count(ColumnQuery query) {
+        Objects.requireNonNull(query, "query is required");
+        return this.select(DefaultColumnQuery.countBy(query)).count();
+    }
+
+    /**
+     * Returns whether an entity that match a specified query.
+     * @param query the query
+     * @return true if an entity with the given query exists, false otherwise.
+     * @throws NullPointerException when query it null
+     */
+    default boolean exists(ColumnQuery query) {
+        Objects.requireNonNull(query, "query is required");
+        return this.select(DefaultColumnQuery.existsBy(query)).count() > 0;
+    }
+
+    /**
      * Executes a query and returns the result, when the operations are <b>insert</b>, <b>update</b> and <b>select</b>
      * command it will return the result of the operation when the command is <b>delete</b> it will return an empty collection.
      *

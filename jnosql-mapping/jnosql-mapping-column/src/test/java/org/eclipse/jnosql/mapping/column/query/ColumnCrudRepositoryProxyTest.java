@@ -604,6 +604,46 @@ public class ColumnCrudRepositoryProxyTest {
 
     }
 
+    @Test
+    public void shouldFindByNameNotEquals() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(ColumnQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findByNameNotEquals("Otavio");
+
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition negate = query.condition().get();
+        assertEquals(Condition.NOT, negate.condition());
+        ColumnCondition condition = negate.column().get(ColumnCondition.class);
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Column.of("name", "Otavio"), condition.column());
+    }
+
+    @Test
+    public void shouldFindByAgeNotGreaterThan() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(ColumnQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findByAgeNotGreaterThan(10);
+
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).select(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition negate = query.condition().get();
+        assertEquals(Condition.NOT, negate.condition());
+        ColumnCondition condition = negate.column().get(ColumnCondition.class);
+        assertEquals(GREATER_THAN, condition.condition());
+        assertEquals(Column.of("age", 10), condition.column());
+    }
+
     interface PersonRepository extends CrudRepository<Person, Long> {
 
         List<Person> findBySalary_Currency(String currency);
@@ -613,6 +653,10 @@ public class ColumnCrudRepositoryProxyTest {
         List<Person> findBySalary_CurrencyOrderByCurrency_Name(String currency);
 
         Person findByName(String name);
+
+        List<Person> findByNameNotEquals(String name);
+
+        List<Person> findByAgeNotGreaterThan(Integer age);
 
         void deleteByName(String name);
 

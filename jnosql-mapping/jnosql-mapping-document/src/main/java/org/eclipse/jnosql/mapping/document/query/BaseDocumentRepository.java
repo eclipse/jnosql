@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
+import jakarta.data.repository.Limit;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Sort;
@@ -35,6 +36,7 @@ import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MappingDocumentQuery;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.repository.SpecialParameters;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
 
 import java.lang.reflect.Method;
@@ -52,6 +54,8 @@ public abstract class BaseDocumentRepository<T> {
     private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
 
     private static final DeleteQueryParser DELETE_PARSER = new DeleteQueryParser();
+    private static final Object[] EMPTY_PARAM = new Object[0];
+
 
     protected abstract Converters getConverters();
 
@@ -70,8 +74,8 @@ public abstract class BaseDocumentRepository<T> {
         DocumentQueryParams queryParams = SELECT_PARSER.apply(selectQuery, getParser());
         DocumentQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, args, method);
-        return updateQueryDynamically(args, query);
+        getParamsBinder().bind(params, getArgs(args), method);
+        return updateQueryDynamically(getArgs(args), query);
     }
 
 
@@ -81,27 +85,58 @@ public abstract class BaseDocumentRepository<T> {
         DocumentDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, getParser());
         DocumentDeleteQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, args, method);
+        getParamsBinder().bind(params, getArgs(args), method);
         return query;
+    }
+
+    private static Object[] getArgs(Object[] args) {
+        return args == null ? EMPTY_PARAM : args;
     }
 
 
     protected DocumentQuery updateQueryDynamically(Object[] args, DocumentQuery query) {
-        Optional<Pageable> pageable = DynamicReturn.findPagination(args);
+        SpecialParameters special = DynamicReturn.findSpecialParameters(args);
 
-        return pageable.<DocumentQuery>map(p -> {
+        if (special.isEmpty()) {
+            return query;
+        }
+        Optional<Limit> limit = special.limit();
+
+        if (special.hasOnlySort()) {
+            List<Sort> sorts = new ArrayList<>();
+            sorts.addAll(query.sorts());
+            sorts.addAll(special.sorts());
+            long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
+            long max = limit.map(Limit::maxResults).orElse(query.limit());
+            return new MappingDocumentQuery(sorts, max,
+                    skip,
+                    query.condition().orElse(null),
+                    query.name());
+        }
+
+        if (limit.isPresent()) {
+            long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
+            long max = limit.map(Limit::maxResults).orElse(query.limit());
+            return new MappingDocumentQuery(query.sorts(), max,
+                    skip,
+                    query.condition().orElse(null),
+                    query.name());
+        }
+
+        return special.pageable().<DocumentQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
             List<Sort> sorts = query.sorts();
-            if (!p.sorts().isEmpty()) {
+            if (!special.sorts().isEmpty()) {
                 sorts = new ArrayList<>(query.sorts());
-                sorts.addAll(p.sorts());
+                sorts.addAll(special.sorts());
             }
             return new MappingDocumentQuery(sorts, size, skip,
                     query.condition().orElse(null), query.name());
         }).orElse(query);
 
     }
+
     protected DocumentObserverParser getParser() {
         if (parser == null) {
             this.parser = new RepositoryDocumentObserverParser(getEntityMetadata());
@@ -116,13 +151,21 @@ public abstract class BaseDocumentRepository<T> {
         return paramsBinder;
     }
 
-    protected Object executeQuery(Method method, Object[] args, Class<?> typeClass, DocumentQuery query) {
+    protected Long executeCountByQuery(DocumentQuery query) {
+       return getTemplate().count(query);
+    }
+
+    protected boolean executeExistsByQuery(DocumentQuery query) {
+        return getTemplate().exists(query);
+    }
+
+    protected Object executeFindByQuery(Method method, Object[] args, Class<?> typeClass, DocumentQuery query) {
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
                 .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findPagination(args).orElse(null))
+                .withPagination(DynamicReturn.findPageable(args))
                 .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
@@ -138,11 +181,11 @@ public abstract class BaseDocumentRepository<T> {
     }
 
     protected Function<Pageable, Optional<T>> getSingleResult(DocumentQuery query) {
-          return p -> getTemplate().singleResult(query);
+        return p -> getTemplate().singleResult(query);
     }
 
     protected Function<Pageable, Stream<T>> streamPagination(DocumentQuery query) {
-        return p ->getTemplate().select(query);
+        return p -> getTemplate().select(query);
     }
 
 }

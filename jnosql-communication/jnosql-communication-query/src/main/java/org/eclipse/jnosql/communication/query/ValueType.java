@@ -15,6 +15,5 @@ package org.eclipse.jnosql.communication.query;
  * The value type
  */
 public enum ValueType {
-
-    CONDITION, NUMBER, STRING, PARAMETER, ARRAY, FUNCTION, JSON
+    CONDITION, NUMBER, STRING, PARAMETER, ARRAY, FUNCTION, JSON, BOOLEAN;
 }

@@ -33,6 +33,7 @@ import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Vendor;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -538,6 +539,43 @@ public class DocumentRepositoryProxyTest {
     }
 
     @Test
+    public void shouldFindByActiveTrue() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findByActiveTrue();
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Document.of("active", true),
+                condition.document());
+    }
+
+    @Test
+    public void shouldFindByActiveFalse() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findByActiveFalse();
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        assertEquals("Person", query.name());
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Document.of("active", false), condition.document());
+    }
+
+    @Test
     public void shouldExecuteJNoSQLQuery() {
         personRepository.findByQuery();
         verify(template).query("select * from Person");
@@ -612,7 +650,47 @@ public class DocumentRepositoryProxyTest {
 
     }
 
+    @Test
+    public void shouldCountByName() {
+        when(template.count(any(DocumentQuery.class)))
+                .thenReturn(10L);
+
+        var result = personRepository.countByName("Poliana");
+        Assertions.assertEquals(10L, result);
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).count(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        final Document document = condition.document();
+        assertEquals("Person", query.name());
+        assertEquals("name", document.name());
+        assertEquals("Poliana", document.get());
+    }
+
+    @Test
+    public void shouldExistsByName() {
+        when(template.exists(any(DocumentQuery.class)))
+                .thenReturn(true);
+
+        var result = personRepository.existsByName("Poliana");
+        Assertions.assertEquals(true, result);
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).exists(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition condition = query.condition().get();
+        final Document document = condition.document();
+        assertEquals("Person", query.name());
+        assertEquals("name", document.name());
+        assertEquals("Poliana", document.get());
+    }
+
+
     interface PersonRepository extends PageableRepository<Person, Long> {
+
+
+        long countByName(String name);
+
+        boolean existsByName(String name);
 
         List<Person> findBySalary_Currency(String currency);
 
@@ -651,6 +729,10 @@ public class DocumentRepositoryProxyTest {
 
         @Query("select * from Person where id = @id")
         Optional<Person> findByQuery(@Param("id") String id);
+
+        List<Person> findByActiveFalse();
+
+        List<Person> findByActiveTrue();
     }
 
     public interface VendorRepository extends PageableRepository<Vendor, String> {

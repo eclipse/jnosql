@@ -16,6 +16,8 @@ package org.eclipse.jnosql.mapping.graph.query;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.eclipse.jnosql.communication.query.BooleanQueryValue;
+import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
@@ -63,14 +65,16 @@ final class GraphQueryMethod {
         return traversal;
     }
 
-    public Object getValue(String name) {
-        Object value = getValue();
-        return ConverterUtil.getValue(value, mapping, name, converters);
+    public Object getValue(String name, QueryValue<?> value) {
+        if (value instanceof BooleanQueryValue) {
+            return BooleanQueryValue.class.cast(value).get();
+        }
+        return ConverterUtil.getValue(getValue(), mapping, name, converters);
     }
 
-    public  Collection<?> getInValue(String name) {
+    public Collection<?> getInValue(String name) {
         Object value = getValue();
-        if(value instanceof Iterable<?>) {
+        if (value instanceof Iterable<?>) {
             return (Collection<?>) StreamSupport.stream(((Iterable) value).spliterator(), false)
                     .map(v -> ConverterUtil.getValue(v, mapping, name, converters))
                     .collect(Collectors.toList());

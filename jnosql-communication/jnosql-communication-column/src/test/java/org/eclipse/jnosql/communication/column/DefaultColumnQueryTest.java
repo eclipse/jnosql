@@ -17,6 +17,7 @@
 package org.eclipse.jnosql.communication.column;
 
 import jakarta.data.repository.Sort;
+import org.eclipse.jnosql.communication.Condition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.eclipse.jnosql.communication.column.ColumnQuery.select;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -52,5 +54,37 @@ public class DefaultColumnQueryTest {
             assertTrue(sorts.isEmpty());
             sorts.clear();
         });
+    }
+
+    @Test
+    public void shouldConvertCountyBy() {
+        ColumnQuery query = ColumnQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        ColumnQuery countQuery = DefaultColumnQuery.countBy(query);
+        Assertions.assertNotNull(countQuery);
+        assertEquals("entity", countQuery.name());
+        assertEquals(0, countQuery.limit());
+        assertEquals(0, countQuery.skip());
+        assertTrue(countQuery.sorts().isEmpty());
+       ColumnCondition condition = countQuery.condition().orElseThrow();
+       Assertions.assertEquals(Condition.EQUALS, condition.condition());
+    }
+
+    @Test
+    public void shouldConvertExistsBy() {
+        ColumnQuery query = ColumnQuery.select().from("entity")
+                .where("name").eq("predicate")
+                .orderBy("name").asc().build();
+
+        ColumnQuery countQuery = DefaultColumnQuery.existsBy(query);
+        Assertions.assertNotNull(countQuery);
+        assertEquals("entity", countQuery.name());
+        assertEquals(1, countQuery.limit());
+        assertEquals(0, countQuery.skip());
+        assertTrue(countQuery.sorts().isEmpty());
+        ColumnCondition condition = countQuery.condition().orElseThrow();
+        Assertions.assertEquals(Condition.EQUALS, condition.condition());
     }
 }

@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
-import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Sort;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -23,8 +22,8 @@ import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.repository.SpecialParameters;
 
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -47,10 +46,9 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
         EntityMetadata mapping = graphQuery.getMapping();
 
         GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, query::where, mapping);
-
-        query.orderBy().forEach(getSort(traversal, mapping));
-        setPagination(params, traversal, query, mapping);
         traversal.hasLabel(mapping.getName());
+        query.orderBy().forEach(getSort(traversal, mapping));
+        updateDynamicParameter(params, traversal, query, mapping);
         return traversal.toStream();
     }
 
@@ -66,13 +64,13 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
     }
 
 
-    static void setPagination(Object[] args, GraphTraversal<Vertex, Vertex> traversal, EntityMetadata mapping) {
-        setPagination(args, traversal, null, mapping);
+    static void updateDynamicParameter(Object[] args, GraphTraversal<Vertex, Vertex> traversal, EntityMetadata mapping) {
+        updateDynamicParameter(args, traversal, null, mapping);
     }
 
 
-    private static void setPagination(Object[] args, GraphTraversal<Vertex, Vertex> traversal, SelectQuery query, EntityMetadata mapping) {
-        Optional<Pageable> pageable = DynamicReturn.findPagination(args);
+    private static void updateDynamicParameter(Object[] args, GraphTraversal<Vertex, Vertex> traversal, SelectQuery query, EntityMetadata mapping) {
+        SpecialParameters special = DynamicReturn.findSpecialParameters(args);
 
         if (query != null) {
             if (query.skip() > 0) {
@@ -80,11 +78,26 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
             }
 
             if (query.limit() > 0) {
-                traversal.next((int) query.limit());
+                traversal.limit((int) query.limit());
             }
         }
-        pageable.ifPresent(p -> {
-            p.sorts().forEach(getSort(traversal, mapping));
+        if (special.isEmpty()) {
+            return;
+        }
+
+        if (special.hasOnlySort()) {
+            special.sorts().forEach(getSort(traversal, mapping));
+            return;
+        }
+
+        special.limit().ifPresent(l -> {
+            if (l.startAt() > 1) {
+                traversal.skip(l.startAt() - 1);
+            }
+            traversal.limit((int) l.maxResults());
+        });
+        special.pageable().ifPresent(p -> {
+            special.sorts().forEach(getSort(traversal, mapping));
             traversal.skip(NoSQLPage.skip(p)).limit(p.size());
         });
 

@@ -19,7 +19,9 @@ import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Query;
 
 import java.lang.reflect.Method;
+import java.util.EnumSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /**
@@ -27,14 +29,53 @@ import java.util.function.Predicate;
  */
 public enum RepositoryType {
 
-    DEFAULT, FIND_BY, DELETE_BY, UNKNOWN, OBJECT_METHOD, JNOSQL_QUERY, FIND_ALL;
+    /**
+     * Methods from either {@link CrudRepository} or {@link  PageableRepository}
+     */
+    DEFAULT(""),
+    /**
+     * General query method returning the repository type.It starts with "findBy" key word
+     */
+    FIND_BY("findBy"),
+    /**
+     * Delete query method returning either no result (void) or the delete count. It starts with "deleteBy" keyword
+     */
+    DELETE_BY("deleteBy"),
+    /**
+     * Method that has the "FindAll" keyword
+     */
+    FIND_ALL("findAll"),
+    /**
+     * Count projection returning a numeric result. It starts with "countBy" keyword
+     */
+    COUNT_BY("countBy"),
+    /**
+     * Exists projection, returning typically a boolean result. It starts with "existsBy" keyword
+     */
+    EXISTS_BY("existsBy"),
+    UNKNOWN(""),
+    /**
+     * Methods from {@link Object}
+     */
+    OBJECT_METHOD(""),
+    /**
+     * Method that has {@link Query} annotation
+     */
+    JNOSQL_QUERY("");
 
-    private static final Predicate<Class<?>> IS_REPOSITORY_METHOD =  Predicate.<Class<?>>isEqual(CrudRepository.class)
+    private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(CrudRepository.class)
             .or(Predicate.<Class<?>>isEqual(PageableRepository.class));
+
+    private static final Set<RepositoryType> KEY_WORLD_METHODS = EnumSet.of(FIND_BY, DELETE_BY, COUNT_BY, EXISTS_BY);
+    private final String keyword;
+
+    RepositoryType(String keyword) {
+        this.keyword = keyword;
+    }
 
 
     /**
-     * Returns a operation type from the {@link Method}
+     * Returns an operation type from the {@link Method}
      *
      * @param method the method
      * @return a repository type
@@ -53,13 +94,11 @@ public enum RepositoryType {
         }
 
         String methodName = method.getName();
-        if ("findAll".equals(methodName)) {
+        if (FIND_ALL.keyword.equals(methodName)) {
             return FIND_ALL;
-        } else if (methodName.startsWith("findBy")) {
-            return FIND_BY;
-        } else if (methodName.startsWith("deleteBy")) {
-            return DELETE_BY;
         }
-        return UNKNOWN;
+        return KEY_WORLD_METHODS.stream()
+                .filter(k -> methodName.startsWith(k.keyword))
+                .findFirst().orElse(UNKNOWN);
     }
 }

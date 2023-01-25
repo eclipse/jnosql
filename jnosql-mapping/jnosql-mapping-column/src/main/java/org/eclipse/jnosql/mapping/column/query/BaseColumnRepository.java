@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
+import jakarta.data.repository.Limit;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Sort;
@@ -36,6 +37,7 @@ import org.eclipse.jnosql.mapping.column.JNoSQLColumnTemplate;
 import org.eclipse.jnosql.mapping.column.MappingColumnQuery;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.repository.SpecialParameters;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
 
 import java.lang.reflect.Method;
@@ -53,6 +55,7 @@ public abstract class BaseColumnRepository<T> {
     private static final SelectQueryParser SELECT_PARSER = new SelectQueryParser();
 
     private static final DeleteQueryParser DELETE_PARSER = new DeleteQueryParser();
+    private static final Object[] EMPTY_PARAM = new Object[0];
 
     protected abstract Converters getConverters();
 
@@ -71,8 +74,12 @@ public abstract class BaseColumnRepository<T> {
         ColumnQueryParams queryParams = SELECT_PARSER.apply(selectQuery, getParser());
         ColumnQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, args, method);
-        return updateQueryDynamically(args, query);
+        getParamsBinder().bind(params, getArgs(args), method);
+        return updateQueryDynamically(getArgs(args), query);
+    }
+
+    private static Object[] getArgs(Object[] args) {
+        return args == null ? EMPTY_PARAM : args;
     }
 
     protected ColumnDeleteQuery getDeleteQuery(Method method, Object[] args) {
@@ -81,7 +88,7 @@ public abstract class BaseColumnRepository<T> {
         ColumnDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, getParser());
         ColumnDeleteQuery query = queryParams.query();
         Params params = queryParams.params();
-        getParamsBinder().bind(params, args, method);
+        getParamsBinder().bind(params, getArgs(args), method);
         return query;
     }
 
@@ -100,19 +107,28 @@ public abstract class BaseColumnRepository<T> {
         return paramsBinder;
     }
 
-    protected Object executeQuery(Method method, Object[] args, Class<?> typeClass, ColumnQuery query) {
+    protected Object executeFindByQuery(Method method, Object[] args, Class<?> typeClass, ColumnQuery query) {
         DynamicReturn<?> dynamicReturn = DynamicReturn.builder()
                 .withClassSource(typeClass)
                 .withMethodSource(method)
                 .withResult(() -> getTemplate().select(query))
                 .withSingleResult(() -> getTemplate().singleResult(query))
-                .withPagination(DynamicReturn.findPagination(args).orElse(null))
+                .withPagination(DynamicReturn.findPageable(args))
                 .withStreamPagination(streamPagination(query))
                 .withSingleResultPagination(getSingleResult(query))
                 .withPage(getPage(query))
                 .build();
         return dynamicReturn.execute();
     }
+
+    protected Long executeCountByQuery(ColumnQuery query) {
+        return getTemplate().count(query);
+    }
+
+    protected boolean executeExistsByQuery(ColumnQuery query) {
+        return getTemplate().exists(query);
+    }
+
 
     protected Function<Pageable, Page<T>> getPage(ColumnQuery query) {
         return p -> {
@@ -126,20 +142,45 @@ public abstract class BaseColumnRepository<T> {
     }
 
     protected Function<Pageable, Stream<T>> streamPagination(ColumnQuery query) {
-        return p ->getTemplate().select(query);
+        return p -> getTemplate().select(query);
     }
 
 
     protected ColumnQuery updateQueryDynamically(Object[] args, ColumnQuery query) {
-        Optional<Pageable> pageable = DynamicReturn.findPagination(args);
+        SpecialParameters special = DynamicReturn.findSpecialParameters(args);
 
-        return pageable.<ColumnQuery>map(p -> {
+        if (special.isEmpty()) {
+            return query;
+        }
+        Optional<Limit> limit = special.limit();
+        if (special.hasOnlySort()) {
+            List<Sort> sorts = new ArrayList<>();
+            sorts.addAll(query.sorts());
+            sorts.addAll(special.sorts());
+            long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
+            long max = limit.map(Limit::maxResults).orElse(query.limit());
+            return new MappingColumnQuery(sorts, max,
+                    skip,
+                    query.condition().orElse(null),
+                    query.name());
+        }
+
+        if (limit.isPresent()) {
+            long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
+            long max = limit.map(Limit::maxResults).orElse(query.limit());
+            return new MappingColumnQuery(query.sorts(), max,
+                    skip,
+                    query.condition().orElse(null),
+                    query.name());
+        }
+
+        return special.pageable().<ColumnQuery>map(p -> {
             long size = p.size();
             long skip = NoSQLPage.skip(p);
             List<Sort> sorts = query.sorts();
-            if (!p.sorts().isEmpty()) {
+            if (!special.sorts().isEmpty()) {
                 sorts = new ArrayList<>(query.sorts());
-                sorts.addAll(p.sorts());
+                sorts.addAll(special.sorts());
             }
             return new MappingColumnQuery(sorts, size, skip,
                     query.condition().orElse(null), query.name());

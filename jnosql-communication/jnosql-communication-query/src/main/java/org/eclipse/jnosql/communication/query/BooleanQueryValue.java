@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  and Apache License v2.0 which accompanies this distribution.
@@ -12,38 +12,31 @@
 package org.eclipse.jnosql.communication.query;
 
 
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
-import jakarta.json.JsonReader;
-
-import java.io.StringReader;
 import java.util.Objects;
 
-
 /**
- * JavaScript Object Notation is a lightweight data-interchange format.
+ * Boolean is a data type that has one of two possible values (usually denoted true and false)
+ * which is intended to represent the two truth values of logic and Boolean algebra.
  */
-public final class JSONQueryValue implements QueryValue<JsonObject> {
+public final class BooleanQueryValue implements QueryValue<Boolean>{
 
-    private final JsonObject value;
+    public static final BooleanQueryValue TRUE = new BooleanQueryValue(true);
+    public static final BooleanQueryValue FALSE = new BooleanQueryValue(false);
 
-    private JSONQueryValue(JsonObject value) {
+    private final boolean value;
+
+    private BooleanQueryValue(boolean value) {
         this.value = value;
-    }
-
-    public JsonObject get() {
-        return value;
     }
 
     @Override
     public ValueType type() {
-        return ValueType.JSON;
+        return ValueType.BOOLEAN;
     }
 
-    public static JSONQueryValue of(QueryParser.JsonContext context) {
-        try (JsonReader jsonReader = Json.createReader(new StringReader(context.getText()))) {
-            return new JSONQueryValue(jsonReader.readObject());
-        }
+    @Override
+    public Boolean get() {
+        return value;
     }
 
     @Override
@@ -54,18 +47,18 @@ public final class JSONQueryValue implements QueryValue<JsonObject> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        JSONQueryValue that = (JSONQueryValue) o;
-        return Objects.equals(value, that.value);
+        BooleanQueryValue that = (BooleanQueryValue) o;
+        return value == that.value;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(value);
+        return Objects.hash(value);
     }
 
     @Override
     public String toString() {
-        return "JSONQueryValue{" +
+        return "BooleanQueryValue{" +
                 "value=" + value +
                 '}';
     }

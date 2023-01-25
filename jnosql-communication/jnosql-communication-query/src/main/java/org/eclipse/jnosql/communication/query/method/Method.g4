@@ -1,15 +1,18 @@
 grammar Method;
-findBy:'findBy' where? order? EOF;
+select: selectStart where? order? EOF;
 deleteBy: 'deleteBy' where? EOF;
 
+selectStart: 'findBy'| 'countBy'| 'existsBy';
 where: condition (and condition| or condition)* ;
-condition: eq | gt | gte | lt | lte | between | in | like;
+condition: eq | gt | gte | lt | lte | between | in | like | true | false;
 order: 'OrderBy' orderName (orderName)*;
 orderName: variable | variable asc | variable desc;
 and: 'And';
 or: 'Or';
 asc: 'Asc';
 desc: 'Desc';
+true: variable 'True';
+false: variable 'False';
 eq: variable | variable not? 'Equals';
 gt: variable not? 'GreaterThan';
 gte: variable not? 'GreaterThanEqual';

@@ -20,6 +20,7 @@ package org.eclipse.jnosql.communication.column;
 
 import jakarta.data.repository.Sort;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,7 +46,8 @@ class DefaultColumnQuery implements ColumnQuery {
     private final ColumnCondition condition;
 
 
-    DefaultColumnQuery(long maxResults, long firstResult, String columnFamily, List<String> columns, List<Sort> sorts, ColumnCondition condition) {
+    DefaultColumnQuery(long maxResults, long firstResult, String columnFamily,
+                       List<String> columns, List<Sort> sorts, ColumnCondition condition) {
         this.maxResults = maxResults;
         this.firstResult = firstResult;
         this.columnFamily = columnFamily;
@@ -108,12 +110,21 @@ class DefaultColumnQuery implements ColumnQuery {
 
     @Override
     public String toString() {
-        return  "DefaultColumnQuery{" + "maxResults=" + maxResults +
+        return  "ColumnQuery{" + "maxResults=" + maxResults +
                 ", firstResult=" + firstResult +
                 ", columnFamily='" + columnFamily + '\'' +
                 ", columns=" + columns +
                 ", sorts=" + sorts +
                 ", condition=" + condition +
                 '}';
+    }
+    static ColumnQuery countBy(ColumnQuery query) {
+        return new DefaultColumnQuery(0, 0, query.name(), query.columns(),
+                Collections.emptyList(), query.condition().orElse(null));
+    }
+
+    static ColumnQuery existsBy(ColumnQuery query) {
+        return new DefaultColumnQuery(1, 0, query.name(), query.columns(),
+                Collections.emptyList(), query.condition().orElse(null));
     }
 }

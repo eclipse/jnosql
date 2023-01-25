@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public final class FindByMethodQueryProvider extends AbstractMethodQueryProvider implements BiFunction<String, String, SelectQuery> {
+public final class SelectMethodQueryProvider extends AbstractMethodQueryProvider implements BiFunction<String, String, SelectQuery> {
 
     private final List<Sort> sorts = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public final class FindByMethodQueryProvider extends AbstractMethodQueryProvider
 
     @Override
     Function<MethodParser, ParseTree> getParserTree() {
-        return MethodParser::findBy;
+        return MethodParser::select;
     }
 
     private Sort sort(MethodParser.OrderNameContext context) {

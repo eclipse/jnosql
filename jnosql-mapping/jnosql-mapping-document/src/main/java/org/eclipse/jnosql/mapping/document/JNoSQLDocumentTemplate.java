@@ -48,28 +48,48 @@ public interface JNoSQLDocumentTemplate extends DocumentTemplate {
     <T> Stream<T> select(DocumentQuery query);
 
     /**
+     * Returns the number of items in the collection that match a specified query.
+     *
+     * @param query the query
+     * @return the number of documents from query
+     * @throws NullPointerException when query is null
+     */
+    long count(DocumentQuery query);
+
+    /**
+     * Returns whether an entity that match a specified query.
+     *
+     * @param query the query
+     * @return true if an entity with the given query exists, false otherwise.
+     * @throws NullPointerException when query it null
+     */
+    boolean exists(DocumentQuery query);
+
+    /**
      * Returns a single entity from query
      *
      * @param query - query to figure out entities
      * @param <T>   the instance type
      * @return an entity on {@link Optional} or {@link Optional#empty()} when the result is not found.
-     * @throws NullPointerException     when query is null
+     * @throws NullPointerException when query is null
      */
     <T> Optional<T> singleResult(DocumentQuery query);
 
     /**
      * Returns all elements from column family
+     *
      * @param type the entity type
+     * @param <T>  the entity type
      * @return the {@link Stream}
-     * @param <T> the entity type
      * @throws NullPointerException when type is null
      */
     <T> Stream<T> findAll(Class<T> type);
 
     /**
      * delete elements from column family
+     *
      * @param type the entity type
-     * @param <T> the entity type
+     * @param <T>  the entity type
      * @throws NullPointerException when type is null
      */
     <T> void deleteAll(Class<T> type);
