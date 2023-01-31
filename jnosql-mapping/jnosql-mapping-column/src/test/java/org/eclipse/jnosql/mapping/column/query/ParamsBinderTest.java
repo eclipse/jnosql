@@ -32,7 +32,7 @@ import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.jboss.weld.junit5.auto.AddExtensions;

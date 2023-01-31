@@ -23,7 +23,7 @@ import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;

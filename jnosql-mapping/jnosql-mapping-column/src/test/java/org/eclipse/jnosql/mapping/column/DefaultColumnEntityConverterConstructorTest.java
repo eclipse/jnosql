@@ -26,7 +26,7 @@ import org.eclipse.jnosql.mapping.test.entities.Money;
 import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+
 import org.eclipse.jnosql.mapping.column.entities.BookRelease;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;

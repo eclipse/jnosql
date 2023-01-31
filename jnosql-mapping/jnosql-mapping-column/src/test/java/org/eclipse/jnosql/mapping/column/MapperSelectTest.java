@@ -27,7 +27,7 @@ import org.eclipse.jnosql.mapping.test.entities.Address;
 import org.eclipse.jnosql.mapping.test.entities.Money;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Worker;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
