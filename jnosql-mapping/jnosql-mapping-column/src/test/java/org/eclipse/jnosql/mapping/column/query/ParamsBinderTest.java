@@ -31,7 +31,7 @@ import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.column.entities.Person;
 
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
@@ -43,7 +43,6 @@ import org.junit.jupiter.api.Test;
 import jakarta.inject.Inject;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

@@ -22,11 +22,10 @@ import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.entities.Address;
-import org.eclipse.jnosql.mapping.test.entities.Money;
-import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.entities.Worker;
-import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.column.entities.Address;
+import org.eclipse.jnosql.mapping.column.entities.Money;
+import org.eclipse.jnosql.mapping.column.entities.Person;
+import org.eclipse.jnosql.mapping.column.entities.Worker;
 
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.jboss.weld.junit5.auto.AddExtensions;

@@ -20,12 +20,12 @@ import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.entities.Animal;
-import org.eclipse.jnosql.mapping.test.entities.Book;
-import org.eclipse.jnosql.mapping.test.entities.Money;
-import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
-import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
-import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
+import org.eclipse.jnosql.mapping.column.entities.Animal;
+import org.eclipse.jnosql.mapping.column.entities.Book;
+import org.eclipse.jnosql.mapping.column.entities.Money;
+import org.eclipse.jnosql.mapping.column.entities.constructor.BookUser;
+import org.eclipse.jnosql.mapping.column.entities.constructor.Computer;
+import org.eclipse.jnosql.mapping.column.entities.constructor.PetOwner;
 
 import org.eclipse.jnosql.mapping.column.entities.BookRelease;
 import org.jboss.weld.junit5.auto.AddExtensions;
