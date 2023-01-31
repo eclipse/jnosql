@@ -14,18 +14,19 @@
  */
 package org.eclipse.jnosql.mapping.validation;
 
+import jakarta.inject.Inject;
 import jakarta.nosql.document.DocumentTemplate;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 import java.util.Set;
 
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @CDIExtension
@@ -44,7 +45,8 @@ public class DocumentTemplateValidationTest {
                 .withSalary(BigDecimal.ONE)
                 .withPhones(singletonList("123131231"))
                 .build();
-        template.insert(person);
+        assertThat(template.insert(person))
+                .isNotNull();
     }
 
     @Test
