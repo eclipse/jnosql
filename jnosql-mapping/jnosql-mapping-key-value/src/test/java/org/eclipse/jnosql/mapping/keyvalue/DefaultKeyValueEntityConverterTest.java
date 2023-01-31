@@ -24,7 +24,6 @@ import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Plate;
 import org.eclipse.jnosql.mapping.test.entities.User;
 import org.eclipse.jnosql.mapping.test.entities.Worker;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
