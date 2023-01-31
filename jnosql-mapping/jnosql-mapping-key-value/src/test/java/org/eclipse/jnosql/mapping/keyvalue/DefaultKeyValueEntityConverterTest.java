@@ -16,6 +16,9 @@ package org.eclipse.jnosql.mapping.keyvalue;
 
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Car;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Plate;
@@ -23,6 +26,9 @@ import org.eclipse.jnosql.mapping.test.entities.User;
 import org.eclipse.jnosql.mapping.test.entities.Worker;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +36,10 @@ import jakarta.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, KeyValueWorkflow.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 public class DefaultKeyValueEntityConverterTest {
 
     @Inject
