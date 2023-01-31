@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Sort;
@@ -339,7 +338,8 @@ public class ColumnCrudRepositoryProxyTest {
 
     @Test
     public void shouldReturnEquals() {
-        personRepository.equals(personRepository);
+        assertThat(personRepository.equals(personRepository))
+                .isNotNull();
     }
 
     @Test

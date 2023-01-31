@@ -47,6 +47,7 @@ import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -313,7 +314,8 @@ public class GraphCrudRepositoryProxyTest {
 
     @Test
     public void shouldReturnEquals() {
-        personRepository.equals(personRepository);
+        assertThat(personRepository.equals(personRepository))
+                .isNotNull();
     }
 
     @Test

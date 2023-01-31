@@ -346,7 +346,8 @@ public class DocumentCrudRepositoryProxyTest {
 
     @Test
     public void shouldReturnEquals() {
-        personRepository.equals(personRepository);
+        assertThat(personRepository.equals(personRepository))
+                .isNotNull();
     }
 
     @Test
