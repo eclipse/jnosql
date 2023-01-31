@@ -16,9 +16,17 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import jakarta.nosql.document.DocumentTemplate;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
+import org.eclipse.jnosql.mapping.document.MockProducer;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -26,7 +34,10 @@ import jakarta.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class DocumentRepositoryProducerTest {
 
     @Inject

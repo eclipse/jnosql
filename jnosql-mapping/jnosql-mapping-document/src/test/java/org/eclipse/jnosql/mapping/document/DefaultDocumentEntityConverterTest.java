@@ -18,6 +18,9 @@ import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Actor;
 import org.eclipse.jnosql.mapping.test.entities.Address;
 import org.eclipse.jnosql.mapping.test.entities.AppointmentBook;
@@ -34,6 +37,9 @@ import org.eclipse.jnosql.mapping.test.entities.Worker;
 import org.eclipse.jnosql.mapping.test.entities.ZipCode;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.mapping.document.entities.Citizen;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,7 +65,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DefaultDocumentEntityConverterTest {
 
     @Inject

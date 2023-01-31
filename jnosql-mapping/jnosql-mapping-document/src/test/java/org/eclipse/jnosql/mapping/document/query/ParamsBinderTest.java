@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Params;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
@@ -24,25 +25,33 @@ import org.eclipse.jnosql.communication.document.DocumentQuery;
 import org.eclipse.jnosql.communication.document.DocumentQueryParams;
 import org.eclipse.jnosql.communication.document.SelectQueryParser;
 import org.eclipse.jnosql.communication.query.SelectQuery;
-import org.eclipse.jnosql.mapping.Converters;
-import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
-import org.eclipse.jnosql.mapping.util.ParamsBinder;
 import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.mapping.document.MockProducer;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.util.ParamsBinder;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class ParamsBinderTest {
 
 

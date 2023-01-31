@@ -27,12 +27,20 @@ import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentCondition;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
+import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
+import org.eclipse.jnosql.mapping.document.MockProducer;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Vendor;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -72,7 +80,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DocumentRepositoryProxyTest {
 
     private JNoSQLDocumentTemplate template;
