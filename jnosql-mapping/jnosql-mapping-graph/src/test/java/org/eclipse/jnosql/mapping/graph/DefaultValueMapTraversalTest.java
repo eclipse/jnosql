@@ -15,8 +15,14 @@
 package org.eclipse.jnosql.mapping.graph;
 
 import jakarta.data.exceptions.NonUniqueResultException;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
+import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -31,7 +37,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, Transactional.class})
+@AddPackages(BookRepository.class)
+@AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 class DefaultValueMapTraversalTest extends AbstractTraversalTest {
 
 
