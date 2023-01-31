@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.keyvalue.spi;
 
 
+import jakarta.enterprise.context.spi.CreationalContext;
 import jakarta.nosql.keyvalue.KeyValueTemplate;
 import org.eclipse.jnosql.communication.keyvalue.BucketManager;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
@@ -22,7 +23,6 @@ import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.keyvalue.KeyValueTemplateProducer;
 import org.eclipse.jnosql.mapping.spi.AbstractBean;
 
-import jakarta.enterprise.context.spi.CreationalContext;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -30,7 +30,7 @@ import java.util.Set;
 
 class TemplateBean extends AbstractBean<KeyValueTemplate> {
 
-    private final Set<Type> types;
+    private static final Set<Type> TYPES = Collections.singleton(KeyValueTemplate.class);
 
     private final String provider;
 
@@ -41,7 +41,6 @@ class TemplateBean extends AbstractBean<KeyValueTemplate> {
      * @param provider    the provider name, that must be a
      */
     public TemplateBean(String provider) {
-        this.types = Collections.singleton(KeyValueTemplate.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofKeyValue(provider));
     }
@@ -65,7 +64,7 @@ class TemplateBean extends AbstractBean<KeyValueTemplate> {
 
     @Override
     public Set<Type> getTypes() {
-        return types;
+        return TYPES;
     }
 
     @Override

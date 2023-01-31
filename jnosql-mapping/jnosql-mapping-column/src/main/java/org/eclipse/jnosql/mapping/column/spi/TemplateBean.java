@@ -32,8 +32,6 @@ import java.util.Set;
 class TemplateBean extends AbstractBean<JNoSQLColumnTemplate> {
 
     private static final Set<Type> TYPES = Set.of(ColumnTemplate.class, JNoSQLColumnTemplate.class);
-    private final Set<Type> types;
-
     private final String provider;
 
     private final Set<Annotation> qualifiers;
@@ -44,7 +42,6 @@ class TemplateBean extends AbstractBean<JNoSQLColumnTemplate> {
      * @param provider    the provider name, that must be a
      */
     public TemplateBean(String provider) {
-        this.types = TYPES;
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofColumn(provider));
     }
@@ -69,7 +66,7 @@ class TemplateBean extends AbstractBean<JNoSQLColumnTemplate> {
 
     @Override
     public Set<Type> getTypes() {
-        return types;
+        return TYPES;
     }
 
     @Override

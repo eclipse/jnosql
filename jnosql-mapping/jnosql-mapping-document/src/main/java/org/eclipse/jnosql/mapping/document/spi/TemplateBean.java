@@ -35,8 +35,6 @@ class TemplateBean extends AbstractBean<JNoSQLDocumentTemplate> {
 
     private static final Set<Type> TYPES = Set.of(DocumentTemplate.class, JNoSQLDocumentTemplate.class);
 
-    private final Set<Type> types;
-
     private final String provider;
 
     private final Set<Annotation> qualifiers;
@@ -47,7 +45,6 @@ class TemplateBean extends AbstractBean<JNoSQLDocumentTemplate> {
      * @param provider    the provider name, that must be a
      */
     public TemplateBean( String provider) {
-        this.types = TYPES;
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofDocument(provider));
     }
@@ -86,7 +83,7 @@ class TemplateBean extends AbstractBean<JNoSQLDocumentTemplate> {
 
     @Override
     public Set<Type> getTypes() {
-        return types;
+        return TYPES;
     }
 
     @Override

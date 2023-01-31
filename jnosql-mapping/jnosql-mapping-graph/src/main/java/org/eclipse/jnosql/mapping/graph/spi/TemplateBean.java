@@ -29,7 +29,7 @@ import java.util.Set;
 
 class TemplateBean extends AbstractBean<GraphTemplate> {
 
-    private final Set<Type> types;
+    private static final Set<Type> TYPES = Collections.singleton(GraphTemplate.class);
 
     private final String provider;
 
@@ -41,7 +41,6 @@ class TemplateBean extends AbstractBean<GraphTemplate> {
      * @param provider    the provider name, that must be a
      */
     public TemplateBean(String provider) {
-        this.types = Collections.singleton(GraphTemplate.class);
         this.provider = provider;
         this.qualifiers = Collections.singleton(DatabaseQualifier.ofGraph(provider));
     }
@@ -66,7 +65,7 @@ class TemplateBean extends AbstractBean<GraphTemplate> {
 
     @Override
     public Set<Type> getTypes() {
-        return types;
+        return TYPES;
     }
 
     @Override
