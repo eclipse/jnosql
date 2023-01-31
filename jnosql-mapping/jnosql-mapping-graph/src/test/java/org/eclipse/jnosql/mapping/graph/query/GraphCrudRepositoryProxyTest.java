@@ -313,12 +313,6 @@ public class GraphCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldReturnEquals() {
-        assertThat(personRepository.equals(personRepository))
-                .isNotNull();
-    }
-
-    @Test
     public void shouldExecuteQuery() {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);

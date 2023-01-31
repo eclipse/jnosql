@@ -345,12 +345,6 @@ public class DocumentCrudRepositoryProxyTest {
     }
 
     @Test
-    public void shouldReturnEquals() {
-        assertThat(personRepository.equals(personRepository))
-                .isNotNull();
-    }
-
-    @Test
     public void shouldFindByNameAndAgeGreaterEqualThan() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
