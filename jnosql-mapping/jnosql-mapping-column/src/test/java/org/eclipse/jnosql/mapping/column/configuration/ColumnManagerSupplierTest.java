@@ -16,7 +16,15 @@ package org.eclipse.jnosql.mapping.column.configuration;
 
 import org.eclipse.jnosql.communication.column.ColumnManager;
 import jakarta.data.exceptions.MappingException;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.column.ColumnWorkflow;
+import org.eclipse.jnosql.mapping.column.MockProducer;
+import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +35,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_DATABASE;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.COLUMN_PROVIDER;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, ColumnWorkflow.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 class ColumnManagerSupplierTest {
 
     @Inject
