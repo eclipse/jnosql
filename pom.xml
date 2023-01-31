@@ -58,7 +58,7 @@
     </developers>
     <properties>
         <apache.rat.version>0.12</apache.rat.version>
-        <jacoco.maven.version>0.8.7</jacoco.maven.version>
+        <jacoco.maven.version>0.8.8</jacoco.maven.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
         <jakarta.enterprise.cdi.version>4.0.1</jakarta.enterprise.cdi.version>
         <jakarta.json.bind.version>3.0.0</jakarta.json.bind.version>
@@ -310,14 +310,16 @@
                 <version>${jacoco.maven.version}</version>
                 <executions>
                     <execution>
-                        <id>pre-test</id>
+                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                        <configuration>
-                            <destFile>${sonar.jacoco.reportPath}</destFile>
-                            <append>true</append>
-                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
