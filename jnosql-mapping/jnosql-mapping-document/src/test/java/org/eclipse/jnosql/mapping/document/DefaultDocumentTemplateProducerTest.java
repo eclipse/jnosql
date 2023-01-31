@@ -19,7 +19,6 @@ import jakarta.nosql.document.DocumentTemplate;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;

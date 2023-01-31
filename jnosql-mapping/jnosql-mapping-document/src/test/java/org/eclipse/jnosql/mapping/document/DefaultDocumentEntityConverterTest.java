@@ -35,7 +35,6 @@ import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Vendor;
 import org.eclipse.jnosql.mapping.test.entities.Worker;
 import org.eclipse.jnosql.mapping.test.entities.ZipCode;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.mapping.document.entities.Citizen;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
