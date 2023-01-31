@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -43,7 +44,8 @@ public class ColumnTemplateValidationTest {
                 .withSalary(BigDecimal.ONE)
                 .withPhones(singletonList("123131231"))
                 .build();
-        template.insert(person);
+        assertThat(template.insert(person))
+                .isNotNull();
     }
 
     @Test
