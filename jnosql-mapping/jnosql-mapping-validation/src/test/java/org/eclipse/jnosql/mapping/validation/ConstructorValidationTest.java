@@ -15,18 +15,25 @@
 package org.eclipse.jnosql.mapping.validation;
 
 import jakarta.data.exceptions.MappingException;
-import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.lang.reflect.Constructor;
 import java.util.Set;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class})
+@AddPackages(Person.class)
+@AddExtensions({EntityMetadataExtension.class})
 public class ConstructorValidationTest {
 
     @Inject
