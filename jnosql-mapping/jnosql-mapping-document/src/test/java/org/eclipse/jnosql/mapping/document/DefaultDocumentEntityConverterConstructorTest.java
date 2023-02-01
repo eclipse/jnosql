@@ -14,19 +14,23 @@
  */
 package org.eclipse.jnosql.mapping.document;
 
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.document.Document;
 import org.eclipse.jnosql.communication.document.DocumentEntity;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.document.entities.BookRelease;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.entities.Animal;
 import org.eclipse.jnosql.mapping.test.entities.Money;
 import org.eclipse.jnosql.mapping.test.entities.constructor.BookUser;
 import org.eclipse.jnosql.mapping.test.entities.constructor.Computer;
 import org.eclipse.jnosql.mapping.test.entities.constructor.PetOwner;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
-import org.eclipse.jnosql.mapping.document.entities.BookRelease;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
-
-import jakarta.inject.Inject;
 
 import java.time.Year;
 import java.util.ArrayList;
@@ -37,7 +41,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 public class DefaultDocumentEntityConverterConstructorTest {
 
     @Inject

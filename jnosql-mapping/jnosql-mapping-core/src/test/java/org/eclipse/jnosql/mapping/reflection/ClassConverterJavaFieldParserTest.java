@@ -14,22 +14,29 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.test.entities.Address;
 import org.eclipse.jnosql.mapping.test.entities.AppointmentBook;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Worker;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = Convert.class)
+@AddPackages(value = VetedConverter.class)
+@AddExtensions(EntityMetadataExtension.class)
 public class ClassConverterJavaFieldParserTest {
 
     @Inject

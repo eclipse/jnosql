@@ -31,15 +31,19 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>jnosql-jupiter</module>
         <module>jnosql-mapping-core</module>
-        <module>jnosql-mapping-tests</module>
         <module>jnosql-mapping-graph</module>
         <module>jnosql-mapping-document</module>
         <module>jnosql-mapping-column</module>
         <module>jnosql-mapping-key-value</module>
         <module>jnosql-mapping-validation</module>
     </modules>
+
+    <properties>
+        <weld.jupiter.version>4.0.0.Final</weld.jupiter.version>
+        <tinkerpop.version>3.6.1</tinkerpop.version>
+        <neo4j.connector.version>0.9-3.4.0</neo4j.connector.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -51,6 +55,12 @@
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>
             <version>${weld.se.core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-junit5</artifactId>
+            <version>${weld.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

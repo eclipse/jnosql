@@ -21,14 +21,20 @@ import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnEntity;
 import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import jakarta.nosql.PreparedStatement;
 import org.eclipse.jnosql.mapping.IdNotFoundException;
+import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
-import org.eclipse.jnosql.mapping.test.entities.Job;
-import org.eclipse.jnosql.mapping.test.entities.Movie;
-import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.column.entities.Job;
+import org.eclipse.jnosql.mapping.column.entities.Movie;
+import org.eclipse.jnosql.mapping.column.entities.Person;
+
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,7 +59,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, ColumnWorkflow.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
 public class DefaultColumnTemplateTest {
 
     private final Person person = Person.builder().

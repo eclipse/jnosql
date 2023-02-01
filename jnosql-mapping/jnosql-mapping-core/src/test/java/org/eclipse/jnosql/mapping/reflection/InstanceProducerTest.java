@@ -14,8 +14,12 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.test.entities.ZipCode;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.eclipse.jnosql.mapping.InstanceProducer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +27,10 @@ import org.junit.jupiter.api.Test;
 import jakarta.inject.Inject;
 
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = Convert.class)
+@AddPackages(value = VetedConverter.class)
+@AddExtensions(EntityMetadataExtension.class)
 public class InstanceProducerTest {
 
     @Inject

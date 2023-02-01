@@ -15,19 +15,28 @@
 package org.eclipse.jnosql.mapping.graph.spi;
 
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Database;
 import org.eclipse.jnosql.mapping.graph.BookRepository;
 import org.eclipse.jnosql.mapping.graph.GraphTemplate;
+import org.eclipse.jnosql.mapping.graph.Transactional;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
 import static org.eclipse.jnosql.mapping.DatabaseType.GRAPH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, Transactional.class})
+@AddPackages(BookRepository.class)
+@AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 public class GraphConfigurationProducerExtensionTest {
 
     @Inject

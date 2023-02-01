@@ -17,9 +17,15 @@ package org.eclipse.jnosql.mapping.graph;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Transaction.Status;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.BookTemplate;
+import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
@@ -32,7 +38,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, Transactional.class})
+@AddPackages(BookRepository.class)
+@AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
 public class BookTemplateTest {
 
     @Inject

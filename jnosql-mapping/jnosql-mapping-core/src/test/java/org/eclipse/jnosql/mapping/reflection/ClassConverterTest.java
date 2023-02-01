@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.inject.Inject;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.test.entities.Actor;
 import org.eclipse.jnosql.mapping.test.entities.Director;
 import org.eclipse.jnosql.mapping.test.entities.Machine;
@@ -28,7 +30,9 @@ import org.eclipse.jnosql.mapping.test.entities.inheritance.Notification;
 import org.eclipse.jnosql.mapping.test.entities.inheritance.Project;
 import org.eclipse.jnosql.mapping.test.entities.inheritance.SmallProject;
 import org.eclipse.jnosql.mapping.test.entities.inheritance.SocialMediaNotification;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +47,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = Convert.class)
+@AddPackages(value = VetedConverter.class)
+@AddExtensions(EntityMetadataExtension.class)
 public class ClassConverterTest {
 
     @Inject

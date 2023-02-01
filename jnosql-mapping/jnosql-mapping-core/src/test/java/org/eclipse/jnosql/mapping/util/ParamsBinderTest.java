@@ -15,29 +15,33 @@
 package org.eclipse.jnosql.mapping.util;
 
 import jakarta.data.repository.CrudRepository;
+import jakarta.inject.Inject;
 import org.eclipse.jnosql.communication.Params;
-import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.eclipse.jnosql.communication.Value;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.DynamicQueryException;
+import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import jakarta.inject.Inject;
-
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = Convert.class)
+@AddPackages(value = VetedConverter.class)
+@AddExtensions(EntityMetadataExtension.class)
 class ParamsBinderTest {
 
     @Inject

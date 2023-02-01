@@ -14,6 +14,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Add support for Jakarta Data
 - Add documentation repository
 - Move the communication API as JNoSQL implementation
+- Change the test engine to Weld-jupiter instead of jnosql-jupiter
 
 === Added
 
@@ -27,6 +28,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Remove ColumnQueryMapper implementation
 - Remove DocumentQueryMapper implementation
 - Remove support for old Repository and Pagination (replaced by Jakarta Data)
+- Remove project jnosql-jupiter and jnosql-entity
 
 === Fixed
 

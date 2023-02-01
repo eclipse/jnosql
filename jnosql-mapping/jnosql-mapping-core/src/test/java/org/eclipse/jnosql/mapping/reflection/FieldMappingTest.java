@@ -16,8 +16,12 @@ package org.eclipse.jnosql.mapping.reflection;
 
 
 import jakarta.nosql.Column;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Embeddable;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.eclipse.jnosql.mapping.VetedConverter;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
@@ -31,7 +35,10 @@ import static org.eclipse.jnosql.mapping.reflection.MappingType.EMBEDDED;
 import static org.eclipse.jnosql.mapping.reflection.MappingType.MAP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = Convert.class)
+@AddPackages(value = VetedConverter.class)
+@AddExtensions(EntityMetadataExtension.class)
 public class FieldMappingTest {
 
 

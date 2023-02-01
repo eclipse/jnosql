@@ -16,7 +16,15 @@ package org.eclipse.jnosql.mapping.document.configuration;
 
 import jakarta.data.exceptions.MappingException;
 import org.eclipse.jnosql.communication.document.DocumentManager;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.eclipse.jnosql.mapping.Convert;
+import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
+import org.eclipse.jnosql.mapping.document.MockProducer;
+import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +35,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_DATABASE;
 import static org.eclipse.jnosql.mapping.config.MappingConfigurations.DOCUMENT_PROVIDER;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, DocumentWorkflow.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class, DocumentExtension.class})
 class DocumentManagerSupplierTest {
 
     @Inject

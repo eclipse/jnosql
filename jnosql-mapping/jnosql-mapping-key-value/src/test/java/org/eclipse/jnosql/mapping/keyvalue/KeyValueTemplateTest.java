@@ -16,14 +16,22 @@ package org.eclipse.jnosql.mapping.keyvalue;
 
 import jakarta.inject.Inject;
 import jakarta.nosql.Template;
+import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Database;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
+import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.jboss.weld.junit5.auto.AddExtensions;
+import org.jboss.weld.junit5.auto.AddPackages;
+import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.eclipse.jnosql.mapping.DatabaseType.KEY_VALUE;
 
-@CDIExtension
+@EnableAutoWeld
+@AddPackages(value = {Convert.class, KeyValueWorkflow.class})
+@AddPackages(MockProducer.class)
+@AddExtensions({EntityMetadataExtension.class, KeyValueExtension.class})
 class KeyValueTemplateTest {
 
     @Inject
