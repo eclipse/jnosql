@@ -26,10 +26,6 @@
     <artifactId>jnosql-mapping-graph</artifactId>
 
 
-    <properties>
-        <tinkerpop.version>3.6.1</tinkerpop.version>
-        <neo4j.connector.version>0.9-3.4.0</neo4j.connector.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jnosql.mapping</groupId>
