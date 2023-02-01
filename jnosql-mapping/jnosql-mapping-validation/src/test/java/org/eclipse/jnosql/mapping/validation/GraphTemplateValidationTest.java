@@ -50,13 +50,8 @@ public class GraphTemplateValidationTest {
     @Test
     public void shouldValidate() {
 
-        Person person = Person.builder()
-                .withAge(21)
-                .withName("10")
-                .withSalary(BigDecimal.ONE)
-                .withPhones(singletonList("123131231"))
-                .build();
-        assertThat(template.insert(person))
+        User ada = User.of("Ada", 30);
+        assertThat(template.insert(ada))
                 .isNotNull();
     }
 
