@@ -15,16 +15,19 @@
 package org.eclipse.jnosql.mapping.validation;
 
 import jakarta.inject.Inject;
-import jakarta.nosql.column.ColumnTemplate;
+import jakarta.nosql.keyvalue.KeyValueTemplate;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.eclipse.jnosql.mapping.Convert;
-import org.eclipse.jnosql.mapping.column.ColumnWorkflow;
-import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
+import org.eclipse.jnosql.mapping.graph.GraphTemplate;
+import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
+import org.eclipse.jnosql.mapping.keyvalue.KeyValueWorkflow;
+import org.eclipse.jnosql.mapping.keyvalue.spi.KeyValueExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -33,23 +36,23 @@ import java.util.Set;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @EnableAutoWeld
-@AddPackages(value = {Convert.class, ColumnWorkflow.class, EntityObserver.class})
+@AddPackages(value = {Convert.class, GraphTemplate.class, EntityObserver.class})
 @AddPackages(Person.class)
-@AddExtensions({EntityMetadataExtension.class, ColumnExtension.class})
-public class ColumnTemplateValidationTest {
+@AddExtensions({EntityMetadataExtension.class, GraphExtension.class})
+public class GraphTemplateValidationTest {
 
     @Inject
-    private ColumnTemplate template;
+    private GraphTemplate template;
+
 
     @Test
-    public void shouldValidateOnSave() {
+    public void shouldValidate() {
 
         Person person = Person.builder()
-                .withAge(22)
-                .withName("Ada")
+                .withAge(21)
+                .withName("10")
                 .withSalary(BigDecimal.ONE)
                 .withPhones(singletonList("123131231"))
                 .build();
@@ -58,11 +61,10 @@ public class ColumnTemplateValidationTest {
     }
 
     @Test
-    public void shouldReturnValidationExceptionOnSave() {
-        assertThrows(ConstraintViolationException.class, () -> {
+    public void shouldReturnValidationException() {
+        Assertions.assertThrows(ConstraintViolationException.class, () -> {
             Person person = Person.builder()
                     .withAge(10)
-                    .withName("Ada")
                     .withSalary(BigDecimal.ONE)
                     .withPhones(singletonList("123131231"))
                     .build();
@@ -72,7 +74,7 @@ public class ColumnTemplateValidationTest {
 
 
     @Test
-    public void shouldGetValidationsOnSave() {
+    public void shouldGetValidations() {
 
         Person person = Person.builder()
                 .withAge(10)
@@ -82,50 +84,6 @@ public class ColumnTemplateValidationTest {
                 .build();
         try {
             template.insert(person);
-        } catch (ConstraintViolationException ex) {
-            Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
-            assertEquals(2, violations.size());
-        }
-
-    }
-
-    @Test
-    public void shouldValidateOnUpdate() {
-
-        Person person = Person.builder()
-                .withAge(22)
-                .withName("Ada")
-                .withSalary(BigDecimal.ONE)
-                .withPhones(singletonList("123131231"))
-                .build();
-        template.update(person);
-    }
-
-    @Test
-    public void shouldReturnValidationExceptionOnUpdate() {
-        assertThrows(ConstraintViolationException.class, () -> {
-            Person person = Person.builder()
-                    .withAge(10)
-                    .withName("Ada")
-                    .withSalary(BigDecimal.ONE)
-                    .withPhones(singletonList("123131231"))
-                    .build();
-            template.update(person);
-        });
-    }
-
-
-    @Test
-    public void shouldGetValidationsOnUpdate() {
-
-        Person person = Person.builder()
-                .withAge(10)
-                .withName("Ada")
-                .withSalary(BigDecimal.valueOf(12991))
-                .withPhones(singletonList("123131231"))
-                .build();
-        try {
-            template.update(person);
         } catch (ConstraintViolationException ex) {
             Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
             assertEquals(2, violations.size());
