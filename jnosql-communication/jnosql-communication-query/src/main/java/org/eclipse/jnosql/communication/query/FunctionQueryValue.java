@@ -24,7 +24,7 @@ public final class FunctionQueryValue implements QueryValue<Function> {
 
     private final Function function;
 
-    private FunctionQueryValue(Function function) {
+    FunctionQueryValue(Function function) {
         this.function = function;
     }
 
