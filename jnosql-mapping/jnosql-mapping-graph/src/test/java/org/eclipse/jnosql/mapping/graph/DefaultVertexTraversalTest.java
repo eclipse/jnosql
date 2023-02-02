@@ -18,7 +18,7 @@ import jakarta.data.exceptions.NonUniqueResultException;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.eclipse.jnosql.mapping.graph.entities.Animal;
