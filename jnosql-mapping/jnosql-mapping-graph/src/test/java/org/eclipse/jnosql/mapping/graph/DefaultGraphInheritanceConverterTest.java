@@ -17,7 +17,7 @@ package org.eclipse.jnosql.mapping.graph;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
 import jakarta.inject.Inject;

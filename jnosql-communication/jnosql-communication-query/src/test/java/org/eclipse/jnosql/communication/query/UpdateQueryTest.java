@@ -42,6 +42,26 @@ public class UpdateQueryTest {
         Assertions.assertThrows(QueryException.class, () -> testQuery(query));
     }
 
+    @Test
+    public void shouldCreateFromMethodFactory() {
+        UpdateQuery query = UpdateQuery.parse("update Person (name = \"Ada Lovelace\")");
+        Assertions.assertNotNull(query);
+    }
+
+    @Test
+    public void shouldEquals() {
+        String text = "update Person (name = \"Ada Lovelace\")";
+        UpdateQuery query = UpdateQuery.parse(text);
+        Assertions.assertEquals(query, UpdateQuery.parse(text));
+    }
+
+    @Test
+    public void shouldHashCode() {
+        String text = "update Person (name = \"Ada Lovelace\")";
+        UpdateQuery query = UpdateQuery.parse(text);
+        Assertions.assertEquals(query.hashCode(), UpdateQuery.parse(text).hashCode());
+    }
+
     private void testQuery(String query) {
         CharStream stream = CharStreams.fromString(query);
         QueryLexer lexer = new QueryLexer(stream);

@@ -43,6 +43,7 @@ public class DeleteQueryTest {
         Assertions.assertThrows(QueryException.class, () -> testQuery(query));
     }
 
+
     private void testQuery(String query) {
         CharStream stream = CharStreams.fromString(query);
         QueryLexer lexer = new QueryLexer(stream);
@@ -56,9 +57,8 @@ public class DeleteQueryTest {
         ParseTree tree = parser.delete();
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(new QueryBaseListener(), tree);
-
-
     }
+
 
 
 }

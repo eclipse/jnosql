@@ -26,6 +26,18 @@ class MethodQueryTest {
         Assertions.assertThrows(NullPointerException.class, () -> MethodQuery.of(null));
     }
 
+    @Test
+    public void shouldEquals() {
+        MethodQuery query = MethodQuery.of("findByAge");
+        Assertions.assertEquals(query, MethodQuery.of("findByAge"));
+    }
+
+    @Test
+    public void shouldHashCode() {
+        MethodQuery query = MethodQuery.of("findByAge");
+        Assertions.assertEquals(query.hashCode(), MethodQuery.of("findByAge").hashCode());
+    }
+
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"findByAge"})
     public void shouldRunQuery(String query) {

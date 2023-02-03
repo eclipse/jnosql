@@ -23,7 +23,6 @@ import org.eclipse.jnosql.mapping.graph.Transactional;
 import org.eclipse.jnosql.mapping.graph.entities.Book;
 import org.eclipse.jnosql.mapping.graph.entities.Person;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;

@@ -19,7 +19,7 @@ import org.eclipse.jnosql.mapping.graph.BookRepository;
 import org.eclipse.jnosql.mapping.graph.Transactional;
 import org.eclipse.jnosql.mapping.graph.spi.GraphExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.jupiter.CDIExtension;
+
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;

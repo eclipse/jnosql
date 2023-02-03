@@ -26,7 +26,7 @@ public final class DeleteByMethodQueryProvider extends AbstractMethodQueryProvid
         Objects.requireNonNull(query, " query is required");
         Objects.requireNonNull(entity, " entity is required");
         runQuery(MethodQuery.of(query).get());
-        return new MethodDeleteQuery(entity, where);
+        return DeleteQuery.of(entity, where);
     }
 
     @Override

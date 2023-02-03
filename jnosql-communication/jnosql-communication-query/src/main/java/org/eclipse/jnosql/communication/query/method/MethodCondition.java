@@ -16,6 +16,8 @@ import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryValue;
 
+import java.util.Objects;
+
 final class MethodCondition implements QueryCondition {
 
     private final String name;
@@ -54,5 +56,24 @@ final class MethodCondition implements QueryCondition {
     @Override
     public String toString() {
         return name + " " + condition + " " + value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MethodCondition that = (MethodCondition) o;
+        return Objects.equals(name, that.name)
+                && condition == that.condition
+                && Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, condition, value);
     }
 }
