@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Map;
@@ -78,9 +77,4 @@ final class TreeEntry<K, V> implements Map.Entry<K, V> {
         return new TreeEntry<>(key, value);
     }
 
-    static <K> TreeEntry<K, EdgeEntity> of(Edge edge, GraphConverter converter) {
-        K key = (K) edge.id();
-        EdgeEntity value = converter.toEdgeEntity(edge);
-        return new TreeEntry<>(key, value);
-    }
 }
