@@ -1,12 +1,11 @@
 package org.eclipse.jnosql.communication.query;
 
 import jakarta.json.JsonObject;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JSONQueryValueTest {
 
@@ -14,7 +13,7 @@ class JSONQueryValueTest {
 
     @BeforeEach
     public void setUp() {
-        this.json = JsonObject.TRUE.asJsonObject();
+        this.json = JsonObject.EMPTY_JSON_OBJECT.asJsonObject();
     }
 
 
