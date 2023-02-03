@@ -64,12 +64,8 @@ public class DefaultDocumentWorkflowTest {
         UnaryOperator<DocumentEntity> action = t -> t;
         subject.flow(Person.builder().withId(1L).withAge().withName("Ada").build(), action);
 
-        verify(columnEventPersistManager).firePreDocument(any());
-        verify(columnEventPersistManager).firePostDocument(any());
         verify(columnEventPersistManager).firePreEntity(any());
         verify(columnEventPersistManager).firePostEntity(any());
-        verify(columnEventPersistManager).firePreDocumentEntity(any());
-        verify(columnEventPersistManager).firePostDocumentEntity(any());
         verify(converter).toDocument(any(Object.class));
     }
 

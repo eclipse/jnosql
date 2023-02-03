@@ -42,12 +42,6 @@ public class GraphEventPersistManagerTest {
     private Event<EntityPostPersist> entityPostPersistEvent;
 
     @Mock
-    private Event<EntityGraphPrePersist> entityGraphPrePersist;
-
-    @Mock
-    private Event<EntityGraphPostPersist> entityGraphPostPersist;
-
-    @Mock
     private Vertex vertex;
 
     @Test
@@ -71,31 +65,6 @@ public class GraphEventPersistManagerTest {
         EntityPostPersist value = captor.getValue();
         assertEquals(jedi, value.get());
     }
-
-    @Test
-    public void shouldFirePreGraphEntity() {
-        Jedi jedi = new Jedi();
-        jedi.name = "Luke";
-        subject.firePreGraphEntity(jedi);
-        ArgumentCaptor<EntityGraphPrePersist> captor = ArgumentCaptor.forClass(EntityGraphPrePersist.class);
-        verify(entityGraphPrePersist).fire(captor.capture());
-        EntityGraphPrePersist value = captor.getValue();
-        assertEquals(jedi, value.get());
-    }
-
-    @Test
-    public void shouldFirePostGraphEntity() {
-
-        Jedi jedi = new Jedi();
-        jedi.name = "Luke";
-        subject.firePostGraphEntity(jedi);
-        ArgumentCaptor<EntityGraphPostPersist> captor = ArgumentCaptor.forClass(EntityGraphPostPersist.class);
-        verify(entityGraphPostPersist).fire(captor.capture());
-        EntityGraphPostPersist value = captor.getValue();
-        assertEquals(jedi, value.get());
-    }
-
-
 
     static class Jedi {
         private String name;

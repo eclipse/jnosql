@@ -63,13 +63,9 @@ public class DefaultColumnWorkflowTest {
         UnaryOperator<ColumnEntity> action = t -> t;
         subject.flow(Person.builder().withId(1L).withAge().withName("Ada").build(), action);
 
-        verify(columnEventPersistManager).firePreColumn(any());
-        verify(columnEventPersistManager).firePostColumn(any());
         verify(columnEventPersistManager).firePreEntity(any());
         verify(columnEventPersistManager).firePostEntity(any());
 
-        verify(columnEventPersistManager).firePreColumnEntity(any());
-        verify(columnEventPersistManager).firePostColumnEntity(any());
         verify(converter).toColumn(any());
     }
 

@@ -15,72 +15,29 @@
 package org.eclipse.jnosql.mapping.column;
 
 
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.communication.column.ColumnEntity;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.EntityPostPersist;
 import org.eclipse.jnosql.mapping.EntityPrePersist;
 
 /**
  * This interface represents the manager of events. When an entity be either saved or updated an event will be fired.
  * This order going to be:
- * 1) firePreEntity
- * 2) firePreColumnEntity
- * 3) firePreColumn
- * 4) firePostColumn
- * 5) firePostEntity
- * 6) firePostColumnEntity
+ * 1) firePreColumn
+ * 2) firePostColumn
  *
  * @see ColumnWorkflow
  */
 @ApplicationScoped
 public class ColumnEventPersistManager {
 
-    @Inject
-    private Event<ColumnEntityPrePersist> columnEntityPrePersistEvent;
-
-    @Inject
-    private Event<ColumnEntityPostPersist> columnEntityPostPersistEvent;
 
     @Inject
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Inject
     private Event<EntityPostPersist> entityPostPersistEvent;
-
-    @Inject
-    private Event<EntityColumnPrePersist> entityColumnPrePersist;
-
-    @Inject
-    private Event<EntityColumnPostPersist> entityColumnPostPersist;
-
-    @Inject
-    private Event<ColumnQueryExecute> columnQueryExecute;
-
-    @Inject
-    private Event<ColumnDeleteQueryExecute> columnDeleteQueryExecute;
-
-    /**
-     * Fire an event after the conversion of the entity to communication API model.
-     *
-     * @param entity the entity
-     */
-    public void firePreColumn(ColumnEntity entity) {
-        columnEntityPrePersistEvent.fire(new ColumnEntityPrePersist(entity));
-    }
-
-    /**
-     * Fire an event after the response from communication layer
-     *
-     * @param entity the entity
-     */
-    public void firePostColumn(ColumnEntity entity) {
-        columnEntityPostPersistEvent.fire(new ColumnEntityPostPersist(entity));
-    }
 
     /**
      * Fire an event once the method is called
@@ -102,41 +59,4 @@ public class ColumnEventPersistManager {
         entityPostPersistEvent.fire(EntityPostPersist.of(entity));
     }
 
-    /**
-     * Fire an event once the method is called after firePreEntity
-     *
-     * @param entity the entity
-     * @param <T>    the entity type
-     */
-    public <T> void firePreColumnEntity(T entity) {
-        entityColumnPrePersist.fire(new EntityColumnPrePersist(entity));
-    }
-
-    /**
-     * Fire an event after firePostEntity
-     *
-     * @param entity the entity
-     * @param <T>    the entity kind
-     */
-    public <T> void firePostColumnEntity(T entity) {
-        entityColumnPostPersist.fire(new EntityColumnPostPersist(entity));
-    }
-
-    /**
-     * Fire an event before the query is executed
-     *
-     * @param query the query
-     */
-    public void firePreQuery(ColumnQuery query) {
-        columnQueryExecute.fire(new ColumnQueryExecute(query));
-    }
-
-    /**
-     * Fire an event before the delete query is executed
-     *
-     * @param query the query
-     */
-    public void firePreDeleteQuery(ColumnDeleteQuery query) {
-        columnDeleteQueryExecute.fire(new ColumnDeleteQueryExecute(query));
-    }
 }

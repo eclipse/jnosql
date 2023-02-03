@@ -43,12 +43,6 @@ class GraphEventPersistManager {
     @Inject
     private Event<EntityPostPersist> entityPostPersistEvent;
 
-    @Inject
-    private Event<EntityGraphPrePersist> entityGraphPrePersist;
-
-    @Inject
-    private Event<EntityGraphPostPersist> entityGraphPostPersist;
-
     /**
      * Fire an event once the method is called
      *
@@ -68,25 +62,5 @@ class GraphEventPersistManager {
      */
     public <T> void firePostEntity(T entity) {
         entityPostPersistEvent.fire(EntityPostPersist.of(entity));
-    }
-
-    /**
-     * Fire an event once the method is called after firePreEntity
-     *
-     * @param entity the entity
-     * @param <T>    the entity type
-     */
-    public <T> void firePreGraphEntity(T entity) {
-        entityGraphPrePersist.fire(EntityGraphPrePersist.of(entity));
-    }
-
-    /**
-     * Fire an event after firePostEntity
-     *
-     * @param entity the entity
-     * @param <T>    the entity kind
-     */
-    public <T> void firePostGraphEntity(T entity) {
-        entityGraphPostPersist.fire(EntityGraphPostPersist.of(entity));
     }
 }

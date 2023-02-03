@@ -25,13 +25,9 @@ import java.util.function.UnaryOperator;
  * This implementation defines the workflow to insert an Entity on DocumentTemplate.
  * The default implementation follows:
  *  <p>{@link DocumentEventPersistManager#firePreEntity(Object)}</p>
- *  <p>{@link DocumentEventPersistManager#firePreDocumentEntity(Object)}</p>
  *  <p>{@link DocumentEntityConverter#toDocument(Object)}</p>
- *  <p>{@link DocumentEventPersistManager#firePreDocument(DocumentEntity)}}</p>
  *  <p>Database alteration</p>
- *  <p>{@link DocumentEventPersistManager#firePostDocument(DocumentEntity)}</p>
  *  <p>{@link DocumentEventPersistManager#firePostEntity(Object)}</p>
- *  <p>{@link DocumentEventPersistManager#firePostDocumentEntity(Object)}</p>
  */
 public abstract class DocumentWorkflow {
 
@@ -65,23 +61,10 @@ public abstract class DocumentWorkflow {
             return t;
         };
 
-        UnaryOperator<T> firePreDocumentEntity = t -> {
-            getEventManager().firePreDocumentEntity(t);
-            return t;
-        };
 
 
         Function<T, DocumentEntity> converterDocument = t -> getConverter().toDocument(t);
 
-        UnaryOperator<DocumentEntity> firePreDocument = t -> {
-            getEventManager().firePreDocument(t);
-            return t;
-        };
-
-        UnaryOperator<DocumentEntity> firePostDocument = t -> {
-            getEventManager().firePostDocument(t);
-            return t;
-        };
 
         Function<DocumentEntity, T> converterEntity = t -> getConverter().toEntity(entity, t);
 
@@ -90,21 +73,13 @@ public abstract class DocumentWorkflow {
             return t;
         };
 
-        UnaryOperator<T> firePostDocumentEntity = t -> {
-            getEventManager().firePostDocumentEntity(t);
-            return t;
-        };
 
 
         return validation
                 .andThen(firePreEntity)
-                .andThen(firePreDocumentEntity)
                 .andThen(converterDocument)
-                .andThen(firePreDocument)
                 .andThen(action)
-                .andThen(firePostDocument)
                 .andThen(converterEntity)
-                .andThen(firePostEntity)
-                .andThen(firePostDocumentEntity);
+                .andThen(firePostEntity);
     }
 }

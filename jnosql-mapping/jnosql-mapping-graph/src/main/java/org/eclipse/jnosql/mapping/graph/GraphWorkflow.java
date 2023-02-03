@@ -69,10 +69,6 @@ class GraphWorkflow {
             return t;
         };
 
-        UnaryOperator<T> firePreGraphEntity = t -> {
-            graphEventPersistManager.firePreGraphEntity(t);
-            return t;
-        };
 
         Function<T, Vertex> converterGraph = t -> converter.toVertex(t);
 
@@ -83,18 +79,12 @@ class GraphWorkflow {
             return t;
         };
 
-        UnaryOperator<T> firePostGraphEntity = t -> {
-            graphEventPersistManager.firePostGraphEntity(t);
-            return t;
-        };
 
         return validation
                 .andThen(firePreEntity)
-                .andThen(firePreGraphEntity)
                 .andThen(converterGraph)
                 .andThen(action)
                 .andThen(converterEntity)
-                .andThen(firePostEntity)
-                .andThen(firePostGraphEntity);
+                .andThen(firePostEntity);
     }
 }

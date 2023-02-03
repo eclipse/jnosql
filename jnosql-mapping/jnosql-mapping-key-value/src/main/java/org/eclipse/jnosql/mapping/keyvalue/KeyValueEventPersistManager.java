@@ -27,41 +27,10 @@ import org.eclipse.jnosql.mapping.EntityPrePersist;
 public class KeyValueEventPersistManager {
 
     @Inject
-    private Event<KeyValueEntityPrePersist> keyValueEntityPrePersistEvent;
-
-    @Inject
-    private Event<KeyValueEntityPostPersist> keyValueEntityPostPersistEvent;
-
-    @Inject
     private Event<EntityPrePersist> entityPrePersistEvent;
 
     @Inject
     private Event<EntityPostPersist> entityPostPersistEvent;
-
-    @Inject
-    private Event<EntityKeyValuePrePersist> entityKeyValuePrePersist;
-
-    @Inject
-    private Event<EntityKeyValuePostPersist> entityKeyValuePostPersist;
-
-
-    /**
-     * Fire an event after the conversion of the entity to communication API model.
-     *
-     * @param entity the entity
-     */
-    public void firePreKeyValue(KeyValueEntity entity) {
-        keyValueEntityPrePersistEvent.fire(new KeyValueEntityPrePersist(entity));
-    }
-
-    /**
-     * Fire an event after the response from communication layer
-     *
-     * @param entity the entity
-     */
-    public void firePostKeyValue(KeyValueEntity entity) {
-        keyValueEntityPostPersistEvent.fire(new KeyValueEntityPostPersist(entity));
-    }
 
     /**
      * Fire an event once the method is called
@@ -82,24 +51,5 @@ public class KeyValueEventPersistManager {
      */
     public <T> void firePostEntity(T entity) {
         entityPostPersistEvent.fire(EntityPostPersist.of(entity));
-    }
-
-    /**
-     * fire an event after the firePostEntity
-     *
-     * @param entity the entity
-     * @param <T>    the entity type
-     */
-    public <T> void firePreKeyValueEntity(T entity) {
-        entityKeyValuePrePersist.fire(new EntityKeyValuePrePersist(entity));
-    }
-    /**
-     * Fire the last event
-     *
-     * @param entity the entity
-     * @param <T>    the entity kind
-     */
-    public <T> void firePostKeyValueEntity(T entity) {
-        entityKeyValuePostPersist.fire(new EntityKeyValuePostPersist(entity));
     }
 }

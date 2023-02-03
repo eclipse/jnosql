@@ -26,13 +26,13 @@ public final class AnnotationLiteralUtil {
     /**
      * Annotation literal {@link Default}
      */
-    public static final AnnotationLiteral<Default> DEFAULT_ANNOTATION = new AnnotationLiteral<Default>() {
+    public static final AnnotationLiteral<Default> DEFAULT_ANNOTATION = new AnnotationLiteral<>() {
     };
 
     /**
      * Annotation literal {@link Any}
      */
-    public static final AnnotationLiteral<Any> ANY_ANNOTATION = new AnnotationLiteral<Any>() {
+    public static final AnnotationLiteral<Any> ANY_ANNOTATION = new AnnotationLiteral<>() {
     };
     private AnnotationLiteralUtil() {
     }

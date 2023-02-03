@@ -124,7 +124,6 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
     @Override
     public void delete(ColumnDeleteQuery query) {
         requireNonNull(query, "query is required");
-        getEventManager().firePreDeleteQuery(query);
         getManager().delete(query);
     }
 
@@ -236,7 +235,6 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
 
     private <T> Stream<T> executeQuery(ColumnQuery query) {
         requireNonNull(query, "query is required");
-        getEventManager().firePreQuery(query);
         Stream<ColumnEntity> entities = getManager().select(query);
         Function<ColumnEntity, T> function = e -> getConverter().toEntity(e);
         return entities.map(function).peek(getEventManager()::firePostEntity);
