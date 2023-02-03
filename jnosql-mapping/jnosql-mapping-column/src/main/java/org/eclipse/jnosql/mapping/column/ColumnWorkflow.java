@@ -72,15 +72,6 @@ public abstract class ColumnWorkflow {
 
         Function<T, ColumnEntity> converterColumn = t -> getConverter().toColumn(t);
 
-        UnaryOperator<ColumnEntity> firePreColumn = t -> {
-            getEventManager().firePreColumn(t);
-            return t;
-        };
-
-        UnaryOperator<ColumnEntity> firePostColumn = t -> {
-            getEventManager().firePostColumn(t);
-            return t;
-        };
 
         Function<ColumnEntity, T> converterEntity = t -> getConverter().toEntity(entity, t);
 
@@ -98,9 +89,7 @@ public abstract class ColumnWorkflow {
                 .andThen(firePreEntity)
                 .andThen(firePreColumnEntity)
                 .andThen(converterColumn)
-                .andThen(firePreColumn)
                 .andThen(action)
-                .andThen(firePostColumn)
                 .andThen(converterEntity)
                 .andThen(firePostEntity)
                 .andThen(firePostColumnEntity);

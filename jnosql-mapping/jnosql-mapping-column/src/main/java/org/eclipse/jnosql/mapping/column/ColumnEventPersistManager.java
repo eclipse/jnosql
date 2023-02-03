@@ -40,11 +40,6 @@ import org.eclipse.jnosql.mapping.EntityPrePersist;
 @ApplicationScoped
 public class ColumnEventPersistManager {
 
-    @Inject
-    private Event<ColumnEntityPrePersist> columnEntityPrePersistEvent;
-
-    @Inject
-    private Event<ColumnEntityPostPersist> columnEntityPostPersistEvent;
 
     @Inject
     private Event<EntityPrePersist> entityPrePersistEvent;
@@ -64,23 +59,7 @@ public class ColumnEventPersistManager {
     @Inject
     private Event<ColumnDeleteQueryExecute> columnDeleteQueryExecute;
 
-    /**
-     * Fire an event after the conversion of the entity to communication API model.
-     *
-     * @param entity the entity
-     */
-    public void firePreColumn(ColumnEntity entity) {
-        columnEntityPrePersistEvent.fire(new ColumnEntityPrePersist(entity));
-    }
 
-    /**
-     * Fire an event after the response from communication layer
-     *
-     * @param entity the entity
-     */
-    public void firePostColumn(ColumnEntity entity) {
-        columnEntityPostPersistEvent.fire(new ColumnEntityPostPersist(entity));
-    }
 
     /**
      * Fire an event once the method is called
