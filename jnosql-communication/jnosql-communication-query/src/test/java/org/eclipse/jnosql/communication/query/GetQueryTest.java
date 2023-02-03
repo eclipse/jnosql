@@ -42,6 +42,24 @@ public class GetQueryTest {
         Assertions.assertThrows(QueryException.class, () -> testQuery(query));
     }
 
+    @Test
+    public void shouldCreateFromMethodFactory(){
+        GetQuery query = GetQuery.parse("get \"Ada Lovelace\"");
+        Assertions.assertNotNull(query);
+    }
+
+    @Test
+    public void shouldEquals(){
+        String text = "get \"Ada Lovelace\"";
+        Assertions.assertEquals(GetQuery.parse(text), GetQuery.parse(text));
+    }
+
+    @Test
+    public void shouldHashCode() {
+        String text = "get \"Ada Lovelace\"";
+        Assertions.assertEquals(GetQuery.parse(text).hashCode(), GetQuery.parse(text).hashCode());
+    }
+
     private void testQuery(String query) {
         CharStream stream = CharStreams.fromString(query);
         QueryLexer lexer = new QueryLexer(stream);
