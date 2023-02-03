@@ -124,7 +124,6 @@ public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate
     @Override
     public void delete(DocumentDeleteQuery query) {
         requireNonNull(query, "query is required");
-        getEventManager().firePreDeleteQuery(query);
         getManager().delete(query);
     }
 
@@ -230,7 +229,6 @@ public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate
 
     private <T> Stream<T> executeQuery(DocumentQuery query) {
         requireNonNull(query, "query is required");
-        getEventManager().firePreQuery(query);
         Stream<DocumentEntity> entities = getManager().select(query);
         Function<DocumentEntity, T> function = e -> getConverter().toEntity(e);
         return entities.map(function).peek(getEventManager()::firePostEntity);

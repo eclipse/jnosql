@@ -125,8 +125,6 @@ public class DefaultDocumentTemplateTest {
         verify(managerMock).insert(captor.capture());
         verify(documentEventPersistManager).firePostEntity(any(Person.class));
         verify(documentEventPersistManager).firePreEntity(any(Person.class));
-        verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
-        verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
         DocumentEntity value = captor.getValue();
         assertEquals("Person", value.name());
         assertEquals(4, value.documents().size());
@@ -146,8 +144,6 @@ public class DefaultDocumentTemplateTest {
         verify(managerMock).insert(captor.capture());
         verify(documentEventPersistManager).firePostEntity(any(Person.class));
         verify(documentEventPersistManager).firePreEntity(any(Person.class));
-        verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
-        verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
         DocumentEntity value = captor.getValue();
         assertSame(person, result);
         assertEquals(10, person.getAge());
@@ -170,8 +166,6 @@ public class DefaultDocumentTemplateTest {
         verify(managerMock).insert(captor.capture(), Mockito.eq(twoHours));
         verify(documentEventPersistManager).firePostEntity(any(Person.class));
         verify(documentEventPersistManager).firePreEntity(any(Person.class));
-        verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
-        verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
         DocumentEntity value = captor.getValue();
         assertEquals("Person", value.name());
         assertEquals(4, value.documents().size());
@@ -191,8 +185,6 @@ public class DefaultDocumentTemplateTest {
         verify(managerMock).update(captor.capture());
         verify(documentEventPersistManager).firePostEntity(any(Person.class));
         verify(documentEventPersistManager).firePreEntity(any(Person.class));
-        verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
-        verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
         DocumentEntity value = captor.getValue();
         assertEquals("Person", value.name());
         assertEquals(4, value.documents().size());
@@ -212,8 +204,6 @@ public class DefaultDocumentTemplateTest {
         verify(managerMock).update(captor.capture());
         verify(documentEventPersistManager).firePostEntity(any(Person.class));
         verify(documentEventPersistManager).firePreEntity(any(Person.class));
-        verify(documentEventPersistManager).firePreDocument(any(DocumentEntity.class));
-        verify(documentEventPersistManager).firePostDocument(any(DocumentEntity.class));
         DocumentEntity value = captor.getValue();
         assertSame(person, result);
         assertEquals(10, person.getAge());
