@@ -12,6 +12,7 @@
 package org.eclipse.jnosql.communication.query;
 
 import org.eclipse.jnosql.communication.Condition;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +22,7 @@ class DefaultQueryConditionTest {
 
     private QueryValue<Boolean> queryValue;
 
-    @Test
+    @BeforeEach
     public void setUp() {
         this.queryValue = BooleanQueryValue.TRUE;
     }
