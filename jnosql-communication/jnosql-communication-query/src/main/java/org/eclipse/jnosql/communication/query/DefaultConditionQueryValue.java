@@ -35,11 +35,6 @@ final class DefaultConditionQueryValue implements ConditionQueryValue {
     }
 
     @Override
-    public ValueType type() {
-        return ValueType.CONDITION;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
