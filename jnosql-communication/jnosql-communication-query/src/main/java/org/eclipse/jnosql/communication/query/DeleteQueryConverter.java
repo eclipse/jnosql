@@ -21,9 +21,9 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
- * A provider of {@link DefaultDeleteQuery} from a {@link String}
+ * A provider of {@link DeleteQuery} from a {@link String}
  */
-public final class DeleteQueryConverter extends AbstractWhereSupplier implements Function<String, DefaultDeleteQuery> {
+public final class DeleteQueryConverter extends AbstractWhereSupplier implements Function<String, DeleteQuery> {
 
     private String entity;
 
@@ -42,9 +42,9 @@ public final class DeleteQueryConverter extends AbstractWhereSupplier implements
     }
 
     @Override
-    public DefaultDeleteQuery apply(String query) {
+    public DeleteQuery apply(String query) {
         runQuery(query);
-        return new DefaultDeleteQuery(entity, fields, where);
+        return DeleteQuery.of(entity, fields, where);
     }
 
     @Override
