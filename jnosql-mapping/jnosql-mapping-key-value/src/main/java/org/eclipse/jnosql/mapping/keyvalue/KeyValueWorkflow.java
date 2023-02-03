@@ -66,22 +66,8 @@ public abstract class KeyValueWorkflow {
             return t;
         };
 
-        UnaryOperator<T> firePreKeyValueEntity = t -> {
-            getEventManager().firePreKeyValueEntity(t);
-            return t;
-        };
 
         Function<T, KeyValueEntity> convertKeyValue = t -> getConverter().toKeyValue(t);
-
-        UnaryOperator<KeyValueEntity> firePreDocument = t -> {
-            getEventManager().firePreKeyValue(t);
-            return t;
-        };
-
-        UnaryOperator<KeyValueEntity> firePostDocument = t -> {
-            getEventManager().firePostKeyValue(t);
-            return t;
-        };
 
         Function<KeyValueEntity, T> converterEntity = t -> getConverter().toEntity((Class<T>) entity.getClass(), t);
 
@@ -90,21 +76,11 @@ public abstract class KeyValueWorkflow {
             return t;
         };
 
-        UnaryOperator<T> firePostKeyValueEntity = t -> {
-            getEventManager().firePostKeyValueEntity(t);
-            return t;
-        };
-
-
         return validation
                 .andThen(firePreEntity)
-                .andThen(firePreKeyValueEntity)
                 .andThen(convertKeyValue)
-                .andThen(firePreDocument)
                 .andThen(action)
-                .andThen(firePostDocument)
                 .andThen(converterEntity)
-                .andThen(firePostEntity)
-                .andThen(firePostKeyValueEntity);
+                .andThen(firePostEntity);
     }
 }

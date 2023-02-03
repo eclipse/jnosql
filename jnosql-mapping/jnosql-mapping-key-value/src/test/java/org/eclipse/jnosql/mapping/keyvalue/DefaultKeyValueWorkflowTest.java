@@ -56,8 +56,6 @@ public class DefaultKeyValueWorkflowTest {
         UnaryOperator<KeyValueEntity> action = t -> t;
         subject.flow("entity", action);
 
-        verify(eventPersistManager).firePreKeyValue(any(KeyValueEntity.class));
-        verify(eventPersistManager).firePostKeyValue(any(KeyValueEntity.class));
     }
 
 }
