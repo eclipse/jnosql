@@ -66,8 +66,6 @@ public class GraphWorkflowTest {
         verify(graphEventPersistManager).firePreEntity(any());
         verify(graphEventPersistManager).firePostEntity(any());
 
-        verify(graphEventPersistManager).firePreGraphEntity(any());
-        verify(graphEventPersistManager).firePostGraphEntity(any());
         verify(converter).toVertex(any());
     }
 
