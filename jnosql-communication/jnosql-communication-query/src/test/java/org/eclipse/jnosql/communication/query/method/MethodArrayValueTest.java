@@ -14,6 +14,7 @@ package org.eclipse.jnosql.communication.query.method;
 import org.eclipse.jnosql.communication.query.ArrayQueryValue;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.ValueType;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,5 +33,17 @@ class MethodArrayValueTest {
     public void shouldReturnArrayValue() {
         ArrayQueryValue array = MethodArrayValue.of("name");
         assertThat(array.get()).isInstanceOf(QueryValue[].class);
+    }
+
+    @Test
+    public void shouldEquals(){
+        ArrayQueryValue array = MethodArrayValue.of("name");
+        Assertions.assertEquals(array, array);
+    }
+
+    @Test
+    public void shouldHashCode(){
+        ArrayQueryValue array = MethodArrayValue.of("name");
+        Assertions.assertEquals(array.hashCode(), array.hashCode());
     }
 }

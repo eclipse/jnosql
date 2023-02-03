@@ -11,6 +11,7 @@
  */
 package org.eclipse.jnosql.communication.query;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,5 +32,23 @@ class DefaultArrayQueryValueTest {
         ArrayQueryValue array = DefaultArrayQueryValue.of(new QueryValue<?>[]{
                 BooleanQueryValue.FALSE, BooleanQueryValue.TRUE});
         assertThat(array.get()).containsExactly(BooleanQueryValue.FALSE, BooleanQueryValue.TRUE);
+    }
+
+    @Test
+    public void shouldEquals(){
+        ArrayQueryValue array = DefaultArrayQueryValue.of(new QueryValue<?>[]{
+                BooleanQueryValue.FALSE, BooleanQueryValue.TRUE});
+        ArrayQueryValue arrayB = DefaultArrayQueryValue.of(new QueryValue<?>[]{
+                BooleanQueryValue.FALSE, BooleanQueryValue.TRUE});
+        Assertions.assertEquals(arrayB, array);
+    }
+
+    @Test
+    public void shouldHashCode(){
+        ArrayQueryValue array = DefaultArrayQueryValue.of(new QueryValue<?>[]{
+                BooleanQueryValue.FALSE, BooleanQueryValue.TRUE});
+        ArrayQueryValue arrayB = DefaultArrayQueryValue.of(new QueryValue<?>[]{
+                BooleanQueryValue.FALSE, BooleanQueryValue.TRUE});
+        Assertions.assertEquals(arrayB.hashCode(), array.hashCode());
     }
 }
