@@ -82,26 +82,6 @@ public class ColumnEventPersistManager {
     }
 
     /**
-     * Fire an event once the method is called after firePreEntity
-     *
-     * @param entity the entity
-     * @param <T>    the entity type
-     */
-    public <T> void firePreColumnEntity(T entity) {
-        entityColumnPrePersist.fire(new EntityColumnPrePersist(entity));
-    }
-
-    /**
-     * Fire an event after firePostEntity
-     *
-     * @param entity the entity
-     * @param <T>    the entity kind
-     */
-    public <T> void firePostColumnEntity(T entity) {
-        entityColumnPostPersist.fire(new EntityColumnPostPersist(entity));
-    }
-
-    /**
      * Fire an event before the query is executed
      *
      * @param query the query
