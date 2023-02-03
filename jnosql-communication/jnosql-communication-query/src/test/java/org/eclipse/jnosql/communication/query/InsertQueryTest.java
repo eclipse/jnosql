@@ -42,6 +42,24 @@ public class InsertQueryTest {
         Assertions.assertThrows(QueryException.class, () -> testQuery(query));
     }
 
+    @Test
+    public void shouldCreateFromStaticMethod() {
+        InsertQuery query = InsertQuery.parse("insert Person (name = \"Ada Lovelace\")");
+        Assertions.assertNotNull(query);
+    }
+
+    @Test
+    public void shouldEquals(){
+        String text = "insert Person (name = \"Ada Lovelace\")";
+        Assertions.assertEquals(InsertQuery.parse(text), InsertQuery.parse(text));
+    }
+
+    @Test
+    public void shouldHashCode() {
+        String text = "insert Person (name = \"Ada Lovelace\")";
+        Assertions.assertEquals(InsertQuery.parse(text).hashCode(), InsertQuery.parse(text).hashCode());
+    }
+
     private void testQuery(String query) {
         CharStream stream = CharStreams.fromString(query);
         QueryLexer lexer = new QueryLexer(stream);
