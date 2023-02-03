@@ -121,8 +121,6 @@ public class DefaultColumnTemplateTest {
         verify(managerMock).insert(captor.capture());
         verify(columnEventPersistManager).firePostEntity(any(Person.class));
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
-        verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
-        verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
         ColumnEntity value = captor.getValue();
         assertEquals("Person", value.name());
         assertEquals(4, value.columns().size());
@@ -143,8 +141,6 @@ public class DefaultColumnTemplateTest {
         verify(managerMock).insert(captor.capture());
         verify(columnEventPersistManager).firePostEntity(any(Person.class));
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
-        verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
-        verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
         assertSame(person, result);
        assertEquals(10, person.getAge());
 
@@ -167,8 +163,6 @@ public class DefaultColumnTemplateTest {
         verify(managerMock).insert(captor.capture(), Mockito.eq(Duration.ofHours(2)));
         verify(columnEventPersistManager).firePostEntity(any(Person.class));
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
-        verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
-        verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
         ColumnEntity value = captor.getValue();
         assertEquals("Person", value.name());
         assertEquals(4, value.columns().size());
@@ -187,8 +181,6 @@ public class DefaultColumnTemplateTest {
         verify(managerMock).update(captor.capture());
         verify(columnEventPersistManager).firePostEntity(any(Person.class));
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
-        verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
-        verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
         ColumnEntity value = captor.getValue();
         assertEquals("Person", value.name());
         assertEquals(4, value.columns().size());
@@ -208,8 +200,6 @@ public class DefaultColumnTemplateTest {
         verify(managerMock).update(captor.capture());
         verify(columnEventPersistManager).firePostEntity(any(Person.class));
         verify(columnEventPersistManager).firePreEntity(any(Person.class));
-        verify(columnEventPersistManager).firePreColumn(any(ColumnEntity.class));
-        verify(columnEventPersistManager).firePostColumn(any(ColumnEntity.class));
         assertSame(person, result);
         assertEquals(10, person.getAge());
 
