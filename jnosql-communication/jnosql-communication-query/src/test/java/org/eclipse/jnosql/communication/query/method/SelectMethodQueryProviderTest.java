@@ -314,7 +314,7 @@ class SelectMethodQueryProviderTest {
         QueryCondition condition = where.get().condition();
         QueryValue<?> value = condition.value();
         assertEquals(Condition.NOT, condition.condition());
-        QueryCondition notCondition = MethodConditionValue.class.cast(value).get().get(0);
+        QueryCondition notCondition = ConditionQueryValue.class.cast(value).get().get(0);
         assertEquals(Condition.BETWEEN, notCondition.condition());
 
         QueryValue<?>[] values = MethodArrayValue.class.cast(notCondition.value()).get();

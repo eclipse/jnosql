@@ -213,7 +213,7 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
 
     private QueryCondition checkNotCondition(QueryCondition condition, boolean hasNot) {
         if (hasNot) {
-            ConditionQueryValue conditions = MethodConditionValue.of(Collections.singletonList(condition));
+            ConditionQueryValue conditions = ConditionQueryValue.of(Collections.singletonList(condition));
             return new MethodCondition("_NOT", NOT, conditions);
         } else {
             return condition;
@@ -226,10 +226,10 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
             ConditionQueryValue conditionValue = ConditionQueryValue.class.cast(this.condition.value());
             List<QueryCondition> conditions = new ArrayList<>(conditionValue.get());
             conditions.add(newCondition);
-            this.condition = new MethodCondition(SUB_ENTITY_FLAG + operator.name(), operator, MethodConditionValue.of(conditions));
+            this.condition = new MethodCondition(SUB_ENTITY_FLAG + operator.name(), operator, ConditionQueryValue.of(conditions));
         } else if (isNotAppendable()) {
             List<QueryCondition> conditions = Arrays.asList(this.condition, newCondition);
-            this.condition = new MethodCondition(SUB_ENTITY_FLAG + operator.name(), operator, MethodConditionValue.of(conditions));
+            this.condition = new MethodCondition(SUB_ENTITY_FLAG + operator.name(), operator, ConditionQueryValue.of(conditions));
         } else {
             List<QueryCondition> conditions = ConditionQueryValue.class.cast(this.condition.value()).get();
             QueryCondition lastCondition = conditions.get(conditions.size() - 1);
@@ -239,20 +239,20 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
                 lastConditions.add(newCondition);
 
                 QueryCondition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
-                        operator, MethodConditionValue.of(lastConditions));
+                        operator, ConditionQueryValue.of(lastConditions));
 
                 List<QueryCondition> newConditions = new ArrayList<>(conditions.subList(0, conditions.size() - 1));
                 newConditions.add(newAppendable);
                 this.condition = new MethodCondition(this.condition.name(), this.condition.condition(),
-                        MethodConditionValue.of(newConditions));
+                        ConditionQueryValue.of(newConditions));
             } else {
                 QueryCondition newAppendable = new MethodCondition(SUB_ENTITY_FLAG + operator.name(),
-                        operator, MethodConditionValue.of(Collections.singletonList(newCondition)));
+                        operator, ConditionQueryValue.of(Collections.singletonList(newCondition)));
 
                 List<QueryCondition> newConditions = new ArrayList<>(conditions);
                 newConditions.add(newAppendable);
                 this.condition = new MethodCondition(this.condition.name(), this.condition.condition(),
-                        MethodConditionValue.of(newConditions));
+                        ConditionQueryValue.of(newConditions));
             }
 
         }

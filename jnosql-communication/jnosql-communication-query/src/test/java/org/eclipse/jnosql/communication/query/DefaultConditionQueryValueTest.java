@@ -35,7 +35,7 @@ class DefaultConditionQueryValueTest {
 
     @Test
     public void shouldReturnType() {
-        ConditionQueryValue conditionQueryValue = DefaultConditionQueryValue.of(List.of(condition));
+        ConditionQueryValue conditionQueryValue = ConditionQueryValue.of(List.of(condition));
         Assertions.assertThat(conditionQueryValue).isNotNull()
                 .extracting(ConditionQueryValue::type)
                 .isEqualTo(ValueType.CONDITION);
@@ -43,7 +43,7 @@ class DefaultConditionQueryValueTest {
 
     @Test
     public void shouldGet() {
-        ConditionQueryValue conditionQueryValue = DefaultConditionQueryValue.of(List.of(condition));
+        ConditionQueryValue conditionQueryValue = ConditionQueryValue.of(List.of(condition));
         Assertions.assertThat(conditionQueryValue).isNotNull()
                 .extracting(ConditionQueryValue::get)
                 .isEqualTo(List.of(condition));
@@ -51,15 +51,15 @@ class DefaultConditionQueryValueTest {
 
     @Test
     public void shouldEquals(){
-        ConditionQueryValue conditionQueryValue = DefaultConditionQueryValue.of(List.of(condition));
+        ConditionQueryValue conditionQueryValue = ConditionQueryValue.of(List.of(condition));
         assertEquals(conditionQueryValue,
-                DefaultConditionQueryValue.of(List.of(condition)));
+                ConditionQueryValue.of(List.of(condition)));
     }
 
     @Test
     public void shouldHashCode(){
-        ConditionQueryValue conditionQueryValue = DefaultConditionQueryValue.of(List.of(condition));
+        ConditionQueryValue conditionQueryValue = ConditionQueryValue.of(List.of(condition));
         assertEquals(conditionQueryValue.hashCode(),
-                DefaultConditionQueryValue.of(List.of(condition)).hashCode());
+                ConditionQueryValue.of(List.of(condition)).hashCode());
     }
 }

@@ -296,8 +296,8 @@ class DeleteQueryConverterTest {
         QueryValue<?> value = condition.value();
         Assertions.assertEquals(Condition.NOT, condition.condition());
         assertEquals("_NOT", condition.name());
-        assertTrue(value instanceof DefaultConditionQueryValue);
-        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof ConditionQueryValue);
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(1, conditions.size());
         condition = conditions.get(0);
         value = condition.value();
@@ -319,8 +319,8 @@ class DeleteQueryConverterTest {
         QueryValue<?> value = condition.value();
         Assertions.assertEquals(Condition.AND, condition.condition());
         assertEquals("_AND", condition.name());
-        assertTrue(value instanceof DefaultConditionQueryValue);
-        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof ConditionQueryValue);
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
         condition = conditions.get(0);
         value = condition.value();
@@ -358,8 +358,8 @@ class DeleteQueryConverterTest {
         QueryValue<?> value = condition.value();
         Assertions.assertEquals(Condition.OR, condition.condition());
         assertEquals("_OR", condition.name());
-        assertTrue(value instanceof DefaultConditionQueryValue);
-        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof ConditionQueryValue);
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
         condition = conditions.get(0);
         value = condition.value();
@@ -398,8 +398,8 @@ class DeleteQueryConverterTest {
         QueryValue<?> value = condition.value();
         Assertions.assertEquals(Condition.AND, condition.condition());
         assertEquals("_AND", condition.name());
-        assertTrue(value instanceof DefaultConditionQueryValue);
-        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof ConditionQueryValue);
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
 
         condition = conditions.get(0);
@@ -420,7 +420,7 @@ class DeleteQueryConverterTest {
         value = condition.value();
         Assertions.assertEquals(Condition.OR, condition.condition());
 
-        conditions = DefaultConditionQueryValue.class.cast(condition.value()).get();
+        conditions = ConditionQueryValue.class.cast(condition.value()).get();
         assertEquals(1, conditions.size());
 
         condition = conditions.get(0);
@@ -449,8 +449,8 @@ class DeleteQueryConverterTest {
         QueryValue<?> value = condition.value();
         Assertions.assertEquals(Condition.AND, condition.condition());
         assertEquals("_AND", condition.name());
-        assertTrue(value instanceof DefaultConditionQueryValue);
-        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof ConditionQueryValue);
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(3, conditions.size());
 
         condition = conditions.get(0);
@@ -470,7 +470,7 @@ class DeleteQueryConverterTest {
         condition = conditions.get(2);
         Assertions.assertEquals(Condition.OR, condition.condition());
 
-        conditions = DefaultConditionQueryValue.class.cast(condition.value()).get();
+        conditions = ConditionQueryValue.class.cast(condition.value()).get();
         assertEquals(2, conditions.size());
 
         condition = conditions.get(0);
@@ -512,8 +512,8 @@ class DeleteQueryConverterTest {
         QueryValue<?> value = condition.value();
         Assertions.assertEquals(Condition.AND, condition.condition());
         assertEquals("_AND", condition.name());
-        assertTrue(value instanceof DefaultConditionQueryValue);
-        List<QueryCondition> conditions = DefaultConditionQueryValue.class.cast(value).get();
+        assertTrue(value instanceof ConditionQueryValue);
+        List<QueryCondition> conditions = ConditionQueryValue.class.cast(value).get();
         assertEquals(4, conditions.size());
 
         condition = conditions.get(0);
@@ -533,9 +533,9 @@ class DeleteQueryConverterTest {
         condition = conditions.get(2);
         Assertions.assertEquals(Condition.OR, condition.condition());
 
-        assertEquals(1, DefaultConditionQueryValue.class.cast(condition.value()).get().size());
+        assertEquals(1, ConditionQueryValue.class.cast(condition.value()).get().size());
 
-        QueryCondition c = DefaultConditionQueryValue.class.cast(condition.value()).get().get(0);
+        QueryCondition c = ConditionQueryValue.class.cast(condition.value()).get().get(0);
         value = c.value();
         Assertions.assertEquals(Condition.EQUALS, c.condition());
 
