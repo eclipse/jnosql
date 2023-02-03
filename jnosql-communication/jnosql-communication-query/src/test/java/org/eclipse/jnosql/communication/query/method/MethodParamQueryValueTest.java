@@ -12,12 +12,20 @@
 package org.eclipse.jnosql.communication.query.method;
 
 import org.assertj.core.api.Assertions;
+import org.eclipse.jnosql.communication.query.ValueType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MethodParamQueryValueTest {
 
+    @Test
+    public void shouldReturnType() {
+        MethodParamQueryValue param = new MethodParamQueryValue("name");
+        Assertions.assertThat(param).isNotNull()
+                .extracting(MethodParamQueryValue::type)
+                .isNotNull().isEqualTo(ValueType.PARAMETER);
+    }
     @Test
     public void shouldCreateInstance() {
         MethodParamQueryValue param = new MethodParamQueryValue("name");
