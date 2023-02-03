@@ -42,6 +42,24 @@ public class DelQueryTest {
         Assertions.assertThrows(QueryException.class, () -> testQuery(query));
     }
 
+    @Test
+    public void shouldCreateFromMethodFactory(){
+        DelQuery query = DelQuery.parse("del \"Ada Lovelace\"");
+        Assertions.assertNotNull(query);
+    }
+
+    @Test
+    public void shouldEquals(){
+        String text = "del \"Ada Lovelace\"";
+        Assertions.assertEquals(DelQuery.parse(text), DelQuery.parse(text));
+    }
+
+    @Test
+    public void shouldHashCode(){
+        String text = "del \"Ada Lovelace\"";
+        Assertions.assertEquals(DelQuery.parse(text).hashCode(), DelQuery.parse(text).hashCode());
+    }
+
     private void testQuery(String query) {
         CharStream stream = CharStreams.fromString(query);
         QueryLexer lexer = new QueryLexer(stream);
