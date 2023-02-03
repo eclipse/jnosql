@@ -27,7 +27,7 @@ public final class JSONQueryValue implements QueryValue<JsonObject> {
 
     private final JsonObject value;
 
-    private JSONQueryValue(JsonObject value) {
+    JSONQueryValue(JsonObject value) {
         this.value = value;
     }
 
