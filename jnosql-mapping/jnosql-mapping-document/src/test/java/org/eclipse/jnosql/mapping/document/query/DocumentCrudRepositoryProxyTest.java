@@ -688,6 +688,30 @@ public class DocumentCrudRepositoryProxyTest {
 
     }
 
+    @Test
+    public void shouldConvertMapAddressRepositoryOrder() {
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        addressRepository.findByZipCodeZipOrderByZipCodeZip("123456");
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        Assertions.assertThat(query)
+                .isNotNull()
+                .matches(c -> c.name().equals("Address"))
+                .matches(c -> c.documents().isEmpty())
+                .matches(c -> !c.sorts().isEmpty())
+                .extracting(DocumentQuery::condition)
+                .extracting(Optional::orElseThrow)
+                .matches(c -> c.condition().equals(EQUALS))
+                .extracting(DocumentCondition::document)
+                .matches(d -> d.value().get().equals("123456"))
+                .matches(d -> d.name().equals("zipCode.zip"));
+
+
+        Assertions.assertThat(query.sorts()).contains(Sort.asc("zipCode.zip"));
+
+    }
+
     interface PersonRepository extends CrudRepository<Person, Long> {
 
         List<Person> findBySalary_Currency(String currency);
@@ -744,5 +768,7 @@ public class DocumentCrudRepositoryProxyTest {
     public interface AddressRepository extends CrudRepository<Address, String> {
 
         List<Address> findByZipCodeZip(String zip);
+
+        List<Address> findByZipCodeZipOrderByZipCodeZip(String zip);
     }
 }
