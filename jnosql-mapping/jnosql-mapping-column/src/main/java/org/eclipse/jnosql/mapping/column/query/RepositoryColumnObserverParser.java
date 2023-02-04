@@ -18,8 +18,6 @@ import org.eclipse.jnosql.communication.column.ColumnObserverParser;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.RepositoryObserverParser;
 
-import java.util.Optional;
-
 final class RepositoryColumnObserverParser implements ColumnObserverParser {
 
     private final RepositoryObserverParser parser;
@@ -35,6 +33,6 @@ final class RepositoryColumnObserverParser implements ColumnObserverParser {
 
     @Override
     public String fireField(String entity, String field) {
-        return parser.fireField(field);
+        return parser.field(field);
     }
 }

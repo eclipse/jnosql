@@ -59,7 +59,7 @@ class RepositoryObserverParserTest {
         EntityMetadata metadata = entities.get(Person.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
-                .extracting(p -> p.fireField("name"))
+                .extracting(p -> p.field("name"))
                 .isEqualTo("name");
     }
 
@@ -68,7 +68,7 @@ class RepositoryObserverParserTest {
         EntityMetadata metadata = entities.get(Worker.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
-                .extracting(p -> p.fireField("salary"))
+                .extracting(p -> p.field("salary"))
                 .isEqualTo("money");
     }
 
@@ -77,7 +77,7 @@ class RepositoryObserverParserTest {
         EntityMetadata metadata = entities.get(Address.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
-                .extracting(p -> p.fireField("not-found"))
+                .extracting(p -> p.field("not-found"))
                 .isEqualTo("not-found");
     }
 
@@ -86,7 +86,7 @@ class RepositoryObserverParserTest {
         EntityMetadata metadata = entities.get(Address.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
-                .extracting(p -> p.fireField("zipCodePlusFour"))
+                .extracting(p -> p.field("zipCodePlusFour"))
                 .isEqualTo("zipCode.plusFour");
     }
 

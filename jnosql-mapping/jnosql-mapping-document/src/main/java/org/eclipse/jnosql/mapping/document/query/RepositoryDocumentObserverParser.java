@@ -33,7 +33,7 @@ public class RepositoryDocumentObserverParser implements DocumentObserverParser 
 
     @Override
     public String fireField(String entity, String field) {
-        return parser.fireField(field);
+        return parser.field(field);
     }
 
 }

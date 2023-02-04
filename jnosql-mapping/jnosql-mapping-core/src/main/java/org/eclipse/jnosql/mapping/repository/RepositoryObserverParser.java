@@ -43,12 +43,13 @@ public final class RepositoryObserverParser {
     }
 
     /**
-     * Fire an event to each field in case of mapper process
+     * Given a Java field, it will convert it to native if it does exist,
+     * otherwise, it will return the same value
      *
      * @param field the field
      * @return the field result
      */
-    public String fireField(String field) {
+    public String field(String field) {
         if (metadata.getFieldMapping(field).isPresent()) {
             return metadata.getColumnField(field);
         } else {
