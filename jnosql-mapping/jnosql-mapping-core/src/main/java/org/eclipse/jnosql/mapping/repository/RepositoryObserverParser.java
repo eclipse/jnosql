@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class RepositoryObserverParser {
+public final class RepositoryObserverParser {
 
     private static final String[] EMPTY_STRING_ARRAY = {};
 

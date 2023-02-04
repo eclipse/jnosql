@@ -16,24 +16,31 @@ package org.eclipse.jnosql.mapping.document.query;
 
 import org.eclipse.jnosql.communication.document.DocumentObserverParser;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.reflection.FieldMapping;
+import org.eclipse.jnosql.mapping.repository.RepositoryObserverParser;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 public class RepositoryDocumentObserverParser implements DocumentObserverParser {
 
-    private final EntityMetadata entityMetadata;
+    private final RepositoryObserverParser parser;
 
     RepositoryDocumentObserverParser(EntityMetadata entityMetadata) {
-        this.entityMetadata = entityMetadata;
+        this.parser = RepositoryObserverParser.of(entityMetadata);
     }
 
     @Override
     public String fireEntity(String entity) {
-        return entityMetadata.getName();
+        return parser.fireEntity(entity);
     }
 
     @Override
     public String fireField(String entity, String field) {
-        return Optional.ofNullable(entityMetadata.getColumnField(field)).orElse(field);
+        return parser.fireField(field);
     }
+
 }
