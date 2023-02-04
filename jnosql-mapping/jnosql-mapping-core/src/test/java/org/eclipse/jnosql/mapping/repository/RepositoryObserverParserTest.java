@@ -20,6 +20,7 @@ import org.eclipse.jnosql.mapping.VetedConverter;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
+import org.eclipse.jnosql.mapping.test.entities.Address;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.Worker;
 import org.jboss.weld.junit5.auto.AddExtensions;
@@ -58,7 +59,7 @@ class RepositoryObserverParserTest {
         EntityMetadata metadata = entities.get(Person.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
-                .extracting(p -> p.fireField("name", "name"))
+                .extracting(p -> p.fireField("name"))
                 .isEqualTo("name");
     }
 
@@ -67,20 +68,26 @@ class RepositoryObserverParserTest {
         EntityMetadata metadata = entities.get(Worker.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
-                .extracting(p -> p.fireField("name", "salary"))
+                .extracting(p -> p.fireField("salary"))
                 .isEqualTo("money");
     }
 
     @Test
     public void shouldKeepWhenDoesNotFind() {
-        EntityMetadata metadata = entities.get(Worker.class);
+        EntityMetadata metadata = entities.get(Address.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
-                .extracting(p -> p.fireField("name", "not-found"))
+                .extracting(p -> p.fireField("not-found"))
                 .isEqualTo("not-found");
     }
 
     @Test
-    public void shouldConcatSmart() {}
+    public void shouldConcatSmart() {
+        EntityMetadata metadata = entities.get(Address.class);
+        RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
+        org.assertj.core.api.Assertions.assertThat(parser)
+                .extracting(p -> p.fireField("zipCodePlusFour"))
+                .isEqualTo("zipCode.plusFour");
+    }
 
 }
