@@ -34,14 +34,14 @@ public interface FieldMapping {
      *
      * @return the {@link MappingType}
      */
-    MappingType getType();
+    MappingType type();
 
     /**
      * The {@link Field}
      *
      * @return the field
      */
-    default Field getNativeField() {
+    default Field nativeField() {
         return null;
     }
 
@@ -69,7 +69,7 @@ public interface FieldMapping {
      *
      * @return the name
      */
-    String getName();
+    String name();
 
     /**
      * Returns the Java Fields name.
@@ -77,7 +77,7 @@ public interface FieldMapping {
      *
      * @return The Java Field name {@link Field#getName()}
      */
-    String getFieldName();
+    String fieldName();
 
 
     /**
@@ -86,7 +86,7 @@ public interface FieldMapping {
      * @param value the value {@link Value}
      * @return the instance from the field type
      */
-    Object getValue(Value value);
+    Object value(Value value);
 
     /**
      * Returns true is the field is annotated with {@link Id}

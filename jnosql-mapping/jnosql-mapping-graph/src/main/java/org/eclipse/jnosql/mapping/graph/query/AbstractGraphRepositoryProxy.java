@@ -64,7 +64,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
     public Object invoke(Object instance, Method method, Object[] args) throws Throwable {
 
         RepositoryType type = RepositoryType.of(method);
-        Class<?> typeClass = getEntityMetadata().getType();
+        Class<?> typeClass = getEntityMetadata().type();
 
         switch (type) {
             case DEFAULT:
@@ -100,7 +100,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
 
         Supplier<Stream<?>> querySupplier = () -> {
 
-            GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V().hasLabel(getEntityMetadata().getName());
+            GraphTraversal<Vertex, Vertex> traversal = getGraph().traversal().V().hasLabel(getEntityMetadata().name());
 
             SelectQueryConverter.updateDynamicParameter(args, traversal, getEntityMetadata());
             return traversal.toStream()

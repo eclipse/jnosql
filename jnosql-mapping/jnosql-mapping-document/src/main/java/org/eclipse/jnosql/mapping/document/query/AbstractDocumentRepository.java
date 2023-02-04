@@ -99,7 +99,7 @@ public abstract class AbstractDocumentRepository<T, K> implements PageableReposi
 
 
     private FieldMapping getIdField() {
-        return getEntityMetadata().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     @Override
@@ -113,7 +113,7 @@ public abstract class AbstractDocumentRepository<T, K> implements PageableReposi
         EntityMetadata metadata = getEntityMetadata();
         DocumentQuery query = new MappingDocumentQuery(pageable.sorts(),
                 pageable.size(), NoSQLPage.skip(pageable)
-                , null ,metadata.getName());
+                , null ,metadata.name());
 
         List<Object> entities = getTemplate().select(query).collect(Collectors.toUnmodifiableList());
         return NoSQLPage.of(entities, pageable);
@@ -140,7 +140,7 @@ public abstract class AbstractDocumentRepository<T, K> implements PageableReposi
     }
 
     private Class<T> getType() {
-        return (Class<T>) getEntityMetadata().getType();
+        return (Class<T>) getEntityMetadata().type();
     }
 
     private Function optionalToStream() {

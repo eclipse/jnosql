@@ -91,9 +91,9 @@ class DefaultGraphTraversalSourceConverter extends GraphConverter {
         requireNonNull(entity, "entity is required");
 
         EntityMetadata mapping = getEntities().get(entity.getClass());
-        String label = mapping.getName();
+        String label = mapping.name();
 
-        List<FieldGraph> fields = mapping.getFields().stream()
+        List<FieldGraph> fields = mapping.fields().stream()
                 .map(f -> to(f, entity))
                 .filter(FieldGraph::isNotEmpty).collect(toList());
 
@@ -115,7 +115,7 @@ class DefaultGraphTraversalSourceConverter extends GraphConverter {
                 .flatMap(f -> f.toElements(this, getConverters()).stream())
                 .forEach(p -> vertex.property(p.key(), p.value()));
 
-        mapping.getInheritance().ifPresent(i ->
+        mapping.inheritance().ifPresent(i ->
                 vertex.property(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
 
         return vertex;

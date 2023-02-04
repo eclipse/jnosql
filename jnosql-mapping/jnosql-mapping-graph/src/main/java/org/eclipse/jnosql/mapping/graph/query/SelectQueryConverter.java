@@ -47,7 +47,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
         EntityMetadata mapping = graphQuery.getMapping();
         RepositoryObserverParser parser = RepositoryObserverParser.of(mapping);
         GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, query::where, mapping);
-        traversal.hasLabel(mapping.getName());
+        traversal.hasLabel(mapping.name());
         query.orderBy().forEach(getSort(traversal, parser));
         updateDynamicParameter(params, traversal, query, parser);
         return traversal.toStream();

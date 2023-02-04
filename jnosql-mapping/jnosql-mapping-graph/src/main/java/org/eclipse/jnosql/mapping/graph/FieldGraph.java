@@ -87,25 +87,25 @@ final class FieldGraph {
     }
 
     public <X, Y> List<Property<?>> toElements(GraphConverter converter, Converters converters) {
-        if (EMBEDDED.equals(field.getType())) {
+        if (EMBEDDED.equals(field.type())) {
             return converter.getProperties(value);
         }
 
         Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(optionalConverter.get());
-            return singletonList(DefaultProperty.of(field.getName(), attributeConverter.convertToDatabaseColumn((X) value)));
+            return singletonList(DefaultProperty.of(field.name(), attributeConverter.convertToDatabaseColumn((X) value)));
         }
-        return singletonList(DefaultProperty.of(field.getName(), value));
+        return singletonList(DefaultProperty.of(field.name(), value));
     }
 
     public <X, Y> Property toElement(Converters converters) {
         Optional<Class<? extends AttributeConverter<X, Y>>> optionalConverter = field.getConverter();
         if (optionalConverter.isPresent()) {
             AttributeConverter<X, Y> attributeConverter = converters.get(optionalConverter.get());
-            return DefaultProperty.of(field.getName(), attributeConverter.convertToDatabaseColumn((X) value));
+            return DefaultProperty.of(field.name(), attributeConverter.convertToDatabaseColumn((X) value));
         }
-        return DefaultProperty.of(field.getName(), value);
+        return DefaultProperty.of(field.name(), value);
     }
 
 }

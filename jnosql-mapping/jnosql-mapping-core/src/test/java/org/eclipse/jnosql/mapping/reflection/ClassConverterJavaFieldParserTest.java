@@ -46,14 +46,14 @@ public class ClassConverterJavaFieldParserTest {
     public void shouldReturnErrorWhenParameterIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> {
             EntityMetadata entityMetadata = classConverter.create(Person.class);
-            entityMetadata.getColumnField(null);
+            entityMetadata.columnField(null);
         });
     }
 
     @Test
     public void shouldReturnTheNativeName() {
         EntityMetadata entityMetadata = classConverter.create(Worker.class);
-        String notFound = entityMetadata.getColumnField("salary");
+        String notFound = entityMetadata.columnField("salary");
         assertEquals("money", notFound);
 
     }
@@ -61,21 +61,21 @@ public class ClassConverterJavaFieldParserTest {
     @Test
     public void shouldReturnTheSameValueWhenTheFieldDoesNotExistInTheEntityMetadata() {
         EntityMetadata entityMetadata = classConverter.create(Person.class);
-        String notFound = entityMetadata.getColumnField("notFound");
+        String notFound = entityMetadata.columnField("notFound");
         assertEquals("notFound", notFound);
     }
 
     @Test
     public void shouldReadFieldWhenFieldIsSubEntity() {
         EntityMetadata entityMetadata = classConverter.create(Address.class);
-        String result = entityMetadata.getColumnField("zipCode.plusFour");
+        String result = entityMetadata.columnField("zipCode.plusFour");
         assertEquals("zipCode.plusFour", result);
     }
 
     @Test
     public void shouldReturnAllFieldWhenSelectTheSubEntityField() {
         EntityMetadata entityMetadata = classConverter.create(Address.class);
-        String result = entityMetadata.getColumnField("zipCode");
+        String result = entityMetadata.columnField("zipCode");
         List<String> resultList = Stream.of(result.split(",")).sorted().collect(toList());
         List<String> expected = Stream.of("zipCode.plusFour", "zipCode.zip").sorted().collect(toList());
         assertEquals(expected, resultList);
@@ -84,14 +84,14 @@ public class ClassConverterJavaFieldParserTest {
     @Test
     public void shouldReadFieldWhenFieldIsEmbedded() {
         EntityMetadata entityMetadata = classConverter.create(Worker.class);
-        String result = entityMetadata.getColumnField("job.city");
+        String result = entityMetadata.columnField("job.city");
         assertEquals("city", result);
     }
 
     @Test
     public void shouldReturnAllFieldWhenSelectTheEmbeddedField() {
         EntityMetadata entityMetadata = classConverter.create(Worker.class);
-        String result = entityMetadata.getColumnField("job");
+        String result = entityMetadata.columnField("job");
         List<String> resultList = Stream.of(result.split(",")).sorted().collect(toList());
         List<String> expected = Stream.of("description", "city").sorted().collect(toList());
         assertEquals(expected, resultList);
@@ -101,7 +101,7 @@ public class ClassConverterJavaFieldParserTest {
     @Test
     public void shouldReturnEmbeddedFieldInCollection() {
         EntityMetadata entityMetadata = classConverter.create(AppointmentBook.class);
-        String result = entityMetadata.getColumnField("contacts.name");
+        String result = entityMetadata.columnField("contacts.name");
         assertEquals("contacts.contact_name", result);
     }
 

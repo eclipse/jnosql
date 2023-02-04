@@ -148,13 +148,13 @@ final class DocumentMapperSelect extends AbstractMapperQuery implements MapperFr
 
     @Override
     public MapperNameOrder asc() {
-        this.sorts.add(Sort.of(mapping.getColumnField(name), Direction.ASC, false));
+        this.sorts.add(Sort.of(mapping.columnField(name), Direction.ASC, false));
         return this;
     }
 
     @Override
     public MapperNameOrder desc() {
-        this.sorts.add(Sort.of(mapping.getColumnField(name), Direction.DESC, false));
+        this.sorts.add(Sort.of(mapping.columnField(name), Direction.DESC, false));
         return this;
     }
 

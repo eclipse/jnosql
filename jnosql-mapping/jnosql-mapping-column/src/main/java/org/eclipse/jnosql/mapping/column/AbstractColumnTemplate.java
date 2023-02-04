@@ -167,12 +167,12 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
         EntityMetadata entityMetadata = getEntities().get(type);
-        FieldMapping idField = entityMetadata.getId()
+        FieldMapping idField = entityMetadata.id()
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
-        Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
-        ColumnQuery query = ColumnQuery.select().from(entityMetadata.getName())
-                .where(idField.getName()).eq(value).build();
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
+        ColumnQuery query = ColumnQuery.select().from(entityMetadata.name())
+                .where(idField.name()).eq(value).build();
 
         return singleResult(query);
     }
@@ -183,12 +183,12 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
         requireNonNull(id, "id is required");
 
         EntityMetadata entityMetadata = getEntities().get(type);
-        FieldMapping idField = entityMetadata.getId()
+        FieldMapping idField = entityMetadata.id()
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
-        Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
 
-        ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(entityMetadata.getName())
-                .where(idField.getName()).eq(value).build();
+        ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(entityMetadata.name())
+                .where(idField.name()).eq(value).build();
         getManager().delete(query);
     }
 
@@ -230,7 +230,7 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
     public <T> long count(Class<T> type) {
         requireNonNull(type, "entity class is required");
         EntityMetadata entityMetadata = getEntities().get(type);
-        return getManager().count(entityMetadata.getName());
+        return getManager().count(entityMetadata.name());
     }
 
     private <T> Stream<T> executeQuery(ColumnQuery query) {
@@ -258,7 +258,7 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
     public <T> Stream<T> findAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        ColumnQuery query = ColumnQuery.select().from(metadata.getName()).build();
+        ColumnQuery query = ColumnQuery.select().from(metadata.name()).build();
         return select(query);
     }
 
@@ -266,7 +266,7 @@ public abstract class AbstractColumnTemplate implements JNoSQLColumnTemplate {
     public <T> void deleteAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(metadata.getName()).build();
+        ColumnDeleteQuery query = ColumnDeleteQuery.delete().from(metadata.name()).build();
         delete(query);
     }
 

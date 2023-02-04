@@ -50,7 +50,7 @@ class DefaultEntitiesMetadataTest {
 
         EntityMetadata mapping = this.mappings.get(Person.class);
         Assertions.assertNotNull(mapping);
-        Assertions.assertEquals(Person.class, mapping.getType());
+        Assertions.assertEquals(Person.class, mapping.type());
     }
 
     @Test
@@ -60,7 +60,7 @@ class DefaultEntitiesMetadataTest {
 
         EntityMetadata mapping = this.mappings.findByName("vendors");
         Assertions.assertNotNull(mapping);
-        Assertions.assertEquals(Vendor.class, mapping.getType());
+        Assertions.assertEquals(Vendor.class, mapping.type());
     }
     @Test
     public void shouldFindBySimpleName(){
@@ -72,7 +72,7 @@ class DefaultEntitiesMetadataTest {
                 .orElseThrow();
 
         Assertions.assertNotNull(mapping);
-        Assertions.assertEquals(Person.class, mapping.getType());
+        Assertions.assertEquals(Person.class, mapping.type());
     }
 
     @Test
@@ -85,7 +85,7 @@ class DefaultEntitiesMetadataTest {
                 .orElseThrow();
 
         Assertions.assertNotNull(mapping);
-        Assertions.assertEquals(Person.class, mapping.getType());
+        Assertions.assertEquals(Person.class, mapping.type());
     }
 
     @Test
@@ -102,11 +102,11 @@ class DefaultEntitiesMetadataTest {
 
         EntityMetadata parent = this.mappings.findByName("Notification");
         Assertions.assertNotNull(parent);
-        Assertions.assertEquals(Notification.class, parent.getType());
+        Assertions.assertEquals(Notification.class, parent.type());
 
         parent = this.mappings.findByName("Project");
         Assertions.assertNotNull(parent);
-        Assertions.assertEquals(Project.class, parent.getType());
+        Assertions.assertEquals(Project.class, parent.type());
     }
 
     @Test

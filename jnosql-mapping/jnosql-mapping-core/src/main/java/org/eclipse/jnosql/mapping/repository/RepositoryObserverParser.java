@@ -39,7 +39,7 @@ public final class RepositoryObserverParser {
      * @return the field result
      */
     public String name() {
-        return metadata.getName();
+        return metadata.name();
     }
 
     /**
@@ -50,8 +50,8 @@ public final class RepositoryObserverParser {
      * @return the field result
      */
     public String field(String field) {
-        if (metadata.getFieldMapping(field).isPresent()) {
-            return metadata.getColumnField(field);
+        if (metadata.fieldMapping(field).isPresent()) {
+            return metadata.columnField(field);
         } else {
             String currentField = "";
             String[] fields = splitByCharacterType(field);
@@ -61,9 +61,9 @@ public final class RepositoryObserverParser {
                 } else {
                     currentField = currentField + capitalize(fields[index], true);
                 }
-                Optional<FieldMapping> mapping = metadata.getFieldMapping(currentField);
+                Optional<FieldMapping> mapping = metadata.fieldMapping(currentField);
                 if (mapping.isPresent()) {
-                    String name = mapping.map(FieldMapping::getName).orElseThrow();
+                    String name = mapping.map(FieldMapping::name).orElseThrow();
                     return name + concat(index, fields);
                 }
             }

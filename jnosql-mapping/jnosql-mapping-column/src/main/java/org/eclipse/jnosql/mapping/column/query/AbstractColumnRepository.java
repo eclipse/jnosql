@@ -93,7 +93,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
     }
 
     private Class<T> getType() {
-        return (Class<T>) getEntityMetadata().getType();
+        return (Class<T>) getEntityMetadata().type();
     }
 
     @Override
@@ -104,7 +104,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
     }
 
     private FieldMapping getIdField() {
-        return getEntityMetadata().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     @Override
@@ -118,7 +118,7 @@ public abstract class AbstractColumnRepository<T, K> implements PageableReposito
         EntityMetadata metadata = getEntityMetadata();
         ColumnQuery query = new MappingColumnQuery(pageable.sorts(),
                 pageable.size(), NoSQLPage.skip(pageable)
-                , null ,metadata.getName());
+                , null ,metadata.name());
 
         List<Object> entities = getTemplate().select(query).collect(Collectors.toUnmodifiableList());
         return NoSQLPage.of(entities, pageable);

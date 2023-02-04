@@ -59,15 +59,15 @@ public abstract class DocumentEntityConverter {
     public DocumentEntity toDocument(Object entity) {
         requireNonNull(entity, "entity is required");
         EntityMetadata mapping = getEntities().get(entity.getClass());
-        DocumentEntity communication = DocumentEntity.of(mapping.getName());
-        mapping.getFields().stream()
+        DocumentEntity communication = DocumentEntity.of(mapping.name());
+        mapping.fields().stream()
                 .map(f -> to(f, entity))
                 .filter(FieldValue::isNotEmpty)
                 .map(f -> f.toDocument(this, getConverters()))
                 .flatMap(List::stream)
                 .forEach(communication::add);
 
-        mapping.getInheritance().ifPresent(i -> communication.add(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
+        mapping.inheritance().ifPresent(i -> communication.add(i.getDiscriminatorColumn(), i.getDiscriminatorValue()));
         return communication;
 
     }
@@ -119,9 +119,9 @@ public abstract class DocumentEntityConverter {
         requireNonNull(entity, "entity is required");
         EntityMetadata mapping = getEntities().findByName(entity.name());
         if (mapping.isInheritance()) {
-            return mapInheritanceEntity(entity, mapping.getType());
+            return mapInheritanceEntity(entity, mapping.type());
         }
-        ConstructorMetadata constructor = mapping.getConstructor();
+        ConstructorMetadata constructor = mapping.constructor();
         if (constructor.isDefault()) {
             T instance = mapping.newInstance();
             return convertEntity(entity.documents(), mapping, instance);
@@ -136,7 +136,7 @@ public abstract class DocumentEntityConverter {
             return inheritanceToEntity(documents, mapping);
 
         }
-        ConstructorMetadata constructor = mapping.getConstructor();
+        ConstructorMetadata constructor = mapping.constructor();
         if (constructor.isDefault()) {
             T instance = mapping.newInstance();
             return convertEntity(documents, mapping, instance);
@@ -153,7 +153,7 @@ public abstract class DocumentEntityConverter {
             Optional<Document> document = documents.stream().filter(c -> c.name().equals(k)).findFirst();
             FieldMapping field = fieldsGroupByName.get(k);
             FieldConverter fieldConverter = FieldConverter.get(field);
-            if (ENTITY.equals(field.getType())) {
+            if (ENTITY.equals(field.type())) {
                 document.ifPresent(d -> fieldConverter.convert(entity,
                         null, d, field, this));
             } else {
@@ -163,7 +163,7 @@ public abstract class DocumentEntityConverter {
     }
 
     private <T> T convertEntityByConstructor(List<Document> documents, EntityMetadata mapping) {
-        ConstructorBuilder builder = ConstructorBuilder.of(mapping.getConstructor());
+        ConstructorBuilder builder = ConstructorBuilder.of(mapping.constructor());
         for (ParameterMetaData parameter : builder.getParameters()) {
             Optional<Document> document = documents.stream()
                     .filter(c -> c.name().equals(parameter.getName()))
@@ -200,7 +200,7 @@ public abstract class DocumentEntityConverter {
                         " column value " + discriminator));
 
         EntityMetadata mapping = getEntities().get(inheritance.getEntity());
-        ConstructorMetadata constructor = mapping.getConstructor();
+        ConstructorMetadata constructor = mapping.constructor();
         if (constructor.isDefault()) {
             T instance = mapping.newInstance();
             return convertEntity(entity.documents(), mapping, instance);
@@ -210,11 +210,11 @@ public abstract class DocumentEntityConverter {
     }
 
     private <T> T convertEntity(List<Document> documents, EntityMetadata mapping, T instance) {
-        final Map<String, FieldMapping> fieldsGroupByName = mapping.getFieldsGroupByName();
+        final Map<String, FieldMapping> fieldsGroupByName = mapping.fieldsGroupByName();
         final List<String> names = documents.stream().map(Document::name).sorted().collect(Collectors.toList());
         final Predicate<String> existField = k -> Collections.binarySearch(names, k) >= 0;
         final Predicate<String> isElementType = k -> {
-            MappingType type = fieldsGroupByName.get(k).getType();
+            MappingType type = fieldsGroupByName.get(k).type();
             return EMBEDDED.equals(type) || ENTITY.equals(type);
         };
 
@@ -227,11 +227,11 @@ public abstract class DocumentEntityConverter {
 
     private <T> T inheritanceToEntity(List<Document> documents, EntityMetadata mapping) {
         Map<String, InheritanceMetadata> group = getEntities()
-                .findByParentGroupByDiscriminatorValue(mapping.getType());
+                .findByParentGroupByDiscriminatorValue(mapping.type());
 
         if (group.isEmpty()) {
             throw new MappingException("There is no discriminator inheritance to the document collection "
-                    + mapping.getName());
+                    + mapping.name());
         }
 
         String column = group.values()

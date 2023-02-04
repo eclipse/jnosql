@@ -70,7 +70,7 @@ public abstract class BaseDocumentRepository<T> {
 
     protected DocumentQuery getQuery(Method method, Object[] args) {
         SelectMethodProvider provider = SelectMethodProvider.INSTANCE;
-        SelectQuery selectQuery = provider.apply(method, getEntityMetadata().getName());
+        SelectQuery selectQuery = provider.apply(method, getEntityMetadata().name());
         DocumentQueryParams queryParams = SELECT_PARSER.apply(selectQuery, getParser());
         DocumentQuery query = queryParams.query();
         Params params = queryParams.params();
@@ -81,7 +81,7 @@ public abstract class BaseDocumentRepository<T> {
 
     protected DocumentDeleteQuery getDeleteQuery(Method method, Object[] args) {
         DeleteMethodProvider deleteMethodFactory = DeleteMethodProvider.INSTANCE;
-        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getEntityMetadata().getName());
+        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getEntityMetadata().name());
         DocumentDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, getParser());
         DocumentDeleteQuery query = queryParams.query();
         Params params = queryParams.params();

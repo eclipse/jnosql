@@ -63,7 +63,7 @@ class AbstractMapperQuery {
         if (isKey(name)) {
             appendCondition(__.has(id, P.eq(getValue(value))));
         } else {
-            appendCondition(__.has(mapping.getColumnField(name), P.eq(getValue(value))));
+            appendCondition(__.has(mapping.columnField(name), P.eq(getValue(value))));
         }
     }
 
@@ -72,7 +72,7 @@ class AbstractMapperQuery {
         if (isKey(name)) {
             appendCondition(__.has(id, P.gt(getValue(value))));
         } else {
-            appendCondition(__.has(mapping.getColumnField(name), P.gt(getValue(value))));
+            appendCondition(__.has(mapping.columnField(name), P.gt(getValue(value))));
         }
     }
 
@@ -81,7 +81,7 @@ class AbstractMapperQuery {
         if (isKey(name)) {
             appendCondition(__.has(id, P.gte(getValue(value))));
         } else {
-            appendCondition(__.has(mapping.getColumnField(name), P.gte(getValue(value))));
+            appendCondition(__.has(mapping.columnField(name), P.gte(getValue(value))));
         }
     }
 
@@ -90,7 +90,7 @@ class AbstractMapperQuery {
         if (isKey(name)) {
             appendCondition(__.has(id, P.lt(getValue(value))));
         } else {
-            appendCondition(__.has(mapping.getColumnField(name), P.lt(getValue(value))));
+            appendCondition(__.has(mapping.columnField(name), P.lt(getValue(value))));
         }
     }
 
@@ -99,7 +99,7 @@ class AbstractMapperQuery {
         if (isKey(name)) {
             appendCondition(__.has(id, P.lte(getValue(value))));
         } else {
-            appendCondition(__.has(mapping.getColumnField(name), P.lte(getValue(value))));
+            appendCondition(__.has(mapping.columnField(name), P.lte(getValue(value))));
         }
     }
 
@@ -109,7 +109,7 @@ class AbstractMapperQuery {
         if (isKey(name)) {
             appendCondition(__.has(id, P.between(getValue(valueA), getValue(valueB))));
         } else {
-            appendCondition(__.has(mapping.getColumnField(name), P.between(getValue(valueA), getValue(valueB))));
+            appendCondition(__.has(mapping.columnField(name), P.between(getValue(valueA), getValue(valueB))));
         }
     }
 
@@ -121,7 +121,7 @@ class AbstractMapperQuery {
         if (isKey(name)) {
             appendCondition(__.has(id, P.within(convertedValues)));
         } else {
-            appendCondition(__.has(mapping.getColumnField(name), P.within(convertedValues)));
+            appendCondition(__.has(mapping.columnField(name), P.within(convertedValues)));
         }
     }
 
@@ -134,7 +134,7 @@ class AbstractMapperQuery {
     }
 
     private boolean isKey(String name) {
-        Optional<FieldMapping> field = mapping.getFieldMapping(name);
+        Optional<FieldMapping> field = mapping.fieldMapping(name);
         return field.map(FieldMapping::isId).orElse(false);
     }
 

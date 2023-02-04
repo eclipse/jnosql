@@ -92,7 +92,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
 
     @Override
     public long count() {
-        return getTemplate().count(getEntityMetadata().getName());
+        return getTemplate().count(getEntityMetadata().name());
     }
 
     @Override
@@ -101,7 +101,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
         EntityMetadata metadata = getEntityMetadata();
 
         List<Object> entities = getTemplate().traversalVertex()
-                .hasLabel(metadata.getType())
+                .hasLabel(metadata.type())
                 .skip(NoSQLPage.skip(pageable))
                 .limit(pageable.size()).getResult()
                 .collect(Collectors.toUnmodifiableList());
@@ -111,7 +111,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
 
     @Override
     public Stream findAll() {
-        return getTemplate().findAll(getEntityMetadata().getType());
+        return getTemplate().findAll(getEntityMetadata().type());
     }
 
     @Override
@@ -126,11 +126,11 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
 
     @Override
     public void deleteAll() {
-        getTemplate().deleteAll(getEntityMetadata().getType());
+        getTemplate().deleteAll(getEntityMetadata().type());
     }
 
     private FieldMapping getIdField() {
-        return getEntityMetadata().getId().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
+        return getEntityMetadata().id().orElseThrow(KEY_NOT_FOUND_EXCEPTION_SUPPLIER);
     }
 
     private Function optionalToStream() {

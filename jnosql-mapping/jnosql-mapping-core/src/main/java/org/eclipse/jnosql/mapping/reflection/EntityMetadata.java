@@ -30,18 +30,18 @@ public interface EntityMetadata {
     /**
      * @return the Entity name
      */
-    String getName();
+    String name();
 
     /**
      * @return the fields name
      */
-    List<String> getFieldsName();
+    List<String> fieldsName();
 
     /**
      * @return a {@code Class} object identifying the declared
      * type of the entity represented by this object
      */
-    Class<?> getType();
+    Class<?> type();
 
     /**
      * Return the parent class of this class mapping.
@@ -49,7 +49,7 @@ public interface EntityMetadata {
      *
      * @return the parent annotation otherwise {@link  Optional#empty()}
      */
-    Optional<InheritanceMetadata> getInheritance();
+    Optional<InheritanceMetadata> inheritance();
 
     /**
      * A class that has a parent with {@link org.eclipse.jnosql.mapping.Inheritance} annotation
@@ -67,7 +67,7 @@ public interface EntityMetadata {
     /**
      * @return The fields from this class
      */
-    List<FieldMapping> getFields();
+    List<FieldMapping> fields();
 
 
     /**
@@ -83,7 +83,7 @@ public interface EntityMetadata {
      * Returns the {@link  ConstructorMetadata} the representation of a constructor
      * @return The {@link  ConstructorMetadata}
      */
-    ConstructorMetadata getConstructor();
+    ConstructorMetadata constructor();
 
 
     /**
@@ -93,7 +93,7 @@ public interface EntityMetadata {
      * @return the column name or column
      * @throws NullPointerException when javaField is null
      */
-    String getColumnField(String javaField);
+    String columnField(String javaField);
 
     /**
      * Gets the {@link FieldMapping} from the java field name
@@ -102,16 +102,16 @@ public interface EntityMetadata {
      * @return the field otherwise {@link Optional#empty()}
      * @throws NullPointerException when the javaField is null
      */
-    Optional<FieldMapping> getFieldMapping(String javaField);
+    Optional<FieldMapping> fieldMapping(String javaField);
 
     /**
      * Returns a Fields grouped by the name
      *
      * @return a {@link FieldMapping} grouped by
-     * {@link FieldMapping#getName()}
-     * @see FieldMapping#getName()
+     * {@link FieldMapping#name()}
+     * @see FieldMapping#name()
      */
-    Map<String, FieldMapping> getFieldsGroupByName();
+    Map<String, FieldMapping> fieldsGroupByName();
 
 
     /**
@@ -119,5 +119,5 @@ public interface EntityMetadata {
      *
      * @return the field with ID annotation
      */
-    Optional<FieldMapping> getId();
+    Optional<FieldMapping> id();
 }

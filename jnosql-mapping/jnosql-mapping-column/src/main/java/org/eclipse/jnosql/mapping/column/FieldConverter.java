@@ -37,10 +37,10 @@ enum FieldConverter {
         @Override
         public <X, Y, T> void convert(T instance, List<Column> columns, Column column,
                                       FieldMapping field, ColumnEntityConverter converter) {
-            Field nativeField = field.getNativeField();
+            Field nativeField = field.nativeField();
             Object subEntity = converter.toEntity(nativeField.getType(), columns);
             EntityMetadata mapping = converter.getEntities().get(subEntity.getClass());
-            boolean areAllFieldsNull = mapping.getFields()
+            boolean areAllFieldsNull = mapping.fields()
                     .stream()
                     .map(f -> f.read(subEntity))
                     .allMatch(Objects::isNull);
@@ -56,7 +56,7 @@ enum FieldConverter {
             if (Objects.nonNull(subColumn)) {
                 converterSubDocument(instance, subColumn, field, converter);
             } else {
-                field.write(instance, converter.toEntity(field.getNativeField().getType(), columns));
+                field.write(instance, converter.toEntity(field.nativeField().getType(), columns));
             }
         }
 
@@ -70,10 +70,10 @@ enum FieldConverter {
                 for (Map.Entry entry : (Set<Map.Entry>) map.entrySet()) {
                     embeddedColumns.add(Column.of(entry.getKey().toString(), entry.getValue()));
                 }
-                field.write(instance, converter.toEntity(field.getNativeField().getType(), embeddedColumns));
+                field.write(instance, converter.toEntity(field.nativeField().getType(), embeddedColumns));
 
             } else {
-                field.write(instance, converter.toEntity(field.getNativeField().getType(),
+                field.write(instance, converter.toEntity(field.nativeField().getType(),
                         subColumn.get(new TypeReference<List<Column>>() {
                         })));
             }
@@ -105,9 +105,9 @@ enum FieldConverter {
                     AttributeConverter<X, Y> attributeConverter = converter.getConverters().get(optionalConverter.get());
                     Y attr = (Y)(value.isInstanceOf(List.class) ? column : value.get());
                     Object attributeConverted = attributeConverter.convertToEntityAttribute((Y) attr);
-                    field.write(instance, field.getValue(Value.of(attributeConverted)));
+                    field.write(instance, field.value(Value.of(attributeConverted)));
                 } else {
-                    field.write(instance, field.getValue(value));
+                    field.write(instance, field.value(value));
                 }
             }
         }
@@ -115,9 +115,9 @@ enum FieldConverter {
 
 
     static FieldConverter get(FieldMapping field) {
-        if (MappingType.EMBEDDED.equals(field.getType())) {
+        if (MappingType.EMBEDDED.equals(field.type())) {
             return EMBEDDED;
-        } else if (MappingType.ENTITY.equals(field.getType())) {
+        } else if (MappingType.ENTITY.equals(field.type())) {
             return ENTITY;
         } else if (isCollectionEmbeddable(field)) {
             return COLLECTION;
@@ -127,7 +127,7 @@ enum FieldConverter {
     }
 
     private static boolean isCollectionEmbeddable(FieldMapping field) {
-        return MappingType.COLLECTION.equals(field.getType()) && ((GenericFieldMapping) field).isEmbeddable();
+        return MappingType.COLLECTION.equals(field.type()) && ((GenericFieldMapping) field).isEmbeddable();
     }
 
     abstract <X, Y, T> void convert(T instance, List<Column> columns, Column column, FieldMapping field,

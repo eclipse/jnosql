@@ -86,11 +86,11 @@ final class DefaultColumnFieldValue implements ColumnFieldValue {
     }
 
     private MappingType getType() {
-        return getField().getType();
+        return getField().type();
     }
 
     private String getName() {
-        return getField().getName();
+        return getField().name();
     }
 
     private boolean isEmbeddableElement() {

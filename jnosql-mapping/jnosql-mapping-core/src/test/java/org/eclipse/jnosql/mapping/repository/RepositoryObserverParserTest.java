@@ -50,7 +50,7 @@ class RepositoryObserverParserTest {
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
                 .extracting(p -> p.name())
-                .isEqualTo(metadata.getName());
+                .isEqualTo(metadata.name());
     }
 
 

@@ -86,7 +86,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     }
 
     private MappingType getType() {
-        return getField().getType();
+        return getField().type();
     }
 
     private boolean isEmbeddableElement() {
@@ -94,7 +94,7 @@ final class DefaultDocumentFieldValue implements DocumentFieldValue {
     }
 
     private String getName() {
-        return getField().getName();
+        return getField().name();
     }
 
     static DocumentFieldValue of(Object value, FieldMapping field) {

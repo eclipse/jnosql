@@ -73,7 +73,7 @@ class ParamsBinderTest {
         paramsBinder = new ParamsBinder(entityMetadata, converters);
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
-        SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.getName());
+        SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.name());
         SelectQueryParser queryParser = new SelectQueryParser();
         DocumentQueryParams documentQueryParams = queryParser.apply(selectQuery, parser);
         Params params = documentQueryParams.params();
@@ -96,7 +96,7 @@ class ParamsBinderTest {
         paramsBinder = new ParamsBinder(entityMetadata, converters);
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
-        SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.getName());
+        SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.name());
         SelectQueryParser queryParser = new SelectQueryParser();
         DocumentQueryParams queryParams = queryParser.apply(selectQuery, parser);
         Params params = queryParams.params();
