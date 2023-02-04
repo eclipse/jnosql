@@ -29,9 +29,9 @@ import org.eclipse.jnosql.mapping.IdNotFoundException;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.entities.Job;
-import org.eclipse.jnosql.mapping.test.entities.Movie;
-import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.document.entities.Job;
+import org.eclipse.jnosql.mapping.document.entities.Movie;
+import org.eclipse.jnosql.mapping.document.entities.Person;
 
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
