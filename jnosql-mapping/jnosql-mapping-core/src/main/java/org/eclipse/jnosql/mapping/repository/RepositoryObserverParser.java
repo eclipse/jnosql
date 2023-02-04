@@ -34,12 +34,11 @@ public final class RepositoryObserverParser {
 
 
     /**
-     * Fire an event to entity name
+     * Returns name of the entity
      *
-     * @param entity the entity
      * @return the field result
      */
-    public String fireEntity(String entity) {
+    public String name() {
         return metadata.getName();
     }
 

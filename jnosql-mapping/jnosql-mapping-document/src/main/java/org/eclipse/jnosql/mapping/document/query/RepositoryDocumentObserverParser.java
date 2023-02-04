@@ -28,7 +28,7 @@ public class RepositoryDocumentObserverParser implements DocumentObserverParser 
 
     @Override
     public String fireEntity(String entity) {
-        return parser.fireEntity(entity);
+        return parser.name();
     }
 
     @Override
