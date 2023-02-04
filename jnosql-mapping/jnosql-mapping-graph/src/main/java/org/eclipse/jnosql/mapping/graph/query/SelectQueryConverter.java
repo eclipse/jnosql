@@ -22,6 +22,7 @@ import org.eclipse.jnosql.communication.query.method.SelectMethodProvider;
 import org.eclipse.jnosql.mapping.NoSQLPage;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.repository.DynamicReturn;
+import org.eclipse.jnosql.mapping.repository.RepositoryObserverParser;
 import org.eclipse.jnosql.mapping.repository.SpecialParameters;
 
 import java.util.function.BiFunction;
@@ -44,32 +45,33 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
         SelectQuery query = selectMethodFactory.apply(graphQuery.getMethod(), graphQuery.getEntityName());
         EntityMetadata mapping = graphQuery.getMapping();
-
+        RepositoryObserverParser parser = RepositoryObserverParser.of(mapping);
         GraphTraversal<Vertex, Vertex> traversal = getGraphTraversal(graphQuery, query::where, mapping);
         traversal.hasLabel(mapping.getName());
-        query.orderBy().forEach(getSort(traversal, mapping));
-        updateDynamicParameter(params, traversal, query, mapping);
+        query.orderBy().forEach(getSort(traversal, parser));
+        updateDynamicParameter(params, traversal, query, parser);
         return traversal.toStream();
     }
 
 
-    private static Consumer<Sort> getSort(GraphTraversal<Vertex, Vertex> traversal, EntityMetadata mapping) {
+    private static Consumer<Sort> getSort(GraphTraversal<Vertex, Vertex> traversal, RepositoryObserverParser parser) {
         return o -> {
             if (o.isAscending()) {
-                traversal.order().by(mapping.getColumnField(o.property()), asc);
+                traversal.order().by(parser.field(o.property()), asc);
             } else {
-                traversal.order().by(mapping.getColumnField(o.property()), desc);
+                traversal.order().by(parser.field(o.property()), desc);
             }
         };
     }
 
 
     static void updateDynamicParameter(Object[] args, GraphTraversal<Vertex, Vertex> traversal, EntityMetadata mapping) {
-        updateDynamicParameter(args, traversal, null, mapping);
+        updateDynamicParameter(args, traversal, null, RepositoryObserverParser.of(mapping));
     }
 
 
-    private static void updateDynamicParameter(Object[] args, GraphTraversal<Vertex, Vertex> traversal, SelectQuery query, EntityMetadata mapping) {
+    private static void updateDynamicParameter(Object[] args, GraphTraversal<Vertex, Vertex> traversal,
+                                               SelectQuery query, RepositoryObserverParser parser) {
         SpecialParameters special = DynamicReturn.findSpecialParameters(args);
 
         if (query != null) {
@@ -86,7 +88,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
         }
 
         if (special.hasOnlySort()) {
-            special.sorts().forEach(getSort(traversal, mapping));
+            special.sorts().forEach(getSort(traversal, parser));
             return;
         }
 
@@ -97,7 +99,7 @@ final class SelectQueryConverter extends AbstractQueryConvert implements BiFunct
             traversal.limit((int) l.maxResults());
         });
         special.pageable().ifPresent(p -> {
-            special.sorts().forEach(getSort(traversal, mapping));
+            special.sorts().forEach(getSort(traversal, parser));
             traversal.skip(NoSQLPage.skip(p)).limit(p.size());
         });
 
