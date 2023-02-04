@@ -20,6 +20,7 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Sort;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
@@ -664,6 +665,26 @@ public class DocumentCrudRepositoryProxyTest {
         DocumentCondition condition = negate.document().get(DocumentCondition.class);
         assertEquals(GREATER_THAN, condition.condition());
         assertEquals(Document.of("age", 10), condition.document());
+    }
+
+    @Test
+    public void shouldConvertMapAddressRepository() {
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        addressRepository.findByZipCodeZip("123456");
+        DocumentQuery query = captor.getValue();
+        Assertions.assertThat(query)
+                .isNotNull()
+                .matches(c -> c.name().equals("Address"))
+                .matches(c -> c.documents().isEmpty())
+                .matches(c -> c.sorts().isEmpty())
+                .extracting(DocumentQuery::condition)
+                .extracting(Optional::orElseThrow)
+                .matches(c -> c.condition().equals(EQUALS))
+                .extracting(DocumentCondition::document)
+                .matches(d -> d.value().equals("123456"))
+                .matches(d -> d.name().equals("zipCode.zip"));
+
     }
 
     interface PersonRepository extends CrudRepository<Person, Long> {
