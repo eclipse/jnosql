@@ -60,11 +60,11 @@ public class ClassConverterTest {
     public void shouldCreateEntityMetadata() {
         EntityMetadata entityMetadata = classConverter.create(Person.class);
 
-        assertEquals("Person", entityMetadata.getName());
-        assertEquals(Person.class, entityMetadata.getType());
-        assertEquals(4, entityMetadata.getFields().size());
-        assertThat(entityMetadata.getFieldsName()).contains("_id", "name", "age", "phones");
-        ConstructorMetadata constructor = entityMetadata.getConstructor();
+        assertEquals("Person", entityMetadata.name());
+        assertEquals(Person.class, entityMetadata.type());
+        assertEquals(4, entityMetadata.fields().size());
+        assertThat(entityMetadata.fieldsName()).contains("_id", "name", "age", "phones");
+        ConstructorMetadata constructor = entityMetadata.constructor();
         assertNotNull(constructor);
         assertTrue(constructor.isDefault());
 
@@ -74,10 +74,10 @@ public class ClassConverterTest {
     public void shouldEntityMetadata2() {
         EntityMetadata entityMetadata = classConverter.create(Actor.class);
 
-        assertEquals("Actor", entityMetadata.getName());
-        assertEquals(Actor.class, entityMetadata.getType());
+        assertEquals("Actor", entityMetadata.name());
+        assertEquals(Actor.class, entityMetadata.type());
 
-        assertThat(entityMetadata.getFieldsName())
+        assertThat(entityMetadata.fieldsName())
                 .hasSize(6)
                 .contains("_id", "name", "age", "phones", "movieCharacter", "movieRating");
 
@@ -86,17 +86,17 @@ public class ClassConverterTest {
     @Test
     public void shouldCreateEntityMetadataWithEmbeddedClass() {
         EntityMetadata entityMetadata = classConverter.create(Director.class);
-        assertEquals("Director", entityMetadata.getName());
-        assertEquals(Director.class, entityMetadata.getType());
-        assertEquals(5, entityMetadata.getFields().size());
-        assertThat(entityMetadata.getFieldsName()).contains("_id", "name", "age", "phones", "movie");
+        assertEquals("Director", entityMetadata.name());
+        assertEquals(Director.class, entityMetadata.type());
+        assertEquals(5, entityMetadata.fields().size());
+        assertThat(entityMetadata.fieldsName()).contains("_id", "name", "age", "phones", "movie");
 
     }
 
     @Test
     public void shouldReturnFalseWhenThereIsNotKey() {
         EntityMetadata entityMetadata = classConverter.create(Worker.class);
-        boolean allMatch = entityMetadata.getFields().stream().noneMatch(FieldMapping::isId);
+        boolean allMatch = entityMetadata.fields().stream().noneMatch(FieldMapping::isId);
         assertTrue(allMatch);
     }
 
@@ -104,13 +104,13 @@ public class ClassConverterTest {
     @Test
     public void shouldReturnTrueWhenThereIsKey() {
         EntityMetadata entityMetadata = classConverter.create(User.class);
-        List<FieldMapping> fields = entityMetadata.getFields();
+        List<FieldMapping> fields = entityMetadata.fields();
 
         Predicate<FieldMapping> hasKeyAnnotation = FieldMapping::isId;
         assertTrue(fields.stream().anyMatch(hasKeyAnnotation));
         FieldMapping fieldMapping = fields.stream().filter(hasKeyAnnotation).findFirst().get();
-        assertEquals("_id", fieldMapping.getName());
-        assertEquals(MappingType.DEFAULT, fieldMapping.getType());
+        assertEquals("_id", fieldMapping.name());
+        assertEquals(MappingType.DEFAULT, fieldMapping.type());
 
     }
 
@@ -122,24 +122,24 @@ public class ClassConverterTest {
     @Test
     public void shouldReturnWhenIsDefaultConstructor() {
         EntityMetadata entityMetadata = classConverter.create(Machine.class);
-        List<FieldMapping> fields = entityMetadata.getFields();
+        List<FieldMapping> fields = entityMetadata.fields();
         assertEquals(1, fields.size());
     }
 
     @Test
     public void shouldReturnEmptyInheritance() {
         EntityMetadata entityMetadata = classConverter.create(Person.class);
-        Optional<InheritanceMetadata> inheritance = entityMetadata.getInheritance();
+        Optional<InheritanceMetadata> inheritance = entityMetadata.inheritance();
         Assertions.assertTrue(inheritance.isEmpty());
     }
 
     @Test
     public void shouldInheritance() {
         EntityMetadata entity = classConverter.create(SmallProject.class);
-        Assertions.assertEquals(2, entity.getFields().size());
-        Assertions.assertEquals(SmallProject.class, entity.getType());
+        Assertions.assertEquals(2, entity.fields().size());
+        Assertions.assertEquals(SmallProject.class, entity.type());
 
-        InheritanceMetadata inheritance = entity.getInheritance()
+        InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
         assertEquals("size", inheritance.getDiscriminatorColumn());
@@ -150,10 +150,10 @@ public class ClassConverterTest {
     @Test
     public void shouldInheritanceNoDiscriminatorValue() {
         EntityMetadata entity = classConverter.create(SocialMediaNotification.class);
-        Assertions.assertEquals(4, entity.getFields().size());
-        Assertions.assertEquals(SocialMediaNotification.class, entity.getType());
+        Assertions.assertEquals(4, entity.fields().size());
+        Assertions.assertEquals(SocialMediaNotification.class, entity.type());
 
-        InheritanceMetadata inheritance = entity.getInheritance()
+        InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
         assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
@@ -164,10 +164,10 @@ public class ClassConverterTest {
     @Test
     public void shouldInheritanceNoDiscriminatorColumn() {
         EntityMetadata entity = classConverter.create(EmailNotification.class);
-        Assertions.assertEquals(4, entity.getFields().size());
-        Assertions.assertEquals(EmailNotification.class, entity.getType());
+        Assertions.assertEquals(4, entity.fields().size());
+        Assertions.assertEquals(EmailNotification.class, entity.type());
 
-        InheritanceMetadata inheritance = entity.getInheritance()
+        InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
         assertEquals(DEFAULT_DISCRIMINATOR_COLUMN, inheritance.getDiscriminatorColumn());
@@ -178,10 +178,10 @@ public class ClassConverterTest {
     @Test
     public void shouldInheritanceSameParent() {
         EntityMetadata entity = classConverter.create(Project.class);
-        Assertions.assertEquals(1, entity.getFields().size());
-        Assertions.assertEquals(Project.class, entity.getType());
+        Assertions.assertEquals(1, entity.fields().size());
+        Assertions.assertEquals(Project.class, entity.type());
 
-        InheritanceMetadata inheritance = entity.getInheritance()
+        InheritanceMetadata inheritance = entity.inheritance()
                 .orElseThrow(RuntimeException::new);
 
         assertEquals("size", inheritance.getDiscriminatorColumn());
@@ -195,11 +195,11 @@ public class ClassConverterTest {
     public void shouldCreateEntityMetadataWithConstructor() {
         EntityMetadata entityMetadata = classConverter.create(Computer.class);
 
-        assertEquals("Computer", entityMetadata.getName());
-        assertEquals(Computer.class, entityMetadata.getType());
-        assertEquals(5, entityMetadata.getFields().size());
-        assertThat(entityMetadata.getFieldsName()).contains("_id", "name", "age", "model", "price");
-        ConstructorMetadata constructor = entityMetadata.getConstructor();
+        assertEquals("Computer", entityMetadata.name());
+        assertEquals(Computer.class, entityMetadata.type());
+        assertEquals(5, entityMetadata.fields().size());
+        assertThat(entityMetadata.fieldsName()).contains("_id", "name", "age", "model", "price");
+        ConstructorMetadata constructor = entityMetadata.constructor();
         assertNotNull(constructor);
         assertFalse(constructor.isDefault());
         assertEquals(5, constructor.getParameters().size());

@@ -146,13 +146,13 @@ final class GraphMapperSelect extends AbstractMapperQuery
 
     @Override
     public MapperNameOrder asc() {
-        traversal.order().by(mapping.getColumnField(mapping.getColumnField(name)), asc);
+        traversal.order().by(mapping.columnField(mapping.columnField(name)), asc);
         return this;
     }
 
     @Override
     public MapperNameOrder desc() {
-        traversal.order().by(mapping.getColumnField(mapping.getColumnField(name)), desc);
+        traversal.order().by(mapping.columnField(mapping.columnField(name)), desc);
         return this;
     }
 

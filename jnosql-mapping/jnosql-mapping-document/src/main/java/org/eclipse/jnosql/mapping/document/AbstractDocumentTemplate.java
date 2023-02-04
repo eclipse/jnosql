@@ -163,12 +163,12 @@ public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate
         requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
         EntityMetadata entityMetadata = getEntities().get(type);
-        FieldMapping idField = entityMetadata.getId()
+        FieldMapping idField = entityMetadata.id()
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
-        Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
-        DocumentQuery query = DocumentQuery.select().from(entityMetadata.getName())
-                .where(idField.getName()).eq(value).build();
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
+        DocumentQuery query = DocumentQuery.select().from(entityMetadata.name())
+                .where(idField.name()).eq(value).build();
 
         return singleResult(query);
     }
@@ -179,12 +179,12 @@ public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate
         requireNonNull(id, "id is required");
 
         EntityMetadata entityMetadata = getEntities().get(type);
-        FieldMapping idField = entityMetadata.getId()
+        FieldMapping idField = entityMetadata.id()
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
-        Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
-        DocumentDeleteQuery query = DocumentDeleteQuery.delete().from(entityMetadata.getName())
-                .where(idField.getName()).eq(value).build();
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
+        DocumentDeleteQuery query = DocumentDeleteQuery.delete().from(entityMetadata.name())
+                .where(idField.name()).eq(value).build();
 
         delete(query);
     }
@@ -224,7 +224,7 @@ public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate
     public <T> long count(Class<T> type) {
         requireNonNull(type, "type is required");
         EntityMetadata entityMetadata = getEntities().get(type);
-        return getManager().count(entityMetadata.getName());
+        return getManager().count(entityMetadata.name());
     }
 
     private <T> Stream<T> executeQuery(DocumentQuery query) {
@@ -252,7 +252,7 @@ public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate
     public <T> Stream<T> findAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        DocumentQuery query = DocumentQuery.select().from(metadata.getName()).build();
+        DocumentQuery query = DocumentQuery.select().from(metadata.name()).build();
         return select(query);
     }
 
@@ -260,7 +260,7 @@ public abstract class AbstractDocumentTemplate implements JNoSQLDocumentTemplate
     public <T> void deleteAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        DocumentDeleteQuery query = DocumentDeleteQuery.delete().from(metadata.getName()).build();
+        DocumentDeleteQuery query = DocumentDeleteQuery.delete().from(metadata.name()).build();
         delete(query);
     }
 

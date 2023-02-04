@@ -39,7 +39,7 @@ public class GenericFieldMapping extends AbstractFieldMapping {
     }
 
     @Override
-    public Object getValue(Value value) {
+    public Object value(Value value) {
         if(value.get() instanceof Iterable) {
             return value.get(typeSupplier);
         } else {
@@ -85,20 +85,20 @@ public class GenericFieldMapping extends AbstractFieldMapping {
     }
 
     private boolean hasFieldAnnotation(Class<?> annotation) {
-        return ((Class) ((ParameterizedType) getNativeField()
+        return ((Class) ((ParameterizedType) nativeField()
                 .getGenericType())
                 .getActualTypeArguments()[0])
                 .getAnnotation(annotation) != null;
     }
 
     public Class<?> getElementType() {
-        return (Class) ((ParameterizedType) getNativeField()
+        return (Class) ((ParameterizedType) nativeField()
                 .getGenericType())
                 .getActualTypeArguments()[0];
     }
 
     public Collection<?> getCollectionInstance() {
-        Class<?> type = getNativeField().getType();
+        Class<?> type = nativeField().getType();
         final CollectionSupplier supplier =  ServiceLoader.load(CollectionSupplier.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)

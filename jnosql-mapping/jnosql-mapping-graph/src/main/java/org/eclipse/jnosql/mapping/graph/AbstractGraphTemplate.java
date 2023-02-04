@@ -124,12 +124,12 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         requireNonNull(type, "type is required");
         requireNonNull(id, "id is required");
         EntityMetadata entityMetadata = getEntities().get(type);
-        FieldMapping idField = entityMetadata.getId()
+        FieldMapping idField = entityMetadata.id()
                 .orElseThrow(() -> IdNotFoundException.newInstance(type));
 
-        Object value = ConverterUtil.getValue(id, entityMetadata, idField.getFieldName(), getConverters());
+        Object value = ConverterUtil.getValue(id, entityMetadata, idField.fieldName(), getConverters());
 
-        final Optional<Vertex> vertex = traversal().V(value).hasLabel(entityMetadata.getName()).tryNext();
+        final Optional<Vertex> vertex = traversal().V(value).hasLabel(entityMetadata.name()).tryNext();
         return vertex.map(getConverter()::toEntity);
     }
 
@@ -146,7 +146,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
         EntityMetadata mapping = getEntities().get(type);
         traversal()
                 .V(id)
-                .hasLabel(mapping.getName())
+                .hasLabel(mapping.name())
                 .toStream()
                 .forEach(Vertex::remove);
     }
@@ -346,14 +346,14 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     @Override
     public <T> long count(Class<T> type) {
         Objects.requireNonNull(type, "entity class is required");
-        return count(getEntities().get(type).getName());
+        return count(getEntities().get(type).name());
     }
 
     @Override
     public <T> QueryMapper.MapperFrom select(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        GraphTraversal<Vertex, Vertex> traversal = traversal().V().hasLabel(metadata.getName());
+        GraphTraversal<Vertex, Vertex> traversal = traversal().V().hasLabel(metadata.name());
         return new GraphMapperSelect(metadata,getConverters(), traversal, getConverter());
     }
 
@@ -361,7 +361,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> QueryMapper.MapperDeleteFrom delete(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        GraphTraversal<Vertex, Vertex> traversal = traversal().V().hasLabel(metadata.getName());
+        GraphTraversal<Vertex, Vertex> traversal = traversal().V().hasLabel(metadata.name());
         return new GraphMapperDelete(metadata,getConverters(), traversal, getConverter());
     }
 
@@ -369,7 +369,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> Stream<T> findAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        return traversal().V().hasLabel(metadata.getName())
+        return traversal().V().hasLabel(metadata.name())
                 .toStream().map(getConverter()::toEntity);
     }
 
@@ -377,7 +377,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
     public <T> void deleteAll(Class<T> type) {
         Objects.requireNonNull(type, "type is required");
         EntityMetadata metadata = getEntities().get(type);
-        traversal().V().hasLabel(metadata.getName()).toStream().forEach(Vertex::remove);
+        traversal().V().hasLabel(metadata.name()).toStream().forEach(Vertex::remove);
     }
 
     private <K> Collection<EdgeEntity> edgesByIdImpl(K id, Direction direction, String... labels) {
@@ -396,7 +396,7 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     private <T> Optional<Vertex> vertex(T entity) {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
-        FieldMapping field = entityMetadata.getId().get();
+        FieldMapping field = entityMetadata.id().get();
         Object id = field.read(entity);
         Iterator<Vertex> vertices = vertices(id);
         if (vertices.hasNext()) {
@@ -427,13 +427,13 @@ public abstract class AbstractGraphTemplate implements GraphTemplate {
 
     private <T> boolean isIdNull(T entity) {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
-        FieldMapping field = entityMetadata.getId().get();
+        FieldMapping field = entityMetadata.id().get();
         return isNull(field.read(entity));
 
     }
 
     private <T> void checkId(T entity) {
         EntityMetadata entityMetadata = getEntities().get(entity.getClass());
-        entityMetadata.getId().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
+        entityMetadata.id().orElseThrow(() -> IdNotFoundException.newInstance(entity.getClass()));
     }
 }

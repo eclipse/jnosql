@@ -52,7 +52,7 @@ public class EntityMetadataExtension implements Extension {
         for (Class<?> entity : scanner.entities()) {
                 EntityMetadata entityMetadata = converter.create(entity);
                 if (entityMetadata.hasEntityName()) {
-                    mappings.put(entityMetadata.getName(), entityMetadata);
+                    mappings.put(entityMetadata.name(), entityMetadata);
                 }
                 classes.put(entity, entityMetadata);
             }

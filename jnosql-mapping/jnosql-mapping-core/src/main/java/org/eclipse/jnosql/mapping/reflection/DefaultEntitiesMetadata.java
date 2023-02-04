@@ -58,7 +58,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
         classes.putAll(extension.getClasses());
         mappings.putAll(extension.getMappings());
         mappings.values().forEach(r -> {
-            Class<?> type = r.getType();
+            Class<?> type = r.type();
             findBySimpleName.put(type.getSimpleName(), r);
             findByClassName.put(type.getName(), r);
         });
@@ -88,7 +88,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
     public Map<String, InheritanceMetadata> findByParentGroupByDiscriminatorValue(Class<?> parent) {
         Objects.requireNonNull(parent, "parent is required");
         return this.classes.values().stream()
-                .flatMap(c -> c.getInheritance().stream())
+                .flatMap(c -> c.inheritance().stream())
                 .filter(p -> p.isParent(parent))
                 .collect(Collectors.toMap(InheritanceMetadata::getDiscriminatorValue, Function.identity()));
     }
@@ -97,7 +97,7 @@ class DefaultEntitiesMetadata implements EntitiesMetadata {
     public EntityMetadata findByName(String name) {
         return mappings.keySet().stream()
                 .map(k -> mappings.get(k))
-                .filter(r -> r.getName().equalsIgnoreCase(name)).findFirst()
+                .filter(r -> r.name().equalsIgnoreCase(name)).findFirst()
                 .orElseThrow(() -> new ClassInformationNotFoundException("There is not entity found with the name: " + name));
     }
 

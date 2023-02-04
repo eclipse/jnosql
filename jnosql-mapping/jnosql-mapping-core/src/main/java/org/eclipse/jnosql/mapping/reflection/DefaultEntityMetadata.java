@@ -70,22 +70,22 @@ class DefaultEntityMetadata implements EntityMetadata {
     }
 
     @Override
-    public String getName() {
+    public String name() {
         return name;
     }
 
     @Override
-    public List<String> getFieldsName() {
+    public List<String> fieldsName() {
         return fieldsName;
     }
 
     @Override
-    public Class<?> getType() {
+    public Class<?> type() {
         return type;
     }
 
     @Override
-    public Optional<InheritanceMetadata> getInheritance() {
+    public Optional<InheritanceMetadata> inheritance() {
         return Optional.ofNullable(inheritance);
     }
 
@@ -100,7 +100,7 @@ class DefaultEntityMetadata implements EntityMetadata {
     }
 
     @Override
-    public List<FieldMapping> getFields() {
+    public List<FieldMapping> fields() {
         return fields;
     }
 
@@ -110,12 +110,12 @@ class DefaultEntityMetadata implements EntityMetadata {
     }
 
     @Override
-    public ConstructorMetadata getConstructor() {
+    public ConstructorMetadata constructor() {
         return constructor;
     }
 
     @Override
-    public String getColumnField(String javaField) {
+    public String columnField(String javaField) {
         requireNonNull(javaField, "javaField is required");
         return ofNullable(javaFieldGroupedByColumn.get(javaField))
                 .map(NativeMapping::getNativeField).orElse(javaField);
@@ -123,19 +123,19 @@ class DefaultEntityMetadata implements EntityMetadata {
     }
 
     @Override
-    public Optional<FieldMapping> getFieldMapping(String javaField) {
+    public Optional<FieldMapping> fieldMapping(String javaField) {
         requireNonNull(javaField, "javaField is required");
         return ofNullable(javaFieldGroupedByColumn.get(javaField))
                 .map(NativeMapping::getFieldMapping);
     }
 
     @Override
-    public Map<String, FieldMapping> getFieldsGroupByName() {
+    public Map<String, FieldMapping> fieldsGroupByName() {
         return fieldsGroupedByName;
     }
 
     @Override
-    public Optional<FieldMapping> getId() {
+    public Optional<FieldMapping> id() {
         return Optional.ofNullable(id);
     }
 

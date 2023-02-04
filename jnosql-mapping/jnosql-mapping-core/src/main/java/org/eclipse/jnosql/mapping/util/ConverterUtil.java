@@ -47,7 +47,7 @@ public final class ConverterUtil {
      * @return the value converted
      */
     public static Object getValue(Object value, EntityMetadata mapping, String name, Converters converters) {
-        Optional<FieldMapping> fieldOptional = mapping.getFieldMapping(name);
+        Optional<FieldMapping> fieldOptional = mapping.fieldMapping(name);
         if (fieldOptional.isPresent()) {
             FieldMapping field = fieldOptional.get();
             return getValue(value, converters, field);
@@ -64,7 +64,7 @@ public final class ConverterUtil {
      * @return tje value converted
      */
     public static Object getValue(Object value, Converters converters, FieldMapping field) {
-        Field nativeField = field.getNativeField();
+        Field nativeField = field.nativeField();
         if (!nativeField.getType().equals(value.getClass())) {
             return field.getConverter()
                     .map(converters::get)

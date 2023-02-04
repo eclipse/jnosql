@@ -34,7 +34,7 @@ import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.entities.Person;
+import org.eclipse.jnosql.mapping.document.entities.Person;
 import org.eclipse.jnosql.mapping.util.ParamsBinder;
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
@@ -73,7 +73,7 @@ class ParamsBinderTest {
         paramsBinder = new ParamsBinder(entityMetadata, converters);
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
-        SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.getName());
+        SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.name());
         SelectQueryParser queryParser = new SelectQueryParser();
         DocumentQueryParams documentQueryParams = queryParser.apply(selectQuery, parser);
         Params params = documentQueryParams.params();
@@ -96,7 +96,7 @@ class ParamsBinderTest {
         paramsBinder = new ParamsBinder(entityMetadata, converters);
 
         SelectMethodProvider selectMethodFactory = SelectMethodProvider.INSTANCE;
-        SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.getName());
+        SelectQuery selectQuery = selectMethodFactory.apply(method, entityMetadata.name());
         SelectQueryParser queryParser = new SelectQueryParser();
         DocumentQueryParams queryParams = queryParser.apply(selectQuery, parser);
         Params params = queryParams.params();

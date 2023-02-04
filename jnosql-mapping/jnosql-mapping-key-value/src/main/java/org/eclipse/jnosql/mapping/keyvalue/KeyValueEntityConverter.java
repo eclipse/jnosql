@@ -50,7 +50,7 @@ public abstract class KeyValueEntityConverter {
         FieldMapping key = getId(type);
         Object value = key.read(entity);
 
-        requireNonNull(value, String.format("The key field %s is required", key.getName()));
+        requireNonNull(value, String.format("The key field %s is required", key.name()));
         return KeyValueEntity.of(getKey(value, type, false), entity);
     }
 
@@ -87,12 +87,12 @@ public abstract class KeyValueEntityConverter {
                 return attributeConverter.convertToDatabaseColumn(key);
             }
         } else {
-            return Value.of(key).get(id.getNativeField().getType());
+            return Value.of(key).get(id.nativeField().getType());
         }
     }
 
     private FieldMapping getId(Class<?> type) {
         EntityMetadata mapping = getEntities().get(type);
-        return mapping.getId().orElseThrow(() -> IdNotFoundException.newInstance(type));
+        return mapping.id().orElseThrow(() -> IdNotFoundException.newInstance(type));
     }
 }

@@ -54,22 +54,22 @@ abstract class AbstractFieldMapping implements FieldMapping {
     }
 
     @Override
-    public MappingType getType() {
+    public MappingType type() {
         return type;
     }
 
     @Override
-    public Field getNativeField() {
+    public Field nativeField() {
         return field;
     }
 
     @Override
-    public String getName() {
+    public String name() {
         return name;
     }
 
     @Override
-    public String getFieldName() {
+    public String fieldName() {
         return fieldName;
     }
 
@@ -103,7 +103,7 @@ abstract class AbstractFieldMapping implements FieldMapping {
                 '}';
     }
 
-    public Object getValue(Value value) {
+    public Object value(Value value) {
         return value.get(field.getType());
     }
 }

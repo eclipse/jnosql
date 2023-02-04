@@ -48,52 +48,52 @@ public class FieldMappingTest {
     @Test
     public void shouldReadDefaultField() {
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = entityMetadata.getFields();
+        List<FieldMapping> fields = entityMetadata.fields();
 
         FieldMapping field = fields.stream()
-                .filter(f -> "string".equals(f.getFieldName())).findFirst().get();
+                .filter(f -> "string".equals(f.fieldName())).findFirst().get();
 
-        assertEquals("string", field.getFieldName());
-        assertEquals("stringTypeAnnotation", field.getName());
-        assertEquals(DEFAULT, field.getType());
+        assertEquals("string", field.fieldName());
+        assertEquals("stringTypeAnnotation", field.name());
+        assertEquals(DEFAULT, field.type());
 
     }
 
     @Test
     public void shouldReadCollectionField() {
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = entityMetadata.getFields();
+        List<FieldMapping> fields = entityMetadata.fields();
         FieldMapping field = fields.stream()
-                .filter(f -> "list".equals(f.getFieldName())).findFirst().get();
+                .filter(f -> "list".equals(f.fieldName())).findFirst().get();
 
-        assertEquals("list", field.getFieldName());
-        assertEquals("listAnnotation", field.getName());
-        assertEquals(COLLECTION, field.getType());
+        assertEquals("list", field.fieldName());
+        assertEquals("listAnnotation", field.name());
+        assertEquals(COLLECTION, field.type());
     }
 
     @Test
     public void shouldReadMapField() {
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = entityMetadata.getFields();
+        List<FieldMapping> fields = entityMetadata.fields();
         FieldMapping field = fields.stream()
-                .filter(f -> "map".equals(f.getFieldName())).findFirst().get();
+                .filter(f -> "map".equals(f.fieldName())).findFirst().get();
 
-        assertEquals("map", field.getFieldName());
-        assertEquals("mapAnnotation", field.getName());
-        assertEquals(MAP, field.getType());
+        assertEquals("map", field.fieldName());
+        assertEquals("mapAnnotation", field.name());
+        assertEquals(MAP, field.type());
 
     }
 
     @Test
     public void shouldReadEmbeddableField() {
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
-        List<FieldMapping> fields = entityMetadata.getFields();
+        List<FieldMapping> fields = entityMetadata.fields();
         FieldMapping field = fields.stream()
-                .filter(f -> "barClass".equals(f.getFieldName())).findFirst().get();
+                .filter(f -> "barClass".equals(f.fieldName())).findFirst().get();
 
-        assertEquals("barClass", field.getFieldName());
-        assertEquals("barClass", field.getName());
-        assertEquals(EMBEDDED, field.getType());
+        assertEquals("barClass", field.fieldName());
+        assertEquals("barClass", field.name());
+        assertEquals(EMBEDDED, field.type());
     }
 
     @Test
@@ -107,10 +107,10 @@ public class FieldMappingTest {
 
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
 
-        FieldMapping string = entityMetadata.getFieldMapping("string").get();
-        FieldMapping list = entityMetadata.getFieldMapping("list").get();
-        FieldMapping map = entityMetadata.getFieldMapping("map").get();
-        FieldMapping barClass = entityMetadata.getFieldMapping("barClass").get();
+        FieldMapping string = entityMetadata.fieldMapping("string").get();
+        FieldMapping list = entityMetadata.fieldMapping("list").get();
+        FieldMapping map = entityMetadata.fieldMapping("map").get();
+        FieldMapping barClass = entityMetadata.fieldMapping("barClass").get();
 
         assertEquals("text", string.read(forClass));
         assertEquals(forClass.list, list.read(forClass));
@@ -127,10 +127,10 @@ public class FieldMappingTest {
 
         EntityMetadata entityMetadata = classConverter.create(ForClass.class);
 
-        FieldMapping string = entityMetadata.getFieldMapping("string").get();
-        FieldMapping list = entityMetadata.getFieldMapping("list").get();
-        FieldMapping map = entityMetadata.getFieldMapping("map").get();
-        FieldMapping barClass = entityMetadata.getFieldMapping("barClass").get();
+        FieldMapping string = entityMetadata.fieldMapping("string").get();
+        FieldMapping list = entityMetadata.fieldMapping("list").get();
+        FieldMapping map = entityMetadata.fieldMapping("map").get();
+        FieldMapping barClass = entityMetadata.fieldMapping("barClass").get();
 
         string.write(forClass, "text");
         list.write(forClass, Collections.singletonList("text"));

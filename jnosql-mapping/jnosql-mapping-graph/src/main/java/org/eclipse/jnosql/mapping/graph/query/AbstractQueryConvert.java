@@ -24,6 +24,7 @@ import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryValue;
 import org.eclipse.jnosql.communication.query.Where;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
+import org.eclipse.jnosql.mapping.repository.RepositoryObserverParser;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -32,11 +33,11 @@ abstract class AbstractQueryConvert {
 
 
     protected GraphTraversal<Vertex, Vertex> getPredicate(GraphQueryMethod graphQuery, QueryCondition condition,
-                                                        EntityMetadata mapping) {
+                                                          RepositoryObserverParser parser) {
         Condition operator = condition.condition();
         String name = condition.name();
         QueryValue<?> value = condition.value();
-        String nativeName = mapping.getColumnField(name);
+        String nativeName = parser.field(name);
         switch (operator) {
             case EQUALS:
                 return __.has(nativeName, P.eq(graphQuery.getValue(name, value)));
@@ -55,14 +56,14 @@ abstract class AbstractQueryConvert {
                 return __.has(nativeName, P.within(graphQuery.getInValue(name)));
             case NOT:
                 QueryCondition notCondition = ((ConditionQueryValue) value).get().get(0);
-                return __.not(getPredicate(graphQuery, notCondition, mapping));
+                return __.not(getPredicate(graphQuery, notCondition, parser));
             case AND:
                 return ((ConditionQueryValue) value).get().stream()
-                        .map(c -> getPredicate(graphQuery, c, mapping)).reduce(GraphTraversal::and)
+                        .map(c -> getPredicate(graphQuery, c, parser)).reduce(GraphTraversal::and)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the AND operator"));
             case OR:
                 return ((ConditionQueryValue) value).get().stream()
-                        .map(c -> getPredicate(graphQuery, c, mapping)).reduce(GraphTraversal::or)
+                        .map(c -> getPredicate(graphQuery, c, parser)).reduce(GraphTraversal::or)
                         .orElseThrow(() -> new UnsupportedOperationException("There is an inconsistency at the OR operator"));
             default:
                 throw new UnsupportedOperationException("There is not support to the type " + operator + " in graph");
@@ -79,7 +80,8 @@ abstract class AbstractQueryConvert {
         Optional<Where> whereOptional = whereSupplier.get();
         whereOptional.ifPresent(w -> {
             QueryCondition condition = w.condition();
-            traversal.filter(getPredicate(graphQuery, condition, mapping));
+            RepositoryObserverParser parser = RepositoryObserverParser.of(mapping);
+            traversal.filter(getPredicate(graphQuery, condition, parser));
         });
         return traversal;
     }

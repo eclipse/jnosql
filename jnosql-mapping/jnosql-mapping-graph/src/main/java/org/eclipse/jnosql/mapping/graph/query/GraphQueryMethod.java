@@ -54,7 +54,7 @@ final class GraphQueryMethod {
     }
 
     public String getEntityName() {
-        return mapping.getName();
+        return mapping.name();
     }
 
     public EntityMetadata getMapping() {

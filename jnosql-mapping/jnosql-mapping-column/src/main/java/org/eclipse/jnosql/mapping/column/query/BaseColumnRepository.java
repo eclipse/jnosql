@@ -70,7 +70,7 @@ public abstract class BaseColumnRepository<T> {
 
     protected ColumnQuery getQuery(Method method, Object[] args) {
         SelectMethodProvider provider = SelectMethodProvider.INSTANCE;
-        SelectQuery selectQuery = provider.apply(method, getEntityMetadata().getName());
+        SelectQuery selectQuery = provider.apply(method, getEntityMetadata().name());
         ColumnQueryParams queryParams = SELECT_PARSER.apply(selectQuery, getParser());
         ColumnQuery query = queryParams.query();
         Params params = queryParams.params();
@@ -84,7 +84,7 @@ public abstract class BaseColumnRepository<T> {
 
     protected ColumnDeleteQuery getDeleteQuery(Method method, Object[] args) {
         DeleteMethodProvider deleteMethodFactory = DeleteMethodProvider.INSTANCE;
-        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getEntityMetadata().getName());
+        DeleteQuery deleteQuery = deleteMethodFactory.apply(method, getEntityMetadata().name());
         ColumnDeleteQueryParams queryParams = DELETE_PARSER.apply(deleteQuery, getParser());
         ColumnDeleteQuery query = queryParams.query();
         Params params = queryParams.params();

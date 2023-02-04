@@ -33,13 +33,13 @@ final class DocumentMapperObserver  implements DocumentObserverParser {
     @Override
     public String fireEntity(String entity) {
         Optional<EntityMetadata> entityMetadata = getEntityMetadata(entity);
-        return entityMetadata.map(EntityMetadata::getName).orElse(entity);
+        return entityMetadata.map(EntityMetadata::name).orElse(entity);
     }
 
     @Override
     public String fireField(String entity, String field) {
         Optional<EntityMetadata> mapping = getEntityMetadata(entity);
-        return mapping.map(c -> c.getColumnField(field)).orElse(field);
+        return mapping.map(c -> c.columnField(field)).orElse(field);
     }
 
     private Optional<EntityMetadata> getEntityMetadata(String entity) {

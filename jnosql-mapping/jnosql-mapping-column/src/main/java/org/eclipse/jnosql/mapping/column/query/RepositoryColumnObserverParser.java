@@ -16,24 +16,23 @@ package org.eclipse.jnosql.mapping.column.query;
 
 import org.eclipse.jnosql.communication.column.ColumnObserverParser;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
-
-import java.util.Optional;
+import org.eclipse.jnosql.mapping.repository.RepositoryObserverParser;
 
 final class RepositoryColumnObserverParser implements ColumnObserverParser {
 
-    private final EntityMetadata entityMetadata;
+    private final RepositoryObserverParser parser;
 
     RepositoryColumnObserverParser(EntityMetadata entityMetadata) {
-        this.entityMetadata = entityMetadata;
+        this.parser = RepositoryObserverParser.of(entityMetadata);
     }
 
     @Override
     public String fireEntity(String entity) {
-        return entityMetadata.getName();
+        return parser.name();
     }
 
     @Override
     public String fireField(String entity, String field) {
-        return Optional.ofNullable(entityMetadata.getColumnField(field)).orElse(field);
+        return parser.field(field);
     }
 }

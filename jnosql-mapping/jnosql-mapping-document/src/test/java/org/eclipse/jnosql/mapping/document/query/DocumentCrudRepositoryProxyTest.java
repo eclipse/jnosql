@@ -20,6 +20,7 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Sort;
 import jakarta.inject.Inject;
 import jakarta.nosql.PreparedStatement;
+import org.assertj.core.api.Assertions;
 import org.eclipse.jnosql.communication.Condition;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
@@ -32,11 +33,12 @@ import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MockProducer;
+import org.eclipse.jnosql.mapping.document.entities.Address;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
-import org.eclipse.jnosql.mapping.test.entities.Person;
-import org.eclipse.jnosql.mapping.test.entities.Vendor;
+import org.eclipse.jnosql.mapping.document.entities.Person;
+import org.eclipse.jnosql.mapping.document.entities.Vendor;
 
 import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.AddPackages;
@@ -97,6 +99,8 @@ public class DocumentCrudRepositoryProxyTest {
 
     private VendorRepository vendorRepository;
 
+    private AddressRepository addressRepository;
+
 
     @BeforeEach
     public void setUp() {
@@ -108,6 +112,9 @@ public class DocumentCrudRepositoryProxyTest {
         DocumentRepositoryProxy vendorHandler = new DocumentRepositoryProxy(template,
                 entities, VendorRepository.class, converters);
 
+        DocumentRepositoryProxy addressHandler = new DocumentRepositoryProxy(template,
+                entities, AddressRepository.class, converters);
+
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
@@ -116,6 +123,9 @@ public class DocumentCrudRepositoryProxyTest {
                 personHandler);
         vendorRepository = (VendorRepository) Proxy.newProxyInstance(VendorRepository.class.getClassLoader(),
                 new Class[]{VendorRepository.class}, vendorHandler);
+
+        addressRepository = (AddressRepository) Proxy.newProxyInstance(AddressRepository.class.getClassLoader(),
+                new Class[]{AddressRepository.class}, addressHandler);
     }
 
 
@@ -657,6 +667,51 @@ public class DocumentCrudRepositoryProxyTest {
         assertEquals(Document.of("age", 10), condition.document());
     }
 
+    @Test
+    public void shouldConvertMapAddressRepository() {
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        addressRepository.findByZipCodeZip("123456");
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        Assertions.assertThat(query)
+                .isNotNull()
+                .matches(c -> c.name().equals("Address"))
+                .matches(c -> c.documents().isEmpty())
+                .matches(c -> c.sorts().isEmpty())
+                .extracting(DocumentQuery::condition)
+                .extracting(Optional::orElseThrow)
+                .matches(c -> c.condition().equals(EQUALS))
+                .extracting(DocumentCondition::document)
+                .matches(d -> d.value().get().equals("123456"))
+                .matches(d -> d.name().equals("zipCode.zip"));
+
+    }
+
+    @Test
+    public void shouldConvertMapAddressRepositoryOrder() {
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        addressRepository.findByZipCodeZipOrderByZipCodeZip("123456");
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        Assertions.assertThat(query)
+                .isNotNull()
+                .matches(c -> c.name().equals("Address"))
+                .matches(c -> c.documents().isEmpty())
+                .matches(c -> !c.sorts().isEmpty())
+                .extracting(DocumentQuery::condition)
+                .extracting(Optional::orElseThrow)
+                .matches(c -> c.condition().equals(EQUALS))
+                .extracting(DocumentCondition::document)
+                .matches(d -> d.value().get().equals("123456"))
+                .matches(d -> d.name().equals("zipCode.zip"));
+
+
+        Assertions.assertThat(query.sorts()).contains(Sort.asc("zipCode.zip"));
+
+    }
+
     interface PersonRepository extends CrudRepository<Person, Long> {
 
         List<Person> findBySalary_Currency(String currency);
@@ -708,5 +763,12 @@ public class DocumentCrudRepositoryProxyTest {
 
         Vendor findByPrefixesIn(List<String> prefix);
 
+    }
+
+    public interface AddressRepository extends CrudRepository<Address, String> {
+
+        List<Address> findByZipCodeZip(String zip);
+
+        List<Address> findByZipCodeZipOrderByZipCodeZip(String zip);
     }
 }

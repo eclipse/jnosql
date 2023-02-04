@@ -70,8 +70,8 @@ public class ParamsBinder {
             String name = names.get(index);
             int lastIndex = name.lastIndexOf('_') == -1 ? name.length() : name.lastIndexOf('_');
             String fieldName = name.substring(0, lastIndex);
-            Optional<FieldMapping> field = this.mapping.getFields().stream()
-                    .filter(f -> f.getName().equals(fieldName)).findFirst();
+            Optional<FieldMapping> field = this.mapping.fields().stream()
+                    .filter(f -> f.name().equals(fieldName)).findFirst();
 
             Object value = getValue(args, index, field);
             params.bind(name, value);

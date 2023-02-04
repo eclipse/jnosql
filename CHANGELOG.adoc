@@ -35,6 +35,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Enhance constructor converter allowing simple translating supported by Value implementation.
 - Define Qualifier on templates implementations (Graph, Key-value, Document and Column).
 - Using the proper methods to skip on GraphRepository implementation
+- Increase capability on map to improve scenario on Repository parser
 
 
 == [1.0.0.4-b5] - 2022-12-22
