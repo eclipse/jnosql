@@ -32,6 +32,7 @@ import org.eclipse.jnosql.mapping.Converters;
 import org.eclipse.jnosql.mapping.document.DocumentWorkflow;
 import org.eclipse.jnosql.mapping.document.JNoSQLDocumentTemplate;
 import org.eclipse.jnosql.mapping.document.MockProducer;
+import org.eclipse.jnosql.mapping.document.entities.Address;
 import org.eclipse.jnosql.mapping.document.spi.DocumentExtension;
 import org.eclipse.jnosql.mapping.reflection.EntitiesMetadata;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
@@ -97,6 +98,8 @@ public class DocumentCrudRepositoryProxyTest {
 
     private VendorRepository vendorRepository;
 
+    private AddressRepository addressRepository;
+
 
     @BeforeEach
     public void setUp() {
@@ -108,6 +111,9 @@ public class DocumentCrudRepositoryProxyTest {
         DocumentRepositoryProxy vendorHandler = new DocumentRepositoryProxy(template,
                 entities, VendorRepository.class, converters);
 
+        DocumentRepositoryProxy addressHandler = new DocumentRepositoryProxy(template,
+                entities, AddressRepository.class, converters);
+
         when(template.insert(any(Person.class))).thenReturn(Person.builder().build());
         when(template.insert(any(Person.class), any(Duration.class))).thenReturn(Person.builder().build());
         when(template.update(any(Person.class))).thenReturn(Person.builder().build());
@@ -116,6 +122,9 @@ public class DocumentCrudRepositoryProxyTest {
                 personHandler);
         vendorRepository = (VendorRepository) Proxy.newProxyInstance(VendorRepository.class.getClassLoader(),
                 new Class[]{VendorRepository.class}, vendorHandler);
+
+        addressRepository = (AddressRepository) Proxy.newProxyInstance(AddressRepository.class.getClassLoader(),
+                new Class[]{AddressRepository.class}, addressHandler);
     }
 
 
@@ -708,5 +717,10 @@ public class DocumentCrudRepositoryProxyTest {
 
         Vendor findByPrefixesIn(List<String> prefix);
 
+    }
+
+    public interface AddressRepository extends CrudRepository<Address, String> {
+
+        List<Address> findByZipCodeZip(String zip);
     }
 }
