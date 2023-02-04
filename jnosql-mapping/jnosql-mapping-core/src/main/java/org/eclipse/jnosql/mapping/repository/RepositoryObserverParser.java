@@ -47,41 +47,59 @@ public class RepositoryObserverParser {
     /**
      * Fire an event to each field in case of mapper process
      *
-     * @param field  the field
-     * @param entity the entity
+     * @param field the field
      * @return the field result
      */
-    public String fireField(String entity, String field) {
+    public String fireField(String field) {
         if (metadata.getFieldMapping(field).isPresent()) {
             return metadata.getColumnField(field);
         } else {
-            StringJoiner subField = new StringJoiner(".");
             String currentField = "";
-            String[] fields = splitByCharacterType(field, true);
+            String[] fields = splitByCharacterType(field);
             for (int index = 0; index < fields.length; index++) {
                 if (currentField.isEmpty()) {
-                    currentField = currentField + fields[index];
+                    currentField = capitalize(fields[index], false);
                 } else {
-                    currentField = currentField + capitalize(fields[index]);
+                    currentField = currentField + capitalize(fields[index], true);
                 }
                 Optional<FieldMapping> mapping = metadata.getFieldMapping(currentField);
                 if (mapping.isPresent()) {
                     currentField = "";
-                    mapping.map(FieldMapping::getName).ifPresent(subField::add);
+                    String name = mapping.map(FieldMapping::getName).orElseThrow();
+                    return name + concat(index, fields);
                 }
             }
         }
         return field;
     }
 
-    private static String capitalize(String str) {
+    private String concat(int index, String[] fields) {
+        if (index == (fields.length - 1)) {
+            return "";
+        }
+        StringBuilder column = new StringBuilder(".");
+        column.append(capitalize(fields[index + 1], false));
+        if (index + 2 == (fields.length - 1)) {
+            return column.toString();
+        }
+        for (int newIndex = index + 2; newIndex < fields.length; newIndex++) {
+            column.append(fields[newIndex]);
+        }
+        return column.toString();
+    }
+
+    private static String capitalize(String str, boolean upperCase) {
         if (!hasLength(str)) {
             return str;
         }
 
         char baseChar = str.charAt(0);
         char updatedChar;
-        updatedChar = Character.toUpperCase(baseChar);
+        if (upperCase) {
+            updatedChar = Character.toUpperCase(baseChar);
+        } else {
+            updatedChar = Character.toLowerCase(baseChar);
+        }
         if (baseChar == updatedChar) {
             return str;
         }
@@ -95,7 +113,7 @@ public class RepositoryObserverParser {
         return (str != null && str.length() > 0);
     }
 
-    private static String[] splitByCharacterType(final String str, final boolean camelCase) {
+    private static String[] splitByCharacterType(final String str) {
         if (str == null) {
             return null;
         }
@@ -111,7 +129,7 @@ public class RepositoryObserverParser {
             if (type == currentType) {
                 continue;
             }
-            if (camelCase && type == Character.LOWERCASE_LETTER && currentType == Character.UPPERCASE_LETTER) {
+            if (type == Character.LOWERCASE_LETTER && currentType == Character.UPPERCASE_LETTER) {
                 final int newTokenStart = pos - 1;
                 if (newTokenStart != tokenStart) {
                     list.add(new String(c, tokenStart, newTokenStart - tokenStart));
