@@ -64,7 +64,6 @@ public class RepositoryObserverParser {
                 }
                 Optional<FieldMapping> mapping = metadata.getFieldMapping(currentField);
                 if (mapping.isPresent()) {
-                    currentField = "";
                     String name = mapping.map(FieldMapping::getName).orElseThrow();
                     return name + concat(index, fields);
                 }
@@ -74,12 +73,12 @@ public class RepositoryObserverParser {
     }
 
     private String concat(int index, String[] fields) {
-        if (index == (fields.length - 1)) {
+        if (index > (fields.length - 1)) {
             return "";
         }
         StringBuilder column = new StringBuilder(".");
         column.append(capitalize(fields[index + 1], false));
-        if (index + 2 == (fields.length - 1)) {
+        if (index + 2 > (fields.length - 1)) {
             return column.toString();
         }
         for (int newIndex = index + 2; newIndex < fields.length; newIndex++) {
