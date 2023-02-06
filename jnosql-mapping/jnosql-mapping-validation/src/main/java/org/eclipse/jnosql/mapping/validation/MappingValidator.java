@@ -15,8 +15,7 @@
 package org.eclipse.jnosql.mapping.validation;
 
 
-import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
-
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
@@ -26,6 +25,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import jakarta.validation.executable.ExecutableValidator;
+import org.eclipse.jnosql.mapping.reflection.ConstructorEvent;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -44,6 +44,8 @@ public class MappingValidator {
     @Inject
     private Instance<Validator> validators;
 
+    private Validator validator;
+
     /**
      * Validate an entity using entity validation
      *
@@ -54,7 +56,6 @@ public class MappingValidator {
      */
     public void validate(Object entity) {
         Objects.requireNonNull(entity, "entity is required");
-        Validator validator = getValidator();
         Set<ConstraintViolation<Object>> violations = validator.validate(entity);
 
         if (!violations.isEmpty()) {
@@ -73,7 +74,6 @@ public class MappingValidator {
      */
     public void validate(ConstructorEvent event) {
         Objects.requireNonNull(event, "event is required");
-        Validator validator = getValidator();
         ExecutableValidator executableValidator = validator.forExecutables();
         Set<? extends ConstraintViolation<?>> violations =
                 executableValidator.validateConstructorParameters(event.getConstructor(),
@@ -84,16 +84,40 @@ public class MappingValidator {
         }
     }
 
-    private Validator getValidator() {
-        if (!validators.isUnsatisfied()) {
-            return validators.get();
-        } else if (!validatorFactories.isUnsatisfied()) {
-            ValidatorFactory validatorFactory = validatorFactories.get();
-            return validatorFactory.getValidator();
-        } else {
-            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-            return factory.getValidator();
-        }
+    /**
+     * Defines the {@link Validator} that it's going to be used during the validation process
+     *
+     * @throws NullPointerException when cannot to get the validator from CDI
+     */
+    @PostConstruct
+    void postConstruct() {
+        var validator = ValidatorSupplier.get(validatorFactories, validators);
+        Objects.requireNonNull(validator, "validator is required");
+        this.validator = validator;
     }
 
+    private static class ValidatorSupplier {
+
+        /**
+         * Supplies a {Validator} dynamically from CDI
+         *
+         * @param validatorFactories the validatorFactories instance provided by the CDI
+         * @param validators         the validators instance provided by the CDI
+         * @throws NullPointerException when the provided validatorFactories or the validators instances are null
+         */
+        private static Validator get(Instance<ValidatorFactory> validatorFactories, Instance<Validator> validators) {
+            Objects.requireNonNull(validatorFactories, "validatorFactories is required");
+            Objects.requireNonNull(validators, "validators is required");
+            if (!validators.isUnsatisfied()) {
+                return validators.get();
+            } else if (!validatorFactories.isUnsatisfied()) {
+                ValidatorFactory validatorFactory = validatorFactories.get();
+                return validatorFactory.getValidator();
+            } else {
+                ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+                return factory.getValidator();
+            }
+        }
+
+    }
 }
