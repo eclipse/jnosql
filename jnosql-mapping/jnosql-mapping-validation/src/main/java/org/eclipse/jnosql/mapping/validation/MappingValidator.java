@@ -90,7 +90,7 @@ public class MappingValidator {
      * @throws NullPointerException when cannot to get the validator from CDI
      */
     @PostConstruct
-    public void postConstruct() {
+ void postConstruct() {
         var validator = ValidatorSupplier.get(validatorFactories, validators);
         Objects.requireNonNull(validator, "validator is required");
         this.validator = validator;
