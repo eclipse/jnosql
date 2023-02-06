@@ -90,7 +90,7 @@ public class MappingValidator {
      * @throws NullPointerException when cannot to get the validator from CDI
      */
     @PostConstruct
- void postConstruct() {
+    void postConstruct() {
         var validator = ValidatorSupplier.get(validatorFactories, validators);
         Objects.requireNonNull(validator, "validator is required");
         this.validator = validator;
@@ -101,8 +101,8 @@ public class MappingValidator {
         /**
          * Supplies a {Validator} dynamically from CDI
          *
-         * @param validatorFactories    the validatorFactories instance provided by the CDI
-         * @param validators            the validators instance provided by the CDI
+         * @param validatorFactories the validatorFactories instance provided by the CDI
+         * @param validators         the validators instance provided by the CDI
          * @throws NullPointerException when the provided validatorFactories or the validators instances are null
          */
         private static Validator get(Instance<ValidatorFactory> validatorFactories, Instance<Validator> validators) {
