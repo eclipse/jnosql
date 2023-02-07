@@ -17,14 +17,12 @@ package org.eclipse.jnosql.mapping.repository;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadata;
 import org.eclipse.jnosql.mapping.reflection.FieldMapping;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 public final class RepositoryObserverParser {
 
-    private static final String[] EMPTY_STRING_ARRAY = {};
+    private static final String CAMEL_CASE = "(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])";
 
     private final EntityMetadata metadata;
 
@@ -54,7 +52,7 @@ public final class RepositoryObserverParser {
             return metadata.columnField(field);
         } else {
             String currentField = "";
-            String[] fields = splitByCharacterType(field);
+            String[] fields = field.split(CAMEL_CASE);
             for (int index = 0; index < fields.length; index++) {
                 if (currentField.isEmpty()) {
                     currentField = capitalize(fields[index], false);
@@ -107,41 +105,10 @@ public final class RepositoryObserverParser {
         return new String(chars, 0, chars.length);
     }
 
-    public static boolean hasLength(CharSequence str) {
-        return (str != null && str.length() > 0);
+    public static boolean hasLength(CharSequence text) {
+        return (text != null && text.length() > 0);
     }
 
-    private static String[] splitByCharacterType(final String str) {
-        if (str == null) {
-            return null;
-        }
-        if (str.isEmpty()) {
-            return EMPTY_STRING_ARRAY;
-        }
-        final char[] c = str.toCharArray();
-        final List<String> list = new ArrayList<>();
-        int tokenStart = 0;
-        int currentType = Character.getType(c[tokenStart]);
-        for (int pos = tokenStart + 1; pos < c.length; pos++) {
-            final int type = Character.getType(c[pos]);
-            if (type == currentType) {
-                continue;
-            }
-            if (type == Character.LOWERCASE_LETTER && currentType == Character.UPPERCASE_LETTER) {
-                final int newTokenStart = pos - 1;
-                if (newTokenStart != tokenStart) {
-                    list.add(new String(c, tokenStart, newTokenStart - tokenStart));
-                    tokenStart = newTokenStart;
-                }
-            } else {
-                list.add(new String(c, tokenStart, pos - tokenStart));
-                tokenStart = pos;
-            }
-            currentType = type;
-        }
-        list.add(new String(c, tokenStart, c.length - tokenStart));
-        return list.toArray(EMPTY_STRING_ARRAY);
-    }
 
     public static RepositoryObserverParser of(EntityMetadata metadata) {
         Objects.requireNonNull(metadata, "metadata is required");
