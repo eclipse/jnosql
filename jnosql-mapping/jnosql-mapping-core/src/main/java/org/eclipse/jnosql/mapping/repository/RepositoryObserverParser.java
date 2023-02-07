@@ -84,12 +84,12 @@ public final class RepositoryObserverParser {
         return column.toString();
     }
 
-    private static String capitalize(String str, boolean upperCase) {
-        if (!hasLength(str)) {
-            return str;
+    private static String capitalize(String text, boolean upperCase) {
+        if (text.isBlank()) {
+            return text;
         }
 
-        char baseChar = str.charAt(0);
+        char baseChar = text.charAt(0);
         char updatedChar;
         if (upperCase) {
             updatedChar = Character.toUpperCase(baseChar);
@@ -97,18 +97,13 @@ public final class RepositoryObserverParser {
             updatedChar = Character.toLowerCase(baseChar);
         }
         if (baseChar == updatedChar) {
-            return str;
+            return text;
         }
 
-        char[] chars = str.toCharArray();
+        char[] chars = text.toCharArray();
         chars[0] = updatedChar;
         return new String(chars, 0, chars.length);
     }
-
-    public static boolean hasLength(CharSequence text) {
-        return (text != null && text.length() > 0);
-    }
-
 
     public static RepositoryObserverParser of(EntityMetadata metadata) {
         Objects.requireNonNull(metadata, "metadata is required");
