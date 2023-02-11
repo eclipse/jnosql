@@ -60,7 +60,7 @@ class WhereTest {
         Where where = Where.of(condition);
         String actual = where.toString();
         assertNotNull(actual);
-        assertNotNull(actual.startsWith("where "));
+        assertTrue(actual.startsWith("where "));
     }
 
 }
