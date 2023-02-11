@@ -24,6 +24,7 @@ class WhereTest {
     private QueryCondition condition;
 
     private QueryValue<Boolean> queryValue;
+
     @BeforeEach
     public void setUp() {
         this.queryValue = BooleanQueryValue.TRUE;
@@ -41,13 +42,25 @@ class WhereTest {
     @Test
     public void shouldEquals() {
         Where where = Where.of(condition);
+        assertEquals(where, where,"should be equals to yourself");
         assertEquals(where, Where.of(condition));
+        assertNotEquals(new Object(), where,"should be not equal to an instance of any other type");
+        assertNotEquals(null, where,"should be not equal to null reference");
     }
+
 
     @Test
     public void shouldHashCode() {
         Where where = Where.of(condition);
         assertEquals(where.hashCode(), Where.of(condition).hashCode());
+    }
+
+    @Test
+    public void shouldToString() {
+        Where where = Where.of(condition);
+        String actual = where.toString();
+        assertNotNull(actual);
+        assertTrue(actual.startsWith("where "));
     }
 
 }
