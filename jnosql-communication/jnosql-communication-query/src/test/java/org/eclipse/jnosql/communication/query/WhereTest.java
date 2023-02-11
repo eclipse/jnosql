@@ -44,8 +44,8 @@ class WhereTest {
         Where where = Where.of(condition);
         assertEquals(where, where,"should be equals to yourself");
         assertEquals(where, Where.of(condition));
-        assertNotEquals(new Object(), where,"should be not equal to an instance of any other type");
-        assertNotEquals(null, where,"should be not equal to null reference");
+        assertFalse(where.equals(new Object()),"should be not equal to an instance of any other type");
+        assertFalse(where.equals(null),"should be not equal to null reference");
     }
 
 
