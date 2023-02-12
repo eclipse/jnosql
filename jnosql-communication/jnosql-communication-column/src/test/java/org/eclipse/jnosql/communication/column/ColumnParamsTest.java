@@ -12,38 +12,18 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Maximillian Arruda
  *
  */
 package org.eclipse.jnosql.communication.column;
 
 import org.eclipse.jnosql.communication.Params;
-import org.eclipse.jnosql.communication.QueryException;
 import org.eclipse.jnosql.communication.Value;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ColumnParamsTest {
-
-    @Test
-    public void shouldAddParameter() {
-        Params params = Params.newParams();
-        Value name = params.add("name");
-        assertNotNull(name);
-        assertThat(params.getParametersNames()).contains("name");
-    }
-
-    @Test
-    public void shouldNotUseValueWhenIsInvalid() {
-        Params params = Params.newParams();
-        Value name = params.add("name");
-        assertThrows(QueryException.class, name::get);
-
-        assertThrows(QueryException.class, () -> name.get(String.class));
-    }
 
     @Test
     public void shouldSetParameter() {
