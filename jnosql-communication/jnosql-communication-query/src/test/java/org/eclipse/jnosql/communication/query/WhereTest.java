@@ -42,10 +42,10 @@ class WhereTest {
     @Test
     public void shouldEquals() {
         Where where = Where.of(condition);
-        assertEquals(where, where,"should be equals to yourself");
+        assertEquals(where, where, "should be equals to yourself");
         assertEquals(where, Where.of(condition));
-        assertFalse(where.equals(new Object()),"should be not equal to an instance of any other type");
-        assertFalse(where.equals(null),"should be not equal to null reference");
+        assertNotEquals(where, new Object(), "should be not equal to an instance of any other type");
+        assertNotEquals(where, null, "should be not equal to null reference");
     }
 
 
