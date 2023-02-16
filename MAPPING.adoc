@@ -554,8 +554,6 @@ ColumnTemplate template = // instance;
 Stream<Person> result = template.query("select * from Person where id = 1");
 ----
 
-TIP: The main difference to run using a template instead of in a manager instance as the template will be a mapper as *ColumnQueryMapperBuilder* does.
-
 ===== Document Database Types
 
 The Document database allows for more complex queries, so with more complex entities within a Document database, a developer can more easily and naturally find from different fields. Also, there are Document databases that support an aggregations query. However, Eclipse JNoSQL does not yet support this. From the Eclipse JNoSQL API perspective, the Document and Column-Family types are pretty similar, but with the Document database type, a Java developer might initiate a query from a field that isn't a key, and neither returns an unsupported operation exception or adds a secondary index for this. So, given the same `Person` class as an entity with the Document database type, a developer can do more with queries, such as "person" between "age."
@@ -565,8 +563,6 @@ The Document database allows for more complex queries, so with more complex enti
 DocumentTemplate template = // instance;
 Stream<Person> result = template.query("select * from Person where age > 10");
 ----
-
-TIP: The main difference to run using a template instead of in a manager instance as the template will be a mapper as *DocumentQueryMapperBuilder* does.
 
 ===== Graph Database Types
 
