@@ -608,6 +608,7 @@ Eclipse JNoSQL as a Jakarta Data implementations supports the following list of 
 
 |===
 
+WARNING: Eclipse JNoSQL does not support `OrderBy` annotatation and the Keyset Pagination.
 
 === Bean Validation
 
