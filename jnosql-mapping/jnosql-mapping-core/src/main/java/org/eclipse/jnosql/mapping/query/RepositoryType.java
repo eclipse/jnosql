@@ -61,7 +61,11 @@ public enum RepositoryType {
     /**
      * Method that has {@link Query} annotation
      */
-    QUERY("");
+    QUERY(""),
+    /**
+     * Method that has {@link jakarta.data.repository.OrderBy} annotation
+     */
+    ORDER_BY("");
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(CrudRepository.class)
             .or(Predicate.<Class<?>>isEqual(PageableRepository.class));
