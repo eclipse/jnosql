@@ -15,9 +15,11 @@
 package org.eclipse.jnosql.mapping.query;
 
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Query;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -102,6 +104,13 @@ class RepositoryTypeTest {
         Long existsByName(String name);
 
         void nope();
+
+        @OrderBy("sample")
+        String order();
+
+        @OrderBy("sample")
+        @OrderBy("test")
+        String order2();
     }
 
 }
