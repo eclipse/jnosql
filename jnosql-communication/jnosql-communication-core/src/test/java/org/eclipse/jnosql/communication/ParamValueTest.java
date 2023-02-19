@@ -13,6 +13,8 @@ package org.eclipse.jnosql.communication;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.function.Supplier;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -20,11 +22,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ParamValueTest {
+class ParamValueTest extends ValueTest {
 
+    @Override
+    Value getValueOf(Supplier<?> supplier) {
+        Params params = Params.newParams();
+        Value value = params.add("name");
+        params.bind("name", supplier.get());
+        return value;
+    }
 
     @Test
-    public void shouldAddParameter() {
+    void shouldAddParameter() {
         Params params = Params.newParams();
         Value name = params.add("name");
         assertNotNull(name);
@@ -33,7 +42,7 @@ class ParamValueTest {
     }
 
     @Test
-    public void shouldNotUseValueWhenIsInvalid() {
+    void shouldNotUseValueWhenIsInvalid() {
         Params params = Params.newParams();
         Value name = params.add("name");
         assertThrows(QueryException.class, name::get);
@@ -42,7 +51,7 @@ class ParamValueTest {
     }
 
     @Test
-    public void shouldSetParameter() {
+    void shouldSetParameter() {
         Params params = Params.newParams();
         Value name = params.add("name");
 
@@ -52,14 +61,14 @@ class ParamValueTest {
     }
 
     @Test
-    public void shouldReturnsTrueWhenValueIsEmpty() {
+    void shouldReturnsTrueWhenValueIsEmpty() {
         Params params = Params.newParams();
         Value name = params.add("name");
         assertTrue(name.isInstanceOf(Integer.class));
     }
 
     @Test
-    public void shouldInstanceOf() {
+    void shouldInstanceOf() {
         Params params = Params.newParams();
         Value name = params.add("name");
         assertTrue(name.isInstanceOf(Integer.class));
@@ -69,4 +78,21 @@ class ParamValueTest {
         assertFalse(name.isInstanceOf(Integer.class));
 
     }
+
+    @Test
+    void testToString() {
+
+        String paramName = "name";
+        String paramValue = "12";
+
+        Params params = Params.newParams();
+        Value value = params.add(paramName);
+
+        assertEquals(paramName + "= ?", value.toString());
+
+        params.bind(paramName, paramValue);
+        assertEquals(paramName + "= " + paramValue, value.toString());
+
+    }
+
 }
