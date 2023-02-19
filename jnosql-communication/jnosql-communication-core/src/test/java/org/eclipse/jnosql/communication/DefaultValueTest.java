@@ -12,14 +12,13 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Maximillian Arruda
  *
  */
 
 package org.eclipse.jnosql.communication;
 
 
-import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.communication.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -43,7 +43,6 @@ public class DefaultValueTest {
     @Test
     public void shouldReturnErrorWhenElementIsNull() {
         Assertions.assertThrows(NullPointerException.class, () -> Value.of(null));
-
     }
 
     @Test
@@ -152,5 +151,37 @@ public class DefaultValueTest {
     public void shouldIsInstanceOf() {
         Assertions.assertTrue(Value.of("12").isInstanceOf(String.class));
         Assertions.assertFalse(Value.of("12").isInstanceOf(Integer.class));
+    }
+
+    @Test
+    public void shouldBeEquals() {
+        Value left = Value.of("12");
+        Value right = Value.of("12");
+        Assertions.assertTrue(left.equals(right));
+        Assertions.assertTrue(left.equals(left));
+    }
+
+    @Test
+    public void shouldBeNotEquals() {
+        Value left = Value.of("12");
+        Value right = Value.of("13");
+        Assertions.assertFalse(left.equals(right));
+        Assertions.assertFalse(left.equals(null));
+        Assertions.assertFalse(left.equals(new Object()));
+    }
+
+    @Test
+    public void testHashCode() {
+        String wrappedValue = "12";
+        Value targetValue = Value.of(wrappedValue);
+        assertEquals(Objects.hashCode(wrappedValue), targetValue.hashCode(),
+                "DefaultValue hash code should be conditioned to its value attribute's hashCode");
+    }
+
+    @Test
+    public void testToString() {
+        String wrappedValue = "12";
+        Value targetValue = Value.of(wrappedValue);
+        assertEquals("DefaultValue{value=" + wrappedValue + "}", targetValue.toString());
     }
 }
