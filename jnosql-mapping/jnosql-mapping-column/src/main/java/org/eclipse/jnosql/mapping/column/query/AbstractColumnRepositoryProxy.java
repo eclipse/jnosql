@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
+import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
@@ -52,6 +53,8 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
                 return executeCountByQuery(getQuery(method, args));
             case EXISTS_BY:
                 return executeExistsByQuery(getQuery(method, args));
+            case ORDER_BY:
+                throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
             case FIND_ALL:
                 ColumnQuery queryFindAll = ColumnQuery.select().from(getEntityMetadata().name()).build();
                 return executeFindByQuery(method, args, typeClass, updateQueryDynamically(args, queryFindAll));
