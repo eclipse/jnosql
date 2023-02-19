@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
+import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
@@ -417,6 +418,18 @@ public class GraphRepositoryProxyTest {
 
         boolean count = personRepository.existsByActiveTrue();
         assertFalse(count);
+    }
+
+    @Test
+    public void shouldGotOrderException() {
+        Assertions.assertThrows(MappingException.class, () ->
+                personRepository.findBy());
+    }
+
+    @Test
+    public void shouldGotOrderException2() {
+        Assertions.assertThrows(MappingException.class, () ->
+                personRepository.findByException());
     }
     @Test
     public void shouldExecuteQuery2() {
