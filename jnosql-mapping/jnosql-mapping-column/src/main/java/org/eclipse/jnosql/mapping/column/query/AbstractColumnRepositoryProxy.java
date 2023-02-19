@@ -53,8 +53,6 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
                 return executeCountByQuery(getQuery(method, args));
             case EXISTS_BY:
                 return executeExistsByQuery(getQuery(method, args));
-            case ORDER_BY:
-                throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
             case FIND_ALL:
                 ColumnQuery queryFindAll = ColumnQuery.select().from(getEntityMetadata().name()).build();
                 return executeFindByQuery(method, args, typeClass, updateQueryDynamically(args, queryFindAll));
@@ -64,6 +62,8 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
                 return Void.class;
             case OBJECT_METHOD:
                 return method.invoke(this, args);
+            case ORDER_BY:
+                throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
             case QUERY:
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)
