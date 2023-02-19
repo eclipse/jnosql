@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.document.query;
 
 
+import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.communication.document.DocumentDeleteQuery;
 import org.eclipse.jnosql.communication.document.DocumentQuery;
@@ -60,6 +61,8 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 return null;
             case OBJECT_METHOD:
                 return method.invoke(this, args);
+            case ORDER_BY:
+                throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
             case QUERY:
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)
