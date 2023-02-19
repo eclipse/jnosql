@@ -14,7 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.document.query;
 
+import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Sort;
@@ -553,6 +555,18 @@ public class DocumentCrudRepositoryProxyTest {
     }
 
     @Test
+    public void shouldGotOrderException() {
+        org.junit.jupiter.api.Assertions.assertThrows(MappingException.class, () ->
+                personRepository.findBy());
+    }
+
+    @Test
+    public void shouldGotOrderException2() {
+        org.junit.jupiter.api.Assertions.assertThrows(MappingException.class, () ->
+                personRepository.findByException());
+    }
+
+    @Test
     public void shouldExecuteJNoSQLQuery() {
         personRepository.findByQuery();
         verify(template).query("select * from Person");
@@ -755,6 +769,13 @@ public class DocumentCrudRepositoryProxyTest {
 
         @Query("select * from Person where id = @id")
         Optional<Person> findByQuery(@Param("id") String id);
+
+        @OrderBy("name")
+        List<Person> findBy();
+
+        @OrderBy("name")
+        @OrderBy("age")
+        List<Person> findByException();
     }
 
     public interface VendorRepository extends CrudRepository<Vendor, String> {

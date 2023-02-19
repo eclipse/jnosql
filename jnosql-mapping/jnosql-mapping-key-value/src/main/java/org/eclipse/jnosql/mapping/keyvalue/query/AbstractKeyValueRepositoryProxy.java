@@ -42,7 +42,7 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
                 return method.invoke(getRepository(), args);
             case OBJECT_METHOD:
                 return method.invoke(this, args);
-            case JNOSQL_QUERY:
+            case QUERY:
                 Class<?> typeClass = getType();
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)

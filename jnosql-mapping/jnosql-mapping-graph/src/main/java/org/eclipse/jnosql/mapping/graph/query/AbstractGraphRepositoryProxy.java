@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
+import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
@@ -81,7 +82,9 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 return countBy(method, args);
             case EXISTS_BY:
                 return existsBy(method, args);
-            case JNOSQL_QUERY:
+            case ORDER_BY:
+                throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
+            case QUERY:
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)
                         .withMethod(method)

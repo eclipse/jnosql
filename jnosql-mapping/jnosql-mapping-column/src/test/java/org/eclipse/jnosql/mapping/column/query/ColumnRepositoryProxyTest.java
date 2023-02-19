@@ -14,6 +14,8 @@
  */
 package org.eclipse.jnosql.mapping.column.query;
 
+import jakarta.data.exceptions.MappingException;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
@@ -480,6 +482,18 @@ public class ColumnRepositoryProxyTest {
 
     }
 
+    @Test
+    public void shouldGotOrderException() {
+        Assertions.assertThrows(MappingException.class, () ->
+                personRepository.findBy());
+    }
+
+    @Test
+    public void shouldGotOrderException2() {
+        Assertions.assertThrows(MappingException.class, () ->
+                personRepository.findByException());
+    }
+
 
     @Test
     public void shouldFindByStringWhenFieldIsSet() {
@@ -730,6 +744,13 @@ public class ColumnRepositoryProxyTest {
         long countByName(String name);
 
         boolean existsByName(String name);
+
+        @OrderBy("name")
+        List<Person> findBy();
+
+        @OrderBy("name")
+        @OrderBy("age")
+        List<Person> findByException();
     }
 
     public interface VendorRepository extends PageableRepository<Vendor, String> {

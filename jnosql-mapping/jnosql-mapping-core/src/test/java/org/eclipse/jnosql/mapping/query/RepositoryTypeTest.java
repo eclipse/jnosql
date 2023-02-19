@@ -15,9 +15,11 @@
 package org.eclipse.jnosql.mapping.query;
 
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Query;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -61,7 +63,7 @@ class RepositoryTypeTest {
 
     @Test
     public void shouldReturnJNoSQLQuery() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.JNOSQL_QUERY, RepositoryType.of(getMethod(DevRepository.class, "query")));
+        Assertions.assertEquals(RepositoryType.QUERY, RepositoryType.of(getMethod(DevRepository.class, "query")));
     }
 
     @Test
@@ -77,6 +79,15 @@ class RepositoryTypeTest {
     @Test
     public void shouldReturnExistsBy() throws NoSuchMethodException {
         Assertions.assertEquals(RepositoryType.EXISTS_BY, RepositoryType.of(getMethod(DevRepository.class, "existsByName")));
+    }
+
+    @Test
+    public void shouldReturnOrder() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.ORDER_BY, RepositoryType.of(getMethod(DevRepository.class,
+                "order")));
+
+        Assertions.assertEquals(RepositoryType.ORDER_BY, RepositoryType.of(getMethod(DevRepository.class,
+                "order2")));
     }
 
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
@@ -102,6 +113,13 @@ class RepositoryTypeTest {
         Long existsByName(String name);
 
         void nope();
+
+        @OrderBy("sample")
+        String order();
+
+        @OrderBy("sample")
+        @OrderBy("test")
+        String order2();
     }
 
 }

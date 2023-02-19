@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.query;
 
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Query;
 
@@ -61,7 +62,11 @@ public enum RepositoryType {
     /**
      * Method that has {@link Query} annotation
      */
-    JNOSQL_QUERY("");
+    QUERY(""),
+    /**
+     * Method that has {@link jakarta.data.repository.OrderBy} annotation
+     */
+    ORDER_BY("");
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(CrudRepository.class)
             .or(Predicate.<Class<?>>isEqual(PageableRepository.class));
@@ -89,8 +94,11 @@ public enum RepositoryType {
         if (IS_REPOSITORY_METHOD.test(declaringClass)) {
             return DEFAULT;
         }
+        if (method.getAnnotationsByType(OrderBy.class).length > 0) {
+            return ORDER_BY;
+        }
         if (Objects.nonNull(method.getAnnotation(Query.class))) {
-            return JNOSQL_QUERY;
+            return QUERY;
         }
 
         String methodName = method.getName();

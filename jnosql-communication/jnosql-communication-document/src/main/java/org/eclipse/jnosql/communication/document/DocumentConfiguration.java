@@ -42,7 +42,7 @@ public interface DocumentConfiguration extends Function<Settings, DocumentManage
         return (T) ServiceLoader.load(DocumentConfiguration.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)
-                .findFirst().orElseThrow(() -> new CommunicationException("It does not find DocumentConfiguration"));
+                .findFirst().orElseThrow(() -> new CommunicationException("No DocumentConfiguration implementation found!"));
 
     }
 
@@ -59,6 +59,6 @@ public interface DocumentConfiguration extends Function<Settings, DocumentManage
                 .stream()
                 .map(ServiceLoader.Provider::get)
                 .filter(type::isInstance)
-                .findFirst().orElseThrow(() -> new CommunicationException("It does not find DocumentConfiguration"));
+                .findFirst().orElseThrow(() -> new CommunicationException("No DocumentConfiguration implementation found!"));
     }
 }

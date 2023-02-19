@@ -38,7 +38,7 @@ public interface KeyValueConfiguration extends Function<Settings, BucketManagerF
        return (T) ServiceLoader.load(KeyValueConfiguration.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)
-               .findFirst().orElseThrow(() -> new CommunicationException("It does not find KeyValueConfiguration"));
+               .findFirst().orElseThrow(() -> new CommunicationException("No KeyValueConfiguration implementation found!"));
     }
 
     /**
@@ -55,6 +55,6 @@ public interface KeyValueConfiguration extends Function<Settings, BucketManagerF
                 .stream()
                 .map(ServiceLoader.Provider::get)
                 .filter(type::isInstance)
-                .findFirst().orElseThrow(() -> new CommunicationException("It does not find KeyValueConfiguration"));
+                .findFirst().orElseThrow(() -> new CommunicationException("No KeyValueConfiguration implementation found!"));
     }
 }

@@ -15,6 +15,7 @@
 package org.eclipse.jnosql.mapping.column.query;
 
 
+import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
 import org.eclipse.jnosql.communication.column.ColumnQuery;
@@ -61,7 +62,9 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
                 return Void.class;
             case OBJECT_METHOD:
                 return method.invoke(this, args);
-            case JNOSQL_QUERY:
+            case ORDER_BY:
+                throw new MappingException("Eclipse JNoSQL has not support for method that has OrderBy annotation");
+            case QUERY:
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)
                         .withMethod(method)

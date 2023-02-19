@@ -44,7 +44,7 @@ public interface ColumnConfiguration extends Function<Settings, ColumnManagerFac
         return (T) ServiceLoader.load(ColumnConfiguration.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)
-                .findFirst().orElseThrow(() -> new CommunicationException("It does not find ColumnConfiguration"));
+                .findFirst().orElseThrow(() -> new CommunicationException("No ColumnConfiguration implementation found!"));
     }
 
     /**
@@ -60,6 +60,6 @@ public interface ColumnConfiguration extends Function<Settings, ColumnManagerFac
                 .stream()
                 .map(ServiceLoader.Provider::get)
                 .filter(type::isInstance)
-                .findFirst().orElseThrow(() -> new CommunicationException("It does not find ColumnConfiguration"));
+                .findFirst().orElseThrow(() -> new CommunicationException("No ColumnConfiguration implementation found!"));
     }
 }
