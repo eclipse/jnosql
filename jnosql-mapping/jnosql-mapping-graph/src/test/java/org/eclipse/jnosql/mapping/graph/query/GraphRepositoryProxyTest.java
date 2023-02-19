@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.graph.query;
 
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
@@ -491,6 +492,12 @@ public class GraphRepositoryProxyTest {
         @Query("g.V().hasLabel('Person').has('name', name).toList()")
         List<Person> findByQuery(@Param("name") String name);
 
+        @OrderBy("name")
+        List<Person> findBy();
+
+        @OrderBy("name")
+        @OrderBy("age")
+        List<Person> findByException();
     }
 
     public interface VendorRepository extends PageableRepository<Vendor, String> {
