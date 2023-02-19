@@ -8,6 +8,7 @@
  *  You may elect to redistribute this code under either of these licenses.
  *  Contributors:
  *  Otavio Santana
+ *  Maximillian Arruda
  */
 package org.eclipse.jnosql.communication;
 
@@ -67,14 +68,14 @@ final class ParamValue implements Value {
     }
 
     private void validValue() {
-        if (Objects.isNull(value)) {
+        if (isEmpty()) {
             throw new QueryException(String.format("The value of parameter %s cannot be null", name));
         }
     }
 
     @Override
     public String toString() {
-        if (Objects.isNull(value)) {
+        if (isEmpty()) {
             return name + "= ?";
         }
         return name + "= " + value;
