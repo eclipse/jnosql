@@ -94,7 +94,7 @@ public enum RepositoryType {
         if (IS_REPOSITORY_METHOD.test(declaringClass)) {
             return DEFAULT;
         }
-        if (method.getAnnotationsByType(OrderBy.class).length == 0) {
+        if (method.getAnnotationsByType(OrderBy.class).length > 0) {
             return ORDER_BY;
         }
         if (Objects.nonNull(method.getAnnotation(Query.class))) {
