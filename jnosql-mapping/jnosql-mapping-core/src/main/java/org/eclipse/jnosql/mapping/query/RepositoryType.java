@@ -61,7 +61,7 @@ public enum RepositoryType {
     /**
      * Method that has {@link Query} annotation
      */
-    JNOSQL_QUERY("");
+    QUERY("");
 
     private static final Predicate<Class<?>> IS_REPOSITORY_METHOD = Predicate.<Class<?>>isEqual(CrudRepository.class)
             .or(Predicate.<Class<?>>isEqual(PageableRepository.class));
@@ -90,7 +90,7 @@ public enum RepositoryType {
             return DEFAULT;
         }
         if (Objects.nonNull(method.getAnnotation(Query.class))) {
-            return JNOSQL_QUERY;
+            return QUERY;
         }
 
         String methodName = method.getName();

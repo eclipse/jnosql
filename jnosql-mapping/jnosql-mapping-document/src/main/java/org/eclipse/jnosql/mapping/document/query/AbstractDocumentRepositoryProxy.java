@@ -60,7 +60,7 @@ public abstract class AbstractDocumentRepositoryProxy<T> extends BaseDocumentRep
                 return null;
             case OBJECT_METHOD:
                 return method.invoke(this, args);
-            case JNOSQL_QUERY:
+            case QUERY:
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)
                         .withMethod(method)

@@ -61,7 +61,7 @@ class RepositoryTypeTest {
 
     @Test
     public void shouldReturnJNoSQLQuery() throws NoSuchMethodException {
-        Assertions.assertEquals(RepositoryType.JNOSQL_QUERY, RepositoryType.of(getMethod(DevRepository.class, "query")));
+        Assertions.assertEquals(RepositoryType.QUERY, RepositoryType.of(getMethod(DevRepository.class, "query")));
     }
 
     @Test

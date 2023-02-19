@@ -81,7 +81,7 @@ abstract class AbstractGraphRepositoryProxy<T, K> implements InvocationHandler {
                 return countBy(method, args);
             case EXISTS_BY:
                 return existsBy(method, args);
-            case JNOSQL_QUERY:
+            case QUERY:
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)
                         .withMethod(method)

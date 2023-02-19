@@ -61,7 +61,7 @@ public abstract class AbstractColumnRepositoryProxy<T, K> extends  BaseColumnRep
                 return Void.class;
             case OBJECT_METHOD:
                 return method.invoke(this, args);
-            case JNOSQL_QUERY:
+            case QUERY:
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)
                         .withMethod(method)
