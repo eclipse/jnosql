@@ -81,6 +81,15 @@ class RepositoryTypeTest {
         Assertions.assertEquals(RepositoryType.EXISTS_BY, RepositoryType.of(getMethod(DevRepository.class, "existsByName")));
     }
 
+    @Test
+    public void shouldReturnOrder() throws NoSuchMethodException {
+        Assertions.assertEquals(RepositoryType.ORDER_BY, RepositoryType.of(getMethod(DevRepository.class,
+                "order")));
+
+        Assertions.assertEquals(RepositoryType.ORDER_BY, RepositoryType.of(getMethod(DevRepository.class,
+                "order2")));
+    }
+
     private Method getMethod(Class<?> repository, String methodName) throws NoSuchMethodException {
         return Stream.of(repository.getDeclaredMethods())
                 .filter(m -> m.getName().equals(methodName))
