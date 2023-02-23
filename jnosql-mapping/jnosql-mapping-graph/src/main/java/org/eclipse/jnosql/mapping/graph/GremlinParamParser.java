@@ -14,24 +14,55 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This singleton has the goal to interpolate params inside the Gremlin query.
  * Thus, given the query:
- * ""g.V().hasLabel(@param)" where the params is {"param":"Otavio"}
+ * "g.V().hasLabel(@param)" where the params is {"param":"Otavio"}
  * It should return the query to: g.V().hasLabel("Otavio")
  * It should check the Gremlin query options:
  * https://github.com/apache/tinkerpop/blob/e1396223ea9e1d6240c1f051036cbb5507f47f8d/gremlin-language/src/main/antlr4/Gremlin.g4
- *
+ * <p>
  * Thus, given a current query with params it should convert to Gremlin compatible syntax.
  */
 enum GremlinParamParser implements BiFunction<String, Map<String, Object>, String> {
     INSTANCE;
 
+    private final Pattern pattern = Pattern.compile("@\\w+");
+
     @Override
     public String apply(String query, Map<String, Object> params) {
-        return null;
+        Objects.requireNonNull(query, "query is required");
+        Objects.requireNonNull(query, "params is required");
+        Matcher matcher = pattern.matcher(query);
+        List<String> leftParams = new ArrayList<>();
+        leftParams.addAll(params.keySet());
+        StringBuilder gremlin = new StringBuilder();
+        while (matcher.find()) {
+            String param = matcher.group().substring(1);
+            leftParams.remove(param);
+            Object value = params.get(param);
+            matcher.appendReplacement(gremlin, toString(value));
+        }
+        matcher.appendTail(gremlin);
+        if (leftParams.isEmpty()) {
+            return gremlin.toString();
+        }
+
+        throw new GremlinQueryException("There are params missing on the parser: " + leftParams);
+    }
+
+    private String toString(Object value) {
+        if (value instanceof Number) {
+            return value.toString();
+        }
+        return '\'' + value.toString() + '\'';
     }
 }
