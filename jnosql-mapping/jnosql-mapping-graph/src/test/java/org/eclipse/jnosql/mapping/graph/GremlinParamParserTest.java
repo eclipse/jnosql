@@ -14,17 +14,38 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GremlinParamParserTest {
 
+    private GremlinParamParser parser = GremlinParamParser.INSTANCE;
+
     @Test
     public void shouldGotErrorWhenNull() {
+        assertNotNull(NullPointerException.class, () ->
+                parser.apply(null, null));
+        assertNotNull(NullPointerException.class, () ->
+                parser.apply("null", null));
 
+        assertNotNull(NullPointerException.class, () ->
+                parser.apply(null, Collections.emptyMap()));
     }
 
+    @Test
+    public void shouldParserParamString() {
+        String query = "g.V().hasLabel(@param)";
+        String expected = "g.V().hasLabel(\"Otavio\")";
+        Map<String, Object> params = Map.of("param", "Otavio");
+
+        String gremlin = parser.apply(query, params);
+        Assertions.assertEquals(expected, gremlin);
+    }
     //number
     //negative number
     //boolean
