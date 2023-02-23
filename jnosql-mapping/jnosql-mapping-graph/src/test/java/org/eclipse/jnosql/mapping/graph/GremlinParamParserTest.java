@@ -47,15 +47,63 @@ class GremlinParamParserTest {
         Assertions.assertEquals(expected, gremlin);
     }
 
-    public void shouldParserBoolean(){}
+    @Test
+    public void shouldParserBoolean() {
+        String query = "g.V().hasLabel(@label).has('active', @active)";
+        String expected = "g.V().hasLabel(\'Otavio\').has('active', 'true')";
+        Map<String, Object> params = Map.of("label", "Otavio", "active", Boolean.TRUE);
 
-    public void shouldParserNumber() {}
+        String gremlin = parser.apply(query, params);
+        Assertions.assertEquals(expected, gremlin);
+    }
+
+    @Test
+    public void shouldParserPrimitiveBoolean() {
+        String query = "g.V().hasLabel(@label).has('active', @active)";
+        String expected = "g.V().hasLabel(\'Otavio\').has('active', 'true')";
+        Map<String, Object> params = Map.of("label", "Otavio", "active", true);
+
+        String gremlin = parser.apply(query, params);
+        Assertions.assertEquals(expected, gremlin);
+    }
+    @Test
+    public void shouldParserBooleanFalse() {
+        String query = "g.V().hasLabel(@label).has('active', @active)";
+        String expected = "g.V().hasLabel(\'Otavio\').has('active', 'false')";
+        Map<String, Object> params = Map.of("label", "Otavio", "active", Boolean.FALSE);
+
+        String gremlin = parser.apply(query, params);
+        Assertions.assertEquals(expected, gremlin);
+    }
+
+    @Test
+    public void shouldParserPrimitiveBooleanFalse() {
+        String query = "g.V().hasLabel(@label).has('active', @active)";
+        String expected = "g.V().hasLabel(\'Otavio\').has('active', 'falsei')";
+        Map<String, Object> params = Map.of("label", "Otavio", "active", false);
+
+        String gremlin = parser.apply(query, params);
+        Assertions.assertEquals(expected, gremlin);
+    }
+
+    public void shouldParserNumber() {
+    }
 
     public void shouldParserNegativeNumber() {
 
     }
 
-    public void shouldGetAnExceptionWhenThereIsMoreParams() {}
+    @Test
+    public void shouldReplaceAll() {
+
+    }
+
+    @Test
+    public void shouldGetAnExceptionWhenThereIsMoreParams() {
+    }
+
+    @Test
+    public void shouldReturnErrorWhenMissingParameter(){}
     //number
     //negative number
     //boolean
