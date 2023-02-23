@@ -40,12 +40,22 @@ class GremlinParamParserTest {
     @Test
     public void shouldParserParamString() {
         String query = "g.V().hasLabel(@param)";
-        String expected = "g.V().hasLabel(\"Otavio\")";
+        String expected = "g.V().hasLabel(\'Otavio\')";
         Map<String, Object> params = Map.of("param", "Otavio");
 
         String gremlin = parser.apply(query, params);
         Assertions.assertEquals(expected, gremlin);
     }
+
+    public void shouldParserBoolean(){}
+
+    public void shouldParserNumber() {}
+
+    public void shouldParserNegativeNumber() {
+
+    }
+
+    public void shouldGetAnExceptionWhenThereIsMoreParams() {}
     //number
     //negative number
     //boolean
