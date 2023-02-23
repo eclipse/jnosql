@@ -14,14 +14,14 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
-import org.apache.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
+import org.apache.tinkerpop.gremlin.jsr223.GremlinLangScriptEngine;
+import org.apache.tinkerpop.gremlin.jsr223.GremlinScriptEngine;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import javax.script.Bindings;
-import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import java.util.Collections;
 import java.util.Map;
@@ -33,7 +33,7 @@ final class GremlinExecutor {
 
     private final GraphConverter converter;
 
-    private static final ScriptEngine ENGINE = new GremlinGroovyScriptEngine();
+    private static final GremlinScriptEngine ENGINE = new GremlinLangScriptEngine();
 
     GremlinExecutor(GraphConverter converter) {
         this.converter = converter;
