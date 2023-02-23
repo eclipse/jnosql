@@ -79,18 +79,32 @@ class GremlinParamParserTest {
     @Test
     public void shouldParserPrimitiveBooleanFalse() {
         String query = "g.V().hasLabel(@label).has('active', @active)";
-        String expected = "g.V().hasLabel(\'Otavio\').has('active', 'falsei')";
+        String expected = "g.V().hasLabel(\'Otavio\').has('active', 'false')";
         Map<String, Object> params = Map.of("label", "Otavio", "active", false);
 
         String gremlin = parser.apply(query, params);
         Assertions.assertEquals(expected, gremlin);
     }
 
+    @Test
     public void shouldParserNumber() {
+        String query = "g.V().hasLabel(@label).has('age', @age)";
+        String expected = "g.V().hasLabel(\'Otavio\').has('age', 15)";
+        Map<String, Object> params = Map.of("label", "Otavio", "age", 15);
+
+        String gremlin = parser.apply(query, params);
+        Assertions.assertEquals(expected, gremlin);
+
     }
 
+    @Test
     public void shouldParserNegativeNumber() {
+        String query = "g.V().hasLabel(@label).has('age', @age)";
+        String expected = "g.V().hasLabel(\'Otavio\').has('age', -15)";
+        Map<String, Object> params = Map.of("label", "Otavio", "age", -15);
 
+        String gremlin = parser.apply(query, params);
+        Assertions.assertEquals(expected, gremlin);
     }
 
     @Test
@@ -99,7 +113,12 @@ class GremlinParamParserTest {
     }
 
     @Test
-    public void shouldGetAnExceptionWhenThereIsMoreParams() {
+    public void shouldGetAnExceptionWhenThereIsMoreParamsLeft() {
+        String query = "g.V().hasLabel(@label).has('age', @age)";
+        Map<String, Object> params = Map.of("label", "Otavio");
+
+        Assertions.assertThrows(GremlinQueryException.class, () ->
+                parser.apply(query, params));
     }
 
     @Test
