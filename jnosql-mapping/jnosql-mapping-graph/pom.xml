@@ -34,6 +34,12 @@
         <dependency>
             <groupId>org.eclipse.jnosql.communication</groupId>
             <artifactId>jnosql-communication-query</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.antlr</groupId>
+                    <artifactId>antlr4-runtime</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.tinkerpop</groupId>
