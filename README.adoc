@@ -685,7 +685,7 @@ You don’t need to build from source to use the project, but should you be inte
 mvn clean install
 ----
 
-WARNING: To perform the tests is required to use Java 11, otherwise, skip them by using `-DskipTests` parameter as below;
+WARNING: To perform the tests is required to use Java 11, otherwise, skip them by using `-DskipTests` parameter as below:
 
 [source, Bash]
 ----
