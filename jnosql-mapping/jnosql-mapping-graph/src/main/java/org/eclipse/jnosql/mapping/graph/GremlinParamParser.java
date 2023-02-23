@@ -14,6 +14,9 @@
  */
 package org.eclipse.jnosql.mapping.graph;
 
+import java.util.Map;
+import java.util.function.BiFunction;
+
 /**
  * This singleton has the goal to interpolate params inside the Gremlin query.
  * Thus, given the query:
@@ -21,7 +24,14 @@ package org.eclipse.jnosql.mapping.graph;
  * It should return the query to: g.V().hasLabel("Otavio")
  * It should check the Gremlin query options:
  * https://github.com/apache/tinkerpop/blob/e1396223ea9e1d6240c1f051036cbb5507f47f8d/gremlin-language/src/main/antlr4/Gremlin.g4
+ *
+ * Thus, given a current query with params it should convert to Gremlin compatible syntax.
  */
-enum GremlinParamParser {
+enum GremlinParamParser implements BiFunction<String, Map<String, String>, String> {
     INSTANCE;
+
+    @Override
+    public String apply(String query, Map<String, String> params) {
+        return null;
+    }
 }
