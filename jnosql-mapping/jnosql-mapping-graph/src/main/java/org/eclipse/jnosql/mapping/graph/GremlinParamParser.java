@@ -49,6 +49,9 @@ enum GremlinParamParser implements BiFunction<String, Map<String, Object>, Strin
             String param = matcher.group().substring(1);
             leftParams.remove(param);
             Object value = params.get(param);
+            if (value == null) {
+                throw new GremlinQueryException("The param is " + param + " is required on the query " + query);
+            }
             matcher.appendReplacement(gremlin, toString(value));
         }
         matcher.appendTail(gremlin);
@@ -56,7 +59,7 @@ enum GremlinParamParser implements BiFunction<String, Map<String, Object>, Strin
             return gremlin.toString();
         }
 
-        throw new GremlinQueryException("There are params missing on the parser: " + leftParams);
+        throw new GremlinQueryException("There are params missing on the parser: " + leftParams + " on the query" + query);
     }
 
     private String toString(Object value) {
