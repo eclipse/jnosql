@@ -27,11 +27,11 @@ import java.util.function.BiFunction;
  *
  * Thus, given a current query with params it should convert to Gremlin compatible syntax.
  */
-enum GremlinParamParser implements BiFunction<String, Map<String, String>, String> {
+enum GremlinParamParser implements BiFunction<String, Map<String, Object>, String> {
     INSTANCE;
 
     @Override
-    public String apply(String query, Map<String, String> params) {
+    public String apply(String query, Map<String, Object> params) {
         return null;
     }
 }
