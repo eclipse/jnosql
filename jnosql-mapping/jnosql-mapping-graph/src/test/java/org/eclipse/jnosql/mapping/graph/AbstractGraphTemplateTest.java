@@ -448,7 +448,7 @@ public abstract class AbstractGraphTemplateTest {
     @Test
     public void shouldExecutePrepareStatement() {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
-        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(param)");
+        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
         List<Person> people = prepare.<Person>result().collect(Collectors.toList());
         assertThat(people.stream().map(Person::getName).collect(toList())).contains("Otavio");
@@ -457,7 +457,7 @@ public abstract class AbstractGraphTemplateTest {
     @Test
     public void shouldExecutePrepareStatementSingleton() {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
-        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(param)");
+        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
         Optional<Person> otavio = prepare.singleResult();
         assertTrue(otavio.isPresent());
@@ -465,7 +465,7 @@ public abstract class AbstractGraphTemplateTest {
 
     @Test
     public void shouldExecutePrepareStatementSingletonEmpty() {
-        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(param)");
+        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
         Optional<Person> otavio = prepare.singleResult();
         assertFalse(otavio.isPresent());
@@ -475,7 +475,7 @@ public abstract class AbstractGraphTemplateTest {
     public void shouldExecutePrepareStatementWithErrorWhenThereIsMoreThanOneResult() {
         getGraphTemplate().insert(Person.builder().withAge().withName("Otavio").build());
         getGraphTemplate().insert(Person.builder().withAge().withName("Poliana").build());
-        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(param)");
+        PreparedStatement prepare = getGraphTemplate().prepare("g.V().hasLabel(@param)");
         prepare.bind("param", "Person");
         assertThrows(NonUniqueResultException.class, prepare::singleResult);
     }
