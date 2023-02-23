@@ -109,7 +109,12 @@ class GremlinParamParserTest {
 
     @Test
     public void shouldReplaceAll() {
+        String query = "g.V().hasLabel(@label).has('name', @label)";
+        String expected = "g.V().hasLabel(\'Otavio\').has('name', 'Otavio')";
+        Map<String, Object> params = Map.of("label", "Otavio");
 
+        String gremlin = parser.apply(query, params);
+        Assertions.assertEquals(expected, gremlin);
     }
 
     @Test
@@ -122,9 +127,11 @@ class GremlinParamParserTest {
     }
 
     @Test
-    public void shouldReturnErrorWhenMissingParameter(){}
-    //number
-    //negative number
-    //boolean
-    //string
+    public void shouldReturnErrorWhenMissingParameter(){
+        String query = "g.V().hasLabel(@label)";
+        Map<String, Object> params = Map.of("label", "Otavio", "age", 15);
+
+        Assertions.assertThrows(GremlinQueryException.class, () ->
+                parser.apply(query, params));
+    }
 }
