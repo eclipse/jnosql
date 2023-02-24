@@ -87,13 +87,13 @@ abstract class AbstractMethodQueryProvider extends MethodBaseListener {
     }
 
     @Override
-    public void exitTrue(MethodParser.TrueContext ctx) {
+    public void exitTruth(MethodParser.TruthContext ctx) {
         String variable = getVariable(ctx.variable());
         checkCondition(new MethodCondition(variable, EQUALS, BooleanQueryValue.TRUE), false);
     }
 
     @Override
-    public void exitFalse(MethodParser.FalseContext ctx) {
+    public void exitUntruth(MethodParser.UntruthContext ctx) {
         String variable = getVariable(ctx.variable());
         checkCondition(new MethodCondition(variable, EQUALS, BooleanQueryValue.FALSE), false);
     }
