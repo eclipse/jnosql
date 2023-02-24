@@ -25,6 +25,9 @@
 
     <artifactId>jnosql-mapping-graph</artifactId>
 
+    <properties>
+        <antlr4.version>4.9.3</antlr4.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -60,4 +63,25 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>${antlr4.version}</version>
+                <configuration>
+                    <sourceDirectory>src/main/java</sourceDirectory>
+                    <outputDirectory>target/generated-sources/generated-sources</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
