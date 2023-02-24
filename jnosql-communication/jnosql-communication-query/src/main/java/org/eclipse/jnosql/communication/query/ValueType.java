@@ -37,7 +37,7 @@ public enum ValueType {
      */
     ARRAY,
     /**
-     *
+     *This type defines a task to be defined on query.
      */
     FUNCTION,
     /**
