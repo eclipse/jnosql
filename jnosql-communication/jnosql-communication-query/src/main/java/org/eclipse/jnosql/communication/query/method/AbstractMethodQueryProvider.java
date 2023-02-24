@@ -24,6 +24,9 @@ import org.eclipse.jnosql.communication.query.ParamQueryValue;
 import org.eclipse.jnosql.communication.query.QueryCondition;
 import org.eclipse.jnosql.communication.query.QueryErrorListener;
 import org.eclipse.jnosql.communication.query.Where;
+import org.eclipse.jnosql.query.grammar.method.MethodBaseListener;
+import org.eclipse.jnosql.query.grammar.method.MethodLexer;
+import org.eclipse.jnosql.query.grammar.method.MethodParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;

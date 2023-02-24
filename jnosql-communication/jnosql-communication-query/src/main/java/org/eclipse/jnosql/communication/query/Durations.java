@@ -11,6 +11,8 @@
  */
 package org.eclipse.jnosql.communication.query;
 
+import org.eclipse.jnosql.query.grammar.QueryParser;
+
 import java.time.Duration;
 
 final class Durations {

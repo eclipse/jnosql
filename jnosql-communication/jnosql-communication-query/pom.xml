@@ -48,7 +48,7 @@
                 <artifactId>antlr4-maven-plugin</artifactId>
                 <version>${antlr4.version}</version>
                 <configuration>
-                    <sourceDirectory>src/main/java</sourceDirectory>
+                    <sourceDirectory>../../antlr4</sourceDirectory>
                     <outputDirectory>target/generated-sources/generated-sources</outputDirectory>
                 </configuration>
                 <executions>

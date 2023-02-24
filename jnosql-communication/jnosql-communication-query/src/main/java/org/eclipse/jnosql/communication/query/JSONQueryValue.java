@@ -15,6 +15,7 @@ package org.eclipse.jnosql.communication.query;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+import org.eclipse.jnosql.query.grammar.QueryParser;
 
 import java.io.StringReader;
 import java.util.Objects;

@@ -15,6 +15,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import jakarta.data.repository.Sort;
 import jakarta.data.repository.Direction;
 import org.eclipse.jnosql.communication.query.SelectQuery;
+import org.eclipse.jnosql.query.grammar.method.MethodParser;
 
 import java.util.ArrayList;
 import java.util.List;

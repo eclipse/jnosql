@@ -13,6 +13,7 @@ package org.eclipse.jnosql.communication.query;
 
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.eclipse.jnosql.query.grammar.QueryParser;
 
 import java.util.Collections;
 import java.util.List;
