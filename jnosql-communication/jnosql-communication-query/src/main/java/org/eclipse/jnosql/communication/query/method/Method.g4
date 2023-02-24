@@ -4,15 +4,15 @@ deleteBy: 'deleteBy' where? EOF;
 
 selectStart: 'findBy'| 'countBy'| 'existsBy';
 where: condition (and condition| or condition)* ;
-condition: eq | gt | gte | lt | lte | between | in | like | true | false;
+condition: eq | gt | gte | lt | lte | between | in | like | truth | untruth;
 order: 'OrderBy' orderName (orderName)*;
 orderName: variable | variable asc | variable desc;
 and: 'And';
 or: 'Or';
 asc: 'Asc';
 desc: 'Desc';
-true: variable 'True';
-false: variable 'False';
+truth: variable 'True';
+untruth: variable 'False';
 eq: variable | variable not? 'Equals';
 gt: variable not? 'GreaterThan';
 gte: variable not? 'GreaterThanEqual';
