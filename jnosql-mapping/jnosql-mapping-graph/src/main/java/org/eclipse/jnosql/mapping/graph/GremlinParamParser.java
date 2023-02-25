@@ -42,8 +42,7 @@ enum GremlinParamParser implements BiFunction<String, Map<String, Object>, Strin
         Objects.requireNonNull(query, "query is required");
         Objects.requireNonNull(query, "params is required");
         Matcher matcher = pattern.matcher(query);
-        List<String> leftParams = new ArrayList<>();
-        leftParams.addAll(params.keySet());
+        List<String> leftParams = new ArrayList<>(params.keySet());
         StringBuilder gremlin = new StringBuilder();
         while (matcher.find()) {
             String param = matcher.group().substring(1);
