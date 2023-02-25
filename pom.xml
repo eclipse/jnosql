@@ -78,7 +78,7 @@
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.maven.version>3.3.0.603</sonar.maven.version>
         <mockito.verson>5.1.1</mockito.verson>
-        <assertj.version>3.23.1</assertj.version>
+        <assertj.version>3.24.2</assertj.version>
         <commons.io.version>2.11.0</commons.io.version>
         <awaitility.version>4.2.0</awaitility.version>
         <checkstyle.excludes>**/jnosql/query/grammar/**</checkstyle.excludes>
