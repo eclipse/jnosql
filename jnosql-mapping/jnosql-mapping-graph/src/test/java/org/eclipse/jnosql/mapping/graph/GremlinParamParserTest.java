@@ -40,7 +40,7 @@ class GremlinParamParserTest {
     @Test
     public void shouldParserParamString() {
         String query = "g.V().hasLabel(@param)";
-        String expected = "g.V().hasLabel(\'Otavio\')";
+        String expected = "g.V().hasLabel('Otavio')";
         Map<String, Object> params = Map.of("param", "Otavio");
 
         String gremlin = parser.apply(query, params);
@@ -50,7 +50,7 @@ class GremlinParamParserTest {
     @Test
     public void shouldParserBoolean() {
         String query = "g.V().hasLabel(@label).has('active', @active)";
-        String expected = "g.V().hasLabel(\'Otavio\').has('active', 'true')";
+        String expected = "g.V().hasLabel('Otavio').has('active', 'true')";
         Map<String, Object> params = Map.of("label", "Otavio", "active", Boolean.TRUE);
 
         String gremlin = parser.apply(query, params);
@@ -60,7 +60,7 @@ class GremlinParamParserTest {
     @Test
     public void shouldParserPrimitiveBoolean() {
         String query = "g.V().hasLabel(@label).has('active', @active)";
-        String expected = "g.V().hasLabel(\'Otavio\').has('active', 'true')";
+        String expected = "g.V().hasLabel('Otavio').has('active', 'true')";
         Map<String, Object> params = Map.of("label", "Otavio", "active", true);
 
         String gremlin = parser.apply(query, params);
@@ -69,7 +69,7 @@ class GremlinParamParserTest {
     @Test
     public void shouldParserBooleanFalse() {
         String query = "g.V().hasLabel(@label).has('active', @active)";
-        String expected = "g.V().hasLabel(\'Otavio\').has('active', 'false')";
+        String expected = "g.V().hasLabel('Otavio').has('active', 'false')";
         Map<String, Object> params = Map.of("label", "Otavio", "active", Boolean.FALSE);
 
         String gremlin = parser.apply(query, params);
@@ -79,7 +79,7 @@ class GremlinParamParserTest {
     @Test
     public void shouldParserPrimitiveBooleanFalse() {
         String query = "g.V().hasLabel(@label).has('active', @active)";
-        String expected = "g.V().hasLabel(\'Otavio\').has('active', 'false')";
+        String expected = "g.V().hasLabel('Otavio').has('active', 'false')";
         Map<String, Object> params = Map.of("label", "Otavio", "active", false);
 
         String gremlin = parser.apply(query, params);
@@ -89,7 +89,7 @@ class GremlinParamParserTest {
     @Test
     public void shouldParserNumber() {
         String query = "g.V().hasLabel(@label).has('age', @age)";
-        String expected = "g.V().hasLabel(\'Otavio\').has('age', 15)";
+        String expected = "g.V().hasLabel('Otavio').has('age', 15)";
         Map<String, Object> params = Map.of("label", "Otavio", "age", 15);
 
         String gremlin = parser.apply(query, params);
@@ -100,7 +100,7 @@ class GremlinParamParserTest {
     @Test
     public void shouldParserNegativeNumber() {
         String query = "g.V().hasLabel(@label).has('age', @age)";
-        String expected = "g.V().hasLabel(\'Otavio\').has('age', -15)";
+        String expected = "g.V().hasLabel('Otavio').has('age', -15)";
         Map<String, Object> params = Map.of("label", "Otavio", "age", -15);
 
         String gremlin = parser.apply(query, params);
@@ -110,7 +110,7 @@ class GremlinParamParserTest {
     @Test
     public void shouldReplaceAll() {
         String query = "g.V().hasLabel(@label).has('name', @label)";
-        String expected = "g.V().hasLabel(\'Otavio\').has('name', 'Otavio')";
+        String expected = "g.V().hasLabel('Otavio').has('name', 'Otavio')";
         Map<String, Object> params = Map.of("label", "Otavio");
 
         String gremlin = parser.apply(query, params);
