@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * "g.V().hasLabel(@param)" where the params is {"param":"Otavio"}
  * It should return the query to: g.V().hasLabel("Otavio")
  * It should check the Gremlin query options:
- * https://github.com/apache/tinkerpop/blob/e1396223ea9e1d6240c1f051036cbb5507f47f8d/gremlin-language/src/main/antlr4/Gremlin.g4
+ * <a href="https://github.com/apache/tinkerpop/blob/e1396223ea9e1d6240c1f051036cbb5507f47f8d/gremlin-language/src/main/antlr4/Gremlin.g4">Gremlin.g4</a>
  * <p>
  * Thus, given a current query with params it should convert to Gremlin compatible syntax.
  */
