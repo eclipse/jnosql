@@ -54,7 +54,7 @@ abstract class ValueTest {
 
     @Test
     void shouldConvertToSingletonList() {
-        Long number = 10L;
+        long number = 10L;
         Value value = getValueOf(() -> number);
         assertThat(value.get(new TypeReference<List<String>>() {
         })).contains("10");
@@ -64,7 +64,7 @@ abstract class ValueTest {
 
     @Test
     void shouldConvertToStream() {
-        Long number = 10L;
+        long number = 10L;
         Value value = getValueOf(() -> number);
 
         assertThat(value.get(new TypeReference<Stream<String>>() {
@@ -84,7 +84,7 @@ abstract class ValueTest {
 
     @Test
     void shouldConvertToSingletonSet() {
-        Long number = 10L;
+        long number = 10L;
         Value value = getValueOf(() -> number);
         assertThat(value.get(new TypeReference<Set<String>>() {
         })).contains("10");
