@@ -105,10 +105,9 @@ public abstract class DocumentEntityConverter {
         return convertEntity(entity.documents(), mapping, type);
     }
 
-    @SuppressWarnings("unchecked")
     /**
      * Similar to {@link DocumentEntityConverter#toEntity(Class, DocumentEntity)}, but
-     * search the instance type from {@link DocumentEntity#getName()}
+     * search the instance type from {@link DocumentEntity#name()}
      *
      * @param entity the {@link DocumentEntity} to be converted
      * @param <T>    the entity type
