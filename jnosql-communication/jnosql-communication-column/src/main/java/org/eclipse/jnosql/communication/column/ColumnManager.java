@@ -141,7 +141,7 @@ public interface ColumnManager extends AutoCloseable {
      */
     default boolean exists(ColumnQuery query) {
         Objects.requireNonNull(query, "query is required");
-        return this.select(DefaultColumnQuery.existsBy(query)).count() > 0;
+        return this.select(DefaultColumnQuery.existsBy(query)).findAny().isPresent();
     }
 
     /**

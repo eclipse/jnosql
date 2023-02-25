@@ -141,7 +141,7 @@ public interface DocumentManager extends AutoCloseable {
      */
     default boolean exists(DocumentQuery query) {
         Objects.requireNonNull(query, "query is required");
-        return this.select(DefaultDocumentQuery.existsBy(query)).count() > 0;
+        return this.select(DefaultDocumentQuery.existsBy(query)).findAny().isPresent();
     }
 
     /**
