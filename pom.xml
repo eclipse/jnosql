@@ -66,7 +66,7 @@
         <jakarta.data.api.version>1.0.0-b1</jakarta.data.api.version>
         <jakarta.nosql.version>1.0.0-b6-SNAPSHOT</jakarta.nosql.version>
         <jakarta.validation.version>3.0.2</jakarta.validation.version>
-        <junit.version>5.9.1</junit.version>
+        <junit.version>5.9.2</junit.version>
         <maven-javadoc-plugin.vesion>3.3.2</maven-javadoc-plugin.vesion>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven.checkstyle.plugin.version>3.2.0</maven.checkstyle.plugin.version>
