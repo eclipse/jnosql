@@ -30,6 +30,9 @@
     <properties>
         <hibernate.validator.version>8.0.0.Final</hibernate.validator.version>
         <el.impl.version>5.0.0-M1</el.impl.version>
+        <!-- it's required by the 'org.neo4j' libraries  -->
+        <argLine> --add-opens java.base/java.lang=ALL-UNNAMED --add-exports java.base/sun.nio.ch=ALL-UNNAMED </argLine>
+
     </properties>
 
     <dependencies>

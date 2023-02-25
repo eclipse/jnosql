@@ -49,7 +49,6 @@
                 <version>${antlr4.version}</version>
                 <configuration>
                     <sourceDirectory>../../antlr4</sourceDirectory>
-                    <outputDirectory>target/generated-sources/generated-sources</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
