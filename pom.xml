@@ -82,7 +82,6 @@
         <commons.io.version>2.11.0</commons.io.version>
         <awaitility.version>4.2.0</awaitility.version>
         <checkstyle.excludes>**/jnosql/query/grammar/**</checkstyle.excludes>
-        <owb.version>2.0.3</owb.version>
         <weld.se.core.version>5.1.0.Final</weld.se.core.version>
         <yasson.version>3.0.2</yasson.version>
         <microprofile.config.version>3.0.2</microprofile.config.version>
