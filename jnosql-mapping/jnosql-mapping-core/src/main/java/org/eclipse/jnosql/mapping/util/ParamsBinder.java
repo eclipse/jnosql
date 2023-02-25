@@ -73,22 +73,22 @@ public class ParamsBinder {
             Optional<FieldMapping> field = this.mapping.fields().stream()
                     .filter(f -> f.name().equals(fieldName)).findFirst();
 
-            Object value = getValue(args, index, field);
+            Object value = getValue(args, index, field.orElse(null));
             params.bind(name, value);
         }
     }
 
-    private Object getValue(Object[] args, int index, Optional<FieldMapping> field) {
+    private Object getValue(Object[] args, int index, FieldMapping field) {
         Object value = args[index];
-        if (field.isPresent()) {
+        if (field != null) {
             if (value instanceof Iterable) {
                 List<Object> values = new ArrayList<>();
                 for (Object item : Iterable.class.cast(value)) {
-                    values.add(ConverterUtil.getValue(item, converters, field.get()));
+                    values.add(ConverterUtil.getValue(item, converters, field));
                 }
                 return values;
             }
-            return ConverterUtil.getValue(value, converters, field.get());
+            return ConverterUtil.getValue(value, converters, field);
         } else {
             return value;
         }
