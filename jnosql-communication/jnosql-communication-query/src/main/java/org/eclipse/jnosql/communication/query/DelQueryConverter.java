@@ -22,7 +22,7 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 /**
- * A provider to {@link DelQuery}, this provider converts text into {@link DefaultDeleteQuery}
+ * A provider to {@link DelQuery}, this provider converts text into {@link DeleteQuery}
  */
 public final class DelQueryConverter extends AbstractSupplier implements Function<String, DelQuery> {
 
