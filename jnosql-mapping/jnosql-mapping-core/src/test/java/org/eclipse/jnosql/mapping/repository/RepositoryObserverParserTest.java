@@ -49,7 +49,7 @@ class RepositoryObserverParserTest {
         EntityMetadata metadata = entities.get(Person.class);
         RepositoryObserverParser parser = RepositoryObserverParser.of(metadata);
         org.assertj.core.api.Assertions.assertThat(parser)
-                .extracting(p -> p.name())
+                .extracting(RepositoryObserverParser::name)
                 .isEqualTo(metadata.name());
     }
 
