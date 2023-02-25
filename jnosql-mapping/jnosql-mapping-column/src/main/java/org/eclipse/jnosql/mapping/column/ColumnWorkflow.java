@@ -24,13 +24,9 @@ import java.util.function.UnaryOperator;
  * This implementation defines the workflow to insert an Entity on {@link jakarta.nosql.column.ColumnTemplate}.
  * The default implementation follows:
  *  <p>{@link ColumnEventPersistManager#firePreEntity(Object)}</p>
- *  <p>{@link ColumnEventPersistManager#firePreColumnEntity(Object)}</p>
  *  <p>{@link ColumnEntityConverter#toColumn(Object)}</p>
- *  <p>{@link ColumnEventPersistManager#firePreColumn(ColumnEntity)}</p>
  *  <p>Database alteration</p>
- *  <p>{@link ColumnEventPersistManager#firePostColumn(ColumnEntity)}</p>
  *  <p>{@link ColumnEventPersistManager#firePostEntity(Object)}</p>
- *  <p>{@link ColumnEventPersistManager#firePostColumnEntity(Object)}</p>
  */
 public abstract class ColumnWorkflow {
 
