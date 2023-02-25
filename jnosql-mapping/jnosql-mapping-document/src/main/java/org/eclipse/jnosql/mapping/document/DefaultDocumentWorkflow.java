@@ -24,13 +24,9 @@ import org.eclipse.jnosql.communication.document.DocumentEntity;
  * This implementation defines the workflow to insert an Entity on {@link jakarta.nosql.document.DocumentTemplate}.
  * The default implementation follows:
  *  <p>{@link DocumentEventPersistManager#firePreEntity(Object)}</p>
- *  <p>{@link DocumentEventPersistManager#firePreDocumentEntity(Object)}</p>
  *  <p>{@link DocumentEntityConverter#toDocument(Object)}</p>
- *  <p>{@link DocumentEventPersistManager#firePreDocument(DocumentEntity)}</p>
  *  <p>Database alteration</p>
- *  <p>{@link DocumentEventPersistManager#firePostDocument(DocumentEntity)}</p>
  *  <p>{@link DocumentEventPersistManager#firePostEntity(Object)}</p>
- *  <p>{@link DocumentEventPersistManager#firePostDocumentEntity(Object)}</p>
  */
 @ApplicationScoped
 class DefaultDocumentWorkflow extends DocumentWorkflow {
