@@ -18,7 +18,6 @@ package org.eclipse.jnosql.mapping.document;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.eclipse.jnosql.communication.document.DocumentEntity;
 
 /**
  * This implementation defines the workflow to insert an Entity on {@link jakarta.nosql.document.DocumentTemplate}.

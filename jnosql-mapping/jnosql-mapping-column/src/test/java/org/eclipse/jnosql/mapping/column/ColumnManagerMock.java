@@ -20,8 +20,6 @@ import org.eclipse.jnosql.communication.column.ColumnManager;
 import org.eclipse.jnosql.communication.column.ColumnManagerFactory;
 import org.mockito.Mockito;
 
-import java.util.Collections;
-
 public class ColumnManagerMock implements ColumnConfiguration {
 
 

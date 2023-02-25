@@ -14,9 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.column;
 
-import org.eclipse.jnosql.communication.column.ColumnDeleteQuery;
-import org.eclipse.jnosql.communication.column.ColumnEntity;
-import org.eclipse.jnosql.communication.column.ColumnQuery;
 import org.eclipse.jnosql.mapping.EntityPostPersist;
 import org.eclipse.jnosql.mapping.EntityPrePersist;
 import org.junit.jupiter.api.Test;
@@ -28,8 +25,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import jakarta.enterprise.event.Event;
 
-import static org.eclipse.jnosql.communication.column.ColumnDeleteQuery.delete;
-import static org.eclipse.jnosql.communication.column.ColumnQuery.select;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 

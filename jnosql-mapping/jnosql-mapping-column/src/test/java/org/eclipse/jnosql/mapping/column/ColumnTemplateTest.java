@@ -17,7 +17,6 @@ package org.eclipse.jnosql.mapping.column;
 import jakarta.nosql.Template;
 import org.eclipse.jnosql.mapping.Convert;
 import org.eclipse.jnosql.mapping.Database;
-import org.eclipse.jnosql.mapping.DatabaseType;
 import org.eclipse.jnosql.mapping.column.spi.ColumnExtension;
 import org.eclipse.jnosql.mapping.reflection.EntityMetadataExtension;
 

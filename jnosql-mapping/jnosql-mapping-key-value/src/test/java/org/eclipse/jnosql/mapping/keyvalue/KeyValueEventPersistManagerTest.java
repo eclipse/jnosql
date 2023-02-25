@@ -14,7 +14,6 @@
  */
 package org.eclipse.jnosql.mapping.keyvalue;
 
-import org.eclipse.jnosql.communication.keyvalue.KeyValueEntity;
 import org.eclipse.jnosql.mapping.EntityPostPersist;
 import org.eclipse.jnosql.mapping.EntityPrePersist;
 import org.junit.jupiter.api.Test;
