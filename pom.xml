@@ -64,7 +64,7 @@
         <jakarta.json.bind.version>3.0.0</jakarta.json.bind.version>
         <jakarta.json.version>2.1.1</jakarta.json.version>
         <jakarta.data.api.version>1.0.0-b1</jakarta.data.api.version>
-        <jakarta.nosql.version>1.0.0-b6-SNAPSHOT</jakarta.nosql.version>
+        <jakarta.nosql.version>1.0.0-b6</jakarta.nosql.version>
         <jakarta.validation.version>3.0.2</jakarta.validation.version>
         <junit.version>5.9.2</junit.version>
         <maven-javadoc-plugin.vesion>3.3.2</maven-javadoc-plugin.vesion>
@@ -77,7 +77,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.maven.version>3.3.0.603</sonar.maven.version>
-        <mockito.verson>4.11.0</mockito.verson>
+        <mockito.verson>5.1.1</mockito.verson>
         <assertj.version>3.23.1</assertj.version>
         <commons.io.version>2.11.0</commons.io.version>
         <awaitility.version>4.2.0</awaitility.version>
