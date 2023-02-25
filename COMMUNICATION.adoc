@@ -1050,8 +1050,6 @@ bucketManager.remove("key");
 bucketManager.remove(Collections.singletonList("key"));
 ----
 
-include::communication_query.adoc[]
-
 === Factory
 
 The factory class creates the *Managers*.
