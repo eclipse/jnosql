@@ -16,6 +16,9 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.jnosql.query.grammar.QueryBaseListener;
+import org.eclipse.jnosql.query.grammar.QueryLexer;
+import org.eclipse.jnosql.query.grammar.QueryParser;
 
 import java.util.Objects;
 import java.util.function.Function;

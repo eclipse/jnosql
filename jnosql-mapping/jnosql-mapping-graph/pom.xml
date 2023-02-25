@@ -25,6 +25,11 @@
 
     <artifactId>jnosql-mapping-graph</artifactId>
 
+    <properties>
+        <antlr4.version>4.9.3</antlr4.version>
+        <!-- it's required by the 'org.neo4j' libraries  -->
+        <argLine> --add-opens java.base/java.lang=ALL-UNNAMED --add-exports java.base/sun.nio.ch=ALL-UNNAMED </argLine>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -34,16 +39,16 @@
         <dependency>
             <groupId>org.eclipse.jnosql.communication</groupId>
             <artifactId>jnosql-communication-query</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.antlr</groupId>
+                    <artifactId>antlr4-runtime</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.tinkerpop</groupId>
             <artifactId>gremlin-core</artifactId>
-            <version>${tinkerpop.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tinkerpop</groupId>
-            <artifactId>gremlin-groovy</artifactId>
             <version>${tinkerpop.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -59,5 +64,37 @@
             <version>${neo4j.connector.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j</artifactId>
+            <version>3.4.18</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-enterprise</artifactId>
+            <version>3.4.18</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>${antlr4.version}</version>
+                <configuration>
+                    <sourceDirectory>../../antlr4</sourceDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -15,6 +15,9 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Add documentation repository
 - Move the communication API as JNoSQL implementation
 - Change the test engine to Weld-jupiter instead of jnosql-jupiter
+- Move antlr4 to grammar package
+- Update Antlr version to 4.12.0
+- Update Apache Tinkerpop to version 3.6.2
 
 === Added
 
@@ -29,6 +32,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Remove DocumentQueryMapper implementation
 - Remove support for old Repository and Pagination (replaced by Jakarta Data)
 - Remove project jnosql-jupiter and jnosql-entity
+- Remove Apache Tinkerpop Groovy and use JavaScript engine instead.
 
 === Fixed
 
@@ -36,6 +40,8 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Define Qualifier on templates implementations (Graph, Key-value, Document and Column).
 - Using the proper methods to skip on GraphRepository implementation
 - Increase capability on map to improve scenario on Repository parser
+- Fix param analyzer on Gremlin Graph query
+
 
 
 == [1.0.0.4-b5] - 2022-12-22

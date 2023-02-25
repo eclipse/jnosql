@@ -14,6 +14,7 @@ package org.eclipse.jnosql.communication.query;
 
 
 import org.eclipse.jnosql.communication.QueryException;
+import org.eclipse.jnosql.query.grammar.QueryParser;
 
 import java.util.Objects;
 

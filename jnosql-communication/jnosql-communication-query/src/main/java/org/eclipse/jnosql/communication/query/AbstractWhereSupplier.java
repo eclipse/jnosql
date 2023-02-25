@@ -12,6 +12,7 @@
 package org.eclipse.jnosql.communication.query;
 
 import org.eclipse.jnosql.communication.Condition;
+import org.eclipse.jnosql.query.grammar.QueryParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -135,7 +135,7 @@ class GremlinExecutorTest {
 
     @Test
     public void shouldExecuteQueryVertex5() {
-        List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().in('loves').toStream()")
+        List<Person> people = executor.<Person>executeGremlin(graph.traversal(), "g.V().in('loves').toList()")
                 .collect(toList());
         List<String> names = people.stream().map(Person::getName).collect(toList());
         assertThat(names).contains("Bruce Banner");
@@ -201,7 +201,7 @@ class GremlinExecutorTest {
     public void shouldExecuteWithParams() {
 
         List<Person> people = executor.<Person>executeGremlin(graph.traversal(),
-                "g.V().in(param).toList()",singletonMap("param", "loves"))
+                "g.V().in(@param).toList()",singletonMap("param", "loves"))
                 .collect(toList());
 
         assertFalse(people.isEmpty());

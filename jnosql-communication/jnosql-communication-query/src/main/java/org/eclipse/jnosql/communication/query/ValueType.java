@@ -12,8 +12,42 @@
 package org.eclipse.jnosql.communication.query;
 
 /**
- * The value type
+ * The values type that the query supports at this syntax.
  */
 public enum ValueType {
-    CONDITION, NUMBER, STRING, PARAMETER, ARRAY, FUNCTION, JSON, BOOLEAN;
+    /**
+     * Conditions are statements that are created by the programmer which evaluates
+     * actions in the program and evaluates if it's true or false.
+     */
+    CONDITION,
+    /**
+     * The values that implements {@link Number}
+     */
+    NUMBER,
+    /**
+     * The values that implements {@link CharSequence} in general it will be {@link String}
+     */
+    STRING,
+    /**
+     * That parameter is for dynamic query where you define prepare statement.
+     */
+    PARAMETER,
+    /**
+     * An array is a series of memory locations
+     */
+    ARRAY,
+    /**
+     *This type defines a task to be defined on query.
+     */
+    FUNCTION,
+    /**
+     * JSON is an open standard file format and data interchange
+     * format that uses human-readable text to store and transmit data objects consisting
+     * of attribute–value pairs and arrays.
+     */
+    JSON,
+    /**
+     * In computer science, a Boolean is a logical data type that can have only the values true or false
+     */
+    BOOLEAN;
 }
