@@ -45,7 +45,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 
 
-== [1.0.0.4-b5] - 2022-12-22
+== [1.0.0-b5] - 2022-12-22
 
 === Added
 - Create a CHANGELOG file to track the specification evolution
