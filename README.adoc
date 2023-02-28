@@ -685,6 +685,17 @@ You don’t need to build from source to use the project, but should you be inte
 mvn clean install
 ----
 
+
+== Contributing
+
+We are very happy you are interested in helping us and there are plenty ways you can do so.
+
+- https://github.com/eclipse/jnosql/issues[**Open an Issue:**]  Recommend improvements, changes and report bugs
+
+- **Open a Pull Request:** If you feel like you can even make changes to our source code and suggest them, just check out our link:CONTRIBUTING.adoc[contributing guide] to learn about the development process, how to suggest bugfixes and improvements.
+
+
+
 == For know more
 
 If you want to know more about both the communication and mapping layer, there are two complementary files for it each specific topic:
