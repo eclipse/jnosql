@@ -63,11 +63,11 @@ Writing a good issue will help our team better analyze and manage your contribut
 
 - **Scope:** Add what your issue refers to:
 
-- **[Bug report](https://github.com/ZupIT/beagle/issues/new?assignees=&labels=bug&template=bug_report.md&title=):** Report a reproducible bug.
+- **https://github.com/eclipse/jnosql/issues/new?assignees=&labels=bug&template=bug_report.md&title=[Bug report]:** Report a reproducible bug.
 
-- **[Feature request](https://github.com/ZupIT/beagle/issues/new?assignees=&labels=&template=feature_request.md&title=):** Suggest a new idea for Beagle.
+- **https://github.com/eclipse/jnosql/issues/new?assignees=&labels=&template=feature_request.md&title=[Feature request]:** Suggest a new idea for Eclipse JNoSQL.
 
-> **Example: Beagle-ios:feat request - Suggestion for a better user experience**
+> **Example: Eclipse JNoSQL:feat request - Suggestion for a better user experience**
 
 **With the issue description:**
 
