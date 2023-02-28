@@ -1,0 +1,37 @@
+# Migration guide
+:toc: auto
+
+== Eclipse JNoSQL 1.0.0-b6 Migration Guide
+
+This migration guide explains how to migrate from Eclipse JNoSQL 1.0.0-b6 to the latest version, taking into account the following two significant changes:
+
+Jakarta EE upgrade to version 9
+Reduction of the scope of the Jakarta NoSQL specification to only run on the Mapping.
+
+== Jakarta EE migration
+
+With the new version of Eclipse JNoSQL, you need to use Jakarta EE 9 or higher. There is an impact on the package name due to this upgrade. Therefore, we recommend that you check any third-party libraries that you use that integrate with Jakarta EE and verify if they have EE 9 compatible variants. The most common problems are with projects that import Servlet APIs. However, most well-maintained libraries produce Jakarta EE 9 compatible variants.
+
+Here are some examples of libraries that have already produced Jakarta EE 9 compatible variants:
+
+* Hibernate
+* Thymeleaf
+* Tomcat
+* Jetty
+* Undertow
+
+== Jakarta NoSQL scope reduction
+
+The current scope of Jakarta NoSQL has been reduced to only run on the Mapping. The communication has been moved to Eclipse JNoSQL using the package name `org.eclipse.jnosql` instead of `jakarta.nosql`.
+
+Furthermore, the annotations that don't belong to the Jakarta NoSQL specification (Id, Entity, and Column) have moved to the new package name: `org.eclipse.jnosql.mapping`. The new Jakarta NoSQL annotations have moved to the package `jakarta.nosql`. such as `Id` with `jakarta.nosql.Id`.
+
+To migrate to the new version of Eclipse JNoSQL, follow these steps:
+
+* Update your project to use Jakarta EE 9 or higher.
+* Update the package name for communication with Eclipse JNoSQL from jakarta.nosql to org.eclipse.jnosql.
+* Update the package name for the annotations that don't belong to the Jakarta NoSQL specification from jakarta.nosql to org.eclipse.jnosql.mapping.
+* Update the package name for the new Jakarta NoSQL annotations from `org.eclipse.jnosql`  to `jakarta.nosql`.
+
+By following these steps, you should be able to migrate your Eclipse JNoSQL project successfully.
+
