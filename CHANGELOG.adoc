@@ -25,6 +25,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Create jnosql-jupiter module
 - Enhance readme, adding Mapping and communication details.
 - Add count and exist methods as default on DocumentManager and ColumnManager
+- Include a migration file adoc
 
 === Removed
 
