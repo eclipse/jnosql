@@ -41,3 +41,38 @@ https://www.eclipse.org/projects/handbook/#resources-commit
 Contact the project developers via the project's "dev" list.
 
 * https://dev.eclipse.org/mailman/listinfo/jnosql-dev
+
+
+== Issues
+
+If you found a bug or have an idea, check out the following sections before submitting your contribution.
+
+=== Check the issue tracker
+
+All our issues are centralized in our https://github.com/eclipse/jnosql[**main repository**], it is quite likely that you will find a topic that is being discussed. Check the https://github.com/eclipse/jnosql/issues[**open issues**], another good way to start is https://github.com/eclipse/jnosql/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22[**good first issues**].
+
+=== Open an issue for any new problem
+
+Writing a good issue will help our team better analyze and manage your contributions, therefore, follow the standards and best practices below:
+
+**With the title:**
+
+**Project:Scope - Title Description**
+
+- **Project:** Name of the project or repository you want to contribute to.
+
+- **Scope:** Add what your issue refers to:
+
+- **[Bug report](https://github.com/ZupIT/beagle/issues/new?assignees=&labels=bug&template=bug_report.md&title=):** Report a reproducible bug.
+
+- **[Feature request](https://github.com/ZupIT/beagle/issues/new?assignees=&labels=&template=feature_request.md&title=):** Suggest a new idea for Beagle.
+
+> **Example: Beagle-ios:feat request - Suggestion for a better user experience**
+
+**With the issue description:**
+
+Try to explain the scenario to us by following these tips:
+
+- **Context:** explain the conditions which led you to write this issue.
+- **Problem or idea:** the context should lead to something, an idea or a problem that you’re facing.
+- **Solution or next step:** this where you move forward. You can engage others (request feedback), assign somebody else to the issue, or simply leave it for further investigation, but you absolutely need to propose a next step towards solving the issue.
