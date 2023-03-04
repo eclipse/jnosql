@@ -107,7 +107,7 @@ public abstract class BaseDocumentRepository<T> {
             sorts.addAll(query.sorts());
             sorts.addAll(special.sorts());
             long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
-            long max = limit.map(Limit::maxResults).orElse(query.limit());
+            long max = limit.map(Limit::maxResults).orElse((int) query.limit());
             return new MappingDocumentQuery(sorts, max,
                     skip,
                     query.condition().orElse(null),
@@ -116,7 +116,7 @@ public abstract class BaseDocumentRepository<T> {
 
         if (limit.isPresent()) {
             long skip = limit.map(l -> l.startAt() - 1).orElse(query.skip());
-            long max = limit.map(Limit::maxResults).orElse(query.limit());
+            long max = limit.map(Limit::maxResults).orElse((int) query.limit());
             return new MappingDocumentQuery(query.sorts(), max,
                     skip,
                     query.condition().orElse(null),
