@@ -115,8 +115,8 @@ class ColumnDeleteQueryParamsTest {
     static Stream<Arguments> scenarios() {
         return Stream.of(
                 givenNullArguments(),
-                givenDummyColumnDeleteQueryOnly(),
-                givenDummyParamsOnly(),
+                givenColumnDeleteQueryOnly(),
+                givenParamsOnly(),
                 givenValidArguments()
         );
     }
@@ -139,11 +139,11 @@ class ColumnDeleteQueryParamsTest {
         return arguments(newDummyColumnDeleteQuery(), newDummyParams());
     }
 
-    private static Arguments givenDummyParamsOnly() {
+    private static Arguments givenParamsOnly() {
         return arguments(null, newDummyParams());
     }
 
-    private static Arguments givenDummyColumnDeleteQueryOnly() {
+    private static Arguments givenColumnDeleteQueryOnly() {
         return arguments(newDummyColumnDeleteQuery(), null);
     }
 
