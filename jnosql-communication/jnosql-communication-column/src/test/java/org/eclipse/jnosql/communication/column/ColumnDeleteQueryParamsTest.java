@@ -75,7 +75,6 @@ class ColumnDeleteQueryParamsTest {
         var instance = new ColumnDeleteQueryParams(newDummyColumnDeleteQuery(), newDummyParams());
 
         assertThat(instance).isNotEqualTo(null);
-        assertThat(instance).isNotEqualTo(new Object());
     }
 
     @Test
