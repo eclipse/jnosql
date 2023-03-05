@@ -17,12 +17,113 @@ package org.eclipse.jnosql.communication.column;
 
 import org.eclipse.jnosql.communication.Params;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class ColumnDeleteQueryParamsTest {
+
+    @ParameterizedTest
+    @MethodSource("scenarios")
+    void shouldInstantiateSuccessfully(ColumnDeleteQuery query, Params params) {
+        newInstance(query,params);
+    }
+
+    @ParameterizedTest
+    @MethodSource("scenarios")
+    void shouldReturnTheSameQueryInstance(ColumnDeleteQuery expectedQuery, Params params) {
+        var target = newInstance(expectedQuery, params);
+        assertThat(expectedQuery).isSameAs(target.query());
+    }
+
+    @ParameterizedTest
+    @MethodSource("scenarios")
+    void shouldReturnTheSameParamsInstance(ColumnDeleteQuery query, Params expectedParams) {
+        var target = newInstance(query, expectedParams);
+        assertThat(expectedParams).isSameAs(target.params());
+    }
+
+    @ParameterizedTest
+    @MethodSource("scenarios")
+    void shouldBeNotEqualsToNull(ColumnDeleteQuery query, Params params) {
+        var instance = newInstance(query, params);
+        assertThat(instance).isNotEqualTo(null);
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("scenarios")
+    void shouldBeNotEqualsToAnyOtherInstanceOfDifferentType(ColumnDeleteQuery query, Params params) {
+        var instance = newInstance(query, params);
+        assertThat(instance).isNotEqualTo(new Object());
+    }
+
+    @ParameterizedTest
+    @MethodSource("scenarios")
+    void shouldBeEqualsToItself(ColumnDeleteQuery query, Params params) {
+        var instance = newInstance(query, params);
+        assertThat(instance).isEqualTo(instance);
+    }
+
+    @Test
+    void shouldBeEqualsWhenQueryAndParamsAreUsedByTwoDifferentInstances() {
+        var query = newDummyColumnDeleteQuery();
+        var params = newDummyParams();
+
+        var leftInstance = newInstance(query, params);
+        var rightInstance = newInstance(query, params);
+
+        assertThat(leftInstance).isEqualTo(rightInstance);
+    }
+
+    @ParameterizedTest
+    @MethodSource("scenarios")
+    void shouldBeNotEqualsWhenDifferentQueryAndParamsAreUsedByTwoDifferentInstances(ColumnDeleteQuery query, Params params) {
+
+        var leftInstance = newInstance(query, params);
+        var rightInstance = newInstance(newDummyColumnDeleteQuery(), newDummyParams());
+
+        assertThat(leftInstance).isNotEqualTo(rightInstance);
+    }
+
+    @Test
+    void shouldHashCodeBeConditionedToQueryAndParamsAttributes() {
+
+        ColumnDeleteQuery firstQuery = newDummyColumnDeleteQuery();
+        Params firstParams = newDummyParams();
+
+        var fistInstance = newInstance(firstQuery, firstParams);
+        var secondInstance = newInstance(firstQuery, firstParams);
+
+        assertThat(fistInstance.hashCode()).isEqualTo(secondInstance.hashCode());
+
+        ColumnDeleteQuery secondQuery = newDummyColumnDeleteQuery();
+        Params secondParams = newDummyParams();
+
+        var thirdInstance = newInstance(secondQuery, secondParams);
+
+        assertThat(fistInstance.hashCode()).isNotEqualTo(thirdInstance.hashCode());
+
+    }
+
+    static Stream<Arguments> scenarios() {
+        return Stream.of(
+                givenNullArguments(),
+                givenDummyColumnDeleteQueryOnly(),
+                givenDummyParamsOnly(),
+                givenValidArguments()
+        );
+    }
+
+    private ColumnDeleteQueryParams newInstance(ColumnDeleteQuery query, Params params) {
+        return new ColumnDeleteQueryParams(query,params);
+    }
 
     private static Params newDummyParams() {
         Params params = Params.newParams();
@@ -34,101 +135,20 @@ class ColumnDeleteQueryParamsTest {
         return ColumnDeleteQuery.builder().from(UUID.randomUUID().toString()).build();
     }
 
-    @Test
-    void shouldInstantiateWithNullArguments() {
-        new ColumnDeleteQueryParams(null, null);
+    private static Arguments givenValidArguments() {
+        return arguments(newDummyColumnDeleteQuery(), newDummyParams());
     }
 
-    @Test
-    void shouldInstantiateWithParamsOnly() {
-        new ColumnDeleteQueryParams(null, newDummyParams());
+    private static Arguments givenDummyParamsOnly() {
+        return arguments(null, newDummyParams());
     }
 
-    @Test
-    void shouldInstantiateWithQueryOnly() {
-        new ColumnDeleteQueryParams(newDummyColumnDeleteQuery(), null);
+    private static Arguments givenDummyColumnDeleteQueryOnly() {
+        return arguments(newDummyColumnDeleteQuery(), null);
     }
 
-    @Test
-    void shouldInstantiateWithNonNullArgs() {
-        new ColumnDeleteQueryParams(newDummyColumnDeleteQuery(), newDummyParams());
+    private static Arguments givenNullArguments() {
+        return arguments(null, null);
     }
 
-
-    @Test
-    void shouldReturnTheSameQueryInstance() {
-        var expectedQuery = newDummyColumnDeleteQuery();
-        var target = new ColumnDeleteQueryParams(expectedQuery, Params.newParams());
-        assertThat(expectedQuery).isSameAs(target.query());
-    }
-
-    @Test
-    void shouldReturnTheSameParamsInstance() {
-        var expectedParams = Params.newParams();
-        var target = new ColumnDeleteQueryParams(newDummyColumnDeleteQuery(), expectedParams);
-        assertThat(expectedParams).isSameAs(target.params());
-    }
-
-    @Test
-    void shouldBeNotEqualsToNull() {
-
-        var instance = new ColumnDeleteQueryParams(newDummyColumnDeleteQuery(), newDummyParams());
-
-        assertThat(instance).isNotEqualTo(null);
-    }
-
-    @Test
-    void shouldBeNotEqualsToAnyOtherInstanceOfDifferentType() {
-
-        var instance = new ColumnDeleteQueryParams(newDummyColumnDeleteQuery(), newDummyParams());
-
-        assertThat(instance).isNotEqualTo(new Object());
-    }
-
-    @Test
-    void shouldBeEqualsToItself() {
-        var instance = new ColumnDeleteQueryParams(newDummyColumnDeleteQuery(), newDummyParams());
-
-        assertThat(instance).isEqualTo(instance);
-    }
-
-    @Test
-    void shouldBeEqualsWhenQueryAndParamsAreUsedByTwoDifferentInstances() {
-        var query = newDummyColumnDeleteQuery();
-        var params = newDummyParams();
-
-        var leftInstance = new ColumnDeleteQueryParams(query, params);
-        var rightInstance = new ColumnDeleteQueryParams(query, params);
-
-        assertThat(leftInstance).isEqualTo(rightInstance);
-    }
-
-    @Test
-    void shouldBeNotEqualsWhenDifferentQueryAndParamsAreUsedByTwoDifferentInstances() {
-
-        var leftInstance = new ColumnDeleteQueryParams(newDummyColumnDeleteQuery(), newDummyParams());
-        var rightInstance = new ColumnDeleteQueryParams(newDummyColumnDeleteQuery(), newDummyParams());
-
-        assertThat(leftInstance).isNotEqualTo(rightInstance);
-    }
-
-    @Test
-    void shouldHashCodeBeConditionedToQueryAndParamsAttributes() {
-
-        ColumnDeleteQuery firstQuery = newDummyColumnDeleteQuery();
-        Params firstParams = newDummyParams();
-
-        var fistInstance = new ColumnDeleteQueryParams(firstQuery, firstParams);
-        var secondInstance = new ColumnDeleteQueryParams(firstQuery, firstParams);
-
-        assertThat(fistInstance.hashCode()).isEqualTo(secondInstance.hashCode());
-
-        ColumnDeleteQuery secondQuery = newDummyColumnDeleteQuery();
-        Params secondParams = newDummyParams();
-
-        var thirdInstance = new ColumnDeleteQueryParams(secondQuery, secondParams);
-
-        assertThat(fistInstance.hashCode()).isNotEqualTo(thirdInstance.hashCode());
-
-    }
 }
