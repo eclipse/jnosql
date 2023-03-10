@@ -662,6 +662,26 @@ public class DocumentCrudRepositoryProxyTest {
     }
 
     @Test
+    public void shouldFindByNameNot() {
+        Person ada = Person.builder()
+                .withAge(20).withName("Ada").build();
+
+        when(template.select(any(DocumentQuery.class)))
+                .thenReturn(Stream.of(ada));
+
+        personRepository.findByNameNot("Otavio");
+
+        ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
+        verify(template).select(captor.capture());
+        DocumentQuery query = captor.getValue();
+        DocumentCondition negate = query.condition().get();
+        assertEquals(Condition.NOT, negate.condition());
+        DocumentCondition condition = negate.document().get(DocumentCondition.class);
+        assertEquals(EQUALS, condition.condition());
+        assertEquals(Document.of("name", "Otavio"), condition.document());
+    }
+
+    @Test
     public void shouldFindByAgeNotGreaterThan() {
         Person ada = Person.builder()
                 .withAge(20).withName("Ada").build();
@@ -735,6 +755,8 @@ public class DocumentCrudRepositoryProxyTest {
         List<Person> findBySalary_CurrencyOrderByCurrency_Name(String currency);
 
         Person findByName(String name);
+
+        List<Person> findByNameNot(String name);
 
         List<Person> findByNameNotEquals(String name);
 
