@@ -385,8 +385,8 @@ public class GraphCrudRepositoryProxyTest {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "Otavio", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "Otavio", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
 
         List<Person> people = personRepository.findByNameNot("name");
         assertThat(people)
@@ -403,8 +403,8 @@ public class GraphCrudRepositoryProxyTest {
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
         graph.addVertex(T.label, "Person", "name", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "Otavio", "name", "age", 20);
-        graph.addVertex(T.label, "Person", "Otavio", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
 
         List<Person> people = personRepository.findByNameNotEquals("name");
         assertThat(people)
