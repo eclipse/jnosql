@@ -42,7 +42,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Using the proper methods to skip on GraphRepository implementation
 - Increase capability on map to improve scenario on Repository parser
 - Fix param analyzer on Gremlin Graph query
-
+- Fix method query by query when there is Not Equals
 
 
 == [1.0.0-b5] - 2022-12-22
