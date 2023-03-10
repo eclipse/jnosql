@@ -449,6 +449,12 @@ class SelectMethodQueryProviderTest {
         assertEquals(BooleanQueryValue.FALSE, condition.value());
     }
 
+    @ParameterizedTest(name = "Should parser the query {0}")
+    @ValueSource(strings = {"findByNameNot", "countByNameNot", "existsByNameNot"})
+    public void shouldReturnParserQuery35(String query) {
+        checkNotCondition(query, Condition.EQUALS, "name");
+    }
+
 
     private void checkOrderBy(String query, Direction direction, Direction direction2) {
         String entity = "entity";
