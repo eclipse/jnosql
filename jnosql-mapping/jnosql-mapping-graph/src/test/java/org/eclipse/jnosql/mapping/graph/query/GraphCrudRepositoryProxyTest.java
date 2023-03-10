@@ -55,6 +55,7 @@ import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -378,12 +379,51 @@ public class GraphCrudRepositoryProxyTest {
 
     }
 
+    @Test
+    public void shouldFindByNameNot() {
+
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
+
+        List<Person> people = personRepository.findByNameNot("name");
+        assertThat(people)
+                .isNotEmpty()
+                .hasSize(2)
+                .map(Person::getName)
+                .allMatch("Otavio"::equals);
+
+    }
+
+    @Test
+    public void shouldFindByNameNotEquals() {
+
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "name", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
+        graph.addVertex(T.label, "Person", "name", "Otavio", "age", 20);
+
+        List<Person> people = personRepository.findByNameNotEquals("name");
+        assertThat(people)
+                .isNotEmpty()
+                .hasSize(2)
+                .map(Person::getName)
+                .allMatch("Otavio"::equals);
+
+    }
 
     interface PersonRepository extends CrudRepository<Person, Long> {
 
         Person findByName(String name);
 
         void deleteByName(String name);
+
+        List<Person> findByNameNot(String name);
+
+        List<Person> findByNameNotEquals(String name);
 
         Optional<Person> findByAge(Integer age);
 

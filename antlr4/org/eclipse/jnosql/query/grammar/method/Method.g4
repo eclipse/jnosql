@@ -13,7 +13,7 @@ asc: 'Asc';
 desc: 'Desc';
 truth: variable 'True';
 untruth: variable 'False';
-eq: variable | variable not? 'Equals';
+eq: variable | variable not? 'Equals'| variable not;
 gt: variable not? 'GreaterThan';
 gte: variable not? 'GreaterThanEqual';
 lt: variable not? 'LessThan';

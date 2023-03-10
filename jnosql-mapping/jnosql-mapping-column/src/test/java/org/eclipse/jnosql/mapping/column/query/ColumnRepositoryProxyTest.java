@@ -698,6 +698,56 @@ public class ColumnRepositoryProxyTest {
         assertEquals("Poliana", column.get());
     }
 
+    @Test
+    public void shouldFindByNameNot() {
+
+        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+                .of(Person.builder().build()));
+
+        personRepository.findByNameNot("name");
+
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).singleResult(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.condition().get();
+        assertEquals(Condition.NOT, condition.condition());
+        assertEquals("Person", query.name());
+        ColumnCondition columnCondition = condition.column().get(ColumnCondition.class);
+        assertEquals(Condition.EQUALS, columnCondition.condition());
+        assertEquals(Column.of("name", "name"), columnCondition.column());
+
+        assertNotNull(personRepository.findByName("name"));
+        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+                .empty());
+
+        assertNull(personRepository.findByName("name"));
+    }
+
+    @Test
+    public void shouldFindByNameNotEquals() {
+
+        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+                .of(Person.builder().build()));
+
+        personRepository.findByNameNotEquals("name");
+
+        ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
+        verify(template).singleResult(captor.capture());
+        ColumnQuery query = captor.getValue();
+        ColumnCondition condition = query.condition().get();
+        assertEquals(Condition.NOT, condition.condition());
+        assertEquals("Person", query.name());
+        ColumnCondition columnCondition = condition.column().get(ColumnCondition.class);
+        assertEquals(Condition.EQUALS, columnCondition.condition());
+        assertEquals(Column.of("name", "name"), columnCondition.column());
+
+        assertNotNull(personRepository.findByName("name"));
+        when(template.singleResult(any(ColumnQuery.class))).thenReturn(Optional
+                .empty());
+
+        assertNull(personRepository.findByName("name"));
+    }
+
     interface PersonRepository extends PageableRepository<Person, Long> {
 
         List<Person> findByActiveTrue();
@@ -710,6 +760,10 @@ public class ColumnRepositoryProxyTest {
         List<Person> findBySalary_CurrencyOrderByCurrency_Name(String currency);
 
         Person findByName(String name);
+
+        Person findByNameNot(String name);
+
+        Person findByNameNotEquals(String name);
 
         void deleteByName(String name);
 
