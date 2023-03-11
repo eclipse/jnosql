@@ -38,6 +38,7 @@ public @interface DiscriminatorValue {
     /**
      * (Optional) The value that indicates that the
      * row is an entity of the annotated entity type.
+     * @return the discriminator Value
      */
     String value();
 }

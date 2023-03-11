@@ -32,6 +32,7 @@ public @interface DiscriminatorColumn {
     String DEFAULT_DISCRIMINATOR_COLUMN = "dtype";
     /**
      * (Optional) The name of column to be used for the discriminator.
+     * @return the column's name
      */
     String value() default DEFAULT_DISCRIMINATOR_COLUMN;
 }
