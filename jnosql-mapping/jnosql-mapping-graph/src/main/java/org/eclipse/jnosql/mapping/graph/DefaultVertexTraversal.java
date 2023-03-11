@@ -193,15 +193,15 @@ class DefaultVertexTraversal extends AbstractVertexTraversal implements VertexTr
     }
 
     @Override
-    public <T> Stream<T> getResult() {
+    public <T> Stream<T> result() {
         return flow.apply(supplier.get())
                 .toStream()
                 .map(converter::toEntity);
     }
 
     @Override
-    public <T> Optional<T> getSingleResult() {
-        final Stream<T> stream = getResult();
+    public <T> Optional<T> singleResult() {
+        final Stream<T> stream = result();
         final Iterator<T> iterator = stream.iterator();
 
         if (!iterator.hasNext()) {

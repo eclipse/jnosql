@@ -103,7 +103,7 @@ abstract class AbstractGraphRepository<T, K> implements PageableRepository<T, K>
         List<Object> entities = getTemplate().traversalVertex()
                 .hasLabel(metadata.type())
                 .skip(NoSQLPage.skip(pageable))
-                .limit(pageable.size()).getResult()
+                .limit(pageable.size()).result()
                 .collect(Collectors.toUnmodifiableList());
 
         return NoSQLPage.of(entities, pageable);

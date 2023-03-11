@@ -73,13 +73,13 @@ public interface EdgeTraversal extends EdgeConditionTraversal {
      * Concludes the traversal that returns a single {@link EdgeEntity} result
      * @return the EdgeEntity result otherwise {@link Optional#empty()}
      */
-    Optional<EdgeEntity> getSingleResult();
+    Optional<EdgeEntity> singleResult();
 
     /**
      * Concludes the traversal then returns the result as list.
      * @return the entities result
      */
-    Stream<EdgeEntity> getResult();
+    Stream<EdgeEntity> result();
 
 
     /**
