@@ -139,8 +139,8 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
     @Override
-    public Optional<EdgeEntity> getSingleResult() {
-        Stream<EdgeEntity> result = getResult();
+    public Optional<EdgeEntity> singleResult() {
+        Stream<EdgeEntity> result = result();
         final Iterator<EdgeEntity> iterator = result.iterator();
 
         if (!iterator.hasNext()) {
@@ -154,7 +154,7 @@ class DefaultEdgeTraversal extends AbstractEdgeTraversal implements EdgeTraversa
     }
 
     @Override
-    public Stream<EdgeEntity> getResult() {
+    public Stream<EdgeEntity> result() {
         return stream();
     }
 

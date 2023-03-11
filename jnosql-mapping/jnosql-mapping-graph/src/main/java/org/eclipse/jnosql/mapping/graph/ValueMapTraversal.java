@@ -53,14 +53,14 @@ public interface ValueMapTraversal {
      *
      * @return the entity result otherwise {@link Optional#empty()}
      */
-    Optional<Map<String, Object>> getSingleResult();
+    Optional<Map<String, Object>> singleResult();
 
     /**
      * Concludes the traversal then returns the result as list.
      *
      * @return the maps result
      */
-    List<Map<String, Object>> getResultList();
+    List<Map<String, Object>> resultList();
 
     /**
      * Map the traversal next to its reduction as a sum of the elements

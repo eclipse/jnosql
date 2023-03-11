@@ -61,8 +61,8 @@ class DefaultValueMapTraversal implements ValueMapTraversal {
     }
 
     @Override
-    public Optional<Map<String, Object>> getSingleResult() {
-        List<Map<String, Object>> result = getResultList();
+    public Optional<Map<String, Object>> singleResult() {
+        List<Map<String, Object>> result = resultList();
         if (result.isEmpty()) {
             return Optional.empty();
         }
@@ -73,7 +73,7 @@ class DefaultValueMapTraversal implements ValueMapTraversal {
     }
 
     @Override
-    public List<Map<String, Object>> getResultList() {
+    public List<Map<String, Object>> resultList() {
         return stream().collect(toList());
     }
 

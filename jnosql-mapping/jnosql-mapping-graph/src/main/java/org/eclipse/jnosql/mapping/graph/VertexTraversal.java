@@ -165,7 +165,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @param <T> the entity type
      * @return the entity result as {@link Stream}
      */
-    <T> Stream<T> getResult();
+    <T> Stream<T> result();
 
     /**
      * Concludes the traversal that returns a single result
@@ -173,7 +173,7 @@ public interface VertexTraversal extends VertexConditionTraversal {
      * @param <T> the type
      * @return the entity result otherwise {@link Optional#empty()}
      */
-    <T> Optional<T> getSingleResult();
+    <T> Optional<T> singleResult();
 
     /**
      * Maps to {@link EntityTree}
