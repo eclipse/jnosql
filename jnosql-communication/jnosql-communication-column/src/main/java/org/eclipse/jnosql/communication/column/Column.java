@@ -70,7 +70,7 @@ public interface Column extends Entry {
      * @throws NullPointerException when there is any null parameter
      * @see Columns
      */
-    public static <V> Column of(String name, V value) {
+    static <V> Column of(String name, V value) {
         Objects.requireNonNull(name, "name is required");
         Objects.requireNonNull(value, "value is required");
         return new DefaultColumn(name, getValue(value));

@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * This class can be either a regular or an abstract;
  * The table/column-family/document-collection will have a column for every attribute
  * of every class in the hierarchy.
- * The subclass will use the {@link jakarta.data.Entity} name from that class with this annotation.
+ * The subclass will use the {@link jakarta.nosql.Entity} name from that class with this annotation.
  *
  * <pre>
  *
