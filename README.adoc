@@ -694,6 +694,23 @@ We are very happy you are interested in helping us and there are plenty ways you
 
 - **Open a Pull Request:** If you feel like you can even make changes to our source code and suggest them, just check out our link:CONTRIBUTING.adoc[contributing guide] to learn about the development process, how to suggest bugfixes and improvements.
 
+Here are the badges of this project:
+[%autowidth,cols="a,a,a,a", frame=none, grid=none, role=stretch ]
+|===
+| image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=sqale_rating[ link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent, window=_blank, target=_blank]
+| image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=code_smells[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
+| image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=ncloc[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
+| image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=coverage[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
+| image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=sqale_index[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
+| image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=alert_status[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
+| image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=reliability_rating[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
+| image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=duplicated_lines_density[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
+| image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=vulnerabilities[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
+| image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=bugs[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
+| image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=security_rating[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
+|===
+
+
 == Migration
 
 This migration guide explains how to upgrade from Eclipse JNoSQL version 1.0.0-b6 to the latest version, taking into account two significant changes: upgrading to Jakarta EE 9 and reducing the scope of the Jakarta NoSQL specification to only run on the Mapping. The guide provides instructions on how to update package names and annotations to successfully migrate your Eclipse JNoSQL project.
