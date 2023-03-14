@@ -3,6 +3,8 @@
 
 == Introduction
 
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent)
+
 Eclipse JNoSQL is a compatible implementation of the https://jakarta.ee/specifications/nosql/[Jakarta NoSQL] and https://jakarta.ee/specifications/data/[Jakarta Data] specifications, a Java framework that streamlines the integration of Java applications with NoSQL databases.
 
 == Goals
