@@ -1,362 +1,309 @@
 /*
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * and Apache License v2.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
  *
- *  Copyright (c) 2022 Contributors to the Eclipse Foundation
- *   All rights reserved. This program and the accompanying materials
- *   are made available under the terms of the Eclipse Public License v1.0
- *   and Apache License v2.0 which accompanies this distribution.
- *   The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- *   and the Apache License v2.0 is available at http://www.opensource.org/licenses/apache2.0.php.
+ * You may elect to redistribute this code under either of these licenses.
  *
- *   You may elect to redistribute this code under either of these licenses.
+ * Contributors:
  *
- *   Contributors:
- *
- *   Otavio Santana
+ * Maximillian Arruda
  *
  */
+
 package org.eclipse.jnosql.communication.document;
 
-import org.eclipse.jnosql.communication.Condition;
 import jakarta.data.repository.Sort;
-import jakarta.data.repository.Direction;
-import org.eclipse.jnosql.communication.TypeReference;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.jnosql.communication.document.DocumentCondition.eq;
-import static org.eclipse.jnosql.communication.document.DocumentQuery.builder;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class DefaultDocumentQueryBuilderTest {
-    @Test
-    public void shouldReturnErrorWhenHasNullElementInSelect() {
-        assertThrows(NullPointerException.class, () -> builder("document", "document'", null));
+
+    private DefaultDocumentQueryBuilder builder;
+
+    private String newRandomDocument() {
+        return UUID.randomUUID().toString();
+    }
+
+    private static Sort newRandomSortRef() {
+        return Sort.asc(UUID.randomUUID().toString());
+    }
+
+    private String newRandomDocumentCollection() {
+        return UUID.randomUUID().toString();
+    }
+
+    private DocumentCondition newRandomDocumentCondition() {
+        return DocumentCondition.eq(UUID.randomUUID().toString().toString(), UUID.randomUUID().toString().toString());
+    }
+
+    @BeforeEach
+    void before() {
+        builder = newBuilder();
+    }
+
+    private DefaultDocumentQueryBuilder newBuilder() {
+        return new DefaultDocumentQueryBuilder();
     }
 
     @Test
-    public void shouldBuilder() {
-        String documentCollection = "documentCollection";
-        DocumentQuery query = builder().from(documentCollection).build();
-        assertTrue(query.documents().isEmpty());
-        assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.name());
+    void shouldReturnErrorWhenSelectIsCalledWithNullDocument() {
+        assertThrows(NullPointerException.class, () -> builder.select((String) null));
     }
 
     @Test
-    public void shouldSelectDocument() {
-        String documentCollection = "documentCollection";
-        DocumentQuery query = builder("document", "document2").from(documentCollection).build();
-        assertThat(query.documents()).contains("document", "document2");
-        assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.name());
+    void shouldAcceptToSelectOneValidDocument() {
+        assertSame(builder, builder.select(newRandomDocument()));
     }
 
     @Test
-    public void shouldReturnErrorWhenFromIsNull() {
-        assertThrows(NullPointerException.class, () -> builder().from(null));
-    }
-
-
-    @Test
-    public void shouldSelectOrderAsc() {
-        String documentCollection = "documentCollection";
-        DocumentQuery query = builder().from(documentCollection).sort(Sort.asc("name")).build();
-        assertTrue(query.documents().isEmpty());
-        assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.name());
-        assertThat(query.sorts()).contains(Sort.of("name", Direction.ASC, false));
+    void shouldAcceptToSelectAnEmptyArrayOfDocuments() {
+        assertSame(builder, builder.select(new String[]{}));
     }
 
     @Test
-    public void shouldSelectOrderDesc() {
-        String documentCollection = "documentCollection";
-        DocumentQuery query = builder().from(documentCollection).sort(Sort.desc("name")).build();
-        assertTrue(query.documents().isEmpty());
-        assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.name());
-        assertThat(query.sorts()).contains(Sort.of("name", Direction.DESC, false));
-    }
-
-
-    @Test
-    public void shouldReturnErrorSelectWhenOrderIsNull() {
-        assertThrows(NullPointerException.class,() -> {
-            String documentCollection = "documentCollection";
-            builder().from(documentCollection).sort((Sort) null);
-        });
+    void shouldReturnErrorWhenSelectIsCalledWithArrayOfDocumentsWithNullElement() {
+        assertThrows(NullPointerException.class, () -> builder.select(newRandomDocument(), null, newRandomDocument()));
     }
 
     @Test
-    public void shouldSelectLimit() {
-        String documentCollection = "documentCollection";
-        DocumentQuery query = builder().from(documentCollection).limit(10).build();
-        assertTrue(query.documents().isEmpty());
-        assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.name());
-        assertEquals(10L, query.limit());
+    void shouldAcceptToSelectAnNonEmptyArrayOfDocumentsWithoutNullElement() {
+        assertSame(builder, builder.select(newRandomDocument(), newRandomDocument()));
     }
 
     @Test
-    public void shouldReturnErrorWhenLimitIsNegative() {
-        String documentCollection = "documentCollection";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> builder().from(documentCollection).limit(-1));
+    void shouldReturnErrorWhenSortIsCalledWithNullSortRef() {
+        assertThrows(NullPointerException.class, () -> builder.sort((Sort) null));
     }
 
     @Test
-    public void shouldSelectSkip() {
-        String documentCollection = "documentCollection";
-        DocumentQuery query = builder().from(documentCollection).skip(10).build();
-        assertTrue(query.documents().isEmpty());
-        assertFalse(query.condition().isPresent());
-        assertEquals(documentCollection, query.name());
-        assertEquals(10L, query.skip());
+    void shouldAcceptToSortOneValidSortReference() {
+        assertSame(builder, builder.sort(newRandomSortRef()));
     }
 
     @Test
-    public void shouldReturnErrorWhenSkipIsNegative() {
-        String documentCollection = "documentCollection";
-        Assertions.assertThrows(IllegalArgumentException.class, () -> builder().from(documentCollection).skip(-1));
+    void shouldAcceptToSortAnEmptyArrayOfSortRef() {
+        assertSame(builder, builder.sort(new Sort[]{}));
     }
 
     @Test
-    public void shouldSelectWhereNameEq() {
-        String documentCollection = "documentCollection";
-        String name = "Ada Lovelace";
-
-        DocumentQuery query = builder().from(documentCollection)
-                .where(eq("name", name))
-                .build();
-        DocumentCondition condition = query.condition().get();
-
-        Document document = condition.document();
-
-        assertTrue(query.documents().isEmpty());
-        assertEquals(documentCollection, query.name());
-        assertEquals(Condition.EQUALS, condition.condition());
-        assertEquals("name", document.name());
-        assertEquals(name, document.get());
-
+    void shouldReturnErrorWhenSortIsCalledWithArrayOfSortRefWithNullElement() {
+        assertThrows(NullPointerException.class, () -> builder.sort(newRandomSortRef(), null, newRandomSortRef()));
     }
 
     @Test
-    public void shouldSelectWhereNameLike() {
-        String documentCollection = "documentCollection";
-        String name = "Ada Lovelace";
-        DocumentQuery query = builder().from(documentCollection)
-                .where(DocumentCondition.like("name", name))
-                .build();
-        DocumentCondition condition = query.condition().get();
-
-        Document document = condition.document();
-
-        assertTrue(query.documents().isEmpty());
-        assertEquals(documentCollection, query.name());
-        assertEquals(Condition.LIKE, condition.condition());
-        assertEquals("name", document.name());
-        assertEquals(name, document.get());
+    void shouldAcceptToSortAnNonEmptyArrayOfSortRefWithoutNullElement() {
+        assertSame(builder, builder.sort(newRandomSortRef(), newRandomSortRef()));
     }
 
     @Test
-    public void shouldSelectWhereNameGt() {
-        String documentCollection = "documentCollection";
-        Number value = 10;
-
-        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.gt("name", 10))
-                .build();
-
-        DocumentCondition condition = query.condition().get();
-
-        Document document = condition.document();
-
-        assertTrue(query.documents().isEmpty());
-        assertEquals(documentCollection, query.name());
-        assertEquals(Condition.GREATER_THAN, condition.condition());
-        assertEquals("name", document.name());
-        assertEquals(value, document.get());
+    void shouldReturnErrorWhenFromIsCalledWithNullDocumentCollection() {
+        assertThrows(NullPointerException.class, () -> builder.from(null));
     }
 
     @Test
-    public void shouldSelectWhereNameGte() {
-        String documentCollection = "documentCollection";
-        Number value = 10;
-        DocumentCondition gteName = DocumentCondition.gte("name", value);
-        DocumentQuery query = builder().from(documentCollection).where(gteName).build();
-        DocumentCondition condition = query.condition().get();
-
-        Document document = condition.document();
-
-        assertTrue(query.documents().isEmpty());
-        assertEquals(documentCollection, query.name());
-        assertEquals(Condition.GREATER_EQUALS_THAN, condition.condition());
-        assertEquals("name", document.name());
-        assertEquals(value, document.get());
+    void shouldAcceptToCallFromMethodWithValidDocumentCollection() {
+        assertSame(builder, builder.from(newRandomDocumentCollection()));
     }
 
     @Test
-    public void shouldSelectWhereNameLt() {
-        String documentCollection = "documentCollection";
-        Number value = 10;
-
-        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.lt("name", value))
-                .build();
-        DocumentCondition condition = query.condition().get();
-
-        Document document = condition.document();
-
-        assertTrue(query.documents().isEmpty());
-        assertEquals(documentCollection, query.name());
-        assertEquals(Condition.LESSER_THAN, condition.condition());
-        assertEquals("name", document.name());
-        assertEquals(value, document.get());
+    void shouldReturnErrorWhenWhereIsCalledWithNullDocumentCondition() {
+        assertThrows(NullPointerException.class, () -> builder.where(null));
     }
 
     @Test
-    public void shouldSelectWhereNameLte() {
-        String documentCollection = "documentCollection";
-        Number value = 10;
-        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.lte("name", value))
-                .build();
-        DocumentCondition condition = query.condition().get();
-
-        Document document = condition.document();
-
-        assertTrue(query.documents().isEmpty());
-        assertEquals(documentCollection, query.name());
-        assertEquals(Condition.LESSER_EQUALS_THAN, condition.condition());
-        assertEquals("name", document.name());
-        assertEquals(value, document.get());
-    }
-
-    @Test
-    public void shouldSelectWhereNameBetween() {
-        String documentCollection = "documentCollection";
-        Number valueA = 10;
-        Number valueB = 20;
-
-        DocumentQuery query = builder().from(documentCollection)
-                .where(DocumentCondition.between("name", Arrays.asList(valueA, valueB)))
-                .build();
-        DocumentCondition condition = query.condition().get();
-
-        Document document = condition.document();
-
-        assertTrue(query.documents().isEmpty());
-        assertEquals(documentCollection, query.name());
-        assertEquals(Condition.BETWEEN, condition.condition());
-        assertEquals("name", document.name());
-        assertThat(document.get(new TypeReference<List<Number>>() {
-        })).contains(10, 20);
-    }
-
-    @Test
-    public void shouldSelectWhereNameNot() {
-        String documentCollection = "documentCollection";
-        String name = "Ada Lovelace";
-
-        DocumentQuery query = builder().from(documentCollection).where(eq("name", name).negate())
-                .build();
-        DocumentCondition condition = query.condition().get();
-
-        Document column = condition.document();
-        DocumentCondition negate = column.get(DocumentCondition.class);
-        assertTrue(query.documents().isEmpty());
-        assertEquals(documentCollection, query.name());
-        assertEquals(Condition.NOT, condition.condition());
-        assertEquals(Condition.EQUALS, negate.condition());
-        assertEquals("name", negate.document().name());
-        assertEquals(name, negate.document().get());
+    void shouldAcceptToCallWhereMethodWithValidDocumentCondition() {
+        assertSame(builder, builder.where(newRandomDocumentCondition()));
     }
 
 
     @Test
-    public void shouldSelectWhereNameAnd() {
-        String documentCollection = "documentCollection";
-        String name = "Ada Lovelace";
-        DocumentCondition nameEqualsAda = eq("name", name);
-        DocumentCondition ageOlderTen = DocumentCondition.gt("age", 10);
-        DocumentQuery query = builder().from(documentCollection)
-                .where(DocumentCondition.and(nameEqualsAda, ageOlderTen))
-                .build();
-        DocumentCondition condition = query.condition().get();
-
-        Document document = condition.document();
-        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
-        });
-        assertEquals(Condition.AND, condition.condition());
-        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Document.of("name", name)),
-                DocumentCondition.gt(Document.of("age", 10)));
+    void shouldReturnErrorWhenSkipIsCalledWithArgumentLessThanZero() {
+        assertThrows(IllegalArgumentException.class, () -> builder.skip(-1));
     }
 
     @Test
-    public void shouldSelectWhereNameOr() {
-        String documentCollection = "documentCollection";
-        String name = "Ada Lovelace";
-        DocumentCondition nameEqualsAda = eq("name", name);
-        DocumentCondition ageOlderTen = DocumentCondition.gt("age", 10);
-        DocumentQuery query = builder().from(documentCollection).where(DocumentCondition.or(nameEqualsAda, ageOlderTen))
-                .build();
-        DocumentCondition condition = query.condition().get();
-
-        Document document = condition.document();
-        List<DocumentCondition> conditions = document.get(new TypeReference<>() {
-        });
-        assertEquals(Condition.OR, condition.condition());
-        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Document.of("name", name)),
-                DocumentCondition.gt(Document.of("age", 10)));
+    void shouldAcceptToCallSkipWithArgumentGreaterThanZero() {
+        assertSame(builder, builder.skip(1));
     }
 
+    @Test
+    void shouldReturnErrorWhenLimitIsCalledWithArgumentLessThanZero() {
+        assertThrows(IllegalArgumentException.class, () -> builder.limit(-1));
+    }
 
     @Test
-    public void shouldSelectNegate() {
-        String collection = "collection";
-        DocumentCondition nameNotEqualsLucas = eq("name", "Lucas").negate();
-        DocumentQuery query = builder().from(collection)
-                .where(nameNotEqualsLucas).build();
+    void shouldAcceptToCallLimitWithArgumentGreaterThanZero() {
+        assertSame(builder, builder.limit(1));
+    }
 
-        DocumentCondition condition = query.condition().orElseThrow(RuntimeException::new);
-        assertEquals(collection, query.name());
-        Document column = condition.document();
-        List<DocumentCondition> conditions = column.get(new TypeReference<>() {
-        });
+    @Test
+    void shouldReturnErrorWhenBuildIsCalledWithoutDocumentCollectionIsNotProvidedPreviously() {
+        assertThrows(IllegalArgumentException.class, () -> builder.build());
+    }
 
-        assertEquals(Condition.NOT, condition.condition());
-        org.assertj.core.api.Assertions.assertThat(conditions).contains(eq(Document.of("name", "Lucas")));
+    @Test
+    void shouldAcceptToBuildWhenDocumentCollectionWasDefinedPreviously() {
+        DocumentQuery documentQuery = builder.from(newRandomDocumentCollection()).build();
+        assertNotNull(documentQuery);
+    }
+
+    @Test
+    void shouldReturnErrorWhenGetResultIsCalledWithNullDocumentManagerReference() {
+        assertThrows(NullPointerException.class, () -> builder.from(newRandomDocumentCollection()).getResult(null));
+    }
+
+    @Test
+    void shouldAcceptToCallGetResultWithAValidDocumentManager() {
+
+        DocumentManager manager = mock(DocumentManager.class);
+        Stream<DocumentEntity> expectedEntities = Stream.empty();
+        when(manager.select(any(DocumentQuery.class))).thenReturn(expectedEntities);
+        String collection = newRandomDocumentCollection();
+        Stream<DocumentEntity> entities = builder.from(collection).getResult(manager);
+        assertSame(expectedEntities, entities);
+        verify(manager, atLeastOnce()).select(any(DocumentQuery.class));
+
+    }
+
+    @Test
+    void shouldReturnErrorWhenGetSingleResultIsCalledWithNullDocumentManagerReference() {
+        assertThrows(NullPointerException.class, () -> builder.from(newRandomDocumentCollection()).getSingleResult(null));
+    }
+
+    @Test
+    void shouldAcceptToCallGetSingleResultWithAValidDocumentManager() {
+
+        DocumentManager manager = mock(DocumentManager.class);
+        Optional<DocumentEntity> expectedResult = Optional.empty();
+        when(manager.singleResult(any(DocumentQuery.class))).thenReturn(expectedResult);
+        String collection = newRandomDocumentCollection();
+        Optional<DocumentEntity> result = builder.from(collection).getSingleResult(manager);
+        assertSame(expectedResult, result);
+        verify(manager, atLeastOnce()).singleResult(any(DocumentQuery.class));
 
     }
 
 
     @Test
-    public void shouldExecuteManager() {
-        DocumentManager manager = Mockito.mock(DocumentManager.class);
-        ArgumentCaptor<DefaultDocumentQuery> queryCaptor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
-        String collection = "collection";
-        Stream<DocumentEntity> entities = builder().from(collection).getResult(manager);
-        Mockito.verify(manager).select(queryCaptor.capture());
-        checkQuery(queryCaptor, collection);
+    void shouldBeEqualsToYourself() {
+        assertTrue(builder.equals(builder));
+    }
+
+
+    @Test
+    void shouldBeNotEqualsToAnyOtherInstanceType() {
+        assertFalse(builder.equals(new Object()));
     }
 
     @Test
-    public void shouldExecuteSingleResultManager() {
-        DocumentManager manager = Mockito.mock(DocumentManager.class);
-        ArgumentCaptor<DefaultDocumentQuery> queryCaptor = ArgumentCaptor.forClass(DefaultDocumentQuery.class);
-        String collection = "collection";
-        Optional<DocumentEntity> entities = builder().from(collection).getSingleResult(manager);
-        Mockito.verify(manager).singleResult(queryCaptor.capture());
-        checkQuery(queryCaptor, collection);
+    void shouldBeNotEqualsToAnotherBuilderWithDifferentAttributes() {
+        var anotherBuilder = newBuilder()
+                .select(newRandomDocument())
+                .from(newRandomDocumentCollection())
+                .sort(newRandomSortRef())
+                .skip(1)
+                .limit(2);
+
+        assertFalse(builder.equals(anotherBuilder));
     }
 
-    private void checkQuery(ArgumentCaptor<DefaultDocumentQuery> queryCaptor, String collection) {
-        DocumentQuery query = queryCaptor.getValue();
-        assertTrue(query.documents().isEmpty());
-        assertFalse(query.condition().isPresent());
-        assertEquals(collection, query.name());
+    @Test
+    void shouldBeEqualsToAnotherBuilderInstanceWithSameAttributes() {
+        String document = newRandomDocument();
+        String documentCollection = newRandomDocumentCollection();
+        Sort sort = newRandomSortRef();
+        int skip = 1;
+        int limit = 2;
+
+        var builder1 = newBuilder()
+                .select(document)
+                .from(documentCollection)
+                .sort(sort)
+                .skip(skip)
+                .limit(limit);
+
+        var builder2 = newBuilder()
+                .select(document)
+                .from(documentCollection)
+                .sort(sort)
+                .skip(skip)
+                .limit(limit);
+
+        assertNotSame(builder1,builder2);
+
+        assertTrue(builder1.equals(builder2));
     }
+
+    @Test
+    void shouldHashCodeBeDifferentWhenAttributesAreDifferent() {
+
+        var builder1 = newBuilder()
+                .select(newRandomDocument());
+
+        var builder2 = newBuilder()
+                .select(newRandomDocument());
+
+        assertNotEquals(builder1.hashCode(),builder2.hashCode());
+
+    }
+
+    @Test
+    void shouldHashCodeBeEqualsWhenAttributesAreTheSame() {
+
+        String document = newRandomDocument();
+        String documentCollection = newRandomDocumentCollection();
+        Sort sort = newRandomSortRef();
+        int skip = 1;
+        int limit = 2;
+
+        var builder1 = newBuilder();
+        var builder2 = newBuilder();
+
+        assertEquals(builder1.hashCode(), builder2.hashCode());
+
+
+        builder1.select(document);
+        builder2.select(document);
+        assertEquals(builder1.hashCode(), builder2.hashCode());
+
+        builder1.from(documentCollection);
+        builder2.from(documentCollection);
+        assertEquals(builder1.hashCode(), builder2.hashCode());
+
+        builder1.sort(sort);
+        builder2.sort(sort);
+        assertEquals(builder1.hashCode(), builder2.hashCode());
+
+        builder1.skip(skip);
+        builder2.skip(skip);
+        assertEquals(builder1.hashCode(), builder2.hashCode());
+
+        builder1.limit(limit);
+        builder2.limit(limit);
+        assertEquals(builder1.hashCode(), builder2.hashCode());
+
+    }
+
 }
