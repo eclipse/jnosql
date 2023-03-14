@@ -306,7 +306,4 @@ class DefaultDocumentQueryBuilderTest {
 
     }
 
-    @Test
-    void testToString() {
-    }
 }
