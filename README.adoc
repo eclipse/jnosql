@@ -1,5 +1,4 @@
 = Eclipse JNoSQL
-:toc: auto
 
 [%autowidth,cols="a,a,a,a", frame=none, grid=none, role=center, align=center]
 |===
@@ -15,6 +14,8 @@
 | image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=bugs[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
 | image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=security_rating[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
 |===
+
+:toc: auto
 
 == Introduction
 
