@@ -35,7 +35,7 @@ import static org.eclipse.jnosql.communication.document.DocumentCondition.eq;
 import static org.eclipse.jnosql.communication.document.DocumentQuery.builder;
 import static org.junit.jupiter.api.Assertions.*;
 
-class DefaultDocumentQueryBuilderTest {
+class DocumentQueryBuilderTest {
     @Test
     public void shouldReturnErrorWhenHasNullElementInSelect() {
         assertThrows(NullPointerException.class, () -> builder("document", "document'", null));
