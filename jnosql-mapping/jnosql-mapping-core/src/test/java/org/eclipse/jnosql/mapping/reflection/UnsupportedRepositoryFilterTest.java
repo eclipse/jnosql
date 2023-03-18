@@ -42,12 +42,15 @@ class UnsupportedRepositoryFilterTest {
         assertThat(predicate.test(PersonRepository.class)).isFalse();
         assertThat(predicate.test(People.class)).isFalse();
         assertThat(predicate.test(Persons.class)).isFalse();
+
     }
 
     @Test
     public void shouldReturnTrueWhenHasSupportRepository() {
         assertThat(predicate.test(NoSQLVendor.class)).isTrue();
         assertThat(predicate.test(Server.class)).isTrue();
+        assertThat(predicate.test(StringSupplier.class)).isTrue();
+        assertThat(predicate.test(Repository.class)).isTrue();
     }
 
 
@@ -63,8 +66,13 @@ class UnsupportedRepositoryFilterTest {
 
     }
 
+    private interface StringSupplier extends Supplier<String> {
 
+    }
 
+    private interface Repository {
+
+    }
 
     private class Computer {
 
