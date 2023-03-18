@@ -38,16 +38,16 @@ class UnsupportedRepositoryFilterTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenHasSupportRepository() {
-        assertThat(predicate.test(PersonRepository.class)).isTrue();
-        assertThat(predicate.test(People.class)).isTrue();
-        assertThat(predicate.test(Persons.class)).isTrue();
+    public void shouldReturnFalseWhenHasSupportRepository() {
+        assertThat(predicate.test(PersonRepository.class)).isFalse();
+        assertThat(predicate.test(People.class)).isFalse();
+        assertThat(predicate.test(Persons.class)).isFalse();
     }
 
     @Test
-    public void shouldReturnFalseWhenHasSupportRepository() {
-        assertThat(predicate.test(NoSQLVendor.class)).isFalse();
-        assertThat(predicate.test(Server.class)).isFalse();
+    public void shouldReturnTrueWhenHasSupportRepository() {
+        assertThat(predicate.test(NoSQLVendor.class)).isTrue();
+        assertThat(predicate.test(Server.class)).isTrue();
     }
 
 
