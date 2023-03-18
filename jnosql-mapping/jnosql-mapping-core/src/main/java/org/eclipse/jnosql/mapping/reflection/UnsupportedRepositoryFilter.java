@@ -14,14 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.function.Predicate;
 
+/**
+ *A filter to remove any Repository that Eclipse JNoSQL does not support. It will check the first parameter
+ * on the repository, and if the entity has not had an unsupported annotation,
+ * it will return false and true to supported Repository.
+ */
 enum UnsupportedRepositoryFilter implements Predicate<Class<?>> {
 
     INSTANCE;
 
     @Override
     public boolean test(Class<?> type) {
+        Type[] interfaces = type.getGenericInterfaces();
+        ParameterizedType param = (ParameterizedType) interfaces[0];
+        Type[] arguments = param.getActualTypeArguments();
+        Class<?> entity = (Class<?>) arguments[0];
         return false;
     }
 }
