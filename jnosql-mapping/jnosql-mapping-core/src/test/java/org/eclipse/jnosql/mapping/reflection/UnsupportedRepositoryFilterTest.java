@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import jakarta.data.repository.PageableRepository;
+import jakarta.nosql.Column;
+import jakarta.nosql.Id;
 import org.eclipse.jnosql.mapping.test.entities.NoSQLVendor;
 import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
@@ -45,6 +47,7 @@ class UnsupportedRepositoryFilterTest {
     @Test
     public void shouldReturnFalseWhenHasSupportRepository() {
         assertThat(predicate.test(NoSQLVendor.class)).isFalse();
+        assertThat(predicate.test(Server.class)).isFalse();
     }
 
 
@@ -54,5 +57,21 @@ class UnsupportedRepositoryFilterTest {
 
     private interface Persons extends Supplier<String>, PageableRepository<Person, Long> {
 
+    }
+
+    private interface Server extends PageableRepository<Computer, String> {
+
+    }
+
+
+
+
+    private class Computer {
+
+        @Id
+        private String id;
+
+        @Column
+        private String name;
     }
 }
