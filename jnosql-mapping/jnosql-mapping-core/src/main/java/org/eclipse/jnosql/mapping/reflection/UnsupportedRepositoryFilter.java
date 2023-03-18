@@ -36,13 +36,13 @@ enum UnsupportedRepositoryFilter implements Predicate<Class<?>> {
         ParameterizedType param = (ParameterizedType) interfaces[0];
         Type[] arguments = param.getActualTypeArguments();
         if (arguments.length == 0) {
-            return false;
+            return true;
         }
         Type argument = arguments[0];
         if (argument instanceof Class<?> entity) {
-            return entity.getAnnotation(Entity.class) != null;
+            return entity.getAnnotation(Entity.class) == null;
         }
 
-        return false;
+        return true;
     }
 }
