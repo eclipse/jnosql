@@ -14,11 +14,13 @@
  */
 package org.eclipse.jnosql.mapping.test.entities;
 
+import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 
 import java.util.Objects;
 
 
+@Entity
 public class User {
 
     @Id

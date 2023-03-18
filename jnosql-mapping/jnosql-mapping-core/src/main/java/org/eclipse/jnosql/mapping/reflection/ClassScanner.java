@@ -59,13 +59,14 @@ public enum ClassScanner {
             this.entities.addAll(result.getClassesWithAnnotation(Entity.class).loadClasses());
             embeddables.addAll(result.getClassesWithAnnotation(Embeddable.class).loadClasses());
             this.repositores.addAll(result.getClassesWithAnnotation(Repository.class)
-                    .getInterfaces().loadClasses(DataRepository.class));
+                    .getInterfaces()
+                    .loadClasses(DataRepository.class));
+            this.repositores.removeIf(UnsupportedRepositoryFilter.INSTANCE);
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
                 , entities.size(), embeddables.size(), repositores.size()));
 
     }
-
 
     /**
      * Returns the classes that that has the {@link Entity} annotation
@@ -111,6 +112,7 @@ public enum ClassScanner {
 
     /**
      * Returns the repositories that extends directly from {@link PageableRepository} and {@link CrudRepository}
+     *
      * @return the standard repositories
      */
     public Set<Class<?>> repositoriesStandard() {
