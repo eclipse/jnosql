@@ -15,7 +15,10 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfoList;
+import io.github.classgraph.ClassTypeSignature;
 import io.github.classgraph.ScanResult;
+import io.github.classgraph.TypeParameter;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.PageableRepository;
@@ -59,11 +62,22 @@ public enum ClassScanner {
             this.entities.addAll(result.getClassesWithAnnotation(Entity.class).loadClasses());
             embeddables.addAll(result.getClassesWithAnnotation(Embeddable.class).loadClasses());
             this.repositores.addAll(result.getClassesWithAnnotation(Repository.class)
-                    .getInterfaces().loadClasses(DataRepository.class));
+                    .getInterfaces()
+                    .filter(isEntitySupported())
+                    .loadClasses(DataRepository.class));
+
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
                 , entities.size(), embeddables.size(), repositores.size()));
 
+    }
+
+    private static ClassInfoList.ClassInfoFilter isEntitySupported() {
+        return c -> {
+            ClassTypeSignature signature = c.getTypeSignature();
+            List<TypeParameter> typeParameters = signature.getTypeParameters();
+            return true;
+        };
     }
 
 
@@ -111,6 +125,7 @@ public enum ClassScanner {
 
     /**
      * Returns the repositories that extends directly from {@link PageableRepository} and {@link CrudRepository}
+     *
      * @return the standard repositories
      */
     public Set<Class<?>> repositoriesStandard() {
