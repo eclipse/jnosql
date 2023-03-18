@@ -16,9 +16,12 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import java.util.function.Predicate;
 
-class UnsupportedRepositoryFilter implements Predicate<Class<?>> {
+enum UnsupportedRepositoryFilter implements Predicate<Class<?>> {
+
+    INSTANCE;
+
     @Override
-    public boolean test(Class<?> aClass) {
+    public boolean test(Class<?> type) {
         return false;
     }
 }
