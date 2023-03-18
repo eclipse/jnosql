@@ -14,6 +14,7 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import org.eclipse.jnosql.mapping.test.entities.NoSQLVendor;
 import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,5 +35,10 @@ class UnsupportedRepositoryFilterTest {
     @Test
     public void shouldReturnTrueWhenHasSupportRepository() {
         assertThat(predicate.test(PersonRepository.class)).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseWhenHasSupportRepository() {
+        assertThat(predicate.test(NoSQLVendor.class)).isFalse();
     }
 }
