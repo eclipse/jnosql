@@ -51,11 +51,11 @@ class UnsupportedRepositoryFilterTest {
     }
 
 
-    private interface People extends PageableRepository<Person, Long>, Supplier<String> {
+    private interface People extends PageableRepository<Person, Long> {
 
     }
 
-    private interface Persons extends Supplier<String>, PageableRepository<Person, Long> {
+    private interface Persons extends PageableRepository<Person, Long> {
 
     }
 
