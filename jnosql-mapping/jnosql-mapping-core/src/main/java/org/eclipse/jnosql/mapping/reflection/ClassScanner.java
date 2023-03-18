@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -67,13 +68,12 @@ public enum ClassScanner {
             this.repositores.addAll(result.getClassesWithAnnotation(Repository.class)
                     .getInterfaces()
                     .loadClasses(DataRepository.class));
-
+            this.repositores.removeIf(UnsupportedRepositoryFilter.INSTANCE);
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
                 , entities.size(), embeddables.size(), repositores.size()));
 
     }
-
 
     /**
      * Returns the classes that that has the {@link Entity} annotation
