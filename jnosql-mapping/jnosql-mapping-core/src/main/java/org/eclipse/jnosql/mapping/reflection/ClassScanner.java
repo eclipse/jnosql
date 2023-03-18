@@ -16,8 +16,11 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfoList;
+import io.github.classgraph.ClassRefTypeSignature;
 import io.github.classgraph.ClassTypeSignature;
+import io.github.classgraph.ReferenceTypeSignature;
 import io.github.classgraph.ScanResult;
+import io.github.classgraph.TypeArgument;
 import io.github.classgraph.TypeParameter;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
@@ -63,21 +66,12 @@ public enum ClassScanner {
             embeddables.addAll(result.getClassesWithAnnotation(Embeddable.class).loadClasses());
             this.repositores.addAll(result.getClassesWithAnnotation(Repository.class)
                     .getInterfaces()
-                    .filter(isEntitySupported())
                     .loadClasses(DataRepository.class));
 
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
                 , entities.size(), embeddables.size(), repositores.size()));
 
-    }
-
-    private static ClassInfoList.ClassInfoFilter isEntitySupported() {
-        return c -> {
-            ClassTypeSignature signature = c.getTypeSignature();
-            List<TypeParameter> typeParameters = signature.getTypeParameters();
-            return true;
-        };
     }
 
 
