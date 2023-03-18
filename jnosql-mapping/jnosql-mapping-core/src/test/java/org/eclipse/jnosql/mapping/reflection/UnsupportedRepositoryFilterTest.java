@@ -14,12 +14,15 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
+import jakarta.data.repository.PageableRepository;
 import org.eclipse.jnosql.mapping.test.entities.NoSQLVendor;
+import org.eclipse.jnosql.mapping.test.entities.Person;
 import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,10 +38,21 @@ class UnsupportedRepositoryFilterTest {
     @Test
     public void shouldReturnTrueWhenHasSupportRepository() {
         assertThat(predicate.test(PersonRepository.class)).isTrue();
+        assertThat(predicate.test(People.class)).isTrue();
+        assertThat(predicate.test(Persons.class)).isTrue();
     }
 
     @Test
     public void shouldReturnFalseWhenHasSupportRepository() {
         assertThat(predicate.test(NoSQLVendor.class)).isFalse();
+    }
+
+
+    private interface People extends PageableRepository<Person, Long>, Supplier<String> {
+
+    }
+
+    private interface Persons extends Supplier<String>, PageableRepository<Person, Long> {
+
     }
 }
