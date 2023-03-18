@@ -14,8 +14,25 @@
  */
 package org.eclipse.jnosql.mapping.reflection;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.eclipse.jnosql.mapping.test.entities.PersonRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.function.Predicate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class UnsupportedRepositoryFilterTest {
 
+    private Predicate<Class<?>> predicate;
+
+    @BeforeEach
+    public void setUp() {
+        this.predicate = UnsupportedRepositoryFilter.INSTANCE;
+    }
+
+    @Test
+    public void shouldReturnTrueWhenHasSupportRepository() {
+        assertThat(predicate.test(PersonRepository.class)).isTrue();
+    }
 }
