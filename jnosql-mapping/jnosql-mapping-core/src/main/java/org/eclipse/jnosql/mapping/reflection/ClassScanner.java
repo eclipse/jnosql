@@ -15,13 +15,7 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfoList;
-import io.github.classgraph.ClassRefTypeSignature;
-import io.github.classgraph.ClassTypeSignature;
-import io.github.classgraph.ReferenceTypeSignature;
 import io.github.classgraph.ScanResult;
-import io.github.classgraph.TypeArgument;
-import io.github.classgraph.TypeParameter;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.PageableRepository;
@@ -34,7 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
