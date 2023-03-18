@@ -33,6 +33,9 @@ enum UnsupportedRepositoryFilter implements Predicate<Class<?>> {
     @Override
     public boolean test(Class<?> type) {
         Type[] interfaces = type.getGenericInterfaces();
+        if (interfaces.length == 0) {
+            return true;
+        }
         ParameterizedType param = (ParameterizedType) interfaces[0];
         Type[] arguments = param.getActualTypeArguments();
         if (arguments.length == 0) {
