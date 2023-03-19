@@ -15,7 +15,6 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import jakarta.data.repository.DataRepository;
 import jakarta.nosql.Entity;
 
 import java.lang.reflect.ParameterizedType;
@@ -35,8 +34,8 @@ enum UnsupportedRepositoryFilter implements Predicate<Class<?>> {
     @Override
     public boolean test(Class<?> type) {
         Optional<Class<?>> entity = getEntity(type);
-        return entity.map(c -> c.getAnnotation(Entity.class) != null)
-                .orElse(false);
+        return entity.map(c -> c.getAnnotation(Entity.class) == null)
+                .orElse(true);
     }
 
     private Optional<Class<?>> getEntity(Class<?> repository) {
