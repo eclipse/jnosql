@@ -15,10 +15,12 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
+import jakarta.data.repository.DataRepository;
 import jakarta.nosql.Entity;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
@@ -32,20 +34,25 @@ enum UnsupportedRepositoryFilter implements Predicate<Class<?>> {
 
     @Override
     public boolean test(Class<?> type) {
-        Type[] interfaces = type.getGenericInterfaces();
+        Optional<Class<?>> entity = getEntity(type);
+        return entity.map(c -> c.getAnnotation(Entity.class) != null)
+                .orElse(false);
+    }
+
+    private Optional<Class<?>> getEntity(Class<?> repository) {
+        Type[] interfaces = repository.getGenericInterfaces();
         if (interfaces.length == 0) {
-            return true;
+            return Optional.empty();
         }
         ParameterizedType param = (ParameterizedType) interfaces[0];
         Type[] arguments = param.getActualTypeArguments();
         if (arguments.length == 0) {
-            return true;
+            return Optional.empty();
         }
         Type argument = arguments[0];
         if (argument instanceof Class<?> entity) {
-            return entity.getAnnotation(Entity.class) == null;
+            return Optional.of(entity);
         }
-
-        return true;
+        return Optional.empty();
     }
 }
