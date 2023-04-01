@@ -17,10 +17,16 @@ package org.eclipse.jnosql.mapping.reflection;
 
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
+import io.github.classgraph.ClassRefTypeSignature;
+import io.github.classgraph.ClassTypeSignature;
+import io.github.classgraph.TypeArgument;
+import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Repository;
 import jakarta.nosql.Entity;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -29,7 +35,7 @@ import java.util.function.Predicate;
  * on the repository, and if the entity has not had an unsupported annotation,
  * it will return false and true to supported Repository.
  */
-enum RepositoryFilter implements Predicate<Class<?>>, ClassInfoList.ClassInfoFilter {
+enum RepositoryFilter implements Predicate<Class<?>> {
 
     INSTANCE;
 
@@ -40,10 +46,6 @@ enum RepositoryFilter implements Predicate<Class<?>>, ClassInfoList.ClassInfoFil
                 .orElse(true);
     }
 
-    @Override
-    public boolean accept(ClassInfo info) {
-        return false;
-    }
 
     private Optional<Class<?>> getEntity(Class<?> repository) {
         Type[] interfaces = repository.getGenericInterfaces();
