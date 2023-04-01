@@ -15,6 +15,8 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ClassInfoList;
 import jakarta.nosql.Entity;
 
 import java.lang.reflect.ParameterizedType;
@@ -27,7 +29,7 @@ import java.util.function.Predicate;
  * on the repository, and if the entity has not had an unsupported annotation,
  * it will return false and true to supported Repository.
  */
-enum RepositoryFilter implements Predicate<Class<?>> {
+enum RepositoryFilter implements Predicate<Class<?>>, ClassInfoList.ClassInfoFilter {
 
     INSTANCE;
 
@@ -36,6 +38,11 @@ enum RepositoryFilter implements Predicate<Class<?>> {
         Optional<Class<?>> entity = getEntity(type);
         return entity.map(c -> c.getAnnotation(Entity.class) == null)
                 .orElse(true);
+    }
+
+    @Override
+    public boolean accept(ClassInfo info) {
+        return false;
     }
 
     private Optional<Class<?>> getEntity(Class<?> repository) {
@@ -54,4 +61,6 @@ enum RepositoryFilter implements Predicate<Class<?>> {
         }
         return Optional.empty();
     }
+
+
 }

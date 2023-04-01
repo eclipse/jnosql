@@ -69,6 +69,7 @@ public enum ClassScanner {
     private static List<Class<DataRepository>> loadRepositories(ScanResult scan) {
         return scan.getClassesWithAnnotation(Repository.class)
                 .getInterfaces()
+                .filter(RepositoryFilter.INSTANCE)
                 .loadClasses(DataRepository.class);
     }
 
