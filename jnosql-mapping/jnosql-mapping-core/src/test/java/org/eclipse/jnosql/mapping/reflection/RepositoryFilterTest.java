@@ -28,13 +28,13 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UnsupportedRepositoryFilterTest {
+class RepositoryFilterTest {
 
     private Predicate<Class<?>> predicate;
 
     @BeforeEach
     public void setUp() {
-        this.predicate = UnsupportedRepositoryFilter.INSTANCE;
+        this.predicate = RepositoryFilter.INSTANCE;
     }
 
     @Test

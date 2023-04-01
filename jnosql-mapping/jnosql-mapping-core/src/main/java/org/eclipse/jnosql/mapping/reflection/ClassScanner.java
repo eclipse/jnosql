@@ -61,7 +61,7 @@ public enum ClassScanner {
             this.repositores.addAll(result.getClassesWithAnnotation(Repository.class)
                     .getInterfaces()
                     .loadClasses(DataRepository.class));
-            this.repositores.removeIf(UnsupportedRepositoryFilter.INSTANCE);
+            this.repositores.removeIf(RepositoryFilter.INSTANCE);
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
                 , entities.size(), embeddables.size(), repositores.size()));
