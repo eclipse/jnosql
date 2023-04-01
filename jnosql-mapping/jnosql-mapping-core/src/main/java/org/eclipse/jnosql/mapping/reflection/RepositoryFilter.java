@@ -23,20 +23,21 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
- * A filter to remove any Repository that Eclipse JNoSQL does not support. It will check the first parameter
+ * A filter validate Repository that Eclipse JNoSQL supports. It will check the first parameter
  * on the repository, and if the entity has not had an unsupported annotation,
  * it will return false and true to supported Repository.
  */
-enum UnsupportedRepositoryFilter implements Predicate<Class<?>> {
+enum RepositoryFilter implements Predicate<Class<?>> {
 
     INSTANCE;
 
     @Override
     public boolean test(Class<?> type) {
         Optional<Class<?>> entity = getEntity(type);
-        return entity.map(c -> c.getAnnotation(Entity.class) == null)
-                .orElse(true);
+        return entity.map(c -> c.getAnnotation(Entity.class))
+                .isPresent();
     }
+
 
     private Optional<Class<?>> getEntity(Class<?> repository) {
         Type[] interfaces = repository.getGenericInterfaces();
@@ -54,4 +55,6 @@ enum UnsupportedRepositoryFilter implements Predicate<Class<?>> {
         }
         return Optional.empty();
     }
+
+
 }

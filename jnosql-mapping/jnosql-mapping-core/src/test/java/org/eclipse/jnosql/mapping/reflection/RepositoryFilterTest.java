@@ -28,29 +28,29 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UnsupportedRepositoryFilterTest {
+class RepositoryFilterTest {
 
     private Predicate<Class<?>> predicate;
 
     @BeforeEach
     public void setUp() {
-        this.predicate = UnsupportedRepositoryFilter.INSTANCE;
-    }
-
-    @Test
-    public void shouldReturnFalseWhenHasSupportRepository() {
-        assertThat(predicate.test(PersonRepository.class)).isFalse();
-        assertThat(predicate.test(People.class)).isFalse();
-        assertThat(predicate.test(Persons.class)).isFalse();
-
+        this.predicate = RepositoryFilter.INSTANCE;
     }
 
     @Test
     public void shouldReturnTrueWhenHasSupportRepository() {
-        assertThat(predicate.test(NoSQLVendor.class)).isTrue();
-        assertThat(predicate.test(Server.class)).isTrue();
-        assertThat(predicate.test(StringSupplier.class)).isTrue();
-        assertThat(predicate.test(Repository.class)).isTrue();
+        assertThat(predicate.test(PersonRepository.class)).isTrue();
+        assertThat(predicate.test(People.class)).isTrue();
+        assertThat(predicate.test(Persons.class)).isTrue();
+
+    }
+
+    @Test
+    public void shouldReturnFalseWhenHasNotSupportRepository() {
+        assertThat(predicate.test(NoSQLVendor.class)).isFalse();
+        assertThat(predicate.test(Server.class)).isFalse();
+        assertThat(predicate.test(StringSupplier.class)).isFalse();
+        assertThat(predicate.test(Repository.class)).isFalse();
     }
 
 
