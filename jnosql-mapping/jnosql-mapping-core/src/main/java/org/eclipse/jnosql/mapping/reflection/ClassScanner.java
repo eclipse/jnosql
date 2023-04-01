@@ -56,16 +56,28 @@ public enum ClassScanner {
         Logger logger = Logger.getLogger(ClassScanner.class.getName());
         logger.fine("Starting scan class to find entities, embeddable and repositories.");
         try (ScanResult result = new ClassGraph().enableAllInfo().scan()) {
-            this.entities.addAll(result.getClassesWithAnnotation(Entity.class).loadClasses());
-            embeddables.addAll(result.getClassesWithAnnotation(Embeddable.class).loadClasses());
-            this.repositores.addAll(result.getClassesWithAnnotation(Repository.class)
-                    .getInterfaces()
-                    .loadClasses(DataRepository.class));
+            this.entities.addAll(loadEntities(result));
+            embeddables.addAll(loadEmbeddable(result));
+            this.repositores.addAll(loadRepositories(result));
             this.repositores.removeIf(RepositoryFilter.INSTANCE);
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
                 , entities.size(), embeddables.size(), repositores.size()));
 
+    }
+
+    private static List<Class<DataRepository>> loadRepositories(ScanResult scan) {
+        return scan.getClassesWithAnnotation(Repository.class)
+                .getInterfaces()
+                .loadClasses(DataRepository.class);
+    }
+
+    private static List<Class<?>> loadEmbeddable(ScanResult scan) {
+        return scan.getClassesWithAnnotation(Embeddable.class).loadClasses();
+    }
+
+    private static List<Class<?>> loadEntities(ScanResult scan) {
+        return scan.getClassesWithAnnotation(Entity.class).loadClasses();
     }
 
     /**
