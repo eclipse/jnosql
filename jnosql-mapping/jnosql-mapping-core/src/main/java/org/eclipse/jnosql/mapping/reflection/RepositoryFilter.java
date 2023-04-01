@@ -15,18 +15,10 @@
 package org.eclipse.jnosql.mapping.reflection;
 
 
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ClassInfoList;
-import io.github.classgraph.ClassRefTypeSignature;
-import io.github.classgraph.ClassTypeSignature;
-import io.github.classgraph.TypeArgument;
-import jakarta.data.repository.DataRepository;
-import jakarta.data.repository.Repository;
 import jakarta.nosql.Entity;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -42,8 +34,8 @@ enum RepositoryFilter implements Predicate<Class<?>> {
     @Override
     public boolean test(Class<?> type) {
         Optional<Class<?>> entity = getEntity(type);
-        return entity.map(c -> c.getAnnotation(Entity.class) == null)
-                .orElse(true);
+        return entity.map(c -> c.getAnnotation(Entity.class))
+                .isPresent();
     }
 
 
