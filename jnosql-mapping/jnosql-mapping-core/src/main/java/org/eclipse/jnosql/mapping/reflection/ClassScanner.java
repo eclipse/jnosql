@@ -59,7 +59,6 @@ public enum ClassScanner {
             this.entities.addAll(loadEntities(result));
             embeddables.addAll(loadEmbeddable(result));
             this.repositores.addAll(loadRepositories(result));
-            this.repositores.removeIf(RepositoryFilter.INSTANCE);
         }
         logger.fine(String.format("Finished the class scan with entities %d, embeddables %d and repositories: %d"
                 , entities.size(), embeddables.size(), repositores.size()));
@@ -69,8 +68,9 @@ public enum ClassScanner {
     private static List<Class<DataRepository>> loadRepositories(ScanResult scan) {
         return scan.getClassesWithAnnotation(Repository.class)
                 .getInterfaces()
-                .filter(RepositoryFilter.INSTANCE)
-                .loadClasses(DataRepository.class);
+                .loadClasses(DataRepository.class)
+                .stream().filter(RepositoryFilter.INSTANCE)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private static List<Class<?>> loadEmbeddable(ScanResult scan) {
