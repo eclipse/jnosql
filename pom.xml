@@ -58,7 +58,7 @@
     </developers>
     <properties>
         <apache.rat.version>0.12</apache.rat.version>
-        <jacoco.maven.version>0.8.8</jacoco.maven.version>
+        <jacoco.maven.version>0.8.9-SNAPSHOT</jacoco.maven.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
         <jakarta.enterprise.cdi.version>4.0.1</jakarta.enterprise.cdi.version>
         <jakarta.json.bind.version>3.0.0</jakarta.json.bind.version>
@@ -600,4 +600,19 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <!-- Needed to download jacoco 0.8.9 snapshot. Once it is officially released, we can remove this  -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>oss.sonatype.org-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>
