@@ -155,7 +155,7 @@ Jakarta NoSQL provides a Key-Value template to explore the specific behavior of 
 </dependency>
 ----
 
-Furthermore, check for a Key-Value communications driver. You can find some implementations in the JNoSQL https://github.com/eclipse/jnosql-communication-driver[Communications Driver API].
+Furthermore, check for a Key-Value databases. You can find some implementations in the https://github.com/eclipse/jnosql-databases[JNoSQL Databases].
 
 [source,java]
 ----
@@ -247,7 +247,7 @@ Jakarta NoSQL provides a Column Family template to explore the specific behavior
 </dependency>
 ----
 
-Furthermore, check for a Column Family communications driver. You can find some implementations in the JNoSQL https://github.com/eclipse/jnosql-communication-driver[Communications Driver API].
+Furthermore, check for a Column Family databases. You can find some implementations in the https://github.com/eclipse/jnosql-databases[JNoSQL Databases].
 
 [source,java]
 ----
@@ -342,7 +342,7 @@ Jakarta NoSQL provides a Document template to explore the specific behavior of t
 </dependency>
 ----
 
-Furthermore, check for a Document communications driver. You can find some implementations in the JNoSQL https://github.com/eclipse/jnosql-communication-driver[Communications Driver API].
+Furthermore, check for a Document databases. You can find some implementations in the https://github.com/eclipse/jnosql-databases[JNoSQL Databases].
 
 [source,java]
 ----
