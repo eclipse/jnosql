@@ -36,7 +36,6 @@
         <module>jnosql-mapping-document</module>
         <module>jnosql-mapping-column</module>
         <module>jnosql-mapping-key-value</module>
-        <module>jnosql-mapping-validation</module>
     </modules>
 
     <properties>

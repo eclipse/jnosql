@@ -8,6 +8,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+=== Removed
+
+- Removed the JNoSQL Bean Validation module
+
 === Fixed
 
 - Create a filter to ignore unsupported annotations on repositories interfaces.
