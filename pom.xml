@@ -58,7 +58,7 @@
     </developers>
     <properties>
         <apache.rat.version>0.12</apache.rat.version>
-        <jacoco.maven.version>0.8.8</jacoco.maven.version>
+        <jacoco.maven.version>0.8.9</jacoco.maven.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
         <jakarta.enterprise.cdi.version>4.0.1</jakarta.enterprise.cdi.version>
         <jakarta.json.bind.version>3.0.0</jakarta.json.bind.version>
