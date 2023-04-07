@@ -76,3 +76,28 @@ Try to explain the scenario to us by following these tips:
 - **Context:** explain the conditions which led you to write this issue.
 - **Problem or idea:** the context should lead to something, an idea or a problem that you’re facing.
 - **Solution or next step:** this where you move forward. You can engage others (request feedback), assign somebody else to the issue, or simply leave it for further investigation, but you absolutely need to propose a next step towards solving the issue.
+
+== Contribute to the repo
+
+To contribute to the repo one must adhere to the following:
+
+**Types of Commits:** 
+
+- **fix:** Any commit that patches a bug anywhere in the codebase
+- **feat:** Any commit that introduces a new feature or focuses on enhancing the scope of exisiting features 
+- **breaking changes:** Any commit that has a footer "BREAKING CHANGE", or appends a ! after the type/scope, introduces a breaking API change (correlating with MAJOR in Semantic Versioning). A BREAKING CHANGE can be part of commits of any type.
+- **other than fix and feat:** Any commit that consists of the following keywords: build:, chore:, ci:, docs:, style:, refactor:, perf:, test:, and others. For other keywords refer to https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional[@commitlint/config-conventional] (based on the Angular convention)  
+- **other footers:**<description> may be provided and follow a convention similar to https://git-scm.com/docs/git-interpret-trailers[git trailer format]
+
+**Examples of commits**
+
+- **Regular Commit Message:** This may be used for either fix or feat and can be wriiten as "fix:<message>" or "feat:<message>"
+- **Commit with breaking change**: Example: A new feature being introduced as a breaking change can be written as "feat!:<message>", this can also simply be written as a regular feat with the "BREAKING CHANGE" appended to it at the end of the commit 
+- **Specific breaking change:**: Example: A breaking change introduced with a new feature somewhere in the api can be written as "feat(api)!:<message>"
+- **Changing the docs:** "docs:<message>"
+- **Regular commit message with specificaton:** A new feature introduced in the api can be written as "feat(api):<message>"
+
+**Formatting Commit messages**
+
+All commit messages must clearly state the change that takes place. Multiple paragraphs or bullet points explaining the changes in detail are encouraged. The message must contain the link to the issue that it is directed towards. 
+If there are other people working on a particular issue which you wanted to work on as well, consider woring together. If the commit influences a visual change, screenshots are encouraged 
