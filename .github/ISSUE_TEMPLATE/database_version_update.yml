@@ -1,0 +1,39 @@
+name: Support a new database version 🆕
+description: Support a new database version
+labels: 'enhancement'
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### New database version support 🆕
+        🔍  Before opening a new issue please search existing issues at https://github.com/eclipse/jnosql/issues
+        🤔  To make it easier for us to help you, please include as much useful information as possible.
+
+  - type: input
+    id: database_name
+    attributes:
+      label: Database name
+      description: The name of the database that needs support for new versions
+    validations:
+      required: true
+
+  - type: input
+    id: database_version
+    attributes:
+      label: Database version
+      description: What is the unsupported version of this database
+    validations:
+      required: true
+
+  - type: textarea
+    id: what_fails
+    attributes:
+      label: Any operation fails?
+      description: Tell us what operations fail when you use JNoSQL with this new database version
+
+  - type: textarea
+    id: whats_missing
+    attributes:
+      label: Any operation is missing?
+      description: Tell us what operations this new database version supports that are missing in JNoSQL
