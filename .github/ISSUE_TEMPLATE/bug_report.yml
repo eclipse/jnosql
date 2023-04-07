@@ -13,7 +13,17 @@ body:
         🤔  To make it easier for us to help you, please include as much useful information as possible.
 
         Please test using the latest JNoSQL release to make sure your issue has not already been fixed: https://github.com/eclipse/jnosql/releases
-
+  - type: dropdown
+    id: project
+    attributes:
+      label: Which JNoSQL project the issue refers to?
+      description: Please tell us which JNoSQL project this issue refers to
+      options:
+        - "JNoSQL (Core)"
+        - "JNoSQL Databases"
+        - "JNoSQL Extensions"
+    validations:
+      required: true
   - type: textarea
     id: bug_description
     validations:

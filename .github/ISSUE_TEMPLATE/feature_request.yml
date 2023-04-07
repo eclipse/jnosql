@@ -9,7 +9,17 @@ body:
         ### Requesting a new feature 💡
         🔍  Before opening a new issue please search existing issues at https://github.com/eclipse/jnosql/issues
         🤔  To make it easier for us to help you, please include as much useful information as possible.
-
+  - type: dropdown
+    id: project
+    attributes:
+      label: Which JNoSQL project the issue refers to?
+      description: Please tell us which JNoSQL project this issue refers to
+      options:
+        - "JNoSQL (Core)"
+        - "JNoSQL Databases"
+        - "JNoSQL Extensions"
+    validations:
+      required: true
   - type: textarea
     id: use_case
     attributes:
