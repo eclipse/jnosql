@@ -11,7 +11,7 @@ Migrating to the next version of Eclipse JNoSQL is a straightforward process. Th
 
 3. Add the jnosql-databases repository dependency to your project. You can do this by adding the appropriate dependency declaration to your build file or by downloading the repository and adding it to your project's classpath.
 
-4. Check the `README` file of jnosql-database for the new dependency to the database target. This step is essential as it will help you understand how to use the new repository dependency to interact with your target database. The README file will provide you with detailed instructions on how to use the repository dependency to perform database operations.
+4. Check the https://github.com/eclipse/jnosql-databases/blob/main/README.adoc[README] file of https://github.com/eclipse/jnosql-databases/blob/main/[jnosql-database] for the new dependency to the database target. This step is essential as it will help you understand how to use the new repository dependency to interact with your target database. The README file will provide you with detailed instructions on how to use the repository dependency to perform database operations.
 
 5. Modify your code to use the new repository dependency. Once you have updated your project and added the new dependency, you need to modify your code to use it. This will involve updating your database access code to use the new repository dependency instead of the Eclipse JNoSQL driver.
 
