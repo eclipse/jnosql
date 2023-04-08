@@ -1,4 +1,5 @@
 = Contributing to Eclipse JNoSQL
+:toc: auto
 
 Thanks for your interest in this project.
 
@@ -35,6 +36,41 @@ Contributor Agreement (ECA) on file.
 
 For more information, please see the Eclipse Committer Handbook:
 https://www.eclipse.org/projects/handbook/#resources-commit
+
+=== Developer Certificate of Origin - DCO
+
+This is a security layer for the project and for the developers. It is mandatory.
+
+Follow one of these two methods to add DCO to your commits:
+
+==== 1. Command line
+
+Follow the steps:
+**Step 1:** Configure your local git environment adding the same name and e-mail configured at your GitHub account. It helps to sign commits manually during reviews and suggestions.
+
+[source, Bash]
+----
+git config --global user.name “Name”
+git config --global user.email “email@domain.com.br”
+----
+
+**Step 2:** Add the Signed-off-by line with the `'-s'` flag in the git commit command:
+
+[source, Bash]
+----
+$ git commit -s -m "This is my commit message"
+----
+
+==== 2. GitHub website
+
+You can also manually sign your commits during GitHub reviews and suggestions, follow the steps below:
+
+**Step 1:** When the commit changes box opens, manually type or paste your signature in the comment box, see the example:
+
+[source, Bash]
+----
+Signed-off-by: Name < e-mail address >
+----
 
 == Contact
 
