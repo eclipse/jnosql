@@ -136,4 +136,4 @@ To contribute to the repo one must adhere to the following:
 **Formatting Commit messages**
 
 All commit messages must clearly state the change that takes place. Multiple paragraphs or bullet points explaining the changes in detail are encouraged. The message must contain the link to the issue that it is directed towards. 
-If there are other people working on a particular issue which you wanted to work on as well, consider woring together. If the commit influences a visual change, screenshots are encouraged 
+If there are other people working on a particular issue which you wanted to work on as well, consider working together. If the commit influences a visual change, screenshots are encouraged 
