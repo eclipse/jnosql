@@ -12,44 +12,45 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class CharacterReaderTest {
+class CharacterReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new CharacterReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new CharacterReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(Character.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(Character.class));
-        assertFalse(valueReader.test(AtomicBoolean.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertThat(valueReader.test(AtomicBoolean.class)).isFalse();
     }
 
     @Test
-    public void shouldConvert() {
-        Character character = 'o';
-        assertEquals(character, valueReader.read(Character.class, character));
-        assertEquals(Character.valueOf((char) 10), valueReader.read(Character.class, 10.00));
-        assertEquals(Character.valueOf('1'), valueReader.read(Character.class, "10"));
-        assertEquals(Character.valueOf(Character.MIN_VALUE), valueReader.read(Character.class, ""));
+    @DisplayName("Should be able to convert the value to Character")
+    void shouldConvert() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(Character.class, 'o')).as("char conversion").isEqualTo('o');
+            softly.assertThat(valueReader.read(Character.class, 10.00)).as("Integer conversion").isEqualTo(Character.valueOf((char) 10));
+            softly.assertThat(valueReader.read(Character.class, "10")).as("char conversion").isEqualTo(Character.valueOf('1'));
+            softly.assertThat(valueReader.read(Character.class, "")).as("Character conversion")
+                    .isEqualTo(Character.valueOf(Character.MIN_VALUE));
+        });
     }
-
-
 }

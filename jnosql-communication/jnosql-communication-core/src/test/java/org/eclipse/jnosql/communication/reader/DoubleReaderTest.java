@@ -12,44 +12,48 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class DoubleReaderTest {
+class DoubleReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new DoubleReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new DoubleReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(Double.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(Double.class));
-        assertFalse(valueReader.test(AtomicBoolean.class));
-        assertFalse(valueReader.test(Boolean.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateInCompatibility() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.test(AtomicBoolean.class)).as("AtomicBoolean is not compatible").isFalse();
+            softly.assertThat(valueReader.test(Boolean.class)).as("Boolean is not compatible").isFalse();
+        });
     }
 
     @Test
-    public void shouldConvert() {
-        Double number = 10D;
-        assertEquals(number, valueReader.read(Double.class, number));
-        assertEquals(Double.valueOf(10D), valueReader.read(Double.class, 10.00));
-        assertEquals(Double.valueOf(10D), valueReader.read(Double.class, "10"));
+    @DisplayName("Should be able to convert the value to Character")
+    void shouldConvert() {
+        Double doubleValue = 10D;
+
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(Double.class, doubleValue)).as("Double conversion").isEqualTo(doubleValue);
+            softly.assertThat(valueReader.read(Number.class, 10.00)).as("Number conversion").isEqualTo(doubleValue);
+            softly.assertThat(valueReader.read(Double.class, "10")).as("String conversion").isEqualTo(doubleValue);
+        });
     }
-
-
 }

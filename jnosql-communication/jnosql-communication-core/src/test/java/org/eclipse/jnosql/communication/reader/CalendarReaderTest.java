@@ -12,45 +12,49 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-public class CalendarReaderTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-    private ValueReader valueReader;
+class CalendarReaderTest {
 
-    @BeforeEach
-    public void init() {
-        valueReader = new CalendarReader();
+    private final ValueReader valueReader = new CalendarReader();
+
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(Calendar.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(Calendar.class));
-        assertFalse(valueReader.test(String.class));
-        assertFalse(valueReader.test(Long.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.test(String.class)).as("String is not compatible").isFalse();
+            softly.assertThat(valueReader.test(Long.class)).as("Long is not compatible").isFalse();
+        });
     }
 
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert the value to Calendar")
+    void shouldConvert() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2010, 10, 9);
+        calendar.set(2010, Calendar.OCTOBER, 9);
 
-        assertEquals(calendar, valueReader.read(Calendar.class, calendar));
-        assertEquals(calendar, valueReader.read(Calendar.class, calendar.getTimeInMillis()));
-        assertEquals(calendar, valueReader.read(Calendar.class, calendar.getTime()));
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(Calendar.class, calendar)).as("Calendar conversion").isEqualTo(calendar);
+            softly.assertThat(valueReader.read(Calendar.class, calendar.getTimeInMillis())).as("Long conversion").isEqualTo(calendar);
+            softly.assertThat(valueReader.read(Calendar.class, calendar.getTime())).as("int conversion").isEqualTo(calendar);
+        });
     }
-
-
 }

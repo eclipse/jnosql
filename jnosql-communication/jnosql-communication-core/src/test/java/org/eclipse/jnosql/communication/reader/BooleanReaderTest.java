@@ -12,62 +12,103 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class BooleanReaderTest {
+class BooleanReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new BooleanReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new BooleanReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.test(AtomicBoolean.class)).as("AtomicBoolean is compatible").isTrue();
+            softly.assertThat(valueReader.test(Boolean.class)).as("Boolean is compatible").isTrue();
+        });
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(AtomicBoolean.class));
-        assertTrue(valueReader.test(Boolean.class));
-        assertFalse(valueReader.test(Number.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertThat(valueReader.test(Number.class)).isFalse();
     }
 
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert the AtomicBoolean for 'true' value returns")
+    void shouldConvertAtomicBooleanExpectingTrue() {
         AtomicBoolean atomicBooleanTrue = new AtomicBoolean(true);
+
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(AtomicBoolean.class, atomicBooleanTrue)).as("AtomicBoolean conversion as true")
+                    .isEqualTo(atomicBooleanTrue);
+
+            softly.assertThat(valueReader.read(AtomicBoolean.class, 10).get()).as("Integer conversion as true")
+                    .isEqualTo(atomicBooleanTrue.get());
+
+            softly.assertThat(valueReader.read(AtomicBoolean.class, -1).get()).as("Integer with negative value conversion as true")
+                    .isEqualTo(atomicBooleanTrue.get());
+
+            softly.assertThat(valueReader.read(AtomicBoolean.class, "true").get()).as("String with 'true' value conversion as true")
+                    .isEqualTo(atomicBooleanTrue.get());
+
+            softly.assertThat(valueReader.read(AtomicBoolean.class, true).get()).as("boolean with 'true' value conversion as true")
+                    .isEqualTo(atomicBooleanTrue.get());
+        });
+    }
+
+    @Test
+    @DisplayName("Should be able to convert the AtomicBoolean for 'false' value returns")
+    void shouldConvertAtomicBooleanExpectingFalse() {
         AtomicBoolean atomicBooleanFalse = new AtomicBoolean(false);
 
-        assertEquals(atomicBooleanTrue, valueReader.read(AtomicBoolean.class, atomicBooleanTrue));
-        assertEquals(atomicBooleanTrue.get(), valueReader.read(AtomicBoolean.class, 10).get());
-        assertEquals(atomicBooleanTrue.get(), valueReader.read(AtomicBoolean.class, -1).get());
-        assertEquals(atomicBooleanFalse.get(), valueReader.read(AtomicBoolean.class, 0).get());
-        assertEquals(atomicBooleanTrue.get(), valueReader.read(AtomicBoolean.class, "true").get());
-        assertEquals(atomicBooleanFalse.get(), valueReader.read(AtomicBoolean.class, "false").get());
-        assertEquals(atomicBooleanTrue.get(), valueReader.read(AtomicBoolean.class, true).get());
-        assertEquals(atomicBooleanFalse.get(), valueReader.read(AtomicBoolean.class, false).get());
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(AtomicBoolean.class, 0).get()).as("Integer conversion as false")
+                    .isEqualTo(atomicBooleanFalse.get());
 
+            softly.assertThat(valueReader.read(AtomicBoolean.class, "false").get()).as("String with negative value conversion as false")
+                    .isEqualTo(atomicBooleanFalse.get());
 
-        assertEquals(Boolean.TRUE, valueReader.read(Boolean.class, atomicBooleanTrue));
-        assertEquals(Boolean.TRUE, valueReader.read(Boolean.class, 10));
-        assertEquals(Boolean.TRUE, valueReader.read(Boolean.class, -1));
-        assertEquals(Boolean.FALSE, valueReader.read(Boolean.class, 0));
-        assertEquals(Boolean.TRUE, valueReader.read(Boolean.class, "true"));
-        assertEquals(Boolean.FALSE, valueReader.read(Boolean.class, "false"));
-        assertEquals(Boolean.TRUE, valueReader.read(Boolean.class, true));
-        assertEquals(Boolean.FALSE, valueReader.read(Boolean.class, false));
+            softly.assertThat(valueReader.read(AtomicBoolean.class, false).get()).as("boolean with 'true' value conversion as false")
+                    .isEqualTo(atomicBooleanFalse.get());
 
+        });
     }
 
+    @Test
+    @DisplayName("Should be able to convert the value to the Boolean object for 'true' returns")
+    void shouldConvertBooleanExpectingTrue() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(Boolean.class, new AtomicBoolean(true))).as("AtomicBoolean conversion as true").isEqualTo(Boolean.TRUE);
+            softly.assertThat(valueReader.read(Boolean.class, 10)).as("Integer conversion as true").isEqualTo(Boolean.TRUE);
+            softly.assertThat(valueReader.read(Boolean.class, -1)).as("Integer with negative value conversion as true").isEqualTo(Boolean.TRUE);
+            softly.assertThat(valueReader.read(Boolean.class, "true")).as("String with 'true' value conversion as true").isEqualTo(Boolean.TRUE);
+            softly.assertThat(valueReader.read(Boolean.class, true)).as("boolean with 'true' value conversion as true").isEqualTo(Boolean.TRUE);
 
+            softly.assertThat(valueReader.read(Boolean.class, 0)).as("Integer conversion is false").isEqualTo(Boolean.FALSE);
+            softly.assertThat(valueReader.read(Boolean.class, "false")).as("String with 'false' value conversion as false").isEqualTo(Boolean.FALSE);
+            softly.assertThat(valueReader.read(Boolean.class, false)).as("boolean with 'false' value conversion as false").isEqualTo(Boolean.FALSE);
+        });
+    }
+
+    @Test
+    @DisplayName("Should be able to convert the value to the Boolean object for 'false' returns")
+    void shouldConvertBooleanExpectingFalse() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(Boolean.class, 0)).as("Integer conversion as false").isEqualTo(Boolean.FALSE);
+            softly.assertThat(valueReader.read(Boolean.class, "false")).as("String conversion as false").isEqualTo(Boolean.FALSE);
+            softly.assertThat(valueReader.read(Boolean.class, false)).as("boolean conversion as false").isEqualTo(Boolean.FALSE);
+        });
+    }
 }

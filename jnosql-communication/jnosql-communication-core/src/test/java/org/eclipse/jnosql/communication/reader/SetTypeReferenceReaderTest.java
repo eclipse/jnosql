@@ -12,68 +12,105 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.TypeReferenceReader;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static java.util.Collections.singleton;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-public class SetTypeReferenceReaderTest {
+class SetTypeReferenceReaderTest {
 
     private final TypeReferenceReader referenceReader = new SetTypeReferenceReader();
 
-    @Test
-    public void shouldBeCompatible() {
-
-        assertTrue(referenceReader.test(new TypeReference<Set<String>>(){}));
-        assertTrue(referenceReader.test(new TypeReference<Set<Long>>(){}));
-
+    @DisplayName("Should be compatible")
+    @ParameterizedTest(name = "compatible {0}")
+    @MethodSource("compatibleTypeReferences")
+    void shouldBeCompatible(TypeReference<?> type) {
+        assertThat(referenceReader.test(type)).isTrue();
     }
 
-
-    @Test
-    public void shouldNotBeCompatible() {
-        assertFalse(referenceReader.test(new TypeReference<String>(){}));
-        assertFalse(referenceReader.test(new TypeReference<List<String>>(){}));
-        assertFalse(referenceReader.test(new TypeReference<List<List<String>>>(){}));
-        assertFalse(referenceReader.test(new TypeReference<Queue<String>>(){}));
-        assertFalse(referenceReader.test(new TypeReference<Map<Integer, String>>(){}));
-    }
-
-
-    @Test
-    public void shouldConvert() {
-        assertEquals(singleton("123"), referenceReader.convert(new TypeReference<List<String>>(){}, "123"));
-        assertEquals(singleton(123L), referenceReader.convert(new TypeReference<List<Long>>(){}, "123"));
+    @DisplayName("Should be incompatible")
+    @ParameterizedTest(name = "compatible {0}")
+    @MethodSource("incompatibleTypeReferences")
+    void shouldNotBeCompatible(TypeReference<?> type) {
+        assertThat(referenceReader.test(type)).isFalse();
     }
 
     @Test
-    public void shouldConvertAndBeMutable() {
+    @DisplayName("Should be able to convert")
+    void shouldConvert() {
+        assertSoftly(softly -> {
+            softly.assertThat(referenceReader.convert(new TypeReference<HashSet<String>>() {
+                    }, Set.of("123")))
+                    .as("TypeReference<HashSet<String>> conversion").isEqualTo(singleton("123"));
+
+            softly.assertThat(referenceReader.convert(new TypeReference<HashSet<Long>>() {
+                    }, Set.of("123")))
+                    .as("TypeReference<HashSet<Long>> conversion").isEqualTo(singleton(123L));
+        });
+    }
+
+    @Test
+    @DisplayName("Should be able to convert and mutable")
+    void shouldConvertAndBeMutable() {
         Set<String> strings = referenceReader.convert(new TypeReference<>() {
         }, "123");
         strings.add("456");
-        Assertions.assertEquals(2, strings.size());
+
+        assertThat(strings).hasSize(2).contains("123", "456");
     }
 
     @Test
-    public void shouldConvertAndBeMutable2() {
+    @DisplayName("Should be able to convert and mutable an Array value")
+    void shouldConvertAndBeMutable2() {
         Set<String> strings = referenceReader.convert(new TypeReference<>() {
         }, Arrays.asList("123", "32"));
         strings.add("456");
-        Assertions.assertEquals(3, strings.size());
+
+        assertThat(strings).hasSize(3).contains("123", "456", "32");
+    }
+
+    static Stream<Arguments> compatibleTypeReferences() {
+        return Stream.of(
+                arguments(new TypeReference<Set<String>>() {
+                }),
+                arguments(new TypeReference<Set<Long>>() {
+                })
+        );
+    }
+
+    static Stream<Arguments> incompatibleTypeReferences() {
+        return Stream.of(
+                arguments(new TypeReference<String>() {
+                }),
+                arguments(new TypeReference<List<String>>() {
+                }),
+                arguments(new TypeReference<List<List<String>>>() {
+                }),
+                arguments(new TypeReference<Queue<String>>() {
+                }),
+                arguments(new TypeReference<Map<Integer, String>>() {
+                })
+        );
     }
 }

@@ -12,14 +12,18 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.writer;
 
 import org.eclipse.jnosql.communication.ValueWriter;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,81 +32,44 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.time.ZonedDateTime;
 import java.time.temporal.Temporal;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-public class TemporalWriterTest {
+class TemporalWriterTest {
 
+    private final ValueWriter<Temporal, String> valueWriter = new TemporalValueWriter();
 
-    private ValueWriter<Temporal, String> valueWriter;
-
-    @BeforeEach
-    public void setUp() {
-        valueWriter = new TemporalValueWriter();
+    @ParameterizedTest(name = "must be compatible to {0}")
+    @DisplayName("Should check for compatibility")
+    @ValueSource(classes = {Temporal.class, LocalDate.class, LocalDateTime.class, LocalTime.class, Year.class, YearMonth.class, ZonedDateTime.class})
+    void shouldVerifyCompatibility(Class<?> supportedClass) {
+        assertThat(valueWriter.test(supportedClass)).isTrue();
     }
 
     @Test
-    public void shouldVerifyCompatibility() {
-        assertTrue(valueWriter.test(Temporal.class));
-        assertTrue(valueWriter.test(LocalDate.class));
-        assertTrue(valueWriter.test(LocalDateTime.class));
-        assertTrue(valueWriter.test(LocalTime.class));
-        assertTrue(valueWriter.test(Year.class));
-        assertTrue(valueWriter.test(YearMonth.class));
-        assertTrue(valueWriter.test(ZonedDateTime.class));
-        assertFalse(valueWriter.test(Boolean.class));
-
+    @DisplayName("Should check for incompatibility")
+    void shouldBeNotCompatible() {
+        assertThat(valueWriter.test(Boolean.class)).isFalse();
     }
 
-    @Test
-    public void shouldConvertLocalDate() {
-        LocalDate now = LocalDate.now();
-        String result = valueWriter.write(now);
-        assertEquals(now.toString(), result);
-        assertEquals(now, LocalDate.parse(result));
+    @ParameterizedTest(name = "must convert {0}")
+    @DisplayName("Should be able to convert temporal")
+    @MethodSource("temporalDataForConversion")
+    void shouldConvert(Temporal temporal) {
+        String result = valueWriter.write(temporal);
+        assertThat(result).isEqualTo(temporal.toString());
     }
 
-    @Test
-    public void shouldConvertLocalDateTime() {
-        LocalDateTime now = LocalDateTime.now();
-        String result = valueWriter.write(now);
-        assertEquals(now.toString(), result);
-        assertEquals(now, LocalDateTime.parse(result));
+    static Stream<Arguments> temporalDataForConversion() {
+        return Stream.of(
+                arguments(LocalDateTime.now()),
+                arguments(LocalDate.now()),
+                arguments(LocalTime.now()),
+                arguments(Year.now()),
+                arguments(YearMonth.now()),
+                arguments(ZonedDateTime.now())
+        );
     }
-
-    @Test
-    public void shouldConvertLocalTime() {
-        LocalTime now = LocalTime.now();
-        String result = valueWriter.write(now);
-        assertEquals(now.toString(), result);
-        assertEquals(now, LocalTime.parse(result));
-    }
-
-
-    @Test
-    public void shouldConvertYear() {
-        Year now = Year.now();
-        String result = valueWriter.write(now);
-        assertEquals(now.toString(), result);
-        assertEquals(now, Year.parse(result));
-    }
-
-    @Test
-    public void shouldConvertYearMonth() {
-        YearMonth now = YearMonth.now();
-        String result = valueWriter.write(now);
-        assertEquals(now.toString(), result);
-        assertEquals(now, YearMonth.parse(result));
-    }
-
-    @Test
-    public void shouldConvertZonedDateTime() {
-        ZonedDateTime now = ZonedDateTime.now();
-        String result = valueWriter.write(now);
-        assertEquals(now.toString(), result);
-        assertEquals(now, ZonedDateTime.parse(result));
-    }
-
 }

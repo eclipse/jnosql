@@ -12,46 +12,60 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
-
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.Temporal;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class ZonedDateTimeReaderTest {
+class ZonedDateTimeReaderTest {
 
-    private ZonedDateTimeReader dateReader;
+    private final ZonedDateTimeReader dateReader = new ZonedDateTimeReader();
 
-    @BeforeEach
-    public void init() {
-        dateReader = new ZonedDateTimeReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(dateReader.test(ZonedDateTime.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(dateReader.test(ZonedDateTime.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertThat(dateReader.test(Temporal.class)).isFalse();
     }
 
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert")
+    void shouldConvert() {
         final ZonedDateTime now = ZonedDateTime.now();
         final Date date = new Date();
         final Calendar calendar = Calendar.getInstance();
 
-        assertEquals(now, dateReader.read(ZonedDateTime.class, now));
-        assertEquals(date.toInstant().atZone(ZoneId.systemDefault()), dateReader.read(ZonedDateTime.class, date));
-        assertEquals(calendar.toInstant().atZone(ZoneId.systemDefault()), dateReader.read(ZonedDateTime.class, calendar));
-        assertEquals(date.toInstant().atZone(ZoneId.systemDefault()), dateReader.read(ZonedDateTime.class, date.getTime()));
+        assertSoftly(softly -> {
+            softly.assertThat(dateReader.read(ZonedDateTime.class, now)).as("ZonedDateTime conversion").isEqualTo(now);
+
+            softly.assertThat(dateReader.read(ZonedDateTime.class, date)).as("Date conversion")
+                    .isEqualTo(date.toInstant().atZone(ZoneId.systemDefault()));
+
+            softly.assertThat(dateReader.read(ZonedDateTime.class, calendar)).as("Calendar conversion")
+                    .isEqualTo(calendar.toInstant().atZone(ZoneId.systemDefault()));
+
+            softly.assertThat(dateReader.read(ZonedDateTime.class, date.getTime())).as("Number conversion")
+                    .isEqualTo(date.toInstant().atZone(ZoneId.systemDefault()));
+
+            softly.assertThat(dateReader.read(ZonedDateTime.class, ZonedDateTime.parse(now.toString())))
+                    .as("Default conversion").isEqualToIgnoringSeconds(date.toInstant().atZone(ZoneId.systemDefault()));
+        });
     }
 }

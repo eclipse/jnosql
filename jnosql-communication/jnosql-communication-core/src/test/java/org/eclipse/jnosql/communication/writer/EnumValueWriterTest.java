@@ -12,47 +12,46 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.writer;
 
 import org.eclipse.jnosql.communication.ValueWriter;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.DayOfWeek;
 import java.time.Month;
 import java.util.List;
 
 import static java.time.Month.JANUARY;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class EnumValueWriterTest {
-    private ValueWriter<Enum<?>, String> valueWriter;
+class EnumValueWriterTest {
 
-    @SuppressWarnings("unchecked")
-    @BeforeEach
-    public void setUp() {
-        valueWriter = new EnumValueWriter();
+    private final ValueWriter<Enum<?>, String> valueWriter = new EnumValueWriter();
+
+    @ParameterizedTest(name = "must be compatible with {0}")
+    @DisplayName("Should verify compatibility with enums")
+    @ValueSource(classes = {Month.class, DayOfWeek.class})
+    void shouldVerifyCompatibility(Class<?> enumClass) {
+        assertThat(valueWriter.test(enumClass)).isTrue();
+    }
+
+    @ParameterizedTest(name = "must be compatible with {0}")
+    @DisplayName("Should verify incompatibility with enums")
+    @ValueSource(classes = {Integer.class, List.class})
+    void shouldNotVerifyCompatibility(Class<?> notEnumClass) {
+        assertThat(valueWriter.test(notEnumClass)).isFalse();
     }
 
     @Test
-    public void shouldVerifyCompatibility() {
-        assertTrue(valueWriter.test(Month.class));
-        assertTrue(valueWriter.test(DayOfWeek.class));
-    }
-
-    @Test
-    public void shouldNotVerifyCompatibility() {
-        assertFalse(valueWriter.test(Integer.class));
-        assertFalse(valueWriter.test(List.class));
-    }
-
-    @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert an enum")
+    void shouldConvert() {
         String result = valueWriter.write(JANUARY);
-        assertEquals(JANUARY.name(), result);
+        assertThat(JANUARY.name()).isEqualTo(result);
     }
 }

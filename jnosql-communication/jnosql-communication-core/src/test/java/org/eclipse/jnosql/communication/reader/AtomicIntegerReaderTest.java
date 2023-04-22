@@ -12,42 +12,46 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class AtomicIntegerReaderTest {
+class AtomicIntegerReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new AtomicIntegerReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new AtomicIntegerReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(AtomicInteger.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(AtomicInteger.class));
-        assertFalse(valueReader.test(AtomicBoolean.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertThat(valueReader.test(AtomicBoolean.class)).isFalse();
     }
 
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert the value to AtomicInteger")
+    void shouldConvert() {
         AtomicInteger integer = new AtomicInteger(10);
-        assertEquals(integer, valueReader.read(AtomicInteger.class, integer));
-        assertEquals(integer.get(), valueReader.read(AtomicInteger.class, 10.00).get());
-        assertEquals(integer.get(), valueReader.read(AtomicInteger.class, "10").get());
+
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(AtomicInteger.class, integer)).as("AtomicInteger conversion").isEqualTo(integer);
+            softly.assertThat(valueReader.read(AtomicInteger.class, 10.00).get()).as("Number conversion").isEqualTo(integer.get());
+            softly.assertThat(valueReader.read(AtomicInteger.class, "10").get()).as("String conversion").isEqualTo(integer.get());
+        });
     }
 }

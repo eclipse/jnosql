@@ -12,67 +12,97 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication;
 
-import org.eclipse.jnosql.communication.Settings;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-public class SettingsBuilderTest {
-
+class SettingsBuilderTest {
 
     @Test
-    public void shouldReturnErrorWhenKeyIsNUll() {
-        Assertions.assertThrows(NullPointerException.class, () -> Settings.builder().put((String) null, "value"));
-        Assertions.assertThrows(NullPointerException.class, () -> Settings.builder().put((Supplier<String>) null,
-                "value"));
+    @DisplayName("Should throw NullPointerException when key is null")
+    void shouldReturnErrorWhenKeyIsNUll() {
+        assertSoftly(softly -> {
+            assertThatNullPointerException().as("key is required")
+                    .isThrownBy(() -> Settings.builder().put((String) null, "value")).withMessage("key is required");
+
+            assertThatNullPointerException().as("supplier is required")
+                    .isThrownBy(() -> Settings.builder().put((Supplier<String>) null, "value")).withMessage("supplier is required");
+        });
     }
 
     @Test
-    public void shouldReturnErrorWhenValueIsNUll() {
-        Assertions.assertThrows(NullPointerException.class, () -> Settings.builder().put("key", null));
-        Assertions.assertThrows(NullPointerException.class, () -> Settings.builder().put(() -> "key", null));
+    @DisplayName("Should return empty DefaultSettings when settings() is called")
+    void shouldReturnEmptyDefaultSettings() {
+        Settings settings = Settings.settings();
+
+        assertSoftly(softly -> {
+            softly.assertThat(settings).as("Is instance of DefaultSettings").isInstanceOf(DefaultSettings.class);
+            softly.assertThat(settings.keySet()).as("Has expected size").hasSize(0);
+        });
     }
 
     @Test
-    public void shouldReturnErrorWhenMapHasNullKey() {
+    @DisplayName("Should throw NullPointerException when key and value are null")
+    void shouldReturnErrorWhenValueIsNUll() {
+        assertSoftly(softly -> {
+            softly.assertThatNullPointerException().as("value is required")
+                    .isThrownBy(() -> Settings.builder().put("key", null)).withMessage("value is required");
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
+            softly.assertThatNullPointerException().as("value is required")
+                    .isThrownBy(() -> Settings.builder().put(() -> "key", null)).withMessage("value is required");
+        });
+    }
+
+    @Test
+    @DisplayName("Should throw NullPointerException when key is null")
+    void shouldReturnErrorWhenMapHasNullKey() {
+        assertThatNullPointerException().isThrownBy(() -> {
             Map<String, Object> map = Collections.singletonMap(null, "value");
             Settings.builder().putAll(map);
-        });
+        }).withMessage("key is required");
     }
 
     @Test
-    public void shouldReturnErrorWhenMapHasNullValue() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
-
+    @DisplayName("Should throw NullPointerException when value is null")
+    void shouldReturnErrorWhenMapHasNullValue() {
+        assertThatNullPointerException().isThrownBy(() -> {
             Map<String, Object> map = Collections.singletonMap("key", null);
             Settings.builder().putAll(map);
+        }).withMessage("value is required");
+    }
+
+    @Test
+    @DisplayName("Should be able to create the settings using builder")
+    void shouldCreateSettingsBuilder() {
+        Settings settings = Settings.builder().put("key", "value").build();
+
+        assertSoftly(softly -> {
+            softly.assertThat(settings).as("Settings are not null").isNotNull();
+            softly.assertThat(settings.get("key"))
+                    .as("Can retrieve the settings value").isPresent().get().isEqualTo("value");
         });
     }
 
     @Test
-    public void shouldCreateSettingsBuilder() {
-        Settings settings = Settings.builder().put("key", "value").build();
-        assertNotNull(settings);
-        assertEquals("value", settings.get("key").get());
-    }
-
-    @Test
-    public void shouldCreateSettingsBuilderWithSupplier() {
+    @DisplayName("Should be able to create settings using builder with supplier")
+    void shouldCreateSettingsBuilderWithSupplier() {
         Settings settings = Settings.builder().put(() -> "key", "value").build();
-        assertNotNull(settings);
-        assertEquals("value", settings.get("key").get());
+
+        assertSoftly(softly -> {
+            softly.assertThat(settings).as("Settings are not null").isNotNull();
+            softly.assertThat(settings.get("key"))
+                    .as("Can retrieve the settings value").isPresent().get().isEqualTo("value");
+        });
     }
 }

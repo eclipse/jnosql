@@ -12,14 +12,18 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.TypeReferenceReader;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -29,39 +33,59 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-
-public class StreamTypeReferenceReaderTest {
+class StreamTypeReferenceReaderTest {
 
     private final TypeReferenceReader referenceReader = new StreamTypeReferenceReader();
 
-    @Test
-    public void shouldBeCompatible() {
-
-        assertTrue(referenceReader.test(new TypeReference<Stream<String>>(){}));
-        assertTrue(referenceReader.test(new TypeReference<Stream<Long>>(){}));
-
+    @DisplayName("Should be compatible")
+    @ParameterizedTest(name = "compatible {0}")
+    @MethodSource("compatibleTypeReferences")
+    void shouldBeCompatible(TypeReference<?> type) {
+        assertThat(referenceReader.test(type)).isTrue();
     }
 
-
-    @Test
-    public void shouldNotBeCompatible() {
-        assertFalse(referenceReader.test(new TypeReference<ArrayList<BigDecimal>>(){}));
-        assertFalse(referenceReader.test(new TypeReference<String>(){}));
-        assertFalse(referenceReader.test(new TypeReference<Set<String>>(){}));
-        assertFalse(referenceReader.test(new TypeReference<List<List<String>>>(){}));
-        assertFalse(referenceReader.test(new TypeReference<Queue<String>>(){}));
-        assertFalse(referenceReader.test(new TypeReference<Map<Integer, String>>(){}));
+    @DisplayName("Should be incompatible")
+    @ParameterizedTest(name = "compatible {0}")
+    @MethodSource("incompatibleTypeReferences")
+    void shouldNotBeCompatible(TypeReference<?> type) {
+        assertThat(referenceReader.test(type)).isFalse();
     }
 
-
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert")
+    void shouldConvert() {
         Stream<String> stream = referenceReader.convert(new TypeReference<>() {
         }, "123");
-        assertEquals("123", stream.findAny().get());
+
+        assertThat(stream.findAny()).isPresent().get().isEqualTo("123");
+    }
+
+    static Stream<Arguments> compatibleTypeReferences() {
+        return Stream.of(
+                arguments(new TypeReference<Stream<String>>() {
+                }),
+                arguments(new TypeReference<Stream<Long>>() {
+                })
+        );
+    }
+
+    static Stream<Arguments> incompatibleTypeReferences() {
+        return Stream.of(
+                arguments(new TypeReference<ArrayList<BigDecimal>>() {
+                }),
+                arguments(new TypeReference<String>() {
+                }),
+                arguments(new TypeReference<Set<String>>() {
+                }),
+                arguments(new TypeReference<List<List<String>>>() {
+                }),
+                arguments(new TypeReference<Queue<String>>() {
+                }),
+                arguments(new TypeReference<Map<Integer, String>>() {
+                })
+        );
     }
 }

@@ -13,63 +13,155 @@
  *
  *   Otavio Santana
  *   Maximillian Arruda
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication;
 
-
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Objects;
-import java.util.function.Supplier;
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonMap;
+import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+class DefaultValueTest {
 
-class DefaultValueTest extends ValueTest {
-
-    @Override
-    Value getValueOf(Supplier<?> supplier) {
-        return Value.of(supplier.get());
-    }
+    private static final Value VALUE_OF_DOUBLE = Value.of(10L);
 
     @Test
+    @DisplayName("Should return NullPointerException when element is null")
     void shouldReturnErrorWhenElementIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> Value.of(null));
+        assertThatNullPointerException().isThrownBy(() -> Value.of(null)).withMessage("value is required");
     }
 
     @Test
-    void shouldBeEquals() {
-        Value left = Value.of("12");
-        Value right = Value.of("12");
-        Assertions.assertTrue(left.equals(right));
-        Assertions.assertTrue(left.equals(left));
+    @DisplayName("Should be instance of the defined object")
+    void shouldIsInstanceOf() {
+        Value value = Value.of("12");
+
+        assertThat(value.get()).isInstanceOf(String.class).isNotInstanceOf(Integer.class);
     }
 
     @Test
-    void shouldBeNotEquals() {
-        Value left = Value.of("12");
-        Value right = Value.of("13");
-        Assertions.assertFalse(left.equals(right));
-        Assertions.assertFalse(left.equals(null));
-        Assertions.assertFalse(left.equals(new Object()));
+    @DisplayName("Should be able to convert the defined object type")
+    void shouldConvertType() {
+        Value value = Value.of(new AtomicInteger(5_000));
+
+        assertSoftly(softly -> {
+            softly.assertThat(value.get(Integer.class)).as("convert to Integer")
+                    .isEqualTo(Integer.valueOf(5_000)).isInstanceOf(Integer.class);
+
+            softly.assertThat(value.get(String.class))
+                    .as("convert to String").isEqualTo("5000").isInstanceOf(String.class);
+        });
     }
 
     @Test
-    void testHashCode() {
-        String wrappedValue = "12";
-        Value targetValue = Value.of(wrappedValue);
-        assertEquals(Objects.hashCode(wrappedValue), targetValue.hashCode(),
-                "DefaultValue hash code should be conditioned to its value attribute's hashCode");
+    @DisplayName("Should be able to convert a defined object to a singleton List")
+    void shouldConvertToSingletonList() {
+        assertSoftly(softly -> {
+            softly.assertThat(VALUE_OF_DOUBLE.get(new TypeReference<List<String>>() {
+            })).as("TypeSupplier List of String").containsExactly("10");
+            softly.assertThat(VALUE_OF_DOUBLE.get(new TypeReference<List<Long>>() {
+            })).as("TypeSupplier List of Long").containsExactly(10L);
+        });
     }
 
     @Test
-    void testToString() {
-        String wrappedValue = "12";
-        Value targetValue = Value.of(wrappedValue);
-        assertEquals("DefaultValue{value=" + wrappedValue + "}", targetValue.toString());
+    @DisplayName("Should be able to convert a defined object to a Stream")
+    void shouldConvertToStream() {
+        assertSoftly(softly -> {
+            softly.assertThat(VALUE_OF_DOUBLE.get(new TypeReference<Stream<String>>() {
+            }).collect(toList())).as("TypeSupplier Stream of String").containsExactly("10");
+            softly.assertThat(VALUE_OF_DOUBLE.get(new TypeReference<Stream<Long>>() {
+            }).collect(toList())).as("TypeSupplier Stream of Long").containsExactly(10L);
+        });
     }
 
+    @Test
+    @DisplayName("Should be able to convert a defined object to List")
+    void shouldConvertToList() {
+        Value value = Value.of(asList(10, 20, 30));
+
+        assertSoftly(softly -> {
+            softly.assertThat(value.get(new TypeReference<List<String>>() {
+            })).as("TypeSupplier List of String").containsExactly("10", "20", "30");
+            softly.assertThat(value.get(new TypeReference<List<BigInteger>>() {
+                    })).as("TypeSupplier List of BigInteger")
+                    .containsExactly(BigInteger.TEN, BigInteger.valueOf(20L), BigInteger.valueOf(30L));
+        });
+    }
+
+    @Test
+    @DisplayName("Should be able to convert a defined object to a singleton Set")
+    void shouldConvertToSingletonSet() {
+        assertSoftly(softly -> {
+            softly.assertThat(VALUE_OF_DOUBLE.get(new TypeReference<Set<String>>() {
+            })).as("TypeSupplier Singleton Stream of String").containsExactly("10");
+            softly.assertThat(VALUE_OF_DOUBLE.get(new TypeReference<List<Long>>() {
+            })).as("TypeSupplier Singleton Stream of Long").containsExactly(10L);
+        });
+    }
+
+    @Test
+    @DisplayName("Should be able to convert a defined object to a Set")
+    void shouldConvertToSet() {
+        Value value = Value.of(asList(10, 20, 30));
+
+        assertSoftly(softly -> {
+            softly.assertThat(value.get(new TypeReference<Set<String>>() {
+            })).as("Should convert as Set<String>").contains("10", "20", "30");
+            softly.assertThat(value.get(new TypeReference<List<BigInteger>>() {
+                    })).as("Should convert List<BigInteger>")
+                    .containsExactly(BigInteger.TEN, BigInteger.valueOf(20L), BigInteger.valueOf(30L));
+        });
+    }
+
+    @Test
+    @DisplayName("Should be able to convert a defined object to a Map")
+    void shouldConvertMap() {
+        Map<String, Integer> map = singletonMap("ONE", 1);
+        Value value = Value.of(map);
+
+        Map<String, Integer> result = value.get(new TypeReference<>() {
+        });
+        assertThat(result).containsKey("ONE").containsValue(1);
+    }
+
+    @Test
+    @DisplayName("Should be able to convert the map key and value")
+    void shouldConvertKeyValueInsideMap() {
+        Map<Integer, String> map = singletonMap(10, "1");
+        Value value = Value.of(map);
+
+        Map<String, Integer> result = value.get(new TypeReference<>() {
+        });
+        assertThat(result).containsKey("10").containsValue(1);
+    }
+
+    @Test
+    @DisplayName("Should throw UnsupportedOperationException when key has a different object type")
+    @SuppressWarnings("unused")
+    void shouldConvertMapIgnoringKeyValue() {
+        assertThatThrownBy(() -> {
+            Map<Integer, List<String>> map = singletonMap(10, asList("1", "2", "3"));
+            Value value = Value.of(map);
+
+            Map<String, List<String>> result = value.get(new TypeReference<>() {
+            });
+        }).isInstanceOf(UnsupportedOperationException.class)
+                .hasMessage("The type TypeReference{type=java.util.Map<java.lang.String, java.util.List<java.lang.String>>} is not supported");
+    }
 }

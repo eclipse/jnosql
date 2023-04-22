@@ -12,45 +12,47 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.eclipse.jnosql.communication.ValueReader;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.time.YearMonth;
 
-import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class YearMonthTest {
+class YearMonthTest {
 
-	private ValueReader valueReader;
+    private final ValueReader valueReader = new YearMonthReader();
 
-	@BeforeEach
-	public void init() {
-		valueReader = new YearMonthReader();
-	}
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(YearMonth.class)).isTrue();
+    }
 
-	@Test
-	public void shouldValidateCompatibility() {
-		assertTrue(valueReader.test(YearMonth.class));
-		assertFalse(valueReader.test(String.class));
-		assertFalse(valueReader.test(Long.class));
-	}
+    @Test
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.test(String.class)).as("String is not compatible").isFalse();
+            softly.assertThat(valueReader.test(Long.class)).as("Long is not compatible").isFalse();
+        });
+    }
 
-	@Test
-	public void shouldConvert() {
-		YearMonth yearMonth = YearMonth.parse("2016-08");
+    @Test
+    @DisplayName("Should be able to convert")
+    void shouldConvert() {
+        YearMonth yearMonth = YearMonth.parse("2016-08");
 
-		assertEquals(yearMonth, valueReader.read(YearMonth.class, YearMonth.parse("2016-08")));
-		assertEquals(yearMonth, valueReader.read(String.class,"2016-08"));
-		assertEquals(yearMonth, valueReader.read(Integer.class,YearMonth.of(2016,8)));
-		assertEquals(yearMonth, valueReader.read(Long.class,YearMonth.of(2016,8)));
-	}
-
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(YearMonth.class, YearMonth.parse("2016-08"))).as("YearMonth compatible").isEqualTo(yearMonth);
+            softly.assertThat(valueReader.read(YearMonth.class, "2016-08")).as("Default compatible").isEqualTo(yearMonth);
+        });
+    }
 }

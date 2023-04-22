@@ -12,39 +12,44 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
-
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class DateReaderTest {
+class DateReaderTest {
 
-    private DateReader dateReader;
+    private final DateReader dateReader = new DateReader();
 
-    @BeforeEach
-    public void init() {
-        dateReader = new DateReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(dateReader.test(Date.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(dateReader.test(Date.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertThat(dateReader.test(String.class)).isFalse();
     }
 
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert the value to Date")
+    void shouldConvert() {
         long milliseconds = new Date().getTime();
         Date date = new Date();
-        assertEquals(milliseconds, dateReader.read(Date.class, milliseconds).getTime());
-        assertEquals(date, dateReader.read(Date.class, date));
+
+        assertSoftly(softly -> {
+            softly.assertThat(dateReader.read(Date.class, milliseconds).getTime()).as("long conversion").isEqualTo(milliseconds);
+            softly.assertThat(dateReader.read(Date.class, date)).as("Date conversion").isEqualTo(date);
+        });
     }
 }
