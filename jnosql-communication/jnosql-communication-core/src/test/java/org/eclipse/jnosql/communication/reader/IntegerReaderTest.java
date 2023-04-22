@@ -12,44 +12,49 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class IntegerReaderTest {
+class IntegerReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new IntegerReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new IntegerReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(Integer.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(Integer.class));
-        assertFalse(valueReader.test(AtomicBoolean.class));
-        assertFalse(valueReader.test(Boolean.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.test(AtomicBoolean.class)).as("AtomicBoolean is not compatible").isFalse();
+            softly.assertThat(valueReader.test(Boolean.class)).as("Boolean is not compatible").isFalse();
+        });
     }
+
 
     @Test
-    public void shouldConvert() {
-        Integer number = 10;
-        assertEquals(Integer.valueOf(10), valueReader.read(Integer.class, number));
-        assertEquals(Integer.valueOf(10), valueReader.read(Integer.class, 10.00));
-        assertEquals(Integer.valueOf(10), valueReader.read(Integer.class, "10"));
+    @DisplayName("Should be able to convert the value to Integer")
+    void shouldConvert() {
+        Integer expectedValue = 10;
+
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(Integer.class, 10)).isEqualTo(expectedValue);
+            softly.assertThat(valueReader.read(Integer.class, 10.00)).isEqualTo(expectedValue);
+            softly.assertThat(valueReader.read(Integer.class, "10")).isEqualTo(expectedValue);
+        });
     }
-
-
 }

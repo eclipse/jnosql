@@ -12,60 +12,59 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication;
 
-import org.eclipse.jnosql.communication.ValueReaderDecorator;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
-public class ValueReaderDecoratorTest {
+class ValueReaderDecoratorTest {
 
     private final ValueReaderDecorator serviceLoader = ValueReaderDecorator.getInstance();
 
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert")
+    void shouldConvert() {
         Number convert = serviceLoader.read(Number.class, "10D");
-        assertEquals(10D, convert);
+        assertThat(convert).isEqualTo(10D);
     }
 
     @Test
-    public void shouldCastObject() {
+    @DisplayName("Should be able to cast")
+    void shouldCastObject() {
         Bean name = serviceLoader.read(Bean.class, new Bean());
-        assertEquals(name.getClass(), Bean.class);
+        assertThat(name.getClass()).isEqualTo(Bean.class);
     }
 
     @Test
-    public void shouldReturnErrorWhenTypeIsNotSupported() {
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            Bean name = serviceLoader.read(Bean.class, "name");
-        });
+    @DisplayName("Should throw UnsupportedOperationException during read when class is not supported")
+    void shouldReturnErrorWhenTypeIsNotSupported() {
+        assertThatThrownBy(() -> serviceLoader.read(Bean.class, "name"))
+                .isInstanceOf(UnsupportedOperationException.class)
+                .hasMessage("The type class org.eclipse.jnosql.communication.ValueReaderDecoratorTest$Bean is not supported yet");
     }
 
     @Test
-    public void shouldReturnIfIsCompatible() {
-        assertTrue(serviceLoader.test(Integer.class));
+    @DisplayName("Should check for compatibility")
+    void shouldReturnIfIsCompatible() {
+        assertThat(serviceLoader.test(Integer.class)).isTrue();
     }
 
     @Test
-    public void shouldReturnIfIsNotCompatible() {
+    @DisplayName("Should check for incompatibility")
+    void shouldReturnIfIsNotCompatible() {
+        assertThat(serviceLoader.test(Bean.class)).isFalse();
         assertFalse(serviceLoader.test(Bean.class));
     }
 
-
     static class Bean {
-        private String name;
-
         Bean() {
-            this.name = "name";
         }
     }
-
 }

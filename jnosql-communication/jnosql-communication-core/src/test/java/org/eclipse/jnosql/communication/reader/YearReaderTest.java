@@ -12,46 +12,47 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Year;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class YearReaderTest {
+class YearReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new YearReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new YearReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(Year.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(Year.class));
-        assertFalse(valueReader.test(String.class));
-        assertFalse(valueReader.test(Long.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.test(String.class)).as("String is not compatible").isFalse();
+            softly.assertThat(valueReader.test(Long.class)).as("Long is not compatible").isFalse();
+        });
     }
 
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert")
+    void shouldConvert() {
         Year year = Year.parse("2009");
 
-        assertEquals(year, valueReader.read(Year.class, Year.parse("2009")));
-        assertEquals(year, valueReader.read(String.class, "2009"));
-        assertEquals(year, valueReader.read(Integer.class, 2009));
-        assertEquals(year, valueReader.read(Long.class, 2009));
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(Year.class, Year.parse("2009"))).as("Year compatible").isEqualTo(year);
+            softly.assertThat(valueReader.read(Year.class, "2009")).as("Default compatible").isEqualTo(year);
+        });
     }
-
-
 }

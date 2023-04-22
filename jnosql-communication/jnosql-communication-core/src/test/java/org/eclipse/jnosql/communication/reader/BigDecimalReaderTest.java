@@ -12,45 +12,47 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class BigDecimalReaderTest {
+class BigDecimalReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new BigDecimalReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new BigDecimalReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(BigDecimal.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(BigDecimal.class));
-        assertFalse(valueReader.test(AtomicBoolean.class));
-        assertFalse(valueReader.test(Boolean.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.test(AtomicBoolean.class)).as("AtomicBoolean is not compatible").isFalse();
+            softly.assertThat(valueReader.test(Boolean.class)).as("Boolean is not compatible").isFalse();
+        });
     }
 
     @Test
-    public void shouldConvert() {
-        BigDecimal bigDecimal = BigDecimal.TEN;
-        assertEquals(bigDecimal, valueReader.read(BigDecimal.class, bigDecimal));
-        assertEquals(BigDecimal.valueOf(10D), valueReader.read(BigDecimal.class, 10.00));
-        assertEquals(BigDecimal.valueOf(10D), valueReader.read(BigDecimal.class, "10"));
+    @DisplayName("Should be able to convert the value to BigDecimal")
+    void shouldConvert() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(BigDecimal.class, BigDecimal.TEN)).as("BigDecimal conversion").isEqualTo(BigDecimal.TEN);
+            softly.assertThat(valueReader.read(BigDecimal.class, 10.0)).as("Number conversion").isEqualTo(BigDecimal.valueOf(10D));
+            softly.assertThat(valueReader.read(BigDecimal.class, "10")).as("String conversion").isEqualTo(BigDecimal.valueOf(10D));
+        });
     }
-
-
 }

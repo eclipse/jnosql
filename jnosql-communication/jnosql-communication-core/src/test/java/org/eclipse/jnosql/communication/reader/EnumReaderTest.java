@@ -12,62 +12,80 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class EnumReaderTest {
+class EnumReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new EnumReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new EnumReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.test(Enum.class)).as("Enum is compatible").isTrue();
+            softly.assertThat(valueReader.test(ExampleNumber.class)).as("ExampleNumber is compatible").isTrue();
+        });
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(Enum.class));
-        assertTrue(valueReader.test(ExampleNumber.class));
-        assertFalse(valueReader.test(AtomicBoolean.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertThat(valueReader.test(AtomicBoolean.class)).isFalse();
     }
 
     @Test
-    public void shouldConvert() {
-        ExampleNumber value = ExampleNumber.ONE;
-        assertEquals(value, valueReader.read(ExampleNumber.class, value));
-        assertEquals(value, valueReader.read(ExampleNumber.class, 0));
-        assertEquals(value, valueReader.read(ExampleNumber.class, "ONE"));
-        assertEquals(ExampleNumber.TWO, valueReader.read(ExampleNumber.class, 1));
-        assertEquals(ExampleNumber.TWO, valueReader.read(ExampleNumber.class, "TWO"));
+    @DisplayName("Should be able to convert the value to ExampleNumber")
+    void shouldConvert() {
+        ExampleNumber exampleNumberOne = ExampleNumber.ONE;
+        ExampleNumber exampleNumberTwo = ExampleNumber.TWO;
+
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(ExampleNumber.class, exampleNumberOne)).as("ExampleNumber conversion")
+                    .isEqualTo(exampleNumberOne);
+
+            softly.assertThat(valueReader.read(ExampleNumber.class, 0)).as("Integer conversion").isEqualTo(exampleNumberOne);
+            softly.assertThat(valueReader.read(ExampleNumber.class, "ONE")).as("String conversion").isEqualTo(exampleNumberOne);
+            softly.assertThat(valueReader.read(ExampleNumber.class, 1)).as("Integer conversion").isEqualTo(exampleNumberTwo);
+            softly.assertThat(valueReader.read(ExampleNumber.class, "TWO")).as("String conversion").isEqualTo(exampleNumberTwo);
+        });
     }
 
     @Test
-    public void shouldReturnErrorInIndex() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> valueReader.read(ExampleNumber.class, 10));
+    @DisplayName("Should throw IllegalArgumentException when class is not assignable")
+    void shouldThrowIllegalArgumentExceptionWhenClassIsNotAssignable() {
+        assertThatIllegalArgumentException().isThrownBy(() -> valueReader.read(List.class, "ONE"))
+                .withMessage("The informed class isn't an enum type: interface java.util.List");
     }
 
     @Test
-    public void shouldReturnErrorInName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> valueReader.read(ExampleNumber.class, "FOUR"));
+    @DisplayName("Should throw IllegalArgumentException when there is no index")
+    void shouldReturnErrorInIndex() {
+        assertThatIllegalArgumentException().isThrownBy(() -> valueReader.read(ExampleNumber.class, 10))
+                .withMessage("There is not index in enum to value: 10");
     }
 
+    @Test
+    @DisplayName("Should throw IllegalArgumentException when there is no value")
+    void shouldReturnErrorInName() {
+        assertThatIllegalArgumentException().isThrownBy(() -> valueReader.read(ExampleNumber.class, "FOUR"))
+                .withMessage("There isn't name in enum to value: FOUR");
+    }
 
     enum ExampleNumber {
         ONE, TWO
     }
-
-
 }

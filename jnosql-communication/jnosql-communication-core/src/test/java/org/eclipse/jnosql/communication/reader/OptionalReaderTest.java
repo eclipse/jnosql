@@ -12,47 +12,44 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class OptionalReaderTest {
+class OptionalReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new OptionalReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new OptionalReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(Optional.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(Optional.class));
-        assertFalse(valueReader.test(AtomicBoolean.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertThat(valueReader.test(AtomicBoolean.class)).isFalse();
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void shouldConvert() {
-        Optional<String> optional = Optional.of("value");
-        assertEquals(optional, valueReader.read(Optional.class, optional));
-
-        Optional<String> result = valueReader.read(Optional.class, "12");
-        assertEquals(Optional.of("12"), result);
-
+    @DisplayName("Should be abe to convert to Optional")
+    void shouldConvert() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(Optional.class, "12")).isEqualTo(Optional.of("12")).as("Default conversion");
+            softly.assertThat(valueReader.read(Optional.class, Optional.of("value"))).isEqualTo(Optional.of("value")).as("Optional conversion");
+        });
     }
-
-
 }

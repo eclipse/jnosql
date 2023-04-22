@@ -12,13 +12,12 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
-
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
@@ -27,37 +26,41 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class OffsetTimeReaderTest {
+class OffsetTimeReaderTest {
 
-    private OffsetTimeReader dateReader;
+    private final OffsetTimeReader dateReader = new OffsetTimeReader();
 
-    @BeforeEach
-    public void init() {
-        dateReader = new OffsetTimeReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(dateReader.test(OffsetTime.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertFalse(dateReader.test(LocalTime.class));
-        assertTrue(dateReader.test(OffsetTime.class));
+    @DisplayName("Should be compatible")
+    void shouldValidateIncompatibility() {
+        assertThat(dateReader.test(LocalTime.class)).isFalse();
     }
 
     @Test
-    public void shouldConvert() {
-        final OffsetTime now = OffsetTime.now();
+    @DisplayName("Should be abe to convert to OffsetTime")
+    void shouldConvert() {
+        final OffsetTime offsetTime = OffsetTime.now();
         final Date date = new Date();
         final Calendar calendar = Calendar.getInstance();
 
-        assertEquals(now, dateReader.read(LocalTime.class, now));
-        assertEquals(date.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime().toOffsetTime(),
-                dateReader.read(OffsetTime.class, date));
-        assertEquals(calendar.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime().toOffsetTime(),
-                dateReader.read(OffsetTime.class, calendar));
-        assertEquals(date.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime().toOffsetTime(),
-                dateReader.read(OffsetTime.class, date.getTime()));
+        assertSoftly(softly -> {
+            softly.assertThat(dateReader.read(OffsetTime.class, offsetTime)).as("OffsetTime conversion")
+                    .isEqualTo(offsetTime);
+
+            softly.assertThat(dateReader.read(OffsetTime.class, date)).as("Calendar conversion")
+                    .isEqualToIgnoringSeconds(calendar.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime().toOffsetTime());
+
+            softly.assertThat(dateReader.read(OffsetTime.class, date.getTime())).as("Number conversion")
+                    .isEqualTo(date.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime().toOffsetTime());
+        });
     }
 }

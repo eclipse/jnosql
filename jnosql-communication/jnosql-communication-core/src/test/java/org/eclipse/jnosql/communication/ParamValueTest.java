@@ -8,91 +8,90 @@
  *  You may elect to redistribute this code under either of these licenses.
  *  Contributors:
  *  Otavio Santana
+ *  Elias Nogueira
  */
 package org.eclipse.jnosql.communication;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.function.Supplier;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-class ParamValueTest extends ValueTest {
+class ParamValueTest {
 
-    @Override
-    Value getValueOf(Supplier<?> supplier) {
-        Params params = Params.newParams();
-        Value value = params.add("name");
-        params.bind("name", supplier.get());
-        return value;
+    private static Params params;
+    private static Value name;
+
+    @BeforeAll
+    static void preCondition() {
+        params = Params.newParams();
+        name = params.add("name");
     }
 
     @Test
+    @DisplayName("Should be able to retrieve the parameters")
     void shouldAddParameter() {
-        Params params = Params.newParams();
-        Value name = params.add("name");
-        assertNotNull(name);
-
         assertThat(params.getParametersNames()).contains("name");
     }
 
     @Test
+    @DisplayName("Should throw QueryException when value is invalid")
     void shouldNotUseValueWhenIsInvalid() {
         Params params = Params.newParams();
-        Value name = params.add("name");
-        assertThrows(QueryException.class, name::get);
+        Value surname = params.add("surname");
 
-        assertThrows(QueryException.class, () -> name.get(String.class));
+        assertSoftly(softly -> {
+            softly.assertThatThrownBy(surname::get).isInstanceOf(QueryException.class)
+                    .hasMessage("The value of parameter surname cannot be null");
+
+            softly.assertThatThrownBy(() -> surname.get(String.class)).isInstanceOf(QueryException.class)
+                    .hasMessage("The value of parameter surname cannot be null");
+        });
     }
 
     @Test
+    @DisplayName("Should be abe to bind he parameter")
     void shouldSetParameter() {
-        Params params = Params.newParams();
-        Value name = params.add("name");
-
         params.bind("name", "Ada Lovelace");
-
-        assertEquals("Ada Lovelace", name.get());
+        assertThat(name.get()).isEqualTo("Ada Lovelace");
     }
 
     @Test
+    @DisplayName("Should be instance of Integer when value is empty")
     void shouldReturnsTrueWhenValueIsEmpty() {
         Params params = Params.newParams();
-        Value name = params.add("name");
-        assertTrue(name.isInstanceOf(Integer.class));
+        Value surname = params.add("surname");
+
+        assertThat(surname.isInstanceOf(Integer.class)).isTrue();
     }
 
     @Test
+    @DisplayName("Should change the value instance")
     void shouldInstanceOf() {
-        Params params = Params.newParams();
-        Value name = params.add("name");
-        assertTrue(name.isInstanceOf(Integer.class));
+        assertThat(name.isInstanceOf(Integer.class)).isTrue();
 
         params.bind("name", "Ada Lovelace");
-        assertTrue(name.isInstanceOf(String.class));
-        assertFalse(name.isInstanceOf(Integer.class));
 
+        assertSoftly(softly -> {
+            assertThat(name.isInstanceOf(String.class)).as("has the correct instance").isTrue();
+            assertThat(name.isInstanceOf(Integer.class)).as("has incorrect instance").isFalse();
+        });
     }
 
     @Test
+    @DisplayName("Should have custom toString")
     void testToString() {
-
         String paramName = "name";
         String paramValue = "12";
 
         Params params = Params.newParams();
         Value value = params.add(paramName);
 
-        assertEquals(paramName + "= ?", value.toString());
+        assertThat(paramName + "= ?").isEqualTo(value.toString());
 
         params.bind(paramName, paramValue);
-        assertEquals(paramName + "= " + paramValue, value.toString());
-
+        assertThat(paramName + "= " + paramValue).isEqualTo(value.toString());
     }
-
 }

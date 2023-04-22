@@ -14,42 +14,43 @@
  *   Otavio Santana
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class ByteReaderTest {
+class ByteReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new ByteReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new ByteReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(Byte.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(Byte.class));
-        assertFalse(valueReader.test(AtomicBoolean.class));
-        assertFalse(valueReader.test(Boolean.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.test(AtomicBoolean.class)).as("AtomicBoolean is not compatible").isFalse();
+            softly.assertThat(valueReader.test(Boolean.class)).as("Boolean is not compatible").isFalse();
+        });
     }
 
     @Test
-    public void shouldConvert() {
-        Byte number = (byte) 10;
-        assertEquals(number, valueReader.read(Byte.class, 10.00));
-        assertEquals(Byte.valueOf((byte) 10), valueReader.read(Byte.class, 10.00));
-        assertEquals(Byte.valueOf((byte) 10), valueReader.read(Byte.class, "10"));
+    @DisplayName("Should be able to convert the value to Byte")
+    void shouldConvert() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(Byte.class, 10.00)).as("Byte conversion").isEqualTo((byte) 10);
+            softly.assertThat(valueReader.read(Byte.class, 10.00)).as("Number conversion").isEqualTo(Byte.valueOf((byte) 10));
+            softly.assertThat(valueReader.read(Byte.class, "10")).as("String conversion").isEqualTo(Byte.valueOf((byte) 10));
+        });
     }
-
-
 }

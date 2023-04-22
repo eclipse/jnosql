@@ -12,124 +12,143 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.reader;
 
+import org.eclipse.jnosql.communication.Entry;
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.TypeReferenceReader;
 import org.eclipse.jnosql.communication.Value;
-import org.eclipse.jnosql.communication.Entry;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Stream;
 
 import static java.util.Collections.singletonMap;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-public class MapTypeReferenceReaderTest {
+class MapTypeReferenceReaderTest {
 
     private final TypeReferenceReader referenceReader = new MapTypeReferenceReader();
 
-
-    @Test
-    public void shouldBeCompatible() {
-
-        assertTrue(referenceReader.test(new TypeReference<Map<String, String>>(){}));
-        assertTrue(referenceReader.test(new TypeReference<Map<Long, Integer>>(){}));
-
+    @DisplayName("Should be compatible")
+    @ParameterizedTest(name = "compatible {0}")
+    @MethodSource("compatibleTypeReferences")
+    void shouldBeCompatible(TypeReference<?> type) {
+        assertThat(referenceReader.test(type)).isTrue();
     }
 
-
-    @Test
-    public void shouldNotBeCompatible() {
-        assertFalse(referenceReader.test(new TypeReference<ArrayList<BigDecimal>>(){}));
-        assertFalse(referenceReader.test(new TypeReference<String>(){}));
-        assertFalse(referenceReader.test(new TypeReference<Set<String>>(){}));
-        assertFalse(referenceReader.test(new TypeReference<List<List<String>>>(){}));
-        assertFalse(referenceReader.test(new TypeReference<Queue<String>>(){}));
-        assertFalse(referenceReader.test(new TypeReference<Map<Integer, List<String>>>(){}));
+    @DisplayName("Should be incompatible")
+    @ParameterizedTest(name = "is incompatible: {0}")
+    @MethodSource("incompatibleTypeReferences")
+    void shouldNotBeCompatible(TypeReference<?> type) {
+        assertThat(referenceReader.test(type)).isFalse();
     }
 
     @Test
-    public void shouldConvert() {
-        assertEquals(new HashMap<>(singletonMap("123", "123")), referenceReader.convert(new TypeReference<Map<String, String>>(){}, singletonMap(123, 123L)));
-        assertEquals(singletonMap(123L, 123), referenceReader.convert(new TypeReference<Map<Long, Integer>>(){}, singletonMap("123", "123")));
+    @DisplayName("Should be able to convert the value to Map")
+    void shouldConvert() {
+        assertSoftly(softly -> {
+            softly.assertThat(referenceReader.convert(new TypeReference<Map<String, String>>() {
+                    }, singletonMap(123, 123L))).as("TypeReference<Map<String, String>> conversion")
+                    .isEqualTo(new HashMap<>(singletonMap("123", "123")));
+
+            softly.assertThat(referenceReader.convert(new TypeReference<Map<Long, Integer>>() {
+                    }, singletonMap(123, 123L))).as("TypeReference<Map<Long, Integer>> conversion")
+                    .isEqualTo(new HashMap<>(singletonMap(123L, 123)));
+        });
     }
 
     @Test
-    public void shouldCreateMutableMap() {
+    @DisplayName("Should create mutable Map")
+    void shouldCreateMutableMap() {
         Map<String, String> map = referenceReader.convert(new TypeReference<>() {
         }, singletonMap(123, 123L));
+
         map.put("23", "123");
-        assertEquals(2, map.size());
+
+        assertThat(map).hasSize(2).containsOnly(entry("123", "123"), entry("23", "123"));
     }
 
-
     @Test
-    public void shouldMutableMap2() {
+    @DisplayName("Should create mutable between Maps")
+    void shouldMutableMap2() {
         Map<Integer, Long> oldMap = new HashMap<>();
         oldMap.put(1, 234L);
         oldMap.put(2, 2345L);
+
         Map<String, String> map = referenceReader.convert(new TypeReference<>() {
         }, oldMap);
 
         map.put("23", "123");
 
-        assertEquals(3, map.size());
+        assertThat(map).hasSize(3).containsOnly(entry("1", "234"), entry("2", "2345"), entry("23", "123"));
     }
 
     @Test
-    public void shouldConvertEntryToMap() {
+    @DisplayName("Should convert Entry to Map")
+    void shouldConvertEntryToMap() {
         Entry entry = new EntryTest("key", Value.of("value"));
+
         Map<String, String> map = referenceReader.convert(new TypeReference<>() {
         }, Collections.singletonList(entry));
 
-        assertEquals(1, map.size());
-        assertEquals("value", map.get("key"));
+        assertThat(map).hasSize(1).contains(entry("key", "value"));
     }
 
     @Test
-    public void shouldConvertSubEntryToMap() {
+    @DisplayName("Should convert SubEntry to Map")
+    void shouldConvertSubEntryToMap() {
         Entry subEntry = new EntryTest("key", Value.of("value"));
         Entry entry = new EntryTest("key", Value.of(subEntry));
 
         Map<String, Map<String, String>> map = referenceReader.convert(new TypeReference<>() {
         }, Collections.singletonList(entry));
-        assertEquals(1, map.size());
+
         Map<String, String> subMap = map.get("key");
-        assertEquals("value", subMap.get("key"));
+
+        assertSoftly(softly -> {
+            softly.assertThat(map).as("Map is correctly converted").hasSize(1).contains(entry("key", Map.of("key", "value")));
+            softly.assertThat(subMap).as("SubMap is correctly converted").hasSize(1).contains(entry("key", "value"));
+        });
     }
 
+    static Stream<Arguments> compatibleTypeReferences() {
+        return Stream.of(
+                arguments(new TypeReference<Map<String, String>>() {
+                }),
+                arguments(new TypeReference<Map<Long, Integer>>() {
+                })
+        );
+    }
 
-    public static class EntryTest implements Entry {
+    static Stream<Arguments> incompatibleTypeReferences() {
+        return Stream.of(
+                arguments(new TypeReference<ArrayList<BigDecimal>>() {
+                }),
+                arguments(new TypeReference<String>() {
+                }),
+                arguments(new TypeReference<Set<String>>() {
+                }),
+                arguments(new TypeReference<List<List<String>>>() {
+                }),
+                arguments(new TypeReference<Queue<String>>() {
+                }),
+                arguments(new TypeReference<Map<Integer, List<String>>>() {
+                })
+        );
+    }
 
-        private final String name;
-
-        private final Value value;
-
-        public EntryTest(String name, Value value) {
-            this.name = name;
-            this.value = value;
-        }
-
-        @Override
-        public String name() {
-            return name;
-        }
-
-        @Override
-        public Value value() {
-            return value;
-        }
+    public record EntryTest(String name, Value value) implements Entry {
     }
 }

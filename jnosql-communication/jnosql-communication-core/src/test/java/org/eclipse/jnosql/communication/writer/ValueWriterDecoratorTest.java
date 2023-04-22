@@ -12,45 +12,62 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.writer;
 
 import org.eclipse.jnosql.communication.ValueWriter;
 import org.eclipse.jnosql.communication.ValueWriterDecorator;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.temporal.Temporal;
+import java.util.Collections;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class ValueWriterDecoratorTest {
+class ValueWriterDecoratorTest {
 
-    private ValueWriter valueWriter;
+    @SuppressWarnings("rawtypes")
+    private final ValueWriter valueWriter = ValueWriterDecorator.getInstance();
 
-    @BeforeEach
-    public void setUp() {
-        valueWriter = ValueWriterDecorator.getInstance();
-    }
-
-    @Test
-    public void shouldVerifyCompatibility() {
-        assertTrue(valueWriter.test(Optional.class));
-        assertTrue(valueWriter.test(Temporal.class));
-        assertFalse(valueWriter.test(Boolean.class));
-    }
-
+    @ParameterizedTest(name = "must be compatible to {0}")
+    @DisplayName("Should be able to verify the test compatibility")
+    @ValueSource(classes = {Enum.class, Optional.class, Temporal.class})
     @SuppressWarnings("unchecked")
+    void shouldVerifyCompatibility(Class<?> supportedClass) {
+        assertThat(valueWriter.test(supportedClass)).isTrue();
+    }
+
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to check the test object incompatibility")
+    @SuppressWarnings("unchecked")
+    void shouldVerifyIncompatibility() {
+        assertThat(valueWriter.test(Boolean.class)).isFalse();
+    }
+
+
+    @Test
+    @DisplayName("Should be able to convert the result")
+    @SuppressWarnings("unchecked")
+    void shouldConvert() {
         String diana = "diana";
-        Optional<String> optional = Optional.of(diana);
+        Optional<String> optional = Optional.of("diana");
+
         Object result = valueWriter.write(optional);
-        assertEquals(diana, result);
+        assertThat(diana).isEqualTo(result);
+    }
+
+    @Test
+    @DisplayName("Should throw UnsupportedOperationException when type is not supported")
+    @SuppressWarnings("unchecked")
+    void shouldThrowUnsupportedOperationExceptionWhenTypeIsNotSupported() {
+        assertThatThrownBy(() -> valueWriter.write(Collections.EMPTY_LIST)).isInstanceOf(UnsupportedOperationException.class)
+                .hasMessage("The type class java.util.Collections$EmptyList is not supported yet");
     }
 }

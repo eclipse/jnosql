@@ -12,43 +12,41 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-public class FloatReaderTest {
+class FloatReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new FloatReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new FloatReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(Float.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(Float.class));
-        assertFalse(valueReader.test(AtomicBoolean.class));
-        assertFalse(valueReader.test(Boolean.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertThat(valueReader.test(Boolean.class)).isFalse();
     }
 
     @Test
-    public void shouldConvert() {
-        Float number = 10F;
-        assertEquals(number, valueReader.read(Float.class, number));
-        assertEquals(Float.valueOf(10F), valueReader.read(Float.class, 10.00));
-        assertEquals(Float.valueOf(10F), valueReader.read(Float.class, "10"));
+    @DisplayName("Should be able to convert the value to ExampleNumber")
+    void shouldConvert() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(Float.class, 10F)).as("Float conversion").isEqualTo(10F);
+            softly.assertThat(valueReader.read(Float.class, 10.00)).as("Number conversion").isEqualTo(Float.valueOf(10F));
+            softly.assertThat(valueReader.read(Float.class, "10")).as("String conversion").isEqualTo(Float.valueOf(10F));
+        });
     }
-
-
 }

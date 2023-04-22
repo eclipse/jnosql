@@ -12,45 +12,49 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class AtomicLongReaderTest {
+class AtomicLongReaderTest {
 
-    private ValueReader valueReader;
+    private final ValueReader valueReader = new AtomicLongReader();
 
-    @BeforeEach
-    public void init() {
-        valueReader = new AtomicLongReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(AtomicLong.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(AtomicLong.class));
-        assertFalse(valueReader.test(AtomicBoolean.class));
-        assertFalse(valueReader.test(Boolean.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.test(AtomicBoolean.class)).as("AtomicBoolean is not compatible").isFalse();
+            softly.assertThat(valueReader.test(Boolean.class)).as("Boolean is not compatible").isFalse();
+        });
     }
 
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert the value to AtomicLong")
+    void shouldConvert() {
         AtomicLong atomicLong = new AtomicLong(9L);
-        assertEquals(atomicLong, valueReader.read(AtomicLong.class, atomicLong));
-        assertEquals(atomicLong.get(), valueReader.read(AtomicLong.class, 9.00).get());
-        assertEquals(atomicLong.get(), valueReader.read(AtomicLong.class, "9").get());
+
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(AtomicLong.class, atomicLong)).as("AtomicLong conversion").isEqualTo(atomicLong);
+            softly.assertThat(valueReader.read(AtomicLong.class, 9.00).get()).as("Number conversion").isEqualTo(atomicLong.get());
+            softly.assertThat(valueReader.read(AtomicLong.class, "9").get()).as("String conversion").isEqualTo(9L);
+        });
     }
-
-
 }
