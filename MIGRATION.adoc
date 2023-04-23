@@ -1,6 +1,24 @@
 # Migration guide
 :toc: auto
 
+== Eclipse JNoSQL 1.0.0-b7 Migration Guide
+
+Migrating to the next version of Eclipse JNoSQL is a straightforward process. The primary change in this new version is the removal of the Eclipse JNoSQL driver, which has been replaced by the jnosql-databases repository dependency. The following is a step-by-step guide to help you migrate to the new version:
+
+1. Update the JNoSQL version in your project to the latest version. You can do this by updating the version number in your Maven or Gradle build file or by downloading the new version and replacing the old one.
+
+2. Remove the Eclipse JNoSQL driver dependency from your project. This can be done by removing the dependency declaration from your build file or by deleting the driver library from your project's classpath.
+
+3. Add the jnosql-databases repository dependency to your project. You can do this by adding the appropriate dependency declaration to your build file or by downloading the repository and adding it to your project's classpath.
+
+4. Check the https://github.com/eclipse/jnosql-databases/blob/main/README.adoc[README] file of https://github.com/eclipse/jnosql-databases/blob/main/[jnosql-database] for the new dependency to the database target. This step is essential as it will help you understand how to use the new repository dependency to interact with your target database. The README file will provide you with detailed instructions on how to use the repository dependency to perform database operations.
+
+5. Modify your code to use the new repository dependency. Once you have updated your project and added the new dependency, you need to modify your code to use it. This will involve updating your database access code to use the new repository dependency instead of the Eclipse JNoSQL driver.
+
+6. Test your application to ensure everything is working correctly. Once you have made the necessary changes, you need to test your application to ensure everything is working correctly. This will involve running your application and verifying that it can still access and manipulate your target database.
+
+In conclusion, migrating to the next version of Eclipse JNoSQL is a simple process that involves removing the Eclipse JNoSQL driver dependency and replacing it with the jnosql-databases repository dependency. By following the steps outlined above, you should be able to migrate to the new version without any issues.
+
 == Eclipse JNoSQL 1.0.0-b6 Migration Guide
 
 This migration guide explains how to migrate from Eclipse JNoSQL 1.0.0-b6 to the latest version, taking into account the following two significant changes:

@@ -1,0 +1,35 @@
+name: New database support 🆕
+description: Support a new database
+labels: 'enhancement'
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### New database support 🆕
+        🔍  Before opening a new issue please search existing issues at https://github.com/eclipse/jnosql/issues
+        🤔  To make it easier for us to help you, please include as much useful information as possible.
+
+  - type: input
+    id: database_name
+    attributes:
+      label: Database name
+      description: The name of the database lacking support in JNoSQL
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_details
+    attributes:
+      label: Database details
+      description: Briefly explain some details about this new database, such as features, technology maturity, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra_details
+    attributes:
+      label: Relevance
+      description: Tell us why you consider supporting this database important
+    validations:
+      required: true
