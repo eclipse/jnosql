@@ -713,7 +713,8 @@ Here are the badges of this project:
 == Testing Guideline
 
 This project has a testing guideline that will help you understand Jakarta Data's testing practices.
-Please take a look at the _TESTING-GUIDELINE_ file.
+This project's testing guideline will help you understand Jakarta Data's testing practices.
+Please take a look link:TESTING-GUIDELINE[at the file]
 
 == Migration
 
