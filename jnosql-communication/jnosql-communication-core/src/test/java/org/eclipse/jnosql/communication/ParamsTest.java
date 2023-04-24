@@ -8,6 +8,7 @@
  *  You may elect to redistribute this code under either of these licenses.
  *  Contributors:
  *  Maximillian Arruda
+ *  Elias Nogueira
  */
 package org.eclipse.jnosql.communication;
 
@@ -15,42 +16,40 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class ParamsTest {
 
     @Test
-    @DisplayName("should create a new Params from a method factory Params.newParams()")
+    @DisplayName("Should create a new Params from a method factory Params.newParams()")
     void testNewParams() {
         Params params = Params.newParams();
-        assertNotNull(params);
+        assertThat(params).isInstanceOf(Params.class).isNotNull();
     }
 
     @Test
-    @DisplayName("should not use Value when is invalid")
+    @DisplayName("Should not use Value when is invalid")
     public void shouldNotUseValueWhenIsInvalid() {
-        Params params = Params.newParams();
-        var param = params.add(UUID.randomUUID().toString());
+        String paramValue = UUID.randomUUID().toString();
 
-        assertThrows(QueryException.class, param::get);
-        assertThrows(QueryException.class, () -> param.get(String.class));
+        Params params = Params.newParams();
+        var param = params.add(paramValue);
+
+        assertSoftly(softly -> {
+            softly.assertThatThrownBy(param::get).isInstanceOf(QueryException.class)
+                    .hasMessage(String.format("The value of parameter %s cannot be null", paramValue));
+
+            softly.assertThatThrownBy(() -> param.get(String.class)).isInstanceOf(QueryException.class)
+                    .hasMessage(String.format("The value of parameter %s cannot be null", paramValue));
+        });
     }
 
     @Nested
-    @DisplayName("given an empty Params")
+    @DisplayName("Given an empty Params")
     class GivenEmptyParamsTest {
 
         @Test
@@ -61,18 +60,17 @@ class ParamsTest {
         }
 
         @Test
-        @DisplayName("should isNotEmpty() returns false")
+        @DisplayName("and isNotEmpty() returns false")
         void testIsNotEmpty() {
             Params params = Params.newParams();
-            assertFalse(params.isNotEmpty());
+            assertThat(params.isNotEmpty()).isFalse();
         }
 
         @Test
-        @DisplayName("should getParametersNames() returns an empty List<String>")
+        @DisplayName("and getParametersNames() should returns an empty List<String>")
         void testGetParametersNames() {
             Params params = Params.newParams();
-            assertNotNull(params.getParametersNames());
-            assertThat(params.getParametersNames()).isEmpty();
+            assertThat(params.getParametersNames()).isNotNull().isEmpty();
         }
 
         @Nested
@@ -85,7 +83,8 @@ class ParamsTest {
                 Params params = Params.newParams();
                 var paramName = UUID.randomUUID().toString();
                 var value = params.add(paramName);
-                assertNotNull(value);
+
+                assertThat(value).isNotNull();
             }
 
             @Test
@@ -94,12 +93,14 @@ class ParamsTest {
                 Params params = Params.newParams();
                 var paramName = UUID.randomUUID().toString();
                 var value1 = params.add(paramName);
-                assertNotNull(value1);
-                var value2 = params.add(paramName);
-                assertNotNull(value2);
-                assertFalse(Objects.equals(value1, value2));
-            }
+                assertThat(value1).isNotNull();
 
+                var value2 = params.add(paramName);
+                assertSoftly(softly -> {
+                    softly.assertThat(value2).as("value is not null").isNotNull();
+                    softly.assertThat(Objects.equals(value1, value2)).as("values are not equals").isFalse();
+                });
+            }
         }
 
         @Nested
@@ -111,11 +112,13 @@ class ParamsTest {
             void testBind() {
                 Params params = Params.newParams();
                 params.bind(UUID.randomUUID().toString(), new Object());
-                assertFalse(params.isNotEmpty());
-                assertTrue(params.getParametersNames().isEmpty());
+
+                assertSoftly(softly -> {
+                    softly.assertThat(params.isNotEmpty()).as("params are not empty").isFalse();
+                    softly.assertThat(params.getParametersNames().isEmpty()).as("parameter names are empty").isTrue();
+                });
             }
         }
-
     }
 
     @Nested
@@ -132,7 +135,7 @@ class ParamsTest {
                 this.params = Params.newParams();
 
                 final List<String> parameterNameList = new ArrayList<>();
-                final List<Map<String, Value>> parameterList = new ArrayList<Map<String, Value>>();
+                final List<Map<String, Value>> parameterList = new ArrayList<>();
 
                 IntStream.range(0, 3)
                         .boxed()
@@ -146,7 +149,6 @@ class ParamsTest {
                 this.parameterList = Collections.unmodifiableList(parameterList);
                 this.parameterNameList = Collections.unmodifiableList(parameterNameList);
             }
-
         }
 
         Scenario newScenario() {
@@ -158,25 +160,22 @@ class ParamsTest {
         void testToString() {
             Scenario scenario = newScenario();
             Params params = scenario.params;
-            assertThat(params.toString())
-                    .isEqualTo(scenario.parameterNameList
-                            .stream()
-                            .collect(Collectors.joining(",")));
+
+            assertThat(params.toString()).isEqualTo(String.join(",", scenario.parameterNameList));
         }
 
         @Test
         @DisplayName("should isNotEmpty() returns true")
         void testIsNotEmpty() {
             Params params = newScenario().params;
-            assertTrue(params.isNotEmpty());
+            assertThat(params.isNotEmpty()).isTrue();
         }
 
         @Test
         @DisplayName("should getParametersNames() returns an non empty List<String>")
         void testGetParametersNames() {
             Params params = newScenario().params;
-            assertNotNull(params.getParametersNames());
-            assertThat(params.getParametersNames()).isNotEmpty();
+            assertThat(params.getParametersNames()).isNotNull().isNotEmpty();
         }
 
         @Nested
@@ -189,7 +188,8 @@ class ParamsTest {
                 Params params = newScenario().params;
                 var paramName = UUID.randomUUID().toString();
                 var value = params.add(paramName);
-                assertNotNull(value);
+
+                assertThat(value).isNotNull();
             }
 
             @Test
@@ -198,12 +198,14 @@ class ParamsTest {
                 Params params = newScenario().params;
                 var paramName = UUID.randomUUID().toString();
                 var value1 = params.add(paramName);
-                assertNotNull(value1);
-                var value2 = params.add(paramName);
-                assertNotNull(value2);
-                assertFalse(Objects.equals(value1, value2));
-            }
+                assertThat(value1).isNotNull();
 
+                var value2 = params.add(paramName);
+                assertSoftly(softly -> {
+                    softly.assertThat(value2).as("value is not null").isNotNull();
+                    softly.assertThat(Objects.equals(value1, value2)).as("values are not equal").isFalse();
+                });
+            }
         }
 
         @Nested
@@ -217,6 +219,7 @@ class ParamsTest {
                 Params params = scenario.params;
                 String newParameter = UUID.randomUUID().toString();
                 params.bind(newParameter, new Object());
+
                 assertThat(params.getParametersNames()).doesNotContain(newParameter);
             }
 
@@ -231,7 +234,7 @@ class ParamsTest {
                 Object newParamValue = UUID.randomUUID().toString();
                 params.bind(existParamName, newParamValue);
 
-                assertTrue(params.isNotEmpty());
+                assertThat(params.isNotEmpty()).isTrue();
 
                 Object actualParamValue = scenario.parameterList.stream()
                         .filter(item -> item.containsKey(existParamName))
@@ -242,9 +245,6 @@ class ParamsTest {
 
                 assertThat(newParamValue).isEqualTo(actualParamValue);
             }
-
         }
-
     }
-
 }

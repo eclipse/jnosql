@@ -12,41 +12,47 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.ValueReader;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class ShortValueReaderTest {
 
+    private final ValueReader valueReader = new ShortReader();
 
-    private ValueReader valueReader;
-
-    @BeforeEach
-    public void init() {
-        valueReader = new ShortReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(valueReader.test(Short.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(valueReader.test(Short.class));
-        assertFalse(valueReader.test(AtomicBoolean.class));
-        assertFalse(valueReader.test(Boolean.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.test(AtomicBoolean.class)).as("AtomicBoolean is not compatible").isFalse();
+            softly.assertThat(valueReader.test(Boolean.class)).as("Boolean is not compatible").isFalse();
+        });
     }
 
     @Test
-    public void shouldConvert() {
-        Integer number = 10;
-        assertEquals(Short.valueOf((short) 10), valueReader.read(Integer.class, number));
-        assertEquals(Short.valueOf((short) 10), valueReader.read(Integer.class, 10.00));
-        assertEquals(Short.valueOf((short) 10), valueReader.read(Integer.class, "10"));
-    }
+    @DisplayName("Should be able to convert")
+    void shouldConvert() {
+        assertSoftly(softly -> {
+            softly.assertThat(valueReader.read(Short.class, 10)).as("Short conversion").isEqualTo(Short.valueOf((short) 10));
+            softly.assertThat(valueReader.read(Number.class, 10.00)).as("Number conversion").isEqualTo((short) 10);
+            softly.assertThat(valueReader.read(Number.class, "10")).as("Default conversion").isEqualTo((short) 10);
+        });
 
+    }
 }

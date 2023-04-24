@@ -12,45 +12,60 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.reader;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class LocalDateTimeReaderTest {
+class LocalDateTimeReaderTest {
 
-    private LocalDateTimeReader dateReader;
+    private final LocalDateTimeReader dateReader = new LocalDateTimeReader();
 
-    @BeforeEach
-    public void init() {
-        dateReader = new LocalDateTimeReader();
+    @Test
+    @DisplayName("Should be compatible")
+    void shouldValidateCompatibility() {
+        assertThat(dateReader.test(LocalDateTime.class)).isTrue();
     }
 
     @Test
-    public void shouldValidateCompatibility() {
-        assertTrue(dateReader.test(LocalDateTime.class));
+    @DisplayName("Should be incompatible")
+    void shouldValidateIncompatibility() {
+        assertThat(dateReader.test(String.class)).isFalse();
     }
 
+    //TODO: extra review here as the inversion of the assertions was hiding possible cast exceptions
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert the value to LocalDate")
+    void shouldConvert() {
         final LocalDateTime now = LocalDateTime.now();
         final Date date = new Date();
         final Calendar calendar = Calendar.getInstance();
-        assertEquals(now, dateReader.read(LocalDate.class, now));
-        assertEquals(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), dateReader.read(LocalDate.class, date));
-        assertEquals(calendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), dateReader.read(LocalDate.class, calendar));
-        assertEquals(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), dateReader.read(LocalDate.class, date.getTime()));
-    }
 
+        assertSoftly(softly -> {
+            softly.assertThat(dateReader.read(LocalDateTime.class, now)).as("LocalDateTime conversion").isEqualTo(now);
+
+            softly.assertThat(dateReader.read(LocalDateTime.class, now)).as("Date conversion")
+                    .isEqualToIgnoringSeconds(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+
+            softly.assertThat(dateReader.read(LocalDateTime.class, now)).as("Calendar conversion")
+                    .isEqualToIgnoringSeconds(calendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+
+            softly.assertThat(dateReader.read(LocalDateTime.class, date.getTime())).as("Number conversion")
+                    .isEqualToIgnoringSeconds(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+
+            softly.assertThat(dateReader.read(LocalDateTime.class, now.toString())).as("Default conversion")
+                    .isEqualToIgnoringSeconds(now);
+        });
+    }
 }

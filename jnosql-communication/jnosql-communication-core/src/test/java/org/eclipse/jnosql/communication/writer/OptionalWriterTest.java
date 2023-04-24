@@ -12,43 +12,43 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
-
 package org.eclipse.jnosql.communication.writer;
 
 import org.eclipse.jnosql.communication.ValueWriter;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
+class OptionalWriterTest {
 
-public class OptionalWriterTest {
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private final ValueWriter<Optional, String> valueWriter = new OptionalValueWriter();
 
-    private ValueWriter<Optional, String> valueWriter;
-
-    @SuppressWarnings("unchecked")
-    @BeforeEach
-    public void setUp() {
-        valueWriter = new OptionalValueWriter();
+    @Test
+    @DisplayName("Should be able to verify compatibility with Optional")
+    void shouldVerifyCompatibility() {
+        assertThat(valueWriter.test(Optional.class)).isTrue();
     }
 
     @Test
-    public void shouldVerifyCompatibility() {
-        assertTrue(valueWriter.test(Optional.class));
-        assertFalse(valueWriter.test(Boolean.class));
+    @DisplayName("Should be able to verify the class incompatibility")
+    void shouldVerifyIncompatibility() {
+        assertThat(valueWriter.test(Boolean.class)).isFalse();
     }
 
     @Test
-    public void shouldConvert() {
+    @DisplayName("Should be able to convert the result")
+    void shouldConvert() {
         String diana = "diana";
         Optional<String> optional = Optional.of(diana);
         String result = valueWriter.write(optional);
-        assertEquals(diana, result);
+
+        assertThat(diana).isEqualTo(result);
     }
 }

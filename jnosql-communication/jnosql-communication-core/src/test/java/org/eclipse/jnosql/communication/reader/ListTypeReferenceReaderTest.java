@@ -12,14 +12,18 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.reader;
 
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.TypeReferenceReader;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -29,86 +33,110 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-
-public class ListTypeReferenceReaderTest {
+class ListTypeReferenceReaderTest {
 
     private final TypeReferenceReader referenceReader = new ListTypeReferenceReader();
+    private final String firstValue = "123";
+    private final String secondValue = "123";
 
-    @Test
-    public void shouldBeCompatible() {
-
-
-        assertTrue(referenceReader.test(new TypeReference<List<String>>() {
-        }));
-        assertTrue(referenceReader.test(new TypeReference<List<Long>>() {
-        }));
-
-        assertTrue(referenceReader.test(new TypeReference<Collection<String>>() {
-        }));
-        assertTrue(referenceReader.test(new TypeReference<Collection<Long>>() {
-        }));
-        assertTrue(referenceReader.test(new TypeReference<Iterable<String>>() {
-        }));
-        assertTrue(referenceReader.test(new TypeReference<Iterable<Long>>() {
-        }));
+    @DisplayName("Should be compatible")
+    @ParameterizedTest(name = "is compatible: {0}")
+    @MethodSource("compatibleTypeReferences")
+    void shouldBeCompatible(TypeReference<?> type) {
+        assertThat(referenceReader.test(type)).isTrue();
     }
 
-
-    @Test
-    public void shouldNotBeCompatible() {
-        assertFalse(referenceReader.test(new TypeReference<ArrayList<BigDecimal>>() {
-        }));
-        assertFalse(referenceReader.test(new TypeReference<String>() {
-        }));
-        assertFalse(referenceReader.test(new TypeReference<Set<String>>() {
-        }));
-        assertFalse(referenceReader.test(new TypeReference<List<List<String>>>() {
-        }));
-        assertFalse(referenceReader.test(new TypeReference<Queue<String>>() {
-        }));
-        assertFalse(referenceReader.test(new TypeReference<Map<Integer, String>>() {
-        }));
-    }
-
-
-    @Test
-    public void shouldConvert() {
-        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<List<String>>() {
-        }, "123"));
-        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<List<Long>>() {
-        }, "123"));
-
-        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<Collection<String>>() {
-        }, "123"));
-        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<Collection<Long>>() {
-        }, "123"));
-
-        assertEquals(singletonList("123"), referenceReader.convert(new TypeReference<Iterable<String>>() {
-        }, "123"));
-        assertEquals(singletonList(123L), referenceReader.convert(new TypeReference<Iterable<Long>>() {
-        }, "123"));
+    @DisplayName("Should be incompatible")
+    @ParameterizedTest(name = "is incompatible: {0}")
+    @MethodSource("incompatibleTypeReferences")
+    void shouldNotBeCompatible(TypeReference<?> type) {
+        assertThat(referenceReader.test(type)).isFalse();
     }
 
     @Test
-    public void shouldConvertAndBeMutable() {
+    @DisplayName("Should be able to convert the value to Integer")
+    void shouldConvert() {
+        assertSoftly(softly -> {
+            softly.assertThat(referenceReader.convert(new TypeReference<List<String>>() {
+            }, firstValue)).as("TypeReference<List<String>> conversion").isEqualTo(singletonList(firstValue));
+
+            softly.assertThat(referenceReader.convert(new TypeReference<List<Long>>() {
+            }, Long.valueOf(firstValue))).as("TypeReference<List<Long>> conversion").isEqualTo(singletonList(Long.valueOf(firstValue)));
+
+            softly.assertThat(referenceReader.convert(new TypeReference<Collection<String>>() {
+            }, firstValue)).as("TypeReference<Collection<String>> conversion").isEqualTo(singletonList(firstValue));
+
+            softly.assertThat(referenceReader.convert(new TypeReference<Collection<Long>>() {
+            }, firstValue)).as("TypeReference<Collection<Long>> conversion").isEqualTo(singletonList(Long.valueOf(firstValue)));
+
+            softly.assertThat(referenceReader.convert(new TypeReference<Iterable<String>>() {
+            }, firstValue)).as("TypeReference<Iterable<String>> conversion").isEqualTo(singletonList(firstValue));
+
+            softly.assertThat(referenceReader.convert(new TypeReference<Iterable<Long>>() {
+            }, firstValue)).as("TypeReference<Iterable<Long>> conversion").isEqualTo(singletonList(Long.valueOf(firstValue)));
+        });
+    }
+
+    @Test
+    @DisplayName("Should be able to convert and be mutable using String as value")
+    void shouldConvertAndBeMutable() {
         List<String> strings = referenceReader.convert(new TypeReference<>() {
-        }, "123");
-        strings.add("456");
-        Assertions.assertEquals(2, strings.size());
+        }, firstValue);
+
+        strings.add(secondValue);
+
+        assertThat(strings).hasSize(2).contains(firstValue, secondValue);
     }
 
     @Test
-    public void shouldConvertAndBeMutable2() {
+    @DisplayName("Should be able to convert and be mutable using Arrays as value")
+    void shouldConvertAndBeMutable2() {
         List<String> strings = referenceReader.convert(new TypeReference<>() {
-        }, Arrays.asList("123", "32"));
-        strings.add("456");
-        Assertions.assertEquals(3, strings.size());
+        }, Arrays.asList(firstValue, secondValue));
+
+        strings.add("32");
+
+        assertThat(strings).hasSize(3).contains(firstValue, secondValue, "32");
     }
 
+    static Stream<Arguments> compatibleTypeReferences() {
+        return Stream.of(
+                arguments(new TypeReference<List<String>>() {
+                }),
+                arguments(new TypeReference<List<Long>>() {
+                }),
+                arguments(new TypeReference<Collection<String>>() {
+                }),
+                arguments(new TypeReference<Iterable<String>>() {
+                }),
+                arguments(new TypeReference<Iterable<Long>>() {
+                })
+        );
+    }
+
+    static Stream<Arguments> incompatibleTypeReferences() {
+        return Stream.of(
+                arguments(new TypeReference<ArrayList<BigDecimal>>() {
+                }),
+                arguments(new TypeReference<String>() {
+                }),
+                arguments(new TypeReference<Set<String>>() {
+                }),
+                arguments(new TypeReference<List<List<String>>>() {
+                }),
+                arguments(new TypeReference<Queue<String>>() {
+                }),
+                arguments(new TypeReference<Queue<String>>() {
+                }),
+                arguments(new TypeReference<Map<Integer, String>>() {
+                })
+        );
+    }
 }

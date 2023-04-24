@@ -662,6 +662,10 @@ Here are the badges of this project:
 | image::https://sonarcloud.io/api/project_badges/measure?project=org.eclipse.jnosql%3Ajakarta-nosql-parent&metric=security_rating[window=_blank, link=https://sonarcloud.io/summary/new_code?id=org.eclipse.jnosql%3Ajakarta-nosql-parent]
 |===
 
+== Testing Guideline
+
+This project's testing guideline will help you understand Jakarta Data's testing practices.
+Please take a look link:TESTING-GUIDELINE[at the file]
 
 == Migration
 
