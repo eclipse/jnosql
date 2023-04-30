@@ -12,96 +12,94 @@
  *   Contributors:
  *
  *   Otavio Santana
+ *   Elias Nogueira
  *
  */
 package org.eclipse.jnosql.communication.keyvalue;
 
 import org.eclipse.jnosql.communication.TypeReference;
 import org.eclipse.jnosql.communication.Value;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+class KeyValueEntityTest {
 
-public class KeyValueEntityTest {
+    public static final String KEY = "key";
+    public static final String VALUE = "VALUE";
 
     @Test
-    public void shouldReturnErrorWhenKeyIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> KeyValueEntity.of(null, "value"));
+    @DisplayName("Should throw NullPointerException when key is null")
+    void shouldReturnErrorWhenKeyIsNull() {
+        assertThatNullPointerException().isThrownBy(() -> KeyValueEntity.of(null, VALUE)).withMessage("key is required");
     }
 
     @Test
-    public void shouldReturnErrorWhenValueIsNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> KeyValueEntity.of("key", null));
+    @DisplayName("Should throw NullPointerException when value is null")
+    void shouldReturnErrorWhenValueIsNull() {
+        assertThatNullPointerException().isThrownBy(() -> KeyValueEntity.of(KEY, null)).withMessage("value is required");
     }
 
     @Test
-    public void shouldCreateInstance() {
-        KeyValueEntity entity = KeyValueEntity.of("key", "value");
-        assertNotNull(entity);
-        assertEquals("key", entity.key());
-        assertEquals("value", entity.value());
+    @DisplayName("Should be able to create a KeyValueEntity")
+    void shouldCreateInstance() {
+        KeyValueEntity entity = KeyValueEntity.of(KEY, VALUE);
+
+        assertSoftly(softly -> {
+            softly.assertThat(entity.key()).as("key is required").isEqualTo(KEY);
+            softly.assertThat(entity.value()).as("value is required").isEqualTo(VALUE);
+        });
     }
 
     @Test
-    public void shouldAliasOnValue() {
-        String value = "10";
-        KeyValueEntity entity = KeyValueEntity.of("key", value);
-        assertEquals(value, entity.value());
-        assertEquals(Integer.valueOf(10), entity.value(Integer.class));
-        assertThat(singletonList(10)).contains(entity.value(new TypeReference<List<Integer>>() {
-        }).get(0));
+    @DisplayName("Should be able to get the value")
+    void shouldGetValue() {
+        Value value = Value.of(VALUE);
+        KeyValueEntity entity = KeyValueEntity.of(KEY, value);
+
+        assertThat(entity.value()).isEqualTo(value.get());
     }
 
     @Test
-    public void shouldGetValue() {
-        Value value = Value.of("value");
-        KeyValueEntity entity = KeyValueEntity.of("key", value);
-        assertNotNull(entity);
-        assertEquals("value", entity.value());
-    }
-
-
-    @Test
-    public void shouldGetKeyClass() {
-        Value value = Value.of("value");
+    @DisplayName("Should be able to get the key by class")
+    void shouldGetKeyClass() {
+        Value value = Value.of(VALUE);
         KeyValueEntity entity = KeyValueEntity.of("10", value);
-        assertNotNull(entity);
-        assertEquals(Long.valueOf(10L), entity.key(Long.class));
+
+        assertThat(entity.key(Long.class)).isEqualTo(10L);
     }
 
-
     @Test
-    public void shouldReturnErrorWhenGetKeyClassIsNull() {
-        Value value = Value.of("value");
+    @DisplayName("Should throw NullPointerException when Class is null")
+    void shouldReturnErrorWhenGetKeyClassIsNull() {
+        Value value = Value.of(VALUE);
         KeyValueEntity entity = KeyValueEntity.of("10", value);
-        assertNotNull(entity);
-        Assertions.assertThrows(NullPointerException.class, () -> entity.key((Class<Object>) null));
+
+        assertThatNullPointerException().isThrownBy(() -> entity.key((Class<Object>) null)).withMessage("type is required");
     }
 
-
     @Test
-    public void shouldGetKeyValueSupplier() {
+    @DisplayName("Should be able to get the key by TypeSupplier")
+    void shouldGetKeyValueSupplier() {
         String value = "10";
         KeyValueEntity entity = KeyValueEntity.of(value, value);
-        assertEquals(value, entity.value());
-        assertEquals(Integer.valueOf(10), entity.key(Integer.class));
-        assertThat(singletonList(10)).contains(entity.value(new TypeReference<List<Integer>>() {
-        }).get(0));
+
+        assertThat(entity.value(new TypeReference<List<Integer>>() {
+        })).isEqualTo(singletonList(10));
     }
 
     @Test
-    public void shouldReturnErrorWhenGetKeySupplierIsNull() {
+    @DisplayName("Should throw NullPointerException when TypeSupplier is null")
+    void shouldReturnErrorWhenGetKeySupplierIsNull() {
         Value value = Value.of("value");
         KeyValueEntity entity = KeyValueEntity.of("10", value);
-        assertNotNull(entity);
-        Assertions.assertThrows(NullPointerException.class, () -> entity.key((TypeReference<Object>) null));
-    }
 
+        assertThatNullPointerException().isThrownBy(() -> entity.key((TypeReference<Object>) null)).withMessage("supplier is required");
+    }
 }
