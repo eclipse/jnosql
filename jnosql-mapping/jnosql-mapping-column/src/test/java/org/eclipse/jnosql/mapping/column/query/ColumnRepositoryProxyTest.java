@@ -687,7 +687,7 @@ public class ColumnRepositoryProxyTest {
                 .thenReturn(true);
 
         var result = personRepository.existsByName("Poliana");
-        Assertions.assertEquals(true, result);
+        assertTrue(result);
         ArgumentCaptor<ColumnQuery> captor = ArgumentCaptor.forClass(ColumnQuery.class);
         verify(template).exists(captor.capture());
         ColumnQuery query = captor.getValue();

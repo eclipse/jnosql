@@ -208,13 +208,13 @@ class DefaultDocumentQueryBuilderTest {
 
     @Test
     void shouldBeEqualsToYourself() {
-        assertTrue(builder.equals(builder));
+        assertEquals(builder, builder);
     }
 
 
     @Test
     void shouldBeNotEqualsToAnyOtherInstanceType() {
-        assertFalse(builder.equals(new Object()));
+        assertNotEquals(builder, new Object());
     }
 
     @Test
@@ -226,7 +226,7 @@ class DefaultDocumentQueryBuilderTest {
                 .skip(1)
                 .limit(2);
 
-        assertFalse(builder.equals(anotherBuilder));
+        assertNotEquals(builder, anotherBuilder);
     }
 
     @Test
@@ -253,7 +253,7 @@ class DefaultDocumentQueryBuilderTest {
 
         assertNotSame(builder1,builder2);
 
-        assertTrue(builder1.equals(builder2));
+        assertEquals(builder1, builder2);
     }
 
     @Test
