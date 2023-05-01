@@ -254,7 +254,7 @@ public class GraphCrudRepositoryProxyTest {
     public void shouldFindByIds() {
 
         when(template.find(any(Object.class))).thenReturn(Optional.empty());
-        ArgumentCaptor<Iterable> captor = ArgumentCaptor.forClass(Iterable.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         personRepository.findAllById(singletonList(10L)).collect(Collectors.toUnmodifiableList());
         verify(template).find(captor.capture());
 
