@@ -44,7 +44,7 @@ class GetQueryParserTest {
     @ValueSource(strings = {"get \"Diana\""})
     public void shouldReturnParserQuery1(String query) {
 
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
 
         final Stream<Value> stream = parser.query(query, manager);
         verify(manager, Mockito.never()).get(Mockito.any(Object.class));
@@ -60,7 +60,7 @@ class GetQueryParserTest {
     @ValueSource(strings = {"get 12"})
     public void shouldReturnParserQuery2(String query) {
 
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
 
         final Stream<Value> stream = parser.query(query, manager);
 
@@ -77,7 +77,7 @@ class GetQueryParserTest {
     @ValueSource(strings = {"get {\"Ana\" : \"Sister\", \"Maria\" : \"Mother\"}"})
     public void shouldReturnParserQuery3(String query) {
 
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
 
         final Stream<Value> stream = parser.query(query, manager);
 
@@ -93,7 +93,7 @@ class GetQueryParserTest {
     @ParameterizedTest(name = "Should parser the query {0}")
     @ValueSource(strings = {"get convert(\"2018-01-10\", java.time.LocalDate)"})
     public void shouldReturnParserQuery4(String query) {
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
 
         final Stream<Value> stream = parser.query(query, manager);
 
@@ -126,7 +126,7 @@ class GetQueryParserTest {
     @ValueSource(strings = {"get @id"})
     public void shouldExecutePrepareStatement(String query) {
 
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         prepare.result().collect(Collectors.toList());
@@ -143,7 +143,7 @@ class GetQueryParserTest {
     @ValueSource(strings = {"get @id, @id2"})
     public void shouldExecutePrepareStatement2(String query) {
 
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         prepare.bind("id2", 11);
