@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Class to reads and converts to {@link AtomicInteger}, first it verify if is AtomicInteger if yes return itself then
- * verifies if is {@link Number} and use {@link Number#intValue()} ()} otherwise convert to {@link String}
+ * verifies if is {@link Number} and use {@link Number#intValue()} otherwise convert to {@link String}
  * and then {@link AtomicInteger}
  */
 public final class AtomicIntegerReader implements ValueReader {
