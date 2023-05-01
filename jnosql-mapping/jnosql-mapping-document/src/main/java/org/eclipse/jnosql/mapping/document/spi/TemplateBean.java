@@ -15,9 +15,7 @@
 package org.eclipse.jnosql.mapping.document.spi;
 
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.spi.CreationalContext;
-import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.nosql.document.DocumentTemplate;
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;

@@ -53,11 +53,6 @@ final class DefaultQueryValue implements ParamQueryValue {
         return "@" + value;
     }
 
-    @Override
-    public ValueType type() {
-        return ValueType.PARAMETER;
-    }
-
     public static DefaultQueryValue of(QueryParser.ParameterContext parameter) {
         return new DefaultQueryValue(parameter.getText().substring(1));
     }
