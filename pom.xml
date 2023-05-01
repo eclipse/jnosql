@@ -79,7 +79,7 @@
         <commons.io.version>2.11.0</commons.io.version>
         <checkstyle.excludes>**/jnosql/query/grammar/**</checkstyle.excludes>
         <weld.se.core.version>5.1.0.Final</weld.se.core.version>
-        <yasson.version>3.0.2</yasson.version>
+        <yasson.version>3.0.3</yasson.version>
         <microprofile.config.version>3.0.2</microprofile.config.version>
         <smallrye.config.version>3.2.1</smallrye.config.version>
 
