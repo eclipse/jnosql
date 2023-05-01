@@ -684,7 +684,7 @@ public class DocumentRepositoryProxyTest {
                 .thenReturn(true);
 
         var result = personRepository.existsByName("Poliana");
-        Assertions.assertEquals(true, result);
+        assertTrue(result);
         ArgumentCaptor<DocumentQuery> captor = ArgumentCaptor.forClass(DocumentQuery.class);
         verify(template).exists(captor.capture());
         DocumentQuery query = captor.getValue();

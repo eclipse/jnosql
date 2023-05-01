@@ -58,7 +58,7 @@
     </developers>
     <properties>
         <apache-rat-plugin.version>0.15</apache-rat-plugin.version>
-        <jacoco.maven.version>0.8.9</jacoco.maven.version>
+        <jacoco.maven.version>0.8.10</jacoco.maven.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
         <jakarta.enterprise.cdi.version>4.0.1</jakarta.enterprise.cdi.version>
         <jakarta.json.bind.version>3.0.0</jakarta.json.bind.version>
@@ -79,7 +79,7 @@
         <commons.io.version>2.11.0</commons.io.version>
         <checkstyle.excludes>**/jnosql/query/grammar/**</checkstyle.excludes>
         <weld.se.core.version>5.1.0.Final</weld.se.core.version>
-        <yasson.version>3.0.2</yasson.version>
+        <yasson.version>3.0.3</yasson.version>
         <microprofile.config.version>3.0.2</microprofile.config.version>
         <smallrye.config.version>3.2.1</smallrye.config.version>
 
@@ -88,8 +88,8 @@
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 
         <!-- testing libraries -->
-        <junit.version>5.9.2</junit.version>
-        <mockito.verson>4.11.0</mockito.verson>
+        <junit.version>5.9.3</junit.version>
+        <mockito.verson>5.3.1</mockito.verson>
         <assertj.version>3.24.2</assertj.version>
         <awaitility.version>4.2.0</awaitility.version>
         <pi-test.version>1.12.0</pi-test.version>

@@ -15,9 +15,7 @@
 package org.eclipse.jnosql.mapping.document.spi;
 
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.spi.CreationalContext;
-import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.nosql.document.DocumentTemplate;
 import org.eclipse.jnosql.communication.document.DocumentManager;
 import org.eclipse.jnosql.mapping.DatabaseQualifier;
@@ -54,15 +52,6 @@ class TemplateBean extends AbstractBean<JNoSQLDocumentTemplate> {
         return DocumentTemplate.class;
     }
 
-    @Override
-    public Set<InjectionPoint> getInjectionPoints() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isNullable() {
-        return false;
-    }
 
     @Override
     public JNoSQLDocumentTemplate create(CreationalContext<JNoSQLDocumentTemplate> context) {
@@ -77,11 +66,6 @@ class TemplateBean extends AbstractBean<JNoSQLDocumentTemplate> {
     }
 
     @Override
-    public void destroy(JNoSQLDocumentTemplate instance, CreationalContext<JNoSQLDocumentTemplate> creationalContext) {
-
-    }
-
-    @Override
     public Set<Type> getTypes() {
         return TYPES;
     }
@@ -89,26 +73,6 @@ class TemplateBean extends AbstractBean<JNoSQLDocumentTemplate> {
     @Override
     public Set<Annotation> getQualifiers() {
         return qualifiers;
-    }
-
-    @Override
-    public Class<? extends Annotation> getScope() {
-        return ApplicationScoped.class;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public Set<Class<? extends Annotation>> getStereotypes() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public boolean isAlternative() {
-        return false;
     }
 
     @Override

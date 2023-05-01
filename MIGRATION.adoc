@@ -1,4 +1,4 @@
-# Migration guide
+= Migration guide
 :toc: auto
 
 == Eclipse JNoSQL 1.0.0-b7 Migration Guide

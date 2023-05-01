@@ -43,7 +43,7 @@ class KeyValueQueryParserTest {
     @ValueSource(strings = {"get \"Diana\""})
     public void shouldReturnParserQuery1(String query) {
 
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
 
         parser.query(query, manager).collect(Collectors.toList());
 
@@ -139,7 +139,7 @@ class KeyValueQueryParserTest {
     public void shouldReturnSingleResult(String query) {
 
         Mockito.when(manager.get(10)).thenReturn(Optional.of(Value.of(10L)));
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         final Optional<Value> result = prepare.singleResult();
@@ -157,7 +157,7 @@ class KeyValueQueryParserTest {
     public void shouldReturnEmptySingleResult(String query) {
 
         Mockito.when(manager.get(10)).thenReturn(Optional.empty());
-        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
         KeyValuePreparedStatement prepare = parser.prepare(query, manager);
         prepare.bind("id", 10);
         final Optional<Value> result = prepare.singleResult();

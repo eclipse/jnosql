@@ -74,7 +74,7 @@ class RepositoryFilterTest {
 
     }
 
-    private class Computer {
+    private static class Computer {
 
         @Id
         private String id;
