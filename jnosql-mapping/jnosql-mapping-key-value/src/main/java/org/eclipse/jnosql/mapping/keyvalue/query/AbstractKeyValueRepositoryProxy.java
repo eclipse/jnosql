@@ -38,11 +38,13 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
 
         RepositoryType type = RepositoryType.of(method);
         switch (type) {
-            case DEFAULT:
+            case DEFAULT -> {
                 return method.invoke(getRepository(), args);
-            case OBJECT_METHOD:
+            }
+            case OBJECT_METHOD -> {
                 return method.invoke(this, args);
-            case QUERY:
+            }
+            case QUERY -> {
                 Class<?> typeClass = getType();
                 DynamicQueryMethodReturn methodReturn = DynamicQueryMethodReturn.builder()
                         .withArgs(args)
@@ -51,8 +53,8 @@ public abstract class AbstractKeyValueRepositoryProxy<T> implements InvocationHa
                         .withPrepareConverter(q -> getTemplate().prepare(q, typeClass))
                         .withQueryConverter(q -> getTemplate().query(q, typeClass)).build();
                 return methodReturn.execute();
-            default:
-                throw new DynamicQueryException("Key Value repository does not support query method");
+            }
+            default -> throw new DynamicQueryException("Key Value repository does not support query method");
         }
     }
 }

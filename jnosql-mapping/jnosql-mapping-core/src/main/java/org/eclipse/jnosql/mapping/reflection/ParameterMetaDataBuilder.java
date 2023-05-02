@@ -38,19 +38,16 @@ class ParameterMetaDataBuilder {
                 .map(Id::value)
                 .orElseGet(() -> column.value());
         MappingType mappingType = MappingType.of(parameter);
-        switch (mappingType) {
-            case COLLECTION:
-            case MAP:
-                return new GenericParameterMetaData(name, type,
-                        id != null,
-                        Optional.ofNullable(convert).map(Convert::value).orElse(null),
-                        mappingType, parameter::getParameterizedType);
-            default:
-                return new DefaultParameterMetaData(name, type,
-                        id != null,
-                        Optional.ofNullable(convert).map(Convert::value).orElse(null),
-                        mappingType);
-        }
+        return switch (mappingType) {
+            case COLLECTION, MAP -> new GenericParameterMetaData(name, type,
+                    id != null,
+                    Optional.ofNullable(convert).map(Convert::value).orElse(null),
+                    mappingType, parameter::getParameterizedType);
+            default -> new DefaultParameterMetaData(name, type,
+                    id != null,
+                    Optional.ofNullable(convert).map(Convert::value).orElse(null),
+                    mappingType);
+        };
 
     }
 

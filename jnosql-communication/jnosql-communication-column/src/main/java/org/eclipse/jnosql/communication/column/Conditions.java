@@ -34,52 +34,38 @@ final class Conditions {
     }
 
     static ColumnCondition getCondition(QueryCondition condition, Params parameters, ColumnObserverParser observer, String entity) {
-        switch (condition.condition()) {
-            case EQUALS:
-                return ColumnCondition.eq(Column.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case GREATER_THAN:
-                return ColumnCondition.gt(Column.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case GREATER_EQUALS_THAN:
-                return ColumnCondition.gte(Column.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case LESSER_THAN:
-                return ColumnCondition.lt(Column.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case LESSER_EQUALS_THAN:
-                return ColumnCondition.lte(Column.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case IN:
-                return ColumnCondition.in(Column.of(getName(condition, observer, entity),
-                        Values.get(condition.value(), parameters)));
-            case LIKE:
-                return ColumnCondition.like(Column.of(getName(condition, observer, entity),
-                        Values.get(condition.value(),
-                                parameters)));
-            case BETWEEN:
-                return ColumnCondition.between(Column.of(getName(condition, observer, entity),
-                        Values.get(condition.value(),
-                                parameters)));
-            case NOT:
-                return getCondition(ConditionQueryValue.class.cast(condition.value()).get().get(0),
-                        parameters, observer,
-                        entity).negate();
-            case OR:
-                return ColumnCondition.or(ConditionQueryValue.class.cast(condition.value())
-                        .get()
-                        .stream().map(v -> getCondition(v, parameters, observer, entity))
-                        .toArray(ColumnCondition[]::new));
-            case AND:
-                return ColumnCondition.and(ConditionQueryValue.class.cast(condition.value())
-                        .get()
-                        .stream().map(v -> getCondition(v, parameters, observer, entity))
-                        .toArray(ColumnCondition[]::new));
-            default:
-                throw new QueryException("There is not support the type: " + condition.condition());
-
-
-        }
+        return switch (condition.condition()) {
+            case EQUALS -> ColumnCondition.eq(Column.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case GREATER_THAN -> ColumnCondition.gt(Column.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case GREATER_EQUALS_THAN -> ColumnCondition.gte(Column.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case LESSER_THAN -> ColumnCondition.lt(Column.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case LESSER_EQUALS_THAN -> ColumnCondition.lte(Column.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case IN -> ColumnCondition.in(Column.of(getName(condition, observer, entity),
+                    Values.get(condition.value(), parameters)));
+            case LIKE -> ColumnCondition.like(Column.of(getName(condition, observer, entity),
+                    Values.get(condition.value(),
+                            parameters)));
+            case BETWEEN -> ColumnCondition.between(Column.of(getName(condition, observer, entity),
+                    Values.get(condition.value(),
+                            parameters)));
+            case NOT -> getCondition(ConditionQueryValue.class.cast(condition.value()).get().get(0),
+                    parameters, observer,
+                    entity).negate();
+            case OR -> ColumnCondition.or(ConditionQueryValue.class.cast(condition.value())
+                    .get()
+                    .stream().map(v -> getCondition(v, parameters, observer, entity))
+                    .toArray(ColumnCondition[]::new));
+            case AND -> ColumnCondition.and(ConditionQueryValue.class.cast(condition.value())
+                    .get()
+                    .stream().map(v -> getCondition(v, parameters, observer, entity))
+                    .toArray(ColumnCondition[]::new));
+            default -> throw new QueryException("There is not support the type: " + condition.condition());
+        };
     }
 
     private static String getName(QueryCondition condition, ColumnObserverParser observer, String entity) {

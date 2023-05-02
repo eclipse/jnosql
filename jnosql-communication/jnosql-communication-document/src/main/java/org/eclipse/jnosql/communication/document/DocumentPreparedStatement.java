@@ -99,22 +99,24 @@ public final class DocumentPreparedStatement {
             throw new QueryException("Check all the parameters before execute the query, params left: " + paramsLeft);
         }
         switch (type) {
-            case SELECT:
+            case SELECT -> {
                 return manager.select(documentQuery);
-            case DELETE:
+            }
+            case DELETE -> {
                 manager.delete(documentDeleteQuery);
                 return Stream.empty();
-            case UPDATE:
+            }
+            case UPDATE -> {
                 return Stream.of(manager.update(entity));
-            case INSERT:
+            }
+            case INSERT -> {
                 if (Objects.isNull(duration)) {
                     return Stream.of(manager.insert(entity));
                 } else {
                     return Stream.of(manager.insert(entity, duration));
                 }
-            default:
-                throw new UnsupportedOperationException("there is not support to operation type: " + type);
-
+            }
+            default -> throw new UnsupportedOperationException("there is not support to operation type: " + type);
         }
     }
 

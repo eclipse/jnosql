@@ -80,15 +80,17 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
                     + paramsLeft);
         }
         switch (type) {
-            case GET:
+            case GET -> {
                 return keys.stream().map(Value::get)
                         .map(manager::get)
                         .filter(Optional::isPresent)
                         .map(Optional::get);
-            case DEL:
+            }
+            case DEL -> {
                 manager.delete(keys.stream().map(Value::get).collect(Collectors.toList()));
                 return Stream.empty();
-            case PUT:
+            }
+            case PUT -> {
                 KeyValueEntity entity = KeyValueEntity.of(key.get(), value.get());
                 if (Objects.isNull(ttl)) {
                     manager.put(entity);
@@ -96,8 +98,8 @@ final class DefaultKeyValuePreparedStatement implements KeyValuePreparedStatemen
                     manager.put(entity, ttl);
                 }
                 return Stream.empty();
-            default:
-                throw new UnsupportedOperationException("there is not support to operation type: " + type);
+            }
+            default -> throw new UnsupportedOperationException("there is not support to operation type: " + type);
         }
     }
 

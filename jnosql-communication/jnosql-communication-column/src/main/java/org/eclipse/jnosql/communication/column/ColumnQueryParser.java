@@ -46,18 +46,14 @@ public final class ColumnQueryParser {
     public Stream<ColumnEntity> query(String query, ColumnManager manager, ColumnObserverParser observer) {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
-        switch (command) {
-            case "select":
-                return select.query(query, manager, observer);
-            case "delete":
-                return delete.query(query, manager, observer);
-            case "insert":
-                return insert.query(query, manager, observer);
-            case "update":
-                return update.query(query, manager, observer);
-            default:
-                throw new QueryException(String.format("The command was not recognized at the query %s ", query));
-        }
+        return switch (command) {
+            case "select" -> select.query(query, manager, observer);
+            case "delete" -> delete.query(query, manager, observer);
+            case "insert" -> insert.query(query, manager, observer);
+            case "update" -> update.query(query, manager, observer);
+            default ->
+                    throw new QueryException(String.format("The command was not recognized at the query %s ", query));
+        };
     }
 
     /**
@@ -76,18 +72,14 @@ public final class ColumnQueryParser {
         validation(query, manager, observer);
         String command = query.substring(0, 6);
 
-        switch (command) {
-            case "select":
-                return select.prepare(query, manager, observer);
-            case "delete":
-                return delete.prepare(query, manager, observer);
-            case "insert":
-                return insert.prepare(query, manager, observer);
-            case "update":
-                return update.prepare(query, manager, observer);
-            default:
-                throw new QueryException(String.format("The command was not recognized at the query %s ", query));
-        }
+        return switch (command) {
+            case "select" -> select.prepare(query, manager, observer);
+            case "delete" -> delete.prepare(query, manager, observer);
+            case "insert" -> insert.prepare(query, manager, observer);
+            case "update" -> update.prepare(query, manager, observer);
+            default ->
+                    throw new QueryException(String.format("The command was not recognized at the query %s ", query));
+        };
     }
 
 

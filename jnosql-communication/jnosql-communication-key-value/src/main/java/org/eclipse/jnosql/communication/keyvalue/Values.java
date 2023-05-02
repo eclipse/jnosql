@@ -44,17 +44,18 @@ final class Values {
 
         ValueType type = value.type();
         switch (type) {
-            case NUMBER:
-            case STRING:
-            case BOOLEAN:
+            case NUMBER, STRING, BOOLEAN -> {
                 return value.get();
-            case PARAMETER:
+            }
+            case PARAMETER -> {
                 return parameters.add(ParamQueryValue.class.cast(value).get());
-            case ARRAY:
+            }
+            case ARRAY -> {
                 return Stream.of(ArrayQueryValue.class.cast(value).get())
                         .map(v -> get(v, parameters))
                         .collect(toList());
-            case FUNCTION:
+            }
+            case FUNCTION -> {
                 Function function = FunctionQueryValue.class.cast(value).get();
                 String name = function.name();
                 Object[] params = function.params();
@@ -64,12 +65,11 @@ final class Values {
                 String message = String.format("There is not support to the function: %s with parameters %s", name,
                         Arrays.toString(params));
                 throw new QueryException(message);
-            case JSON:
+            }
+            case JSON -> {
                 return JSONQueryValue.class.cast(value).get().toString();
-            case CONDITION:
-            default:
-                throw new QueryException("There is not support to the value: " + type);
-
+            }
+            default -> throw new QueryException("There is not support to the value: " + type);
         }
     }
 
